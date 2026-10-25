@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { TestContractService } from '../../../src/services/verification-evidence/TestContractService';
 import { indexFiles, unitOf } from '../../support/memoryTree';
 
@@ -110,4 +111,61 @@ test('compare initialized contracts preserves identities unless capabilities cha
 		)
 	).toEqual([]);
 	expect(service.compare([], [unit])).toEqual([]);
+	assertSiblingCaseIdentity(unit);
 });
+
+function assertSiblingCaseIdentity(unit: ComponentManifest) {
+	const names = ['first', 'second'];
+	const helpers = names.map((name) => ({
+		name,
+		source: 'src/helpers/strings/values.ts',
+		pure: true as const,
+		inputs: [],
+		output: 'number',
+		consumers: [{ unit: 'function.a' }, { unit: 'function.b' }],
+		examples: [{ name: 'Base', call: `${name}()`, input: [], output: 0 }]
+	}));
+	const cases = names.map((subject) => ({
+		id: `${subject}.base`,
+		state: 'ready',
+		subject,
+		example: 'Base',
+		test: { file: 'test/values.test.ts', title: `${subject}: Base` }
+	}));
+	const before = {
+		...unit,
+		owns: { ...unit.owns, symbols: names },
+		helperContracts: helpers,
+		testing: { version: 1 as const, shape: 'helper' as const, states: ['ready'], cases }
+	};
+	const after = {
+		...before,
+		helperContracts: [
+			{
+				...helpers[0],
+				examples: [
+					...helpers[0].examples,
+					{ name: 'New first capability', call: 'first(1)', input: [1], output: 1 }
+				]
+			},
+			helpers[1]
+		],
+		testing: {
+			...before.testing,
+			cases: [
+				{
+					...cases[0],
+					id: 'first.new',
+					example: 'New first capability',
+					test: { ...cases[0].test, title: 'first: New first capability' }
+				},
+				cases[0],
+				{ ...cases[1], id: 'second.renamed' }
+			]
+		}
+	};
+	expect(
+		service.compare([before], [after]).join(' '),
+		'changing first must not permit changing second case identities'
+	).toContain('second');
+}
