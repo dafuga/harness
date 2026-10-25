@@ -28,7 +28,7 @@ export async function measureHarness(input: Input, run: Runner): Promise<Command
 			input.env
 		);
 		const duration = performance.now() - start;
-		if (result.exitCode === 0)
+		if (result.exitCode === 0 || input.args[0] === 'validate')
 			recordUsage(
 				units,
 				input.args[0] === 'api' ? apiWorkloadArgs(input.args) : input.args,
@@ -43,6 +43,15 @@ export async function measureHarness(input: Input, run: Runner): Promise<Command
 
 function measuredUnits(args: string[]): string[] {
 	if (args[0] === 'api') return apiMeasuredUnits(args);
+	if (args[0] === 'validate')
+		return [
+			'command.development-tooling-validate',
+			'service.git-source-history-module-data',
+			'repository.git-source-history-module-data',
+			'validator.development-tooling-module-data',
+			'entry.program',
+			'entry.index'
+		];
 	const workload = measuredWorkloads[args.slice(0, 2).join(':')];
 	if (workload) return workload;
 	if (args[0] === 'new') return ['template.project-guidance'];

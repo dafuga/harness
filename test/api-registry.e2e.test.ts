@@ -51,3 +51,22 @@ test.each(['local', 'hosted'] as const)(
 	},
 	30000
 );
+
+test.each(['local', 'hosted'] as const)(
+	'API CLI reads %s committed page APIs without a graph script',
+	async (mode) => {
+		const f = await apiFixture(mode);
+		try {
+			const result = await f.cli(['get', 'used-apis', 'page.example', '--commit', commit]);
+			expect(JSON.parse(result.stdout)).toEqual([
+				expect.objectContaining({ id: 'endpoint.orders', title: '/api/orders' })
+			]);
+			expect(f.seen.find((request) => request.operation === 'moduleData')?.input.commit).toBe(
+				commit
+			);
+		} finally {
+			await f.close();
+		}
+	},
+	30000
+);

@@ -95,6 +95,15 @@ function answer(operation: string, input: Record<string, unknown>, endpoints: bo
 					: [])
 			]
 		};
+	if (operation === 'moduleData')
+		return {
+			schemaVersion: 1,
+			commit,
+			modules: [],
+			issues: [],
+			registry: { units: [{ id: 'endpoint.orders', kind: 'endpoint', title: '/api/orders' }] },
+			relationships: { 'page.example': { apis: ['endpoint.orders'] } }
+		};
 	if (operation === 'entity') return { id: input.entityId, contract };
 	if (operation === 'createPlan') return { id: 'function.format-totals', contract: input.contract };
 	if (operation === 'events')

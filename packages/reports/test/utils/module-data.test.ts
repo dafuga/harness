@@ -1,0 +1,82 @@
+import { expect, test } from 'vitest';
+import { explorerRelations } from '../../src/utils/explorerRelations';
+import { harnessClient } from '../../src/utils/explorer-ui/harnessClient';
+import { revision, unit } from '../explorerFixture';
+
+const empty = {
+	pages: [],
+	layouts: [],
+	components: [],
+	functions: [],
+	configs: [],
+	services: [],
+	types: [],
+	apis: [],
+	models: [],
+	usedBy: [],
+	support: []
+};
+function stored() {
+	const head = revision(
+		[
+			unit('page.orders', 'page', {
+				owns: { source: ['src/routes/orders/+page.svelte'], symbols: [] },
+				dependencies: [{ unit: 'endpoint.orders', via: 'http' }]
+			}),
+			unit('endpoint.orders', 'endpoint')
+		],
+		[],
+		[]
+	);
+	return Object.assign(head, {
+		moduleData: {
+			required: true,
+			committed: true,
+			commit: head.commit,
+			digest: 'a'.repeat(64),
+			issues: [],
+			modules: [],
+			relationships: { 'page.orders': { ...empty } }
+		}
+	});
+}
+test('relationship readers use committed empty results without searching the source graph', () => {
+	const head = stored();
+	expect(explorerRelations(head, 'page.orders').apis).toEqual([]);
+});
+test('required missing relationships fail instead of silently recomputing them', () => {
+	const head = stored();
+	expect(() => explorerRelations(head, 'endpoint.orders')).toThrow(
+		'Missing committed relationships'
+	);
+});
+test('the app refuses incomplete committed metadata and exposes the exact module and field', async () => {
+	const head = stored();
+	head.moduleData.modules = [
+		{
+			id: 'page.orders',
+			kind: 'page',
+			category: 'pages',
+			issues: [
+				{ field: 'contract.inputs', message: 'Missing inputs', repair: 'Commit the contract' }
+			]
+		}
+	] as never;
+	const client = harnessClient('/fixture', async () => new Response(JSON.stringify(head)));
+	await expect(client.revision(head.commit)).rejects.toThrow('page.orders: contract.inputs');
+});
+test('the app refuses required uncommitted metadata while leaving legacy data readable', async () => {
+	const head = stored();
+	const incomplete = { ...head, moduleData: { ...head.moduleData, committed: false } };
+	await expect(
+		harnessClient('/incomplete', async () => new Response(JSON.stringify(incomplete))).revision(
+			head.commit
+		)
+	).rejects.toThrow('Missing committed module data');
+	const legacy = revision([], [], []);
+	await expect(
+		harnessClient('/legacy', async () => new Response(JSON.stringify(legacy))).revision(
+			legacy.commit
+		)
+	).resolves.toEqual(legacy);
+});
