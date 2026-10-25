@@ -1,0 +1,73 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W4Rik4
+
+ ❯ test/adapters/git-source-history/commit-tree.test.ts (6 tests | 2 failed) 270ms
+   ✓ CommitTreeAdapter.open empty resolves the exact commit and refuses absent revisions 43ms
+   × CommitTreeAdapter.open populated establishes the object format before caching 47ms
+     → promise resolved "CommitTreeAdapter{ …(6) }" instead of rejecting
+   ✓ CommitTreeAdapter.list empty returns no source entries 36ms
+   ✓ CommitTreeAdapter.list populated retains blob identities and paths 45ms
+   ✓ CommitTreeAdapter.read empty rejects missing paths 34ms
+   × CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths 63ms
+     → immutable blob should be read once across trees: expected [ [ …(2) ], [ …(2) ] ] to have a length of 1 but got 2
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/git-source-history/commit-tree.test.ts > CommitTreeAdapter.open populated establishes the object format before caching
+AssertionError: promise resolved "CommitTreeAdapter{ …(6) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ CommitTreeAdapter {
++   "flushing": false,
++   "git": GitAdapter {
++     "root": "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-committed-tree-37PfAL",
++   },
++   "listed": undefined,
++   "revision": "71f304c21e8f7b189675c85cc18bc6ee2ec79ae2",
++   "texts": Map {},
++   "waiting": Map {},
+  }
+
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:55:52
+     53|     : run.call(this, args, options);
+     54|   });
+     55|   await expect(CommitTreeAdapter.open(root, 'HEAD')).rejects.toThrow(
+       |                                                    ^
+     56|    'Unsupported Git object format'
+     57|   );
+ ❯ fixture test/adapters/git-source-history/commit-tree.test.ts:26:3
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:41:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/adapters/git-source-history/commit-tree.test.ts > CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths
+AssertionError: immutable blob should be read once across trees: expected [ [ …(2) ], [ …(2) ] ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:97:7
+     95|      bytes.mock.calls.filter(([args]) => args[0] === 'cat-file'),
+     96|      'immutable blob should be read once across trees'
+     97|     ).toHaveLength(1);
+       |       ^
+     98|     await writeFile(join(root, 'sample.txt'), 'Changed fixture\n');
+     99|     await git.run(['add', '.']);
+ ❯ fixture test/adapters/git-source-history/commit-tree.test.ts:26:3
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:83:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  16:38:42
+   Duration  2.50s (transform 64ms, setup 86ms, collect 13ms, tests 270ms, environment 0ms, prepare 20ms)
+
