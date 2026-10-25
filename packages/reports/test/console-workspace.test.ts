@@ -43,3 +43,44 @@ test('chat references navigate the standalone explorer to scoped entity history'
 	expect(host.workspace.error).toBe('');
 	host.close();
 });
+
+test('module screens retain revision-scoped project chat without selecting a source entity', async () => {
+	vi.stubGlobal(
+		'fetch',
+		vi.fn(async (_url, init) => {
+			const { method, input } = JSON.parse(init.body);
+			const selected = {
+				...snapshot,
+				writable: !input?.commit,
+				revision: {
+					...snapshot.revision,
+					branch: input?.branch ?? 'main',
+					commit: input?.commit ?? commit
+				}
+			};
+			const answers: Record<string, unknown> = {
+				connect: { token: 'fixture-token', snapshot },
+				snapshot: selected,
+				capabilities: snapshot.capabilities
+			};
+			return Response.json(answers[method] ?? null);
+		})
+	);
+	const navigate = vi.fn();
+	const host = createConsoleWorkspaceStore(navigate);
+	try {
+		for (const route of ['/modules', '/modules/email', '/module-resources/email.email']) {
+			for (const at of ['', `/commit/${commit}`]) {
+				await host.workspace.navigate(`/harness/branch/feature%2Fmodules${at}${route}`, false);
+				expect(host.workspace.error).toBe('');
+				expect(host.workspace.category).toBe('pages');
+				expect(host.workspace.entity).toBeNull();
+				expect(host.workspace.snapshot?.revision.branch).toBe('feature/modules');
+				expect(host.workspace.pinned).toBe(Boolean(at));
+			}
+		}
+		expect(navigate).not.toHaveBeenCalled();
+	} finally {
+		host.close();
+	}
+});

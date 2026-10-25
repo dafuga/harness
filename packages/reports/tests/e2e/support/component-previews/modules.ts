@@ -57,7 +57,8 @@ export const moduleData = {
 };
 export function modulePreview(host: ExplorerScreenProps, entity?: string): ExplorerScreenProps {
 	const route = {
-		...host.route,
+		branch: host.route.branch,
+		commit: host.route.commit,
 		category: 'pages' as const,
 		screen: 'modules' as const,
 		...(entity ? { entity } : {})
