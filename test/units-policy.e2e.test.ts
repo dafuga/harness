@@ -177,6 +177,7 @@ test('source-bound reviews repair historical default runtime targets without cha
 		const head = (await git(['rev-parse', 'HEAD'])).stdout.trim();
 		const invoke = validationInvoker(project);
 		const before = await invoke(['--write', '--module', 'service.title']);
+		expect(before.valid).toBe(false);
 		expect(JSON.stringify(before.modules)).toContain('runtime.targets must include');
 		const review = join(project.root, '..', 'runtime-review.json');
 		await writeFile(

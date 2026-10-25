@@ -1,5 +1,6 @@
 import type {
 	ModuleData,
+	HistoryValidationReport,
 	ValidationReport
 } from '../src/services/git-source-history/ModuleDataService.types';
 import { expect, test } from 'vitest';
@@ -56,7 +57,7 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 		const changed = await invoke([]);
 		expect(changed.commit).not.toBe(head);
 		expect(changed.committed).toBe(false);
-		const history = await invoke(['--history', '--write']);
+		const history = (await invoke(['--history', '--write'])) as unknown as HistoryValidationReport;
 		expect(history.revisions.map((item: { commit: string }) => item.commit)).toContain(head);
 		expect((await git(['rev-parse', 'HEAD'])).stdout.trim()).toBe(changed.commit);
 		expect((await git(['status', '--porcelain'])).stdout.trim()).toBe('');
