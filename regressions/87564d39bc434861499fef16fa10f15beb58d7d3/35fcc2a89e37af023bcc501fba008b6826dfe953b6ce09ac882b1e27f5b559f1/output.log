@@ -1,0 +1,44 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fYPaB4
+
+ ❯ test/cli.e2e.test.ts (5 tests | 1 failed | 4 skipped) 57399ms
+   ↓ CLI scaffolds and checks a lib project
+   ↓ CLI scaffolds and checks an app project with routes
+   ↓ CLI reports edge errors cleanly
+   ↓ CLI supports force overwrites and generated lint failures
+   × CLI installs module foundations and generates their declared resources 57397ms
+     → page.evaluate: TypeError: Failed to execute 'fetch' on 'Window': Illegal invocation
+    at MetricsWasmService.load (http://rust-module.fixture/service.js:23:33)
+    at MetricsWasmService.sumSquares (http://rust-module.fixture/service.js:13:26)
+    at eval (eval at evaluate (:311:30), <anonymous>:1:123)
+    at async <anonymous>:337:30
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cli.e2e.test.ts > CLI installs module foundations and generates their declared resources
+Error: page.evaluate: TypeError: Failed to execute 'fetch' on 'Window': Illegal invocation
+    at MetricsWasmService.load (http://rust-module.fixture/service.js:23:33)
+    at MetricsWasmService.sumSquares (http://rust-module.fixture/service.js:13:26)
+    at eval (eval at evaluate (:311:30), <anonymous>:1:123)
+    at async <anonymous>:337:30
+ ❯ MetricsWasmService.load ../../../../../../../service.js:23:33
+ ❯ MetricsWasmService.sumSquares ../../../../../../../service.js:13:26
+ ❯ assertRustBrowser test/support/rustModuleScenario.ts:121:28
+    119|   });
+    120|   await page.goto('http://rust-module.fixture/');
+    121|   const total = await page.evaluate<number>(
+       |                            ^
+    122|    "(async () => { const { MetricsWasmService } = await import('/servi…
+    123|   );
+ ❯ assertRustModuleProject test/support/rustModuleScenario.ts:43:2
+ ❯ assertModuleProject test/support/moduleScenario.ts:28:2
+ ❯ test/cli.e2e.test.ts:205:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  17:19:48
+   Duration  61.50s (transform 137ms, setup 143ms, collect 318ms, tests 57.40s, environment 0ms, prepare 46ms)
+
