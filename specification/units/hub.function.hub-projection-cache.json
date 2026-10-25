@@ -43,6 +43,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "hub.function.development-tooling-hub-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.hub-json",
 			"via": "import",
 			"origin": "derived"

@@ -1,3 +1,5 @@
+import { ModuleDataService } from '../../../../../../../src/services/git-source-history/ModuleDataService';
+import { moduleDataRequired } from '../../../../../../../src/services/git-source-history/module-data-service/moduleDataAdmission';
 import { createHash } from 'node:crypto';
 import { basename } from 'node:path';
 import { componentManifestSchema } from '../../../../../../../src/lib/contracts';
@@ -68,6 +70,8 @@ export class GitSourceAdapter {
 	private registry = new Map<string, Promise<ComponentManifest[]>>();
 	async units(revision: string): Promise<ComponentManifest[]> {
 		const commit = await gitRevision(this.root, revision);
+		if (await moduleDataRequired(this.root, commit))
+			return (await new ModuleDataService(this.root).require(commit)).declarations;
 		if (!this.registry.has(commit)) this.registry.set(commit, this.readUnits(commit));
 		return this.registry.get(commit)!;
 	}

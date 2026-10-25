@@ -18,6 +18,7 @@
 			"HubProjectionService.evidence",
 			"HubProjectionService.artifact",
 			"HubProjectionService.snapshot",
+			"HubProjectionService.moduleData",
 			"HubProjectionService.registry",
 			"HubProjectionService.entity",
 			"HubProjectionService.history",
@@ -70,6 +71,22 @@
 			{
 				"name": "HubProjectionService.snapshot.query",
 				"type": "{ branch: string | null; commit: string | null }"
+			},
+			{
+				"name": "HubProjectionService.moduleData.actor",
+				"type": "Actor"
+			},
+			{
+				"name": "HubProjectionService.moduleData.projectId",
+				"type": "string"
+			},
+			{
+				"name": "HubProjectionService.moduleData.commit",
+				"type": "string | null"
+			},
+			{
+				"name": "HubProjectionService.moduleData.branch",
+				"type": "string | null"
 			},
 			{
 				"name": "HubProjectionService.registry.actor",
@@ -158,6 +175,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "HubProjectionService.moduleData",
+				"type": "unknown"
+			},
+			{
 				"name": "HubProjectionService.registry",
 				"type": "unknown"
 			},
@@ -197,6 +218,11 @@
 		},
 		{
 			"unit": "desktop.validator.remote-project-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.development-tooling-hub-module-data",
 			"via": "import",
 			"origin": "derived"
 		},

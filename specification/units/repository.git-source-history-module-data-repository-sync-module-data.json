@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.git-source-history-module-data-repository-sync-module-data",
+	"kind": "repository",
+	"title": "syncModuleData",
+	"responsibility": "Owns the syncModuleData persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/git-source-history/module-data-repository/syncModuleData.ts"],
+		"symbols": ["syncModuleData"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "syncModuleData.tree",
+				"type": "EvidenceTreeAdapter"
+			},
+			{
+				"name": "syncModuleData.ref",
+				"type": "string"
+			},
+			{
+				"name": "syncModuleData.remote",
+				"type": "string"
+			},
+			{
+				"name": "syncModuleData.push",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "syncModuleData",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.evidence-tree",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/git-source-history/module-data-repository/syncModuleData.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/git-source-history/module-data-repository/syncModuleData.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

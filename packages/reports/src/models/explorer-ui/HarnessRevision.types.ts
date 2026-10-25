@@ -1,3 +1,4 @@
+import type { PreparedModuleData } from '../../../../../src/services/git-source-history/ModuleDataService.types';
 import type { ProjectDependencies } from '../../../../../src/services/explorer-ui/revision-detail-service/projectDependencies.types';
 import type { PlatformCatalog } from '../../../../../src/core/explorer-ui/Platform.types';
 import type { TranslationCatalog } from '../../../../../src/core/explorer-ui/Translation.types';
@@ -10,6 +11,7 @@ import type {
 } from './Harness.types';
 
 export interface HarnessRevision {
+	moduleData?: PreparedModuleData;
 	projectDependencies?: ProjectDependencies;
 	platforms?: PlatformCatalog;
 	translations?: TranslationCatalog;

@@ -1,3 +1,4 @@
+import { ValidateCommand } from '../commands/development-tooling/ValidateCommand';
 import { registerTaskCommand } from './program/TaskCommand';
 import { ApiCommand } from '../commands/networking-security/ApiCommand';
 import { sdkPackage } from '../utils/development-tooling/buildStamp';
@@ -44,6 +45,7 @@ export function buildProgram(): Command {
 	registerInfoCommand(program);
 	registerLoopCommand(program);
 	registerUnitsCommand(program);
+	new ValidateCommand().register(program);
 	registerImpactCommand(program);
 	registerKernelCommand(program);
 	registerScenariosCommand(program);

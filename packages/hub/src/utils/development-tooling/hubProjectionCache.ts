@@ -1,3 +1,4 @@
+import { hubModuleData, hubRequiresModuleData } from './hubModuleData';
 import { cacheKey, readCache, writeCache } from 'collaboration';
 import type { HubSourceContext } from './hubSource';
 import { hubHash } from './hubJson';
@@ -8,10 +9,14 @@ export async function hubProjectionCache<T>(
 	projection: { profile: string; accept: (value: unknown) => T },
 	load: () => Promise<T>
 ): Promise<T> {
+	const metadata = hubRequiresModuleData(context) ? await hubModuleData(context, true) : undefined;
+	const profile = metadata
+		? `${projection.profile}\nmodule-data:${metadata.digest}`
+		: projection.profile;
 	const identity = {
 		...context.identity,
 		artifactHash: null,
-		profile: 'projection:' + (await hubHash(new TextEncoder().encode(projection.profile)))
+		profile: 'projection:' + (await hubHash(new TextEncoder().encode(profile)))
 	};
 	const cached = await readCache(context.cache, identity);
 	if (cached) {

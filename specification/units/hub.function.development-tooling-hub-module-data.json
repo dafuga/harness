@@ -1,0 +1,99 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.development-tooling-hub-module-data",
+	"kind": "function",
+	"title": "hubModuleData",
+	"responsibility": "Owns the hubModuleData shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/utils/development-tooling/hubModuleData.ts"],
+		"symbols": ["hubModuleData", "hubRequiresModuleData"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubModuleData.context",
+				"type": "HubSourceContext"
+			},
+			{
+				"name": "hubModuleData.admit",
+				"type": "unknown"
+			},
+			{
+				"name": "hubRequiresModuleData.context",
+				"type": "HubSourceContext"
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubModuleData",
+				"type": "Promise<ModuleData>"
+			},
+			{
+				"name": "hubRequiresModuleData",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.git-source-history-format-module-data-failure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.hub-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-protocol",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data-snapshot",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/utils/development-tooling/hubModuleData.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/utils/development-tooling/hubModuleData.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

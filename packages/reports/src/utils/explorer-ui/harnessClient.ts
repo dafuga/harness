@@ -1,3 +1,5 @@
+import { ModuleDataSnapshotValidator } from '../../../../../src/validators/development-tooling/ModuleDataSnapshotValidator';
+import { formatModuleDataFailure } from '../../../../../src/helpers/git-source-history/formatModuleDataFailure';
 import type { HarnessClient } from './harnessClient.types';
 import type { ProjectActivity } from '../../../../../src/core/activityTypes';
 import type { StoredSide } from '../../../../../src/utils/sideImpact';
@@ -33,7 +35,40 @@ function reading(base: string, fetcher: typeof fetch): HarnessClient {
 	};
 	return {
 		index: () => load<HarnessIndex>('index.json'),
-		revision: (commit) => load<HarnessRevision>(`revisions/${commit}.json`),
+		revision: async (commit) => {
+			const revision = await load<HarnessRevision>(`revisions/${commit}.json`);
+			const metadata = revision.moduleData;
+			if (metadata?.required) {
+				if (metadata.commit !== commit) {
+					cache.delete(`revisions/${commit}.json`);
+					throw new Error(
+						'Module metadata belongs to a different revision; run harness validate --write.'
+					);
+				}
+				const coverage = new ModuleDataSnapshotValidator().validate({
+					declarations: revision.registry.units,
+					registry: revision.registry,
+					modules: metadata.modules,
+					issues: metadata.issues,
+					relationships: metadata.relationships
+				});
+				if (metadata.committed && !coverage.valid) {
+					cache.delete(`revisions/${commit}.json`);
+					throw new Error(
+						`Incomplete module data: ${coverage.errors.join(' ')} Run harness validate --write.`
+					);
+				}
+
+				const failure = metadata.committed
+					? formatModuleDataFailure(metadata)
+					: 'Missing committed module data. Run harness validate --write.';
+				if (failure) {
+					cache.delete(`revisions/${commit}.json`);
+					throw new Error(failure);
+				}
+			}
+			return revision;
+		},
 		side: (path) => load<StoredSide>(path),
 		activity: () => load<ProjectActivity>('activity.json')
 	};

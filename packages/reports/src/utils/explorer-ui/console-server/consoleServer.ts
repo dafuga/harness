@@ -56,7 +56,7 @@ async function measuredRevision(
 	const root = process.env.HARNESS_SITE_ROOT?.trim();
 	if (!root) return json;
 	const revision = selectedRevision(path, json);
-	if (!revision) return json;
+	if (!revision || revision.moduleData?.required) return json;
 	const commit = revision.commit;
 	const units = revision.registry.units;
 	if (units.every((unit) => currentFigures(unit, commit))) return json;

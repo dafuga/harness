@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "service.git-source-history-module-data-service-module-preview-bindings",
+	"kind": "service",
+	"title": "modulePreviewBindings",
+	"responsibility": "Owns the modulePreviewBindings service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/git-source-history/module-data-service/modulePreviewBindings.ts"],
+		"symbols": ["modulePreviewBindings"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "modulePreviewBindings.registry",
+				"type": "RevisionRegistry"
+			},
+			{
+				"name": "modulePreviewBindings.declarations",
+				"type": "ComponentManifest[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "modulePreviewBindings",
+				"type": "void"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.revision-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-category",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/git-source-history/module-data-service/modulePreviewBindings.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/git-source-history/module-data-service/modulePreviewBindings.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

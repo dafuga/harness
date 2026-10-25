@@ -1,3 +1,4 @@
+import { ModuleDataRepository } from '../../../repositories/git-source-history/ModuleDataRepository';
 import type { Relation, RefChange, Synced } from './HistorySyncService.types';
 import { EvidenceTreeAdapter } from '../../../adapters/verification-evidence/EvidenceTreeAdapter';
 import { LfsAdapter } from '../../../adapters/git-source-history/LfsAdapter';
@@ -38,6 +39,7 @@ export class HistorySyncService {
 	/** Brings the remote's records here and merges them with the local ones. */
 	async fetch(remote: string): Promise<Synced> {
 		const theirs = await this.remoteRefs(remote);
+		await new ModuleDataRepository(this.tree.git.root).fetch(remote);
 		const tracking = (name: string) => `${remoteTrackingPrefix}${remote}/${name}`;
 		const wanted = [
 			...(theirs.has(evidenceRef) ? [`+${evidenceRef}:${tracking('evidence')}`] : []),
@@ -82,6 +84,7 @@ export class HistorySyncService {
 	async sync(remote: string): Promise<Synced> {
 		const fetched = await this.fetch(remote);
 		const pushed = await this.push(remote);
+		await new ModuleDataRepository(this.tree.git.root).sync(remote);
 		return { ...fetched, pushed: pushed.pushed };
 	}
 

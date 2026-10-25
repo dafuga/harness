@@ -1,3 +1,8 @@
+import { ModuleDataService } from '../../../../../../src/services/git-source-history/ModuleDataService';
+import {
+	committedModuleData,
+	moduleDataRequired
+} from '../../../../../../src/services/git-source-history/module-data-service/moduleDataAdmission';
 import { randomUUID, createHash } from 'node:crypto';
 import { ProjectSessionService } from '../../../../../desktop/src/services/project-session-service/ProjectSessionService';
 import { DesktopRunService } from '../../../../../desktop/src/services/desktop-run-service/DesktopRunService';
@@ -64,7 +69,15 @@ export class ConsoleAgentService {
 		async () => null
 	).bridge();
 	async open() {
-		return this.session.open(reportSite().root);
+		return this.session.open(reportSite().root).catch((cause: unknown) => {
+			if (
+				cause instanceof Error &&
+				/^(?:Missing or stale committed module data|Incomplete module data)/.test(cause.message) &&
+				this.session.source
+			)
+				return { validation: cause.message };
+			throw cause;
+		});
 	}
 	close() {
 		this.runs.cancelActive();
@@ -88,8 +101,13 @@ export class ConsoleAgentService {
 
 	async call(method: string, input: unknown, requestId?: string): Promise<unknown> {
 		this.touched = Date.now();
-		const reads = { events: () => this.progress(input), registry: () => this.registry(input) };
+		const reads = {
+			events: () => this.progress(input),
+			registry: () => this.registry(input),
+			moduleData: () => this.moduleData(input)
+		};
 		if (Object.hasOwn(reads, method)) return reads[method as keyof typeof reads]();
+		await admitConsoleRead(this.session, method, input);
 		if (!allowed.includes(method)) throw new Error('Operation unavailable in this web session.');
 		if (method === 'startRun') {
 			if (!requestId || !/^[a-f0-9-]{36}$/.test(requestId))
@@ -114,7 +132,17 @@ export class ConsoleAgentService {
 		}
 		return work;
 	}
+	private async moduleData(input: unknown) {
+		const query = new IpcRequestValidator().parse(channels.snapshot, input) as RevisionQuery;
+		this.session.assertProject(query.projectId);
+		const { source } = this.session.requireProject(),
+			revision = await source.revision(query);
+		const stored = await committedModuleData(source.root, revision.commit);
+		if (!stored) throw new Error('Missing committed module data; run harness validate --write.');
+		return stored.data;
+	}
 	private async registry(input: unknown) {
+		await admitConsoleRead(this.session, 'registry', input);
 		const query = new IpcRequestValidator().parse(channels.snapshot, input) as RevisionQuery;
 		this.session.assertProject(query.projectId);
 		const { source } = this.session.requireProject();
@@ -122,6 +150,27 @@ export class ConsoleAgentService {
 		return { commit: revision.commit, units: await source.units(revision.commit) };
 	}
 }
+async function admitConsoleRead(session: ProjectSessionService, method: string, input: unknown) {
+	if (
+		![
+			'snapshot',
+			'entity',
+			'source',
+			'history',
+			'evidence',
+			'artifact',
+			'image',
+			'registry'
+		].includes(method)
+	)
+		return;
+	const query = input as RevisionQuery & { entityId?: string };
+	const { source } = session.requireProject(),
+		revision = await source.revision(query);
+	if (await moduleDataRequired(source.root, revision.commit))
+		await new ModuleDataService(source.root).require(revision.commit, query.entityId);
+}
+
 const key = Symbol.for('harness.console.agents');
 const state = globalThis as typeof globalThis & { [key]?: Map<string, ConsoleAgentService> };
 const clients = (state[key] ??= new Map());

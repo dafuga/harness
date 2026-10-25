@@ -1,0 +1,88 @@
+{
+	"schemaVersion": 1,
+	"id": "service.git-source-history-module-data-service-module-data-cache",
+	"kind": "service",
+	"title": "ModuleDataCache",
+	"responsibility": "Owns the ModuleDataCache service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/git-source-history/module-data-service/ModuleDataCache.ts"],
+		"symbols": [
+			"ModuleDataCache",
+			"ModuleDataCache.constructor",
+			"ModuleDataCache.read",
+			"ModuleDataCache.write"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleDataCache.constructor.repository",
+				"type": "ModuleDataRepository"
+			},
+			{
+				"name": "ModuleDataCache.read.identity",
+				"type": "ModuleDataIdentity"
+			},
+			{
+				"name": "ModuleDataCache.read.source",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleDataCache.write.data",
+				"type": "ModuleData"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleDataCache.read",
+				"type": "Promise<ModuleData | undefined>"
+			},
+			{
+				"name": "ModuleDataCache.write",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-protocol",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data-snapshot",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/git-source-history/module-data-service/ModuleDataCache.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/git-source-history/module-data-service/ModuleDataCache.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

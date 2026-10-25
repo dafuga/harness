@@ -1,3 +1,6 @@
+import type { ModuleData } from '../../services/git-source-history/ModuleDataService.types';
+import { ModuleDataService } from '../../services/git-source-history/ModuleDataService';
+import { moduleDataRequired } from '../../services/git-source-history/module-data-service/moduleDataAdmission';
 import type { UnitDetail } from './inspectUnits.types';
 import { z } from 'zod';
 import { fail } from '../../core/development-tooling/errors';
@@ -28,17 +31,21 @@ export function unitSchema(name: string): unknown {
 }
 
 export async function listUnits(options: UnitsOptions & { kind?: string } = {}) {
-	const loaded = await loadUnits(options.root);
-	return loaded.stored
+	const committed = await admittedUnits(options.root);
+	const loaded = committed ? undefined : await loadUnits(options.root);
+	return (committed?.declarations ?? loaded!.stored)
 		.filter((unit) => unit.status === 'active' && (!options.kind || unit.kind === options.kind))
 		.map((unit) => ({ id: unit.id, kind: unit.kind, responsibility: unit.responsibility }));
 }
 
 export async function unitsGraph(options: UnitsOptions = {}): Promise<SourceGraph> {
-	return graphOf(await loadUnits(options.root));
+	const committed = await admittedUnits(options.root);
+	return committed?.sourceGraph ?? graphOf(await loadUnits(options.root));
 }
 
 export async function showUnit(id: string, options: UnitsOptions = {}): Promise<UnitDetail> {
+	const committed = await admittedUnits(options.root);
+	if (committed) return committedUnitDetail(committed, id);
 	const loaded = await loadUnits(options.root);
 	const manifest = loaded.stored.find((unit) => unit.id === id);
 	if (!manifest) return fail(`Unknown unit "${id}".`);
@@ -118,3 +125,28 @@ export function renderUnit(detail: UnitDetail): string {
 }
 
 export type { UnitDetail } from './inspectUnits.types';
+
+async function admittedUnits(root = process.cwd()): Promise<ModuleData | undefined> {
+	if (await moduleDataRequired(root, 'HEAD')) return new ModuleDataService(root).require('HEAD');
+	return undefined;
+}
+
+function committedUnitDetail(data: ModuleData, id: string): UnitDetail {
+	const manifest = data.declarations.find((unit) => unit.id === id);
+	if (!manifest) return fail(`Unknown unit "${id}".`);
+	const byId = new Map(data.declarations.map((unit) => [unit.id, unit]));
+	return {
+		manifest,
+		version: data.versions[id],
+		consumers: data.declarations
+			.filter((unit) => unit.dependencies.some((edge) => edge.unit === id))
+			.map((unit) => unit.id),
+		tests: dependentTests(data.sourceGraph, manifest),
+		dependencies: manifest.dependencies.flatMap((edge) => {
+			const used = byId.get(edge.unit);
+			return used
+				? [{ id: used.id, responsibility: used.responsibility, contract: used.contract }]
+				: [];
+		})
+	};
+}

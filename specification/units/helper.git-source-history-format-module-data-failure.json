@@ -1,0 +1,140 @@
+{
+	"schemaVersion": 1,
+	"id": "helper.git-source-history-format-module-data-failure",
+	"kind": "helper",
+	"title": "formatModuleDataFailure",
+	"responsibility": "Format missing committed module metadata as a scoped repair message; evidence-only gaps allow reads.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/helpers/git-source-history/formatModuleDataFailure.ts"],
+		"symbols": ["formatModuleDataFailure"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "formatModuleDataFailure.data",
+				"type": "Pick<ModuleData, 'commit' | 'modules' | 'issues'>"
+			},
+			{
+				"name": "formatModuleDataFailure.module",
+				"type": "string | undefined"
+			}
+		],
+		"outputs": [
+			{
+				"name": "formatModuleDataFailure",
+				"type": "string | null"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"helperContracts": [
+		{
+			"name": "formatModuleDataFailure",
+			"source": "src/helpers/git-source-history/formatModuleDataFailure.ts",
+			"inputs": [
+				{
+					"name": "formatModuleDataFailure.data",
+					"type": "Pick<ModuleData, 'commit' | 'modules' | 'issues'>"
+				},
+				{
+					"name": "formatModuleDataFailure.module",
+					"type": "string"
+				}
+			],
+			"output": "string | null",
+			"pure": true,
+			"examples": [
+				{
+					"name": "Allow complete metadata",
+					"call": "formatModuleDataFailure({commit: \"abc\", modules: [], issues: []})",
+					"input": [
+						{
+							"commit": "abc",
+							"modules": [],
+							"issues": []
+						}
+					],
+					"output": null
+				},
+				{
+					"name": "Explain an unknown selected module",
+					"call": "formatModuleDataFailure({commit: \"abc\", modules: [], issues: []}, \"page.absent\")",
+					"input": [
+						{
+							"commit": "abc",
+							"modules": [],
+							"issues": []
+						},
+						"page.absent"
+					],
+					"output": "Incomplete module data for abc. Run harness validate --module page.absent --commit abc --json. Unknown module: page.absent"
+				},
+				{
+					"name": "Allow reads with an explicit screenshot gap",
+					"call": "formatModuleDataFailure(evidenceOnlyData)",
+					"input": [
+						{
+							"commit": "abc",
+							"issues": [],
+							"modules": [
+								{
+									"id": "page.home",
+									"kind": "page",
+									"category": "pages",
+									"issues": [
+										{
+											"kind": "evidence",
+											"field": "screenshots.desktop",
+											"message": "Missing screenshot.",
+											"repair": "Capture the declared state."
+										}
+									]
+								}
+							]
+						}
+					],
+					"output": null
+				}
+			],
+			"consumers": [
+				{
+					"unit": "hub.function.development-tooling-hub-module-data",
+					"symbol": "hubModuleData"
+				},
+				{
+					"unit": "reports.function.harness-client",
+					"symbol": "reading"
+				},
+				{
+					"unit": "service.git-source-history-module-data"
+				}
+			]
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/helpers/git-source-history/formatModuleDataFailure.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/helpers/git-source-history/formatModuleDataFailure.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,163 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.git-source-history-module-data",
+	"kind": "repository",
+	"title": "ModuleDataRepository",
+	"responsibility": "Retain sealed revision metadata in a separate Git ref without changing source commits, and exchange snapshots safely across clones.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/git-source-history/ModuleDataRepository.ts",
+			"src/repositories/git-source-history/ModuleDataRepository.types.ts"
+		],
+		"symbols": [
+			"moduleDataProducer",
+			"ModuleDataRepository",
+			"ModuleDataRepository.constructor",
+			"ModuleDataRepository.identity",
+			"ModuleDataRepository.key",
+			"ModuleDataRepository.digest",
+			"ModuleDataRepository.read",
+			"ModuleDataRepository.source",
+			"ModuleDataRepository.write",
+			"ModuleDataRepository.sync",
+			"ModuleDataRepository.fetch",
+			"ModuleDataIdentity"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleDataRepository.constructor.root",
+				"type": "string"
+			},
+			{
+				"name": "ModuleDataRepository.identity.revision",
+				"type": "string"
+			},
+			{
+				"name": "ModuleDataRepository.key.identity",
+				"type": "ModuleDataIdentity"
+			},
+			{
+				"name": "ModuleDataRepository.digest.data",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleDataRepository.read.identity",
+				"type": "ModuleDataIdentity"
+			},
+			{
+				"name": "ModuleDataRepository.source.identity",
+				"type": "ModuleDataIdentity"
+			},
+			{
+				"name": "ModuleDataRepository.write.data",
+				"type": "ModuleData"
+			},
+			{
+				"name": "ModuleDataRepository.sync.remote",
+				"type": "string"
+			},
+			{
+				"name": "ModuleDataRepository.fetch.remote",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleDataRepository.identity",
+				"type": "Promise<ModuleDataIdentity>"
+			},
+			{
+				"name": "ModuleDataRepository.key",
+				"type": "string"
+			},
+			{
+				"name": "ModuleDataRepository.digest",
+				"type": "string"
+			},
+			{
+				"name": "ModuleDataRepository.read",
+				"type": "Promise<{ data: ModuleData; commit: string } | undefined>"
+			},
+			{
+				"name": "ModuleDataRepository.source",
+				"type": "Promise<ModuleData | undefined>"
+			},
+			{
+				"name": "ModuleDataRepository.write",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "ModuleDataRepository.sync",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleDataRepository.fetch",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.evidence-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data-repository-sync-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-protocol",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data-snapshot",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/git-source-history/ModuleDataRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/git-source-history/ModuleDataRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

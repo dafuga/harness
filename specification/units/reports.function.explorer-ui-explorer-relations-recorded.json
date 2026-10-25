@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-ui-explorer-relations-recorded",
+	"kind": "function",
+	"title": "explorerRelationsRecorded",
+	"responsibility": "Owns the explorerRelationsRecorded shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/explorer-ui/explorerRelationsRecorded.ts"],
+		"symbols": ["recordedRelations"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "recordedRelations.head",
+				"type": "HarnessRevision"
+			},
+			{
+				"name": "recordedRelations.id",
+				"type": "string"
+			},
+			{
+				"name": "recordedRelations.entity",
+				"type": "Entity"
+			}
+		],
+		"outputs": [
+			{
+				"name": "recordedRelations",
+				"type": "ExplorerRelations | undefined"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.explorer-category",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-relations",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorer-ui/explorerRelationsRecorded.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorer-ui/explorerRelationsRecorded.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

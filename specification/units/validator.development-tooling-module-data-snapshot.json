@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.development-tooling-module-data-snapshot",
+	"kind": "validator",
+	"title": "ModuleDataSnapshotValidator",
+	"responsibility": "Reject malformed or incomplete committed module snapshots before readers can trust their explicit relationship collections.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/validators/development-tooling/ModuleDataSnapshotValidator.ts",
+			"src/validators/development-tooling/ModuleDataSnapshotValidator.types.ts"
+		],
+		"symbols": [
+			"ModuleDataSnapshotValidator",
+			"ModuleDataSnapshotValidator.validate",
+			"ModuleDataSnapshotValidatorResult"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleDataSnapshotValidator.validate.input",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleDataSnapshotValidator.validate",
+				"type": "ModuleDataSnapshotValidatorResult"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/development-tooling/ModuleDataSnapshotValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/development-tooling/ModuleDataSnapshotValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

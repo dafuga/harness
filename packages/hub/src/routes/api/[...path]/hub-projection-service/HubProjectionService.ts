@@ -1,3 +1,4 @@
+import { hubModuleData } from '../../../../utils/development-tooling/hubModuleData';
 import type { Dependencies } from './HubProjectionService.types';
 import { HubEvidenceService } from './hub-evidence-service/HubEvidenceService';
 import type {
@@ -36,9 +37,11 @@ export class HubProjectionService {
 	artifact(actor: Actor, projectId: string, query: EvidenceArtifactQuery) {
 		return this.recorded.artifact(actor, projectId, query);
 	}
-	private async load(actor: Actor, projectId: string, ref: string) {
+	private async load(actor: Actor, projectId: string, ref: string | null, branch?: string | null) {
 		const project = await this.context.api.getProject(actor, projectId);
-		return hubSource({ ...this.context, actor, project, ref });
+		const selected =
+			ref ?? (await defaultModuleRef(this.context, project.sourceRepository, branch));
+		return hubSource({ ...this.context, actor, project, ref: selected });
 	}
 	async snapshot(
 		actor: Actor,
@@ -47,6 +50,9 @@ export class HubProjectionService {
 	) {
 		const project = await this.context.api.getProject(actor, projectId);
 		return hubSnapshot({ ...this.context, actor, project }, query);
+	}
+	async moduleData(actor: Actor, projectId: string, commit: string | null, branch?: string | null) {
+		return hubModuleData(await this.load(actor, projectId, commit, branch));
 	}
 	async registry(actor: Actor, projectId: string, commit: string) {
 		return readRegistry(await this.load(actor, projectId, commit));
@@ -148,4 +154,17 @@ export class HubProjectionService {
 
 async function readRegistry(context: HubSourceContext) {
 	return { commit: context.commit, units: await hubRecords(context) };
+}
+
+async function defaultModuleRef(
+	context: Dependencies,
+	repository: Parameters<Dependencies['source']['branches']>[0],
+	name?: string | null
+): Promise<string> {
+	const branches = await context.source.branches(repository);
+	const branch = name
+		? branches.find((item) => item.name === name)
+		: (branches.find((item) => item.name === 'main') ?? branches[0]);
+	if (!branch) return hubFail('not-found');
+	return `refs/heads/${branch.name}`;
 }

@@ -112,6 +112,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-admission",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.source-graph",
 			"via": "import",
 			"origin": "derived"

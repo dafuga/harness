@@ -1,3 +1,4 @@
+import { hubModuleData, hubRequiresModuleData } from '../../development-tooling/hubModuleData';
 import { scenarioManifestSchema } from '../../../../../../src/core/unitTypes';
 import { budgetEventSchema, type BudgetEvent } from '../../../../../../src/core/budgetTypes';
 import { budgetsLedger } from '../../../../../../src/core/unitsConfig';
@@ -8,6 +9,7 @@ import { hubRead, type HubSourceContext } from '../../development-tooling/hubSou
 import { hubJson, hubFail } from '../../development-tooling/hubJson';
 
 export async function hubEvidenceRegistry(context: HubSourceContext) {
+	if (hubRequiresModuleData(context)) return (await hubModuleData(context, true)).registry;
 	const units = await hubRecords(context);
 	const entries = context.entries.filter((e) =>
 		/^specification\/scenarios\/[^/]+\.json$/.test(e.path)

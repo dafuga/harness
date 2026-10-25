@@ -147,7 +147,13 @@
 			"ModuleTaskRunnerAdapter",
 			"ModuleTaskWorkerService",
 			"ModuleTaskAnalyticsService",
-			"ModuleTaskWorktreeAdapter"
+			"ModuleTaskWorktreeAdapter",
+			"ValidateCommand",
+			"ModuleDataService",
+			"ModuleDataRepository",
+			"ModuleDataValidator",
+			"formatModuleDataFailure",
+			"ModuleDataSnapshotValidator"
 		]
 	},
 	"contract": {
@@ -234,6 +240,11 @@
 		},
 		{
 			"unit": "command.codex-picker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-validate",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -453,6 +464,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "helper.git-source-history-format-module-data-failure",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "model.adapters-sqlite",
 			"via": "reexport",
 			"origin": "derived"
@@ -578,6 +594,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.git-source-history-module-data",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.provider-switch",
 			"via": "reexport",
 			"origin": "derived"
@@ -668,6 +689,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.git-source-history-module-data",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.model-dependency",
 			"via": "reexport",
 			"origin": "derived"
@@ -734,6 +760,16 @@
 		},
 		{
 			"unit": "validator.codex-request",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data-snapshot",
 			"via": "reexport",
 			"origin": "derived"
 		},

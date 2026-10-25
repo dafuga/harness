@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"id": "service.git-source-history-module-data-service-module-data-protocol",
+	"kind": "service",
+	"title": "moduleDataProtocol",
+	"responsibility": "Owns the moduleDataProtocol service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/git-source-history/module-data-service/moduleDataProtocol.ts"],
+		"symbols": ["moduleDataProducer", "moduleDataRef"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "moduleDataProducer",
+				"type": "unknown"
+			},
+			{
+				"name": "moduleDataRef",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/git-source-history/module-data-service/moduleDataProtocol.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/git-source-history/module-data-service/moduleDataProtocol.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

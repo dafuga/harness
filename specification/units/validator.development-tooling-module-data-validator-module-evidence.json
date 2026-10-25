@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.development-tooling-module-data-validator-module-evidence",
+	"kind": "validator",
+	"title": "moduleEvidence",
+	"responsibility": "Owns the moduleEvidence input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/validators/development-tooling/module-data-validator/moduleEvidence.ts"],
+		"symbols": ["moduleEvidence"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "moduleEvidence.detail",
+				"type": "ModuleValidationInput"
+			},
+			{
+				"name": "moduleEvidence.unit",
+				"type": "Unit"
+			},
+			{
+				"name": "moduleEvidence.tree",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "moduleEvidence",
+				"type": "ModuleIssue[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.explorer-category",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data-validator-module-fields",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/development-tooling/module-data-validator/moduleEvidence.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/development-tooling/module-data-validator/moduleEvidence.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

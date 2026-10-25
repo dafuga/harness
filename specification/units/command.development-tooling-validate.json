@@ -1,0 +1,60 @@
+{
+	"schemaVersion": 1,
+	"id": "command.development-tooling-validate",
+	"kind": "command",
+	"title": "ValidateCommand",
+	"responsibility": "Expose whole-project, module, type and source-history validation with cached diagnostics and committed repair data.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/commands/development-tooling/ValidateCommand.ts",
+			"src/commands/development-tooling/ValidateCommand.types.ts"
+		],
+		"symbols": ["ValidateCommand", "ValidateCommand.register", "ValidateOptions"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ValidateCommand.register.program",
+				"type": "Command"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ValidateCommand.register",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/development-tooling/ValidateCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/development-tooling/ValidateCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -63,11 +63,19 @@ async function readProject(c: Context, operation: string): Promise<Response> {
 		return hubHttp({ ...project, executionAvailable: await executable(c, project) });
 	}
 	if (operation === 'members') return hubHttp(await api.listMembers(actor, projectId));
+
+	if (operation === 'moduleData') {
+		const params = new URL(request.url).searchParams,
+			commit = params.get('commit');
+		if (commit && !/^[a-f0-9]{40}$/.test(commit)) return hubFail('invalid-input');
+		return hubHttp(await projection.moduleData(actor, projectId, commit, params.get('branch')));
+	}
 	if (operation === 'registry') {
 		const commit = new URL(request.url).searchParams.get('commit');
 		if (!commit || !/^[a-f0-9]{40}$/.test(commit)) return hubFail('invalid-input');
 		return hubHttp(await projection.registry(actor, projectId, commit));
 	}
+
 	if (operation === 'snapshot') {
 		const p = new URL(request.url).searchParams;
 		const snapshot = await projection.snapshot(actor, projectId, {

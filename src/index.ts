@@ -194,3 +194,9 @@ export { ModuleTaskRunnerAdapter } from './adapters/agents-providers/ModuleTaskR
 export { ModuleTaskWorkerService } from './services/agents-providers/ModuleTaskWorkerService';
 export { ModuleTaskAnalyticsService } from './services/agents-providers/ModuleTaskAnalyticsService';
 export { ModuleTaskWorktreeAdapter } from './adapters/agents-providers/ModuleTaskWorktreeAdapter';
+export { ValidateCommand } from './commands/development-tooling/ValidateCommand';
+export { ModuleDataService } from './services/git-source-history/ModuleDataService';
+export { ModuleDataRepository } from './repositories/git-source-history/ModuleDataRepository';
+export { ModuleDataValidator } from './validators/development-tooling/ModuleDataValidator';
+export { formatModuleDataFailure } from './helpers/git-source-history/formatModuleDataFailure';
+export { ModuleDataSnapshotValidator } from './validators/development-tooling/ModuleDataSnapshotValidator';

@@ -11,7 +11,8 @@
 		"uses": [
 			"reports.component.harness-harness-header",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-main"
+			"reports.component.shared-primitives-atoms-html-main",
+			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
 	"owns": {
@@ -69,6 +70,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-main",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

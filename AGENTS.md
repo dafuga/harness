@@ -2,6 +2,14 @@
 
 This is a Harness CLI project. Treat Harness as the operating contract for every code change in this repository.
 
+## Committed Module Data
+
+- After committing a change, run `bun run dev -- validate --write`; complete the per-module contract, relationships, source data and required evidence it reports before delivery.
+- Use `validate --module <id>` or `validate --type <kind-or-category>` for focused work. `--json` retains every missing field and repair action; `--refresh` rechecks cached findings.
+- Commit source-derived historical repairs using `validate --history --commit <source-ref> --write`. Keep original source commits and real evidence provenance. Missing historical captures or observations remain gaps.
+- Exchange the metadata ref with `validate --sync origin` after normal evidence sync, and rebuild prepared history from those committed snapshots. CLI/app reads require this repository's declared metadata protocol.
+- Use `harness api get used-apis <module-id>` and `get relations <module-id>` for committed usage data. Do not reconstruct it in an outside script.
+
 ## Required Harness Workflow
 
 - Read this file and `.codex/skills/harness/SKILL.md` before changing code.

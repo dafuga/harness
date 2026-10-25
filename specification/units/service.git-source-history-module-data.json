@@ -1,0 +1,157 @@
+{
+	"schemaVersion": 1,
+	"id": "service.git-source-history-module-data",
+	"kind": "service",
+	"title": "ModuleDataService",
+	"responsibility": "Validate exact source revisions, persist complete metadata and explicit gaps, and admit reads only when metadata is committed and complete.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/git-source-history/ModuleDataService.ts",
+			"src/services/git-source-history/ModuleDataService.types.ts"
+		],
+		"symbols": [
+			"ModuleDataService",
+			"ModuleDataService.constructor",
+			"ModuleDataService.validate",
+			"ModuleDataService.history",
+			"ModuleDataService.require",
+			"ModuleDataService.sync",
+			"ModuleIssue",
+			"ModuleValidation",
+			"ModuleRelationships",
+			"ModuleData",
+			"ValidateOptions",
+			"ValidationReport",
+			"PreparedModuleData",
+			"HistoryValidationReport"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleDataService.constructor.root",
+				"type": "string"
+			},
+			{
+				"name": "ModuleDataService.validate.options",
+				"type": "ValidateOptions"
+			},
+			{
+				"name": "ModuleDataService.history.options",
+				"type": "ValidateOptions"
+			},
+			{
+				"name": "ModuleDataService.require.commit",
+				"type": "string"
+			},
+			{
+				"name": "ModuleDataService.require.module",
+				"type": "string"
+			},
+			{
+				"name": "ModuleDataService.sync.remote",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleDataService.validate",
+				"type": "Promise<ValidationReport>"
+			},
+			{
+				"name": "ModuleDataService.history",
+				"type": "Promise<HistoryValidationReport>"
+			},
+			{
+				"name": "ModuleDataService.require",
+				"type": "Promise<ModuleData>"
+			},
+			{
+				"name": "ModuleDataService.sync",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.component-version",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.git-source-history-format-module-data-failure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.source-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-builder",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-cache",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-prepared-module-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/git-source-history/ModuleDataService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/git-source-history/ModuleDataService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

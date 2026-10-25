@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "service.git-source-history-module-data-service-module-source-facts",
+	"kind": "service",
+	"title": "moduleSourceFacts",
+	"responsibility": "Owns the moduleSourceFacts service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/git-source-history/module-data-service/moduleSourceFacts.ts"],
+		"symbols": ["moduleSourceFacts"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "moduleSourceFacts.root",
+				"type": "string"
+			},
+			{
+				"name": "moduleSourceFacts.identity",
+				"type": "ModuleDataIdentity"
+			}
+		],
+		"outputs": [
+			{
+				"name": "moduleSourceFacts",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.component-version",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.preview-binding",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-measurements",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-metadata",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.budget-ledger",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.scenario",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.unit-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.budget",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-preview-bindings",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-relationships",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.unit-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-units",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/git-source-history/module-data-service/moduleSourceFacts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/git-source-history/module-data-service/moduleSourceFacts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

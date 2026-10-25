@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "service.git-source-history-module-data-service-module-data-admission",
+	"kind": "service",
+	"title": "moduleDataAdmission",
+	"responsibility": "Owns the moduleDataAdmission service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/git-source-history/module-data-service/moduleDataAdmission.ts"],
+		"symbols": ["moduleDataRequired", "committedModuleData"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "moduleDataRequired.root",
+				"type": "string"
+			},
+			{
+				"name": "moduleDataRequired.commit",
+				"type": "string"
+			},
+			{
+				"name": "committedModuleData.root",
+				"type": "string"
+			},
+			{
+				"name": "committedModuleData.commit",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "moduleDataRequired",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "committedModuleData",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/git-source-history/module-data-service/moduleDataAdmission.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/git-source-history/module-data-service/moduleDataAdmission.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

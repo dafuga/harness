@@ -113,11 +113,12 @@ function scenarioView(scenario: ScenarioManifest): RevisionRegistry['scenarios']
 		})),
 		viewports: scenario.viewports,
 		tests: scenario.tests.map(({ id, kind, runner }) => ({ id, kind, runner })),
-		evidence: scenario.evidence.map(({ id, kind, states, viewports }) => ({
+		evidence: scenario.evidence.map(({ id, kind, states, viewports, required }) => ({
 			id,
 			kind,
 			states,
-			viewports
+			viewports,
+			required
 		}))
 	};
 }
