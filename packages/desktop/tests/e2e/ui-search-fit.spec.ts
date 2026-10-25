@@ -74,6 +74,10 @@ async function fits(page: Page, width: number, without: number[]): Promise<void>
 	});
 	expect(clipped, 'All category links and labels must fit visibly inside the nav').toEqual([]);
 	const search = await box(trigger(page));
+	for (const link of await navigation.getByRole('link').all())
+		expect(meet(await box(link), search, 0), 'All category links must remain clear of search').toBe(
+			false
+		);
 	const fields = await Promise.all(revision(page).map(box));
 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
 	// The search takes nothing of the room of either revision field.
