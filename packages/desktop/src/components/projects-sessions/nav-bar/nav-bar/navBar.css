@@ -159,6 +159,7 @@ header.topbar {
 			'tools tools tools tools tools';
 	}
 	header.topbar.with-account {
+		row-gap: var(--hx-space-4);
 		grid-template-areas:
 			'brand project project search search'
 			'account account account account account'
