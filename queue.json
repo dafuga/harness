@@ -1829,7 +1829,7 @@
 			},
 			"sourceCommit": "77fb497a3053aa1ada14c498718d2f80ac4af7c1",
 			"contractHash": "40d8ffd3c7fd43b09e637fdffcf5e09c8e72f4502faa42f84c9ed51753705604",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T14:38:33.692Z",
 			"claim": {
@@ -1843,6 +1843,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’m using the Harness workflow because this is a contract-bound test migration in the Harness repository. I’ll inspect the existing unit, contract-test patterns, and prior edits first, then change only the allowed files and run the focused unit test.\nThe Harness instructions are loaded. I found no relevant prior-memory entry; next I’m registering the task activity and locating the current function contract, example-registration path, validator, target manifest, and existing remote-label tests before editing.\nThe current test has 5 registered tests and no standardized contract. The validator requires one canonical case per authored example; `registerExamples` combines `helperContracts` with `testing.examples`, so the proposal must retain pure helper examples and add ordinary function examples without duplicating registrations. I’m now mapping every existing assertion to its callable and boundary state.\nThe migration draft is in place: the test now registers the proposal manifest, and the manifest contains helper-contract cases plus authored value/error examples for the ordinary label functions. I’m validating schema shape, case/example parity, input lengths, and exact runtime error text before running the focused test.\nSchema validation and direct execution now pass all 42 authored cases; the only adjustment was using Bun’s actual error messages for the two invalid-input cases. The package test runner is still environment-blocked by missing generated `.svelte-kit` config, so I’m checking the narrowest supported Vitest invocation before final verification.\nStatic discovery caught a relative-import mistake in the nested `test/utils` file: the Harness source and proposal manifest are four levels up from that directory, not three. I’m correcting those imports, then I’ll rerun discovery and the direct authored-case execution.\nImplemented the migration in:\n\n- [remote-labels.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/e11d3e5f-347f-43ac-b2cb-58b46a9f3825/packages/desktop/test/utils/remote-labels.test.ts:1)\n- [remote-label-examples.json](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/e11d3e5f-347f-43ac-b2cb-58b46a9f3825/test/fixtures/contract-migration/remote-label-examples.json:1)\n\nBefore: 5 aggregate tests.  \nAfter: 42 stable authored cases: 5 helper-contract cases and 37 ordinary value/error examples.\n\nVerification passed:\n\n- Manifest schema and `TestCaseValidator`\n- 42 unique static test discoveries\n- Formatting and `git diff --check`\n\nThe focused desktop unit command was blocked before Vitest by missing `@electron/asar`. No commit, push, deployment, E2E, or broad checks performed.\n\nRemaining gaps: primary must promote the proposal into specification; lock-specific assertions in `remote-lock-labels.test.ts` remain outside the allowed files.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/e11d3e5f-347f-43ac-b2cb-58b46a9f3825",
+				"changedFiles": [
+					"packages/desktop/test/utils/remote-labels.test.ts",
+					"test/fixtures/contract-migration/remote-label-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T14:46:37.440Z",
+				"attempt": "e11d3e5f-347f-43ac-b2cb-58b46a9f3825",
+				"sourceCommit": "77fb497a3053aa1ada14c498718d2f80ac4af7c1",
+				"checkpointCommit": "d0630d994856070210073ff50ab0c064cb555ba2",
+				"usage": {
+					"inputTokens": 7987352,
+					"outputTokens": 64229,
+					"cacheReadTokens": 7808256,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 7987352,
+							"outputTokens": 64229,
+							"cacheReadTokens": 7808256,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T14:38:41.047Z",
+						"finishedAt": "2026-10-25T14:46:37.197Z"
+					}
+				]
+			},
 			"attempts": []
 		}
 	]
