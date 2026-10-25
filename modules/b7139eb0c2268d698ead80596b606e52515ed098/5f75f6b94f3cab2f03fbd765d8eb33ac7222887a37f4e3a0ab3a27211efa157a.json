@@ -7903,7 +7903,45 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.version",
+					"purpose": "Identify the supported installed desktop bundle version.",
+					"source": "src/config/desktopPatchConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.assets[\".vite/build/early-bootstrap.js\"]",
+					"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+					"source": "src/config/desktopPatchConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.assets[\".vite/build/bootstrap-CTpobVUg.js\"]",
+					"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+					"source": "src/config/desktopPatchConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.assets[\".vite/build/application-network-startup-Bt0a8E1L.js\"]",
+					"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+					"source": "src/config/desktopPatchConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.assets[\"webview/assets/app-shared-6c00c2afcf84.js\"]",
+					"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+					"source": "src/config/desktopPatchConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.assets[\"webview/assets/app-initial-61c077dcc1af.js\"]",
+					"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+					"source": "src/config/desktopPatchConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -55172,7 +55210,117 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "operator",
+					"name": "HARNESS_GOOGLE_CLIENT_ID",
+					"purpose": "Identify the project Google sign-in client.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_SESSION_SECRET",
+					"purpose": "Sign and verify project session cookies.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_PUBLIC_ORIGIN",
+					"purpose": "Declare the public origin used by project authentication.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_ENVIRONMENT",
+					"purpose": "Select local, staging or production runtime policy.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_GITHUB_APP_ID",
+					"purpose": "Identify the project GitHub App.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_GITHUB_PRIVATE_KEY",
+					"purpose": "Sign GitHub App installation authentication.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_GITHUB_CLIENT_ID",
+					"purpose": "Identify the GitHub OAuth client.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_GITHUB_CLIENT_SECRET",
+					"purpose": "Authenticate the GitHub OAuth client exchange.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_COLLABORATION_OWNER",
+					"purpose": "Select the owner of the collaboration repository.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_COLLABORATION_REPO",
+					"purpose": "Select the collaboration repository.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_COLLABORATION_REPOSITORY_ID",
+					"purpose": "Bind collaboration to the expected repository identity.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_COLLABORATION_INSTALLATION_ID",
+					"purpose": "Select the GitHub App installation for collaboration.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_EMAIL_API_KEY",
+					"purpose": "Authenticate the configured email proof sender.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_EMAIL_FROM",
+					"purpose": "Set the email proof sender address.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_RELAY_ORIGIN",
+					"purpose": "Locate the remote host and phone relay.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "DB",
+					"purpose": "Bind the project authentication D1 database.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "CACHE",
+					"purpose": "Bind the project R2 cache bucket.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "REMOTE_HOSTS",
+					"purpose": "Bind the remote host Durable Object namespace.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -67931,7 +68079,69 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "relayConfig.internalOrigin",
+					"purpose": "Address a relay host through its namespace binding.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.bodyBytes",
+					"purpose": "Bound incoming JSON body bytes.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.tlsEnvironments",
+					"purpose": "Require TLS in staging and production.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.rateWindowMs",
+					"purpose": "Set the rate limit accounting window.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.pairingCalls",
+					"purpose": "Limit pairing calls per host and rate window.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.failedConnects",
+					"purpose": "Limit failed device connection attempts.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.openPairings",
+					"purpose": "Limit pending offers per host.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.frameWindowMs",
+					"purpose": "Set the per-device frame accounting window.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.deviceFrames",
+					"purpose": "Limit frames per device connection window.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.sweepDelayMs",
+					"purpose": "Retain expired offers long enough to report their expired state.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -84371,7 +84581,57 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.plugins",
+					"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.outDir",
+					"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.emptyOutDir",
+					"purpose": "Clear stale files from the dedicated bundle output before building.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.cssCodeSplit",
+					"purpose": "Keep the embedded bundle stylesheet together.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.lib.entry",
+					"purpose": "Select the source entry for the embedded bundle.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.lib.formats",
+					"purpose": "Emit the browser IIFE format consumed by the host.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.lib.name",
+					"purpose": "Name the bundle global exposed to the host.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.lib.fileName",
+					"purpose": "Name the generated JavaScript bundle.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -84413,7 +84673,57 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.testDir",
+					"purpose": "Locate the browser test sources.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.testMatch",
+					"purpose": "Select the browser suite for this preview surface.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.workers",
+					"purpose": "Limit browser execution to one worker.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.use.baseURL",
+					"purpose": "Set browser viewport, screenshot policy and preview origin.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.use.viewport.width",
+					"purpose": "Set browser viewport, screenshot policy and preview origin.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.use.viewport.height",
+					"purpose": "Set browser viewport, screenshot policy and preview origin.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.reporter",
+					"purpose": "Print list test results.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.webServer",
+					"purpose": "Build and start an isolated preview when an external preview URL is absent.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -84449,7 +84759,57 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.plugins",
+					"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.outDir",
+					"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.emptyOutDir",
+					"purpose": "Clear stale files from the dedicated bundle output before building.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.cssCodeSplit",
+					"purpose": "Keep the embedded bundle stylesheet together.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.lib.entry",
+					"purpose": "Select the source entry for the embedded bundle.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.lib.formats",
+					"purpose": "Emit the browser IIFE format consumed by the host.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.lib.name",
+					"purpose": "Name the bundle global exposed to the host.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.lib.fileName",
+					"purpose": "Name the generated JavaScript bundle.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -84485,7 +84845,57 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.plugins",
+					"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.outDir",
+					"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.emptyOutDir",
+					"purpose": "Clear stale files from the dedicated bundle output before building.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.cssCodeSplit",
+					"purpose": "Keep the embedded bundle stylesheet together.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.lib.entry",
+					"purpose": "Select the source entry for the embedded bundle.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.lib.formats",
+					"purpose": "Emit the browser IIFE format consumed by the host.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.lib.name",
+					"purpose": "Name the bundle global exposed to the host.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.lib.fileName",
+					"purpose": "Name the generated JavaScript bundle.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -84521,7 +84931,45 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.testDir",
+					"purpose": "Locate the browser test sources.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.testMatch",
+					"purpose": "Select the browser suite for this preview surface.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.workers",
+					"purpose": "Limit browser execution to one worker.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.outputDir",
+					"purpose": "Separate the shell test artifacts from other suites.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.use.screenshot",
+					"purpose": "Set browser viewport, screenshot policy and preview origin.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.reporter",
+					"purpose": "Print list test results.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -84557,7 +85005,69 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.plugins",
+					"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.publicDir",
+					"purpose": "Exclude unrelated public assets from the fixture bundle.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.logLevel",
+					"purpose": "Limit fixture build output to warnings.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.outDir",
+					"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.emptyOutDir",
+					"purpose": "Clear stale files from the dedicated bundle output before building.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.cssCodeSplit",
+					"purpose": "Keep the embedded bundle stylesheet together.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.lib.entry",
+					"purpose": "Select the source entry for the embedded bundle.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.lib.formats",
+					"purpose": "Emit the browser IIFE format consumed by the host.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.lib.name",
+					"purpose": "Name the bundle global exposed to the host.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.lib.fileName",
+					"purpose": "Name the generated JavaScript bundle.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -116266,7 +116776,635 @@
 			}
 		}
 	],
-	"reviews": [],
+	"reviews": [
+		{
+			"commit": "b7139eb0c2268d698ead80596b606e52515ed098",
+			"digest": "175d522ad0f21ff9b782288d48eb1dd5bee9c8de720881e90c6253321a0367f3",
+			"files": {
+				"src/config/desktopPatchConfig.ts": "fab900ce4d53e05bba6d78fd33806ea421ba249e"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.version",
+						"purpose": "Identify the supported installed desktop bundle version.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/early-bootstrap.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/bootstrap-CTpobVUg.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/application-network-startup-Bt0a8E1L.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\"webview/assets/app-shared-6c00c2afcf84.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\"webview/assets/app-initial-61c077dcc1af.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob fab900ce4d53e05bba6d78fd33806ea421ba249e from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "06d021246438a909f3e5c9dd59cdf15813cb38fa",
+			"unit": "config.desktop-patch"
+		},
+		{
+			"commit": "b7139eb0c2268d698ead80596b606e52515ed098",
+			"digest": "c5e4a6c2137d3d5a2c0eb731d08c1546a05b01a9cb31bc925b02a787ae3209e2",
+			"files": {
+				"packages/hub/src/config/hubEnvConfig.ts": "2f32b136abdc88faf00b78c63979f789a97750a8"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "operator",
+						"name": "HARNESS_GOOGLE_CLIENT_ID",
+						"purpose": "Identify the project Google sign-in client.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_SESSION_SECRET",
+						"purpose": "Sign and verify project session cookies.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_PUBLIC_ORIGIN",
+						"purpose": "Declare the public origin used by project authentication.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_ENVIRONMENT",
+						"purpose": "Select local, staging or production runtime policy.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_APP_ID",
+						"purpose": "Identify the project GitHub App.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_PRIVATE_KEY",
+						"purpose": "Sign GitHub App installation authentication.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_CLIENT_ID",
+						"purpose": "Identify the GitHub OAuth client.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_CLIENT_SECRET",
+						"purpose": "Authenticate the GitHub OAuth client exchange.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_OWNER",
+						"purpose": "Select the owner of the collaboration repository.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_REPO",
+						"purpose": "Select the collaboration repository.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_REPOSITORY_ID",
+						"purpose": "Bind collaboration to the expected repository identity.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_INSTALLATION_ID",
+						"purpose": "Select the GitHub App installation for collaboration.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_EMAIL_API_KEY",
+						"purpose": "Authenticate the configured email proof sender.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_EMAIL_FROM",
+						"purpose": "Set the email proof sender address.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_RELAY_ORIGIN",
+						"purpose": "Locate the remote host and phone relay.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "DB",
+						"purpose": "Bind the project authentication D1 database.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "CACHE",
+						"purpose": "Bind the project R2 cache bucket.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "REMOTE_HOSTS",
+						"purpose": "Bind the remote host Durable Object namespace.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 2f32b136abdc88faf00b78c63979f789a97750a8 from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "06d021246438a909f3e5c9dd59cdf15813cb38fa",
+			"unit": "hub.config.hub-env"
+		},
+		{
+			"commit": "b7139eb0c2268d698ead80596b606e52515ed098",
+			"digest": "8a7b26ded3ae3982bf79fd88fbb688d7d970d2751cca92d31758855520630962",
+			"files": {
+				"packages/relay/src/config/relayConfig.ts": "c42e4d6c18595d9744c90db83e690d41d37f4717"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "relayConfig.internalOrigin",
+						"purpose": "Address a relay host through its namespace binding.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.bodyBytes",
+						"purpose": "Bound incoming JSON body bytes.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.tlsEnvironments",
+						"purpose": "Require TLS in staging and production.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.rateWindowMs",
+						"purpose": "Set the rate limit accounting window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.pairingCalls",
+						"purpose": "Limit pairing calls per host and rate window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.failedConnects",
+						"purpose": "Limit failed device connection attempts.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.openPairings",
+						"purpose": "Limit pending offers per host.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.frameWindowMs",
+						"purpose": "Set the per-device frame accounting window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.deviceFrames",
+						"purpose": "Limit frames per device connection window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.sweepDelayMs",
+						"purpose": "Retain expired offers long enough to report their expired state.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob c42e4d6c18595d9744c90db83e690d41d37f4717 from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "06d021246438a909f3e5c9dd59cdf15813cb38fa",
+			"unit": "relay.config.relay"
+		},
+		{
+			"commit": "b7139eb0c2268d698ead80596b606e52515ed098",
+			"digest": "944b8bb42676edb6caa52343a225ea4b387492cb9ed1c3a401ce3110d87d76e3",
+			"files": {
+				"packages/reports/src/config/consoleViteConfig.ts": "bfb542e428a00bfc905fd244394fdac7bc0a4ff0"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob bfb542e428a00bfc905fd244394fdac7bc0a4ff0 from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "06d021246438a909f3e5c9dd59cdf15813cb38fa",
+			"unit": "reports.config.console-vite"
+		},
+		{
+			"commit": "b7139eb0c2268d698ead80596b606e52515ed098",
+			"digest": "1f4cfac155a8c8ae3c6dec4e9269d7788e743352215191d0a12287a5d6767a57",
+			"files": {
+				"packages/reports/src/config/pickerPlaywrightConfig.ts": "2780fd3a6e54ed4fe7af99ee608d3e907939b83f"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.testDir",
+						"purpose": "Locate the browser test sources.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.testMatch",
+						"purpose": "Select the browser suite for this preview surface.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.workers",
+						"purpose": "Limit browser execution to one worker.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.baseURL",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.viewport.width",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.viewport.height",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.reporter",
+						"purpose": "Print list test results.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.webServer",
+						"purpose": "Build and start an isolated preview when an external preview URL is absent.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 2780fd3a6e54ed4fe7af99ee608d3e907939b83f from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "06d021246438a909f3e5c9dd59cdf15813cb38fa",
+			"unit": "reports.config.picker-playwright"
+		},
+		{
+			"commit": "b7139eb0c2268d698ead80596b606e52515ed098",
+			"digest": "4b1e6046429c03e1bedccc3d8e97e9569138a7c075c09038873578eee0f9d446",
+			"files": {
+				"packages/reports/src/config/pickerViteConfig.ts": "09ba8a7e7bf86e45b4930bd30549ec702aaa4e6b"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 09ba8a7e7bf86e45b4930bd30549ec702aaa4e6b from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "06d021246438a909f3e5c9dd59cdf15813cb38fa",
+			"unit": "reports.config.picker-vite"
+		},
+		{
+			"commit": "b7139eb0c2268d698ead80596b606e52515ed098",
+			"digest": "491382cca3469e3d2dee2a2afba51733248228f264ca0482dc7718cd0cd9bf22",
+			"files": {
+				"packages/reports/src/config/reportViteConfig.ts": "0764e259af6c91b125a42acae180e99c9391f379"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 0764e259af6c91b125a42acae180e99c9391f379 from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "06d021246438a909f3e5c9dd59cdf15813cb38fa",
+			"unit": "reports.config.report-vite"
+		},
+		{
+			"commit": "b7139eb0c2268d698ead80596b606e52515ed098",
+			"digest": "c61fe8a431b34774cabea74ca292e32fdd6b06d55c1daf36a267f0aca98b1757",
+			"files": {
+				"packages/reports/src/config/shellPlaywrightConfig.ts": "0c0d9212c97231207fcee6c3b3eba976f7c35d34"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.testDir",
+						"purpose": "Locate the browser test sources.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.testMatch",
+						"purpose": "Select the browser suite for this preview surface.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.workers",
+						"purpose": "Limit browser execution to one worker.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.outputDir",
+						"purpose": "Separate the shell test artifacts from other suites.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.use.screenshot",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.reporter",
+						"purpose": "Print list test results.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 0c0d9212c97231207fcee6c3b3eba976f7c35d34 from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "06d021246438a909f3e5c9dd59cdf15813cb38fa",
+			"unit": "reports.config.shell-playwright"
+		},
+		{
+			"commit": "b7139eb0c2268d698ead80596b606e52515ed098",
+			"digest": "9409c938ad90d870d95401a7bc15441fd07fb7761846932fc60fd77db400c413",
+			"files": {
+				"packages/reports/src/config/shellViteConfig.ts": "7d8069d98828fc866839c3fd0a65ac3170605a9d"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.publicDir",
+						"purpose": "Exclude unrelated public assets from the fixture bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.logLevel",
+						"purpose": "Limit fixture build output to warnings.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 7d8069d98828fc866839c3fd0a65ac3170605a9d from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "06d021246438a909f3e5c9dd59cdf15813cb38fa",
+			"unit": "reports.config.shell-vite"
+		}
+	],
 	"registry": {
 		"available": true,
 		"units": [
@@ -134356,7 +135494,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "2de0f737fd144ad1",
+				"version": "d48d52b3513e30d0",
 				"limits": {
 					"metrics": {
 						"source-bytes": 670,
@@ -134462,6 +135600,44 @@
 						"unavailable": "A module unit emits no separate artifact.",
 						"method": "Not applicable.",
 						"artifacts": []
+					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.version",
+						"purpose": "Identify the supported installed desktop bundle version.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/early-bootstrap.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/bootstrap-CTpobVUg.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/application-network-startup-Bt0a8E1L.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\"webview/assets/app-shared-6c00c2afcf84.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\"webview/assets/app-initial-61c077dcc1af.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
 					}
 				]
 			},
@@ -232751,7 +233927,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "e2148406d911ff1c",
+				"version": "b3d0f2b3cd67fc27",
 				"limits": {
 					"metrics": {
 						"source-bytes": 1836,
@@ -232820,6 +233996,116 @@
 						"unavailable": "A module unit emits no separate artifact.",
 						"method": "Not applicable.",
 						"artifacts": []
+					}
+				],
+				"configControls": [
+					{
+						"audience": "operator",
+						"name": "HARNESS_GOOGLE_CLIENT_ID",
+						"purpose": "Identify the project Google sign-in client.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_SESSION_SECRET",
+						"purpose": "Sign and verify project session cookies.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_PUBLIC_ORIGIN",
+						"purpose": "Declare the public origin used by project authentication.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_ENVIRONMENT",
+						"purpose": "Select local, staging or production runtime policy.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_APP_ID",
+						"purpose": "Identify the project GitHub App.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_PRIVATE_KEY",
+						"purpose": "Sign GitHub App installation authentication.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_CLIENT_ID",
+						"purpose": "Identify the GitHub OAuth client.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_CLIENT_SECRET",
+						"purpose": "Authenticate the GitHub OAuth client exchange.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_OWNER",
+						"purpose": "Select the owner of the collaboration repository.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_REPO",
+						"purpose": "Select the collaboration repository.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_REPOSITORY_ID",
+						"purpose": "Bind collaboration to the expected repository identity.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_INSTALLATION_ID",
+						"purpose": "Select the GitHub App installation for collaboration.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_EMAIL_API_KEY",
+						"purpose": "Authenticate the configured email proof sender.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_EMAIL_FROM",
+						"purpose": "Set the email proof sender address.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_RELAY_ORIGIN",
+						"purpose": "Locate the remote host and phone relay.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "DB",
+						"purpose": "Bind the project authentication D1 database.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "CACHE",
+						"purpose": "Bind the project R2 cache bucket.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "REMOTE_HOSTS",
+						"purpose": "Bind the remote host Durable Object namespace.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
 					}
 				]
 			},
@@ -261613,7 +262899,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "9b58abf6d48c57ae",
+				"version": "a05073d61b68c476",
 				"limits": {
 					"metrics": {
 						"source-bytes": 1064,
@@ -261763,6 +263049,68 @@
 						"unavailable": "A module unit emits no separate artifact.",
 						"method": "Not applicable.",
 						"artifacts": []
+					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "relayConfig.internalOrigin",
+						"purpose": "Address a relay host through its namespace binding.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.bodyBytes",
+						"purpose": "Bound incoming JSON body bytes.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.tlsEnvironments",
+						"purpose": "Require TLS in staging and production.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.rateWindowMs",
+						"purpose": "Set the rate limit accounting window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.pairingCalls",
+						"purpose": "Limit pairing calls per host and rate window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.failedConnects",
+						"purpose": "Limit failed device connection attempts.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.openPairings",
+						"purpose": "Limit pending offers per host.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.frameWindowMs",
+						"purpose": "Set the per-device frame accounting window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.deviceFrames",
+						"purpose": "Limit frames per device connection window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.sweepDelayMs",
+						"purpose": "Retain expired offers long enough to report their expired state.",
+						"source": "packages/relay/src/config/relayConfig.ts"
 					}
 				]
 			},
@@ -292778,7 +294126,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "c33c6346bd1bd875",
+				"version": "ac56c45b5b9cf89e",
 				"limits": {
 					"metrics": {
 						"source-bytes": 444,
@@ -292924,6 +294272,56 @@
 						"method": "Not applicable.",
 						"artifacts": []
 					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					}
 				]
 			},
 			{
@@ -292962,7 +294360,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "d21ec6f0cd268b96",
+				"version": "612088672168a4b9",
 				"limits": {
 					"metrics": {
 						"source-bytes": 1528,
@@ -293080,6 +294478,56 @@
 						"method": "Not applicable.",
 						"artifacts": []
 					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.testDir",
+						"purpose": "Locate the browser test sources.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.testMatch",
+						"purpose": "Select the browser suite for this preview surface.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.workers",
+						"purpose": "Limit browser execution to one worker.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.baseURL",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.viewport.width",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.viewport.height",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.reporter",
+						"purpose": "Print list test results.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.webServer",
+						"purpose": "Build and start an isolated preview when an external preview URL is absent.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					}
 				]
 			},
 			{
@@ -293113,7 +294561,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "b5664674872b5ab5",
+				"version": "b49ed7f820acadc8",
 				"limits": {
 					"metrics": {
 						"source-bytes": 360,
@@ -293259,6 +294707,56 @@
 						"method": "Not applicable.",
 						"artifacts": []
 					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					}
 				]
 			},
 			{
@@ -293292,7 +294790,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "2e66adaf3f9f45eb",
+				"version": "f1878f02e1ce12ec",
 				"limits": {
 					"metrics": {
 						"source-bytes": 352,
@@ -293438,6 +294936,56 @@
 						"method": "Not applicable.",
 						"artifacts": []
 					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					}
 				]
 			},
 			{
@@ -293471,7 +295019,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "8ac437d20ef58502",
+				"version": "2066a9197bd448ce",
 				"limits": {
 					"metrics": {
 						"source-bytes": 484,
@@ -293577,6 +295125,44 @@
 						"method": "Not applicable.",
 						"artifacts": []
 					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.testDir",
+						"purpose": "Locate the browser test sources.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.testMatch",
+						"purpose": "Select the browser suite for this preview surface.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.workers",
+						"purpose": "Limit browser execution to one worker.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.outputDir",
+						"purpose": "Separate the shell test artifacts from other suites.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.use.screenshot",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.reporter",
+						"purpose": "Print list test results.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					}
 				]
 			},
 			{
@@ -293610,7 +295196,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "9ed8e4414cf3aa69",
+				"version": "749cbdcc0a4caa59",
 				"limits": {
 					"metrics": {
 						"source-bytes": 755,
@@ -293765,6 +295351,68 @@
 						"unavailable": "A module unit emits no separate artifact.",
 						"method": "Not applicable.",
 						"artifacts": []
+					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.publicDir",
+						"purpose": "Exclude unrelated public assets from the fixture bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.logLevel",
+						"purpose": "Limit fixture build output to warnings.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
 					}
 				]
 			},
@@ -398094,7 +399742,7 @@
 		},
 		"config.desktop-patch": {
 			"unit": "config.desktop-patch",
-			"manifest": "25eee711d4b9ad858d40368466ad1b3c35d588aad8971365238e4aea8369ad9f",
+			"manifest": "d8025dfdf03239352348ad9ea2b4ad7692fef644bb7325baf460d3494096a2aa",
 			"source": "849c72a95d67a22cb4a6483a2170ebbb940a504c76679ea5d626f4ee5fbff003",
 			"contract": "a1f416661dbad414cdd0faea607e9b66c8cc4dba1d652b8202662f23edcb31b6",
 			"runtime": "983dd1f9bfe62514ed7a6a466edfadd3bf38919a615ba4d333970bab994470f5",
@@ -406541,7 +408189,7 @@
 		},
 		"hub.config.hub-env": {
 			"unit": "hub.config.hub-env",
-			"manifest": "e25fce5c84ee9788f7e0ea36e60db6fe2a9614c9b1a027d58ea2018016a1cb9d",
+			"manifest": "20e3185b023521fe18f312c605e5137c57510feefd0b5146dbfdce10683f6cac",
 			"source": "9656a264ae1b90a7f3bb15054798d80dda9158b659c558c5ecc34ec121df51f5",
 			"contract": "cac7670efd878005eebc897fb35ec1a57cde75d7bb63efd9b4ca98dabe5b56bc",
 			"runtime": "2b1d362dc65a3775fc293c9bf79070464cc929012b4a116b0036aa02348ba0b2",
@@ -408713,7 +410361,7 @@
 		},
 		"relay.config.relay": {
 			"unit": "relay.config.relay",
-			"manifest": "c80463d70d651f0e4c5102f1b9a7df62920312306aead52a2747899cbceeed6b",
+			"manifest": "c7c85bb5802385e200bc86370a92656efd4dc55b65a2c59f25632ed5612453a6",
 			"source": "98a16b12999cfbf360c7646a601530196878b3160f78f9d4e3bf2560ee7920c4",
 			"contract": "43805cd9c649f4f39a67f166ecf816ceb2104bbabeb5ca9deff7e79c42007cb7",
 			"runtime": "6b879cc3fed935ac7f0afecca5bdb3d7b23cfcfdb8a31e521d5a461dd0dab63d",
@@ -411087,7 +412735,7 @@
 		},
 		"reports.config.console-vite": {
 			"unit": "reports.config.console-vite",
-			"manifest": "93a2d103b1aedea35e9b89b533e8df5c138cd1863b0830560c033937432d786a",
+			"manifest": "1cf19bc2edd63c714462afcd7aee222d51628ada220ed76b0d17e7230de79521",
 			"source": "e8c36db24276543e8b2bcc0d435d9850dd1ae18ca0734eca7fa5f44f02ddcaab",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "f5901ba2f62326aacaabe7983825b9c48d6557e5219f95d524436c4f513a2783",
@@ -411100,7 +412748,7 @@
 		},
 		"reports.config.picker-playwright": {
 			"unit": "reports.config.picker-playwright",
-			"manifest": "437e8281ec714e7956742dede2d306b51648008eec7b22899d6cf28915943fd2",
+			"manifest": "00b3e1d6e563147d478e27f88fec9f29901745329b1f2e854311029ecc5f43e3",
 			"source": "734cd9f1cd920ae9452bb84034c164b541bf7d8d23ef29ac3ab32321c59271e2",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "79c8df96eeed82d530ed58a3c6845cb0bd8934d8b4656586fa239c6c50d70276",
@@ -411113,7 +412761,7 @@
 		},
 		"reports.config.picker-vite": {
 			"unit": "reports.config.picker-vite",
-			"manifest": "b92301cde21ceb12fa4ac1dab5568903f8f3bc1eddfa0d4b1fa6c02fccce7b30",
+			"manifest": "b6eba99991e6db2ba3f71f00477648b8aa04761c54239dab0f493539003e6b3e",
 			"source": "099960d964503160142d94440b68f900fb50de5510ff7e3f10a49d2d257b043f",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "987f3da9ae71704a02988819ef15ecd965a1d7f68bb37778e7570fbf235c8b21",
@@ -411126,7 +412774,7 @@
 		},
 		"reports.config.report-vite": {
 			"unit": "reports.config.report-vite",
-			"manifest": "5fc755b960d7a4bea0fb2c632d2b97be4a9e11c741588d0741a88223557812bf",
+			"manifest": "ee896d72ac82026e865397e1c3f7f75b0ea40d1bd1b599f388e2a8077d8cd845",
 			"source": "fbe60520dab3df09938ea2d74060a9bbc7f1805d34eb7151905f460e53633e32",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "6a1aef376710a6aeae64c75d60851a4965eaa9000a9b66beb654c6e8607d2a8a",
@@ -411139,7 +412787,7 @@
 		},
 		"reports.config.shell-playwright": {
 			"unit": "reports.config.shell-playwright",
-			"manifest": "3e4689fbf26178d9f2a7636ec0562dc061ee196e96a6944761ae0bfb6ef2594d",
+			"manifest": "69071889a94ac1967cb1e361cae5f7940a0c2ae1168397144562cea9dc807066",
 			"source": "2cd77928952fb687cde6f506583af37f7a69a2ede4aa7e2ffe62e87573d414fa",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "c8f5ea7cf56caa923fd25ab57b4a3e4636a9942ce7a4a570bfa1072ec0da23d7",
@@ -411152,7 +412800,7 @@
 		},
 		"reports.config.shell-vite": {
 			"unit": "reports.config.shell-vite",
-			"manifest": "6e8197ac2f674e40246816ca3321fa6d60fa30923470b32b1db4ee66296cf443",
+			"manifest": "1735c4a782d7054bcfce16fd56763f9be9266a2f83ab533473b864939627a241",
 			"source": "32eb7e145bded4350fbd031c6140683c4ccbebcc50089c3a4c37592565e89635",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "edfe581e54f6a577d6eddac0f4b6b7c123be60721f7797815d662d3af3313644",
@@ -545229,16 +546877,7 @@
 		"reports.function.activity-display: plural must be implemented under src/helpers/<responsibility>/",
 		"reports.function.entity-contract: humanize must be implemented under src/helpers/<responsibility>/",
 		"reports.function.entity-lens: shortCommit must be implemented under src/helpers/<responsibility>/",
-		"reports.function.evidence-media: formatDuration must be implemented under src/helpers/<responsibility>/",
-		"config.desktop-patch requires reviewed configControls with a source, audience and purpose",
-		"hub.config.hub-env requires reviewed configControls with a source, audience and purpose",
-		"relay.config.relay requires reviewed configControls with a source, audience and purpose",
-		"reports.config.console-vite requires reviewed configControls with a source, audience and purpose",
-		"reports.config.picker-playwright requires reviewed configControls with a source, audience and purpose",
-		"reports.config.picker-vite requires reviewed configControls with a source, audience and purpose",
-		"reports.config.report-vite requires reviewed configControls with a source, audience and purpose",
-		"reports.config.shell-playwright requires reviewed configControls with a source, audience and purpose",
-		"reports.config.shell-vite requires reviewed configControls with a source, audience and purpose"
+		"reports.function.evidence-media: formatDuration must be implemented under src/helpers/<responsibility>/"
 	],
 	"modules": [
 		{
@@ -545883,13 +547522,7 @@
 			"id": "config.desktop-patch",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "config.desktop-patch requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "desktop.adapter.agent-http",
@@ -557915,13 +559548,7 @@
 			"id": "hub.config.hub-env",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "hub.config.hub-env requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "hub.controller.email-proof",
@@ -558875,13 +560502,7 @@
 			"id": "relay.config.relay",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "relay.config.relay requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "relay.controller.host-object",
@@ -561956,13 +563577,7 @@
 			"id": "reports.config.console-vite",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "reports.config.console-vite requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.config.picker-playwright",
@@ -561974,11 +563589,6 @@
 					"field": "measurements.dependencies",
 					"message": "Source observation is partial or unavailable.",
 					"repair": "Run validate --write from the exact source revision; preserve unavailable-counter reasons."
-				},
-				{
-					"field": "registry",
-					"message": "reports.config.picker-playwright requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
 				}
 			]
 		},
@@ -561986,49 +563596,25 @@
 			"id": "reports.config.picker-vite",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "reports.config.picker-vite requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.config.report-vite",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "reports.config.report-vite requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.config.shell-playwright",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "reports.config.shell-playwright requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.config.shell-vite",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "reports.config.shell-vite requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.controller.console-agent",
@@ -564496,5 +566082,5 @@
 		}
 	],
 	"issues": [],
-	"digest": "d2518dd91bcaaa7b44fb3f867501d35a3e998fe8d6e4f9a0986ad5e1faa49435"
+	"digest": "1639f912f584071fd5863a27201a182d747789357633d3ca57025a8884e6eeed"
 }
