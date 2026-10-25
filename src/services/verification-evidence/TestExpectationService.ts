@@ -1,5 +1,7 @@
 import { deepStrictEqual } from 'node:assert';
 import { z } from 'zod';
+import { TestCaseValidator } from '../../validators/verification-evidence/TestCaseValidator';
+import { normalizeJson } from './test-expectation-service/normalizeJson';
 import type { UsageExample } from '../../utils/explorer-ui/unit-documentation/unitDocumentation.types';
 import type { ExampleInvocation, ExampleObservation } from './TestExpectationService.types';
 import type { ExampleRegistrar, ExampleFunctions } from './TestExpectationService.types';
@@ -12,8 +14,14 @@ export class TestExpectationService {
 		unit: ComponentManifest,
 		functions: ExampleFunctions
 	): void {
-		if (!unit.helperContracts?.length) throw new Error(`Missing authored Examples for ${unit.id}`);
-		for (const helper of unit.helperContracts ?? []) {
+		const groups = exampleGroups(unit);
+		if (!groups.length) throw new Error(`Missing authored Examples for ${unit.id}`);
+		if (unit.testing?.shape !== 'helper')
+			throw new Error('Example registration requires the helper test shape');
+		const admission = new TestCaseValidator().validate(unit, unit.testing);
+		if (!admission.valid)
+			throw new Error(`Invalid authored Examples: ${admission.errors.join('; ')}`);
+		for (const helper of groups) {
 			const invoke = functions[helper.name];
 			if (!invoke || !helper.examples?.length)
 				throw new Error(`Missing executable examples for ${helper.name}`);
@@ -30,8 +38,8 @@ export class TestExpectationService {
 		const left = globalThis.structuredClone(z.json().parse(actual));
 		const right = globalThis.structuredClone(z.json().parse(expected));
 		for (const path of normalize) {
-			this.normalize(left, path);
-			this.normalize(right, path);
+			normalizeJson(left, path);
+			normalizeJson(right, path);
 		}
 		deepStrictEqual(left, right, 'API JSON differs from its authored response');
 	}
@@ -50,7 +58,10 @@ export class TestExpectationService {
 				error: this.errorValue(error, example.error)
 			};
 		}
-		if (Object.hasOwn(example, 'error')) {
+		if (example.returns === 'void') {
+			deepStrictEqual(Object.hasOwn(observation, 'error'), false, 'Example unexpectedly failed');
+			deepStrictEqual(observation.output, undefined, 'Example output differs from its comment');
+		} else if (Object.hasOwn(example, 'error')) {
 			deepStrictEqual(Object.hasOwn(observation, 'error'), true, 'Expected example to fail');
 			deepStrictEqual(observation.error, example.error, 'Example error differs from its comment');
 		} else {
@@ -63,30 +74,6 @@ export class TestExpectationService {
 		}
 		return observation;
 	}
-	private normalize(value: unknown, path: string): void {
-		const parts = this.pathParts(path);
-		let parent = value;
-		for (const part of parts.slice(0, -1)) {
-			if (!parent || typeof parent !== 'object' || !Object.hasOwn(parent, part))
-				throw new Error(`Missing normalization field ${path}`);
-			parent = (parent as Record<string, unknown>)[part];
-		}
-		const key = parts.at(-1)!;
-		if (!parent || typeof parent !== 'object' || !Object.hasOwn(parent, key))
-			throw new Error(`Missing normalization field ${path}`);
-		const record = parent as Record<string, unknown>;
-		if (record[key] === null || typeof record[key] === 'object')
-			throw new Error(`Normalization must name a scalar field: ${path}`);
-		record[key] = { normalizedType: typeof record[key] };
-	}
-	private pathParts(path: string): string[] {
-		const parts = path.split('.');
-		if (
-			parts.some((part) => !part || ['__proto__', 'prototype', 'constructor', '*'].includes(part))
-		)
-			throw new Error(`Invalid normalization path ${path}`);
-		return parts;
-	}
 	private errorValue(error: unknown, expected: unknown): unknown {
 		if (!(error instanceof Error)) return error;
 		if (typeof expected === 'string') return error.message;
@@ -98,3 +85,22 @@ export class TestExpectationService {
 	}
 }
 export type { ExampleInvocation, ExampleObservation } from './TestExpectationService.types';
+
+function usageExample(
+	item: NonNullable<NonNullable<ComponentManifest['testing']>['examples']>[number]
+): UsageExample {
+	const example = { name: item.name, call: item.call, input: item.input };
+	if (item.expected.kind === 'void') return { ...example, returns: 'void' };
+	if (item.expected.kind === 'error') return { ...example, error: item.expected.value };
+	return { ...example, output: item.expected.value };
+}
+
+function exampleGroups(unit: ComponentManifest) {
+	return [
+		...(unit.helperContracts ?? []),
+		...(unit.testing?.examples ?? []).map((item) => ({
+			name: item.subject,
+			examples: [usageExample(item)]
+		}))
+	];
+}

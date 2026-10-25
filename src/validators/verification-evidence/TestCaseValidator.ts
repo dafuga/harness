@@ -42,17 +42,23 @@ export class TestCaseValidator {
 		return errors;
 	}
 	private examples(unit: ComponentManifest, contract: TestContract): string[] {
-		const examples = (unit.helperContracts ?? []).flatMap((helper) =>
-			(helper.examples ?? []).map((example) => ({ subject: helper.name, name: example.name }))
-		);
+		const examples = [
+			...(unit.helperContracts ?? []).flatMap((helper) =>
+				(helper.examples ?? []).map((example) => ({ subject: helper.name, name: example.name }))
+			),
+			...(contract.examples ?? [])
+		];
 		const errors = examples.length ? [] : [`${unit.id}: helper requires authored Examples`];
+		const identities = examples.map((item) => `${item.subject}/${item.name}`);
+		if (new Set(identities).size !== identities.length)
+			errors.push(`${unit.id}: duplicate authored example`);
 		for (const example of examples) {
 			const matches = contract.cases.filter(
 				(item) => item.subject === example.subject && item.example === example.name
 			);
-			if (matches.length !== 1)
+			if (matches.length !== 1 || matches[0].test.title !== `${example.subject}: ${example.name}`)
 				errors.push(
-					`${unit.id}: example ${example.subject}/${example.name} requires exactly one case`
+					`${unit.id}: example ${example.subject}/${example.name} requires exactly one case with its canonical registered title`
 				);
 		}
 		for (const item of contract.cases)

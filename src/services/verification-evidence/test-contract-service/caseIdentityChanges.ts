@@ -48,6 +48,10 @@ function capabilities(unit: ComponentManifest, subject: string): string {
 			}))
 			.sort((left, right) => left.name.localeCompare(right.name)),
 		symbols: [...new Set(unit.owns.symbols.filter(belongs))].sort(),
+		examples: unit.testing?.examples
+			?.filter((item) => belongs(item.subject))
+			.map(({ subject, name }) => [subject, name])
+			.sort(),
 		shape: unit.testing?.shape,
 		states: unit.testing?.states?.slice().sort(),
 		props: unit.testing?.props?.slice().sort()

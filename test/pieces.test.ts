@@ -1,5 +1,6 @@
 import { measureWorkload } from './support/measureWorkload';
 import { check } from 'prettier';
+import { assertAppPieceContracts, assertClassMatrices } from './support/generatedContracts';
 import { formatConfigFiles } from '../src/templates/development-tooling/formatConfig';
 import { pieceExportPlans } from '../src/workflows/projects-sessions/generate-code/exportPlans';
 import { posix } from 'node:path';
@@ -47,10 +48,7 @@ test.each(['2d', '3d'] as const)(
 );
 
 test('view, layout, and api scaffolds use SvelteKit route files', () => {
-	assertComponentContract();
-	assertPageContract();
-	assertRegionContract();
-	assertAppBehavior();
+	assertAppPieceContracts();
 });
 
 test('marks only SvelteKit scaffolds as app-only', () => {
@@ -65,6 +63,7 @@ test('marks only SvelteKit scaffolds as app-only', () => {
 });
 
 test('Rails-ish scaffolds create their expected code shapes', async () => {
+	assertClassMatrices();
 	expect(pieceFiles('mailer', 'Welcome').map((file) => file.path)).toContain(
 		'src/mailers/WelcomeMailer.ts'
 	);
@@ -94,6 +93,7 @@ test('Rails-ish scaffolds create their expected code shapes', async () => {
 	const configSource = config.find((file) => file.path === 'src/configs/searchConfig.ts')!;
 	expect(configSource.contents).toContain('export const searchConfig = {} as const;');
 	expect(configSource.contents).not.toMatch(/\b(?:name|enabled):/);
+	expect(config.some((file) => file.path.endsWith('.test.ts'))).toBe(false);
 	expect(pieceFiles('middleware', 'Auth').map((file) => file.path)).toContain(
 		'src/middleware/AuthMiddleware.ts'
 	);
@@ -112,72 +112,3 @@ test('helper scaffolds emit pure camelCase functions with domain parameters', ()
 		"formatLabel('  label  ')"
 	);
 });
-
-function assertComponentContract() {
-	const component = pieceFiles('component', 'StatusBadge');
-	const componentSource = component.find((file) => file.path.endsWith('StatusBadge.svelte'));
-	const componentPreview = component.find((file) => file.path.includes('__harness/components'));
-	const componentTest = component.find((file) => file.path.endsWith('-component.spec.ts'));
-	expect(component.map((file) => file.path)).toContain(
-		'src/routes/__harness/components/status-badge/+page.svelte'
-	);
-	expect(componentSource?.contents).not.toContain('Toggle details');
-	expect(componentSource?.contents).toContain('error?: string');
-	expect(componentTest?.contents).toContain("id: 'label-prop'");
-	expect(componentTest?.contents).toContain("id: 'error-prop'");
-	expect(componentTest?.contents).toContain('desktop');
-	expect(componentTest?.contents).toContain('document.fonts.ready');
-	expect(componentTest?.contents).toContain('toHaveScreenshot(state.screenshot[viewport.id]');
-	expect(componentPreview?.contents).toContain("import.meta.env.MODE !== 'test'");
-}
-
-function assertPageContract() {
-	expect(pieceFiles('view', 'BlogPost').map((file) => file.path)).toContain(
-		'src/routes/blog-post/+page.svelte'
-	);
-	const viewTest = pieceFiles('view', 'BlogPost').find((file) =>
-		file.path.endsWith('-page.spec.ts')
-	);
-	expect(viewTest?.contents).toContain('toHaveScreenshot(state.screenshot[viewport.id]');
-	expect(viewTest?.contents).toContain('fullPage: true');
-	expect(viewTest?.contents).toContain("id: 'error-state'");
-	const e2eTest = pieceFiles('e2e', 'BlogPost').find((file) =>
-		file.path.endsWith('blog-post.spec.ts')
-	);
-	expect(e2eTest?.contents).toContain('toHaveScreenshot(state.screenshot[viewport.id]');
-	expect(e2eTest?.contents).toContain('fullPage: true');
-	expect(e2eTest?.contents).toContain("from './support/browserTest'");
-}
-
-function assertRegionContract() {
-	const layout = pieceFiles('layout', 'BlogPost');
-	expect(layout.map((file) => file.path)).toContain('src/routes/blog-post/+layout.svelte');
-	expect(layout.map((file) => file.path)).toContain('src/routes/blog-post/__harness/+page.svelte');
-	const layoutTest = layout.find((file) => file.path.endsWith('-layout.spec.ts'));
-	expect(layoutTest?.contents).toContain('[data-harness-layout="blog-post"]');
-	expect(layoutTest?.contents).toContain('toHaveScreenshot(state.screenshot[viewport.id]');
-	const partial = pieceFiles('partial', 'PostCard');
-	expect(partial.map((file) => file.path)).toContain(
-		'src/routes/__harness/partials/post-card/+page.svelte'
-	);
-	const partialTest = partial.find((file) => file.path.endsWith('-partial.spec.ts'));
-	expect(partialTest?.contents).toContain('[data-harness-partial="post-card"]');
-	expect(partialTest?.contents).toContain('toHaveText(state.label');
-}
-
-function assertAppBehavior() {
-	expect(pieceFiles('api', 'BlogPost').map((file) => file.path)).toContain(
-		'src/routes/api/blog-post/+server.ts'
-	);
-	const apiTest = pieceFiles('api', 'BlogPost').find((file) => file.path.endsWith('-api.test.ts'));
-	expect(apiTest?.contents).toContain('test.each(cases)');
-	expect(apiTest?.contents).toContain("contentType: 'application/json'");
-	expect(apiTest?.contents).toContain("id: 'error prop returns complete JSON'");
-	const storeTest = pieceFiles('store', 'Draft').find((file) => file.path.endsWith('.test.ts'));
-	expect(storeTest?.contents).toContain('test.each(cases)');
-	expect(storeTest?.contents).toContain('store.value = nextValue');
-	const hookTest = pieceFiles('hook', 'auth').find((file) => file.path.endsWith('.test.ts'));
-	expect(hookTest?.contents).toContain('passes the event to resolve');
-	expect(hookTest?.contents).toContain('resolves.toBe(response)');
-	expect(hookTest?.contents).not.toContain('toBeTypeOf');
-}

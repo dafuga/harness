@@ -1,16 +1,28 @@
-import type { BrowserError, ExpectedBrowserError, DiagnosticInfo } from './browserTest.types';
+import type {
+	BrowserError,
+	ExpectedBrowserError,
+	DiagnosticInfo,
+	MatchScreenshot
+} from './browserTest.types';
 import { test as base, expect } from '@playwright/test';
 import type { BrowserContext, ConsoleMessage, WebError } from '@playwright/test';
+import { createMatchScreenshot } from './browserScreenshot';
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 export * from '@playwright/test';
 
 /** Normal flows require no errors. Deliberate failures declare exact expected diagnostics. */
-export const test = base.extend<{ browserErrors: ReturnType<typeof browserErrorCollector> }>({
+export const test = base.extend<{
+	browserErrors: ReturnType<typeof browserErrorCollector>;
+	matchScreenshot: MatchScreenshot;
+}>({
 	context: async ({ context, browserErrors }, use) => {
 		browserErrors.watch(context);
 		await use(context);
+	},
+	matchScreenshot: async (_fixtures, use, testInfo) => {
+		await use(createMatchScreenshot(testInfo));
 	},
 	browserErrors: [
 		async ({ browserName }, use, testInfo) => {

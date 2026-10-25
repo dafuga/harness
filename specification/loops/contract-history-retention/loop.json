@@ -2,11 +2,9 @@
 	"name": "contract-history-retention",
 	"goal": "Rebuild complete source history without retaining full revision source state or corrupting shared-tree catalog measurement provenance",
 	"createdAt": "2026-10-25T13:33:49.462Z",
-	"updatedAt": "2026-10-25T13:38:05.503Z",
+	"updatedAt": "2026-10-25T13:38:27.030Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T13:38:27.030Z",
+			"evidence": "The paired immutable Harness record reruns the frozen existing archive case against the repair, with the original test corpus, assertion, command and runtime unchanged; selected-commit JSON, media and SQLite catalog provenance now pass."
 		},
 		{
 			"id": "verify",

@@ -15,15 +15,20 @@ export async function exampleDeclarations(
 	const tests: DiscoveredTest[] = [];
 	for (const call of calls) {
 		const unit = componentManifestSchema.parse(JSON.parse(await tree.read(call.path)));
-		for (const helper of unit.helperContracts ?? [])
-			for (const example of helper.examples ?? [])
-				tests.push({
-					file,
-					title: `${helper.name}: ${example.name}`,
-					line: call.line,
-					dynamic: false,
-					disabled: false
-				});
+		const examples = [
+			...(unit.helperContracts ?? []).flatMap((helper) =>
+				(helper.examples ?? []).map((example) => ({ subject: helper.name, name: example.name }))
+			),
+			...(unit.testing?.examples ?? [])
+		];
+		for (const example of examples)
+			tests.push({
+				file,
+				title: `${example.subject}: ${example.name}`,
+				line: call.line,
+				dynamic: false,
+				disabled: false
+			});
 	}
 	return tests;
 }

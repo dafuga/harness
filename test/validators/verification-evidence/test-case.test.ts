@@ -1,4 +1,6 @@
 import { expect, test } from 'vitest';
+import type { ComponentManifest } from '../../../src/core/unitTypes';
+import type { ContractCase } from '../../../src/services/verification-evidence/TestContractService';
 import { TestCaseValidator } from '../../../src/validators/verification-evidence/TestCaseValidator';
 import { indexFiles, unitOf } from '../../support/memoryTree';
 
@@ -15,7 +17,7 @@ test('validate each allowed shape and its missing or invalid states', async () =
 		state: 'rest',
 		subject: 'rank',
 		test: { file: 'test/rank.test.ts', title: 'rank rest' },
-		expected: { kind: 'value', value: 1 }
+		expected: { kind: 'value' as const, value: 1 }
 	};
 	const contract = { version: 1, shape: 'service', states: ['rest'], cases: [item] };
 	expect(validator.validate(unit, contract).errors).toEqual([]);
@@ -47,6 +49,7 @@ test('validate each allowed shape and its missing or invalid states', async () =
 	expect(validator.validate(unit, { ...contract, shape: 'helper' }).errors.join(' ')).toContain(
 		'authored Examples'
 	);
+	assertAuthoredExampleCases(unit, item);
 	expect(
 		validator.validate(unit, {
 			...contract,
@@ -54,3 +57,27 @@ test('validate each allowed shape and its missing or invalid states', async () =
 		}).valid
 	).toBe(false);
 });
+
+function assertAuthoredExampleCases(unit: ComponentManifest, item: ContractCase) {
+	const authored = {
+		version: 1,
+		states: ['rest'],
+		shape: 'helper',
+		examples: [
+			{
+				subject: 'rank',
+				name: 'Identity',
+				call: 'rank(1)',
+				input: [1],
+				expected: { kind: 'value' as const, value: 1 }
+			}
+		],
+		cases: [{ ...item, example: 'Identity', test: { ...item.test, title: 'rank: Identity' } }]
+	};
+	expect(validator.validate(unit, authored).errors).toEqual([]);
+	expect(
+		validator
+			.validate(unit, { ...authored, examples: [...authored.examples, ...authored.examples] })
+			.errors.join(' ')
+	).toContain('duplicate authored example');
+}

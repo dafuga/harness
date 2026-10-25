@@ -8,11 +8,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/templates/development-tooling/rails-pieces/railsCases.ts",
 			"src/templates/development-tooling/railsPieces.ts",
 			"src/templates/development-tooling/railsPieces.types.ts",
 			"src/templates/railsPieces.ts"
 		],
 		"symbols": [
+			"valueCase",
+			"errorCase",
+			"channelCases",
+			"formCases",
+			"middlewareCases",
 			"mailerFiles",
 			"helperFiles",
 			"concernFiles",
@@ -22,6 +28,8 @@
 			"configFiles",
 			"middlewareFiles",
 			"resourceFiles",
+			"CaseExample",
+			"ClassCase",
 			"ClassEntityTemplate",
 			"FunctionTemplate",
 			"mailerFiles",
@@ -38,6 +46,30 @@
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "valueCase.title",
+				"type": "string"
+			},
+			{
+				"name": "valueCase.call",
+				"type": "string"
+			},
+			{
+				"name": "valueCase.expected",
+				"type": "string"
+			},
+			{
+				"name": "errorCase.title",
+				"type": "string"
+			},
+			{
+				"name": "errorCase.call",
+				"type": "string"
+			},
+			{
+				"name": "errorCase.error",
+				"type": "string"
+			},
 			{
 				"name": "mailerFiles.name",
 				"type": "string"
@@ -76,6 +108,26 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "valueCase",
+				"type": "unknown"
+			},
+			{
+				"name": "errorCase",
+				"type": "unknown"
+			},
+			{
+				"name": "channelCases",
+				"type": "unknown"
+			},
+			{
+				"name": "formCases",
+				"type": "unknown"
+			},
+			{
+				"name": "middlewareCases",
+				"type": "unknown"
+			},
 			{
 				"name": "mailerFiles",
 				"type": "PlannedFile[]"

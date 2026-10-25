@@ -12,12 +12,12 @@ test('intentional errors retain diagnostics and cannot hide missing, duplicate o
 		const project = join(root, 'intentional');
 		await symlink(resolve('node_modules'), join(project, 'node_modules'), 'dir');
 		await runHarness(['generate', 'e2e', 'Expected'], project);
-		const path = join(project, 'tests/e2e/expected.spec.ts');
+		const path = join(project, 'tests/e2e/expected-page.spec.ts');
 		const imports = (await readFile(path, 'utf8')).split('\n')[0];
 		await writeFile(path, imports + '\n' + flows);
 		await writeFile(
 			join(project, 'playwright.config.ts'),
-			"export default { testDir: 'tests/e2e', workers: 1, reporter: 'json' };\n"
+			"export default { testDir: 'tests/e2e', testMatch: 'expected-page.spec.ts', workers: 1, reporter: 'json' };\n"
 		);
 		const result = await runCommand(
 			['bun', resolve('node_modules/@playwright/test/cli.js'), 'test'],
@@ -82,7 +82,7 @@ test('API-only checks do not require a browser executable', async () => {
 		const project = join(root, 'api-only');
 		await symlink(resolve('node_modules'), join(project, 'node_modules'), 'dir');
 		await runHarness(['generate', 'e2e', 'Api'], project);
-		const path = join(project, 'tests/e2e/api.spec.ts');
+		const path = join(project, 'tests/e2e/api-page.spec.ts');
 		const imports = (await readFile(path, 'utf8')).split('\n')[0];
 		await writeFile(
 			path,
@@ -91,7 +91,7 @@ test('API-only checks do not require a browser executable', async () => {
 		);
 		await writeFile(
 			join(project, 'playwright.config.ts'),
-			"export default { testDir: 'tests/e2e', reporter: 'json', use: { launchOptions: { executablePath: '/nonexistent/harness-browser' } } };\n"
+			"export default { testDir: 'tests/e2e', testMatch: 'api-page.spec.ts', reporter: 'json', use: { launchOptions: { executablePath: '/nonexistent/harness-browser' } } };\n"
 		);
 		const result = await runCommand(
 			['bun', resolve('node_modules/@playwright/test/cli.js'), 'test'],

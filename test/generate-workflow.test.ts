@@ -51,7 +51,7 @@ test('app generation allows app-only scaffolds without package exports', async (
 	expect(result.exportsUpdated).toBe(false);
 	const page = await readFile(join(root, 'src/routes/dashboard/+page.svelte'), 'utf8');
 	expect(page).toContain('@harness-tier page');
-	expect(page).toContain('<hx-h1>');
+	expect(page).toMatch(/<hx-h1(?:\s|>)/);
 	await generatePiece({ root, kind: 'component', name: 'PostCard' });
 	const component = await readFile(join(root, 'src/components/PostCard.svelte'), 'utf8');
 	expect(component).toContain('@harness-tier molecule');

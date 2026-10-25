@@ -155,7 +155,7 @@ function appPackage(name: string): Record<string, unknown> {
 			'test:e2e': 'playwright test'
 		},
 		devDependencies: {
-			'@playwright/test': '^1.28.1',
+			'@playwright/test': '1.63.0',
 			'@eslint/js': '^9.25.1',
 			'@sveltejs/adapter-auto': '^4.0.0',
 			'@sveltejs/kit': '^2.16.1',

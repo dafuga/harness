@@ -2,11 +2,9 @@
 	"name": "contract-subject-counts",
 	"goal": "Keep each callable case identity stable when a sibling callable gains a declared capability",
 	"createdAt": "2026-10-25T14:12:32.286Z",
-	"updatedAt": "2026-10-25T14:16:52.096Z",
+	"updatedAt": "2026-10-25T14:17:09.081Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T14:17:09.081Z",
+			"evidence": "The frozen two-case suite passes at the repair commit after failing on the sibling-capability fixture. Harness retains the unchanged command, full test corpus, failed assertion and paired runtime profile."
 		},
 		{
 			"id": "verify",

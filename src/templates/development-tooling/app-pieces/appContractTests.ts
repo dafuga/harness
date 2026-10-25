@@ -45,11 +45,11 @@ function screenshotContractTest(
 ): string {
 	const capture =
 		target === 'page'
-			? "await expect(page).toHaveScreenshot(state.screenshot[viewport.id], {\n\t\t\t\t\t\tfullPage: true,\n\t\t\t\t\t\tanimations: 'disabled',\n\t\t\t\t\t\tcaret: 'hide'\n\t\t\t\t\t});"
-			: `await expect(${target}).toHaveScreenshot(state.screenshot[viewport.id], {\n\t\t\t\t\t\tanimations: 'disabled',\n\t\t\t\t\t\tcaret: 'hide'\n\t\t\t\t\t});`;
+			? "await matchScreenshot(page, state.screenshot[viewport.id], {\n\t\t\t\t\t\tfullPage: true,\n\t\t\t\t\t\tanimations: 'disabled',\n\t\t\t\t\t\tcaret: 'hide'\n\t\t\t\t\t});"
+			: `await matchScreenshot(${target}, state.screenshot[viewport.id], {\n\t\t\t\t\t\tanimations: 'disabled',\n\t\t\t\t\t\tcaret: 'hide'\n\t\t\t\t\t});`;
 	const assertions = formatContractBlock(blocks.assertions);
 	const postCapture = formatContractBlock(
 		blocks.postCapture ?? '// Screenshot baselines are comparison-only; update them deliberately.'
 	);
-	return `import { expect, test } from './support/browserTest';\nimport type { Page } from '@playwright/test';\n\n${states}\n\nconst viewports = [\n\t{ id: 'desktop', size: { width: 1440, height: 900 } },\n\t{ id: 'tablet', size: { width: 920, height: 800 } },\n\t{ id: 'mobile', size: { width: 390, height: 844 } }\n] as const;\n\nasync function waitForRender(page: Page): Promise<void> {\n\tawait page.waitForLoadState('networkidle');\n\tawait page.waitForFunction(() => document.readyState === 'complete');\n\tawait page.evaluate(async () => {\n\t\tawait document.fonts.ready;\n\t\tawait Promise.all([...document.images].map((image) => image.decode()));\n\t});\n}\n\ntest.describe('${suite}', () => {\n\tfor (const viewport of viewports) {\n\t\ttest.describe(viewport.id + ' viewport', () => {\n\t\t\ttest.use({ viewport: viewport.size });\n\n\t\t\tfor (const state of states)\n\t\t\t\ttest(state.id + ' state matches its declared screenshot', async ({ page }) => {\n\t\t\t\t\tawait page.goto(state.path);\n\t\t\t\t\tawait waitForRender(page);\n\t\t\t\t\t${assertions}\n\t\t\t\t\t${capture}\n\t\t\t\t\t${postCapture}\n\t\t\t\t});\n\t\t});\n\t}\n});\n`;
+	return `import { expect, test } from './support/browserTest';\n\n${states}\n\nconst viewports = [\n\t{ id: 'desktop', size: { width: 1440, height: 900 } },\n\t{ id: 'tablet', size: { width: 920, height: 800 } },\n\t{ id: 'mobile', size: { width: 390, height: 844 } }\n] as const;\n\ntest.describe('${suite}', () => {\n\tfor (const viewport of viewports) {\n\t\ttest.describe(viewport.id + ' viewport', () => {\n\t\t\ttest.use({ viewport: viewport.size });\n\n\t\t\tfor (const state of states)\n\t\t\t\ttest(state.id, async ({ page, matchScreenshot }) => {\n\t\t\t\t\tawait page.goto(state.path);\n\t\t\t\t\t${assertions}\n\t\t\t\t\t${capture}\n\t\t\t\t\t${postCapture}\n\t\t\t\t});\n\t\t});\n\t}\n});\n`;
 }

@@ -19,6 +19,22 @@ const expected = z.discriminatedUnion('kind', [
 export const testContractSchema = z.strictObject({
 	version: z.literal(1),
 	shape: z.enum(['page', 'component', 'helper', 'service', 'api']),
+	examples: z
+		.array(
+			z.strictObject({
+				subject: text,
+				name: text,
+				call: text,
+				input: z.json(),
+				expected: z.discriminatedUnion('kind', [
+					z.strictObject({ kind: z.literal('void') }),
+					z.strictObject({ kind: z.literal('value'), value: z.json() }),
+					z.strictObject({ kind: z.literal('error'), value: z.json() })
+				])
+			})
+		)
+		.min(1)
+		.optional(),
 	states: z.array(id).min(1).optional(),
 	props: z.array(text).optional(),
 	cases: z

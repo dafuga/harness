@@ -48,9 +48,17 @@ export const usageExampleSchema = z
 		call: text.max(16_000).optional(),
 		input: z.json(),
 		output: z.json().optional(),
+		returns: z.literal('void').optional(),
 		error: z.json().optional()
 	})
-	.refine((example) => Object.hasOwn(example, 'output') !== Object.hasOwn(example, 'error'));
+	.refine(
+		(example) =>
+			[
+				Object.hasOwn(example, 'output'),
+				Object.hasOwn(example, 'error'),
+				example.returns === 'void'
+			].filter(Boolean).length === 1
+	);
 
 /** Reviewed helper declarations, derived at indexing time and pinned with the source. */
 export const helperContractSchema = z.strictObject({

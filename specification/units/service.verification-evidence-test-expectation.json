@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"src/services/verification-evidence/TestExpectationService.ts",
-			"src/services/verification-evidence/TestExpectationService.types.ts"
+			"src/services/verification-evidence/TestExpectationService.types.ts",
+			"src/services/verification-evidence/test-expectation-service/normalizeJson.ts"
 		],
 		"symbols": [
 			"TestExpectationService",
@@ -21,7 +22,8 @@
 			"ExampleObservation",
 			"ExampleInvocation",
 			"ExampleRegistrar",
-			"ExampleFunctions"
+			"ExampleFunctions",
+			"normalizeJson"
 		]
 	},
 	"contract": {
@@ -58,6 +60,14 @@
 			{
 				"name": "TestExpectationService.example.example",
 				"type": "UsageExample"
+			},
+			{
+				"name": "normalizeJson.value",
+				"type": "unknown"
+			},
+			{
+				"name": "normalizeJson.path",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -72,6 +82,10 @@
 			{
 				"name": "TestExpectationService.example",
 				"type": "Promise<ExampleObservation>"
+			},
+			{
+				"name": "normalizeJson",
+				"type": "void"
 			}
 		],
 		"errors": [
@@ -89,6 +103,11 @@
 		},
 		{
 			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.verification-evidence-test-case",
 			"via": "import",
 			"origin": "derived"
 		}

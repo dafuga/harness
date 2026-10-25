@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { TestExpectationService } from '../../../src/services/verification-evidence/TestExpectationService';
 
 const service = new TestExpectationService();
@@ -24,6 +25,12 @@ test('json checks complete responses, type-preserving scalar normalization and e
 
 test('example asserts authored comments for successful and error inputs', async () => {
 	const example = { name: 'Round a value', call: 'round(1.2)', input: 1.2, output: 1 };
+	const empty = { name: 'No return value', call: 'run()', input: null, returns: 'void' as const };
+	await expect(service.example(() => undefined, empty)).resolves.toHaveProperty(
+		'output',
+		undefined
+	);
+	await expect(service.example(() => 1, empty)).rejects.toThrow('differs from its comment');
 	await expect(
 		service.example((input) => Math.round(input as number), example)
 	).resolves.toMatchObject({ output: 1 });
@@ -46,14 +53,63 @@ test('registerExamples registers exactly the authored examples and rejects absen
 	const manifest = await import('../../../specification/units/function.case.json');
 	const functions = await import('../../../src/helpers/strings/case');
 	const registered: Array<{ title: string; run: () => Promise<void> }> = [];
-	const unit = manifest.default as import('../../../src/core/unitTypes').ComponentManifest;
+	const unit = manifest.default as ComponentManifest;
 	service.registerExamples((title, run) => registered.push({ title, run }), unit, functions);
 	expect(registered).toHaveLength(
 		unit.helperContracts!.reduce((count, helper) => count + helper.examples!.length, 0)
 	);
 	for (const item of registered) await item.run();
+	await assertFixtureExamples(unit);
 	expect(() => service.registerExamples(() => {}, unit, {})).toThrow('Missing executable examples');
 	expect(() =>
 		service.registerExamples(() => {}, { ...unit, helperContracts: [] }, functions)
 	).toThrow('Missing authored Examples');
 });
+
+async function assertFixtureExamples(unit: ComponentManifest) {
+	const fixture = {
+		...unit,
+		helperContracts: [],
+		testing: {
+			version: 1 as const,
+			shape: 'helper' as const,
+			states: ['initialized'],
+			cases: [
+				{
+					id: 'integration',
+					state: 'initialized',
+					subject: 'runFixture',
+					example: 'Retain disposable integration assertions',
+					test: {
+						file: 'test/fixture.test.ts',
+						title: 'runFixture: Retain disposable integration assertions'
+					}
+				}
+			],
+			examples: [
+				{
+					subject: 'runFixture',
+					name: 'Retain disposable integration assertions',
+					call: 'runFixture()',
+					input: null,
+					expected: { kind: 'void' as const }
+				}
+			]
+		}
+	};
+	const general: Array<{ title: string; run: () => Promise<void> }> = [];
+	service.registerExamples((title, run) => general.push({ title, run }), fixture, {
+		runFixture: async () => {}
+	});
+	expect(general.map((item) => item.title)).toEqual([
+		'runFixture: Retain disposable integration assertions'
+	]);
+	await general[0].run();
+	expect(() =>
+		service.registerExamples(
+			() => {},
+			{ ...fixture, testing: { ...fixture.testing, cases: [] } },
+			{ runFixture: async () => {} }
+		)
+	).toThrow('Invalid authored Examples');
+}

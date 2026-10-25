@@ -21,7 +21,8 @@
 			"ContractRegistry",
 			"TestContract",
 			"ContractCase",
-			"ContractRegistry"
+			"ContractRegistry",
+			"caseIdentityChanges"
 		]
 	},
 	"contract": {
@@ -38,6 +39,14 @@
 			{
 				"name": "TestContractService.compare.after",
 				"type": "ComponentManifest[]"
+			},
+			{
+				"name": "caseIdentityChanges.before",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "caseIdentityChanges.after",
+				"type": "ComponentManifest"
 			}
 		],
 		"outputs": [
@@ -47,6 +56,10 @@
 			},
 			{
 				"name": "TestContractService.compare",
+				"type": "string[]"
+			},
+			{
+				"name": "caseIdentityChanges",
 				"type": "string[]"
 			}
 		],
@@ -88,9 +101,7 @@
 	"testing": {
 		"version": 1,
 		"shape": "service",
-		"states": [
-			"initialized"
-		],
+		"states": ["initialized"],
 		"cases": [
 			{
 				"id": "validate-initialized",

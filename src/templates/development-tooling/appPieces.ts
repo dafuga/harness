@@ -117,8 +117,8 @@ export function e2eFiles(name: string): PlannedFile[] {
 
 	return [
 		{
-			path: `tests/e2e/${route}.spec.ts`,
-			contents: pageContractTest(route, titleName(name), 'e2e')
+			path: `tests/e2e/${route}-page.spec.ts`,
+			contents: pageContractTest(route, titleName(name), 'page')
 		}
 	];
 }

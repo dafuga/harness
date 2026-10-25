@@ -1,7 +1,6 @@
 import type { Snapshot } from './history-source.test.types';
 import { createHash } from 'node:crypto';
-import { DatabaseSync } from 'node:sqlite';
-import { CatalogRepository } from '../src/repositories/git-source-history/CatalogRepository';
+import { assertCatalogRevision } from './support/historyCatalog';
 import { readFile, readdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -205,20 +204,4 @@ function archiveMeasurements(buildMs: number): void {
 		},
 		JSON.stringify({ measurements })
 	);
-}
-
-function assertCatalogRevision(out: string, commit: string) {
-	const db = new DatabaseSync(join(out, 'catalog.sqlite'), { readOnly: true });
-	try {
-		const unit = new CatalogRepository(db, false)
-			.entities({ commit })
-			.find((unit) => unit.id === 'function.slugify');
-		expect(unit?.sourceMeasurements?.length).toBeGreaterThan(0);
-		expect(
-			unit?.sourceMeasurements?.every((item) => item.testedRevision === commit),
-			'catalog measurements retain the selected commit even when its source tree is shared'
-		).toBe(true);
-	} finally {
-		db.close();
-	}
 }
