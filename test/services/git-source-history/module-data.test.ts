@@ -1,17 +1,52 @@
 import type { ModuleData } from '../../../src/services/git-source-history/ModuleDataService.types';
-import { rm } from 'node:fs/promises';
+import { readdir, rm, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { EvidenceTreeAdapter } from '../../../src/adapters/verification-evidence/EvidenceTreeAdapter';
 import { ModuleDataRepository } from '../../../src/repositories/git-source-history/ModuleDataRepository';
 import { ModuleDataReviewRepository } from '../../../src/repositories/git-source-history/ModuleDataReviewRepository';
 import { ModuleDataService } from '../../../src/services/git-source-history/ModuleDataService';
 import { moduleDataRequired } from '../../../src/services/git-source-history/module-data-service/moduleDataAdmission';
-import { configureTestAuthor, unitProject } from '../../support/unitProject';
+import { commitTitleModules, configureTestAuthor, unitProject } from '../../support/unitProject';
+import { ModuleDataCache } from '../../../src/services/git-source-history/module-data-service/ModuleDataCache';
 import { runCommand } from '../../support/cli';
 import { expect, test } from 'vitest';
 import { componentManifestSchema } from '../../../src/core/unitTypes';
 import { revisionRegistry } from '../../../src/utils/revisionRegistry';
 import { moduleRelationships } from '../../../src/services/git-source-history/module-data-service/moduleRelationships';
+test('diagnostic cache stays within its disk budget while retaining the newest source facts', async () => {
+	const project = await unitProject('lib');
+	try {
+		await commitTitleModules(project);
+		await new ModuleDataService(project.root).validate({ write: true });
+		const repository = new ModuleDataRepository(project.root);
+		const identity = await repository.identity('HEAD');
+		let data = (await repository.read(identity))!.data;
+		const budget = Buffer.byteLength(JSON.stringify(data)) * 3 + 1024;
+		const cache = new ModuleDataCache(repository, budget);
+		for (let index = 0; index < 8; index++) {
+			const { digest: _digest, ...body } = data;
+			body.inputs = { ...body.inputs, notes: String(index).padStart(40, '0') };
+			data = { ...body, digest: repository.digest(body) };
+			await cache.write(data);
+		}
+		const git = new EvidenceTreeAdapter(project.root).git;
+		const directory = join(
+			await git.run(['rev-parse', '--absolute-git-dir']),
+			'harness/module-data'
+		);
+		const files = await readdir(directory);
+		const sizes = await Promise.all(files.map((name) => stat(join(directory, name))));
+		expect(
+			sizes.reduce((bytes, item) => bytes + item.size, 0),
+			'Historical diagnostics must not grow an unbounded source cache'
+		).toBeLessThanOrEqual(budget);
+		expect((await cache.read(data))?.digest).toBe(data.digest);
+		expect((await cache.read(data, true))?.digest).toBe(data.digest);
+		expect((await repository.read(identity))?.data.commit).toBe(identity.commit);
+	} finally {
+		await rm(join(project.root, '..'), { recursive: true, force: true });
+	}
+}, 60_000);
 test('metadata admission is required without a project opt-in', async () => {
 	const project = await unitProject('lib');
 	try {
