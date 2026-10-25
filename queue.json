@@ -4341,7 +4341,7 @@
 			},
 			"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
 			"contractHash": "1281cc2e96e3990fc239a4a0394933685231eee7d744e4e6d17d1a9d5accb913",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:00:27.357Z",
 			"claim": {
@@ -4355,6 +4355,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The migration is written in the two allowed files. It has 13 helper Examples, each registered as exactly one case titled `matchesPattern: <title>`. I ran only read-only checks, so the Harness test, type, lint, format and `units check` gates are still open for you.\n\n**Files**\n- `packages/relay/test/utils/matches-pattern.test.ts`: the three original `test()` bodies are gone. The file imports `test` from vitest, keeps the public `../../src/utils/matchesPattern` import, and registers one callback under the subject `matchesPattern` (`invokeMatchesPattern` at line 30, registration at line 38).\n- `test/fixtures/contract-migration/relay-matches-pattern-examples.json` (new directory): a full copy of `specification/units/relay.function.matches-pattern.json` with one `testing` block inserted between `scenarios` and `budgets`. Every other field equals `HEAD`.\n\n**Coverage** (`shape: helper`; states: input 2, boundary 6, invalid 5; props: value 10, pattern 3)\n\n| # | Example | State | From |\n|---|---|---|---|\n| 1 | Accept a lowercase hex text of exactly four characters | input | original test 1 |\n| 2 | Refuse a hex text one character shorter than the pattern | boundary | original test 2 |\n| 3 | Refuse a hex text one character longer than the pattern | boundary | original test 2 |\n| 4 | Refuse an uppercase hex text because the pattern is lowercase | boundary | original test 2 |\n| 5 | Refuse an empty text against a four-character pattern | boundary | original test 2 |\n| 6 | Refuse a number whose digits would match the pattern as text | invalid | original test 2 |\n| 7 | Refuse null as a value | invalid | original test 2 |\n| 8 | Refuse undefined as a value | invalid | original test 2 |\n| 9 | Refuse an array that holds a matching text | invalid | original test 2 |\n| 10 | Refuse an array-like object with a length of four | invalid | original test 2 |\n| 11 | Answer every repeated call with a global pattern the same way | boundary | original test 3, repeats in callback |\n| 12 | Ignore a stale match position on a global pattern | boundary | added; contract says reset before the test |\n| 13 | Accept a text that contains a match for an unanchored pattern | input | added |\n\nExamples 12 and 13 are additions beyond the original inputs. Drop either if you disagree.\n\n**Authoring choices**\n- Non-JSON inputs use explicit markers: `{ \"$fixture\": \"undefined\" }` and `{ \"$fixture\": \"RegExp\", \"source\", \"flags\", \"lastIndex\"? }`. I found no existing marker convention in the repo.\n- Example 11 passes a third, harness-only argument (`3`). The callback builds one RegExp and calls the real function that many times, so global-pattern state carries across calls. The displayed call shows the same `Array.from`.\n- The nine refusals stay as nine Examples. The guidance says equal outputs alone don't make inputs redundant, and the contract requires keeping every old input.\n\n**Verification**\n- Run (read-only): the JSON parses; non-testing fields equal `HEAD`; a mirror of the validator's identity, state, prop, title and orphan rules reports no problems; line widths were checked; `git status` shows only the two files.\n- Not run, per your instruction: vitest, tsc, eslint, prettier, `units check`, `test/readable-unit-contracts.test.ts`, audit, and the loop red/green records. I hand-formatted to Prettier's rules, but `test/fixtures` is not in `.prettierignore`, so the format check will still run on it.\n- I'm claiming no inherited evidence.\n\n**Gaps and decisions for you**\n1. **Error state not authored.** Reading the source: a string value with a non-RegExp pattern throws a TypeError at `pattern.lastIndex = 0`. I did not run this. `contract.errors` is `[]`, so I didn't author an error Example. If you declare the error, it needs one `error` Example and one case.\n2. **After-call lastIndex reset is not covered.** Only the before-call reset is asserted (Example 12). A boolean result can't show the after-call state, so covering it needs a projection Example.\n3. **Purity.** The guard writes the caller's RegExp `lastIndex`. That conflicts with the helper purity rule if this unit is later declared a pure helper.\n4. **Metadata.** `owns.symbols` lists `matchesPattern` twice. I left it, since non-testing fields are off-limits.\n5. **Measurement.** This file records no timing or memory observation. Example 11 is the workload.\n6. **Spec not updated.** `specification/units/relay.function.matches-pattern.json` still has no `testing` block, so `units check` will fail until the fixture is copied over it.\n7. **Ledgers and loop.** `contract-test-policy/migration.json` doesn't list this unit yet. I registered activity without a loop id, since no `contract-tests` loop exists.\n\nFive production modules import the declaration module. Within this repo, only the test reaches the public forwarder `src/utils/matchesPattern.ts`, so this file is its only coverage. The original move is recorded in `module-category-folders/migration.json:502` and `shared-service-ownership/migration.json:497`. I didn't touch product source.\n\n**Handoff**\n- Unit: `relay.function.matches-pattern`. I didn't verify an explorer page, so I link source instead: the unchanged manifest and the proposed fixture. History wasn't checked, and I made no commits.\n- Activity `77d6ae4d-6226-4d01-be5d-fa0999ea1153` was registered and finished with this outcome. That is not verification, and no in-app thread or run exists for this work.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/9b179bd6-2bdb-4361-94fe-3c35594b1ec5",
+				"changedFiles": [
+					"packages/relay/test/utils/matches-pattern.test.ts",
+					"test/fixtures/contract-migration/relay-matches-pattern-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T18:10:01.525Z",
+				"attempt": "9b179bd6-2bdb-4361-94fe-3c35594b1ec5",
+				"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
+				"checkpointCommit": "7e463e5b6ff1a756c22f6f0e88e343bcbff7b411",
+				"usage": {
+					"inputTokens": 3924227,
+					"outputTokens": 141202,
+					"cacheReadTokens": 3719693,
+					"cacheWriteTokens": 204476,
+					"cacheWriteLongTokens": 204476,
+					"reportedCostUsd": 0.59419125,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 3924227,
+							"outputTokens": 141202,
+							"cacheReadTokens": 3719693,
+							"cacheWriteTokens": 204476,
+							"cacheWriteLongTokens": 204476,
+							"reportedCostUsd": 0.59419125,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.59419125,
+							"minimumUsd": 0.59419125,
+							"maximumUsd": 0.59419125,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T18:00:49.994Z",
+						"finishedAt": "2026-10-25T18:10:01.322Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
