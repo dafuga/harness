@@ -5307,7 +5307,7 @@
 			},
 			"sourceCommit": "8dbd4d77c15833d2339864aa4ce757e20226fa04",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:56:07.220Z",
 			"claim": {
@@ -5321,6 +5321,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The `canonicalJson` test migration is written, but nothing has been run. I changed only the two allowed files. Per your constraints I did not run tests, tsc, prettier, lint, audit, `units check`, or the CLI, so everything below is read-only verification.\n\n**Changed**\n- `test/utils/canonical-json.test.ts` (93 lines, modified). It keeps the public `src/utils/canonicalJson` entry and registers 20 Examples through `new TestExpectationService().registerExamples(test, unit as ComponentManifest, { canonicalJson })`. Non-JSON inputs are rebuilt from `$fixture` markers before the call, so getters, hidden properties, null prototypes, symbol keys, Map, Array subclass, Date, undefined and BigInt reach the real function unnormalized.\n- `test/fixtures/contract-migration/canonical-json-examples.json` (new, 636 lines). A proposed full copy of `specification/units/function.canonical-json.json`, plus two declared `contract.errors` (`Error` and `TypeError`, both `thrown`) and a `testing` block: shape `helper`, states `input`/`boundary`/`admission`/`invalid`, prop `value`, 20 examples, and 20 one-to-one cases. Each case's `fixture` names this file and `test.file` names the test.\n\nNothing else changed. There are no commits, no spec or product edits, and no memory updates.\n\n**Original assertions**\n\n| Original | Now |\n|---|---|\n| `canonicalJson(left)` equals `canonicalJson(right)` | Two Examples, \"Sort object keys…\" and \"Give equal objects…\", with the same authored text |\n| Exact nested string | \"Sort object keys at every depth and keep array order\" |\n| `{b:[1,2]}` not equal `{b:[2,1]}` | \"Keep ascending…\" and \"Keep descending…\", each with its own authored output |\n| `{a:1, b:undefined}` gives `{\"a\":1}` | \"Omit undefined object properties\" |\n| `'plain'` gives `\"plain\"` | \"Serialize a string primitive\" |\n\nExpected values come from the contract and JSON/JS semantics, not from running the code.\n\n**Judgment calls**\n- Relative assertions became authored values, so each expectation stands independently of the implementation.\n- Date gives `{\"at\":{}}`. The contract says objects are read \"through enumerable own keys rather than a custom JSON serializer\", so `toJSON` is not honored.\n- Error entries follow relay's `name` plus `type: \"thrown\"` convention.\n- The ascending and descending pair preserves the original inequality. You could collapse them if you want fewer Examples.\n\n**Gaps and risks**\n1. **BigInt message.** `Do not know how to serialize a BigInt` is V8's text. It fits Node, and `test:unit` runs `vitest` through `sh`, but Bun would produce different text. Confirm on the first run.\n2. **Behaviors the contract doesn't specify.** I did not author these, and each needs your decision. A top-level `undefined`, function or symbol returns `undefined` despite the `string` output type. `NaN` and `Infinity` become `null`. Symbol- and function-valued properties are dropped. Circular input throws a RangeError whose message is engine-specific, so it needs name-only error matching in `TestExpectationService`, which is a product-side change.\n3. **Size and format.** The JSON is 636 lines. The line limit applies only to code adapters, and the relay manifest is 475 lines. I followed the layout existing manifests use, where arrays containing objects are broken across lines. Prettier's `format:check` covers JSON, so this is unverified.\n4. **The `stableJson` workload.** This file has no prettier comparison. That workload is in `test/utils/stable-json.test.ts` (unit `function.stable-json`), which is outside the allowed files and untouched.\n5. **Product source.** `src/utils/development-tooling/canonicalJson.ts` has no `@pure` declaration. If the helper catalog treats this function as a helper, it needs one. I did not change it.\n6. **Still to run.** Root typecheck, `format:check`, lint, `harness audit`, and `units check` with `test/readable-unit-contracts.test.ts` once the manifest moves into the spec. The fixture-in-registry check also needs a commit.\n7. **Harness bookkeeping.** I did not register activity or resolve explorer links, because the CLI is bun-based and I avoided it. I also did not run `harness info` and read the schema and validator source directly. The entity is `function.canonical-json`, with sources `src/utils/canonicalJson.ts` and `src/utils/development-tooling/canonicalJson.ts`. Read-only dependencies are `service.verification-evidence-test-expectation` and `validator.verification-evidence-test-case`. Product modules that use it include `RegressionProofService.ts` and `sealRecord.ts`, and none of them changed.\n\n**Verification performed (read-only)**\n- A standalone check of the fixture covered JSON parsing and the validator's rules: unique IDs, one case per Example with the canonical title, state/prop/error coverage, and every marker kind handled. Result: 20 Examples, 20 cases, no problems.\n- Line counts as above.\n- Not run: vitest, tsc, prettier, eslint, audit, `units check`, or the CLI.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/7a0eb987-d5c0-48dd-9763-bd32436b9b86",
+				"changedFiles": [
+					"test/utils/canonical-json.test.ts",
+					"test/fixtures/contract-migration/canonical-json-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T19:09:04.226Z",
+				"attempt": "7a0eb987-d5c0-48dd-9763-bd32436b9b86",
+				"sourceCommit": "8dbd4d77c15833d2339864aa4ce757e20226fa04",
+				"checkpointCommit": "2631c7f60f78ee0926a73653a2e95b0080ff250b",
+				"usage": {
+					"inputTokens": 3748572,
+					"outputTokens": 183635,
+					"cacheReadTokens": 3509315,
+					"cacheWriteTokens": 239207,
+					"cacheWriteLongTokens": 239207,
+					"reportedCostUsd": 0.6712172099999999,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 3748572,
+							"outputTokens": 183635,
+							"cacheReadTokens": 3509315,
+							"cacheWriteTokens": 239207,
+							"cacheWriteLongTokens": 239207,
+							"reportedCostUsd": 0.6712172099999999,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.6712172099999999,
+							"minimumUsd": 0.6712172099999999,
+							"maximumUsd": 0.6712172099999999,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T18:57:13.274Z",
+						"finishedAt": "2026-10-25T19:09:04.089Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
