@@ -318,7 +318,7 @@
 			},
 			"sourceCommit": "e463e31854366174e5fb338b58e3734ce2b8d12d",
 			"contractHash": "1ad3358ecd1ef5afeff20ad6d4a17a44b4f48932c37083a9a03fdfaff7e95923",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T12:19:14.821Z",
 			"claim": {
@@ -332,6 +332,62 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The generated AGENTS.md and Harness skill now state the five allowed test forms and the stable-case bug policy for both app and library projects. The focused tests and the three existing unit tests that read this guidance all pass. Nothing is committed, and I didn't run the full `bun run check`, typecheck, root audit, E2E, or any screenshots.\n\n**What changed**\n\n- `src/templates/projects-sessions/projectGuidance.ts`\n  - A new **Standard Test Forms** section lists the five forms: pages, components, helpers, classes, and APIs. It also says interaction, accessibility, and console assertions stay inside those cases, other functions and classes map by behavior, and projects without UI have no page or component cases. It also says screenshot baselines are never auto-accepted, and that missing coverage fails explicitly.\n  - A new **Stable-Case Bug Policy** section says bugs strengthen existing cases, case counts stay fixed unless the contract explicitly changes a capability, and case titles and identities stay stable.\n  - Each document gets one operating rule pointing to these sections.\n  - Three generic add-a-test lines were reworded. \"Keep exhaustive boundary cases in tests\" is now \"a helper's unit cases are exactly its authored examples\". \"Reproduce with a failing test\" is now \"its strengthened standardized case\". \"Include the guard\" is now \"a strengthened standardized case\".\n  - Non-test controls are unchanged.\n- `test/project-template.test.ts`: a new `expectGeneratedGuidance` helper runs the existing rename check and a new forms check. Both existing test titles and counts are unchanged.\n- `test/regression-loops.test.ts`: the existing per-kind guidance case gained stable-case assertions, plus negative checks for the removed wording.\n\n**Interpretation choices**\n\n- \"Five forms\" is read as pages, components, helpers, classes, and APIs, with pages and components counted separately.\n- \"Generic add-a-test advice\" is read as the three lines above. The shared `bugRepairPolicy()` bullets stay verbatim.\n\n**Verification**\n\n- Red, against the unchanged generator: `bun src/index.ts resources run --priority agent-test --cpus 1 --memory-mib 2048 -- sh -c 'vitest run test/project-template.test.ts test/regression-loops.test.ts'`. Four tests failed on the new missing-text assertions, and nine passed.\n- Green, final revision: the same two files, 13 of 13 pass, with fresh evidence recorded to `/tmp/harness-evidence-6d30ed22-final`.\n- Consumers: `vitest run test/browser-console-errors.test.ts test/clean-code-integrity.test.ts test/game-project.test.ts`, 17 of 17 pass.\n- `prettier --check` on the four owned files passes. I formatted one test file, and the change only wrapped a line.\n- `eslint` on the four owned files passes. It flagged a 56-line test body, which I fixed with the helper.\n- `harness units check`: \"Units registry is valid: 1787 units.\"\n- Measurements for `template.project-guidance` at the working tree, which is uncommitted: source went from 14,370 bytes and 107 lines at HEAD to 16,965 bytes and 136 lines. The module observations were about 0.02 to 0.09 ms with whole-process peak RSS about 224 to 259 MB. The `layout-catalog-behavior` case took 3.2 ms with whole-worker RSS 245 MB. The RSS figures are not isolated unit memory. The workload label predates this change and was kept for identity.\n\n**Not run**\n\n- Full `bun run check`, typecheck, and root audit. The 220-line limit was checked by counting lines instead.\n- E2E tests. `test/loop.e2e.test.ts` still asserts the unchanged loop-create line.\n- `harness loop record` red and green. Those need commits, and I did not create a loop because loop metadata sits outside the allowed files.\n\n**Remaining gaps**\n\n1. `function.bug-repair-policy` (`src/utils/development-tooling/bugRepairPolicy.ts`) is outside my allowed files. It is shared with desktop run context, the loop guide, and the SDK export, and it still says \"extend reusable standardized coverage\" and \"commit the failing test\". The new section clarifies the fixed-count rule.\n2. `template.development-tooling-atomic-guidance` (`src/templates/development-tooling/atomicGuidance.ts`) still says \"focused interaction tests\". That line also lands in generated AGENTS.md.\n3. The unit manifest `specification/units/template.project-guidance.json` doesn't yet mention the five forms in its responsibility or skill-output description.\n4. The unit's frozen size budget needs reconciliation at full verification. The ledger baseline is 4,311 bytes, which is already below HEAD's 14,370.\n5. `packages/*/AGENTS.md`, the packaged `.codex/skills/harness/SKILL.md` copies, and `README.md` still carry the older bug-policy wording. I did not regenerate them.\n6. Nothing enforces the five-form matrix yet. The guidance states the rule, and the existing `units check` only enforces helper examples.\n7. The template kind has no explorer page, so the unit is linked by source. I didn't start or verify the shared preview.\n\nActivity `c98d4c5f-0f1b-48f9-8288-7b5ec705f8f0` is registered and finished.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/6d30ed22-d433-4dfa-a2ee-9d310d392fbe",
+				"changedFiles": [
+					"src/templates/projects-sessions/projectGuidance.ts",
+					"test/project-template.test.ts",
+					"test/regression-loops.test.ts"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T12:29:32.228Z",
+				"attempt": "6d30ed22-d433-4dfa-a2ee-9d310d392fbe",
+				"sourceCommit": "e463e31854366174e5fb338b58e3734ce2b8d12d",
+				"checkpointCommit": "3e64acfc53afe23ce4a9916329a427ebc8c1da4a",
+				"usage": {
+					"inputTokens": 8324253,
+					"outputTokens": 128940,
+					"cacheReadTokens": 8061545,
+					"cacheWriteTokens": 262606,
+					"cacheWriteLongTokens": 262606,
+					"reportedCostUsd": 0.8339273699999998,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 8324253,
+							"outputTokens": 128940,
+							"cacheReadTokens": 8061545,
+							"cacheWriteTokens": 262606,
+							"cacheWriteLongTokens": 262606,
+							"reportedCostUsd": 0.8339273699999998,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.8339273699999998,
+							"minimumUsd": 0.8339273699999998,
+							"maximumUsd": 0.8339273699999998,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T12:19:22.436Z",
+						"finishedAt": "2026-10-25T12:29:32.061Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
