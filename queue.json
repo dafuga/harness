@@ -2077,9 +2077,19 @@
 			},
 			"sourceCommit": "dc1e7d5710cde6f029fe3c538e29780543acec0e",
 			"contractHash": "0373595067587fd02eeb1059459e39d8af17fecf83bacf34c4c1c63045a8f7bf",
-			"status": "queued",
+			"status": "running",
 			"reviews": [],
 			"createdAt": "2026-10-25T14:53:00.011Z",
+			"claim": {
+				"worker": "wire-methods",
+				"token": "8a362647-4ba2-4c62-b22b-3003578d2f72",
+				"startedAt": "2026-10-25T14:53:05.695Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 89825,
+					"startedAt": "Sun Oct 25 14:53:05 2026"
+				}
+			},
 			"claimHistory": [],
 			"attempts": []
 		},
