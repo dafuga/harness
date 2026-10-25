@@ -3812,6 +3812,63 @@
 			"createdAt": "2026-10-25T17:38:42.789Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.relay-response-examples",
+			"title": "Migrate relay.function.relay-response standard cases",
+			"moduleGoal": "Preserve existing assertions within its exact declared entity cases",
+			"verificationFiles": [
+				"packages/relay/test/utils/relay-response.test.ts",
+				"test/fixtures/contract-migration/relay-response-examples.json"
+			],
+			"instructions": "Migrate only packages/relay/test/utils/relay-response.test.ts and write a full proposed copy of specification/units/relay.function.relay-response.json at test/fixtures/contract-migration/relay-response-examples.json. Do not edit specification, implementation, shared contracts or other files. This is a bounded initial contract migration, not a bug repair. Keep every existing substantive assertion, disposable fixture, real crypto/Response boundary and forwarding import. No commits, memory updates or delegation. Do not run build, lint, tests, package installs or broad commands: primary owns verification and integration. Use at most these two files; finish with reviewable edits promptly.\nThese effectful functions use helper shape with authored executable Examples in testing.examples (ordinary functions are not cataloged as pure helpers). Give each distinct supported behavior and error input a named authored comment/expectation, and exactly one case/title per Example. Register using TestExpectationService.registerExamples(test, imported proposed full manifest, callbacks). Response objects cannot be JSON examples: callback invokes the actual function then projects status, complete headers and awaited complete response JSON into an authored JSON expectation; preserve every original header and body assertion. Include explicit supported extra headers and invalid status/body/header/error props. Do not read implementation output to generate authored expectations. Preserve forwarding imports and existing integration behavior. Do not modify product behavior to make the suite pass. Report counts and projection limitations.",
+			"wantedContract": {
+				"responsibility": "Canonical helper coverage for relay.function.relay-response",
+				"inputs": [
+					{
+						"name": "existing declarations and supported states",
+						"type": "authored contract"
+					}
+				],
+				"outputs": [
+					{
+						"name": "standard suite and proposed full manifest",
+						"type": "reviewable test source"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid input props",
+						"type": "authored failure outcomes"
+					}
+				]
+			},
+			"model": "gpt-5.6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "relay-response-examples",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "relay.function.relay-response",
+				"goal": "Preserve existing assertions within its exact declared entity cases",
+				"files": [
+					"packages/relay/src/utils/networking-security/relayResponse.ts",
+					"packages/relay/src/utils/relayResponse.ts",
+					"packages/relay/test/utils/relay-response.test.ts",
+					"test/fixtures/contract-migration/relay-response-examples.json"
+				]
+			},
+			"sourceCommit": "d529e6b4531763c4d09213cceca5dc5b498a26eb",
+			"contractHash": "13c652775632932f3a2165a4245d23deb615d5a113fa15bdf44fb93e5183ef3e",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T17:38:43.581Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
