@@ -1,0 +1,38 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-39xoh9
+
+ ❯ test/units-policy.e2e.test.ts (5 tests | 1 failed) 48512ms
+   ✓ CLI exposes execution targets and component versions, and refuses relaxed tolerance  10929ms
+   ✓ CLI records lineage when retired source is recreated under a new identity  8682ms
+   ✓ CLI labels a supplied responsibility as declared and a generated one as derived  4348ms
+   ✓ public configs require real source controls and retain their reviewed declarations  17695ms
+   × source-bound reviews repair historical default runtime targets without changing source commits 6855ms
+     → {"commit":"f44fe3b8ea9453ef214e381723658c473bfdae64","valid":false,"complete":false,"evidenceGaps":0,"committed":true,"cached":false,"metadataCommit":"8ba6f2ec83be07f06a5f10ccd69631716787b9e6","modules":[{"id":"service.title","kind":"service","category":"services","issues":[{"field":"registry","message":"service.title: responsibility differs from the derived text; set responsibilityOrigin to \"declared\"","repair":"Correct the committed module manifest or source."}]}],"issues":[],"digest":"9a411c3d03f8c634226d725910f0473702effde6805fabd50db372d704113e63","exitCode":1}: expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units-policy.e2e.test.ts > source-bound reviews repair historical default runtime targets without changing source commits
+AssertionError: {"commit":"f44fe3b8ea9453ef214e381723658c473bfdae64","valid":false,"complete":false,"evidenceGaps":0,"committed":true,"cached":false,"metadataCommit":"8ba6f2ec83be07f06a5f10ccd69631716787b9e6","modules":[{"id":"service.title","kind":"service","category":"services","issues":[{"field":"registry","message":"service.title: responsibility differs from the derived text; set responsibilityOrigin to \"declared\"","repair":"Correct the committed module manifest or source."}]}],"issues":[],"digest":"9a411c3d03f8c634226d725910f0473702effde6805fabd50db372d704113e63","exitCode":1}: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/units-policy.e2e.test.ts:196:52
+    194|   );
+    195|   const repaired = await invoke(['--write', '--review', review, '--mod…
+    196|   expect(repaired.valid, JSON.stringify(repaired)).toBe(true);
+       |                                                    ^
+    197|   expect(repaired.committed).toBe(true);
+    198|   expect((await invoke(['--write', '--refresh', '--module', 'service.t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  13:31:03
+   Duration  56.54s (transform 328ms, setup 416ms, collect 67ms, tests 48.51s, environment 0ms, prepare 66ms)
+

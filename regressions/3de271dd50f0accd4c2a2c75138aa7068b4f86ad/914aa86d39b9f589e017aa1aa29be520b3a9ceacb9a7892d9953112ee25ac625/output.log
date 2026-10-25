@@ -1,0 +1,35 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-xFICBo
+
+ ❯ test/services/git-source-history/module-data.test.ts (2 tests | 1 failed) 6620ms
+   ✓ committed relationships include transitive APIs, route layouts and cycles without rewriting raw edges 6ms
+   × sync keeps immutable snapshots while advancing repaired module lookup paths 6591ms
+     → promise rejected "Error: Conflicting immutable module metad…" instead of resolving
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/git-source-history/module-data.test.ts > sync keeps immutable snapshots while advancing repaired module lookup paths
+AssertionError: promise rejected "Error: Conflicting immutable module metad…" instead of resolving
+ ❯ test/services/git-source-history/module-data.test.ts:73:3
+     71|    reader.fetch('origin'),
+     72|    'Repaired lookup paths must sync without losing immutable snapshots'
+     73|   ).resolves.toMatchObject({ remote: 'origin' });
+       |   ^
+     74|   const repaired = await reader.read(await reader.identity('HEAD'));
+     75|   expect(
+
+Caused by: Error: Conflicting immutable module metadata: modules/ddd87683a3c1247b291c2c723d6a9846d77f5f04/8b34ea085ee97fc94dd386a04df9982a154702c04f94fc490314c7f44ad079fc.json. Preserve both histories and repair the producer.
+ ❯ src/repositories/git-source-history/module-data-repository/syncModuleData.ts:50:11
+ ❯ mergeModuleData src/repositories/git-source-history/module-data-repository/syncModuleData.ts:40:29
+ ❯ syncModuleData src/repositories/git-source-history/module-data-repository/syncModuleData.ts:21:4
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ test/services/git-source-history/module-data.test.ts:70:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  14:36:19
+   Duration  12.94s (transform 1.01s, setup 201ms, collect 1.70s, tests 6.62s, environment 0ms, prepare 49ms)
+
