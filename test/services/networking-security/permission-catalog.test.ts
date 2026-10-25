@@ -60,10 +60,10 @@ test('missing declarations stay empty and malformed or mismatched profiles remai
 test('successive source revisions never borrow another profile declaration', async () => {
 	const service = new PermissionCatalogService();
 	const previous = await service.at(source());
-	const { source: _source, ...member } = permissionProfiles.profiles[1];
+	const { source: memberSource, ...member } = permissionProfiles.profiles[1];
 	const current = await service.at(
 		source({
-			'specification/permissions/member.json': JSON.stringify({
+			[memberSource]: JSON.stringify({
 				...member,
 				title: 'Reader',
 				grants: []

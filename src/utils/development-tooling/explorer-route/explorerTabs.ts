@@ -99,10 +99,15 @@ function pageQueryTab(asked: string | null, category: ExplorerLocation['category
 	return asked;
 }
 
+/** Endpoint policy is available only in the API category. */
+function permissionTabAllowed(asked: string | null, category: ExplorerLocation['category']) {
+	return asked !== 'permissions' || category === 'apis';
+}
+
 /** Keep the category checks in their original order while selecting a query tab. */
 function tabQuery(location: ExplorerLocation, search: string): string | null | undefined {
 	const requested = new URLSearchParams(search).get('tab');
-	if (requested === 'permissions' && location.category !== 'apis') return undefined;
+	if (!permissionTabAllowed(requested, location.category)) return undefined;
 	const visual = ['pages', 'components', 'layouts'].includes(location.category);
 	if (invalidAudioTab(requested, location)) return undefined;
 	let asked = pageQueryTab(requested, location.category);
