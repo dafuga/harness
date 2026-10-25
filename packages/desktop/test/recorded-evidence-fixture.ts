@@ -29,6 +29,8 @@ export const sha256 = (bytes: Uint8Array) => createHash('sha256').update(bytes).
  */
 export async function recordedRepo(): Promise<Recorded> {
 	const { repo, commits } = await indexedRepo();
+	await repo.git(['config', '--local', 'user.name', 'Harness Fixture']);
+	await repo.git(['config', '--local', 'user.email', 'fixture@harness.invalid']);
 	await repo.git(['branch', 'verified', commits.changed]);
 	const tree = await repo.git(['rev-parse', `${commits.changed}^{tree}`]);
 	const parents = ['-p', commits.changed, '-p', commits.failed];
