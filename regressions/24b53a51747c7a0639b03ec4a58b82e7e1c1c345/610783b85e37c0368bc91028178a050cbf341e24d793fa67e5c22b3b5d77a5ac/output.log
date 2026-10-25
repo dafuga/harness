@@ -1,0 +1,30 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-Wuk9dn
+
+ ❯ test/services/git-source-history/module-data.test.ts (4 tests | 1 failed) 5647ms
+   × diagnostic cache stays within its disk budget while retaining the newest source facts 1854ms
+     → Historical diagnostics must not grow an unbounded source cache: expected 162272 to be less than or equal to 49603
+   ✓ metadata admission is required without a project opt-in  718ms
+   ✓ committed relationships include transitive APIs, route layouts and cycles without rewriting raw edges 1ms
+   ✓ sync keeps immutable snapshots while advancing repaired module lookup paths  3062ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/git-source-history/module-data.test.ts > diagnostic cache stays within its disk budget while retaining the newest source facts
+AssertionError: Historical diagnostics must not grow an unbounded source cache: expected 162272 to be less than or equal to 49603
+ ❯ test/services/git-source-history/module-data.test.ts:43:5
+     41|    sizes.reduce((bytes, item) => bytes + item.size, 0),
+     42|    'Historical diagnostics must not grow an unbounded source cache'
+     43|   ).toBeLessThanOrEqual(budget);
+       |     ^
+     44|   expect((await cache.read(data))?.digest).toBe(data.digest);
+     45|   expect((await cache.read(data, true))?.digest).toBe(data.digest);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  19:06:58
+   Duration  8.56s (transform 372ms, setup 86ms, collect 651ms, tests 5.65s, environment 0ms, prepare 26ms)
+
