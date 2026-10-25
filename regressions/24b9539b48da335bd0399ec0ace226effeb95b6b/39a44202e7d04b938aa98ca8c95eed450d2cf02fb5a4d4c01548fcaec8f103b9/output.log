@@ -1,0 +1,34 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ELz55i/packages/reports
+
+ ❯ test/console-api.test.ts (3 tests | 3 skipped) 24961ms
+   ↓ the real local API exposes backend unit contracts outside its visual catalog
+   ↓ the real local API bridge returns committed source and hash-bound recorded screenshot bytes
+   ↓ the real local API bridge saves the proposed contract through planning validation
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/console-api.test.ts [ test/console-api.test.ts ]
+AssertionError: Fixture owns its author name: expected '' to be 'Harness Fixture' // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Harness Fixture[39m
+
+ ❯ test/console-api.test.ts:37:94
+     35| beforeAll(async () => {
+     36|  fixture = await recordedRepo();
+     37|  expect(git(fixture.root, 'config', '--local', 'user.name'), 'Fixture …
+       |                                                                                              ^
+     38|   'Harness Fixture'
+     39|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 skipped (3)
+   Start at  04:07:28
+   Duration  27.98s (transform 1.71s, setup 121ms, collect 2.75s, tests 24.96s, environment 0ms, prepare 35ms)
+
