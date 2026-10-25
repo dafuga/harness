@@ -1,0 +1,43 @@
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/build-kernel.ts "$@"' --
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling syn v3.0.7
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling serde_derive v1.0.229
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.3
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ALdFqs/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 15.67s
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ALdFqs/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 5.82s
+Built impact kernel: wasm 161296 bytes (wasm-opt not applied), native 402080 bytes.
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/build-api.ts "$@"' --
+Built public API: atoms, contracts, runtime, verification, history, resources, sqlite, catalog, edge, console and index, declarations in dist/types.
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ALdFqs
+
+ ✓ test/packaged-verification.e2e.test.ts (1 test) 4047ms
+   ✓ a packed consumer uses the verification contracts and evidence protocol  4046ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  02:35:42
+   Duration  7.39s (transform 94ms, setup 125ms, collect 26ms, tests 4.05s, environment 0ms, prepare 32ms)
+
