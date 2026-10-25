@@ -2850,6 +2850,64 @@
 			"createdAt": "2026-10-25T16:09:28.058Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.remote-input-methods",
+			"title": "Migrate remote.validator.remote-input method-state contracts",
+			"moduleGoal": "Preserve every wire protocol and error assertion in stable public-method initialization cases",
+			"verificationFiles": [
+				"packages/remote/test/validators/remote-input.test.ts",
+				"test/fixtures/contract-migration/remote-input-methods.json"
+			],
+			"instructions": "Migrate remote.validator.remote-input using its current source and packages/remote/test/validators/remote-input.test.ts. Edit only that suite and FULL proposed unit manifest test/fixtures/contract-migration/remote-input-methods.json; primary owns specification, shared contracts, integration and commits. Declare service testing kind with public method subjects and finite documented initialization/lifecycle states. Exactly one stable existing case per method/state; meaningful unsupported/error props and state transitions belong inside those cases. Preserve ALL existing assertions, disposable integration fixtures, workloads and public forwarding boundaries. Add cases only for actual declared previously uncovered methods/states, document counts. Do not invent methods for constants or tests for static types. Use exact authored expected values/errors. Keep220/55/120/35 limits. No personal memory reads/writes, delegation, commits, pushes, installs, credentials, broad checks, E2Es, screenshots or production edits. Run focused unit suite only; distinguish environment failures. Return exact files, before/after counts, coverage gaps and focused result. Read canonical testing shape and existing registered TestContractService suite if needed. Never mark work complete if a supported state or original assertion is omitted.",
+			"wantedContract": {
+				"responsibility": "Canonical method-state cases for remote.validator.remote-input",
+				"inputs": [
+					{
+						"name": "declared methods and existing fixtures",
+						"type": "class contract"
+					}
+				],
+				"outputs": [
+					{
+						"name": "stable method suite and proposed manifest",
+						"type": "reviewable source"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid inputs and missing coverage",
+						"type": "documented failure outcomes"
+					}
+				]
+			},
+			"model": "gpt-5.6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "remote-input-methods",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "remote.validator.remote-input",
+				"goal": "Preserve every wire protocol and error assertion in stable public-method initialization cases",
+				"files": [
+					"packages/remote/src/validators/RemoteInputValidator.ts",
+					"packages/remote/src/validators/networking-security/RemoteInputValidator.ts",
+					"packages/remote/src/validators/networking-security/RemoteInputValidator.types.ts",
+					"packages/remote/test/validators/remote-input.test.ts",
+					"test/fixtures/contract-migration/remote-input-methods.json"
+				]
+			},
+			"sourceCommit": "57f9da6ec2ee2cc280605e1f897f0ddf6751cf0f",
+			"contractHash": "0a36364828a4251559bcf0c0bab44da8aae10a4309417290fa5d70a3680df47f",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T16:09:28.737Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
