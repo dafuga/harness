@@ -1,0 +1,778 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL
+
+ ❯ test/services/module-system/module-catalog.test.ts (6 tests | 4 failed) 47ms
+   × module library exposes Email and Offline with instructions and resource generators 10ms
+     → expected [ 'components', 'configs', …(11) ] to deeply equal [ 'apis', 'components', …(14) ]
+   × installing modules enables resource generation without replacing existing source 13ms
+     → expected [ …(11) ] to have a length of 14 but got 11
+   ✓ projects define a resource generator once and the catalog discovers it 4ms
+   ✓ module admission rejects invalid definitions, collisions and escaping output paths 2ms
+   × included modules expose every existing Code catalog through the module contract 1ms
+     → expected [ …(9) ] to have a length of 12 but got 9
+   × included and project modules use declared catalogs and real scaffold generation 12ms
+     → Install module permissions before generating resources.
+ ❯ test/services/networking-security/permission-catalog.test.ts (3 tests | 3 failed) 13ms
+   × permission catalogs retain every profile, HTTP method, data field and scope at the selected tree 10ms
+     → expected [] to deeply equal [ { schemaVersion: 1, …(5) }, …(2) ]
+   × missing declarations stay empty and malformed or mismatched profiles remain explicit gaps 1ms
+     → expected [] to deeply equal [ 'admin', 'guest' ]
+   × successive source revisions never borrow another profile declaration 1ms
+     → expected [] to include 'Member'
+ ❯ test/utils/explorer-route.test.ts (83 tests | 1 failed) 11ms
+   ✓ keeps page and module entity categories separate from primary navigation 3ms
+   ✓ current branch /modules 0ms
+   ✓ current branch /modules/email 0ms
+   ✓ current branch /module-resources/email.email 0ms
+   ✓ current branch /pages 0ms
+   ✓ current branch /dependencies 0ms
+   ✓ current branch /styles 0ms
+   ✓ current branch /pages/reports.page.titles 0ms
+   ✓ current branch /pages/reports.page.titles/details 0ms
+   ✓ current branch /components 0ms
+   ✓ current branch /components/reports.component.harness-harness-console 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/details 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/history 0ms
+   ✓ current branch /functions 0ms
+   ✓ current branch /functions/function.slugify 0ms
+   ✓ current branch /functions/function.slugify/details 0ms
+   ✓ current branch /functions/function.slugify/history 0ms
+   ✓ current branch /configs 0ms
+   ✓ current branch /configs/config.site 0ms
+   ✓ current branch /configs/config.site/details 0ms
+   ✓ current branch /configs/config.site/history 0ms
+   ✓ current branch /types 0ms
+   ✓ current branch /types/model.input 0ms
+   ✓ current branch /types/model.input/details 0ms
+   ✓ current branch /types/model.input/history 0ms
+   ✓ current branch /services 0ms
+   ✓ current branch /services/service.clock 0ms
+   ✓ current branch /services/service.clock/details 0ms
+   ✓ current branch /services/service.clock/history 0ms
+   ✓ selected commit /modules 0ms
+   ✓ selected commit /modules/email 0ms
+   ✓ selected commit /module-resources/email.email 0ms
+   ✓ selected commit /pages 0ms
+   ✓ selected commit /dependencies 0ms
+   ✓ selected commit /styles 0ms
+   ✓ selected commit /pages/reports.page.titles 0ms
+   ✓ selected commit /pages/reports.page.titles/details 0ms
+   ✓ selected commit /components 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/details 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/history 0ms
+   ✓ selected commit /functions 0ms
+   ✓ selected commit /functions/function.slugify 0ms
+   ✓ selected commit /functions/function.slugify/details 0ms
+   ✓ selected commit /functions/function.slugify/history 0ms
+   ✓ selected commit /configs 0ms
+   ✓ selected commit /configs/config.site 0ms
+   ✓ selected commit /configs/config.site/details 0ms
+   ✓ selected commit /configs/config.site/history 0ms
+   ✓ selected commit /types 0ms
+   ✓ selected commit /types/model.input 0ms
+   ✓ selected commit /types/model.input/details 0ms
+   ✓ selected commit /types/model.input/history 0ms
+   ✓ selected commit /services 0ms
+   ✓ selected commit /services/service.clock 0ms
+   ✓ selected commit /services/service.clock/details 0ms
+   ✓ selected commit /services/service.clock/history 0ms
+   ✓ there are twenty-three designed shapes in each scope, and a Page has a history too 0ms
+   ✓ a branch is one path segment, whatever it contains 0ms
+   ✓ a branch or a commit alone opens Pages in the same scope 0ms
+   ✓ a commit that no branch reaches has no branch invented for it 0ms
+   ✓ a callable has a distinct revision-bound address across tabs and history 0ms
+   ✓ an entity id is one encoded segment 0ms
+   ✓ names no explorer address:  0ms
+   ✓ names no explorer address: / 0ms
+   ✓ names no explorer address: /pages 0ms
+   ✓ names no explorer address: /branch 0ms
+   ✓ names no explorer address: /branch/main/reports 0ms
+   ✓ names no explorer address: /branch/main/analytics 0ms
+   ✓ names no explorer address: /branch/main/activity 0ms
+   ✓ names no explorer address: /branch/main/commit/abc/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/pages 0ms
+   ✓ names no explorer address: /branch/main/pages/x/source 0ms
+   ✓ names no explorer address: /branch/main/dependencies/x 0ms
+   ✓ names no explorer address: /branch/main/dependencies/history 0ms
+   ✓ names no explorer address: /branch/main/pages/x/details/extra 0ms
+   ✓ names no explorer address: /branch/feature/kept/pages 0ms
+   ✓ names no explorer address: /branch/%E0%A4%A/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map 0ms
+   ✓ a trailing slash names the same address 0ms
+   ✓ Models is a page tab and legacy page Contract links open Models in the same scope 0ms
+   ✓ APIs are scoped catalog addresses and a page keeps its APIs tab 0ms
+   × API permission tabs and profile routes retain exact revision scope 3ms
+     → expected { branch: 'feature/orders', …(3) } to match object { category: 'apis', …(2) }
+(2 matching properties omitted from actual)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-route.test.ts > API permission tabs and profile routes retain exact revision scope
+AssertionError: expected { branch: 'feature/orders', …(3) } to match object { category: 'apis', …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "category": "apis",
+    "entity": "app.endpoint.orders",
+-   "tab": "permissions",
+  }
+
+ ❯ assertPermissionRoutes test/utils/explorer-route/apis.ts:24:16
+     22|  const prefix = `/branch/feature%2Forders/commit/${'a'.repeat(40)}`;
+     23|  const place = explorerRoute(`${prefix}/apis/app.endpoint.orders`, '?t…
+     24|  expect(place).toMatchObject({
+       |                ^
+     25|   category: 'apis',
+     26|   entity: 'app.endpoint.orders',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/services/module-system/module-catalog.test.ts > module library exposes Email and Offline with instructions and resource generators
+AssertionError: expected [ 'components', 'configs', …(11) ] to deeply equal [ 'apis', 'components', …(14) ]
+
+- Expected
++ Received
+
+@@ -1,17 +1,14 @@
+  [
+-   "apis",
+    "components",
+    "configs",
+    "dependencies",
+    "email",
+    "helpers",
+    "layouts",
+    "models",
+-   "modules",
+    "offline",
+-   "permissions",
+    "rust-backend",
+    "rust-wasm",
+    "services",
+    "styles",
+    "types",
+
+ ❯ test/services/module-system/module-catalog.test.ts:28:68
+     26|   const catalog = await new ModuleCatalogService().load(await project(…
+     27|   expect(catalog.gaps).toEqual([]);
+     28|   expect(catalog.modules.map((item) => item.definition.id).sort()).toE…
+       |                                                                    ^
+     29|    'apis components configs dependencies email helpers layouts models …
+     30|     ' '
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+ ❯ test/services/module-system/module-catalog.test.ts:25:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  test/services/module-system/module-catalog.test.ts > installing modules enables resource generation without replacing existing source
+AssertionError: expected [ …(11) ] to have a length of 14 but got 11
+
+- Expected
++ Received
+
+- 14
++ 11
+
+ ❯ test/services/module-system/module-catalog.test.ts:56:59
+     54|  );
+     55|  const catalog = await new ModuleCatalogService().load(root);
+     56|  expect(catalog.modules.filter((item) => item.installed)).toHaveLength…
+       |                                                           ^
+     57|  await measureWorkload('service.module-system-module-resource', 'gener…
+     58|   resources.generate(root, 'email', 'email', 'Welcome')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  test/services/module-system/module-catalog.test.ts > included modules expose every existing Code catalog through the module contract
+AssertionError: expected [ …(9) ] to have a length of 12 but got 9
+
+- Expected
++ Received
+
+- 12
++ 9
+
+ ❯ test/services/module-system/module-catalog.test.ts:137:19
+    135|  const catalog = await new ModuleCatalogService().load(await project()…
+    136|  const included = catalog.modules.filter((entry) => entry.definition.i…
+    137|  expect(included).toHaveLength(12);
+       |                   ^
+    138|  expect(
+    139|   included.every((entry) =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  test/services/module-system/module-catalog.test.ts > included and project modules use declared catalogs and real scaffold generation
+Error: Install module permissions before generating resources.
+ ❯ resourceAdmission src/services/module-system/ModuleResourceService.ts:76:20
+     74|  const resource = entry.definition.resources.find((item) => item.id ==…
+     75|  if (!resource) throw new Error(`Unknown resource type ${module}.${typ…
+     76|  return { entry, resource, state: await service.state(moduleTree(root)…
+       |                    ^
+     77| }
+     78| async function resourcePlan(
+ ❯ ModuleResourceService.generate src/services/module-system/ModuleResourceService.ts:29:38
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ test/services/module-system/module-catalog.test.ts:203:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  test/services/networking-security/permission-catalog.test.ts > permission catalogs retain every profile, HTTP method, data field and scope at the selected tree
+AssertionError: expected [] to deeply equal [ { schemaVersion: 1, …(5) }, …(2) ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "description": "Manages all orders.",
+-     "grants": [
+-       {
+-         "actions": [
+-           "GET",
+-           "DELETE",
+-         ],
+-         "data": [
+-           {
+-             "actions": [
+-               "read",
+-               "delete",
+-             ],
+-             "fields": [
+-               "*",
+-             ],
+-             "resource": "app.model.order",
+-             "scope": "All accounts",
+-           },
+-         ],
+-         "kind": "api",
+-         "resource": "app.endpoint.orders",
+-       },
+-       {
+-         "actions": [
+-           "read",
+-           "update",
+-         ],
+-         "fields": [
+-           "status",
+-         ],
+-         "kind": "data",
+-         "resource": "app.model.order",
+-         "scope": "All accounts",
+-       },
+-     ],
+-     "id": "admin",
+-     "schemaVersion": 1,
+-     "source": "specification/permissions/admin.json",
+-     "title": "Administrator",
+-   },
+-   {
+-     "description": "Public visitor.",
+-     "grants": [],
+-     "id": "guest",
+-     "schemaVersion": 1,
+-     "source": "specification/permissions/guest.json",
+-     "title": "Guest",
+-   },
+-   {
+-     "description": "Reads their own orders.",
+-     "grants": [
+-       {
+-         "actions": [
+-           "view",
+-         ],
+-         "kind": "page",
+-         "resource": "app.page.orders",
+-       },
+-       {
+-         "actions": [
+-           "GET",
+-         ],
+-         "data": [
+-           {
+-             "actions": [
+-               "read",
+-             ],
+-             "fields": [
+-               "id",
+-               "total",
+-             ],
+-             "resource": "app.model.order",
+-             "scope": "Own account only",
+-           },
+-         ],
+-         "kind": "api",
+-         "resource": "app.endpoint.orders",
+-       },
+-     ],
+-     "id": "member",
+-     "schemaVersion": 1,
+-     "source": "specification/permissions/member.json",
+-     "title": "Member",
+-   },
+- ]
++ []
+
+ ❯ test/services/networking-security/permission-catalog.test.ts:21:29
+     19|   async () => {
+     20|    const catalog = await new PermissionCatalogService().at(source());
+     21|    expect(catalog.profiles).toEqual(
+       |                             ^
+     22|     [...permissionProfiles.profiles].sort((a, b) => a.id.localeCompare…
+     23|    );
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+ ❯ test/services/networking-security/permission-catalog.test.ts:16:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  test/services/networking-security/permission-catalog.test.ts > missing declarations stay empty and malformed or mismatched profiles remain explicit gaps
+AssertionError: expected [] to deeply equal [ 'admin', 'guest' ]
+
+- Expected
++ Received
+
+- [
+-   "admin",
+-   "guest",
+- ]
++ []
+
+ ❯ test/services/networking-security/permission-catalog.test.ts:47:44
+     45|   })
+     46|  );
+     47|  expect(catalog.profiles.map((p) => p.id)).toEqual(['admin', 'guest']);
+       |                                            ^
+     48|  expect(catalog.gaps).toHaveLength(2);
+     49|  expect(catalog.gaps.join(' ')).toContain('member.json');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  test/services/networking-security/permission-catalog.test.ts > successive source revisions never borrow another profile declaration
+AssertionError: expected [] to include 'Member'
+ ❯ test/services/networking-security/permission-catalog.test.ts:73:60
+     71|   })
+     72|  );
+     73|  expect(previous.profiles.map((profile) => profile.title)).toContain('…
+       |                                                            ^
+     74|  expect(current.profiles.find((profile) => profile.id === 'member')).t…
+     75|   title: 'Reader',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  8 failed | 84 passed (92)
+   Start at  17:40:29
+   Duration  3.41s (transform 210ms, setup 151ms, collect 442ms, tests 72ms, environment 0ms, prepare 73ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports
+
+ ❯ test/utils/harness-shell.test.ts (9 tests | 4 failed) 10ms
+   × the bar groups module categories under four scoped primary destinations 5ms
+     → expected [ [ 'pages', 'Pages', 'pages' ], …(5) ] to deeply equal [ [ 'pages', 'Pages', 'pages' ], …(3) ]
+   × on a current branch route the viewed commit is the tip, and there is no tip to go to 1ms
+     → expected undefined to be '/harness/branch/feature%2Fshell%231/a…' // Object.is equality
+   ✓ on a selected commit the tip and the viewed commit are told apart, and Go to tip keeps the place 0ms
+   ✓ a selected commit that is the tip says both, and still leads to the current branch route 0ms
+   ✓ a branch stays in current mode on the same entity, and a commit is always an explicit route 0ms
+   ✓ a commit no branch reaches has no tip, says so, and is listed although no branch lists it 0ms
+   × without a resolved address the bar keeps its navigation and offers no revision 0ms
+     → expected [ 'Pages', 'APIs', 'Code', …(3) ] to deeply equal [ 'Pages', 'Code', …(2) ]
+   ✓ Styles stays active across branch and commit selection without becoming an entity category 0ms
+   × installed modules contribute scoped Code entries from their resource definitions 1ms
+     → expected [ 'Pages', 'APIs', 'Code', …(3) ] to deeply equal [ 'Pages', 'Code', …(2) ]
+ ❯ test/components/harness-navbar.test.ts (8 tests | 4 failed) 17ms
+   × one bar holds the brand, repository, entity categories and the Styles screen 10ms
+     → expected [ { label: 'Pages', …(3) }, …(5) ] to deeply equal [ { label: 'Pages', …(3) }, …(3) ]
+   × Styles has its own active state and keeps the selected revision in its address 2ms
+     → expected { label: 'APIs', …(3) } to match object { label: 'Code', …(2) }
+(1 matching property omitted from actual)
+   ✓ the bar has no reports, analytics, activity, growth or legacy view in it 1ms
+   × at the tip of a branch the commit is the tip, said as current, and Go to tip is disabled 1ms
+     → expected '/harness/branch/feature%2Fshell%231/a…' to be '/harness/branch/feature%2Fshell%231/c…' // Object.is equality
+   ✓ at a selected commit the tip and the viewed hash differ, and Go to tip is the current route 0ms
+   ✓ both selectors are the shared select, and the bar writes no field of its own 0ms
+   × without a resolved address the bar keeps its navigation and offers nothing to choose 0ms
+     → expected 'Pages APIs Code Modules Translations …' to be 'Pages Code Translations Platforms' // Object.is equality
+   ✓ a limited history index keeps revision choices without a limitation banner 0ms
+5:40:34 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/entity-sections/EntitySections.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDetails.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSummary.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH3.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlThead.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTh.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTbody.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:34 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDt.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH3.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:34 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/ContractExample.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDetails.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSummary.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlPre.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDt.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH3.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlUl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:34 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/recorded-value/RecordedValue.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDt.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlThead.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTh.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTbody.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:34 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/ContractTable.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH3.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlThead.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTh.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTbody.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlI.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlButton.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:34 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/EntitySummary.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlThead.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTh.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTbody.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDt.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:34 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/ExplorerTable.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlThead.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTh.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTbody.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlWbr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDetails.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSummary.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlPre.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/explorer-table/explorerTable.css, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:34 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/entity-tests/EntityTests.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlUl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlA.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlThead.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTh.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTbody.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTd.svelte
+5:40:34 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/verification-evidence/RegressionProof.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlHeader.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlArticle.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH3.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlStrong.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlA.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDetails.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSummary.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH4.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlPre.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/verification-evidence/regression-proof/regressionProof.css, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:34 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/verification-evidence/AudioEvidence.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlArticle.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/SvgSvg.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/SvgPath.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTime.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlAudio.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH3.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlA.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDetails.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSummary.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlBlockquote.svelte
+5:40:34 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/verification-evidence/EvidenceCard.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlArticle.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlButton.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlImg.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDetails.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSummary.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH3.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlA.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTime.svelte
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/reports-media/UploadAudio.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDetails.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSummary.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLabel.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOption.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlForm.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlInput.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTextarea.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlButton.svelte
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/UploadComparison.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDetails.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSummary.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlForm.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLabel.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlInput.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOption.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSmall.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlButton.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/EntityBehavior.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlHeader.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlStrong.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDt.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/EntityArtifact.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDt.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH4.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlUl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlPre.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDetails.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSummary.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlA.svelte
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/entity-cases/EntityCases.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlThead.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTh.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTbody.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDetails.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSummary.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlPre.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/EntityStates.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlHeader.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLabel.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOption.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlArticle.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH3.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSmall.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlFigure.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlFigcaption.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/EntityScreens.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlHeader.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlButton.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlUl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlFigure.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlFigcaption.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlStrong.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlImg.svelte
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/entity-history/EntityHistory.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlHeader.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLabel.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOption.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlThead.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTh.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTbody.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlButton.svelte
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/ExplorerPlatforms.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLabel.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOption.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlArticle.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlHeader.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDt.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlNav.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH1.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlButton.svelte
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/ExplorerPlatformDetails.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlThead.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTh.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTbody.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlUl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlNav.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlHeader.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH1.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDt.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDd.svelte
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/ExplorerTranslationsScreen.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlNav.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH1.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLabel.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOption.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDetails.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSummary.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlUl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlThead.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTh.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTbody.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlA.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlButton.svelte
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/ExplorerDependenciesScreen.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlUl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTable.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlThead.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTr.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTh.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTbody.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlTd.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlButton.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH1.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/explorer-ui/explorer-dependencies-screen/explorerDependenciesScreen.css, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/module-system/ExplorerModulesScreen.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlA.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlFigure.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlFigcaption.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlPre.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlUl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlArticle.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlHeader.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH1.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlDiv.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH3.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlNav.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+5:40:35 PM [vite-plugin-svelte] /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/module-system/ExplorerModuleResourcesScreen.svelte svelte.preprocess depends on more than 10 external files which can cause slow builds and poor DX, try to reduce them. Found: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlA.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlFigure.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlFigcaption.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlPre.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlCode.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH1.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlP.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlUl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlLi.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH2.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSpan.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlH3.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlSection.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlNav.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/src/components/shared-primitives/atoms/HtmlOl.svelte, /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TbuMGL/packages/reports/tailwind.config.js
+ ❯ test/components/entity-sections.test.ts (5 tests | 1 failed) 37ms
+   ✓ a page overview introduces its purpose before evidence and keeps usage in its tabs 8ms
+   ✓ what it uses and its tests replace the overview, and its evidence pane with it 13ms
+   ✓ a service opens Examples at either address, construction first and verification apart 4ms
+   ✓ a function keeps its Examples alone and another kind keeps its Tests 1ms
+   × an API exposes its permission tab and the selected profile/data declarations 4ms
+     → expected '<!--[--><nav class="ex-crumbs" aria-l…' to contain 'Permissions'
+ ❯ test/explorer-shells.test.ts (5 tests | 1 failed) 11ms
+   ✓ the public visual layout catalog keeps bootstrap wrappers internal 1ms
+   × the bar has entity categories and a separate Styles screen link 4ms
+     → expected [ [ 'pages', 'Pages', …(2) ], …(5) ] to deeply equal [ [ 'pages', 'Pages', …(2) ], …(3) ]
+   ✓ a unit declared a shell is a Shell; a component, a partial and a layout stay where they were 0ms
+   ✓ each revision lists the unit under what its own manifest declares 2ms
+   ✓ Uses names the shell a page mounts, the shell uses its components, and they are used in both 1ms
+ ❯ test/components/networking-security/explorer-permissions-screen.test.ts (3 tests | 3 failed) 11ms
+   × profile index exposes one revision-scoped page per declared user level 6ms
+     → expected '<!--[--><section data-harness-compone…' to contain '/permissions/guest'
+   × a profile page lists only its endpoint methods, page access and data boundaries 1ms
+     → expected ' Users &amp; Permissions Permission p…' to contain 'Member'
+   × API permissions identify permitted profiles and unconfigured endpoints without inferring access 1ms
+     → expected ' Users &amp; Permissions Permission p…' to contain 'Member'
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/explorer-shells.test.ts > the bar has entity categories and a separate Styles screen link
+AssertionError: expected [ [ 'pages', 'Pages', …(2) ], …(5) ] to deeply equal [ [ 'pages', 'Pages', …(2) ], …(3) ]
+
+- Expected
++ Received
+
+@@ -4,14 +4,26 @@
+      "Pages",
+      "pages",
+      false,
+    ],
+    [
++     "apis",
++     "APIs",
++     "route",
++     false,
++   ],
++   [
+      "modules",
+      "Code",
+      "layers",
+      true,
++   ],
++   [
++     "module-library",
++     "Modules",
++     "layers",
++     false,
+    ],
+    [
+      "translations",
+      "Translations",
+      "web",
+
+ ❯ test/explorer-shells.test.ts:58:82
+     56|   onroute: () => {}
+     57|  });
+     58|  expect(categories.map((item) => [item.id, item.label, item.icon, item…
+       |                                                                                  ^
+     59|   ['pages', 'Pages', 'pages', false],
+     60|   ['modules', 'Code', 'layers', true],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/13]⎯
+
+ FAIL  test/components/entity-sections.test.ts > an API exposes its permission tab and the selected profile/data declarations
+AssertionError: expected '<!--[--><nav class="ex-crumbs" aria-l…' to contain 'Permissions'
+
+Expected: "Permissions"
+Received: "<!--[--><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><!--[-1--><a href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/apis" data-harness-component="harness-entity-link"><!---->APIs<!----></a><!--]--></li> <!--[-1--><!--]--> <!--[-1--><li aria-current="page">OrdersApi</li><!--]--></ol></nav> <header class="ex-head" data-harness-component="harness-entity-header"><span class="ex-tile"><svg class="hx-icon svelte-1ttqmoy" data-harness-component="harness-harness-icon" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path d="M6 20a2 2 0 1 0 0-4a2 2 0 0 0 0 4zM18 8a2 2 0 1 0 0-4a2 2 0 0 0 0 4zM8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"></path></svg><!----></span> <div class="ex-head-main"><div class="ex-head-title"><h1>OrdersApi</h1> <span class="ex-pill">Page</span> <!--[-1--><!--]--> <!--$s1--><span class="hx-verdict svelte-1vd6mv passed" data-harness-component="harness-harness-verdict"><button type="button" aria-label="Full coverage passed" aria-describedby="s1" aria-expanded="false" class="svelte-1vd6mv"><svg class="hx-icon svelte-1ttqmoy solid" data-harness-component="harness-harness-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1vd6mv" role="tooltip" id="s1" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1vd6mv">Full coverage passed</strong><!--[--><!--]--></span></span><!----></div> <!--[0--><p class="ex-lead">Lists the orders of an account.</p><!--]--></div></header> <!----> <div class="hx-tabs" role="tablist" aria-label="OrdersApi sections" data-harness-component="harness-harness-tabs"><!--[--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/apis/app.endpoint.orders" aria-selected="true">Overview</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/apis/app.endpoint.orders?tab=contract" aria-selected="false">Contract</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/apis/app.endpoint.orders?tab=used-in" aria-selected="false">Used In</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/apis/app.endpoint.orders?tab=uses" aria-selected="false">Uses</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/apis/app.endpoint.orders?tab=tests" aria-selected="false">Tests</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/apis/app.endpoint.orders/history" aria-selected="false">History</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/apis/app.endpoint.orders?tab=source" aria-selected="false">Source</a><!--]--><!--]--></div><!----><!--]-->"
+
+ ❯ test/components/entity-sections.test.ts:120:17
+    118|  const navigation = nav(host.route);
+    119|  const header = render(EntityHeader, { props: { entity, nav: navigatio…
+    120|  expect(header).toContain('Permissions');
+       |                 ^
+    121|  expect(header).toContain('tab=permissions');
+    122|  const body = render(EntitySections, { props: { host, entity, nav: nav…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/13]⎯
+
+ FAIL  test/components/harness-navbar.test.ts > one bar holds the brand, repository, entity categories and the Styles screen
+AssertionError: expected [ { label: 'Pages', …(3) }, …(5) ] to deeply equal [ { label: 'Pages', …(3) }, …(3) ]
+
+- Expected
++ Received
+
+@@ -4,14 +4,26 @@
+      "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/pages",
+      "iconThenLabel": true,
+      "label": "Pages",
+    },
+    {
++     "current": false,
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/apis",
++     "iconThenLabel": true,
++     "label": "APIs",
++   },
++   {
+      "current": true,
+      "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/components",
+      "iconThenLabel": true,
+      "label": "Code",
++   },
++   {
++     "current": false,
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/modules",
++     "iconThenLabel": true,
++     "label": "Modules",
+    },
+    {
+      "current": false,
+      "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/translations",
+      "iconThenLabel": true,
+
+ ❯ test/components/harness-navbar.test.ts:75:22
+     73|  expect(html).toMatch(/^\s*<header class="hx-nav"/);
+     74|  expect(html.match(/<header\b/g)).toHaveLength(1);
+     75|  expect(links(html)).toEqual(
+       |                      ^
+     76|   ['Pages', 'Code', 'Translations', 'Platforms'].map((label) => ({
+     77|    label,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/13]⎯
+
+ FAIL  test/components/harness-navbar.test.ts > Styles has its own active state and keeps the selected revision in its address
+AssertionError: expected { label: 'APIs', …(3) } to match object { label: 'Code', …(2) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "current": true,
+-   "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/components",
+-   "label": "Code",
++   "current": false,
++   "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/apis",
++   "label": "APIs",
+  }
+
+ ❯ test/components/harness-navbar.test.ts:108:18
+    106|  const menu = links(html);
+    107|  expect(menu.filter((item) => item.current).map((item) => item.label))…
+    108|  expect(menu[1]).toMatchObject({
+       |                  ^
+    109|   label: 'Code',
+    110|   href: `${scoped}/commit/${sha(4)}/components`,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/13]⎯
+
+ FAIL  test/components/harness-navbar.test.ts > at the tip of a branch the commit is the tip, said as current, and Go to tip is disabled
+AssertionError: expected '/harness/branch/feature%2Fshell%231/a…' to be '/harness/branch/feature%2Fshell%231/c…' // Object.is equality
+
+Expected: "/harness/branch/feature%2Fshell%231/components"
+Received: "/harness/branch/feature%2Fshell%231/apis"
+
+ ❯ test/components/harness-navbar.test.ts:145:30
+    143|    .map((item) => item.label)
+    144|  ).toEqual(['Pages']);
+    145|  expect(links(html)[1].href).toBe(`${scoped}/components`);
+       |                              ^
+    146|  expect(html).not.toContain('aria-label="Code categories"');
+    147| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/13]⎯
+
+ FAIL  test/components/harness-navbar.test.ts > without a resolved address the bar keeps its navigation and offers nothing to choose
+AssertionError: expected 'Pages APIs Code Modules Translations …' to be 'Pages Code Translations Platforms' // Object.is equality
+
+Expected: "Pages Code Translations Platforms"
+Received: "Pages APIs Code Modules Translations Platforms"
+
+ ❯ test/components/harness-navbar.test.ts:172:33
+    170| test('without a resolved address the bar keeps its navigation and offe…
+    171|  const html = body(null, { repository: null, index: null });
+    172|  expect(text(categories(html))).toBe('Pages Code Translations Platform…
+       |                                 ^
+    173|  expect(links(html)).toEqual([]);
+    174|  expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/13]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > the bar groups module categories under four scoped primary destinations
+AssertionError: expected [ [ 'pages', 'Pages', 'pages' ], …(5) ] to deeply equal [ [ 'pages', 'Pages', 'pages' ], …(3) ]
+
+- Expected
++ Received
+
+@@ -3,12 +3,22 @@
+      "pages",
+      "Pages",
+      "pages",
+    ],
+    [
++     "apis",
++     "APIs",
++     "route",
++   ],
++   [
+      "modules",
+      "Code",
++     "layers",
++   ],
++   [
++     "module-library",
++     "Modules",
+      "layers",
+    ],
+    [
+      "translations",
+      "Translations",
+
+ ❯ test/utils/harness-shell.test.ts:45:70
+     43|  await measureWorkload('reports.function.harness-shell', 'scoped-navba…
+     44|   const { categories } = view(historical);
+     45|   expect(categories.map((item) => [item.id, item.label, item.icon])).t…
+       |                                                                      ^
+     46|    ['pages', 'Pages', 'pages'],
+     47|    ['modules', 'Code', 'layers'],
+ ❯ measureWorkload ../../test/support/measureWorkload.ts:13:23
+ ❯ test/utils/harness-shell.test.ts:43:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/13]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > on a current branch route the viewed commit is the tip, and there is no tip to go to
+AssertionError: expected undefined to be '/harness/branch/feature%2Fshell%231/a…' // Object.is equality
+
+- Expected: 
+"/harness/branch/feature%2Fshell%231/apis"
+
++ Received: 
+undefined
+
+ ❯ test/utils/harness-shell.test.ts:108:4
+    106|    (item) => item.id === 'apis'
+    107|   )?.href
+    108|  ).toBe(`${scoped}/apis`);
+       |    ^
+    109|  expect(revision).toMatchObject({
+    110|   branch: shellBranch,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/13]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > without a resolved address the bar keeps its navigation and offers no revision
+AssertionError: expected [ 'Pages', 'APIs', 'Code', …(3) ] to deeply equal [ 'Pages', 'Code', …(2) ]
+
+- Expected
++ Received
+
+  [
+    "Pages",
++   "APIs",
+    "Code",
++   "Modules",
+    "Translations",
+    "Platforms",
+  ]
+
+ ❯ test/utils/harness-shell.test.ts:181:47
+    179|  expect(revision).toBeNull();
+    180|  expect(home).toEqual({ href: shellMount, to: null });
+    181|  expect(categories.map((item) => item.label)).toEqual(primaryNames);
+       |                                               ^
+    182|  expect(view(null)).toMatchObject({ modules: [] });
+    183|  expect(categories.every((item) => item.href === null && item.to === n…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/13]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > installed modules contribute scoped Code entries from their resource definitions
+AssertionError: expected [ 'Pages', 'APIs', 'Code', …(3) ] to deeply equal [ 'Pages', 'Code', …(2) ]
+
+- Expected
++ Received
+
+  [
+    "Pages",
++   "APIs",
+    "Code",
++   "Modules",
+    "Translations",
+    "Platforms",
+  ]
+
+ ❯ test/utils/harness-shell.test.ts:216:67
+    214|  expect(menu.some((item) => item.label === 'Offline collections')).toB…
+    215|  expect(menu.map((item) => item.id)).toEqual(['resource:email.email']);
+    216|  expect(harnessShell(props).categories.map((item) => item.label)).toEq…
+       |                                                                   ^
+    217| });
+    218| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/13]⎯
+
+ FAIL  test/components/networking-security/explorer-permissions-screen.test.ts > profile index exposes one revision-scoped page per declared user level
+AssertionError: expected '<!--[--><section data-harness-compone…' to contain '/permissions/guest'
+
+Expected: "/permissions/guest"
+Received: "<!--[--><section data-harness-component="networking-security-explorer-permissions-screen"><h1>Users &amp; Permissions</h1> <p>Permission profiles are not available yet.</p></section><!--]-->"
+
+ ❯ test/components/networking-security/explorer-permissions-screen.test.ts:14:60
+     12|  const body = render(ExplorerPermissionsScreen, { props: host() }).bod…
+     13|  expect(words(body)).toMatch(/Users (?:&amp;|&) Permissions/);
+     14|  for (const p of permissionProfiles.profiles) expect(body).toContain(`…
+       |                                                            ^
+     15|  expect(body).toContain('/commit/' + 'b'.repeat(40));
+     16| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/13]⎯
+
+ FAIL  test/components/networking-security/explorer-permissions-screen.test.ts > a profile page lists only its endpoint methods, page access and data boundaries
+AssertionError: expected ' Users &amp; Permissions Permission p…' to contain 'Member'
+
+Expected: "Member"
+Received: " Users &amp; Permissions Permission profiles are not available yet. "
+
+ ❯ test/components/networking-security/explorer-permissions-screen.test.ts:30:17
+     28|   'app.page.orders'
+     29|  ])
+     30|   expect(shown).toContain(text);
+       |                 ^
+     31|  expect(shown).not.toContain('All accounts');
+     32|  expect(shown).not.toContain('DELETE');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/13]⎯
+
+ FAIL  test/components/networking-security/explorer-permissions-screen.test.ts > API permissions identify permitted profiles and unconfigured endpoints without inferring access
+AssertionError: expected ' Users &amp; Permissions Permission p…' to contain 'Member'
+
+Expected: "Member"
+Received: " Users &amp; Permissions Permission profiles are not available yet. "
+
+ ❯ test/components/networking-security/explorer-permissions-screen.test.ts:51:23
+     49|   'total'
+     50|  ])
+     51|   expect(words(body)).toContain(text);
+       |                       ^
+     52|  expect(
+     53|   words(render(ExplorerPermissionsScreen, { props: { ...props, endpoin…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/13]⎯
+
+
+ Test Files  5 failed (5)
+      Tests  13 failed | 17 passed (30)
+   Start at  17:40:33
+   Duration  2.72s (transform 1.23s, setup 216ms, collect 1.74s, tests 87ms, environment 0ms, prepare 128ms)
+
