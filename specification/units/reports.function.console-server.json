@@ -48,11 +48,6 @@
 	},
 	"dependencies": [
 		{
-			"unit": "function.verification-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "module.console",
 			"via": "import",
 			"origin": "derived"
@@ -73,17 +68,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.model.harness-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.serializer.report-export",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.source-impact",
 			"via": "import",
 			"origin": "derived"
 		}

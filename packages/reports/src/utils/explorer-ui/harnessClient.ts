@@ -38,7 +38,7 @@ function reading(base: string, fetcher: typeof fetch): HarnessClient {
 		revision: async (commit) => {
 			const revision = await load<HarnessRevision>(`revisions/${commit}.json`);
 			const metadata = revision.moduleData;
-			if (metadata?.required) {
+			if (metadata) {
 				if (metadata.commit !== commit) {
 					cache.delete(`revisions/${commit}.json`);
 					throw new Error(
@@ -66,6 +66,9 @@ function reading(base: string, fetcher: typeof fetch): HarnessClient {
 					cache.delete(`revisions/${commit}.json`);
 					throw new Error(failure);
 				}
+			} else {
+				cache.delete(`revisions/${commit}.json`);
+				throw new Error('Missing committed module data. Run harness validate --write.');
 			}
 			return revision;
 		},
