@@ -2,7 +2,7 @@
 	"name": "packed-sdk-admission",
 	"goal": "The packed verification SDK reports a missing coding verification record before loading optional compiler dependencies, with identical diagnostics in Bun and Node.",
 	"createdAt": "2026-10-25T01:16:38.741Z",
-	"updatedAt": "2026-10-25T01:19:28.420Z",
+	"updatedAt": "2026-10-25T01:27:28.704Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T01:27:27.416Z",
+			"evidence": "At 5bb2ab76bdb00a4e8299f02bed17c52b5cbd519d, the real verification-record check now precedes dynamic compiler imports. Planning, source and missing-record diagnostics do not require Svelte. Valid coding records still use the existing evidence, scope and performance checks."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T01:27:28.704Z",
+			"evidence": "The unchanged packed-consumer assertions fail at f4dec89d13 and pass at 5bb2ab76b in Bun and Node. Records bab3e3bb88021a2b9b7335063637538bf27290189a778452d45cc33e5d3fe2b0 and d24fa38b1508122961c8f21d9509783fc8c26408de3272626c3deb2ff85b2bed preserve the paired full corpus and common environment."
 		},
 		{
 			"id": "verify",

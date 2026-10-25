@@ -2,6 +2,7 @@ import { expect, test, type Locator } from '../../../../test/support/browserTest
 import { fits, pictured, screens, sharedField } from './support/sharedSelect';
 import { box, channels, combo, reachable, styled } from './support/shellChecks';
 import { exerciseNativeAtoms } from './support/nativeAtoms';
+import { shellCategories as categories } from './support/shellData';
 import {
 	buildShellFixture,
 	captureShell,
@@ -15,17 +16,6 @@ import {
  * binary badge, actions, tabs and the bar without an address, and beside them, outside the
  * explorer, two rows of the console that was.
  */
-const categories = [
-	'Pages',
-	'Layouts',
-	'Components',
-	'Models',
-	'Services',
-	'Helpers',
-	'Configs',
-	'Styles',
-	'Platforms'
-];
 const here = `${shellOrigin}/`;
 let home = '';
 
