@@ -39,7 +39,8 @@ test('Used In lists what uses the entity once each, with what it is', () => {
 	expect(used).not.toMatch(/relationship|Used by|Uses|OrderStore|orderSettings|src\//i);
 	expect(used, 'usage lists omit verification marks').not.toMatch(/[×✓]/);
 	for (const category of categories) {
-		const singular = category[0].toUpperCase() + category.slice(1, -1);
+		const singular =
+			category === 'apis' ? 'API' : category[0].toUpperCase() + category.slice(1, -1);
 		expect(
 			panel('used-by', [link('used-by', `app.${singular}.consumer`, 'Consumer', category)]),
 			`${category} uses its canonical singular label`

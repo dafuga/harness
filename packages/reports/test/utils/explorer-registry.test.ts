@@ -1,3 +1,4 @@
+import { written } from '../explorerRegistryStates';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -20,6 +21,7 @@ const at = 'reports.page.harness-branch-branch-at-';
 const part = 'reports.component.harness-';
 const categories = [
 	'pages',
+	'apis',
 	'layouts',
 	'components',
 	'functions',
@@ -28,10 +30,19 @@ const categories = [
 	'models',
 	'types'
 ];
-// What a unit is made of: the shells it mounts and the components it holds.
+// Direct registered composition, before catalog folding or transitive relationship projection.
 const drawn = (id: string) => {
-	const { layouts, components } = explorerRelations(head, id);
-	return [...layouts, ...components].map((item) => item.id.replace(part, '')).sort();
+	const source = units.find((unit) => unit.id === id)!;
+	return source.dependencies
+		.flatMap(({ unit: dependency }) => {
+			const target = units.find((unit) => unit.id === dependency);
+			return target &&
+				['component', 'layout', 'shell', 'partial'].includes(target.kind) &&
+				target.composition?.level !== 'atom'
+				? [dependency.replace(part, '')]
+				: [];
+		})
+		.sort();
 };
 const statesOf = (id: string) => scenarioFor(scenario, id, units).states.map((state) => state.id);
 const pagesOf = (id: string) =>
@@ -42,6 +53,7 @@ const pagesOf = (id: string) =>
 test('the registry records each page as made of the host and the one screen it mounts', () => {
 	const overview: Record<string, string> = {
 		pages: 'entity-visual-screen',
+		apis: 'entity-behavior-screen',
 		layouts: 'entity-visual-screen',
 		components: 'entity-visual-screen',
 		functions: 'entity-behavior-screen',
@@ -52,37 +64,32 @@ test('the registry records each page as made of the host and the one screen it m
 	};
 	for (const category of categories) {
 		const catalog = category === 'pages' ? 'explorer-pages-screen' : 'explorer-catalog-screen';
-		expect([category, drawn(at + category)]).toEqual([
-			category,
-			[catalog, 'reports.layout.root', 'screen']
-		]);
+		expect([category, drawn(at + category)]).toEqual([category, [catalog, 'screen']]);
 		expect([category, drawn(`${at}${category}-entity`)]).toEqual([
 			category,
-			[overview[category], 'reports.layout.root', 'screen'].sort()
+			[overview[category], 'screen'].sort()
 		]);
-		expect([category, drawn(`${at}${category}-entity-details`)]).toEqual([
-			category,
-			['entity-details-screen', 'reports.layout.root', 'screen']
-		]);
+		if (category !== 'apis')
+			expect([category, drawn(`${at}${category}-entity-details`)]).toEqual([
+				category,
+				['entity-details-screen', 'screen']
+			]);
 		expect([category, drawn(`${at}${category}-entity-history`)]).toEqual([
 			category,
-			['entity-history-screen', 'reports.layout.root', 'screen']
+			['entity-history-screen', 'screen']
 		]);
 	}
 });
 
 test('the host uses shared frame pieces, and only the page of no screen names every screen', () => {
+	expect(drawn('reports.layout.root')).toEqual(['reports.component.console-chat']);
 	expect(drawn(`${part}screen`)).toEqual(['harness-console']);
 	expect(drawn(`${part}harness-console`)).toEqual([
 		'reports.component.shared-primitives-loading-state',
 		'reports.layout.explorer-layout'
 	]);
 	expect(drawn('reports.layout.explorer-layout')).toEqual(['harness-header']);
-	expect(drawn('reports.page.harness-view')).toEqual([
-		'explorer-content',
-		'reports.layout.root',
-		'screen'
-	]);
+	expect(drawn('reports.page.harness-view')).toEqual(['explorer-content', 'screen']);
 	const users = units.filter((unit) =>
 		unit.dependencies.some((used) => used.unit === `${part}explorer-content`)
 	);
@@ -109,7 +116,11 @@ test('a screen is recorded on the pages that mount it and on no other route page
 		'layouts-entity',
 		'pages-entity'
 	]);
-	expect(routed(`${part}entity-behavior-screen`)).toEqual(['functions-entity', 'services-entity']);
+	expect(routed(`${part}entity-behavior-screen`)).toEqual([
+		'apis-entity',
+		'functions-entity',
+		'services-entity'
+	]);
 	expect(routed(`${part}entity-history-screen`)).toEqual(
 		entity.map((page) => `${page}-history`).sort()
 	);
@@ -119,7 +130,10 @@ test('a screen is recorded on the pages that mount it and on no other route page
 		.map((item) => item.id.replace(at, ''))
 		.sort();
 	expect(aliases).toEqual(
-		[...entity.map((page) => `${page}-details`), 'shells-entity-details'].sort()
+		[
+			...entity.filter((page) => page !== 'apis-entity').map((page) => `${page}-details`),
+			'shells-entity-details'
+		].sort()
 	);
 });
 
@@ -147,51 +161,6 @@ test('a visual unit is under exactly the states that name it, and never under an
 		expect([id, scenarioFor({ ...scenario, states }, id, units).states]).toEqual([id, []]);
 	}
 });
-
-// What each Shells state shows, written out here rather than read from the scenario: the page it
-// is reached on and, where an old Components address is corrected, the correction too.
-const corrected = 'reports.function.corrected-location';
-const shellStates: Array<[string, string[]]> = [
-	['layouts', [`${at}layouts`]],
-	['shells-tip', [`${at}layouts`]],
-	['shell', [`${at}layouts-entity`]],
-	['shell-details', [`${at}layouts-entity`]],
-	['shell-history', [`${at}layouts-entity-history`]],
-	['shell-redirect', [`${at}layouts-entity`, corrected]],
-	['shell-earlier', [`${at}components-entity`, corrected]],
-	['shell-retained', ['reports.page.harness-view']]
-];
-// What each search state shows, written out here: the catalog it is typed on, the adapter of the
-// console, the search of the bar and the shared field with its results.
-const searching = [
-	'reports.function.explorer-search-entries',
-	'reports.function.navbar-search',
-	'reports.function.entity-search',
-	'reports.component.entity-search',
-	'reports.component.entity-search-results'
-];
-const searchStates: Array<[string, string[]]> = [
-	['search', [`${at}layouts`, ...searching]],
-	['search-pinned', [`${at}functions`, ...searching]]
-];
-const contracts = [
-	'reports.component.entity-contract',
-	'reports.function.contract-fields',
-	`${at}functions-entity`
-];
-const contractStates: Array<[string, string[]]> = [
-	['contract', contracts],
-	['contract-commit', contracts],
-	[
-		'contract-example',
-		[...contracts, 'reports.component.contract-example', 'reports.component.modal']
-	],
-	[
-		'contract-example-commit',
-		[...contracts, 'reports.component.contract-example', 'reports.component.modal']
-	]
-];
-const written: Array<[string, string[]]> = [...shellStates, ...searchStates, ...contractStates];
 
 test('each state names the one page it is reached on, and the code written for it', () => {
 	const every = scenario.states.map((state) => state.id);

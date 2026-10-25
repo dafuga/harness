@@ -67,9 +67,7 @@ test('a unit of a product kind is listed under the category of that kind', () =>
 				owning('model.order', 'model', ['src/models/Order.types.ts', 'src/models/Order.ts'])
 			)
 		).toBe('models');
-		expect(explorerCategory(unit('reports.endpoint.harness-data-path', 'endpoint'))).toBe(
-			'services'
-		);
+		expect(explorerCategory(unit('reports.endpoint.harness-data-path', 'endpoint'))).toBe('apis');
 		expect(explorerCategory(unit('adapter.git', 'adapter'))).toBe('services');
 		expect(explorerCategory(unit('repository.budget-ledger', 'repository'))).toBe('services');
 		expect(explorerCategory(unit('workflow.run-verify', 'workflow'))).toBe('services');
