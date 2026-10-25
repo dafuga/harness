@@ -54,6 +54,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.git-source-history-module-data-repository-read-module-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.git-source-history-module-data",
 			"via": "import",
 			"origin": "derived"

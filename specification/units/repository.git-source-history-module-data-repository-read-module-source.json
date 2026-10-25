@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/repositories/git-source-history/module-data-repository/readModuleSource.ts"],
-		"symbols": ["readModuleSource"]
+		"symbols": ["readModuleSource", "matchesModuleSource", "moduleReviewDigest"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -24,11 +24,43 @@
 			{
 				"name": "readModuleSource.repository",
 				"type": "ModuleDataRepository"
+			},
+			{
+				"name": "matchesModuleSource.data",
+				"type": "ModuleData"
+			},
+			{
+				"name": "matchesModuleSource.identity",
+				"type": "ModuleDataIdentity"
+			},
+			{
+				"name": "matchesModuleSource.reviews",
+				"type": "string"
+			},
+			{
+				"name": "matchesModuleSource.repository",
+				"type": "ModuleDataRepository"
+			},
+			{
+				"name": "moduleReviewDigest.root",
+				"type": "string"
+			},
+			{
+				"name": "moduleReviewDigest.identity",
+				"type": "ModuleDataIdentity"
 			}
 		],
 		"outputs": [
 			{
 				"name": "readModuleSource",
+				"type": "unknown"
+			},
+			{
+				"name": "matchesModuleSource",
+				"type": "unknown"
+			},
+			{
+				"name": "moduleReviewDigest",
 				"type": "unknown"
 			}
 		],

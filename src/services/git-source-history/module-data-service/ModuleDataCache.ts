@@ -1,3 +1,4 @@
+import { moduleReviewDigest } from '../../../repositories/git-source-history/module-data-repository/readModuleSource';
 import { ModuleDataSnapshotValidator } from '../../../validators/development-tooling/ModuleDataSnapshotValidator';
 import { moduleDataProducer } from './moduleDataProtocol';
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
@@ -22,12 +23,14 @@ export class ModuleDataCache {
 			) as ModuleData;
 			const { digest, ...body } = data;
 			return data.producer === producer &&
+				(data.reviews ?? [])
+					.map((item) => item.digest)
+					.sort()
+					.join() === (await moduleReviewDigest(this.repository.root, identity)) &&
 				new ModuleDataSnapshotValidator().validate(data).valid &&
 				digest === this.repository.digest(body) &&
 				(source
-					? data.commit === identity.commit &&
-						data.tree === identity.tree &&
-						data.producer === producer
+					? data.commit === identity.commit && data.tree === identity.tree
 					: this.repository.key(data) === this.repository.key(identity))
 				? data
 				: undefined;

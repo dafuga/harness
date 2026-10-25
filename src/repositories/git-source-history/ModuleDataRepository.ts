@@ -1,4 +1,8 @@
-import { readModuleSource } from './module-data-repository/readModuleSource';
+import {
+	readModuleSource,
+	matchesModuleSource,
+	moduleReviewDigest
+} from './module-data-repository/readModuleSource';
 import { ModuleDataSnapshotValidator } from '../../validators/development-tooling/ModuleDataSnapshotValidator';
 import { createHash } from 'node:crypto';
 import { EvidenceTreeAdapter } from '../../adapters/verification-evidence/EvidenceTreeAdapter';
@@ -57,13 +61,10 @@ export class ModuleDataRepository {
 		if (!bytes) return undefined;
 		try {
 			const data = JSON.parse(bytes.toString()) as ModuleData;
-			const { digest, ...body } = data;
+			const reviews = await moduleReviewDigest(this.root, identity);
 			if (
-				digest !== this.digest(body) ||
 				this.key(data) !== this.key(identity) ||
-				data.schemaVersion !== 1 ||
-				!new ModuleDataSnapshotValidator().validate(data).valid ||
-				data.producer !== moduleDataProducer
+				!matchesModuleSource(data, identity, reviews, this)
 			)
 				return undefined;
 			return { data, commit };

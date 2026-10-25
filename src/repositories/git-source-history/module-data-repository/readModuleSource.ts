@@ -13,10 +13,7 @@ export async function readModuleSource(
 ) {
 	const tip = await tree.tip(repository.ref);
 	if (!tip) return undefined;
-	const reviews = (await new ModuleDataReviewRepository(repository.root).read(identity))
-		.map((item) => item.digest)
-		.sort()
-		.join();
+	const reviews = await moduleReviewDigest(repository.root, identity);
 	const paths = [...(await tree.list(tip)).keys()].filter((path) =>
 		path.startsWith(`modules/${identity.commit}/`)
 	);
@@ -33,7 +30,7 @@ export async function readModuleSource(
 	return undefined;
 }
 
-function matchesModuleSource(
+export function matchesModuleSource(
 	data: ModuleData,
 	identity: ModuleDataIdentity,
 	reviews: string,
@@ -41,6 +38,7 @@ function matchesModuleSource(
 ) {
 	const { digest, ...body } = data;
 	return (
+		data.schemaVersion === 1 &&
 		data.producer === moduleDataProducer &&
 		data.commit === identity.commit &&
 		data.tree === identity.tree &&
@@ -51,4 +49,11 @@ function matchesModuleSource(
 		new ModuleDataSnapshotValidator().validate(data).valid &&
 		digest === repository.digest(body)
 	);
+}
+
+export async function moduleReviewDigest(root: string, identity: ModuleDataIdentity) {
+	return (await new ModuleDataReviewRepository(root).read(identity))
+		.map((item) => item.digest)
+		.sort()
+		.join();
 }
