@@ -70,6 +70,8 @@ is committed with the module relationships, so callers need no source-search scr
 retained source commits. Facts and gap reports live on `refs/harness/module-data`, with immutable
 snapshots and source ancestry. History sync exchanges this ref alongside notes and evidence;
 source SHAs are preserved. Missing historical observations stay missing.
+The diagnostic cache uses at most 64 MiB per worktree and evicts old entries; committed Git
+snapshots remain authoritative. Committing metadata does not duplicate it into that cache.
 
 Repair current declarations in source and commit them. For historical authoring, use
 `harness validate --commit SOURCE_SHA --review review.json --write`. A review names `unit`,

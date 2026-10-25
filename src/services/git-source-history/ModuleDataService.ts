@@ -37,7 +37,7 @@ export class ModuleDataService {
 			);
 			cache = { data: await this.builder.build(identity, true), hit: false };
 		}
-		await new ModuleDataCache(this.repository).write(cache.data);
+		await cacheDiagnostics(this.repository, cache, options);
 		const metadataCommit = options.write
 			? await this.repository.write(cache.data)
 			: (stored ?? (await this.repository.source(identity)))?.commit;
@@ -126,6 +126,14 @@ export class ModuleDataService {
 			digest: data.digest
 		};
 	}
+}
+
+async function cacheDiagnostics(
+	repository: ModuleDataRepository,
+	cache: { data: ModuleData; hit: boolean },
+	options: ValidateOptions
+) {
+	if (!cache.hit && !options.write) await new ModuleDataCache(repository).write(cache.data);
 }
 
 function historySummary({ modules, ...report }: ValidationReport) {
