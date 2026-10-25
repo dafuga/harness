@@ -1679,13 +1679,13 @@
 			"unit": "workflow.load-units",
 			"from": "src/workflows/loadUnits.ts",
 			"to": "src/workflows/development-tooling/load-units/loadUnits.ts",
-			"definition": "d501e458db3d1381ecab0a098e4a7a2eda9c57a0d88ecc9b4a06d60baeac049a",
+			"definition": "e5963c6997dd60fb9a78bb07073c19dd211daa62d2d38a6197baab5f4a9eb350",
 			"relocationDefinition": "43ff49f5ab22f48436c28b0e10bec73f575dde651160657b10cd29c0b1389769",
 			"review": {
-				"commit": "ebe557d670738560a9022377e71f260b328ae685",
+				"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
 				"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
-				"definition": "d501e458db3d1381ecab0a098e4a7a2eda9c57a0d88ecc9b4a06d60baeac049a",
-				"reason": "Validate active config controls against committed syntax while preserving retired histories."
+				"definition": "e5963c6997dd60fb9a78bb07073c19dd211daa62d2d38a6197baab5f4a9eb350",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 			},
 			"previousReviews": [
 				{
@@ -1705,6 +1705,12 @@
 					"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
 					"definition": "848fdef5a1df6e0f2565f7a1a992586701b49bed2e2c4d9ba14d73c13c9a0836",
 					"reason": "Reject config controls that are not values in their declared source."
+				},
+				{
+					"commit": "ebe557d670738560a9022377e71f260b328ae685",
+					"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
+					"definition": "d501e458db3d1381ecab0a098e4a7a2eda9c57a0d88ecc9b4a06d60baeac049a",
+					"reason": "Validate active config controls against committed syntax while preserving retired histories."
 				}
 			]
 		},
@@ -1733,13 +1739,13 @@
 			"unit": "function.derive-manifest",
 			"from": "src/services/unit-index-service/deriveManifest.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-			"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
+			"definition": "26b4695cbbb9495f21a27501347ddf0254dfc030e31856450b887ff2f2892f96",
 			"relocationDefinition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65",
 			"review": {
-				"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+				"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-				"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
-				"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof."
+				"definition": "26b4695cbbb9495f21a27501347ddf0254dfc030e31856450b887ff2f2892f96",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 			},
 			"previousReviews": [
 				{
@@ -1771,6 +1777,12 @@
 					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
 					"definition": "daea7400bead3e801fc5023cc628f0fc98e2b35ad5c0ba2ca5168b6810c140b5",
 					"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit."
+				},
+				{
+					"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+					"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
+					"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof."
 				}
 			]
 		},
@@ -2580,14 +2592,22 @@
 			"unit": "command.units",
 			"from": "src/commands/UnitsCommand.ts",
 			"to": "src/cli/program/UnitsCommand.ts",
-			"definition": "6113964f0f5792544ce96043fbde22c6be0ef7183c00ec372440f10c2d79ed56",
+			"definition": "2f4f017d6d6654465e272877b03aaa6329c47c3024b322c1afb1d07d4f1a83e6",
 			"relocationDefinition": "56b7063d4a3eaae60eab61f13b0a1da62432d13e4f6ee5e0cd0cc25f997289b0",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
 				"path": "src/cli/program/UnitsCommand.ts",
-				"definition": "6113964f0f5792544ce96043fbde22c6be0ef7183c00ec372440f10c2d79ed56",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "2f4f017d6d6654465e272877b03aaa6329c47c3024b322c1afb1d07d4f1a83e6",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/UnitsCommand.ts",
+					"definition": "6113964f0f5792544ce96043fbde22c6be0ef7183c00ec372440f10c2d79ed56",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.inspect-units",
@@ -4558,14 +4578,22 @@
 			"unit": "service.verification-gates",
 			"from": "src/services/VerificationGates.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
-			"definition": "a96d68e326480789b78bcf061c500d63dd13cdd592afa9cd9ba57c27b72834c3",
+			"definition": "184155a96d908738f2047b29f8055df210636f42a279274a25502a11b9780b28",
 			"relocationDefinition": "9782437852eb3589831812da79891f6a8a3727a289b5981275169ae5ae24a3d1",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
-				"definition": "a96d68e326480789b78bcf061c500d63dd13cdd592afa9cd9ba57c27b72834c3",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "184155a96d908738f2047b29f8055df210636f42a279274a25502a11b9780b28",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+					"definition": "a96d68e326480789b78bcf061c500d63dd13cdd592afa9cd9ba57c27b72834c3",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.persist-reasons",

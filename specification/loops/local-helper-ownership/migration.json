@@ -4769,9 +4769,9 @@
 		{
 			"unit": "function.derive-manifest",
 			"name": "deriveManifest",
-			"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
-			"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit.",
-			"definition": "d10d760ab19c3631fceef91b103cd06c02f1fee7ac06ce32918b0c90287dd022",
+			"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
+			"reason": "Preserve declared test contracts while deriving source ownership and runtime metadata.",
+			"definition": "9cb7f65e859065b55c94921538f35d193ae2e960b5fc999dd5fd9c73e67356e2",
 			"previousReviews": [
 				{
 					"unit": "function.derive-manifest",
@@ -4786,6 +4786,13 @@
 					"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
 					"reason": "Index native atom composition and real runtime dependencies while preserving owner-local source.",
 					"definition": "3c6ad72e19d9861a00cb263693f3514f7bb1e05866d993c51bcdea909c3fc225"
+				},
+				{
+					"unit": "function.derive-manifest",
+					"name": "deriveManifest",
+					"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
+					"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit.",
+					"definition": "d10d760ab19c3631fceef91b103cd06c02f1fee7ac06ce32918b0c90287dd022"
 				}
 			]
 		},
@@ -4953,7 +4960,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
