@@ -1,0 +1,68 @@
+{
+	"name": "api-catalog-admission",
+	"goal": "Keep Pages first across every catalog and preserve dedicated preview choices while admitting APIs without legacy aliases.",
+	"createdAt": "2026-10-25T02:27:42.619Z",
+	"updatedAt": "2026-10-25T02:30:35.342Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-10-25T02:28:07.611Z",
+			"evidence": "API source 58d11d624 inserted apis before Pages despite the entityLabels contract. Full Reports checks reproduced the ordering failure. A separate ChatAgents manifest still prefers agent-creation while its dedicated catalog capture uses component-catalog-previews."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-10-25T02:28:08.106Z",
+			"evidence": "The complete entity-lens ordered matrix already guarded Pages first but omitted the new category. Freeze that matrix with APIs after Pages. The existing all-unit preview projection rejects unavailable registered choices at every viewport. Run both in normal Reports verification; preserve historical route aliases only for categories that had them."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-25T02:30:34.851Z",
+			"evidence": "Record 3e67de3866c67e09f8367eae3649e3c55210d0b7f9b32394c1164cb69843e691 tests d62724b7b5d8963d8cb9d8c0c91a7f23c16b7120. The frozen matrix rejects APIs before Pages and the all-unit preview projection rejects ChatAgents at three viewports."
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "complete",
+			"completedAt": "2026-10-25T02:30:35.342Z",
+			"evidence": "Move only the APIs label after Pages. Point ChatAgents at its existing dedicated component-catalog state. Keep explicit missing-state gaps, every viewport assertion, and historical route aliases. The normal ordered category matrix and every-unit preview projection are the reusable guards."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

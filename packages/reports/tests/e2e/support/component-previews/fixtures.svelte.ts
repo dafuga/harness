@@ -20,11 +20,7 @@ export function previewFixture(id: string) {
 	if (id === 'desktop.component.workspace-shell') desktop.workspace.category = 'pages';
 	const remote = remotePreview();
 	const hub = hubPreview(id, desktop.workspace.snapshot!);
-	const desktopCases = Object.fromEntries(
-		Object.entries({ ...desktopControls, ...desktopRuntime, ...deploymentCases }).map(
-			([id, props]) => [id, props(desktop)]
-		)
-	);
+
 	desktop.workspace.remote = { host: {} as never };
 	const legacy = {
 		...legacyCases,
@@ -40,7 +36,7 @@ export function previewFixture(id: string) {
 		...reportCases,
 		...activityCases,
 		...analyticsCases,
-		...desktopCases,
+		...desktopCases(desktop),
 		...gameCases,
 		...remote.cases,
 		...hub.cases,
@@ -69,4 +65,12 @@ export function previewFixture(id: string) {
 		},
 		ready: desktop.ready
 	};
+}
+
+function desktopCases(desktop: ReturnType<typeof createDesktopData>) {
+	return Object.fromEntries(
+		Object.entries({ ...desktopControls, ...desktopRuntime, ...deploymentCases }).map(
+			([id, props]) => [id, props(desktop)]
+		)
+	);
 }

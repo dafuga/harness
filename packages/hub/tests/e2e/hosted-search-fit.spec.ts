@@ -1,5 +1,13 @@
 import type { Box } from './hosted-search-fit.spec.types';
-import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
+import {
+	expect,
+	test,
+	type Locator,
+	type Page,
+	type TestInfo
+} from '../../../../test/support/browserTest';
+import { mkdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { atlas, hostedFixture } from './hosted-fixture';
 const pages = `/projects/${atlas}/harness/branch/main/pages`;
 const widths = [1440, 1379, 1300, 1251, 920, 768, 390];
@@ -30,13 +38,31 @@ const meet = (one: Box, two: Box) =>
 async function apart(page: Page, width: number): Promise<void> {
 	const search = await box(trigger(page));
 	const placed = await Promise.all(controls(page).map(box));
-	expect(placed.map((one) => meet(search, one))).toEqual(placed.map(() => false));
+	expect(
+		placed.map((one) => meet(search, one)),
+		'Search and account controls must leave room for focus rings'
+	).toEqual(placed.map(() => false));
 	const shown = (one: Box) => one.x >= 0 && one.x + one.width <= width;
 	expect([search, ...placed].map(shown)).toEqual([search, ...placed].map(() => true));
 	expect(search.width).toBeGreaterThanOrEqual(32);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 		width
 	);
+}
+
+async function remember(page: Page, info: TestInfo, width: number, suffix = '') {
+	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+	});
+	await page.mouse.move(0, 0);
+	const directory = process.env.SEARCH_SHOTS ?? info.outputDir;
+	mkdirSync(directory, { recursive: true });
+	await page.screenshot({
+		path: join(directory, `hosted-search-${width}${suffix}.png`),
+		fullPage: true
+	});
 }
 
 for (const width of widths) {
@@ -48,6 +74,7 @@ for (const width of widths) {
 		await page.goto(`/projects/${atlas}/harness/pages`);
 		await expect(page).toHaveURL(new RegExp(`${pages}$`));
 		await expect(page.getByRole('navigation', { name: 'Catalog categories' })).toBeVisible();
+		await remember(page, info, width, '-closed');
 		await apart(page, width);
 		await trigger(page).focus();
 		await expect(trigger(page)).toBeFocused();
@@ -60,16 +87,7 @@ for (const width of widths) {
 		await field(page).fill('atlas');
 		await expect(found(page).getByRole('option')).toHaveText([/Page.*Atlas activity/]);
 		const list = await box(found(page));
-		if (process.env.TAKE_SCREENSHOT === 'true') {
-			await page.evaluate(async () => {
-				await document.fonts.ready;
-				await Promise.all([...document.images].map((image) => image.decode()));
-			});
-			await page.screenshot({
-				path: info.outputPath(`hosted-search-${width}.png`),
-				fullPage: true
-			});
-		}
+		await remember(page, info, width);
 		expect([list.x >= 0, list.x + list.width <= width]).toEqual([true, true]);
 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
 			width

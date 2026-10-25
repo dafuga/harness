@@ -1,4 +1,5 @@
 import { desktopEvidence } from './desktop-evidence';
+import { catalogCategories } from './ui-workspace-fixture';
 import { test, expect, type Page } from '../../../../test/support/browserTest';
 import { fixture } from './ui-design-fixture';
 import type { DesktopBridge, RunEvent } from '../../src/models/DesktopBridge.types';
@@ -81,7 +82,7 @@ for (const viewport of [
 		await expect(page.getByRole('img', { name: 'Activity v002 desktop default' })).toBeVisible();
 		await expect(
 			page.getByRole('navigation', { name: 'Catalog categories' }).getByRole('link')
-		).toHaveCount(7);
+		).toHaveText(catalogCategories);
 		if (viewport.width <= 850)
 			await page.getByRole('button', { name: 'Conversation', exact: true }).click();
 		await page.getByRole('textbox', { name: 'Message', exact: true }).scrollIntoViewIfNeeded();
