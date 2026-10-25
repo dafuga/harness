@@ -1,3 +1,7 @@
+import type {
+	ModuleData,
+	ValidationReport
+} from '../src/services/git-source-history/ModuleDataService.types';
 import { expect, test } from 'vitest';
 import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -64,3 +68,49 @@ async function configureTestAuthor(root: string) {
 	await runCommand(['git', 'config', 'user.name', 'Harness Test'], root);
 	await runCommand(['git', 'config', 'user.email', 'harness@example.invalid'], root);
 }
+
+test('validate commits source-derived page API usage and explicit visual data gaps', async () => {
+	const project = await unitProject('app');
+	const git = (args: string[]) => runCommand(['git', ...args], project.root);
+	try {
+		await git(['init', '-b', 'main']);
+		await configureTestAuthor(project.root);
+		await project.write(
+			'src/routes/+page.svelte',
+			'<script>import Titles from "../components/Titles.svelte";</script><Titles />'
+		);
+		await project.write(
+			'src/components/Titles.svelte',
+			'<script>fetch("/api/titles");</script><div>Titles</div>'
+		);
+		await project.write(
+			'src/routes/api/titles/+server.ts',
+			'export function GET(): Response { return Response.json([]); }'
+		);
+		await project.harness(['units', 'index', '--write']);
+		await git(['add', '.']);
+		await git(['commit', '-m', 'feat: declare page API usage']);
+		const result = await project.harness(['validate', '--write', '--json'], false);
+		expect(result.stdout).toContain('"modules"');
+		const report = JSON.parse(result.stdout) as ValidationReport;
+		expect(report.committed).toBe(true);
+		const paths = (
+			await git(['ls-tree', '-r', '--name-only', report.metadataCommit!])
+		).stdout.split('\n');
+		const path = paths.find((path) => path.startsWith(`modules/${report.commit}/`))!;
+		const data = JSON.parse(
+			(await git(['show', `${report.metadataCommit}:${path}`])).stdout
+		) as ModuleData;
+		const page = data.registry.units.find((unit) =>
+			unit.owns.source.includes('src/routes/+page.svelte')
+		)!;
+		const api = data.registry.units.find((unit) =>
+			unit.owns.source.includes('src/routes/api/titles/+server.ts')
+		)!;
+		expect(api.title).toBe('/api/titles');
+		expect(data.relationships[page.id].apis).toEqual([api.id]);
+		expect(report.modules.find((unit) => unit.id === page.id)!.issues.length).toBeGreaterThan(0);
+	} finally {
+		await rm(join(project.root, '..'), { recursive: true, force: true });
+	}
+}, 180_000);
