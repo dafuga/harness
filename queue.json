@@ -5117,7 +5117,7 @@
 			},
 			"sourceCommit": "bd539aefa6bb3b91feab615ec49fb9b86263d6d2",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:42:03.613Z",
 			"claim": {
@@ -5131,6 +5131,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’m using the Harness skill because this is a contract-driven migration in the Harness repository. I’ll first inspect its workflow and the relevant memory entry, then review only the allowed files; I will not run tests, build, lint, audit, commit, publish, or delegate.\nThe Harness instructions require activity registration before editing. Memory had no task-specific `wav-info` entry, so I’m proceeding from the repository’s current files and the committed module contract. I’ll inspect the existing test, source, full specification, and analogous migrations without executing verification commands.\nThe current worktree has unrelated LFS-backed image modifications; I’ll leave them untouched. The WAV module itself is unchanged at the requested source revision. I found the existing two assertions: valid PCM plus an inserted `JUNK` chunk, and separate bad-format/missing-data failures. I’m mapping those into canonical helper Examples while retaining all three public forwarding paths.\nI’m keeping the migration bounded to the helper contract: the proposed manifest will retain the original source metadata and add finite `input`, `boundary`, and `invalid` Examples. The test callback will rebuild JSON fixture markers into real `Buffer` inputs, assert the original duration/error expectations, and verify all three forwarding imports resolve to the canonical implementation.\nThe first draft preserves the original `audioFixture` mutations and adds explicit metadata/chunk markers. During review I found one local rule issue: the reconstruction switch had grown beyond the function-size limit, and the missing-format branch lacked a registered Example. I’m splitting the fixture builders and adding that canonical error case before the final read-only review.\nThe migration now has 15 authored Examples and 15 canonical cases across `input`, `boundary`, and `invalid`, with `bytes` declared and covered. Read-only checks confirm the JSON parses, example/case counts match, and the edited TypeScript has no whitespace errors. I’m doing the final source/manifest diff review now; prohibited test/build/lint/audit commands remain unrun.\nFinal review shows only the two authorized files changed in this task: the migrated test and the new proposed manifest. The source and the actual specification remain untouched; no commits, pushes, credentials, tests, builds, lint, install, or audit were performed. I’m closing the required Harness activity record now.\nImplemented the contract migration in:\n\n- [wav-info.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/dfa52591-26e3-400d-958f-b56ef4da1631/packages/reports/test/utils/wav-info.test.ts)\n- [wav-info-examples.json](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/dfa52591-26e3-400d-958f-b56ef4da1631/test/fixtures/contract-migration/wav-info-examples.json)\n\nAdded 15 authored Examples and matching canonical cases, preserving original assertions, fixtures, errors, and forwarding boundaries.\n\nPerformed: JSON parse, structural count check, whitespace check. Tests, compiler, build, lint, audit, install, commit, and publish were intentionally not run per instruction; runtime verification remains pending. Unrelated LFS image changes were untouched.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/dfa52591-26e3-400d-958f-b56ef4da1631",
+				"changedFiles": [
+					"packages/reports/test/utils/wav-info.test.ts",
+					"test/fixtures/contract-migration/wav-info-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T18:55:57.825Z",
+				"attempt": "dfa52591-26e3-400d-958f-b56ef4da1631",
+				"sourceCommit": "bd539aefa6bb3b91feab615ec49fb9b86263d6d2",
+				"checkpointCommit": "e097abad10af356e01134645be5144169efc8575",
+				"usage": {
+					"inputTokens": 6827402,
+					"outputTokens": 57193,
+					"cacheReadTokens": 6659840,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 6827402,
+							"outputTokens": 57193,
+							"cacheReadTokens": 6659840,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T18:42:12.717Z",
+						"finishedAt": "2026-10-25T18:55:57.672Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
