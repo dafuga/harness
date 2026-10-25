@@ -3,5 +3,5 @@ export interface EntityFileInput {
 	fileName: string;
 	className: string;
 	contents: string;
-	expectation: string;
+	testContents: string;
 }

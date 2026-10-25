@@ -104,6 +104,22 @@ test('Rails-ish scaffolds create their expected code shapes', async () => {
 	expect(pieceFiles('resource', 'Article').map((file) => file.path)).toContain(
 		'src/routes/article/+page.svelte'
 	);
+	const repositoryTest = pieceFiles('repository', 'Post').find((file) =>
+		file.path.endsWith('test/repositories/post.test.ts')
+	)!.contents;
+	expect(repositoryTest).toContain('repository.save(record)');
+	expect(repositoryTest).toContain('repository.find(record.id)');
+	expect(repositoryTest).toContain('toBeUndefined()');
+	expect(repositoryTest).not.toContain('toBeInstanceOf');
+	expect(repositoryTest.match(/^test\(/gm)).toHaveLength(2);
+	const validatorTest = pieceFiles('validator', 'Post').find((file) =>
+		file.path.endsWith('test/validators/post.test.ts')
+	)!.contents;
+	expect(validatorTest).toContain("validate({ title: 'value' })");
+	expect(validatorTest).toContain('validate({})');
+	expect(validatorTest).toContain("errors: ['input is empty']");
+	expect(validatorTest).not.toContain('toBeInstanceOf');
+	expect(validatorTest.match(/^test\(/gm)).toHaveLength(2);
 });
 
 test('helper scaffolds emit pure camelCase functions with domain parameters', () => {

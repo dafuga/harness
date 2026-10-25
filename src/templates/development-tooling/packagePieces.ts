@@ -43,7 +43,17 @@ export function repositoryFiles(name: string): PlannedFile[] {
 		fileName,
 		className,
 		contents: repositoryContents(className),
-		expectation: 'saves records'
+		testContents: `test('${className} saves records', () => {
+	const repository = new ${className}();
+	const record = { id: 1 };
+	expect(repository.save(record)).toBe(record);
+	expect(repository.find(record.id)).toBe(record);
+});
+
+test('${className} finds no records before saving', () => {
+	const repository = new ${className}();
+	expect(repository.find(1)).toBeUndefined();
+});`
 	});
 }
 
@@ -57,7 +67,13 @@ export function adapterFiles(name: string): PlannedFile[] {
 		fileName,
 		className,
 		contents,
-		expectation: 'connects'
+		testContents: `test('${className} connects', () => {
+	expect(new ${className}().connect()).toBe('${fileName}');
+});
+
+test('${className} connects with a configured name', () => {
+	expect(new ${className}({ name: 'custom' }).connect()).toBe('custom');
+});`
 	});
 }
 
@@ -71,7 +87,19 @@ export function validatorFiles(name: string): PlannedFile[] {
 		fileName,
 		className,
 		contents,
-		expectation: 'validates input'
+		testContents: `test('${className} validates input', () => {
+	expect(new ${className}().validate({ title: 'value' })).toEqual({
+		valid: true,
+		errors: []
+	});
+});
+
+test('${className} rejects empty input', () => {
+	expect(new ${className}().validate({})).toEqual({
+		valid: false,
+		errors: ['input is empty']
+	});
+});`
 	});
 }
 
@@ -85,7 +113,12 @@ export function serializerFiles(name: string): PlannedFile[] {
 		fileName,
 		className,
 		contents,
-		expectation: 'serializes input'
+		testContents: `test('${className} serializes input', () => {
+	const input = { title: 'value' };
+	const result = new ${className}().serialize(input);
+	expect(result).toEqual(input);
+	expect(result).not.toBe(input);
+});`
 	});
 }
 
@@ -99,7 +132,13 @@ export function policyFiles(name: string): PlannedFile[] {
 		fileName,
 		className,
 		contents,
-		expectation: 'checks access'
+		testContents: `test('${className} checks access', () => {
+	expect(new ${className}().canRead({ role: 'admin' })).toBe(true);
+});
+
+test('${className} denies non-admin access', () => {
+	expect(new ${className}().canRead({ role: 'member' })).toBe(false);
+});`
 	});
 }
 
@@ -140,7 +179,7 @@ function entityFiles(input: EntityFileInput): PlannedFile[] {
 		{ path: `src/${input.folder}/${input.className}.ts`, contents: input.contents },
 		{
 			path: `test/${input.folder}/${input.fileName}.test.ts`,
-			contents: `import { expect, test } from 'vitest';\nimport { ${input.className} } from '../../src/${input.folder}/${input.className}';\n\ntest('${input.className} ${input.expectation}', () => {\n\texpect(new ${input.className}()).toBeInstanceOf(${input.className});\n});\n`
+			contents: `import { expect, test } from 'vitest';\nimport { ${input.className} } from '../../src/${input.folder}/${input.className}';\n\n${input.testContents}\n`
 		}
 	];
 }
