@@ -1,4 +1,9 @@
-import type { TestInfo } from '@playwright/test';
+import type {
+	Locator,
+	Page,
+	PageAssertionsToHaveScreenshotOptions,
+	TestInfo
+} from '@playwright/test';
 
 export interface BrowserError {
 	type: 'console' | 'pageerror';
@@ -19,3 +24,12 @@ export interface ExpectedBrowserError {
 
 export type DiagnosticInfo = Pick<TestInfo, 'attach'> &
 	Partial<Pick<TestInfo, 'titlePath' | 'file' | 'config' | 'project' | 'retry'>>;
+
+export type ScreenshotTarget = Page | Locator;
+export type ScreenshotName = string | ReadonlyArray<string>;
+export type MatchScreenshotOptions = PageAssertionsToHaveScreenshotOptions;
+export type MatchScreenshot = (
+	target: ScreenshotTarget,
+	name: ScreenshotName,
+	options?: MatchScreenshotOptions
+) => Promise<void>;

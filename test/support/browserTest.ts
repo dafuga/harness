@@ -1,16 +1,35 @@
-import type { BrowserError, ExpectedBrowserError, DiagnosticInfo } from './browserTest.types';
+import type {
+	BrowserError,
+	ExpectedBrowserError,
+	DiagnosticInfo,
+	MatchScreenshot,
+	ScreenshotName,
+	ScreenshotTarget
+} from './browserTest.types';
 import { test as base, expect } from '@playwright/test';
-import type { BrowserContext, ConsoleMessage, WebError } from '@playwright/test';
+import type { BrowserContext, ConsoleMessage, Locator, Page, WebError } from '@playwright/test';
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 export * from '@playwright/test';
 
 /** Normal flows require no errors. Deliberate failures declare exact expected diagnostics. */
-export const test = base.extend<{ browserErrors: ReturnType<typeof browserErrorCollector> }>({
+export const test = base.extend<{
+	browserErrors: ReturnType<typeof browserErrorCollector>;
+	matchScreenshot: MatchScreenshot;
+}>({
 	context: async ({ context, browserErrors }, use) => {
 		browserErrors.watch(context);
 		await use(context);
+	},
+	matchScreenshot: async (_fixtures, use, testInfo) => {
+		await use(async (target, name, options) => {
+			assertReviewedSnapshots(testInfo);
+			validateScreenshotName(name);
+			await settleScreenshot(target);
+			if (screenshotEvidenceRequested()) await attachScreenshot(testInfo, target, name);
+			await expect(target).toHaveScreenshot(name, options);
+		});
 	},
 	browserErrors: [
 		async ({ browserName }, use, testInfo) => {
@@ -24,6 +43,79 @@ export const test = base.extend<{ browserErrors: ReturnType<typeof browserErrorC
 		{ auto: true }
 	]
 });
+
+function assertReviewedSnapshots(testInfo: { config: unknown }): void {
+	const config = testInfo.config as { ignoreSnapshots?: boolean; updateSnapshots?: string };
+	if (config.ignoreSnapshots || (config.updateSnapshots && config.updateSnapshots !== 'none'))
+		throw new Error('matchScreenshot requires reviewed baselines and snapshot updates disabled.');
+}
+
+function validateScreenshotName(name: ScreenshotName): void {
+	const names = typeof name === 'string' ? [name] : name;
+	if (!names.length || names.some((part) => !part.trim()))
+		throw new Error('matchScreenshot requires a non-empty stable snapshot name.');
+}
+
+async function settleScreenshot(target: ScreenshotTarget): Promise<void> {
+	const page = pageFor(target);
+	if (isLocator(target)) await target.waitFor({ state: 'visible' });
+	await page.evaluate(async () => {
+		await globalThis.document.fonts.ready;
+		const images = [...globalThis.document.images].filter((image) => {
+			const box = image.getBoundingClientRect();
+			const style = globalThis.getComputedStyle(image);
+			return (
+				box.width > 0 &&
+				box.height > 0 &&
+				box.bottom > 0 &&
+				box.top < globalThis.innerHeight &&
+				style.display !== 'none' &&
+				style.visibility !== 'hidden' &&
+				style.opacity !== '0'
+			);
+		});
+		for (const image of images) {
+			await image.decode();
+			if (!image.complete || image.naturalWidth <= 0 || image.naturalHeight <= 0)
+				throw new Error(
+					`Visible screenshot image is not decoded: ${image.currentSrc || image.src}`
+				);
+		}
+		await new Promise<void>((resolve) =>
+			globalThis.requestAnimationFrame(() => globalThis.requestAnimationFrame(() => resolve()))
+		);
+	});
+}
+
+function isLocator(target: ScreenshotTarget): target is Locator {
+	return 'page' in target;
+}
+
+function pageFor(target: ScreenshotTarget): Page {
+	return isLocator(target) ? target.page() : target;
+}
+
+function screenshotEvidenceRequested(): boolean {
+	return process.env.TAKE_SCREENSHOT === '1' || process.env.TAKE_SCREENSHOT === 'true';
+}
+
+async function attachScreenshot(
+	testInfo: {
+		attach: (name: string, options: { body: Buffer; contentType: string }) => Promise<void>;
+	},
+	target: ScreenshotTarget,
+	name: ScreenshotName
+): Promise<void> {
+	await testInfo.attach(`screenshot-${screenshotLabel(name)}`, {
+		body: await target.screenshot({ animations: 'disabled', caret: 'hide' }),
+		contentType: 'image/png'
+	});
+}
+
+function screenshotLabel(name: ScreenshotName): string {
+	const label = typeof name === 'string' ? name : name.join('-');
+	return label.replace(/[^a-zA-Z0-9._-]+/g, '_');
+}
 
 export function browserErrorCollector(browser?: string) {
 	const errors: BrowserError[] = [];
