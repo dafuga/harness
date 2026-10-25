@@ -32,23 +32,63 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "Request",
-				"type": "Regression inputs",
-				"description": "Two committed source revisions and the selected test files"
+				"name": "path",
+				"type": "string",
+				"description": "Repository-relative test, configuration, source or metadata path."
+			},
+			{
+				"name": "root",
+				"type": "string",
+				"description": "Disposable or project Git checkout containing committed source."
+			},
+			{
+				"name": "commit",
+				"type": "string",
+				"description": "Actual immutable Git commit to inspect."
+			},
+			{
+				"name": "tests",
+				"type": "string[]",
+				"description": "Selected tracked test files; product source cannot be disguised as a test."
+			},
+			{
+				"name": "red",
+				"type": "RegressionRecord",
+				"description": "The original failed checkpoint and its frozen file and authored expectation identities."
 			}
 		],
 		"outputs": [
 			{
-				"name": "Result",
-				"type": "Regression result",
-				"description": "The frozen test inputs, or why the commit sequence is invalid"
+				"name": "testPath",
+				"type": "boolean",
+				"description": "Identifies standard tests, fixtures and scenario declarations."
+			},
+			{
+				"name": "metadata",
+				"type": "boolean",
+				"description": "Identifies loop traces and Markdown documentation."
+			},
+			{
+				"name": "regressionFiles",
+				"type": "FrozenRegressionInputs",
+				"description": "Actual Git file blobs plus separate typed authored expectation digests and source provenance."
+			},
+			{
+				"name": "regressionFixCommit",
+				"type": "Promise<void>",
+				"description": "Admits only a separate product repair with unchanged executable tests and authored expectations."
+			},
+			{
+				"name": "regressionTestCommit",
+				"type": "Promise<void>",
+				"description": "Admits strengthened test code or authored expectations and rejects product changes."
 			}
 		],
 		"errors": [
 			{
-				"name": "Invalid proof",
-				"type": "Explicit rejection or gap",
-				"description": "Refuses a product repair in the test commit, reused commits or changed test inputs."
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Explains untracked or product test inputs, changed frozen inputs and invalid checkpoint boundaries."
 			}
 		]
 	},
@@ -100,6 +140,608 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "testPath",
+				"name": "Classify packages/app/test/x.ts",
+				"call": "testPath(\"packages/app/test/x.ts\")",
+				"input": ["packages/app/test/x.ts"],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "testPath",
+				"name": "Classify src/x.spec.ts",
+				"call": "testPath(\"src/x.spec.ts\")",
+				"input": ["src/x.spec.ts"],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "testPath",
+				"name": "Classify specification/scenarios/x.json",
+				"call": "testPath(\"specification/scenarios/x.json\")",
+				"input": ["specification/scenarios/x.json"],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "testPath",
+				"name": "Classify src/x.ts",
+				"call": "testPath(\"src/x.ts\")",
+				"input": ["src/x.ts"],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "testPath",
+				"name": "Classify vitest.config.ts",
+				"call": "testPath(\"vitest.config.ts\")",
+				"input": ["vitest.config.ts"],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "metadata",
+				"name": "Classify specification/loops/x/trace.ndjson",
+				"call": "metadata(\"specification/loops/x/trace.ndjson\")",
+				"input": ["specification/loops/x/trace.ndjson"],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "metadata",
+				"name": "Classify .codex/skills/harness/SKILL.md",
+				"call": "metadata(\".codex/skills/harness/SKILL.md\")",
+				"input": [".codex/skills/harness/SKILL.md"],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "metadata",
+				"name": "Classify src/x.ts",
+				"call": "metadata(\"src/x.ts\")",
+				"input": ["src/x.ts"],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "regressionFiles",
+				"name": "Freeze real blobs and authored expectation semantics",
+				"call": "projectFrozenInputs(await regressionFiles(fixture.root, fixture.commit, fixture.tests))",
+				"input": {
+					"fixture": "freeze"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"files": [
+							"harness.verify.json",
+							"package.json",
+							"test/proof.ts",
+							"test/support/data.json",
+							"vitest.config.ts"
+						],
+						"expectations": [
+							{
+								"unit": "function.sample",
+								"path": "specification/units/function.sample.json",
+								"sha256": "fd63e897e7a32736971982f3ea0391e224e13f115cbfe9c61246fc8cc407cf83"
+							}
+						]
+					}
+				}
+			},
+			{
+				"subject": "regressionFiles",
+				"name": "Reject an untracked selected test",
+				"call": "projectFrozenInputs(await regressionFiles(fixture.root, fixture.commit, fixture.tests))",
+				"input": {
+					"fixture": "untracked"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "Regression test missing.test.ts is not a tracked file of this commit."
+					}
+				}
+			},
+			{
+				"subject": "regressionFiles",
+				"name": "Reject product source named as a test",
+				"call": "projectFrozenInputs(await regressionFiles(fixture.root, fixture.commit, fixture.tests))",
+				"input": {
+					"fixture": "product"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "Product source source.ts cannot be declared as the regression test."
+					}
+				}
+			},
+			{
+				"subject": "regressionFixCommit",
+				"name": "Permit a product repair with unrelated documentation changes",
+				"call": "await regressionFixCommit(fixture.root, fixture.commit, fixture.red)",
+				"input": {
+					"fixture": "documentation"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "regressionFixCommit",
+				"name": "Reject reuse of the failing revision",
+				"call": "await regressionFixCommit(fixture.root, fixture.commit, fixture.red)",
+				"input": {
+					"fixture": "same"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "Record a separate fix commit descended from the failing-test commit."
+					}
+				}
+			},
+			{
+				"subject": "regressionFixCommit",
+				"name": "Reject changed executable test bytes",
+				"call": "await regressionFixCommit(fixture.root, fixture.commit, fixture.red)",
+				"input": {
+					"fixture": "changed-test"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "The regression tests, fixtures and runner configuration must remain unchanged."
+					}
+				}
+			},
+			{
+				"subject": "regressionFixCommit",
+				"name": "Reject wrong source hidden by a changed authored answer",
+				"call": "await regressionFixCommit(fixture.root, fixture.commit, fixture.red)",
+				"input": {
+					"fixture": "authored"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "The authored regression expectations must remain unchanged."
+					}
+				}
+			},
+			{
+				"subject": "regressionTestCommit",
+				"name": "Admit a strengthened executable test",
+				"call": "await regressionTestCommit(fixture.root, fixture.commit, fixture.tests)",
+				"input": {
+					"fixture": "test"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "regressionTestCommit",
+				"name": "Admit a strengthened authored comment without changing its adapter",
+				"call": "await regressionTestCommit(fixture.root, fixture.commit, fixture.tests)",
+				"input": {
+					"fixture": "authored-only"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "regressionTestCommit",
+				"name": "Reject product repair in a test checkpoint",
+				"call": "await regressionTestCommit(fixture.root, fixture.commit, fixture.tests)",
+				"input": {
+					"fixture": "product"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "The failing-test commit must be test-only; product files changed: source.ts."
+					}
+				}
+			},
+			{
+				"subject": "regressionTestCommit",
+				"name": "Reject product metadata disguised as a named test",
+				"call": "await regressionTestCommit(fixture.root, fixture.commit, fixture.tests)",
+				"input": {
+					"fixture": "named-product-metadata"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "The failing-test commit must be test-only; product files changed: specification/units/function.sample.json."
+					}
+				}
+			},
+			{
+				"subject": "regressionFiles",
+				"name": "Reject an empty selected test list",
+				"call": "await regressionFiles(fixture.root, fixture.commit, fixture.tests)",
+				"input": {
+					"fixture": "empty"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "Name the strengthened test with --test."
+					}
+				}
+			},
+			{
+				"subject": "regressionFixCommit",
+				"name": "Reject documentation without a product repair",
+				"call": "await regressionFixCommit(fixture.root, fixture.commit, fixture.red)",
+				"input": {
+					"fixture": "metadata-only"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "The separate fix commit must change product code."
+					}
+				}
+			},
+			{
+				"subject": "regressionTestCommit",
+				"name": "Reject documentation without strengthening a named test",
+				"call": "await regressionTestCommit(fixture.root, fixture.commit, fixture.tests)",
+				"input": {
+					"fixture": "documentation-only"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "The failing-test commit must strengthen a named test."
+					}
+				}
+			},
+			{
+				"subject": "regressionTestCommit",
+				"name": "Reject product source disguised as a named test",
+				"call": "await regressionTestCommit(fixture.root, fixture.commit, fixture.tests)",
+				"input": {
+					"fixture": "named-product-source"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "The failing-test commit must be test-only; product files changed: source.ts."
+					}
+				}
+			}
+		],
+		"states": ["input", "invalid"],
+		"props": ["path", "root", "commit", "tests", "red"],
+		"cases": [
+			{
+				"id": "testpath.nested",
+				"state": "input",
+				"subject": "testPath",
+				"example": "Classify packages/app/test/x.ts",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "testPath: Classify packages/app/test/x.ts"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "testpath.spec",
+				"state": "input",
+				"subject": "testPath",
+				"example": "Classify src/x.spec.ts",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "testPath: Classify src/x.spec.ts"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "testpath.scenario",
+				"state": "input",
+				"subject": "testPath",
+				"example": "Classify specification/scenarios/x.json",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "testPath: Classify specification/scenarios/x.json"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "testpath.source",
+				"state": "input",
+				"subject": "testPath",
+				"example": "Classify src/x.ts",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "testPath: Classify src/x.ts"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "testpath.config",
+				"state": "input",
+				"subject": "testPath",
+				"example": "Classify vitest.config.ts",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "testPath: Classify vitest.config.ts"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "metadata.loop",
+				"state": "input",
+				"subject": "metadata",
+				"example": "Classify specification/loops/x/trace.ndjson",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "metadata: Classify specification/loops/x/trace.ndjson"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "metadata.markdown",
+				"state": "input",
+				"subject": "metadata",
+				"example": "Classify .codex/skills/harness/SKILL.md",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "metadata: Classify .codex/skills/harness/SKILL.md"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "metadata.source",
+				"state": "input",
+				"subject": "metadata",
+				"example": "Classify src/x.ts",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "metadata: Classify src/x.ts"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "regressionfiles.freeze",
+				"state": "input",
+				"subject": "regressionFiles",
+				"example": "Freeze real blobs and authored expectation semantics",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionFiles: Freeze real blobs and authored expectation semantics"
+				},
+				"props": ["root", "commit", "tests"]
+			},
+			{
+				"id": "regressionfiles.untracked",
+				"state": "invalid",
+				"subject": "regressionFiles",
+				"example": "Reject an untracked selected test",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionFiles: Reject an untracked selected test"
+				},
+				"props": ["root", "commit", "tests"],
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "regressionfiles.product",
+				"state": "invalid",
+				"subject": "regressionFiles",
+				"example": "Reject product source named as a test",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionFiles: Reject product source named as a test"
+				},
+				"props": ["root", "commit", "tests"],
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "regressionfixcommit.documentation",
+				"state": "input",
+				"subject": "regressionFixCommit",
+				"example": "Permit a product repair with unrelated documentation changes",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionFixCommit: Permit a product repair with unrelated documentation changes"
+				},
+				"props": ["root", "commit", "red"]
+			},
+			{
+				"id": "regressionfixcommit.same",
+				"state": "invalid",
+				"subject": "regressionFixCommit",
+				"example": "Reject reuse of the failing revision",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionFixCommit: Reject reuse of the failing revision"
+				},
+				"props": ["root", "commit", "red"],
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "regressionfixcommit.changed-test",
+				"state": "invalid",
+				"subject": "regressionFixCommit",
+				"example": "Reject changed executable test bytes",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionFixCommit: Reject changed executable test bytes"
+				},
+				"props": ["root", "commit", "red"],
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "regressionfixcommit.authored",
+				"state": "invalid",
+				"subject": "regressionFixCommit",
+				"example": "Reject wrong source hidden by a changed authored answer",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionFixCommit: Reject wrong source hidden by a changed authored answer"
+				},
+				"props": ["root", "commit", "red"],
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "regressiontestcommit.test",
+				"state": "input",
+				"subject": "regressionTestCommit",
+				"example": "Admit a strengthened executable test",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionTestCommit: Admit a strengthened executable test"
+				},
+				"props": ["root", "commit", "tests"]
+			},
+			{
+				"id": "regressiontestcommit.authored-only",
+				"state": "input",
+				"subject": "regressionTestCommit",
+				"example": "Admit a strengthened authored comment without changing its adapter",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionTestCommit: Admit a strengthened authored comment without changing its adapter"
+				},
+				"props": ["root", "commit", "tests"]
+			},
+			{
+				"id": "regressiontestcommit.product",
+				"state": "invalid",
+				"subject": "regressionTestCommit",
+				"example": "Reject product repair in a test checkpoint",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionTestCommit: Reject product repair in a test checkpoint"
+				},
+				"props": ["root", "commit", "tests"],
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "regressiontestcommit.named-product-metadata",
+				"state": "invalid",
+				"subject": "regressionTestCommit",
+				"example": "Reject product metadata disguised as a named test",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionTestCommit: Reject product metadata disguised as a named test"
+				},
+				"props": ["root", "commit", "tests"],
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "regressionfiles.empty",
+				"state": "invalid",
+				"subject": "regressionFiles",
+				"example": "Reject an empty selected test list",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionFiles: Reject an empty selected test list"
+				},
+				"props": ["root", "commit", "tests"],
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "regressionfixcommit.metadata-only",
+				"state": "invalid",
+				"subject": "regressionFixCommit",
+				"example": "Reject documentation without a product repair",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionFixCommit: Reject documentation without a product repair"
+				},
+				"props": ["root", "commit", "red"],
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "regressiontestcommit.documentation-only",
+				"state": "invalid",
+				"subject": "regressionTestCommit",
+				"example": "Reject documentation without strengthening a named test",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionTestCommit: Reject documentation without strengthening a named test"
+				},
+				"props": ["root", "commit", "tests"],
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "regressiontestcommit.named-product-source",
+				"state": "invalid",
+				"subject": "regressionTestCommit",
+				"example": "Reject product source disguised as a named test",
+				"fixture": "test/support/regressionInputFixture.ts",
+				"test": {
+					"file": "test/utils/regression-files.test.ts",
+					"title": "regressionTestCommit: Reject product source disguised as a named test"
+				},
+				"props": ["root", "commit", "tests"],
+				"errors": ["ExpectedCliError"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -62,6 +62,7 @@ const standardFormGuidance = [
 	'Classes: one case per method and declared initialization or lifecycle state, including each declared error.',
 	'APIs: structural complete JSON response matches for each supported prop and error matrix row.',
 	'API comparisons keep every response field, including reserved JSON keys. Before changing a comparison or authored-data parser, strengthen its existing method case to prove field retention and preserve admitted getters, arrays and invalid values.',
+	'Freeze executable tests and authored Examples, states, methods and expected results together. Admit test-only edits to those contract fields, reject product metadata hidden among named tests, and keep original Git blob provenance separate from semantic expectation hashes.',
 	'Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.',
 	'Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.',
 	'Unsupported or missing test coverage is an explicit validation failure',

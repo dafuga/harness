@@ -13,10 +13,10 @@ export async function prepareRepair(root: string, template: string): Promise<voi
 		join(root, 'package.json'),
 		JSON.stringify({ scripts: { check: 'bun proof.ts' } })
 	);
-	await writeFile(join(root, 'source.ts'), 'export const value = 1;');
+	await writeFile(join(root, 'source.ts'), 'export function selectedValue(): number { return 1; }');
 	await writeFile(
 		join(root, 'proof.ts'),
-		"import { value } from './source'; if (value < 0) process.exit(1);"
+		"import { selectedValue } from './source'; if (selectedValue() < 0) process.exit(1);"
 	);
 	const captureScript = await captureFixture(root);
 	await runCommand(['git', 'init', '-q'], root);
@@ -42,7 +42,10 @@ export async function exerciseRepair(root: string, steps: { id: string }[]): Pro
 			await phaseProof(root, step.id, frozen);
 		}
 		if (step.id === 'implement') {
-			await writeFile(join(root, 'source.ts'), 'export const value = 3;');
+			await writeFile(
+				join(root, 'source.ts'),
+				'export function selectedValue(): number { return 3; }'
+			);
 			await commitRepair(root, 'fix: persist the selected value');
 		}
 		const evidence = `${step.id}: existing test checked only positivity; strengthen the shared selected-value assertion; bun run check fails at 1 versus 3, passes unchanged after repairing source.`;
