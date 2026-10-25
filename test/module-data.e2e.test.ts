@@ -1,3 +1,6 @@
+import { ModuleDataRepository } from '../src/repositories/git-source-history/ModuleDataRepository';
+import { ModuleDataReviewRepository } from '../src/repositories/git-source-history/ModuleDataReviewRepository';
+import { ModuleDataCache } from '../src/services/git-source-history/module-data-service/ModuleDataCache';
 import type {
 	ModuleData,
 	HistoryValidationReport,
@@ -11,7 +14,8 @@ import {
 	slugifySource,
 	titleServiceSource,
 	configureTestAuthor,
-	validationInvoker
+	validationInvoker,
+	verifyReview
 } from './support/unitProject';
 import { runCommand } from './support/cli';
 
@@ -40,6 +44,7 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 			])
 		);
 		await verifyReview(project.root, git, invoke, head);
+		await rejectStaleReview(project);
 		const cached = await invoke(['--module', 'service.title']);
 		expect(cached.cached).toBe(true);
 		expect(cached.modules.map((item: { id: string }) => item.id)).toEqual(['service.title']);
@@ -112,35 +117,6 @@ test('validate commits source-derived page API usage and explicit visual data ga
 	}
 }, 180_000);
 
-async function verifyReview(
-	root: string,
-	git: (args: string[]) => ReturnType<typeof runCommand>,
-	invoke: (args: string[]) => Promise<ValidationReport & { exitCode: number }>,
-	head: string
-) {
-	const review = join(root, '..', 'module-review.json');
-	await writeFile(
-		review,
-		JSON.stringify({
-			unit: 'service.title',
-			reason: 'Review the responsibility against this revision source.',
-			metadata: { responsibility: 'Serve normalized titles through the declared title service.' }
-		})
-	);
-	const reviewed = await invoke(['--review', review, '--write']);
-	expect(reviewed.committed).toBe(true);
-	const refreshed = await invoke(['--refresh', '--write']);
-	const retained = (await git(['ls-tree', '-r', '--name-only', refreshed.metadataCommit!])).stdout
-		.split('\n')
-		.find((path: string) => path.startsWith(`modules/${head}/`) && path.endsWith('.json'))!;
-	const reviewedData = JSON.parse(
-		(await git(['show', `${refreshed.metadataCommit}:${retained}`])).stdout
-	) as ModuleData;
-	expect(
-		reviewedData.declarations.find((unit) => unit.id === 'service.title')!.responsibility
-	).toBe('Serve normalized titles through the declared title service.');
-}
-
 // Historical source layout is preserved; data admission must still demand owned source and examples.
 test('historical helper layout does not masquerade as missing module metadata', async () => {
 	const project = await unitProject('lib');
@@ -207,4 +183,33 @@ function historicalSlugifyContract() {
 			]
 		}
 	];
+}
+
+async function rejectStaleReview(project: Awaited<ReturnType<typeof unitProject>>) {
+	const repository = new ModuleDataRepository(project.root);
+	const identity = await repository.identity('HEAD');
+	const held = (await repository.read(identity))!;
+	await new ModuleDataReviewRepository(project.root).write(identity, held.data.declarations, {
+		unit: 'service.title',
+		reason: 'Review metadata changed independently of source or evidence refs.',
+		metadata: { responsibility: 'Serve reviewed title metadata from this exact source revision.' }
+	});
+	expect(
+		await repository.read(identity),
+		'A changed review must invalidate committed module admission'
+	).toBeUndefined();
+	expect(
+		await new ModuleDataCache(repository).read(identity),
+		'A changed review must invalidate cached diagnostics'
+	).toBeUndefined();
+	expect(
+		await new ModuleDataCache(repository).read(identity, true),
+		'A changed review must invalidate cached source metadata'
+	).toBeUndefined();
+	await validationInvoker(project)(['--write']);
+	expect(
+		(await repository.read(identity))!.data.declarations.find(
+			(unit) => unit.id === 'service.title'
+		)!.responsibility
+	).toBe('Serve reviewed title metadata from this exact source revision.');
 }

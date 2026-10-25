@@ -3,7 +3,10 @@ import type { UnitProject } from './unitProject.types';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import type { ValidationReport } from '../../src/services/git-source-history/ModuleDataService.types';
+import type {
+	ModuleData,
+	ValidationReport
+} from '../../src/services/git-source-history/ModuleDataService.types';
 import { runHarness, runCommand } from './cli';
 
 export async function unitProject(kind: 'app' | 'lib'): Promise<UnitProject> {
@@ -92,4 +95,33 @@ export function validationInvoker(project: Awaited<ReturnType<typeof unitProject
 		).toContain('"modules"');
 		return { ...(JSON.parse(result.stdout) as ValidationReport), exitCode: result.exitCode };
 	};
+}
+
+export async function verifyReview(
+	root: string,
+	git: (args: string[]) => ReturnType<typeof runCommand>,
+	invoke: (args: string[]) => Promise<ValidationReport & { exitCode: number }>,
+	head: string
+) {
+	const review = join(root, '..', 'module-review.json');
+	await writeFile(
+		review,
+		JSON.stringify({
+			unit: 'service.title',
+			reason: 'Review the responsibility against this revision source.',
+			metadata: { responsibility: 'Serve normalized titles through the declared title service.' }
+		})
+	);
+	const reviewed = await invoke(['--review', review, '--write']);
+	expect(reviewed.committed).toBe(true);
+	const refreshed = await invoke(['--refresh', '--write']);
+	const retained = (await git(['ls-tree', '-r', '--name-only', refreshed.metadataCommit!])).stdout
+		.split('\n')
+		.find((path: string) => path.startsWith(`modules/${head}/`) && path.endsWith('.json'))!;
+	const reviewedData = JSON.parse(
+		(await git(['show', `${refreshed.metadataCommit}:${retained}`])).stdout
+	) as ModuleData;
+	expect(
+		reviewedData.declarations.find((unit) => unit.id === 'service.title')!.responsibility
+	).toBe('Serve normalized titles through the declared title service.');
 }
