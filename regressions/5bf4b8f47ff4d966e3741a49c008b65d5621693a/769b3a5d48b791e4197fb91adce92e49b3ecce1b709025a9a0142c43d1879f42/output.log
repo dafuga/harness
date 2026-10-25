@@ -1,0 +1,58 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run sync:shared && vitest run "$@"' -- test/run-integration.test.ts -t "Plan uses read-only CLI"
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-HXFovH/packages/desktop
+
+ ❯ test/run-integration.test.ts (9 tests | 1 failed | 8 skipped) 3917ms
+   × Plan uses read-only CLI and saves a committed immutable version without claiming verification 3902ms
+     → Missing or stale committed module data for adb673704ab1c94c42a4a465483e0f828df95ca4. Run harness validate --commit adb673704ab1c94c42a4a465483e0f828df95ca4 --write.
+   ↓ approval alone never runs and Change records untracked and previously dirty source deltas
+   ↓ stale approval is rejected before agent execution
+   ↓ image generation failure creates no invented image or successful completion
+   ↓ failed Change never records a completed outcome
+   ↓ cancelled Change records cancellation and cannot cancel another run ID
+   ↓ observed host writes retain actual absolute path and hashes in committed change history
+   ↓ visual provenance stores actual image orchestration model and exact full generator prompt
+   ↓ Plan refuses a generation whose expected latest version changed while the image was running
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/run-integration.test.ts > Plan uses read-only CLI and saves a committed immutable version without claiming verification
+Error: Missing or stale committed module data for adb673704ab1c94c42a4a465483e0f828df95ca4. Run harness validate --commit adb673704ab1c94c42a4a465483e0f828df95ca4 --write.
+ ❯ requireModuleData ../../src/services/git-source-history/module-data-service/moduleDataAdmission.ts:25:9
+     23|   );
+     24|  const failure = formatModuleDataFailure(stored.data, module);
+     25|  if (failure) throw new Error(failure);
+       |         ^
+     26|  return stored.data;
+     27| }
+ ❯ PerformanceProfileService.observeAsync ../../src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ GitSourceAdapter.units src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts:76:12
+ ❯ PerformanceProfileService.observeAsync ../../src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ CatalogService.held src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts:27:35
+ ❯ CatalogService.entity src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts:20:35
+ ❯ PerformanceProfileService.observeAsync ../../src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ prepareRun src/services/agents-providers/desktop-run-service/prepareRun.ts:19:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 skipped (9)
+   Start at  18:21:42
+   Duration  4.89s (transform 542ms, setup 123ms, collect 715ms, tests 3.92s, environment 0ms, prepare 37ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1
