@@ -1,0 +1,1037 @@
+{
+	"schemaVersion": 1,
+	"id": "function.lfs-pointer",
+	"kind": "function",
+	"title": "Git LFS evidence pointers",
+	"responsibility": "Formats and recognizes LFS pointer text and selects the media extensions stored through LFS.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/evidence-branch-repository/lfsPointer.ts",
+			"src/repositories/verification-evidence/evidence-branch-repository/lfsPointer.ts",
+			"src/services/attached-record-service/lfsPointer.ts",
+			"src/services/history-status-service/attached-record-service/lfsPointer.ts",
+			"src/services/verification-evidence/history-status-service/attached-record-service/lfsPointer.ts",
+			"src/utils/lfsPointer.ts",
+			"src/utils/verification-evidence/lfsPointer.ts",
+			"src/utils/verification-evidence/lfsPointer.types.ts"
+		],
+		"symbols": [
+			"lfsAttributes",
+			"lfsAttributes",
+			"parseLfsPointer",
+			"parseLfsPointer",
+			"parseLfsPointer",
+			"parseLfsPointer",
+			"lfsAttributes",
+			"mediaExtensions",
+			"lfsPointer",
+			"lfsStored",
+			"mediaExtensions",
+			"lfsPointer",
+			"lfsStored",
+			"parseLfsPointer",
+			"lfsAttributes",
+			"LfsObject",
+			"LfsObject"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "lfsPointer.file",
+				"type": "LfsObject",
+				"description": "Original SHA-256 digest and byte count to place in the pointer text."
+			},
+			{
+				"name": "parseLfsPointer.text",
+				"type": "string",
+				"description": "Text to match against a three-line version, SHA-256 object id and decimal size pointer."
+			},
+			{
+				"name": "lfsStored.path",
+				"type": "string",
+				"description": "File path whose final extension determines LFS storage, case-insensitively."
+			}
+		],
+		"outputs": [
+			{
+				"name": "lfsPointer",
+				"type": "string",
+				"description": "Three-line Git LFS pointer with the standard version URL, supplied digest and size, and a final newline."
+			},
+			{
+				"name": "parseLfsPointer",
+				"type": "LfsObject | undefined",
+				"description": "Parsed digest and numeric byte size, or undefined when the pointer shape does not match."
+			},
+			{
+				"name": "lfsStored",
+				"type": "boolean",
+				"description": "True for png, jpg, jpeg, webp, gif, wav, mp3, m4a, ogg, webm and mp4 extensions."
+			},
+			{
+				"name": "lfsAttributes",
+				"type": "string",
+				"description": "Git attributes lines applying LFS filtering to lowercase and uppercase forms of each supported media extension."
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Thrown when lfsPointer receives a null or undefined file object, or when parseLfsPointer or lfsStored receives a value that cannot convert to text, such as a symbol."
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/verification-evidence/lfsPointer.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/verification-evidence/lfsPointer.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "lfsPointer",
+				"name": "Write the exact pointer text for a 12-byte object",
+				"call": "lfsPointer({ sha256: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', bytes: 12 })",
+				"input": [
+					{
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"bytes": 12
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize 12\n"
+				}
+			},
+			{
+				"subject": "lfsPointer",
+				"name": "Write a pointer for a zero-byte object",
+				"call": "lfsPointer({ sha256: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', bytes: 0 })",
+				"input": [
+					{
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"bytes": 0
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize 0\n"
+				}
+			},
+			{
+				"subject": "lfsPointer",
+				"name": "Write the largest safe integer size",
+				"call": "lfsPointer({ sha256: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', bytes: Number.MAX_SAFE_INTEGER })",
+				"input": [
+					{
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"bytes": 9007199254740991
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize 9007199254740991\n"
+				}
+			},
+			{
+				"subject": "lfsPointer",
+				"name": "Write a pointer from getter-backed fields",
+				"call": "lfsPointer({ get sha256() { return 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'; }, get bytes() { return 12; } })",
+				"input": [
+					{
+						"$fixture": "getter-object",
+						"file": {
+							"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"bytes": 12
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize 12\n"
+				}
+			},
+			{
+				"subject": "lfsPointer",
+				"name": "Write a digest that is not SHA-256 without validation",
+				"call": "lfsPointer({ sha256: 'short', bytes: 1 })",
+				"input": [
+					{
+						"sha256": "short",
+						"bytes": 1
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "version https://git-lfs.github.com/spec/v1\noid sha256:short\nsize 1\n"
+				}
+			},
+			{
+				"subject": "lfsPointer",
+				"name": "Write a negative size without validation",
+				"call": "lfsPointer({ sha256: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', bytes: -1 })",
+				"input": [
+					{
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"bytes": -1
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize -1\n"
+				}
+			},
+			{
+				"subject": "lfsPointer",
+				"name": "Refuse a null file object",
+				"call": "lfsPointer(null)",
+				"input": [null],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of null (reading 'sha256')"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Read the pointer written for a 12-byte object",
+				"call": "parseLfsPointer(lfsPointer({ sha256: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', bytes: 12 }))",
+				"input": [
+					{
+						"$fixture": "lfs-pointer",
+						"file": {
+							"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"bytes": 12
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"bytes": 12
+					}
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Read a pointer without its final newline",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\nsize 12')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize 12"
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"bytes": 12
+					}
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Read a size with leading zeros",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\nsize 007\\n')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize 007\n"
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"bytes": 7
+					}
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Read the largest safe integer size",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\nsize 9007199254740991\\n')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize 9007199254740991\n"
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"bytes": 9007199254740991
+					}
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse plain media bytes",
+				"call": "parseLfsPointer('PNG bytes')",
+				"input": ["PNG bytes"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse an empty pointer",
+				"call": "parseLfsPointer('')",
+				"input": [""],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse a missing pointer text",
+				"call": "parseLfsPointer(undefined)",
+				"input": [
+					{
+						"$fixture": "undefined"
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse a symbol pointer text",
+				"call": "parseLfsPointer(Symbol('pointer'))",
+				"input": [
+					{
+						"$fixture": "symbol",
+						"description": "pointer"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot convert a Symbol value to a string"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse a digest that is too short",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\noid sha256:short\\nsize 1\\n')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:short\nsize 1\n"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse a digest one character short",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\nsize 1\\n')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize 1\n"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse a digest one character long",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\nsize 1\\n')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize 1\n"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse an uppercase digest",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\noid sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\\nsize 1\\n')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nsize 1\n"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse a negative size",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\nsize -1\\n')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize -1\n"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse a non-decimal size",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\nsize 1.5\\n')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize 1.5\n"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse an extra blank line after the size",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\nsize 12\\n\\n')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nsize 12\n\n"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse CRLF line endings",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\r\\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\r\\nsize 12\\r\\n')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\r\noid sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nsize 12\r\n"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "parseLfsPointer",
+				"name": "Refuse a pointer without an object id",
+				"call": "parseLfsPointer('version https://git-lfs.github.com/spec/v1\\nsize 12\\n')",
+				"input": [
+					"version https://git-lfs.github.com/spec/v1\nsize 12\n"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Select a lowercase PNG screenshot",
+				"call": "lfsStored('a/shot.png')",
+				"input": ["a/shot.png"],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Select an uppercase WAV recording",
+				"call": "lfsStored('b/SPOKEN.WAV')",
+				"input": ["b/SPOKEN.WAV"],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Select a WebM clip",
+				"call": "lfsStored('c/clip.webm')",
+				"input": ["c/clip.webm"],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Keep a JSON record as an ordinary blob",
+				"call": "lfsStored('record.json')",
+				"input": ["record.json"],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Keep a unit log as an ordinary blob",
+				"call": "lfsStored('logs/unit.log')",
+				"input": ["logs/unit.log"],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Keep a text evidence file as an ordinary blob",
+				"call": "lfsStored('evidence/out.txt')",
+				"input": ["evidence/out.txt"],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Refuse a bare extension name",
+				"call": "lfsStored('png')",
+				"input": ["png"],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Select a dotfile named with a media extension",
+				"call": "lfsStored('.png')",
+				"input": [".png"],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Refuse a media extension on a directory name",
+				"call": "lfsStored('archive.png/readme')",
+				"input": ["archive.png/readme"],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Refuse an extension outside the media list",
+				"call": "lfsStored('clip.mov')",
+				"input": ["clip.mov"],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Refuse an empty path",
+				"call": "lfsStored('')",
+				"input": [""],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Refuse a missing path",
+				"call": "lfsStored(undefined)",
+				"input": [
+					{
+						"$fixture": "undefined"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "lfsStored",
+				"name": "Refuse a symbol path",
+				"call": "lfsStored(Symbol('path'))",
+				"input": [
+					{
+						"$fixture": "symbol",
+						"description": "path"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot convert a Symbol value to a string"
+				}
+			},
+			{
+				"subject": "lfsAttributes",
+				"name": "List LFS filters for each media extension in both cases",
+				"call": "lfsAttributes()",
+				"input": [],
+				"expected": {
+					"kind": "value",
+					"value": "*.png filter=lfs diff=lfs merge=lfs -text\n*.PNG filter=lfs diff=lfs merge=lfs -text\n*.jpg filter=lfs diff=lfs merge=lfs -text\n*.JPG filter=lfs diff=lfs merge=lfs -text\n*.jpeg filter=lfs diff=lfs merge=lfs -text\n*.JPEG filter=lfs diff=lfs merge=lfs -text\n*.webp filter=lfs diff=lfs merge=lfs -text\n*.WEBP filter=lfs diff=lfs merge=lfs -text\n*.gif filter=lfs diff=lfs merge=lfs -text\n*.GIF filter=lfs diff=lfs merge=lfs -text\n*.wav filter=lfs diff=lfs merge=lfs -text\n*.WAV filter=lfs diff=lfs merge=lfs -text\n*.mp3 filter=lfs diff=lfs merge=lfs -text\n*.MP3 filter=lfs diff=lfs merge=lfs -text\n*.m4a filter=lfs diff=lfs merge=lfs -text\n*.M4A filter=lfs diff=lfs merge=lfs -text\n*.ogg filter=lfs diff=lfs merge=lfs -text\n*.OGG filter=lfs diff=lfs merge=lfs -text\n*.webm filter=lfs diff=lfs merge=lfs -text\n*.WEBM filter=lfs diff=lfs merge=lfs -text\n*.mp4 filter=lfs diff=lfs merge=lfs -text\n*.MP4 filter=lfs diff=lfs merge=lfs -text\n"
+				}
+			}
+		],
+		"states": ["input", "boundary", "invalid"],
+		"props": ["file", "sha256", "bytes", "text", "path"],
+		"cases": [
+			{
+				"id": "lfs-pointer.exact-text",
+				"state": "input",
+				"subject": "lfsPointer",
+				"example": "Write the exact pointer text for a 12-byte object",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsPointer: Write the exact pointer text for a 12-byte object"
+				},
+				"props": ["file", "sha256", "bytes"]
+			},
+			{
+				"id": "lfs-pointer.zero-bytes",
+				"state": "boundary",
+				"subject": "lfsPointer",
+				"example": "Write a pointer for a zero-byte object",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsPointer: Write a pointer for a zero-byte object"
+				},
+				"props": ["file", "bytes"]
+			},
+			{
+				"id": "lfs-pointer.max-safe-size",
+				"state": "boundary",
+				"subject": "lfsPointer",
+				"example": "Write the largest safe integer size",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsPointer: Write the largest safe integer size"
+				},
+				"props": ["file", "bytes"]
+			},
+			{
+				"id": "lfs-pointer.getter-fields",
+				"state": "boundary",
+				"subject": "lfsPointer",
+				"example": "Write a pointer from getter-backed fields",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsPointer: Write a pointer from getter-backed fields"
+				},
+				"props": ["file", "sha256", "bytes"]
+			},
+			{
+				"id": "lfs-pointer.non-sha256-digest",
+				"state": "invalid",
+				"subject": "lfsPointer",
+				"example": "Write a digest that is not SHA-256 without validation",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsPointer: Write a digest that is not SHA-256 without validation"
+				},
+				"props": ["file", "sha256"]
+			},
+			{
+				"id": "lfs-pointer.negative-size",
+				"state": "invalid",
+				"subject": "lfsPointer",
+				"example": "Write a negative size without validation",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsPointer: Write a negative size without validation"
+				},
+				"props": ["file", "bytes"]
+			},
+			{
+				"id": "lfs-pointer.null-file",
+				"state": "invalid",
+				"subject": "lfsPointer",
+				"example": "Refuse a null file object",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsPointer: Refuse a null file object"
+				},
+				"props": ["file"],
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "lfs-pointer.read-round-trip",
+				"state": "input",
+				"subject": "parseLfsPointer",
+				"example": "Read the pointer written for a 12-byte object",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Read the pointer written for a 12-byte object"
+				},
+				"props": ["file", "sha256", "bytes", "text"]
+			},
+			{
+				"id": "lfs-pointer.read-without-final-newline",
+				"state": "boundary",
+				"subject": "parseLfsPointer",
+				"example": "Read a pointer without its final newline",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Read a pointer without its final newline"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.read-leading-zero-size",
+				"state": "boundary",
+				"subject": "parseLfsPointer",
+				"example": "Read a size with leading zeros",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Read a size with leading zeros"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.read-max-safe-size",
+				"state": "boundary",
+				"subject": "parseLfsPointer",
+				"example": "Read the largest safe integer size",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Read the largest safe integer size"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-media-bytes",
+				"state": "invalid",
+				"subject": "parseLfsPointer",
+				"example": "Refuse plain media bytes",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse plain media bytes"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-empty-text",
+				"state": "invalid",
+				"subject": "parseLfsPointer",
+				"example": "Refuse an empty pointer",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse an empty pointer"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-missing-text",
+				"state": "invalid",
+				"subject": "parseLfsPointer",
+				"example": "Refuse a missing pointer text",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse a missing pointer text"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-symbol-text",
+				"state": "invalid",
+				"subject": "parseLfsPointer",
+				"example": "Refuse a symbol pointer text",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse a symbol pointer text"
+				},
+				"props": ["text"],
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "lfs-pointer.refuse-short-digest",
+				"state": "invalid",
+				"subject": "parseLfsPointer",
+				"example": "Refuse a digest that is too short",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse a digest that is too short"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-digest-63",
+				"state": "boundary",
+				"subject": "parseLfsPointer",
+				"example": "Refuse a digest one character short",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse a digest one character short"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-digest-65",
+				"state": "boundary",
+				"subject": "parseLfsPointer",
+				"example": "Refuse a digest one character long",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse a digest one character long"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-uppercase-digest",
+				"state": "boundary",
+				"subject": "parseLfsPointer",
+				"example": "Refuse an uppercase digest",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse an uppercase digest"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-negative-size",
+				"state": "invalid",
+				"subject": "parseLfsPointer",
+				"example": "Refuse a negative size",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse a negative size"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-decimal-size",
+				"state": "boundary",
+				"subject": "parseLfsPointer",
+				"example": "Refuse a non-decimal size",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse a non-decimal size"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-extra-blank-line",
+				"state": "boundary",
+				"subject": "parseLfsPointer",
+				"example": "Refuse an extra blank line after the size",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse an extra blank line after the size"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-crlf",
+				"state": "boundary",
+				"subject": "parseLfsPointer",
+				"example": "Refuse CRLF line endings",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse CRLF line endings"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.refuse-missing-object-id",
+				"state": "invalid",
+				"subject": "parseLfsPointer",
+				"example": "Refuse a pointer without an object id",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "parseLfsPointer: Refuse a pointer without an object id"
+				},
+				"props": ["text"]
+			},
+			{
+				"id": "lfs-pointer.select-png",
+				"state": "input",
+				"subject": "lfsStored",
+				"example": "Select a lowercase PNG screenshot",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Select a lowercase PNG screenshot"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.select-upper-wav",
+				"state": "input",
+				"subject": "lfsStored",
+				"example": "Select an uppercase WAV recording",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Select an uppercase WAV recording"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.select-webm",
+				"state": "input",
+				"subject": "lfsStored",
+				"example": "Select a WebM clip",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Select a WebM clip"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.keep-json",
+				"state": "input",
+				"subject": "lfsStored",
+				"example": "Keep a JSON record as an ordinary blob",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Keep a JSON record as an ordinary blob"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.keep-unit-log",
+				"state": "input",
+				"subject": "lfsStored",
+				"example": "Keep a unit log as an ordinary blob",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Keep a unit log as an ordinary blob"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.keep-text-evidence",
+				"state": "input",
+				"subject": "lfsStored",
+				"example": "Keep a text evidence file as an ordinary blob",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Keep a text evidence file as an ordinary blob"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.refuse-bare-extension",
+				"state": "boundary",
+				"subject": "lfsStored",
+				"example": "Refuse a bare extension name",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Refuse a bare extension name"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.select-dotfile",
+				"state": "boundary",
+				"subject": "lfsStored",
+				"example": "Select a dotfile named with a media extension",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Select a dotfile named with a media extension"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.refuse-directory-extension",
+				"state": "boundary",
+				"subject": "lfsStored",
+				"example": "Refuse a media extension on a directory name",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Refuse a media extension on a directory name"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.refuse-unlisted-extension",
+				"state": "boundary",
+				"subject": "lfsStored",
+				"example": "Refuse an extension outside the media list",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Refuse an extension outside the media list"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.refuse-empty-path",
+				"state": "boundary",
+				"subject": "lfsStored",
+				"example": "Refuse an empty path",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Refuse an empty path"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.refuse-missing-path",
+				"state": "invalid",
+				"subject": "lfsStored",
+				"example": "Refuse a missing path",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Refuse a missing path"
+				},
+				"props": ["path"]
+			},
+			{
+				"id": "lfs-pointer.refuse-symbol-path",
+				"state": "invalid",
+				"subject": "lfsStored",
+				"example": "Refuse a symbol path",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsStored: Refuse a symbol path"
+				},
+				"props": ["path"],
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "lfs-pointer.attributes-both-cases",
+				"state": "input",
+				"subject": "lfsAttributes",
+				"example": "List LFS filters for each media extension in both cases",
+				"fixture": "test/utils/lfs-pointer.test.ts",
+				"test": {
+					"file": "test/utils/lfs-pointer.test.ts",
+					"title": "lfsAttributes: List LFS filters for each media extension in both cases"
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
