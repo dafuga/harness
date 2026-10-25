@@ -95,6 +95,8 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
 			await assertComponentCapture(page, unit.id, viewport.id);
+			if (unit.id === 'reports.component.module-system-explorer-modules-screen')
+				await expect(component.locator('article')).toHaveCount(6);
 			await assertModulePreview(component, unit.id);
 			if (unit.id === 'reports.component.networking-security-explorer-permissions-screen')
 				await assertPermissionTable(component, page);
