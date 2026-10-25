@@ -14,6 +14,7 @@ const labels: Array<[HarnessShellCategory['id'], string]> = [
 	['pages', 'Pages'],
 	['apis', 'APIs'],
 	['modules', 'Code'],
+	['module-library', 'Modules'],
 	['translations', 'Translations'],
 	['platforms', 'Platforms']
 ];
@@ -31,10 +32,14 @@ const moduleLabels: Array<[Exclude<HarnessShellCategory['id'], 'modules'>, strin
 
 function categoryActive(place: ExplorerLocation | null, id: HarnessShellCategory['id']): boolean {
 	if (!place) return false;
+	if (id === 'module-library') return place.screen === 'modules';
+	if (id.startsWith('resource:'))
+		return place.screen === 'module-resources' && place.entity === id.slice(9);
 	if (id === 'modules')
 		return (
 			place.screen === 'styles' ||
 			place.screen === 'dependencies' ||
+			place.screen === 'module-resources' ||
 			(!place.screen && moduleLabels.some(([category]) => category === place.category))
 		);
 	if (place.screen) return id === place.screen;
@@ -45,8 +50,10 @@ function categoryGlyph(id: HarnessShellCategory['id']): HarnessIconName {
 	if (id === 'styles') return 'styles';
 	if (id === 'translations') return 'web';
 	if (id === 'modules') return 'layers';
+	if (id === 'module-library') return 'layers';
+	if (id.startsWith('resource:')) return 'code';
 	if (id === 'dependencies') return 'code';
-	return categoryIcon[id];
+	return categoryIcon[id as keyof typeof categoryIcon];
 }
 
 function categoryItem(
@@ -96,6 +103,16 @@ function categoryTarget(
 	id: HarnessShellCategory['id']
 ): ExplorerLocation | null {
 	if (!place) return null;
+	if (id === 'module-library')
+		return { branch: place.branch, commit: place.commit, category: 'pages', screen: 'modules' };
+	if (id.startsWith('resource:'))
+		return {
+			branch: place.branch,
+			commit: place.commit,
+			category: 'pages',
+			screen: 'module-resources',
+			entity: id.slice(9)
+		};
 	const category = id === 'modules' ? 'components' : id;
 	const target: ExplorerLocation = {
 		branch: place.branch,
@@ -103,7 +120,7 @@ function categoryTarget(
 		category:
 			category === 'styles' || category === 'dependencies' || category === 'translations'
 				? 'pages'
-				: category
+				: (category as ExplorerLocation['category'])
 	};
 	if (id === 'styles' || id === 'dependencies' || id === 'translations') target.screen = id;
 	return target;
@@ -122,7 +139,17 @@ export function harnessShell(input: HarnessNavbarInput): HarnessShellView {
 			? { branch: scope.branch, commit: null, category: 'pages' }
 			: null;
 	const categories = labels.map(([id, label]) => categoryItem(input, id, label));
-	const modules = scope ? moduleLabels.map(([id, label]) => categoryItem(input, id, label)) : [];
+	const contributed =
+		input.modules?.modules
+			.filter((entry) => entry.installed)
+			.flatMap((entry) =>
+				entry.definition.resources.map((resource) =>
+					categoryItem(input, `resource:${entry.definition.id}.${resource.id}`, resource.title)
+				)
+			) ?? [];
+	const modules = scope
+		? [...moduleLabels.map(([id, label]) => categoryItem(input, id, label)), ...contributed]
+		: [];
 
 	return {
 		home: { href: tip ? input.href(tip) : input.base, to: tip },

@@ -126,6 +126,9 @@
 					"symbol": "validateRouteName"
 				},
 				{
+					"unit": "service.module-system-module-resource"
+				},
+				{
 					"unit": "template.app-pieces",
 					"symbol": "apiFiles"
 				},
@@ -307,6 +310,9 @@
 					"symbol": "toCamelCase"
 				},
 				{
+					"unit": "service.module-system-module-resource"
+				},
+				{
 					"unit": "template.app-pieces",
 					"symbol": "componentFiles"
 				},
@@ -446,6 +452,9 @@
 				{
 					"unit": "function.validation",
 					"symbol": "validateExportName"
+				},
+				{
+					"unit": "service.module-system-module-resource"
 				},
 				{
 					"unit": "template.app-pieces",

@@ -20,7 +20,7 @@ export const explorerSections = ['details', 'history'] as const;
 const categoryAlias = new Map([['shells', 'layouts']]);
 const canonicalCategory = (name: string) => categoryAlias.get(name) ?? name;
 const hash = /^[0-9a-f]{40}$/;
-const screens = new Set(['styles', 'translations', 'dependencies']);
+const screens = new Set(['styles', 'translations', 'dependencies', 'modules', 'module-resources']);
 const isCategory = (name: string): name is ExplorerCategory =>
 	explorerCategories.some((known) => known === name);
 const isSection = (name: string): name is ExplorerSection =>
@@ -85,8 +85,17 @@ export function explorerRoute(path: string, search = ''): ExplorerLocation | und
 }
 
 function screenSelection(found: Scope, screen: ExplorerScreen): ExplorerLocation | undefined {
-	if (found.rest.length !== 1) return undefined;
-	return { branch: found.branch, commit: found.commit, category: 'pages', screen };
+	const module = screen === 'modules' || screen === 'module-resources';
+	if (found.rest.length !== 1 && !(module && found.rest.length === 2)) return undefined;
+	const entity = found.rest[1] && decoded(found.rest[1]);
+	if (found.rest[1] && (!entity || !/^[a-z][a-z0-9.-]*$/.test(entity))) return undefined;
+	return {
+		branch: found.branch,
+		commit: found.commit,
+		category: 'pages',
+		screen,
+		...(entity ? { entity } : {})
+	};
 }
 
 /** Legacy Details links keep their scope and open a tab of the existing entity page. */
@@ -151,7 +160,10 @@ function helperPane(location: ExplorerLocation, pane?: string): ExplorerLocation
 }
 
 function specialPath(location: ExplorerLocation): string | undefined {
-	if (location.screen) return `/${location.screen}`;
+	if (location.screen) {
+		const module = location.screen === 'modules' || location.screen === 'module-resources';
+		return `/${location.screen}${module && location.entity ? `/${encodeURIComponent(location.entity)}` : ''}`;
+	}
 	if (location.category !== 'functions' || !location.helper) return undefined;
 	const helper = encodeURIComponent(location.helper);
 	const owner = location.entity ? `/in/${encodeURIComponent(location.entity)}` : '';

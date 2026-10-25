@@ -19,6 +19,7 @@ import { RegressionProofRepository } from '../../../repositories/RegressionProof
 import { unitMetadata } from './unitMetadata';
 import { readPlatformCatalog } from './platformCatalog';
 import { projectDependencies } from './projectDependencies';
+import { ModuleCatalogService } from '../../module-system/ModuleCatalogService';
 /** What the source of a commit says, whatever is noted on it: shared, it is read only once. */
 export const revisionSources = (root: string) => ({
 	source: new sourceImpact.SourceImpactService(root),
@@ -176,13 +177,15 @@ function catalogFields(stored: Stored) {
 	return {
 		platforms: stored.platforms,
 		translations: stored.translations,
-		projectDependencies: stored.projectDependencies
+		projectDependencies: stored.projectDependencies,
+		modules: stored.modules
 	};
 }
 
 async function readCatalogs(tree: SourceTree, registry: RevisionRegistry) {
 	return {
 		platforms: await readPlatformCatalog(tree),
+		modules: await new ModuleCatalogService().at(tree),
 		projectDependencies: await projectDependencies(tree),
 		translations: await translationCatalog(tree, registry.units)
 	};

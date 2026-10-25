@@ -20,6 +20,8 @@
 			"reports.component.harness-entity-visual-screen",
 			"reports.component.harness-explorer-catalog-screen",
 			"reports.component.harness-explorer-pages-screen",
+			"reports.component.module-system-explorer-module-resources-screen",
+			"reports.component.module-system-explorer-modules-screen",
 			"reports.component.shared-primitives-atoms-html-div"
 		]
 	},
@@ -162,6 +164,16 @@
 		},
 		{
 			"unit": "reports.component.harness-explorer-pages-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.module-system-explorer-module-resources-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.module-system-explorer-modules-screen",
 			"via": "import",
 			"origin": "derived"
 		},

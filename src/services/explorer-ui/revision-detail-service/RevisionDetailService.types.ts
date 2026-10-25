@@ -10,8 +10,10 @@ import type { BudgetEvent } from '../../../core/budgetTypes';
 import type { StoredSide } from '../../../utils/sideImpact';
 import type { CommitStatus } from '../../history-status-service/HistoryStatusService';
 import type { ProjectDependencies } from './projectDependencies.types';
+import type { ModuleCatalog } from '../../module-system/moduleDefinition.types';
 
 export interface RevisionDetail {
+	modules?: ModuleCatalog;
 	schemaVersion: 1;
 	commit: string;
 	platforms?: PlatformCatalog;
@@ -46,6 +48,7 @@ export interface RevisionDetail {
 }
 
 export interface Stored {
+	modules: ModuleCatalog;
 	platforms: PlatformCatalog;
 	projectDependencies: ProjectDependencies;
 	translations: TranslationCatalog;

@@ -198,3 +198,11 @@ export { ModuleCatalogService } from './services/module-system/ModuleCatalogServ
 export { ModuleCommand } from './commands/module-system/ModuleCommand';
 export { ModuleInstallService } from './services/module-system/ModuleInstallService';
 export { ModuleResourceService } from './services/module-system/ModuleResourceService';
+
+export type {
+	ModuleDefinition,
+	ModuleResource,
+	ModuleState,
+	ModuleCatalog
+} from './services/module-system/moduleDefinition.types';
+export { moduleDefinitionSchema } from './services/module-system/moduleDefinition';

@@ -1,0 +1,88 @@
+{
+	"schemaVersion": 1,
+	"id": "service.module-system-module-install",
+	"kind": "service",
+	"title": "ModuleInstallService",
+	"responsibility": "Install one capability foundation without replacing existing project source or invoking providers.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/module-system/ModuleInstallService.ts"],
+		"symbols": ["ModuleInstallService", "ModuleInstallService.add"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ModuleInstallService.add.root",
+				"type": "string",
+				"description": "Absolute project directory containing the package manifest and module metadata."
+			},
+			{
+				"name": "ModuleInstallService.add.id",
+				"type": "string",
+				"description": "Validated identity of the capability module to install or inspect."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleInstallService.add",
+				"type": "Promise<string[]>",
+				"description": "Relative paths actually created or updated by this operation."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.module-system-module-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-writes",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/module-system/ModuleInstallService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/module-system/ModuleInstallService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

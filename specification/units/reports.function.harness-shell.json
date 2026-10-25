@@ -91,6 +91,11 @@
 			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

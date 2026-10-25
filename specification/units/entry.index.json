@@ -147,7 +147,16 @@
 			"ModuleTaskRunnerAdapter",
 			"ModuleTaskWorkerService",
 			"ModuleTaskAnalyticsService",
-			"ModuleTaskWorktreeAdapter"
+			"ModuleTaskWorktreeAdapter",
+			"ModuleCatalogService",
+			"ModuleCommand",
+			"ModuleInstallService",
+			"ModuleResourceService",
+			"ModuleDefinition",
+			"ModuleResource",
+			"ModuleState",
+			"ModuleCatalog",
+			"moduleDefinitionSchema"
 		]
 	},
 	"contract": {
@@ -234,6 +243,11 @@
 		},
 		{
 			"unit": "command.codex-picker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.module-system-module",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -669,6 +683,26 @@
 		},
 		{
 			"unit": "service.model-dependency",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-catalog",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-install",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-resource",
 			"via": "reexport",
 			"origin": "derived"
 		},

@@ -5,9 +5,11 @@ import type { HarnessIndex } from '../../models/explorer-ui/Harness.types';
 import type { HarnessRevisionSummary } from '../../models/explorer-ui/Harness.types';
 import type { SearchEntry } from './entitySearch';
 import type { HarnessIconName } from './harnessIcons';
+import type { ModuleCatalog } from '../../../../../src/services/module-system/moduleDefinition.types';
 
 /** What a host gives the bar of the explorer. */
 export interface HarnessNavbarInput {
+	modules?: ModuleCatalog;
 	/** The mount of the console; the brand leads there while no branch is resolved. */
 	base: string;
 	/** The repository this website shows; without a name no repository segment is drawn. */
@@ -39,7 +41,14 @@ export interface HarnessShellLink {
 }
 
 export interface HarnessShellCategory {
-	id: ExplorerCategory | 'styles' | 'dependencies' | 'translations' | 'modules';
+	id:
+		| ExplorerCategory
+		| 'styles'
+		| 'dependencies'
+		| 'translations'
+		| 'modules'
+		| 'module-library'
+		| `resource:${string}`;
 	label: string;
 	icon: HarnessIconName;
 	active: boolean;

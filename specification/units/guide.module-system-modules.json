@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "guide.module-system-modules",
+	"kind": "guide",
+	"title": "modules",
+	"responsibility": "Document the module authoring, installation and generation contract.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/guides/module-system/modules.ts"],
+		"symbols": ["modulesGuide"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "modulesGuide",
+				"type": "Guide",
+				"description": "Static agent and developer guidance with executable CLI examples."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "guide.guide",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/guides/module-system/modules.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/guides/module-system/modules.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

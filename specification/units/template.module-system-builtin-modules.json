@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "template.module-system-builtin-modules",
+	"kind": "template",
+	"title": "builtinModules",
+	"responsibility": "Admit built-in Email and Offline definitions through the same schema used by project modules.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/templates/module-system/builtinModules.ts"],
+		"symbols": ["builtinModules"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "builtinModules",
+				"type": "unknown",
+				"description": "Declarative capability definitions, source templates, tests and setup instructions."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-email-module",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-offline-module",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/module-system/builtinModules.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/module-system/builtinModules.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

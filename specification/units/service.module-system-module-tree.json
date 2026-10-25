@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "service.module-system-module-tree",
+	"kind": "service",
+	"title": "moduleTree",
+	"responsibility": "Read module metadata at a project boundary without importing application code.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/module-system/moduleTree.ts"],
+		"symbols": ["moduleTree"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "moduleTree.root",
+				"type": "string",
+				"description": "Absolute project directory containing the package manifest and module metadata."
+			}
+		],
+		"outputs": [
+			{
+				"name": "moduleTree",
+				"type": "unknown",
+				"description": "Filesystem-backed read and list operations restricted to module metadata."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/module-system/moduleTree.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/module-system/moduleTree.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

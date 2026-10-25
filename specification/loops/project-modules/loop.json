@@ -2,7 +2,7 @@
 	"name": "project-modules",
 	"goal": "Projects install extensible modules that add Code resource types, generators and working offline/email foundations",
 	"createdAt": "2026-10-25T13:26:29.428Z",
-	"updatedAt": "2026-10-25T13:26:29.428Z",
+	"updatedAt": "2026-10-25T13:41:38.654Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -12,7 +12,9 @@
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T13:41:38.654Z",
+			"evidence": "User selected working foundation, queued writes and project-local modules; inspected Fluora, BuildFlexity active offline branch and Resend delivery. Acceptance frozen at 39ab83b325."
 		},
 		{
 			"id": "implement",

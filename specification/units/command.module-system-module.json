@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "command.module-system-module",
+	"kind": "command",
+	"title": "ModuleCommand",
+	"responsibility": "Expose module discovery, instructions, installation and resource generation through the CLI.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/module-system/ModuleCommand.ts"],
+		"symbols": ["ModuleCommand", "ModuleCommand.register"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ModuleCommand.register.program",
+				"type": "Command",
+				"description": "Commander program that receives the module subcommands."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleCommand.register",
+				"type": "void",
+				"description": "Registers module list, info, add and generate subcommands on the supplied program."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.module-system-module-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-install",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-resource",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/module-system/ModuleCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/module-system/ModuleCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

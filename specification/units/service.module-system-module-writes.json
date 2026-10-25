@@ -1,0 +1,88 @@
+{
+	"schemaVersion": 1,
+	"id": "service.module-system-module-writes",
+	"kind": "service",
+	"title": "moduleWrites",
+	"responsibility": "Preflight all module outputs and roll back task-owned writes when a write fails.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/module-system/moduleWrites.ts"],
+		"symbols": ["writeModuleFiles", "moduleOutputPath"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "writeModuleFiles.root",
+				"type": "string",
+				"description": "Absolute project directory containing the package manifest and module metadata."
+			},
+			{
+				"name": "writeModuleFiles.files",
+				"type": "PlannedFile[]",
+				"description": "Complete relative-path file plan, checked before any write."
+			},
+			{
+				"name": "writeModuleFiles.replace",
+				"type": "string[]",
+				"description": "Explicit metadata paths this transaction is permitted to update."
+			},
+			{
+				"name": "writeModuleFiles.allowIdentical",
+				"type": "unknown",
+				"description": "Whether an existing byte-identical file is an idempotent setup output."
+			},
+			{
+				"name": "moduleOutputPath.path",
+				"type": "string",
+				"description": "Relative module output path that must stay within supported project code areas."
+			}
+		],
+		"outputs": [
+			{
+				"name": "writeModuleFiles",
+				"type": "Promise<string[]>",
+				"description": "Relative paths actually created or updated by this operation."
+			},
+			{
+				"name": "moduleOutputPath",
+				"type": "string",
+				"description": "Validated project-relative module output path."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.files",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/module-system/moduleWrites.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/module-system/moduleWrites.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

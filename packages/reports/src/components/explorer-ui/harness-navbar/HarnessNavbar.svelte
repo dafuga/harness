@@ -56,7 +56,9 @@
 	</hx-nav>
 	{#if input.scope && moduleActive}
 		<HarnessTabs
-			view={input.scope.location.screen ?? input.scope.location.category}
+			view={input.scope.location.screen === 'module-resources'
+				? `resource:${input.scope.location.entity}`
+				: (input.scope.location.screen ?? input.scope.location.category)}
 			onview={openKind}
 			tabs={kinds}
 			label="Code categories"

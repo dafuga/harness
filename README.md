@@ -1043,3 +1043,53 @@ in its native picker and applies verified provider changes on the next turn. Its
 native selection is independent of the plugin's pending queue. OpenAI remains the
 launch default. Hosted web search is unavailable for Claude; phone and voice are
 unverified. The original vendor app remains unchanged.
+
+## Capability modules
+
+Open **Modules** to browse reusable capabilities and their instructions. Installing a module adds its declared resource types to **Code**. Definitions and generated resource records are committed in `harness.modules.json`, so installation state follows project history.
+
+```sh
+harness module list
+harness module info email
+harness module add email
+harness module generate email email Welcome
+harness module add offline
+harness module generate offline collection Notes
+bun install
+```
+
+Email follows BuildFlexity's Resend delivery boundary. Set `RESEND_API_KEY` and `RESEND_EMAIL_FROM` in server-only, project-specific environment settings, and use `DISABLE_EMAILS=true` in development. Mailers render content independently from delivery. Installation sends nothing.
+
+Offline reuses Fluora's shared `@dafuga01/offline-sync` engine and BuildFlexity's scoped incremental download pattern. The generated `/api/offline/sync` endpoint accepts background downloads and queued mutations. Supply authenticated `locals.offline` adapters, allowed collections, cursor/deletion semantics, and atomic server idempotency. Start one client coordinator per account/tenant scope, stop it before changing scope, and surface retained conflicts. Without application adapters the endpoint denies access. Native networking, large files and shell caching remain app-owned adapters.
+
+Define project-local modules in `specification/modules/<id>/module.json`:
+
+```json
+{
+	"schemaVersion": 1,
+	"id": "notes",
+	"version": "1.0.0",
+	"title": "Notes",
+	"description": "Reusable note resources.",
+	"instructions": ["Keep each note focused and tested."],
+	"setup": [],
+	"dependencies": {},
+	"resources": [
+		{
+			"id": "note",
+			"title": "Notes",
+			"singular": "Note",
+			"kind": "service",
+			"instructions": ["Implement the generated service contract."],
+			"files": [
+				{
+					"path": "src/services/notes/{{PascalName}}Service.ts",
+					"contents": "export class {{PascalName}}Service {}\n"
+				}
+			]
+		}
+	]
+}
+```
+
+Run `harness module add notes` and `harness module generate notes note Meeting`. Modules can declare setup files, dependencies, resource kinds, templates and instructions without extending Harness's core scaffold enum. Templates substitute `name`, `PascalName`, `camelName` and `kebabName`; existing files and unsafe output paths are rejected. Installed definitions are frozen until an explicit future upgrade mechanism is used.
