@@ -4281,6 +4281,65 @@
 			"createdAt": "2026-10-25T18:00:27.357Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.relay-frame-too-large-examples",
+			"title": "Migrate relay.function.frame-too-large executable Examples",
+			"moduleGoal": "Keep every original assertion in finite authored helper Examples",
+			"verificationFiles": [
+				"packages/relay/test/utils/frame-too-large.test.ts",
+				"test/fixtures/contract-migration/relay-frame-too-large-examples.json"
+			],
+			"instructions": "Initial helper-example migration for relay.function.frame-too-large. Edit ONLY packages/relay/test/utils/frame-too-large.test.ts and a full proposed copy of specification/units/relay.function.frame-too-large.json at test/fixtures/contract-migration/relay-frame-too-large-examples.json. Preserve all original assertions, integration boundaries, public forwarding imports, workloads and fixture edge cases. Primary owns specification, shared contracts, integration, commits and verification. Do not run test/build/lint/install/audit commands, delegate, publish, access credentials or update any memory. Keep work bounded to these two files and finish with reviewable edits.\nUse helper testing shape and exactly one registered case for each authored Example. Keep pre-existing helperContracts examples when present; add testing.examples for additional ordinary-function behaviors without duplicate example names. Each Example must declare the actual invocation and expected returned result, expected error, or expected undefined/void. registerExamples must invoke the actual imported function: no callback returning an expected constant, no skipped/fails/only tests and no standalone regressions. Preserve original assertions in the responsible callback when realistic integration or stateful repeat behavior requires them. Describe actual state or error behavior in the Example title and comment.\nRegister with TestExpectationService.registerExamples(test, imported proposed manifest as ComponentManifest, callback map). Import test from vitest explicitly. Non-JSON inputs such as Headers, Request, RegExp, ArrayBuffer, undefined, null-prototype objects or streams need explicit authored fixture markers in JSON input plus transparent reconstruction in the test callback. The displayed call must explain the real reconstructed invocation. If output needs projection, display that projection in the call; preserve all original fields, types, error/undefined differences and assertions. Do not invent an error in projection when the helper itself succeeds. Never derive authored expectations from observed implementation output. Include each meaningful supported prop, boundary and null/error prop state in a finite matrix. Keep every old input covered and report counts, retained boundaries and unresolved metadata/runtime issues. Use companion .types.ts only if already allowed by these two files; otherwise inline type expressions without new named declarations. Do not alter any non-testing manifest fields; primary reviews missing declared errors separately.",
+			"wantedContract": {
+				"responsibility": "Canonical helper examples for relay.function.frame-too-large",
+				"inputs": [
+					{
+						"name": "authored calls and realistic fixtures",
+						"type": "declared Examples"
+					}
+				],
+				"outputs": [
+					{
+						"name": "one registered case per Example",
+						"type": "test source and full proposed manifest"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid props and rejected inputs",
+						"type": "authored result or error"
+					}
+				]
+			},
+			"model": "gpt-5.6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "luna-helpers",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "relay.function.frame-too-large",
+				"goal": "Keep every original assertion in finite authored helper Examples",
+				"files": [
+					"packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service/frameTooLarge.ts",
+					"packages/relay/src/lib/host-runtime/socket-frame-service/frameTooLarge.ts",
+					"packages/relay/src/services/socket-frame-service/frameTooLarge.ts",
+					"packages/relay/src/utils/frameTooLarge.ts",
+					"packages/relay/test/utils/frame-too-large.test.ts",
+					"test/fixtures/contract-migration/relay-frame-too-large-examples.json"
+				]
+			},
+			"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
+			"contractHash": "d31f626818fbae13c091541499aefeccaeb0795d17a64581b23abf8d7778560d",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T18:00:28.021Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
