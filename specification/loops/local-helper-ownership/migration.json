@@ -4737,17 +4737,12 @@
 		{
 			"unit": "function.project",
 			"entry": "src/workflows/projects-sessions/generate-code/project.ts",
-			"exports": [
-				"detectProjectKind"
-			]
+			"exports": ["detectProjectKind"]
 		},
 		{
 			"unit": "function.exports",
 			"entry": "src/workflows/projects-sessions/generate-code/exports.ts",
-			"exports": [
-				"applyExports",
-				"appendMissingExports"
-			]
+			"exports": ["applyExports", "appendMissingExports"]
 		},
 		{
 			"unit": "function.validation",
@@ -5421,6 +5416,13 @@
 			"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
 			"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof.",
 			"definition": "77fb4e594e25fc7458e591cdd99335d9289431cbab1f4bf222735d2b3d10eaab"
+		},
+		{
+			"unit": "function.unit-documentation",
+			"name": "hydrateUnitDocumentation",
+			"commit": "130f5c52d498653db1e9f943648b7ae402833751",
+			"reason": "Preserve declared test contracts while deriving source ownership and runtime metadata.",
+			"definition": "4fae902a3e068821f4786e261db6166ff1b97ea13432a5cb915feffc944b7127"
 		}
 	]
 }
