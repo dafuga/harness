@@ -3577,7 +3577,7 @@
 			},
 			"sourceCommit": "96a034905fd30aa4f0d95385266f39e831f8d152",
 			"contractHash": "4467cba3c71bf5aa5b007b892e7458d821c49b425930db573d6100940253db20",
-			"status": "running",
+			"status": "failed",
 			"reviews": [],
 			"createdAt": "2026-10-25T16:27:03.768Z",
 			"claim": {
@@ -3591,6 +3591,49 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/9db7e29d-d6c7-4469-bdc2-1af1d524372a",
+				"changedFiles": [],
+				"error": "Claude task failed; inspect CLI authentication, permissions or model access.",
+				"fallback": false,
+				"finishedAt": "2026-10-25T16:42:34.372Z",
+				"attempt": "9db7e29d-d6c7-4469-bdc2-1af1d524372a",
+				"sourceCommit": "96a034905fd30aa4f0d95385266f39e831f8d152",
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": null,
+							"outputTokens": null,
+							"cacheReadTokens": null,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI token usage is incomplete."
+						},
+						"status": "failed",
+						"startedAt": "2026-10-25T16:27:34.070Z",
+						"finishedAt": "2026-10-25T16:42:34.372Z"
+					}
+				]
+			},
 			"attempts": []
 		}
 	]
