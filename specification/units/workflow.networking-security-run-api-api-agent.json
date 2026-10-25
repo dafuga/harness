@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.networking-security-run-api-api-agent",
+	"kind": "workflow",
+	"title": "apiAgent",
+	"responsibility": "Reads contract or agent request input and preserves explicit models and retryable run identities.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/networking-security/run-api/apiAgent.ts"],
+		"symbols": ["apiAgent", "apiEventCursor", "apiEvents"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "apiAgent.client",
+				"type": "HarnessApiService"
+			},
+			{
+				"name": "apiAgent.operation",
+				"type": "string"
+			},
+			{
+				"name": "apiAgent.method",
+				"type": "string"
+			},
+			{
+				"name": "apiEventCursor.text",
+				"type": "unknown"
+			},
+			{
+				"name": "apiEvents.client",
+				"type": "HarnessApiService"
+			},
+			{
+				"name": "apiEvents.runId",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "apiAgent",
+				"type": "Promise<unknown>"
+			},
+			{
+				"name": "apiEventCursor",
+				"type": "number"
+			},
+			{
+				"name": "apiEvents",
+				"type": "Promise<unknown>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-harness-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.networking-security-run-api-api-input",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/networking-security/run-api/apiAgent.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/networking-security/run-api/apiAgent.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

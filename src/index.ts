@@ -184,3 +184,13 @@ export { PerformanceProfileService } from './services/verification-evidence/Perf
 export { registerTaskCommand } from './cli/program/TaskCommand';
 export { PerformanceEvidenceValidator } from './validators/verification-evidence/PerformanceEvidenceValidator';
 export { SourceProfileAdapter } from './adapters/verification-evidence/source-profile-adapter/SourceProfileAdapter';
+export { ApiCommand } from './commands/networking-security/ApiCommand';
+export { HarnessApiService } from './services/networking-security/HarnessApiService';
+export { HarnessHttpAdapter } from './adapters/networking-security/HarnessHttpAdapter';
+export { ModuleTaskCommand } from './commands/agents-providers/ModuleTaskCommand';
+export { ModuleTaskRepository } from './repositories/agents-providers/ModuleTaskRepository';
+export { ModuleTaskService } from './services/agents-providers/ModuleTaskService';
+export { ModuleTaskRunnerAdapter } from './adapters/agents-providers/ModuleTaskRunnerAdapter';
+export { ModuleTaskWorkerService } from './services/agents-providers/ModuleTaskWorkerService';
+export { ModuleTaskAnalyticsService } from './services/agents-providers/ModuleTaskAnalyticsService';
+export { ModuleTaskWorktreeAdapter } from './adapters/agents-providers/ModuleTaskWorktreeAdapter';

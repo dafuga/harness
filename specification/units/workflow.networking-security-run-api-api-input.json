@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.networking-security-run-api-api-input",
+	"kind": "workflow",
+	"title": "apiInput",
+	"responsibility": "Reads JSON objects from inline input, files or stdin and parses repeated query fields.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/networking-security/run-api/apiInput.ts"],
+		"symbols": ["apiInput", "apiQuery"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "apiInput.input",
+				"type": "string"
+			},
+			{
+				"name": "apiQuery.fields",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "apiInput",
+				"type": "Promise<Record<string, unknown>>"
+			},
+			{
+				"name": "apiQuery",
+				"type": "Array<[string, string]>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/networking-security/run-api/apiInput.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/networking-security/run-api/apiInput.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

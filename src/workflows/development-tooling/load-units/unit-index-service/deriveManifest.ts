@@ -8,7 +8,15 @@ import type {
 } from '../../../../core/development-tooling/unitTypes';
 import { derivedResponsibility } from './derivedResponsibility';
 
-const viaPriority = ['import', 'reexport', 'dynamic-import', 'require', 'url', 'style-import'];
+const viaPriority = [
+	'import',
+	'reexport',
+	'dynamic-import',
+	'require',
+	'url',
+	'style-import',
+	'http'
+];
 
 /** Builds a manifest from source facts while preserving everything a person declared. */
 export function deriveManifest(input: DeriveInput): ComponentManifest {

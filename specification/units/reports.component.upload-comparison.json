@@ -53,6 +53,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.endpoint.api-report-screenshot-upload",
+			"via": "http",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.model.report-types",
 			"via": "import",
 			"origin": "derived"

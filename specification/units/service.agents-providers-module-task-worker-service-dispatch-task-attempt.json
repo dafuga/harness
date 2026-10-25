@@ -1,0 +1,65 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task-worker-service-dispatch-task-attempt",
+	"kind": "service",
+	"title": "dispatchTaskAttempt",
+	"responsibility": "Owns the dispatchTaskAttempt service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/module-task-worker-service/dispatchTaskAttempt.ts"],
+		"symbols": ["dispatchTaskAttempt"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "dispatchTaskAttempt.runner",
+				"type": "TaskRunner"
+			},
+			{
+				"name": "dispatchTaskAttempt.input",
+				"type": "TaskRunInput"
+			},
+			{
+				"name": "dispatchTaskAttempt.executions",
+				"type": "TaskExecution[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "dispatchTaskAttempt",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/module-task-worker-service/dispatchTaskAttempt.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/module-task-worker-service/dispatchTaskAttempt.ts"
+			}
+		]
+	},
+	"scenarios": ["module-tasks"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

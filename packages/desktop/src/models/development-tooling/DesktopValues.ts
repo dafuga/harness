@@ -10,6 +10,7 @@ export type {
  */
 export const categories = [
 	'pages',
+	'apis',
 	'layouts',
 	'components',
 	'functions',

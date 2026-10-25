@@ -1,0 +1,228 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task",
+	"kind": "service",
+	"title": "ModuleTaskService",
+	"responsibility": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/ModuleTaskService.ts",
+			"src/services/agents-providers/module-task-service/queuedTask.ts",
+			"src/services/agents-providers/module-task-service/retryableTask.ts",
+			"src/services/agents-providers/module-task-service/taskPrompt.ts"
+		],
+		"symbols": [
+			"ModuleTaskService",
+			"ModuleTaskService.constructor",
+			"ModuleTaskService.feature",
+			"ModuleTaskService.add",
+			"ModuleTaskService.list",
+			"ModuleTaskService.schema",
+			"ModuleTaskService.show",
+			"ModuleTaskService.prompt",
+			"ModuleTaskService.prepare",
+			"ModuleTaskService.retry",
+			"ModuleTaskService.review",
+			"queuedTask",
+			"retryableTask",
+			"moduleTaskPrompt",
+			"taskSelection"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleTaskService.constructor.root",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.feature.input",
+				"type": "TaskFeature"
+			},
+			{
+				"name": "ModuleTaskService.add.input",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.show.id",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskService.prompt.id",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskService.prepare.task",
+				"type": "ModuleTask"
+			},
+			{
+				"name": "ModuleTaskService.prepare.commit",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskService.retry.id",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskService.review.id",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskService.review.input",
+				"type": "unknown"
+			},
+			{
+				"name": "queuedTask.input",
+				"type": "ModuleTaskInput"
+			},
+			{
+				"name": "queuedTask.feature",
+				"type": "TaskFeature"
+			},
+			{
+				"name": "queuedTask.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "queuedTask.sourceCommit",
+				"type": "string"
+			},
+			{
+				"name": "retryableTask.task",
+				"type": "ModuleTask"
+			},
+			{
+				"name": "retryableTask.workspace",
+				"type": "string"
+			},
+			{
+				"name": "moduleTaskPrompt.task",
+				"type": "ModuleTask"
+			},
+			{
+				"name": "moduleTaskPrompt.commit",
+				"type": "string"
+			},
+			{
+				"name": "taskSelection.task",
+				"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleTaskService.feature",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.add",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.list",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.schema",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.show",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.prompt",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.prepare",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.retry",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskService.review",
+				"type": "unknown"
+			},
+			{
+				"name": "queuedTask",
+				"type": "ModuleTask"
+			},
+			{
+				"name": "retryableTask",
+				"type": "boolean"
+			},
+			{
+				"name": "moduleTaskPrompt",
+				"type": "string"
+			},
+			{
+				"name": "taskSelection",
+				"type": "TaskSelection"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.process-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.unit-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-service-review-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/ModuleTaskService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/ModuleTaskService.ts"
+			}
+		]
+	},
+	"scenarios": ["module-tasks"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

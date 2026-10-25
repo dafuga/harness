@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.networking-security-run-api-api-resources",
+	"kind": "workflow",
+	"title": "apiResources",
+	"responsibility": "Resolves named project resources and entity categories through the selected app API.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/networking-security/run-api/apiResources.ts"],
+		"symbols": ["apiResources", "apiResource"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "apiResource.client",
+				"type": "HarnessApiService"
+			},
+			{
+				"name": "apiResource.resource",
+				"type": "string"
+			},
+			{
+				"name": "apiResource.id",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "apiResources",
+				"type": "unknown"
+			},
+			{
+				"name": "apiResource",
+				"type": "Promise<unknown>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-harness-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.networking-security-run-api-api-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.networking-security-run-api-api-registry",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/networking-security/run-api/apiResources.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/networking-security/run-api/apiResources.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

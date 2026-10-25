@@ -1,0 +1,100 @@
+{
+	"schemaVersion": 1,
+	"id": "explorer-apis",
+	"title": "Revision-bound APIs catalog and page usage over synthetic history",
+	"kind": "ui",
+	"units": [
+		"reports.component.harness-harness-navbar",
+		"reports.component.harness-explorer-catalog-screen",
+		"reports.component.entity-contract",
+		"reports.component.harness-entity-header",
+		"reports.component.harness-entity-sections",
+		"reports.component.harness-entity-relations",
+		"reports.component.harness-explorer-index",
+		"reports.component.explorer-ui-explorer-module-card",
+		"reports.component.harness-explorer-content"
+	],
+	"states": [
+		{
+			"id": "api-entry",
+			"title": "api entry",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-navbar"]
+		},
+		{
+			"id": "api-catalog",
+			"title": "api catalog",
+			"coverage": "required",
+			"units": [
+				"reports.component.harness-explorer-catalog-screen",
+				"reports.component.harness-harness-navbar",
+				"reports.component.harness-explorer-index",
+				"reports.component.explorer-ui-explorer-module-card",
+				"reports.component.harness-explorer-content"
+			]
+		},
+		{
+			"id": "api-contract",
+			"title": "api contract",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract", "reports.component.harness-entity-header"]
+		},
+		{
+			"id": "page-apis",
+			"title": "page apis",
+			"coverage": "required",
+			"units": [
+				"reports.component.harness-entity-sections",
+				"reports.component.harness-entity-relations",
+				"reports.component.harness-entity-header"
+			]
+		},
+		{
+			"id": "page-apis-empty",
+			"title": "page apis empty",
+			"coverage": "required",
+			"units": [
+				"reports.component.harness-entity-sections",
+				"reports.component.harness-entity-relations"
+			]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 834,
+			"height": 1112
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "apis",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test --config test/entityPreviewPlaywright.ts test/entity-preview.spec.ts --grep 'APIs catalog'",
+			"cwd": "packages/reports"
+		}
+	],
+	"evidence": [
+		{
+			"id": "api-screens",
+			"kind": "screenshot",
+			"states": ["api-entry", "api-catalog", "api-contract", "page-apis", "page-apis-empty"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"capture": "full-page",
+			"build": "entity-preview",
+			"required": true
+		}
+	]
+}

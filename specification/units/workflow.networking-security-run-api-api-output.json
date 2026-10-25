@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.networking-security-run-api-api-output",
+	"kind": "workflow",
+	"title": "apiOutput",
+	"responsibility": "Prints selected JSON fields or writes binary responses without replacing existing files.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/networking-security/run-api/apiOutput.ts"],
+		"symbols": ["apiOutput"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "apiOutput.result",
+				"type": "ApiResponse | unknown"
+			},
+			{
+				"name": "apiOutput.options",
+				"type": "HarnessApiOptions"
+			}
+		],
+		"outputs": [
+			{
+				"name": "apiOutput",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.networking-security-harness-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-harness-api",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/networking-security/run-api/apiOutput.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/networking-security/run-api/apiOutput.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -26,9 +26,10 @@ export function memoryTree(files: Record<string, string>): SourceTree {
 
 export async function indexFiles(
 	files: Record<string, string>,
-	existing: ComponentManifest[] = []
+	existing: ComponentManifest[] = [],
+	config = defaultUnitsConfig
 ): Promise<Indexed> {
-	const index = await new SourceIndexService().index(memoryTree(files), defaultUnitsConfig);
+	const index = await new SourceIndexService().index(memoryTree(files), config);
 	return { index, result: new UnitIndexService().index(index, existing) };
 }
 

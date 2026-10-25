@@ -1,3 +1,4 @@
+import { resolveHttpEndpoint } from './resolve-import/resolveHttpEndpoint';
 import type { ResolveContext } from './resolveImport.types';
 import { posix } from 'node:path';
 import type { ResolvedReference } from '../../core/development-tooling/sourceTypes';
@@ -13,6 +14,7 @@ export function resolveImport(
 	reference: SourceReference,
 	context: ResolveContext
 ): ResolvedReference {
+	if (reference.via === 'http') return resolveHttpEndpoint(reference, context);
 	const base = { via: reference.via, typeOnly: reference.typeOnly };
 	const specifier = reference.specifier;
 	if (specifier === null) {

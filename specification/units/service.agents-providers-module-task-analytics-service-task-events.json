@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task-analytics-service-task-events",
+	"kind": "service",
+	"title": "taskEvents",
+	"responsibility": "Owns the taskEvents service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/module-task-analytics-service/taskEvents.ts"],
+		"symbols": ["taskEvents"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "taskEvents.tasks",
+				"type": "ModuleTask[]"
+			},
+			{
+				"name": "taskEvents.project",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "taskEvents",
+				"type": "AnalyticsEvent[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.analytics-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-task-pricing",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/module-task-analytics-service/taskEvents.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/module-task-analytics-service/taskEvents.ts"
+			}
+		]
+	},
+	"scenarios": ["module-tasks"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

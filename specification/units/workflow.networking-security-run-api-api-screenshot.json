@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.networking-security-run-api-api-screenshot",
+	"kind": "workflow",
+	"title": "apiScreenshot",
+	"responsibility": "Selects an attested recorded page capture, verifies its hash and saves its original bytes and provenance.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/networking-security/run-api/apiScreenshot.ts"],
+		"symbols": ["apiScreenshot"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "apiScreenshot.client",
+				"type": "HarnessApiService"
+			},
+			{
+				"name": "apiScreenshot.entityId",
+				"type": "string"
+			},
+			{
+				"name": "apiScreenshot.options",
+				"type": "HarnessApiOptions"
+			}
+		],
+		"outputs": [
+			{
+				"name": "apiScreenshot",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-harness-api",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/networking-security/run-api/apiScreenshot.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/networking-security/run-api/apiScreenshot.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

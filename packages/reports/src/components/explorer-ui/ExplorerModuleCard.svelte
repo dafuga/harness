@@ -83,8 +83,14 @@
 			});
 		return `${name}(${args.join(', ')})`;
 	}
-	let call = $derived(entry?.helper ? invocation(entry) : row.name);
+	const methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
+	// An API shows the HTTP methods it exports, none assumed, before the route that names its link.
+	let owned = $derived(kind === 'apis' ? (entry?.entity.unit.owns.symbols ?? []) : []);
+	let served = $derived(methods.filter((method) => owned.includes(method)));
+	let named = $derived(served.length ? row.name : undefined);
+	let call = $derived(entry?.helper ? invocation(entry) : [...served, row.name].join(' '));
 	const hint = 'Example usage; arguments without recorded sample values remain named variables.';
+	let tip = $derived(entry?.helper ? hint : undefined);
 </script>
 
 {#snippet picture()}
@@ -136,7 +142,7 @@
 			{@render usage()}
 		</hx-div>
 	{:else if to}
-		<EntityLink {to} {nav} class="ex-function-call" title={entry?.helper ? hint : undefined}>
+		<EntityLink {to} {nav} class="ex-function-call" label={named} title={tip}>
 			<hx-code>{call}</hx-code>
 		</EntityLink>
 		{@render usage()}

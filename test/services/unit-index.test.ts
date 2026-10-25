@@ -1,5 +1,6 @@
 import { assertCompanionOwnership } from './unit-index/ownership';
 import { assertCompositionRegistry } from './unit-index/composition';
+import './unit-index/http';
 import { execFileSync } from 'node:child_process';
 import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';

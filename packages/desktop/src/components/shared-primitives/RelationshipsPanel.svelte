@@ -10,16 +10,19 @@
 	let {
 		relationships,
 		workspace,
-		direction
+		direction,
+		label
 	}: {
 		relationships: Relationship[];
 		workspace: Workspace;
 		/** Which side is listed: what uses the entity, or what it uses. */
 		direction: Relationship['direction'];
+		label?: string;
 	} = $props();
 	/** Each kind as a group of what is used is headed, and as one user of the entity is badged. */
 	const kinds: Record<Category, [string, string]> = {
 		pages: ['Pages', 'Page'],
+		apis: ['APIs', 'API'],
 		layouts: ['Layouts', 'Layout'],
 		components: ['Components', 'Component'],
 		functions: ['Functions', 'Function'],
@@ -33,10 +36,10 @@
 	const named = (item: Relationship) =>
 		explorerName({
 			id: item.id,
-			kind: item.category === 'pages' ? 'page' : 'module',
+			kind: item.category === 'pages' ? 'page' : item.category === 'apis' ? 'endpoint' : 'module',
 			title: item.title
 		});
-	const title = $derived(direction === 'uses' ? 'Uses' : 'Used In');
+	const title = $derived(label ?? (direction === 'uses' ? 'Uses' : 'Used In'));
 	/** What was recorded on this side, each entity once. */
 	const items = $derived([
 		...new Map(
@@ -59,7 +62,11 @@
 	<hx-h2>{title} <hx-span class="count">{items.length}</hx-span></hx-h2>
 	{#if items.length === 0}
 		<hx-p class="muted">
-			{direction === 'uses' ? 'No dependency is recorded.' : 'Nothing recorded uses it.'}
+			{label === 'APIs'
+				? 'No APIs are recorded for this page.'
+				: direction === 'uses'
+					? 'No dependency is recorded.'
+					: 'Nothing recorded uses it.'}
 		</hx-p>
 	{/if}
 	{#each groups as group (group.title)}

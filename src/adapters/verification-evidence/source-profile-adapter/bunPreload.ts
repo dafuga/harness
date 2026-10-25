@@ -2,6 +2,7 @@ import { plugin } from 'bun';
 import { realpathSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import type { SourceProfileAdapter } from './SourceProfileAdapter';
+import { profileSelection } from './runnerSelection';
 
 let pending: Promise<SourceProfileAdapter | null> | undefined;
 const root = preloadRoot();
@@ -40,7 +41,6 @@ function preloadRoot(): string | null {
 function sourceAdapter(root: string): Promise<SourceProfileAdapter | null> {
 	pending ??= (async () => {
 		const { SourceProfileAdapter } = await import('./SourceProfileAdapter');
-		const { profileSelection } = await import('./runnerSelection');
 		const selected = profileSelection(root);
 		return selected ? new SourceProfileAdapter(selected) : null;
 	})();
@@ -50,10 +50,7 @@ function sourceAdapter(root: string): Promise<SourceProfileAdapter | null> {
 /** Bootstrap imports must never await the adapter that is loading those same imports. */
 function bootstrapSource(path: string): boolean {
 	const directory = fileURLToPath(new URL('./', import.meta.url));
-	const schema = fileURLToPath(
-		new URL('../../../core/development-tooling/unitTypes.ts', import.meta.url)
-	);
-	return path.startsWith(realpathSync(directory) + '/') || path === realpathSync(schema);
+	return path.startsWith(realpathSync(directory) + '/');
 }
 
 function benchmarkBoundary(): boolean {

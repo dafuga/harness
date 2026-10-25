@@ -41,7 +41,17 @@ export class HubAgentController {
 
 	private async payload(method: string, body: Record<string, unknown>): Promise<unknown> {
 		const { projectId, projection, actor } = this.context;
-		if (!['providers', 'startRun', 'cancelRun', 'events', 'openThread', 'approve'].includes(method))
+		if (
+			![
+				'providers',
+				'startRun',
+				'cancelRun',
+				'events',
+				'openThread',
+				'approve',
+				'createPlan'
+			].includes(method)
+		)
 			return hubFail('invalid-input');
 		const input = agentInput(body.input, projectId);
 		if (method === 'events') return eventCursor(input);

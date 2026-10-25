@@ -37,6 +37,84 @@ bun run dev -- verify run
 bun run check
 ```
 
+The Explorer’s APIs catalog lists HTTP endpoints and method exports at the selected project revision. Each page has an APIs tab for source-recorded usage through its components and services. API cards open contracts and consumer links in the same revision. Computed or external requests are not presented as confirmed same-app endpoint dependencies.
+
+## API access from the CLI
+
+`harness api` calls the same HTTP APIs as the app. It works from any directory;
+the selected server owns the project data, permissions and agent execution. API reads return active endpoint registry records, including contracts, independently of visual catalog admission.
+The default server is the managed local preview at `http://127.0.0.1:5690`.
+Use `--url` or `HARNESS_API_URL` for another server. Select hosted projects with
+`--project` or `HARNESS_API_PROJECT`; use `--mode hosted` to list hosted projects
+on a loopback test server before selecting one.
+
+```bash
+harness api resources
+harness api get entities --branch main
+harness api get units --branch main
+harness api get pages
+harness api get apis
+harness api contracts get page.checkout
+harness api contracts get entry.program
+harness api get source page.checkout --query path=src/routes/checkout/+page.svelte
+harness api get history page.checkout --query page=1
+harness api screenshot page.checkout --viewport desktop --state loaded --output checkout.png
+harness api agents providers
+harness api agents start --input @run.json --request-id 8775318f-d765-4e78-9d40-6cb92e1f6b11
+harness api agents events RUN_ID --after 0
+harness api agents cancel RUN_ID
+```
+
+Hosted requests read their bearer token from `HARNESS_API_TOKEN`, or the
+project-specific variable named by `--token-env`. Supply it through the project's
+secret environment. Local connections create and reuse an owner-only session
+under `~/.codex/harness/api`, scoped to the exact server origin. `harness api
+connect` explicitly reconnects after a local server restart. Credentials are
+never placed in URLs or printed by connection commands. Reconnecting does not
+recover a run owned by the previous server process.
+
+JSON is the default output. `--select revision.commit` selects one JSON field;
+`--output file.json` writes a new file. Binary responses require `--output`,
+and `--output -` streams their exact bytes. Request bodies accept inline JSON,
+`@file.json`, or piped stdin with `--input -`. Repeat `--query name=value` to
+preserve multiple query values. Existing files are preserved.
+
+```bash
+harness api --url https://harness.example --project PROJECT_ID get entities
+harness api get /api/projects
+harness api request POST /api/projects --input @project.json
+harness api contracts define --input @plan.json
+harness api call openThread --input @thread.json
+```
+
+A contract definition is a saved plan: `plan.json` contains `category`, `title`,
+`goal`, and `contract` with `inputs`, `outputs`, and `errors`. Input/output fields
+have `name`, `type`, and optional `description`. Agent input uses the app's run
+request, including the exact provider/model and the applicable entity, thread,
+mode and approval. Defining a contract creates a plan; implementation and design
+approval keep their existing gates. Hosted writes additionally require writer
+access and a bound executor. Historical commits remain read-only.
+
+`get entities` reads the app's catalog. `get units` reads every registered kind,
+including private backend entries, commands, adapters, policies and workflows;
+`get registry` also returns the pinned commit. `contracts get ID` keeps the
+catalog's current planning contract when one exists, and reads the registered
+contract for backend units outside that catalog. `get contracts` lists all
+registered contracts.
+
+Screenshot downloads retrieve recorded verification captures and check their
+SHA-256 before saving. `--scenario`, `--state`, `--viewport` and `--side` select
+the exact capture; the result retains its revision, timestamp and focused or
+inherited provenance. Missing captures require the page's standard capture
+scenario. This command does not start a new browser capture or agent run.
+
+`request METHOD /api/path` and `get /api/path` cover every endpoint the server
+exposes, including future resources. Named resources are conveniences; the server
+can reject unavailable operations. Local-only `activity` and `build` expose the
+console's process activity and build identity. Redirects and off-origin request
+paths are refused, and mutations are never retried automatically. Save and reuse
+the printed request id if an agent start's response is lost.
+
 ## Project Families
 
 - `app` scaffolds a SvelteKit-shaped application inspired by Daniel's `app-template`.
@@ -843,6 +921,7 @@ harness analytics summary
 harness analytics loops --project /path/to/project --json
 harness analytics jev --since 2026-10-01 --json
 harness analytics models
+harness analytics tasks --project /path/to/project --json
 harness analytics cpu --json
 harness analytics events --loop delivery --json
 harness analytics export --project /path/to/project --output analytics.html
@@ -850,6 +929,17 @@ harness loop create delivery --from feature --goal 'Ship the feature' --agent-mo
 harness response-check --request request.txt --response answer.txt --loop delivery --step implement
 harness audit . --clean-code --loop delivery --step implement --agent-model claude-opus-5-5
 ```
+
+Module task analytics group executions, submissions, accepted reviews, token usage
+and API-equivalent cost by model and intelligence. Missing provider usage and
+unverified prices remain unknown; saved price provenance distinguishes CLI reports
+from standard API estimates and ranges. These are not subscription invoices.
+
+Review a submitted claim with `harness task review TASK --attempt CLAIM_TOKEN
+--verdict accepted`, or use `--verdict incomplete --feedback 'Repair needed'`.
+An incomplete review commits the submitted work as the next attempt's repair base.
+Bounce rate is incomplete reviews divided by all accepted and incomplete reviews;
+execution failures count separately. Stale or duplicate reviews are refused.
 
 For standalone checks, use `--task <stable-id>` instead of `--loop`/`--step`.
 Revisions keep their task identity; new tasks use new IDs. `--agent-model` overrides

@@ -50,6 +50,11 @@
 			"unit": "function.cpu-metrics",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.endpoint.api-analytics-cpu",
+			"via": "http",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

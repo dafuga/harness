@@ -1733,13 +1733,13 @@
 			"unit": "function.derive-manifest",
 			"from": "src/services/unit-index-service/deriveManifest.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-			"definition": "daea7400bead3e801fc5023cc628f0fc98e2b35ad5c0ba2ca5168b6810c140b5",
+			"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
 			"relocationDefinition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65",
 			"review": {
-				"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
+				"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-				"definition": "daea7400bead3e801fc5023cc628f0fc98e2b35ad5c0ba2ca5168b6810c140b5",
-				"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit."
+				"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
+				"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof."
 			},
 			"previousReviews": [
 				{
@@ -1765,6 +1765,12 @@
 					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
 					"definition": "73c1e58c27dfcbcdbdcf895ef78e4ccb6e9faff50c5132aebbb5640326c0905e",
 					"reason": "Add shared native atom generation and composition indexing without changing ownership boundaries."
+				},
+				{
+					"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+					"definition": "daea7400bead3e801fc5023cc628f0fc98e2b35ad5c0ba2ca5168b6810c140b5",
+					"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit."
 				}
 			]
 		},
@@ -1784,20 +1790,26 @@
 			"unit": "command.analytics",
 			"from": "src/commands/AnalyticsCommand.ts",
 			"to": "src/cli/program/AnalyticsCommand.ts",
-			"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
+			"definition": "da04f00e7ab570a4a5e2638baeaeb9b5e49f0a46fc4dd433691ef3259be1e879",
 			"previousReviews": [
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
 					"path": "src/cli/program/AnalyticsCommand.ts",
 					"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
 					"reason": "Add benchmark queries while retaining CPU sampling and every existing analytics operation."
+				},
+				{
+					"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+					"path": "src/cli/program/AnalyticsCommand.ts",
+					"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
+					"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
 				}
 			],
 			"review": {
-				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+				"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
 				"path": "src/cli/program/AnalyticsCommand.ts",
-				"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
-				"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
+				"definition": "da04f00e7ab570a4a5e2638baeaeb9b5e49f0a46fc4dd433691ef3259be1e879",
+				"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
 			},
 			"relocationDefinition": "5043fdbf76fd08dc5df16f5dd7d7eb348b0e2248dee70f1381c0f638b6a9194a"
 		},
@@ -1805,13 +1817,13 @@
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "df8db443d9441dea2e91bab3b178a16a3622407ef39569859f3bac2f3ae03f5c",
+			"definition": "d53b668186ed7645abfef355d77dc8a8dd7b19cb46cc423cecc631646c4584e0",
 			"relocationDefinition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086",
 			"review": {
-				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+				"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
 				"path": "src/cli/program/AnalyticsService.ts",
-				"definition": "df8db443d9441dea2e91bab3b178a16a3622407ef39569859f3bac2f3ae03f5c",
-				"reason": "Retain the additive benchmark analytics query alongside the current sibling type companion."
+				"definition": "d53b668186ed7645abfef355d77dc8a8dd7b19cb46cc423cecc631646c4584e0",
+				"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
 			},
 			"previousReviews": [
 				{
@@ -1825,6 +1837,12 @@
 					"path": "src/cli/program/AnalyticsService.ts",
 					"definition": "740811098f4c3e08b006a61e1f33aa237e4ee3658a7b48a0c243c9f1fc841607",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "df8db443d9441dea2e91bab3b178a16a3622407ef39569859f3bac2f3ae03f5c",
+					"reason": "Retain the additive benchmark analytics query alongside the current sibling type companion."
 				}
 			]
 		},
@@ -1832,20 +1850,26 @@
 			"unit": "workflow.analytics-metrics",
 			"from": "src/workflows/analyticsMetrics.ts",
 			"to": "src/cli/program/analyticsMetrics.ts",
-			"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
+			"definition": "f92c88037b94e173af02733113239e8c7a3128617f8c47ff96835df0f1f9a0d0",
 			"previousReviews": [
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
 					"path": "src/cli/program/analyticsMetrics.ts",
 					"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
 					"reason": "Expose selected benchmark events without changing existing analytics summaries or filters."
+				},
+				{
+					"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+					"path": "src/cli/program/analyticsMetrics.ts",
+					"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
+					"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
 				}
 			],
 			"review": {
-				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+				"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
 				"path": "src/cli/program/analyticsMetrics.ts",
-				"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
-				"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
+				"definition": "f92c88037b94e173af02733113239e8c7a3128617f8c47ff96835df0f1f9a0d0",
+				"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
 			},
 			"relocationDefinition": "ec2621dc9a41ead5584d56839f61c0d5c65a534d0c6e915a8b59c4b2f2d9d044"
 		},
@@ -2064,13 +2088,13 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "a23cd83c2d144ca80865a2a6235e3848dd6375d25edb1f0aee4faf4366c11098",
+			"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-				"definition": "a23cd83c2d144ca80865a2a6235e3848dd6375d25edb1f0aee4faf4366c11098",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
+				"reason": "Exposes immutable project registry reads behind the existing authenticated project boundary."
 			},
 			"previousReviews": [
 				{
@@ -2084,6 +2108,12 @@
 					"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 					"definition": "00b9a5d65308d3c0bdc69ffcc83074cfebd49c878b0d50c0bb21ab8273678e08",
 					"reason": "Retain the game branch’s project request extraction within method limits."
+				},
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+					"definition": "a23cd83c2d144ca80865a2a6235e3848dd6375d25edb1f0aee4faf4366c11098",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				}
 			]
 		},
@@ -2348,14 +2378,22 @@
 			"unit": "hub.service.hub-projection",
 			"from": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-			"definition": "c009664809133b58455ea2c96288b8da196751d6fbf522f29e28291f1cac6824",
+			"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
 			"relocationDefinition": "84da7c7af64f93f2bd137180aebff1745bde5b7c5e57f33231705205f8710ea4",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
 				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-				"definition": "c009664809133b58455ea2c96288b8da196751d6fbf522f29e28291f1cac6824",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
+				"reason": "Reads every declared unit kind from the authorized project and selected source commit."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+					"definition": "c009664809133b58455ea2c96288b8da196751d6fbf522f29e28291f1cac6824",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.function.hub-artifact-commit",
@@ -2844,14 +2882,22 @@
 			"unit": "desktop.function.catalog-detail",
 			"from": "packages/desktop/src/services/catalog-service/catalogDetail.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
-			"definition": "adda1a4ffe96275b3aef4ce4e9d11c16aa532ddddf4f1e130679b2fcfa8c8ea2",
+			"definition": "064c515a4471c9d8f350acc0b367b181ed3e660f130674ccb2d58f5c13edbdd6",
 			"relocationDefinition": "1ceee21dff48fa90b8ba7aa477d5eb90b99c6f96e2a2bf14b3b05071ebb65b31",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
-				"definition": "adda1a4ffe96275b3aef4ce4e9d11c16aa532ddddf4f1e130679b2fcfa8c8ea2",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "064c515a4471c9d8f350acc0b367b181ed3e660f130674ccb2d58f5c13edbdd6",
+				"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
+					"definition": "adda1a4ffe96275b3aef4ce4e9d11c16aa532ddddf4f1e130679b2fcfa8c8ea2",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.catalog-history",
@@ -3731,14 +3777,22 @@
 			"unit": "hub.controller.hub-agent",
 			"from": "packages/hub/src/controllers/HubAgentController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
-			"definition": "edcc2fc66a71a20599f764ecbdeb14a79196f94454ca82b291d6995bc7d4586f",
+			"definition": "2c186335bae7a55ff319933760ee48de377026384615a87c7db1939c4f825ded",
 			"relocationDefinition": "0d95fa47025cad07d80735fa157260a9afa50cfece897f29a381021ec4253ead",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "1c1dcda3a2eb571c83c291ce370c2b9cec4f2f64",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
-				"definition": "edcc2fc66a71a20599f764ecbdeb14a79196f94454ca82b291d6995bc7d4586f",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "2c186335bae7a55ff319933760ee48de377026384615a87c7db1939c4f825ded",
+				"reason": "Admits proposed contracts through writer authorization and verified branch-tip execution."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
+					"definition": "edcc2fc66a71a20599f764ecbdeb14a79196f94454ca82b291d6995bc7d4586f",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "command.report",
@@ -4066,7 +4120,14 @@
 			"unit": "reports.controller.console-agent",
 			"from": "packages/reports/src/controllers/ConsoleAgentController.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.ts",
-			"definition": "e69fab551d013e04a4dce4403696335dde5a3d877b52d988f11b9639e7c3d75e"
+			"definition": "1dc7e9b5af820f6006924bfa34fef2e73889ca259b6f19b0ffa8b13dd3d56a5b",
+			"relocationDefinition": "e69fab551d013e04a4dce4403696335dde5a3d877b52d988f11b9639e7c3d75e",
+			"review": {
+				"commit": "1c1dcda3a2eb571c83c291ce370c2b9cec4f2f64",
+				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.ts",
+				"definition": "1dc7e9b5af820f6006924bfa34fef2e73889ca259b6f19b0ffa8b13dd3d56a5b",
+				"reason": "Accepts native bearer headers and returns original API artifact bytes behind the existing owner guard."
+			}
 		},
 		{
 			"unit": "relay.service.socket-accept",
@@ -4308,14 +4369,34 @@
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-			"definition": "72a427eb9b24b46496276564a200629d69420cc691cb1ef8bcb826786fbfe345",
+			"definition": "f0de2dcb656d031a3de4d9a1621359e3a35d587c9c2ea7e11b9fb0beb7bfbdd9",
 			"relocationDefinition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695",
 			"review": {
-				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+				"commit": "ac0c34670e704cf6d60885e523b88831c4e272a0",
 				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-				"definition": "72a427eb9b24b46496276564a200629d69420cc691cb1ef8bcb826786fbfe345",
-				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
-			}
+				"definition": "f0de2dcb656d031a3de4d9a1621359e3a35d587c9c2ea7e11b9fb0beb7bfbdd9",
+				"reason": "Combines revision-bound registry and recorded-evidence reads with main agent registrations while preserving session and mutation validation."
+			},
+			"previousReviews": [
+				{
+					"commit": "1c1dcda3a2eb571c83c291ce370c2b9cec4f2f64",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "c66b7f1ded5ac0ea5df9c98551c48289f2833965d23a74ed5f69fee02447c606",
+					"reason": "Exposes source, image and recorded-evidence reads through validated local sessions."
+				},
+				{
+					"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "72a427eb9b24b46496276564a200629d69420cc691cb1ef8bcb826786fbfe345",
+					"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+				},
+				{
+					"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "acf5f437cf8bcc745670f9045614425e46c0f3c365b8bb7db31d604e7db16269",
+					"reason": "Exposes validated revision-bound registry reads alongside existing owner-session operations."
+				}
+			]
 		},
 		{
 			"unit": "service.claude-query",

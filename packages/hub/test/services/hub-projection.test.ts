@@ -1,4 +1,8 @@
 import { expect, test } from 'vitest';
+import { z } from 'zod';
+import { componentManifestSchema } from '../../../../src/core/unitTypes';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
+import { readFileSync } from 'node:fs';
 import {
 	actor,
 	outsider,
@@ -58,4 +62,31 @@ test('source is available only within selected entity ownership', async () => {
 			path: 'packages/desktop/src/routes/harness/[...path]/+page.svelte'
 		})
 	).toMatchObject({ text: '<h1>Harness</h1>' });
+});
+
+test('registry reads include backend contracts and recheck project membership before cached data', async () => {
+	const f = projectionFixture();
+	const manifest = readFileSync(
+		new URL('../../../../specification/units/entry.program.json', import.meta.url)
+	);
+	f.files.set('specification/units/entry.program.json', new Uint8Array(manifest));
+	const request = () =>
+		new Request(
+			`https://fixture.example/api/projects/${project.id}/registry?commit=${commit}&branch=feat%2Fa%2Fb`
+		);
+	const response = await measureWorkload('hub.controller.hub-api', 'hosted-api-registry', () =>
+		measureWorkload('hub.service.hub-projection', 'hosted-api-registry', () =>
+			f.controller.handle(request())
+		)
+	);
+	expect(response.status).toBe(200);
+	const result = z
+		.object({ commit: z.string(), units: z.array(componentManifestSchema) })
+		.parse(await response.json());
+	expect(result.commit).toBe(commit);
+	expect(
+		result.units.find((entry) => entry.id === 'entry.program')?.contract.outputs
+	).toContainEqual({ name: 'buildProgram', type: 'Command' });
+	f.setActor(outsider);
+	expect((await f.controller.handle(request())).status).toBe(403);
 });

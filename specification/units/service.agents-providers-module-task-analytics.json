@@ -1,0 +1,118 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task-analytics",
+	"kind": "service",
+	"title": "ModuleTaskAnalyticsService",
+	"responsibility": "Project committed task attempts and reviews into idempotent model, token, API price and bounce analytics.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/ModuleTaskAnalyticsService.ts",
+			"src/services/agents-providers/ModuleTaskAnalyticsService.types.ts"
+		],
+		"symbols": [
+			"ModuleTaskAnalyticsService",
+			"ModuleTaskAnalyticsService.constructor",
+			"ModuleTaskAnalyticsService.quote",
+			"ModuleTaskAnalyticsService.metrics",
+			"ModuleTaskAnalyticsService.sync",
+			"TaskAnalyticsStore",
+			"TaskAnalyticsDetail",
+			"TaskPriceRates"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleTaskAnalyticsService.constructor.store",
+				"type": "() => TaskAnalyticsStore"
+			},
+			{
+				"name": "ModuleTaskAnalyticsService.quote.model",
+				"type": "string"
+			},
+			{
+				"name": "ModuleTaskAnalyticsService.quote.usage",
+				"type": "TaskUsage"
+			},
+			{
+				"name": "ModuleTaskAnalyticsService.metrics.events",
+				"type": "AnalyticsEvent[]"
+			},
+			{
+				"name": "ModuleTaskAnalyticsService.sync.root",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleTaskAnalyticsService.quote",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskAnalyticsService.metrics",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskAnalyticsService.sync",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.analytics-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-task-events",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-task-metrics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics-service-task-pricing",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/ModuleTaskAnalyticsService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/ModuleTaskAnalyticsService.ts"
+			}
+		]
+	},
+	"scenarios": ["module-tasks"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -8,6 +8,7 @@ import { hubHistory } from '../../../../utils/git-source-history/hubHistory';
 import type { Actor } from 'collaboration';
 import type { ThreadMessage } from '../../../../../../desktop/src/models/Desktop.types';
 import { hubSource, hubRead } from '../../../../utils/development-tooling/hubSource';
+import type { HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 import {
 	hubCatalog,
 	hubOwnedPaths,
@@ -46,6 +47,9 @@ export class HubProjectionService {
 	) {
 		const project = await this.context.api.getProject(actor, projectId);
 		return hubSnapshot({ ...this.context, actor, project }, query);
+	}
+	async registry(actor: Actor, projectId: string, commit: string) {
+		return readRegistry(await this.load(actor, projectId, commit));
 	}
 	async entity(
 		actor: Actor,
@@ -140,4 +144,8 @@ export class HubProjectionService {
 		if (!thread) return hubFail('not-found');
 		return hubMessages(thread);
 	}
+}
+
+async function readRegistry(context: HubSourceContext) {
+	return { commit: context.commit, units: await hubRecords(context) };
 }

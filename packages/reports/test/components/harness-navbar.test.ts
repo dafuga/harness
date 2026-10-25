@@ -73,7 +73,7 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 	expect(html).toMatch(/^\s*<header class="hx-nav"/);
 	expect(html.match(/<header\b/g)).toHaveLength(1);
 	expect(links(html)).toEqual(
-		['Pages', 'Code', 'Translations', 'Platforms'].map((label) => ({
+		['Pages', 'APIs', 'Code', 'Translations', 'Platforms'].map((label) => ({
 			label,
 			href: `${scoped}/commit/${sha(4)}/${label === 'Code' ? 'components' : label.toLowerCase()}`,
 			current: label === 'Code',
@@ -105,7 +105,7 @@ test('Styles has its own active state and keeps the selected revision in its add
 	const html = body(styles);
 	const menu = links(html);
 	expect(menu.filter((item) => item.current).map((item) => item.label)).toEqual(['Code']);
-	expect(menu[1]).toMatchObject({
+	expect(menu[2]).toMatchObject({
 		label: 'Code',
 		href: `${scoped}/commit/${sha(4)}/components`,
 		current: true
@@ -142,7 +142,7 @@ test('at the tip of a branch the commit is the tip, said as current, and Go to t
 			.filter((item) => item.current)
 			.map((item) => item.label)
 	).toEqual(['Pages']);
-	expect(links(html)[1].href).toBe(`${scoped}/components`);
+	expect(links(html)[2].href).toBe(`${scoped}/components`);
 	expect(html).not.toContain('aria-label="Code categories"');
 });
 
@@ -169,9 +169,9 @@ test('both selectors are the shared select, and the bar writes no field of its o
 
 test('without a resolved address the bar keeps its navigation and offers nothing to choose', () => {
 	const html = body(null, { repository: null, index: null });
-	expect(text(categories(html))).toBe('Pages Code Translations Platforms');
+	expect(text(categories(html))).toBe('Pages APIs Code Translations Platforms');
 	expect(links(html)).toEqual([]);
-	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(4);
+	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(5);
 	expect(html).not.toMatch(/<select\b|Go to tip|hx-repository/);
 	expect(html).toMatch(new RegExp(`<a\\b[^>]*class="hx-brand"[^>]*href="${shellMount}"`));
 });

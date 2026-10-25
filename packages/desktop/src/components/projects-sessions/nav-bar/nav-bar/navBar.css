@@ -75,7 +75,13 @@ header.topbar {
 		justify-self: start;
 		justify-content: flex-start;
 		width: auto;
-		height: 58px;
+		/* Keep both 40px controls and their gaps outside every row of tabs. */
+		max-width: calc(100% - 80px - 2 * var(--hx-space-8));
+		height: auto;
+		flex-wrap: wrap;
+	}
+	.topbar nav :global(a) {
+		min-height: 58px;
 	}
 	.topbar-search {
 		grid-area: tools;
@@ -107,6 +113,7 @@ header.topbar {
 @media (min-width: 561px) and (max-width: 760px) {
 	.topbar nav {
 		grid-area: 4 / 1 / 5 / -1;
+		max-width: 100%;
 	}
 	.topbar-search {
 		width: 100%;
@@ -128,10 +135,41 @@ header.topbar {
 	}
 	.topbar:not(.with-account) nav {
 		height: auto;
+		max-width: none;
 	}
 	.topbar:not(.with-account) .topbar-search {
 		grid-area: search;
 		width: 100%;
+	}
+}
+/* Use the existing top row for phone controls so categories keep the compact header. */
+@media (max-width: 560px) {
+	header.topbar {
+		grid-template-areas:
+			'brand project project search search'
+			'environment environment revision tip tip'
+			'summary summary summary summary summary'
+			'tools tools tools tools tools';
+	}
+	header.topbar.with-activity {
+		grid-template-areas:
+			'brand project search search account'
+			'environment environment revision tip tip'
+			'summary summary summary summary summary'
+			'tools tools tools tools tools';
+	}
+	header.topbar.with-account {
+		row-gap: var(--hx-space-4);
+		grid-template-areas:
+			'brand project project search search'
+			'account account account account account'
+			'environment environment revision tip tip'
+			'summary summary summary summary summary'
+			'tools tools tools tools tools';
+	}
+	.topbar-search {
+		grid-area: search;
+		place-self: center end;
 	}
 }
 /* A phone arranges the same places in rows of its own, in responsive.css. */

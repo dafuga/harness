@@ -1,4 +1,5 @@
 import type { Input, Runner } from './measureHarness.types';
+import { apiMeasuredUnits, apiWorkloadArgs } from './apiMeasuredUnits';
 import { existsSync } from 'node:fs';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -28,7 +29,12 @@ export async function measureHarness(input: Input, run: Runner): Promise<Command
 		);
 		const duration = performance.now() - start;
 		if (result.exitCode === 0)
-			recordUsage(units, input.args, duration, await readFile(usage, 'utf8'));
+			recordUsage(
+				units,
+				input.args[0] === 'api' ? apiWorkloadArgs(input.args) : input.args,
+				duration,
+				await readFile(usage, 'utf8')
+			);
 		return result;
 	} finally {
 		await rm(directory, { recursive: true, force: true });
@@ -36,6 +42,7 @@ export async function measureHarness(input: Input, run: Runner): Promise<Command
 }
 
 function measuredUnits(args: string[]): string[] {
+	if (args[0] === 'api') return apiMeasuredUnits(args);
 	const workload = measuredWorkloads[args.slice(0, 2).join(':')];
 	if (workload) return workload;
 	if (args[0] === 'new') return ['template.project-guidance'];

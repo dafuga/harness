@@ -10,7 +10,10 @@ export class ConsoleAgentController {
 			const input: unknown = JSON.parse(new TextDecoder().decode(bytes));
 			if (!input || typeof input !== 'object' || Array.isArray(input))
 				throw new Error('Invalid request.');
-			return Response.json(await consoleAgent(input as Record<string, unknown>));
+			const payload = input as Record<string, unknown>;
+			const bearer = request.headers.get('authorization');
+			if (bearer?.startsWith('Bearer ')) payload.token = bearer.slice(7);
+			return apiReply(await consoleAgent(payload));
 		} catch (cause) {
 			return Response.json(
 				{ error: cause instanceof Error ? cause.message : 'Chat unavailable.' },
@@ -18,6 +21,18 @@ export class ConsoleAgentController {
 			);
 		}
 	}
+}
+
+/** The same artifact bytes as the hosted API, without JSON numeric-key conversion. */
+function apiReply(value: unknown): Response {
+	if (value instanceof Uint8Array)
+		return new Response(new Uint8Array(value), { headers: { 'content-type': 'image/png' } });
+	const artifact = value as { bytes?: unknown; mediaType?: unknown } | null;
+	if (artifact?.bytes instanceof Uint8Array && typeof artifact.mediaType === 'string')
+		return new Response(new Uint8Array(artifact.bytes), {
+			headers: { 'content-type': artifact.mediaType, 'x-content-type-options': 'nosniff' }
+		});
+	return Response.json(value);
 }
 
 function ownerRequestRefusal(request: Request): Response | null {

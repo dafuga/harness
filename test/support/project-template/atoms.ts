@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { compile } from 'svelte/compiler';
-import { expect } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { atomicComponents } from '../../../src/templates/development-tooling/atomicPreprocess.js';
 import { atomicMarkup } from '../../../src/templates/development-tooling/atomicMarkup';
 import { nativeAtoms } from '../../../src/templates/development-tooling/htmlElements.js';
