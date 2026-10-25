@@ -117,6 +117,7 @@ test('an entity names the pages that show it at any depth, and what else uses it
 test('an entity that is not at the revision has no relations, and a cycle ends', () => {
 	expect(related('function.nowhere')).toEqual({
 		pages: [],
+		apis: [],
 		layouts: [],
 		components: [],
 		functions: [],
