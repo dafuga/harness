@@ -39,8 +39,8 @@ const directory = process.env.HARNESS_EVIDENCE_DIR;
 fs.mkdirSync(directory, { recursive: true });
 fs.writeFileSync(path.join(directory, 'case-results.ndjson'), ${JSON.stringify(JSON.stringify(caseOutcome) + '\n')});
 fs.writeFileSync(path.join(directory, 'browser-errors.ndjson'), ${JSON.stringify(JSON.stringify(diagnostics) + '\n')});
-process.stdout.write('HARNESS_RESOURCE_MEMORY_MIB=' + process.env.HARNESS_RESOURCE_MEMORY_MIB + '\n');
-process.stdout.write('HARNESS_RESOURCE_CPUS=' + process.env.HARNESS_RESOURCE_CPUS + '\n');
+process.stdout.write('HARNESS_RESOURCE_MEMORY_MIB=' + process.env.HARNESS_RESOURCE_MEMORY_MIB + String.fromCharCode(10));
+process.stdout.write('HARNESS_RESOURCE_CPUS=' + process.env.HARNESS_RESOURCE_CPUS + String.fromCharCode(10));
 process.exitCode = ${exitCode};`;
 }
 
