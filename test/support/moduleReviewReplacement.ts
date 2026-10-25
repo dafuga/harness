@@ -8,7 +8,7 @@ import { writeFile } from 'node:fs/promises';
 
 export async function replacedReviewContracts(project: UnitProject) {
 	const original = await project.json<ComponentManifest>('specification/units/service.title.json');
-	const contract = structuredClone(original.contract);
+	const contract = globalThis.structuredClone(original.contract);
 	contract.origin = 'declared';
 	contract.outputs[0].description = 'Return the normalized title reviewed at this source revision.';
 	await review(project, 'service.title', {
