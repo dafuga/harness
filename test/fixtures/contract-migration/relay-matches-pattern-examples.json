@@ -1,0 +1,309 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.matches-pattern",
+	"kind": "function",
+	"title": "String pattern guard",
+	"responsibility": "Checks a string against a regular expression without retaining its match position.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/relay/src/utils/development-tooling/matchesPattern.ts",
+			"packages/relay/src/utils/matchesPattern.ts"
+		],
+		"symbols": ["matchesPattern", "matchesPattern"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "matchesPattern.value",
+				"type": "unknown",
+				"description": "Unknown candidate value; non-strings return false."
+			},
+			{
+				"name": "matchesPattern.pattern",
+				"type": "RegExp",
+				"description": "Regular expression to test. For string inputs, lastIndex is reset to zero before and after the test."
+			}
+		],
+		"outputs": [
+			{
+				"name": "matchesPattern",
+				"type": "value is string",
+				"description": "Whether the string matches, with a string type guard on success."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/development-tooling/matchesPattern.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/development-tooling/matchesPattern.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "matchesPattern",
+				"name": "Accept a lowercase hex text of exactly four characters",
+				"call": "matchesPattern('a1b2', /^[a-f0-9]{4}$/)",
+				"input": ["a1b2", { "$fixture": "RegExp", "source": "^[a-f0-9]{4}$", "flags": "" }],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Refuse a hex text one character shorter than the pattern",
+				"call": "matchesPattern('a1b', /^[a-f0-9]{4}$/)",
+				"input": ["a1b", { "$fixture": "RegExp", "source": "^[a-f0-9]{4}$", "flags": "" }],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Refuse a hex text one character longer than the pattern",
+				"call": "matchesPattern('a1b2c', /^[a-f0-9]{4}$/)",
+				"input": ["a1b2c", { "$fixture": "RegExp", "source": "^[a-f0-9]{4}$", "flags": "" }],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Refuse an uppercase hex text because the pattern is lowercase",
+				"call": "matchesPattern('A1B2', /^[a-f0-9]{4}$/)",
+				"input": ["A1B2", { "$fixture": "RegExp", "source": "^[a-f0-9]{4}$", "flags": "" }],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Refuse an empty text against a four-character pattern",
+				"call": "matchesPattern('', /^[a-f0-9]{4}$/)",
+				"input": ["", { "$fixture": "RegExp", "source": "^[a-f0-9]{4}$", "flags": "" }],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Refuse a number whose digits would match the pattern as text",
+				"call": "matchesPattern(1234, /^[a-f0-9]{4}$/)",
+				"input": [1234, { "$fixture": "RegExp", "source": "^[a-f0-9]{4}$", "flags": "" }],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Refuse null as a value",
+				"call": "matchesPattern(null, /^[a-f0-9]{4}$/)",
+				"input": [null, { "$fixture": "RegExp", "source": "^[a-f0-9]{4}$", "flags": "" }],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Refuse undefined as a value",
+				"call": "matchesPattern(undefined, /^[a-f0-9]{4}$/)",
+				"input": [
+					{ "$fixture": "undefined" },
+					{ "$fixture": "RegExp", "source": "^[a-f0-9]{4}$", "flags": "" }
+				],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Refuse an array that holds a matching text",
+				"call": "matchesPattern(['a1b2'], /^[a-f0-9]{4}$/)",
+				"input": [["a1b2"], { "$fixture": "RegExp", "source": "^[a-f0-9]{4}$", "flags": "" }],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Refuse an array-like object with a length of four",
+				"call": "matchesPattern({ length: 4 }, /^[a-f0-9]{4}$/)",
+				"input": [
+					{ "length": 4 },
+					{ "$fixture": "RegExp", "source": "^[a-f0-9]{4}$", "flags": "" }
+				],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Answer every repeated call with a global pattern the same way",
+				"call": "const pattern = /[a-f0-9]{4}/g; Array.from({ length: 3 }, () => matchesPattern('a1b2', pattern))",
+				"input": ["a1b2", { "$fixture": "RegExp", "source": "[a-f0-9]{4}", "flags": "g" }, 3],
+				"expected": { "kind": "value", "value": [true, true, true] }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Ignore a stale match position on a global pattern",
+				"call": "const pattern = /[a-f0-9]{4}/g; pattern.lastIndex = 3; matchesPattern('a1b2', pattern)",
+				"input": [
+					"a1b2",
+					{ "$fixture": "RegExp", "source": "[a-f0-9]{4}", "flags": "g", "lastIndex": 3 }
+				],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "matchesPattern",
+				"name": "Accept a text that contains a match for an unanchored pattern",
+				"call": "matchesPattern('xx-a1b2-yy', /[a-f0-9]{4}/)",
+				"input": ["xx-a1b2-yy", { "$fixture": "RegExp", "source": "[a-f0-9]{4}", "flags": "" }],
+				"expected": { "kind": "value", "value": true }
+			}
+		],
+		"states": ["input", "boundary", "invalid"],
+		"props": ["value", "pattern"],
+		"cases": [
+			{
+				"id": "matches-pattern.accepts-hex-text",
+				"state": "input",
+				"subject": "matchesPattern",
+				"example": "Accept a lowercase hex text of exactly four characters",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Accept a lowercase hex text of exactly four characters"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "matches-pattern.refuses-short-text",
+				"state": "boundary",
+				"subject": "matchesPattern",
+				"example": "Refuse a hex text one character shorter than the pattern",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Refuse a hex text one character shorter than the pattern"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "matches-pattern.refuses-long-text",
+				"state": "boundary",
+				"subject": "matchesPattern",
+				"example": "Refuse a hex text one character longer than the pattern",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Refuse a hex text one character longer than the pattern"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "matches-pattern.refuses-uppercase-text",
+				"state": "boundary",
+				"subject": "matchesPattern",
+				"example": "Refuse an uppercase hex text because the pattern is lowercase",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Refuse an uppercase hex text because the pattern is lowercase"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "matches-pattern.refuses-empty-text",
+				"state": "boundary",
+				"subject": "matchesPattern",
+				"example": "Refuse an empty text against a four-character pattern",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Refuse an empty text against a four-character pattern"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "matches-pattern.refuses-number",
+				"state": "invalid",
+				"subject": "matchesPattern",
+				"example": "Refuse a number whose digits would match the pattern as text",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Refuse a number whose digits would match the pattern as text"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "matches-pattern.refuses-null",
+				"state": "invalid",
+				"subject": "matchesPattern",
+				"example": "Refuse null as a value",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Refuse null as a value"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "matches-pattern.refuses-undefined",
+				"state": "invalid",
+				"subject": "matchesPattern",
+				"example": "Refuse undefined as a value",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Refuse undefined as a value"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "matches-pattern.refuses-array",
+				"state": "invalid",
+				"subject": "matchesPattern",
+				"example": "Refuse an array that holds a matching text",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Refuse an array that holds a matching text"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "matches-pattern.refuses-length-object",
+				"state": "invalid",
+				"subject": "matchesPattern",
+				"example": "Refuse an array-like object with a length of four",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Refuse an array-like object with a length of four"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "matches-pattern.repeats-global-pattern",
+				"state": "boundary",
+				"subject": "matchesPattern",
+				"example": "Answer every repeated call with a global pattern the same way",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Answer every repeated call with a global pattern the same way"
+				},
+				"props": ["pattern"]
+			},
+			{
+				"id": "matches-pattern.ignores-stale-position",
+				"state": "boundary",
+				"subject": "matchesPattern",
+				"example": "Ignore a stale match position on a global pattern",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Ignore a stale match position on a global pattern"
+				},
+				"props": ["pattern"]
+			},
+			{
+				"id": "matches-pattern.accepts-unanchored-text",
+				"state": "input",
+				"subject": "matchesPattern",
+				"example": "Accept a text that contains a match for an unanchored pattern",
+				"test": {
+					"file": "packages/relay/test/utils/matches-pattern.test.ts",
+					"title": "matchesPattern: Accept a text that contains a match for an unanchored pattern"
+				},
+				"props": ["pattern"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
