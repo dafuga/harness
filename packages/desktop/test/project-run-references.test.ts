@@ -14,6 +14,7 @@ function referenceUnit(base: Record<string, unknown>, kind: 'function' | 'compon
 	const entry = `src/${kind}.ts`;
 	return {
 		...base,
+		catalog: { visibility: 'public' },
 		id: kind === 'function' ? 'app.function.owned' : `app.${kind}.consumer`,
 		kind,
 		title: kind === 'function' ? 'owned' : kind,
@@ -95,7 +96,7 @@ test('a pages request is asked with a registered function it names, and its chec
 	await registered(f.root);
 	expect(await created(f, JSON.stringify(proposal))).toEqual([notes]);
 	const prompt = f.run.mock.calls[0][0].prompt;
-	expect(named(prompt).startsWith('[[unit:app.function.owned]]')).toBe(true);
+	expect(named(prompt), prompt).toMatch(/^\[\[unit:app\.function\.owned\]\]/);
 	// The planned target of the fixture has no registry entry; no source is in the prompt.
 	expect(named(prompt)).not.toContain(f.request.entityId);
 	expect(prompt).not.toContain('committed source');
