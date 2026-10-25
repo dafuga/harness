@@ -2,7 +2,7 @@
 	"name": "contract-subject-counts",
 	"goal": "Keep each callable case identity stable when a sibling callable gains a declared capability",
 	"createdAt": "2026-10-25T14:12:32.286Z",
-	"updatedAt": "2026-10-25T14:12:33.429Z",
+	"updatedAt": "2026-10-25T14:16:52.096Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T14:12:41.658Z",
+			"evidence": "The existing comparison case fails because a first-callable capability addition authorizes changing second-callable case identity; immutable Harness proof retains the exact failure and unchanged two-test suite."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T14:16:52.096Z",
+			"evidence": "Compare case IDs separately by callable subject and compare only that callable signatures and authored examples, with declared shared states and props. The same two-case suite now rejects sibling identity changes."
 		},
 		{
 			"id": "green",

@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"src/services/verification-evidence/TestContractService.ts",
-			"src/services/verification-evidence/TestContractService.types.ts"
+			"src/services/verification-evidence/TestContractService.types.ts",
+			"src/services/verification-evidence/test-contract-service/caseIdentityChanges.ts"
 		],
 		"symbols": [
 			"TestContractService",
@@ -87,7 +88,9 @@
 	"testing": {
 		"version": 1,
 		"shape": "service",
-		"states": ["initialized"],
+		"states": [
+			"initialized"
+		],
 		"cases": [
 			{
 				"id": "validate-initialized",

@@ -1,7 +1,7 @@
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import type { ContractRegistry } from './TestContractService.types';
 import { TestCaseValidator } from '../../validators/verification-evidence/TestCaseValidator';
-import { stableJson } from '../../utils/development-tooling/stableJson';
+import { caseIdentityChanges } from './test-contract-service/caseIdentityChanges';
 
 /** Checks case ownership, discovery and history without changing expected results. */
 export class TestContractService {
@@ -32,16 +32,7 @@ export class TestContractService {
 			const base = previous.get(unit.id);
 			if (!base?.testing || unit.status !== 'active') return [];
 			if (!unit.testing) return [`${unit.id}: standardized cases cannot be removed`];
-			const old = base.testing.cases.map((item) => item.id).sort();
-			const next = unit.testing.cases.map((item) => item.id).sort();
-			if (
-				stableJson(old) === stableJson(next) ||
-				this.capabilities(base) !== this.capabilities(unit)
-			)
-				return [];
-			return [
-				`${unit.id}: case identities/count changed without declared capability changes; strengthen existing cases for bugs`
-			];
+			return caseIdentityChanges(base, unit);
 		});
 	}
 	private executable(unit: ComponentManifest): boolean {
@@ -64,25 +55,6 @@ export class TestContractService {
 			)
 				errors.push(`${unit.id}: case ${item.id} was not discovered`);
 			return errors;
-		});
-	}
-	private capabilities(unit: ComponentManifest): string {
-		return stableJson({
-			inputs: unit.contract.inputs.map(({ name, type }) => [name, type]).sort(),
-			outputs: unit.contract.outputs.map(({ name, type }) => [name, type]).sort(),
-			errors: unit.contract.errors.map(({ name, type }) => [name, type]).sort(),
-			helpers: unit.helperContracts
-				?.map((helper) => ({
-					name: helper.name,
-					inputs: helper.inputs.map(({ name, type }) => [name, type]).sort(),
-					output: helper.output,
-					examples: helper.examples?.map((example) => example.name).sort()
-				}))
-				.sort((left, right) => left.name.localeCompare(right.name)),
-			symbols: [...new Set(unit.owns.symbols)].sort(),
-			shape: unit.testing?.shape,
-			states: unit.testing?.states?.slice().sort(),
-			props: unit.testing?.props?.slice().sort()
 		});
 	}
 	private scenarios(registry: ContractRegistry): string[] {
