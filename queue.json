@@ -5766,7 +5766,7 @@
 			},
 			"sourceCommit": "97aec09ddf11b7e6011c2a84b6eb564f53cae7f9",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T19:13:56.471Z",
 			"claim": {
@@ -5780,6 +5780,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The migration is drafted in the two allowed files, but nothing is verified. I ran only static checks, and the compiler, lint, format, audit and test runs are still open for the primary.\n\n**Files**\n- Test: `test/utils/resource-environment.test.ts`. It now calls `registerExamples` on the fixture manifest and wraps the `resourceEnvironment` call in `measureWorkload`.\n- Proposed manifest: `test/fixtures/contract-migration/resource-environment-examples.json`, a new untracked directory holding a full copy of the unit with the changes below.\n- Unit: `function.resource-environment`, registered in `specification/units/function.resource-environment.json`. I did not edit that file. I could not resolve the explorer page URL from source, so the unit's History link is unavailable. Nothing is committed yet, so History is empty.\n- Consumers read, not edited: `src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts`, `src/utils/execution-runtimes/resourceWork.ts`, `packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts`, `packages/desktop/src/utils/development-tooling/cliProcess.ts`, and `specification/units/module.resources.json`.\n\n**Matrix: 22 Examples, 22 cases, one each**\n- `input` (9): one per recognized key.\n- `combination` (4): the original credential-filter assertion, with its input and expected values unchanged; all nine keys together; a partial budget with an explicit undefined key; the native thread limits.\n- `boundary` (8): a longer name and a lower-case name that must not match; an empty lease; no recognized key; explicit undefined, getter and prototype environments, rebuilt by fixture markers.\n- `invalid` (1): a null environment, expected to fail with a `TypeError`.\n\nThe original plain test title is retired, so the assertion now lives under `resourceEnvironment: Forward only scheduling context separately from application and credential values`.\n\n**Contract changes in the proposal, for your review**\n- Added a `TypeError` error entry, covered by the null case.\n- Corrected the responsibility. It omitted the resources home and priority variables.\n- Corrected the input description. \"Used to resolve paths\" does not match the code, and the default `process.env` read is now stated.\n- Added the `testing` block.\n\n**Static checks, not Harness verification**\n- The JSON parses, and only the intended top-level fields changed.\n- A Python re-check of the `TestCaseValidator` rules passed: identities, state, prop and error coverage, and canonical titles. It is my own reimplementation, not Harness's validator.\n- I replayed all 22 expectations against a model of the function and the marker rules, and all match.\n- The scratch script is deleted.\n\n**Not run**\n- Compiler, ESLint, `prettier --check`, `harness audit`, `units check`, `readable-unit-contracts`, and the new test file itself.\n- Prettier layout was matched by inspection. I avoided `[{}]` because committed manifests disagree on it.\n- The `TypeError` expectation is V8 text. The shebang confirms `vitest` runs under Node, and the relay precedent does the same. A Bun or JSC runtime would fail that one case.\n\n**Decisions and gaps for you**\n1. **Default `process.env` path has no Example.** `resourceWork.ts` calls `resourceEnvironment()` in production. Its output depends on the ambient lease, so no authored expectation is deterministic. Either add a projection-based Example that preserves the inherited lease, or keep it as a reported gap.\n2. **Null error text is engine-specific.** An engine-neutral contract needs an explicit product guard, which is a product change outside my files.\n3. **Invalid property values are not covered.** The product forwards non-string and null values unchanged, and the contract types them out. Declaring that behaviour is a contract decision first.\n4. **Non-record environments are not covered.** A number or string silently yields `{}`, and that is undeclared.\n5. **Own iterators and species do not apply.** The product never iterates the environment. Getter and prototype reads are covered.\n6. **The `measureWorkload` wrapper was my addition.** AGENTS requires a measured workload for changed units. The wanted contract does not list it, so drop it if you prefer a different mechanism.\n\n**Activity**\n- Registered as `94a14a9b-0b07-4508-be67-818a04445fd4` under loop `contract-test-policy`, with heartbeats. Finished with the outcome \"static checks only\".\n- No commits, pushes or memory writes.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/6d1021a9-0bc2-45f4-9270-cefc2a33229d",
+				"changedFiles": [
+					"test/utils/resource-environment.test.ts",
+					"test/fixtures/contract-migration/resource-environment-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T19:50:58.278Z",
+				"attempt": "6d1021a9-0bc2-45f4-9270-cefc2a33229d",
+				"sourceCommit": "97aec09ddf11b7e6011c2a84b6eb564f53cae7f9",
+				"checkpointCommit": "f3fb059f1a78a3c1055f03733e5504677bf4fd7e",
+				"usage": {
+					"inputTokens": 4387345,
+					"outputTokens": 165606,
+					"cacheReadTokens": 4162680,
+					"cacheWriteTokens": 224599,
+					"cacheWriteLongTokens": 224599,
+					"reportedCostUsd": 0.6294831599999999,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 4387345,
+							"outputTokens": 165606,
+							"cacheReadTokens": 4162680,
+							"cacheWriteTokens": 224599,
+							"cacheWriteLongTokens": 224599,
+							"reportedCostUsd": 0.6294831599999999,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.6294831599999999,
+							"minimumUsd": 0.6294831599999999,
+							"maximumUsd": 0.6294831599999999,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T19:13:57.683Z",
+						"finishedAt": "2026-10-25T19:50:58.129Z"
+					}
+				]
+			},
 			"attempts": []
 		}
 	]
