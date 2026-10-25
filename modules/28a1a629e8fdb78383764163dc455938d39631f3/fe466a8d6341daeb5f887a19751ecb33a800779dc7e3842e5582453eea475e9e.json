@@ -40017,23 +40017,13 @@
 			"dependencies": [],
 			"helperContracts": [
 				{
-					"name": "githubRepositoryUrl",
-					"source": "src/utils/githubSourceUrl.ts",
-					"inputs": [
-						{
-							"name": "githubRepositoryUrl.remote",
-							"type": "string"
-						}
-					],
-					"output": "string | undefined",
-					"pure": true,
 					"consumers": [
 						{
 							"unit": "desktop.service.project-session"
 						},
 						{
-							"unit": "function.github-source-url",
-							"symbol": "githubSourceUrl"
+							"symbol": "githubSourceUrl",
+							"unit": "function.github-source-url"
 						},
 						{
 							"unit": "hub.service.hub-projection"
@@ -40041,11 +40031,79 @@
 						{
 							"unit": "service.history-index"
 						}
-					]
+					],
+					"examples": [
+						{
+							"call": "githubRepositoryUrl(\" https://github.com/dafuga/harness.git \")",
+							"input": [" https://github.com/dafuga/harness.git "],
+							"name": "Normalize a public HTTPS repository remote",
+							"output": "https://github.com/dafuga/harness"
+						},
+						{
+							"call": "githubRepositoryUrl(\"git@github.com:dafuga/harness.git\")",
+							"input": ["git@github.com:dafuga/harness.git"],
+							"name": "Normalize the SSH shorthand remote",
+							"output": "https://github.com/dafuga/harness"
+						},
+						{
+							"call": "githubRepositoryUrl(\"ssh://git@github.com/dafuga/harness.git\")",
+							"input": ["ssh://git@github.com/dafuga/harness.git"],
+							"name": "Normalize an SSH URL",
+							"output": "https://github.com/dafuga/harness"
+						}
+					],
+					"inputs": [
+						{
+							"name": "githubRepositoryUrl.remote",
+							"type": "string"
+						}
+					],
+					"name": "githubRepositoryUrl",
+					"output": "string | undefined",
+					"pure": true,
+					"source": "src/utils/githubSourceUrl.ts"
 				},
 				{
-					"name": "githubSourceUrl",
-					"source": "src/utils/githubSourceUrl.ts",
+					"consumers": [
+						{
+							"unit": "desktop.component.details-panel"
+						},
+						{
+							"unit": "reports.component.harness-explorer-frame"
+						}
+					],
+					"examples": [
+						{
+							"call": "githubSourceUrl(\"https://github.com/dafuga/harness\", \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"src/index.ts\")",
+							"input": [
+								"https://github.com/dafuga/harness",
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"src/index.ts"
+							],
+							"name": "Link a source path at an exact SHA-1 commit",
+							"output": "https://github.com/dafuga/harness/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/src/index.ts"
+						},
+						{
+							"call": "githubSourceUrl(\"git@github.com:dafuga/harness.git\", \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"docs/My File.md\")",
+							"input": [
+								"git@github.com:dafuga/harness.git",
+								"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+								"docs/My File.md"
+							],
+							"name": "Encode filename spaces separately from path separators",
+							"output": "https://github.com/dafuga/harness/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/docs/My%20File.md"
+						},
+						{
+							"call": "githubSourceUrl(\"https://github.com/dafuga/harness.git\", \"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\", \"src/index.ts\")",
+							"input": [
+								"https://github.com/dafuga/harness.git",
+								"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+								"src/index.ts"
+							],
+							"name": "Link a source path at an exact SHA-256 commit",
+							"output": "https://github.com/dafuga/harness/blob/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/src/index.ts"
+						}
+					],
 					"inputs": [
 						{
 							"name": "githubSourceUrl.repository",
@@ -40060,16 +40118,10 @@
 							"type": "string"
 						}
 					],
+					"name": "githubSourceUrl",
 					"output": "string | undefined",
 					"pure": true,
-					"consumers": [
-						{
-							"unit": "desktop.component.details-panel"
-						},
-						{
-							"unit": "reports.component.harness-explorer-frame"
-						}
-					]
+					"source": "src/utils/githubSourceUrl.ts"
 				}
 			],
 			"runtime": {
@@ -112073,6 +112125,128 @@
 			"schemaVersion": 1,
 			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
 			"unit": "function.case"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "affcb9f37bd7343159e2c9816efa15f9cb312b53ab104277f9864932d4f1ac09",
+			"files": {
+				"src/utils/githubSourceUrl.ts": "3eddc87a0a792a60467e77295d71e3dcd3258b58"
+			},
+			"metadata": {
+				"helperContracts": [
+					{
+						"consumers": [
+							{
+								"unit": "desktop.service.project-session"
+							},
+							{
+								"symbol": "githubSourceUrl",
+								"unit": "function.github-source-url"
+							},
+							{
+								"unit": "hub.service.hub-projection"
+							},
+							{
+								"unit": "service.history-index"
+							}
+						],
+						"examples": [
+							{
+								"call": "githubRepositoryUrl(\" https://github.com/dafuga/harness.git \")",
+								"input": [" https://github.com/dafuga/harness.git "],
+								"name": "Normalize a public HTTPS repository remote",
+								"output": "https://github.com/dafuga/harness"
+							},
+							{
+								"call": "githubRepositoryUrl(\"git@github.com:dafuga/harness.git\")",
+								"input": ["git@github.com:dafuga/harness.git"],
+								"name": "Normalize the SSH shorthand remote",
+								"output": "https://github.com/dafuga/harness"
+							},
+							{
+								"call": "githubRepositoryUrl(\"ssh://git@github.com/dafuga/harness.git\")",
+								"input": ["ssh://git@github.com/dafuga/harness.git"],
+								"name": "Normalize an SSH URL",
+								"output": "https://github.com/dafuga/harness"
+							}
+						],
+						"inputs": [
+							{
+								"name": "githubRepositoryUrl.remote",
+								"type": "string"
+							}
+						],
+						"name": "githubRepositoryUrl",
+						"output": "string | undefined",
+						"pure": true,
+						"source": "src/utils/githubSourceUrl.ts"
+					},
+					{
+						"consumers": [
+							{
+								"unit": "desktop.component.details-panel"
+							},
+							{
+								"unit": "reports.component.harness-explorer-frame"
+							}
+						],
+						"examples": [
+							{
+								"call": "githubSourceUrl(\"https://github.com/dafuga/harness\", \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"src/index.ts\")",
+								"input": [
+									"https://github.com/dafuga/harness",
+									"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"src/index.ts"
+								],
+								"name": "Link a source path at an exact SHA-1 commit",
+								"output": "https://github.com/dafuga/harness/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/src/index.ts"
+							},
+							{
+								"call": "githubSourceUrl(\"git@github.com:dafuga/harness.git\", \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"docs/My File.md\")",
+								"input": [
+									"git@github.com:dafuga/harness.git",
+									"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"docs/My File.md"
+								],
+								"name": "Encode filename spaces separately from path separators",
+								"output": "https://github.com/dafuga/harness/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/docs/My%20File.md"
+							},
+							{
+								"call": "githubSourceUrl(\"https://github.com/dafuga/harness.git\", \"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\", \"src/index.ts\")",
+								"input": [
+									"https://github.com/dafuga/harness.git",
+									"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"src/index.ts"
+								],
+								"name": "Link a source path at an exact SHA-256 commit",
+								"output": "https://github.com/dafuga/harness/blob/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/src/index.ts"
+							}
+						],
+						"inputs": [
+							{
+								"name": "githubSourceUrl.repository",
+								"type": "string | undefined"
+							},
+							{
+								"name": "githubSourceUrl.commit",
+								"type": "string"
+							},
+							{
+								"name": "githubSourceUrl.path",
+								"type": "string"
+							}
+						],
+						"name": "githubSourceUrl",
+						"output": "string | undefined",
+						"pure": true,
+						"source": "src/utils/githubSourceUrl.ts"
+					}
+				]
+			},
+			"reason": "Helper examples executed against an identical source blob in the historical source review receipt; preserve the actual signature, source and consumers at this revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "function.github-source-url"
 		},
 		{
 			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
@@ -196410,6 +196584,26 @@
 						"output": "string | undefined",
 						"pure": true,
 						"source": "src/utils/githubSourceUrl.ts",
+						"examples": [
+							{
+								"call": "githubRepositoryUrl(\" https://github.com/dafuga/harness.git \")",
+								"input": [" https://github.com/dafuga/harness.git "],
+								"name": "Normalize a public HTTPS repository remote",
+								"output": "https://github.com/dafuga/harness"
+							},
+							{
+								"call": "githubRepositoryUrl(\"git@github.com:dafuga/harness.git\")",
+								"input": ["git@github.com:dafuga/harness.git"],
+								"name": "Normalize the SSH shorthand remote",
+								"output": "https://github.com/dafuga/harness"
+							},
+							{
+								"call": "githubRepositoryUrl(\"ssh://git@github.com/dafuga/harness.git\")",
+								"input": ["ssh://git@github.com/dafuga/harness.git"],
+								"name": "Normalize an SSH URL",
+								"output": "https://github.com/dafuga/harness"
+							}
+						],
 						"consumers": [
 							{
 								"unit": "desktop.service.project-session"
@@ -196446,6 +196640,38 @@
 						"output": "string | undefined",
 						"pure": true,
 						"source": "src/utils/githubSourceUrl.ts",
+						"examples": [
+							{
+								"call": "githubSourceUrl(\"https://github.com/dafuga/harness\", \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"src/index.ts\")",
+								"input": [
+									"https://github.com/dafuga/harness",
+									"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"src/index.ts"
+								],
+								"name": "Link a source path at an exact SHA-1 commit",
+								"output": "https://github.com/dafuga/harness/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/src/index.ts"
+							},
+							{
+								"call": "githubSourceUrl(\"git@github.com:dafuga/harness.git\", \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\", \"docs/My File.md\")",
+								"input": [
+									"git@github.com:dafuga/harness.git",
+									"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"docs/My File.md"
+								],
+								"name": "Encode filename spaces separately from path separators",
+								"output": "https://github.com/dafuga/harness/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/docs/My%20File.md"
+							},
+							{
+								"call": "githubSourceUrl(\"https://github.com/dafuga/harness.git\", \"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\", \"src/index.ts\")",
+								"input": [
+									"https://github.com/dafuga/harness.git",
+									"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+									"src/index.ts"
+								],
+								"name": "Link a source path at an exact SHA-256 commit",
+								"output": "https://github.com/dafuga/harness/blob/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/src/index.ts"
+							}
+						],
 						"consumers": [
 							{
 								"unit": "desktop.component.details-panel"
@@ -196470,7 +196696,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "e490becece703e9e",
+				"version": "690dab895f98ce74",
 				"serviceExports": [],
 				"serviceConsumers": [],
 				"serviceClasses": [],
@@ -387718,7 +387944,7 @@
 		},
 		"function.github-source-url": {
 			"unit": "function.github-source-url",
-			"manifest": "30f6783e8e767512e121a633469c5a033b5dc0fab66e2dc3569959a3b57c74ed",
+			"manifest": "1a1b6ee3ac4d5145e71464a9ee687e29960965d472bd7c49f13692f397904f93",
 			"source": "d5ed86c3fea1ee0807d01c73d4e6578c3d62caae1b2a06acd4aaf7960996a4b3",
 			"contract": "0d1a18def79fc1bb7d5fc62ccb871f4fc1f7285309e97cf6d6a54b0e47a14ba4",
 			"runtime": "a979b22bccde80cfc223bfb814e78e0d63f888f3807d149ebcce461401199096",
@@ -521786,8 +522012,6 @@
 		}
 	},
 	"sourceIssues": [
-		"function.github-source-url: githubRepositoryUrl requires at least one usage example with call, arguments and expected result",
-		"function.github-source-url: githubSourceUrl requires at least one usage example with call, arguments and expected result",
 		"desktop.function.remote-labels: plural must be implemented under src/helpers/<responsibility>/",
 		"desktop.function.remote-labels: identityLabel must be implemented under src/helpers/<responsibility>/",
 		"function.case: toKebabCase must be implemented under src/helpers/<responsibility>/",
@@ -533065,28 +533289,7 @@
 			"id": "function.github-source-url",
 			"kind": "function",
 			"category": "functions",
-			"issues": [
-				{
-					"field": "helpers.githubRepositoryUrl.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "helpers.githubSourceUrl.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "registry",
-					"message": "function.github-source-url: githubRepositoryUrl requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				},
-				{
-					"field": "registry",
-					"message": "function.github-source-url: githubSourceUrl requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "function.group-teardown",
@@ -540498,5 +540701,5 @@
 		}
 	],
 	"issues": [],
-	"digest": "6bd8049eb56b4c7a001e07fedf338ecb2eb11cbfdd1d406f60ddd888f0ecce18"
+	"digest": "f63d4138c8c5b20809bf0a825b3ceb2fab52b2d0e7fc15fa7fa5e86ae4a48d37"
 }
