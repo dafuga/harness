@@ -3640,6 +3640,54 @@
 				]
 			},
 			"attempts": []
+		},
+		{
+			"id": "api-permission-profiles.visual",
+			"title": "Profile pages and endpoint permission panel",
+			"moduleGoal": "One reusable screen presents profile discovery, selected-profile access and API access declarations.",
+			"instructions": "Implement only the two owned ExplorerPermissionsScreen files; make actual frontend edits. Use Claude Opus 5.5/xhigh. No Bash, tests, Git, network, browser, credential access, or other source edits. Primary handles all wiring and checks. Read existing ExplorerModulesScreen, ExplorerFrame, EntityLink, HarnessIcon, Styles/appStyleTokensConfig and shared atoms for reference.\nThe component receives ExplorerPermissionsScreenProps (extends ExplorerScreenProps plus optional endpoint:string). host.head.permissions is optional PermissionCatalog. Profiles: schemaVersion1,id,title,description,source,grants. grant.kind api: resource endpoint unit ID, actions HTTP methods[], data[{resource model ID,actions read/create/update/delete[],fields[],scope:string}]; page: resource unit ID, actions ['view']; data: resource model ID,actions[],fields[],scope. No implicit inheritance or grants.\nRender three views: optional endpoint => permission panel for only matching api grants across profiles, showing profile links, HTTP methods and exact data fields/action/scope; otherwise host.route.entity => profile detail (heading title; description; full API, page and data grants; back to profiles link); otherwise index titled Users & Permissions with one linked profile per id and description. Use scope-preserving links via host.lens.href and plainClick/host.onroute; category pages, screen permissions, entity id. Link referenced units only when present in host.entities; otherwise show exact ID as code. Endpoint mode is inside an existing EntityFrame, so do not nest a frame there; standalone index/detail use ExplorerFrame registryRequired=false. One component may define snippets for shared grants/panels. Empty catalog shows generator command harness module generate permissions profile Member. Missing profile says Profile not found. Empty API selection says No access declaration. Gaps remain explicit. Show a concise Declared policy label, not a claim of runtime enforcement.\nUse existing ex-card/ex-table/ex-scroll/ex-stack styles and token variables only. Native semantic markup through hx-* atoms, matching data-harness-component=networking-security-explorer-permissions-screen. Keep file <=220 lines, functions <=55 lines. Do not invent permissions, user identities, UI controls, budgets or settings. Existing tests are frozen: read profile SSR tests and test/support/permissionProfiles.ts as acceptance reference. Do not edit tests. Return brief changed-file summary and unresolved concerns.",
+			"wantedContract": {
+				"responsibility": "Display user profiles and their declared API, page and data access at the selected revision.",
+				"inputs": [
+					{
+						"name": "ExplorerPermissionsScreen.props",
+						"type": "ExplorerPermissionsScreenProps",
+						"description": "Explorer host data with the selected revision permission catalog and optional endpoint ID restricting the view to API access."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ExplorerPermissionsScreen",
+						"type": "markup",
+						"description": "Profile index, one profile detail page or endpoint permission panel with method, data action, field and scope declarations; missing declarations remain explicit."
+					}
+				],
+				"errors": []
+			},
+			"model": "claude-opus-5-5",
+			"provider": "claude",
+			"intelligence": "xhigh",
+			"assignee": "api-permission-visual",
+			"feature": {
+				"id": "api-permission-profiles",
+				"goal": "Expose API/data grants and user-profile pages through UI and CLI, with APIs and Modules under Code",
+				"tldr": "One revision-bound profile catalog; four top-level navigation destinations"
+			},
+			"module": {
+				"id": "reports.component.networking-security-explorer-permissions-screen",
+				"goal": "One reusable screen presents profile discovery, selected-profile access and API access declarations.",
+				"files": [
+					"packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte",
+					"packages/reports/src/components/networking-security/ExplorerPermissionsScreen.types.ts"
+				]
+			},
+			"sourceCommit": "d8d334f6816acf696078cb01640612bbd4c38e22",
+			"contractHash": "053164fbb8f1f98cb2a24c69803b04af69b315de42a92d830fbcc97f44fcc3c4",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T17:11:27.630Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
