@@ -6,6 +6,9 @@
 	"responsibility": "Expand an installed module resource template and record the generated source files.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/services/module-system/ModuleResourceService.ts"],
 		"symbols": ["ModuleResourceService", "ModuleResourceService.generate"]
@@ -96,8 +99,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

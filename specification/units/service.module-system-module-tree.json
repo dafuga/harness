@@ -6,6 +6,9 @@
 	"responsibility": "Read module metadata at a project boundary without importing application code.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/services/module-system/moduleTree.ts"],
 		"symbols": ["moduleTree"]
@@ -44,8 +47,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

@@ -6,6 +6,9 @@
 	"responsibility": "Define Resend delivery scaffolds, email rendering resources and their integration instructions.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/templates/module-system/emailModule.ts"],
 		"symbols": ["emailModule"]
@@ -38,8 +41,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

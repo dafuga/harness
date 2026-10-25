@@ -6,6 +6,9 @@
 	"responsibility": "Expose module discovery, instructions, installation and resource generation through the CLI.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/commands/module-system/ModuleCommand.ts"],
 		"symbols": ["ModuleCommand", "ModuleCommand.register"]
@@ -66,8 +69,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

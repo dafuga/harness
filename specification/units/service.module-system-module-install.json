@@ -6,6 +6,9 @@
 	"responsibility": "Install one capability foundation without replacing existing project source or invoking providers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/services/module-system/ModuleInstallService.ts"],
 		"symbols": ["ModuleInstallService", "ModuleInstallService.add"]
@@ -81,8 +84,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

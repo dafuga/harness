@@ -6,6 +6,9 @@
 	"responsibility": "Validate declarative module definitions and persisted installation and resource records.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"src/services/module-system/moduleDefinition.ts",
@@ -73,8 +76,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

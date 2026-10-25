@@ -6,6 +6,9 @@
 	"responsibility": "Define scoped streamed downloads, durable mutation replay, offline collections and their verification scaffolds.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/templates/module-system/offlineModule.ts"],
 		"symbols": ["offlineModule"]
@@ -38,8 +41,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

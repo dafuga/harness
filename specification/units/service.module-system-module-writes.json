@@ -6,6 +6,9 @@
 	"responsibility": "Preflight all module outputs and roll back task-owned writes when a write fails.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/services/module-system/moduleWrites.ts"],
 		"symbols": ["writeModuleFiles", "moduleOutputPath"]
@@ -81,8 +84,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

@@ -6,6 +6,9 @@
 	"responsibility": "Document the module authoring, installation and generation contract.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/guides/module-system/modules.ts"],
 		"symbols": ["modulesGuide"]
@@ -44,8 +47,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

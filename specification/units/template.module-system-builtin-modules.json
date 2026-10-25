@@ -6,6 +6,9 @@
 	"responsibility": "Admit built-in Email and Offline definitions through the same schema used by project modules.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/templates/module-system/builtinModules.ts"],
 		"symbols": ["builtinModules"]
@@ -54,8 +57,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

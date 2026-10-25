@@ -6,6 +6,9 @@
 	"responsibility": "Prepare dependency and responsibility-category updates while preserving existing project settings.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/services/module-system/modulePlan.ts"],
 		"symbols": ["modulePackagePlan", "moduleGroupPlan"]
@@ -81,8 +84,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }
