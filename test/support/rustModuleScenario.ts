@@ -106,10 +106,13 @@ async function assertRustBrowser(project: string): Promise<void> {
 		const page = await context.newPage();
 		const wasm = await readFile(join(project, 'static/wasm/metrics.wasm'));
 		const script = await readFile(join(project, '.cache/wasm-service.js'));
+		let wasmRequests = 0;
 		await page.route('http://rust-module.fixture/**', (route) => {
 			const path = new URL(route.request().url()).pathname;
-			if (path === '/metrics.wasm')
+			if (path === '/metrics.wasm') {
+				wasmRequests++;
 				return route.fulfill({ contentType: 'application/wasm', body: wasm });
+			}
 			if (path === '/service.js')
 				return route.fulfill({ contentType: 'text/javascript', body: script });
 			return route.fulfill({
@@ -118,10 +121,11 @@ async function assertRustBrowser(project: string): Promise<void> {
 			});
 		});
 		await page.goto('http://rust-module.fixture/');
-		const total = await page.evaluate<number>(
-			"(async () => { const { MetricsWasmService } = await import('/service.js'); return new MetricsWasmService('/metrics.wasm').sumSquares(4); })()"
+		const totals = await page.evaluate<number[]>(
+			"(async () => { const { MetricsWasmService } = await import('/service.js'); const service = new MetricsWasmService('/metrics.wasm'); return [await service.sumSquares(4), await service.sumSquares(5)]; })()"
 		);
-		expect(total).toBe(14);
+		expect(totals).toEqual([14, 30]);
+		expect(wasmRequests).toBe(1);
 		await errors.finish();
 	} finally {
 		await context.close();
