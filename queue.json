@@ -6970,6 +6970,66 @@
 			"createdAt": "2026-10-25T22:35:29.945Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-first.server-cli",
+			"title": "Expose automatic contract-plan execution through Harness task serve",
+			"moduleGoal": "Make server task admission and worker dispatch available through a thin supported Harness CLI entrypoint.",
+			"verificationFiles": ["test/commands/agents-providers/module-task.test.ts"],
+			"instructions": "Edit only assigned ModuleTaskCommand source/companion types and assigned command unit matrix. Add `task serve --input <file> --worker <id> --modules <comma-list> --once|--watch --json` using the new ModuleTaskServerService public contract. Its contract from committed task contract-first.server-runtime: submit({feature:{id,goal,tldr},tasks:ModuleTaskInput[]}) validates all definitions before queue mutation, reuses exact duplicates and rejects conflicting definitions. run(plan, worker, modules, once, signal) performs admission plus real worker dispatch under one server lifecycle. The service implementation is a concurrent separate assigned task and its current generated placeholder may not yet provide run; report that dependency if typechecks cannot pass, do not edit it. Keep this command thin, accept no unknown/incompatible flags, parse JSON with clear diagnostics, require explicit once or watch/default watch, report actual outcomes rather than claiming tasks completed after queueing. Bind SIGINT/SIGTERM to owned AbortController, remove only listeners owned by this invocation and await worker cleanup; never stop other servers/processes. Do not create HTTP listeners or a persistent preview. Existing feature/add/worker/retry/review/sync behavior remains intact. Existing worker tracks selected/reported model, tokens, API-cost and retries; do not double-account or auto-accept task results. CLI discovery uses units show and task show only, not dependency implementation/test suites. No delegate/commit/push/deploy/install/credentials/aggregate checks or E2Es. Unit tests with a controlled runner can cover normal execution and cancellation; real provider/browser proof belongs to primary. Files220/functions55. Preserve other work. Return exact paths and commands/results, unresolved dependencies.",
+			"wantedContract": {
+				"responsibility": "Expose one server-owned CLI lifecycle that validates and commits a desired-contract plan and automatically executes matching Claude/Codex workers, retaining existing task review and accounting.",
+				"inputs": [
+					{
+						"name": "plan",
+						"type": "JSON file with TaskFeature and ModuleTaskInput[]"
+					},
+					{
+						"name": "lifecycle",
+						"type": "worker id, module filters, once/watch, JSON output and cancellation"
+					}
+				],
+				"outputs": [
+					{
+						"name": "server outcomes",
+						"type": "structured admitted/reused task ids and actual worker results",
+						"description": "CLI returns truthful execution status; once drains eligible plan tasks, watch continues polling, cancellation awaits owned children."
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid flags or JSON plan",
+						"type": "nonzero CLI diagnostic before execution"
+					},
+					{
+						"name": "failed worker or cancelled lifecycle",
+						"type": "nonzero result with preserved task state and evidence"
+					}
+				]
+			},
+			"model": "auto",
+			"assignee": "contract-first-server-cli",
+			"feature": {
+				"id": "contract-first-execution",
+				"goal": "Harness users and agents develop from committed contracts; server-managed workers can read app-wide contracts and modify only their assigned files, with complete metadata validation and tracked executions.",
+				"tldr": "Extend the API-backed CLI and mandatory revision metadata with contract authoring, contract-first Codex guidance, enforced worker scopes, and automatic server task creation and dispatch. Preserve local and hosted permissions, existing history and exact model/usage/cost/bounce records."
+			},
+			"module": {
+				"id": "command.agents-providers-module-task",
+				"goal": "Make server task admission and worker dispatch available through a thin supported Harness CLI entrypoint.",
+				"files": [
+					"src/commands/agents-providers/ModuleTaskCommand.ts",
+					"src/commands/agents-providers/ModuleTaskCommand.types.ts",
+					"test/commands/agents-providers/module-task.test.ts"
+				]
+			},
+			"sourceCommit": "0ff03ffbcec57641920ec1a086d19ff58e818bbf",
+			"contractHash": "c901b616bd7c268fa9a800e538b5d4f4ee72784cf3cd5875a2e037b8c5b5dd2c",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T22:38:58.920Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
