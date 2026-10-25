@@ -2,7 +2,7 @@
 	"name": "api-catalog-admission",
 	"goal": "Keep Pages first across every catalog and preserve dedicated preview choices while admitting APIs without legacy aliases.",
 	"createdAt": "2026-10-25T02:27:42.619Z",
-	"updatedAt": "2026-10-25T02:28:08.106Z",
+	"updatedAt": "2026-10-25T02:30:35.342Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T02:30:34.851Z",
+			"evidence": "Record 3e67de3866c67e09f8367eae3649e3c55210d0b7f9b32394c1164cb69843e691 tests d62724b7b5d8963d8cb9d8c0c91a7f23c16b7120. The frozen matrix rejects APIs before Pages and the all-unit preview projection rejects ChatAgents at three viewports."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T02:30:35.342Z",
+			"evidence": "Move only the APIs label after Pages. Point ChatAgents at its existing dedicated component-catalog state. Keep explicit missing-state gaps, every viewport assertion, and historical route aliases. The normal ordered category matrix and every-unit preview projection are the reusable guards."
 		},
 		{
 			"id": "implement",
