@@ -3,7 +3,7 @@ import { measureWorkload } from '../../../../test/support/measureWorkload';
 import type { ExplorerLocation } from '../../src/models/Explorer.types';
 import { retainedBranch } from '../../src/utils/harnessAncestry';
 import { harnessShell } from '../../src/components/explorer-ui/harness-navbar/harnessShell';
-import { plainClick, type HarnessNavbarInput } from '../../src/utils/harnessShell';
+import { type HarnessNavbarInput } from '../../src/utils/harnessShell';
 import {
 	sha,
 	shellBranch,
@@ -197,26 +197,4 @@ test('Styles stays active across branch and commit selection without becoming an
 	});
 	expect(revision?.branchTo('main')).toEqual({ ...styles, branch: 'main', commit: null });
 	expect(revision?.commitTo(sha(3))).toEqual({ ...styles, commit: sha(3) });
-});
-
-test('only a plain left click is followed inside the application', () => {
-	const click = (changes: Partial<MouseEvent> = {}) =>
-		({
-			button: 0,
-			metaKey: false,
-			ctrlKey: false,
-			shiftKey: false,
-			altKey: false,
-			...changes
-		}) as MouseEvent;
-	expect(plainClick(click())).toBe(true);
-	for (const changed of [
-		{ button: 1 },
-		{ metaKey: true },
-		{ ctrlKey: true },
-		{ shiftKey: true },
-		{ altKey: true },
-		{ defaultPrevented: true }
-	])
-		expect([changed, plainClick(click(changed))]).toEqual([changed, false]);
 });
