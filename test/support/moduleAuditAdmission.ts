@@ -1,3 +1,4 @@
+import { measureWorkload } from './measureWorkload';
 import { expect } from 'vitest';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -46,7 +47,13 @@ export async function assertModuleAuditAdmission(root: string): Promise<void> {
 		JSON.stringify(definition)
 	);
 	const sources = async () =>
-		(await auditPath(root))
+		(
+			await measureWorkload('audit.audit', 'audit-module-source-boundaries', () =>
+				measureWorkload('audit.structure-rules', 'audit-module-source-boundaries', () =>
+					auditPath(root)
+				)
+			)
+		)
 			.filter((finding) => finding.rule === 'harness-source-structure')
 			.map((finding) => finding.path);
 	const available = await sources();

@@ -186,8 +186,10 @@ test('included modules expose every existing Code catalog through the module con
 test('included and project modules use declared catalogs and real scaffold generation', async () => {
 	const root = await project();
 	const generate = new ModuleResourceService();
-	await measureWorkload('service.module-system-module-resource', 'generate-default-service', () =>
-		generate.generate(root, 'services', 'service', { name: 'Invoice', group: 'billing' })
+	await measureWorkload(
+		'service.module-system-module-scaffold',
+		'generate-default-service-through-module',
+		() => generate.generate(root, 'services', 'service', { name: 'Invoice', group: 'billing' })
 	);
 	expect(await readFile(join(root, 'src/services/billing/InvoiceService.ts'), 'utf8')).toContain(
 		'class InvoiceService'
@@ -208,4 +210,10 @@ test('included and project modules use declared catalogs and real scaffold gener
 	const state = JSON.parse(await readFile(join(root, 'harness.modules.json'), 'utf8'));
 	expect(state.resources).toHaveLength(4);
 	expect(await new ModuleInstallService().add(root, 'services')).toEqual([]);
+	await measureWorkload('service.module-system-module-plan', 'install-rust-build-scripts', () =>
+		new ModuleInstallService().add(root, 'rust-wasm')
+	);
+	expect(
+		JSON.parse(await readFile(join(root, 'package.json'), 'utf8')).scripts['build:wasm']
+	).toContain('buildWasm.mjs');
 });
