@@ -3,43 +3,49 @@
 	"id": "hub.function.development-tooling-hub-module-data",
 	"kind": "function",
 	"title": "hubModuleData",
-	"responsibility": "Owns the hubModuleData shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Load and verify sealed metadata for one authenticated project revision, and reject incomplete metadata before hosted reads.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/utils/development-tooling/hubModuleData.ts"],
 		"symbols": ["hubModuleData", "hubRequiresModuleData"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubModuleData.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Authenticated repository, exact source revision, notes and evidence identities."
 			},
 			{
 				"name": "hubModuleData.admit",
-				"type": "unknown"
+				"type": "boolean",
+				"description": "Whether to reject missing module metadata after verifying snapshot integrity."
 			},
 			{
 				"name": "hubRequiresModuleData.context",
-				"type": "HubSourceContext"
+				"type": "HubSourceContext",
+				"description": "Selected revision entries used to determine whether the validation protocol is adopted."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubModuleData",
-				"type": "Promise<ModuleData>"
+				"type": "Promise<ModuleData>",
+				"description": "Committed metadata bound to the requested source revision and current evidence inputs."
 			},
 			{
 				"name": "hubRequiresModuleData",
-				"type": "unknown"
+				"type": "boolean",
+				"description": "True when the selected source declares required metadata admission."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Missing, malformed, stale or incomplete committed module metadata; no alternate project or revision is substituted."
 			}
 		]
 	},

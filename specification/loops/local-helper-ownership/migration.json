@@ -4953,7 +4953,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5409,6 +5409,20 @@
 			"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
 			"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof.",
 			"definition": "77fb4e594e25fc7458e591cdd99335d9289431cbab1f4bf222735d2b3d10eaab"
+		},
+		{
+			"unit": "hub.function.hub-evidence-registry",
+			"name": "hubEvidenceRegistry",
+			"consumer": {
+				"unit": "hub.function.hub-evidence-revision",
+				"symbol": "hubEvidenceRevision"
+			},
+			"from": "packages/hub/src/utils/hubEvidenceRegistry.ts",
+			"to": "packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceRegistry.ts",
+			"ownerSource": "packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceRevision.ts",
+			"definition": "6c9319c65bd456405a9531c18388352be926fda30964820fbb71b445c40eaabd",
+			"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
+			"reason": "Use the committed module registry for admitted hosted reads while preserving the original helper move and runtime behavior for legacy projects."
 		}
 	]
 }

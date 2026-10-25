@@ -2088,13 +2088,13 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
+			"definition": "680273ad4ec32ce5d278d6f1e590490ecef4c2b30329e327836ca7b8b1ac6142",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+				"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-				"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
-				"reason": "Exposes immutable project registry reads behind the existing authenticated project boundary."
+				"definition": "680273ad4ec32ce5d278d6f1e590490ecef4c2b30329e327836ca7b8b1ac6142",
+				"reason": "Admit committed module metadata before normal resource reads, retaining authenticated project scope and exposing validation diagnostics for repair."
 			},
 			"previousReviews": [
 				{
@@ -2114,6 +2114,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
 					"definition": "a23cd83c2d144ca80865a2a6235e3848dd6375d25edb1f0aee4faf4366c11098",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+					"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
+					"reason": "Exposes immutable project registry reads behind the existing authenticated project boundary."
 				}
 			]
 		},
@@ -2378,13 +2384,13 @@
 			"unit": "hub.service.hub-projection",
 			"from": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-			"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
+			"definition": "8757ad5b2fb35b0c4d7d9b31f26d5c0145b8b6c9fb78392575f6871a6d38f14a",
 			"relocationDefinition": "84da7c7af64f93f2bd137180aebff1745bde5b7c5e57f33231705205f8710ea4",
 			"review": {
-				"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+				"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
 				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-				"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
-				"reason": "Reads every declared unit kind from the authorized project and selected source commit."
+				"definition": "8757ad5b2fb35b0c4d7d9b31f26d5c0145b8b6c9fb78392575f6871a6d38f14a",
+				"reason": "Admit committed module metadata before normal resource reads, retaining authenticated project scope and exposing validation diagnostics for repair."
 			},
 			"previousReviews": [
 				{
@@ -2392,6 +2398,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
 					"definition": "c009664809133b58455ea2c96288b8da196751d6fbf522f29e28291f1cac6824",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+					"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
+					"reason": "Reads every declared unit kind from the authorized project and selected source commit."
 				}
 			]
 		},
@@ -2593,14 +2605,22 @@
 			"unit": "workflow.inspect-units",
 			"from": "src/workflows/inspectUnits.ts",
 			"to": "src/cli/program/inspectUnits.ts",
-			"definition": "7ca7dc76b501a40efbcfff3eac281dbcc4ed9a91849e59c968292ffe7049ae55",
+			"definition": "c1a63efe4d9b84c8979ceb6498deacf43d9968270068facbc63704a9094c2db4",
 			"relocationDefinition": "072cf1293671393fd361ca319d41b7dbb0a77de9cc57be8e81f46013d9296019",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
 				"path": "src/cli/program/inspectUnits.ts",
-				"definition": "7ca7dc76b501a40efbcfff3eac281dbcc4ed9a91849e59c968292ffe7049ae55",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "c1a63efe4d9b84c8979ceb6498deacf43d9968270068facbc63704a9094c2db4",
+				"reason": "Admit committed module metadata before normal resource reads, retaining authenticated project scope and exposing validation diagnostics for repair."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/inspectUnits.ts",
+					"definition": "7ca7dc76b501a40efbcfff3eac281dbcc4ed9a91849e59c968292ffe7049ae55",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.run-verify",
@@ -3578,14 +3598,22 @@
 			"unit": "service.history-sync",
 			"from": "src/services/history-sync-service/HistorySyncService.ts",
 			"to": "src/cli/program/history-sync-service/HistorySyncService.ts",
-			"definition": "1c5e30f493ba2b5bf2be09989a558b1641d49ee4ffdbd1fe62dc2fbc056e08ca",
+			"definition": "a9046878e377f82face4d0f6291de7298f53fe1cfe7327f2b82bcfbc242bf324",
 			"relocationDefinition": "77f2dfda99fa773d749ac5db85fa15725eac3596a496d3d4a242c98e1c0f5711",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
 				"path": "src/cli/program/history-sync-service/HistorySyncService.ts",
-				"definition": "1c5e30f493ba2b5bf2be09989a558b1641d49ee4ffdbd1fe62dc2fbc056e08ca",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "a9046878e377f82face4d0f6291de7298f53fe1cfe7327f2b82bcfbc242bf324",
+				"reason": "Admit committed module metadata before normal resource reads, retaining authenticated project scope and exposing validation diagnostics for repair."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/history-sync-service/HistorySyncService.ts",
+					"definition": "1c5e30f493ba2b5bf2be09989a558b1641d49ee4ffdbd1fe62dc2fbc056e08ca",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "function.history-refs",
@@ -3597,14 +3625,22 @@
 			"unit": "desktop.adapter.git-source",
 			"from": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-			"definition": "e12d157a00d668f62b5cfaeba6fc54cf425e0c785065f12b53adfcd345593362",
+			"definition": "efbcba6d07a4df8bc93635a0c440fac1680610ef7cb62e395cc786ab0ea9a829",
 			"relocationDefinition": "01decde5581e75ca571d6f0156881dd2b9e059ef55127d28b366b3b64713cf90",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
-				"path": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
-				"definition": "e12d157a00d668f62b5cfaeba6fc54cf425e0c785065f12b53adfcd345593362",
-				"reason": "Retain main’s committed source measurement projection."
-			}
+				"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+				"definition": "efbcba6d07a4df8bc93635a0c440fac1680610ef7cb62e395cc786ab0ea9a829",
+				"reason": "Admit committed module metadata before normal resource reads, retaining authenticated project scope and exposing validation diagnostics for repair."
+			},
+			"previousReviews": [
+				{
+					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+					"path": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
+					"definition": "e12d157a00d668f62b5cfaeba6fc54cf425e0c785065f12b53adfcd345593362",
+					"reason": "Retain main’s committed source measurement projection."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.git-blobs",
@@ -4369,13 +4405,13 @@
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-			"definition": "f0de2dcb656d031a3de4d9a1621359e3a35d587c9c2ea7e11b9fb0beb7bfbdd9",
+			"definition": "39a72f081bd6a9305930a5cdd68bc54c0b775dbd69a458ccebd7280f78193906",
 			"relocationDefinition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695",
 			"review": {
-				"commit": "ac0c34670e704cf6d60885e523b88831c4e272a0",
+				"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
 				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-				"definition": "f0de2dcb656d031a3de4d9a1621359e3a35d587c9c2ea7e11b9fb0beb7bfbdd9",
-				"reason": "Combines revision-bound registry and recorded-evidence reads with main agent registrations while preserving session and mutation validation."
+				"definition": "39a72f081bd6a9305930a5cdd68bc54c0b775dbd69a458ccebd7280f78193906",
+				"reason": "Admit committed module metadata before normal resource reads, retaining authenticated project scope and exposing validation diagnostics for repair."
 			},
 			"previousReviews": [
 				{
@@ -4395,6 +4431,12 @@
 					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
 					"definition": "acf5f437cf8bcc745670f9045614425e46c0f3c365b8bb7db31d604e7db16269",
 					"reason": "Exposes validated revision-bound registry reads alongside existing owner-session operations."
+				},
+				{
+					"commit": "ac0c34670e704cf6d60885e523b88831c4e272a0",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "f0de2dcb656d031a3de4d9a1621359e3a35d587c9c2ea7e11b9fb0beb7bfbdd9",
+					"reason": "Combines revision-bound registry and recorded-evidence reads with main agent registrations while preserving session and mutation validation."
 				}
 			]
 		},

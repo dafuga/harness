@@ -3,39 +3,44 @@
 	"id": "reports.function.explorer-ui-explorer-relations-recorded",
 	"kind": "function",
 	"title": "explorerRelationsRecorded",
-	"responsibility": "Owns the explorerRelationsRecorded shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Resolve committed relationship IDs to catalog entities without searching source or inferring missing API usage.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/explorer-ui/explorerRelationsRecorded.ts"],
 		"symbols": ["recordedRelations"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "recordedRelations.head",
-				"type": "HarnessRevision"
+				"type": "HarnessRevision",
+				"description": "Selected revision with its committed registry and relationship collections."
 			},
 			{
 				"name": "recordedRelations.id",
-				"type": "string"
+				"type": "string",
+				"description": "Stable identity of the module whose relationships are requested."
 			},
 			{
 				"name": "recordedRelations.entity",
-				"type": "Entity"
+				"type": "Entity",
+				"description": "Catalog projection for each resolved registered module."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordedRelations",
-				"type": "ExplorerRelations | undefined"
+				"type": "ExplorerRelations | undefined",
+				"description": "Stored relationship groups, or undefined for a legacy revision without committed relationships."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Required relationship metadata is missing; asks the operator to run validation."
 			}
 		]
 	},
