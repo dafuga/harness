@@ -7903,7 +7903,45 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.version",
+					"purpose": "Identify the supported installed desktop bundle version.",
+					"source": "src/config/desktopPatchConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.assets[\".vite/build/early-bootstrap.js\"]",
+					"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+					"source": "src/config/desktopPatchConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.assets[\".vite/build/bootstrap-CTpobVUg.js\"]",
+					"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+					"source": "src/config/desktopPatchConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.assets[\".vite/build/application-network-startup-Bt0a8E1L.js\"]",
+					"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+					"source": "src/config/desktopPatchConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.assets[\"webview/assets/app-shared-6c00c2afcf84.js\"]",
+					"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+					"source": "src/config/desktopPatchConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "desktopPatchConfig.assets[\"webview/assets/app-initial-61c077dcc1af.js\"]",
+					"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+					"source": "src/config/desktopPatchConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -22896,8 +22934,30 @@
 			],
 			"helperContracts": [
 				{
-					"name": "plural",
-					"source": "packages/desktop/src/utils/remoteLabels.ts",
+					"consumers": [
+						{
+							"symbol": "grantSummary",
+							"unit": "desktop.function.remote-labels"
+						},
+						{
+							"symbol": "hostSummary",
+							"unit": "desktop.function.remote-labels"
+						}
+					],
+					"examples": [
+						{
+							"call": "plural(1, \"task\")",
+							"input": [1, "task"],
+							"name": "Keep the singular word for one item",
+							"output": "1 task"
+						},
+						{
+							"call": "plural(2, \"task\")",
+							"input": [2, "task"],
+							"name": "Add s for other counts",
+							"output": "2 tasks"
+						}
+					],
 					"inputs": [
 						{
 							"name": "plural.count",
@@ -22908,30 +22968,12 @@
 							"type": "string"
 						}
 					],
+					"name": "plural",
 					"output": "unknown",
 					"pure": true,
-					"consumers": [
-						{
-							"unit": "desktop.function.remote-labels",
-							"symbol": "grantSummary"
-						},
-						{
-							"unit": "desktop.function.remote-labels",
-							"symbol": "hostSummary"
-						}
-					]
+					"source": "packages/desktop/src/utils/remoteLabels.ts"
 				},
 				{
-					"name": "identityLabel",
-					"source": "packages/desktop/src/utils/remoteLabels.ts",
-					"inputs": [
-						{
-							"name": "identityLabel.deviceId",
-							"type": "string"
-						}
-					],
-					"output": "string",
-					"pure": true,
 					"consumers": [
 						{
 							"unit": "desktop.component.remote-approval"
@@ -22939,7 +22981,31 @@
 						{
 							"unit": "desktop.component.remote-phone-panel"
 						}
-					]
+					],
+					"examples": [
+						{
+							"call": "identityLabel(\"0123456789abcde\")",
+							"input": ["0123456789abcde"],
+							"name": "Group the whole identity in fours, retaining the final group",
+							"output": "0123 4567 89ab cde"
+						},
+						{
+							"call": "identityLabel(\"\")",
+							"input": [""],
+							"name": "Leave an empty identity blank",
+							"output": ""
+						}
+					],
+					"inputs": [
+						{
+							"name": "identityLabel.deviceId",
+							"type": "string"
+						}
+					],
+					"name": "identityLabel",
+					"output": "string",
+					"pure": true,
+					"source": "packages/desktop/src/utils/remoteLabels.ts"
 				}
 			],
 			"runtime": {
@@ -36439,333 +36505,413 @@
 			"dependencies": [],
 			"helperContracts": [
 				{
-					"name": "toKebabCase",
-					"source": "src/core/case.ts",
+					"consumers": [
+						{
+							"symbol": "named",
+							"unit": "function.unit-identity"
+						},
+						{
+							"symbol": "validateRouteName",
+							"unit": "function.validation"
+						},
+						{
+							"symbol": "apiFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "componentFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "e2eFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "hookFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "layoutFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "partialFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "storeFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "viewFiles",
+							"unit": "template.app-pieces"
+						},
+						{
+							"symbol": "modelFiles",
+							"unit": "template.model"
+						},
+						{
+							"symbol": "adapterFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "classFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "controllerFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "policyFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "repositoryFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "seederFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "serializerFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "utilFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "validatorFiles",
+							"unit": "template.package-pieces"
+						},
+						{
+							"symbol": "featureFiles",
+							"unit": "template.pieces"
+						},
+						{
+							"symbol": "migrationFiles",
+							"unit": "template.pieces"
+						},
+						{
+							"symbol": "testFiles",
+							"unit": "template.pieces"
+						},
+						{
+							"symbol": "channelFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "concernFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "configFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "formFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "helperFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "initializerFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "mailerFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"symbol": "middlewareFiles",
+							"unit": "template.rails-pieces"
+						},
+						{
+							"unit": "workflow.export-plans"
+						}
+					],
+					"examples": [
+						{
+							"call": "toKebabCase(\"Hello world\")",
+							"input": ["Hello world"],
+							"name": "Join separated words with lowercase hyphens",
+							"output": "hello-world"
+						},
+						{
+							"call": "toKebabCase(\"orderID\")",
+							"input": ["orderID"],
+							"name": "Split lowercase-to-uppercase word boundaries",
+							"output": "order-id"
+						},
+						{
+							"call": "toKebabCase(\"\")",
+							"input": [""],
+							"name": "Return blank when the input contains no words",
+							"output": ""
+						}
+					],
 					"inputs": [
 						{
 							"name": "toKebabCase.textToConvert",
 							"type": "string"
 						}
 					],
+					"name": "toKebabCase",
 					"output": "string",
 					"pure": true,
+					"source": "src/core/case.ts"
+				},
+				{
 					"consumers": [
 						{
-							"unit": "function.unit-identity",
-							"symbol": "named"
+							"symbol": "prefixedRule",
+							"unit": "audit.scaffold-naming-rules"
 						},
 						{
-							"unit": "function.validation",
-							"symbol": "validateRouteName"
+							"symbol": "seedRule",
+							"unit": "audit.scaffold-naming-rules"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "apiFiles"
+							"symbol": "storeRule",
+							"unit": "audit.scaffold-naming-rules"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "componentFiles"
+							"symbol": "toCamelCase",
+							"unit": "function.case"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "e2eFiles"
+							"symbol": "componentFiles",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "hookFiles"
+							"symbol": "partialFiles",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "layoutFiles"
+							"symbol": "storeFiles",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "partialFiles"
+							"symbol": "titleName",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "storeFiles"
+							"symbol": "modelFiles",
+							"unit": "template.model"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "viewFiles"
+							"symbol": "adapterFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.model",
-							"symbol": "modelFiles"
+							"symbol": "classFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "adapterFiles"
+							"symbol": "controllerFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "classFiles"
+							"symbol": "policyFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "controllerFiles"
+							"symbol": "repositoryFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "policyFiles"
+							"symbol": "seederFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "repositoryFiles"
+							"symbol": "serializerFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "seederFiles"
+							"symbol": "validatorFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "serializerFiles"
+							"symbol": "featureFiles",
+							"unit": "template.pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "utilFiles"
+							"symbol": "channelFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.package-pieces",
-							"symbol": "validatorFiles"
+							"symbol": "concernFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.pieces",
-							"symbol": "featureFiles"
+							"symbol": "formFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.pieces",
-							"symbol": "migrationFiles"
+							"symbol": "helperFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.pieces",
-							"symbol": "testFiles"
+							"symbol": "initializerFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.rails-pieces",
-							"symbol": "channelFiles"
+							"symbol": "mailerFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
-							"unit": "template.rails-pieces",
-							"symbol": "concernFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "configFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "formFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "helperFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "initializerFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "mailerFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "middlewareFiles"
+							"symbol": "middlewareFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
 							"unit": "workflow.export-plans"
 						}
-					]
-				},
-				{
-					"name": "toPascalCase",
-					"source": "src/core/case.ts",
+					],
+					"examples": [
+						{
+							"call": "toPascalCase(\"Hello world\")",
+							"input": ["Hello world"],
+							"name": "Capitalize and join separated words",
+							"output": "HelloWorld"
+						},
+						{
+							"call": "toPascalCase(\"orderID\")",
+							"input": ["orderID"],
+							"name": "Split lowercase-to-uppercase word boundaries",
+							"output": "OrderId"
+						},
+						{
+							"call": "toPascalCase(\"\")",
+							"input": [""],
+							"name": "Return blank when the input contains no words",
+							"output": ""
+						}
+					],
 					"inputs": [
 						{
 							"name": "toPascalCase.textToConvert",
 							"type": "string"
 						}
 					],
+					"name": "toPascalCase",
 					"output": "string",
 					"pure": true,
+					"source": "src/core/case.ts"
+				},
+				{
 					"consumers": [
 						{
-							"unit": "audit.scaffold-naming-rules",
-							"symbol": "prefixedRule"
+							"symbol": "camelFunctionRule",
+							"unit": "audit.scaffold-naming-rules"
 						},
 						{
-							"unit": "audit.scaffold-naming-rules",
-							"symbol": "seedRule"
+							"symbol": "hookRule",
+							"unit": "audit.scaffold-naming-rules"
 						},
 						{
-							"unit": "audit.scaffold-naming-rules",
-							"symbol": "storeRule"
+							"symbol": "parseField",
+							"unit": "function.fields"
 						},
 						{
-							"unit": "function.case",
-							"symbol": "toCamelCase"
+							"symbol": "validateExportName",
+							"unit": "function.validation"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "componentFiles"
+							"symbol": "hookFiles",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "partialFiles"
+							"symbol": "storeFiles",
+							"unit": "template.app-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "storeFiles"
+							"symbol": "utilFiles",
+							"unit": "template.package-pieces"
 						},
 						{
-							"unit": "template.app-pieces",
-							"symbol": "titleName"
-						},
-						{
-							"unit": "template.model",
-							"symbol": "modelFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "adapterFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "classFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "controllerFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "policyFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "repositoryFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "seederFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "serializerFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "validatorFiles"
-						},
-						{
-							"unit": "template.pieces",
-							"symbol": "featureFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "channelFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "concernFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "formFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "helperFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "initializerFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "mailerFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "middlewareFiles"
+							"symbol": "configFiles",
+							"unit": "template.rails-pieces"
 						},
 						{
 							"unit": "workflow.export-plans"
 						}
-					]
-				},
-				{
-					"name": "toCamelCase",
-					"source": "src/core/case.ts",
+					],
+					"examples": [
+						{
+							"call": "toCamelCase(\"Hello world\")",
+							"input": ["Hello world"],
+							"name": "Join separated words with a lowercase first word",
+							"output": "helloWorld"
+						},
+						{
+							"call": "toCamelCase(\"orderID\")",
+							"input": ["orderID"],
+							"name": "Split lowercase-to-uppercase word boundaries",
+							"output": "orderId"
+						},
+						{
+							"call": "toCamelCase(\"\")",
+							"input": [""],
+							"name": "Return blank when the input contains no words",
+							"output": ""
+						}
+					],
 					"inputs": [
 						{
 							"name": "toCamelCase.textToConvert",
 							"type": "string"
 						}
 					],
+					"name": "toCamelCase",
 					"output": "string",
 					"pure": true,
-					"consumers": [
-						{
-							"unit": "audit.scaffold-naming-rules",
-							"symbol": "camelFunctionRule"
-						},
-						{
-							"unit": "audit.scaffold-naming-rules",
-							"symbol": "hookRule"
-						},
-						{
-							"unit": "function.fields",
-							"symbol": "parseField"
-						},
-						{
-							"unit": "function.validation",
-							"symbol": "validateExportName"
-						},
-						{
-							"unit": "template.app-pieces",
-							"symbol": "hookFiles"
-						},
-						{
-							"unit": "template.app-pieces",
-							"symbol": "storeFiles"
-						},
-						{
-							"unit": "template.package-pieces",
-							"symbol": "utilFiles"
-						},
-						{
-							"unit": "template.rails-pieces",
-							"symbol": "configFiles"
-						},
-						{
-							"unit": "workflow.export-plans"
-						}
-					]
+					"source": "src/core/case.ts"
 				},
 				{
-					"name": "toSnakeCase",
-					"source": "src/core/case.ts",
+					"consumers": [
+						{
+							"symbol": "parseField",
+							"unit": "function.fields"
+						},
+						{
+							"symbol": "modelFiles",
+							"unit": "template.model"
+						}
+					],
+					"examples": [
+						{
+							"call": "toSnakeCase(\"Hello world\")",
+							"input": ["Hello world"],
+							"name": "Join separated words with lowercase underscores",
+							"output": "hello_world"
+						},
+						{
+							"call": "toSnakeCase(\"orderID\")",
+							"input": ["orderID"],
+							"name": "Split lowercase-to-uppercase word boundaries",
+							"output": "order_id"
+						},
+						{
+							"call": "toSnakeCase(\"\")",
+							"input": [""],
+							"name": "Return blank when the input contains no words",
+							"output": ""
+						}
+					],
 					"inputs": [
 						{
 							"name": "toSnakeCase.textToConvert",
 							"type": "string"
 						}
 					],
+					"name": "toSnakeCase",
 					"output": "string",
 					"pure": true,
-					"consumers": [
-						{
-							"unit": "function.fields",
-							"symbol": "parseField"
-						},
-						{
-							"unit": "template.model",
-							"symbol": "modelFiles"
-						}
-					]
+					"source": "src/core/case.ts"
 				}
 			],
 			"runtime": {
@@ -50019,7 +50165,117 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "operator",
+					"name": "HARNESS_GOOGLE_CLIENT_ID",
+					"purpose": "Identify the project Google sign-in client.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_SESSION_SECRET",
+					"purpose": "Sign and verify project session cookies.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_PUBLIC_ORIGIN",
+					"purpose": "Declare the public origin used by project authentication.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_ENVIRONMENT",
+					"purpose": "Select local, staging or production runtime policy.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_GITHUB_APP_ID",
+					"purpose": "Identify the project GitHub App.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_GITHUB_PRIVATE_KEY",
+					"purpose": "Sign GitHub App installation authentication.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_GITHUB_CLIENT_ID",
+					"purpose": "Identify the GitHub OAuth client.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_GITHUB_CLIENT_SECRET",
+					"purpose": "Authenticate the GitHub OAuth client exchange.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_COLLABORATION_OWNER",
+					"purpose": "Select the owner of the collaboration repository.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_COLLABORATION_REPO",
+					"purpose": "Select the collaboration repository.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_COLLABORATION_REPOSITORY_ID",
+					"purpose": "Bind collaboration to the expected repository identity.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_COLLABORATION_INSTALLATION_ID",
+					"purpose": "Select the GitHub App installation for collaboration.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_EMAIL_API_KEY",
+					"purpose": "Authenticate the configured email proof sender.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_EMAIL_FROM",
+					"purpose": "Set the email proof sender address.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "HARNESS_RELAY_ORIGIN",
+					"purpose": "Locate the remote host and phone relay.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "DB",
+					"purpose": "Bind the project authentication D1 database.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "CACHE",
+					"purpose": "Bind the project R2 cache bucket.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				},
+				{
+					"audience": "operator",
+					"name": "REMOTE_HOSTS",
+					"purpose": "Bind the remote host Durable Object namespace.",
+					"source": "packages/hub/src/config/hubEnvConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -62783,7 +63039,69 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "relayConfig.internalOrigin",
+					"purpose": "Address a relay host through its namespace binding.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.bodyBytes",
+					"purpose": "Bound incoming JSON body bytes.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.tlsEnvironments",
+					"purpose": "Require TLS in staging and production.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.rateWindowMs",
+					"purpose": "Set the rate limit accounting window.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.pairingCalls",
+					"purpose": "Limit pairing calls per host and rate window.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.failedConnects",
+					"purpose": "Limit failed device connection attempts.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.openPairings",
+					"purpose": "Limit pending offers per host.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.frameWindowMs",
+					"purpose": "Set the per-device frame accounting window.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.deviceFrames",
+					"purpose": "Limit frames per device connection window.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "relayConfig.sweepDelayMs",
+					"purpose": "Retain expired offers long enough to report their expired state.",
+					"source": "packages/relay/src/config/relayConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -79358,7 +79676,57 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.plugins",
+					"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.outDir",
+					"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.emptyOutDir",
+					"purpose": "Clear stale files from the dedicated bundle output before building.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.cssCodeSplit",
+					"purpose": "Keep the embedded bundle stylesheet together.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.lib.entry",
+					"purpose": "Select the source entry for the embedded bundle.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.lib.formats",
+					"purpose": "Emit the browser IIFE format consumed by the host.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.lib.name",
+					"purpose": "Name the bundle global exposed to the host.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "consoleViteConfig.build.lib.fileName",
+					"purpose": "Name the generated JavaScript bundle.",
+					"source": "packages/reports/src/config/consoleViteConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -79400,7 +79768,57 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.testDir",
+					"purpose": "Locate the browser test sources.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.testMatch",
+					"purpose": "Select the browser suite for this preview surface.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.workers",
+					"purpose": "Limit browser execution to one worker.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.use.baseURL",
+					"purpose": "Set browser viewport, screenshot policy and preview origin.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.use.viewport.width",
+					"purpose": "Set browser viewport, screenshot policy and preview origin.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.use.viewport.height",
+					"purpose": "Set browser viewport, screenshot policy and preview origin.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.reporter",
+					"purpose": "Print list test results.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerPlaywrightConfig.webServer",
+					"purpose": "Build and start an isolated preview when an external preview URL is absent.",
+					"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -79436,7 +79854,57 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.plugins",
+					"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.outDir",
+					"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.emptyOutDir",
+					"purpose": "Clear stale files from the dedicated bundle output before building.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.cssCodeSplit",
+					"purpose": "Keep the embedded bundle stylesheet together.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.lib.entry",
+					"purpose": "Select the source entry for the embedded bundle.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.lib.formats",
+					"purpose": "Emit the browser IIFE format consumed by the host.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.lib.name",
+					"purpose": "Name the bundle global exposed to the host.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "pickerViteConfig.build.lib.fileName",
+					"purpose": "Name the generated JavaScript bundle.",
+					"source": "packages/reports/src/config/pickerViteConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -79472,7 +79940,57 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.plugins",
+					"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.outDir",
+					"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.emptyOutDir",
+					"purpose": "Clear stale files from the dedicated bundle output before building.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.cssCodeSplit",
+					"purpose": "Keep the embedded bundle stylesheet together.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.lib.entry",
+					"purpose": "Select the source entry for the embedded bundle.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.lib.formats",
+					"purpose": "Emit the browser IIFE format consumed by the host.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.lib.name",
+					"purpose": "Name the bundle global exposed to the host.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "reportViteConfig.build.lib.fileName",
+					"purpose": "Name the generated JavaScript bundle.",
+					"source": "packages/reports/src/config/reportViteConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -79508,7 +80026,45 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.testDir",
+					"purpose": "Locate the browser test sources.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.testMatch",
+					"purpose": "Select the browser suite for this preview surface.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.workers",
+					"purpose": "Limit browser execution to one worker.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.outputDir",
+					"purpose": "Separate the shell test artifacts from other suites.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.use.screenshot",
+					"purpose": "Set browser viewport, screenshot policy and preview origin.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellPlaywrightConfig.reporter",
+					"purpose": "Print list test results.",
+					"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -79544,7 +80100,69 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.plugins",
+					"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.publicDir",
+					"purpose": "Exclude unrelated public assets from the fixture bundle.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.logLevel",
+					"purpose": "Limit fixture build output to warnings.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.outDir",
+					"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.emptyOutDir",
+					"purpose": "Clear stale files from the dedicated bundle output before building.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.cssCodeSplit",
+					"purpose": "Keep the embedded bundle stylesheet together.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.lib.entry",
+					"purpose": "Select the source entry for the embedded bundle.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.lib.formats",
+					"purpose": "Emit the browser IIFE format consumed by the host.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.lib.name",
+					"purpose": "Name the bundle global exposed to the host.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "shellViteConfig.build.lib.fileName",
+					"purpose": "Name the generated JavaScript bundle.",
+					"source": "packages/reports/src/config/shellViteConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -80652,8 +81270,28 @@
 			],
 			"helperContracts": [
 				{
-					"name": "plural",
-					"source": "packages/reports/src/utils/activityDisplay.ts",
+					"consumers": [
+						{
+							"unit": "reports.component.activity-loops"
+						},
+						{
+							"unit": "reports.component.activity-work"
+						}
+					],
+					"examples": [
+						{
+							"call": "plural(1, \"task\")",
+							"input": [1, "task"],
+							"name": "Keep the singular word for one item",
+							"output": "1 task"
+						},
+						{
+							"call": "plural(2, \"task\")",
+							"input": [2, "task"],
+							"name": "Add s for other counts",
+							"output": "2 tasks"
+						}
+					],
 					"inputs": [
 						{
 							"name": "plural.count",
@@ -80664,16 +81302,10 @@
 							"type": "string"
 						}
 					],
+					"name": "plural",
 					"output": "string",
 					"pure": true,
-					"consumers": [
-						{
-							"unit": "reports.component.activity-loops"
-						},
-						{
-							"unit": "reports.component.activity-work"
-						}
-					]
+					"source": "packages/reports/src/utils/activityDisplay.ts"
 				}
 			],
 			"runtime": {
@@ -82070,16 +82702,6 @@
 			],
 			"helperContracts": [
 				{
-					"name": "humanize",
-					"source": "packages/reports/src/utils/entityContract.ts",
-					"inputs": [
-						{
-							"name": "humanize.name",
-							"type": "string"
-						}
-					],
-					"output": "string",
-					"pure": true,
 					"consumers": [
 						{
 							"unit": "desktop.component.contract-panel"
@@ -82100,38 +82722,74 @@
 							"unit": "reports.component.recorded-value"
 						},
 						{
-							"unit": "reports.function.contract-fields",
-							"symbol": "nameOf"
+							"symbol": "nameOf",
+							"unit": "reports.function.contract-fields"
 						},
 						{
-							"unit": "reports.function.entity-contract",
-							"symbol": "row"
+							"symbol": "row",
+							"unit": "reports.function.entity-contract"
 						},
 						{
-							"unit": "reports.function.entity-history",
-							"symbol": "named"
+							"symbol": "named",
+							"unit": "reports.function.entity-history"
 						},
 						{
-							"unit": "reports.function.entity-measure",
-							"symbol": "metricLabel"
+							"symbol": "metricLabel",
+							"unit": "reports.function.entity-measure"
 						},
 						{
-							"unit": "reports.function.entity-measure",
-							"symbol": "timing"
+							"symbol": "timing",
+							"unit": "reports.function.entity-measure"
 						},
 						{
-							"unit": "reports.function.entity-reasons",
-							"symbol": "attempts"
+							"symbol": "attempts",
+							"unit": "reports.function.entity-reasons"
 						},
 						{
-							"unit": "reports.function.entity-reasons",
-							"symbol": "subject"
+							"symbol": "subject",
+							"unit": "reports.function.entity-reasons"
 						},
 						{
-							"unit": "reports.function.entity-reasons",
-							"symbol": "uses"
+							"symbol": "uses",
+							"unit": "reports.function.entity-reasons"
 						}
-					]
+					],
+					"examples": [
+						{
+							"call": "humanize(\"orderID\")",
+							"input": ["orderID"],
+							"name": "Separate lowercase words from uppercase letters",
+							"output": "order id"
+						},
+						{
+							"call": "humanize(\"HTTPServer\")",
+							"input": ["HTTPServer"],
+							"name": "Separate an acronym from the following word",
+							"output": "http server"
+						},
+						{
+							"call": "humanize(\" order-item_count.total \")",
+							"input": [" order-item_count.total "],
+							"name": "Replace identifier separators with spaces and trim",
+							"output": "order item count total"
+						},
+						{
+							"call": "humanize(\"\")",
+							"input": [""],
+							"name": "Leave an empty identifier blank",
+							"output": ""
+						}
+					],
+					"inputs": [
+						{
+							"name": "humanize.name",
+							"type": "string"
+						}
+					],
+					"name": "humanize",
+					"output": "string",
+					"pure": true,
+					"source": "packages/reports/src/utils/entityContract.ts"
 				}
 			],
 			"runtime": {
@@ -83202,16 +83860,6 @@
 			],
 			"helperContracts": [
 				{
-					"name": "formatDuration",
-					"source": "packages/reports/src/utils/evidenceMedia.ts",
-					"inputs": [
-						{
-							"name": "formatDuration.seconds",
-							"type": "number"
-						}
-					],
-					"output": "string",
-					"pure": true,
 					"consumers": [
 						{
 							"unit": "reports.component.audio-comparison"
@@ -83222,7 +83870,37 @@
 						{
 							"unit": "reports.component.replay-controls"
 						}
-					]
+					],
+					"examples": [
+						{
+							"call": "formatDuration(90.9)",
+							"input": [90.9],
+							"name": "Format minutes and seconds, dropping fractions",
+							"output": "1:30"
+						},
+						{
+							"call": "formatDuration(3661)",
+							"input": [3661],
+							"name": "Include hours for longer durations",
+							"output": "1:01:01"
+						},
+						{
+							"call": "formatDuration(-1)",
+							"input": [-1],
+							"name": "Leave invalid durations blank",
+							"output": ""
+						}
+					],
+					"inputs": [
+						{
+							"name": "formatDuration.seconds",
+							"type": "number"
+						}
+					],
+					"name": "formatDuration",
+					"output": "string",
+					"pure": true,
+					"source": "packages/reports/src/utils/evidenceMedia.ts"
 				}
 			],
 			"runtime": {
@@ -110814,7 +111492,1370 @@
 			}
 		}
 	],
-	"reviews": [],
+	"reviews": [
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "00b88e812e9923bce0189377bd76e2495d66766ae9dc1220f905fb367b0274b1",
+			"files": {
+				"src/config/desktopPatchConfig.ts": "fab900ce4d53e05bba6d78fd33806ea421ba249e"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.version",
+						"purpose": "Identify the supported installed desktop bundle version.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/early-bootstrap.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/bootstrap-CTpobVUg.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/application-network-startup-Bt0a8E1L.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\"webview/assets/app-shared-6c00c2afcf84.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\"webview/assets/app-initial-61c077dcc1af.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob fab900ce4d53e05bba6d78fd33806ea421ba249e from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "config.desktop-patch"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "971b047112783a3703d9b77ecfa04f2f33a098fe9af1aa1370c683302c0b62a9",
+			"files": {
+				"packages/desktop/src/components/remote-host-panel/remoteLabels.ts": "205ebb2e356beef93c4c5403ee2b43d4436a56b9",
+				"packages/desktop/src/components/remote-offer-code/remoteLabels.ts": "1b9c0800372a7054fb451e3bf65fdd93ea9e30eb",
+				"packages/desktop/src/components/remote-phone-panel/remoteLabels.ts": "079b5fb376e7866141a3f0ae06221eed1da60e6d",
+				"packages/desktop/src/utils/remoteLabels.ts": "ab97212b9943afaf1811b88f8ae6a4f7962c5d91"
+			},
+			"metadata": {
+				"helperContracts": [
+					{
+						"consumers": [
+							{
+								"symbol": "grantSummary",
+								"unit": "desktop.function.remote-labels"
+							},
+							{
+								"symbol": "hostSummary",
+								"unit": "desktop.function.remote-labels"
+							}
+						],
+						"examples": [
+							{
+								"call": "plural(1, \"task\")",
+								"input": [1, "task"],
+								"name": "Keep the singular word for one item",
+								"output": "1 task"
+							},
+							{
+								"call": "plural(2, \"task\")",
+								"input": [2, "task"],
+								"name": "Add s for other counts",
+								"output": "2 tasks"
+							}
+						],
+						"inputs": [
+							{
+								"name": "plural.count",
+								"type": "number"
+							},
+							{
+								"name": "plural.word",
+								"type": "string"
+							}
+						],
+						"name": "plural",
+						"output": "unknown",
+						"pure": true,
+						"source": "packages/desktop/src/utils/remoteLabels.ts"
+					},
+					{
+						"consumers": [
+							{
+								"unit": "desktop.component.remote-approval"
+							},
+							{
+								"unit": "desktop.component.remote-phone-panel"
+							}
+						],
+						"examples": [
+							{
+								"call": "identityLabel(\"0123456789abcde\")",
+								"input": ["0123456789abcde"],
+								"name": "Group the whole identity in fours, retaining the final group",
+								"output": "0123 4567 89ab cde"
+							},
+							{
+								"call": "identityLabel(\"\")",
+								"input": [""],
+								"name": "Leave an empty identity blank",
+								"output": ""
+							}
+						],
+						"inputs": [
+							{
+								"name": "identityLabel.deviceId",
+								"type": "string"
+							}
+						],
+						"name": "identityLabel",
+						"output": "string",
+						"pure": true,
+						"source": "packages/desktop/src/utils/remoteLabels.ts"
+					}
+				]
+			},
+			"reason": "Helper examples executed against an identical source blob in the historical source review receipt; preserve the actual signature, source and consumers at this revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "desktop.function.remote-labels"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "7907c6325d4f92392b39dc600f4cf426e1e6f6beaeb26f3bd7a75ef67fc536cb",
+			"files": {
+				"src/core/case.ts": "b24f3e1a239045ddda1bb7c00e479d9b50f5e8a2"
+			},
+			"metadata": {
+				"helperContracts": [
+					{
+						"consumers": [
+							{
+								"symbol": "named",
+								"unit": "function.unit-identity"
+							},
+							{
+								"symbol": "validateRouteName",
+								"unit": "function.validation"
+							},
+							{
+								"symbol": "apiFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "componentFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "e2eFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "hookFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "layoutFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "partialFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "storeFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "viewFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "modelFiles",
+								"unit": "template.model"
+							},
+							{
+								"symbol": "adapterFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "classFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "controllerFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "policyFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "repositoryFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "seederFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "serializerFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "utilFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "validatorFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "featureFiles",
+								"unit": "template.pieces"
+							},
+							{
+								"symbol": "migrationFiles",
+								"unit": "template.pieces"
+							},
+							{
+								"symbol": "testFiles",
+								"unit": "template.pieces"
+							},
+							{
+								"symbol": "channelFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "concernFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "configFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "formFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "helperFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "initializerFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "mailerFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "middlewareFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"unit": "workflow.export-plans"
+							}
+						],
+						"examples": [
+							{
+								"call": "toKebabCase(\"Hello world\")",
+								"input": ["Hello world"],
+								"name": "Join separated words with lowercase hyphens",
+								"output": "hello-world"
+							},
+							{
+								"call": "toKebabCase(\"orderID\")",
+								"input": ["orderID"],
+								"name": "Split lowercase-to-uppercase word boundaries",
+								"output": "order-id"
+							},
+							{
+								"call": "toKebabCase(\"\")",
+								"input": [""],
+								"name": "Return blank when the input contains no words",
+								"output": ""
+							}
+						],
+						"inputs": [
+							{
+								"name": "toKebabCase.textToConvert",
+								"type": "string"
+							}
+						],
+						"name": "toKebabCase",
+						"output": "string",
+						"pure": true,
+						"source": "src/core/case.ts"
+					},
+					{
+						"consumers": [
+							{
+								"symbol": "prefixedRule",
+								"unit": "audit.scaffold-naming-rules"
+							},
+							{
+								"symbol": "seedRule",
+								"unit": "audit.scaffold-naming-rules"
+							},
+							{
+								"symbol": "storeRule",
+								"unit": "audit.scaffold-naming-rules"
+							},
+							{
+								"symbol": "toCamelCase",
+								"unit": "function.case"
+							},
+							{
+								"symbol": "componentFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "partialFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "storeFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "titleName",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "modelFiles",
+								"unit": "template.model"
+							},
+							{
+								"symbol": "adapterFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "classFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "controllerFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "policyFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "repositoryFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "seederFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "serializerFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "validatorFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "featureFiles",
+								"unit": "template.pieces"
+							},
+							{
+								"symbol": "channelFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "concernFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "formFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "helperFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "initializerFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "mailerFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"symbol": "middlewareFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"unit": "workflow.export-plans"
+							}
+						],
+						"examples": [
+							{
+								"call": "toPascalCase(\"Hello world\")",
+								"input": ["Hello world"],
+								"name": "Capitalize and join separated words",
+								"output": "HelloWorld"
+							},
+							{
+								"call": "toPascalCase(\"orderID\")",
+								"input": ["orderID"],
+								"name": "Split lowercase-to-uppercase word boundaries",
+								"output": "OrderId"
+							},
+							{
+								"call": "toPascalCase(\"\")",
+								"input": [""],
+								"name": "Return blank when the input contains no words",
+								"output": ""
+							}
+						],
+						"inputs": [
+							{
+								"name": "toPascalCase.textToConvert",
+								"type": "string"
+							}
+						],
+						"name": "toPascalCase",
+						"output": "string",
+						"pure": true,
+						"source": "src/core/case.ts"
+					},
+					{
+						"consumers": [
+							{
+								"symbol": "camelFunctionRule",
+								"unit": "audit.scaffold-naming-rules"
+							},
+							{
+								"symbol": "hookRule",
+								"unit": "audit.scaffold-naming-rules"
+							},
+							{
+								"symbol": "parseField",
+								"unit": "function.fields"
+							},
+							{
+								"symbol": "validateExportName",
+								"unit": "function.validation"
+							},
+							{
+								"symbol": "hookFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "storeFiles",
+								"unit": "template.app-pieces"
+							},
+							{
+								"symbol": "utilFiles",
+								"unit": "template.package-pieces"
+							},
+							{
+								"symbol": "configFiles",
+								"unit": "template.rails-pieces"
+							},
+							{
+								"unit": "workflow.export-plans"
+							}
+						],
+						"examples": [
+							{
+								"call": "toCamelCase(\"Hello world\")",
+								"input": ["Hello world"],
+								"name": "Join separated words with a lowercase first word",
+								"output": "helloWorld"
+							},
+							{
+								"call": "toCamelCase(\"orderID\")",
+								"input": ["orderID"],
+								"name": "Split lowercase-to-uppercase word boundaries",
+								"output": "orderId"
+							},
+							{
+								"call": "toCamelCase(\"\")",
+								"input": [""],
+								"name": "Return blank when the input contains no words",
+								"output": ""
+							}
+						],
+						"inputs": [
+							{
+								"name": "toCamelCase.textToConvert",
+								"type": "string"
+							}
+						],
+						"name": "toCamelCase",
+						"output": "string",
+						"pure": true,
+						"source": "src/core/case.ts"
+					},
+					{
+						"consumers": [
+							{
+								"symbol": "parseField",
+								"unit": "function.fields"
+							},
+							{
+								"symbol": "modelFiles",
+								"unit": "template.model"
+							}
+						],
+						"examples": [
+							{
+								"call": "toSnakeCase(\"Hello world\")",
+								"input": ["Hello world"],
+								"name": "Join separated words with lowercase underscores",
+								"output": "hello_world"
+							},
+							{
+								"call": "toSnakeCase(\"orderID\")",
+								"input": ["orderID"],
+								"name": "Split lowercase-to-uppercase word boundaries",
+								"output": "order_id"
+							},
+							{
+								"call": "toSnakeCase(\"\")",
+								"input": [""],
+								"name": "Return blank when the input contains no words",
+								"output": ""
+							}
+						],
+						"inputs": [
+							{
+								"name": "toSnakeCase.textToConvert",
+								"type": "string"
+							}
+						],
+						"name": "toSnakeCase",
+						"output": "string",
+						"pure": true,
+						"source": "src/core/case.ts"
+					}
+				]
+			},
+			"reason": "Helper examples executed against an identical source blob in the historical source review receipt; preserve the actual signature, source and consumers at this revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "function.case"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "52d4d008bdb797cb4ff6ef6709fba888916dde5c5cf2d0641ab7be6b8f45ecd7",
+			"files": {
+				"packages/hub/src/config/hubEnvConfig.ts": "2f32b136abdc88faf00b78c63979f789a97750a8"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "operator",
+						"name": "HARNESS_GOOGLE_CLIENT_ID",
+						"purpose": "Identify the project Google sign-in client.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_SESSION_SECRET",
+						"purpose": "Sign and verify project session cookies.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_PUBLIC_ORIGIN",
+						"purpose": "Declare the public origin used by project authentication.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_ENVIRONMENT",
+						"purpose": "Select local, staging or production runtime policy.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_APP_ID",
+						"purpose": "Identify the project GitHub App.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_PRIVATE_KEY",
+						"purpose": "Sign GitHub App installation authentication.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_CLIENT_ID",
+						"purpose": "Identify the GitHub OAuth client.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_CLIENT_SECRET",
+						"purpose": "Authenticate the GitHub OAuth client exchange.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_OWNER",
+						"purpose": "Select the owner of the collaboration repository.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_REPO",
+						"purpose": "Select the collaboration repository.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_REPOSITORY_ID",
+						"purpose": "Bind collaboration to the expected repository identity.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_INSTALLATION_ID",
+						"purpose": "Select the GitHub App installation for collaboration.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_EMAIL_API_KEY",
+						"purpose": "Authenticate the configured email proof sender.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_EMAIL_FROM",
+						"purpose": "Set the email proof sender address.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_RELAY_ORIGIN",
+						"purpose": "Locate the remote host and phone relay.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "DB",
+						"purpose": "Bind the project authentication D1 database.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "CACHE",
+						"purpose": "Bind the project R2 cache bucket.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "REMOTE_HOSTS",
+						"purpose": "Bind the remote host Durable Object namespace.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 2f32b136abdc88faf00b78c63979f789a97750a8 from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "hub.config.hub-env"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "39afe8a802a9df438aca3c238667f4eb846912c04a9be74abb19427ce05e08ef",
+			"files": {
+				"packages/relay/src/config/relayConfig.ts": "c42e4d6c18595d9744c90db83e690d41d37f4717"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "relayConfig.internalOrigin",
+						"purpose": "Address a relay host through its namespace binding.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.bodyBytes",
+						"purpose": "Bound incoming JSON body bytes.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.tlsEnvironments",
+						"purpose": "Require TLS in staging and production.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.rateWindowMs",
+						"purpose": "Set the rate limit accounting window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.pairingCalls",
+						"purpose": "Limit pairing calls per host and rate window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.failedConnects",
+						"purpose": "Limit failed device connection attempts.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.openPairings",
+						"purpose": "Limit pending offers per host.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.frameWindowMs",
+						"purpose": "Set the per-device frame accounting window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.deviceFrames",
+						"purpose": "Limit frames per device connection window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.sweepDelayMs",
+						"purpose": "Retain expired offers long enough to report their expired state.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob c42e4d6c18595d9744c90db83e690d41d37f4717 from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "relay.config.relay"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "4dfe2560e30587f981366b7201341405bb168c9d882883ed28527aec5119e7b0",
+			"files": {
+				"packages/reports/src/config/consoleViteConfig.ts": "bfb542e428a00bfc905fd244394fdac7bc0a4ff0"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob bfb542e428a00bfc905fd244394fdac7bc0a4ff0 from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "reports.config.console-vite"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "e85e3df1676fd8175d9e5ee026cdbb80027a7d105004d68613c9ec0fb641fedb",
+			"files": {
+				"packages/reports/src/config/pickerPlaywrightConfig.ts": "2780fd3a6e54ed4fe7af99ee608d3e907939b83f"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.testDir",
+						"purpose": "Locate the browser test sources.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.testMatch",
+						"purpose": "Select the browser suite for this preview surface.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.workers",
+						"purpose": "Limit browser execution to one worker.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.baseURL",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.viewport.width",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.viewport.height",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.reporter",
+						"purpose": "Print list test results.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.webServer",
+						"purpose": "Build and start an isolated preview when an external preview URL is absent.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 2780fd3a6e54ed4fe7af99ee608d3e907939b83f from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "reports.config.picker-playwright"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "85d0c59764daf6bd01efb7af0c0173a7e3f97c8137ef24604862e9a2ee5ac825",
+			"files": {
+				"packages/reports/src/config/pickerViteConfig.ts": "09ba8a7e7bf86e45b4930bd30549ec702aaa4e6b"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 09ba8a7e7bf86e45b4930bd30549ec702aaa4e6b from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "reports.config.picker-vite"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "447aa4bed6a4448c5b24ebd27f848a5cde259195a7d53fb266839a65c0155f34",
+			"files": {
+				"packages/reports/src/config/reportViteConfig.ts": "0764e259af6c91b125a42acae180e99c9391f379"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 0764e259af6c91b125a42acae180e99c9391f379 from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "reports.config.report-vite"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "8b39d5884aee81b5de46f9a27e74c4433e989ecefedf5deb654281d3797acb24",
+			"files": {
+				"packages/reports/src/config/shellPlaywrightConfig.ts": "0c0d9212c97231207fcee6c3b3eba976f7c35d34"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.testDir",
+						"purpose": "Locate the browser test sources.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.testMatch",
+						"purpose": "Select the browser suite for this preview surface.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.workers",
+						"purpose": "Limit browser execution to one worker.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.outputDir",
+						"purpose": "Separate the shell test artifacts from other suites.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.use.screenshot",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.reporter",
+						"purpose": "Print list test results.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 0c0d9212c97231207fcee6c3b3eba976f7c35d34 from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "reports.config.shell-playwright"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "f3ff91375a39223deeac3e40711a2bf5167088b737900c19ddc45956ef2c2fdb",
+			"files": {
+				"packages/reports/src/config/shellViteConfig.ts": "7d8069d98828fc866839c3fd0a65ac3170605a9d"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.publicDir",
+						"purpose": "Exclude unrelated public assets from the fixture bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.logLevel",
+						"purpose": "Limit fixture build output to warnings.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 7d8069d98828fc866839c3fd0a65ac3170605a9d from 98a7469046ecd93d290765361ea4ddac22deea6c; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "reports.config.shell-vite"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "67a981c0b173bf1cae8915fdefcccf29e941c6fc01de27ef8f4f013d81227ced",
+			"files": {
+				"packages/reports/src/components/activity-agents/activityDisplay.ts": "0bf2f74b945b2ae336ae87fd121ff68a5624a604",
+				"packages/reports/src/components/project-activity/activityDisplay.ts": "38b847f9f961f48f55537e3489d6203f4c48bb69",
+				"packages/reports/src/utils/activityDisplay.ts": "0d2a2297a27fd1de669f5b9ddcc8e7401f4c1651"
+			},
+			"metadata": {
+				"helperContracts": [
+					{
+						"consumers": [
+							{
+								"unit": "reports.component.activity-loops"
+							},
+							{
+								"unit": "reports.component.activity-work"
+							}
+						],
+						"examples": [
+							{
+								"call": "plural(1, \"task\")",
+								"input": [1, "task"],
+								"name": "Keep the singular word for one item",
+								"output": "1 task"
+							},
+							{
+								"call": "plural(2, \"task\")",
+								"input": [2, "task"],
+								"name": "Add s for other counts",
+								"output": "2 tasks"
+							}
+						],
+						"inputs": [
+							{
+								"name": "plural.count",
+								"type": "number"
+							},
+							{
+								"name": "plural.word",
+								"type": "string"
+							}
+						],
+						"name": "plural",
+						"output": "string",
+						"pure": true,
+						"source": "packages/reports/src/utils/activityDisplay.ts"
+					}
+				]
+			},
+			"reason": "Helper examples executed against an identical source blob in the historical source review receipt; preserve the actual signature, source and consumers at this revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "reports.function.activity-display"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "2053a0777f9cb914a83a96e9d6924b7318c29d7bb261fb6e6ca88a460a3e8c24",
+			"files": {
+				"packages/reports/src/components/harness/entity-sections/entityContract.ts": "28eb73740e3d51d88fe13c78b868d66bc4ba7ae7",
+				"packages/reports/src/utils/entityContract.ts": "00aaf2b806702b2aec4ae2d2b2a6902891ca75d7"
+			},
+			"metadata": {
+				"helperContracts": [
+					{
+						"consumers": [
+							{
+								"unit": "desktop.component.contract-panel"
+							},
+							{
+								"unit": "reports.component.harness-entity-change"
+							},
+							{
+								"unit": "reports.component.harness-entity-config"
+							},
+							{
+								"unit": "reports.component.harness-entity-measures"
+							},
+							{
+								"unit": "reports.component.harness-explorer-table"
+							},
+							{
+								"unit": "reports.component.recorded-value"
+							},
+							{
+								"symbol": "nameOf",
+								"unit": "reports.function.contract-fields"
+							},
+							{
+								"symbol": "row",
+								"unit": "reports.function.entity-contract"
+							},
+							{
+								"symbol": "named",
+								"unit": "reports.function.entity-history"
+							},
+							{
+								"symbol": "metricLabel",
+								"unit": "reports.function.entity-measure"
+							},
+							{
+								"symbol": "timing",
+								"unit": "reports.function.entity-measure"
+							},
+							{
+								"symbol": "attempts",
+								"unit": "reports.function.entity-reasons"
+							},
+							{
+								"symbol": "subject",
+								"unit": "reports.function.entity-reasons"
+							},
+							{
+								"symbol": "uses",
+								"unit": "reports.function.entity-reasons"
+							}
+						],
+						"examples": [
+							{
+								"call": "humanize(\"orderID\")",
+								"input": ["orderID"],
+								"name": "Separate lowercase words from uppercase letters",
+								"output": "order id"
+							},
+							{
+								"call": "humanize(\"HTTPServer\")",
+								"input": ["HTTPServer"],
+								"name": "Separate an acronym from the following word",
+								"output": "http server"
+							},
+							{
+								"call": "humanize(\" order-item_count.total \")",
+								"input": [" order-item_count.total "],
+								"name": "Replace identifier separators with spaces and trim",
+								"output": "order item count total"
+							},
+							{
+								"call": "humanize(\"\")",
+								"input": [""],
+								"name": "Leave an empty identifier blank",
+								"output": ""
+							}
+						],
+						"inputs": [
+							{
+								"name": "humanize.name",
+								"type": "string"
+							}
+						],
+						"name": "humanize",
+						"output": "string",
+						"pure": true,
+						"source": "packages/reports/src/utils/entityContract.ts"
+					}
+				]
+			},
+			"reason": "Helper examples executed against an identical source blob in the historical source review receipt; preserve the actual signature, source and consumers at this revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "reports.function.entity-contract"
+		},
+		{
+			"commit": "28a1a629e8fdb78383764163dc455938d39631f3",
+			"digest": "828fc21fee2968f36754eb0e73542c7336f27238f4ed5608791ad7d6e1d5b79e",
+			"files": {
+				"packages/reports/src/utils/evidenceMedia.ts": "9fd5205f28dcc237ef0ae546007f93d1f813cf86"
+			},
+			"metadata": {
+				"helperContracts": [
+					{
+						"consumers": [
+							{
+								"unit": "reports.component.audio-comparison"
+							},
+							{
+								"unit": "reports.component.audio-evidence"
+							},
+							{
+								"unit": "reports.component.replay-controls"
+							}
+						],
+						"examples": [
+							{
+								"call": "formatDuration(90.9)",
+								"input": [90.9],
+								"name": "Format minutes and seconds, dropping fractions",
+								"output": "1:30"
+							},
+							{
+								"call": "formatDuration(3661)",
+								"input": [3661],
+								"name": "Include hours for longer durations",
+								"output": "1:01:01"
+							},
+							{
+								"call": "formatDuration(-1)",
+								"input": [-1],
+								"name": "Leave invalid durations blank",
+								"output": ""
+							}
+						],
+						"inputs": [
+							{
+								"name": "formatDuration.seconds",
+								"type": "number"
+							}
+						],
+						"name": "formatDuration",
+						"output": "string",
+						"pure": true,
+						"source": "packages/reports/src/utils/evidenceMedia.ts"
+					}
+				]
+			},
+			"reason": "Helper examples executed against an identical source blob in the historical source review receipt; preserve the actual signature, source and consumers at this revision.",
+			"schemaVersion": 1,
+			"tree": "a01413ed2d19502ea79f403e86509e39f3cba98e",
+			"unit": "reports.function.evidence-media"
+		}
+	],
 	"registry": {
 		"available": true,
 		"units": [
@@ -128901,7 +130942,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "2de0f737fd144ad1",
+				"version": "d48d52b3513e30d0",
 				"limits": {
 					"metrics": {
 						"source-bytes": 670,
@@ -129007,6 +131048,44 @@
 						"unavailable": "A module unit emits no separate artifact.",
 						"method": "Not applicable.",
 						"artifacts": []
+					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.version",
+						"purpose": "Identify the supported installed desktop bundle version.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/early-bootstrap.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/bootstrap-CTpobVUg.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\".vite/build/application-network-startup-Bt0a8E1L.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\"webview/assets/app-shared-6c00c2afcf84.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "desktopPatchConfig.assets[\"webview/assets/app-initial-61c077dcc1af.js\"]",
+						"purpose": "Pin the expected asset hashes before applying the desktop patch.",
+						"source": "src/config/desktopPatchConfig.ts"
 					}
 				]
 			},
@@ -157428,6 +159507,20 @@
 						"output": "unknown",
 						"pure": true,
 						"source": "packages/desktop/src/utils/remoteLabels.ts",
+						"examples": [
+							{
+								"call": "plural(1, \"task\")",
+								"input": [1, "task"],
+								"name": "Keep the singular word for one item",
+								"output": "1 task"
+							},
+							{
+								"call": "plural(2, \"task\")",
+								"input": [2, "task"],
+								"name": "Add s for other counts",
+								"output": "2 tasks"
+							}
+						],
 						"consumers": [
 							{
 								"unit": "desktop.function.remote-labels",
@@ -157465,6 +159558,20 @@
 						"output": "string",
 						"pure": true,
 						"source": "packages/desktop/src/utils/remoteLabels.ts",
+						"examples": [
+							{
+								"call": "identityLabel(\"0123456789abcde\")",
+								"input": ["0123456789abcde"],
+								"name": "Group the whole identity in fours, retaining the final group",
+								"output": "0123 4567 89ab cde"
+							},
+							{
+								"call": "identityLabel(\"\")",
+								"input": [""],
+								"name": "Leave an empty identity blank",
+								"output": ""
+							}
+						],
 						"consumers": [
 							{
 								"unit": "desktop.component.remote-approval"
@@ -157511,7 +159618,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "fea5d59863cb21b4",
+				"version": "e42ac4c291b84bf3",
 				"limits": {
 					"metrics": {
 						"source-bytes": 3956,
@@ -186531,6 +188638,26 @@
 						"output": "string",
 						"pure": true,
 						"source": "src/core/case.ts",
+						"examples": [
+							{
+								"call": "toKebabCase(\"Hello world\")",
+								"input": ["Hello world"],
+								"name": "Join separated words with lowercase hyphens",
+								"output": "hello-world"
+							},
+							{
+								"call": "toKebabCase(\"orderID\")",
+								"input": ["orderID"],
+								"name": "Split lowercase-to-uppercase word boundaries",
+								"output": "order-id"
+							},
+							{
+								"call": "toKebabCase(\"\")",
+								"input": [""],
+								"name": "Return blank when the input contains no words",
+								"output": ""
+							}
+						],
 						"consumers": [
 							{
 								"unit": "function.unit-identity",
@@ -186673,6 +188800,26 @@
 						"output": "string",
 						"pure": true,
 						"source": "src/core/case.ts",
+						"examples": [
+							{
+								"call": "toPascalCase(\"Hello world\")",
+								"input": ["Hello world"],
+								"name": "Capitalize and join separated words",
+								"output": "HelloWorld"
+							},
+							{
+								"call": "toPascalCase(\"orderID\")",
+								"input": ["orderID"],
+								"name": "Split lowercase-to-uppercase word boundaries",
+								"output": "OrderId"
+							},
+							{
+								"call": "toPascalCase(\"\")",
+								"input": [""],
+								"name": "Return blank when the input contains no words",
+								"output": ""
+							}
+						],
 						"consumers": [
 							{
 								"unit": "audit.scaffold-naming-rules",
@@ -186791,6 +188938,26 @@
 						"output": "string",
 						"pure": true,
 						"source": "src/core/case.ts",
+						"examples": [
+							{
+								"call": "toCamelCase(\"Hello world\")",
+								"input": ["Hello world"],
+								"name": "Join separated words with a lowercase first word",
+								"output": "helloWorld"
+							},
+							{
+								"call": "toCamelCase(\"orderID\")",
+								"input": ["orderID"],
+								"name": "Split lowercase-to-uppercase word boundaries",
+								"output": "orderId"
+							},
+							{
+								"call": "toCamelCase(\"\")",
+								"input": [""],
+								"name": "Return blank when the input contains no words",
+								"output": ""
+							}
+						],
 						"consumers": [
 							{
 								"unit": "audit.scaffold-naming-rules",
@@ -186841,6 +189008,26 @@
 						"output": "string",
 						"pure": true,
 						"source": "src/core/case.ts",
+						"examples": [
+							{
+								"call": "toSnakeCase(\"Hello world\")",
+								"input": ["Hello world"],
+								"name": "Join separated words with lowercase underscores",
+								"output": "hello_world"
+							},
+							{
+								"call": "toSnakeCase(\"orderID\")",
+								"input": ["orderID"],
+								"name": "Split lowercase-to-uppercase word boundaries",
+								"output": "order_id"
+							},
+							{
+								"call": "toSnakeCase(\"\")",
+								"input": [""],
+								"name": "Return blank when the input contains no words",
+								"output": ""
+							}
+						],
 						"consumers": [
 							{
 								"unit": "function.fields",
@@ -186867,7 +189054,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "7763a7ddf9018f00",
+				"version": "027fd5353cbfd383",
 				"limits": {
 					"metrics": {
 						"source-bytes": 664,
@@ -215889,7 +218076,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "e2148406d911ff1c",
+				"version": "b3d0f2b3cd67fc27",
 				"limits": {
 					"metrics": {
 						"source-bytes": 1836,
@@ -215958,6 +218145,116 @@
 						"unavailable": "A module unit emits no separate artifact.",
 						"method": "Not applicable.",
 						"artifacts": []
+					}
+				],
+				"configControls": [
+					{
+						"audience": "operator",
+						"name": "HARNESS_GOOGLE_CLIENT_ID",
+						"purpose": "Identify the project Google sign-in client.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_SESSION_SECRET",
+						"purpose": "Sign and verify project session cookies.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_PUBLIC_ORIGIN",
+						"purpose": "Declare the public origin used by project authentication.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_ENVIRONMENT",
+						"purpose": "Select local, staging or production runtime policy.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_APP_ID",
+						"purpose": "Identify the project GitHub App.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_PRIVATE_KEY",
+						"purpose": "Sign GitHub App installation authentication.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_CLIENT_ID",
+						"purpose": "Identify the GitHub OAuth client.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_GITHUB_CLIENT_SECRET",
+						"purpose": "Authenticate the GitHub OAuth client exchange.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_OWNER",
+						"purpose": "Select the owner of the collaboration repository.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_REPO",
+						"purpose": "Select the collaboration repository.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_REPOSITORY_ID",
+						"purpose": "Bind collaboration to the expected repository identity.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_COLLABORATION_INSTALLATION_ID",
+						"purpose": "Select the GitHub App installation for collaboration.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_EMAIL_API_KEY",
+						"purpose": "Authenticate the configured email proof sender.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_EMAIL_FROM",
+						"purpose": "Set the email proof sender address.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "HARNESS_RELAY_ORIGIN",
+						"purpose": "Locate the remote host and phone relay.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "DB",
+						"purpose": "Bind the project authentication D1 database.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "CACHE",
+						"purpose": "Bind the project R2 cache bucket.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
+					},
+					{
+						"audience": "operator",
+						"name": "REMOTE_HOSTS",
+						"purpose": "Bind the remote host Durable Object namespace.",
+						"source": "packages/hub/src/config/hubEnvConfig.ts"
 					}
 				]
 			},
@@ -244755,7 +247052,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "9b58abf6d48c57ae",
+				"version": "a05073d61b68c476",
 				"limits": {
 					"metrics": {
 						"source-bytes": 1064,
@@ -244905,6 +247202,68 @@
 						"unavailable": "A module unit emits no separate artifact.",
 						"method": "Not applicable.",
 						"artifacts": []
+					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "relayConfig.internalOrigin",
+						"purpose": "Address a relay host through its namespace binding.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.bodyBytes",
+						"purpose": "Bound incoming JSON body bytes.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.tlsEnvironments",
+						"purpose": "Require TLS in staging and production.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.rateWindowMs",
+						"purpose": "Set the rate limit accounting window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.pairingCalls",
+						"purpose": "Limit pairing calls per host and rate window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.failedConnects",
+						"purpose": "Limit failed device connection attempts.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.openPairings",
+						"purpose": "Limit pending offers per host.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.frameWindowMs",
+						"purpose": "Set the per-device frame accounting window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.deviceFrames",
+						"purpose": "Limit frames per device connection window.",
+						"source": "packages/relay/src/config/relayConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "relayConfig.sweepDelayMs",
+						"purpose": "Retain expired offers long enough to report their expired state.",
+						"source": "packages/relay/src/config/relayConfig.ts"
 					}
 				]
 			},
@@ -276166,7 +278525,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "c33c6346bd1bd875",
+				"version": "ac56c45b5b9cf89e",
 				"limits": {
 					"metrics": {
 						"source-bytes": 444,
@@ -276312,6 +278671,56 @@
 						"method": "Not applicable.",
 						"artifacts": []
 					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "consoleViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/consoleViteConfig.ts"
+					}
 				]
 			},
 			{
@@ -276350,7 +278759,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "d21ec6f0cd268b96",
+				"version": "612088672168a4b9",
 				"limits": {
 					"metrics": {
 						"source-bytes": 1528,
@@ -276468,6 +278877,56 @@
 						"method": "Not applicable.",
 						"artifacts": []
 					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.testDir",
+						"purpose": "Locate the browser test sources.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.testMatch",
+						"purpose": "Select the browser suite for this preview surface.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.workers",
+						"purpose": "Limit browser execution to one worker.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.baseURL",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.viewport.width",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.use.viewport.height",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.reporter",
+						"purpose": "Print list test results.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerPlaywrightConfig.webServer",
+						"purpose": "Build and start an isolated preview when an external preview URL is absent.",
+						"source": "packages/reports/src/config/pickerPlaywrightConfig.ts"
+					}
 				]
 			},
 			{
@@ -276501,7 +278960,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "b5664674872b5ab5",
+				"version": "b49ed7f820acadc8",
 				"limits": {
 					"metrics": {
 						"source-bytes": 360,
@@ -276647,6 +279106,56 @@
 						"method": "Not applicable.",
 						"artifacts": []
 					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "pickerViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/pickerViteConfig.ts"
+					}
 				]
 			},
 			{
@@ -276680,7 +279189,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "2e66adaf3f9f45eb",
+				"version": "f1878f02e1ce12ec",
 				"limits": {
 					"metrics": {
 						"source-bytes": 352,
@@ -276826,6 +279335,56 @@
 						"method": "Not applicable.",
 						"artifacts": []
 					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "reportViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/reportViteConfig.ts"
+					}
 				]
 			},
 			{
@@ -276859,7 +279418,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "8ac437d20ef58502",
+				"version": "2066a9197bd448ce",
 				"limits": {
 					"metrics": {
 						"source-bytes": 484,
@@ -276965,6 +279524,44 @@
 						"method": "Not applicable.",
 						"artifacts": []
 					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.testDir",
+						"purpose": "Locate the browser test sources.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.testMatch",
+						"purpose": "Select the browser suite for this preview surface.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.workers",
+						"purpose": "Limit browser execution to one worker.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.outputDir",
+						"purpose": "Separate the shell test artifacts from other suites.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.use.screenshot",
+						"purpose": "Set browser viewport, screenshot policy and preview origin.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellPlaywrightConfig.reporter",
+						"purpose": "Print list test results.",
+						"source": "packages/reports/src/config/shellPlaywrightConfig.ts"
+					}
 				]
 			},
 			{
@@ -276998,7 +279595,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "9ed8e4414cf3aa69",
+				"version": "749cbdcc0a4caa59",
 				"limits": {
 					"metrics": {
 						"source-bytes": 755,
@@ -277153,6 +279750,68 @@
 						"unavailable": "A module unit emits no separate artifact.",
 						"method": "Not applicable.",
 						"artifacts": []
+					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.plugins",
+						"purpose": "Compile Svelte components through the Vite Svelte plugin.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.publicDir",
+						"purpose": "Exclude unrelated public assets from the fixture bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.logLevel",
+						"purpose": "Limit fixture build output to warnings.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.outDir",
+						"purpose": "Write this independently embedded bundle to its dedicated output directory.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.emptyOutDir",
+						"purpose": "Clear stale files from the dedicated bundle output before building.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.cssCodeSplit",
+						"purpose": "Keep the embedded bundle stylesheet together.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.entry",
+						"purpose": "Select the source entry for the embedded bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.formats",
+						"purpose": "Emit the browser IIFE format consumed by the host.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.name",
+						"purpose": "Name the bundle global exposed to the host.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "shellViteConfig.build.lib.fileName",
+						"purpose": "Name the generated JavaScript bundle.",
+						"source": "packages/reports/src/config/shellViteConfig.ts"
 					}
 				]
 			},
@@ -279476,6 +282135,20 @@
 						"output": "string",
 						"pure": true,
 						"source": "packages/reports/src/utils/activityDisplay.ts",
+						"examples": [
+							{
+								"call": "plural(1, \"task\")",
+								"input": [1, "task"],
+								"name": "Keep the singular word for one item",
+								"output": "1 task"
+							},
+							{
+								"call": "plural(2, \"task\")",
+								"input": [2, "task"],
+								"name": "Add s for other counts",
+								"output": "2 tasks"
+							}
+						],
 						"consumers": [
 							{
 								"unit": "reports.component.activity-loops"
@@ -279500,7 +282173,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "a4bf606bcc22bb8e",
+				"version": "5c9cb42d38148e39",
 				"limits": {
 					"metrics": {
 						"source-bytes": 1446,
@@ -282536,6 +285209,32 @@
 						"output": "string",
 						"pure": true,
 						"source": "packages/reports/src/utils/entityContract.ts",
+						"examples": [
+							{
+								"call": "humanize(\"orderID\")",
+								"input": ["orderID"],
+								"name": "Separate lowercase words from uppercase letters",
+								"output": "order id"
+							},
+							{
+								"call": "humanize(\"HTTPServer\")",
+								"input": ["HTTPServer"],
+								"name": "Separate an acronym from the following word",
+								"output": "http server"
+							},
+							{
+								"call": "humanize(\" order-item_count.total \")",
+								"input": [" order-item_count.total "],
+								"name": "Replace identifier separators with spaces and trim",
+								"output": "order item count total"
+							},
+							{
+								"call": "humanize(\"\")",
+								"input": [""],
+								"name": "Leave an empty identifier blank",
+								"output": ""
+							}
+						],
 						"consumers": [
 							{
 								"unit": "desktop.component.contract-panel"
@@ -282604,7 +285303,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "83dd7ab57c7f679e",
+				"version": "8acb0cf7e4b5bd6c",
 				"limits": {
 					"metrics": {
 						"source-bytes": 4999,
@@ -284816,6 +287515,26 @@
 						"output": "string",
 						"pure": true,
 						"source": "packages/reports/src/utils/evidenceMedia.ts",
+						"examples": [
+							{
+								"call": "formatDuration(90.9)",
+								"input": [90.9],
+								"name": "Format minutes and seconds, dropping fractions",
+								"output": "1:30"
+							},
+							{
+								"call": "formatDuration(3661)",
+								"input": [3661],
+								"name": "Include hours for longer durations",
+								"output": "1:01:01"
+							},
+							{
+								"call": "formatDuration(-1)",
+								"input": [-1],
+								"name": "Leave invalid durations blank",
+								"output": ""
+							}
+						],
 						"consumers": [
 							{
 								"unit": "reports.component.audio-comparison"
@@ -284843,7 +287562,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "d1e7c73ef18fe4aa",
+				"version": "51aa64bfbdacd351",
 				"limits": {
 					"metrics": {
 						"source-bytes": 1164,
@@ -379310,7 +382029,7 @@
 		},
 		"config.desktop-patch": {
 			"unit": "config.desktop-patch",
-			"manifest": "25eee711d4b9ad858d40368466ad1b3c35d588aad8971365238e4aea8369ad9f",
+			"manifest": "d8025dfdf03239352348ad9ea2b4ad7692fef644bb7325baf460d3494096a2aa",
 			"source": "849c72a95d67a22cb4a6483a2170ebbb940a504c76679ea5d626f4ee5fbff003",
 			"contract": "a1f416661dbad414cdd0faea607e9b66c8cc4dba1d652b8202662f23edcb31b6",
 			"runtime": "983dd1f9bfe62514ed7a6a466edfadd3bf38919a615ba4d333970bab994470f5",
@@ -381974,7 +384693,7 @@
 		},
 		"desktop.function.remote-labels": {
 			"unit": "desktop.function.remote-labels",
-			"manifest": "a0d0dc37a150e4eafe2f2c8288ec3e0f787008b61ce11701990fc79bb2987c28",
+			"manifest": "c13b1c7b96dba62f6fbf34f2e32c513235d5d0e0a481972ebb76a8545f63e153",
 			"source": "c8653e923d0ec04eae54747379ffa470a905674b63306ebbca531febe1d28ce4",
 			"contract": "67d7beeaee8afff0ab2fd9b3a5360336edd0bd33847e353486364e4b6a925ed8",
 			"runtime": "113de56afb148727435a14e3f07c923bdbfd4ecd24c773590fa20e6f74c7ebc9",
@@ -384202,7 +386921,7 @@
 		},
 		"function.case": {
 			"unit": "function.case",
-			"manifest": "44d1a08acc5772c19aa6102a3a2cbc4c2b8db221cea8f16dd0044730a9bea05e",
+			"manifest": "97c4a0f71984db0a66ae7ea70c09a71d16870c2027db79ec3216bfecd32fc7ce",
 			"source": "8668074c51891aa221384642047154206a630caa8dbd7b0541c594a0453b916e",
 			"contract": "99f98f7f01f00dc9b0cdf9de418dc68190496e535505092fcd40ab2a2ccccbd8",
 			"runtime": "f4cd56e031217e2a0f64a9a1a3ca649aa7e7d4e7030a7e0104201728870be60a",
@@ -386913,7 +389632,7 @@
 		},
 		"hub.config.hub-env": {
 			"unit": "hub.config.hub-env",
-			"manifest": "e25fce5c84ee9788f7e0ea36e60db6fe2a9614c9b1a027d58ea2018016a1cb9d",
+			"manifest": "20e3185b023521fe18f312c605e5137c57510feefd0b5146dbfdce10683f6cac",
 			"source": "9656a264ae1b90a7f3bb15054798d80dda9158b659c558c5ecc34ec121df51f5",
 			"contract": "cac7670efd878005eebc897fb35ec1a57cde75d7bb63efd9b4ca98dabe5b56bc",
 			"runtime": "2b1d362dc65a3775fc293c9bf79070464cc929012b4a116b0036aa02348ba0b2",
@@ -389085,7 +391804,7 @@
 		},
 		"relay.config.relay": {
 			"unit": "relay.config.relay",
-			"manifest": "c80463d70d651f0e4c5102f1b9a7df62920312306aead52a2747899cbceeed6b",
+			"manifest": "c7c85bb5802385e200bc86370a92656efd4dc55b65a2c59f25632ed5612453a6",
 			"source": "98a16b12999cfbf360c7646a601530196878b3160f78f9d4e3bf2560ee7920c4",
 			"contract": "43805cd9c649f4f39a67f166ecf816ceb2104bbabeb5ca9deff7e79c42007cb7",
 			"runtime": "6b879cc3fed935ac7f0afecca5bdb3d7b23cfcfdb8a31e521d5a461dd0dab63d",
@@ -391481,7 +394200,7 @@
 		},
 		"reports.config.console-vite": {
 			"unit": "reports.config.console-vite",
-			"manifest": "93a2d103b1aedea35e9b89b533e8df5c138cd1863b0830560c033937432d786a",
+			"manifest": "1cf19bc2edd63c714462afcd7aee222d51628ada220ed76b0d17e7230de79521",
 			"source": "e8c36db24276543e8b2bcc0d435d9850dd1ae18ca0734eca7fa5f44f02ddcaab",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "f5901ba2f62326aacaabe7983825b9c48d6557e5219f95d524436c4f513a2783",
@@ -391494,7 +394213,7 @@
 		},
 		"reports.config.picker-playwright": {
 			"unit": "reports.config.picker-playwright",
-			"manifest": "437e8281ec714e7956742dede2d306b51648008eec7b22899d6cf28915943fd2",
+			"manifest": "00b3e1d6e563147d478e27f88fec9f29901745329b1f2e854311029ecc5f43e3",
 			"source": "734cd9f1cd920ae9452bb84034c164b541bf7d8d23ef29ac3ab32321c59271e2",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "79c8df96eeed82d530ed58a3c6845cb0bd8934d8b4656586fa239c6c50d70276",
@@ -391507,7 +394226,7 @@
 		},
 		"reports.config.picker-vite": {
 			"unit": "reports.config.picker-vite",
-			"manifest": "b92301cde21ceb12fa4ac1dab5568903f8f3bc1eddfa0d4b1fa6c02fccce7b30",
+			"manifest": "b6eba99991e6db2ba3f71f00477648b8aa04761c54239dab0f493539003e6b3e",
 			"source": "099960d964503160142d94440b68f900fb50de5510ff7e3f10a49d2d257b043f",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "987f3da9ae71704a02988819ef15ecd965a1d7f68bb37778e7570fbf235c8b21",
@@ -391520,7 +394239,7 @@
 		},
 		"reports.config.report-vite": {
 			"unit": "reports.config.report-vite",
-			"manifest": "5fc755b960d7a4bea0fb2c632d2b97be4a9e11c741588d0741a88223557812bf",
+			"manifest": "ee896d72ac82026e865397e1c3f7f75b0ea40d1bd1b599f388e2a8077d8cd845",
 			"source": "fbe60520dab3df09938ea2d74060a9bbc7f1805d34eb7151905f460e53633e32",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "6a1aef376710a6aeae64c75d60851a4965eaa9000a9b66beb654c6e8607d2a8a",
@@ -391533,7 +394252,7 @@
 		},
 		"reports.config.shell-playwright": {
 			"unit": "reports.config.shell-playwright",
-			"manifest": "3e4689fbf26178d9f2a7636ec0562dc061ee196e96a6944761ae0bfb6ef2594d",
+			"manifest": "69071889a94ac1967cb1e361cae5f7940a0c2ae1168397144562cea9dc807066",
 			"source": "2cd77928952fb687cde6f506583af37f7a69a2ede4aa7e2ffe62e87573d414fa",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "c8f5ea7cf56caa923fd25ab57b4a3e4636a9942ce7a4a570bfa1072ec0da23d7",
@@ -391546,7 +394265,7 @@
 		},
 		"reports.config.shell-vite": {
 			"unit": "reports.config.shell-vite",
-			"manifest": "6e8197ac2f674e40246816ca3321fa6d60fa30923470b32b1db4ee66296cf443",
+			"manifest": "1735c4a782d7054bcfce16fd56763f9be9266a2f83ab533473b864939627a241",
 			"source": "32eb7e145bded4350fbd031c6140683c4ccbebcc50089c3a4c37592565e89635",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "edfe581e54f6a577d6eddac0f4b6b7c123be60721f7797815d662d3af3313644",
@@ -391797,7 +394516,7 @@
 		},
 		"reports.function.activity-display": {
 			"unit": "reports.function.activity-display",
-			"manifest": "5a78fb824297570d3661809e32a45116a22fefeffc8ddb7f08bf2bc59716d441",
+			"manifest": "084710b99a796f15b99a89f1640f82c58286b03c480b800538269fa58d520f4e",
 			"source": "71b278b4df15235735e162d2a57577bb8ef34f6c724c7cc74306c9f685ccbffe",
 			"contract": "09708d88ee4384376edc09779c2697e80f039b9b11fad3fc4d8c8eda4132e941",
 			"runtime": "994787a877c7c0876c34842e237eebdf02d99a9882bcc9394a47c27d4d076af6",
@@ -392066,7 +394785,7 @@
 		},
 		"reports.function.entity-contract": {
 			"unit": "reports.function.entity-contract",
-			"manifest": "34c25958acd795a277a1b86112136d00e1fd46292f9ce8e243f7bb49b6336745",
+			"manifest": "4ba7f92329c8ad0e4fb5777a1f1eda4f250e9f01b309efe64bf6075fe9a86e53",
 			"source": "f4bf916de47876cfdc8158def9f386b55a88cc02c16a81283e628a79556568bf",
 			"contract": "068ec6fc403d9d892c5760acb8fe01e3a5165324d3105ca18606199a6601c3b1",
 			"runtime": "b1454eddc32d9bad629a4cfe6cded413c7e8ce87a230210551c64bfa1e19f662",
@@ -392236,7 +394955,7 @@
 		},
 		"reports.function.evidence-media": {
 			"unit": "reports.function.evidence-media",
-			"manifest": "838f4e77c3927ce2056abbe935a5d776874244303fd1141a4ef45999d9789079",
+			"manifest": "f78f99afcd91c862768589b6a89ddb0d5bead2078735b8365af729f7a9defd3d",
 			"source": "27f5d1538e7ca4470592ddf203dede334b7bc5965e6cb6973040ade4ab936cc9",
 			"contract": "5f12233d9b7982dcdc344494cd41443ee09a5b7af6d2e1948d7fe67b1bbdad14",
 			"runtime": "89182ffddfdbbee7d3d3cb83b3e62e3e1e2763b07d88148983bca7ac4a2e70d7",
@@ -518963,18 +521682,9 @@
 		}
 	},
 	"sourceIssues": [
-		"desktop.function.remote-labels: plural requires at least one usage example with call, arguments and expected result",
-		"desktop.function.remote-labels: identityLabel requires at least one usage example with call, arguments and expected result",
-		"function.case: toKebabCase requires at least one usage example with call, arguments and expected result",
-		"function.case: toPascalCase requires at least one usage example with call, arguments and expected result",
-		"function.case: toCamelCase requires at least one usage example with call, arguments and expected result",
-		"function.case: toSnakeCase requires at least one usage example with call, arguments and expected result",
 		"function.github-source-url: githubRepositoryUrl requires at least one usage example with call, arguments and expected result",
 		"function.github-source-url: githubSourceUrl requires at least one usage example with call, arguments and expected result",
-		"reports.function.activity-display: plural requires at least one usage example with call, arguments and expected result",
-		"reports.function.entity-contract: humanize requires at least one usage example with call, arguments and expected result",
 		"reports.function.entity-lens: shortCommit requires at least one usage example with call, arguments and expected result",
-		"reports.function.evidence-media: formatDuration requires at least one usage example with call, arguments and expected result",
 		"desktop.function.remote-labels: plural must be implemented under src/helpers/<responsibility>/",
 		"desktop.function.remote-labels: identityLabel must be implemented under src/helpers/<responsibility>/",
 		"function.case: toKebabCase must be implemented under src/helpers/<responsibility>/",
@@ -518986,16 +521696,7 @@
 		"reports.function.activity-display: plural must be implemented under src/helpers/<responsibility>/",
 		"reports.function.entity-contract: humanize must be implemented under src/helpers/<responsibility>/",
 		"reports.function.entity-lens: shortCommit must be implemented under src/helpers/<responsibility>/",
-		"reports.function.evidence-media: formatDuration must be implemented under src/helpers/<responsibility>/",
-		"config.desktop-patch requires reviewed configControls with a source, audience and purpose",
-		"hub.config.hub-env requires reviewed configControls with a source, audience and purpose",
-		"relay.config.relay requires reviewed configControls with a source, audience and purpose",
-		"reports.config.console-vite requires reviewed configControls with a source, audience and purpose",
-		"reports.config.picker-playwright requires reviewed configControls with a source, audience and purpose",
-		"reports.config.picker-vite requires reviewed configControls with a source, audience and purpose",
-		"reports.config.report-vite requires reviewed configControls with a source, audience and purpose",
-		"reports.config.shell-playwright requires reviewed configControls with a source, audience and purpose",
-		"reports.config.shell-vite requires reviewed configControls with a source, audience and purpose"
+		"reports.function.evidence-media: formatDuration must be implemented under src/helpers/<responsibility>/"
 	],
 	"modules": [
 		{
@@ -519640,13 +522341,7 @@
 			"id": "config.desktop-patch",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "config.desktop-patch requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "desktop.adapter.agent-http",
@@ -528546,28 +531241,7 @@
 			"id": "desktop.function.remote-labels",
 			"kind": "function",
 			"category": "functions",
-			"issues": [
-				{
-					"field": "helpers.plural.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "helpers.identityLabel.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "registry",
-					"message": "desktop.function.remote-labels: plural requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				},
-				{
-					"field": "registry",
-					"message": "desktop.function.remote-labels: identityLabel requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "desktop.function.renderer-assets",
@@ -530018,48 +532692,7 @@
 			"id": "function.case",
 			"kind": "function",
 			"category": "functions",
-			"issues": [
-				{
-					"field": "helpers.toKebabCase.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "helpers.toPascalCase.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "helpers.toCamelCase.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "helpers.toSnakeCase.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "registry",
-					"message": "function.case: toKebabCase requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				},
-				{
-					"field": "registry",
-					"message": "function.case: toPascalCase requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				},
-				{
-					"field": "registry",
-					"message": "function.case: toCamelCase requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				},
-				{
-					"field": "registry",
-					"message": "function.case: toSnakeCase requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "function.catalog",
@@ -531238,13 +533871,7 @@
 			"id": "hub.config.hub-env",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "hub.config.hub-env requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "hub.controller.email-proof",
@@ -532198,13 +534825,7 @@
 			"id": "relay.config.relay",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "relay.config.relay requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "relay.controller.host-object",
@@ -535311,13 +537932,7 @@
 			"id": "reports.config.console-vite",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "reports.config.console-vite requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.config.picker-playwright",
@@ -535329,11 +537944,6 @@
 					"field": "measurements.dependencies",
 					"message": "Source observation is partial or unavailable.",
 					"repair": "Run validate --write from the exact source revision; preserve unavailable-counter reasons."
-				},
-				{
-					"field": "registry",
-					"message": "reports.config.picker-playwright requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
 				}
 			]
 		},
@@ -535341,49 +537951,25 @@
 			"id": "reports.config.picker-vite",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "reports.config.picker-vite requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.config.report-vite",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "reports.config.report-vite requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.config.shell-playwright",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "reports.config.shell-playwright requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.config.shell-vite",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "reports.config.shell-vite requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.controller.console-agent",
@@ -535497,18 +538083,7 @@
 			"id": "reports.function.activity-display",
 			"kind": "function",
 			"category": "functions",
-			"issues": [
-				{
-					"field": "helpers.plural.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "registry",
-					"message": "reports.function.activity-display: plural requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.function.activity-reading",
@@ -535610,18 +538185,7 @@
 			"id": "reports.function.entity-contract",
 			"kind": "function",
 			"category": "functions",
-			"issues": [
-				{
-					"field": "helpers.humanize.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "registry",
-					"message": "reports.function.entity-contract: humanize requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.function.entity-history",
@@ -535692,18 +538256,7 @@
 			"id": "reports.function.evidence-media",
 			"kind": "function",
 			"category": "functions",
-			"issues": [
-				{
-					"field": "helpers.formatDuration.examples",
-					"message": "Missing executable usage examples.",
-					"repair": "Commit descriptive calls and expected results."
-				},
-				{
-					"field": "registry",
-					"message": "reports.function.evidence-media: formatDuration requires at least one usage example with call, arguments and expected result",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.function.explorer-artifact",
@@ -537853,5 +540406,5 @@
 		}
 	],
 	"issues": [],
-	"digest": "356a2d56707826671f5da5f43c9e520f7ae3027c81c632cfd06b02ece42df37c"
+	"digest": "c2ed4298b7c0109c20a73ac0f93e95cf5b1890b9a3b8b15aaca7d150c2fa5942"
 }
