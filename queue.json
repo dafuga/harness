@@ -4587,7 +4587,7 @@
 			},
 			"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
 			"contractHash": "e5aa2430d5c9ef372715a30c123bcd9eb544e353bf2cdfa1aa93fb69ff07a344",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:00:28.669Z",
 			"claim": {
@@ -4601,6 +4601,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The fixture and the test file are written, and the Harness activity is registered and finished. I did not run vitest, typecheck, prettier, lint, `units check` or audit, so the test and fixture have not been verified at runtime or type level.\n\n**Changed (uncommitted)**\n- `packages/relay/test/utils/public-route.test.ts:1-16`: the seven `test()` blocks are replaced by one `registerExamples(test, unit as ComponentManifest, { publicRoute: invokePublicRoute })`. The callback calls the imported `publicRoute` from `../../src/utils/publicRoute`, which is still the import. No callback returns an expected constant.\n- `test/fixtures/contract-migration/relay-public-route-examples.json` (new): the original manifest with one `testing` block inserted at lines 67–1193. `git diff --no-index` shows 1,127 lines added and 0 removed, so the non-testing fields are unchanged.\n- No companion `.types.ts` was created, since it is not in the allowed files. The callback uses `Parameters<typeof publicRoute>` inline.\n\n**Unit and links:** `relay.function.public-route`, manifest `specification/units/relay.function.public-route.json`. Its consumers in the manifests are `relay.controller.public-relay` and `relay.controller.host-object`. Product source is unchanged. I did not open explorer pages, so there are no History links, and I created no commits.\n\n**Counts**\n- The original suite has 54 assertions (tests 1–6: 1, 1, 4, 9, 32, 7). Each maps to exactly one Example.\n- I added 2 Examples from the contract and remote pattern: a lowercase method, since the contract says the method is compared \"exactly, including case\", and a pairing ID one character short, since the pattern is exactly 32 hex.\n- Total: 56 Examples and 56 registered cases, titled `publicRoute: <example>`.\n\n| State | Examples | Covers |\n|---|---|---|\n| input | 6 | supported routes |\n| combination | 9 | served route with the wrong verb |\n| boundary | 13 | trailing slash, ID one character off, ID case |\n| invalid | 28 | management, unknown or extra segments, prefix, non-hex ID, traversal |\n\nExpected results are 6 `value` and 50 `void`. There are no `error` Examples, because every refusal returns `undefined` and nothing throws. Every case lists both props, `method` and `pathname`.\n\n**Verification performed (reads and data checks only)**\n- The generator asserted that non-testing fields deep-equal the original and that every `call` equals `publicRoute(<inputs>)`. It is a scratch script at `/tmp/harness-public-route-fixture/generate-fixture.mjs`, outside the repo.\n- `jq` parses the fixture. A structural check on the file found no problems: unique calls and IDs, one canonical case per Example, and all states and props covered.\n- I checked every expectation against the implementation and the remote patterns by reading them, not from observed output.\n- `git status` shows only the test file modified and the fixture untracked. The fixture path is not git-ignored.\n- A repo grep found no references to the retired titles.\n\n**Open items for you**\n1. Not run: the vitest file run, relay and root typecheck (the `unit as ComponentManifest` cast over the JSON type is unverified), prettier (I matched `.prettierrc` by hand), lint, `bun run dev -- units check`, `bun x vitest run test/readable-unit-contracts.test.ts`, and `harness audit`. The fixture is 1,199 lines. The precedent `relay.function.relay-response.json` is 626 lines, so I expect JSON to be outside `maxFileLines`, but I have not confirmed that.\n2. Semantic overlap: `publicRoute` never reads the method on a refused path, so the GET and POST pairs behave identically. I kept both because the task says to keep every old input. Collapsing them would drop covered inputs, so that is your call.\n3. Not authored: null or undefined props (declared inputs are `string`) and query data in `pathname` (the contract says no query data). `contract.errors` is `[]`, so no declared errors needed covering.\n4. Behaviour change: the service compares with `deepStrictEqual`, which is stricter than the old `toEqual`. It rejects undefined-valued keys, and none of these outputs has any.\n5. No new performance workload was added. The source is unchanged, but the contract changed, so decide whether the measurement rule applies.\n6. Retired titles: I found no in-repo references, but any external verification records bound to `publicRoute knows …` would need checking.\n7. No product source changed, so the `local-helper-ownership` follow-up should not be triggered. I did not run the guard to confirm.\n\nActivity `7f41b12a-1d7b-448b-a456-38491a888a90` was registered, given a heartbeat and finished.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/b363124e-0f03-479f-80f0-d55cb98fafda",
+				"changedFiles": [
+					"packages/relay/test/utils/public-route.test.ts",
+					"test/fixtures/contract-migration/relay-public-route-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T18:18:20.568Z",
+				"attempt": "b363124e-0f03-479f-80f0-d55cb98fafda",
+				"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
+				"checkpointCommit": "124c77d4063ffb68152c156b569964382f45fe57",
+				"usage": {
+					"inputTokens": 3259802,
+					"outputTokens": 160135,
+					"cacheReadTokens": 3031279,
+					"cacheWriteTokens": 228479,
+					"cacheWriteLongTokens": 228479,
+					"reportedCostUsd": 0.6308042899999998,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 3259802,
+							"outputTokens": 160135,
+							"cacheReadTokens": 3031279,
+							"cacheWriteTokens": 228479,
+							"cacheWriteLongTokens": 228479,
+							"reportedCostUsd": 0.6308042899999998,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.6308042899999998,
+							"minimumUsd": 0.6308042899999998,
+							"maximumUsd": 0.6308042899999998,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T18:08:20.027Z",
+						"finishedAt": "2026-10-25T18:18:20.350Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
