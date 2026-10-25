@@ -2,7 +2,7 @@
 	"name": "contract-check-resource-budget",
 	"goal": "Run checks within the admitted parent budget and use two GiB for standalone verification",
 	"createdAt": "2026-10-25T18:45:25.422Z",
-	"updatedAt": "2026-10-25T19:30:29.201Z",
+	"updatedAt": "2026-10-25T19:34:08.863Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T19:34:08.863Z",
+			"evidence": "The paired records at 415d314483 and 3d16c9ff35 run the same two cases, command, authored unit contract, complete test corpus and Node22 environment on harbor-mbp-2 under one real 2 CPU/2048 MiB lease. Both method cases pass; child inherits both budgets, null inputs still reject, application getter retains two reads, and all original diagnostics/settlement assertions pass. Full verification remains pending."
 		},
 		{
 			"id": "verify",
