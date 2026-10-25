@@ -39,7 +39,6 @@ test.beforeAll(async () => {
 });
 test.afterAll(() => removeShellFixture(home));
 test('every active visual component has its own required capture state', assertCatalogRegistry);
-
 for (const viewport of catalogViewports) {
 	for (const stage of ['history', 'revision'] as const) {
 		test(`console data loading: ${stage} at ${viewport.id}`, async ({ page }) => {
@@ -102,9 +101,7 @@ for (const viewport of catalogViewports) {
 			await assertModulePreview(component, unit.id);
 			if (unit.id === 'reports.component.networking-security-explorer-permissions-screen')
 				await assertPermissionTable(component, page);
-
 			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
-
 			if (
 				unit.id === 'reports.component.explorer-dependencies-screen' ||
 				unit.id.endsWith('at-dependencies')
@@ -157,7 +154,6 @@ for (const viewport of catalogViewports) {
 				await expect(usage).toBeVisible();
 				await expect(usage).toHaveAttribute('href', /\/pages\/app\.page\.orders$/);
 			}
-
 			if (unit.id === 'reports.component.explorer-function-card') {
 				await expect(component.locator('article')).toHaveCSS('border-top-style', 'solid');
 				await expect(component.locator('code')).toHaveText('filterOrders(orders, "SERVICE")');

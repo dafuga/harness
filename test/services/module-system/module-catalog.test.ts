@@ -16,7 +16,7 @@ async function project() {
 	await writeFile(join(root, 'package.json'), '{"name":"example","harness":{"kind":"app"}}');
 	return root;
 }
-test('module library exposes Email and Offline with instructions and resource generators', async () => {
+test('module library includes external and default headless testing plugin definitions', async () => {
 	await measureWorkload('service.module-system-module-catalog', 'read-module-library', async () => {
 		const catalog = await new ModuleCatalogService().load(await project());
 		expect(catalog.gaps).toEqual([]);
