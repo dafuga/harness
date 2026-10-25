@@ -4,11 +4,11 @@
 	"base": "e463e31854366174e5fb338b58e3734ce2b8d12d",
 	"scope": "Harness repository workspaces and generators only; external applications and production excluded",
 	"inventory": {
-		"files": 1110,
-		"declarations": 4422,
-		"standardizedUnits": 34,
-		"standardizedCases": 496,
-		"errors": 5937
+		"files": 1109,
+		"declarations": 4421,
+		"standardizedUnits": 35,
+		"standardizedCases": 498,
+		"errors": 5931
 	},
 	"migrations": [
 		{
@@ -229,6 +229,13 @@
 			"cases": 24,
 			"states": ["input", "boundary", "invalid"],
 			"testFiles": ["packages/reports/test/utils/wav-info.test.ts"]
+		},
+		{
+			"unit": "service.check-run",
+			"shape": "service",
+			"cases": 2,
+			"states": ["initialized"],
+			"testFiles": ["test/browser-error-evidence.test.ts"]
 		},
 		{
 			"unit": "service.verification-evidence-test-artifact",
