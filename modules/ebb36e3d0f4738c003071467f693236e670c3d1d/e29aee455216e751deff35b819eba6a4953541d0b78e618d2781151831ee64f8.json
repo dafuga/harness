@@ -97869,7 +97869,45 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "appStyleTokensConfig.roots",
+					"purpose": "Select the Reports, desktop and Hub renderer roots covered by the shared style policy.",
+					"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "appStyleTokensConfig.tokenFile",
+					"purpose": "Locate the canonical stylesheet for design values shared by all renderers.",
+					"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "appStyleTokensConfig.groups",
+					"purpose": "Name the documented design-token groups, including typography, spacing, layout and responsive breakpoints.",
+					"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "appStyleTokensConfig.designProperties",
+					"purpose": "Select CSS design properties governed by the shared token policy.",
+					"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "appStyleTokensConfig.typographyProperties",
+					"purpose": "Select font and text-metric properties governed by typography tokens.",
+					"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+				},
+				{
+					"audience": "developer",
+					"name": "appStyleTokensConfig.colorRoles",
+					"purpose": "Declare one base hue and its treatments per semantic color role, with token paint targets for actions, status and focus styling.",
+					"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -135521,6 +135559,57 @@
 			"schemaVersion": 1,
 			"tree": "9fe1e26ed7477ad20177426b0b29d570097be02d",
 			"unit": "reports.config.report-vite"
+		},
+		{
+			"commit": "ebb36e3d0f4738c003071467f693236e670c3d1d",
+			"digest": "ab88a76d157d10e6d93731ef9392ec561635b28f6d37ea4879e5268189ebac45",
+			"files": {
+				"packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts": "1d0647275d71dce6123d7ef7893e83f64c132cb7"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.roots",
+						"purpose": "Select the Reports, desktop and Hub renderer roots covered by the shared style policy.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.tokenFile",
+						"purpose": "Locate the canonical stylesheet for design values shared by all renderers.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.groups",
+						"purpose": "Name the documented design-token groups, including typography, spacing, layout and responsive breakpoints.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.designProperties",
+						"purpose": "Select CSS design properties governed by the shared token policy.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.typographyProperties",
+						"purpose": "Select font and text-metric properties governed by typography tokens.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.colorRoles",
+						"purpose": "Declare one base hue and its treatments per semantic color role, with token paint targets for actions, status and focus styling.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob 1d0647275d71dce6123d7ef7893e83f64c132cb7 from ebb36e3d0f4738c003071467f693236e670c3d1d; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "9fe1e26ed7477ad20177426b0b29d570097be02d",
+			"unit": "reports.config.shared-primitives-app-style-tokens"
 		},
 		{
 			"commit": "ebb36e3d0f4738c003071467f693236e670c3d1d",
@@ -338272,7 +338361,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "df0aaabb251cd98c",
+				"version": "76c93053d57bb284",
 				"group": {
 					"id": "shared-primitives",
 					"title": "Shared primitives"
@@ -338435,149 +338524,6 @@
 							"Layout tokens",
 							"Responsive breakpoints"
 						]
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes.Colors",
-						"value": "/^--hx-(?:bg|surface|raised|line|text|soft|muted|gold|pass|fail|accent|danger|warning|tint|scrim)(?:-|$)/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes[\"Font families\"]",
-						"value": "/^--hx-font-family-/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes[\"Type scale\"]",
-						"value": "/^--hx-type-size-/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes[\"Text styles\"]",
-						"value": "/^--hx-style-/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes.Spacing",
-						"value": "/^--hx-space-/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes[\"Borders and corners\"]",
-						"value": "/^--hx-(?:border|radius)(?:-|$)/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes.Shadows",
-						"value": "/^--hx-shadow-/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes.Effects",
-						"value": "/^--hx-effect-/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes.Opacity",
-						"value": "/^--hx-opacity-/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes.Motion",
-						"value": "/^--hx-motion-/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes.Layering",
-						"value": "/^--hx-layer-/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes[\"Layout tokens\"]",
-						"value": "/^--hx-(?:gutter$|nav-|layout-)/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupPrefixes[\"Responsive breakpoints\"]",
-						"value": "/^--hx-breakpoint-/",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions.Colors",
-						"value": "'Every color variable once, under its role: a base color, then its treatments.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Every color variable once, under its role: a base color, then its treatments."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions[\"Font families\"]",
-						"value": "'Inter for interface text, and a named monospace stack for code.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Inter for interface text, and a named monospace stack for code."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions[\"Type scale\"]",
-						"value": "'Fixed font sizes, fluid title sizes, and inline text sized to its parent.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Fixed font sizes, fluid title sizes, and inline text sized to its parent."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions[\"Text styles\"]",
-						"value": "'Weights, styles, leading, tracking, numerals and whole font shorthands.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Weights, styles, leading, tracking, numerals and whole font shorthands."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions.Spacing",
-						"value": "'Padding, margin and gap lengths, each named by its size in pixels.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Padding, margin and gap lengths, each named by its size in pixels."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions[\"Borders and corners\"]",
-						"value": "'Border widths and corner radii.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Border widths and corner radii."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions.Shadows",
-						"value": "'Elevation and outline rings, painted with the shared shadow tint.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Elevation and outline rings, painted with the shared shadow tint."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions.Effects",
-						"value": "'Blur and brightness treatments shared by dialogs, galleries and chat.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Blur and brightness treatments shared by dialogs, galleries and chat."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions.Opacity",
-						"value": "'Translucency of faint, disabled and secondary content.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Translucency of faint, disabled and secondary content."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions.Motion",
-						"value": "'Transition and animation durations and easing functions.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Transition and animation durations and easing functions."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions.Layering",
-						"value": "'Stacking order, from behind content to a full-screen view.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Stacking order, from behind content to a full-screen view."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions[\"Layout tokens\"]",
-						"value": "'Gutters, navigation gaps and structural clearances.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Gutters, navigation gaps and structural clearances."
-					},
-					{
-						"name": "appStyleTokensConfig.groupDescriptions[\"Responsive breakpoints\"]",
-						"value": "'Reference widths, repeated literally by media queries.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Reference widths, repeated literally by media queries."
 					},
 					{
 						"name": "appStyleTokensConfig.colorRoles",
@@ -339749,18 +339695,6 @@
 						}
 					},
 					{
-						"name": "appStyleTokensConfig.unassignedColors.name",
-						"value": "'Unassigned colors'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "Unassigned colors"
-					},
-					{
-						"name": "appStyleTokensConfig.unassignedColors.use",
-						"value": "'nothing until a role above lists it, with what it paints.'",
-						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts",
-						"literal": "nothing until a role above lists it, with what it paints."
-					},
-					{
 						"name": "appStyleTokensConfig.designProperties",
 						"value": "/^(?:color|background(?:-.+)?|border(?:-.+)?|outline(?:-.+)?|fill|stroke|font(?:-.+)?|line-height|letter-spacing|text-shadow|box-shadow|filter|backdrop-filter|accent-color|caret-color|scrollbar-color|text-decoration(?:-.+)?|border-spacing|padding(?:-.+)?|margin(?:-.+)?|(?:row-|column-)?gap|opacity|z-index|transition(?:-.+)?|animation(?:-.+)?)$/",
 						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
@@ -339831,6 +339765,44 @@
 						"unavailable": "A module unit emits no separate artifact.",
 						"method": "Not applicable.",
 						"artifacts": []
+					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.roots",
+						"purpose": "Select the Reports, desktop and Hub renderer roots covered by the shared style policy.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.tokenFile",
+						"purpose": "Locate the canonical stylesheet for design values shared by all renderers.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.groups",
+						"purpose": "Name the documented design-token groups, including typography, spacing, layout and responsive breakpoints.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.designProperties",
+						"purpose": "Select CSS design properties governed by the shared token policy.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.typographyProperties",
+						"purpose": "Select font and text-metric properties governed by typography tokens.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
+					},
+					{
+						"audience": "developer",
+						"name": "appStyleTokensConfig.colorRoles",
+						"purpose": "Declare one base hue and its treatments per semantic color role, with token paint targets for actions, status and focus styling.",
+						"source": "packages/reports/src/configs/shared-primitives/appStyleTokensConfig.ts"
 					}
 				]
 			},
@@ -481637,7 +481609,7 @@
 		},
 		"reports.config.shared-primitives-app-style-tokens": {
 			"unit": "reports.config.shared-primitives-app-style-tokens",
-			"manifest": "b3c7bbbf9e2255449375ac2430dada1f466b1ba3d531e1b2e97e33b554fb8f9f",
+			"manifest": "61ff0363a073f1e7f8dce9cc072959efaaee98f3745ccd31fce6485445a88323",
 			"source": "87d1d5a3100f2903e8f378b031bb83e4ffa002119319b445129310b29ebd566f",
 			"contract": "444693c39e4724760d13fd3018877f27d9546c97b09dfb35cfdad8d31d923f45",
 			"runtime": "113ce638a04fa88eac058179029b0448a1759b897b8bfd007253864808cd6364",
@@ -668928,9 +668900,7 @@
 			"support": ["function.errors"]
 		}
 	},
-	"sourceIssues": [
-		"reports.config.shared-primitives-app-style-tokens requires reviewed configControls with a source, audience and purpose"
-	],
+	"sourceIssues": [],
 	"modules": [
 		{
 			"id": "adapter.claude-benchmark",
@@ -687439,13 +687409,7 @@
 			"id": "reports.config.shared-primitives-app-style-tokens",
 			"kind": "config",
 			"category": "configs",
-			"issues": [
-				{
-					"field": "registry",
-					"message": "reports.config.shared-primitives-app-style-tokens requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
-				}
-			]
+			"issues": []
 		},
 		{
 			"id": "reports.config.shell-playwright",
@@ -690258,5 +690222,5 @@
 		}
 	],
 	"issues": [],
-	"digest": "62dfd4f0e0d7c286238735b8707838f9f5147522b5a43dc01638d4e6a0647a45"
+	"digest": "b11e760a3664329aa92f40142fcf9e4a78a7ffadff54b79e581607d9b89ec621"
 }
