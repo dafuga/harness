@@ -44,11 +44,14 @@ export class CheckRunService {
 		evidencePath: string,
 		slug: string
 	): Promise<IsolatedResult> {
-		const { directory } = this.context;
+		const { directory, env } = this.context;
+		const budget = resourceEnvironment();
 		return resourceWork(
 			{
-				priority: resourcePriority.parse(
-					this.context.env.HARNESS_RESOURCE_PRIORITY ?? 'environment'
+				priority: resourcePriority.parse(env.HARNESS_RESOURCE_PRIORITY ?? 'environment'),
+				cpus: Number(env.HARNESS_RESOURCE_CPUS ?? budget.HARNESS_RESOURCE_CPUS ?? 1),
+				memoryMiB: Number(
+					env.HARNESS_RESOURCE_MEMORY_MIB ?? budget.HARNESS_RESOURCE_MEMORY_MIB ?? 2048
 				)
 			},
 			(context) =>
@@ -65,7 +68,7 @@ export class CheckRunService {
 					log: join(directory, 'logs', `${slug}.log`),
 					maxLogBytes
 				}),
-			this.context.env
+			env
 		);
 	}
 

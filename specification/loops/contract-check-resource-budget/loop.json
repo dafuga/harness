@@ -2,7 +2,7 @@
 	"name": "contract-check-resource-budget",
 	"goal": "Run checks within the admitted parent budget and use two GiB for standalone verification",
 	"createdAt": "2026-10-25T18:45:25.422Z",
-	"updatedAt": "2026-10-25T18:45:26.607Z",
+	"updatedAt": "2026-10-25T19:30:29.201Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T19:30:17.122Z",
+			"evidence": "At 415d314483 on harbor-mbp-2, retained red 4023d71c3201ebeed68f263989155f965acb1ec4411508f87f5ec35d8e264cd6 proves the existing run case receives 512 MiB instead of its real 2048 MiB parent reservation. Original diagnostics and settlement assertions, null input checks and the admitted two-read application getter all pass first; version case passes. Two cases only. No product repair yet."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T19:30:29.201Z",
+			"evidence": "Request CPU and memory from the supplied caller environment or real parent scheduling context, with standalone defaults of one CPU and 2048 MiB. resourceWork already merges scheduling context: retain that path and both existing caller-environment reads; do not add a normalization or environment spread. Tests and authored contract remain unchanged from 415d314483."
 		},
 		{
 			"id": "green",
