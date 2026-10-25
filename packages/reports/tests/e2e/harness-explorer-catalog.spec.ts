@@ -1,3 +1,4 @@
+import { moduleValidation } from './support/moduleValidation';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { generatedUnits } from '../../scripts/harness-scale-data';
 import { at, branch, checkpoint, commit, expectPath, explorer, tip } from './support/explorer';
@@ -203,3 +204,8 @@ test.describe('a registry of several hundred units', () => {
 		await expectPath(page, tip('main', 'helpers/unit477/contract'));
 	});
 });
+
+for (const viewport of viewports)
+	test(`catalog requires committed module data at ${viewport.id}`, async ({ page }) => {
+		await moduleValidation(page, viewport);
+	});

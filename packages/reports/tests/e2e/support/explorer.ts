@@ -29,7 +29,7 @@ const shots = process.env.HARNESS_EXPLORER_SHOTS ?? join(home, 'explorer-shots')
  * Keeps what the page shows at the point an assertion is about to be made, when the run was asked
  * to with TAKE_SCREENSHOT=1. The same name is the same checkpoint before and after a change.
  */
-export async function checkpoint(page: Page, name: string): Promise<void> {
+export async function checkpoint(page: Page, name: string, state?: string): Promise<void> {
 	if (process.env.TAKE_SCREENSHOT !== '1') return;
 	mkdirSync(shots, { recursive: true });
 	await settled(page);
@@ -37,17 +37,22 @@ export async function checkpoint(page: Page, name: string): Promise<void> {
 		path: join(shots, `${name}.png`),
 		fullPage: true
 	});
-	await pageScreenshot(page, name, bytes);
+	await pageScreenshot(page, name, bytes, state);
 	await pageBenchmark(page, name, pageUnit(page.url()));
 }
 
 /** Each persisted picture names the actual app page, state, viewport and served revision. */
-async function pageScreenshot(page: Page, name: string, bytes: Buffer): Promise<void> {
+async function pageScreenshot(
+	page: Page,
+	name: string,
+	bytes: Buffer,
+	selectedState?: string
+): Promise<void> {
 	const unit = pageUnit(page.url());
 	const server = await servedBuild(page);
 	if (!unit || !server || server.revision !== process.env.HARNESS_VERIFY_REVISION) return;
 	const width = page.viewportSize()!.width;
-	const state = new URL(page.url()).searchParams.get('tab') ?? 'overview';
+	const state = selectedState ?? new URL(page.url()).searchParams.get('tab') ?? 'overview';
 	recordCapture(
 		{
 			evidence: unit,

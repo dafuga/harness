@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import type { ModuleValidation } from '../../../../src/services/git-source-history/ModuleDataService.types';
 import { explorerRelations } from '../../src/utils/explorerRelations';
 import { harnessClient } from '../../src/utils/explorer-ui/harnessClient';
 import { revision, unit } from '../explorerFixture';
@@ -35,7 +36,7 @@ function stored() {
 			commit: head.commit,
 			digest: 'a'.repeat(64),
 			issues: [],
-			modules: [],
+			modules: [] as ModuleValidation[],
 			relationships: { 'page.orders': { ...empty } }
 		}
 	});
@@ -61,22 +62,38 @@ test('the app refuses incomplete committed metadata and exposes the exact module
 				{ field: 'contract.inputs', message: 'Missing inputs', repair: 'Commit the contract' }
 			]
 		}
-	] as never;
-	const client = harnessClient('/fixture', async () => new Response(JSON.stringify(head)));
+	];
+	const client = harnessClient('/fixture', respond(head));
 	await expect(client.revision(head.commit)).rejects.toThrow('page.orders: contract.inputs');
 });
 test('the app refuses required uncommitted metadata while leaving legacy data readable', async () => {
 	const head = stored();
 	const incomplete = { ...head, moduleData: { ...head.moduleData, committed: false } };
 	await expect(
-		harnessClient('/incomplete', async () => new Response(JSON.stringify(incomplete))).revision(
-			head.commit
-		)
+		harnessClient('/incomplete', respond(incomplete)).revision(head.commit)
 	).rejects.toThrow('Missing committed module data');
 	const legacy = revision([], [], []);
-	await expect(
-		harnessClient('/legacy', async () => new Response(JSON.stringify(legacy))).revision(
-			legacy.commit
-		)
-	).resolves.toEqual(legacy);
+	await expect(harnessClient('/legacy', respond(legacy)).revision(legacy.commit)).resolves.toEqual(
+		legacy
+	);
+});
+
+function respond(data: unknown): typeof fetch {
+	return Object.assign(async () => new Response(JSON.stringify(data)), {
+		preconnect() {}
+	}) as typeof fetch;
+}
+
+test('an incomplete report is reloaded after a committed repair rather than cached forever', async () => {
+	const head = stored();
+	let committed = false;
+	const fetcher = Object.assign(
+		async () =>
+			new Response(JSON.stringify({ ...head, moduleData: { ...head.moduleData, committed } })),
+		{ preconnect() {} }
+	) as typeof fetch;
+	const client = harnessClient('/repair', fetcher);
+	await expect(client.revision(head.commit)).rejects.toThrow('Missing committed module data');
+	committed = true;
+	await expect(client.revision(head.commit)).resolves.toMatchObject({ commit: head.commit });
 });
