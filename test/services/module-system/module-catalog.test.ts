@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, readFile, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile, rm, readdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
@@ -194,6 +194,8 @@ test('included and project modules use declared catalogs and real scaffold gener
 	);
 	await generate.generate(root, 'types', 'type', 'Invoice');
 	await generate.generate(root, 'styles', 'style', 'Invoice');
+	expect(await readdir(join(root, 'src/types'))).toContain('invoice');
+	expect(await readdir(join(root, 'src/styles'))).toContain('invoice');
 	await measureWorkload('service.module-system-module-package', 'declare-pinned-package', () =>
 		generate.generate(root, 'dependencies', 'dependency', 'lit@3.3.1')
 	);
