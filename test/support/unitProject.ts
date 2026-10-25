@@ -2,7 +2,8 @@ import type { UnitProject } from './unitProject.types';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { runHarness } from './cli';
+import type { ValidationReport } from '../../src/services/git-source-history/ModuleDataService.types';
+import { runHarness, runCommand } from './cli';
 
 export async function unitProject(kind: 'app' | 'lib'): Promise<UnitProject> {
 	const parent = await mkdtemp(join(tmpdir(), `harness-units-${kind}-`));
@@ -75,3 +76,19 @@ export const utcDateExamples = [
 ];
 
 export type { UnitProject } from './unitProject.types';
+
+export async function configureTestAuthor(root: string) {
+	await runCommand(['git', 'config', 'user.name', 'Harness Test'], root);
+	await runCommand(['git', 'config', 'user.email', 'harness@example.invalid'], root);
+}
+
+export function validationInvoker(project: Awaited<ReturnType<typeof unitProject>>) {
+	return async (args: string[]) => {
+		const result = await project.harness(['validate', ...args, '--json'], false);
+		expect(
+			result.stdout,
+			'Validation returns structured per-module diagnostics: ' + result.stderr
+		).toContain('"modules"');
+		return { ...JSON.parse(result.stdout), exitCode: result.exitCode };
+	};
+}

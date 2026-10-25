@@ -5,7 +5,13 @@ import type {
 import { expect, test } from 'vitest';
 import { rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { unitProject, slugifySource, titleServiceSource } from './support/unitProject';
+import {
+	unitProject,
+	slugifySource,
+	titleServiceSource,
+	configureTestAuthor,
+	validationInvoker
+} from './support/unitProject';
 import { runCommand } from './support/cli';
 
 test('validate persists revision-bound module gaps, filters them and invalidates cached searches', async () => {
@@ -58,11 +64,6 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 		await rm(join(project.root, '..'), { recursive: true, force: true });
 	}
 }, 180_000);
-
-async function configureTestAuthor(root: string) {
-	await runCommand(['git', 'config', 'user.name', 'Harness Test'], root);
-	await runCommand(['git', 'config', 'user.email', 'harness@example.invalid'], root);
-}
 
 test('validate commits source-derived page API usage and explicit visual data gaps', async () => {
 	const project = await unitProject('app');
@@ -139,16 +140,6 @@ async function verifyReview(
 	).toBe('Serve normalized titles through the declared title service.');
 }
 
-function validationInvoker(project: Awaited<ReturnType<typeof unitProject>>) {
-	return async (args: string[]) => {
-		const result = await project.harness(['validate', ...args, '--json'], false);
-		expect(result.stdout, 'Validation returns structured per-module diagnostics').toContain(
-			'"modules"'
-		);
-		return { ...JSON.parse(result.stdout), exitCode: result.exitCode };
-	};
-}
-
 // Historical source layout is preserved; data admission must still demand owned source and examples.
 test('historical helper layout does not masquerade as missing module metadata', async () => {
 	const project = await unitProject('lib');
@@ -216,48 +207,3 @@ function historicalSlugifyContract() {
 		}
 	];
 }
-
-test('source-bound reviews repair historical default runtime targets without changing source commits', async () => {
-	const project = await unitProject('lib');
-	const git = (args: string[]) => runCommand(['git', ...args], project.root);
-	try {
-		await git(['init', '-b', 'main']);
-		await configureTestAuthor(project.root);
-		await project.write(
-			'src/services/TitleService.ts',
-			'export class TitleService { run(): string { return "Title"; } }'
-		);
-		await project.harness(['units', 'index', '--write']);
-		const path = 'specification/units/service.title.json';
-		const manifest = await project.json<{
-			runtime: { kind: string; entry: string; targets: Array<{ kind: string; entry: string }> };
-		}>(path);
-		const wanted = {
-			...manifest.runtime,
-			targets: [{ kind: manifest.runtime.kind, entry: manifest.runtime.entry }]
-		};
-		manifest.runtime.targets = [{ kind: 'module', entry: 'src/services/old/TitleService.ts' }];
-		await project.write(path, JSON.stringify(manifest));
-		await git(['add', '.']);
-		await git(['commit', '-m', 'feat: retain historical runtime target']);
-		const head = (await git(['rev-parse', 'HEAD'])).stdout.trim();
-		const invoke = validationInvoker(project);
-		const before = await invoke(['--write', '--module', 'service.title']);
-		expect(JSON.stringify(before.modules)).toContain('runtime.targets must include');
-		const review = join(project.root, '..', 'runtime-review.json');
-		await writeFile(
-			review,
-			JSON.stringify({
-				unit: 'service.title',
-				reason: 'Bind the default target to the owned implementation at this source commit.',
-				metadata: { runtime: wanted }
-			})
-		);
-		const repaired = await invoke(['--write', '--review', review, '--module', 'service.title']);
-		expect(repaired.valid, JSON.stringify(repaired)).toBe(true);
-		expect((await invoke(['--write', '--refresh', '--module', 'service.title'])).valid).toBe(true);
-		expect((await git(['rev-parse', 'HEAD'])).stdout.trim()).toBe(head);
-	} finally {
-		await rm(join(project.root, '..'), { recursive: true, force: true });
-	}
-}, 180_000);
