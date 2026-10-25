@@ -124,6 +124,10 @@ export function harnessShell(input: HarnessNavbarInput): HarnessShellView {
 			? { branch: scope.branch, commit: null, category: 'pages' }
 			: null;
 	const modules = scope ? codeItems(input) : [];
+	if (scope?.location.screen === 'module-resources' && !modules.some((item) => item.active)) {
+		const plugins = modules.find((item) => item.id === 'module-library');
+		if (plugins) plugins.active = true;
+	}
 	const primary = modules.find((item) => item.primary) ?? modules[0];
 	const categories = labels.map(([id, label]) => {
 		const item = categoryItem(input, id, label);
