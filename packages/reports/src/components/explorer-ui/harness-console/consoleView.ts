@@ -30,7 +30,9 @@ export function consoleRelations(
 	const own = explorerRelationsReader(detail, listed);
 	// The parent lists its own entities, with the verdicts it gave them.
 	const last = before ? explorerRelationsReader(before) : own;
-	const held = new Set(detail.registry.units.map((unit) => unit.id));
+	const held = new Set(
+		detail.registry.units.filter((unit) => unit.status === 'active').map((unit) => unit.id)
+	);
 	return (id: string) => (held.has(id) ? own : last)(id);
 }
 /** Bind one revision's helper identity and cached answers to the screen it renders. */
