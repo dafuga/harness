@@ -17,9 +17,9 @@ export class ModuleDataCache {
 	async read(identity: ModuleDataIdentity, source = false): Promise<ModuleData | undefined> {
 		const current = await this.readVersion(identity, source, moduleDataProducer);
 		if (current || !source) return current;
-		// Version 5 only separates layout policy from metadata admission. Reuse sealed source
-		// facts from version 4, then run the current validator; never reuse old admission results.
-		return this.readVersion(identity, true, 'harness-module-data-v1.2026-10-25.4');
+		// Reuse sealed version 5 facts only when they could not have cataloged planning logs.
+		const prior = await this.readVersion(identity, true, 'harness-module-data-v1.2026-10-25.5');
+		return prior && new ModuleDataSnapshotValidator().sourceProducer(prior) ? prior : undefined;
 	}
 	private async readVersion(identity: ModuleDataIdentity, source: boolean, producer: string) {
 		try {

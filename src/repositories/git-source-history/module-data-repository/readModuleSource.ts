@@ -4,7 +4,6 @@ import type { ModuleDataRepository } from '../ModuleDataRepository';
 import type { ModuleData } from '../../../services/git-source-history/ModuleDataService.types';
 import { ModuleDataSnapshotValidator } from '../../../validators/development-tooling/ModuleDataSnapshotValidator';
 import { ModuleDataReviewRepository } from '../ModuleDataReviewRepository';
-import { moduleDataProducer } from '../../../services/git-source-history/module-data-service/moduleDataProtocol';
 /** Evidence may advance without changing committed metadata about the same source tree. */
 export async function readModuleSource(
 	tree: EvidenceTreeAdapter,
@@ -39,7 +38,7 @@ export function matchesModuleSource(
 	const { digest, ...body } = data;
 	return (
 		data.schemaVersion === 1 &&
-		data.producer === moduleDataProducer &&
+		new ModuleDataSnapshotValidator().sourceProducer(data) &&
 		data.commit === identity.commit &&
 		data.tree === identity.tree &&
 		(data.reviews ?? [])

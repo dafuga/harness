@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { moduleDataProducer } from '../../services/git-source-history/module-data-service/moduleDataProtocol';
+import type { ModuleSourceProducerInput } from './ModuleDataSnapshotValidator.types';
 import type { ModuleDataSnapshotValidatorResult } from './ModuleDataSnapshotValidator.types';
 const identity = z.object({
 	id: z.string().min(1),
@@ -40,6 +42,16 @@ const relations = [
 ];
 /** Reject incomplete snapshots even when their JSON was re-sealed or a missing report was omitted. */
 export class ModuleDataSnapshotValidator {
+	/** Version 6 excludes planning logs; unaffected sealed version 5 source facts stay valid. */
+	sourceProducer(data: ModuleSourceProducerInput): boolean {
+		if (data.producer === moduleDataProducer) return true;
+		return (
+			data.producer === 'harness-module-data-v1.2026-10-25.5' &&
+			data.declarations.every((unit) =>
+				unit.owns.source.every((path) => !/\.(?:ndjson|jsonl)$/.test(path))
+			)
+		);
+	}
 	validate(input: unknown): ModuleDataSnapshotValidatorResult {
 		const parsed = snapshot.safeParse(input);
 		if (!parsed.success)
