@@ -2165,8 +2165,20 @@
 			},
 			"sourceCommit": "dc1e7d5710cde6f029fe3c538e29780543acec0e",
 			"contractHash": "0373595067587fd02eeb1059459e39d8af17fecf83bacf34c4c1c63045a8f7bf",
-			"status": "review",
-			"reviews": [],
+			"status": "accepted",
+			"reviews": [
+				{
+					"attempt": "8a362647-4ba2-4c62-b22b-3003578d2f72",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "Primary integrated the reviewed proposal with canonical manifests, retained original assertions and fixtures, strengthened invalid-prop coverage where needed, and verified owning focused Vitest suites. Integration commit4c746db7ed; repository-wide migration and full acceptance remain pending.",
+					"at": "2026-10-25T16:31:54.996Z",
+					"provider": "claude",
+					"model": "claude-haiku-5-5",
+					"intelligence": "max",
+					"reportedModel": "claude-haiku-5-5"
+				}
+			],
 			"createdAt": "2026-10-25T14:53:00.011Z",
 			"claim": {
 				"worker": "wire-methods",
