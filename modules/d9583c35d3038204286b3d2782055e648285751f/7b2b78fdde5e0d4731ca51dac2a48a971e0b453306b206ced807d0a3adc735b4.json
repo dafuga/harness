@@ -94207,7 +94207,15 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "shellViteConfig",
+					"purpose": "Build the selected isolated shell fixture as one production IIFE and stylesheet, setting production mode and injecting catalog data plus fixture-specific router, desktop and shared-component aliases.",
+					"source": "packages/reports/src/config/development-tooling/shellViteConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -129029,6 +129037,28 @@
 			"schemaVersion": 1,
 			"tree": "b50114d362cec99e9ad840b68790848e3718a4f9",
 			"unit": "reports.config.shell-playwright"
+		},
+		{
+			"commit": "d9583c35d3038204286b3d2782055e648285751f",
+			"digest": "14181096cf7596aca278e96c21544436f4eb37ddd56419e1a7071a2c3f180bfe",
+			"files": {
+				"packages/reports/src/config/development-tooling/shellViteConfig.ts": "c2a05390767b6de2f89b7d31369ecdc036918f8d",
+				"packages/reports/src/config/shellViteConfig.ts": "2d69d066ee0b86543cca85be77233449597e63fd"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellViteConfig",
+						"purpose": "Build the selected isolated shell fixture as one production IIFE and stylesheet, setting production mode and injecting catalog data plus fixture-specific router, desktop and shared-component aliases.",
+						"source": "packages/reports/src/config/development-tooling/shellViteConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob c2a05390767b6de2f89b7d31369ecdc036918f8d from 4a0a51f29516a460865982acae94792e5a7e7ac9; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "b50114d362cec99e9ad840b68790848e3718a4f9",
+			"unit": "reports.config.shell-vite"
 		}
 	],
 	"registry": {
@@ -326297,6 +326327,14 @@
 					"outputs": [],
 					"errors": []
 				},
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellViteConfig",
+						"purpose": "Build the selected isolated shell fixture as one production IIFE and stylesheet, setting production mode and injecting catalog data plus fixture-specific router, desktop and shared-component aliases.",
+						"source": "packages/reports/src/config/development-tooling/shellViteConfig.ts"
+					}
+				],
 				"runtime": {
 					"kind": "module",
 					"targets": [
@@ -326311,7 +326349,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "678c81f639e93c50",
+				"version": "7568132fa0fb5f1b",
 				"limits": {
 					"metrics": {
 						"source-bytes": 755,
@@ -458743,7 +458781,7 @@
 		},
 		"reports.config.shell-vite": {
 			"unit": "reports.config.shell-vite",
-			"manifest": "8e7e318bca6afe70f604d8e1def273194c4fa981cebef8fa75724e2cb0d7e5d2",
+			"manifest": "97608e5382107018415efd90be4b5b4cc941d4355d2f91d6240bb1e2525183a8",
 			"source": "f18fa36376901c4317273e443a03d7709db70f1df84f0e82a40642b8c651c1df",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "4cbdde65c6b16cd8eee1938e24639977f2726ea41d0183397a4bf154b770c4a6",
@@ -623266,8 +623304,7 @@
 		"reports.function.activity-display: plural must be implemented under src/helpers/<responsibility>/",
 		"reports.function.entity-contract: humanize must be implemented under src/helpers/<responsibility>/",
 		"reports.function.entity-lens: shortCommit must be implemented under src/helpers/<responsibility>/",
-		"reports.function.evidence-media: formatDuration must be implemented under src/helpers/<responsibility>/",
-		"reports.config.shell-vite requires reviewed configControls with a source, audience and purpose"
+		"reports.function.evidence-media: formatDuration must be implemented under src/helpers/<responsibility>/"
 	],
 	"modules": [
 		{
@@ -640636,11 +640673,6 @@
 					"field": "measurements.dependencies",
 					"message": "Source observation is partial or unavailable.",
 					"repair": "Run validate --write from the exact source revision; preserve unavailable-counter reasons."
-				},
-				{
-					"field": "registry",
-					"message": "reports.config.shell-vite requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
 				}
 			]
 		},
@@ -643236,5 +643268,5 @@
 		}
 	],
 	"issues": [],
-	"digest": "35a9f13eb6550de099df5717f27a9d8be017b4d20dd226a72ed4b40aefcc8dbd"
+	"digest": "86c0d4a8c08512129ff29c6169ad3346d29ed387506210a69f59f4d668966c47"
 }
