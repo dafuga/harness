@@ -948,6 +948,66 @@
 			},
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.snapshot-fixture",
+			"title": "snapshot fixture",
+			"moduleGoal": "Implement the requested standardized test contracts without dropping assertions",
+			"verificationFiles": [
+				"test/support/browserTest.ts",
+				"test/support/browserTest.types.ts",
+				"test/browser-console-errors.test.ts",
+				"test/browser-console-expected.test.ts"
+			],
+			"instructions": "Work only in allowed files. Do not delegate, commit, push, publish, access credentials or run E2Es/broad checks. Preserve unrelated changes. Extend the shared and generated browser fixture with an explicit matchScreenshot(Page|Locator, name, options) helper. Normal tests must run screenshot comparison regardless of TAKE_SCREENSHOT; that flag controls optional evidence only. Wait for fonts, decode visible images, settle frames and preserve existing browser error checks. Match reviewed baseline bytes only; missing or mismatched baselines must fail, never update or accept actual pixels automatically. Use standard Playwright screenshot assertions. Keep generated fixture and root fixture behavior aligned. Do not monkeypatch page or automatically snapshot arbitrary final pages. Preserve existing test declarations and assertions. Report config/baseline materialization integrations the primary needs. No E2Es locally. No unrelated visual changes.",
+			"wantedContract": {
+				"responsibility": "Extend the shared and generated browser fixture with an explicit matchScreenshot(Page|Locator, name, options) helper. Normal tests must run screenshot comparison regardless of TAKE_SCREENSHOT; that flag controls optional evidence only. Wait for fonts, decode visible images, settle frames and preserve existing browser error checks. Match reviewed baseline bytes only; missing or mismatched baselines must fail, never update or accept actual pixels automatically. Use standard Playwright screenshot assertions. Keep generated fixture and root fixture behavior aligned. Do not monkeypatch page or automatically snapshot arbitrary final pages. Preserve existing test declarations and assertions. Report config/baseline materialization integrations the primary needs. No E2Es locally. No unrelated visual changes.",
+				"inputs": [
+					{
+						"name": "declared entity capabilities",
+						"type": "finite test contract"
+					}
+				],
+				"outputs": [
+					{
+						"name": "standardized tests",
+						"type": "reviewable source and focused results"
+					}
+				],
+				"errors": [
+					{
+						"name": "missing coverage or baseline",
+						"type": "explicit failure"
+					}
+				]
+			},
+			"model": "gpt-5.6-luna",
+			"intelligence": "max",
+			"assignee": "contract-generators",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "template.browser-test",
+				"goal": "Implement the requested standardized test contracts without dropping assertions",
+				"files": [
+					"src/templates/browserTest.ts",
+					"src/templates/development-tooling/browserTest.ts",
+					"test/support/browserTest.ts",
+					"test/support/browserTest.types.ts",
+					"test/browser-console-errors.test.ts",
+					"test/browser-console-expected.test.ts"
+				]
+			},
+			"sourceCommit": "c7775b5b6e1355f6b3df0f1a7f7e84706bb148ad",
+			"contractHash": "2a4b6a9e5e8eab94a10031593b49b620b820fc8f7a33de5ed48dbf26a0adda8c",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T12:57:07.388Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
