@@ -5,10 +5,10 @@
 	"scope": "Harness repository workspaces and generators only; external applications and production excluded",
 	"inventory": {
 		"files": 1109,
-		"declarations": 4421,
-		"standardizedUnits": 35,
-		"standardizedCases": 498,
-		"errors": 5931
+		"declarations": 4553,
+		"standardizedUnits": 42,
+		"standardizedCases": 659,
+		"errors": 5895
 	},
 	"migrations": [
 		{
@@ -33,11 +33,53 @@
 			"testFiles": ["packages/desktop/test/utils/remote-labels.test.ts"]
 		},
 		{
+			"unit": "function.canonical-json",
+			"shape": "helper",
+			"cases": 20,
+			"states": ["input", "boundary", "admission", "invalid"],
+			"testFiles": ["test/utils/canonical-json.test.ts"]
+		},
+		{
 			"unit": "function.case",
 			"shape": "helper",
 			"cases": 24,
 			"states": ["input", "invalid"],
 			"testFiles": ["test/case.test.ts"]
+		},
+		{
+			"unit": "function.commit-message",
+			"shape": "helper",
+			"cases": 11,
+			"states": ["boundary", "invalid", "stored", "cleanup", "performance"],
+			"testFiles": ["test/utils/commit-message.test.ts"]
+		},
+		{
+			"unit": "function.gateway-content-error",
+			"shape": "helper",
+			"cases": 9,
+			"states": ["input", "boundary", "coercion", "invalid"],
+			"testFiles": ["test/utils/gateway-content-error.test.ts"]
+		},
+		{
+			"unit": "function.lfs-pointer",
+			"shape": "helper",
+			"cases": 38,
+			"states": ["input", "boundary", "invalid"],
+			"testFiles": ["test/utils/lfs-pointer.test.ts"]
+		},
+		{
+			"unit": "function.resource-environment",
+			"shape": "helper",
+			"cases": 22,
+			"states": ["input", "combination", "boundary", "invalid"],
+			"testFiles": ["test/utils/resource-environment.test.ts"]
+		},
+		{
+			"unit": "function.stable-json",
+			"shape": "helper",
+			"cases": 12,
+			"states": ["input", "boundary", "admission", "invalid"],
+			"testFiles": ["test/utils/stable-json.test.ts"]
 		},
 		{
 			"unit": "relay.function.connect-claims",
@@ -215,6 +257,13 @@
 			"cases": 20,
 			"states": ["input", "boundary", "invalid"],
 			"testFiles": ["packages/reports/test/utils/evidence-media.test.ts"]
+		},
+		{
+			"unit": "reports.function.explorer-name",
+			"shape": "helper",
+			"cases": 49,
+			"states": ["code", "title", "invalid", "boundary", "route"],
+			"testFiles": ["packages/reports/test/utils/explorer-name.test.ts"]
 		},
 		{
 			"unit": "reports.function.report-filter",

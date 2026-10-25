@@ -30,7 +30,18 @@
 				"description": "Formatted text with a trailing newline. Objects retain entry order; primitive arrays stay inline when they fit the 100-column layout calculation, otherwise values expand with tabs."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An enumerable getter can throw while stableJson reads object entries, and the original error propagates."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "BigInt values have no JSON form, so JSON.stringify throws a TypeError."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
@@ -44,6 +55,351 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "stableJson",
+				"name": "Match the project Prettier style across escaped text and width boundaries",
+				"call": "stableJson(prettierRepresentative())",
+				"input": [
+					{
+						"$fixture": "prettier-workload",
+						"value": {
+							"text": "quotes \" and \\ slashes / plus\nnewlines",
+							"flag": true,
+							"none": null,
+							"count": 12.5
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\n\t\"text\": \"quotes \\\" and \\\\ slashes / plus\\nnewlines\",\n\t\"flag\": true,\n\t\"none\": null,\n\t\"count\": 12.5\n}\n"
+				}
+			},
+			{
+				"subject": "stableJson",
+				"name": "Preserve object order and a trailing newline",
+				"call": "stableJson({ b: 1, a: [true, null] })",
+				"input": [
+					{
+						"b": 1,
+						"a": [true, null]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\n\t\"b\": 1,\n\t\"a\": [true, null]\n}\n"
+				}
+			},
+			{
+				"subject": "stableJson",
+				"name": "Render an empty array",
+				"call": "stableJson([])",
+				"input": [
+					[]
+				],
+				"expected": {
+					"kind": "value",
+					"value": "[]\n"
+				}
+			},
+			{
+				"subject": "stableJson",
+				"name": "Render an empty object",
+				"call": "stableJson({})",
+				"input": [
+					{}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{}\n"
+				}
+			},
+			{
+				"subject": "stableJson",
+				"name": "Render a null primitive",
+				"call": "stableJson(null)",
+				"input": [null],
+				"expected": {
+					"kind": "value",
+					"value": "null\n"
+				}
+			},
+			{
+				"subject": "stableJson",
+				"name": "Render a string primitive",
+				"call": "stableJson('plain')",
+				"input": ["plain"],
+				"expected": {
+					"kind": "value",
+					"value": "\"plain\"\n"
+				}
+			},
+			{
+				"subject": "stableJson",
+				"name": "Render top-level undefined as null",
+				"call": "stableJson(undefined)",
+				"input": [
+					{
+						"$fixture": "undefined"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "null\n"
+				}
+			},
+			{
+				"subject": "stableJson",
+				"name": "Omit undefined object fields and write array items as null",
+				"call": "stableJson({ visible: true, missing: undefined, items: [1, undefined, 3] })",
+				"input": [
+					{
+						"visible": true,
+						"missing": {
+							"$fixture": "undefined"
+						},
+						"items": [
+							1,
+							{
+								"$fixture": "undefined"
+							},
+							3
+						]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\n\t\"visible\": true,\n\t\"items\": [1, null, 3]\n}\n"
+				}
+			},
+			{
+				"subject": "stableJson",
+				"name": "Read an enumerable getter through its current value",
+				"call": "stableJson({ computed: getter })",
+				"input": [
+					{
+						"computed": {
+							"$fixture": "getter",
+							"value": "from getter"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\n\t\"computed\": \"from getter\"\n}\n"
+				}
+			},
+			{
+				"subject": "stableJson",
+				"name": "Read own keys while preserving a prototype and iterator",
+				"call": "stableJson(iterableWithPrototype())",
+				"input": [
+					{
+						"$fixture": "prototype-and-iterator",
+						"fields": {
+							"own": "kept"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\n\t\"own\": \"kept\"\n}\n"
+				}
+			},
+			{
+				"subject": "stableJson",
+				"name": "Propagate an enumerable getter error",
+				"call": "stableJson({ invalid: throwingGetter })",
+				"input": [
+					{
+						"invalid": {
+							"$fixture": "throwing-getter",
+							"message": "invalid property"
+						}
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "invalid property"
+					}
+				}
+			},
+			{
+				"subject": "stableJson",
+				"name": "Reject a BigInt input because JSON cannot carry it",
+				"call": "stableJson(1n)",
+				"input": [
+					{
+						"$fixture": "bigint",
+						"value": "1"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "TypeError",
+						"message": "Do not know how to serialize a BigInt"
+					}
+				}
+			}
+		],
+		"states": ["input", "boundary", "admission", "invalid"],
+		"props": ["value"],
+		"cases": [
+			{
+				"id": "stable-json.prettier-style",
+				"state": "boundary",
+				"subject": "stableJson",
+				"example": "Match the project Prettier style across escaped text and width boundaries",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Match the project Prettier style across escaped text and width boundaries"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "stable-json.object-order",
+				"state": "input",
+				"subject": "stableJson",
+				"example": "Preserve object order and a trailing newline",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Preserve object order and a trailing newline"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "stable-json.empty-array",
+				"state": "boundary",
+				"subject": "stableJson",
+				"example": "Render an empty array",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Render an empty array"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "stable-json.empty-object",
+				"state": "boundary",
+				"subject": "stableJson",
+				"example": "Render an empty object",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Render an empty object"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "stable-json.null",
+				"state": "boundary",
+				"subject": "stableJson",
+				"example": "Render a null primitive",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Render a null primitive"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "stable-json.string",
+				"state": "boundary",
+				"subject": "stableJson",
+				"example": "Render a string primitive",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Render a string primitive"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "stable-json.undefined",
+				"state": "invalid",
+				"subject": "stableJson",
+				"example": "Render top-level undefined as null",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Render top-level undefined as null"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "stable-json.undefined-values",
+				"state": "invalid",
+				"subject": "stableJson",
+				"example": "Omit undefined object fields and write array items as null",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Omit undefined object fields and write array items as null"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "stable-json.getter",
+				"state": "admission",
+				"subject": "stableJson",
+				"example": "Read an enumerable getter through its current value",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Read an enumerable getter through its current value"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "stable-json.prototype-iterator",
+				"state": "admission",
+				"subject": "stableJson",
+				"example": "Read own keys while preserving a prototype and iterator",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Read own keys while preserving a prototype and iterator"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "stable-json.throwing-getter",
+				"state": "invalid",
+				"subject": "stableJson",
+				"example": "Propagate an enumerable getter error",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Propagate an enumerable getter error"
+				},
+				"props": ["value"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "stable-json.bigint",
+				"state": "invalid",
+				"subject": "stableJson",
+				"example": "Reject a BigInt input because JSON cannot carry it",
+				"fixture": "specification/units/function.stable-json.json",
+				"test": {
+					"file": "test/utils/stable-json.test.ts",
+					"title": "stableJson: Reject a BigInt input because JSON cannot carry it"
+				},
+				"props": ["value"],
+				"errors": ["TypeError"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

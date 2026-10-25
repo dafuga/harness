@@ -85,6 +85,289 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "commitMessage",
+				"name": "Accept subject and body limits for every prefix",
+				"call": "commitMessage(subject(72))",
+				"input": {
+					"$fixture": "limits"
+				},
+				"expected": {
+					"kind": "value",
+					"value": []
+				}
+			},
+			{
+				"subject": "commitMessage",
+				"name": "Report subject, body, character, and trailer limit errors",
+				"call": "commitMessage(subject(73))",
+				"input": {
+					"$fixture": "limit-errors"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["subject has 73 characters; the limit is 72."]
+				}
+			},
+			{
+				"subject": "commitMessage",
+				"name": "Require a subject and an allowed prefix",
+				"call": "commitMessage('')",
+				"input": {
+					"$fixture": "subject-prefix"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["subject is empty."]
+				}
+			},
+			{
+				"subject": "commitMessage",
+				"name": "Count code points and normalized line endings",
+				"call": "commitMessage(`feat: ${'é'.repeat(65)}𝄞`)",
+				"input": {
+					"$fixture": "unicode-line-endings"
+				},
+				"expected": {
+					"kind": "value",
+					"value": []
+				}
+			},
+			{
+				"subject": "commitMessage",
+				"name": "Measure a stored hash paragraph as body content",
+				"call": "commitMessage(`fix: short\\n\\n# ${'x'.repeat(700)}`)",
+				"input": {
+					"$fixture": "stored-hash"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["body has 702 characters; the limit is 400."]
+				}
+			},
+			{
+				"subject": "writtenMessage",
+				"name": "Remove Git comments, scissors, and diff text",
+				"call": "writtenMessage(commitMessageFile())",
+				"input": {
+					"$fixture": "git-drops"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "feat: add the navbar\n\nWhy it was needed."
+				}
+			},
+			{
+				"subject": "writtenMessage",
+				"name": "Clean whitespace, comments, and line endings",
+				"call": "writtenMessage(oddWhitespaceMessage(), { cleanup: 'whitespace' })",
+				"input": {
+					"$fixture": "cleanup-whitespace"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "fix: a\n\nb \nc\f\nd"
+				}
+			},
+			{
+				"subject": "commitMessage",
+				"name": "Measure the message after Git cleanup",
+				"call": "commitMessage(writtenMessage(messageFile()))",
+				"input": {
+					"$fixture": "cleaned-message"
+				},
+				"expected": {
+					"kind": "value",
+					"value": []
+				}
+			},
+			{
+				"subject": "writtenMessage",
+				"name": "Preserve internal text in verbatim mode",
+				"call": "messageProjection(writtenMessage(messageFile(), { cleanup: 'verbatim' }))",
+				"input": {
+					"$fixture": "verbatim"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"length": 434,
+						"start": "feat: par",
+						"end": "a"
+					}
+				}
+			},
+			{
+				"subject": "writtenMessage",
+				"name": "Apply scissors and alternate comment markers",
+				"call": "writtenMessage(messageFile(), { cleanup: 'scissors' })",
+				"input": {
+					"$fixture": "scissors"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "fix: a\n\nwhy"
+				}
+			},
+			{
+				"subject": "writtenMessage",
+				"name": "Trim a long internal whitespace run in one pass",
+				"call": "messageProjection(writtenMessage(longWhitespace(), { cleanup: 'whitespace' }))",
+				"input": {
+					"$fixture": "long-spaces",
+					"spaces": 200000
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"length": 200010,
+						"start": "fix: a\n\nb",
+						"end": "c"
+					}
+				}
+			}
+		],
+		"states": ["boundary", "invalid", "stored", "cleanup", "performance"],
+		"props": ["message", "file", "options", "cleanup", "comment"],
+		"cases": [
+			{
+				"id": "commit-message.limits",
+				"state": "boundary",
+				"subject": "commitMessage",
+				"example": "Accept subject and body limits for every prefix",
+				"fixture": "specification/units/function.commit-message.json",
+				"test": {
+					"file": "test/utils/commit-message.test.ts",
+					"title": "commitMessage: Accept subject and body limits for every prefix"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "commit-message.limit-errors",
+				"state": "invalid",
+				"subject": "commitMessage",
+				"example": "Report subject, body, character, and trailer limit errors",
+				"fixture": "specification/units/function.commit-message.json",
+				"test": {
+					"file": "test/utils/commit-message.test.ts",
+					"title": "commitMessage: Report subject, body, character, and trailer limit errors"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "commit-message.subject-prefix",
+				"state": "invalid",
+				"subject": "commitMessage",
+				"example": "Require a subject and an allowed prefix",
+				"fixture": "specification/units/function.commit-message.json",
+				"test": {
+					"file": "test/utils/commit-message.test.ts",
+					"title": "commitMessage: Require a subject and an allowed prefix"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "commit-message.unicode-line-endings",
+				"state": "boundary",
+				"subject": "commitMessage",
+				"example": "Count code points and normalized line endings",
+				"fixture": "specification/units/function.commit-message.json",
+				"test": {
+					"file": "test/utils/commit-message.test.ts",
+					"title": "commitMessage: Count code points and normalized line endings"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "commit-message.stored-hash",
+				"state": "stored",
+				"subject": "commitMessage",
+				"example": "Measure a stored hash paragraph as body content",
+				"fixture": "specification/units/function.commit-message.json",
+				"test": {
+					"file": "test/utils/commit-message.test.ts",
+					"title": "commitMessage: Measure a stored hash paragraph as body content"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "written-message.git-drops",
+				"state": "cleanup",
+				"subject": "writtenMessage",
+				"example": "Remove Git comments, scissors, and diff text",
+				"fixture": "specification/units/function.commit-message.json",
+				"test": {
+					"file": "test/utils/commit-message.test.ts",
+					"title": "writtenMessage: Remove Git comments, scissors, and diff text"
+				},
+				"props": ["file", "options", "comment"]
+			},
+			{
+				"id": "written-message.cleanup-whitespace",
+				"state": "cleanup",
+				"subject": "writtenMessage",
+				"example": "Clean whitespace, comments, and line endings",
+				"fixture": "specification/units/function.commit-message.json",
+				"test": {
+					"file": "test/utils/commit-message.test.ts",
+					"title": "writtenMessage: Clean whitespace, comments, and line endings"
+				},
+				"props": ["file", "cleanup", "comment"]
+			},
+			{
+				"id": "commit-message.cleaned",
+				"state": "cleanup",
+				"subject": "commitMessage",
+				"example": "Measure the message after Git cleanup",
+				"fixture": "specification/units/function.commit-message.json",
+				"test": {
+					"file": "test/utils/commit-message.test.ts",
+					"title": "commitMessage: Measure the message after Git cleanup"
+				},
+				"props": ["message", "file", "cleanup"]
+			},
+			{
+				"id": "written-message.verbatim",
+				"state": "stored",
+				"subject": "writtenMessage",
+				"example": "Preserve internal text in verbatim mode",
+				"fixture": "specification/units/function.commit-message.json",
+				"test": {
+					"file": "test/utils/commit-message.test.ts",
+					"title": "writtenMessage: Preserve internal text in verbatim mode"
+				},
+				"props": ["file", "cleanup"]
+			},
+			{
+				"id": "written-message.scissors",
+				"state": "cleanup",
+				"subject": "writtenMessage",
+				"example": "Apply scissors and alternate comment markers",
+				"fixture": "specification/units/function.commit-message.json",
+				"test": {
+					"file": "test/utils/commit-message.test.ts",
+					"title": "writtenMessage: Apply scissors and alternate comment markers"
+				},
+				"props": ["file", "cleanup", "comment"]
+			},
+			{
+				"id": "written-message.long-spaces",
+				"state": "performance",
+				"subject": "writtenMessage",
+				"example": "Trim a long internal whitespace run in one pass",
+				"fixture": "specification/units/function.commit-message.json",
+				"test": {
+					"file": "test/utils/commit-message.test.ts",
+					"title": "writtenMessage: Trim a long internal whitespace run in one pass"
+				},
+				"props": ["file", "cleanup"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

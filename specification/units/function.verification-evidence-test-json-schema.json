@@ -6,6 +6,9 @@
 	"responsibility": "Defines lossless authored test JSON and response schemas while preserving field names, parser admission and JSON Schema exports.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"src/core/verification-evidence/testJsonSchema.ts",
@@ -48,8 +51,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }
