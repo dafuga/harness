@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process';
+import { fixtureGit as git } from '../scripts/committed-fixture';
 import { mkdir, mkdtemp, realpath, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -54,9 +54,6 @@ export function pagePlan(unit: ComponentManifest, versions: DesignVersion[] = []
 		threads: []
 	};
 }
-
-const git = (root: string, ...args: string[]) =>
-	execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
 
 async function put(root: string, path: string, content: string) {
 	await mkdir(dirname(join(root, path)), { recursive: true });

@@ -1,3 +1,4 @@
+import { publishFixture } from '../scripts/committed-fixture';
 import type { Recorded, Opened, Reads, At } from './recorded-evidence-fixture.types';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -36,6 +37,7 @@ export async function recordedRepo(): Promise<Recorded> {
 	const parents = ['-p', commits.changed, '-p', commits.failed];
 	const merged = await repo.git(['commit-tree', tree, ...parents, '-m', 'chore: merge']);
 	await repo.git(['branch', 'merged', merged]);
+	for (const commit of [...Object.values(commits), merged]) publishFixture(repo.root, commit);
 	return { repo, root: await realpath(repo.root), commits: { ...commits, merged } };
 }
 
