@@ -1,3 +1,4 @@
+import { permissionProfiles } from '../../../../../../test/support/permissionProfiles';
 import { standardCodeModules } from '../../../../../../src/templates/module-system/standardCodeModules';
 import { rustWasmModule } from '../../../../../../src/templates/module-system/rustWasmModule';
 import { rustBackendModule } from '../../../../../../src/templates/module-system/rustBackendModule';
@@ -95,6 +96,11 @@ export function modulePreview(host: ExplorerScreenProps, entity?: string): Explo
 export function moduleCases(host: ExplorerScreenProps) {
 	const library = modulePreview(host);
 	return {
+		'reports.component.networking-security-explorer-permissions-screen': {
+			...host,
+			head: { ...host.head, permissions: permissionProfiles },
+			route: { ...host.route, category: 'pages', screen: 'permissions', entity: 'member' }
+		},
 		'reports.component.module-system-explorer-modules-screen': library as unknown as Record<
 			string,
 			unknown
