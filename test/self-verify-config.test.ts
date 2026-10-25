@@ -3,6 +3,8 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { verifyConfigSchema } from '../src/core/verifyTypes';
+import { scenarioManifestSchema } from '../src/core/unitTypes';
+import { verificationTarget } from './verification-targets';
 
 /** Every file under a directory of this repository, as repository paths. */
 function under(directory: string): string[] {
@@ -35,4 +37,36 @@ test('this repository declares no source, test or specification file as somethin
 	for (const build of config.builds) {
 		expect(config.outputs.some((declared) => covers(declared, `${build.directory}/x`))).toBe(true);
 	}
+});
+
+const wrappers = under('specification/scenarios').flatMap((path) => {
+	const scenario = scenarioManifestSchema.parse(JSON.parse(readFileSync(path, 'utf8')));
+	return scenario.kind === 'headless'
+		? scenario.tests
+				.filter((check) => check.target.includes('test/verification-output.ts'))
+				.map((check) => ({
+					scenario: scenario.id,
+					states: scenario.states.map((state) => state.id),
+					...check
+				}))
+		: [];
+});
+test.each(wrappers)('headless $scenario wrapper $id admits its registered test', (check) => {
+	const command = check.target.split(/\s+/);
+	const wrapper = command.findIndex((part) => part.endsWith('test/verification-output.ts'));
+	const args = command.slice(wrapper + 1);
+	expect(args, 'verification-output accepts exactly one runner and one file').toHaveLength(2);
+	const roots = [
+		process.cwd(),
+		...readdirSync('packages').map((name) => join(process.cwd(), 'packages', name))
+	];
+	const registered = roots.flatMap((cwd) => {
+		try {
+			return [verificationTarget(check.scenario, args[0], args[1], cwd)];
+		} catch {
+			return [];
+		}
+	});
+	expect(registered, 'declared wrappers must resolve to one registered package').toHaveLength(1);
+	for (const state of registered[0].states) expect(check.states).toContain(state);
 });

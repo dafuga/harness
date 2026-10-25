@@ -1,4 +1,14 @@
 import { installDeploymentFixture } from './ui-deployment-fixture';
+export const catalogCategories = [
+	'Pages',
+	'APIs',
+	'Layouts',
+	'Components',
+	'Helpers',
+	'Configs',
+	'Services',
+	'Models'
+];
 const hash = 'a'.repeat(40);
 const item = {
 	id: 'page:activity',

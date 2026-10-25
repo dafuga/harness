@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
+import { catalogCategories } from './ui-workspace-fixture';
 import { remoteEvidence } from './remote-evidence';
 import { phone, remoteHostFixture } from './ui-remote-host-fixture';
 import { alpha, hostName, remotePhoneFixture } from './ui-remote-phone-fixture';
@@ -22,7 +23,7 @@ test('a tablet-wide phone shell keeps the shared workspace and its connection in
 	await expect(page.getByRole('heading', { level: 1, name: 'Alpha activity' })).toBeVisible();
 	await expect(page.locator('html')).toHaveAttribute('data-environment', 'capacitor');
 	const categories = page.getByRole('navigation', { name: 'Catalog categories' });
-	await expect(categories.getByRole('link')).toHaveCount(7);
+	await expect(categories.getByRole('link')).toHaveText(catalogCategories);
 	const footer = page.getByRole('contentinfo');
 	await expect(footer.getByRole('region', { name: 'Computer connection' })).toContainText(
 		`Connected to ${hostName}`
