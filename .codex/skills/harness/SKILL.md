@@ -107,6 +107,7 @@ same callable. Exercise distinct owner and callable names at current and histori
 - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
 - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
 - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
+- Before accepting scenario evidence, run its declared command through registered-target admission and actual assertion capture. A custom loop command does not prove the declared scenario works. Headless wrapper declarations are checked by `test/self-verify-config.test.ts`; `verification-output` accepts one registered test file per command.
 - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
 
 ## API and Naming Corrections
@@ -170,6 +171,8 @@ Use source-and-run-specific output directories for verification attempts. Before
 Codex sessions assigning module work use `harness task feature <id> --goal <text> --tldr <text>`, then `harness task add --input <file>`. A task must identify a registered module and include a wanted contract with responsibility, inputs, outputs and errors. Admission commits feature context and the contract to `refs/harness/tasks`; source HEAD and unrelated edits stay intact.
 
 Use `--model <exact-id> --intelligence <level>` for explicit selection. Otherwise auto tries `claude-haiku-5-5` at medium and falls back to `gpt-6-luna` at max only for structured Claude quota rejection. Worker prompts begin with the identical shared feature goal/TLDR, then include the overall module goal and committed wanted contract. `harness task worker --worker <id> --watch` picks up matching assignments in isolated worktrees; CLI success leaves changes in review, not verified completion. Use one repository as the active queue owner; `task sync <remote>` exchanges the task ref and refuses divergence.
+
+Bind reviews to the submitted claim with `harness task review <id> --attempt <token> --verdict accepted|incomplete`; incomplete reviews require `--feedback`. Rejection commits the submitted source as the next repair base and preserves the wanted contract. `harness analytics tasks --project <root> --json` reconciles committed attempts and reviews idempotently. Keep reported model and token counters distinct from requested settings; preserve unknown usage and API price ranges. Bounce rate counts incomplete reviews over accepted plus incomplete reviews, separately from execution failures.
 
 ## Hard Limits
 

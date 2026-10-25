@@ -59,8 +59,8 @@ if(provider==='claude'&&mode==='quota') { console.log(JSON.stringify({type:'rate
 if(provider==='claude'&&mode==='auth') {console.log(JSON.stringify({type:'result',is_error:true,result:'Authentication required'}));process.exit(1);}
 if(mode==='outside') writeFileSync('outside.txt','outside requested module');
 else writeFileSync('src/orders.ts','export const orders = 2;\\n');
-if(provider==='claude') {console.log(JSON.stringify({type:'system',subtype:'init',model}));console.log(JSON.stringify({type:'result',subtype:'success',is_error:false,result:'Implemented order validation.',modelUsage:{[model]:{}}}));}
-else { console.log(JSON.stringify({type:'thread.started',thread_id:'fixture-session'})); console.log(JSON.stringify({type:'item.completed',item:{type:'agent_message',text:'Implemented order validation.'}})); console.log(JSON.stringify({type:'turn.completed',model})); }
+if(provider==='claude') {console.log(JSON.stringify({type:'system',subtype:'init',model}));console.log(JSON.stringify({type:'result',subtype:'success',is_error:false,result:'Implemented order validation.',usage:{input_tokens:70,output_tokens:20,cache_read_input_tokens:30,cache_creation_input_tokens:0,cache_creation:{ephemeral_1h_input_tokens:0}},total_cost_usd:0.002,modelUsage:{[model]:{}}}));}
+else { console.log(JSON.stringify({type:'thread.started',thread_id:'fixture-session'})); console.log(JSON.stringify({type:'item.completed',item:{type:'agent_message',text:'Implemented order validation.'}})); console.log(JSON.stringify({type:'turn.completed',model,usage:{input_tokens:100,output_tokens:20,cached_input_tokens:30}})); }
 `;
 }
 
