@@ -1,0 +1,74 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-0UvPxD
+
+ ❯ test/module-data.e2e.test.ts (3 tests | 2 failed) 44319ms
+   × validate persists revision-bound module gaps, filters them and invalidates cached searches 24926ms
+     → Replacing a review must remove omitted fields from cached facts: expected { errors: [], …(3) } to deeply equal { origin: 'derived', …(3) }
+   × validate commits source-derived page API usage and explicit visual data gaps 12785ms
+     → Cached preview repairs must match refreshed source facts: expected undefined to deeply equal { …(3) }
+   ✓ historical helper layout does not masquerade as missing module metadata  6604ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/module-data.e2e.test.ts > validate persists revision-bound module gaps, filters them and invalidates cached searches
+AssertionError: Replacing a review must remove omitted fields from cached facts: expected { errors: [], …(3) } to deeply equal { origin: 'derived', …(3) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -4,13 +4,14 @@[39m
+[2m      {[22m
+[2m        "name": "TitleService.run.title",[22m
+[2m        "type": "string",[22m
+[2m      },[22m
+[2m    ],[22m
+[32m-   "origin": "derived",[39m
+[31m+   "origin": "declared",[39m
+[2m    "outputs": [[22m
+[2m      {[22m
+[31m+       "description": "Return the normalized title reviewed at this source revision.",[39m
+[2m        "name": "TitleService.run",[22m
+[2m        "type": "string",[22m
+[2m      },[22m
+[2m    ],[22m
+[2m  }[22m
+
+ ❯ test/module-data.e2e.test.ts:50:5
+     48|    contracts.cached,
+     49|    'Replacing a review must remove omitted fields from cached facts'
+     50|   ).toEqual(contracts.refreshed);
+       |     ^
+     51|   await rejectStaleReview(project);
+     52|   await git(['update-ref', 'refs/heads/harness-evidence', head]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/module-data.e2e.test.ts > validate commits source-derived page API usage and explicit visual data gaps
+AssertionError: Cached preview repairs must match refreshed source facts: expected undefined to deeply equal { …(3) }
+
+[32m- Expected:[39m 
+{
+  "scenario": "component-catalog-previews",
+  "state": "component-titles",
+  "viewport": "desktop",
+}
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/module-data.e2e.test.ts:126:87
+    124|   expect(report.modules.find((unit) => unit.id === page.id)!.issues.le…
+    125|   const previews = await replacedReviewPreviews(project);
+    126|   expect(previews.cached, 'Cached preview repairs must match refreshed…
+       |                                                                                       ^
+    127|    previews.refreshed
+    128|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  17:23:16
+   Duration  53.52s (transform 688ms, setup 471ms, collect 648ms, tests 44.32s, environment 1ms, prepare 110ms)
+
