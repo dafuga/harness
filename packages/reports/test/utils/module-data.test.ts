@@ -5,6 +5,7 @@ import type {
 } from '../../../../src/services/git-source-history/ModuleDataService.types';
 import { explorerRelations } from '../../src/utils/explorerRelations';
 import { harnessClient } from '../../src/utils/explorer-ui/harnessClient';
+import { consoleRelations } from '../../src/components/explorer-ui/harness-console/consoleView';
 import { revision, unit } from '../explorerFixture';
 
 const empty = {
@@ -62,6 +63,15 @@ test('required missing relationships fail instead of silently recomputing them',
 	expect(() => explorerRelations(head, 'endpoint.orders')).toThrow(
 		'Missing committed relationships'
 	);
+});
+test('retired modules use their committed parent relationships instead of current active-module metadata', () => {
+	const parent = stored();
+	parent.moduleData.relationships['endpoint.orders'].pages = ['page.orders'];
+	const head = stored();
+	head.registry.units.find((unit) => unit.id === 'endpoint.orders')!.status = 'retired';
+	delete head.moduleData.relationships['endpoint.orders'];
+	const read = consoleRelations(head, parent, []);
+	expect(read('endpoint.orders').pages.map((page) => page.id)).toEqual(['page.orders']);
 });
 test('the app refuses incomplete committed metadata and exposes the exact module and field', async () => {
 	const head = stored();
