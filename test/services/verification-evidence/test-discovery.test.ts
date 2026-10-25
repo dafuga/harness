@@ -15,6 +15,18 @@ test('scan initialized source finds imported cases, aliases and computed registr
 	expect(service.scan(`const test = () => {}; test('ordinary call');`, 'src/service.ts')).toEqual(
 		[]
 	);
+	const nested = service.scan(
+		`import { test } from 'vitest';
+		test.describe('active', () => { test('ready', () => {}); });
+		test.describe.skip('disabled', () => {
+			test.describe('inner', () => { test('ready', () => {}); });
+		});`,
+		'test/nested.test.ts'
+	);
+	expect(nested.map(({ title, disabled }) => [title, disabled])).toEqual([
+		['active > ready', false],
+		['disabled > inner > ready', true]
+	]);
 });
 
 test('discover initialized and unreadable sources retain explicit discovery gaps', async () => {
