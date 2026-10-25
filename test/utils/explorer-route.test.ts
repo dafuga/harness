@@ -213,4 +213,8 @@ test('Models is a page tab and legacy page Contract links open Models in the sam
 
 test('APIs are scoped catalog addresses and a page keeps its APIs tab', assertApiRoutes);
 
-test('API permission tabs and profile routes retain exact revision scope', assertPermissionRoutes);
+test('API permission tabs and profile routes retain exact revision scope', () => {
+	assertPermissionRoutes();
+	const profile = `/branch/main/commit/${sha}/permissions/member`;
+	expect(explorerRoutePath(explorerRoute(profile)!)).toBe(profile);
+});
