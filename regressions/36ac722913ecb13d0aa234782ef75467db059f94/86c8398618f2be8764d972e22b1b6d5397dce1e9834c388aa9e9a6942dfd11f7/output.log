@@ -1,0 +1,60 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JJRnuB
+
+ ❯ test/services/verification-evidence/test-expectation.test.ts (4 tests | 2 failed) 26ms
+   ✓ json checks complete responses, type-preserving scalar normalization and errors 11ms
+   ✓ example asserts authored comments for successful and error inputs 2ms
+   × registerExamples registers exactly the authored examples and rejects absent implementations 8ms
+     → expected [Function] to throw an error
+   × registerCases binds complete method matrices and API results to canonical file identities 2ms
+     → promise resolved "undefined" instead of rejecting
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-expectation.test.ts > registerExamples registers exactly the authored examples and rejects absent implementations
+AssertionError: expected [Function] to throw an error
+
+[32m- Expected:[39m 
+null
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/services/verification-evidence/test-expectation.test.ts:75:4
+     73|    unregistered: () => 'unregistered'
+     74|   })
+     75|  ).toThrow('Unsupported example implementation');
+       |    ^
+     76|  await assertFixtureExamples(unit);
+     77|  await assertAuthoredJsonFields(service);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/services/verification-evidence/test-expectation.test.ts > registerCases binds complete method matrices and API results to canonical file identities
+AssertionError: promise resolved "undefined" instead of rejecting
+
+[32m- Expected:[39m 
+Error {
+  "message": "rejected promise",
+}
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ assertRegisteredResults test/support/testExpectationRegistrationCases.ts:26:45
+     24|   return callbacks[0]();
+     25|  };
+     26|  await expect(run({ kind: 'void' }, () => 1)).rejects.toThrow('differs…
+       |                                             ^
+     27|  const expected = { kind: 'value' as const, value: { values: [false, 0…
+     28|  await expect(run(expected, () => ({ values: [false, 0, '', null] })))…
+ ❯ test/services/verification-evidence/test-expectation.test.ts:147:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  22:57:51
+   Duration  4.28s (transform 396ms, setup 137ms, collect 827ms, tests 26ms, environment 0ms, prepare 31ms)
+
