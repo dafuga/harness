@@ -201,3 +201,4 @@ export { ModuleDataValidator } from './validators/development-tooling/ModuleData
 export { formatModuleDataFailure } from './helpers/git-source-history/formatModuleDataFailure';
 export { ModuleDataSnapshotValidator } from './validators/development-tooling/ModuleDataSnapshotValidator';
 export { ModuleDataReviewRepository } from './repositories/git-source-history/ModuleDataReviewRepository';
+export { ModuleDataSourceAdapter } from './adapters/git-source-history/ModuleDataSourceAdapter';
