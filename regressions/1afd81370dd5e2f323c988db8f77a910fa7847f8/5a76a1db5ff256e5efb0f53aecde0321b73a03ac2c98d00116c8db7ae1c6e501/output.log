@@ -1,0 +1,32 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VhlJEz
+
+ ❯ test/services/verification-evidence/test-artifact.test.ts (1 test | 1 failed) 17ms
+   × capture initialized audio artifacts retains playable bytes and rejects invalid properties 16ms
+     → capture must keep stored bytes and returned hash aligned: expected '3aba7d3ecc5ea9c86dde0818e47b7041ed80d…' to be 'd62864e6ea737a2a02f3341d9c944f5d67dcc…' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-artifact.test.ts > capture initialized audio artifacts retains playable bytes and rejects invalid properties
+AssertionError: capture must keep stored bytes and returned hash aligned: expected '3aba7d3ecc5ea9c86dde0818e47b7041ed80d…' to be 'd62864e6ea737a2a02f3341d9c944f5d67dcc…' // Object.is equality
+
+Expected: "d62864e6ea737a2a02f3341d9c944f5d67dcc0c08be05a81fb0a1f0d5348a05b"
+Received: "3aba7d3ecc5ea9c86dde0818e47b7041ed80deccf144693abdbf344a1dbb4112"
+
+ ❯ assertByteSnapshot test/services/verification-evidence/test-artifact.test.ts:88:84
+     86|   }
+     87|  });
+     88|  expect(result.sha256, 'capture must keep stored bytes and returned ha…
+       |                                                                                    ^
+     89|   contract.testing.cases[0].expected.value.sha256
+     90|  );
+ ❯ test/services/verification-evidence/test-artifact.test.ts:41:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  18:47:40
+   Duration  2.80s (transform 79ms, setup 98ms, collect 20ms, tests 17ms, environment 0ms, prepare 27ms)
+
