@@ -2,6 +2,7 @@ import type { ComponentManifest } from '../../core/development-tooling/unitTypes
 import type { ContractRegistry } from './TestContractService.types';
 import { TestCaseValidator } from '../../validators/verification-evidence/TestCaseValidator';
 import { caseIdentityChanges } from './test-contract-service/caseIdentityChanges';
+import { executionCaseErrors } from './test-contract-service/executionCaseErrors';
 
 /** Checks case ownership, discovery and history without changing expected results. */
 export class TestContractService {
@@ -24,7 +25,7 @@ export class TestContractService {
 		for (const test of registry.tests ?? [])
 			if (!claimed.includes(`${test.file}\0${test.title}`))
 				errors.push(`Unsupported or orphaned test: ${test.file}: ${test.title}`);
-		return [...errors, ...this.scenarios(registry)];
+		return [...errors, ...this.scenarios(registry), ...executionCaseErrors(registry)];
 	}
 	compare(before: ComponentManifest[], after: ComponentManifest[]): string[] {
 		const previous = new Map(before.map((unit) => [unit.id, unit]));
@@ -75,4 +76,10 @@ export class TestContractService {
 		);
 	}
 }
-export type { TestContract, ContractCase, ContractRegistry } from './TestContractService.types';
+export type {
+	TestContract,
+	ContractCase,
+	ContractRegistry,
+	CaseOutcome,
+	CaseExecution
+} from './TestContractService.types';

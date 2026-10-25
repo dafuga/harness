@@ -10,7 +10,8 @@
 		"source": [
 			"src/services/verification-evidence/TestContractService.ts",
 			"src/services/verification-evidence/TestContractService.types.ts",
-			"src/services/verification-evidence/test-contract-service/caseIdentityChanges.ts"
+			"src/services/verification-evidence/test-contract-service/caseIdentityChanges.ts",
+			"src/services/verification-evidence/test-contract-service/executionCaseErrors.ts"
 		],
 		"symbols": [
 			"TestContractService",
@@ -22,7 +23,10 @@
 			"TestContract",
 			"ContractCase",
 			"ContractRegistry",
-			"caseIdentityChanges"
+			"caseIdentityChanges",
+			"CaseOutcome",
+			"CaseExecution",
+			"executionCaseErrors"
 		]
 	},
 	"contract": {

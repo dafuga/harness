@@ -2,7 +2,7 @@
 	"name": "contract-expected-failure-cases",
 	"goal": "Expected-failure runner modifiers cannot count as passing standard cases",
 	"createdAt": "2026-10-25T16:01:16.604Z",
-	"updatedAt": "2026-10-25T16:01:17.623Z",
+	"updatedAt": "2026-10-25T16:08:29.700Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:02:56.954Z",
+			"evidence": "Frozen scan case fails at6668a1271e because fails is marked enabled. Immutable proofa37651c9 retains the same two-case suite and the expected-failure assertion."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:08:29.700Z",
+			"evidence": "Discovery marks fail and fails modifiers unsupported alongside skips, preserving explicit error assertions within ordinary cases. The unchanged two-case scanner suite passes."
 		},
 		{
 			"id": "green",

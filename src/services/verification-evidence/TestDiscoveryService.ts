@@ -20,7 +20,9 @@ export class TestDiscoveryService {
 			if (test.dynamic)
 				errors.push(`${test.file}:${test.line}: computed case requires runner discovery`);
 			if (test.disabled)
-				errors.push(`${test.file}:${test.line}: skipped, exclusive or todo case is not coverage`);
+				errors.push(
+					`${test.file}:${test.line}: skipped, exclusive, todo or expected-failure case is not coverage`
+				);
 		}
 		return { tests, errors };
 	}

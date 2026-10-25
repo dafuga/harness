@@ -76,6 +76,6 @@ function registration(
 		kind,
 		title: ts.isStringLiteralLike(title) ? title.text : title.getText(source),
 		dynamic: !ts.isStringLiteralLike(title) || /\.each\b|\.for\b/.test(expression),
-		disabled: /\.(?:skip|only|todo|fixme)\b/.test(expression)
+		disabled: /\.(?:skip|only|todo|fixme|fails|fail)\b/.test(expression)
 	};
 }

@@ -2,7 +2,7 @@
 	"name": "contract-runtime-case-coverage",
 	"goal": "Verification rejects missing, duplicate, skipped, orphaned or wrong-revision execution of registered cases",
 	"createdAt": "2026-10-25T15:47:59.450Z",
-	"updatedAt": "2026-10-25T16:01:15.943Z",
+	"updatedAt": "2026-10-25T16:08:28.764Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,7 +32,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:08:28.764Z",
+			"evidence": "Execution observations now validate exact file/title, nonnegative retry, revision, final passing outcome and declared scope. Focused unchanged suites pass four tests. Normal runner wiring remains a separate integration requirement."
 		},
 		{
 			"id": "green",
