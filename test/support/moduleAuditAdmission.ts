@@ -46,22 +46,24 @@ export async function assertModuleAuditAdmission(root: string): Promise<void> {
 		join(root, 'specification/modules/extensions/module.json'),
 		JSON.stringify(definition)
 	);
-	const sources = async () =>
-		(
-			await measureWorkload('audit.audit', 'audit-module-source-boundaries', () =>
-				measureWorkload('audit.structure-rules', 'audit-module-source-boundaries', () =>
-					auditPath(root)
-				)
-			)
-		)
-			.filter((finding) => finding.rule === 'harness-source-structure')
-			.map((finding) => finding.path);
-	const available = await sources();
+	const available = await sourceFindings(root);
 	expect(available).not.toContain('src/types/Invoice.ts');
 	expect(available).not.toContain('src/styles/invoice.css');
 	expect(available).toContain('src/extensions/example.ts');
 	await new ModuleInstallService().add(root, 'extensions');
-	const installed = await sources();
+	const installed = await sourceFindings(root);
 	expect(installed).not.toContain('src/extensions/example.ts');
 	expect(installed).toContain('src/unrelated/example.ts');
+}
+
+async function sourceFindings(root: string): Promise<string[]> {
+	return (
+		await measureWorkload('audit.audit', 'audit-module-source-boundaries', () =>
+			measureWorkload('audit.structure-rules', 'audit-module-source-boundaries', () =>
+				auditPath(root)
+			)
+		)
+	)
+		.filter((finding) => finding.rule === 'harness-source-structure')
+		.map((finding) => finding.path);
 }
