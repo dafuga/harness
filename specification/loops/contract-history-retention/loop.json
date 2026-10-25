@@ -2,7 +2,7 @@
 	"name": "contract-history-retention",
 	"goal": "Rebuild complete source history without retaining full revision source state or corrupting shared-tree catalog measurement provenance",
 	"createdAt": "2026-10-25T13:33:49.462Z",
-	"updatedAt": "2026-10-25T13:33:50.466Z",
+	"updatedAt": "2026-10-25T13:38:05.503Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T13:34:17.204Z",
+			"evidence": "The existing single archive case fails the selected-commit catalog provenance assertion at the committed unchanged-tree fixture. Harness retains the failed command, source/test corpus and assertion."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T13:38:05.503Z",
+			"evidence": "Working repair now writes each full immutable snapshot before retaining compact summaries, streams persisted snapshots to SQLite, interns repeated ledger entries, and bounds source/registry/media caches. The same existing archive assertion passes with unchanged tests."
 		},
 		{
 			"id": "green",

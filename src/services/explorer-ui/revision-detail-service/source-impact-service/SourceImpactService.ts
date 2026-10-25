@@ -79,14 +79,19 @@ export class SourceImpactService {
 		return side.manifests.flatMap((unit) => unitMeasurements(unit, side.index.files, commit));
 	}
 
-	/** Each tree is indexed once, however many commits are compared with it. */
+	/** Retain the active comparison working set; older immutable trees can be reloaded. */
 	private side(commit: string): Promise<RevisionSide> {
 		const known = this.sides.get(commit);
-		if (known) return known;
+		if (known) {
+			this.sides.delete(commit);
+			this.sides.set(commit, known);
+			return known;
+		}
 		const loading = CommitTreeAdapter.open(this.root, commit).then((tree) =>
 			loadSide(this.root, tree, this.indexer)
 		);
 		this.sides.set(commit, loading);
+		if (this.sides.size > 4) this.sides.delete(this.sides.keys().next().value!);
 		return loading;
 	}
 }

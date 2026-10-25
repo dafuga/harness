@@ -17,4 +17,11 @@ export interface BuiltHistory {
 
 export type LegacyReader = (media: HistoryMediaService) => Promise<LegacyEntry[]>;
 
-export type Built = Array<{ revision: SourceRevision; result: BuiltRevision }>;
+export type Built = Array<{ revision: SourceRevision; result: CompactRevision }>;
+
+export type CompactRevision = Omit<BuiltRevision, 'detail' | 'side'> & {
+	detail: Pick<
+		BuiltRevision['detail'],
+		'commit' | 'records' | 'sourceImpact' | 'explanations' | 'regressions'
+	> & { registry: import('../../../utils/development-tooling/revisionChanges').UnitVersions };
+};

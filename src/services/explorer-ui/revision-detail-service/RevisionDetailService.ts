@@ -127,7 +127,7 @@ export class RevisionDetailService {
 			ledger,
 			...(await readCatalogs(tree, registry))
 		};
-		this.kept.registries.set(key, stored);
+		cacheRegistry(this.kept.registries, key, stored);
 		return stored;
 	}
 	/** Reasons of this commit itself, excluding the earlier commits of a verified range. */
@@ -186,4 +186,9 @@ async function readCatalogs(tree: SourceTree, registry: RevisionRegistry) {
 		projectDependencies: await projectDependencies(tree),
 		translations: await translationCatalog(tree, registry.units)
 	};
+}
+
+function cacheRegistry(registries: Map<string, Stored>, key: string, stored: Stored): void {
+	registries.set(key, stored);
+	if (registries.size > 4) registries.delete(registries.keys().next().value!);
 }

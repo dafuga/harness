@@ -1,4 +1,4 @@
-import type { Owners, Reason } from './ProjectActivityService.types';
+import type { Owners, Reason, RecordedDetail } from './ProjectActivityService.types';
 import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { basename, join } from 'node:path';
@@ -20,7 +20,6 @@ import { projectActivity } from './projectActivity';
 import { unitOwners, type OwnedSource } from '../../../utils/development-tooling/unitOwners';
 import { AgentActivityService } from '../../agents-providers/agent-activity-service/AgentActivityService';
 import { HistoryStatusService } from '../../verification-evidence/history-status-service/HistoryStatusService';
-import type { RevisionDetail } from '../../explorer-ui/revision-detail-service/RevisionDetailService';
 
 /** How much of a project is shown: its newest commits, files, reasons, checkouts and changes. */
 const bounds = { files: 40, reasons: 3, units: 12, checkouts: 12, changes: 40, recorded: 30 };
@@ -70,10 +69,10 @@ export class ProjectActivityService {
 	/** The activity a history index records, from the revisions it has built. */
 	async recorded(
 		history: SourceHistory,
-		details: Map<string, RevisionDetail>
+		details: ReadonlyMap<string, RecordedDetail>
 	): Promise<ProjectActivity> {
 		const [newest] = history.revisions;
-		const registry = newest ? details.get(newest.commit)?.registry.units : undefined;
+		const registry = newest ? details.get(newest.commit)?.registry?.units : undefined;
 		const owned = (registry ?? []).map((unit) => ({ id: unit.id, source: unit.owns.source }));
 		const [primary] = await this.work.checkouts();
 		const head = newest?.commit ?? null;

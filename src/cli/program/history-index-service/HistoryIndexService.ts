@@ -1,6 +1,7 @@
 import type { LegacyReader, BuiltHistory, Built } from './HistoryIndexService.types';
 import { createHash } from 'node:crypto';
 import { SourceArchiveService } from './SourceArchiveService';
+import { activityDetails, compactRevision, storedSnapshots } from './historySnapshots';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
@@ -11,6 +12,7 @@ import type {
 	LegacyEntry
 } from '../../../core/git-source-history/historyIndexTypes';
 import { evidenceRef, notesRef } from '../../../core/git-source-history/historyTypes';
+import type { BudgetEvent } from '../../../core/verification-evidence/budgetTypes';
 import type { VerificationRecord } from '../../../core/verification-evidence/verificationTypes';
 import {
 	SourceHistoryRepository,
@@ -19,18 +21,17 @@ import {
 import { budgetReviews } from './budgetReviews';
 import { historySeries, unitGrowth } from './historySeries';
 import { revisionChanges } from './revisionChanges';
-import { type RevisionChanges } from '../../../utils/development-tooling/revisionChanges';
-import type { RevisionRegistry } from '../../../utils/verification-evidence/revision-registry/revisionRegistry';
+import type {
+	RevisionChanges,
+	UnitVersions
+} from '../../../utils/development-tooling/revisionChanges';
 import { revisionSummary } from '../../../utils/development-tooling/revisionSummary';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
 import { HistoryMediaService } from './history-media-service/HistoryMediaService';
 import { HistoryStatusService } from '../../../services/verification-evidence/history-status-service/HistoryStatusService';
 import { ProjectActivityService } from '../../../services/projects-sessions/project-activity-service/ProjectActivityService';
 import { CatalogIndexService } from '../../../services/git-source-history/CatalogIndexService';
-import {
-	RevisionDetailService,
-	type BuiltRevision
-} from '../../../services/explorer-ui/revision-detail-service/RevisionDetailService';
+import { RevisionDetailService } from '../../../services/explorer-ui/revision-detail-service/RevisionDetailService';
 
 /**
  * Builds the history index: a deterministic, self-contained set of files made only from Git.
@@ -49,10 +50,11 @@ export class HistoryIndexService {
 		out: string,
 		revisions: SourceRevision[],
 		media: HistoryMediaService
-	): Promise<Array<{ revision: SourceRevision; result: BuiltRevision }>> {
+	): Promise<Built> {
 		const details = new RevisionDetailService(this.root, this.history);
 		const sources = new SourceArchiveService(this.root, out);
-		const built: Array<{ revision: SourceRevision; result: BuiltRevision }> = [];
+		const built: Built = [];
+		const events = new Map<string, BudgetEvent>();
 		const sides = new Set<string>();
 		for (const revision of revisions) {
 			const result = await details.build(revision.commit, media);
@@ -67,7 +69,7 @@ export class HistoryIndexService {
 				sides.add(result.detail.side);
 				await writeFile(join(out, result.detail.side), stableJson(result.side));
 			}
-			built.push({ revision, result });
+			built.push({ revision, result: compactRevision(result, events) });
 		}
 		return built;
 	}
@@ -109,12 +111,11 @@ export class HistoryIndexService {
 		const text = stableJson(index);
 		await writeFile(join(out, 'index.json'), text);
 		// What the project did, beside the index: recent work, changed files and loop types.
-		const details = new Map(built.map((item) => [item.revision.commit, item.result.detail]));
+		const details = activityDetails(out, built);
 		const activity = await new ProjectActivityService(this.root).recorded(source, details);
 		await writeFile(join(out, 'activity.json'), stableJson(activity));
 		const digest = createHash('sha256').update(text).digest('hex');
-		const snapshots = built.map(({ result }) => result.detail);
-		const catalog = await new CatalogIndexService().write(out, index, snapshots);
+		const catalog = await new CatalogIndexService().write(out, index, storedSnapshots(out, built));
 		return { out, digest, media: media.counts, problems: index.problems, index, catalog };
 	}
 }
@@ -149,7 +150,7 @@ function summaries(built: Built, legacy: LegacyEntry[]): IndexedRevision[] {
 /** What a commit changed itself, from its stored impact and the registry of its first parent. */
 function changed(
 	item: Built[number],
-	registries: Map<string, RevisionRegistry>
+	registries: Map<string, UnitVersions>
 ): RevisionChanges | null {
 	const base = item.revision.parents[0] ?? null;
 	const { sourceImpact, registry } = item.result.detail;
@@ -159,7 +160,7 @@ function changed(
 
 function summary(
 	revision: SourceRevision,
-	built: BuiltRevision,
+	built: Built[number]['result'],
 	legacy: LegacyEntry[],
 	changes: RevisionChanges | null
 ): IndexedRevision {
@@ -180,10 +181,7 @@ function profiles(records: VerificationRecord[]): HistoryIndex['profiles'] {
 }
 
 /** Every line, record or file that could not be used, named so that it can be acted on. */
-function problems(
-	built: Array<{ revision: SourceRevision; result: BuiltRevision }>,
-	legacy: LegacyEntry[]
-): string[] {
+function problems(built: Built, legacy: LegacyEntry[]): string[] {
 	const found = built.flatMap(({ revision, result }) => [
 		...result.status.problems.map((problem) => `commit ${short(revision.commit)}: ${problem}`),
 		...(result.detail.regressions ?? []).flatMap((proof) =>

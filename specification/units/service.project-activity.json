@@ -19,7 +19,8 @@
 			"ProjectActivityService.show",
 			"ProjectActivityService.recorded",
 			"Owners",
-			"Reason"
+			"Reason",
+			"RecordedDetail"
 		]
 	},
 	"contract": {
@@ -39,7 +40,7 @@
 			},
 			{
 				"name": "ProjectActivityService.recorded.details",
-				"type": "Map<string, RevisionDetail>"
+				"type": "ReadonlyMap<string, RecordedDetail>"
 			}
 		],
 		"outputs": [
@@ -92,7 +93,7 @@
 		},
 		{
 			"unit": "service.revision-detail",
-			"via": "import",
+			"via": "dynamic-import",
 			"origin": "derived"
 		}
 	],
