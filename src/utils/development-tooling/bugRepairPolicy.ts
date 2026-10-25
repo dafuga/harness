@@ -16,6 +16,7 @@ const rules = [
 	'Keep registered case titles and identities stable; verification records bind to them.',
 	'Artifact validation, hashing and storage must consume the same byte snapshot; strengthen the existing method case with accepted getter or aliased-buffer inputs before changing an artifact producer.',
 	'API comparisons keep every response field, including reserved JSON keys. Before changing a comparison or authored-data parser, strengthen its existing method case to prove field retention and preserve admitted getters, arrays and invalid values.',
+	'Freeze executable tests and authored Examples, states, methods and expected results together. Admit test-only edits to those contract fields, reject product metadata hidden among named tests, and keep original Git blob provenance separate from semantic expectation hashes.',
 	'Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.',
 	'Retain reviewed baselines through Harness evidence with source revision, media hash and review provenance. Never automatically accept a missing or changed image.',
 	'Matrices include boundaries, invalid inputs and prop combinations that change behavior. Static types and configuration use compiler, lint, build and audit checks.',

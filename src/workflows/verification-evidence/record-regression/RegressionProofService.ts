@@ -153,6 +153,7 @@ async function sealRegression(
 	observed: Observation
 ): Promise<RegressionRecord> {
 	const { profile, startedAt, result } = observed;
+	const frozen = await regressionFiles(root, input.commit, input.tests);
 	const draft: Omit<RegressionRecord, 'id'> = {
 		schemaVersion: 1,
 		loop: input.loop,
@@ -161,7 +162,7 @@ async function sealRegression(
 		source: await sourceIdentity(root, input.commit),
 		tests: input.tests,
 		units: input.units,
-		inputs: await regressionFiles(root, input.commit, input.tests),
+		...frozen,
 		command: input.command,
 		assertion: input.assertion,
 		profile,

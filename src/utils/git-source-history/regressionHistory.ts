@@ -89,9 +89,13 @@ function sameRun(red: RegressionRecord, green: RegressionRecord): boolean {
 function sameInputs(red: RegressionRecord, green: RegressionRecord): boolean {
 	return (
 		canonicalJson(red.inputs) === canonicalJson(green.inputs) &&
+		canonicalJson(expectationValues(red)) === canonicalJson(expectationValues(green)) &&
 		canonicalJson(red.units) === canonicalJson(green.units) &&
 		canonicalJson(red.tests) === canonicalJson(green.tests)
 	);
+}
+function expectationValues(record: RegressionRecord) {
+	return record.expectations?.map(({ unit, path, sha256 }) => ({ unit, path, sha256 }));
 }
 async function regressionPoint(loaded: Loaded, media?: MediaPlacer): Promise<RegressionPoint> {
 	const { record, output } = loaded;
@@ -110,6 +114,7 @@ async function regressionPoint(loaded: Loaded, media?: MediaPlacer): Promise<Reg
 	);
 	return {
 		commit: record.source.commit,
+		...(record.expectations ? { expectations: record.expectations } : {}),
 		sourceTree: record.source.tree,
 		id: record.id,
 		status: record.status,
