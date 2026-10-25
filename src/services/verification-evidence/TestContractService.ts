@@ -68,12 +68,21 @@ export class TestContractService {
 	}
 	private capabilities(unit: ComponentManifest): string {
 		return stableJson({
-			contract: unit.contract,
-			helpers: unit.helperContracts,
-			symbols: unit.owns.symbols,
+			inputs: unit.contract.inputs.map(({ name, type }) => [name, type]).sort(),
+			outputs: unit.contract.outputs.map(({ name, type }) => [name, type]).sort(),
+			errors: unit.contract.errors.map(({ name, type }) => [name, type]).sort(),
+			helpers: unit.helperContracts
+				?.map((helper) => ({
+					name: helper.name,
+					inputs: helper.inputs.map(({ name, type }) => [name, type]).sort(),
+					output: helper.output,
+					examples: helper.examples?.map((example) => example.name).sort()
+				}))
+				.sort((left, right) => left.name.localeCompare(right.name)),
+			symbols: [...new Set(unit.owns.symbols)].sort(),
 			shape: unit.testing?.shape,
-			states: unit.testing?.states,
-			props: unit.testing?.props
+			states: unit.testing?.states?.slice().sort(),
+			props: unit.testing?.props?.slice().sort()
 		});
 	}
 	private scenarios(registry: ContractRegistry): string[] {
