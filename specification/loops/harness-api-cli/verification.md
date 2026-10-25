@@ -1,5 +1,7 @@
 # Harness API CLI verification
 
+The checkpoints below retain the original implementation evidence and failures. Their measurements and status statements apply to the named historical revisions. Consolidated delivery verification, current source identity and provider boundaries are recorded in [Module task completion analytics](../module-task-analytics/verification.md).
+
 The feature branch supports local workspaces and hosted projects through `harness api`.
 It discovers registered resources, reads revision-bound data and all declared contracts,
 saves proposed contracts, downloads existing screenshot evidence, and controls agents
@@ -58,7 +60,7 @@ it is not a new screenshot, a current-main UI capture or a visual acceptance cla
 Missing screenshots produce an explicit error and require the normal capture scenario.
 No frontend UI code was added, so visual UI regression capture is not applicable here.
 
-## Pending full verification
+## Historical stopped full verification
 
 `bun run check` was started on `harbor-mbp-2` at
 `2688f658b99f1ca52ca2b3e9b4a71249c77e8fe4`. After integrating main `bb0d5b323`,
@@ -81,11 +83,10 @@ an existing main/environment blocker rather than an API CLI regression. The full
 pipeline stops at unit tests, so later aggregate E2E, package and workspace gates
 remain unproven. Focused API E2Es ran separately and pass. No safeguards are relaxed.
 
-The loop's `verify` step stays pending. No full-suite, Jev-clean, merged-main, package
-publication, live paid-provider or production claim is made. Existing service migration
-proofs and prior reviews are preserved in their committed-source pack. No screenshots
-are committed. The PR is a draft until the required checks pass. The feature report
-remains in progress.
+At that checkpoint the loop's `verify` step and draft PR remained pending. The original
+feature report retains that incomplete outcome. Existing service migration proofs and
+prior reviews remain preserved in their committed-source pack. Screenshots remain
+uncommitted. Consolidated verification below supersedes that historical delivery status.
 
 ## Focused observations
 

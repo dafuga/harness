@@ -1,5 +1,7 @@
 # APIs catalog and page usage
 
+The checkpoints below retain the original implementation evidence and failures. Their measurements and status statements apply to the named historical revisions. Consolidated delivery verification, current source identity and provider boundaries are recorded in [Module task completion analytics](../module-task-analytics/verification.md).
+
 ## Delivered behavior
 
 The selected project and revision list indexed HTTP endpoints as APIs, with routes, exported HTTP methods, contracts, source, history and consumers. Pages have an APIs tab showing recorded direct and transitive requests through components, services and layouts. Links and reload retain revision scope; earlier revisions do not show later endpoints. Local and shared-workspace catalog projections use the same category and relationship rules.
@@ -10,7 +12,7 @@ The source index resolves same-workspace rooted static `fetch` and known platfor
 
 ## Verification scope
 
-Application code last changed at `5381cd1203858db72541de2a7412347d1955c145`. Commit `f1afc969327a1e1f915020006f8fdc4689e7e019` adds the three route pages to the existing component-preview matrix and its existing representative fixtures. Later handoff metadata does not change executable source.
+At the original checkpoint, application code last changed at `5381cd1203858db72541de2a7412347d1955c145`. Commit `f1afc969327a1e1f915020006f8fdc4689e7e019` adds the three route pages to the existing component-preview matrix and its existing representative fixtures. Later handoff metadata does not change executable source.
 
 All automated E2Es ran on `harbor-mbp-2`. Primary-Mac checks were unit/type/audit commands and manual in-app browser inspection. Synthetic browser fixtures render the actual shared UI; they are not deployed-project or physical-device evidence.
 
@@ -45,15 +47,15 @@ The same frozen UI assertions fail against unchanged historical application code
 
 The earlier combined profiling capture `8f4ccf6837f0241eb6920b9a38eb2a87a5b3694bf1ebc638036d2182d40b92d4` failed when two CLI cases timed out under instrumentation. Ordinary CLI E2Es pass; this failed capture is retained and does not count as green CLI profiling proof. A separate manual CLI process read took 1.37 seconds and 196,444,160 bytes peak RSS, including startup and network activity; those are not isolated-helper measurements.
 
-## Required gate still pending
+## Historical stopped full verification
 
 `bun run check` at `5381cd1203858db72541de2a7412347d1955c145` passed formatting, types, lint, Rust checks and kernel build, then stopped with 1,202 unit tests passed, 3 failed and 25 skipped. One failure was the missing API route-preview registration, repaired in `f1afc969327a1e1f915020006f8fdc4689e7e019` and verified by the unchanged 6-case registry guard and all 9 route previews.
 
-The other two failures were independently reproduced on clean main `bb0d5b323e7e93886c3e19f1e88b46af582bed8b`: `test/late-cleanup.test.ts` expected a late tool-start observation, and the design-option-storage case in `test/verification-observations.test.ts` timed out. Their assertions are preserved. The full gate has not passed; later full E2E, build/package and workspace stages remain unproven by that command.
+The other two failures were independently reproduced on clean main `bb0d5b323e7e93886c3e19f1e88b46af582bed8b`: `test/late-cleanup.test.ts` expected a late tool-start observation, and the design-option-storage case in `test/verification-observations.test.ts` timed out. Their assertions are preserved. That historical full gate did not pass; later full E2E, build/package and workspace stages were unproven by that command.
 
 Two broader Reports relationship-fixture cases also fail unchanged on clean main; baseline diagnostic record `9a0f768af32ceea83a53cfb2786cd90aa5815097fe2c9e410af3a6f7b3666597` preserves that result. Focused new API relationship cases pass. No unrelated fixture expectations were weakened.
 
-The Project Reports run `ffb27570-1672-4185-a1e7-b7cf10fde2c9` remains active while the required gate is pending. PR #114 remains draft. No application deployment, package publication or production promotion is claimed.
+The original Project Reports run `ffb27570-1672-4185-a1e7-b7cf10fde2c9` retains its incomplete historical outcome. PR #114 was kept draft at that checkpoint; consolidated delivery verification supersedes that status. No application deployment, package publication or production promotion is claimed.
 
 ## Prevention notes
 

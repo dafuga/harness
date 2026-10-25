@@ -2,7 +2,7 @@
 	"name": "api-catalog-admission",
 	"goal": "Keep Pages first across every catalog and preserve dedicated preview choices while admitting APIs without legacy aliases.",
 	"createdAt": "2026-10-25T02:27:42.619Z",
-	"updatedAt": "2026-10-25T02:30:35.342Z",
+	"updatedAt": "2026-10-25T07:10:03.869Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,22 +39,30 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T02:50:56.724Z",
+			"evidence": "Source 56306ba0dbd2f8e3540378590bcfff3cdecabd1f keeps Pages before APIs and points ChatAgents at its dedicated catalog state. All frozen assertions, route compatibility checks and explicit missing-preview gaps remain enforced."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T02:50:58.180Z",
+			"evidence": "Red 017bdd8ec396ee9995c0f1eac473df2c0bab882f7f6d214a7ff221c799237074 rejects historical source 3dec8febaf67d3822820b3f3715a6f51abe12125. Green 846121981035937119cb46074c415c8b4a45d2fdb73e26b7a14aa616acf976e2 passes at 56306ba0db with the complete test corpus, command and runtime unchanged."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T02:50:59.260Z",
+			"evidence": "Clean historical-source snapshot 3dec8feb reintroduces the original ordering and stale preview declaration; the normal matrix rejects both. Restoring source 56306ba0db passes the same 9 assertions. No assertion, five-second unit limit, missing-preview gap or resource policy was relaxed."
 		},
 		{
 			"id": "verify",
 			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T07:10:03.869Z",
+			"evidence": "The full standard hosted xvfb-run -a bun run check passed at f13d6d15e189a9195833dc49f063ab1b74737d57 in job121084549517 (Bun1.2.18). On harbor-mbp-2 the first complete aggregate failed at one concurrent-history seeding wait after root1311/25declared skips and CLI285 passed. The entire normal package command passed unchanged on retry (28+5, three declared scale skips), then every normal downstream format/type/lint/unit/build/audit and browser stage passed with the same1CPU/2048MiB reservation and clean source. Desktop973 units with three declared iOS skips plus232 browser cases/one declared skip; Hub479 units plus28 browser cases. Reports770, Planning56, Collaboration45, Remote135, Relay159 and Game27 pass. The final frozen1819-file test/config corpus also passes all five matched regression pairs; fresh local/hosted screenshots and live API list/contract/page-tab pixels were inspected. Final independent captures preserve application/test bytes across documentation-only bookkeeping. Paid live-provider completion, real quota fallback and physical devices are unproven; the separate full native CI verifier did not admit execution (resource wait timeout/no record), not a passing native or approved-budget proof. See module-task-analytics/verification.md and Project Reports run92efc4cd-d42a-46bd-afd0-a307cafb568c."
 		}
 	],
 	"evaluators": [

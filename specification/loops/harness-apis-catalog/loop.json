@@ -2,7 +2,7 @@
 	"name": "harness-apis-catalog",
 	"goal": "Selected-revision APIs catalog lists project endpoints, and page APIs tabs show source-proven direct and transitive usage with correct contracts and scoped links",
 	"createdAt": "2026-10-24T18:54:18.159Z",
-	"updatedAt": "2026-10-24T20:25:55.511Z",
+	"updatedAt": "2026-10-25T07:09:59.720Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -31,7 +31,9 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T07:09:59.720Z",
+			"evidence": "The full standard hosted xvfb-run -a bun run check passed at f13d6d15e189a9195833dc49f063ab1b74737d57 in job121084549517 (Bun1.2.18). On harbor-mbp-2 the first complete aggregate failed at one concurrent-history seeding wait after root1311/25declared skips and CLI285 passed. The entire normal package command passed unchanged on retry (28+5, three declared scale skips), then every normal downstream format/type/lint/unit/build/audit and browser stage passed with the same1CPU/2048MiB reservation and clean source. Desktop973 units with three declared iOS skips plus232 browser cases/one declared skip; Hub479 units plus28 browser cases. Reports770, Planning56, Collaboration45, Remote135, Relay159 and Game27 pass. The final frozen1819-file test/config corpus also passes all five matched regression pairs; fresh local/hosted screenshots and live API list/contract/page-tab pixels were inspected. Final independent captures preserve application/test bytes across documentation-only bookkeeping. Paid live-provider completion, real quota fallback and physical devices are unproven; the separate full native CI verifier did not admit execution (resource wait timeout/no record), not a passing native or approved-budget proof. See module-task-analytics/verification.md and Project Reports run92efc4cd-d42a-46bd-afd0-a307cafb568c."
 		}
 	],
 	"evaluators": [
