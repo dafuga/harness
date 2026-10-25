@@ -19,6 +19,7 @@ import {
 	verifyReview
 } from './support/unitProject';
 import { runCommand } from './support/cli';
+import { replacedReviewContracts, replacedReviewPreviews } from './support/moduleReviewReplacement';
 
 test('validate persists revision-bound module gaps, filters them and invalidates cached searches', async () => {
 	const project = await unitProject('lib');
@@ -38,6 +39,11 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 			])
 		);
 		await verifyReview(project.root, git, invoke, head);
+		const contracts = await replacedReviewContracts(project);
+		expect(
+			contracts.cached,
+			'Replacing a review must remove omitted fields from cached facts'
+		).toEqual(contracts.refreshed);
 		await rejectStaleReview(project);
 		await git(['update-ref', 'refs/heads/harness-evidence', head]);
 		expect(
@@ -112,6 +118,11 @@ test('validate commits source-derived page API usage and explicit visual data ga
 		expect(api.title).toBe('/api/titles');
 		expect(data.relationships[page.id].apis).toEqual([api.id]);
 		expect(report.modules.find((unit) => unit.id === page.id)!.issues.length).toBeGreaterThan(0);
+		const previews = await replacedReviewPreviews(project);
+		expect(previews.cached, 'Cached preview repairs must match refreshed source facts').toEqual(
+			previews.refreshed
+		);
+		expect(previews.refreshed?.state).toBe('component-titles');
 	} finally {
 		await rm(join(project.root, '..'), { recursive: true, force: true });
 	}
