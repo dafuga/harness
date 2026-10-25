@@ -6,6 +6,7 @@ import { png } from './support/legacyStore';
 import { runCommand, runHarness } from './support/cli';
 
 test('generated browser tests reject errors in normal flows and pass after the error disappears', async () => {
+	console.info(`E2E integration worker ${process.env.VITEST_POOL_ID}`);
 	const root = await mkdtemp(join(tmpdir(), 'harness-browser-errors-'));
 	try {
 		await runHarness(['new', 'app', 'browser-proof'], root);
@@ -21,6 +22,7 @@ test('generated browser tests reject errors in normal flows and pass after the e
 		const result = await browserRun(project);
 		expect(result.exitCode).toBe(1);
 		const report = JSON.parse(result.stdout);
+		console.info(`Effective Playwright workers: ${report.config.metadata.actualWorkers}`);
 		expect(outcomes(report)).toEqual([
 			'expected',
 			'unexpected',

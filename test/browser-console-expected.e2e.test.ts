@@ -6,6 +6,7 @@ import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
 
 test('intentional errors retain diagnostics and cannot hide missing, duplicate or unrelated errors', async () => {
+	console.info(`E2E integration worker ${process.env.VITEST_POOL_ID}`);
 	const root = await mkdtemp(join(tmpdir(), 'harness-expected-errors-'));
 	try {
 		await runHarness(['new', 'app', 'intentional'], root);
@@ -26,7 +27,9 @@ test('intentional errors retain diagnostics and cannot hide missing, duplicate o
 			{ HARNESS_EVIDENCE_DIR: join(root, 'evidence') }
 		);
 		expect(result.exitCode).toBe(1);
-		const results = JSON.parse(result.stdout).suites[0].specs.map((spec: Spec) => spec.tests[0]);
+		const report = JSON.parse(result.stdout);
+		console.info(`Effective Playwright workers: ${report.config.metadata.actualWorkers}`);
+		const results = report.suites[0].specs.map((spec: Spec) => spec.tests[0]);
 		expect(results.map((item: Execution) => item.status)).toEqual([
 			'expected',
 			'expected',
@@ -71,11 +74,12 @@ async function assertPersisted(results: Execution[], root: string) {
 	expect(kept.find((item) => item.test.includes('missing expected error'))).toMatchObject({
 		errors: [],
 		retry: 0,
-		file: 'expected.spec.ts'
+		file: 'expected-page.spec.ts'
 	});
 }
 
 test('API-only checks do not require a browser executable', async () => {
+	console.info(`E2E integration worker ${process.env.VITEST_POOL_ID}`);
 	const root = await mkdtemp(join(tmpdir(), 'harness-api-only-'));
 	try {
 		await runHarness(['new', 'app', 'api-only'], root);
