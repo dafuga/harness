@@ -2,7 +2,7 @@
 	"name": "contract-proof-resource-identity",
 	"goal": "Ignore transient resource lease identities while retaining meaningful proof environment differences",
 	"createdAt": "2026-10-25T17:44:05.103Z",
-	"updatedAt": "2026-10-25T17:46:44.143Z",
+	"updatedAt": "2026-10-25T17:47:30.897Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T17:47:30.897Z",
+			"evidence": "The same eight cases fail on the lease assertion before repair and pass at 5d23da87c7. Runtime, flags and CPU/memory amount distinctions remain asserted. Broader verification is pending."
 		},
 		{
 			"id": "verify",
