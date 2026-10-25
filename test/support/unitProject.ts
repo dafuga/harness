@@ -115,6 +115,11 @@ export async function verifyReview(
 	invoke: (args: string[]) => Promise<ValidationReport & { exitCode: number }>,
 	head: string
 ) {
+	assert.equal(
+		(await git(['status', '--porcelain'])).stdout.trim(),
+		'',
+		'Validation cache must stay outside the source worktree'
+	);
 	const review = join(root, '..', 'module-review.json');
 	await writeFile(
 		review,
@@ -142,6 +147,7 @@ export async function verifyReview(
 /** A committed title service and normalization helper for metadata/history boundary tests. */
 export async function commitTitleModules(project: UnitProject) {
 	const git = (args: string[]) => runCommand(['git', ...args], project.root);
+	await project.write('.gitignore', '');
 	await git(['init', '-b', 'main']);
 	await configureTestAuthor(project.root);
 	await project.write('src/utils/slugify.ts', slugifySource);
