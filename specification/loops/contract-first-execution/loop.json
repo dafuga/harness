@@ -1,0 +1,41 @@
+{
+	"name": "contract-first-execution",
+	"goal": "Prove CLI-authored committed contracts drive server-created tasks; Codex reads app contracts without source discovery; Claude/Codex workers have app-wide contract reads and enforced assigned-file writes; validation rejects every missing mandatory field; automatic dispatch starts and records real workers.",
+	"createdAt": "2026-10-25T22:24:12.024Z",
+	"updatedAt": "2026-10-25T22:24:12.024Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
