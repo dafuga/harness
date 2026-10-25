@@ -6,7 +6,7 @@ import { commits, ids } from '../entityUnits';
 const source = /src\/|\+page\.svelte|\.ts\b|OrdersPage|filterOrders/;
 const banned = /sub-?components|\brelated\b|\breports?\b|dashboard|analytics/i;
 
-test('the pages collection is cards with a page title, screenshot and shared usage footer', () => {
+test('the pages collection is cards with a page title and screenshot without a proof legend', () => {
 	const body = content('current');
 	expect(words(body)).toContain('Pages Start with the pages people use.');
 	expect(body).toContain('aria-label="Orders page"');
@@ -14,20 +14,10 @@ test('the pages collection is cards with a page title, screenshot and shared usa
 	expect(body).toContain('src="/harness/media/ccccccc-default-desktop.png"');
 	expect(body).toContain('href="/harness/branch/feature%2Forders/pages/app.page.orders"');
 	expect(words(body)).not.toContain('2 components');
-	// Verification belongs to the page itself, never a catalog card.
-	const card = body.slice(0, body.indexOf('class="ex-legend"'));
-	expect(verdicts(card)).toEqual([]);
-	// The footer explains the two marks by showing them: no status word is written beside either.
-	const footer = body.slice(body.indexOf('class="ex-legend"'));
-	expect(verdicts(footer).map((mark) => `${mark.passed} ${mark.name}`)).toEqual([
-		'true Proven',
-		'false Not proven'
-	]);
-	expect(verdicts(footer)[1].reasons).toEqual([
-		'A required test, state or capture failed, is missing, is stale or is unknown.'
-	]);
-	expect(words(footer)).not.toMatch(/Proven|Not proven|passed|failed/i);
-	expect(words(footer)).toContain('Hover, focus or tap a mark to read why.');
+	// Catalogs omit proof marks and their legend; evidence belongs to the entity view.
+	expect(verdicts(body)).toEqual([]);
+	expect(body).not.toContain('class="ex-legend"');
+	expect(words(body)).not.toContain('Hover, focus or tap a mark to read why.');
 	expect(words(body)).not.toContain('Full coverage passed');
 	expect(words(body)).not.toMatch(source);
 	expect(words(body)).not.toMatch(banned);

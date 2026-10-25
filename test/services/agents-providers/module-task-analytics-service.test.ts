@@ -1,4 +1,4 @@
-import { test } from 'vitest';
+import { afterEach, test, vi } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskAnalyticsService } from '../../../src/services/agents-providers/ModuleTaskAnalyticsService';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
@@ -8,7 +8,10 @@ import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { observedTaskOperation } from '../../support/taskProfiles';
 import { readFile } from 'node:fs/promises';
 
+afterEach(() => vi.unstubAllEnvs());
+
 test('committed task history emits stable IDs and excludes raw prompt text', async () => {
+	vi.stubEnv('HARNESS_ANALYTICS_DISABLED', '0');
 	const f = await moduleTaskFixture();
 	try {
 		const service = new ModuleTaskService(f.root);
@@ -50,6 +53,10 @@ test('committed task history emits stable IDs and excludes raw prompt text', asy
 			bounceRate: null
 		});
 		expect(JSON.stringify(selected)).not.toContain('Implement the wanted contract');
+		vi.stubEnv('HARNESS_ANALYTICS_DISABLED', '1');
+		seen.clear();
+		expect(await analytics.sync(f.root)).toBe(0);
+		expect(seen.size).toBe(0);
 	} finally {
 		await f.dispose();
 	}
