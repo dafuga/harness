@@ -1046,7 +1046,7 @@ unverified. The original vendor app remains unchanged.
 
 ## Capability modules
 
-Open **Modules** to browse reusable capabilities and their instructions. Installing a module adds its declared resource types to **Code**. Definitions and generated resource records are committed in `harness.modules.json`, so installation state follows project history.
+Open **Modules** to browse reusable capabilities and their instructions. Layouts, Components, Models, Services, Helpers, Types, Configs, Styles and Dependencies are ordinary modules included from the start. Every Code destination comes from a module declaration. Installing an optional module adds its declared resource types to **Code**. Definitions and generated resource records are committed in `harness.modules.json`, so installation state follows project history.
 
 ```sh
 harness module list
@@ -1061,6 +1061,25 @@ bun install
 Email follows BuildFlexity's Resend delivery boundary. Set `RESEND_API_KEY` and `RESEND_EMAIL_FROM` in server-only, project-specific environment settings, and use `DISABLE_EMAILS=true` in development. Mailers render content independently from delivery. Installation sends nothing.
 
 Offline reuses Fluora's shared `@dafuga01/offline-sync` engine and BuildFlexity's scoped incremental download pattern. The generated `/api/offline/sync` endpoint accepts background downloads and queued mutations. Supply authenticated `locals.offline` adapters, allowed collections, cursor/deletion semantics, and atomic server idempotency. Start one client coordinator per account/tenant scope, stop it before changing scope, and surface retained conflicts. Without application adapters the endpoint denies access. Native networking, large files and shell caching remain app-owned adapters.
+
+Rust WebAssembly and Rust Backend are optional modules using the same install/generate contract:
+
+```sh
+harness module generate services service Invoice --group billing
+harness module generate dependencies dependency lit@3.3.1
+harness module add rust-wasm
+harness module generate rust-wasm kernel Metrics
+rustup target add wasm32-unknown-unknown
+bun run build:wasm metrics
+harness module add rust-backend
+harness module generate rust-backend kernel Metrics
+bun run check:rust-backend metrics
+bun run rust:backend metrics
+```
+
+WebAssembly generates a standalone Cargo library, bounded numeric ABI, TypeScript loader and asset build command. Profile actual browser workloads; use a Web Worker for heavy computation. Rust Backend generates an independent Axum service with typed JSON, bounded input, Cargo tests, health route and loopback defaults. Commit Cargo.lock after Cargo resolves dependencies. Applications retain their normal authentication, persistence and deployment boundaries.
+
+Module resources can declare template `files`, a standard `generator: { "kind": "scaffold", "scaffold": "service" }`, or a pinned dependency generator. `catalog` connects a resource to an existing Code collection; omitted catalogs use the generated-resource list. `includedByDefault` is the only installation difference for standard capabilities. `packageScripts` are declared without executing them during installation.
 
 Define project-local modules in `specification/modules/<id>/module.json`:
 

@@ -5013,9 +5013,9 @@
 		{
 			"unit": "reports.function.harness-shell",
 			"name": "harnessShell",
-			"commit": "eeef9c72e2",
-			"reason": "Expose revision-scoped module discovery and installed resource menus while preserving the existing navbar owner and source history.",
-			"definition": "0d57e97d63d519227392dcde841d210d7bfe98ab06cf10e8bfb7f2c31fdb1e8e",
+			"commit": "8eb2f5ff2e",
+			"reason": "Derive Code navigation from included and installed module declarations while retaining scoped catalog routes.",
+			"definition": "31aa5655b2774d3d8a05d49d9525d4dbff57065a7daf01289d1269fe1fbcecd6",
 			"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
 			"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte",
 			"previousDefinitions": [
@@ -5052,6 +5052,15 @@
 					"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
 					"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof.",
 					"definition": "de8a82d7ab645931ab633eb5b7e7c1a50e6cc35dbacc208f7129d97c8277a36e",
+					"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
+					"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
+				},
+				{
+					"unit": "reports.function.harness-shell",
+					"name": "harnessShell",
+					"commit": "eeef9c72e2",
+					"reason": "Expose revision-scoped module discovery and installed resource menus while preserving the existing navbar owner and source history.",
+					"definition": "0d57e97d63d519227392dcde841d210d7bfe98ab06cf10e8bfb7f2c31fdb1e8e",
 					"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
 					"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
 				}
