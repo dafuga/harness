@@ -51,7 +51,9 @@
 	>
 		<hx-header class="ex-evidence-head">
 			<hx-div>
-				<hx-h2 id={`${idPrefix}ex-audio-title`}>{paired ? 'Audio comparison' : 'Current audio'}</hx-h2>
+				<hx-h2 id={`${idPrefix}ex-audio-title`}
+					>{paired ? 'Audio comparison' : 'Current audio'}</hx-h2
+				>
 				<hx-p class="ex-soft">
 					{paired
 						? 'The same clip before and after the selected commit, each with its transcript.'
@@ -71,7 +73,11 @@
 							</hx-p>
 						{/if}
 						{#if clip}
-							<AudioEvidence item={clip} assetBase={mediaBase} idPrefix={`${idPrefix}overview-audio-`} />
+							<AudioEvidence
+								item={clip}
+								assetBase={mediaBase}
+								idPrefix={`${idPrefix}overview-audio-`}
+							/>
 						{:else}
 							<hx-p class="ex-gap">
 								<HarnessVerdict passed={false} label="No clip" />
