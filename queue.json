@@ -318,8 +318,20 @@
 			},
 			"sourceCommit": "e463e31854366174e5fb338b58e3734ce2b8d12d",
 			"contractHash": "1ad3358ecd1ef5afeff20ad6d4a17a44b4f48932c37083a9a03fdfaff7e95923",
-			"status": "review",
-			"reviews": [],
+			"status": "accepted",
+			"reviews": [
+				{
+					"attempt": "6d30ed22-d433-4dfa-a2ee-9d310d392fbe",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "",
+					"at": "2026-10-25T12:45:35.618Z",
+					"provider": "claude",
+					"model": "claude-haiku-5-5",
+					"intelligence": "max",
+					"reportedModel": "claude-haiku-5-5"
+				}
+			],
 			"createdAt": "2026-10-25T12:19:14.821Z",
 			"claim": {
 				"worker": "contract-guidance",
