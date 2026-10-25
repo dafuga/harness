@@ -129,7 +129,8 @@ async function rejectProducerConflict(
 ) {
 	const tree = new EvidenceTreeAdapter(reader.root),
 		prior = (await tree.tip(reader.ref))!;
-	const { digest: _digest, ...body } = globalThis.structuredClone(data);
+	const { digest, ...body } = globalThis.structuredClone(data);
+	expect(digest).toBe(repository.digest(body));
 	body.registry.units[0].responsibility =
 		'Conflicting producer output with the same review inputs.';
 	await repository.write({ ...body, digest: repository.digest(body) });
