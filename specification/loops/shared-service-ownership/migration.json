@@ -1640,13 +1640,13 @@
 			"unit": "service.regression-proof",
 			"from": "src/services/RegressionProofService.ts",
 			"to": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-			"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
+			"definition": "691d2c0809e3f2571deb6718a0ebc71329cef179c48379d861b93a51dca58232",
 			"relocationDefinition": "fe7669ca45e2a0ea78e302821cd1fb8a23eb10a79522d1afd2e7f95d093c865c",
 			"review": {
-				"commit": "b0fc91c011ea2c787af5280b660f6fa03a6cc77b",
+				"commit": "7fdf168400f4f060f63817c29436d8dfcdb3913e",
 				"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-				"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
-				"reason": "Pass exact selected-revision registry IDs into scoped actual screenshot admission, rejecting unknown bindings while preserving registered retired and unscoped attachments."
+				"definition": "691d2c0809e3f2571deb6718a0ebc71329cef179c48379d861b93a51dca58232",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 			},
 			"previousReviews": [
 				{
@@ -1672,6 +1672,12 @@
 					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
 					"definition": "20d82a9911c8fbf0b9f59a2e7da692bd3654873a1bb3bca25ec2bd63e60fa1f4",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b0fc91c011ea2c787af5280b660f6fa03a6cc77b",
+					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+					"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
+					"reason": "Pass exact selected-revision registry IDs into scoped actual screenshot admission, rejecting unknown bindings while preserving registered retired and unscoped attachments."
 				}
 			]
 		},

@@ -2,7 +2,7 @@
 	"name": "contract-method-state-counts",
 	"goal": "Reject duplicate method-state cases and retain existing supported case identities when other capabilities expand",
 	"createdAt": "2026-10-25T16:59:18.515Z",
-	"updatedAt": "2026-10-25T17:35:39.956Z",
+	"updatedAt": "2026-10-25T17:47:54.139Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T17:47:54.139Z",
+			"evidence": "Retained paired red 50f72a8d5de579a634f39598a9c5887062edb385f68c9e6a81140814ea874dfc and green 36e22567250c546865b39cdac976e7711e55131c7b14a92aeeea8b4594a1aa5f prove the same three owning cases fail before and pass at dc952871e6. In-memory getter, own iterator and species-bearing arrays are included. No case-count increase. Registry metadata repairs are separately recorded; broader verification remains pending."
 		},
 		{
 			"id": "verify",
