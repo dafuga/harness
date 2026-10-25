@@ -4532,9 +4532,19 @@
 			},
 			"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
 			"contractHash": "e5aa2430d5c9ef372715a30c123bcd9eb544e353bf2cdfa1aa93fb69ff07a344",
-			"status": "queued",
+			"status": "running",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:00:28.669Z",
+			"claim": {
+				"worker": "haiku-helpers-a",
+				"token": "b363124e-0f03-479f-80f0-d55cb98fafda",
+				"startedAt": "2026-10-25T18:08:19.311Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 18069,
+					"startedAt": "Sun Oct 25 18:00:48 2026"
+				}
+			},
 			"claimHistory": [],
 			"attempts": []
 		},
