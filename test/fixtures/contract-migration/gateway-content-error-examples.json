@@ -1,0 +1,267 @@
+{
+	"schemaVersion": 1,
+	"id": "function.gateway-content-error",
+	"kind": "function",
+	"title": "Gateway content error",
+	"responsibility": "Constructs the named error used for gateway content failures.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/development-tooling/gatewayContentError.ts",
+			"src/utils/gatewayContentError.ts"
+		],
+		"symbols": ["gatewayContentError", "gatewayContentError"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "gatewayContentError.message",
+				"type": "string",
+				"description": "Explanation placed on the error as its message. Undefined leaves it empty, other values are converted to text, and a value that cannot be converted makes construction throw."
+			}
+		],
+		"outputs": [
+			{
+				"name": "gatewayContentError",
+				"type": "Error",
+				"description": "New Error with the supplied message and name GatewayContentError; the function returns it rather than throwing it."
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A message that cannot be converted to text, such as a Symbol or an object without toString or valueOf, throws from the Error constructor."
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/development-tooling/gatewayContentError.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/development-tooling/gatewayContentError.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "gatewayContentError",
+				"name": "Name an unsupported media message",
+				"call": "gatewayContentError('Unsupported media') // { name, message } => { name: 'GatewayContentError', message: 'Unsupported media' }",
+				"input": ["Unsupported media"],
+				"expected": {
+					"kind": "value",
+					"value": { "name": "GatewayContentError", "message": "Unsupported media" }
+				}
+			},
+			{
+				"subject": "gatewayContentError",
+				"name": "Keep an empty message empty",
+				"call": "gatewayContentError('') // { name, message } => { name: 'GatewayContentError', message: '' }",
+				"input": [""],
+				"expected": {
+					"kind": "value",
+					"value": { "name": "GatewayContentError", "message": "" }
+				}
+			},
+			{
+				"subject": "gatewayContentError",
+				"name": "Coerce null to the text null",
+				"call": "gatewayContentError(null) // { name, message } => { name: 'GatewayContentError', message: 'null' }",
+				"input": [null],
+				"expected": {
+					"kind": "value",
+					"value": { "name": "GatewayContentError", "message": "null" }
+				}
+			},
+			{
+				"subject": "gatewayContentError",
+				"name": "Leave the message empty for undefined",
+				"call": "gatewayContentError(undefined) // { name, message } => { name: 'GatewayContentError', message: '' }",
+				"input": [{ "$fixture": "undefined" }],
+				"expected": {
+					"kind": "value",
+					"value": { "name": "GatewayContentError", "message": "" }
+				}
+			},
+			{
+				"subject": "gatewayContentError",
+				"name": "Coerce zero to the text 0",
+				"call": "gatewayContentError(0) // { name, message } => { name: 'GatewayContentError', message: '0' }",
+				"input": [0],
+				"expected": {
+					"kind": "value",
+					"value": { "name": "GatewayContentError", "message": "0" }
+				}
+			},
+			{
+				"subject": "gatewayContentError",
+				"name": "Coerce a bigint to decimal text",
+				"call": "gatewayContentError(BigInt('1')) // { name, message } => { name: 'GatewayContentError', message: '1' }",
+				"input": [{ "$fixture": "bigint", "value": "1" }],
+				"expected": {
+					"kind": "value",
+					"value": { "name": "GatewayContentError", "message": "1" }
+				}
+			},
+			{
+				"subject": "gatewayContentError",
+				"name": "Use the text returned by an object's toString",
+				"call": "gatewayContentError({ toString: () => 'blocked upstream' }) // { name, message } => { name: 'GatewayContentError', message: 'blocked upstream' }",
+				"input": [{ "$fixture": "text-object", "text": "blocked upstream" }],
+				"expected": {
+					"kind": "value",
+					"value": { "name": "GatewayContentError", "message": "blocked upstream" }
+				}
+			},
+			{
+				"subject": "gatewayContentError",
+				"name": "Refuse a symbol message with a TypeError",
+				"call": "gatewayContentError(Symbol('gateway')) // throws { name: 'TypeError', message: 'Cannot convert a Symbol value to a string' }",
+				"input": [{ "$fixture": "symbol", "description": "gateway" }],
+				"expected": {
+					"kind": "error",
+					"value": { "name": "TypeError", "message": "Cannot convert a Symbol value to a string" }
+				}
+			},
+			{
+				"subject": "gatewayContentError",
+				"name": "Refuse a prototype-less object with a TypeError",
+				"call": "gatewayContentError(Object.create(null)) // throws { name: 'TypeError', message: 'Cannot convert object to primitive value' }",
+				"input": [{ "$fixture": "null-prototype" }],
+				"expected": {
+					"kind": "error",
+					"value": { "name": "TypeError", "message": "Cannot convert object to primitive value" }
+				}
+			}
+		],
+		"states": ["input", "boundary", "coercion", "invalid"],
+		"props": ["message"],
+		"cases": [
+			{
+				"id": "gateway-content-error.realistic-message",
+				"state": "input",
+				"subject": "gatewayContentError",
+				"example": "Name an unsupported media message",
+				"fixture": "test/fixtures/contract-migration/gateway-content-error-examples.json",
+				"test": {
+					"file": "test/utils/gateway-content-error.test.ts",
+					"title": "gatewayContentError: Name an unsupported media message"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "gateway-content-error.empty-message",
+				"state": "boundary",
+				"subject": "gatewayContentError",
+				"example": "Keep an empty message empty",
+				"fixture": "test/fixtures/contract-migration/gateway-content-error-examples.json",
+				"test": {
+					"file": "test/utils/gateway-content-error.test.ts",
+					"title": "gatewayContentError: Keep an empty message empty"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "gateway-content-error.null-message",
+				"state": "boundary",
+				"subject": "gatewayContentError",
+				"example": "Coerce null to the text null",
+				"fixture": "test/fixtures/contract-migration/gateway-content-error-examples.json",
+				"test": {
+					"file": "test/utils/gateway-content-error.test.ts",
+					"title": "gatewayContentError: Coerce null to the text null"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "gateway-content-error.undefined-message",
+				"state": "boundary",
+				"subject": "gatewayContentError",
+				"example": "Leave the message empty for undefined",
+				"fixture": "test/fixtures/contract-migration/gateway-content-error-examples.json",
+				"test": {
+					"file": "test/utils/gateway-content-error.test.ts",
+					"title": "gatewayContentError: Leave the message empty for undefined"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "gateway-content-error.zero-message",
+				"state": "boundary",
+				"subject": "gatewayContentError",
+				"example": "Coerce zero to the text 0",
+				"fixture": "test/fixtures/contract-migration/gateway-content-error-examples.json",
+				"test": {
+					"file": "test/utils/gateway-content-error.test.ts",
+					"title": "gatewayContentError: Coerce zero to the text 0"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "gateway-content-error.bigint-message",
+				"state": "coercion",
+				"subject": "gatewayContentError",
+				"example": "Coerce a bigint to decimal text",
+				"fixture": "test/fixtures/contract-migration/gateway-content-error-examples.json",
+				"test": {
+					"file": "test/utils/gateway-content-error.test.ts",
+					"title": "gatewayContentError: Coerce a bigint to decimal text"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "gateway-content-error.text-object-message",
+				"state": "coercion",
+				"subject": "gatewayContentError",
+				"example": "Use the text returned by an object's toString",
+				"fixture": "test/fixtures/contract-migration/gateway-content-error-examples.json",
+				"test": {
+					"file": "test/utils/gateway-content-error.test.ts",
+					"title": "gatewayContentError: Use the text returned by an object's toString"
+				},
+				"props": ["message"]
+			},
+			{
+				"id": "gateway-content-error.symbol-message",
+				"state": "invalid",
+				"subject": "gatewayContentError",
+				"example": "Refuse a symbol message with a TypeError",
+				"fixture": "test/fixtures/contract-migration/gateway-content-error-examples.json",
+				"test": {
+					"file": "test/utils/gateway-content-error.test.ts",
+					"title": "gatewayContentError: Refuse a symbol message with a TypeError"
+				},
+				"props": ["message"],
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "gateway-content-error.prototype-less-message",
+				"state": "invalid",
+				"subject": "gatewayContentError",
+				"example": "Refuse a prototype-less object with a TypeError",
+				"fixture": "test/fixtures/contract-migration/gateway-content-error-examples.json",
+				"test": {
+					"file": "test/utils/gateway-content-error.test.ts",
+					"title": "gatewayContentError: Refuse a prototype-less object with a TypeError"
+				},
+				"props": ["message"],
+				"errors": ["TypeError"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
