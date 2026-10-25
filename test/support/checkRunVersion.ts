@@ -10,13 +10,14 @@ function tool(id: string, command: string): ToolCheck {
 }
 
 /** Real disposable tools: first nonempty stdout line, empty stdout, nonzero exit, missing tool. */
-export async function versionInitialized(): Promise<void> {
+export async function versionInitialized() {
 	const root = await mkdtemp(join(tmpdir(), 'harness-version-'));
 	try {
 		const service = runnerFor(root);
 		await expect(service.version(null as never)).rejects.toThrow(TypeError);
 		const firstLine = "printf '\\n   \\n  harness 2.4.1  \\nsecond line\\n'";
-		await expect(service.version(tool('first-line', firstLine))).resolves.toBe('harness 2.4.1');
+		const version = await service.version(tool('first-line', firstLine));
+		expect(version).toBe('harness 2.4.1');
 		expect(await readFile(join(root, 'logs', 'tool-first-line.log'), 'utf8')).toContain(
 			'second line'
 		);
@@ -28,6 +29,7 @@ export async function versionInitialized(): Promise<void> {
 		expect(await readFile(join(root, 'logs', 'tool-missing.log'), 'utf8')).toContain(
 			'harness-missing-tool-for-version'
 		);
+		return version;
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}

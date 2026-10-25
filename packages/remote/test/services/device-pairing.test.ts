@@ -6,7 +6,12 @@ import { DevicePairingService } from '../../src/services/device-pairing-service/
 import { setup } from '../support/devicePairingFixture';
 import { scanInitialized, requestedScan, startAfter } from '../support/devicePairingScan';
 import { requestInitialized, requestedRequest } from '../support/devicePairingRequest';
-import { pollState, exchangeRejected, exchangeApproved } from '../support/devicePairingLifecycle';
+import {
+	pollState,
+	exchangeRejected,
+	exchangeApproved,
+	rejectedPairing
+} from '../support/devicePairingLifecycle';
 
 new TestExpectationService().registerCases(
 	test,
@@ -18,7 +23,7 @@ new TestExpectationService().registerCases(
 		'poll-initialized': async () => pollState('initialized'),
 		'exchange-initialized': async () => {
 			expect(new DevicePairingService()).toBeInstanceOf(DevicePairingService);
-			await expect((await setup()).device.exchange(undefined as never)).rejects.toThrow(TypeError);
+			return rejectedPairing((await setup()).device.exchange(undefined as never), TypeError);
 		},
 		'scanned-requested': requestedScan,
 		'request-requested': requestedRequest,

@@ -5,11 +5,13 @@ import type { ComponentManifest } from '../../../../src/core/development-tooling
 import unit from '../../../../specification/units/relay.validator.pairing-body.json' with { type: 'json' };
 import { PairingBodyValidator } from '../../src/validators/PairingBodyValidator';
 import { newRequest } from '../support/relayActors';
+import { bodyFieldTypes } from '../support/bodyFieldTypes';
 
-async function requestInitialized(): Promise<void> {
+async function requestInitialized() {
 	const validator = new PairingBodyValidator();
 	const { body } = await newRequest('e6'.repeat(16));
-	expect(validator.request({ ...body })).toEqual(body);
+	const observed = validator.request({ ...body });
+	expect(observed).toEqual(body);
 	for (const sealed of ['A'.repeat(22), 'A'.repeat(8192)])
 		expect(validator.request({ ...body, sealed })).toEqual({ ...body, sealed });
 	const refused: unknown[] = [
@@ -46,12 +48,14 @@ async function requestInitialized(): Promise<void> {
 	];
 	for (const value of refused)
 		expect(validator.request(value), JSON.stringify(value)).toBeUndefined();
+	return bodyFieldTypes(observed!);
 }
 
-async function verifierInitialized(): Promise<void> {
+async function verifierInitialized() {
 	const validator = new PairingBodyValidator();
 	const verifier = randomCredential();
-	expect(validator.verifier({ verifier })).toBe(verifier);
+	const observed = validator.verifier({ verifier });
+	expect(observed).toBe(verifier);
 	for (const accepted of ['-'.repeat(43), '_'.repeat(43)])
 		expect(validator.verifier({ verifier: accepted })).toBe(accepted);
 	const refused: unknown[] = [
@@ -75,6 +79,7 @@ async function verifierInitialized(): Promise<void> {
 	];
 	for (const value of refused)
 		expect(validator.verifier(value), JSON.stringify(value)).toBeUndefined();
+	return typeof observed;
 }
 
 new TestExpectationService().registerCases(

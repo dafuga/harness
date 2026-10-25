@@ -26,14 +26,15 @@ new TestExpectationService().registerCases(
 );
 
 /** Original assertions run first; the inherited budget runs last so it cannot hide them. */
-async function runInitialized(): Promise<void> {
-	await browserDiagnostics(0);
+async function runInitialized() {
+	const result = await browserDiagnostics(0);
 	await browserDiagnostics(1);
 	await refusedDiagnostics('malformed');
 	await refusedDiagnostics('timeout');
 	await settlementFailures();
 	await invalidPriority();
 	await inheritedBudget();
+	return result;
 }
 
 /** Fake settlement replaces only the isolated runner; module state is restored afterwards. */

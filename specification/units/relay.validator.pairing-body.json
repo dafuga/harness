@@ -88,13 +88,14 @@
 				"expected": {
 					"kind": "value",
 					"value": {
-						"ephemeralKey": "structural P-256 public key",
-						"sealed": "structural sealed envelope",
-						"challenge": "structural PKCE challenge"
+						"ephemeralKey": "string",
+						"sealed": "string",
+						"challenge": "string"
 					}
 				},
 				"props": ["ephemeralKey", "sealed", "challenge"],
-				"errors": ["invalid input props"]
+				"errors": ["invalid input props"],
+				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions."
 			},
 			{
 				"id": "verifier-initialized",
@@ -107,10 +108,11 @@
 				},
 				"expected": {
 					"kind": "value",
-					"value": "structural PKCE verifier"
+					"value": "string"
 				},
 				"props": ["verifier"],
-				"errors": ["invalid input props"]
+				"errors": ["invalid input props"],
+				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions."
 			}
 		]
 	},

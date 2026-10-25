@@ -75,7 +75,7 @@ function runnerCheck(timeoutMs: number): CheckInput {
 }
 
 /** A passing runner retains its browser diagnostics and projects them into evidence records. */
-export async function browserDiagnostics(exitCode: DiagnosticsExit): Promise<void> {
+export async function browserDiagnostics(exitCode: DiagnosticsExit) {
 	const root = await mkdtemp(join(tmpdir(), 'harness-browser-evidence-'));
 	try {
 		await writeFile(join(root, 'writer.cjs'), writerScript(exitCode));
@@ -96,6 +96,7 @@ export async function browserDiagnostics(exitCode: DiagnosticsExit): Promise<voi
 			}
 		});
 		assertDiagnosticProjection(outcome.entry);
+		return { passed: outcome.passed, entry: { status: outcome.entry.status } };
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}

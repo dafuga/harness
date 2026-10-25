@@ -112,10 +112,14 @@
 				},
 				"expected": {
 					"kind": "value",
-					"value": ["owner id and hostId only", "undefined"]
+					"value": {
+						"owner": "object",
+						"hostId": "string"
+					}
 				},
 				"props": ["owner.id", "owner.id length", "hostId", "hostId length", "extra fields"],
-				"errors": ["invalid input props"]
+				"errors": ["invalid input props"],
+				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions."
 			},
 			{
 				"id": "register-initialized",
@@ -128,7 +132,13 @@
 				},
 				"expected": {
 					"kind": "value",
-					"value": ["owner, hostId, hostKey, credentialHash and name only", "undefined"]
+					"value": {
+						"owner": "object",
+						"hostId": "string",
+						"hostKey": "string",
+						"credentialHash": "string",
+						"name": "string"
+					}
 				},
 				"props": [
 					"hostKey",
@@ -142,7 +152,8 @@
 					"hostId",
 					"extra fields"
 				],
-				"errors": ["invalid input props"]
+				"errors": ["invalid input props"],
+				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions."
 			},
 			{
 				"id": "device-initialized",
@@ -155,7 +166,11 @@
 				},
 				"expected": {
 					"kind": "value",
-					"value": ["owner, hostId and deviceId only", "undefined"]
+					"value": {
+						"owner": "object",
+						"hostId": "string",
+						"deviceId": "string"
+					}
 				},
 				"props": [
 					"deviceId",
@@ -165,7 +180,8 @@
 					"hostId",
 					"extra fields"
 				],
-				"errors": ["invalid input props"]
+				"errors": ["invalid input props"],
+				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions."
 			}
 		]
 	},

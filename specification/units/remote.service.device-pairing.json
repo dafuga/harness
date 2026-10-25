@@ -171,13 +171,15 @@
 				"expected": {
 					"kind": "value",
 					"value": {
-						"state": "approved",
-						"credential": "structural remote credential",
-						"wire": "sealed request"
+						"origin": "https://relay.example",
+						"platform": "test",
+						"deviceName": "Fixture phone",
+						"credentialValid": true
 					}
 				},
 				"props": ["text", "device", "reading", "reading.environments", "reading.now"],
-				"errors": ["Error"]
+				"errors": ["Error"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "request-initialized",
@@ -192,8 +194,8 @@
 					"kind": "value",
 					"value": {
 						"state": "requested",
-						"wire": "sealed request",
-						"invalid": "Error"
+						"wireRequests": 1,
+						"keysRetained": true
 					}
 				},
 				"props": [
@@ -206,7 +208,8 @@
 					"deviceName",
 					"platform"
 				],
-				"errors": ["Error"]
+				"errors": ["Error"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "poll-initialized",
@@ -218,11 +221,14 @@
 					"title": "poll initialized rejects an absent pending pairing"
 				},
 				"expected": {
-					"kind": "error",
-					"value": "TypeError"
+					"kind": "value",
+					"value": {
+						"error": "TypeError"
+					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"]
+				"errors": ["Error"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "exchange-initialized",
@@ -234,11 +240,14 @@
 					"title": "exchange initialized rejects an absent pending pairing"
 				},
 				"expected": {
-					"kind": "error",
-					"value": "TypeError"
+					"kind": "value",
+					"value": {
+						"error": "TypeError"
+					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"]
+				"errors": ["Error"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "scanned-requested",
@@ -253,11 +262,12 @@
 					"kind": "value",
 					"value": {
 						"state": "requested",
-						"spentOffer": "refused"
+						"spentOffer": null
 					}
 				},
 				"props": ["text", "reading"],
-				"errors": ["Error"]
+				"errors": ["Error"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "request-requested",
@@ -275,7 +285,8 @@
 						"secondRelayRequest": null
 					}
 				},
-				"props": ["input"]
+				"props": ["input"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "poll-requested",
@@ -292,7 +303,8 @@
 						"state": "requested"
 					}
 				},
-				"props": ["pending"]
+				"props": ["pending"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "exchange-requested",
@@ -304,11 +316,14 @@
 					"title": "exchange requested refuses before approval"
 				},
 				"expected": {
-					"kind": "error",
-					"value": "Error"
+					"kind": "value",
+					"value": {
+						"error": "Error"
+					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"]
+				"errors": ["Error"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "scanned-approved",
@@ -323,10 +338,11 @@
 					"kind": "value",
 					"value": {
 						"state": "requested",
-						"newOffer": "accepted"
+						"pendingRequests": 1
 					}
 				},
-				"props": ["text", "device", "reading"]
+				"props": ["text", "device", "reading"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "request-approved",
@@ -341,10 +357,11 @@
 					"kind": "value",
 					"value": {
 						"state": "requested",
-						"newOffer": "accepted"
+						"pendingRequests": 1
 					}
 				},
-				"props": ["input"]
+				"props": ["input"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "poll-approved",
@@ -361,7 +378,8 @@
 						"state": "approved"
 					}
 				},
-				"props": ["pending"]
+				"props": ["pending"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "exchange-approved",
@@ -375,13 +393,24 @@
 				"expected": {
 					"kind": "value",
 					"value": {
-						"credential": "structural remote credential",
-						"key": "approved device key",
-						"reuse": "Error"
+						"origin": "https://relay.example",
+						"hostName": "Fixture Mac",
+						"generation": 1,
+						"grant": {
+							"projects": [
+								{
+									"id": "local-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"name": "Harness"
+								}
+							],
+							"agents": true
+						},
+						"credentialValid": true
 					}
 				},
 				"props": ["pending", "approval.deviceId", "approval.sealed"],
-				"errors": ["Error"]
+				"errors": ["Error"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "scanned-denied",
@@ -396,10 +425,11 @@
 					"kind": "value",
 					"value": {
 						"state": "requested",
-						"newOffer": "accepted"
+						"pendingRequests": 1
 					}
 				},
-				"props": ["text", "device", "reading"]
+				"props": ["text", "device", "reading"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "request-denied",
@@ -414,10 +444,11 @@
 					"kind": "value",
 					"value": {
 						"state": "requested",
-						"newOffer": "accepted"
+						"pendingRequests": 1
 					}
 				},
-				"props": ["input"]
+				"props": ["input"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "poll-denied",
@@ -434,7 +465,8 @@
 						"state": "denied"
 					}
 				},
-				"props": ["pending"]
+				"props": ["pending"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "exchange-denied",
@@ -446,11 +478,14 @@
 					"title": "exchange denied refuses credentials"
 				},
 				"expected": {
-					"kind": "error",
-					"value": "Error"
+					"kind": "value",
+					"value": {
+						"error": "Error"
+					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"]
+				"errors": ["Error"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "scanned-exchanged",
@@ -465,10 +500,11 @@
 					"kind": "value",
 					"value": {
 						"state": "requested",
-						"newOffer": "accepted"
+						"pendingRequests": 1
 					}
 				},
-				"props": ["text", "device", "reading"]
+				"props": ["text", "device", "reading"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "request-exchanged",
@@ -483,10 +519,11 @@
 					"kind": "value",
 					"value": {
 						"state": "requested",
-						"newOffer": "accepted"
+						"pendingRequests": 1
 					}
 				},
-				"props": ["input"]
+				"props": ["input"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "poll-exchanged",
@@ -498,11 +535,14 @@
 					"title": "poll exchanged refuses the consumed pairing"
 				},
 				"expected": {
-					"kind": "error",
-					"value": "Error"
+					"kind": "value",
+					"value": {
+						"error": "Error"
+					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"]
+				"errors": ["Error"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			},
 			{
 				"id": "exchange-exchanged",
@@ -514,11 +554,14 @@
 					"title": "exchange exchanged refuses a second credential"
 				},
 				"expected": {
-					"kind": "error",
-					"value": "Error"
+					"kind": "value",
+					"value": {
+						"error": "Error"
+					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"]
+				"errors": ["Error"],
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
 			}
 		]
 	},

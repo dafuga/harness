@@ -4,13 +4,15 @@ import type { ComponentManifest } from '../../../../src/core/unitTypes';
 import unit from '../../../../specification/units/relay.validator.manage-body.json' with { type: 'json' };
 import { ManageBodyValidator } from '../../src/validators/ManageBodyValidator';
 import { newHost, registration } from '../support/relayActors';
+import { bodyFieldTypes } from '../support/bodyFieldTypes';
 
-async function ownerInitialized(): Promise<void> {
+async function ownerInitialized() {
 	const validator = new ManageBodyValidator();
 	const body = await registration(await newHost('owner-1'));
 	const hostId = String(body.hostId);
 	const owner = { owner: { id: 'owner-1' }, hostId };
-	expect(validator.owner(owner)).toEqual(owner);
+	const observed = validator.owner(owner);
+	expect(observed).toEqual(owner);
 	expect(validator.owner({ ...owner, owner: { id: 'owner-1', admin: true }, extra: 1 })).toEqual(
 		owner
 	);
@@ -43,14 +45,16 @@ async function ownerInitialized(): Promise<void> {
 	];
 	for (const value of refused)
 		expect(validator.owner(value), JSON.stringify(value)).toBeUndefined();
+	return bodyFieldTypes(observed!);
 }
 
-async function registerInitialized(): Promise<void> {
+async function registerInitialized() {
 	const validator = new ManageBodyValidator();
 	const body = await registration(await newHost('owner-1'));
 	const hash = String(body.credentialHash);
 	const hostKey = String(body.hostKey);
-	expect(validator.register(body)).toEqual(body);
+	const observed = validator.register(body);
+	expect(observed).toEqual(body);
 	expect(validator.register({ ...body, role: 'admin' })).toEqual(body);
 	expect(validator.register({ ...body, owner: { id: 'owner-1', admin: true } })).toEqual(body);
 	const shortest = { ...body, name: 'n' };
@@ -85,14 +89,16 @@ async function registerInitialized(): Promise<void> {
 	}
 	expect(validator.register(null)).toBeUndefined();
 	expect(validator.register(undefined)).toBeUndefined();
+	return bodyFieldTypes(observed!);
 }
 
-async function deviceInitialized(): Promise<void> {
+async function deviceInitialized() {
 	const validator = new ManageBodyValidator();
 	const body = await registration(await newHost('owner-1'));
 	const deviceId = 'd4'.repeat(20);
 	const call = { owner: { id: 'owner-1' }, hostId: body.hostId, deviceId };
-	expect(validator.device(call)).toEqual(call);
+	const observed = validator.device(call);
+	expect(observed).toEqual(call);
 	expect(validator.device({ ...call, role: 'device' })).toEqual(call);
 	expect(validator.device({ ...call, deviceId: deviceId.slice(2) })).toBeUndefined();
 	expect(validator.device({ ...call, deviceId: undefined })).toBeUndefined();
@@ -111,6 +117,7 @@ async function deviceInitialized(): Promise<void> {
 	for (const value of refused)
 		expect(validator.device(value), JSON.stringify(value)).toBeUndefined();
 	expect(validator.device(null)).toBeUndefined();
+	return bodyFieldTypes(observed!);
 }
 
 new TestExpectationService().registerCases(

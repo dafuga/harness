@@ -4,17 +4,18 @@ import { setup, pendingAt, approve, type State } from './devicePairingFixture';
 
 export async function pollState(state: State | 'initialized') {
 	const f = await setup();
-	if (state === 'initialized')
-		return expect(f.device.poll(undefined as never)).rejects.toThrow(TypeError);
+	if (state === 'initialized') return rejectedPairing(f.device.poll(undefined as never), TypeError);
 	const pending = await pendingAt(f, state);
-	if (state === 'exchanged') return expect(f.device.poll(pending)).rejects.toThrow();
-	expect(await f.device.poll(pending)).toBe(state);
+	if (state === 'exchanged') return rejectedPairing(f.device.poll(pending));
+	const observed = await f.device.poll(pending);
+	expect(observed).toBe(state);
+	return { state: observed };
 }
 
 export async function exchangeRejected(state: State) {
 	const f = await setup(),
 		pending = await pendingAt(f, state);
-	await expect(f.device.exchange(pending)).rejects.toThrow();
+	return rejectedPairing(f.device.exchange(pending));
 }
 
 export async function exchangeApproved() {
@@ -34,4 +35,22 @@ export async function exchangeApproved() {
 	const sealed = (tamperedResult.sealed[0] === 'A' ? 'B' : 'A') + tamperedResult.sealed.slice(1);
 	tampered.relay.approve(tampered.offer.pairingId, { deviceId: tamperedResult.deviceId, sealed });
 	await expect(tampered.device.exchange(tamperedPending)).rejects.toThrow();
+	return {
+		origin: credentials.origin,
+		hostName: credentials.hostName,
+		generation: credentials.generation,
+		grant: credentials.grant,
+		credentialValid: remotePatterns.credential.test(credentials.credential)
+	};
+}
+
+/** Display an actual rejected operation's error name after its original rejection assertion. */
+export async function rejectedPairing(attempt: Promise<unknown>, constructor = Error) {
+	await expect(attempt).rejects.toThrow(constructor);
+	try {
+		await attempt;
+	} catch (error) {
+		expect(error).toBeInstanceOf(Error);
+		return { error: (error as Error).name };
+	}
 }

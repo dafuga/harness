@@ -1,4 +1,5 @@
 import { expect } from 'vitest';
+import { remotePatterns } from '../../src/utils/remoteIdentity';
 import {
 	setup,
 	scan,
@@ -22,8 +23,14 @@ export async function scanInitialized() {
 		...phone
 	});
 	expect(await f.device.poll(pending)).toBe('requested');
-	await complete(f, pending);
+	const credentials = await complete(f, pending);
 	await scanErrors();
+	return {
+		origin: credentials.origin,
+		platform: pending.input.platform,
+		deviceName: pending.input.deviceName,
+		credentialValid: remotePatterns.credential.test(credentials.credential)
+	};
 }
 
 async function scanErrors() {
@@ -50,11 +57,13 @@ export async function requestedScan() {
 		current = await nextOffer(f);
 	await scan(f, earlier);
 	expect(f.relay.received.at(-1)).toBeNull();
+	const spentOffer = f.relay.received.at(-1);
 	expect(f.host.requests()).toEqual([]);
 	f.relay.close(earlier.pairingId);
 	await expect(scanText(f, earlierText)).rejects.toThrow('The pairing was refused or has expired.');
 	const pending = await scan(f, current);
 	expect(f.host.requests()).toMatchObject([{ deviceId: pending.deviceId }]);
+	return { state: await f.device.poll(pending), spentOffer };
 }
 
 export async function startAfter(state: Exclude<State, 'requested'>, useScan: boolean) {
@@ -65,4 +74,5 @@ export async function startAfter(state: Exclude<State, 'requested'>, useScan: bo
 	expect(f.host.requests()).toMatchObject([
 		{ pairingId: offer.pairingId, deviceId: pending.deviceId }
 	]);
+	return { state: await f.device.poll(pending), pendingRequests: f.host.requests().length };
 }

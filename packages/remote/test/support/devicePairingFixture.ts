@@ -80,4 +80,5 @@ export async function complete(f: Fixture, pending: PendingPairing) {
 	});
 	expect(credentials.credential).toMatch(remotePatterns.credential);
 	expect(credentials.keys.publicKey).toBe(result.deviceKey);
+	return credentials;
 }
