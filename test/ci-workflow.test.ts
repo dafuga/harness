@@ -21,6 +21,10 @@ test('code under test runs without write credentials', () => {
 	expect(verify).toMatch(/verify run --commit/);
 	expect(verify).toMatch(/npm install --global bun@\d+\.\d+\.\d+/);
 	expect(verify).toContain('rustup show');
+	expect(
+		verify.match(/RUSTUP_TOOLCHAIN=\$\(rustup show active-toolchain/g),
+		'Both CI jobs pin child-process Rust outside the repository'
+	).toHaveLength(2);
 });
 
 test('publication is a separate trusted workflow that never runs the tested code', () => {
