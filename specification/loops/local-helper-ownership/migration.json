@@ -5420,9 +5420,25 @@
 			"from": "packages/hub/src/utils/hubEvidenceRegistry.ts",
 			"to": "packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceRegistry.ts",
 			"ownerSource": "packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceRevision.ts",
-			"definition": "6c9319c65bd456405a9531c18388352be926fda30964820fbb71b445c40eaabd",
-			"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
-			"reason": "Use the committed module registry for admitted hosted reads while preserving the original helper move and runtime behavior for legacy projects."
+			"definition": "6e3e0522174c8297b12f5bdbf5bd7504dc12e520f0a7febcdfff14d5754f5be0",
+			"commit": "dcef4e0806dd885c6f6aa1a6dc5bb46754337e81",
+			"reason": "Require committed metadata for every hosted evidence read; preserve the original helper ownership and move proof.",
+			"previousDefinitions": [
+				{
+					"unit": "hub.function.hub-evidence-registry",
+					"name": "hubEvidenceRegistry",
+					"consumer": {
+						"unit": "hub.function.hub-evidence-revision",
+						"symbol": "hubEvidenceRevision"
+					},
+					"from": "packages/hub/src/utils/hubEvidenceRegistry.ts",
+					"to": "packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceRegistry.ts",
+					"ownerSource": "packages/hub/src/utils/verification-evidence/hub-evidence-revision/hubEvidenceRevision.ts",
+					"definition": "6c9319c65bd456405a9531c18388352be926fda30964820fbb71b445c40eaabd",
+					"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
+					"reason": "Use the committed module registry for admitted hosted reads while preserving the original helper move and runtime behavior for legacy projects."
+				}
+			]
 		}
 	]
 }

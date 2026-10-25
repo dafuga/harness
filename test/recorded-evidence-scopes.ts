@@ -9,6 +9,7 @@ export const recordedEvidenceScopes: Record<string, VerificationScope> = {
 		package: 'root',
 		vitest: {
 			'test/evidence-batch.test.ts': {
+				'a scoped Git listing retains full paths and excludes unrelated evidence': 'binary-read',
 				'one batch reads exact binary evidence, duplicate blobs and unusual paths at a pinned commit':
 					'binary-read',
 				'a malformed, mismatched, truncated or non-blob batch never yields evidence': 'boundaries',

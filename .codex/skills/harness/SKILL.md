@@ -381,4 +381,6 @@ When changing a shared Game renderer, include the root `test/game-runtime.test.t
 
 ## Committed module validation
 
+Every project requires committed metadata by default. Internal Git writers, including planning, threads, designs and messages, must publish and admit metadata for the exact commit they return. Keep an ancestor's selected source tree separate from the requesting cache identity. Test normal reads after a write; missing metadata must never trigger an automatic repair in a reader.
+
 After each source commit run `harness validate --write`. Repair every missing metadata field before delivery. Missing screenshots and measurement observations remain explicit evidence gaps and do not block resource reads. Scope diagnostics with `--module <stable-id>` or `--type <kind-or-category>`; use `--json` for agent-readable repair actions. Source facts and missing-data reports live on `refs/harness/module-data`, bound to the exact commit/tree and notes/evidence inputs. Exchange them with `validate --sync origin` after evidence sync. Backfill old commits with `validate --history --commit <source-ref> --write`, preserving source SHAs and genuine evidence gaps. Use `harness api get used-apis <id>` or `get relations <id>`; readers use committed relationships rather than a separate source-search script.

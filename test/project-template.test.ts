@@ -28,7 +28,7 @@ test('app projects include SvelteKit and specification files', () =>
 		expect(paths).toContain('.codex/skills/harness/SKILL.md');
 		expect(fileContents(files, 'AGENTS.md')).toContain('Treat Harness as the operating contract');
 		expect(fileContents(files, 'AGENTS.md')).toContain('bun run check');
-		expectResourceGuidance(files);
+		expectWorkflowGuidance(files);
 		expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
 			'Use this skill whenever'
 		);
@@ -68,6 +68,7 @@ test('app projects include SvelteKit and specification files', () =>
 
 test('library projects include Bun TypeScript test structure', () => {
 	const files = projectFiles({ kind: 'lib', name: 'demo-lib' });
+	expectWorkflowGuidance(files);
 	const paths = files.map((file) => file.path);
 	const packageJson = JSON.parse(
 		files.find((file) => file.path === 'package.json')?.contents ?? '{}'
@@ -151,7 +152,11 @@ function auditConfig(files: ReturnType<typeof projectFiles>): { limits: Record<s
 	};
 }
 
-function expectResourceGuidance(files: ReturnType<typeof projectFiles>): void {
+function expectWorkflowGuidance(files: ReturnType<typeof projectFiles>): void {
 	expect(fileContents(files, 'AGENTS.md')).toContain('harness resources run');
 	expect(fileContents(files, 'AGENTS.md')).toContain('Finish current tests under pressure');
+	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+		expect(fileContents(files, path)).toContain('harness validate --write');
+		expect(fileContents(files, path)).toContain('Every project requires committed module metadata');
+	}
 }

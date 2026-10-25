@@ -2088,13 +2088,13 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "680273ad4ec32ce5d278d6f1e590490ecef4c2b30329e327836ca7b8b1ac6142",
+			"definition": "2c33cfe8d0453e11e0ec1c425eeac9731a19e538eb6017790220e775e1fae553",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
+				"commit": "fb59885d0f5b0f55d2458ecb13c243b5ae1231a0",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-				"definition": "680273ad4ec32ce5d278d6f1e590490ecef4c2b30329e327836ca7b8b1ac6142",
-				"reason": "Admit committed module metadata before normal resource reads, retaining authenticated project scope and exposing validation diagnostics for repair."
+				"definition": "2c33cfe8d0453e11e0ec1c425eeac9731a19e538eb6017790220e775e1fae553",
+				"reason": "Separate immutable registry routing from project dispatch while preserving project authorization and commit input checks."
 			},
 			"previousReviews": [
 				{
@@ -2120,6 +2120,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
 					"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
 					"reason": "Exposes immutable project registry reads behind the existing authenticated project boundary."
+				},
+				{
+					"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+					"definition": "680273ad4ec32ce5d278d6f1e590490ecef4c2b30329e327836ca7b8b1ac6142",
+					"reason": "Admit committed module metadata before normal resource reads, retaining authenticated project scope and exposing validation diagnostics for repair."
 				}
 			]
 		},
@@ -3902,7 +3908,14 @@
 			"unit": "desktop.adapter.planning-facade",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
-			"definition": "afff4002416783534f5046ec92099d8a29b37ef726ad3bfdef6e4529d145b47b"
+			"definition": "2486b35a9546d6a69dc07549e96514d56eeb542dbc722b8deca69fb6a661fc36",
+			"relocationDefinition": "afff4002416783534f5046ec92099d8a29b37ef726ad3bfdef6e4529d145b47b",
+			"review": {
+				"commit": "59506bb318c6b2bfe716f3713d475e06f0e4a5d0",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
+				"definition": "2486b35a9546d6a69dc07549e96514d56eeb542dbc722b8deca69fb6a661fc36",
+				"reason": "Publish and admit metadata for each exact planning write commit before returning; normal reads remain unable to repair missing metadata."
+			}
 		},
 		{
 			"unit": "desktop.function.planning-message",

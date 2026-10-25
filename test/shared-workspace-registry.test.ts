@@ -13,6 +13,7 @@ import {
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { scanImports } from '../src/services/source-index-service/scanImports';
 import { showUnit } from '../src/workflows/inspectUnits';
+import { ModuleDataService } from '../src/services/git-source-history/ModuleDataService';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 /**
@@ -37,6 +38,7 @@ const indexer = new SourceIndexService();
 let loaded: LoadedUnits;
 beforeAll(async () => {
 	loaded = await loadUnits(process.cwd(), undefined, indexer);
+	expect((await new ModuleDataService(process.cwd()).validate({ write: true })).valid).toBe(true);
 }, 60_000);
 
 test('cataloged application configs keep their implementation and entries under configs', () => {
