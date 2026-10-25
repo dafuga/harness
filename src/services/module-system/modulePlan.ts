@@ -23,7 +23,7 @@ export async function modulePackagePlan(
 /** Module source folders participate in the same project-wide responsibility taxonomy. */
 export async function moduleGroupPlan(
 	root: string,
-	definition: ModuleDefinition
+	definition: Pick<ModuleDefinition, 'id' | 'title'>
 ): Promise<PlannedFile> {
 	let config = {
 		schemaVersion: 1,

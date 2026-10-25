@@ -1,3 +1,5 @@
+import { moduleGroupConfig } from '../../configs/development-tooling/moduleGroupsConfig';
+import { moduleGroupPlan } from './modulePlan';
 import { ModuleCatalogService } from './ModuleCatalogService';
 import { ModuleScaffoldService } from './ModuleScaffoldService';
 import { ModulePackageService } from './ModulePackageService';
@@ -47,9 +49,10 @@ export class ModuleResourceService {
 		return persistResource(root, state, plan);
 	}
 }
-function templateExpansion(name: string) {
+function templateExpansion(name: string, group?: string) {
 	const variables: Record<string, string> = {
 		name,
+		group: group ?? toKebabCase(name),
 		PascalName: toPascalCase(name),
 		camelName: toCamelCase(name),
 		snakeName: toKebabCase(name).replaceAll('-', '_'),
@@ -77,11 +80,24 @@ async function resourcePlan(
 	resource: ModuleResource,
 	request: ModuleResourceRequest
 ): Promise<ModuleResourcePlan> {
-	const expand = templateExpansion(request.name);
+	const expand = templateExpansion(request.name, request.group);
 	const dependency = resource.generator?.kind === 'dependency';
 	const files = dependency
 		? [await new ModulePackageService().plan(root, request.name)]
 		: resource.files.map((file) => ({ path: expand(file.path), contents: expand(file.contents) }));
+	const grouped = resource.files.some(
+		(file) => file.path.includes('{{group}}') || file.contents.includes('{{group}}')
+	);
+	if (grouped) {
+		const id = request.group ?? toKebabCase(request.name);
+		const title = id
+			.split('-')
+			.map((word) => word[0].toUpperCase() + word.slice(1))
+			.join(' ');
+		const group = moduleGroupConfig.parse({ id, title, terms: [id] });
+		files.push(await moduleGroupPlan(root, group));
+	}
+
 	const generated =
 		resource.generator?.kind === 'scaffold'
 			? await new ModuleScaffoldService().generate(root, resource, request)
@@ -89,7 +105,11 @@ async function resourcePlan(
 	return {
 		files,
 		generated,
-		replace: dependency ? [moduleStateFile, 'package.json'] : [moduleStateFile]
+		replace: [
+			moduleStateFile,
+			...(dependency ? ['package.json'] : []),
+			...(grouped ? ['harness.groups.json'] : [])
+		]
 	};
 }
 async function persistResource(

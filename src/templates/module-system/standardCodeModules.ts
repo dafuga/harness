@@ -71,7 +71,7 @@ function resourceGeneration(
 		return {
 			files: [
 				{
-					path: 'src/types/{{PascalName}}.ts',
+					path: 'src/types/{{group}}/{{PascalName}}.types.ts',
 					contents: 'export interface {{PascalName}} {\n\tid: string;\n}\n'
 				}
 			]
@@ -80,7 +80,7 @@ function resourceGeneration(
 		return {
 			files: [
 				{
-					path: 'src/styles/{{kebabName}}.css',
+					path: 'src/styles/{{group}}/{{kebabName}}.css',
 					contents: '/* {{PascalName}} styles. Reuse application design tokens. */\n'
 				}
 			]

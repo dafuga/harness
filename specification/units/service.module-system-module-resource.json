@@ -54,6 +54,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "config.module-groups",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.case",
 			"via": "import",
 			"origin": "derived"
@@ -75,6 +80,11 @@
 		},
 		{
 			"unit": "service.module-system-module-package",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-plan",
 			"via": "import",
 			"origin": "derived"
 		},

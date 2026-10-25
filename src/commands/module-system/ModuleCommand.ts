@@ -23,7 +23,7 @@ export class ModuleCommand {
 		module
 			.command('generate <module> <type> <name>')
 			.description('Generate a resource declared by an installed module.')
-			.option('--group <group>', 'Responsibility category for a standard scaffold.')
+			.option('--group <group>', 'Responsibility category for the module generator.')
 			.action(async (id: string, type: string, name: string, options: { group?: string }) => {
 				console.log(
 					(

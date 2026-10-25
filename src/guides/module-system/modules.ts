@@ -15,7 +15,7 @@ export const modulesGuide: Guide = {
 		'Module definitions are declarative data; discovery never imports project code.',
 		'Installed definitions and generated resource records live in harness.modules.json and are read from the selected revision.',
 		'Project modules live in specification/modules/<id>/module.json and use the same schema as built-ins.',
-		'Generators support {{name}}, {{PascalName}}, {{camelName}}, {{snakeName}} and {{kebabName}} substitutions in file paths and contents.',
+		'Generators support {{name}}, {{PascalName}}, {{camelName}}, {{snakeName}}, {{group}} and {{kebabName}} substitutions in file paths and contents.',
 		'Keep credentials server-only and project-specific. Installation never sends email or synchronizes application data.',
 		'Offline application adapters own authentication, authorization, idempotency and conflict resolution; no default grants access.'
 	],
