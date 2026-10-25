@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { runCommand, runHarness } from './cli';
 import { browserErrorCollector } from './browserTest';
+import { measureWorkload } from './measureWorkload';
 
 /** Compile both declared Rust targets and exercise their actual browser and HTTP boundaries. */
 export async function assertRustModuleProject(project: string): Promise<void> {
@@ -11,15 +12,19 @@ export async function assertRustModuleProject(project: string): Promise<void> {
 		await runHarness(['module', 'add', id], project);
 		await runHarness(['module', 'generate', id, 'kernel', 'Metrics'], project);
 	}
-	await runCommand(['bun', 'run', 'build:wasm', 'metrics'], project);
-	const manifest = 'src/services/rust-backend/metrics/Cargo.toml';
-	const target = join(project, '.cache/rust-backend/metrics');
-	await runCommand(['cargo', 'test', '--manifest-path', manifest, '--target-dir', target], project);
-	await runCommand(
-		['cargo', 'build', '--manifest-path', manifest, '--target-dir', target],
-		project
+	await measureWorkload('template.module-system-rust-wasm-module', 'compile-generated-wasm', () =>
+		runCommand(['bun', 'run', 'build:wasm', 'metrics'], project)
 	);
-	await assertRustHttp(join(target, 'debug/metrics'), project);
+	const target = join(project, '.cache/rust-backend/metrics');
+	await measureWorkload(
+		'template.module-system-rust-backend-module',
+		'compile-and-request-generated-backend',
+		async () => {
+			await runCommand(['bun', 'run', 'check:rust-backend', 'metrics'], project);
+			await runCommand(['bun', 'run', 'build:rust-backend', 'metrics'], project);
+			await assertRustHttp(join(target, 'debug/metrics'), project);
+		}
+	);
 	await assertRustBrowser(project);
 }
 
