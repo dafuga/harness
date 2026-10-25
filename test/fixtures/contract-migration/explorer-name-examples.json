@@ -1,0 +1,1171 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.explorer-name",
+	"kind": "function",
+	"title": "Readable entity names",
+	"responsibility": "Keeps canonical recorded code names consistent across catalogs, related units and detail pages; derives readable route screen labels separately.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/utils/explorer-ui/explorerName.ts",
+			"packages/reports/src/utils/explorer-ui/explorerName.types.ts",
+			"packages/reports/src/utils/explorerName.ts"
+		],
+		"symbols": ["explorerName", "explorerAppRoute", "Named", "explorerName", "explorerAppRoute"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "explorerName.unit",
+				"type": "Named",
+				"description": "Unit identity, kind and title with optional owned source and declared symbols from the viewed revision."
+			},
+			{
+				"name": "explorerAppRoute.unit",
+				"type": "Pick<HarnessUnit, 'kind' | 'title' | 'owns'>",
+				"description": "Unit kind, title and owned files used for the page address."
+			}
+		],
+		"outputs": [
+			{
+				"name": "explorerName",
+				"type": "string",
+				"description": "Recorded primary symbol or owned module stem for code units, preserving exact casing. Shared models omit the .types file suffix while keeping their recorded identity and source paths. Route screens retain readable names; absent code metadata retains the explicit readable fallback. No unit ID or route changes."
+			},
+			{
+				"name": "explorerAppRoute",
+				"type": "string | null",
+				"description": "For page or layout kinds, a slash-prefixed title or the owned +page route address; null for other kinds or no matching route file."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorer-ui/explorerName.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorer-ui/explorerName.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "explorerName",
+				"name": "Keep a camel-case function identifier as written",
+				"call": "explorerName(unit('function.console-route', 'function', { title: 'consoleRoute' })) // => 'consoleRoute'",
+				"input": ["function.console-route", "function", { "title": "consoleRoute" }],
+				"expected": { "kind": "value", "value": "consoleRoute" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep a PascalCase component name as written",
+				"call": "explorerName(unit('reports.component.harness-harness-console', 'component', { title: 'HarnessConsole' })) // => 'HarnessConsole'",
+				"input": [
+					"reports.component.harness-harness-console",
+					"component",
+					{ "title": "HarnessConsole" }
+				],
+				"expected": { "kind": "value", "value": "HarnessConsole" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep a service class name as written",
+				"call": "explorerName(unit('service.title', 'service', { title: 'TitleService' })) // => 'TitleService'",
+				"input": ["service.title", "service", { "title": "TitleService" }],
+				"expected": { "kind": "value", "value": "TitleService" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep a lowercase function name as written",
+				"call": "explorerName(unit('function.slugify', 'function', { title: 'slugify' })) // => 'slugify'",
+				"input": ["function.slugify", "function", { "title": "slugify" }],
+				"expected": { "kind": "value", "value": "slugify" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep an initialism inside a function name",
+				"call": "explorerName(unit('reports.function.report-pdf', 'function', { title: 'reportPdf' })) // => 'reportPdf'",
+				"input": ["reports.function.report-pdf", "function", { "title": "reportPdf" }],
+				"expected": { "kind": "value", "value": "reportPdf" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep an initialism inside a component name",
+				"call": "explorerName(unit('reports.component.analytics-cpu', 'component', { title: 'AnalyticsCpu' })) // => 'AnalyticsCpu'",
+				"input": ["reports.component.analytics-cpu", "component", { "title": "AnalyticsCpu" }],
+				"expected": { "kind": "value", "value": "AnalyticsCpu" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep a digit-led initialism inside a function name",
+				"call": "explorerName(unit('reports.function.r2-evidence-config', 'function', { title: 'r2EvidenceConfig' })) // => 'r2EvidenceConfig'",
+				"input": [
+					"reports.function.r2-evidence-config",
+					"function",
+					{ "title": "r2EvidenceConfig" }
+				],
+				"expected": { "kind": "value", "value": "r2EvidenceConfig" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep an e2e initialism at the start of a function name",
+				"call": "explorerName(unit('function.e2e-fixtures', 'function', { title: 'e2eFixtures' })) // => 'e2eFixtures'",
+				"input": ["function.e2e-fixtures", "function", { "title": "e2eFixtures" }],
+				"expected": { "kind": "value", "value": "e2eFixtures" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a service for its recorded class",
+				"call": "explorerName(unit('app.service.orders', 'service', { title: 'A descriptive title for orders', owns: { source: ['src/lib/checkout/CheckoutService.ts'], symbols: ['CheckoutOptions', 'CheckoutService', 'CheckoutResult'] } })) // => 'CheckoutService'",
+				"input": [
+					"app.service.orders",
+					"service",
+					{
+						"title": "A descriptive title for orders",
+						"owns": {
+							"source": ["src/lib/checkout/CheckoutService.ts"],
+							"symbols": ["CheckoutOptions", "CheckoutService", "CheckoutResult"]
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "CheckoutService" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name an adapter for its recorded class",
+				"call": "explorerName(unit('app.adapter.orders', 'adapter', { title: 'A descriptive title for orders', owns: { source: ['src/adapters/agent-http/AgentHttpAdapter.ts'], symbols: ['AgentHttpOptions', 'AgentHttpAdapter'] } })) // => 'AgentHttpAdapter'",
+				"input": [
+					"app.adapter.orders",
+					"adapter",
+					{
+						"title": "A descriptive title for orders",
+						"owns": {
+							"source": ["src/adapters/agent-http/AgentHttpAdapter.ts"],
+							"symbols": ["AgentHttpOptions", "AgentHttpAdapter"]
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "AgentHttpAdapter" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a repository for its recorded class",
+				"call": "explorerName(unit('app.repository.orders', 'repository', { title: 'A descriptive title for orders', owns: { source: ['src/repositories/OrderRepository.ts'], symbols: ['OrderRepository'] } })) // => 'OrderRepository'",
+				"input": [
+					"app.repository.orders",
+					"repository",
+					{
+						"title": "A descriptive title for orders",
+						"owns": {
+							"source": ["src/repositories/OrderRepository.ts"],
+							"symbols": ["OrderRepository"]
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "OrderRepository" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a workflow for its recorded function",
+				"call": "explorerName(unit('app.workflow.orders', 'workflow', { title: 'A descriptive title for orders', owns: { source: ['src/cli/program/recordAnalytics.ts'], symbols: ['AnalyticsInput', 'recordAnalytics'] } })) // => 'recordAnalytics'",
+				"input": [
+					"app.workflow.orders",
+					"workflow",
+					{
+						"title": "A descriptive title for orders",
+						"owns": {
+							"source": ["src/cli/program/recordAnalytics.ts"],
+							"symbols": ["AnalyticsInput", "recordAnalytics"]
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "recordAnalytics" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a utility function for its recorded function",
+				"call": "explorerName(unit('app.function.orders', 'function', { title: 'A descriptive title for orders', owns: { source: ['src/utils/formatDuration.ts'], symbols: ['formatDuration'] } })) // => 'formatDuration'",
+				"input": [
+					"app.function.orders",
+					"function",
+					{
+						"title": "A descriptive title for orders",
+						"owns": {
+							"source": ["src/utils/formatDuration.ts"],
+							"symbols": ["formatDuration"]
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "formatDuration" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a module for its owned file stem",
+				"call": "explorerName(unit('app.module.orders', 'module', { title: 'A descriptive title for orders', owns: { source: ['src/lib/orders/orderRules.ts'], symbols: ['validateOrder', 'sortOrders'] } })) // => 'orderRules'",
+				"input": [
+					"app.module.orders",
+					"module",
+					{
+						"title": "A descriptive title for orders",
+						"owns": {
+							"source": ["src/lib/orders/orderRules.ts"],
+							"symbols": ["validateOrder", "sortOrders"]
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "orderRules" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a component for its owned Svelte file",
+				"call": "explorerName(unit('app.component.orders', 'component', { title: 'A descriptive title for orders', owns: { source: ['src/components/order-list/OrderList.svelte'], symbols: [] } })) // => 'OrderList'",
+				"input": [
+					"app.component.orders",
+					"component",
+					{
+						"title": "A descriptive title for orders",
+						"owns": {
+							"source": ["src/components/order-list/OrderList.svelte"],
+							"symbols": []
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "OrderList" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a model for its recorded class",
+				"call": "explorerName(unit('app.model.orders', 'model', { title: 'A descriptive title for orders', owns: { source: ['src/models/Order.ts'], symbols: ['OrderFields', 'Order'] } })) // => 'Order'",
+				"input": [
+					"app.model.orders",
+					"model",
+					{
+						"title": "A descriptive title for orders",
+						"owns": {
+							"source": ["src/models/Order.ts"],
+							"symbols": ["OrderFields", "Order"]
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "Order" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a model types file for its shared model",
+				"call": "explorerName(unit('app.model.orders', 'model', { title: 'A descriptive title for orders', owns: { source: ['src/models/Order.types.ts'], symbols: ['OrderInput', 'OrderResult'] } })) // => 'Order'",
+				"input": [
+					"app.model.orders",
+					"model",
+					{
+						"title": "A descriptive title for orders",
+						"owns": {
+							"source": ["src/models/Order.types.ts"],
+							"symbols": ["OrderInput", "OrderResult"]
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "Order" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a config for its recorded config value",
+				"call": "explorerName(unit('app.config.orders', 'config', { title: 'A descriptive title for orders', owns: { source: ['src/config/orderConfig.ts'], symbols: ['OrderConfig', 'orderConfig'] } })) // => 'orderConfig'",
+				"input": [
+					"app.config.orders",
+					"config",
+					{
+						"title": "A descriptive title for orders",
+						"owns": {
+							"source": ["src/config/orderConfig.ts"],
+							"symbols": ["OrderConfig", "orderConfig"]
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "orderConfig" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep a page title that a person wrote",
+				"call": "explorerName(unit('page.orders', 'page', { title: 'Order history' })) // => 'Order history'",
+				"input": ["page.orders", "page", { "title": "Order history" }],
+				"expected": { "kind": "value", "value": "Order history" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Trim the space around a written component title",
+				"call": "explorerName(unit('component.cart', 'component', { title: '  Cart summary (mini)  ' })) // => 'Cart summary (mini)'",
+				"input": ["component.cart", "component", { "title": "  Cart summary (mini)  " }],
+				"expected": { "kind": "value", "value": "Cart summary (mini)" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name an address without a screen from its id words",
+				"call": "explorerName(unit('reports.page.harness-view', 'page', { title: '/harness/[...view]' })) // => 'Harness view'",
+				"input": ["reports.page.harness-view", "page", { "title": "/harness/[...view]" }],
+				"expected": { "kind": "value", "value": "Harness view" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a page titled with a route file name from its id",
+				"call": "explorerName(unit('page.titles', 'page', { title: '+page' })) // => 'Titles'",
+				"input": ["page.titles", "page", { "title": "+page" }],
+				"expected": { "kind": "value", "value": "Titles" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a style file from its id words, not its file ending",
+				"call": "explorerName(unit('reports.style.base-2', 'style', { title: 'base-2.css' })) // => 'Base 2'",
+				"input": ["reports.style.base-2", "style", { "title": "base-2.css" }],
+				"expected": { "kind": "value", "value": "Base 2" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name paths, file endings, identifier titles and empty titles as readable words",
+				"call": "[explorerName(unit('reports.page.harness-reports-id', 'page', { title: '/harness/reports/[id]' })), explorerName(unit('reports.script.seed-e2e', 'script', { title: 'scripts/seed-e2e.ts' })), explorerName(unit('template.audit-config', 'template', { title: 'auditConfig' })), explorerName(unit('', 'function', { title: '' }))] // => ['Harness reports ID', 'Seed E2E', 'Audit config', 'Unnamed']",
+				"input": [
+					["reports.page.harness-reports-id", "page", { "title": "/harness/reports/[id]" }],
+					["reports.script.seed-e2e", "script", { "title": "scripts/seed-e2e.ts" }],
+					["template.audit-config", "template", { "title": "auditConfig" }],
+					["", "function", { "title": "" }]
+				],
+				"expected": {
+					"kind": "value",
+					"value": ["Harness reports ID", "Seed E2E", "Audit config", "Unnamed"]
+				}
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a page whose address title has a parameter from its id",
+				"call": "explorerName(unit('page.orders', 'page', { title: '/orders/[id] page' })) // => 'Orders'",
+				"input": ["page.orders", "page", { "title": "/orders/[id] page" }],
+				"expected": { "kind": "value", "value": "Orders" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a function from its id when its title is a dotted id",
+				"call": "explorerName(unit('function.slugify', 'function', { title: 'function.slugify' })) // => 'Slugify'",
+				"input": ["function.slugify", "function", { "title": "function.slugify" }],
+				"expected": { "kind": "value", "value": "Slugify" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a script from its id when its title is a file name",
+				"call": "explorerName(unit('script.seed', 'script', { title: 'seed data.ts' })) // => 'Seed'",
+				"input": ["script.seed", "script", { "title": "seed data.ts" }],
+				"expected": { "kind": "value", "value": "Seed" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep a written title for a unit that owns no source",
+				"call": "explorerName(unit('reports.component.order-list', 'component', { title: 'Order list', owns: null })) // owns: null is the fixture marker for no owned source => 'Order list'",
+				"input": [
+					"reports.component.order-list",
+					"component",
+					{ "title": "Order list", "owns": null }
+				],
+				"expected": { "kind": "value", "value": "Order list" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name the root page Root",
+				"call": "explorerName(unit('reports.page.root', 'page', { title: '/' })) // => 'Root'",
+				"input": ["reports.page.root", "page", { "title": "/" }],
+				"expected": { "kind": "value", "value": "Root" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a collection route page by its collection",
+				"call": "explorerName(unit('reports.page.x', 'page', { title: '/harness/branch/[branch]/[...at]/functions' })) // => 'Functions'",
+				"input": [
+					"reports.page.x",
+					"page",
+					{ "title": "/harness/branch/[branch]/[...at]/functions" }
+				],
+				"expected": { "kind": "value", "value": "Functions" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a collection member page in the singular",
+				"call": "explorerName(unit('reports.page.x', 'page', { title: '/harness/branch/[branch]/[...at]/functions/[entity]' })) // => 'Function'",
+				"input": [
+					"reports.page.x",
+					"page",
+					{ "title": "/harness/branch/[branch]/[...at]/functions/[entity]" }
+				],
+				"expected": { "kind": "value", "value": "Function" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a member screen by its singular collection and screen",
+				"call": "explorerName(unit('reports.page.x', 'page', { title: '/harness/branch/[branch]/[...at]/functions/[entity]/details' })) // => 'Function details'",
+				"input": [
+					"reports.page.x",
+					"page",
+					{ "title": "/harness/branch/[branch]/[...at]/functions/[entity]/details" }
+				],
+				"expected": { "kind": "value", "value": "Function details" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a service member history screen in the singular",
+				"call": "explorerName(unit('reports.page.x', 'page', { title: '/harness/branch/[branch]/[...at]/services/[entity]/history' })) // => 'Service history'",
+				"input": [
+					"reports.page.x",
+					"page",
+					{ "title": "/harness/branch/[branch]/[...at]/services/[entity]/history" }
+				],
+				"expected": { "kind": "value", "value": "Service history" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a pages collection member in the singular",
+				"call": "explorerName(unit('reports.page.x', 'page', { title: '/harness/branch/[branch]/[...at]/pages/[entity]' })) // => 'Page'",
+				"input": [
+					"reports.page.x",
+					"page",
+					{ "title": "/harness/branch/[branch]/[...at]/pages/[entity]" }
+				],
+				"expected": { "kind": "value", "value": "Page" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a parameter-free route page from its address",
+				"call": "explorerName(unit('page.titles', 'page', { title: '/titles' })) // => 'Titles'",
+				"input": ["page.titles", "page", { "title": "/titles" }],
+				"expected": { "kind": "value", "value": "Titles" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a desktop project harness page by its screen",
+				"call": "explorerName(unit('desktop.page.projects-project-id-harness-path', 'page', { title: '/projects/[projectId]/harness/[...path]' })) // => 'Harness'",
+				"input": [
+					"desktop.page.projects-project-id-harness-path",
+					"page",
+					{ "title": "/projects/[projectId]/harness/[...path]" }
+				],
+				"expected": { "kind": "value", "value": "Harness" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a hub project harness page by its screen",
+				"call": "explorerName(unit('hub.page.projects-project-id-harness-path', 'page', { title: '/projects/[projectId]/harness/[...path]' })) // => 'Harness'",
+				"input": [
+					"hub.page.projects-project-id-harness-path",
+					"page",
+					{ "title": "/projects/[projectId]/harness/[...path]" }
+				],
+				"expected": { "kind": "value", "value": "Harness" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep a route word that is not an explorer collection",
+				"call": "explorerName(unit('reports.page.x', 'page', { title: '/teams/[team]/settings/[tab]' })) // => 'Settings'",
+				"input": ["reports.page.x", "page", { "title": "/teams/[team]/settings/[tab]" }],
+				"expected": { "kind": "value", "value": "Settings" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep every word of a multi-word route screen",
+				"call": "explorerName(unit('reports.page.x', 'page', { title: '/teams/[team]/status/[id]/details' })) // => 'Status details'",
+				"input": ["reports.page.x", "page", { "title": "/teams/[team]/status/[id]/details" }],
+				"expected": { "kind": "value", "value": "Status details" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Keep a plural route word before a parameter when it names no collection",
+				"call": "explorerName(unit('reports.page.x', 'page', { title: '/teams/[team]/members/[member]' })) // => 'Members'",
+				"input": ["reports.page.x", "page", { "title": "/teams/[team]/members/[member]" }],
+				"expected": { "kind": "value", "value": "Members" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a component member screen in the singular",
+				"call": "explorerName(unit('reports.page.x', 'page', { title: '/harness/branch/[branch]/[...at]/components/[entity]/details' })) // => 'Component details'",
+				"input": [
+					"reports.page.x",
+					"page",
+					{ "title": "/harness/branch/[branch]/[...at]/components/[entity]/details" }
+				],
+				"expected": { "kind": "value", "value": "Component details" }
+			},
+			{
+				"subject": "explorerName",
+				"name": "Name a config member page in the singular",
+				"call": "explorerName(unit('reports.page.x', 'page', { title: '/harness/branch/[branch]/[...at]/configs/[entity]' })) // => 'Config'",
+				"input": [
+					"reports.page.x",
+					"page",
+					{ "title": "/harness/branch/[branch]/[...at]/configs/[entity]" }
+				],
+				"expected": { "kind": "value", "value": "Config" }
+			},
+			{
+				"subject": "explorerAppRoute",
+				"name": "Use a slash-prefixed page title as its address",
+				"call": "explorerAppRoute(unit('reports.page.harness-view', 'page', { title: '/harness/[...view]' })) // => '/harness/[...view]'",
+				"input": ["reports.page.harness-view", "page", { "title": "/harness/[...view]" }],
+				"expected": { "kind": "value", "value": "/harness/[...view]" }
+			},
+			{
+				"subject": "explorerAppRoute",
+				"name": "Use the address of an owned route page file",
+				"call": "explorerAppRoute(unit('page.titles', 'page', { title: '+page', owns: { source: ['src/routes/titles/+page.server.ts', 'src/routes/titles/+page.svelte'], symbols: [] } })) // => '/titles'",
+				"input": [
+					"page.titles",
+					"page",
+					{
+						"title": "+page",
+						"owns": {
+							"source": ["src/routes/titles/+page.server.ts", "src/routes/titles/+page.svelte"],
+							"symbols": []
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "/titles" }
+			},
+			{
+				"subject": "explorerAppRoute",
+				"name": "Use a slash-prefixed layout title as its address",
+				"call": "explorerAppRoute(unit('reports.layout.harness', 'layout', { title: '/harness', owns: { source: ['packages/reports/src/routes/harness/+layout.svelte'], symbols: [] } })) // => '/harness'",
+				"input": [
+					"reports.layout.harness",
+					"layout",
+					{
+						"title": "/harness",
+						"owns": {
+							"source": ["packages/reports/src/routes/harness/+layout.svelte"],
+							"symbols": []
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "/harness" }
+			},
+			{
+				"subject": "explorerAppRoute",
+				"name": "Use the root route page file as the root address",
+				"call": "explorerAppRoute(unit('page.root', 'page', { title: '+page', owns: { source: ['packages/reports/src/routes/+page.svelte'], symbols: [] } })) // => '/'",
+				"input": [
+					"page.root",
+					"page",
+					{
+						"title": "+page",
+						"owns": {
+							"source": ["packages/reports/src/routes/+page.svelte"],
+							"symbols": []
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": "/" }
+			},
+			{
+				"subject": "explorerAppRoute",
+				"name": "Return null for a layout that owns no route page file",
+				"call": "explorerAppRoute(unit('reports.layout.harness-shell', 'layout', { title: 'Harness shell', owns: { source: ['packages/reports/src/routes/harness/+layout.svelte'], symbols: [] } })) // => null",
+				"input": [
+					"reports.layout.harness-shell",
+					"layout",
+					{
+						"title": "Harness shell",
+						"owns": {
+							"source": ["packages/reports/src/routes/harness/+layout.svelte"],
+							"symbols": []
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": null }
+			},
+			{
+				"subject": "explorerAppRoute",
+				"name": "Return null for a function even with an address title",
+				"call": "explorerAppRoute(unit('function.slugify', 'function', { title: '/not/a/page' })) // => null",
+				"input": ["function.slugify", "function", { "title": "/not/a/page" }],
+				"expected": { "kind": "value", "value": null }
+			},
+			{
+				"subject": "explorerAppRoute",
+				"name": "Return null for a page with no owned route file",
+				"call": "explorerAppRoute(unit('page.odd', 'page', { title: 'Odd', owns: { source: ['src/page.odd.ts'], symbols: [] } })) // => null",
+				"input": [
+					"page.odd",
+					"page",
+					{
+						"title": "Odd",
+						"owns": {
+							"source": ["src/page.odd.ts"],
+							"symbols": []
+						}
+					}
+				],
+				"expected": { "kind": "value", "value": null }
+			}
+		],
+		"states": ["code", "title", "invalid", "boundary", "route"],
+		"props": ["id", "kind", "title", "owns"],
+		"cases": [
+			{
+				"id": "explorer-name.keep-camel-case-function",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Keep a camel-case function identifier as written",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep a camel-case function identifier as written"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.keep-pascal-case-component",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Keep a PascalCase component name as written",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep a PascalCase component name as written"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.keep-service-class-name",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Keep a service class name as written",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep a service class name as written"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.keep-lowercase-function",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Keep a lowercase function name as written",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep a lowercase function name as written"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.keep-initialism-in-function",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Keep an initialism inside a function name",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep an initialism inside a function name"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.keep-initialism-in-component",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Keep an initialism inside a component name",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep an initialism inside a component name"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.keep-digit-led-initialism",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Keep a digit-led initialism inside a function name",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep a digit-led initialism inside a function name"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.keep-e2e-initialism",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Keep an e2e initialism at the start of a function name",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep an e2e initialism at the start of a function name"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.name-service-by-class",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Name a service for its recorded class",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a service for its recorded class"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-name.name-adapter-by-class",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Name an adapter for its recorded class",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name an adapter for its recorded class"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-name.name-repository-by-class",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Name a repository for its recorded class",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a repository for its recorded class"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-name.name-workflow-by-function",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Name a workflow for its recorded function",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a workflow for its recorded function"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-name.name-function-by-function",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Name a utility function for its recorded function",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a utility function for its recorded function"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-name.name-module-by-owned-file",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Name a module for its owned file stem",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a module for its owned file stem"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-name.name-component-by-svelte-file",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Name a component for its owned Svelte file",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a component for its owned Svelte file"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-name.name-model-by-class",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Name a model for its recorded class",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a model for its recorded class"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-name.name-model-types-file",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Name a model types file for its shared model",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a model types file for its shared model"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-name.name-config-by-value",
+				"state": "code",
+				"subject": "explorerName",
+				"example": "Name a config for its recorded config value",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a config for its recorded config value"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-name.keep-written-page-title",
+				"state": "title",
+				"subject": "explorerName",
+				"example": "Keep a page title that a person wrote",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep a page title that a person wrote"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.trim-written-component-title",
+				"state": "title",
+				"subject": "explorerName",
+				"example": "Trim the space around a written component title",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Trim the space around a written component title"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.address-title-uses-id-words",
+				"state": "invalid",
+				"subject": "explorerName",
+				"example": "Name an address without a screen from its id words",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name an address without a screen from its id words"
+				},
+				"props": ["id", "kind", "title"]
+			},
+			{
+				"id": "explorer-name.route-file-title-uses-id-words",
+				"state": "invalid",
+				"subject": "explorerName",
+				"example": "Name a page titled with a route file name from its id",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a page titled with a route file name from its id"
+				},
+				"props": ["id", "kind", "title"]
+			},
+			{
+				"id": "explorer-name.style-file-title-uses-id-words",
+				"state": "invalid",
+				"subject": "explorerName",
+				"example": "Name a style file from its id words, not its file ending",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a style file from its id words, not its file ending"
+				},
+				"props": ["id", "kind", "title"]
+			},
+			{
+				"id": "explorer-name.readable-words-matrix",
+				"state": "invalid",
+				"subject": "explorerName",
+				"example": "Name paths, file endings, identifier titles and empty titles as readable words",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name paths, file endings, identifier titles and empty titles as readable words"
+				},
+				"props": ["id", "kind", "title"]
+			},
+			{
+				"id": "explorer-name.parameter-led-title-uses-id",
+				"state": "invalid",
+				"subject": "explorerName",
+				"example": "Name a page whose address title has a parameter from its id",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a page whose address title has a parameter from its id"
+				},
+				"props": ["id", "kind", "title"]
+			},
+			{
+				"id": "explorer-name.dotted-id-title-uses-id",
+				"state": "invalid",
+				"subject": "explorerName",
+				"example": "Name a function from its id when its title is a dotted id",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a function from its id when its title is a dotted id"
+				},
+				"props": ["id", "kind", "title"]
+			},
+			{
+				"id": "explorer-name.file-title-script-uses-id",
+				"state": "invalid",
+				"subject": "explorerName",
+				"example": "Name a script from its id when its title is a file name",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a script from its id when its title is a file name"
+				},
+				"props": ["id", "kind", "title"]
+			},
+			{
+				"id": "explorer-name.written-title-without-source",
+				"state": "boundary",
+				"subject": "explorerName",
+				"example": "Keep a written title for a unit that owns no source",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep a written title for a unit that owns no source"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-name.root-page-root",
+				"state": "boundary",
+				"subject": "explorerName",
+				"example": "Name the root page Root",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name the root page Root"
+				},
+				"props": ["id", "kind", "title"]
+			},
+			{
+				"id": "explorer-name.collection-page-by-collection",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Name a collection route page by its collection",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a collection route page by its collection"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.collection-member-singular",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Name a collection member page in the singular",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a collection member page in the singular"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.collection-member-screen",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Name a member screen by its singular collection and screen",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a member screen by its singular collection and screen"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.service-member-history",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Name a service member history screen in the singular",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a service member history screen in the singular"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.pages-member-singular",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Name a pages collection member in the singular",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a pages collection member in the singular"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.parameter-free-route",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Name a parameter-free route page from its address",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a parameter-free route page from its address"
+				},
+				"props": ["id", "kind", "title"]
+			},
+			{
+				"id": "explorer-name.desktop-project-harness",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Name a desktop project harness page by its screen",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a desktop project harness page by its screen"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.hub-project-harness",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Name a hub project harness page by its screen",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a hub project harness page by its screen"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.non-collection-word",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Keep a route word that is not an explorer collection",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep a route word that is not an explorer collection"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.multi-word-screen",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Keep every word of a multi-word route screen",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep every word of a multi-word route screen"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.non-collection-plural-before-parameter",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Keep a plural route word before a parameter when it names no collection",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Keep a plural route word before a parameter when it names no collection"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.component-member-screen",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Name a component member screen in the singular",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a component member screen in the singular"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-name.config-member-singular",
+				"state": "route",
+				"subject": "explorerName",
+				"example": "Name a config member page in the singular",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerName: Name a config member page in the singular"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-app-route.slash-title-page-address",
+				"state": "route",
+				"subject": "explorerAppRoute",
+				"example": "Use a slash-prefixed page title as its address",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerAppRoute: Use a slash-prefixed page title as its address"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-app-route.owned-page-file-address",
+				"state": "route",
+				"subject": "explorerAppRoute",
+				"example": "Use the address of an owned route page file",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerAppRoute: Use the address of an owned route page file"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-app-route.slash-title-layout-address",
+				"state": "route",
+				"subject": "explorerAppRoute",
+				"example": "Use a slash-prefixed layout title as its address",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerAppRoute: Use a slash-prefixed layout title as its address"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-app-route.root-page-file-address",
+				"state": "boundary",
+				"subject": "explorerAppRoute",
+				"example": "Use the root route page file as the root address",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerAppRoute: Use the root route page file as the root address"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-app-route.layout-without-page-file",
+				"state": "boundary",
+				"subject": "explorerAppRoute",
+				"example": "Return null for a layout that owns no route page file",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerAppRoute: Return null for a layout that owns no route page file"
+				},
+				"props": ["kind", "title", "owns"]
+			},
+			{
+				"id": "explorer-app-route.function-with-address-title",
+				"state": "boundary",
+				"subject": "explorerAppRoute",
+				"example": "Return null for a function even with an address title",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerAppRoute: Return null for a function even with an address title"
+				},
+				"props": ["kind", "title"]
+			},
+			{
+				"id": "explorer-app-route.page-without-route-file",
+				"state": "boundary",
+				"subject": "explorerAppRoute",
+				"example": "Return null for a page with no owned route file",
+				"test": {
+					"file": "packages/reports/test/utils/explorer-name.test.ts",
+					"title": "explorerAppRoute: Return null for a page with no owned route file"
+				},
+				"props": ["kind", "title", "owns"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
