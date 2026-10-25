@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest';
 import * as media from '../../src/utils/evidenceMedia';
 const { evidenceMedia, mediaMime } = media;
-import { reportFilter } from '../../src/components/evidence-grid/reportFilter';
 test('legacy image manifests and portable audio keep their media kind', () => {
 	expect(evidenceMedia({ file: 'hash.png' })).toBe('image');
 	expect(evidenceMedia({ file: 'hash.wav' })).toBe('audio');
@@ -23,17 +22,4 @@ test('legacy image manifests and portable audio keep their media kind', () => {
 		[3661, '1:01:01']
 	] as const)
 		expect(media.formatDuration(seconds)).toBe(output);
-});
-test('search finds audio transcript and source', () => {
-	const item = {
-		id: 'voice',
-		title: 'Sound',
-		category: 'Audio',
-		file: 'hash.wav',
-		status: 'failed' as const,
-		transcript: 'Quiet time',
-		source: 'French GPT Live'
-	};
-	for (const search of ['quiet', 'French'])
-		expect(reportFilter([item], { search, category: '', phase: '', status: '' })).toEqual([item]);
 });

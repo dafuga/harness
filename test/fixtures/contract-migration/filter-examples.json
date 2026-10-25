@@ -1,0 +1,1164 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.report-filter",
+	"kind": "function",
+	"title": "Report and evidence filtering",
+	"responsibility": "Classifies viewport sizes and filters report galleries and project lists.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/evidence-grid/reportFilter.ts",
+			"packages/reports/src/components/verification-evidence/evidence-grid/reportFilter.ts",
+			"packages/reports/src/utils/reportFilter.ts",
+			"packages/reports/src/utils/verification-evidence/reportFilter.ts",
+			"packages/reports/src/utils/verification-evidence/reportFilter.types.ts"
+		],
+		"symbols": [
+			"reportFilter",
+			"reportFilter",
+			"reportFilter",
+			"screenSize",
+			"galleryEvidence",
+			"projectFilter",
+			"screenSize",
+			"galleryEvidence",
+			"projectFilter",
+			"reportFilter",
+			"ScreenSize",
+			"Filters",
+			"ScreenSize",
+			"Filters"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "screenSize.item",
+				"type": "Evidence",
+				"description": "Evidence viewport label to classify."
+			},
+			{
+				"name": "galleryEvidence.items",
+				"type": "Evidence[]",
+				"description": "Evidence items to choose gallery representatives from."
+			},
+			{
+				"name": "galleryEvidence.pairs",
+				"type": "unknown",
+				"description": "Optional after-to-before audio pair map, defaulting to audioPairs(items)."
+			},
+			{
+				"name": "reportFilter.items",
+				"type": "Evidence[]",
+				"description": "Evidence items to filter."
+			},
+			{
+				"name": "reportFilter.filter",
+				"type": "Filters",
+				"description": "Search text and optional exact category, phase and status filters."
+			},
+			{
+				"name": "reportFilter.pairs",
+				"type": "ReadonlyMap<string, Evidence>",
+				"description": "Optional after-to-before pair map allowing either member to satisfy all filters."
+			},
+			{
+				"name": "projectFilter.run",
+				"type": "Report",
+				"description": "Report to test for a project-list match."
+			},
+			{
+				"name": "projectFilter.query",
+				"type": "string",
+				"description": "Case-insensitive text query, not trimmed."
+			},
+			{
+				"name": "projectFilter.project",
+				"type": "string",
+				"description": "Optional exact project identifier; empty accepts all projects."
+			}
+		],
+		"outputs": [
+			{
+				"name": "screenSize",
+				"type": "ScreenSize",
+				"description": "Mobile/tablet/desktop from known words first, otherwise the first numeric width with boundaries at 700 and 1100; other when no positive width is found."
+			},
+			{
+				"name": "galleryEvidence",
+				"type": "unknown",
+				"description": "All non-before items plus unpaired before-audio items. Paired before audio and all before images are hidden as separate gallery entries."
+			},
+			{
+				"name": "reportFilter",
+				"type": "unknown",
+				"description": "Matches where either the item or its paired before item satisfies all filters, sorted by order with missing order treated as zero. Search spans title, notes, category, viewport, source and transcript."
+			},
+			{
+				"name": "projectFilter",
+				"type": "unknown",
+				"description": "True when project selection matches and the lowercased project name, title or summary contains the query."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{ "unit": "reports.function.audio-pairs", "via": "import", "origin": "derived" },
+		{ "unit": "reports.function.evidence-media", "via": "import", "origin": "derived" },
+		{ "unit": "reports.model.report-types", "via": "import", "origin": "derived" }
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/verification-evidence/reportFilter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/verification-evidence/reportFilter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"states": ["typical", "boundary"],
+		"examples": [
+			{
+				"subject": "screenSize",
+				"name": "Prefer a named mobile viewport over its numeric width",
+				"call": "screenSize(item)",
+				"input": [
+					{
+						"id": "named",
+						"title": "Capture",
+						"category": "Screens",
+						"file": "capture.png",
+						"status": "passed",
+						"viewport": "1280px mobile"
+					}
+				],
+				"expected": { "kind": "value", "value": "mobile" }
+			},
+			{
+				"subject": "screenSize",
+				"name": "Use the mobile threshold below 700px",
+				"call": "screenSize(item)",
+				"input": [
+					{
+						"id": "mobile",
+						"title": "Capture",
+						"category": "Screens",
+						"file": "capture.png",
+						"status": "passed",
+						"viewport": "699px"
+					}
+				],
+				"expected": { "kind": "value", "value": "mobile" }
+			},
+			{
+				"subject": "screenSize",
+				"name": "Use the tablet threshold at 700px",
+				"call": "screenSize(item)",
+				"input": [
+					{
+						"id": "tablet-start",
+						"title": "Capture",
+						"category": "Screens",
+						"file": "capture.png",
+						"status": "passed",
+						"viewport": "700px"
+					}
+				],
+				"expected": { "kind": "value", "value": "tablet" }
+			},
+			{
+				"subject": "screenSize",
+				"name": "Keep 1099px in the tablet range",
+				"call": "screenSize(item)",
+				"input": [
+					{
+						"id": "tablet-end",
+						"title": "Capture",
+						"category": "Screens",
+						"file": "capture.png",
+						"status": "passed",
+						"viewport": "1099px"
+					}
+				],
+				"expected": { "kind": "value", "value": "tablet" }
+			},
+			{
+				"subject": "screenSize",
+				"name": "Use the desktop threshold at 1100px",
+				"call": "screenSize(item)",
+				"input": [
+					{
+						"id": "desktop",
+						"title": "Capture",
+						"category": "Screens",
+						"file": "capture.png",
+						"status": "passed",
+						"viewport": "1100px"
+					}
+				],
+				"expected": { "kind": "value", "value": "desktop" }
+			},
+			{
+				"subject": "screenSize",
+				"name": "Return other when no positive width is present",
+				"call": "screenSize(item)",
+				"input": [
+					{
+						"id": "other",
+						"title": "Capture",
+						"category": "Screens",
+						"file": "capture.png",
+						"status": "passed",
+						"viewport": "preview"
+					}
+				],
+				"expected": { "kind": "value", "value": "other" }
+			},
+			{
+				"subject": "galleryEvidence",
+				"name": "Hide a paired before recording from the gallery",
+				"call": "galleryEvidence(items)",
+				"input": [
+					[
+						{
+							"id": "before",
+							"title": "Early recording",
+							"category": "Voice",
+							"file": "before.wav",
+							"status": "failed",
+							"source": "Unique microphone source",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						},
+						{
+							"id": "after",
+							"title": "Later recording",
+							"category": "Voice",
+							"file": "after.wav",
+							"status": "passed",
+							"source": "Later source",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "after",
+							"title": "Later recording",
+							"category": "Voice",
+							"file": "after.wav",
+							"status": "passed",
+							"source": "Later source",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					]
+				}
+			},
+			{
+				"subject": "galleryEvidence",
+				"name": "Retain an unpaired before recording",
+				"call": "galleryEvidence(items)",
+				"input": [
+					[
+						{
+							"id": "before",
+							"title": "Early recording",
+							"category": "Voice",
+							"file": "before.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						},
+						{
+							"id": "mobile",
+							"title": "Mobile recording",
+							"category": "Voice",
+							"file": "mobile.wav",
+							"status": "passed",
+							"viewport": "mobile",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "before",
+							"title": "Early recording",
+							"category": "Voice",
+							"file": "before.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						},
+						{
+							"id": "mobile",
+							"title": "Mobile recording",
+							"category": "Voice",
+							"file": "mobile.wav",
+							"status": "passed",
+							"viewport": "mobile",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					]
+				}
+			},
+			{
+				"subject": "galleryEvidence",
+				"name": "Hide before images but retain current evidence",
+				"call": "galleryEvidence(items)",
+				"input": [
+					[
+						{
+							"id": "before-image",
+							"title": "Old image",
+							"category": "Screens",
+							"file": "before.png",
+							"status": "passed",
+							"phase": "before",
+							"mediaType": "image"
+						},
+						{
+							"id": "current",
+							"title": "Current image",
+							"category": "Screens",
+							"file": "current.png",
+							"status": "passed",
+							"phase": "current",
+							"mediaType": "image"
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "current",
+							"title": "Current image",
+							"category": "Screens",
+							"file": "current.png",
+							"status": "passed",
+							"phase": "current",
+							"mediaType": "image"
+						}
+					]
+				}
+			},
+			{
+				"subject": "galleryEvidence",
+				"name": "Retain an audio item without a comparison name",
+				"call": "galleryEvidence(items)",
+				"input": [
+					[
+						{
+							"id": "before",
+							"title": "Early recording",
+							"category": "Voice",
+							"file": "before.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						},
+						{
+							"id": "no-comparison",
+							"title": "Unpaired recording",
+							"category": "Voice",
+							"file": "unpaired.wav",
+							"status": "passed",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "",
+							"mediaType": "audio"
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "before",
+							"title": "Early recording",
+							"category": "Voice",
+							"file": "before.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						},
+						{
+							"id": "no-comparison",
+							"title": "Unpaired recording",
+							"category": "Voice",
+							"file": "unpaired.wav",
+							"status": "passed",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "",
+							"mediaType": "audio"
+						}
+					]
+				}
+			},
+			{
+				"subject": "galleryEvidence",
+				"name": "Retain an after image when its before is cross-media",
+				"call": "galleryEvidence(items)",
+				"input": [
+					[
+						{
+							"id": "before",
+							"title": "Early recording",
+							"category": "Voice",
+							"file": "before.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						},
+						{
+							"id": "image-after",
+							"title": "Image result",
+							"category": "Voice",
+							"file": "after.png",
+							"status": "passed",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "image"
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "before",
+							"title": "Early recording",
+							"category": "Voice",
+							"file": "before.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						},
+						{
+							"id": "image-after",
+							"title": "Image result",
+							"category": "Voice",
+							"file": "after.png",
+							"status": "passed",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "image"
+						}
+					]
+				}
+			},
+			{
+				"subject": "galleryEvidence",
+				"name": "Show a lone before recording",
+				"call": "galleryEvidence(items)",
+				"input": [
+					[
+						{
+							"id": "before",
+							"title": "Early recording",
+							"category": "Voice",
+							"file": "before.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "before",
+							"title": "Early recording",
+							"category": "Voice",
+							"file": "before.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					]
+				}
+			},
+			{
+				"subject": "galleryEvidence",
+				"name": "Keep ambiguous audio recordings visible",
+				"call": "galleryEvidence(items)",
+				"input": [
+					[
+						{
+							"id": "before",
+							"title": "Early recording",
+							"category": "Voice",
+							"file": "before.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						},
+						{
+							"id": "duplicate",
+							"title": "Duplicate recording",
+							"category": "Voice",
+							"file": "duplicate.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						},
+						{
+							"id": "after",
+							"title": "Later recording",
+							"category": "Voice",
+							"file": "after.wav",
+							"status": "passed",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "before",
+							"title": "Early recording",
+							"category": "Voice",
+							"file": "before.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						},
+						{
+							"id": "duplicate",
+							"title": "Duplicate recording",
+							"category": "Voice",
+							"file": "duplicate.wav",
+							"status": "failed",
+							"viewport": "desktop",
+							"phase": "before",
+							"comparison": "voice",
+							"mediaType": "audio"
+						},
+						{
+							"id": "after",
+							"title": "Later recording",
+							"category": "Voice",
+							"file": "after.wav",
+							"status": "passed",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					]
+				}
+			},
+			{
+				"subject": "galleryEvidence",
+				"name": "Accept an explicit after-to-before pair map",
+				"call": "galleryEvidence(items, pairs)",
+				"input": [
+					[
+						{
+							"id": "after",
+							"title": "Later recording",
+							"category": "Voice",
+							"file": "after.wav",
+							"status": "passed",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					],
+					[
+						[
+							"after",
+							{
+								"id": "before",
+								"title": "Early recording",
+								"category": "Voice",
+								"file": "before.wav",
+								"status": "failed",
+								"viewport": "desktop",
+								"phase": "before",
+								"comparison": "voice",
+								"mediaType": "audio"
+							}
+						]
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "after",
+							"title": "Later recording",
+							"category": "Voice",
+							"file": "after.wav",
+							"status": "passed",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					]
+				}
+			},
+			{
+				"subject": "reportFilter",
+				"name": "Find transcript text without changing the item",
+				"call": "reportFilter(items, filter)",
+				"input": [
+					[
+						{
+							"id": "voice",
+							"title": "Sound",
+							"category": "Audio",
+							"file": "hash.wav",
+							"status": "failed",
+							"transcript": "Quiet time",
+							"source": "French GPT Live"
+						}
+					],
+					{ "search": "quiet", "category": "", "phase": "", "status": "" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "voice",
+							"title": "Sound",
+							"category": "Audio",
+							"file": "hash.wav",
+							"status": "failed",
+							"transcript": "Quiet time",
+							"source": "French GPT Live"
+						}
+					]
+				}
+			},
+			{
+				"subject": "reportFilter",
+				"name": "Find source text case-insensitively",
+				"call": "reportFilter(items, filter)",
+				"input": [
+					[
+						{
+							"id": "voice",
+							"title": "Sound",
+							"category": "Audio",
+							"file": "hash.wav",
+							"status": "failed",
+							"transcript": "Quiet time",
+							"source": "French GPT Live"
+						}
+					],
+					{ "search": "French", "category": "", "phase": "", "status": "" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "voice",
+							"title": "Sound",
+							"category": "Audio",
+							"file": "hash.wav",
+							"status": "failed",
+							"transcript": "Quiet time",
+							"source": "French GPT Live"
+						}
+					]
+				}
+			},
+			{
+				"subject": "reportFilter",
+				"name": "Apply category phase status and order",
+				"call": "reportFilter(items, filter)",
+				"input": [
+					[
+						{
+							"id": "late",
+							"title": "Late",
+							"category": "Review",
+							"file": "late.png",
+							"status": "passed",
+							"phase": "after",
+							"viewport": "desktop",
+							"order": 4
+						},
+						{
+							"id": "first",
+							"title": "First",
+							"category": "Review",
+							"file": "first.png",
+							"status": "passed",
+							"phase": "after",
+							"viewport": "desktop",
+							"order": 1
+						},
+						{
+							"id": "zero",
+							"title": "Zero",
+							"category": "Review",
+							"file": "zero.png",
+							"status": "passed",
+							"phase": "after",
+							"viewport": "desktop"
+						}
+					],
+					{ "search": "", "category": "Review", "phase": "after", "status": "passed" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "zero",
+							"title": "Zero",
+							"category": "Review",
+							"file": "zero.png",
+							"status": "passed",
+							"phase": "after",
+							"viewport": "desktop"
+						},
+						{
+							"id": "first",
+							"title": "First",
+							"category": "Review",
+							"file": "first.png",
+							"status": "passed",
+							"phase": "after",
+							"viewport": "desktop",
+							"order": 1
+						},
+						{
+							"id": "late",
+							"title": "Late",
+							"category": "Review",
+							"file": "late.png",
+							"status": "passed",
+							"phase": "after",
+							"viewport": "desktop",
+							"order": 4
+						}
+					]
+				}
+			},
+			{
+				"subject": "reportFilter",
+				"name": "Let a paired before item satisfy the filters",
+				"call": "reportFilter(items, filter, pairs)",
+				"input": [
+					[
+						{
+							"id": "after",
+							"title": "Later recording",
+							"category": "Voice",
+							"file": "after.wav",
+							"status": "passed",
+							"source": "Later source",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					],
+					{ "search": "Unique microphone", "category": "", "phase": "", "status": "failed" },
+					[
+						[
+							"after",
+							{
+								"id": "before",
+								"title": "Early recording",
+								"category": "Voice",
+								"file": "before.wav",
+								"status": "failed",
+								"source": "Unique microphone source",
+								"viewport": "desktop",
+								"phase": "before",
+								"comparison": "voice",
+								"mediaType": "audio"
+							}
+						]
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "after",
+							"title": "Later recording",
+							"category": "Voice",
+							"file": "after.wav",
+							"status": "passed",
+							"source": "Later source",
+							"viewport": "desktop",
+							"phase": "after",
+							"comparison": "voice",
+							"mediaType": "audio"
+						}
+					]
+				}
+			},
+			{
+				"subject": "projectFilter",
+				"name": "Match the project name and identifier case-insensitively",
+				"call": "projectFilter(report, query, project)",
+				"input": [
+					{
+						"project": { "id": "project-7", "name": "BuildFlexity", "path": "/tmp/buildflexity" },
+						"title": "Release report",
+						"summary": "Ready for review"
+					},
+					"buildflexity",
+					"project-7"
+				],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "projectFilter",
+				"name": "Match a title query when the project is unrestricted",
+				"call": "projectFilter(report, query, project)",
+				"input": [
+					{
+						"project": { "id": "project-7", "name": "BuildFlexity", "path": "/tmp/buildflexity" },
+						"title": "Release report",
+						"summary": "Ready for review"
+					},
+					"release",
+					""
+				],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "projectFilter",
+				"name": "Match a summary query",
+				"call": "projectFilter(report, query, project)",
+				"input": [
+					{
+						"project": { "id": "project-7", "name": "BuildFlexity", "path": "/tmp/buildflexity" },
+						"title": "Release report",
+						"summary": "Ready for review"
+					},
+					"ready",
+					""
+				],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "projectFilter",
+				"name": "Reject an over-indented query",
+				"call": "projectFilter(report, query, project)",
+				"input": [
+					{
+						"project": { "id": "project-7", "name": "BuildFlexity", "path": "/tmp/buildflexity" },
+						"title": "Release report",
+						"summary": "Ready for review"
+					},
+					"  release",
+					""
+				],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "projectFilter",
+				"name": "Reject a different project",
+				"call": "projectFilter(report, query, project)",
+				"input": [
+					{
+						"project": { "id": "project-7", "name": "BuildFlexity", "path": "/tmp/buildflexity" },
+						"title": "Release report",
+						"summary": "Ready for review"
+					},
+					"release",
+					"other-project"
+				],
+				"expected": { "kind": "value", "value": false }
+			}
+		],
+		"cases": [
+			{
+				"id": "screen-size.named-mobile",
+				"state": "typical",
+				"subject": "screenSize",
+				"example": "Prefer a named mobile viewport over its numeric width",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "screenSize: Prefer a named mobile viewport over its numeric width"
+				}
+			},
+			{
+				"id": "screen-size.mobile-boundary",
+				"state": "boundary",
+				"subject": "screenSize",
+				"example": "Use the mobile threshold below 700px",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "screenSize: Use the mobile threshold below 700px"
+				}
+			},
+			{
+				"id": "screen-size.tablet-start",
+				"state": "boundary",
+				"subject": "screenSize",
+				"example": "Use the tablet threshold at 700px",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "screenSize: Use the tablet threshold at 700px"
+				}
+			},
+			{
+				"id": "screen-size.tablet-end",
+				"state": "boundary",
+				"subject": "screenSize",
+				"example": "Keep 1099px in the tablet range",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "screenSize: Keep 1099px in the tablet range"
+				}
+			},
+			{
+				"id": "screen-size.desktop-boundary",
+				"state": "boundary",
+				"subject": "screenSize",
+				"example": "Use the desktop threshold at 1100px",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "screenSize: Use the desktop threshold at 1100px"
+				}
+			},
+			{
+				"id": "screen-size.other",
+				"state": "boundary",
+				"subject": "screenSize",
+				"example": "Return other when no positive width is present",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "screenSize: Return other when no positive width is present"
+				}
+			},
+			{
+				"id": "gallery-evidence.paired-before",
+				"state": "typical",
+				"subject": "galleryEvidence",
+				"example": "Hide a paired before recording from the gallery",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "galleryEvidence: Hide a paired before recording from the gallery"
+				}
+			},
+			{
+				"id": "gallery-evidence.unpaired-before",
+				"state": "boundary",
+				"subject": "galleryEvidence",
+				"example": "Retain an unpaired before recording",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "galleryEvidence: Retain an unpaired before recording"
+				}
+			},
+			{
+				"id": "gallery-evidence.before-image",
+				"state": "boundary",
+				"subject": "galleryEvidence",
+				"example": "Hide before images but retain current evidence",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "galleryEvidence: Hide before images but retain current evidence"
+				}
+			},
+			{
+				"id": "gallery-evidence.missing-comparison",
+				"state": "boundary",
+				"subject": "galleryEvidence",
+				"example": "Retain an audio item without a comparison name",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "galleryEvidence: Retain an audio item without a comparison name"
+				}
+			},
+			{
+				"id": "gallery-evidence.cross-media",
+				"state": "boundary",
+				"subject": "galleryEvidence",
+				"example": "Retain an after image when its before is cross-media",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "galleryEvidence: Retain an after image when its before is cross-media"
+				}
+			},
+			{
+				"id": "gallery-evidence.lone-before",
+				"state": "boundary",
+				"subject": "galleryEvidence",
+				"example": "Show a lone before recording",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "galleryEvidence: Show a lone before recording"
+				}
+			},
+			{
+				"id": "gallery-evidence.ambiguous-audio",
+				"state": "boundary",
+				"subject": "galleryEvidence",
+				"example": "Keep ambiguous audio recordings visible",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "galleryEvidence: Keep ambiguous audio recordings visible"
+				}
+			},
+			{
+				"id": "gallery-evidence.explicit-pair-map",
+				"state": "boundary",
+				"subject": "galleryEvidence",
+				"example": "Accept an explicit after-to-before pair map",
+				"fixture": "packages/reports/test/utils/report-filter.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "galleryEvidence: Accept an explicit after-to-before pair map"
+				}
+			},
+			{
+				"id": "report-filter.transcript-search",
+				"state": "typical",
+				"subject": "reportFilter",
+				"example": "Find transcript text without changing the item",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "reportFilter: Find transcript text without changing the item"
+				}
+			},
+			{
+				"id": "report-filter.source-search",
+				"state": "typical",
+				"subject": "reportFilter",
+				"example": "Find source text case-insensitively",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "reportFilter: Find source text case-insensitively"
+				}
+			},
+			{
+				"id": "report-filter.order-and-status",
+				"state": "boundary",
+				"subject": "reportFilter",
+				"example": "Apply category phase status and order",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "reportFilter: Apply category phase status and order"
+				}
+			},
+			{
+				"id": "report-filter.paired-before",
+				"state": "boundary",
+				"subject": "reportFilter",
+				"example": "Let a paired before item satisfy the filters",
+				"fixture": "packages/reports/test/utils/report-filter.test.ts",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "reportFilter: Let a paired before item satisfy the filters"
+				}
+			},
+			{
+				"id": "project-filter.project-name",
+				"state": "typical",
+				"subject": "projectFilter",
+				"example": "Match the project name and identifier case-insensitively",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "projectFilter: Match the project name and identifier case-insensitively"
+				}
+			},
+			{
+				"id": "project-filter.title",
+				"state": "typical",
+				"subject": "projectFilter",
+				"example": "Match a title query when the project is unrestricted",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "projectFilter: Match a title query when the project is unrestricted"
+				}
+			},
+			{
+				"id": "project-filter.summary",
+				"state": "typical",
+				"subject": "projectFilter",
+				"example": "Match a summary query",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "projectFilter: Match a summary query"
+				}
+			},
+			{
+				"id": "project-filter.whitespace",
+				"state": "boundary",
+				"subject": "projectFilter",
+				"example": "Reject an over-indented query",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "projectFilter: Reject an over-indented query"
+				}
+			},
+			{
+				"id": "project-filter.other-project",
+				"state": "boundary",
+				"subject": "projectFilter",
+				"example": "Reject a different project",
+				"test": {
+					"file": "packages/reports/test/utils/report-filter.test.ts",
+					"title": "projectFilter: Reject a different project"
+				}
+			}
+		]
+	},
+	"budgets": { "size": "frozen", "complexity": "frozen", "performance": [] }
+}
