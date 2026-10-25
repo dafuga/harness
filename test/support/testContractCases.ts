@@ -1,5 +1,5 @@
 import { expect } from 'vitest';
-import type { ComponentManifest } from '../../src/core/unitTypes';
+import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
 import type { TestContractService } from '../../src/services/verification-evidence/TestContractService';
 type ContractUnit = ComponentManifest & { testing: NonNullable<ComponentManifest['testing']> };
 
@@ -89,4 +89,34 @@ export function assertExpandedCapabilities(
 		service.compare([unit], [renamed]).join(' '),
 		'an existing supported state retains its case identity'
 	).toContain('case identities/count changed');
+}
+
+/** Admission is exercised in memory: JSON round trips would erase these accepted properties. */
+export function assertCaseAdmissionInputs(unit: ContractUnit, service: TestContractService) {
+	let reads = 0;
+	const id = unit.testing.cases[0].id;
+	const item = { ...unit.testing.cases[0] };
+	Object.defineProperty(item, 'id', {
+		enumerable: true,
+		get: () => {
+			reads++;
+			return id;
+		}
+	});
+	const cases = [item];
+	Object.defineProperty(cases, Symbol.iterator, {
+		value: function* () {
+			yield item;
+		}
+	});
+	Object.defineProperty(cases, 'constructor', { value: { [Symbol.species]: Array } });
+	const raw = { ...unit, testing: { ...unit.testing, cases } };
+	expect(componentManifestSchema.safeParse(raw).success).toBe(true);
+	expect(service.compare([raw], [raw])).toEqual([]);
+	const inflated = {
+		...raw,
+		testing: { ...raw.testing, cases: [...cases, { ...item, id: 'extra' }] }
+	};
+	expect(service.compare([raw], [inflated]).join(' ')).toContain('case identities/count changed');
+	expect(reads).toBeGreaterThan(0);
 }

@@ -1,4 +1,8 @@
-import { assertExecutedCases, assertExpandedCapabilities } from '../../support/testContractCases';
+import {
+	assertExecutedCases,
+	assertExpandedCapabilities,
+	assertCaseAdmissionInputs
+} from '../../support/testContractCases';
 import { expect, test } from 'vitest';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { TestContractService } from '../../../src/services/verification-evidence/TestContractService';
@@ -65,6 +69,7 @@ test('validate initialized and invalid registries against declared cases', async
 
 test('compare initialized contracts preserves identities unless capabilities change', async () => {
 	const unit = await fixture();
+	assertCaseAdmissionInputs(unit, service);
 	const changed = {
 		...unit,
 		testing: {
