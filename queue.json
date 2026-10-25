@@ -3698,6 +3698,63 @@
 			},
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.relay-manage-methods",
+			"title": "Migrate relay.validator.manage-body standard cases",
+			"moduleGoal": "Preserve existing assertions within its exact declared entity cases",
+			"verificationFiles": [
+				"packages/relay/test/validators/manage-body.test.ts",
+				"test/fixtures/contract-migration/relay-manage-methods.json"
+			],
+			"instructions": "Migrate only packages/relay/test/validators/manage-body.test.ts and write a full proposed copy of specification/units/relay.validator.manage-body.json at test/fixtures/contract-migration/relay-manage-methods.json. Do not edit specification, implementation, shared contracts or other files. This is a bounded initial contract migration, not a bug repair. Keep every existing substantive assertion, disposable fixture, real crypto/Response boundary and forwarding import. No commits, memory updates or delegation. Do not run build, lint, tests, package installs or broad commands: primary owns verification and integration. Use at most these two files; finish with reviewable edits promptly.\nThe validators are stateless: exactly one canonical case for each public method in initialized state, containing success, malformed/null/unknown/boundary properties in that method case. Construct a fresh validator and real fixture inside every case; no global shared instance or beforeAll state. Merge prior success/error test declarations into their responsible method cases without dropping assertions. Add meaningful missing error props within the same case. Declare service testing shape, states, stable IDs, expected metadata, input props and errors. No duplicate method/state slots. Register canonical callbacks with TestExpectationService.registerCases(test, imported proposed full manifest, literal repository-relative test path, case-id callback map); no computed dynamic test() loops. Import the proposed JSON manifest from the task fixture path. Preserve original manifest fields outside testing. Report original/new counts and all retained assertions.",
+			"wantedContract": {
+				"responsibility": "Canonical service coverage for relay.validator.manage-body",
+				"inputs": [
+					{
+						"name": "existing declarations and supported states",
+						"type": "authored contract"
+					}
+				],
+				"outputs": [
+					{
+						"name": "standard suite and proposed full manifest",
+						"type": "reviewable test source"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid input props",
+						"type": "authored failure outcomes"
+					}
+				]
+			},
+			"model": "claude-haiku-5-5",
+			"provider": "claude",
+			"intelligence": "max",
+			"assignee": "relay-manage-methods",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "relay.validator.manage-body",
+				"goal": "Preserve existing assertions within its exact declared entity cases",
+				"files": [
+					"packages/relay/src/validators/ManageBodyValidator.ts",
+					"packages/relay/src/validators/development-tooling/ManageBodyValidator.ts",
+					"packages/relay/test/validators/manage-body.test.ts",
+					"test/fixtures/contract-migration/relay-manage-methods.json"
+				]
+			},
+			"sourceCommit": "d529e6b4531763c4d09213cceca5dc5b498a26eb",
+			"contractHash": "20a3cedb639d1b2c5e4b75d410b5be0ab39ba10ad75db5afe439de2b9ed75ee2",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T17:38:41.957Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
