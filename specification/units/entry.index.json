@@ -156,7 +156,8 @@
 			"ModuleDataSnapshotValidator",
 			"ModuleDataReviewRepository",
 			"ModuleDataSourceAdapter",
-			"moduleScenarioReviews"
+			"moduleScenarioReviews",
+			"ModuleTaskServerService"
 		]
 	},
 	"contract": {
@@ -648,6 +649,11 @@
 		},
 		{
 			"unit": "service.agents-providers-module-task-analytics",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-server",
 			"via": "reexport",
 			"origin": "derived"
 		},

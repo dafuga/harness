@@ -203,3 +203,4 @@ export { ModuleDataSnapshotValidator } from './validators/development-tooling/Mo
 export { ModuleDataReviewRepository } from './repositories/git-source-history/ModuleDataReviewRepository';
 export { ModuleDataSourceAdapter } from './adapters/git-source-history/ModuleDataSourceAdapter';
 export { moduleScenarioReviews } from './utils/git-source-history/moduleScenarioReviews';
+export { ModuleTaskServerService } from './services/agents-providers/ModuleTaskServerService';
