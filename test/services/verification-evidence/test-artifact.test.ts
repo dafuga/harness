@@ -14,7 +14,7 @@ test('capture initialized audio artifacts retains playable bytes and rejects inv
 			HARNESS_VERIFY_REVISION: 'a'.repeat(40)
 		});
 		const artifact = {
-			unit: 'service.tone',
+			unit: 'service.verification-evidence-test-artifact',
 			case: 'capture-initialized',
 			state: 'initialized',
 			evidence: 'generated-audio',
@@ -51,10 +51,20 @@ function assertInvalidArtifacts(
 	for (const changed of [
 		{ ...artifact, transcript: '' },
 		{ ...artifact, unit: 'invalid/id' },
+		{ ...artifact, unit: 'service.unregistered' },
+		{ ...artifact, case: 'unregistered' },
+		{ ...artifact, state: 'unregistered' },
+		{ ...artifact, evidence: 'unregistered' },
 		{ ...artifact, case: 'invalid/id' },
 		{ ...artifact, provenance: 'observed' as never },
 		{ ...artifact, bytes: Buffer.from('not WAV') },
 		{ ...artifact, file: '../escape.wav' }
 	])
-		expect(() => service.capture(changed)).toThrow();
+		expect(
+			() => service.capture(changed),
+			'artifacts must belong to their registered case/state/slot'
+		).toThrow();
+	expect(() =>
+		new TestArtifactService({ HARNESS_VERIFY_REVISION: 'invalid' }).capture(artifact)
+	).toThrow();
 }
