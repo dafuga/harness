@@ -14,6 +14,7 @@ export async function hubPinnedSource(
 		repository: base.repository,
 		cache: base.cache,
 		commit,
+		sourceTree: revision.tree,
 		entries: await base.source.tree(base.repository, commit),
 		// Keep the requesting source tree and pinned notes/evidence in every cache identity.
 		identity: { ...base.identity, requestedRef: commit }

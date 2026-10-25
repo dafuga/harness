@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { moduleDataRef } from '../../../../src/services/git-source-history/module-data-service/moduleDataProtocol';
 import {
 	actor,
 	outsider,
@@ -17,7 +18,11 @@ test('hosted projection cache avoids rebuilding unchanged GitHub snapshots and s
 	};
 	expect(await f.projection.snapshot(actor, project.id, query)).toEqual(first);
 	await expect(f.projection.snapshot(outsider, project.id, query)).rejects.toThrow();
-	f.source.optionalRef = async () => ({ commit: '8'.repeat(40), tree: '7'.repeat(40) });
+	const original = f.source.optionalRef;
+	f.source.optionalRef = async (repository, ref) =>
+		ref === moduleDataRef
+			? original(repository, ref)
+			: { commit: '8'.repeat(40), tree: '7'.repeat(40) };
 	await expect(f.projection.snapshot(actor, project.id, query)).rejects.toThrow(
 		'Unexpected projection rebuild'
 	);

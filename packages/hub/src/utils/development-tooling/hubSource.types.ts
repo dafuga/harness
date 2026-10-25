@@ -10,6 +10,8 @@ export interface HubSourceContext {
 	source: SourceHistoryAdapter;
 	repository: Project['sourceRepository'];
 	commit: string;
+	/** Tree of this selected commit; the requesting cache identity may belong to another revision. */
+	sourceTree: string;
 	entries: SourceEntry[];
 	identity: CacheIdentity;
 	cache: CollaborationCache;

@@ -16,7 +16,7 @@ export async function hubModuleData(context: HubSourceContext, admit = false): P
 	const identity = {
 		producer,
 		commit: context.commit,
-		tree: context.identity.sourceTree,
+		tree: context.sourceTree,
 		inputs: { notes: context.identity.notesRevision, evidence: context.identity.evidenceRevision }
 	};
 	const data = await readModuleSnapshot(context, tip.commit, identity);
@@ -24,9 +24,6 @@ export async function hubModuleData(context: HubSourceContext, admit = false): P
 	const failure = admit ? formatModuleDataFailure(data) : undefined;
 	if (failure) throw new Error(failure);
 	return data;
-}
-export function hubRequiresModuleData(context: HubSourceContext) {
-	return context.entries.some((entry) => entry.path === 'harness.validation.json');
 }
 
 async function readModuleSnapshot(

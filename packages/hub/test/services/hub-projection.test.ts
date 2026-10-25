@@ -80,6 +80,11 @@ test('registry reads include backend contracts and recheck project membership be
 		new URL('../../../../specification/units/entry.program.json', import.meta.url)
 	);
 	f.files.set('specification/units/entry.program.json', new Uint8Array(manifest));
+	for (const path of componentManifestSchema.parse(JSON.parse(manifest.toString())).owns.source)
+		f.files.set(
+			path,
+			new Uint8Array(readFileSync(new URL('../../../../' + path, import.meta.url)))
+		);
 	const request = () =>
 		new Request(
 			`https://fixture.example/api/projects/${project.id}/registry?commit=${commit}&branch=feat%2Fa%2Fb`
