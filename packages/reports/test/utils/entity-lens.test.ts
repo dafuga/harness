@@ -4,10 +4,11 @@ import { entityLabels, entityLens } from '../../src/utils/entityLens';
 import { place } from '../entityPlaces';
 import { commits, ids } from '../entityUnits';
 
-test('there are exactly seven collections and pages come first', () =>
+test('the ten collections keep Pages first and APIs immediately after', () =>
 	measureWorkload('reports.function.entity-lens', 'layout-catalog-behavior', () => {
-		expect(Object.keys(entityLabels)).toEqual([
+		expect(Object.keys(entityLabels), 'Pages stay first when APIs are listed').toEqual([
 			'pages',
+			'apis',
 			'layouts',
 			'components',
 			'functions',
