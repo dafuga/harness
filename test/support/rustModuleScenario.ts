@@ -12,8 +12,23 @@ export async function assertRustModuleProject(project: string): Promise<void> {
 		await runHarness(['module', 'add', id], project);
 		await runHarness(['module', 'generate', id, 'kernel', 'Metrics'], project);
 	}
-	await measureWorkload('template.module-system-rust-wasm-module', 'compile-generated-wasm', () =>
-		runCommand(['bun', 'run', 'build:wasm', 'metrics'], project)
+	await measureWorkload(
+		'template.module-system-rust-wasm-module',
+		'test-and-compile-generated-wasm',
+		async () => {
+			await runCommand(
+				[
+					'cargo',
+					'test',
+					'--manifest-path',
+					'src/services/rust-wasm/metrics/Cargo.toml',
+					'--target-dir',
+					'.cache/rust-wasm/metrics'
+				],
+				project
+			);
+			await runCommand(['bun', 'run', 'build:wasm', 'metrics'], project);
+		}
 	);
 	const target = join(project, '.cache/rust-backend/metrics');
 	await measureWorkload(

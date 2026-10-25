@@ -2,20 +2,26 @@
 	"name": "code-capability-modules",
 	"goal": "Every Code destination is contributed by a default-included module; opt-in Rust Wasm and Rust backend modules compile and execute through their generated boundaries",
 	"createdAt": "2026-10-25T15:12:42.442Z",
-	"updatedAt": "2026-10-25T15:12:42.442Z",
+	"updatedAt": "2026-10-25T16:31:57.723Z",
 	"template": "feature",
-	"templateLineage": ["feature"],
+	"templateLineage": [
+		"feature"
+	],
 	"enforceOrder": false,
 	"steps": [
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:31:57.035Z",
+			"evidence": "Code uses nine included module definitions; Email, Offline and both Rust targets remain opt-in. Preserve existing IDs, URLs and scoped revision navigation."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:31:57.723Z",
+			"evidence": "8eb2f5ff2e unifies Code contributions and Rust generators; c7900e4df7 admits declared source roots; 70d28a8c34 preserves generated taxonomy. Focused red-green pairs are retained."
 		},
 		{
 			"id": "test",
