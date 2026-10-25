@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.script.committed-fixture",
+	"kind": "script",
+	"title": "committed-fixture",
+	"responsibility": "Publish metadata for synthetic fixture commits while preserving normal resource admission.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/scripts/committed-fixture.ts"],
+		"symbols": ["fixtureGit", "publishFixture", "seedOwnedFixture"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "fixtureGit.root",
+				"type": "string",
+				"description": "Disposable Git project in which to execute the fixture command."
+			},
+			{
+				"name": "fixtureGit.args",
+				"type": "string[]",
+				"description": "Git arguments authored by the fixture; commit commands also publish metadata."
+			},
+			{
+				"name": "publishFixture.root",
+				"type": "string",
+				"description": "Disposable project whose exact revision is being validated."
+			},
+			{
+				"name": "publishFixture.commit",
+				"type": "string",
+				"description": "Source commit or revision to validate; defaults to HEAD."
+			},
+			{
+				"name": "seedOwnedFixture.root",
+				"type": "string",
+				"description": "Disposable project receiving the opaque source ownership declaration."
+			},
+			{
+				"name": "seedOwnedFixture.source",
+				"type": "string",
+				"description": "Owned source path; defaults to src/owned.ts."
+			}
+		],
+		"outputs": [
+			{
+				"name": "fixtureGit",
+				"type": "string",
+				"description": "Trimmed Git output after publishing any new commit metadata."
+			},
+			{
+				"name": "publishFixture",
+				"type": "void",
+				"description": "Persist the real validation report, including intentional invalid fixture diagnostics."
+			},
+			{
+				"name": "seedOwnedFixture",
+				"type": "void",
+				"description": "Write the fixture source ownership and empty callable contract."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Refuse Git or producer execution failures and uncommitted metadata reports."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "entry.index",
+			"via": "url",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/scripts/committed-fixture.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/scripts/committed-fixture.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

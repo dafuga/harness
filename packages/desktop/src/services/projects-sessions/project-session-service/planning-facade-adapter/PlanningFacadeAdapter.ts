@@ -1,4 +1,5 @@
 import { createPlanning } from '../../../../../../planning/src/lib/planning/index';
+import { ModuleDataService } from '../../../../../../../src/services/git-source-history/ModuleDataService';
 import type { ComponentManifest } from '../../../../../../../src/lib/contracts';
 import type { PlanningApi } from '../../../../../../planning/src/lib/planning/index';
 import type {
@@ -25,7 +26,10 @@ import { planningMessage } from './planningMessage';
 export class PlanningFacadeAdapter implements PlanningPort {
 	private constructor(private context: { root: string; api: PlanningApi }) {}
 	static async open(root: string) {
-		return new PlanningFacadeAdapter({ root, api: await createPlanning(root) });
+		return new PlanningFacadeAdapter({
+			root,
+			api: committedPlanningApi(root, await createPlanning(root))
+		});
 	}
 	plans(revision: string) {
 		return planningReads(this.context, revision);
@@ -57,4 +61,23 @@ export class PlanningFacadeAdapter implements PlanningPort {
 	history(entityId: string, revision: string) {
 		return readPlanHistory(this.context, entityId, revision);
 	}
+}
+
+/** The app is a source writer too: publish complete metadata for each exact planning commit. */
+function committedPlanningApi(root: string, api: PlanningApi): PlanningApi {
+	const metadata = new ModuleDataService(root);
+	const committed = async <Result extends { commit: string }>(work: Promise<Result>) => {
+		const result = await work;
+		await metadata.validate({ commit: result.commit, write: true });
+		await metadata.require(result.commit);
+		return result;
+	};
+	return {
+		...api,
+		createPlan: (input) => committed(api.createPlan(input)),
+		addDesign: (input) => committed(api.addDesign(input)),
+		openThread: (input) => committed(api.openThread(input)),
+		appendMessage: (input) => committed(api.appendMessage(input)),
+		approveDesign: (input) => committed(api.approveDesign(input))
+	};
 }
