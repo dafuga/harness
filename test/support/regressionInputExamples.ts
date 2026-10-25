@@ -5,7 +5,11 @@ import {
 } from '../../src/utils/verification-evidence/regressionFiles';
 import { regressionTestCommit } from '../../src/workflows/verification-evidence/record-regression/regressionFiles';
 import { regressionInputFixture, fixtureUnitPath } from './regressionInputFixture';
-import type { FrozenFixtureInputs, RegressionInputExample } from './regressionInputFixture.types';
+import type {
+	FrozenFixtureInputs,
+	RegressionInputExample,
+	RegressionInputFixture
+} from './regressionInputFixture.types';
 
 /** Return the actual tracked-file and authored-data projection, including real Git blob identities. */
 export async function invokeRegressionFiles(input: RegressionInputExample) {
@@ -51,6 +55,7 @@ export async function invokeRegressionFix(input: RegressionInputExample): Promis
 			changes['source.ts'] = 'export function selectedValue(): number { return 3; }';
 		if (input.fixture === 'changed-test') changes['test/proof.ts'] = 'export const selected = 2;';
 		if (input.fixture === 'authored') {
+			await assertAuthoredInputVariants(fixture);
 			fixture.unit.testing!.examples![0].expected = { kind: 'value', value: 2 };
 			changes[fixtureUnitPath] = JSON.stringify(fixture.unit);
 			changes['source.ts'] = 'export function selectedValue(): number { return 2; }';
@@ -91,5 +96,22 @@ export async function invokeRegressionTestCommit(input: RegressionInputExample):
 		await regressionTestCommit(fixture.root, commit, tests);
 	} finally {
 		await fixture.close();
+	}
+}
+
+/** The same authored-answer case also retains its case identity and contract Example inputs. */
+async function assertAuthoredInputVariants(fixture: RegressionInputFixture): Promise<void> {
+	for (const variant of ['case-identity', 'contract-example']) {
+		const unit = globalThis.structuredClone(fixture.unit);
+		if (variant === 'case-identity') unit.testing!.cases[0].id = 'renamed';
+		else unit.contract.outputs[0].examples = [2];
+		const commit = await fixture.commit({
+			'source.ts': 'export function selectedValue(): number { return 3; }',
+			[fixtureUnitPath]: JSON.stringify(unit)
+		});
+		await expect(
+			regressionFixCommit(fixture.root, commit, fixture.red),
+			'Authored case identities and example comments must remain unchanged'
+		).rejects.toThrow('authored regression expectations');
 	}
 }
