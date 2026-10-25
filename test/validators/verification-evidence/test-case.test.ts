@@ -3,16 +3,15 @@ import type { ComponentManifest } from '../../../src/core/unitTypes';
 import type { ContractCase } from '../../../src/services/verification-evidence/TestContractService';
 import { TestCaseValidator } from '../../../src/validators/verification-evidence/TestCaseValidator';
 import { indexFiles, unitOf } from '../../support/memoryTree';
-import { assertDeclaredCases } from '../../support/testCaseAdmissionCases';
+import {
+	observedDeclaredCases,
+	observedAuthoredCases,
+	assertExampleAdmissionInputs
+} from '../../support/testCaseAdmissionCases';
 
 const validator = new TestCaseValidator();
 test('validate each allowed shape and its missing or invalid states', async () => {
-	const indexed = await indexFiles({
-		'src/utils/rank.ts': 'export function rank(value: number): number { return value; }',
-		'src/services/runner.ts': 'export class Runner { run(value: number): number { return value; } }'
-	});
-	const unit = unitOf(indexed, 'service.runner');
-	const helper = unitOf(indexed, 'function.rank');
+	const { unit, helper } = await indexedOwners();
 	const item = {
 		id: 'rest',
 		state: 'rest',
@@ -50,9 +49,14 @@ test('validate each allowed shape and its missing or invalid states', async () =
 	expect(validator.validate(unit, { ...contract, shape: 'helper' }).errors.join(' ')).toContain(
 		'authored Examples'
 	);
-	assertAuthoredExampleCases(helper, { ...item, subject: 'rank' });
+	const authored = observedAuthoredCases(validator, helper, { ...item, subject: 'rank' });
+	const declared = observedDeclaredCases(validator, unit, helper, item);
+	assertExampleAdmissionInputs(validator, helper, item);
+	expect(
+		[...authored, ...declared],
+		'helper case expectations must match their authored Example; method/state matrices must be finite'
+	).toEqual([false, false, false, false, false, false, false, false, false, false]);
 	assertMethodStateCases(unit, item);
-	assertDeclaredCases(validator, unit, helper, item);
 	expect(
 		validator.validate(unit, {
 			...contract,
@@ -61,40 +65,12 @@ test('validate each allowed shape and its missing or invalid states', async () =
 	).toBe(false);
 });
 
-function assertAuthoredExampleCases(unit: ComponentManifest, item: ContractCase) {
-	const authored = {
-		version: 1,
-		states: ['rest'],
-		shape: 'helper',
-		examples: [
-			{
-				subject: 'rank',
-				name: 'Identity',
-				call: 'rank(1)',
-				input: [1],
-				expected: { kind: 'value' as const, value: 1 }
-			}
-		],
-		cases: [{ ...item, example: 'Identity', test: { ...item.test, title: 'rank: Identity' } }]
-	};
-	expect(validator.validate(unit, authored).errors).toEqual([]);
-	expect(
-		validator.validate(unit, {
-			...authored,
-			cases: [
-				{
-					...authored.cases[0],
-					expected: { kind: 'value', value: 2 }
-				}
-			]
-		}).valid,
-		'helper case expectations must match their authored Example'
-	).toBe(false);
-	expect(
-		validator
-			.validate(unit, { ...authored, examples: [...authored.examples, ...authored.examples] })
-			.errors.join(' ')
-	).toContain('duplicate authored example');
+async function indexedOwners() {
+	const indexed = await indexFiles({
+		'src/utils/rank.ts': 'export function rank(value: number): number { return value; }',
+		'src/services/runner.ts': 'export class Runner { run(value: number): number { return value; } }'
+	});
+	return { unit: unitOf(indexed, 'service.runner'), helper: unitOf(indexed, 'function.rank') };
 }
 
 function assertMethodStateCases(unit: ComponentManifest, item: ContractCase) {
