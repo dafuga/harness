@@ -1,3 +1,4 @@
+import { reviewPermissionProfiles } from './entityPreviewPermissions';
 import { expect, type Page } from '@playwright/test';
 import { open, capture, fits, ready } from './entityPreviewPage';
 import { commits, ids } from './entityUnits';
@@ -8,8 +9,12 @@ export async function reviewApis(page: Page, viewport: string): Promise<void> {
 	await open(page, { category: 'pages', entity: ids.page }, 'apis');
 	await ready(page);
 	await capture(page, `api-entry-${viewport}`, ['reports.component.harness-harness-navbar']);
-	await expect(page.getByRole('link', { name: 'APIs', exact: true })).toHaveCount(1);
-	await page.getByRole('link', { name: 'APIs', exact: true }).click();
+	await page.getByRole('link', { name: 'Code', exact: true }).click();
+	const apiTab = page
+		.getByRole('tablist', { name: 'Code categories' })
+		.getByRole('tab', { name: 'APIs', exact: true });
+	await expect(apiTab).toHaveCount(1);
+	await apiTab.click();
 	await expect(page.getByRole('heading', { level: 1, name: 'APIs', exact: true })).toBeVisible();
 	await expect(page.getByRole('status').filter({ hasText: '3 of 3 apis shown' })).toBeVisible();
 	await capture(page, `api-catalog-${viewport}`, [
@@ -31,6 +36,7 @@ export async function reviewApis(page: Page, viewport: string): Promise<void> {
 		'reports.component.entity-contract',
 		'reports.component.harness-entity-header'
 	]);
+	await reviewPermissionProfiles(page, viewport);
 	await page.getByRole('tab', { name: 'Used In', exact: true }).click();
 	await page.getByRole('link', { name: 'Open Orders page', exact: true }).first().click();
 	await page.getByRole('tab', { name: 'APIs', exact: true }).click();
