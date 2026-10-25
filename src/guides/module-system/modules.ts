@@ -11,7 +11,10 @@ export const modulesGuide: Guide = {
 		'Generate a resource declared by the installed module, implement its application adapters and verify it.'
 	],
 	rules: [
-		'Every Code destination is module-declared; nine standard capabilities are includedByDefault and optional modules require installation.',
+		'Every Code destination is module-declared; twelve standard capabilities are includedByDefault and optional modules require installation.',
+		'Only Pages, Code, Translations and Platforms are top-level destinations; APIs, Users & Permissions and Modules are contributed under Code.',
+		'User profiles live in specification/permissions/<id>.json. Their explicit grants name endpoint IDs and HTTP methods, page IDs, and data resources/actions/fields/scopes. This catalog documents declarations; application handlers enforce authorization.',
+		'Use harness permissions list, harness permissions show <id> and harness api permissions <endpoint-id>; --root selects project source and --commit or --branch pins its revision.',
 		'Module definitions are declarative data; discovery never imports project code.',
 		'Installed definitions and generated resource records live in harness.modules.json and are read from the selected revision.',
 		'Project modules live in specification/modules/<id>/module.json and use the same schema as built-ins.',
@@ -27,6 +30,9 @@ export const modulesGuide: Guide = {
 	exampleCommands: [
 		'harness module list --json',
 		'harness module info offline',
+		'harness module generate permissions profile Member',
+		'harness permissions show member --json',
+		'harness api permissions app.endpoint.orders --root .',
 		'harness module add email',
 		'harness module generate email email Welcome',
 		'harness module add offline',

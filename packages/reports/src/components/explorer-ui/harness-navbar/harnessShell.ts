@@ -14,9 +14,7 @@ import { categoryIcon, type HarnessIconName } from '../../../utils/explorer-ui/h
 
 const labels: Array<[HarnessShellCategory['id'], string]> = [
 	['pages', 'Pages'],
-	['apis', 'APIs'],
 	['modules', 'Code'],
-	['module-library', 'Modules'],
 	['translations', 'Translations'],
 	['platforms', 'Platforms']
 ];
@@ -32,6 +30,7 @@ function categoryActive(place: ExplorerLocation | null, id: HarnessShellCategory
 }
 
 function categoryGlyph(id: HarnessShellCategory['id']): HarnessIconName {
+	if (id === 'permissions') return 'shield';
 	if (id === 'styles') return 'styles';
 	if (id === 'translations') return 'web';
 	if (id === 'modules') return 'layers';

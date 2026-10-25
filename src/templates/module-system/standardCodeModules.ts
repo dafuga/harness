@@ -1,7 +1,9 @@
 import { scaffoldKinds } from '../development-tooling/scaffoldTypes';
 import type { ModuleDefinition } from '../../services/module-system/moduleDefinition.types';
+const moduleIds: Record<string, string> = { functions: 'helpers', 'module-library': 'modules' };
 /** Standard capabilities are ordinary module definitions, included before any project installation. */
 export const standardCodeModules: ModuleDefinition[] = [
+	['apis', 'APIs', 'API endpoint', 'api'],
 	['layouts', 'Layouts', 'Layout', 'layout'],
 	['components', 'Components', 'Component', 'component'],
 	['models', 'Models', 'Model', 'model'],
@@ -10,11 +12,13 @@ export const standardCodeModules: ModuleDefinition[] = [
 	['types', 'Types', 'Type', 'type'],
 	['configs', 'Configs', 'Config', 'config'],
 	['styles', 'Styles', 'Style', 'style'],
-	['dependencies', 'Dependencies', 'Dependency', 'dependency']
+	['dependencies', 'Dependencies', 'Dependency', 'dependency'],
+	['permissions', 'Users & Permissions', 'User profile', 'profile'],
+	['module-library', 'Modules', 'Module', 'module']
 ].map(
 	([catalog, title, singular, kind], order): ModuleDefinition => ({
 		schemaVersion: 1,
-		id: catalog === 'functions' ? 'helpers' : catalog,
+		id: moduleIds[catalog] ?? catalog,
 		version: '1.0.0',
 		title,
 		includedByDefault: true,
@@ -47,6 +51,18 @@ function resourceInstructions(kind: string): string[] {
 		return [
 			'Use a registry package name and exact version, such as lit@3.3.1; generation edits package.json without installing or running scripts.'
 		];
+	if (kind === 'api')
+		return [
+			'Define endpoint grants in specification/permissions/<profile>.json, then inspect them with harness api permissions <endpoint-id>. Application handlers own runtime authorization.'
+		];
+	if (kind === 'profile')
+		return [
+			'Declare each API method, page grant and data action, field and row scope explicitly. Empty grants never establish public access. Query with harness permissions list or harness permissions show <profile>.'
+		];
+	if (kind === 'module')
+		return [
+			'Edit the generated module definition, then install it with harness module add <id>. Its declared resources use the same generation and instructions contract.'
+		];
 	if (kind === 'helper')
 		return [
 			'Keep helpers pure and synchronous. The public Helpers catalog requires reviewed contracts and two distinct runtime consumers.'
@@ -66,6 +82,8 @@ function resourceInstructions(kind: string): string[] {
 function resourceGeneration(
 	kind: string
 ): Pick<ModuleDefinition['resources'][number], 'files' | 'generator'> {
+	if (kind === 'profile') return profileGeneration();
+	if (kind === 'module') return moduleGeneration();
 	if (kind === 'dependency') return { files: [], generator: { kind: 'dependency' } };
 	if (kind === 'type')
 		return {
@@ -88,4 +106,46 @@ function resourceGeneration(
 	const scaffold = kind === 'model' ? 'model' : scaffoldKinds.find((value) => value === kind);
 	if (!scaffold) throw new Error('Unknown standard scaffold.');
 	return { files: [], generator: { kind: 'scaffold', scaffold } };
+}
+
+function profileGeneration() {
+	return {
+		files: [
+			{
+				path: 'specification/permissions/{{kebabName}}.json',
+				contents:
+					JSON.stringify(
+						{
+							schemaVersion: 1,
+							id: '{{kebabName}}',
+							title: '{{PascalName}}',
+							description: 'Describe this user profile.',
+							grants: []
+						},
+						null,
+						'\t'
+					) + '\n'
+			}
+		]
+	};
+}
+function moduleGeneration() {
+	const file = JSON.stringify({
+		path: 'src/services/{{group}}/{{PascalName}}Service.ts',
+		contents: 'export class {{PascalName}}Service {}\n'
+	})
+		.replaceAll('{{', '\\u007b\\u007b')
+		.replaceAll('}}', '\\u007d\\u007d');
+	return {
+		files: [
+			{
+				path: 'specification/modules/{{kebabName}}/module.json',
+				contents: `{
+ "schemaVersion":1,"id":"{{kebabName}}","version":"1.0.0","title":"{{PascalName}}",
+ "description":"Describe this capability.","instructions":["Review generated code and define its contract."],"setup":[],"dependencies":{},
+ "resources":[{"id":"service","title":"{{PascalName}} services","singular":"{{PascalName}} service","kind":"service","instructions":["Implement this resource."],"files":[${file}]}]
+}\n`
+			}
+		]
+	};
 }

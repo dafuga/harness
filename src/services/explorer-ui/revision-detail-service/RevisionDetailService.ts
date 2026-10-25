@@ -1,3 +1,4 @@
+import { PermissionCatalogService } from '../../networking-security/PermissionCatalogService';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
 import { translationCatalog } from './translationCatalog';
 import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailService.types';
@@ -178,6 +179,7 @@ function catalogFields(stored: Stored) {
 		platforms: stored.platforms,
 		translations: stored.translations,
 		projectDependencies: stored.projectDependencies,
+		permissions: stored.permissions,
 		modules: stored.modules
 	};
 }
@@ -185,6 +187,7 @@ function catalogFields(stored: Stored) {
 async function readCatalogs(tree: SourceTree, registry: RevisionRegistry) {
 	return {
 		platforms: await readPlatformCatalog(tree),
+		permissions: await new PermissionCatalogService().at(tree),
 		modules: await new ModuleCatalogService().at(tree),
 		projectDependencies: await projectDependencies(tree),
 		translations: await translationCatalog(tree, registry.units)

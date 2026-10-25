@@ -20,7 +20,14 @@ export const explorerSections = ['details', 'history'] as const;
 const categoryAlias = new Map([['shells', 'layouts']]);
 const canonicalCategory = (name: string) => categoryAlias.get(name) ?? name;
 const hash = /^[0-9a-f]{40}$/;
-const screens = new Set(['styles', 'translations', 'dependencies', 'modules', 'module-resources']);
+const screens = new Set([
+	'styles',
+	'translations',
+	'dependencies',
+	'modules',
+	'module-resources',
+	'permissions'
+]);
 const isCategory = (name: string): name is ExplorerCategory =>
 	explorerCategories.some((known) => known === name);
 const isSection = (name: string): name is ExplorerSection =>
@@ -85,7 +92,7 @@ export function explorerRoute(path: string, search = ''): ExplorerLocation | und
 }
 
 function screenSelection(found: Scope, screen: ExplorerScreen): ExplorerLocation | undefined {
-	const module = screen === 'modules' || screen === 'module-resources';
+	const module = ['modules', 'module-resources', 'permissions'].includes(screen);
 	if (found.rest.length !== 1 && !(module && found.rest.length === 2)) return undefined;
 	const entity = found.rest[1] && decoded(found.rest[1]);
 	if (found.rest[1] && (!entity || !/^[a-z][a-z0-9.-]*$/.test(entity))) return undefined;
@@ -172,6 +179,6 @@ function specialPath(location: ExplorerLocation): string | undefined {
 export type { ExplorerScreen, ExplorerSection, ExplorerLocation } from './explorerRoute.types';
 
 function moduleScreenPath(location: ExplorerLocation): string {
-	const module = location.screen === 'modules' || location.screen === 'module-resources';
+	const module = ['modules', 'module-resources', 'permissions'].includes(location.screen ?? '');
 	return `/${location.screen}${module && location.entity ? `/${encodeURIComponent(location.entity)}` : ''}`;
 }

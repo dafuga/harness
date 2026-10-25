@@ -213,3 +213,4 @@ export { rustWasmModule } from './templates/module-system/rustWasmModule';
 export { rustBackendModule } from './templates/module-system/rustBackendModule';
 export { moduleResourceLocation } from './helpers/module-system/moduleResourceLocation';
 export { PermissionCatalogService } from './services/networking-security/PermissionCatalogService';
+export { PermissionsCommand } from './commands/networking-security/PermissionsCommand';

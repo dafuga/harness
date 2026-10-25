@@ -67,6 +67,7 @@ export const explorerTabs = {
 	overview: [
 		'overview',
 		'contract',
+		'permissions',
 		'table',
 		'models',
 		'apis',
@@ -101,6 +102,7 @@ function pageQueryTab(asked: string | null, category: ExplorerLocation['category
 /** Keep the category checks in their original order while selecting a query tab. */
 function tabQuery(location: ExplorerLocation, search: string): string | null | undefined {
 	const requested = new URLSearchParams(search).get('tab');
+	if (requested === 'permissions' && location.category !== 'apis') return undefined;
 	const visual = ['pages', 'components', 'layouts'].includes(location.category);
 	if (invalidAudioTab(requested, location)) return undefined;
 	let asked = pageQueryTab(requested, location.category);

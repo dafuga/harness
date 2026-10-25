@@ -49,6 +49,7 @@ export interface HarnessShellCategory {
 		| 'translations'
 		| 'modules'
 		| 'module-library'
+		| 'permissions'
 		| `resource:${string}`;
 	label: string;
 	icon: HarnessIconName;

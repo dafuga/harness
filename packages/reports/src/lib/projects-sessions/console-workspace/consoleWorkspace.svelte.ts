@@ -16,7 +16,8 @@ export function createConsoleWorkspaceStore(navigate: (path: string, replace: bo
 /** Global module screens discuss the project, while keeping source-unit selection explicit. */
 function projectChatPath(path: string): string {
 	const route = explorerRoute(path.replace(/^\/harness/, ''));
-	if (!route || !['modules', 'module-resources'].includes(route.screen ?? '')) return path;
+	if (!route || !['modules', 'module-resources', 'permissions'].includes(route.screen ?? ''))
+		return path;
 	return (
 		'/harness' +
 		explorerRoutePath({ branch: route.branch, commit: route.commit, category: 'pages' })

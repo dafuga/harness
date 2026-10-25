@@ -1,3 +1,4 @@
+import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
 import { registerTaskCommand } from './program/TaskCommand';
 import { ModuleCommand } from '../commands/module-system/ModuleCommand';
 import { ApiCommand } from '../commands/networking-security/ApiCommand';
@@ -54,6 +55,7 @@ export function buildProgram(): Command {
 	registerTaskCommand(program);
 	new ModuleCommand().register(program);
 	new ApiCommand().register(program);
+	new PermissionsCommand().register(program);
 	registerHistoryCommand(program);
 	registerHooksCommand(program);
 	registerConsoleCommand(program);

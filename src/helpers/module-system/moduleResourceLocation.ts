@@ -8,6 +8,13 @@ export function moduleResourceLocation(
 ): ExplorerLocation {
 	const { branch, commit } = scope;
 	const category = resource.catalog;
+	if (category === 'permissions' || category === 'module-library')
+		return {
+			branch,
+			commit,
+			category: 'pages',
+			screen: category === 'module-library' ? 'modules' : 'permissions'
+		};
 	if (category === 'styles' || category === 'dependencies')
 		return { branch, commit, category: 'pages', screen: category };
 	if (category) return { branch, commit, category };

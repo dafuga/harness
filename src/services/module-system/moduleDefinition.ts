@@ -14,6 +14,9 @@ export const moduleResourceSchema = z
 		files: z.array(moduleFileSchema).default([]),
 		catalog: z
 			.enum([
+				'apis',
+				'permissions',
+				'module-library',
 				'layouts',
 				'components',
 				'models',
