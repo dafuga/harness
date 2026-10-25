@@ -206,3 +206,8 @@ export type {
 	ModuleCatalog
 } from './services/module-system/moduleDefinition.types';
 export { moduleDefinitionSchema } from './services/module-system/moduleDefinition';
+export { ModuleScaffoldService } from './services/module-system/ModuleScaffoldService';
+export { ModulePackageService } from './services/module-system/ModulePackageService';
+export { standardCodeModules } from './templates/module-system/standardCodeModules';
+export { rustWasmModule } from './templates/module-system/rustWasmModule';
+export { rustBackendModule } from './templates/module-system/rustBackendModule';

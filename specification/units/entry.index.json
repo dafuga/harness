@@ -156,7 +156,12 @@
 			"ModuleResource",
 			"ModuleState",
 			"ModuleCatalog",
-			"moduleDefinitionSchema"
+			"moduleDefinitionSchema",
+			"ModuleScaffoldService",
+			"ModulePackageService",
+			"standardCodeModules",
+			"rustWasmModule",
+			"rustBackendModule"
 		]
 	},
 	"contract": {
@@ -702,7 +707,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.module-system-module-package",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.module-system-module-resource",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-scaffold",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -758,6 +773,21 @@
 		},
 		{
 			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-rust-backend-module",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-rust-wasm-module",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-standard-code-modules",
 			"via": "reexport",
 			"origin": "derived"
 		},
