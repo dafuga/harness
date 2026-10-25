@@ -14,19 +14,44 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "moduleScenarioReviews.value",
-				"type": "string"
+				"name": "moduleScenarioReviews.scenarios",
+				"type": "ScenarioManifest[]"
+			},
+			{
+				"name": "moduleScenarioReviews.reviews",
+				"type": "ModuleReviewInput[]"
 			}
 		],
 		"outputs": [
 			{
 				"name": "moduleScenarioReviews",
-				"type": "string"
+				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data-review",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.scenario-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/git-source-history/moduleScenarioReviews.ts",

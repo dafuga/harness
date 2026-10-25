@@ -1,3 +1,4 @@
+import { moduleScenarioReviews } from '../../../utils/git-source-history/moduleScenarioReviews';
 import { ModuleDataReviewRepository } from '../../../repositories/git-source-history/ModuleDataReviewRepository';
 import { applyModuleReviews, unresolvedReviewIssues } from './moduleReviews';
 import { SourceIndexService } from '../../development-tooling/source-index-service/SourceIndexService';
@@ -42,6 +43,7 @@ async function scanModuleSourceFacts(
 	const limits = new BudgetService().baselines(ledger.events, declarations);
 	const reviews = await new ModuleDataReviewRepository(root).read(identity);
 	applyModuleReviews(declarations, reviews, blobs);
+	const scenarioIssues = moduleScenarioReviews(loaded.scenarios, reviews);
 	const registry = revisionRegistry(declarations, loaded.scenarios, blobs, limits);
 	await unitMetadata(tree, registry.units);
 	modulePreviewBindings(registry, declarations);
@@ -58,7 +60,10 @@ async function scanModuleSourceFacts(
 		references: sourceGraph.uncertain,
 		relationships: moduleRelationships(registry),
 		sourceIssues: [
-			...unresolvedReviewIssues(loaded.errors, reviews),
+			...unresolvedReviewIssues(
+				loaded.errors.filter((issue) => !scenarioIssues.has(issue)),
+				reviews
+			),
 			...declarations.flatMap((unit) => previewBinding(unit, loaded.scenarios)),
 			...new UnitRegistryValidator().validate(declarations, new Set(loaded.index.files.keys()))
 		]

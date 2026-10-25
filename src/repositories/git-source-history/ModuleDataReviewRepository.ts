@@ -1,3 +1,6 @@
+import { ModuleDataSourceAdapter } from '../../adapters/git-source-history/ModuleDataSourceAdapter';
+import { ScenarioRepository } from '../ScenarioRepository';
+import { moduleScenarioReviews } from '../../utils/git-source-history/moduleScenarioReviews';
 import { createHash } from 'node:crypto';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import type { ModuleDataIdentity } from './ModuleDataRepository.types';
@@ -9,7 +12,7 @@ import { moduleReviewSchema } from './module-data-review-repository/moduleReview
 /** Commit source-bound authoring separately from source history; evidence and ownership are immutable. */
 export class ModuleDataReviewRepository {
 	private tree: EvidenceTreeAdapter;
-	constructor(root: string) {
+	constructor(private readonly root: string) {
 		this.tree = new EvidenceTreeAdapter(root);
 	}
 	async read(identity: ModuleDataIdentity): Promise<ModuleReview[]> {
@@ -31,7 +34,8 @@ export class ModuleDataReviewRepository {
 				moduleReviewSchema.parse({
 					unit: review.unit,
 					reason: review.reason,
-					metadata: review.metadata
+					metadata: review.metadata,
+					scenarios: review.scenarios
 				});
 				return review;
 			})
@@ -45,6 +49,13 @@ export class ModuleDataReviewRepository {
 		const blobs = await this.tree.list(identity.commit);
 		const inputs = Array.isArray(input) ? input : [input];
 		const reviews = inputs.map((item) => this.bind(identity, units, item, blobs));
+		if (reviews.some((review) => review.scenarios?.length)) {
+			const tree = await ModuleDataSourceAdapter.open(this.root, identity.commit);
+			const scenarios = await new ScenarioRepository(this.root).read(tree);
+			const replaced = new Set(reviews.map((review) => review.unit));
+			const retained = (await this.read(identity)).filter((review) => !replaced.has(review.unit));
+			moduleScenarioReviews(scenarios.manifests, [...retained, ...reviews]);
+		}
 		if (reviews.length) await this.commit(reviews);
 	}
 	private bind(
@@ -58,7 +69,7 @@ export class ModuleDataReviewRepository {
 			throw new Error('Review belongs to a different source commit.');
 		const unit = units.find((unit) => unit.id === requested.unit);
 		if (!unit) throw new Error(`Unknown review module: ${requested.unit}`);
-		this.checkRuntime(requested.metadata.runtime, unit);
+		checkRuntime(requested.metadata.runtime, unit);
 		const files = Object.fromEntries(
 			unit.owns.source.map((path) => {
 				const hash = blobs.get(path);
@@ -74,20 +85,6 @@ export class ModuleDataReviewRepository {
 			files
 		};
 		return { ...body, digest: seal(body) };
-	}
-
-	private checkRuntime(runtime: ComponentManifest['runtime'] | undefined, unit: ComponentManifest) {
-		if (
-			runtime &&
-			(runtime.kind !== 'module' ||
-				!unit.owns.source.includes(runtime.entry) ||
-				!runtime.targets.some(
-					(target) => target.kind === runtime.kind && target.entry === runtime.entry
-				))
-		)
-			throw new Error(
-				'Runtime reviews must name an owned module entry and include its default target.'
-			);
 	}
 
 	private async commit(reviews: ModuleReview[]) {
@@ -126,4 +123,18 @@ export class ModuleDataReviewRepository {
 }
 function seal(body: unknown) {
 	return createHash('sha256').update(canonicalJson(body)).digest('hex');
+}
+
+function checkRuntime(runtime: ComponentManifest['runtime'] | undefined, unit: ComponentManifest) {
+	if (
+		runtime &&
+		(runtime.kind !== 'module' ||
+			!unit.owns.source.includes(runtime.entry) ||
+			!runtime.targets.some(
+				(target) => target.kind === runtime.kind && target.entry === runtime.entry
+			))
+	)
+		throw new Error(
+			'Runtime reviews must name an owned module entry and include its default target.'
+		);
 }

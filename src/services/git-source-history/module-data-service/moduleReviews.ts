@@ -1,3 +1,4 @@
+import { moduleScenarioReviews } from '../../../utils/git-source-history/moduleScenarioReviews';
 import type { ModuleData } from '../ModuleDataService.types';
 import { ModuleDataSourceAdapter } from '../../../adapters/git-source-history/ModuleDataSourceAdapter';
 import { ModuleDataReviewRepository } from '../../../repositories/git-source-history/ModuleDataReviewRepository';
@@ -42,10 +43,12 @@ export async function reviewedModuleFacts(root: string, prior: ModuleData) {
 	applyModuleReviews(declarations, reviews, blobs);
 	const changed = new Set(reviews.map((review) => review.unit));
 	const scenarios = await new ScenarioRepository(root).read(tree);
+	const scenarioIssues = moduleScenarioReviews(scenarios.manifests, reviews);
 	const fresh = revisionRegistry(declarations, scenarios.manifests, blobs);
 	const old = new Map(prior.registry.units.map((unit) => [unit.id, unit]));
 	const registry = {
 		...prior.registry,
+		scenarios: fresh.scenarios,
 		units: fresh.units.map((unit) =>
 			changed.has(unit.id) ? { ...old.get(unit.id), ...unit } : old.get(unit.id)!
 		)
@@ -68,7 +71,7 @@ export async function reviewedModuleFacts(root: string, prior: ModuleData) {
 	const oldIssues = new Set(validator.validate(prior.declarations, new Set(blobs.keys())));
 	const sourceIssues = [
 		...unresolvedReviewIssues(
-			prior.sourceIssues.filter((issue) => !oldIssues.has(issue)),
+			prior.sourceIssues.filter((issue) => !oldIssues.has(issue) && !scenarioIssues.has(issue)),
 			reviews
 		),
 		...validator.validate(declarations, new Set(blobs.keys()))

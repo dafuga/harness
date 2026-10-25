@@ -68,7 +68,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.git-source-history-module-data-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.git-source-history-module-scenario-reviews",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -84,6 +94,11 @@
 		},
 		{
 			"unit": "repository.git-source-history-module-data-review-repository-module-review-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.scenario",
 			"via": "import",
 			"origin": "derived"
 		},
