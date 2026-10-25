@@ -1,4 +1,4 @@
-import { assertApiRoutes, assertPermissionRoutes } from './explorer-route/apis';
+import * as apiRoutes from './explorer-route/apis';
 import { measureWorkload } from '../support/measureWorkload';
 import { expect, test } from 'vitest';
 import {
@@ -211,10 +211,9 @@ test('Models is a page tab and legacy page Contract links open Models in the sam
 	expect(explorerRoute('/branch/main/components/card', '?tab=contract')?.tab).toBe('contract');
 });
 
-test('APIs are scoped catalog addresses and a page keeps its APIs tab', assertApiRoutes);
+test('APIs are scoped catalog addresses and a page keeps its APIs tab', apiRoutes.assertApiRoutes);
 
 test('API permission tabs and profile routes retain exact revision scope', () => {
-	assertPermissionRoutes();
-	const profile = `/branch/main/commit/${sha}/permissions/member`;
-	expect(explorerRoutePath(explorerRoute(profile)!)).toBe(profile);
+	apiRoutes.assertPermissionRoutes();
+	apiRoutes.assertPermissionGetterAdmission();
 });
