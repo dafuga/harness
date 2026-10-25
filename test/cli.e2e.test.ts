@@ -1,3 +1,4 @@
+import { assertModuleProject } from './support/moduleScenario';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -197,3 +198,12 @@ async function waitForUrl(url: string): Promise<void> {
 
 	throw new Error(`Timed out waiting for ${url}`);
 }
+
+test('CLI installs module foundations and generates their declared resources', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-cli-modules-'));
+	try {
+		await assertModuleProject(root);
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+}, 180_000);

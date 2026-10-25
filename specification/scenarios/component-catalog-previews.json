@@ -205,6 +205,8 @@
 		"reports.component.harness-screen",
 		"reports.component.image-zoom",
 		"reports.component.modal",
+		"reports.component.module-system-explorer-module-resources-screen",
+		"reports.component.module-system-explorer-modules-screen",
 		"reports.component.project-activity",
 		"reports.component.provider-picker",
 		"reports.component.provider-picker-cards",
@@ -1598,6 +1600,18 @@
 			"units": ["reports.component.modal"]
 		},
 		{
+			"id": "reports-component-module-system-explorer-module-resources-screen",
+			"title": "ExplorerModuleResourcesScreen",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen",
+			"title": "ExplorerModulesScreen",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
 			"id": "reports-component-project-activity",
 			"title": "Project activity overview",
 			"coverage": "required",
@@ -2935,6 +2949,8 @@
 				"reports-component-harness-screen",
 				"reports-component-image-zoom",
 				"reports-component-modal",
+				"reports-component-module-system-explorer-module-resources-screen",
+				"reports-component-module-system-explorer-modules-screen",
 				"reports-component-project-activity",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-cards",
