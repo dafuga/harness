@@ -7,5 +7,58 @@
 			"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
 		}
 	],
-	"tasks": []
+	"tasks": [
+		{
+			"id": "contract-tests.app-scaffolds",
+			"title": "Inspect appPieces",
+			"moduleGoal": "Emit and enforce contract-driven tests for this module",
+			"verificationFiles": ["test/pieces.test.ts"],
+			"instructions": "Use Harness CLI as appropriate. Do not delegate, commit, push, deploy, install credentials, run E2Es or broad checks. Edit only your owned source and listed verification files. Preserve unrelated work. User explicitly requests only five standard test shapes: pages and components Playwright screenshot matches of declared states (component at rest plus interactions/error props), helpers one unit case per authored example asserting its documented output/error, classes method x declared initialization/lifecycle state cases including errors, APIs structural complete JSON response matches for supported prop/error matrices. Existing interaction/accessibility/console assertions stay within those cases. Other functions/classes map by behavior. No standalone bug regression tests: strengthen existing cases, fixed counts unless explicit capabilities change. Use finite documented matrices. Report exact files and focused commands/results. No auto-accept screenshot baselines.\nInspect appPieces. Update generated page/component/e2e tests to use Playwright screenshot comparisons at declared states including error props, retaining keyboard/accessibility/console assertions. API tests compare complete JSON success/error responses and prop matrices. Do not delete substantive tests. Work only on this module and listed tests. Generated baselines must not silently update.",
+			"wantedContract": {
+				"responsibility": "Inspect appPieces. Update generated page/component/e2e tests to use Playwright screenshot comparisons at declared states including error props, retaining keyboard/accessibility/console assertions. API tests compare complete JSON success/error responses and prop matrices. Do not delete substantive tests. Work only on this module and listed tests. Generated baselines must not silently update.",
+				"inputs": [
+					{
+						"name": "entity contract",
+						"type": "declared examples, methods, props and states"
+					}
+				],
+				"outputs": [
+					{
+						"name": "standard testing behavior",
+						"type": "generated source or instructions"
+					}
+				],
+				"errors": [
+					{
+						"name": "unsupported or missing test coverage",
+						"type": "explicit validation failure"
+					}
+				]
+			},
+			"model": "gpt-6-luna",
+			"intelligence": "max",
+			"assignee": "contract-generators",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "template.app-pieces",
+				"goal": "Emit and enforce contract-driven tests for this module",
+				"files": [
+					"src/templates/appPieces.ts",
+					"src/templates/development-tooling/appPieces.ts",
+					"test/pieces.test.ts"
+				]
+			},
+			"sourceCommit": "e463e31854366174e5fb338b58e3734ce2b8d12d",
+			"contractHash": "7ca286e86e94f11e212ad646e5d524735a42408e5456873ac1d1ff238a770eb0",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T12:19:12.960Z",
+			"claimHistory": [],
+			"attempts": []
+		}
+	]
 }
