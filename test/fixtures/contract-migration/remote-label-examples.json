@@ -1,0 +1,1297 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.remote-labels",
+	"kind": "function",
+	"title": "Phone-access wording",
+	"responsibility": "Format connection, identity, permission and lock-state wording for phone access.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/networking-security/remote-host-panel/remoteLabels.ts",
+			"packages/desktop/src/components/networking-security/remote-offer-code/remoteLabels.ts",
+			"packages/desktop/src/components/networking-security/remote-phone-panel/remoteLabels.ts",
+			"packages/desktop/src/components/networking-security/remote-phone-panel/remoteLabels.types.ts",
+			"packages/desktop/src/components/remote-host-panel/remoteLabels.ts",
+			"packages/desktop/src/components/remote-offer-code/remoteLabels.ts",
+			"packages/desktop/src/components/remote-phone-panel/remoteLabels.ts",
+			"packages/desktop/src/helpers/networking-security/identityLabel.ts",
+			"packages/desktop/src/helpers/strings/plural.ts",
+			"packages/desktop/src/utils/networking-security/remoteLabels.ts",
+			"packages/desktop/src/utils/remoteLabels.ts"
+		],
+		"symbols": [
+			"relayName",
+			"hostLine",
+			"hostSummary",
+			"timeLeft",
+			"grantSummary",
+			"remoteLabels",
+			"Words",
+			"relayName",
+			"hostLine",
+			"hostSummary",
+			"timeLeft",
+			"grantSummary",
+			"remoteLabels",
+			"identityLabel",
+			"plural",
+			"lockNote",
+			"awakeNote",
+			"lockedNote",
+			"unlockedNote",
+			"approveNote",
+			"awayNote",
+			"revokedNote",
+			"keyLabel",
+			"grantLabel",
+			"relayName",
+			"hostLine",
+			"hostSummary",
+			"timeLeft",
+			"grantSummary",
+			"remoteLabels",
+			"plural",
+			"identityLabel",
+			"relayName",
+			"hostLine",
+			"hostSummary",
+			"timeLeft",
+			"grantSummary",
+			"remoteLabels",
+			"lockNote",
+			"awakeNote",
+			"lockedNote",
+			"unlockedNote",
+			"approveNote",
+			"awayNote",
+			"revokedNote",
+			"plural",
+			"keyLabel",
+			"identityLabel",
+			"grantLabel"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "relayName.origin",
+				"type": "string | null",
+				"description": "Relay origin to display; invalid URLs produce an empty label."
+			},
+			{
+				"name": "timeLeft.milliseconds",
+				"type": "number",
+				"description": "Remaining milliseconds; rounded up to seconds and clamped at zero."
+			},
+			{
+				"name": "keyLabel.deviceId",
+				"type": "string",
+				"description": "Device ID whose first 12 characters are grouped in fours."
+			},
+			{
+				"name": "identityLabel.deviceId",
+				"type": "string",
+				"description": "Full device ID to group in fours."
+			},
+			{
+				"name": "grantLabel.grant",
+				"type": "{ agents: boolean }",
+				"description": "Grant whose agents flag determines permission wording."
+			},
+			{
+				"name": "grantSummary.grant",
+				"type": "{ projects: unknown[]; agents: boolean }",
+				"description": "Grant containing project list and agents flag."
+			},
+			{
+				"name": "hostLine.status",
+				"type": "RemoteHostStatus",
+				"description": "Host status used for relay and connection-state wording."
+			},
+			{
+				"name": "hostSummary.status",
+				"type": "RemoteHostStatus",
+				"description": "Host status used for enabled state and approved-phone count."
+			},
+			{
+				"name": "remoteLabels.status",
+				"type": "RemoteNativeStatus",
+				"description": "Mobile connection status used for heading and supporting text."
+			}
+		],
+		"outputs": [
+			{
+				"name": "lockNote",
+				"type": "unknown",
+				"description": "Explanation that approved phones work while the computer is locked and awake, but not asleep."
+			},
+			{
+				"name": "awakeNote",
+				"type": "unknown",
+				"description": "Wording for an awake computer."
+			},
+			{
+				"name": "lockedNote",
+				"type": "unknown",
+				"description": "Wording for a locked, awake computer."
+			},
+			{
+				"name": "unlockedNote",
+				"type": "unknown",
+				"description": "Wording for an unlocked, awake computer."
+			},
+			{
+				"name": "approveNote",
+				"type": "unknown",
+				"description": "Instruction to approve the phone on the computer."
+			},
+			{
+				"name": "awayNote",
+				"type": "unknown",
+				"description": "Explanation that an offline computer is asleep or disconnected and nothing is sent until it returns."
+			},
+			{
+				"name": "revokedNote",
+				"type": "unknown",
+				"description": "Instruction to pair again after revocation."
+			},
+			{
+				"name": "relayName",
+				"type": "string",
+				"description": "Relay host and optional port, or an empty string for an invalid URL."
+			},
+			{
+				"name": "timeLeft",
+				"type": "string",
+				"description": "Minutes and two-digit seconds remaining."
+			},
+			{
+				"name": "keyLabel",
+				"type": "string",
+				"description": "Short grouped device identifier."
+			},
+			{
+				"name": "identityLabel",
+				"type": "string",
+				"description": "Full grouped device identifier."
+			},
+			{
+				"name": "grantLabel",
+				"type": "string",
+				"description": "Plan and Change allowed, or Read and comment only."
+			},
+			{
+				"name": "grantSummary",
+				"type": "string",
+				"description": "Project count followed by permission wording."
+			},
+			{
+				"name": "hostLine",
+				"type": "string",
+				"description": "Phone-access-on line with relay and applicable registering, connecting or offline suffix."
+			},
+			{
+				"name": "hostSummary",
+				"type": "string",
+				"description": "Phone access off, or the approved-phone count."
+			},
+			{
+				"name": "remoteLabels",
+				"type": "{ title: string; detail: string }",
+				"description": "Heading and supporting text for the mobile state, using host name and lock state where available."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"helperContracts": [
+		{
+			"name": "identityLabel",
+			"source": "packages/desktop/src/helpers/networking-security/identityLabel.ts",
+			"inputs": [
+				{
+					"name": "identityLabel.deviceId",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"examples": [
+				{
+					"name": "Group a full device identity in fours for comparison",
+					"call": "identityLabel(\"4f2a91c07b3edddddddddddddddddddddddddddd\")",
+					"input": ["4f2a91c07b3edddddddddddddddddddddddddddd"],
+					"output": "4f2a 91c0 7b3e dddd dddd dddd dddd dddd dddd dddd"
+				},
+				{
+					"name": "Leave an empty identity blank",
+					"call": "identityLabel(\"\")",
+					"input": [""],
+					"output": ""
+				},
+				{
+					"name": "Reject a null identity",
+					"call": "identityLabel(null)",
+					"input": [null],
+					"error": "Cannot read properties of null (reading 'match')"
+				}
+			],
+			"consumers": [
+				{
+					"unit": "desktop.component.remote-approval"
+				},
+				{
+					"unit": "desktop.component.remote-phone-panel"
+				}
+			]
+		},
+		{
+			"name": "plural",
+			"source": "packages/desktop/src/helpers/strings/plural.ts",
+			"inputs": [
+				{
+					"name": "plural.count",
+					"type": "number"
+				},
+				{
+					"name": "plural.word",
+					"type": "string"
+				}
+			],
+			"output": "unknown",
+			"pure": true,
+			"examples": [
+				{
+					"name": "Keep the singular word for one item",
+					"call": "plural(1, \"task\")",
+					"input": [1, "task"],
+					"output": "1 task"
+				},
+				{
+					"name": "Add s for other counts",
+					"call": "plural(2, \"task\")",
+					"input": [2, "task"],
+					"output": "2 tasks"
+				}
+			],
+			"consumers": [
+				{
+					"unit": "desktop.function.remote-labels",
+					"symbol": "grantSummary"
+				},
+				{
+					"unit": "desktop.function.remote-labels",
+					"symbol": "hostSummary"
+				}
+			]
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/networking-security/remoteLabels.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/networking-security/remoteLabels.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-mobile-ui"],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"states": ["input", "boundary", "invalid"],
+		"cases": [
+			{
+				"id": "identity-label.full",
+				"state": "input",
+				"subject": "identityLabel",
+				"example": "Group a full device identity in fours for comparison",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "identityLabel: Group a full device identity in fours for comparison"
+				}
+			},
+			{
+				"id": "identity-label.empty",
+				"state": "boundary",
+				"subject": "identityLabel",
+				"example": "Leave an empty identity blank",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "identityLabel: Leave an empty identity blank"
+				}
+			},
+			{
+				"id": "identity-label.null",
+				"state": "invalid",
+				"subject": "identityLabel",
+				"example": "Reject a null identity",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "identityLabel: Reject a null identity"
+				}
+			},
+			{
+				"id": "plural.singular",
+				"state": "boundary",
+				"subject": "plural",
+				"example": "Keep the singular word for one item",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "plural: Keep the singular word for one item"
+				}
+			},
+			{
+				"id": "plural.multiple",
+				"state": "input",
+				"subject": "plural",
+				"example": "Add s for other counts",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "plural: Add s for other counts"
+				}
+			},
+			{
+				"id": "relay-name.origin",
+				"state": "input",
+				"subject": "relayName",
+				"example": "Extract the relay host and ignore its path",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "relayName: Extract the relay host and ignore its path"
+				}
+			},
+			{
+				"id": "relay-name.missing",
+				"state": "boundary",
+				"subject": "relayName",
+				"example": "Return blank for a missing relay origin",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "relayName: Return blank for a missing relay origin"
+				}
+			},
+			{
+				"id": "relay-name.malformed",
+				"state": "invalid",
+				"subject": "relayName",
+				"example": "Return blank for a malformed relay origin",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "relayName: Return blank for a malformed relay origin"
+				}
+			},
+			{
+				"id": "host-line.online",
+				"state": "input",
+				"subject": "hostLine",
+				"example": "Name the reachable relay without progress text",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "hostLine: Name the reachable relay without progress text"
+				}
+			},
+			{
+				"id": "host-line.registering",
+				"state": "input",
+				"subject": "hostLine",
+				"example": "Show registering progress",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "hostLine: Show registering progress"
+				}
+			},
+			{
+				"id": "host-line.connecting",
+				"state": "input",
+				"subject": "hostLine",
+				"example": "Show connecting progress",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "hostLine: Show connecting progress"
+				}
+			},
+			{
+				"id": "host-line.offline",
+				"state": "boundary",
+				"subject": "hostLine",
+				"example": "Show an unreachable relay",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "hostLine: Show an unreachable relay"
+				}
+			},
+			{
+				"id": "host-summary.disabled",
+				"state": "boundary",
+				"subject": "hostSummary",
+				"example": "Turn disabled phone access off",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "hostSummary: Turn disabled phone access off"
+				}
+			},
+			{
+				"id": "host-summary.empty",
+				"state": "boundary",
+				"subject": "hostSummary",
+				"example": "Name enabled access with no phones",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "hostSummary: Name enabled access with no phones"
+				}
+			},
+			{
+				"id": "host-summary.one",
+				"state": "boundary",
+				"subject": "hostSummary",
+				"example": "Use singular phone wording",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "hostSummary: Use singular phone wording"
+				}
+			},
+			{
+				"id": "host-summary.multiple",
+				"state": "input",
+				"subject": "hostSummary",
+				"example": "Use plural phone wording",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "hostSummary: Use plural phone wording"
+				}
+			},
+			{
+				"id": "time-left.minutes",
+				"state": "input",
+				"subject": "timeLeft",
+				"example": "Format whole minutes with zero seconds",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "timeLeft: Format whole minutes with zero seconds"
+				}
+			},
+			{
+				"id": "time-left.minutes-seconds",
+				"state": "input",
+				"subject": "timeLeft",
+				"example": "Format remaining minutes and seconds",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "timeLeft: Format remaining minutes and seconds"
+				}
+			},
+			{
+				"id": "time-left.round-up",
+				"state": "boundary",
+				"subject": "timeLeft",
+				"example": "Round a partial second up",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "timeLeft: Round a partial second up"
+				}
+			},
+			{
+				"id": "time-left.zero",
+				"state": "boundary",
+				"subject": "timeLeft",
+				"example": "Keep zero at zero",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "timeLeft: Keep zero at zero"
+				}
+			},
+			{
+				"id": "time-left.negative",
+				"state": "invalid",
+				"subject": "timeLeft",
+				"example": "Clamp negative time to zero",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "timeLeft: Clamp negative time to zero"
+				}
+			},
+			{
+				"id": "key-label.identity",
+				"state": "input",
+				"subject": "keyLabel",
+				"example": "Group the first twelve identity characters",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "keyLabel: Group the first twelve identity characters"
+				}
+			},
+			{
+				"id": "key-label.empty",
+				"state": "boundary",
+				"subject": "keyLabel",
+				"example": "Leave an empty key blank",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "keyLabel: Leave an empty key blank"
+				}
+			},
+			{
+				"id": "grant-label.legacy-read",
+				"state": "input",
+				"subject": "grantLabel",
+				"example": "Describe legacy read-and-comment access",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "grantLabel: Describe legacy read-and-comment access"
+				}
+			},
+			{
+				"id": "grant-label.legacy-write",
+				"state": "input",
+				"subject": "grantLabel",
+				"example": "Describe legacy Plan and Change access",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "grantLabel: Describe legacy Plan and Change access"
+				}
+			},
+			{
+				"id": "grant-label.write-ai",
+				"state": "input",
+				"subject": "grantLabel",
+				"example": "Describe write access with AI",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "grantLabel: Describe write access with AI"
+				}
+			},
+			{
+				"id": "grant-label.read-only",
+				"state": "boundary",
+				"subject": "grantLabel",
+				"example": "Describe read-only access",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "grantLabel: Describe read-only access"
+				}
+			},
+			{
+				"id": "grant-label.comment",
+				"state": "boundary",
+				"subject": "grantLabel",
+				"example": "Describe comment access",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "grantLabel: Describe comment access"
+				}
+			},
+			{
+				"id": "grant-summary.single",
+				"state": "boundary",
+				"subject": "grantSummary",
+				"example": "Summarize one project with read-and-comment access",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "grantSummary: Summarize one project with read-and-comment access"
+				}
+			},
+			{
+				"id": "grant-summary.multiple",
+				"state": "input",
+				"subject": "grantSummary",
+				"example": "Summarize multiple projects with Plan and Change access",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "grantSummary: Summarize multiple projects with Plan and Change access"
+				}
+			},
+			{
+				"id": "remote-labels.awake",
+				"state": "input",
+				"subject": "remoteLabels",
+				"example": "Call an awake computer connected",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Call an awake computer connected"
+				}
+			},
+			{
+				"id": "remote-labels.locked",
+				"state": "input",
+				"subject": "remoteLabels",
+				"example": "Name a locked computer",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Name a locked computer"
+				}
+			},
+			{
+				"id": "remote-labels.unlocked",
+				"state": "input",
+				"subject": "remoteLabels",
+				"example": "Name an unlocked computer",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Name an unlocked computer"
+				}
+			},
+			{
+				"id": "remote-labels.connecting",
+				"state": "input",
+				"subject": "remoteLabels",
+				"example": "Describe a connecting computer",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Describe a connecting computer"
+				}
+			},
+			{
+				"id": "remote-labels.pairing",
+				"state": "input",
+				"subject": "remoteLabels",
+				"example": "Describe a pairing computer",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Describe a pairing computer"
+				}
+			},
+			{
+				"id": "remote-labels.pending-host",
+				"state": "boundary",
+				"subject": "remoteLabels",
+				"example": "Tell the person to approve on the named computer",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Tell the person to approve on the named computer"
+				}
+			},
+			{
+				"id": "remote-labels.pending-unnamed",
+				"state": "boundary",
+				"subject": "remoteLabels",
+				"example": "Tell the person to approve on their computer when unnamed",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Tell the person to approve on their computer when unnamed"
+				}
+			},
+			{
+				"id": "remote-labels.offline-reason",
+				"state": "boundary",
+				"subject": "remoteLabels",
+				"example": "Explain an offline reason",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Explain an offline reason"
+				}
+			},
+			{
+				"id": "remote-labels.offline-fallback",
+				"state": "boundary",
+				"subject": "remoteLabels",
+				"example": "Use the offline fallback explanation",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Use the offline fallback explanation"
+				}
+			},
+			{
+				"id": "remote-labels.revoked",
+				"state": "boundary",
+				"subject": "remoteLabels",
+				"example": "Explain removed phone access",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Explain removed phone access"
+				}
+			},
+			{
+				"id": "remote-labels.unpaired",
+				"state": "boundary",
+				"subject": "remoteLabels",
+				"example": "Prompt an unpaired phone to connect",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Prompt an unpaired phone to connect"
+				}
+			},
+			{
+				"id": "remote-labels.unknown-state",
+				"state": "invalid",
+				"subject": "remoteLabels",
+				"example": "Reject an unknown mobile state",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Reject an unknown mobile state"
+				}
+			}
+		],
+		"examples": [
+			{
+				"subject": "relayName",
+				"name": "Extract the relay host and ignore its path",
+				"call": "relayName(\"https://relay.example.invalid/path\")",
+				"input": ["https://relay.example.invalid/path"],
+				"expected": {
+					"kind": "value",
+					"value": "relay.example.invalid"
+				}
+			},
+			{
+				"subject": "relayName",
+				"name": "Return blank for a missing relay origin",
+				"call": "relayName(null)",
+				"input": [null],
+				"expected": {
+					"kind": "value",
+					"value": ""
+				}
+			},
+			{
+				"subject": "relayName",
+				"name": "Return blank for a malformed relay origin",
+				"call": "relayName(\"not a URL\")",
+				"input": ["not a URL"],
+				"expected": {
+					"kind": "value",
+					"value": ""
+				}
+			},
+			{
+				"subject": "hostLine",
+				"name": "Name the reachable relay without progress text",
+				"call": "hostLine({ state: \"online\", origin: \"https://relay.example.invalid/ignored?x=1\" })",
+				"input": [
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "online",
+						"reason": null,
+						"host": null,
+						"origin": "https://relay.example.invalid/ignored?x=1",
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": []
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "Phone access is on · relay.example.invalid"
+				}
+			},
+			{
+				"subject": "hostLine",
+				"name": "Show registering progress",
+				"call": "hostLine({ state: \"registering\", origin: \"https://relay.example.invalid\" })",
+				"input": [
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "registering",
+						"reason": null,
+						"host": null,
+						"origin": "https://relay.example.invalid",
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": []
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "Phone access is on · relay.example.invalid · registering…"
+				}
+			},
+			{
+				"subject": "hostLine",
+				"name": "Show connecting progress",
+				"call": "hostLine({ state: \"connecting\", origin: \"https://relay.example.invalid\" })",
+				"input": [
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "connecting",
+						"reason": null,
+						"host": null,
+						"origin": "https://relay.example.invalid",
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": []
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "Phone access is on · relay.example.invalid · connecting…"
+				}
+			},
+			{
+				"subject": "hostLine",
+				"name": "Show an unreachable relay",
+				"call": "hostLine({ state: \"offline\", origin: \"https://relay.example.invalid\" })",
+				"input": [
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "offline",
+						"reason": null,
+						"host": null,
+						"origin": "https://relay.example.invalid",
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": []
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "Phone access is on · relay.example.invalid · relay unreachable"
+				}
+			},
+			{
+				"subject": "hostSummary",
+				"name": "Turn disabled phone access off",
+				"call": "hostSummary({ enabled: false, devices: [] })",
+				"input": [
+					{
+						"supported": true,
+						"enabled": false,
+						"state": "online",
+						"reason": null,
+						"host": null,
+						"origin": "https://relay.example.invalid/ignored?x=1",
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": []
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "Phone access off"
+				}
+			},
+			{
+				"subject": "hostSummary",
+				"name": "Name enabled access with no phones",
+				"call": "hostSummary({ enabled: true, devices: [] })",
+				"input": [
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "online",
+						"reason": null,
+						"host": null,
+						"origin": "https://relay.example.invalid/ignored?x=1",
+						"pairing": null,
+						"requests": [],
+						"devices": [],
+						"projects": []
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "Phone access on · no phone"
+				}
+			},
+			{
+				"subject": "hostSummary",
+				"name": "Use singular phone wording",
+				"call": "hostSummary({ enabled: true, devices: [{}] })",
+				"input": [
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "online",
+						"reason": null,
+						"host": null,
+						"origin": "https://relay.example.invalid/ignored?x=1",
+						"pairing": null,
+						"requests": [],
+						"devices": [{}],
+						"projects": []
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "Phone access on · 1 phone"
+				}
+			},
+			{
+				"subject": "hostSummary",
+				"name": "Use plural phone wording",
+				"call": "hostSummary({ enabled: true, devices: [{}, {}] })",
+				"input": [
+					{
+						"supported": true,
+						"enabled": true,
+						"state": "online",
+						"reason": null,
+						"host": null,
+						"origin": "https://relay.example.invalid/ignored?x=1",
+						"pairing": null,
+						"requests": [],
+						"devices": [{}, {}],
+						"projects": []
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "Phone access on · 2 phones"
+				}
+			},
+			{
+				"subject": "timeLeft",
+				"name": "Format whole minutes with zero seconds",
+				"call": "timeLeft(240000)",
+				"input": [240000],
+				"expected": {
+					"kind": "value",
+					"value": "4:00"
+				}
+			},
+			{
+				"subject": "timeLeft",
+				"name": "Format remaining minutes and seconds",
+				"call": "timeLeft(65000)",
+				"input": [65000],
+				"expected": {
+					"kind": "value",
+					"value": "1:05"
+				}
+			},
+			{
+				"subject": "timeLeft",
+				"name": "Round a partial second up",
+				"call": "timeLeft(999)",
+				"input": [999],
+				"expected": {
+					"kind": "value",
+					"value": "0:01"
+				}
+			},
+			{
+				"subject": "timeLeft",
+				"name": "Keep zero at zero",
+				"call": "timeLeft(0)",
+				"input": [0],
+				"expected": {
+					"kind": "value",
+					"value": "0:00"
+				}
+			},
+			{
+				"subject": "timeLeft",
+				"name": "Clamp negative time to zero",
+				"call": "timeLeft(-5)",
+				"input": [-5],
+				"expected": {
+					"kind": "value",
+					"value": "0:00"
+				}
+			},
+			{
+				"subject": "keyLabel",
+				"name": "Group the first twelve identity characters",
+				"call": "keyLabel(\"4f2a91c07b3e\" + \"d\".repeat(28))",
+				"input": ["4f2a91c07b3edddddddddddddddddddddddddddd"],
+				"expected": {
+					"kind": "value",
+					"value": "4f2a 91c0 7b3e"
+				}
+			},
+			{
+				"subject": "keyLabel",
+				"name": "Leave an empty key blank",
+				"call": "keyLabel(\"\")",
+				"input": [""],
+				"expected": {
+					"kind": "value",
+					"value": ""
+				}
+			},
+			{
+				"subject": "grantLabel",
+				"name": "Describe legacy read-and-comment access",
+				"call": "grantLabel({ agents: false })",
+				"input": [{ "agents": false }],
+				"expected": {
+					"kind": "value",
+					"value": "Read and comment only"
+				}
+			},
+			{
+				"subject": "grantLabel",
+				"name": "Describe legacy Plan and Change access",
+				"call": "grantLabel({ agents: true })",
+				"input": [{ "agents": true }],
+				"expected": {
+					"kind": "value",
+					"value": "Plan and Change allowed"
+				}
+			},
+			{
+				"subject": "grantLabel",
+				"name": "Describe write access with AI",
+				"call": "grantLabel({ agents: true, comments: false })",
+				"input": [{ "agents": true, "comments": false }],
+				"expected": {
+					"kind": "value",
+					"value": "Write · read, comment and ask AI"
+				}
+			},
+			{
+				"subject": "grantLabel",
+				"name": "Describe read-only access",
+				"call": "grantLabel({ agents: false, comments: false })",
+				"input": [{ "agents": false, "comments": false }],
+				"expected": {
+					"kind": "value",
+					"value": "Read only"
+				}
+			},
+			{
+				"subject": "grantLabel",
+				"name": "Describe comment access",
+				"call": "grantLabel({ agents: false, comments: true })",
+				"input": [{ "agents": false, "comments": true }],
+				"expected": {
+					"kind": "value",
+					"value": "Comment · read and comment"
+				}
+			},
+			{
+				"subject": "grantSummary",
+				"name": "Summarize one project with read-and-comment access",
+				"call": "grantSummary({ projects: [{}], agents: false })",
+				"input": [{ "projects": [{}], "agents": false }],
+				"expected": {
+					"kind": "value",
+					"value": "1 project · Read and comment only"
+				}
+			},
+			{
+				"subject": "grantSummary",
+				"name": "Summarize multiple projects with Plan and Change access",
+				"call": "grantSummary({ projects: [{}, {}], agents: true })",
+				"input": [{ "projects": [{}, {}], "agents": true }],
+				"expected": {
+					"kind": "value",
+					"value": "2 projects · Plan and Change allowed"
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Call an awake computer connected",
+				"call": "remoteLabels({ state: \"online\", host: { name: \"Studio Mac\" } })",
+				"input": [
+					{
+						"state": "online",
+						"origin": "https://relay.example.invalid",
+						"host": { "id": "host-id", "name": "Studio Mac" },
+						"device": null,
+						"grant": null,
+						"reason": null,
+						"lastOnlineAt": null
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"title": "Connected to Studio Mac",
+						"detail": "Computer awake · works while its screen is locked"
+					}
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Name a locked computer",
+				"call": "remoteLabels({ state: \"online\", locked: true })",
+				"input": [
+					{
+						"state": "online",
+						"host": { "name": "Studio Mac" },
+						"locked": true,
+						"reason": null
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"title": "Connected to Studio Mac",
+						"detail": "Computer locked · awake"
+					}
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Name an unlocked computer",
+				"call": "remoteLabels({ state: \"online\", locked: false })",
+				"input": [
+					{
+						"state": "online",
+						"host": { "name": "Studio Mac" },
+						"locked": false,
+						"reason": null
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"title": "Connected to Studio Mac",
+						"detail": "Computer unlocked · awake"
+					}
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Describe a connecting computer",
+				"call": "remoteLabels({ state: \"connecting\", host: { name: \"Studio Mac\" } })",
+				"input": [
+					{
+						"state": "connecting",
+						"host": { "name": "Studio Mac" },
+						"reason": null
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": { "title": "Connecting to Studio Mac…", "detail": "" }
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Describe a pairing computer",
+				"call": "remoteLabels({ state: \"pairing\", host: { name: \"Studio Mac\" } })",
+				"input": [
+					{
+						"state": "pairing",
+						"host": { "name": "Studio Mac" },
+						"reason": null
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": { "title": "Contacting the relay…", "detail": "" }
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Tell the person to approve on the named computer",
+				"call": "remoteLabels({ state: \"pending-approval\", host: { name: \"Studio Mac\" } })",
+				"input": [
+					{
+						"state": "pending-approval",
+						"host": { "name": "Studio Mac" },
+						"reason": null
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"title": "Waiting for approval on Studio Mac…",
+						"detail": "Approve this phone in Harness on your computer."
+					}
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Tell the person to approve on their computer when unnamed",
+				"call": "remoteLabels({ state: \"pending-approval\", host: null })",
+				"input": [
+					{
+						"state": "pending-approval",
+						"host": null,
+						"reason": null
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"title": "Waiting for approval on your computer…",
+						"detail": "Approve this phone in Harness on your computer."
+					}
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Explain an offline reason",
+				"call": "remoteLabels({ state: \"offline\", reason: \"Suspending\" })",
+				"input": [
+					{
+						"state": "offline",
+						"host": { "name": "Studio Mac" },
+						"reason": "Suspending"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": { "title": "Computer offline", "detail": "Suspending" }
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Use the offline fallback explanation",
+				"call": "remoteLabels({ state: \"offline\", reason: null })",
+				"input": [
+					{
+						"state": "offline",
+						"host": { "name": "Studio Mac" },
+						"reason": null
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"title": "Computer offline",
+						"detail": "It is asleep or has no network. Nothing is sent until it is back."
+					}
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Explain removed phone access",
+				"call": "remoteLabels({ state: \"revoked\" })",
+				"input": [{ "state": "revoked" }],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"title": "This phone’s access was removed on the computer.",
+						"detail": "Pair again from your computer to continue."
+					}
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Prompt an unpaired phone to connect",
+				"call": "remoteLabels({ state: \"unpaired\" })",
+				"input": [{ "state": "unpaired" }],
+				"expected": {
+					"kind": "value",
+					"value": { "title": "Connect to computer", "detail": "" }
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Reject an unknown mobile state",
+				"call": "remoteLabels({ state: \"unknown\" })",
+				"input": [{ "state": "unknown" }],
+				"expected": {
+					"kind": "error",
+					"value": "words[status.state] is not a function"
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
