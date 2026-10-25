@@ -1,0 +1,40 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-Egyuvh
+
+ ❯ test/utils/unit-identity.test.ts (3 tests | 1 failed) 33ms
+   ✓ unitIdentity derives kind and name from Harness scaffold folders 1ms
+   × unitIdentity prefixes named workspaces and skips tests and unknown files 2ms
+     → expected { kind: 'component', …(2) } to be undefined
+   ✓ public helper contracts require owned, categorized helper implementation files 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/unit-identity.test.ts > unitIdentity prefixes named workspaces and skips tests and unknown files
+AssertionError: expected { kind: 'component', …(2) } to be undefined
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+{
+  "id": "component.item-threads-thread-messages",
+  "kind": "component",
+  "name": "item-threads-thread-messages",
+}
+
+ ❯ test/utils/unit-identity.test.ts:44:5
+     42|   expect(
+     43|    unitIdentity(`src/components/item/threads/thread/messages.${extensi…
+     44|   ).toBeUndefined();
+       |     ^
+     45| });
+     46| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  21:31:59
+   Duration  2.56s (transform 126ms, setup 78ms, collect 308ms, tests 33ms, environment 0ms, prepare 19ms)
+
