@@ -552,7 +552,7 @@
 			},
 			"sourceCommit": "e463e31854366174e5fb338b58e3734ce2b8d12d",
 			"contractHash": "668b6abf10ed066b1a538797fc643e21c8eca680c0dd79f947d17375f7da4517",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T12:19:16.026Z",
 			"claim": {
@@ -566,6 +566,58 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The scaffold guidance now states one of five test shapes for every scaffold kind, and the focused guide tests pass. The change is uncommitted in this worktree. Two gaps sit in files outside my allowed list, so they need their owners.\n\n## Changed files (unit `guide.scaffolds`, direct edits)\n\n- **`src/guides/development-tooling/scaffolds.ts`**: adds a test-shape table. An exhaustive `Record<PieceKind, …>` maps all 36 scaffold kinds, so a new kind won't type-check until it has a shape. The catalog gets the five shapes and the class/function rule, and each kind gets a `Test shape:` line. Exports are unchanged.\n- **`test/guides.test.ts`**: no new `test(` declarations. I added one coverage assertion to the existing every-kind test, and assertions to the existing scaffold test, which is now wrapped in `measureWorkload('guide.scaffolds', 'scaffold-test-shape-guidance', …)`.\n- **`src/guides/scaffolds.ts`**: unchanged (re-export shim).\n\nDependencies checked, not edited: `template.scaffold-types` (`PieceKind`, scaffold details), `function.catalog` (`harnessNamingRules`), and consumer `guide.guide`.\n\n## Mapping decisions to check\n\n- I read \"pages and components\" as two shapes, so the five are page screenshot, component screenshot, helper examples, class method-state cases and API JSON match.\n- Page: `view`, `e2e`, and `game-view` (my call). Component: `component`, `partial`, `layout`. Helper: `helper`. API: `api`. Class: the 15 class scaffolds. `resource` maps per generated piece. `feature` has no test shape. The other 11 kinds map by behavior.\n\n## Verification (focused only)\n\n- `bun x vitest run test/guides.test.ts`: 7/7 pass.\n- Same run with `test/readable-unit-contracts.test.ts`: 9/9 pass.\n- Red check: the final test file against committed `scaffolds.ts` fails exactly the two changed tests. My file was restored byte-identical.\n- ESLint on the three files: clean. My first version had a complexity error (14 > 10) in the test callback, which I fixed.\n- Prettier on the three files: clean.\n- Focused `tsc` (temporary tsconfig in `/tmp`, the three files as roots): exit 0.\n- `bun run dev -- units check`: valid, 1787 units, 161 uncertain references (unchanged).\n- `bun run dev -- audit src/guides`: exit 1 with 14 `harness-root-file-structure` findings, all on root-level guide files. None are on changed content, and there are no size, function or nesting findings.\n- Workload recorded in `/tmp/harness-guides-evidence/run-*`: `scaffold-test-shape-guidance` took 0.343 ms, with whole-worker RSS of 91,078,656 bytes. That is not isolated unit memory.\n- Source measurements, `budget measure guide.scaffolds`: committed 3,600 bytes, 95 lines, complexity 11, 3 deps. Working tree 7,526 bytes, 187 lines, complexity 13, 3 deps.\n\nNot run: `bun run check`, E2E, browser and screenshot checks (no UI changed), and any broad check.\n\n## Gaps and blockers\n\n1. **Shadowed guides** (`src/guides/development-tooling/guide.ts`, not in my allowed files). Hand-written `controller` (:55), `service` (:75), `decorator` (:88), `component` (:101) and `feature` (:122) come before `...scaffoldGuides()` (:167), and `findGuide` takes the first match. So `harness info component` still says \"Add a component test or page smoke test.\" The catalog, `harness info scaffolds`, shows the mapping for every kind.\n2. **Template `contains` text** (`src/templates/development-tooling/scaffoldTypes.ts`, not mine). It still says \"smoke test\" for view, layout, component and partial, and \"Single starting assertion.\" for `test`.\n3. **Frozen budget** (`specification/budgets/ledger.ndjson`, not mine). The `guide.scaffolds` baseline (1,704 bytes, complexity 5, 2 deps, 2026-10-11) was already behind `HEAD`. This change moves it to 7,526 / 13 / 3. It needs a reviewed budget record.\n4. **Commit-tree measurements and the loop record** need a commit. I did not create a `harness loop`, because its metadata lives in tracked `specification/loops/`, outside my allowed files.\n5. **Not verified**: the explorer page and History for `guide.scaffolds`, since I opened no preview.\n\n## Other notes\n\n- `harness info helper` prints the group rules twice, because `scaffoldGuide` and the final map in `guide.ts` both add them. This predates my change, and I left it.\n- I ran `bun install --frozen-lockfile` because `node_modules` was missing. The lockfile is unchanged, and `node_modules` is gitignored.\n- Activity `a614b82a-e4f2-4473-b08b-edb6b3c048b4` is registered and finished.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/ad16e82d-33fe-4e5a-b7a4-341fe638a3bd",
+				"changedFiles": ["src/guides/development-tooling/scaffolds.ts", "test/guides.test.ts"],
+				"fallback": false,
+				"finishedAt": "2026-10-25T12:45:48.719Z",
+				"attempt": "ad16e82d-33fe-4e5a-b7a4-341fe638a3bd",
+				"sourceCommit": "e463e31854366174e5fb338b58e3734ce2b8d12d",
+				"checkpointCommit": "750a302f37e8455b84405954dcf9e5b09a831182",
+				"usage": {
+					"inputTokens": 6555421,
+					"outputTokens": 132172,
+					"cacheReadTokens": 6342413,
+					"cacheWriteTokens": 212920,
+					"cacheWriteLongTokens": 212920,
+					"reportedCostUsd": 0.6984740500000001,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 6555421,
+							"outputTokens": 132172,
+							"cacheReadTokens": 6342413,
+							"cacheWriteTokens": 212920,
+							"cacheWriteLongTokens": 212920,
+							"reportedCostUsd": 0.6984740500000001,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.6984740500000001,
+							"minimumUsd": 0.6984740500000001,
+							"maximumUsd": 0.6984740500000001,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T12:29:38.127Z",
+						"finishedAt": "2026-10-25T12:45:48.499Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
