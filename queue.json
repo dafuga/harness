@@ -6179,7 +6179,7 @@
 			},
 			"sourceCommit": "7d263753ece7aa867f9bc067322647c3ba136058",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T20:38:33.665Z",
 			"claim": {
@@ -6193,6 +6193,63 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The migration is written, but nothing has been verified. The compiler, Vitest, lint, format, audit and `units check` were not run, per the instructions, and the live spec is unchanged, so Primary needs to land the proposed manifest.\n\n**Files** (`git status` shows only these)\n- `test/utils/gateway-content-error.test.ts`: the single `test()` is retired. The file now calls `TestExpectationService.registerExamples` with the proposed manifest and `test` imported from vitest.\n- `test/support/gatewayContentErrorExamples.ts`: `invokeGatewayContentError` rebuilds marker inputs and calls the public alias `src/utils/gatewayContentError`. Inside the case it checks `instanceof Error` and `name`, then returns the `{ name, message }` projection.\n- `test/support/gatewayContentErrorExamples.types.ts`: marker and projection types.\n- `test/fixtures/contract-migration/gateway-content-error-examples.json`: a full proposed copy of the unit spec.\n\n**Coverage**\n- 9 Examples map one-to-one to 9 cases, using shape `helper`. The function has no `helperContracts` and is not `@pure`.\n- States: `input` (the original \"Unsupported media\"), `boundary` (empty, null, undefined, zero), `coercion` (bigint, object with its own `toString`), and `invalid` (Symbol, prototype-less object).\n- Prop: `message`. Contract error: `TypeError`, covered by the two invalid cases.\n- Each `call` shows the real invocation with its exact authored output or throws comment.\n- The old title appears in no other file, so no verification record binds to it.\n\n**Decisions to review**\n- The function really throws `TypeError` for Symbols and prototype-less objects. I declared that in `contract.errors` before adding the cases.\n- I reworded two contract descriptions. The input now says undefined leaves the message empty and unconvertible values throw. The output now says the function returns the Error rather than throwing it.\n- Empty string and undefined give the same projection but are different inputs: the empty string sets its own `message`, while undefined inherits `''`. The wanted contract asks for both, so I kept both.\n- The original `toMatchObject` is split. The name check stays in the callback, and the message is compared through the authored projection, which is stricter.\n- I checked consumers after drafting, not before. `GatewayImageValidator.ts` and `GatewayContentSerializer.ts` pass only string literals, so the new error path is unreachable there. `src/index.ts:75` re-exports the function to the SDK.\n\n**Verification performed**\n- Harness activity `e12b2e56-089c-4180-9c18-290e5bc8b8d8` was registered, heartbeated and finished as a handoff.\n- A read-only script checked the proposed JSON. It parses, the 9 examples match the 9 cases on subject, example and canonical title, and every state, prop and error is covered.\n- A diff against the live spec shows only the two descriptions, the new `contract.errors` entry and the `testing` block changed.\n\n**Gaps for Primary**\n1. Not compiled. The `unit as ComponentManifest` cast and the support file's `as string` cast are unchecked. The relay and `function.case` tests use the same cast pattern.\n2. Not run. The two engine messages are assumed to be V8's: `Cannot convert a Symbol value to a string` and `Cannot convert object to primitive value`. Confirm them if the runner uses Bun.\n3. Before landing, run `bun run dev -- units check`, `bun x vitest run test/readable-unit-contracts.test.ts`, `bun x vitest run test/utils/gateway-content-error.test.ts`, the root typecheck and audit, and Prettier. Two import lines run 105–108 columns, matching existing repo imports.\n4. Measurement: `budgets.performance` is still empty and no workload was added, since afterAll hooks are forbidden here. AGENTS requires a workload for changed executable units, so that decision is Primary's.\n5. Explorer link: the entity page is not resolved. I did not check the commit or the shared preview. The registered id is `function.gateway-content-error`.\n6. This is not a bug repair, so no red/green loop applies. Product source is untouched.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/3de675b3-1c43-46a1-939d-2230daa0ab2d",
+				"changedFiles": [
+					"test/utils/gateway-content-error.test.ts",
+					"test/fixtures/contract-migration/gateway-content-error-examples.json",
+					"test/support/gatewayContentErrorExamples.ts",
+					"test/support/gatewayContentErrorExamples.types.ts"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T20:47:22.534Z",
+				"attempt": "3de675b3-1c43-46a1-939d-2230daa0ab2d",
+				"sourceCommit": "7d263753ece7aa867f9bc067322647c3ba136058",
+				"checkpointCommit": "fbb00aac18fc2fc17ceefb9d6c4642af9921aa49",
+				"usage": {
+					"inputTokens": 4288051,
+					"outputTokens": 127443,
+					"cacheReadTokens": 4096452,
+					"cacheWriteTokens": 191533,
+					"cacheWriteLongTokens": 191533,
+					"reportedCostUsd": 0.5151091799999999,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 4288051,
+							"outputTokens": 127443,
+							"cacheReadTokens": 4096452,
+							"cacheWriteTokens": 191533,
+							"cacheWriteLongTokens": 191533,
+							"reportedCostUsd": 0.5151091799999999,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.5151091799999999,
+							"minimumUsd": 0.5151091799999999,
+							"maximumUsd": 0.5151091799999999,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T20:38:46.731Z",
+						"finishedAt": "2026-10-25T20:47:22.348Z"
+					}
+				]
+			},
 			"attempts": []
 		}
 	]
