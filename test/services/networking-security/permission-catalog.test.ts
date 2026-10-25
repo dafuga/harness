@@ -47,6 +47,14 @@ test('missing declarations stay empty and malformed or mismatched profiles remai
 	expect(catalog.profiles.map((p) => p.id)).toEqual(['admin', 'guest']);
 	expect(catalog.gaps).toHaveLength(2);
 	expect(catalog.gaps.join(' ')).toContain('member.json');
+	const unreadable = await service.at({
+		list: async () => [{ path: 'specification/permissions/member.json' }],
+		read: async () => {
+			throw new Error('Fixture read unavailable');
+		}
+	});
+	expect(unreadable.profiles).toEqual([]);
+	expect(unreadable.gaps.join(' ')).toContain('specification/permissions/member.json');
 });
 
 test('successive source revisions never borrow another profile declaration', async () => {
