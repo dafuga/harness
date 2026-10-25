@@ -163,5 +163,73 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
+	},
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "run.initialized",
+				"state": "initialized",
+				"subject": "CheckRunService.run",
+				"test": {
+					"file": "test/browser-error-evidence.test.ts",
+					"title": "CheckRunService.run initialized keeps diagnostics, settlement and inherited resource budget"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"passed": true,
+						"entry": {
+							"status": "passed"
+						}
+					}
+				},
+				"errors": ["Error"],
+				"props": [
+					"check.id",
+					"check.name",
+					"check.kind",
+					"check.runner",
+					"check.target",
+					"check.cwd",
+					"check.command",
+					"check.timeoutMs",
+					"check.scenario",
+					"context.env"
+				],
+				"fixture": "test/support/checkRunCases.ts"
+			},
+			{
+				"id": "version.initialized",
+				"state": "initialized",
+				"subject": "CheckRunService.version",
+				"test": {
+					"file": "test/browser-error-evidence.test.ts",
+					"title": "CheckRunService.version initialized reports only a passing tool's first nonempty line"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "harness 2.4.1"
+				},
+				"props": ["tool.id", "tool.command", "context.env"],
+				"fixture": "test/support/checkRunCases.ts"
+			}
+		],
+		"props": [
+			"check.id",
+			"check.name",
+			"check.kind",
+			"check.runner",
+			"check.target",
+			"check.cwd",
+			"check.command",
+			"check.timeoutMs",
+			"check.scenario",
+			"context.env",
+			"tool.id",
+			"tool.command"
+		]
 	}
 }
