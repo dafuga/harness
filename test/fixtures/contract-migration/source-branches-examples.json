@@ -1,0 +1,358 @@
+{
+	"schemaVersion": 1,
+	"id": "function.source-branches",
+	"kind": "function",
+	"title": "Source branch naming",
+	"responsibility": "Combines local and remote-tracking source branches without moving local names to conflicting remote tips.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/git-source-history/source-history-repository/sourceBranches.ts",
+			"src/repositories/git-source-history/source-history-repository/sourceBranches.types.ts",
+			"src/repositories/source-history-repository/sourceBranches.ts",
+			"src/utils/git-source-history/sourceBranches.ts",
+			"src/utils/sourceBranches.ts"
+		],
+		"symbols": [
+			"sourceBranches",
+			"Tracked",
+			"sourceBranches",
+			"ListedRef",
+			"SourceBranch",
+			"sourceBranches",
+			"sourceBranches"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sourceBranches.refs",
+				"type": "ListedRef[]",
+				"description": "Listed Git refs with heads and optional symbolic targets."
+			},
+			{
+				"name": "sourceBranches.remotes",
+				"type": "string[]",
+				"description": "Configured remote names, used to disambiguate tracking prefixes by longest match."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sourceBranches",
+				"type": "SourceBranch[]",
+				"description": "Branches sorted by name. Local branches keep their tips; a remote-only agreed tip keeps the plain branch name, while conflicting tips use remote:branch. Evidence, notes, archives, tags and remote HEAD/symbolic refs are excluded."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.history-refs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.history-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/git-source-history/sourceBranches.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/git-source-history/sourceBranches.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"states": ["input", "boundary", "invalid"],
+		"props": ["refs", "remotes"],
+		"examples": [
+			{
+				"subject": "sourceBranches",
+				"name": "Keep agreed remote tips plain in a clone",
+				"call": "sourceBranches(clone.refs, clone.remotes)",
+				"input": {
+					"fixture": "clone-with-remote-head",
+					"fixtures": [
+						{
+							"refs": [
+								{"ref": "refs/heads/feat/work", "head": "6591099341ac0f3d0f5de2f1a439d854162f2719"},
+								{"ref": "refs/remotes/origin/feat/work", "head": "6591099341ac0f3d0f5de2f1a439d854162f2719"},
+								{"ref": "refs/remotes/origin/main", "head": "1b172612e9129ff3bb28748aa914ff01301ef180"},
+								{"ref": "refs/remotes/origin/release/1.0", "head": "fa02ed33dd1253370822d39171e09bf3548cdfbd"},
+								{"ref": "refs/remotes/origin/HEAD", "head": "1b172612e9129ff3bb28748aa914ff01301ef180", "symbolic": "refs/remotes/origin/main"}
+							],
+							"remotes": ["origin"]
+						}
+					]
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"repository": [[["feat/work", "6591099341ac0f3d0f5de2f1a439d854162f2719"], ["main", "1b172612e9129ff3bb28748aa914ff01301ef180"], ["release/1.0", "fa02ed33dd1253370822d39171e09bf3548cdfbd"]]],
+						"utility": [[["feat/work", "6591099341ac0f3d0f5de2f1a439d854162f2719"], ["main", "1b172612e9129ff3bb28748aa914ff01301ef180"], ["release/1.0", "fa02ed33dd1253370822d39171e09bf3548cdfbd"]]]
+					}
+				}
+			},
+			{
+				"subject": "sourceBranches",
+				"name": "Keep local tips beside conflicting remote tips",
+				"call": "sourceBranches(conflictingLocalRefs, [\"origin\"])",
+				"input": {
+					"fixture": "local-conflict-and-name-collision",
+					"fixtures": [
+						{
+							"refs": [
+								{"ref": "refs/heads/main", "head": "6591099341ac0f3d0f5de2f1a439d854162f2719"},
+								{"ref": "refs/remotes/origin/main", "head": "1b172612e9129ff3bb28748aa914ff01301ef180"}
+							],
+							"remotes": ["origin"]
+						},
+						{
+							"refs": [
+								{"ref": "refs/heads/origin/main", "head": "fa02ed33dd1253370822d39171e09bf3548cdfbd"},
+								{"ref": "refs/heads/main", "head": "6591099341ac0f3d0f5de2f1a439d854162f2719"},
+								{"ref": "refs/remotes/origin/main", "head": "1b172612e9129ff3bb28748aa914ff01301ef180"}
+							],
+							"remotes": ["origin"]
+						}
+					]
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"repository": [
+							[["main", "6591099341ac0f3d0f5de2f1a439d854162f2719"], ["origin:main", "1b172612e9129ff3bb28748aa914ff01301ef180"]],
+							[["main", "6591099341ac0f3d0f5de2f1a439d854162f2719"], ["origin/main", "fa02ed33dd1253370822d39171e09bf3548cdfbd"], ["origin:main", "1b172612e9129ff3bb28748aa914ff01301ef180"]]
+						],
+						"utility": [
+							[["main", "6591099341ac0f3d0f5de2f1a439d854162f2719"], ["origin:main", "1b172612e9129ff3bb28748aa914ff01301ef180"]],
+							[["main", "6591099341ac0f3d0f5de2f1a439d854162f2719"], ["origin/main", "fa02ed33dd1253370822d39171e09bf3548cdfbd"], ["origin:main", "1b172612e9129ff3bb28748aa914ff01301ef180"]]
+						]
+					}
+				}
+			},
+			{
+				"subject": "sourceBranches",
+				"name": "Name agreed and disagreeing remotes independently",
+				"call": "sourceBranches(remoteRefs, [\"origin\", \"team/mirror\"])",
+				"input": {
+					"fixture": "remote-agreement-and-conflict",
+					"fixtures": [
+						{
+							"refs": [
+								{"ref": "refs/remotes/origin/topic", "head": "6591099341ac0f3d0f5de2f1a439d854162f2719"},
+								{"ref": "refs/remotes/team/mirror/topic", "head": "6591099341ac0f3d0f5de2f1a439d854162f2719"}
+							],
+							"remotes": ["origin", "team/mirror"]
+						},
+						{
+							"refs": [
+								{"ref": "refs/remotes/origin/topic", "head": "6591099341ac0f3d0f5de2f1a439d854162f2719"},
+								{"ref": "refs/remotes/team/mirror/topic", "head": "1b172612e9129ff3bb28748aa914ff01301ef180"}
+							],
+							"remotes": ["origin", "team/mirror"]
+						}
+					]
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"repository": [
+							[["topic", "6591099341ac0f3d0f5de2f1a439d854162f2719"]],
+							[["origin:topic", "6591099341ac0f3d0f5de2f1a439d854162f2719"], ["team/mirror:topic", "1b172612e9129ff3bb28748aa914ff01301ef180"]]
+						],
+						"utility": [
+							[["topic", "6591099341ac0f3d0f5de2f1a439d854162f2719"]],
+							[["origin:topic", "6591099341ac0f3d0f5de2f1a439d854162f2719"], ["team/mirror:topic", "1b172612e9129ff3bb28748aa914ff01301ef180"]]
+						]
+					}
+				}
+			},
+			{
+				"subject": "sourceBranches",
+				"name": "Keep only the other remote tip and infer an unconfigured remote",
+				"call": "sourceBranches(localAndUnconfiguredRefs, remotes)",
+				"input": {
+					"fixture": "local-tip-and-unconfigured-remote",
+					"fixtures": [
+						{
+							"refs": [
+								{"ref": "refs/heads/topic", "head": "6591099341ac0f3d0f5de2f1a439d854162f2719"},
+								{"ref": "refs/remotes/origin/topic", "head": "6591099341ac0f3d0f5de2f1a439d854162f2719"},
+								{"ref": "refs/remotes/team/mirror/topic", "head": "1b172612e9129ff3bb28748aa914ff01301ef180"}
+							],
+							"remotes": ["origin", "team/mirror"]
+						},
+						{
+							"refs": [{"ref": "refs/remotes/gone/topic", "head": "00f0472994c716a853d3b14c85d5e08dffbc0ff"}],
+							"remotes": []
+						}
+					]
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"repository": [
+							[["team/mirror:topic", "1b172612e9129ff3bb28748aa914ff01301ef180"], ["topic", "6591099341ac0f3d0f5de2f1a439d854162f2719"]],
+							[["topic", "00f0472994c716a853d3b14c85d5e08dffbc0ff"]]
+						],
+						"utility": [
+							[["team/mirror:topic", "1b172612e9129ff3bb28748aa914ff01301ef180"], ["topic", "6591099341ac0f3d0f5de2f1a439d854162f2719"]],
+							[["topic", "00f0472994c716a853d3b14c85d5e08dffbc0ff"]]
+						]
+					}
+				}
+			},
+			{
+				"subject": "sourceBranches",
+				"name": "Exclude evidence notes archives tags and malformed refs",
+				"call": "sourceBranches(nonCodeRefs, [\"origin\"])",
+				"input": {
+					"fixture": "non-code-and-malformed-refs",
+					"fixtures": [
+						{
+							"refs": [
+								{"ref": "refs/heads/main", "head": "6591099341ac0f3d0f5de2f1a439d854162f2719"},
+								{"ref": "refs/heads/harness-evidence", "head": "1b172612e9129ff3bb28748aa914ff01301ef180"},
+								{"ref": "refs/remotes/origin/harness-evidence", "head": "1b172612e9129ff3bb28748aa914ff01301ef180"},
+								{"ref": "refs/remotes/origin/HEAD", "head": "6591099341ac0f3d0f5de2f1a439d854162f2719", "symbolic": "refs/remotes/origin/main"},
+								{"ref": "refs/remotes/origin/", "head": "fa02ed33dd1253370822d39171e09bf3548cdfbd"},
+								{"ref": "refs/notes/harness", "head": "fa02ed33dd1253370822d39171e09bf3548cdfbd"},
+								{"ref": "refs/harness/source/00f0472994c716a853d3b14c85d5e08dffbc0ff", "head": "00f0472994c716a853d3b14c85d5e08dffbc0ff"},
+								{"ref": "refs/harness/remotes/origin/evidence", "head": "1b172612e9129ff3bb28748aa914ff01301ef180"},
+								{"ref": "refs/tags/v1", "head": "fa02ed33dd1253370822d39171e09bf3548cdfbd"},
+								{"ref": "not-a-ref", "head": "00f0472994c716a853d3b14c85d5e08dffbc0ff"}
+							],
+							"remotes": ["origin"]
+						}
+					]
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"repository": [[["main", "6591099341ac0f3d0f5de2f1a439d854162f2719"]]],
+						"utility": [[["main", "6591099341ac0f3d0f5de2f1a439d854162f2719"]]]
+					}
+				}
+			},
+			{
+				"subject": "sourceBranches",
+				"name": "Return no branches for an empty ref list",
+				"call": "sourceBranches([], [])",
+				"input": {
+					"fixture": "empty-refs",
+					"fixtures": [{"refs": [], "remotes": []}]
+				},
+				"expected": {
+					"kind": "value",
+					"value": {"repository": [[]], "utility": [[]]}
+				}
+			},
+			{
+				"subject": "sourceBranches",
+				"name": "Round trip a remote branch route through the Reports alias",
+				"call": "consoleRoute(consoleRoutePath(route))",
+				"input": {
+					"fixture": "remote-branch-console-route",
+					"fixtures": [{"refs": [], "remotes": []}],
+					"route": {
+						"route": {"branch": "origin:feature/kept#1", "commit": "6591099341ac0f3d0f5de2f1a439d854162f2719", "view": "history"},
+						"legacyBranch": "origin/feature/kept#1"
+					}
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"repository": [[]],
+						"utility": [[]],
+						"route": {
+							"path": "/branch/origin%3Afeature/kept%231/commit/6591099341ac0f3d0f5de2f1a439d854162f2719/history",
+							"parsed": {"branch": "origin:feature/kept#1", "commit": "6591099341ac0f3d0f5de2f1a439d854162f2719", "view": "history"},
+							"legacyBranch": "origin/feature/kept#1"
+						}
+					}
+				}
+			}
+		],
+		"cases": [
+			{
+				"id": "source-branches.clone",
+				"state": "input",
+				"subject": "sourceBranches",
+				"example": "Keep agreed remote tips plain in a clone",
+				"fixture": "test/support/sourceBranchesExamples.ts",
+				"props": ["refs", "remotes"],
+				"test": {"file": "test/utils/source-branches.test.ts", "title": "sourceBranches: Keep agreed remote tips plain in a clone"}
+			},
+			{
+				"id": "source-branches.conflicting-tips",
+				"state": "input",
+				"subject": "sourceBranches",
+				"example": "Keep local tips beside conflicting remote tips",
+				"fixture": "test/support/sourceBranchesExamples.ts",
+				"props": ["refs", "remotes"],
+				"test": {"file": "test/utils/source-branches.test.ts", "title": "sourceBranches: Keep local tips beside conflicting remote tips"}
+			},
+			{
+				"id": "source-branches.remote-tips",
+				"state": "input",
+				"subject": "sourceBranches",
+				"example": "Name agreed and disagreeing remotes independently",
+				"fixture": "test/support/sourceBranchesExamples.ts",
+				"props": ["refs", "remotes"],
+				"test": {"file": "test/utils/source-branches.test.ts", "title": "sourceBranches: Name agreed and disagreeing remotes independently"}
+			},
+			{
+				"id": "source-branches.local-and-unconfigured",
+				"state": "boundary",
+				"subject": "sourceBranches",
+				"example": "Keep only the other remote tip and infer an unconfigured remote",
+				"fixture": "test/support/sourceBranchesExamples.ts",
+				"props": ["refs", "remotes"],
+				"test": {"file": "test/utils/source-branches.test.ts", "title": "sourceBranches: Keep only the other remote tip and infer an unconfigured remote"}
+			},
+			{
+				"id": "source-branches.non-code-refs",
+				"state": "invalid",
+				"subject": "sourceBranches",
+				"example": "Exclude evidence notes archives tags and malformed refs",
+				"fixture": "test/support/sourceBranchesExamples.ts",
+				"props": ["refs", "remotes"],
+				"test": {"file": "test/utils/source-branches.test.ts", "title": "sourceBranches: Exclude evidence notes archives tags and malformed refs"}
+			},
+			{
+				"id": "source-branches.empty",
+				"state": "boundary",
+				"subject": "sourceBranches",
+				"example": "Return no branches for an empty ref list",
+				"fixture": "test/support/sourceBranchesExamples.ts",
+				"props": ["refs", "remotes"],
+				"test": {"file": "test/utils/source-branches.test.ts", "title": "sourceBranches: Return no branches for an empty ref list"}
+			},
+			{
+				"id": "source-branches.console-route",
+				"state": "input",
+				"subject": "sourceBranches",
+				"example": "Round trip a remote branch route through the Reports alias",
+				"fixture": "test/support/sourceBranchesExamples.ts",
+				"props": ["refs", "remotes"],
+				"test": {"file": "test/utils/source-branches.test.ts", "title": "sourceBranches: Round trip a remote branch route through the Reports alias"}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
