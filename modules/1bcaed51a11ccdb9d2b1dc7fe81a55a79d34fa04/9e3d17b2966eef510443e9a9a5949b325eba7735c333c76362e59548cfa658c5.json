@@ -94818,7 +94818,15 @@
 				"size": "frozen",
 				"complexity": "frozen",
 				"performance": []
-			}
+			},
+			"configControls": [
+				{
+					"audience": "developer",
+					"name": "shellViteConfig",
+					"purpose": "Build isolated shell fixtures with source-derived catalog data, fixture aliases, scoped catalog style resolution and one browser IIFE bundle with its stylesheet.",
+					"source": "packages/reports/src/config/development-tooling/shellViteConfig.ts"
+				}
+			]
 		},
 		{
 			"schemaVersion": 1,
@@ -130300,6 +130308,28 @@
 			"schemaVersion": 1,
 			"tree": "aafffd00b0f07c754c8547f2c41623aab3d2c9a8",
 			"unit": "reports.config.shell-playwright"
+		},
+		{
+			"commit": "1bcaed51a11ccdb9d2b1dc7fe81a55a79d34fa04",
+			"digest": "59b0e292ac494ce840b7700f0c7cdd2522474244d90718221adf6e73abfa079b",
+			"files": {
+				"packages/reports/src/config/development-tooling/shellViteConfig.ts": "d745008d71d5737879928a71598b05d8334c09c8",
+				"packages/reports/src/config/shellViteConfig.ts": "2d69d066ee0b86543cca85be77233449597e63fd"
+			},
+			"metadata": {
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellViteConfig",
+						"purpose": "Build isolated shell fixtures with source-derived catalog data, fixture aliases, scoped catalog style resolution and one browser IIFE bundle with its stylesheet.",
+						"source": "packages/reports/src/config/development-tooling/shellViteConfig.ts"
+					}
+				]
+			},
+			"reason": "Configuration descriptions reviewed against identical Git blob d745008d71d5737879928a71598b05d8334c09c8 from d6d15b059909acf0121cfe3d65532278f746b338; bind controls to this exact owned source revision.",
+			"schemaVersion": 1,
+			"tree": "aafffd00b0f07c754c8547f2c41623aab3d2c9a8",
+			"unit": "reports.config.shell-vite"
 		}
 	],
 	"registry": {
@@ -328411,7 +328441,7 @@
 					"complexity": "frozen",
 					"performance": []
 				},
-				"version": "557f006d8baff548",
+				"version": "9f011b563f9baf13",
 				"limits": {
 					"metrics": {
 						"source-bytes": 755,
@@ -328491,6 +328521,14 @@
 						"unavailable": "A module unit emits no separate artifact.",
 						"method": "Not applicable.",
 						"artifacts": []
+					}
+				],
+				"configControls": [
+					{
+						"audience": "developer",
+						"name": "shellViteConfig",
+						"purpose": "Build isolated shell fixtures with source-derived catalog data, fixture aliases, scoped catalog style resolution and one browser IIFE bundle with its stylesheet.",
+						"source": "packages/reports/src/config/development-tooling/shellViteConfig.ts"
 					}
 				]
 			},
@@ -463774,7 +463812,7 @@
 		},
 		"reports.config.shell-vite": {
 			"unit": "reports.config.shell-vite",
-			"manifest": "8e7e318bca6afe70f604d8e1def273194c4fa981cebef8fa75724e2cb0d7e5d2",
+			"manifest": "d28cf540bbc4a75f7e243bbe32d4788d7b0dc6b8f408f8e4868ed32d1e8a9a3a",
 			"source": "948fd28bc9de77deb0939ba8c852067b2c67f3c8ea8e0f2fd19472ef00e73b95",
 			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
 			"runtime": "4cbdde65c6b16cd8eee1938e24639977f2726ea41d0183397a4bf154b770c4a6",
@@ -631289,8 +631327,7 @@
 		"reports.function.activity-display: plural must be implemented under src/helpers/<responsibility>/",
 		"reports.function.entity-contract: humanize must be implemented under src/helpers/<responsibility>/",
 		"reports.function.entity-lens: shortCommit must be implemented under src/helpers/<responsibility>/",
-		"reports.function.evidence-media: formatDuration must be implemented under src/helpers/<responsibility>/",
-		"reports.config.shell-vite requires reviewed configControls with a source, audience and purpose"
+		"reports.function.evidence-media: formatDuration must be implemented under src/helpers/<responsibility>/"
 	],
 	"modules": [
 		{
@@ -649636,11 +649673,6 @@
 					"field": "measurements.dependencies",
 					"message": "Source observation is partial or unavailable.",
 					"repair": "Run validate --write from the exact source revision; preserve unavailable-counter reasons."
-				},
-				{
-					"field": "registry",
-					"message": "reports.config.shell-vite requires reviewed configControls with a source, audience and purpose",
-					"repair": "Correct the committed module manifest or source."
 				}
 			]
 		},
@@ -652321,5 +652353,5 @@
 		}
 	],
 	"issues": [],
-	"digest": "e87fbf57c402418b8bcdb3b20739e9f798bb38b15268b5f484318c64b13550ee"
+	"digest": "0e4a94f2ef1c76670f7d741d552fdb49d6ccba5af5d15b3e16c82caae040e680"
 }
