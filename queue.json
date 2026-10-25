@@ -6440,9 +6440,19 @@
 			},
 			"sourceCommit": "6591099341ac0f3d0f5de2f1a439d854162f2719",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "queued",
+			"status": "running",
 			"reviews": [],
 			"createdAt": "2026-10-25T20:59:36.552Z",
+			"claim": {
+				"worker": "source-branches-examples",
+				"token": "015b4d97-c960-4e48-bfc8-7439e1b0849a",
+				"startedAt": "2026-10-25T20:59:38.150Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 17439,
+					"startedAt": "Sun Oct 25 20:59:37 2026"
+				}
+			},
 			"claimHistory": [],
 			"attempts": []
 		},
