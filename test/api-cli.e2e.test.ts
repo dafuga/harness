@@ -4,7 +4,6 @@ import { test } from 'vitest';
 import { readFile, stat, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { apiFixture, commit, requestId, png } from './support/api-cli/apiFixture';
-
 test('API CLI discovers resources and reads arbitrary hosted resources, queries and large JSON', async () => {
 	const f = await apiFixture('hosted');
 	try {
