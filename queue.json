@@ -5614,6 +5614,62 @@
 			},
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.resource-environment-examples",
+			"title": "Migrate function.resource-environment standard test cases",
+			"moduleGoal": "Complete canonical coverage without losing existing assertions",
+			"verificationFiles": [
+				"test/utils/resource-environment.test.ts",
+				"test/fixtures/contract-migration/resource-environment-examples.json"
+			],
+			"instructions": "Initial helper-Example migration for function.resource-environment. Edit only test/utils/resource-environment.test.ts and a full proposed copy of specification/units/function.resource-environment.json at test/fixtures/contract-migration/resource-environment-examples.json. Primary owns integration, shared contracts, product fixes, verification and commits. Do not run tests/build/lint/audit/install, delegate, update memory, access credentials, commit or publish. Run permitted Harness activity registration and heartbeat. Use registerExamples(test, direct imported JSON manifest as ComponentManifest if necessary, callbacks). One canonical stable case per authored Example; declare finite states, props, errors, exact outputs/error comments, actual owning fixture path and canonical subject: Example titles. Retain the original synthetic credential-filtering assertion exactly and never read or print real credentials. Cover each recognized scheduling/native worker key, unknown key filtering, empty/missing values, undefined through explicit fixture markers, null input errors and meaningful combinations. Keep authored expectations separate from observed output. If a default-process-env Example is used, display its explicit projection, preserve the real inherited lease and never manufacture expected values from observed results. Do not mutate or forge resource reservations. Non-JSON fixture markers must reconstruct actual accepted inputs without pre-normalizing getters/prototypes/iterators. No standalone regressions or dynamic test loops. Keep files/functions small, named types in companion files only; these two allowed files should not need named type declarations. Report static gaps truthfully, not passing verification. No model substitution.",
+			"wantedContract": {
+				"responsibility": "Preserve existing assertions in canonical method or Example cases",
+				"inputs": [
+					{
+						"name": "existing source contracts and realistic fixtures",
+						"type": "authored capability matrix"
+					}
+				],
+				"outputs": [
+					{
+						"name": "registered suite and proposed full manifest",
+						"type": "reviewable source"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid properties and failure outcomes",
+						"type": "explicit assertions"
+					}
+				]
+			},
+			"model": "claude-haiku-5-5",
+			"provider": "claude",
+			"intelligence": "max",
+			"assignee": "resource-environment-examples",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "function.resource-environment",
+				"goal": "Complete canonical coverage without losing existing assertions",
+				"files": [
+					"src/utils/execution-runtimes/resourceEnvironment.ts",
+					"test/utils/resource-environment.test.ts",
+					"test/fixtures/contract-migration/resource-environment-examples.json"
+				]
+			},
+			"sourceCommit": "97aec09ddf11b7e6011c2a84b6eb564f53cae7f9",
+			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T19:13:56.471Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
