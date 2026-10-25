@@ -14,6 +14,10 @@ test('historical source text is reused by repository and blob identity, never by
 	try {
 		const first = await ModuleDataSourceAdapter.open('/repo-a', 'first');
 		expect(await first.read('src/title.ts')).toBe('old title');
+		expect(await Promise.all([first.read('src/title.ts'), first.read('src/title.ts')])).toEqual([
+			'old title',
+			'old title'
+		]);
 		const same = await ModuleDataSourceAdapter.open('/repo-a', 'second');
 		expect(await same.read('src/title.ts')).toBe('old title');
 		expect(reads, 'Identical immutable blobs are fetched once').toHaveBeenCalledTimes(1);
