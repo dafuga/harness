@@ -1,0 +1,124 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IBmMER
+
+ ❯ test/commands/development-tooling/validate.test.ts (1 test | 1 failed) 19ms
+   × validation is a discoverable command with module, type and historical scopes 7ms
+     → A first-class validate command is required: expected undefined to be defined
+ ❯ test/module-data.e2e.test.ts (2 tests | 2 failed) 8647ms
+   × validate persists revision-bound module gaps, filters them and invalidates cached searches 3976ms
+     → Validation returns structured per-module diagnostics: expected '' to contain '"modules"'
+   × validate commits source-derived page API usage and explicit visual data gaps 4668ms
+     → expected '' to contain '"modules"'
+ ❯ test/api-registry.e2e.test.ts (8 tests | 2 failed) 10211ms
+   ✓ API CLI lists every registered local unit, including backend entries outside the catalog  1341ms
+   ✓ API CLI lists every registered hosted unit, including backend entries outside the catalog  1163ms
+   ✓ API CLI reads local backend contracts without relying on a visual catalog entry  1165ms
+   ✓ API CLI reads hosted backend contracts without relying on a visual catalog entry  1251ms
+   ✓ API CLI lists registered local APIs even when their visual snapshot is older  1290ms
+   ✓ API CLI lists registered hosted APIs even when their visual snapshot is older  1285ms
+   × API CLI reads local committed page APIs without a graph script 1410ms
+     → expected { ok: true } to deeply equal [ ObjectContaining{…} ]
+   × API CLI reads hosted committed page APIs without a graph script 1303ms
+     → expected { ok: true } to deeply equal [ ObjectContaining{…} ]
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/helpers/git-source-history/format-module-data-failure.test.ts [ test/helpers/git-source-history/format-module-data-failure.test.ts ]
+Error: Cannot find module '../../../src/helpers/git-source-history/formatModuleDataFailure' imported from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IBmMER/test/helpers/git-source-history/format-module-data-failure.test.ts'
+ ❯ test/helpers/git-source-history/format-module-data-failure.test.ts:2:1
+      1| import { expect, test } from 'vitest';
+      2| import { formatModuleDataFailure } from '../../../src/helpers/git-sour…
+       | ^
+      3| 
+      4| test('formatModuleDataFailure describes complete, scoped missing and u…
+
+Caused by: Error: Failed to load url ../../../src/helpers/git-source-history/formatModuleDataFailure (resolved id: ../../../src/helpers/git-source-history/formatModuleDataFailure) in /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IBmMER/test/helpers/git-source-history/format-module-data-failure.test.ts. Does the file exist?
+ ❯ loadAndTransform ../../../../../../../Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/node_modules/vite/dist/node/chunks/config.js:22663:33
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/api-registry.e2e.test.ts > API CLI reads local committed page APIs without a graph script
+ FAIL  test/api-registry.e2e.test.ts > API CLI reads hosted committed page APIs without a graph script
+AssertionError: expected { ok: true } to deeply equal [ ObjectContaining{…} ]
+
+[32m- Expected:[39m 
+[
+  ObjectContaining {
+    "id": "endpoint.orders",
+    "title": "/api/orders",
+  },
+]
+
+[31m+ Received:[39m 
+{
+  "ok": true,
+}
+
+ ❯ test/api-registry.e2e.test.ts:61:38
+     59|   try {
+     60|    const result = await f.cli(['get', 'used-apis', 'page.example', '--…
+     61|    expect(JSON.parse(result.stdout)).toEqual([
+       |                                      ^
+     62|     expect.objectContaining({ id: 'endpoint.orders', title: '/api/orde…
+     63|    ]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  test/module-data.e2e.test.ts > validate persists revision-bound module gaps, filters them and invalidates cached searches
+AssertionError: Validation returns structured per-module diagnostics: expected '' to contain '"modules"'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- "modules"[39m
+
+ ❯ invoke test/module-data.e2e.test.ts:25:82
+     23|   const invoke = async (args: string[]) => {
+     24|    const result = await project.harness(['validate', ...args, '--json'…
+     25|    expect(result.stdout, 'Validation returns structured per-module dia…
+       |                                                                                  ^
+     26|     '"modules"'
+     27|    );
+ ❯ test/module-data.e2e.test.ts:30:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  test/module-data.e2e.test.ts > validate commits source-derived page API usage and explicit visual data gaps
+AssertionError: expected '' to contain '"modules"'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- "modules"[39m
+
+ ❯ test/module-data.e2e.test.ts:94:25
+     92|   await git(['commit', '-m', 'feat: declare page API usage']);
+     93|   const result = await project.harness(['validate', '--write', '--json…
+     94|   expect(result.stdout).toContain('"modules"');
+       |                         ^
+     95|   const report = JSON.parse(result.stdout) as ValidationReport;
+     96|   expect(report.committed).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  test/commands/development-tooling/validate.test.ts > validation is a discoverable command with module, type and historical scopes
+AssertionError: A first-class validate command is required: expected undefined to be defined
+ ❯ test/commands/development-tooling/validate.test.ts:6:64
+      4| test('validation is a discoverable command with module, type and histo…
+      5|  const command = buildProgram().commands.find((item) => item.name() ==…
+      6|  expect(command, 'A first-class validate command is required').toBeDef…
+       |                                                                ^
+      7|  expect(command!.options.map((item) => item.long)).toEqual(
+      8|   expect.arrayContaining([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+
+ Test Files  4 failed (4)
+      Tests  5 failed | 6 passed (11)
+   Start at  11:03:56
+   Duration  25.78s (transform 1.71s, setup 301ms, collect 2.88s, tests 18.88s, environment 0ms, prepare 156ms)
+
