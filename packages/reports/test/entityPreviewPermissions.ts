@@ -64,4 +64,16 @@ async function reviewHistoricalPermissions(page: Page, viewport: string): Promis
 	await page.reload();
 	await ready(page);
 	await capture(page, `permission-profiles-empty-${viewport}`, [profileUnit]);
+	await open(
+		page,
+		{ category: 'apis', entity: apiIds.orders, commit: commits.first, tab: 'permissions' },
+		'apis'
+	);
+	await expect(page.getByRole('tabpanel')).toContainText(
+		'No access declaration names this endpoint at this revision.'
+	);
+	await capture(page, `api-permissions-empty-${viewport}`, [
+		'reports.component.harness-entity-header',
+		'reports.component.harness-entity-sections'
+	]);
 }

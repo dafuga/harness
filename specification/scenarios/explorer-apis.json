@@ -103,6 +103,15 @@
 			"title": "The selected revision declares no profiles",
 			"coverage": "required",
 			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "api-permissions-empty",
+			"title": "The selected endpoint has no declared profile access",
+			"coverage": "required",
+			"units": [
+				"reports.component.harness-entity-header",
+				"reports.component.harness-entity-sections"
+			]
 		}
 	],
 	"viewports": [
