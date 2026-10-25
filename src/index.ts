@@ -211,3 +211,4 @@ export { ModulePackageService } from './services/module-system/ModulePackageServ
 export { standardCodeModules } from './templates/module-system/standardCodeModules';
 export { rustWasmModule } from './templates/module-system/rustWasmModule';
 export { rustBackendModule } from './templates/module-system/rustBackendModule';
+export { moduleResourceLocation } from './helpers/module-system/moduleResourceLocation';
