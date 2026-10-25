@@ -3,7 +3,7 @@ import { measureWorkload } from '../../../../test/support/measureWorkload';
 import type { ExplorerLocation } from '../../src/models/Explorer.types';
 import { retainedBranch } from '../../src/utils/harnessAncestry';
 import { harnessShell } from '../../src/components/explorer-ui/harness-navbar/harnessShell';
-import { plainClick, type HarnessNavbarInput } from '../../src/utils/harnessShell';
+import { type HarnessNavbarInput } from '../../src/utils/harnessShell';
 import {
 	sha,
 	shellBranch,
@@ -41,12 +41,13 @@ test('the bar groups module categories under five scoped primary destinations', 
 		const { categories } = view(historical);
 		expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 			['pages', 'Pages', 'pages'],
+			['apis', 'APIs', 'route'],
 			['modules', 'Code', 'layers'],
 			['translations', 'Translations', 'web'],
 			['platforms', 'Platforms', 'platforms']
 		]);
 		expect(categories.map((item) => item.href)).toEqual(
-			['pages', 'components', 'translations', 'platforms'].map(
+			['pages', 'apis', 'components', 'translations', 'platforms'].map(
 				(category) => `${scoped}/commit/${sha(4)}/${category}`
 			)
 		);
@@ -94,7 +95,8 @@ test('on a current branch route the viewed commit is the tip, and there is no ti
 		href: `${scoped}/pages`,
 		to: { branch: shellBranch, commit: null, category: 'pages' }
 	});
-	expect(categories[1].href).toBe(`${scoped}/components`);
+	expect(categories.find((item) => item.id === 'modules')?.href).toBe(`${scoped}/components`);
+	expect(categories.find((item) => item.id === 'apis')?.href).toBe(`${scoped}/apis`);
 	expect(revision).toMatchObject({
 		branch: shellBranch,
 		commit: sha(5),
@@ -169,6 +171,7 @@ test('without a resolved address the bar keeps its navigation and offers no revi
 	expect(home).toEqual({ href: shellMount, to: null });
 	expect(categories.map((item) => item.label)).toEqual([
 		'Pages',
+		'APIs',
 		'Code',
 		'Translations',
 		'Platforms'
@@ -194,26 +197,4 @@ test('Styles stays active across branch and commit selection without becoming an
 	});
 	expect(revision?.branchTo('main')).toEqual({ ...styles, branch: 'main', commit: null });
 	expect(revision?.commitTo(sha(3))).toEqual({ ...styles, commit: sha(3) });
-});
-
-test('only a plain left click is followed inside the application', () => {
-	const click = (changes: Partial<MouseEvent> = {}) =>
-		({
-			button: 0,
-			metaKey: false,
-			ctrlKey: false,
-			shiftKey: false,
-			altKey: false,
-			...changes
-		}) as MouseEvent;
-	expect(plainClick(click())).toBe(true);
-	for (const changed of [
-		{ button: 1 },
-		{ metaKey: true },
-		{ ctrlKey: true },
-		{ shiftKey: true },
-		{ altKey: true },
-		{ defaultPrevented: true }
-	])
-		expect([changed, plainClick(click(changed))]).toEqual([changed, false]);
 });

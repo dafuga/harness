@@ -10,8 +10,11 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { alpha, searchFixture } from './ui-search-fixture';
 const at = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
-const widths = [1440, 1379, 1300, 1251, 920, 768, 390, 320];
-const bar = (page: Page) => page.getByRole('banner');
+const widths = [1800, 1440, 1379, 1300, 1251, 920, 768, 760, 561, 560, 390, 320];
+const bar = (page: Page) =>
+	page.getByRole('banner').filter({
+		has: page.getByRole('navigation', { name: 'Catalog categories' })
+	});
 const field = (page: Page) =>
 	page
 		.getByRole('dialog', { name: 'Search project' })
@@ -74,6 +77,15 @@ async function fits(page: Page, width: number, without: number[]): Promise<void>
 	});
 	expect(clipped, 'All category links and labels must fit visibly inside the nav').toEqual([]);
 	const search = await box(trigger(page));
+	for (const link of await navigation.getByRole('link').all())
+		expect(meet(await box(link), search, 0), 'All category links must remain clear of search').toBe(
+			false
+		);
+	if (width <= 560)
+		expect(
+			(await box(bar(page))).height,
+			'Mobile header must leave room for project content'
+		).toBeLessThanOrEqual(184);
 	const fields = await Promise.all(revision(page).map(box));
 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
 	// The search takes nothing of the room of either revision field.

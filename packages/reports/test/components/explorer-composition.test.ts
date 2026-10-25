@@ -28,18 +28,27 @@ const entry = (path: string): string =>
 	)?.runtime.entry ?? path;
 const components = `${workspaceRoot}/src/components`;
 const routes = `${workspaceRoot}/src/routes/harness`;
-const isComponent = (path: string) => path.endsWith('.svelte');
+const isComponent = (path: string) =>
+	path.endsWith('.svelte') &&
+	!units.some((unit) => unit.composition?.level === 'atom' && unit.owns.source.includes(path));
 const named = (path: string) => path.slice(path.lastIndexOf('/') + 1).replace('.svelte', '');
+
+const references = new Map<string, string[]>();
 
 /** The files one file refers to: all of them, or only those it needs when it runs. */
 function refers(path: string, runs: boolean): string[] {
 	path = entry(path);
+	const key = `${path}:${runs}`;
+	const cached = references.get(key);
+	if (cached) return cached;
 	const script = path.endsWith('.ts') ? 'ts' : 'other';
 	const language = isComponent(path) ? 'svelte' : script;
 	const code = readFileSync(join(repo, path), 'utf8');
-	return scanImports(code, language)
+	const found = scanImports(code, language)
 		.map((reference) => resolveImport(path, reference, { files, workspaceRoot }))
 		.flatMap((found) => (found.path && !(runs && found.typeOnly) ? [found.path] : []));
+	references.set(key, found);
+	return found;
 }
 
 /** Every component a file draws when it runs, through whatever it imports, by name. */
@@ -59,6 +68,10 @@ const mounts = (path: string, runs = true) => refers(path, runs).filter(isCompon
 
 const views = { catalog: '', overview: '/[entity]', details: '/[entity]/details' };
 const screens = { ...views, history: '/[entity]/history' };
+const screensFor = (category: string) =>
+	category === 'apis'
+		? { catalog: screens.catalog, overview: screens.overview, history: screens.history }
+		: screens;
 const page = (category: string, view: string) =>
 	`${routes}/branch/[branch]/[...at]/${category}${view}/+page.svelte`;
 
@@ -86,10 +99,11 @@ test('the renderer of any screen is named only where the screen is not known', (
 
 test('every page mounts the host with one screen of its own, and none draws every screen', () => {
 	for (const category of explorerCategories) {
-		for (const [screen, view] of Object.entries(screens)) {
+		for (const [screen, view] of Object.entries(screensFor(category))) {
 			const mounted = mounts(page(category, view), false);
 			if (screen !== 'catalog') {
-				const singular = category[0].toUpperCase() + category.slice(1, -1);
+				const singular =
+					category === 'apis' ? 'API' : category[0].toUpperCase() + category.slice(1, -1);
 				const suffix = screen === 'overview' ? '' : ` ${screen}`;
 				expect(
 					readFileSync(join(repo, page(category, view)), 'utf8'),
@@ -111,10 +125,15 @@ test('every page mounts the host with one screen of its own, and none draws ever
 	}
 });
 
-test('the four screens of a category are made of different components', () => {
+test('the canonical screens of a category are made of different components', () => {
 	for (const category of explorerCategories) {
-		const made = Object.values(screens).map((view) => drawn(page(category, view)).join());
-		expect([category, new Set(made).size]).toEqual([category, 4]);
+		const made = Object.values(screensFor(category)).map((view) =>
+			drawn(page(category, view)).join()
+		);
+		expect([category, new Set(made).size]).toEqual([
+			category,
+			Object.keys(screensFor(category)).length
+		]);
 	}
 });
 
@@ -126,7 +145,7 @@ test('a catalog draws no entity view, and each entity view draws its own and not
 			category,
 			[]
 		]);
-		for (const [screen, view] of Object.entries(screens).slice(1)) {
+		for (const [screen, view] of Object.entries(screensFor(category)).slice(1)) {
 			const has = Object.values(own).filter((name) => drawn(page(category, view)).includes(name));
 			expect([category, screen, has]).toEqual([
 				category,
