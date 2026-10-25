@@ -12,13 +12,8 @@ export async function modulePackagePlan(
 	if (definition.appOnly && !['app', 'game'].includes(manifest.harness?.kind))
 		throw new Error('This module requires a Harness app project.');
 	for (const field of ['dependencies', 'devDependencies'] as const) {
-		const dependencies = { ...manifest[field] };
-		for (const [name, version] of Object.entries(definition[field] ?? {})) {
-			if (dependencies[name] && dependencies[name] !== version)
-				throw new Error(`Resolve the existing dependency ${name} before installing this module.`);
-			dependencies[name] = version;
-		}
-		if (Object.keys(definition[field] ?? {}).length) manifest[field] = dependencies;
+		if (Object.keys(definition[field] ?? {}).length)
+			manifest[field] = moduleDependencies(manifest[field], definition[field]);
 	}
 	return { path: 'package.json', contents: JSON.stringify(manifest, null, '\t') + '\n' };
 }
@@ -36,9 +31,22 @@ export async function moduleGroupPlan(
 	try {
 		config = JSON.parse(await readFile(join(root, 'harness.groups.json'), 'utf8'));
 	} catch (error) {
-		if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+		if ((error as { code?: string }).code !== 'ENOENT') throw error;
 	}
 	if (!config.groups.some((group) => group.id === definition.id))
 		config.groups.push({ id: definition.id, title: definition.title, terms: [definition.id] });
 	return { path: 'harness.groups.json', contents: JSON.stringify(config, null, '\t') + '\n' };
+}
+
+function moduleDependencies(
+	existing: Record<string, string> = {},
+	requested: Record<string, string> = {}
+) {
+	const dependencies = { ...existing };
+	for (const [name, version] of Object.entries(requested)) {
+		if (dependencies[name] && dependencies[name] !== version)
+			throw new Error(`Resolve the existing dependency ${name} before installing this module.`);
+		dependencies[name] = version;
+	}
+	return dependencies;
 }

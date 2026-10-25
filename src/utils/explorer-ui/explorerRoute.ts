@@ -160,10 +160,7 @@ function helperPane(location: ExplorerLocation, pane?: string): ExplorerLocation
 }
 
 function specialPath(location: ExplorerLocation): string | undefined {
-	if (location.screen) {
-		const module = location.screen === 'modules' || location.screen === 'module-resources';
-		return `/${location.screen}${module && location.entity ? `/${encodeURIComponent(location.entity)}` : ''}`;
-	}
+	if (location.screen) return moduleScreenPath(location);
 	if (location.category !== 'functions' || !location.helper) return undefined;
 	const helper = encodeURIComponent(location.helper);
 	const owner = location.entity ? `/in/${encodeURIComponent(location.entity)}` : '';
@@ -173,3 +170,8 @@ function specialPath(location: ExplorerLocation): string | undefined {
 }
 
 export type { ExplorerScreen, ExplorerSection, ExplorerLocation } from './explorerRoute.types';
+
+function moduleScreenPath(location: ExplorerLocation): string {
+	const module = location.screen === 'modules' || location.screen === 'module-resources';
+	return `/${location.screen}${module && location.entity ? `/${encodeURIComponent(location.entity)}` : ''}`;
+}

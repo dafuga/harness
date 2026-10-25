@@ -15,6 +15,27 @@ export class ModuleCatalogService {
 	): Promise<ModuleCatalog> {
 		const gaps: string[] = [];
 		const state = await this.state(tree, gaps);
+		const entries = await this.definitions(tree, gaps);
+		// Installed definitions are frozen with the project, never upgraded by the indexer's library.
+		for (const entry of state.modules) entries.set(entry.definition.id, entry);
+		return {
+			gaps,
+			modules: [...entries.values()]
+				.map((entry) => ({
+					...entry,
+					installed: state.modules.some(
+						(installed) => installed.definition.id === entry.definition.id
+					),
+					instances: state.resources.filter((instance) => instance.module === entry.definition.id)
+				}))
+				.sort((a, b) => a.definition.title.localeCompare(b.definition.title))
+		};
+	}
+
+	private async definitions(
+		tree: Pick<SourceTree, 'read'> & { list(): Promise<Array<{ path: string }>> },
+		gaps: string[]
+	) {
 		const definitions = new Map(
 			builtinModules.map((definition) => [
 				definition.id,
@@ -37,20 +58,7 @@ export class ModuleCatalogService {
 				gaps.push(`Invalid module definition: ${entry.path}`);
 			}
 		}
-		// Installed definitions are frozen with the project, never upgraded by the indexer's library.
-		for (const entry of state.modules) entries.set(entry.definition.id, entry);
-		return {
-			gaps,
-			modules: [...entries.values()]
-				.map((entry) => ({
-					...entry,
-					installed: state.modules.some(
-						(installed) => installed.definition.id === entry.definition.id
-					),
-					instances: state.resources.filter((instance) => instance.module === entry.definition.id)
-				}))
-				.sort((a, b) => a.definition.title.localeCompare(b.definition.title))
-		};
+		return entries;
 	}
 
 	async state(tree: Pick<SourceTree, 'read'>, gaps?: string[]): Promise<ModuleState> {
@@ -59,7 +67,7 @@ export class ModuleCatalogService {
 			source = await tree.read(moduleStateFile);
 		} catch (error) {
 			if (
-				(error as NodeJS.ErrnoException).code === 'ENOENT' ||
+				(error as { code?: string }).code === 'ENOENT' ||
 				/not (?:found|exist)|does not exist/i.test(String(error))
 			)
 				return emptyState();

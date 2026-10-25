@@ -16,15 +16,8 @@ export async function writeModuleFiles(
 		const path = moduleOutputPath(file.path);
 		if (seen.has(path)) throw new Error(`Duplicate module output: ${path}`);
 		seen.add(path);
-		await assertNoLinks(canonical, path);
-		const previous = await existing(join(canonical, path));
-		if (
-			previous !== undefined &&
-			(!allowIdentical || previous !== file.contents) &&
-			!replace.includes(path)
-		)
-			throw new Error(`Refusing to overwrite existing ${path}.`);
-		if (previous !== file.contents) plans.push({ ...file, path, previous });
+		const plan = await moduleFilePlan(canonical, { ...file, path }, replace, allowIdentical);
+		if (plan) plans.push(plan);
 	}
 	const written: typeof plans = [];
 	try {
@@ -67,7 +60,7 @@ async function assertNoLinks(root: string, path: string): Promise<void> {
 			if ((await lstat(target)).isSymbolicLink())
 				throw new Error(`Module output crosses symlink: ${path}`);
 		} catch (error) {
-			if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+			if ((error as { code?: string }).code !== 'ENOENT') throw error;
 		}
 	}
 }
@@ -76,7 +69,7 @@ async function existing(path: string): Promise<string | undefined> {
 	try {
 		return await readFile(path, 'utf8');
 	} catch (error) {
-		if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+		if ((error as { code?: string }).code !== 'ENOENT') throw error;
 		return undefined;
 	}
 }
@@ -89,4 +82,22 @@ async function rollback(
 		if (file.previous === undefined) await unlink(join(root, file.path));
 		else await writeFile(join(root, file.path), file.previous);
 	}
+}
+
+async function moduleFilePlan(
+	root: string,
+	file: PlannedFile,
+	replace: string[],
+	allowIdentical: boolean
+) {
+	const path = file.path;
+	await assertNoLinks(root, path);
+	const previous = await existing(join(root, path));
+	if (
+		previous !== undefined &&
+		(!allowIdentical || previous !== file.contents) &&
+		!replace.includes(path)
+	)
+		throw new Error(`Refusing to overwrite existing ${path}.`);
+	return previous !== file.contents ? { ...file, previous } : undefined;
 }

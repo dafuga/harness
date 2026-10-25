@@ -18,14 +18,14 @@ export function moduleTree(root: string) {
 							await readFile(join(root, path), 'utf8');
 							return { path };
 						} catch (error) {
-							if ((error as NodeJS.ErrnoException).code === 'ENOENT') return undefined;
+							if ((error as { code?: string }).code === 'ENOENT') return undefined;
 							throw error;
 						}
 					})
 				);
 				return entries.filter((entry): entry is { path: string } => entry !== undefined);
 			} catch (error) {
-				if ((error as NodeJS.ErrnoException).code === 'ENOENT') return [];
+				if ((error as { code?: string }).code === 'ENOENT') return [];
 				throw error;
 			}
 		}
