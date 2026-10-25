@@ -4,13 +4,20 @@
 	"base": "e463e31854366174e5fb338b58e3734ce2b8d12d",
 	"scope": "Harness repository workspaces and generators only; external applications and production excluded",
 	"inventory": {
-		"files": 1109,
-		"declarations": 4209,
-		"standardizedUnits": 21,
-		"standardizedCases": 229,
-		"errors": 6004
+		"files": 1110,
+		"declarations": 4230,
+		"standardizedUnits": 23,
+		"standardizedCases": 256,
+		"errors": 5996
 	},
 	"migrations": [
+		{
+			"unit": "adapter.commit-tree",
+			"shape": "service",
+			"cases": 6,
+			"states": ["empty", "populated"],
+			"testFiles": ["test/adapters/git-source-history/commit-tree.test.ts"]
+		},
 		{
 			"unit": "adapter.verification-evidence-case-result",
 			"shape": "service",
@@ -31,6 +38,13 @@
 			"cases": 24,
 			"states": ["input", "invalid"],
 			"testFiles": ["test/case.test.ts"]
+		},
+		{
+			"unit": "remote.service.device-pairing",
+			"shape": "service",
+			"cases": 20,
+			"states": ["initialized", "requested", "approved", "denied", "exchanged"],
+			"testFiles": ["packages/remote/test/services/device-pairing.test.ts"]
 		},
 		{
 			"unit": "remote.service.event-log",
@@ -154,7 +168,7 @@
 		{
 			"unit": "service.verification-evidence-test-expectation",
 			"shape": "service",
-			"cases": 3,
+			"cases": 4,
 			"states": ["initialized"],
 			"testFiles": ["test/services/verification-evidence/test-expectation.test.ts"]
 		},
