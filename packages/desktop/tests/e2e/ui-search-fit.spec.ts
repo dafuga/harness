@@ -11,7 +11,10 @@ import { join } from 'node:path';
 import { alpha, searchFixture } from './ui-search-fixture';
 const at = (rest: string) => `/projects/${alpha}/harness/branch/feat%2Falpha/${rest}`;
 const widths = [1800, 1440, 1379, 1300, 1251, 920, 768, 760, 561, 560, 390, 320];
-const bar = (page: Page) => page.getByRole('banner');
+const bar = (page: Page) =>
+	page.getByRole('banner').filter({
+		has: page.getByRole('navigation', { name: 'Catalog categories' })
+	});
 const field = (page: Page) =>
 	page
 		.getByRole('dialog', { name: 'Search project' })
