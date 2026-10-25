@@ -2,7 +2,7 @@
 	"name": "project-modules",
 	"goal": "Projects install extensible modules that add Code resource types, generators and working offline/email foundations",
 	"createdAt": "2026-10-25T13:26:29.428Z",
-	"updatedAt": "2026-10-25T13:41:38.654Z",
+	"updatedAt": "2026-10-25T15:05:49.094Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,17 +17,22 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T15:05:48.486Z",
+			"evidence": "Implemented extensible frozen module definitions, guarded source generation, Email and Offline runtime foundations, revision-scoped catalog/resource screens and Code contributions; implementation at eeef9c72e2 with runtime fixes at 49e98e1e0e and console routing at debd9ad084."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T15:05:49.094Z",
+			"evidence": "Committed tests c936ee57af and e95e4a46d6; core generated app red-green passes at 49e98e1e0e; console chat red-green passes at debd9ad084. Reports package check at c276d6ea77 passes all 774 cases, typechecks, lint, build and audit. Six module component captures passed at 5fd7e16d12 on harbor-mbp-2. Full repository verification remains pending."
 		},
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "Reports package check passes at c276d6ea77 (774 tests). Independent module component captures pass at 5fd7e16d12 on harbor-mbp-2. Repository check and highest-memory-supported six-worker browser/navigation rerun remain pending resource admission; SSH PATH corrected to include the already installed Rust toolchain. Root unit failures require generated kernel artifacts; kernel build is queued. Do not finalize the report or claim full repository verification."
 		}
 	],
 	"evaluators": [
