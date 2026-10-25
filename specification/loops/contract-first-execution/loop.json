@@ -2,7 +2,7 @@
 	"name": "contract-first-execution",
 	"goal": "Prove CLI-authored committed contracts drive server-created tasks; Codex reads app contracts without source discovery; Claude/Codex workers have app-wide contract reads and enforced assigned-file writes; validation rejects every missing mandatory field; automatic dispatch starts and records real workers.",
 	"createdAt": "2026-10-25T22:24:12.024Z",
-	"updatedAt": "2026-10-25T22:24:12.024Z",
+	"updatedAt": "2026-10-25T22:36:47.308Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -27,6 +27,31 @@
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		},
+		{
+			"id": "contract-cli",
+			"title": "Contracts can be authored through CLI with invalid-input atomic rejection.",
+			"status": "pending"
+		},
+		{
+			"id": "worker-scope",
+			"title": "Real child processes read all app contracts, edit assigned files, and are denied foreign writes and source/test discovery.",
+			"status": "pending"
+		},
+		{
+			"id": "automatic-dispatch",
+			"title": "Server validates a desired-contract plan, creates tasks and starts real Claude/Codex workers without manual worker launches.",
+			"status": "pending"
+		},
+		{
+			"id": "codex-skill",
+			"title": "Active and generated Harness skills require contract-first CLI discovery and assigned implementation boundaries.",
+			"status": "pending"
+		},
+		{
+			"id": "metadata-admission",
+			"title": "Global and scoped validation reject every missing mandatory metadata field while reporting evidence gaps separately.",
 			"status": "pending"
 		}
 	],
