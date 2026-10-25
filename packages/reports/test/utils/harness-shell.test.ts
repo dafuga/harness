@@ -41,12 +41,13 @@ test('the bar groups module categories under five scoped primary destinations', 
 		const { categories } = view(historical);
 		expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 			['pages', 'Pages', 'pages'],
+			['apis', 'APIs', 'route'],
 			['modules', 'Code', 'layers'],
 			['translations', 'Translations', 'web'],
 			['platforms', 'Platforms', 'platforms']
 		]);
 		expect(categories.map((item) => item.href)).toEqual(
-			['pages', 'components', 'translations', 'platforms'].map(
+			['pages', 'apis', 'components', 'translations', 'platforms'].map(
 				(category) => `${scoped}/commit/${sha(4)}/${category}`
 			)
 		);
@@ -94,7 +95,8 @@ test('on a current branch route the viewed commit is the tip, and there is no ti
 		href: `${scoped}/pages`,
 		to: { branch: shellBranch, commit: null, category: 'pages' }
 	});
-	expect(categories[1].href).toBe(`${scoped}/components`);
+	expect(categories.find((item) => item.id === 'modules')?.href).toBe(`${scoped}/components`);
+	expect(categories.find((item) => item.id === 'apis')?.href).toBe(`${scoped}/apis`);
 	expect(revision).toMatchObject({
 		branch: shellBranch,
 		commit: sha(5),
@@ -169,6 +171,7 @@ test('without a resolved address the bar keeps its navigation and offers no revi
 	expect(home).toEqual({ href: shellMount, to: null });
 	expect(categories.map((item) => item.label)).toEqual([
 		'Pages',
+		'APIs',
 		'Code',
 		'Translations',
 		'Platforms'
