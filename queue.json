@@ -5255,6 +5255,63 @@
 			},
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.canonical-json-examples",
+			"title": "Migrate function.canonical-json standard test cases",
+			"moduleGoal": "Complete canonical coverage without losing existing assertions",
+			"verificationFiles": [
+				"test/utils/canonical-json.test.ts",
+				"test/fixtures/contract-migration/canonical-json-examples.json"
+			],
+			"instructions": "Initial test-contract migration for function.canonical-json. Edit ONLY test/utils/canonical-json.test.ts and test/fixtures/contract-migration/canonical-json-examples.json. Write a proposed full copy of specification/units/function.canonical-json.json at that fixture path; do not edit specification or product source. Primary owns integration, product fixes, shared contracts, review, verification and commits. Do not run tests, builds, audit, lint, install, delegate, update memory, access credentials, commit or publish. Use exactly one registered helper Example case per authored Example with registerExamples(test, direct imported JSON manifest as ComponentManifest if necessary, callbacks); import test from vitest. Keep all original assertions and real implementation/public entry boundaries. Use authored expected values, never observed output to manufacture expectations. Preserve non-JSON admission with explicit fixture markers and displayed calls showing reconstruction; never normalize getters, iterators, undefined or prototypes away before invoking the function. Keep files under 220 lines, functions55, named types in companion files only if preexisting allowed file supports them. Declare finite meaningful inputs/errors and complete stable testing.states/examples/cases with canonical subject: Example titles, expected output/error comments and owning fixture paths. Existing prettier comparison workload for stableJson must remain inside its responsible Example with all nine width boundaries and escaped text assertions; authored output must remain separate from observed product output. Do not add afterAll tests or lose style oracle comparisons. canonicalJson must retain recursive key sorting, canonical equality of differently ordered inputs, array-order distinction, undefined object omission and primitive behavior. Characterize normal JSON inputs, empty/null/invalid properties and actual unsupported input error behavior with finite authored Examples. Preserve all preexisting helperContracts Examples, avoid duplicate names. No model substitution.",
+			"wantedContract": {
+				"responsibility": "Preserve existing assertions in canonical method or Example cases",
+				"inputs": [
+					{
+						"name": "existing source contracts and realistic fixtures",
+						"type": "authored capability matrix"
+					}
+				],
+				"outputs": [
+					{
+						"name": "registered suite and proposed full manifest",
+						"type": "reviewable source"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid properties and failure outcomes",
+						"type": "explicit assertions"
+					}
+				]
+			},
+			"model": "claude-haiku-5-5",
+			"provider": "claude",
+			"intelligence": "max",
+			"assignee": "canonical-json-examples",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "function.canonical-json",
+				"goal": "Complete canonical coverage without losing existing assertions",
+				"files": [
+					"src/utils/canonicalJson.ts",
+					"src/utils/development-tooling/canonicalJson.ts",
+					"test/utils/canonical-json.test.ts",
+					"test/fixtures/contract-migration/canonical-json-examples.json"
+				]
+			},
+			"sourceCommit": "8dbd4d77c15833d2339864aa4ce757e20226fa04",
+			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T18:56:07.220Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
