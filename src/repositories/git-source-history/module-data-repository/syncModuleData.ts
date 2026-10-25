@@ -1,3 +1,4 @@
+import type { ModulePathConflict } from './syncModuleData.types';
 import type { ModuleData } from '../../../services/git-source-history/ModuleDataService.types';
 import type { TreeFile } from '../../../adapters/verification-evidence/EvidenceTreeAdapter.types';
 import { randomUUID } from 'node:crypto';
@@ -62,21 +63,26 @@ async function mergedFiles(
 		if (!/^(modules|snapshots|reviews|review-snapshots)\//.test(path)) continue;
 		const held = local.get(path);
 		if (held === blob) continue;
-		if (held && held !== blob) {
-			const mutable = path.startsWith('modules/') || path.startsWith('reviews/');
-			if (!mutable) conflict(path);
-			if (path.startsWith('modules/')) {
-				const prefer =
-					held === ancestor.get(path) ? true : blob === ancestor.get(path) ? false : undefined;
-				if (!(await preferReviewedModule(tree, ours, theirs, path, prefer))) continue;
-			} else {
-				if (blob === ancestor.get(path)) continue;
-				if (held !== ancestor.get(path)) conflict(path);
-			}
-		}
+		if (
+			held &&
+			!(await shouldReplace(tree, { ours, theirs, path, held, blob, base: ancestor.get(path) }))
+		)
+			continue;
 		files.push({ path, content: { blob } });
 	}
 	return files;
+}
+
+async function shouldReplace(tree: EvidenceTreeAdapter, input: ModulePathConflict) {
+	const { ours, theirs, path, held, blob, base } = input;
+	if (path.startsWith('modules/')) {
+		const prefer = held === base ? true : blob === base ? false : undefined;
+		return preferReviewedModule(tree, ours, theirs, path, prefer);
+	}
+	if (!path.startsWith('reviews/')) conflict(path);
+	if (blob === base) return false;
+	if (held !== base) conflict(path);
+	return true;
 }
 
 /** Lookup aliases may advance after authoring. Immutable digest paths retain every version. */

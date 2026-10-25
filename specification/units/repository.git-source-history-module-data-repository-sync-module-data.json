@@ -7,8 +7,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/repositories/git-source-history/module-data-repository/syncModuleData.ts"],
-		"symbols": ["syncModuleData"]
+		"source": [
+			"src/repositories/git-source-history/module-data-repository/syncModuleData.ts",
+			"src/repositories/git-source-history/module-data-repository/syncModuleData.types.ts"
+		],
+		"symbols": ["syncModuleData", "ModulePathConflict"]
 	},
 	"contract": {
 		"origin": "derived",
