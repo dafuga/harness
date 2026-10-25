@@ -1651,6 +1651,69 @@
 			"createdAt": "2026-10-25T14:38:32.262Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.contract-examples",
+			"title": "Migrate reports.function.entity-contract to authored example cases",
+			"moduleGoal": "Preserve all existing assertions through canonical authored example cases",
+			"verificationFiles": [
+				"packages/reports/test/utils/entity-contract.test.ts",
+				"packages/reports/test/components/entity-contract.test.ts",
+				"test/fixtures/contract-migration/contract-examples.json"
+			],
+			"instructions": "Migrate the owned functions to the approved helper example contract, preserving every substantive assertion and disposable fixture. Read specification/units/function.case.json, test/case.test.ts, TestExpectationService.registerExamples, TestCaseValidator and the current target unit manifest. Primary owns all shared schema and committed specification changes. Author a FULL proposed unit manifest JSON at test/fixtures/contract-migration/contract-examples.json (primary will promote it to specification). Add testing shape helper with finite states and one stable case per canonical helperContracts example; ordinary impure functions use testing.examples with authored value/error/void expected entries, not fake pure helper eligibility. Cover current boundaries and invalid/error inputs. Use one canonical source for executable input and expected comment/result, register with TestExpectationService from this proposal JSON; primary will change the import to the real manifest. Transfer existing assertions into the responsible example cases. Preserve any assertions belonging to another entity explicitly until primary transfers them. New counts are allowed only for migration to declared examples; do not invent new behavior, skip tests, mirror implementation, or create standalone regression suites. Do not edit production behavior unless a genuine defect is found: report it first so primary can freeze an existing strengthened red case. Do not edit shared contracts or specification files. Keep files under220 lines/functions55. Do not delegate, commit, push, publish, access credentials, install, or run E2Es/broad checks. You may run only relevant existing unit test commands; environment failures must be reported separately. Return exact files, before/after test counts, coverage preserved and remaining ownership gaps.",
+			"wantedContract": {
+				"responsibility": "Canonical executable example matrix for reports.function.entity-contract",
+				"inputs": [
+					{
+						"name": "declared behavior and existing assertions",
+						"type": "source and authored examples"
+					}
+				],
+				"outputs": [
+					{
+						"name": "standard helper suite and proposed manifest",
+						"type": "stable executable examples"
+					}
+				],
+				"errors": [
+					{
+						"name": "missing or mismatched example",
+						"type": "explicit assertion failure"
+					}
+				]
+			},
+			"model": "gpt-5.6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "contract-examples",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "reports.function.entity-contract",
+				"goal": "Preserve all existing assertions through canonical authored example cases",
+				"files": [
+					"packages/reports/src/components/explorer-ui/entity-sections/entityContract.ts",
+					"packages/reports/src/components/explorer-ui/entity-sections/entityContract.types.ts",
+					"packages/reports/src/helpers/strings/humanize.ts",
+					"packages/reports/src/utils/entityContract.ts",
+					"packages/reports/src/utils/explorer-ui/entityContract.ts",
+					"packages/reports/src/utils/explorer-ui/entityContract.types.ts",
+					"packages/reports/test/utils/entity-contract.test.ts",
+					"packages/reports/test/components/entity-contract.test.ts",
+					"test/fixtures/contract-migration/contract-examples.json"
+				]
+			},
+			"sourceCommit": "77fb497a3053aa1ada14c498718d2f80ac4af7c1",
+			"contractHash": "0871206b142e4b9274c4bf7835a0d2ec0728553a94b51f434187a7b18567775a",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T14:38:33.001Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
