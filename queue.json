@@ -3817,7 +3817,7 @@
 			},
 			"sourceCommit": "d529e6b4531763c4d09213cceca5dc5b498a26eb",
 			"contractHash": "20a3cedb639d1b2c5e4b75d410b5be0ab39ba10ad75db5afe439de2b9ed75ee2",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T17:38:41.957Z",
 			"claim": {
@@ -3831,6 +3831,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "Both files are written, and they are uncommitted. I did not run Vitest, typecheck, Prettier, ESLint, `units check`, or the audit, as you asked. Every claim below comes from reading the source.\n\n### Files written\n- `packages/relay/test/validators/manage-body.test.ts`: rewritten. The `beforeAll` fixture and shared validator are gone. Each case builds its own validator and host through the real `newHost`/`registration` crypto path. The forwarding import `../../src/validators/ManageBodyValidator` is kept.\n- `test/fixtures/contract-migration/relay-manage-methods.json`: new. Every original manifest field is unchanged. A `testing` block is added after `scenarios`.\n\n### Counts\n- **Before:** 5 `test()` declarations, 10 `expect` statements, 34 assertion evaluations.\n- **After:** 3 registered cases, one per public method, all in `initialized` state. There are 68 evaluations: all 34 originals plus 34 added.\n\n| Case id | Subject | Title | Evaluations |\n|---|---|---|---|\n| `owner-initialized` | `ManageBodyValidator.owner` | ManageBodyValidator reads the owner and the host of every call | 15 → 25 |\n| `register-initialized` | `ManageBodyValidator.register` | ManageBodyValidator reads a registration | 15 → 28 |\n| `device-initialized` | `ManageBodyValidator.device` | ManageBodyValidator reads the device of a revocation | 4 → 15 |\n\n### Retained assertions (all 34)\n- **owner:** `owner` round-trips. Extra `owner.admin` and top-level `extra` are dropped. All 13 original refusals are kept: `null`, `[]`, `'owner-1'`, `{}`, `{hostId}`, owner as a string, owner `{}`, id `''`, id `7`, id of 201 characters, no `hostId`, `hostId: 'abc'`, and uppercase `hostId`.\n- **register:** `body` round-trips. Extra `role` is dropped. All 13 original refusals are kept: `hostKey` undefined, `'AAAA'`, and `+A`; `credentialHash` undefined, 63 characters, uppercase, and non-hex; `name` undefined, `''`, `7`, and 201 characters; owner id `''`; `hostId: 'abc'`.\n- **device:** the call round-trips. A 38-character `deviceId`, an undefined `deviceId`, and `owner: {}` are all refused.\n\n### Added error and boundary props\n- **owner:** accepted id lengths 1 and 200. Refused: a whole value of `undefined` or `7`, `owner` as `null` or `[]`, `id: null`, `hostId` as `null`, and `hostId` at 39 and 41 characters.\n- **register:** accepted extra `owner.admin`, and name lengths 1 and 200. Refused: a whole value of `null` or `undefined`, `hostKey` as `null`, 86 characters, or ending in `+`, `credentialHash` as `null` or 65 characters, `name: null`, `owner: null`, and `hostId: undefined`.\n- **device:** accepted extra `role`. Refused: `deviceId` at 39 and 41 characters, uppercase, a non-hex `g`, `null`, and `7`; a missing `deviceId`; `owner: null`; `hostId: 'abc'`; and a whole value of `null`.\n\nEach new refusal was checked against the code: `isRecord` rejects arrays and null, `matchesPattern` rejects non-strings and is anchored, and the `remotePatterns` regexes are fixed-length.\n\n### Decisions to review\n1. **Retired titles.** I kept the two success titles. The two refusal titles (`refuses a call without a usable owner or host` and `refuses a registration with a malformed field`) no longer register, so any verification record bound to them will not bind.\n2. **`errors` label.** Each case lists `\"invalid input props\"`, as your wanted contract says. The validators never throw; they return `undefined`. The unit's `contract.errors` is `[]`, so this label has no declared counterpart. Declaring it would need a spec change, which is outside scope. The admission code only checks labels during revision comparison, and that check does not fire here.\n3. **`expected` is descriptive.** For the `service` shape, `registerCases` does not compare `expected`. The assertions live in the callbacks, as in `device-pairing.test.ts`.\n4. **No `measureWorkload`.** The root AGENTS.md rule covers changed executable units. This task changes no unit source, so I think the rule does not apply. Your call.\n5. **Consumer.** The only in-repo consumer is `packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts`, which imports the declaration module directly. The test still covers only the forwarding entry.\n\n### Verification by reading\n- `registerCases` and `TestCaseValidator` requirements hold: `shape: service`, one case per method and state, every state covered, `test.file` equal to the literal, and callback keys equal to case ids. The schema is strict, and every key I used is allowed.\n- Discovery resolves the JSON import to `test/fixtures/contract-migration/relay-manage-methods.json`, so the registration is discoverable.\n- The relay Vitest config has no workerd pool, so the test body runs in Node and `node:assert` loads.\n\n### Still open for you\n- Run `vitest run packages/relay/test/validators/manage-body.test.ts`. Expect 3 passing cases.\n- Run relay `tsc --noEmit`. This is the first relay test to import root `src/` (`TestExpectationService`) and a JSON file from outside the package.\n- Run Prettier and ESLint on both files. I formatted them to `.prettierrc` by hand.\n- Run `units check` and the audit on the proposed manifest. Then integrate it into `specification/units/relay.validator.manage-body.json`, which still has no `testing` block.\n\n### Harness record\nActivity `6ebb065d-3de5-4c09-8c34-771c7e09bcd7` was registered and finished with the outcome \"verification not run\". No app conversation or run exists for this work.\n\n### Links\nThese are explorer route paths at the committed revision `d529e6b4531763c4d09213cceca5dc5b498a26eb`. I did not open them in a browser. Until the proposal is integrated and committed, they show the current spec, not this proposal.\n- **Changed:** `/branch/main/commit/d529e6b4531763c4d09213cceca5dc5b498a26eb/functions/relay.validator.manage-body/history`. The kind `validator` maps to `functions`.\n- **Dependencies checked, not edited:**\n  - `/branch/main/commit/d529e6b4531763c4d09213cceca5dc5b498a26eb/services/service.verification-evidence-test-expectation/history` (`registerCases`)\n  - `/branch/main/commit/d529e6b4531763c4d09213cceca5dc5b498a26eb/functions/validator.verification-evidence-test-case/history` (admission)\n  - Pattern references: `services/remote.service.device-pairing/history` and `functions/remote.validator.remote-input/history`.\n- **Uses, read but not linked:** `relay.function.is-record`, `relay.function.matches-pattern`, `remote.entry.index`. I did not verify their kinds.\n- **Used In:** `ManageController.ts`. Its registered id is unresolved, so it has no explorer link.\n- **No explorer page:** the test file and the fixture JSON. Their sources are the two paths above.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/f9e7c14f-2631-45ae-b956-557846555d51",
+				"changedFiles": [
+					"packages/relay/test/validators/manage-body.test.ts",
+					"test/fixtures/contract-migration/relay-manage-methods.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T17:50:25.689Z",
+				"attempt": "f9e7c14f-2631-45ae-b956-557846555d51",
+				"sourceCommit": "d529e6b4531763c4d09213cceca5dc5b498a26eb",
+				"checkpointCommit": "17b70884e90dadc27a81aba29c2c625e6d1eadc4",
+				"usage": {
+					"inputTokens": 4646809,
+					"outputTokens": 152001,
+					"cacheReadTokens": 4407058,
+					"cacheWriteTokens": 239697,
+					"cacheWriteLongTokens": 239697,
+					"reportedCostUsd": 0.7077134399999999,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 4646809,
+							"outputTokens": 152001,
+							"cacheReadTokens": 4407058,
+							"cacheWriteTokens": 239697,
+							"cacheWriteLongTokens": 239697,
+							"reportedCostUsd": 0.7077134399999999,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.7077134399999999,
+							"minimumUsd": 0.7077134399999999,
+							"maximumUsd": 0.7077134399999999,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T17:38:52.409Z",
+						"finishedAt": "2026-10-25T17:50:25.483Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
