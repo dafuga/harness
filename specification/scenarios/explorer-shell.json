@@ -84,6 +84,12 @@
 				"reports.function.entity-search",
 				"reports.function.navbar-search"
 			]
+		},
+		{
+			"id": "module-discovery",
+			"title": "Modules is discoverable at every viewport while preserving branch and revision.",
+			"coverage": "required",
+			"units": ["reports.component.harness-harness-navbar"]
 		}
 	],
 	"viewports": [
@@ -147,7 +153,8 @@
 				"pieces-verdict",
 				"pieces-used",
 				"pieces-tabs",
-				"search-results"
+				"search-results",
+				"module-discovery"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
