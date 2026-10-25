@@ -78,15 +78,19 @@ test('the app refuses incomplete committed metadata and exposes the exact module
 	const client = harnessClient('/fixture', respond(head));
 	await expect(client.revision(head.commit)).rejects.toThrow('page.orders: contract.inputs');
 });
-test('the app refuses required uncommitted metadata while leaving legacy data readable', async () => {
+test('the app requires committed metadata for legacy and current projects', async () => {
 	const head = stored();
 	const incomplete = { ...head, moduleData: { ...head.moduleData, committed: false } };
 	await expect(
 		harnessClient('/incomplete', respond(incomplete)).revision(head.commit)
 	).rejects.toThrow('Missing committed module data');
 	const legacy = revision([], [], []);
-	await expect(harnessClient('/legacy', respond(legacy)).revision(legacy.commit)).resolves.toEqual(
-		legacy
+	await expect(harnessClient('/legacy', respond(legacy)).revision(legacy.commit)).rejects.toThrow(
+		'Missing committed module data'
+	);
+	const disabled = { ...incomplete, moduleData: { ...incomplete.moduleData, required: false } };
+	await expect(harnessClient('/disabled', respond(disabled)).revision(head.commit)).rejects.toThrow(
+		'Missing committed module data'
 	);
 });
 
