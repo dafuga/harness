@@ -1363,7 +1363,7 @@
 			},
 			"sourceCommit": "c7775b5b6e1355f6b3df0f1a7f7e84706bb148ad",
 			"contractHash": "08d9daf4772dd8718958498725f53e49516d6483dc1a8735773555bcf71e5948",
-			"status": "queued",
+			"status": "running",
 			"repairCommit": "208ed3ff98458fdd2fc722d78b97db1ebd0970e7",
 			"reviews": [
 				{
@@ -1379,6 +1379,16 @@
 				}
 			],
 			"createdAt": "2026-10-25T12:57:08.789Z",
+			"claim": {
+				"worker": "contract-classes",
+				"token": "b8dba0c8-7056-469d-bee5-14f3327d4ba9",
+				"startedAt": "2026-10-25T13:23:09.689Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 79109,
+					"startedAt": "Sun Oct 25 13:23:08 2026"
+				}
+			},
 			"claimHistory": [
 				{
 					"worker": "contract-classes",
