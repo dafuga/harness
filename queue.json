@@ -5,6 +5,11 @@
 			"id": "contract-test-policy",
 			"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
 			"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+		},
+		{
+			"id": "api-permission-profiles",
+			"goal": "Expose API/data grants and user-profile pages through UI and CLI, with APIs and Modules under Code",
+			"tldr": "One revision-bound profile catalog; four top-level navigation destinations"
 		}
 	],
 	"tasks": [
