@@ -22,7 +22,7 @@ export async function assertModuleProject(root: string): Promise<void> {
 	const catalog = await runHarness(['module', 'list', '--json'], project);
 	expect(
 		JSON.parse(catalog.stdout).modules.filter((entry: { installed: boolean }) => entry.installed)
-	).toHaveLength(11);
+	).toHaveLength(14);
 	const repeated = await runHarness(['module', 'add', 'email'], project);
 	expect(repeated.stdout).toContain('already installed');
 	await assertRustModuleProject(project);

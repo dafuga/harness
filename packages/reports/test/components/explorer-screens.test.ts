@@ -174,7 +174,8 @@ test('the content that shows any address holds no screen of its own: it mounts t
 			'ExplorerDependenciesScreen',
 			'ExplorerStylesScreen',
 			'ExplorerModulesScreen',
-			'ExplorerModuleResourcesScreen'
+			'ExplorerModuleResourcesScreen',
+			'ExplorerPermissionsScreen'
 		].sort()
 	);
 });
