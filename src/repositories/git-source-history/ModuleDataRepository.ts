@@ -1,3 +1,4 @@
+import { readModuleSource } from './module-data-repository/readModuleSource';
 import { ModuleDataSnapshotValidator } from '../../validators/development-tooling/ModuleDataSnapshotValidator';
 import { createHash } from 'node:crypto';
 import { EvidenceTreeAdapter } from '../../adapters/verification-evidence/EvidenceTreeAdapter';
@@ -70,31 +71,10 @@ export class ModuleDataRepository {
 			return undefined;
 		}
 	}
-	async source(identity: ModuleDataIdentity): Promise<ModuleData | undefined> {
-		const tip = await this.tree.tip(this.ref);
-		if (!tip) return undefined;
-		const paths = [...(await this.tree.list(tip)).keys()].filter((path) =>
-			path.startsWith(`modules/${identity.commit}/`)
-		);
-		for (const path of paths) {
-			try {
-				const bytes = await this.tree.read(tip, path);
-				if (!bytes) continue;
-				const data = JSON.parse(bytes.toString()) as ModuleData,
-					{ digest, ...body } = data;
-				if (
-					data.producer === moduleDataProducer &&
-					data.commit === identity.commit &&
-					data.tree === identity.tree &&
-					new ModuleDataSnapshotValidator().validate(data).valid &&
-					digest === this.digest(body)
-				)
-					return data;
-			} catch {
-				continue;
-			}
-		}
-		return undefined;
+	async source(
+		identity: ModuleDataIdentity
+	): Promise<{ data: ModuleData; commit: string } | undefined> {
+		return readModuleSource(this.tree, identity, this);
 	}
 
 	async write(data: ModuleData): Promise<string> {

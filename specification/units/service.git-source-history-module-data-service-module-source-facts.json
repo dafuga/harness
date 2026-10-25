@@ -76,6 +76,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.git-source-history-module-data-review",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.scenario",
 			"via": "import",
 			"origin": "derived"
@@ -97,6 +102,11 @@
 		},
 		{
 			"unit": "service.git-source-history-module-data-service-module-relationships",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-reviews",
 			"via": "import",
 			"origin": "derived"
 		},

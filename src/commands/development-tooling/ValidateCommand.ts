@@ -17,6 +17,7 @@ export class ValidateCommand {
 			.option('--all', 'With --history, include every source branch and archived source commit.')
 			.option('--history', 'Validate all ancestors of the selected revision.')
 			.option('--write', 'Commit derived facts and gap reports to refs/harness/module-data.')
+			.option('--review <json-file>', 'Commit source-bound authored metadata; requires --write.')
 			.option('--refresh', 'Recheck source and evidence instead of using cached results.')
 			.option('--sync <remote>', 'Exchange committed metadata with a configured Git remote.')
 			.option('--json', 'Print the complete machine-readable report.')

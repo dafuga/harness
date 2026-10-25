@@ -19,26 +19,65 @@ export async function hubModuleData(context: HubSourceContext, admit = false): P
 		tree: context.identity.sourceTree,
 		inputs: { notes: context.identity.notesRevision, evidence: context.identity.evidenceRevision }
 	};
-	const hash = (data: unknown) => createHash('sha256').update(canonicalJson(data)).digest('hex');
-	const bytes = await context.source.read(context.repository, {
-		commit: tip.commit,
-		path: `modules/${context.commit}/${hash(identity)}.json`
-	});
-	const data = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)) as ModuleData;
-	const { digest, ...body } = data;
-	if (
-		data.schemaVersion !== 1 ||
-		!new ModuleDataSnapshotValidator().validate(data).valid ||
-		data.producer !== producer ||
-		hash(body) !== digest ||
-		hash({ producer: data.producer, commit: data.commit, tree: data.tree, inputs: data.inputs }) !==
-			hash(identity)
-	)
-		return hubFail();
+	const data = await readModuleSnapshot(context, tip.commit, identity);
+	if (!validModuleSnapshot(data, identity)) return hubFail();
 	const failure = admit ? formatModuleDataFailure(data) : undefined;
 	if (failure) throw new Error(failure);
 	return data;
 }
 export function hubRequiresModuleData(context: HubSourceContext) {
 	return context.entries.some((entry) => entry.path === 'harness.validation.json');
+}
+
+async function readModuleSnapshot(
+	context: HubSourceContext,
+	tip: string,
+	identity: { producer: string; commit: string; tree: string; inputs: unknown }
+) {
+	const hash = createHash('sha256').update(canonicalJson(identity)).digest('hex');
+	const exact = `modules/${context.commit}/${hash}.json`;
+	const paths = (await context.source.tree(context.repository, tip)).map((entry) => entry.path);
+	const reviews = await Promise.all(
+		paths
+			.filter((path) => path.startsWith(`reviews/${context.commit}/`))
+			.map(
+				async (path) =>
+					JSON.parse(
+						new TextDecoder().decode(
+							await context.source.read(context.repository, { commit: tip, path })
+						)
+					).digest as string
+			)
+	);
+	const expected = reviews.sort().join();
+	const candidates = paths.includes(exact)
+		? [exact]
+		: paths.filter((path) => path.startsWith(`modules/${context.commit}/`));
+	for (const path of candidates) {
+		const bytes = await context.source.read(context.repository, { commit: tip, path });
+		const data = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)) as ModuleData;
+		if (
+			data.producer === producer &&
+			data.commit === identity.commit &&
+			data.tree === identity.tree &&
+			(data.reviews ?? [])
+				.map((item) => item.digest)
+				.sort()
+				.join() === expected
+		)
+			return data;
+	}
+	throw new Error('Missing committed module data; run harness validate --write --sync origin.');
+}
+
+function validModuleSnapshot(data: ModuleData, identity: Pick<ModuleData, 'commit' | 'tree'>) {
+	const { digest, ...body } = data;
+	return (
+		data.schemaVersion === 1 &&
+		new ModuleDataSnapshotValidator().validate(data).valid &&
+		data.producer === producer &&
+		createHash('sha256').update(canonicalJson(body)).digest('hex') === digest &&
+		data.commit === identity.commit &&
+		data.tree === identity.tree
+	);
 }

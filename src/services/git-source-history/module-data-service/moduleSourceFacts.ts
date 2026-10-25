@@ -1,3 +1,5 @@
+import { ModuleDataReviewRepository } from '../../../repositories/git-source-history/ModuleDataReviewRepository';
+import { applyModuleReviews } from './moduleReviews';
 import { SourceIndexService } from '../../development-tooling/source-index-service/SourceIndexService';
 import { modulePreviewBindings } from './modulePreviewBindings';
 import { UnitRegistryRepository } from '../../../repositories/UnitRegistryRepository';
@@ -38,6 +40,8 @@ async function scanModuleSourceFacts(
 		ledger = await new BudgetLedgerRepository(root).read(tree);
 	const blobs = new Map((await tree.list()).map((entry) => [entry.path, entry.hash]));
 	const limits = new BudgetService().baselines(ledger.events, declarations);
+	const reviews = await new ModuleDataReviewRepository(root).read(identity);
+	applyModuleReviews(declarations, reviews, blobs);
 	const registry = revisionRegistry(declarations, loaded.scenarios, blobs, limits);
 	await unitMetadata(tree, registry.units);
 	modulePreviewBindings(registry, declarations);
@@ -45,6 +49,7 @@ async function scanModuleSourceFacts(
 	const sourceGraph = graphOf(loaded, declarations);
 	return {
 		declarations,
+		reviews,
 		registry,
 		versions: Object.fromEntries(
 			declarations.map((unit) => [unit.id, componentVersion(unit, loaded.index.files)])

@@ -1,3 +1,6 @@
+import type { ModuleReviewInput } from '../../repositories/git-source-history/ModuleDataReviewRepository.types';
+import { ModuleDataReviewRepository } from '../../repositories/git-source-history/ModuleDataReviewRepository';
+import { readModuleReviews } from './module-data-service/moduleReviews';
 import { requireModuleData } from './module-data-service/moduleDataAdmission';
 import type { HistoryValidationReport } from './ModuleDataService.types';
 import { SourceHistoryRepository } from '../../repositories/git-source-history/source-history-repository/SourceHistoryRepository';
@@ -17,10 +20,24 @@ export class ModuleDataService {
 		this.builder = new ModuleDataBuilder(this.repository);
 	}
 
-	async validate(options: ValidateOptions = {}): Promise<ValidationReport> {
+	async validate(
+		options: ValidateOptions = {},
+		reviews?: ModuleReviewInput[]
+	): Promise<ValidationReport> {
 		const identity = await this.repository.identity(options.commit ?? 'HEAD');
 		const stored = await this.repository.read(identity);
-		const cache = await this.load(identity, Boolean(options.refresh), stored?.data);
+		let cache = await this.load(identity, Boolean(options.refresh), stored?.data);
+		const requested = reviews ?? (await readModuleReviews(options.review));
+		if (requested.length) {
+			if (!options.write) throw new Error('--review requires --write.');
+			for (const review of requested)
+				await new ModuleDataReviewRepository(this.root).write(
+					identity,
+					cache.data.declarations,
+					review
+				);
+			cache = await this.load(identity, true);
+		}
 		await new ModuleDataCache(this.repository).write(cache.data);
 		const metadataCommit = options.write ? await this.repository.write(cache.data) : stored?.commit;
 		return this.report(cache.data, options, {
@@ -48,21 +65,20 @@ export class ModuleDataService {
 					.map((item) => item.commit)
 					.reverse()
 			: (await git.run(['rev-list', '--reverse', tip])).split('\n').filter(Boolean);
+		const reviews = await readModuleReviews(options.review);
+		if (reviews.some((review) => !review.commit))
+			throw new Error('Historical reviews must name exact source commits.');
+		if (reviews.some((review) => !commits.includes(review.commit!)))
+			throw new Error('Review source commit is outside the selected history.');
 		const revisions: HistoryValidationReport['revisions'] = [];
 		let modules: ValidationReport['modules'] = [];
 		for (const commit of commits) {
-			const report = await this.validate({ ...options, history: false, commit });
-			const { modules: current, ...summary } = report;
-			modules = current;
-			revisions.push({
-				...summary,
-				moduleCount: current.length,
-				missingModules: current.filter((unit) => unit.issues.length).length,
-				issueCount: current.reduce(
-					(count, unit) => count + unit.issues.length,
-					report.issues.length
-				)
-			});
+			const report = await this.validate(
+				{ ...options, review: undefined, history: false, commit },
+				reviews.filter((review) => review.commit === commit)
+			);
+			modules = report.modules;
+			revisions.push(historySummary(report));
 		}
 		return {
 			commit: tip,
@@ -109,4 +125,13 @@ export class ModuleDataService {
 			digest: data.digest
 		};
 	}
+}
+
+function historySummary({ modules, ...report }: ValidationReport) {
+	return {
+		...report,
+		moduleCount: modules.length,
+		missingModules: modules.filter((unit) => unit.issues.length).length,
+		issueCount: modules.reduce((count, unit) => count + unit.issues.length, report.issues.length)
+	};
 }

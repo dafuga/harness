@@ -15,14 +15,16 @@ import { checkedMedia } from '../../../utils/mediaPlace';
 import { moduleSourceFacts } from './moduleSourceFacts';
 /** Reuse source facts; notes and attached evidence are independently checked at their pinned refs. */
 export class ModuleDataBuilder {
-	private readonly indexer = new SourceIndexService();
+	private indexer = new SourceIndexService();
+	private builds = 0;
 	private evidence?: { key: string; history: HistoryStatusService };
 	constructor(private repository: ModuleDataRepository) {}
 	async build(identity: ModuleDataIdentity, refreshSource = false): Promise<ModuleData> {
+		this.boundCaches();
 		const root = this.repository.root,
 			prior = refreshSource
 				? undefined
-				: ((await this.repository.source(identity)) ??
+				: ((await this.repository.source(identity))?.data ??
 					(await new ModuleDataCache(this.repository).read(identity, true)));
 		const facts = prior
 			? sourceFields(prior)
@@ -51,6 +53,12 @@ export class ModuleDataBuilder {
 		};
 		return { ...body, digest: this.repository.digest(body) };
 	}
+	private boundCaches() {
+		if (++this.builds % 32 === 0) {
+			this.indexer = new SourceIndexService();
+			this.evidence = undefined;
+		}
+	}
 	private history(identity: ModuleDataIdentity) {
 		const key = JSON.stringify(identity.inputs);
 		if (this.evidence?.key !== key)
@@ -77,6 +85,7 @@ function addSourceIssues(validation: ModuleDataValidatorResult, errors: string[]
 }
 
 function sourceFields({
+	reviews,
 	declarations,
 	registry,
 	references,
@@ -85,5 +94,14 @@ function sourceFields({
 	relationships,
 	sourceIssues
 }: ModuleData) {
-	return { declarations, registry, references, sourceGraph, versions, relationships, sourceIssues };
+	return {
+		reviews,
+		declarations,
+		registry,
+		references,
+		sourceGraph,
+		versions,
+		relationships,
+		sourceIssues
+	};
 }

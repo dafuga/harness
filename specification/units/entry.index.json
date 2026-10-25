@@ -153,7 +153,8 @@
 			"ModuleDataRepository",
 			"ModuleDataValidator",
 			"formatModuleDataFailure",
-			"ModuleDataSnapshotValidator"
+			"ModuleDataSnapshotValidator",
+			"ModuleDataReviewRepository"
 		]
 	},
 	"contract": {
@@ -595,6 +596,11 @@
 		},
 		{
 			"unit": "repository.git-source-history-module-data",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data-review",
 			"via": "reexport",
 			"origin": "derived"
 		},

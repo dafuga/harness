@@ -85,7 +85,7 @@
 			},
 			{
 				"name": "ModuleDataRepository.source",
-				"type": "Promise<ModuleData | undefined>"
+				"type": "Promise<{ data: ModuleData; commit: string } | undefined>"
 			},
 			{
 				"name": "ModuleDataRepository.write",
@@ -120,6 +120,11 @@
 		},
 		{
 			"unit": "function.stable-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data-repository-read-module-source",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -34,7 +34,9 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Read archived source commits
-        run: git fetch --no-tags origin '+refs/harness/source/*:refs/harness/source/*'
+        run: |
+          git fetch --no-tags origin '+refs/harness/source/*:refs/harness/source/*'
+          git fetch --no-tags origin refs/harness/module-data:refs/harness/module-data
       - name: Install the pinned Bun
         run: npm install --global bun@1.2.18
       - name: Install the pinned Rust toolchain and its Wasm target from rust-toolchain.toml

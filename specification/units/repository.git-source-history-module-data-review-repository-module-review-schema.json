@@ -1,0 +1,53 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.git-source-history-module-data-review-repository-module-review-schema",
+	"kind": "repository",
+	"title": "moduleReviewSchema",
+	"responsibility": "Owns the moduleReviewSchema persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/git-source-history/module-data-review-repository/moduleReviewSchema.ts"
+		],
+		"symbols": ["moduleReviewSchema", "moduleReviewDocument"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "moduleReviewSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "moduleReviewDocument",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/git-source-history/module-data-review-repository/moduleReviewSchema.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/git-source-history/module-data-review-repository/moduleReviewSchema.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

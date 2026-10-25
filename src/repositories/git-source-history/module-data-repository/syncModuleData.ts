@@ -35,7 +35,13 @@ async function mergeModuleData(tree: EvidenceTreeAdapter, input: { ref: string; 
 		}
 		const [local, remote] = await Promise.all([tree.list(ours), tree.list(input.theirs)]);
 		const files = [...remote].flatMap(([path, blob]) => {
-			if (!path.startsWith('modules/') && !path.startsWith('snapshots/')) return [];
+			if (
+				!path.startsWith('modules/') &&
+				!path.startsWith('snapshots/') &&
+				!path.startsWith('reviews/') &&
+				!path.startsWith('review-snapshots/')
+			)
+				return [];
 			const held = local.get(path);
 			if (held && held !== blob)
 				throw new Error(

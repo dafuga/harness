@@ -1,0 +1,83 @@
+{
+	"schemaVersion": 1,
+	"id": "service.git-source-history-module-data-service-module-reviews",
+	"kind": "service",
+	"title": "moduleReviews",
+	"responsibility": "Owns the moduleReviews service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/git-source-history/module-data-service/moduleReviews.ts"],
+		"symbols": ["readModuleReviews", "applyModuleReviews"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readModuleReviews.path",
+				"type": "string"
+			},
+			{
+				"name": "applyModuleReviews.units",
+				"type": "ComponentManifest[]"
+			},
+			{
+				"name": "applyModuleReviews.reviews",
+				"type": "ModuleReview[]"
+			},
+			{
+				"name": "applyModuleReviews.blobs",
+				"type": "Map<string, string>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "readModuleReviews",
+				"type": "unknown"
+			},
+			{
+				"name": "applyModuleReviews",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data-review",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data-review-repository-module-review-schema",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/git-source-history/module-data-service/moduleReviews.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/git-source-history/module-data-service/moduleReviews.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

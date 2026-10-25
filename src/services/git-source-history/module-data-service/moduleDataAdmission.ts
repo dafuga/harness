@@ -12,7 +12,7 @@ export async function moduleDataRequired(root: string, commit: string): Promise<
 export async function committedModuleData(root: string, commit: string) {
 	const repository = new ModuleDataRepository(root),
 		identity = await repository.identity(commit);
-	return repository.read(identity);
+	return (await repository.read(identity)) ?? repository.source(identity);
 }
 
 /** Read admission stays independent of source indexing, evidence runners and metadata production. */

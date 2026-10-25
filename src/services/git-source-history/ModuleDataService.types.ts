@@ -1,3 +1,4 @@
+import type { ModuleReview } from '../../repositories/git-source-history/ModuleDataReviewRepository.types';
 import type { preparedModuleData } from './module-data-service/preparedModuleData';
 import type { ComponentVersion } from '../../utils/development-tooling/componentVersion';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
@@ -34,6 +35,7 @@ export interface ModuleData {
 	commit: string;
 	tree: string;
 	inputs: { notes: string | null; evidence: string | null };
+	reviews?: ModuleReview[];
 	declarations: ComponentManifest[];
 	versions: Record<string, ComponentVersion>;
 	sourceGraph: SourceGraph;
@@ -53,6 +55,7 @@ export interface ValidateOptions {
 	all?: boolean;
 	write?: boolean;
 	refresh?: boolean;
+	review?: string;
 	json?: boolean;
 	sync?: string;
 }
