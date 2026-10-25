@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"id": "service.module-system-module-catalog",
+	"kind": "service",
+	"title": "ModuleCatalogService",
+	"responsibility": "Discover available definitions and project installation state from a working directory or immutable source tree.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/module-system/ModuleCatalogService.ts"],
+		"symbols": [
+			"ModuleCatalogService",
+			"ModuleCatalogService.load",
+			"ModuleCatalogService.at",
+			"ModuleCatalogService.state"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ModuleCatalogService.load.root",
+				"type": "string",
+				"description": "Absolute project directory containing the package manifest and module metadata."
+			},
+			{
+				"name": "ModuleCatalogService.at.tree",
+				"type": "Pick<SourceTree, 'read'> & { list(): Promise<Array<{ path: string }>> }",
+				"description": "Source reader for exactly the selected project revision."
+			},
+			{
+				"name": "ModuleCatalogService.state.tree",
+				"type": "Pick<SourceTree, 'read'>",
+				"description": "Source reader for exactly the selected project revision."
+			},
+			{
+				"name": "ModuleCatalogService.state.gaps",
+				"type": "string[]",
+				"description": "Optional collection of readable catalog errors; omitted for strict mutation admission."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleCatalogService.load",
+				"type": "Promise<ModuleCatalog>",
+				"description": "Validated definitions, installed flags, generated instances and explicit discovery gaps."
+			},
+			{
+				"name": "ModuleCatalogService.at",
+				"type": "Promise<ModuleCatalog>",
+				"description": "Validated definitions, installed flags, generated instances and explicit discovery gaps."
+			},
+			{
+				"name": "ModuleCatalogService.state",
+				"type": "Promise<ModuleState>",
+				"description": "Persisted module snapshots and generated resource records; absent state is empty."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.source-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-builtin-modules",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/module-system/ModuleCatalogService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/module-system/ModuleCatalogService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

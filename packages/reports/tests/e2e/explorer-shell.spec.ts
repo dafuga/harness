@@ -1,7 +1,8 @@
-import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
+import { expect, test } from '../../../../test/support/browserTest';
 import { fits, pictured, screens, sharedField, typed } from './support/sharedSelect';
 import {
 	box,
+	earlierFunctions,
 	channels,
 	combo,
 	compactRevision,
@@ -9,7 +10,9 @@ import {
 	navigationSpacing,
 	styled,
 	revisionDivider,
-	moduleNavigation
+	moduleNavigation,
+	underline,
+	openNavbar
 } from './support/shellChecks';
 import { sha, shellBranch, shellMount, longBranch } from './support/shellData';
 import { shellCategories as categories } from './support/shellData';
@@ -23,44 +26,17 @@ import {
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
 const earlier = `${scoped}/commit/${sha(3)}`;
 const at = (path: string) => `${shellOrigin}${path}`;
-/** The line under a category: how thick it is and what colour; nothing when there is none. */
-const underline = (locator: Locator) =>
-	locator.evaluate((element) => {
-		const style = getComputedStyle(element, '::after');
-		return style.content === 'none' ? null : [parseFloat(style.height), style.backgroundColor];
-	});
 let home = '';
 test.beforeAll(() => {
 	test.setTimeout(180_000);
 	home = buildShellFixture(['navbar']);
 });
 test.afterAll(() => removeShellFixture(home));
-/** Opens the bar over the made-up history and waits for the name both headers show. */
-async function opened(page: Page, width: number, height: number): Promise<Locator> {
-	await page.setViewportSize({ width, height });
-	await openShellPage(page, home, 'navbar');
-	await expect(page.getByText('Harness', { exact: true }).first()).toBeVisible();
-	return page.getByRole('banner');
-}
-/** Chooses an earlier commit, then opens Helpers there with the keyboard. */
-async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
-	const functions = bar
-		.getByRole('tablist', { name: 'Code categories' })
-		.getByRole('tab', { name: 'Helpers', exact: true });
-	await expect(combo(bar, 'Commit')).toBeVisible();
-	await combo(bar, 'Commit').selectOption(sha(3));
-	await expect(page).toHaveURL(at(`${earlier}/pages`));
-	await bar.getByRole('link', { name: 'Code', exact: true }).click();
-	await functions.focus();
-	await page.keyboard.press('Enter');
-	await expect(page).toHaveURL(at(`${earlier}/functions`));
-	return functions;
-}
 for (const [screen, width, height] of screens) {
 	test(`the bar shows its navigation with an icon above each label at ${screen} width`, async ({
 		page
 	}) => {
-		const bar = await opened(page, width, height);
+		const bar = await openNavbar(page, home, width, height);
 		await pictured(page, `explorer-shell-bar-${screen}`);
 		await captureShell(page, home, { state: 'current', viewport: screen });
 		await navigationSpacing(bar);
@@ -136,7 +112,7 @@ for (const [screen, width, height] of screens) {
 	test(`the branch with its tip and the viewed commit are told apart at ${screen} width`, async ({
 		page
 	}) => {
-		const bar = await opened(page, width, height);
+		const bar = await openNavbar(page, home, width, height);
 		const [branch, commit] = [combo(bar, 'Branch'), combo(bar, 'Commit')];
 		const tip = bar.getByRole('button', { name: 'Go to tip' });
 		await pictured(page, `explorer-shell-current-${screen}`);
@@ -153,7 +129,7 @@ for (const [screen, width, height] of screens) {
 		await expect(bar.locator('small').first()).not.toBeVisible();
 		await expect(tip).toBeDisabled();
 		await reachable(tip, width);
-		const functions = await earlierFunctions(page, bar);
+		const functions = await earlierFunctions(page, bar, at(earlier));
 		await expect(commit).toHaveAttribute('title', /Historical commit/);
 		await expect(branch).toHaveAttribute('title', /Tip · 0505050/);
 		await expect(functions).toHaveAttribute('aria-selected', 'true');
@@ -181,10 +157,10 @@ for (const [screen, width, height] of screens) {
 	test(`Go to tip, back, a reload and another branch each keep their place at ${screen} width`, async ({
 		page
 	}) => {
-		const bar = await opened(page, width, height);
+		const bar = await openNavbar(page, home, width, height);
 		const [branch, commit] = [combo(bar, 'Branch'), combo(bar, 'Commit')];
 		await pictured(page, `explorer-shell-return-${screen}`);
-		const functions = await earlierFunctions(page, bar);
+		const functions = await earlierFunctions(page, bar, at(earlier));
 		// Go to tip is the same place on the current branch.
 		const back = bar.getByRole('link', { name: 'Go to tip' });
 		await expect(back).toHaveAttribute('href', `${scoped}/functions`);
@@ -205,7 +181,6 @@ for (const [screen, width, height] of screens) {
 		await page.goForward();
 		await expect(page).toHaveURL(at(`${scoped}/functions`));
 		await expect(commit).toHaveValue(sha(5));
-
 		// Another branch, chosen from the keyboard, stays current on the same category.
 		await typed(page, branch, 'm');
 		await expect(page).toHaveURL(at(`${shellMount}/branch/main/functions`));
@@ -215,5 +190,20 @@ for (const [screen, width, height] of screens) {
 		await expect(commit).toHaveValue(sha(3));
 		await captureShell(page, home, { state: 'returned', viewport: screen });
 		expect(await fits(page)).toBe(true);
+	});
+	test(`module discovery retains branch and revision at ${screen}`, async ({ page }) => {
+		const bar = await openNavbar(page, home, width, height);
+		await combo(bar, 'Commit').selectOption(sha(3));
+		await pictured(page, `modules-navigation-${screen}`);
+		await bar.getByRole('link', { name: 'Code', exact: true }).click();
+		const modules = bar.getByRole('tab', { name: 'Modules', exact: true });
+		await expect(modules, 'Modules is contributed under Code').toBeVisible();
+		await modules.click();
+		await expect(page).toHaveURL(at(`${earlier}/modules`));
+		await expect(modules).toHaveAttribute('aria-selected', 'true');
+		await page.reload();
+		await expect(modules).toHaveAttribute('aria-selected', 'true');
+		await captureShell(page, home, { state: 'module-discovery', viewport: screen });
+		await expect.poll(() => fits(page)).toBe(true);
 	});
 }

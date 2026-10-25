@@ -1,4 +1,4 @@
-import { assertApiRoutes } from './explorer-route/apis';
+import * as apiRoutes from './explorer-route/apis';
 import { measureWorkload } from '../support/measureWorkload';
 import { expect, test } from 'vitest';
 import {
@@ -12,6 +12,12 @@ const branch = 'feature/kept#1';
 const encoded = 'feature%2Fkept%231';
 const entity = 'reports.component.harness-harness-console';
 const shapes: Array<[string, Partial<ExplorerLocation>]> = [
+	['/modules', { category: 'pages', screen: 'modules' }],
+	['/modules/email', { category: 'pages', screen: 'modules', entity: 'email' }],
+	[
+		'/module-resources/email.email',
+		{ category: 'pages', screen: 'module-resources', entity: 'email.email' }
+	],
 	['/pages', { category: 'pages' }],
 	['/dependencies', { category: 'pages', screen: 'dependencies' }],
 	['/styles', { category: 'pages', screen: 'styles' }],
@@ -91,7 +97,7 @@ test.each(shapes)('selected commit %s', (tail, selected) => {
 	);
 });
 test('there are twenty-three designed shapes in each scope, and a Page has a history too', () => {
-	expect(shapes).toHaveLength(25);
+	expect(shapes).toHaveLength(28);
 	const history: ExplorerLocation = {
 		branch: 'main',
 		commit: null,
@@ -205,4 +211,9 @@ test('Models is a page tab and legacy page Contract links open Models in the sam
 	expect(explorerRoute('/branch/main/components/card', '?tab=contract')?.tab).toBe('contract');
 });
 
-test('APIs are scoped catalog addresses and a page keeps its APIs tab', assertApiRoutes);
+test('APIs are scoped catalog addresses and a page keeps its APIs tab', apiRoutes.assertApiRoutes);
+
+test('API permission tabs and profile routes retain exact revision scope', () => {
+	apiRoutes.assertPermissionRoutes();
+	apiRoutes.assertPermissionGetterAdmission();
+});

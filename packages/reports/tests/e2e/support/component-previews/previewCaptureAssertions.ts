@@ -101,3 +101,58 @@ export async function assertTranslationControls(component: Locator) {
 	await component.getByRole('searchbox', { name: 'Search translations' }).clear();
 	await expect(component.locator('tbody tr')).toHaveCount(50);
 }
+
+/** Module previews must show the actual library and generated-resource content. */
+export async function assertModulePreview(component: Locator, id: string) {
+	if (id === 'reports.component.networking-security-explorer-permissions-screen') {
+		for (const text of [
+			'Member',
+			'app.endpoint.orders',
+			'GET',
+			'app.model.order',
+			'Own account only'
+		])
+			await expect(component.getByText(text, { exact: false }).first()).toBeVisible();
+	}
+
+	if (id === 'reports.component.module-system-explorer-modules-screen') {
+		await expect(
+			component.getByRole('link', { name: 'Rust WebAssembly', exact: true })
+		).toBeVisible();
+		await expect(component.getByRole('link', { name: 'Rust Backend', exact: true })).toBeVisible();
+		await expect(
+			component.getByRole('heading', { level: 1, name: 'Modules', exact: true })
+		).toBeVisible();
+		await expect(component.getByRole('link', { name: 'Email', exact: true })).toBeVisible();
+		await expect(component.getByText('Installed', { exact: true })).toBeVisible();
+		await expect(component).toContainText('harness module add offline');
+	}
+	if (id === 'reports.component.module-system-explorer-module-resources-screen') {
+		await expect(component.getByRole('heading', { name: 'Emails', exact: true })).toBeVisible();
+		await expect(component.getByRole('heading', { name: 'Welcome', exact: true })).toBeVisible();
+		await expect(component).toContainText('harness module generate email email');
+	}
+}
+
+/** Permission table words stay intact and wider data remains keyboard inspectable. */
+export async function assertPermissionTable(component: Locator, page: Page) {
+	const identifier = component.getByRole('table').first().locator('tbody code').first();
+	expect(
+		await identifier.evaluate((node) => {
+			const range = document.createRange();
+			range.selectNodeContents(node);
+			return [...range.getClientRects()].filter((box) => box.width > 0).length;
+		}),
+		'Data identifiers remain unbroken'
+	).toBe(1);
+	expect(
+		await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+		'Permission tables stay inside the document'
+	).toBe(true);
+	const region = component.getByRole('region', { name: /data access/ }).first();
+	if (await region.evaluate((node) => node.scrollWidth > node.clientWidth)) {
+		await region.focus();
+		await region.press('ArrowRight');
+		await expect.poll(() => region.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
+	}
+}

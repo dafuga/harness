@@ -1,3 +1,5 @@
+import { assertModuleArrayAdmission } from '../moduleNavigationCases';
+import { moduleData } from '../../tests/e2e/support/component-previews/modules';
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import type { ExplorerLocation } from '../../src/models/Explorer.types';
@@ -24,6 +26,7 @@ const input = (location: ExplorerLocation | null): HarnessNavbarInput => ({
 	onroute: () => {}
 });
 const view = (location: ExplorerLocation | null) => harnessShell(input(location));
+const primaryNames = ['Pages', 'Code', 'Translations', 'Platforms'];
 const scoped = `${shellMount}/branch/feature%2Fshell%231`;
 const historical: ExplorerLocation = {
 	branch: shellBranch,
@@ -36,18 +39,17 @@ const historical: ExplorerLocation = {
 const canonical = { ...historical };
 delete canonical.section;
 
-test('the bar groups module categories under five scoped primary destinations', async () => {
+test('the bar groups module categories under four scoped primary destinations', async () => {
 	await measureWorkload('reports.function.harness-shell', 'scoped-navbar-destinations', () => {
 		const { categories } = view(historical);
 		expect(categories.map((item) => [item.id, item.label, item.icon])).toEqual([
 			['pages', 'Pages', 'pages'],
-			['apis', 'APIs', 'route'],
 			['modules', 'Code', 'layers'],
 			['translations', 'Translations', 'web'],
 			['platforms', 'Platforms', 'platforms']
 		]);
 		expect(categories.map((item) => item.href)).toEqual(
-			['pages', 'apis', 'components', 'translations', 'platforms'].map(
+			['pages', 'components', 'translations', 'platforms'].map(
 				(category) => `${scoped}/commit/${sha(4)}/${category}`
 			)
 		);
@@ -66,6 +68,7 @@ test('the bar groups module categories under five scoped primary destinations', 
 			const place = { ...historical, category } as ExplorerLocation;
 			expect(view(place)).toMatchObject({
 				modules: [
+					'apis',
 					'layouts',
 					'components',
 					'models',
@@ -74,10 +77,12 @@ test('the bar groups module categories under five scoped primary destinations', 
 					'types',
 					'configs',
 					'styles',
-					'dependencies'
+					'dependencies',
+					'permissions',
+					'module-library'
 				].map((id) => ({
 					id,
-					href: `${scoped}/commit/${sha(4)}/${id}`,
+					href: `${scoped}/commit/${sha(4)}/${id === 'module-library' ? 'modules' : id}`,
 					active: id === category
 				}))
 			});
@@ -96,7 +101,11 @@ test('on a current branch route the viewed commit is the tip, and there is no ti
 		to: { branch: shellBranch, commit: null, category: 'pages' }
 	});
 	expect(categories.find((item) => item.id === 'modules')?.href).toBe(`${scoped}/components`);
-	expect(categories.find((item) => item.id === 'apis')?.href).toBe(`${scoped}/apis`);
+	expect(
+		view({ branch: shellBranch, commit: null, category: 'apis' }).modules.find(
+			(item) => item.id === 'apis'
+		)?.href
+	).toBe(`${scoped}/apis`);
 	expect(revision).toMatchObject({
 		branch: shellBranch,
 		commit: sha(5),
@@ -169,13 +178,7 @@ test('without a resolved address the bar keeps its navigation and offers no revi
 	const { revision, categories, home } = view(null);
 	expect(revision).toBeNull();
 	expect(home).toEqual({ href: shellMount, to: null });
-	expect(categories.map((item) => item.label)).toEqual([
-		'Pages',
-		'APIs',
-		'Code',
-		'Translations',
-		'Platforms'
-	]);
+	expect(categories.map((item) => item.label)).toEqual(primaryNames);
 	expect(view(null)).toMatchObject({ modules: [] });
 	expect(categories.every((item) => item.href === null && item.to === null && !item.active)).toBe(
 		true
@@ -197,4 +200,18 @@ test('Styles stays active across branch and commit selection without becoming an
 	});
 	expect(revision?.branchTo('main')).toEqual({ ...styles, branch: 'main', commit: null });
 	expect(revision?.commitTo(sha(3))).toEqual({ ...styles, commit: sha(3) });
+});
+
+test('installed modules contribute scoped Code entries from their resource definitions', () => {
+	const props = input(historical);
+	props.modules = moduleData;
+	assertModuleArrayAdmission(props);
+	const menu = harnessShell(props).modules;
+	expect(menu.find((item) => item.label === 'Emails')).toMatchObject({
+		id: 'resource:email.email',
+		to: { screen: 'module-resources', entity: 'email.email', branch: shellBranch, commit: sha(4) }
+	});
+	expect(menu.some((item) => item.label === 'Offline collections')).toBe(false);
+	expect(menu.map((item) => item.id)).toEqual(['resource:email.email']);
+	expect(harnessShell(props).categories.map((item) => item.label)).toEqual(primaryNames);
 });

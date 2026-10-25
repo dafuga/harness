@@ -1,5 +1,6 @@
+import { sha } from './shellData';
 import { expect, type Locator, type Page } from '@playwright/test';
-import { captureShell, shellOrigin } from './shellFixture';
+import { captureShell, shellOrigin, openShellPage } from './shellFixture';
 import { fits, pictured } from './sharedSelect';
 
 /** What the specs of the shell ask of what is drawn: where it is, and how it is styled. */
@@ -105,6 +106,7 @@ export async function moduleNavigation(
 	await expect(bar.locator('[popover], [popovertarget]')).toHaveCount(0);
 	const tabs = modules.getByRole('tab');
 	await expect(tabs).toHaveText([
+		'APIs',
 		'Layouts',
 		'Components',
 		'Models',
@@ -113,7 +115,9 @@ export async function moduleNavigation(
 		'Types',
 		'Configs',
 		'Styles',
-		'Dependencies'
+		'Dependencies',
+		'Users & Permissions',
+		'Modules'
 	]);
 	const [row, primary] = await Promise.all([box(modules), box(bar.locator('.hx-categories'))]);
 	expect(row.y, 'module categories sit below the primary row').toBeGreaterThanOrEqual(
@@ -135,6 +139,9 @@ export async function moduleNavigation(
 /** Each additional Code destination retains the current branch and commit scope. */
 async function codeDestinations(page: Page, row: Locator, scoped: string): Promise<void> {
 	for (const [name, path] of [
+		['APIs', 'apis'],
+		['Users & Permissions', 'permissions'],
+		['Modules', 'modules'],
 		['Configs', 'configs'],
 		['Styles', 'styles'],
 		['Dependencies', 'dependencies'],
@@ -174,4 +181,38 @@ export async function dependencyTables(component: Locator, page: Page, width: nu
 	await expect
 		.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
 		.toBeLessThanOrEqual(width);
+}
+
+/** The line under a category: how thick it is and what colour; nothing when there is none. */
+export const underline = (locator: Locator) =>
+	locator.evaluate((element) => {
+		const style = getComputedStyle(element, '::after');
+		return style.content === 'none' ? null : [parseFloat(style.height), style.backgroundColor];
+	});
+/** Opens the bar over the made-up history and waits for the name both headers show. */
+export async function openNavbar(
+	page: Page,
+	home: string,
+	width: number,
+	height: number
+): Promise<Locator> {
+	await page.setViewportSize({ width, height });
+	await openShellPage(page, home, 'navbar');
+	await expect(page.getByText('Harness', { exact: true }).first()).toBeVisible();
+	return page.getByRole('banner');
+}
+
+/** Chooses an earlier commit, then opens Helpers there with the keyboard. */
+export async function earlierFunctions(page: Page, bar: Locator, earlier: string) {
+	const functions = bar
+		.getByRole('tablist', { name: 'Code categories' })
+		.getByRole('tab', { name: 'Helpers', exact: true });
+	await expect(combo(bar, 'Commit')).toBeVisible();
+	await combo(bar, 'Commit').selectOption(sha(3));
+	await expect(page).toHaveURL(`${earlier}/pages`);
+	await bar.getByRole('link', { name: 'Code', exact: true }).click();
+	await functions.focus();
+	await page.keyboard.press('Enter');
+	await expect(page).toHaveURL(`${earlier}/functions`);
+	return functions;
 }

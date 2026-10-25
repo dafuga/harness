@@ -1,3 +1,4 @@
+import { moduleCases } from './modules';
 import { dependencyPreview } from './dependencies';
 import { translationPreview } from './translations';
 import type { PreviewCases } from './shared';
@@ -16,6 +17,7 @@ const seen = {
 	mediaBase: '/media/'
 };
 export const explorerCases: PreviewCases = {
+	...moduleCases(d.host()),
 	'reports.component.explorer-dependencies-screen': dependencyPreview(
 		d.host()
 	) as unknown as Record<string, unknown>,

@@ -28,6 +28,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "command.networking-security-permissions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "workflow.networking-security-run-api",
 			"via": "import",
 			"origin": "derived"

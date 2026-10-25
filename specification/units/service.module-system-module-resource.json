@@ -1,0 +1,123 @@
+{
+	"schemaVersion": 1,
+	"id": "service.module-system-module-resource",
+	"kind": "service",
+	"title": "ModuleResourceService",
+	"responsibility": "Generate declared module resources through templates, standard scaffolds or pinned package plans and persist their records.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/services/module-system/ModuleResourceService.ts"],
+		"symbols": ["ModuleResourceService", "ModuleResourceService.generate"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ModuleResourceService.generate.root",
+				"type": "string",
+				"description": "Absolute project directory containing the package manifest and module metadata."
+			},
+			{
+				"name": "ModuleResourceService.generate.module",
+				"type": "string",
+				"description": "Identity of the installed module that owns this resource type."
+			},
+			{
+				"name": "ModuleResourceService.generate.type",
+				"type": "string",
+				"description": "Resource type declared by the installed module."
+			},
+			{
+				"name": "ModuleResourceService.generate.requested",
+				"type": "string",
+				"description": "Resource name, or a name with its responsibility group; dependency resources require an exact package pin."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleResourceService.generate",
+				"type": "Promise<string[]>",
+				"description": "Relative paths actually created or updated by this operation."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Invalid definitions, incompatible project settings, unsafe paths or conflicting source files prevent the operation."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "config.module-groups",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.case",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.validation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-package",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-scaffold",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-writes",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/module-system/ModuleResourceService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/module-system/ModuleResourceService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

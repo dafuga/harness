@@ -18,6 +18,7 @@
 			"reports.component.harness-entity-source",
 			"reports.component.harness-entity-tests",
 			"reports.component.harness-harness-icon",
+			"reports.component.networking-security-explorer-permissions-screen",
 			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-details",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -114,6 +115,11 @@
 		},
 		{
 			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -147,7 +147,24 @@
 			"ModuleTaskRunnerAdapter",
 			"ModuleTaskWorkerService",
 			"ModuleTaskAnalyticsService",
-			"ModuleTaskWorktreeAdapter"
+			"ModuleTaskWorktreeAdapter",
+			"ModuleCatalogService",
+			"ModuleCommand",
+			"ModuleInstallService",
+			"ModuleResourceService",
+			"ModuleDefinition",
+			"ModuleResource",
+			"ModuleState",
+			"ModuleCatalog",
+			"moduleDefinitionSchema",
+			"ModuleScaffoldService",
+			"ModulePackageService",
+			"standardCodeModules",
+			"rustWasmModule",
+			"rustBackendModule",
+			"moduleResourceLocation",
+			"PermissionCatalogService",
+			"PermissionsCommand"
 		]
 	},
 	"contract": {
@@ -238,7 +255,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.module-system-module",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.networking-security-api",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.networking-security-permissions",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -449,6 +476,11 @@
 		},
 		{
 			"unit": "function.writing-limits",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.module-system-module-resource-location",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -673,6 +705,36 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.module-system-module-catalog",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-install",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-package",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-resource",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-scaffold",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.native-picker-bridge",
 			"via": "reexport",
 			"origin": "derived"
@@ -689,6 +751,11 @@
 		},
 		{
 			"unit": "service.networking-security-harness-api",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-permission-catalog",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -724,6 +791,21 @@
 		},
 		{
 			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-rust-backend-module",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-rust-wasm-module",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-standard-code-modules",
 			"via": "reexport",
 			"origin": "derived"
 		},

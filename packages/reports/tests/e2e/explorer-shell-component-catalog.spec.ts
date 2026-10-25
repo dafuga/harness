@@ -17,6 +17,8 @@ import {
 import { profilePreview } from './support/component-previews/profilePreview';
 import {
 	assertComponentCapture,
+	assertPermissionTable,
+	assertModulePreview,
 	assertTranslationControls
 } from './support/component-previews/previewCaptureAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
@@ -93,6 +95,10 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
 			await assertComponentCapture(page, unit.id, viewport.id);
+			await assertModulePreview(component, unit.id);
+			if (unit.id === 'reports.component.networking-security-explorer-permissions-screen')
+				await assertPermissionTable(component, page);
+
 			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
 
 			if (

@@ -194,3 +194,23 @@ export { ModuleTaskRunnerAdapter } from './adapters/agents-providers/ModuleTaskR
 export { ModuleTaskWorkerService } from './services/agents-providers/ModuleTaskWorkerService';
 export { ModuleTaskAnalyticsService } from './services/agents-providers/ModuleTaskAnalyticsService';
 export { ModuleTaskWorktreeAdapter } from './adapters/agents-providers/ModuleTaskWorktreeAdapter';
+export { ModuleCatalogService } from './services/module-system/ModuleCatalogService';
+export { ModuleCommand } from './commands/module-system/ModuleCommand';
+export { ModuleInstallService } from './services/module-system/ModuleInstallService';
+export { ModuleResourceService } from './services/module-system/ModuleResourceService';
+
+export type {
+	ModuleDefinition,
+	ModuleResource,
+	ModuleState,
+	ModuleCatalog
+} from './services/module-system/moduleDefinition.types';
+export { moduleDefinitionSchema } from './services/module-system/moduleDefinition';
+export { ModuleScaffoldService } from './services/module-system/ModuleScaffoldService';
+export { ModulePackageService } from './services/module-system/ModulePackageService';
+export { standardCodeModules } from './templates/module-system/standardCodeModules';
+export { rustWasmModule } from './templates/module-system/rustWasmModule';
+export { rustBackendModule } from './templates/module-system/rustBackendModule';
+export { moduleResourceLocation } from './helpers/module-system/moduleResourceLocation';
+export { PermissionCatalogService } from './services/networking-security/PermissionCatalogService';
+export { PermissionsCommand } from './commands/networking-security/PermissionsCommand';
