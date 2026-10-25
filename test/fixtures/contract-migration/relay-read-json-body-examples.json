@@ -1,0 +1,312 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.read-json-body",
+	"kind": "function",
+	"title": "Bounded relay JSON body",
+	"responsibility": "Reads a bounded JSON object while rejecting unsupported public content types and oversized bodies.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/relay/src/utils/development-tooling/readJsonBody.ts",
+			"packages/relay/src/utils/readJsonBody.ts"
+		],
+		"symbols": ["readJsonBody", "readJsonBody"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "readJsonBody.request",
+				"type": "Request",
+				"description": "Request supplying headers and a byte stream."
+			},
+			{
+				"name": "readJsonBody.typed",
+				"type": "unknown",
+				"description": "Optional content-type requirement, defaulting to true. False skips only the application/json check for internal callers."
+			}
+		],
+		"outputs": [
+			{
+				"name": "readJsonBody",
+				"type": "Promise<Record<string, unknown> | undefined>",
+				"description": "Promise resolving to a non-null JSON object, or undefined for a missing body, wrong content type, declared/actual body over 16 KiB, malformed JSON or non-object result. Reads chunks incrementally and cancels at the first byte above the limit."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "relay.config.relay",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.function.is-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/development-tooling/readJsonBody.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/development-tooling/readJsonBody.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"states": ["input", "boundary", "invalid"],
+		"props": ["request", "typed"],
+		"examples": [
+			{
+				"subject": "readJsonBody",
+				"name": "Read a JSON object and accept a charset parameter",
+				"call": "readJsonBody(post('{\"verifier\":\"abc\",\"n\":1}'))",
+				"input": {
+					"fixture": "json-object",
+					"body": "{\"verifier\":\"abc\",\"n\":1}",
+					"charsetBody": "{}",
+					"charsetType": "application/json; charset=utf-8"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"verifier": "abc",
+						"n": 1
+					}
+				}
+			},
+			{
+				"subject": "readJsonBody",
+				"name": "Return undefined for missing and unsupported public content types",
+				"call": "readJsonBody(post('{\"a\":1}', 'text/plain'))",
+				"input": {
+					"fixture": "unsupported-content-types",
+					"body": "{\"a\":1}",
+					"types": ["text/plain", "application/x-www-form-urlencoded", "application/jsonp", null]
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "readJsonBody",
+				"name": "Read JSON from an internal untyped request",
+				"call": "readJsonBody(post('{\"a\":1}', 'text/plain'), false)",
+				"input": {
+					"fixture": "internal-json",
+					"body": "{\"a\":1}",
+					"contentType": "text/plain",
+					"typed": false
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"a": 1
+					}
+				}
+			},
+			{
+				"subject": "readJsonBody",
+				"name": "Return undefined for empty malformed and non-object JSON",
+				"call": "readJsonBody(post(''))",
+				"input": {
+					"fixture": "non-object-json",
+					"bodies": [
+						"",
+						"[]",
+						"[{\"a\":1}]",
+						"null",
+						"\"text\"",
+						"7",
+						"true",
+						"{",
+						"{\"a\":1}}"
+					]
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "readJsonBody",
+				"name": "Return undefined for invalid UTF-8 JSON bytes",
+				"call": "readJsonBody(post(new Uint8Array([0x7b, 0x22, 0xff, 0x22, 0x7d])))",
+				"input": {
+					"fixture": "invalid-utf8",
+					"bytes": [123, 34, 255, 34, 125]
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "readJsonBody",
+				"name": "Accept an object exactly at the 16 KiB limit",
+				"call": "(await readJsonBody(post(sized(16 * 1024)))) !== undefined",
+				"input": {
+					"fixture": "exact-limit",
+					"limit": 16384
+				},
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "readJsonBody",
+				"name": "Return undefined for an object one byte over the 16 KiB limit",
+				"call": "readJsonBody(post(sized(16 * 1024 + 1)))",
+				"input": {
+					"fixture": "over-limit",
+					"limit": 16384
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "readJsonBody",
+				"name": "Return undefined when a request has no body",
+				"call": "readJsonBody(new Request('https://relay.test/body', { method: 'POST', headers: { 'Content-Type': 'application/json' } }))",
+				"input": {
+					"fixture": "missing-body",
+					"contentType": "application/json"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "readJsonBody",
+				"name": "Stop reading an unending request stream at the body limit",
+				"call": "await readJsonBody(neverEndingRequest(1024).request)",
+				"input": {
+					"fixture": "never-ending-stream",
+					"chunkBytes": 1024
+				},
+				"expected": {
+					"kind": "void"
+				}
+			}
+		],
+		"cases": [
+			{
+				"id": "read-json-body.json-object",
+				"state": "input",
+				"subject": "readJsonBody",
+				"example": "Read a JSON object and accept a charset parameter",
+				"test": {
+					"file": "packages/relay/test/utils/read-json-body.test.ts",
+					"title": "readJsonBody: Read a JSON object and accept a charset parameter"
+				},
+				"props": ["request"]
+			},
+			{
+				"id": "read-json-body.content-type",
+				"state": "invalid",
+				"subject": "readJsonBody",
+				"example": "Return undefined for missing and unsupported public content types",
+				"test": {
+					"file": "packages/relay/test/utils/read-json-body.test.ts",
+					"title": "readJsonBody: Return undefined for missing and unsupported public content types"
+				},
+				"props": ["request", "typed"]
+			},
+			{
+				"id": "read-json-body.internal",
+				"state": "boundary",
+				"subject": "readJsonBody",
+				"example": "Read JSON from an internal untyped request",
+				"test": {
+					"file": "packages/relay/test/utils/read-json-body.test.ts",
+					"title": "readJsonBody: Read JSON from an internal untyped request"
+				},
+				"props": ["request", "typed"]
+			},
+			{
+				"id": "read-json-body.non-object",
+				"state": "invalid",
+				"subject": "readJsonBody",
+				"example": "Return undefined for empty malformed and non-object JSON",
+				"test": {
+					"file": "packages/relay/test/utils/read-json-body.test.ts",
+					"title": "readJsonBody: Return undefined for empty malformed and non-object JSON"
+				},
+				"props": ["request"]
+			},
+			{
+				"id": "read-json-body.invalid-utf8",
+				"state": "invalid",
+				"subject": "readJsonBody",
+				"example": "Return undefined for invalid UTF-8 JSON bytes",
+				"test": {
+					"file": "packages/relay/test/utils/read-json-body.test.ts",
+					"title": "readJsonBody: Return undefined for invalid UTF-8 JSON bytes"
+				},
+				"props": ["request"]
+			},
+			{
+				"id": "read-json-body.exact-limit",
+				"state": "boundary",
+				"subject": "readJsonBody",
+				"example": "Accept an object exactly at the 16 KiB limit",
+				"test": {
+					"file": "packages/relay/test/utils/read-json-body.test.ts",
+					"title": "readJsonBody: Accept an object exactly at the 16 KiB limit"
+				},
+				"props": ["request"]
+			},
+			{
+				"id": "read-json-body.over-limit",
+				"state": "invalid",
+				"subject": "readJsonBody",
+				"example": "Return undefined for an object one byte over the 16 KiB limit",
+				"test": {
+					"file": "packages/relay/test/utils/read-json-body.test.ts",
+					"title": "readJsonBody: Return undefined for an object one byte over the 16 KiB limit"
+				},
+				"props": ["request"]
+			},
+			{
+				"id": "read-json-body.missing-body",
+				"state": "boundary",
+				"subject": "readJsonBody",
+				"example": "Return undefined when a request has no body",
+				"test": {
+					"file": "packages/relay/test/utils/read-json-body.test.ts",
+					"title": "readJsonBody: Return undefined when a request has no body"
+				},
+				"props": ["request"]
+			},
+			{
+				"id": "read-json-body.never-ending-stream",
+				"state": "boundary",
+				"subject": "readJsonBody",
+				"example": "Stop reading an unending request stream at the body limit",
+				"test": {
+					"file": "packages/relay/test/utils/read-json-body.test.ts",
+					"title": "readJsonBody: Stop reading an unending request stream at the body limit"
+				},
+				"props": ["request"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
