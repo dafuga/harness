@@ -4355,7 +4355,7 @@
 			},
 			"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
 			"contractHash": "d31f626818fbae13c091541499aefeccaeb0795d17a64581b23abf8d7778560d",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:00:28.021Z",
 			"claim": {
@@ -4369,6 +4369,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’m using the Harness skill because this is a contract-driven test migration in the Harness repository. I’ll inspect the current test, proposed manifest, task state, and relevant source contracts, then make only the two authorized file edits; I will not run tests or other prohibited verification commands.\nThe worktree is clean. The current test has four ordinary Vitest cases with multiple assertions each, and the proposed migration fixture does not yet exist. I’m now reading the full Harness guidance plus the canonical unit manifest and nearby example-migration patterns so the rewrite preserves identities, boundaries, and the exact source contract.\nThe canonical manifest has no existing `helperContracts` or testing examples, so this migration will add only `testing.shape: \"helper\"` with ten authored Examples—one for each original assertion. The two binary cases will use an explicit JSON ArrayBuffer fixture marker reconstructed in the callback; generated boundary strings will use transparent repeat markers so the exact workloads remain compact and reviewable.\nThe coverage gap is structural rather than a product defect: the existing four cases are not discoverable as contract cases, and several assertions share one test identity. I’m preserving all ten assertions as ten stable helper Examples while keeping the imported service entry point and real `frameTooLarge` invocation.\nThe two authorized edits are in place. I’m doing read-only review now: checking the exact ten-example count, JSON validity, fixture-marker coverage, and that every non-testing field in the proposed copy matches the canonical manifest. I will not execute the migrated test or any prohibited suite/check command.\nThe review confirms ten Examples, both required fixture-marker families, all original boundary values, and byte-for-byte equality of every non-testing manifest field with the canonical unit. No product source, canonical specification, or unrelated file was changed. I’m recording the task activity completion as administrative state only; behavior verification remains intentionally unrun.\nImplemented only the two authorized files:\n\n- [frame-too-large.test.ts](</Users/danielfugere/projects/harness/.cache/harness/task-worktrees/d5a44a2f-bdde-47c0-8e61-a45a5f28b2c1/packages/relay/test/utils/frame-too-large.test.ts>)\n- [relay-frame-too-large-examples.json](</Users/danielfugere/projects/harness/.cache/harness/task-worktrees/d5a44a2f-bdde-47c0-8e61-a45a5f28b2c1/test/fixtures/contract-migration/relay-frame-too-large-examples.json>)\n\nAdded 10 helper Examples—one per original assertion—with ArrayBuffer and repeat-string fixture reconstruction. Non-testing manifest fields match the canonical manifest.\n\nPerformed read-only JSON, count, metadata, and whitespace checks. Tests/build/lint/audit/install were not run per instruction; no commit was created.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/d5a44a2f-bdde-47c0-8e61-a45a5f28b2c1",
+				"changedFiles": [
+					"packages/relay/test/utils/frame-too-large.test.ts",
+					"test/fixtures/contract-migration/relay-frame-too-large-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T18:03:23.634Z",
+				"attempt": "d5a44a2f-bdde-47c0-8e61-a45a5f28b2c1",
+				"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
+				"checkpointCommit": "594f7feae5c222011da8c0e4b9d2635516419a4a",
+				"usage": {
+					"inputTokens": 1266591,
+					"outputTokens": 20280,
+					"cacheReadTokens": 1156608,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 1266591,
+							"outputTokens": 20280,
+							"cacheReadTokens": 1156608,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T18:00:50.090Z",
+						"finishedAt": "2026-10-25T18:03:23.447Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
