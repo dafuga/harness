@@ -15,16 +15,19 @@ export async function hydrateUnitDocumentation(
 	await Promise.all(
 		units.map(async (unit) => {
 			const path = unit.documentation?.path;
-			if (!path && unit.testing?.examples?.length)
-				unit.documentation = {
-					path: '',
-					examples: unit.testing.examples.map(usageOfTestExample)
-				};
 			if (path)
 				unit.documentation = await readUnitDocumentation(tree, {
 					id: unit.id,
 					documentation: path
 				});
+			if (unit.testing?.examples?.length)
+				unit.documentation = {
+					...(unit.documentation ?? { path: '' }),
+					examples: [
+						...(unit.documentation?.examples ?? []),
+						...unit.testing.examples.map(usageOfTestExample)
+					]
+				};
 		})
 	);
 }
