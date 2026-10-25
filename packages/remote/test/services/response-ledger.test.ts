@@ -12,7 +12,7 @@ const manifest = JSON.parse(
 		'utf8'
 	)
 ) as { testing: { cases: { id: string; test: { title: string } }[] } };
-const contractCase = manifest.testing.cases.find((item) => item.id === 'run-initialized');
+const contractCases = new Map(manifest.testing.cases.map((item) => [item.id, item]));
 
 function counted() {
 	const state = { runs: 0 };
@@ -20,13 +20,37 @@ function counted() {
 }
 const entry = (id: string, digest = 'd') => ({ id, digest });
 
-test('run initialized preserves answers, failures, retention and capacity boundaries', async () => {
-	expect(contractCase?.test.title).toBe(expect.getState().currentTestName);
+function assertRegisteredCase(id: string) {
+	expect(contractCases.get(id)?.test.title).toBe(expect.getState().currentTestName);
+}
+
+test('run initialized settled replay preserves the first answer', async () => {
+	assertRegisteredCase('run-initialized-settled-replay');
 	await assertSettledReplay();
+});
+
+test('run pending replay joins an answer that is still being produced', async () => {
+	assertRegisteredCase('run-pending-replay');
 	await assertPendingReplay();
+});
+
+test('run digest conflict rejects another digest and runs nothing', async () => {
+	assertRegisteredCase('run-digest-conflict');
 	await assertDigestConflict();
+});
+
+test('run remembered failure is not retried', async () => {
+	assertRegisteredCase('run-remembered-failure');
 	await assertFailedReplay();
+});
+
+test('run expired or evicted answer is refused and never runs again', async () => {
+	assertRegisteredCase('run-expired-evicted');
 	await assertRetention();
+});
+
+test('run pending capacity full refuses new ones', async () => {
+	assertRegisteredCase('run-pending-capacity-full');
 	await assertPendingCapacity();
 });
 
