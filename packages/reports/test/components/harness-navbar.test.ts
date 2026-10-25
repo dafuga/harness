@@ -169,9 +169,9 @@ test('both selectors are the shared select, and the bar writes no field of its o
 
 test('without a resolved address the bar keeps its navigation and offers nothing to choose', () => {
 	const html = body(null, { repository: null, index: null });
-	expect(text(categories(html))).toBe('Pages APIs Code Translations Platforms');
+	expect(text(categories(html))).toBe('Pages APIs Code Modules Translations Platforms');
 	expect(links(html)).toEqual([]);
-	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(5);
+	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(6);
 	expect(html).not.toMatch(/<select\b|Go to tip|hx-repository/);
 	expect(html).toMatch(new RegExp(`<a\\b[^>]*class="hx-brand"[^>]*href="${shellMount}"`));
 });
