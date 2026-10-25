@@ -1,0 +1,570 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.entity-lens",
+	"kind": "function",
+	"title": "Entity navigation context",
+	"responsibility": "Builds related explorer locations while preserving branch and revision context.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/helpers/strings/shortCommit.ts",
+			"packages/reports/src/utils/entityLens.ts",
+			"packages/reports/src/utils/explorer-ui/entityLens.ts",
+			"packages/reports/src/utils/explorer-ui/entityLens.types.ts"
+		],
+		"symbols": [
+			"shortCommit",
+			"entityLabels",
+			"entityLens",
+			"shortCommit",
+			"entityLabels",
+			"entityLens",
+			"shortCommit",
+			"EntityLens",
+			"EntityNav",
+			"EntityLabel",
+			"EntityLens",
+			"EntityNav",
+			"EntityLabel",
+			"Target"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "entityLens.from",
+				"type": "ExplorerLocation",
+				"description": "Current explorer location."
+			},
+			{
+				"name": "entityLens.to",
+				"type": "Target",
+				"description": "Optional target commit, category, entity, section and tab. Omitted commit/category retain the current values; null commit explicitly selects current mode."
+			},
+			{
+				"name": "shortCommit.commit",
+				"type": "string",
+				"description": "Commit text to abbreviate."
+			}
+		],
+		"outputs": [
+			{
+				"name": "entityLabels",
+				"type": "Record<ExplorerCategory, EntityLabel>",
+				"description": "Titles, singular labels and descriptions for the six explorer collections."
+			},
+			{
+				"name": "entityLens",
+				"type": "ExplorerLocation",
+				"description": "Location retaining branch and revision; helper identity follows tabs and commits only within the same owning entity. Catalog and different-entity links discard it."
+			},
+			{
+				"name": "shortCommit",
+				"type": "string",
+				"description": "First seven characters of the supplied commit."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"helperContracts": [
+		{
+			"name": "shortCommit",
+			"source": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"inputs": [
+				{
+					"name": "shortCommit.commit",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"examples": [
+				{
+					"name": "Abbreviate a commit to its first seven characters",
+					"call": "shortCommit(\"0123456789abcdef\")",
+					"input": ["0123456789abcdef"],
+					"output": "0123456"
+				},
+				{
+					"name": "Preserve commit text shorter than seven characters",
+					"call": "shortCommit(\"abc\")",
+					"input": ["abc"],
+					"output": "abc"
+				}
+			],
+			"consumers": [
+				{
+					"unit": "reports.component.explorer-ui-explorer-module-card"
+				},
+				{
+					"unit": "reports.component.explorer-ui-explorer-platform-details"
+				},
+				{
+					"unit": "reports.component.explorer-usage-link"
+				},
+				{
+					"unit": "reports.component.harness-entity-audio"
+				},
+				{
+					"unit": "reports.component.harness-entity-behavior"
+				},
+				{
+					"unit": "reports.component.harness-entity-change"
+				},
+				{
+					"unit": "reports.component.harness-entity-config"
+				},
+				{
+					"unit": "reports.component.harness-entity-frame"
+				},
+				{
+					"unit": "reports.component.harness-entity-history-row"
+				},
+				{
+					"unit": "reports.component.harness-entity-history"
+				},
+				{
+					"unit": "reports.component.harness-entity-screens"
+				},
+				{
+					"unit": "reports.component.harness-entity-summary"
+				},
+				{
+					"unit": "reports.component.harness-entity-tests"
+				},
+				{
+					"unit": "reports.component.harness-explorer-frame"
+				}
+			]
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorer-ui/entityLens.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorer-ui/entityLens.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"states": ["input", "boundary"],
+		"examples": [
+			{
+				"subject": "entityLens",
+				"name": "Moves to another category and entity without carrying tabs",
+				"call": "entityLens({branch: 'feature/orders', commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', category: 'pages', entity: 'app.page.orders', tab: 'tests'}, {category: 'components', entity: 'app.component.order-list'})",
+				"input": [
+					{
+						"branch": "feature/orders",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "pages",
+						"entity": "app.page.orders",
+						"tab": "tests"
+					},
+					{ "category": "components", "entity": "app.component.order-list" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/orders",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "components",
+						"entity": "app.component.order-list"
+					}
+				}
+			},
+			{
+				"subject": "entityLens",
+				"name": "Keeps branch-tip mode when opening an entity section",
+				"call": "entityLens({branch: 'feature/orders', commit: null, category: 'pages'}, {entity: 'app.page.orders', section: 'details'})",
+				"input": [
+					{ "branch": "feature/orders", "commit": null, "category": "pages" },
+					{ "entity": "app.page.orders", "section": "details" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/orders",
+						"commit": null,
+						"category": "pages",
+						"entity": "app.page.orders",
+						"section": "details"
+					}
+				}
+			},
+			{
+				"subject": "entityLens",
+				"name": "Adds a source tab to an entity section",
+				"call": "entityLens({branch: 'feature/orders', commit: null, category: 'pages', entity: 'app.page.orders', section: 'details'}, {entity: 'app.page.orders', section: 'details', tab: 'source'})",
+				"input": [
+					{
+						"branch": "feature/orders",
+						"commit": null,
+						"category": "pages",
+						"entity": "app.page.orders",
+						"section": "details"
+					},
+					{ "entity": "app.page.orders", "section": "details", "tab": "source" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/orders",
+						"commit": null,
+						"category": "pages",
+						"entity": "app.page.orders",
+						"section": "details",
+						"tab": "source"
+					}
+				}
+			},
+			{
+				"subject": "entityLens",
+				"name": "Uses an explicitly selected commit",
+				"call": "entityLens({branch: 'feature/orders', commit: null, category: 'pages', entity: 'app.page.orders', section: 'history'}, {commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', entity: 'app.page.orders'})",
+				"input": [
+					{
+						"branch": "feature/orders",
+						"commit": null,
+						"category": "pages",
+						"entity": "app.page.orders",
+						"section": "history"
+					},
+					{ "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "entity": "app.page.orders" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/orders",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "pages",
+						"entity": "app.page.orders"
+					}
+				}
+			},
+			{
+				"subject": "entityLens",
+				"name": "Clears the entity when opening another collection",
+				"call": "entityLens({branch: 'feature/orders', commit: null, category: 'pages', entity: 'app.page.orders', section: 'history'}, {category: 'services'})",
+				"input": [
+					{
+						"branch": "feature/orders",
+						"commit": null,
+						"category": "pages",
+						"entity": "app.page.orders",
+						"section": "history"
+					},
+					{ "category": "services" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": { "branch": "feature/orders", "commit": null, "category": "services" }
+				}
+			},
+			{
+				"subject": "entityLens",
+				"name": "Overview removes a prior section",
+				"call": "entityLens({branch: 'feature/orders', commit: null, category: 'pages', entity: 'app.page.orders', section: 'history'}, {entity: 'app.page.orders'})",
+				"input": [
+					{
+						"branch": "feature/orders",
+						"commit": null,
+						"category": "pages",
+						"entity": "app.page.orders",
+						"section": "history"
+					},
+					{ "entity": "app.page.orders" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/orders",
+						"commit": null,
+						"category": "pages",
+						"entity": "app.page.orders"
+					}
+				}
+			},
+			{
+				"subject": "entityLens",
+				"name": "Keeps a commit without inventing a branch",
+				"call": "entityLens({branch: null, commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', category: 'pages'}, {category: 'configs'})",
+				"input": [
+					{
+						"branch": null,
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "pages"
+					},
+					{ "category": "configs" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": null,
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "configs"
+					}
+				}
+			},
+			{
+				"subject": "entityLens",
+				"name": "Keeps helper identity on its own contract tab",
+				"call": "entityLens({branch: 'feature/orders', commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', category: 'functions', entity: 'app.function.filter-orders', helper: 'filterOrders'}, {entity: 'app.function.filter-orders', tab: 'contract'})",
+				"input": [
+					{
+						"branch": "feature/orders",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "functions",
+						"entity": "app.function.filter-orders",
+						"helper": "filterOrders"
+					},
+					{ "entity": "app.function.filter-orders", "tab": "contract" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/orders",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "functions",
+						"entity": "app.function.filter-orders",
+						"helper": "filterOrders",
+						"tab": "contract"
+					}
+				}
+			},
+			{
+				"subject": "entityLens",
+				"name": "Keeps helper identity on its own history",
+				"call": "entityLens({branch: 'feature/orders', commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', category: 'functions', entity: 'app.function.filter-orders', helper: 'filterOrders'}, {entity: 'app.function.filter-orders', section: 'history', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'})",
+				"input": [
+					{
+						"branch": "feature/orders",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "functions",
+						"entity": "app.function.filter-orders",
+						"helper": "filterOrders"
+					},
+					{
+						"entity": "app.function.filter-orders",
+						"section": "history",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/orders",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "functions",
+						"entity": "app.function.filter-orders",
+						"helper": "filterOrders",
+						"section": "history"
+					}
+				}
+			},
+			{
+				"subject": "entityLens",
+				"name": "Drops helper identity for another entity",
+				"call": "entityLens({branch: 'feature/orders', commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', category: 'functions', entity: 'app.function.filter-orders', helper: 'filterOrders'}, {entity: 'app.component.order-list'})",
+				"input": [
+					{
+						"branch": "feature/orders",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "functions",
+						"entity": "app.function.filter-orders",
+						"helper": "filterOrders"
+					},
+					{ "entity": "app.component.order-list" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/orders",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "functions",
+						"entity": "app.component.order-list"
+					}
+				}
+			},
+			{
+				"subject": "entityLens",
+				"name": "Drops entity and helper on a collection index",
+				"call": "entityLens({branch: 'feature/orders', commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', category: 'functions', entity: 'app.function.filter-orders', helper: 'filterOrders'}, {category: 'functions'})",
+				"input": [
+					{
+						"branch": "feature/orders",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "functions",
+						"entity": "app.function.filter-orders",
+						"helper": "filterOrders"
+					},
+					{ "category": "functions" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/orders",
+						"commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+						"category": "functions"
+					}
+				}
+			}
+		],
+		"cases": [
+			{
+				"id": "shortcommit.1",
+				"state": "input",
+				"subject": "shortCommit",
+				"example": "Abbreviate a commit to its first seven characters",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "shortCommit: Abbreviate a commit to its first seven characters"
+				}
+			},
+			{
+				"id": "shortcommit.2",
+				"state": "boundary",
+				"subject": "shortCommit",
+				"example": "Preserve commit text shorter than seven characters",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "shortCommit: Preserve commit text shorter than seven characters"
+				}
+			},
+			{
+				"id": "entitylens.1",
+				"state": "input",
+				"subject": "entityLens",
+				"example": "Moves to another category and entity without carrying tabs",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "entityLens: Moves to another category and entity without carrying tabs"
+				}
+			},
+			{
+				"id": "entitylens.2",
+				"state": "boundary",
+				"subject": "entityLens",
+				"example": "Keeps branch-tip mode when opening an entity section",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "entityLens: Keeps branch-tip mode when opening an entity section"
+				}
+			},
+			{
+				"id": "entitylens.3",
+				"state": "input",
+				"subject": "entityLens",
+				"example": "Adds a source tab to an entity section",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "entityLens: Adds a source tab to an entity section"
+				}
+			},
+			{
+				"id": "entitylens.4",
+				"state": "boundary",
+				"subject": "entityLens",
+				"example": "Uses an explicitly selected commit",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "entityLens: Uses an explicitly selected commit"
+				}
+			},
+			{
+				"id": "entitylens.5",
+				"state": "input",
+				"subject": "entityLens",
+				"example": "Clears the entity when opening another collection",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "entityLens: Clears the entity when opening another collection"
+				}
+			},
+			{
+				"id": "entitylens.6",
+				"state": "boundary",
+				"subject": "entityLens",
+				"example": "Overview removes a prior section",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "entityLens: Overview removes a prior section"
+				}
+			},
+			{
+				"id": "entitylens.7",
+				"state": "boundary",
+				"subject": "entityLens",
+				"example": "Keeps a commit without inventing a branch",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "entityLens: Keeps a commit without inventing a branch"
+				}
+			},
+			{
+				"id": "entitylens.8",
+				"state": "input",
+				"subject": "entityLens",
+				"example": "Keeps helper identity on its own contract tab",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "entityLens: Keeps helper identity on its own contract tab"
+				}
+			},
+			{
+				"id": "entitylens.9",
+				"state": "input",
+				"subject": "entityLens",
+				"example": "Keeps helper identity on its own history",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "entityLens: Keeps helper identity on its own history"
+				}
+			},
+			{
+				"id": "entitylens.10",
+				"state": "boundary",
+				"subject": "entityLens",
+				"example": "Drops helper identity for another entity",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "entityLens: Drops helper identity for another entity"
+				}
+			},
+			{
+				"id": "entitylens.11",
+				"state": "boundary",
+				"subject": "entityLens",
+				"example": "Drops entity and helper on a collection index",
+				"test": {
+					"file": "packages/reports/test/utils/entity-lens.test.ts",
+					"title": "entityLens: Drops entity and helper on a collection index"
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
