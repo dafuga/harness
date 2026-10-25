@@ -3,7 +3,7 @@ import type {
 	ValidationReport
 } from '../src/services/git-source-history/ModuleDataService.types';
 import { expect, test } from 'vitest';
-import { rm } from 'node:fs/promises';
+import { rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { unitProject, slugifySource, titleServiceSource } from './support/unitProject';
 import { runCommand } from './support/cli';
@@ -20,13 +20,7 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 		await git(['add', '.']);
 		await git(['commit', '-m', 'feat: define title modules']);
 		const head = (await git(['rev-parse', 'HEAD'])).stdout.trim();
-		const invoke = async (args: string[]) => {
-			const result = await project.harness(['validate', ...args, '--json'], false);
-			expect(result.stdout, 'Validation returns structured per-module diagnostics').toContain(
-				'"modules"'
-			);
-			return { ...JSON.parse(result.stdout), exitCode: result.exitCode };
-		};
+		const invoke = validationInvoker(project);
 		const before = await invoke([]);
 		expect(before.commit).toBe(head);
 		expect(before.committed).toBe(false);
@@ -38,6 +32,7 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 				expect.objectContaining({ id: 'service.title', issues: expect.any(Array) })
 			])
 		);
+		await verifyReview(project.root, git, invoke, head);
 		const cached = await invoke(['--module', 'service.title']);
 		expect(cached.cached).toBe(true);
 		expect(cached.modules.map((item: { id: string }) => item.id)).toEqual(['service.title']);
@@ -114,3 +109,42 @@ test('validate commits source-derived page API usage and explicit visual data ga
 		await rm(join(project.root, '..'), { recursive: true, force: true });
 	}
 }, 180_000);
+
+async function verifyReview(
+	root: string,
+	git: (args: string[]) => ReturnType<typeof runCommand>,
+	invoke: (args: string[]) => Promise<ValidationReport & { exitCode: number }>,
+	head: string
+) {
+	const review = join(root, '..', 'module-review.json');
+	await writeFile(
+		review,
+		JSON.stringify({
+			unit: 'service.title',
+			reason: 'Review the responsibility against this revision source.',
+			metadata: { responsibility: 'Serve normalized titles through the declared title service.' }
+		})
+	);
+	const reviewed = await invoke(['--review', review, '--write']);
+	expect(reviewed.committed).toBe(true);
+	const refreshed = await invoke(['--refresh', '--write']);
+	const retained = (await git(['ls-tree', '-r', '--name-only', refreshed.metadataCommit!])).stdout
+		.split('\n')
+		.find((path: string) => path.startsWith(`modules/${head}/`) && path.endsWith('.json'))!;
+	const reviewedData = JSON.parse(
+		(await git(['show', `${refreshed.metadataCommit}:${retained}`])).stdout
+	) as ModuleData;
+	expect(
+		reviewedData.declarations.find((unit) => unit.id === 'service.title')!.responsibility
+	).toBe('Serve normalized titles through the declared title service.');
+}
+
+function validationInvoker(project: Awaited<ReturnType<typeof unitProject>>) {
+	return async (args: string[]) => {
+		const result = await project.harness(['validate', ...args, '--json'], false);
+		expect(result.stdout, 'Validation returns structured per-module diagnostics').toContain(
+			'"modules"'
+		);
+		return { ...JSON.parse(result.stdout), exitCode: result.exitCode };
+	};
+}
