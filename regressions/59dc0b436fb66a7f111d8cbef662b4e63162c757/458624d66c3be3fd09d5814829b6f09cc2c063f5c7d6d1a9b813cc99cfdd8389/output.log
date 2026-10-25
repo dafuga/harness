@@ -1,0 +1,36 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-z9MzvI
+
+ ❯ test/module-data.e2e.test.ts (3 tests | 1 failed) 27214ms
+   ✓ validate persists revision-bound module gaps, filters them and invalidates cached searches  16878ms
+   ✓ validate commits source-derived page API usage and explicit visual data gaps  5694ms
+   × historical helper layout does not masquerade as missing module metadata 4640ms
+     → [{"id":"function.slugify","kind":"function","category":null,"issues":[{"field":"registry","message":"function.slugify: slugify must be implemented under src/helpers/<responsibility>/","repair":"Correct the committed module manifest or source."}]}]: expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/module-data.e2e.test.ts > historical helper layout does not masquerade as missing module metadata
+AssertionError: [{"id":"function.slugify","kind":"function","category":null,"issues":[{"field":"registry","message":"function.slugify: slugify must be implemented under src/helpers/<responsibility>/","repair":"Correct the committed module manifest or source."}]}]: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/module-data.e2e.test.ts:188:56
+    186|    'function.slugify'
+    187|   ]);
+    188|   expect(report.valid, JSON.stringify(report.modules)).toBe(true);
+       |                                                        ^
+    189|   expect(
+    190|    report.modules[0].issues.filter((issue: { kind?: string }) => issue…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  12:11:22
+   Duration  30.38s (transform 105ms, setup 149ms, collect 22ms, tests 27.21s, environment 0ms, prepare 48ms)
+
