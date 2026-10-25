@@ -1,3 +1,4 @@
+import { measureWorkload } from './measureWorkload';
 import { assertRustModuleProject } from './rustModuleScenario';
 import { expect } from 'vitest';
 import { join } from 'node:path';
@@ -27,8 +28,14 @@ export async function assertModuleProject(root: string): Promise<void> {
 	expect(repeated.stdout).toContain('already installed');
 	await assertRustModuleProject(project);
 	await runCommand(['bun', 'install'], project);
-	await runHarness(['plugin', 'generate', 'playwright', 'test', 'Smoke'], project);
-	await runHarness(['plugin', 'add', 'headless-audio'], project);
+	await measureWorkload(
+		'template.module-system-testing-plugins',
+		'generate-browser-plugin-test',
+		() => runHarness(['plugin', 'generate', 'playwright', 'test', 'Smoke'], project)
+	);
+	await measureWorkload('template.module-system-audio-testing-files', 'install-audio-plugin', () =>
+		runHarness(['plugin', 'add', 'headless-audio'], project)
+	);
 	await runHarness(['plugin', 'generate', 'headless-audio', 'test', 'Playback'], project);
 	await runCommand(['bun', 'install'], project);
 	const plugins = JSON.parse((await runHarness(['plugin', 'list', '--json'], project)).stdout);
@@ -38,8 +45,14 @@ export async function assertModuleProject(root: string): Promise<void> {
 			(entry: { definition: { id: string } }) => entry.definition.id === 'services'
 		)
 	).toBe(false);
-	await runHarness(['plugin', 'test', 'playwright'], project);
-	await runHarness(['plugin', 'test', 'headless-audio'], project);
+	await measureWorkload(
+		'template.module-system-browser-testing-files',
+		'run-default-headless-browser',
+		() => runHarness(['plugin', 'test', 'playwright'], project)
+	);
+	await measureWorkload('service.module-system-testing-plugin', 'run-headless-audio-plugin', () =>
+		runHarness(['plugin', 'test', 'headless-audio'], project)
+	);
 	await runCommand(['bun', 'run', 'format'], project);
 	const check = await runCommand(['bun', 'run', 'check'], project);
 	expect(check.stdout + check.stderr).toContain('Harness audit passed');

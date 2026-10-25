@@ -62,6 +62,10 @@ export const moduleData = {
 const testing = ['playwright', 'headless-audio'].map((id) => ({
 	definition: {
 		...definition(id, id === 'playwright' ? 'Playwright' : 'Headless audio', 'test', 'Tests'),
+		description:
+			id === 'playwright'
+				? 'Headless browser tests, included by default.'
+				: 'Test audio playback and interruption without a microphone or speakers.',
 		includedByDefault: id === 'playwright',
 		testing: {
 			headless: true as const,
