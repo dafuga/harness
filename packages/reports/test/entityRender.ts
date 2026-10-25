@@ -107,6 +107,14 @@ export const words = (body: string): string =>
 		)
 	);
 
+/** All visible words of one named section, including nested groups but no adjacent section. */
+export function sectionWords(body: string, name: string): string {
+	const from = [...body.matchAll(/<section\b[^>]*>/g)].find((match) =>
+		match[0].includes(`aria-label="${name}"`)
+	)?.index;
+	return from === undefined ? '' : words(body.slice(from, closed(body, from, 'section'))).trim();
+}
+
 /** The words every disclosure of a page holds, shown once it is opened. */
 export const disclosed = (body: string): string =>
 	[...body.matchAll(/<details\b.*?<\/details>/gs)].map((found) => text(found[0])).join(' ');

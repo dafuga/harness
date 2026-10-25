@@ -2,7 +2,7 @@
 	"name": "verification-admission-repair",
 	"goal": "Declared headless scenario commands admit one registered test and record actual assertions; profiler bootstrap and Mac probe fixtures remain bounded.",
 	"createdAt": "2026-10-24T23:24:20.622Z",
-	"updatedAt": "2026-10-24T23:39:04.608Z",
+	"updatedAt": "2026-10-25T01:02:32.853Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,17 +39,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T01:02:30.518Z",
+			"evidence": "Repair and guard are implemented at 3b3e7a529158cec33bff9efb77939c0e40d3502d. Normal self-verify-config checks every headless wrapper, test registration and state. Profiler schema loads before lazy runner selection; Mac probes launch via the installed interpreter."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T01:02:31.690Z",
+			"evidence": "Paired unchanged corpus at red 354af9df64631394b109fcf329a4729f5b90efde and green 3b3e7a529158cec33bff9efb77939c0e40d3502d: profiler records 380126b349ae893ee668f7c3d5f63b761892e2426e99b1d0219c9d476cd6f169 / d3f0314cd6ba9a8f019d56ba165a2437ba80ad4a56347ebeba6b9e6a857976c0. Real cold transitive schema graph passes within the unchanged five-second bound."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T01:02:32.853Z",
+			"evidence": "Isolated fault injection at 421ef6f9047367c91ccd94ad8357c3277795d390 proved an extra wrapper argument and missing registered scope are both rejected; restored declarations pass. /tmp/harness-task-admission-isolated-proof.json retains the failing and restored results. The same guard passes in the full 1,311-test suite at 7be348611c0c1aecf824440a9c0fcdb48c8c61dc."
 		},
 		{
 			"id": "verify",
