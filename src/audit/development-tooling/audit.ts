@@ -75,15 +75,7 @@ async function auditStaticProject(root: string, options: AuditOptions): Promise<
 	});
 
 	const filteredFindings = filterIgnoredFindings(
-		[
-			...catalog.gaps.map((message) => ({
-				path: 'harness.modules.json',
-				rule: 'harness-source-structure',
-				message
-			})),
-			...structureFindings,
-			...findings.flat()
-		],
+		[...moduleDefinitionFindings(catalog.gaps), ...structureFindings, ...findings.flat()],
 		config
 	);
 
@@ -100,6 +92,14 @@ async function auditStaticProject(root: string, options: AuditOptions): Promise<
 			unknownFiles: unknownFiles(files, profile)
 		}
 	};
+}
+
+function moduleDefinitionFindings(gaps: string[]): AuditFinding[] {
+	return gaps.map((message) => ({
+		path: 'harness.modules.json',
+		rule: 'harness-source-structure',
+		message
+	}));
 }
 
 function auditProjectStructure(
