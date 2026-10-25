@@ -43,7 +43,11 @@ test('CommitTreeAdapter.open populated establishes the object format before cach
 			await git.run(['rev-parse', 'HEAD'])
 		);
 		const run = GitAdapter.prototype.run;
-		vi.spyOn(GitAdapter.prototype, 'run').mockImplementation(function (args, options) {
+		vi.spyOn(GitAdapter.prototype, 'run').mockImplementation(function (
+			this: GitAdapter,
+			args,
+			options
+		) {
 			return args.includes('--show-object-format')
 				? Promise.resolve('unknown')
 				: run.call(this, args, options);
