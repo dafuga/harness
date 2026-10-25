@@ -1,0 +1,30 @@
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 24 tests using 1 worker
+
+  ✓   1 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 1800 pixels the search, closed, focused or open, leaves the revision fields whole (2.0s)
+  ✓   2 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 1800 pixels a result opens in place, and with a modifier in another tab (446ms)
+  ✓   3 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 1440 pixels the search, closed, focused or open, leaves the revision fields whole (901ms)
+  ✓   4 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 1440 pixels a result opens in place, and with a modifier in another tab (427ms)
+  ✓   5 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 1379 pixels the search, closed, focused or open, leaves the revision fields whole (846ms)
+  ✓   6 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 1379 pixels a result opens in place, and with a modifier in another tab (426ms)
+  ✓   7 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 1300 pixels the search, closed, focused or open, leaves the revision fields whole (839ms)
+  ✓   8 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 1300 pixels a result opens in place, and with a modifier in another tab (420ms)
+  ✓   9 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 1251 pixels the search, closed, focused or open, leaves the revision fields whole (829ms)
+  ✓  10 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 1251 pixels a result opens in place, and with a modifier in another tab (409ms)
+  ✓  11 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 920 pixels the search, closed, focused or open, leaves the revision fields whole (776ms)
+  ✓  12 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 920 pixels a result opens in place, and with a modifier in another tab (420ms)
+  ✓  13 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 768 pixels the search, closed, focused or open, leaves the revision fields whole (798ms)
+  ✓  14 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 768 pixels a result opens in place, and with a modifier in another tab (420ms)
+  ✓  15 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 760 pixels the search, closed, focused or open, leaves the revision fields whole (759ms)
+  ✓  16 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 760 pixels a result opens in place, and with a modifier in another tab (405ms)
+  ✓  17 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 561 pixels the search, closed, focused or open, leaves the revision fields whole (729ms)
+  ✓  18 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 561 pixels a result opens in place, and with a modifier in another tab (423ms)
+  ✓  19 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 560 pixels the search, closed, focused or open, leaves the revision fields whole (701ms)
+  ✓  20 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 560 pixels a result opens in place, and with a modifier in another tab (419ms)
+  ✓  21 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 390 pixels the search, closed, focused or open, leaves the revision fields whole (697ms)
+  ✓  22 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 390 pixels a result opens in place, and with a modifier in another tab (406ms)
+  ✓  23 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 320 pixels the search, closed, focused or open, leaves the revision fields whole (650ms)
+  ✓  24 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 320 pixels a result opens in place, and with a modifier in another tab (439ms)
+
+  24 passed (18.4s)
