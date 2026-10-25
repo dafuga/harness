@@ -1,3 +1,4 @@
+import type { UnitProject } from '../../support/unitProject';
 import { expect, test } from 'vitest';
 import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -11,27 +12,7 @@ test('historical scenario evidence contracts are reviewed without rewriting sour
 	try {
 		await git(['init', '-b', 'main']);
 		await configureTestAuthor(project.root);
-		await project.write(
-			'src/services/TitleService.ts',
-			'export class TitleService { run() { return "Title"; } }'
-		);
-		await project.harness(['units', 'index', '--write']);
-		await project.write(
-			'specification/scenarios/title-lifecycle.json',
-			JSON.stringify({
-				schemaVersion: 1,
-				id: 'title-lifecycle',
-				title: 'Title lifecycle',
-				kind: 'headless',
-				units: ['service.title'],
-				states: [{ id: 'lifecycle', title: 'Read title', coverage: 'required' }],
-				viewports: [],
-				tests: [
-					{ id: 'lifecycle', kind: 'integration', runner: 'vitest', target: 'test/title.test.ts' }
-				],
-				evidence: []
-			})
-		);
+		await writeScenario(project);
 		await git(['add', '.']);
 		await git(['commit', '-m', 'feat: retain historical scenario declaration']);
 		const head = (await git(['rev-parse', 'HEAD'])).stdout.trim();
@@ -42,19 +23,6 @@ test('historical scenario evidence contracts are reviewed without rewriting sour
 			'title-lifecycle: required state lifecycle has no required evidence'
 		);
 		const review = join(project.root, '..', 'scenario-review.json');
-		const contract = {
-			id: 'lifecycle-assertions',
-			kind: 'assertions',
-			states: ['lifecycle'],
-			viewports: [],
-			required: true
-		};
-		const requested = {
-			unit: 'service.title',
-			reason: 'Declare the wanted lifecycle assertion evidence; no observation is supplied.',
-			metadata: { responsibility: 'Serve the title.' },
-			scenarios: [{ id: 'title-lifecycle', evidence: [contract] }]
-		};
 		await project.write('../scenario-review.json', JSON.stringify(requested));
 		const accepted = await project.harness(
 			['validate', '--write', '--review', review, '--json'],
@@ -91,3 +59,41 @@ test('historical scenario evidence contracts are reviewed without rewriting sour
 		await rm(join(project.root, '..'), { recursive: true, force: true });
 	}
 }, 180_000);
+
+const contract = {
+	id: 'lifecycle-assertions',
+	kind: 'assertions',
+	states: ['lifecycle'],
+	viewports: [],
+	required: true
+};
+const requested = {
+	unit: 'service.title',
+	reason: 'Declare the wanted lifecycle assertion evidence; no observation is supplied.',
+	metadata: { responsibility: 'Serve the title.' },
+	scenarios: [{ id: 'title-lifecycle', evidence: [contract] }]
+};
+
+async function writeScenario(project: UnitProject) {
+	await project.write(
+		'src/services/TitleService.ts',
+		'export class TitleService { run() { return "Title"; } }'
+	);
+	await project.harness(['units', 'index', '--write']);
+	await project.write(
+		'specification/scenarios/title-lifecycle.json',
+		JSON.stringify({
+			schemaVersion: 1,
+			id: 'title-lifecycle',
+			title: 'Title lifecycle',
+			kind: 'headless',
+			units: ['service.title'],
+			states: [{ id: 'lifecycle', title: 'Read title', coverage: 'required' }],
+			viewports: [],
+			tests: [
+				{ id: 'lifecycle', kind: 'integration', runner: 'vitest', target: 'test/title.test.ts' }
+			],
+			evidence: []
+		})
+	);
+}
