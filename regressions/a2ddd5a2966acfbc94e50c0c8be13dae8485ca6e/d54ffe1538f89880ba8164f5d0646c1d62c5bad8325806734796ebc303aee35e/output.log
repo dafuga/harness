@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-ulo7gd
+
+ ✓ test/services/git-source-history/module-data.test.ts (3 tests) 11801ms
+   ✓ metadata admission is required without a project opt-in  1436ms
+   ✓ sync keeps immutable snapshots while advancing repaired module lookup paths  10339ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  17:30:11
+   Duration  17.40s (transform 1.03s, setup 132ms, collect 1.89s, tests 11.80s, environment 0ms, prepare 35ms)
+
