@@ -95,6 +95,27 @@ for (const viewport of catalogViewports) {
 			await capturePreview(page, home, unit.id, viewport.id);
 			await assertComponentCapture(page, unit.id, viewport.id);
 			await assertModulePreview(component, unit.id);
+			if (unit.id === 'reports.component.networking-security-explorer-permissions-screen') {
+				const identifier = component.getByRole('table').first().locator('tbody code').first();
+				expect(
+					await identifier.evaluate((node) => {
+						const range = document.createRange();
+						range.selectNodeContents(node);
+						return [...range.getClientRects()].filter((box) => box.width > 0).length;
+					}),
+					'Data identifiers remain unbroken'
+				).toBe(1);
+				expect(
+					await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+					'Permission tables stay inside the document'
+				).toBe(true);
+				const region = component.getByRole('region', { name: /data access/ }).first();
+				if (await region.evaluate((node) => node.scrollWidth > node.clientWidth)) {
+					await region.focus();
+					await region.press('ArrowRight');
+					await expect.poll(() => region.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
+				}
+			}
 
 			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
 
