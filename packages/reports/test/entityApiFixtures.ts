@@ -47,16 +47,12 @@ export function withApis(detail: HarnessRevision): HarnessRevision {
 	units.push(api(apiIds.orders, '/api/orders', current ? ['GET', 'POST', 'DELETE'] : ['GET']));
 	units.push(api(apiIds.unused, '/api/status', ['GET']));
 	if (current) units.push(api(apiIds.refunds, '/api/refunds', ['POST']));
+	const profiles = permissionProfiles.profiles.filter(
+		(profile) => current || (detail.commit === commits.middle && profile.id === 'member')
+	);
 	return {
 		...detail,
-		permissions: {
-			gaps: [],
-			profiles: current
-				? permissionProfiles.profiles
-				: detail.commit === commits.middle
-					? permissionProfiles.profiles.filter((profile) => profile.id === 'member')
-					: []
-		},
+		permissions: { gaps: [], profiles },
 		registry: { ...detail.registry, units }
 	};
 }
