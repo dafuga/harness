@@ -1,4 +1,3 @@
-import { explorerRelationsReader } from '../../../src/utils/explorerRelations';
 import { explorerCategory } from '../../../src/utils/explorer-ui/explorerCategory';
 import type { HarnessRevision } from '../../../src/models/Harness.types';
 import { expect, type Page } from '../../../../../test/support/browserTest';
@@ -32,7 +31,10 @@ export async function moduleValidation(page: Page, viewport: Viewport): Promise<
 }
 
 function validationFixture(detail: HarnessRevision, repaired: boolean) {
-	const relations = explorerRelationsReader(detail);
+	if (!detail.moduleData?.committed)
+		throw new Error(
+			'The seeded source must commit its module data before browser admission checks.'
+		);
 	const moduleData = {
 		required: true,
 		committed: true,
@@ -55,17 +57,7 @@ function validationFixture(detail: HarnessRevision, repaired: boolean) {
 							]
 						: []
 			})),
-		relationships: Object.fromEntries(
-			detail.registry.units.map((unit) => [
-				unit.id,
-				Object.fromEntries(
-					Object.entries(relations(unit.id)).map(([kind, entries]) => [
-						kind,
-						entries.map((entry) => entry.id)
-					])
-				)
-			])
-		)
+		relationships: detail.moduleData.relationships
 	};
 	return moduleData;
 }

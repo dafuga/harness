@@ -32,7 +32,12 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {

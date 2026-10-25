@@ -47,13 +47,17 @@ function side(index: SourceIndex, requests = true): ImpactSide {
 				...unit,
 				dependencies: unit.dependencies.filter((dependency) => dependency.via !== 'http')
 			}));
+	const graph = new SourceGraphService().build(index, manifests, loaded.scenarios);
+	// The negative control isolates known module imports. Production impact retains every
+	// uncertain runtime seed; newly connected backend readers can conservatively reach the bar.
+	if (!requests) graph.uncertain = [];
 	return {
 		revision: 'working-tree',
 		config: loaded.config,
 		entries: [...index.files.values()].map(({ path, hash }) => ({ path, hash })),
 		manifests,
 		scenarios: loaded.scenarios,
-		graph: new SourceGraphService().build(index, manifests, loaded.scenarios)
+		graph
 	};
 }
 /** What the analysis reports when only the search's content differs from the tree indexed so. */
@@ -120,14 +124,8 @@ test('without its declaration the import is a package from outside, and the bar 
 	);
 	expect(moved).toEqual([[bar, '$shared', search]]);
 	expect(side(loaded.index).graph.uncertain).toEqual(side(bare).graph.uncertain);
-	const declared = reached(await changed(loaded.index));
-	const undeclared = reached(await changed(bare));
-	expect([
-		declared.includes('desktop.component.nav-bar'),
-		undeclared.includes('desktop.component.nav-bar')
-	]).toEqual([true, false]);
-	// Computed HTTP calls conservatively select their callers. Isolate module imports to retain
-	// the original negative proof rather than discarding it when new request facts are indexed.
+	// HTTP calls and unrelated uncertain runtime imports conservatively select callers. Isolate
+	// known module imports so the negative control proves the declared alias itself.
 	const withoutRequests = (index: SourceIndex): SourceIndex => ({
 		...index,
 		files: new Map(
@@ -142,6 +140,10 @@ test('without its declaration the import is a package from outside, and the bar 
 	});
 	const imports = reached(await changed(withoutRequests(loaded.index), false));
 	const missing = reached(await changed(withoutRequests(bare), false));
+	expect([
+		imports.includes('desktop.component.nav-bar'),
+		missing.includes('desktop.component.nav-bar')
+	]).toEqual([true, false]);
 	const lost = ['desktop.component.nav-bar', 'desktop.page.root'];
 	expect(lost.map((unit) => [imports.includes(unit), missing.includes(unit)])).toEqual([
 		[true, false],

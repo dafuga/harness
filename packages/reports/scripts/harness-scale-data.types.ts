@@ -1,14 +1,9 @@
-export interface Unit {
-	id: string;
-	title: string;
-	responsibility: string;
-	dependencies: Array<{ unit: string; via: string }>;
-	owns: { source: string[]; symbols: string[] };
-	scenarios: string[];
-	helpers?: Array<{ name: string; source: string; inputs: Array<{ name: string; type: string }> }>;
-}
+import type { RevisionRegistry } from '../../../src/utils/revisionRegistry';
+import type { PreparedModuleData } from '../../../src/services/git-source-history/ModuleDataService.types';
+export type Unit = RevisionRegistry['units'][number];
 
 export interface Detail {
-	registry: { units: Unit[]; graph: { edges: Array<{ from: string; to: string; via: string }> } };
+	registry: RevisionRegistry;
+	moduleData?: PreparedModuleData;
 	records: Array<{ status: string; failures: string[] }>;
 }
