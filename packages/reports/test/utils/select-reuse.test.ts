@@ -16,7 +16,8 @@ const holding = (pattern: RegExp) =>
 test('a select field is written once, in the shared component, and nowhere beside it', () => {
 	// A field written by hand has no caret, its own size and its own colours, and drifts from
 	// the others; every choice on the website is the shared component with its options inside.
-	expect(holding(/<select[\s>]/)).toEqual([shared]);
+	expect(holding(/<select[\s>]/)).toEqual([]);
+	expect(holding(/<hx-select[\s>]/)).toEqual([shared]);
 	expect(holding(/createElement\(\s*['"]select['"]/)).toEqual([]);
 	expect(holding(/<Select[\s>]/).length).toBeGreaterThan(1);
 });
