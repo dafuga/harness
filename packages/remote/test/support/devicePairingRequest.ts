@@ -37,9 +37,11 @@ export async function requestInitialized() {
 	const ios = await setup();
 	await ios.device.request({ ...ios.input, platform: undefined });
 	expect(ios.relay.received[0]).toMatchObject({ platform: 'ios' });
+	const wireRequests = f.relay.bodies.length;
+	const state = await f.device.poll(pending);
 	return {
-		state: await f.device.poll(pending),
-		wireRequests: f.relay.bodies.length,
+		state,
+		wireRequests,
 		keysRetained: pending.keys === keys
 	};
 }

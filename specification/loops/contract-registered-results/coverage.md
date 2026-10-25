@@ -21,3 +21,10 @@ cases pass before the runner repair. Root, Remote and Relay compilers, focused l
 and all three structure audits pass. A missing HARNESS_CLI_PATH blocked the first
 workspace audit invocation; supplying the normal project CLI path repaired that
 verification environment without changing source.
+
+The first draft comparison caught a fixture observation-order error: polling added
+a second recorded body before `wireRequests` was read. The original assertion
+correctly requires one request body before polling. Snapshot that real count at
+the original observation point, then poll. Keep the authored expected value at one.
+Commit this fixture correction separately and record a fresh red checkpoint before
+pairing the product repair; the earlier checkpoint is retained, never overwritten.
