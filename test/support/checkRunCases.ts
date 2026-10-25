@@ -41,6 +41,7 @@ fs.writeFileSync(path.join(directory, 'case-results.ndjson'), ${JSON.stringify(J
 fs.writeFileSync(path.join(directory, 'browser-errors.ndjson'), ${JSON.stringify(JSON.stringify(diagnostics) + '\n')});
 process.stdout.write('HARNESS_RESOURCE_MEMORY_MIB=' + process.env.HARNESS_RESOURCE_MEMORY_MIB + String.fromCharCode(10));
 process.stdout.write('HARNESS_RESOURCE_CPUS=' + process.env.HARNESS_RESOURCE_CPUS + String.fromCharCode(10));
+process.stdout.write('HARNESS_FIXTURE_VALUE=' + process.env.HARNESS_FIXTURE_VALUE + String.fromCharCode(10));
 process.exitCode = ${exitCode};`;
 }
 
@@ -170,6 +171,7 @@ export async function invalidPriority(): Promise<void> {
 	try {
 		const env = { ...process.env, HARNESS_RESOURCE_PRIORITY: 'urgent' };
 		await expect(runnerFor(root, env).run(runnerCheck(10_000))).rejects.toThrow(Error);
+		await expect(runnerFor(root).run(null as never)).rejects.toThrow(TypeError);
 		expect(await readdir(root)).toEqual([]);
 	} finally {
 		await rm(root, { recursive: true, force: true });
@@ -181,9 +183,17 @@ export async function inheritedBudget(): Promise<void> {
 	const root = await mkdtemp(join(tmpdir(), 'harness-resource-budget-'));
 	try {
 		await writeFile(join(root, 'writer.cjs'), writerScript(0));
-		const outcome = await runnerFor(root).run(runnerCheck(10_000));
+		let reads = 0;
+		const env = { ...process.env };
+		Object.defineProperty(env, 'HARNESS_FIXTURE_VALUE', {
+			enumerable: true,
+			get: () => (++reads === 1 ? 'first' : 'later')
+		});
+		const outcome = await runnerFor(root, env).run(runnerCheck(10_000));
 		expect(outcome.passed).toBe(true);
 		const log = await readFile(join(root, outcome.entry.log.path), 'utf8');
+		expect(log.split('\n')).toContain('HARNESS_FIXTURE_VALUE=first');
+		expect(reads, 'application getters must be read once for the child environment').toBe(1);
 		const inherited = process.env.HARNESS_RESOURCE_MEMORY_MIB ?? '2048';
 		expect(log.split('\n'), 'check children must inherit the parent memory reservation').toContain(
 			`HARNESS_RESOURCE_MEMORY_MIB=${inherited}`
@@ -201,6 +211,7 @@ export async function versionInitialized(): Promise<void> {
 	const root = await mkdtemp(join(tmpdir(), 'harness-version-'));
 	try {
 		const service = runnerFor(root);
+		await expect(service.version(null as never)).rejects.toThrow(TypeError);
 		const firstLine = "printf '\\n   \\n  harness 2.4.1  \\nsecond line\\n'";
 		await expect(service.version(tool('first-line', firstLine))).resolves.toBe('harness 2.4.1');
 		expect(await readFile(join(root, 'logs', 'tool-first-line.log'), 'utf8')).toContain(
