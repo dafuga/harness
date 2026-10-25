@@ -31,8 +31,59 @@ test('scan initialized source finds imported cases, aliases and computed registr
 });
 
 test('discover initialized and unreadable sources retain explicit discovery gaps', async () => {
+	const manifest = await discoveryManifest();
+	const tree = {
+		read: async (file: string) => {
+			if (file === 'missing') throw new Error('missing');
+			if (file === 'test/method-unit.json')
+				return JSON.stringify({
+					...manifest,
+					testing: {
+						...manifest.testing,
+						shape: 'service',
+						cases: [
+							{
+								...manifest.testing.cases[0],
+								test: { file: 'test/methods.test.ts', title: 'Runner.finish initialized' },
+								expected: { kind: 'void' }
+							}
+						]
+					}
+				});
+			if (file === 'test/methods.test.ts')
+				return `import { test } from 'vitest'; import unit from './method-unit.json'; new TestExpectationService().registerCases(test, unit, 'test/methods.test.ts', {});`;
+			if (file === 'test/unit.json') return JSON.stringify(manifest);
+			if (file === 'test/examples.test.ts')
+				return `import { test } from 'vitest'; import unit from './unit.json'; new TestExpectationService().registerExamples(test, unit, { finish: () => undefined });`;
+			return `import { test } from 'vitest'; test.each([1])('row %i', () => {});`;
+		}
+	};
+	const result = await service.discover(tree, [
+		'present',
+		'missing',
+		'test/examples.test.ts',
+		'test/methods.test.ts'
+	]);
+	expect(result.tests).toHaveLength(3);
+	expect(result.tests[2]).toMatchObject({
+		title: 'Runner.finish initialized',
+		file: 'test/methods.test.ts',
+		dynamic: false
+	});
+	expect(result.tests[1]).toMatchObject({
+		title: 'finish: Finish',
+		dynamic: false,
+		disabled: false
+	});
+	expect(result.errors).toEqual([
+		'Cannot read test declarations: missing',
+		'present:1: computed case requires runner discovery'
+	]);
+});
+
+async function discoveryManifest() {
 	const original = (await import('../../../specification/units/function.case.json')).default;
-	const manifest = {
+	return {
 		...original,
 		helperContracts: [],
 		testing: {
@@ -59,24 +110,4 @@ test('discover initialized and unreadable sources retain explicit discovery gaps
 			]
 		}
 	};
-	const tree = {
-		read: async (file: string) => {
-			if (file === 'missing') throw new Error('missing');
-			if (file === 'test/unit.json') return JSON.stringify(manifest);
-			if (file === 'test/examples.test.ts')
-				return `import { test } from 'vitest'; import unit from './unit.json'; new TestExpectationService().registerExamples(test, unit, { finish: () => undefined });`;
-			return `import { test } from 'vitest'; test.each([1])('row %i', () => {});`;
-		}
-	};
-	const result = await service.discover(tree, ['present', 'missing', 'test/examples.test.ts']);
-	expect(result.tests).toHaveLength(2);
-	expect(result.tests[1]).toMatchObject({
-		title: 'finish: Finish',
-		dynamic: false,
-		disabled: false
-	});
-	expect(result.errors).toEqual([
-		'Cannot read test declarations: missing',
-		'present:1: computed case requires runner discovery'
-	]);
-});
+}
