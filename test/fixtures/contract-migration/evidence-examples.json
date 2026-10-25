@@ -1,0 +1,392 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.evidence-media",
+	"kind": "function",
+	"title": "Evidence media formatting",
+	"responsibility": "Determines supported media MIME/type labels and formats duration in seconds for display.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/helpers/strings/formatDuration.ts",
+			"packages/reports/src/utils/evidenceMedia.ts",
+			"packages/reports/src/utils/verification-evidence/evidenceMedia.ts"
+		],
+		"symbols": [
+			"formatDuration",
+			"mediaMime",
+			"evidenceMedia",
+			"formatDuration",
+			"mediaMime",
+			"evidenceMedia",
+			"formatDuration"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "mediaMime.file",
+				"type": "string",
+				"description": "Filename whose final extension is checked case-insensitively."
+			},
+			{
+				"name": "evidenceMedia.item",
+				"type": "Pick<Evidence, 'mediaType' | 'file'>",
+				"description": "Evidence with optional explicit media type and file address."
+			},
+			{
+				"name": "formatDuration.seconds",
+				"type": "number",
+				"description": "Optional duration in seconds.",
+				"examples": [90]
+			}
+		],
+		"outputs": [
+			{
+				"name": "mediaMime",
+				"type": "unknown",
+				"description": "Known MIME type for supported image, audio, video and document extensions, otherwise application/octet-stream."
+			},
+			{
+				"name": "evidenceMedia",
+				"type": "'image' | 'audio'",
+				"description": "Explicit media type when present; otherwise audio for an audio extension or data:audio/ URL, and image for everything else."
+			},
+			{
+				"name": "formatDuration",
+				"type": "string",
+				"description": "Floored duration as minutes:seconds or hours:minutes:seconds. Empty for absent, negative or nonfinite values."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.model.report-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"helperContracts": [
+		{
+			"name": "formatDuration",
+			"source": "packages/reports/src/helpers/strings/formatDuration.ts",
+			"inputs": [
+				{
+					"name": "formatDuration.seconds",
+					"type": "number"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"examples": [
+				{
+					"name": "Format minutes and seconds, dropping fractions",
+					"call": "formatDuration(90.9)",
+					"input": [90.9],
+					"output": "1:30"
+				},
+				{
+					"name": "Include hours for longer durations",
+					"call": "formatDuration(3661)",
+					"input": [3661],
+					"output": "1:01:01"
+				},
+				{
+					"name": "Leave invalid durations blank",
+					"call": "formatDuration(-1)",
+					"input": [-1],
+					"output": ""
+				}
+			],
+			"consumers": [
+				{
+					"unit": "reports.component.audio-comparison"
+				},
+				{
+					"unit": "reports.component.audio-evidence"
+				},
+				{
+					"unit": "reports.component.replay-controls"
+				}
+			]
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/verification-evidence/evidenceMedia.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/verification-evidence/evidenceMedia.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"states": ["input", "boundary", "invalid"],
+		"examples": [
+			{
+				"subject": "formatDuration",
+				"name": "Format whole minutes and seconds",
+				"call": "formatDuration(90)",
+				"input": [90],
+				"expected": { "kind": "value", "value": "1:30" }
+			},
+			{
+				"subject": "formatDuration",
+				"name": "Format zero seconds as zero minutes and seconds",
+				"call": "formatDuration(0)",
+				"input": [0],
+				"expected": { "kind": "value", "value": "0:00" }
+			},
+			{
+				"subject": "formatDuration",
+				"name": "Floor fractional seconds below one minute",
+				"call": "formatDuration(19.6)",
+				"input": [19.6],
+				"expected": { "kind": "value", "value": "0:19" }
+			},
+			{
+				"subject": "formatDuration",
+				"name": "Leave absent durations blank",
+				"call": "formatDuration()",
+				"input": [],
+				"expected": { "kind": "value", "value": "" }
+			},
+			{
+				"subject": "formatDuration",
+				"name": "Leave not-a-number durations blank",
+				"call": "formatDuration(NaN)",
+				"input": [{ "nonFinite": "NaN" }],
+				"expected": { "kind": "value", "value": "" }
+			},
+			{
+				"subject": "formatDuration",
+				"name": "Leave infinite durations blank",
+				"call": "formatDuration(Infinity)",
+				"input": [{ "nonFinite": "Infinity" }],
+				"expected": { "kind": "value", "value": "" }
+			},
+			{
+				"subject": "mediaMime",
+				"name": "Map an audio extension to its MIME type",
+				"call": "mediaMime('hash.m4a')",
+				"input": ["hash.m4a"],
+				"expected": { "kind": "value", "value": "audio/mp4" }
+			},
+			{
+				"subject": "mediaMime",
+				"name": "Match the extension case-insensitively",
+				"call": "mediaMime('HASH.PNG')",
+				"input": ["HASH.PNG"],
+				"expected": { "kind": "value", "value": "image/png" }
+			},
+			{
+				"subject": "mediaMime",
+				"name": "Fall back to octet-stream for unsupported extensions",
+				"call": "mediaMime('notes.txt')",
+				"input": ["notes.txt"],
+				"expected": { "kind": "value", "value": "application/octet-stream" }
+			},
+			{
+				"subject": "evidenceMedia",
+				"name": "Classify an image file as image",
+				"call": "evidenceMedia({ file: 'hash.png' })",
+				"input": [{ "file": "hash.png" }],
+				"expected": { "kind": "value", "value": "image" }
+			},
+			{
+				"subject": "evidenceMedia",
+				"name": "Classify an audio file as audio",
+				"call": "evidenceMedia({ file: 'hash.wav' })",
+				"input": [{ "file": "hash.wav" }],
+				"expected": { "kind": "value", "value": "audio" }
+			},
+			{
+				"subject": "evidenceMedia",
+				"name": "Classify a portable audio data URL as audio",
+				"call": "evidenceMedia({ file: 'data:audio/wav;base64,AAA' })",
+				"input": [{ "file": "data:audio/wav;base64,AAA" }],
+				"expected": { "kind": "value", "value": "audio" }
+			},
+			{
+				"subject": "evidenceMedia",
+				"name": "Prefer an explicit media type over the file extension",
+				"call": "evidenceMedia({ file: 'hash.wav', mediaType: 'image' })",
+				"input": [{ "file": "hash.wav", "mediaType": "image" }],
+				"expected": { "kind": "value", "value": "image" }
+			}
+		],
+		"cases": [
+			{
+				"id": "formatduration.1",
+				"state": "input",
+				"subject": "formatDuration",
+				"example": "Format minutes and seconds, dropping fractions",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "formatDuration: Format minutes and seconds, dropping fractions"
+				}
+			},
+			{
+				"id": "formatduration.2",
+				"state": "input",
+				"subject": "formatDuration",
+				"example": "Include hours for longer durations",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "formatDuration: Include hours for longer durations"
+				}
+			},
+			{
+				"id": "formatduration.3",
+				"state": "invalid",
+				"subject": "formatDuration",
+				"example": "Leave invalid durations blank",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "formatDuration: Leave invalid durations blank"
+				}
+			},
+			{
+				"id": "formatduration.4",
+				"state": "input",
+				"subject": "formatDuration",
+				"example": "Format whole minutes and seconds",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "formatDuration: Format whole minutes and seconds"
+				}
+			},
+			{
+				"id": "formatduration.5",
+				"state": "boundary",
+				"subject": "formatDuration",
+				"example": "Format zero seconds as zero minutes and seconds",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "formatDuration: Format zero seconds as zero minutes and seconds"
+				}
+			},
+			{
+				"id": "formatduration.6",
+				"state": "boundary",
+				"subject": "formatDuration",
+				"example": "Floor fractional seconds below one minute",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "formatDuration: Floor fractional seconds below one minute"
+				}
+			},
+			{
+				"id": "formatduration.7",
+				"state": "invalid",
+				"subject": "formatDuration",
+				"example": "Leave absent durations blank",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "formatDuration: Leave absent durations blank"
+				}
+			},
+			{
+				"id": "formatduration.8",
+				"state": "invalid",
+				"subject": "formatDuration",
+				"example": "Leave not-a-number durations blank",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "formatDuration: Leave not-a-number durations blank"
+				}
+			},
+			{
+				"id": "formatduration.9",
+				"state": "invalid",
+				"subject": "formatDuration",
+				"example": "Leave infinite durations blank",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "formatDuration: Leave infinite durations blank"
+				}
+			},
+			{
+				"id": "mediamime.1",
+				"state": "input",
+				"subject": "mediaMime",
+				"example": "Map an audio extension to its MIME type",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "mediaMime: Map an audio extension to its MIME type"
+				}
+			},
+			{
+				"id": "mediamime.2",
+				"state": "boundary",
+				"subject": "mediaMime",
+				"example": "Match the extension case-insensitively",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "mediaMime: Match the extension case-insensitively"
+				}
+			},
+			{
+				"id": "mediamime.3",
+				"state": "invalid",
+				"subject": "mediaMime",
+				"example": "Fall back to octet-stream for unsupported extensions",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "mediaMime: Fall back to octet-stream for unsupported extensions"
+				}
+			},
+			{
+				"id": "evidencemedia.1",
+				"state": "input",
+				"subject": "evidenceMedia",
+				"example": "Classify an image file as image",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "evidenceMedia: Classify an image file as image"
+				}
+			},
+			{
+				"id": "evidencemedia.2",
+				"state": "input",
+				"subject": "evidenceMedia",
+				"example": "Classify an audio file as audio",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "evidenceMedia: Classify an audio file as audio"
+				}
+			},
+			{
+				"id": "evidencemedia.3",
+				"state": "boundary",
+				"subject": "evidenceMedia",
+				"example": "Classify a portable audio data URL as audio",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "evidenceMedia: Classify a portable audio data URL as audio"
+				}
+			},
+			{
+				"id": "evidencemedia.4",
+				"state": "boundary",
+				"subject": "evidenceMedia",
+				"example": "Prefer an explicit media type over the file extension",
+				"test": {
+					"file": "packages/reports/test/utils/evidence-media.test.ts",
+					"title": "evidenceMedia: Prefer an explicit media type over the file extension"
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
