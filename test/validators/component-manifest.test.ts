@@ -23,11 +23,25 @@ test('visual units can bind a preview to one scenario, state and viewport', asyn
 			...(await manifest()),
 			kind,
 			preview,
+			testing: {
+				version: 1,
+				shape: kind,
+				cases: [
+					{
+						id: 'loaded',
+						state: 'loaded',
+						test: { file: 'tests/e2e/orders.spec.ts', title: 'orders loaded' },
+						expected: { kind: 'screenshot', file: 'orders-loaded.png' },
+						viewports: ['desktop']
+					}
+				]
+			},
 			responsibilityOrigin: 'declared'
 		} as ComponentManifest;
 		const result = new ComponentManifestValidator().validate(value, file);
 		expect(result.errors).toEqual([]);
 		expect(result.value).toHaveProperty('preview', preview);
+		expect(result.value).toHaveProperty('testing', value.testing);
 	}
 });
 
