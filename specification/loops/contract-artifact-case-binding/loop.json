@@ -2,7 +2,7 @@
 	"name": "contract-artifact-case-binding",
 	"goal": "Bind generated class audio to an active registered case, state and artifact slot",
 	"createdAt": "2026-10-25T18:04:56.821Z",
-	"updatedAt": "2026-10-25T18:04:57.875Z",
+	"updatedAt": "2026-10-25T18:06:44.140Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T18:06:43.122Z",
+			"evidence": "At 4afc0dddcb the unchanged one-case capture suite fails on the named registered-case/state/slot assertion: a well-formed absent unit is accepted and written. Proof 2f047a6bfad1f665a2bd372639d45ac0212605e1e9c7b08d2117e244bbb4f452 retains the product-caused failure."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T18:06:44.140Z",
+			"evidence": "Resolve the unit manifest from the runner case root (or current project), require an active exact unit and exactly one matching registered case, state and audio evidence slot before writing bytes. A supplied tested revision must be a commit-shaped identity; absent provenance stays absent. Preserve original WAV, transcript and hash validation."
 		},
 		{
 			"id": "green",
