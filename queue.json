@@ -164,6 +164,59 @@
 			"createdAt": "2026-10-25T12:19:14.196Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.project-guidance",
+			"title": "Update all generated AGENTS and Harness skill guidance to state the five allowed testing forms and stable-case bug policy explicitly",
+			"moduleGoal": "Emit and enforce contract-driven tests for this module",
+			"verificationFiles": ["test/project-template.test.ts", "test/regression-loops.test.ts"],
+			"instructions": "Use Harness CLI as appropriate. Do not delegate, commit, push, deploy, install credentials, run E2Es or broad checks. Edit only your owned source and listed verification files. Preserve unrelated work. User explicitly requests only five standard test shapes: pages and components Playwright screenshot matches of declared states (component at rest plus interactions/error props), helpers one unit case per authored example asserting its documented output/error, classes method x declared initialization/lifecycle state cases including errors, APIs structural complete JSON response matches for supported prop/error matrices. Existing interaction/accessibility/console assertions stay within those cases. Other functions/classes map by behavior. No standalone bug regression tests: strengthen existing cases, fixed counts unless explicit capabilities change. Use finite documented matrices. Report exact files and focused commands/results. No auto-accept screenshot baselines.\nUpdate all generated AGENTS and Harness skill guidance to state the five allowed testing forms and stable-case bug policy explicitly. Remove contradictory generic add-a-test advice; keep existing non-test controls.",
+			"wantedContract": {
+				"responsibility": "Update all generated AGENTS and Harness skill guidance to state the five allowed testing forms and stable-case bug policy explicitly. Remove contradictory generic add-a-test advice; keep existing non-test controls.",
+				"inputs": [
+					{
+						"name": "entity contract",
+						"type": "declared examples, methods, props and states"
+					}
+				],
+				"outputs": [
+					{
+						"name": "standard testing behavior",
+						"type": "generated source or instructions"
+					}
+				],
+				"errors": [
+					{
+						"name": "unsupported or missing test coverage",
+						"type": "explicit validation failure"
+					}
+				]
+			},
+			"model": "claude-haiku-5-5",
+			"intelligence": "max",
+			"assignee": "contract-guidance",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "template.project-guidance",
+				"goal": "Emit and enforce contract-driven tests for this module",
+				"files": [
+					"src/templates/projectGuidance.ts",
+					"src/templates/projects-sessions/projectGuidance.ts",
+					"test/project-template.test.ts",
+					"test/regression-loops.test.ts"
+				]
+			},
+			"sourceCommit": "e463e31854366174e5fb338b58e3734ce2b8d12d",
+			"contractHash": "1ad3358ecd1ef5afeff20ad6d4a17a44b4f48932c37083a9a03fdfaff7e95923",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T12:19:14.821Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
