@@ -2,16 +2,18 @@
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
-	import { plainClick } from '../../utils/explorer-ui/harnessShell';
+	import EntityLink from '../explorer-ui/EntityLink.svelte';
 	import ExplorerFrame from '../explorer-ui/ExplorerFrame.svelte';
 	import type {
 		ApiGrant,
 		DataGrant,
+  GrantOfKind,
 		ExplorerPermissionsScreenProps,
 		ProfileEntry,
 		ProfileGrant
 	} from './ExplorerPermissionsScreen.types';
 	let host: ExplorerPermissionsScreenProps = $props();
+ let navigation = $derived({route:host.route,href:host.lens.href,go:host.onroute});
 	// Only the shown revision's own declarations: no profile inherits or implies another's access.
 	let catalog = $derived(host.head.permissions);
 	let profiles = $derived(catalog?.profiles ?? []);
@@ -27,8 +29,7 @@
 		)
 	);
 	function grants<K extends ProfileGrant['kind']>(profile: ProfileEntry, kind: K) {
-		type Kind = Extract<ProfileGrant, { kind: K }>;
-		return profile.grants.filter((grant): grant is Kind => grant.kind === kind);
+		return profile.grants.filter((grant): grant is GrantOfKind<K> => grant.kind === kind);
 	}
 	/** A profile screen at the shown branch and commit; no helper, section or tab is carried over. */
 	function at(entity?: string): ExplorerLocation {
@@ -42,18 +43,11 @@
 		const { branch, commit } = host.route;
 		return entity ? { branch, commit, category: entity.category, entity: id } : null;
 	}
-	// A modified click, or another button, stays the browser's so a new tab can open it.
-	function follow(event: MouseEvent, to: ExplorerLocation) {
-		if (!plainClick(event)) return;
-		event.preventDefault();
-		host.onroute(to);
-	}
+
 </script>
 
 {#snippet link(to: ExplorerLocation, text: string, code = false)}
-	<hx-a href={host.lens.href(to)} onclick={(event) => follow(event, to)}
-		>{#if code}<hx-code>{text}</hx-code>{:else}{text}{/if}</hx-a
-	>
+ <EntityLink {to} nav={navigation}>{#if code}<hx-code>{text}</hx-code>{:else}{text}{/if}</EntityLink>
 {/snippet}
 
 <!-- A unit links only where this revision registers it; any other ID is shown exactly. -->
