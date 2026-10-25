@@ -6366,7 +6366,7 @@
 			},
 			"sourceCommit": "6591099341ac0f3d0f5de2f1a439d854162f2719",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "failed",
 			"reviews": [],
 			"createdAt": "2026-10-25T20:59:30.146Z",
 			"claim": {
@@ -6380,6 +6380,49 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/438790d5-b37e-4624-91e5-bdc1abff47b9",
+				"changedFiles": [],
+				"error": "Claude quota exhausted.",
+				"fallback": false,
+				"finishedAt": "2026-10-25T21:04:09.954Z",
+				"attempt": "438790d5-b37e-4624-91e5-bdc1abff47b9",
+				"sourceCommit": "6591099341ac0f3d0f5de2f1a439d854162f2719",
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 1051783,
+							"outputTokens": 67336,
+							"cacheReadTokens": 931361,
+							"cacheWriteTokens": 120396,
+							"cacheWriteLongTokens": 120396,
+							"reportedCostUsd": 0.18275693,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.18275693,
+							"minimumUsd": 0.18275693,
+							"maximumUsd": 0.18275693,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "failed",
+						"startedAt": "2026-10-25T20:59:37.821Z",
+						"finishedAt": "2026-10-25T21:04:09.954Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
