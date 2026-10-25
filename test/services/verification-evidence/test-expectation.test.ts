@@ -1,3 +1,8 @@
+import {
+	assertJsonAdmission,
+	assertCompleteJsonFields,
+	assertAuthoredJsonFields
+} from '../../support/testExpectationJsonCases';
 import { expect, test } from 'vitest';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { TestExpectationService } from '../../../src/services/verification-evidence/TestExpectationService';
@@ -21,6 +26,8 @@ test('json checks complete responses, type-preserving scalar normalization and e
 	for (const path of ['missing', 'request', 'request.*', '__proto__.polluted'])
 		expect(() => service.json(response, expected, [path])).toThrow();
 	expect(response.request.nonce).toBe('actual');
+	assertJsonAdmission(service);
+	assertCompleteJsonFields(service);
 });
 
 test('example asserts authored comments for successful and error inputs', async () => {
@@ -60,6 +67,7 @@ test('registerExamples registers exactly the authored examples and rejects absen
 	);
 	for (const item of registered) await item.run();
 	await assertFixtureExamples(unit);
+	await assertAuthoredJsonFields(service);
 	expect(() => service.registerExamples(() => {}, unit, {})).toThrow('Missing executable examples');
 	expect(() =>
 		service.registerExamples(() => {}, { ...unit, helperContracts: [] }, functions)

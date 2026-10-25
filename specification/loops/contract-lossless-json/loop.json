@@ -1,0 +1,66 @@
+{
+	"name": "contract-lossless-json",
+	"goal": "Retain every API JSON field and authored example value while preserving admitted input behavior",
+	"createdAt": "2026-10-25T20:20:40.050Z",
+	"updatedAt": "2026-10-25T20:35:20.098Z",
+	"template": "regression-prevention",
+	"templateLineage": [
+		"regression-prevention"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-10-25T20:35:19.543Z",
+			"evidence": "The comparator introduced in Codex commit 7ed8d6bc23 compares z.json rewritten output. The installed parser deliberately strips __proto__ keys, so changing a valid wire field can return success. The same schema is used for authored Examples; their parsed fields can disappear too. No third-party regression is claimed."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-10-25T20:35:20.098Z",
+			"evidence": "The existing json/initialized case covered ordinary fields and normalization, but trusted parser output as complete. Strengthen that case for reserved-field changes and current getter, array iterator/species, prototype and invalid-value admission. Strengthen registerExamples/initialized for authored-data round trips and existing schema-export APIs. Add the parser-review rule to the same generated-guidance cases. No test declarations added."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
