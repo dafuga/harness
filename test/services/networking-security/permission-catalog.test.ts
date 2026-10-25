@@ -48,3 +48,24 @@ test('missing declarations stay empty and malformed or mismatched profiles remai
 	expect(catalog.gaps).toHaveLength(2);
 	expect(catalog.gaps.join(' ')).toContain('member.json');
 });
+
+test('successive source revisions never borrow another profile declaration', async () => {
+	const service = new PermissionCatalogService();
+	const previous = await service.at(source());
+	const { source: _source, ...member } = permissionProfiles.profiles[1];
+	const current = await service.at(
+		source({
+			'specification/permissions/member.json': JSON.stringify({
+				...member,
+				title: 'Reader',
+				grants: []
+			})
+		})
+	);
+	expect(previous.profiles.map((profile) => profile.title)).toContain('Member');
+	expect(current.profiles.find((profile) => profile.id === 'member')).toMatchObject({
+		title: 'Reader',
+		grants: []
+	});
+	expect(previous.profiles.find((profile) => profile.id === 'member')?.grants).toHaveLength(2);
+});
