@@ -5086,7 +5086,14 @@
 			"unit": "reports.store.console-workspace",
 			"from": "packages/reports/src/lib/stores/consoleWorkspace.svelte.ts",
 			"to": "packages/reports/src/lib/projects-sessions/console-workspace/consoleWorkspace.svelte.ts",
-			"definition": "e884d503345bba068305a4df47cd9253ec1d9a522e70b6510f69714e225335ce"
+			"definition": "43363769c1b0ee4d94b5d71764f0a92e248948b0697ca5bf8563288850200c37",
+			"relocationDefinition": "e884d503345bba068305a4df47cd9253ec1d9a522e70b6510f69714e225335ce",
+			"review": {
+				"commit": "debd9ad0841c1f00ddb17068e068259cd4906c2a",
+				"path": "packages/reports/src/lib/projects-sessions/console-workspace/consoleWorkspace.svelte.ts",
+				"definition": "43363769c1b0ee4d94b5d71764f0a92e248948b0697ca5bf8563288850200c37",
+				"reason": "Keep project chat in the selected branch or historical revision on module catalog screens without treating module ids as code entities."
+			}
 		},
 		{
 			"unit": "desktop.store.agent-settings",
