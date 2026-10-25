@@ -2,7 +2,7 @@
 	"name": "contract-example-display",
 	"goal": "Keep documented expectations for every selected helper case visible at its tested revision without borrowing sibling examples",
 	"createdAt": "2026-10-25T17:30:19.856Z",
-	"updatedAt": "2026-10-25T17:40:27.446Z",
+	"updatedAt": "2026-10-25T17:46:40.733Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T17:46:40.733Z",
+			"evidence": "The unchanged nine documentation and helper catalog cases pass at e8bacf5c6a after both product-caused failures. Browser, current-tree typechecks and broader verification remain pending."
 		},
 		{
 			"id": "verify",
