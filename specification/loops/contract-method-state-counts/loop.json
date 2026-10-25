@@ -2,9 +2,11 @@
 	"name": "contract-method-state-counts",
 	"goal": "Reject duplicate method-state cases and retain existing supported case identities when other capabilities expand",
 	"createdAt": "2026-10-25T16:59:18.515Z",
-	"updatedAt": "2026-10-25T17:21:55.103Z",
+	"updatedAt": "2026-10-25T17:35:39.956Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -44,6 +46,11 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		},
+		{
+			"id": "registry-correction",
+			"title": "Verify corrected registry evidence: the earlier implement trace said registry passed prematurely; its three metadata errors were repaired in 539b277fd1 and all 1799 units now validate.",
 			"status": "pending"
 		}
 	],

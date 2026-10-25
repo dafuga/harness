@@ -25,8 +25,6 @@ export const scanText = (f: Fixture, text: string, now = Date.now(), environment
 export const scan = (f: Fixture, offer = f.offer, now = Date.now(), environments = production) =>
 	scanText(f, offerText(f, offer), now, environments);
 
-export { phone, production, approval };
-
 export async function setup() {
 	const keys = await remoteKeys(),
 		hostId = await remoteIdentity(keys.publicKey),
