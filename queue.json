@@ -4085,8 +4085,20 @@
 			},
 			"sourceCommit": "d529e6b4531763c4d09213cceca5dc5b498a26eb",
 			"contractHash": "13c652775632932f3a2165a4245d23deb615d5a113fa15bdf44fb93e5183ef3e",
-			"status": "review",
-			"reviews": [],
+			"status": "accepted",
+			"reviews": [
+				{
+					"attempt": "d8a86ab7-3631-41e4-aa5c-132affe0828b",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "Primary integration repairs the missing Vitest import, preserves exact raw bodies alongside complete headers/JSON and corrects the omitted-body expectation: the helper returns an empty body rather than throwing. Seven explicitly authored null/missing prop Examples expand the proposed ten to seventeen initial cases. All seventeen pass in the 22-case relay batch; affected lint and registry pass. Compiler/build/audit remain pending. Requested gpt-5.6-luna/max completed, but reportedModel remains null; backend identity is unverified.",
+					"at": "2026-10-25T17:55:20.317Z",
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null
+				}
+			],
 			"createdAt": "2026-10-25T17:38:43.581Z",
 			"claim": {
 				"worker": "relay-response-examples",
