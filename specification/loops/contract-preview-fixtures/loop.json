@@ -2,7 +2,7 @@
 	"name": "contract-preview-fixtures",
 	"goal": "Generated test preview routes remain page-tier fixtures without polluting component catalog ownership",
 	"createdAt": "2026-10-25T14:54:32.656Z",
-	"updatedAt": "2026-10-25T14:54:33.836Z",
+	"updatedAt": "2026-10-25T14:59:13.983Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T14:57:39.703Z",
+			"evidence": "Frozen existing shell-kind case fails on generated preview markup: it declares molecule instead of page. The full unit run independently rejects its molecule-to-molecule composition."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T14:57:40.739Z",
+			"evidence": "Choose atomic tier from each emitted route filename before applying the scaffold component level. Classify reserved generated __harness Svelte routes as test fixtures in default unit discovery, preserving their source imports and avoiding product catalog entities. Existing shell-kind registry checks are the durable guard."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T14:59:13.983Z",
+			"evidence": "Emitted +page routes receive page composition before scaffold-level overrides; generated reserved __harness Svelte routes are test fixtures in default unit discovery. Existing shell-kind and generator cases plus all missing-kernel failures now pass after building the kernel:28 tests in7files."
 		},
 		{
 			"id": "green",

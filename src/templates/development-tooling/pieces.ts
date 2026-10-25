@@ -87,7 +87,7 @@ export function pieceFiles(
 		pieceBuilders[kind](name, context).map((file) => ({
 			...file,
 			contents: file.path.endsWith('.svelte')
-				? atomicMarkup(file.contents, file.path, componentLevel(kind, context.level))
+				? atomicMarkup(file.contents, file.path, componentLevel(kind, context.level, file.path))
 				: file.contents
 		}))
 	);
@@ -115,7 +115,8 @@ function migrationFiles(name: string): PlannedFile[] {
 
 export type { PieceContext } from './pieces.types';
 
-function componentLevel(kind: PieceKind, level: PieceContext['level']) {
+function componentLevel(kind: PieceKind, level: PieceContext['level'], path: string) {
+	if (path.endsWith('+page.svelte')) return 'page';
 	if (kind === 'layout') return 'layout';
 	if (['view', 'resource'].includes(kind)) return 'page';
 	return level ?? 'molecule';

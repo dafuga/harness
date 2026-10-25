@@ -57,7 +57,7 @@ export const defaultGlobalFiles = [
 export const defaultUnitsConfig: UnitsConfig = {
 	schemaVersion: 1,
 	workspaces: [{ name: '', root: '.' }],
-	tests: ['test/', 'tests/'],
+	tests: ['test/', 'tests/', 'src/routes/**/__harness/**/*.svelte'],
 	global: [],
 	ignored: ['**/*.md', 'specification/features/', 'specification/loops/', '.gitignore'],
 	references: []
