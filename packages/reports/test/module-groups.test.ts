@@ -82,6 +82,35 @@ test('a helper row uses its callable folder instead of its owning module categor
 		() => helperEntity(rows.find((row) => row.name === 'plural')?.entity, 'plural')
 	);
 	expect(selected?.unit).toHaveProperty('group', { id: 'strings', title: 'Strings' });
+	const owner = rows.find((row) => row.name === 'plural')!.entity;
+	const legacy = { name: 'Single item', input: [1, 'item'], output: '1 item' };
+	const canonical = {
+		subject: 'plural',
+		name: 'Null count',
+		call: "plural(null, 'item')",
+		input: [null, 'item'],
+		expected: { kind: 'error' as const, value: 'invalid count' }
+	};
+	const withExamples = {
+		...owner,
+		unit: {
+			...owner.unit,
+			helpers: owner.unit.helpers!.map((helper) =>
+				helper.name === 'plural' ? { ...helper, examples: [legacy] } : helper
+			),
+			testing: {
+				version: 1 as const,
+				shape: 'helper' as const,
+				states: ['input'],
+				cases: [],
+				examples: [canonical, { ...canonical, subject: 'filterOrders', name: 'Sibling' }]
+			}
+		}
+	};
+	expect(helperEntity(withExamples, 'plural')?.unit.documentation?.examples).toEqual([
+		legacy,
+		{ name: 'Null count', call: canonical.call, input: canonical.input, error: 'invalid count' }
+	]);
 	expect(rows.find((row) => row.name === 'plural')).toHaveProperty('group', {
 		id: 'strings',
 		title: 'Strings'

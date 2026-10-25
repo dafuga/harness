@@ -1,3 +1,4 @@
+import { assertTestingExamples } from '../support/documentationExamples';
 import { TestExpectationService } from '../../src/services/verification-evidence/TestExpectationService';
 import type { Helper, HelperCall } from './unit-documentation.test.types';
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
@@ -183,35 +184,4 @@ function helperSamples(inputs: unknown[][], call: HelperCall): number {
 	}
 	expect(checksum).toBeGreaterThan(0);
 	return samples.sort((a, b) => a - b)[2];
-}
-
-async function assertTestingExamples() {
-	const tree = memoryTree({ 'src/utils/finish.ts': 'export function finish(): void {}' });
-	const unit = unitOf(
-		await indexFiles({ 'src/utils/finish.ts': 'export function finish(): void {}' }),
-		'function.finish'
-	);
-	unit.testing = {
-		version: 1,
-		shape: 'helper',
-		states: ['initialized'],
-		examples: [
-			{ subject: 'finish', name: 'Finish', call: 'finish()', input: [], expected: { kind: 'void' } }
-		],
-		cases: [
-			{
-				id: 'finish',
-				state: 'initialized',
-				subject: 'finish',
-				example: 'Finish',
-				test: { file: 'test/finish.test.ts', title: 'finish: Finish' }
-			}
-		]
-	};
-	const registry = revisionRegistry([unit], [], new Map());
-	await hydrateUnitDocumentation(tree, registry.units);
-	expect(registry.units[0].documentation).toEqual({
-		path: '',
-		examples: [{ name: 'finish: Finish', call: 'finish()', input: [], returns: 'void' }]
-	});
 }
