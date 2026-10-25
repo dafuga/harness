@@ -1,0 +1,31 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-R1MZyY
+
+ ✓ test/services/unit-index.test.ts (14 tests) 5324ms
+   ✓ recorded source moves retain definitions, owner-local placement and registered identity  352ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  4898ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 194ms
+ ✓ test/regression-loops.test.ts (8 tests) 151ms
+ ✓ test/utils/stable-json.test.ts (12 tests) 42ms
+ ✓ test/services/verification-evidence/test-expectation.test.ts (4 tests) 68ms
+ ✓ test/utils/commit-message.test.ts (11 tests) 17ms
+ ✓ test/utils/resource-environment.test.ts (22 tests) 13ms
+ ✓ test/utils/canonical-json.test.ts (20 tests) 7ms
+ ✓ test/utils/lfs-pointer.test.ts (38 tests) 8ms
+ ✓ test/utils/gateway-content-error.test.ts (9 tests) 11ms
+
+ Test Files  10 passed (10)
+      Tests  140 passed (140)
+   Start at  21:12:43
+   Duration  16.29s (transform 1.26s, setup 979ms, collect 3.50s, tests 5.83s, environment 1ms, prepare 447ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-R1MZyY/packages/reports
+
+ ✓ test/utils/explorer-name.test.ts (49 tests) 18ms
+
+ Test Files  1 passed (1)
+      Tests  49 passed (49)
+   Start at  21:13:01
+   Duration  484ms (transform 189ms, setup 175ms, collect 119ms, tests 18ms, environment 0ms, prepare 46ms)
+
