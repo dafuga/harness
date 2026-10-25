@@ -1585,7 +1585,7 @@
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 					"definition": "e17905e36b16d1ea9acad4df5deda52208ca85268d2d9b86f88fceae26872ef2",
-					"reason": "Retain the game branch\u2019s unload confirmation and quit-time window and backend guards."
+					"reason": "Retain the game branch’s unload confirmation and quit-time window and backend guards."
 				}
 			]
 		},
@@ -1653,13 +1653,13 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "src/services/RegressionProofService.ts",
 					"definition": "d686ee37b2344e2960908907bfd564b34cbffbb50df4422256129fa9241e1104",
-					"reason": "Retain main\u2019s canonical screenshot evidence mapping after relocation."
+					"reason": "Retain main’s canonical screenshot evidence mapping after relocation."
 				},
 				{
 					"commit": "9fb0505ef04992cc5b1716d2b7b5280d4f866036",
 					"path": "src/services/RegressionProofService.ts",
 					"definition": "50ff3a98e3e93eb0c0393cd95cf8a929b427d23e0f9b242046743b17ad8d40ec",
-					"reason": "Retain main\u2019s bounded failed-green diagnostics after relocation."
+					"reason": "Retain main’s bounded failed-green diagnostics after relocation."
 				},
 				{
 					"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
@@ -1692,7 +1692,7 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "src/workflows/loadUnits.ts",
 					"definition": "9d367801f0fa6ade38ffdf6e7c305993641678882f75cca10eae2642226738dc",
-					"reason": "Retain main\u2019s committed helper-example validation after relocation."
+					"reason": "Retain main’s committed helper-example validation after relocation."
 				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
@@ -1790,20 +1790,26 @@
 			"unit": "command.analytics",
 			"from": "src/commands/AnalyticsCommand.ts",
 			"to": "src/cli/program/AnalyticsCommand.ts",
-			"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
+			"definition": "da04f00e7ab570a4a5e2638baeaeb9b5e49f0a46fc4dd433691ef3259be1e879",
 			"previousReviews": [
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
 					"path": "src/cli/program/AnalyticsCommand.ts",
 					"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
 					"reason": "Add benchmark queries while retaining CPU sampling and every existing analytics operation."
+				},
+				{
+					"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+					"path": "src/cli/program/AnalyticsCommand.ts",
+					"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
+					"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
 				}
 			],
 			"review": {
-				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+				"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
 				"path": "src/cli/program/AnalyticsCommand.ts",
-				"definition": "85a8143ee96802709e22e880a0306c2a3ee41cbcf19fd883fbb04974d8c51109",
-				"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
+				"definition": "da04f00e7ab570a4a5e2638baeaeb9b5e49f0a46fc4dd433691ef3259be1e879",
+				"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
 			},
 			"relocationDefinition": "5043fdbf76fd08dc5df16f5dd7d7eb348b0e2248dee70f1381c0f638b6a9194a"
 		},
@@ -1811,13 +1817,13 @@
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "df8db443d9441dea2e91bab3b178a16a3622407ef39569859f3bac2f3ae03f5c",
+			"definition": "d53b668186ed7645abfef355d77dc8a8dd7b19cb46cc423cecc631646c4584e0",
 			"relocationDefinition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086",
 			"review": {
-				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+				"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
 				"path": "src/cli/program/AnalyticsService.ts",
-				"definition": "df8db443d9441dea2e91bab3b178a16a3622407ef39569859f3bac2f3ae03f5c",
-				"reason": "Retain the additive benchmark analytics query alongside the current sibling type companion."
+				"definition": "d53b668186ed7645abfef355d77dc8a8dd7b19cb46cc423cecc631646c4584e0",
+				"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
 			},
 			"previousReviews": [
 				{
@@ -1831,6 +1837,12 @@
 					"path": "src/cli/program/AnalyticsService.ts",
 					"definition": "740811098f4c3e08b006a61e1f33aa237e4ee3658a7b48a0c243c9f1fc841607",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "df8db443d9441dea2e91bab3b178a16a3622407ef39569859f3bac2f3ae03f5c",
+					"reason": "Retain the additive benchmark analytics query alongside the current sibling type companion."
 				}
 			]
 		},
@@ -1838,20 +1850,26 @@
 			"unit": "workflow.analytics-metrics",
 			"from": "src/workflows/analyticsMetrics.ts",
 			"to": "src/cli/program/analyticsMetrics.ts",
-			"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
+			"definition": "f92c88037b94e173af02733113239e8c7a3128617f8c47ff96835df0f1f9a0d0",
 			"previousReviews": [
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
 					"path": "src/cli/program/analyticsMetrics.ts",
 					"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
 					"reason": "Expose selected benchmark events without changing existing analytics summaries or filters."
+				},
+				{
+					"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+					"path": "src/cli/program/analyticsMetrics.ts",
+					"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
+					"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
 				}
 			],
 			"review": {
-				"commit": "b914bc12858c4230f0fb1da95545798a63ec0fad",
+				"commit": "344f3f46efa5cd8b7279d3e374ebdcf53bedc02f",
 				"path": "src/cli/program/analyticsMetrics.ts",
-				"definition": "e85c70c0d468b0abd38a1535394a9045e14fb55c242096ebedafef7878fa59b5",
-				"reason": "Retain additive benchmark registration, aggregation and rendering alongside current sibling type companions."
+				"definition": "f92c88037b94e173af02733113239e8c7a3128617f8c47ff96835df0f1f9a0d0",
+				"reason": "Retain committed task usage, explicit review outcomes and additive analytics queries without changing existing analytics ownership."
 			},
 			"relocationDefinition": "ec2621dc9a41ead5584d56839f61c0d5c65a534d0c6e915a8b59c4b2f2d9d044"
 		},
@@ -1878,13 +1896,13 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/desktop/src/utils/desktopBridge.ts",
 					"definition": "49fa30e9845e0a21cb92e90e4f4051da92484987f28dba1024e8902ad8757dca",
-					"reason": "Retain main\u2019s deployment operations and active project scoping."
+					"reason": "Retain main’s deployment operations and active project scoping."
 				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/utils/desktopBridge.ts",
 					"definition": "b46a6eeefb79f68661eaeae18ae934b919ca30dc5812ed7f3e1e02ef247453d0",
-					"reason": "Retain the game branch\u2019s game operations and project-independent game creation."
+					"reason": "Retain the game branch’s game operations and project-independent game creation."
 				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
@@ -1955,7 +1973,7 @@
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/services/HostedProjectService.ts",
 					"definition": "a9f13f9e5e99931e95884d9ea5b67648b0f0224b2c7488add859ec28c2f43d57",
-					"reason": "Retain the game branch\u2019s local game creation and reread of the open project."
+					"reason": "Retain the game branch’s local game creation and reread of the open project."
 				}
 			]
 		},
@@ -2083,13 +2101,13 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 					"definition": "b143897f40851a469c666af36a0ff3b65680682493a5fba0043f0ec9a5bb07c0",
-					"reason": "Retain main\u2019s measurement-aware hosted API replies."
+					"reason": "Retain main’s measurement-aware hosted API replies."
 				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 					"definition": "00b9a5d65308d3c0bdc69ffcc83074cfebd49c878b0d50c0bb21ab8273678e08",
-					"reason": "Retain the game branch\u2019s project request extraction within method limits."
+					"reason": "Retain the game branch’s project request extraction within method limits."
 				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
@@ -2353,7 +2371,7 @@
 				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 				"path": "src/commands/new.ts",
 				"definition": "d75850024742dc2f26d08b564d099efc61f57c5ce29b82312aa1bde4180ac3d8",
-				"reason": "Retain the game branch\u2019s game project command and dimension option."
+				"reason": "Retain the game branch’s game project command and dimension option."
 			}
 		},
 		{
@@ -2851,7 +2869,7 @@
 				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 				"path": "packages/desktop/src/services/ProjectSessionService.ts",
 				"definition": "b682426cdf8ec2c96946aa9725037009973fff0487cff89abdd4695052f6b0be",
-				"reason": "Retain the game branch\u2019s selection state and game project identity."
+				"reason": "Retain the game branch’s selection state and game project identity."
 			}
 		},
 		{
@@ -2897,7 +2915,7 @@
 				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 				"path": "packages/desktop/src/services/ProjectOperationsService.ts",
 				"definition": "df70d5294b43a7a26cd848d6e0e1bf6f5a982dbe9da22e44e18d81f9f9e0d48a",
-				"reason": "Retain the game branch\u2019s snapshot of the already open project."
+				"reason": "Retain the game branch’s snapshot of the already open project."
 			}
 		},
 		{
@@ -3157,7 +3175,7 @@
 				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 				"path": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
 				"definition": "eafd716cc1f661e23d7d16bb94afe2aa70bcfd9feceb040d7267803f29ddeb27",
-				"reason": "Retain main\u2019s focused screenshot evidence reads."
+				"reason": "Retain main’s focused screenshot evidence reads."
 			}
 		},
 		{
@@ -3585,7 +3603,7 @@
 				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 				"path": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
 				"definition": "e12d157a00d668f62b5cfaeba6fc54cf425e0c785065f12b53adfcd345593362",
-				"reason": "Retain main\u2019s committed source measurement projection."
+				"reason": "Retain main’s committed source measurement projection."
 			}
 		},
 		{
@@ -3911,13 +3929,13 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/desktop/src/initializers/initializePreload.ts",
 					"definition": "82fdf0148db86ebc1b7b616ea67e7e3a95ff52c622b7c3458a905d127d36fe73",
-					"reason": "Retain main\u2019s deployment bridge methods in the isolated preload."
+					"reason": "Retain main’s deployment bridge methods in the isolated preload."
 				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/initializers/initializePreload.ts",
 					"definition": "392af9b941403a4de6f0df55e32810b357f07816e287a7eff6c4b50ef191e2ee",
-					"reason": "Retain the game branch\u2019s game bridge methods in the isolated preload."
+					"reason": "Retain the game branch’s game bridge methods in the isolated preload."
 				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
@@ -3956,7 +3974,7 @@
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/services/LocalTransportClientService.ts",
 					"definition": "feef703fe74a059e33f7ed0faef4b1c1b8208aae27c8b09e278f4965d52c36a6",
-					"reason": "Retain the game branch\u2019s local transport request bound for full-size game documents."
+					"reason": "Retain the game branch’s local transport request bound for full-size game documents."
 				}
 			]
 		},
@@ -4501,7 +4519,7 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
 					"definition": "191a47d794391e1f000a6ac989d60d4af5d235e26400dcca6afa8ad5fbc6056a",
-					"reason": "Retain main\u2019s regression evidence and source measurement projection."
+					"reason": "Retain main’s regression evidence and source measurement projection."
 				}
 			]
 		},
@@ -4849,7 +4867,7 @@
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/services/LocalClientService.ts",
 					"definition": "b22f573e49778ad7dbda682a022403c64da2ae30cb03d8b9f33db55b527d5893",
-					"reason": "Retain the game branch\u2019s local transport request bound for full-size game documents."
+					"reason": "Retain the game branch’s local transport request bound for full-size game documents."
 				}
 			]
 		},
@@ -5003,7 +5021,7 @@
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "src/workflows/create-project/createProject.ts",
 					"definition": "6d8ebd2b12dfe7c85ac76def00cf62ea5fb3f9956bf84f53affbee9219b0f4f4",
-					"reason": "Retain the game branch\u2019s dimension, parent folder and partial-creation handling."
+					"reason": "Retain the game branch’s dimension, parent folder and partial-creation handling."
 				}
 			]
 		},
@@ -5036,7 +5054,7 @@
 				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 				"path": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
 				"definition": "8c771efe4a0656c993f5384024042df58ac6123ba1223a421e4a36427d19c171",
-				"reason": "Retain main\u2019s verified change promotion after approved project tasks."
+				"reason": "Retain main’s verified change promotion after approved project tasks."
 			}
 		},
 		{
@@ -5055,7 +5073,7 @@
 				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 				"path": "packages/desktop/src/services/change-run-service/ChangeRunService.ts",
 				"definition": "3ba2a6fd8c7b69de3f0a3a15db0efb9dfa49c820fbe8cd08536ec3f5cf81a3c5",
-				"reason": "Retain main\u2019s verified change promotion after approved entity runs."
+				"reason": "Retain main’s verified change promotion after approved entity runs."
 			}
 		},
 		{
