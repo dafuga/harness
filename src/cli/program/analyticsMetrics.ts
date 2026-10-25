@@ -4,10 +4,12 @@ import type {
 	LoopMetric
 } from '../../core/reports-media/analyticsTypes';
 import { jevMetrics } from './analyticsJevMetrics';
+import { ModuleTaskAnalyticsService } from '../../services/agents-providers/ModuleTaskAnalyticsService';
 
 export function analyticsSnapshot(events: AnalyticsEvent[], filter: AnalyticsFilter = {}) {
 	const selected = events.filter((event) => matches(event, filter));
 	const loops = loopMetrics(selected);
+	const tasks = new ModuleTaskAnalyticsService().metrics(selected);
 	const assessmentScope = events.filter((event) => matches(event, { ...filter, model: undefined }));
 	return {
 		schemaVersion: 1,
@@ -34,7 +36,8 @@ export function analyticsSnapshot(events: AnalyticsEvent[], filter: AnalyticsFil
 			response: jevMetrics(assessmentScope, 'response', undefined, filter.model),
 			cleanCode: jevMetrics(assessmentScope, 'clean-code', undefined, filter.model)
 		},
-		models: modelMetrics(assessmentScope, filter.model),
+		models: { ...modelMetrics(assessmentScope, filter.model), taskWorkers: tasks.byModel },
+		tasks,
 		benchmarks: selected.filter((event) => event.kind === 'benchmark'),
 		events: selected
 	};
@@ -42,7 +45,14 @@ export function analyticsSnapshot(events: AnalyticsEvent[], filter: AnalyticsFil
 function matches(event: AnalyticsEvent, filter: AnalyticsFilter): boolean {
 	const identities = ['project', 'loop', 'task'] as const;
 	if (!identities.every((key) => !filter[key] || event[key] === filter[key])) return false;
-	if (filter.model && ![event.agentModel, event.evaluatorModel].includes(filter.model))
+	if (
+		filter.model &&
+		![
+			event.agentModel,
+			event.evaluatorModel,
+			...(event.kind === 'task' ? [event.moduleTask?.model, event.requestedModel] : [])
+		].includes(filter.model)
+	)
 		return false;
 	return (
 		(!filter.since || event.timestamp >= filter.since) &&

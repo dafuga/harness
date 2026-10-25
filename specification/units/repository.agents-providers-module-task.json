@@ -23,6 +23,9 @@
 			"ModuleTaskRepository.update",
 			"ModuleTaskRepository.sync",
 			"ModuleTaskRepository.owner",
+			"TaskUsage",
+			"TaskExecution",
+			"TaskApiCost",
 			"TaskFeature",
 			"ModuleTaskInput",
 			"ModuleTaskQueue",
@@ -147,6 +150,11 @@
 		},
 		{
 			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task-repository-task-usage",
 			"via": "import",
 			"origin": "derived"
 		}

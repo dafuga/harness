@@ -13,6 +13,7 @@ import { stableJson } from '../../utils/development-tooling/stableJson';
 import { moduleTaskPrompt, taskSelection } from './module-task-service/taskPrompt';
 import { z } from 'zod';
 import { retryableTask } from './module-task-service/retryableTask';
+import { reviewModuleTask } from './module-task-service/reviewModuleTask';
 import { queuedTask } from './module-task-service/queuedTask';
 /** Admit immutable feature context and wanted contracts before work is eligible for pickup. */
 export class ModuleTaskService {
@@ -93,5 +94,8 @@ export class ModuleTaskService {
 			task.status = 'queued';
 			return task;
 		});
+	}
+	review(id: string, input: unknown) {
+		return reviewModuleTask(this.root, this.repository, id, input);
 	}
 }

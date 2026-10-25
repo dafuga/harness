@@ -1,9 +1,5 @@
 import { CommitTreeAdapter } from '../../../adapters/git-source-history/CommitTreeAdapter';
 import { VerificationStoreRepository } from '../../../repositories/verification-evidence/VerificationStoreRepository';
-import { PerformanceEvidenceValidator } from '../../../validators/verification-evidence/PerformanceEvidenceValidator';
-import { loadSide } from '../../../workflows/development-tooling/loadRevisions';
-import { SourceIndexService } from '../../development-tooling/source-index-service/SourceIndexService';
-import { VerificationCheckService } from '../VerificationCheckService';
 import type { TaskCheck } from './planAudit';
 
 export async function codeAudit(
@@ -14,6 +10,18 @@ export async function codeAudit(
 	const stored = new VerificationStoreRepository(root).latest(commit);
 	if (!stored)
 		throw new Error('Run harness verify run; no verification record proves the task commit.');
+	// A missing record needs no compiler or framework dependency, including in the packed SDK.
+	const [
+		{ VerificationCheckService },
+		{ loadSide },
+		{ SourceIndexService },
+		{ PerformanceEvidenceValidator }
+	] = await Promise.all([
+		import('../VerificationCheckService'),
+		import('../../../workflows/development-tooling/loadRevisions'),
+		import('../../development-tooling/source-index-service/SourceIndexService'),
+		import('../../../validators/verification-evidence/PerformanceEvidenceValidator')
+	]);
 	const verified = await new VerificationCheckService(root).check(commit, stored);
 	if (verified.status !== 'passed' || stored.record.status !== 'passed')
 		throw new Error(`Harness verification failed: ${verified.problems.join('; ')}`);
@@ -37,11 +45,20 @@ export async function codeAudit(
 	});
 	if (required.length && !stored.record.tests.some((test) => test.status === 'passed'))
 		problems.push('Run relevant automated tests for executable task units.');
+	return auditChecks(stored.record.id, missing, required.length, problems);
+}
+
+function auditChecks(
+	record: string,
+	missing: string[],
+	required: number,
+	problems: string[]
+): TaskCheck[] {
 	return [
 		{
 			id: 'verification',
 			passed: true,
-			detail: `Intact record ${stored.record.id} proves this commit.`
+			detail: `Intact record ${record} proves this commit.`
 		},
 		{
 			id: 'scope',
@@ -55,7 +72,7 @@ export async function codeAudit(
 			passed: problems.length === 0,
 			detail:
 				problems.join('\n') ||
-				(required.length
+				(required
 					? 'Current representative latency and memory profiles are recorded.'
 					: 'No affected executable units; runtime profiling is inapplicable to this source change.')
 		}

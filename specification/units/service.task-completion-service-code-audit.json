@@ -57,7 +57,7 @@
 		},
 		{
 			"unit": "service.source-index",
-			"via": "import",
+			"via": "dynamic-import",
 			"origin": "derived"
 		},
 		{
@@ -67,17 +67,17 @@
 		},
 		{
 			"unit": "service.verification-check",
-			"via": "import",
+			"via": "dynamic-import",
 			"origin": "derived"
 		},
 		{
 			"unit": "validator.performance-evidence",
-			"via": "import",
+			"via": "dynamic-import",
 			"origin": "derived"
 		},
 		{
 			"unit": "workflow.load-revisions",
-			"via": "import",
+			"via": "dynamic-import",
 			"origin": "derived"
 		}
 	],
