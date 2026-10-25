@@ -198,3 +198,4 @@ export { TestContractService } from './services/verification-evidence/TestContra
 export { TestCaseValidator } from './validators/verification-evidence/TestCaseValidator';
 export { TestDiscoveryService } from './services/verification-evidence/TestDiscoveryService';
 export { TestExpectationService } from './services/verification-evidence/TestExpectationService';
+export { TestArtifactService } from './services/verification-evidence/TestArtifactService';

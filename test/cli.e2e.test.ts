@@ -158,7 +158,6 @@ const packageKinds = [
 	'controller',
 	'service',
 	'decorator',
-	'test',
 	'feature',
 	'migration',
 	'adapter',

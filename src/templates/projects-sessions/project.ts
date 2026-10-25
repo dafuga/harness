@@ -54,7 +54,7 @@ function appConfigFiles(name: string): PlannedFile[] {
 		{
 			path: 'playwright.config.ts',
 			contents:
-				"import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n\ttestDir: 'tests/e2e',\n\twebServer: {\n\t\tcommand: 'bun run dev -- --host 127.0.0.1 --port 3322',\n\t\turl: 'http://127.0.0.1:3322',\n\t\treuseExistingServer: true\n\t},\n\tuse: {\n\t\tbaseURL: 'http://127.0.0.1:3322'\n\t}\n});\n"
+				"import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n\ttestDir: 'tests/e2e',\n\tupdateSnapshots: 'none',\n\twebServer: {\n\t\tcommand: 'bun run dev -- --host 127.0.0.1 --port 3322',\n\t\turl: 'http://127.0.0.1:3322',\n\t\treuseExistingServer: true\n\t},\n\tuse: {\n\t\tbaseURL: 'http://127.0.0.1:3322',\n\t\tbrowserName: 'chromium',\n\t\tdeviceScaleFactor: 1,\n\t\tlocale: 'en-US',\n\t\ttimezoneId: 'UTC',\n\t\tcolorScheme: 'light',\n\t\treducedMotion: 'reduce'\n\t}\n});\n"
 		},
 		{
 			path: 'tsconfig.json',
@@ -144,14 +144,14 @@ function appPackage(name: string): Record<string, unknown> {
 			dev: 'vite dev --host --port 3322',
 			build: 'vite build',
 			check:
-				'bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit',
+				'bun run format:check && bun run typecheck && bun run lint && bun run test && bun run test:e2e && bun run build && bun run audit',
 			typecheck: 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json',
 			'format:check': 'prettier --check .',
 			format: 'prettier --write .',
 			lint: 'svelte-kit sync && eslint .',
 			audit: 'bun scripts/harness-audit.ts',
 			test: 'bun run test:unit',
-			'test:unit': 'vitest run',
+			'test:unit': 'vitest run --passWithNoTests',
 			'test:e2e': 'playwright test'
 		},
 		devDependencies: {

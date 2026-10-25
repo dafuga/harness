@@ -48,7 +48,6 @@ const pieceBuilders: Record<PieceKind, (name: string, context: PieceContext) => 
 	service: (name) => classFiles('services', name, 'Service'),
 	decorator: (name) => classFiles('decorators', name, 'Decorator'),
 	component: componentFiles,
-	test: testFiles,
 	feature: featureFiles,
 	migration: migrationFiles,
 	view: viewFiles,
@@ -92,17 +91,6 @@ export function pieceFiles(
 				: file.contents
 		}))
 	);
-}
-
-function testFiles(name: string): PlannedFile[] {
-	const fileName = toKebabCase(name);
-
-	return [
-		{
-			path: `test/${fileName}.test.ts`,
-			contents: `import { expect, test } from 'vitest';\n\ntest('${fileName}', () => {\n\texpect(true).toBe(true);\n});\n`
-		}
-	];
 }
 
 function featureFiles(name: string): PlannedFile[] {

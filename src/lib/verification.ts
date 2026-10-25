@@ -83,3 +83,9 @@ export type {
 	TaskAudit,
 	TaskAuditInput
 } from '../services/verification-evidence/TaskCompletionService';
+
+export { TestArtifactService } from '../services/verification-evidence/TestArtifactService';
+export type { TestArtifact } from '../services/verification-evidence/TestArtifactService';
+export { TestExpectationService } from '../services/verification-evidence/TestExpectationService';
+export { TestContractService } from '../services/verification-evidence/TestContractService';
+export { TestDiscoveryService } from '../services/verification-evidence/TestDiscoveryService';

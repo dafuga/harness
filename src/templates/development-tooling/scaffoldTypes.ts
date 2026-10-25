@@ -7,7 +7,6 @@ export const scaffoldKinds = [
 	'service',
 	'decorator',
 	'component',
-	'test',
 	'feature',
 	'migration',
 	'view',
@@ -60,11 +59,7 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 	component: detail('component', 'Reusable Svelte UI component.', true, [
 		'Svelte component under src/components.',
 		'Typed props using Svelte 5 runes.',
-		'Component smoke test.'
-	]),
-	test: detail('test', 'Focused Vitest spec.', false, [
-		'Vitest file under test.',
-		'Single starting assertion.'
+		'Component screenshots for rest, declared props, interactions and errors.'
 	]),
 	feature: detail('feature', 'Feature specification before implementation.', false, [
 		'Planned feature markdown under specification/features/planned.',
@@ -77,12 +72,12 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 	view: detail('view', 'SvelteKit route page.', true, [
 		'Route page under src/routes/<name>/+page.svelte.',
 		'Page title and data-harness marker.',
-		'Route smoke test.'
+		'Page screenshots for each declared route state.'
 	]),
 	layout: detail('layout', 'SvelteKit route layout.', true, [
 		'Route layout under src/routes/<name>/+layout.svelte.',
 		'Typed child snippet rendering.',
-		'Layout smoke test.'
+		'Layout component screenshots for declared child and error states.'
 	]),
 	api: detail('api', 'SvelteKit API endpoint.', true, [
 		'Server route under src/routes/api/<name>/+server.ts.',
@@ -101,7 +96,7 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 	]),
 	e2e: detail('e2e', 'Playwright workflow spec.', true, [
 		'Playwright spec under tests/e2e.',
-		'Page navigation and visible route marker assertion.'
+		'Page navigation and screenshot matching for a declared state.'
 	]),
 	adapter: detail('adapter', 'Integration adapter boundary.', false, [
 		'Adapter class under src/adapters.',
@@ -186,7 +181,7 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 	partial: detail('partial', 'Reusable route-level partial component.', true, [
 		'Svelte partial under src/components/partials.',
 		'Typed props and data-harness marker.',
-		'Partial smoke test.'
+		'Partial component screenshots for rest, props and error states.'
 	]),
 	initializer: detail('initializer', 'Boot-time setup hook.', false, [
 		'Initializer function under src/initializers.',
@@ -197,7 +192,7 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 		'Config object under src/configs.',
 		'An empty starting object; add only controls with a concrete audience and purpose.',
 		'Internal by default; declare configControls before exposing public settings.',
-		'Config unit test.'
+		'Compiler, lint, build and audit checks; no invented runtime test.'
 	]),
 	middleware: detail('middleware', 'Request middleware boundary.', false, [
 		'Middleware class under src/middleware.',

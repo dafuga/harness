@@ -59,6 +59,170 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "api",
+		"states": ["request-guards", "request-matrix"],
+		"props": [
+			"Origin",
+			"Content-Type",
+			"Content-Length",
+			"reportId",
+			"title",
+			"viewport",
+			"before",
+			"after"
+		],
+		"cases": [
+			{
+				"id": "request-guards",
+				"state": "request-guards",
+				"subject": "POST",
+				"input": [
+					{
+						"Origin": "https://example.com",
+						"Content-Type": "multipart/form-data"
+					},
+					{
+						"Origin": "http://127.0.0.1:5588",
+						"Content-Type": "application/json"
+					},
+					{
+						"Origin": "http://127.0.0.1:5588",
+						"Content-Type": "multipart/form-data",
+						"Content-Length": "101000001"
+					}
+				],
+				"test": {
+					"file": "packages/reports/test/routes/report-screenshot-upload-api.test.ts",
+					"title": "upload endpoint rejects cross-origin requests before reading files"
+				},
+				"expected": {
+					"kind": "json",
+					"value": [
+						{
+							"status": 403,
+							"body": {
+								"error": "Same-origin upload required"
+							}
+						},
+						{
+							"status": 415,
+							"body": {
+								"error": "Multipart form required"
+							}
+						},
+						{
+							"status": 413,
+							"body": {
+								"error": "Upload exceeds size limit"
+							}
+						}
+					]
+				},
+				"props": ["Origin", "Content-Type", "Content-Length"],
+				"errors": ["same-origin", "multipart", "oversized"]
+			},
+			{
+				"id": "request-matrix",
+				"state": "request-matrix",
+				"subject": "POST",
+				"test": {
+					"file": "packages/reports/test/routes/report-screenshot-upload-api.test.ts",
+					"title": "upload endpoint reports missing R2 configuration clearly"
+				},
+				"expected": {
+					"kind": "json",
+					"value": {
+						"success": {
+							"id": "run-1",
+							"evidence": [
+								{
+									"id": "comparison-before",
+									"phase": "before"
+								},
+								{
+									"id": "comparison-after",
+									"phase": "after"
+								}
+							]
+						},
+						"failures": [
+							{
+								"message": "Report finalized",
+								"status": 409,
+								"body": {
+									"error": "Report finalized"
+								}
+							},
+							{
+								"message": "ENOENT",
+								"status": 404,
+								"body": {
+									"error": "Report not found"
+								}
+							},
+							{
+								"message": "Invalid image format",
+								"status": 400,
+								"body": {
+									"error": "Invalid image format"
+								}
+							},
+							{
+								"message": "Comparison title must be 1–120 characters",
+								"status": 400,
+								"body": {
+									"error": "Comparison title must be 1–120 characters"
+								}
+							},
+							{
+								"message": "Invalid viewport",
+								"status": 400,
+								"body": {
+									"error": "Invalid viewport"
+								}
+							},
+							{
+								"message": "Storage unavailable",
+								"status": 502,
+								"body": {
+									"error": "Cloudflare upload failed; no evidence was added"
+								}
+							}
+						],
+						"unconfigured": {
+							"error": "Cloudflare R2 screenshot storage is not configured"
+						},
+						"missing": {
+							"error": "Choose both screenshots"
+						}
+					}
+				},
+				"props": [
+					"Origin",
+					"Content-Type",
+					"Content-Length",
+					"reportId",
+					"title",
+					"viewport",
+					"before",
+					"after"
+				],
+				"errors": [
+					"unconfigured",
+					"missing-file",
+					"finalized",
+					"missing-report",
+					"invalid-image",
+					"invalid-title",
+					"invalid-viewport",
+					"storage-failure",
+					"Error"
+				]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

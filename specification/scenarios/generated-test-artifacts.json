@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "generated-test-artifacts",
+	"title": "Generated test audio retains exact bytes and a visible transcript",
+	"kind": "audio",
+	"units": ["service.verification-evidence-test-artifact"],
+	"states": [
+		{
+			"id": "initialized",
+			"title": "Capture generated tone and reject invalid artifact props",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "capture-audio",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/services/verification-evidence/test-artifact.test.ts",
+			"cases": [
+				{
+					"unit": "service.verification-evidence-test-artifact",
+					"case": "capture-initialized"
+				}
+			]
+		}
+	],
+	"evidence": [
+		{
+			"id": "generated-audio",
+			"kind": "audio",
+			"states": ["initialized"],
+			"viewports": [],
+			"provenance": "fixture",
+			"required": true
+		}
+	]
+}

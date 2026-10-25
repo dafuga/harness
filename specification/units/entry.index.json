@@ -151,7 +151,8 @@
 			"TestContractService",
 			"TestCaseValidator",
 			"TestDiscoveryService",
-			"TestExpectationService"
+			"TestExpectationService",
+			"TestArtifactService"
 		]
 	},
 	"contract": {
@@ -728,6 +729,11 @@
 		},
 		{
 			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-artifact",
 			"via": "reexport",
 			"origin": "derived"
 		},

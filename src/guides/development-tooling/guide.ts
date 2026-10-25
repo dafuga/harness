@@ -36,7 +36,7 @@ export const guides: Guide[] = [
 			'Generate the model with fields and the target adapter.',
 			'Keep persistence calls inside the model or adapter, not in controllers.',
 			'Add validations near the model before wiring UI or API behavior.',
-			'Write model tests before adding higher-level workflow tests.'
+			'Cover each declared model method and initialization or persistence state, including failures, in its existing class suite.'
 		],
 		rules: [
 			'One model file owns one table-shaped concept.',
@@ -58,7 +58,7 @@ export const guides: Guide[] = [
 			'Generate the controller.',
 			'Call models and services from small action methods.',
 			'Return a consistent response shape.',
-			'Cover the action with a focused test.'
+			'Cover each action across its declared initialization and error states in the owning class suite.'
 		],
 		rules: [
 			'Controllers parse input and shape output.',
@@ -78,7 +78,7 @@ export const guides: Guide[] = [
 			'Generate the service.',
 			'Name the public method after the business action.',
 			'Inject collaborators instead of importing global state.',
-			'Test success and failure paths.'
+			'Test each public method across every declared initialization and lifecycle state, including failures.'
 		],
 		rules: ['Services orchestrate work.', 'Services should not own database adapter details.'],
 		antiPatterns: ['Do not make a service named Manager.', 'Do not collect unrelated helpers.'],
@@ -91,7 +91,7 @@ export const guides: Guide[] = [
 			'Generate the decorator.',
 			'Accept the raw object in the constructor or function input.',
 			'Expose display-ready methods.',
-			'Keep formatting rules covered by tests.'
+			'Use class method/state cases or authored function examples for every supported formatting result and error.'
 		],
 		rules: ['Decorators format and derive display values.', 'Decorators do not fetch data.'],
 		antiPatterns: ['Do not hide database writes in decorators.'],
@@ -104,7 +104,7 @@ export const guides: Guide[] = [
 			'Generate the component.',
 			'Use typed props and Svelte 5 runes.',
 			'Keep data loading outside reusable components.',
-			'Add a component test or page smoke test.'
+			'Use Playwright to reach the component at rest and every declared interaction, prop and error state, then match its screenshot.'
 		],
 		rules: [
 			'Components should be reusable and visually scoped.',
@@ -172,7 +172,12 @@ export const guides: Guide[] = [
 	...consoleGuides
 ].map((guide) => {
 	const naming = harnessNamingRules[guide.topic];
-	return naming ? { ...guide, rules: [naming, ...guide.rules, ...harnessModuleGroupRules] } : guide;
+	const standard = scaffoldGuides().find((item) => item.topic === guide.topic);
+	const rules = [...new Set([...guide.rules, ...(standard?.rules ?? [])])];
+	return {
+		...guide,
+		rules: naming ? [...new Set([naming, ...rules, ...harnessModuleGroupRules])] : rules
+	};
 });
 
 export function findGuide(topic: string): Guide | undefined {

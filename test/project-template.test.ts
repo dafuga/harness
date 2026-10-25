@@ -15,8 +15,18 @@ test('app projects include SvelteKit and specification files', () =>
 		const files = projectFiles({ kind: 'app', name: 'demo-app' });
 		const paths = files.map((file) => file.path);
 		const packageJson = JSON.parse(fileContents(files, 'package.json'));
+		const initialPageTest = fileContents(files, 'tests/e2e/app.spec.ts');
 		expect(paths).toContain('svelte.config.js');
 		expect(paths).toContain('playwright.config.ts');
+		expect(paths).toContain('tests/e2e/app.spec.ts');
+		expect(paths).not.toContain('test/smoke.test.ts');
+		expect(files.find((file) => file.path === 'playwright.config.ts')?.contents).toContain(
+			"updateSnapshots: 'none'"
+		);
+		expect(initialPageTest).toContain("from './support/browserTest'");
+		expect(initialPageTest).toContain("test('app page initial state'");
+		expect(initialPageTest).toContain("await page.goto('/')");
+		expect(initialPageTest).toContain("toHaveScreenshot('initial.png', { fullPage: true })");
 		expect(paths).toContain('eslint.config.js');
 		expect(paths).toContain('eslint.harness-rules.js');
 		expect(paths).toContain('harness.audit.json');

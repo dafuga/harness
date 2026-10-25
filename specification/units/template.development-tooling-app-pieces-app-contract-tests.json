@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "template.development-tooling-app-pieces-app-contract-tests",
+	"kind": "template",
+	"title": "appContractTests",
+	"responsibility": "Emits deterministic page and component state screenshot suites for generated SvelteKit entities.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/templates/development-tooling/app-pieces/appContractTests.ts"],
+		"symbols": [
+			"componentContractTest",
+			"pageContractTest",
+			"layoutContractTest",
+			"partialContractTest"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "componentContractTest.componentName",
+				"type": "string"
+			},
+			{
+				"name": "componentContractTest.marker",
+				"type": "string"
+			},
+			{
+				"name": "pageContractTest.route",
+				"type": "string"
+			},
+			{
+				"name": "pageContractTest.title",
+				"type": "string"
+			},
+			{
+				"name": "pageContractTest.kind",
+				"type": "'page' | 'e2e'"
+			},
+			{
+				"name": "layoutContractTest.route",
+				"type": "string"
+			},
+			{
+				"name": "layoutContractTest.title",
+				"type": "string"
+			},
+			{
+				"name": "partialContractTest.marker",
+				"type": "string"
+			},
+			{
+				"name": "partialContractTest.label",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "componentContractTest",
+				"type": "string"
+			},
+			{
+				"name": "pageContractTest",
+				"type": "string"
+			},
+			{
+				"name": "layoutContractTest",
+				"type": "string"
+			},
+			{
+				"name": "partialContractTest",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/development-tooling/app-pieces/appContractTests.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/development-tooling/app-pieces/appContractTests.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
