@@ -1032,10 +1032,7 @@
 				"subject": "reportFilter",
 				"name": "Reject a missing evidence list",
 				"call": "reportFilter(null, {})",
-				"input": [
-					null,
-					{}
-				],
+				"input": [null, {}],
 				"expected": {
 					"kind": "error",
 					"value": "Cannot read properties of null (reading 'filter')"

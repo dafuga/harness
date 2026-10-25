@@ -307,9 +307,7 @@
 				"subject": "evidenceMedia",
 				"name": "Reject a descriptor without a file",
 				"call": "evidenceMedia({})",
-				"input": [
-					{}
-				],
+				"input": [{}],
 				"expected": {
 					"kind": "error",
 					"value": "Cannot read properties of undefined (reading 'slice')"

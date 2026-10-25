@@ -1,6 +1,9 @@
 import type { LoadedUnits } from './loadUnits.types';
 import { revisionRegistry } from '../../../utils/revisionRegistry';
-import { type unitMetadata, hydrateContractMetadata } from '../../../utils/explorer-ui/unitMetadata';
+import {
+	type unitMetadata,
+	hydrateContractMetadata
+} from '../../../utils/explorer-ui/unitMetadata';
 import { helperContract } from '../../../utils/development-tooling/helperContract';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
 import { resolve } from 'node:path';
