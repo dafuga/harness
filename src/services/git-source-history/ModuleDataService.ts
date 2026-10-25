@@ -35,7 +35,7 @@ export class ModuleDataService {
 				cache.data.declarations,
 				requested
 			);
-			cache = await this.load(identity, true);
+			cache = { data: await this.builder.build(identity, false, cache.data), hit: false };
 		}
 		await new ModuleDataCache(this.repository).write(cache.data);
 		const metadataCommit = options.write ? await this.repository.write(cache.data) : stored?.commit;

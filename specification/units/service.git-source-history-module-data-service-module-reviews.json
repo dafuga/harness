@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/git-source-history/module-data-service/moduleReviews.ts"],
-		"symbols": ["readModuleReviews", "applyModuleReviews"]
+		"symbols": ["readModuleReviews", "applyModuleReviews", "reviewedModuleFacts"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -28,6 +28,14 @@
 			{
 				"name": "applyModuleReviews.blobs",
 				"type": "Map<string, string>"
+			},
+			{
+				"name": "reviewedModuleFacts.root",
+				"type": "string"
+			},
+			{
+				"name": "reviewedModuleFacts.prior",
+				"type": "ModuleData"
 			}
 		],
 		"outputs": [
@@ -37,6 +45,10 @@
 			},
 			{
 				"name": "applyModuleReviews",
+				"type": "unknown"
+			},
+			{
+				"name": "reviewedModuleFacts",
 				"type": "unknown"
 			}
 		],
@@ -49,6 +61,26 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.component-version",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-metadata",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"
@@ -60,6 +92,21 @@
 		},
 		{
 			"unit": "repository.git-source-history-module-data-review-repository-module-review-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.scenario",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.unit-registry",
 			"via": "import",
 			"origin": "derived"
 		}

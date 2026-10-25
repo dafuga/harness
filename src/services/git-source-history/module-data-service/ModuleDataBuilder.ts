@@ -1,3 +1,4 @@
+import { reviewedModuleFacts } from './moduleReviews';
 import { SourceIndexService } from '../../development-tooling/source-index-service/SourceIndexService';
 import { ModuleDataCache } from './ModuleDataCache';
 import type { ModuleData } from '../ModuleDataService.types';
@@ -19,16 +20,14 @@ export class ModuleDataBuilder {
 	private builds = 0;
 	private evidence?: { key: string; history: HistoryStatusService };
 	constructor(private repository: ModuleDataRepository) {}
-	async build(identity: ModuleDataIdentity, refreshSource = false): Promise<ModuleData> {
+	async build(
+		identity: ModuleDataIdentity,
+		refreshSource = false,
+		reviewed?: ModuleData
+	): Promise<ModuleData> {
 		this.boundCaches();
-		const root = this.repository.root,
-			prior = refreshSource
-				? undefined
-				: ((await this.repository.source(identity))?.data ??
-					(await new ModuleDataCache(this.repository).read(identity, true)));
-		const facts = prior
-			? sourceFields(prior)
-			: await moduleSourceFacts(root, identity, this.indexer);
+		const root = this.repository.root;
+		const facts = await this.facts(identity, refreshSource, reviewed);
 		const history = this.history(identity);
 		const { records } = await new RevisionDetailService(root, history).recorded(
 			identity.commit,
@@ -53,6 +52,18 @@ export class ModuleDataBuilder {
 		};
 		return { ...body, digest: this.repository.digest(body) };
 	}
+	private async facts(identity: ModuleDataIdentity, refreshSource: boolean, reviewed?: ModuleData) {
+		const root = this.repository.root;
+		if (reviewed) return reviewedModuleFacts(root, reviewed);
+		if (!refreshSource) {
+			const prior =
+				(await this.repository.source(identity))?.data ??
+				(await new ModuleDataCache(this.repository).read(identity, true));
+			if (prior) return sourceFields(prior);
+		}
+		return moduleSourceFacts(root, identity, this.indexer);
+	}
+
 	private boundCaches() {
 		if (++this.builds % 32 === 0) {
 			this.indexer = new SourceIndexService();
