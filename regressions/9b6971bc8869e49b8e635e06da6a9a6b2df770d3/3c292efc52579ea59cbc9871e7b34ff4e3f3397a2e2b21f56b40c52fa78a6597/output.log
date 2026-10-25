@@ -1,0 +1,83 @@
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 29 tests using 1 worker
+
+  ✓   1 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 1800 pixels the search, closed, focused or open, leaves the revision fields whole (2.0s)
+  ✓   2 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 1800 pixels a result opens in place, and with a modifier in another tab (435ms)
+  ✓   3 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 1440 pixels the search, closed, focused or open, leaves the revision fields whole (840ms)
+  ✓   4 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 1440 pixels a result opens in place, and with a modifier in another tab (417ms)
+  ✓   5 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 1379 pixels the search, closed, focused or open, leaves the revision fields whole (823ms)
+  ✓   6 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 1379 pixels a result opens in place, and with a modifier in another tab (437ms)
+  ✓   7 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 1300 pixels the search, closed, focused or open, leaves the revision fields whole (869ms)
+  ✓   8 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 1300 pixels a result opens in place, and with a modifier in another tab (403ms)
+  ✓   9 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 1251 pixels the search, closed, focused or open, leaves the revision fields whole (830ms)
+  ✓  10 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 1251 pixels a result opens in place, and with a modifier in another tab (401ms)
+  ✓  11 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 920 pixels the search, closed, focused or open, leaves the revision fields whole (770ms)
+  ✓  12 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 920 pixels a result opens in place, and with a modifier in another tab (419ms)
+  ✓  13 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 768 pixels the search, closed, focused or open, leaves the revision fields whole (775ms)
+  ✓  14 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 768 pixels a result opens in place, and with a modifier in another tab (400ms)
+  ✓  15 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 760 pixels the search, closed, focused or open, leaves the revision fields whole (735ms)
+  ✓  16 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 760 pixels a result opens in place, and with a modifier in another tab (431ms)
+  ✓  17 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 561 pixels the search, closed, focused or open, leaves the revision fields whole (711ms)
+  ✓  18 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 561 pixels a result opens in place, and with a modifier in another tab (403ms)
+  ✓  19 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 560 pixels the search, closed, focused or open, leaves the revision fields whole (698ms)
+  ✓  20 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 560 pixels a result opens in place, and with a modifier in another tab (399ms)
+  ✓  21 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 390 pixels the search, closed, focused or open, leaves the revision fields whole (693ms)
+  ✓  22 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 390 pixels a result opens in place, and with a modifier in another tab (422ms)
+  ✓  23 [chromium] › tests/e2e/ui-search-fit.spec.ts:108:2 › at 320 pixels the search, closed, focused or open, leaves the revision fields whole (690ms)
+  ✓  24 [chromium] › tests/e2e/ui-search-fit.spec.ts:131:2 › at 320 pixels a result opens in place, and with a modifier in another tab (422ms)
+  ✓  25 [chromium] › tests/e2e/ui-workspace.spec.ts:3:1 › browser preview exposes no writable backend (234ms)
+  ✓  26 [chromium] › tests/e2e/ui-workspace.spec.ts:13:1 › designless Plan preserves truthful status and branch/commit paths (696ms)
+  ✓  27 [chromium] › tests/e2e/ui-workspace.spec.ts:67:1 › catalog search, changed filter and conversational plan request (489ms)
+  ✓  28 [chromium] › tests/e2e/ui-workspace.spec.ts:90:1 › Go to tip exits both historical and explicitly pinned tip revisions (662ms)
+  ✓  29 [chromium] › tests/e2e/ui-workspace.spec.ts:130:1 › workspace selectors start collapsed and environment stays directly selectable (905ms)
+
+  29 passed (21.2s)
+[WebServer] $ bun run sync:shared && vite dev --host 127.0.0.1 --port 5798 --strictPort --port "5795"
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync
+
+Running 7 tests using 1 worker
+
+  ✓  1 tests/e2e/hosted-search-fit.spec.ts:69:2 › at 1440 pixels the search, the revision fields and the account fit the bar apart (1.8s)
+  ✓  2 tests/e2e/hosted-search-fit.spec.ts:69:2 › at 1379 pixels the search, the revision fields and the account fit the bar apart (723ms)
+  ✓  3 tests/e2e/hosted-search-fit.spec.ts:69:2 › at 1300 pixels the search, the revision fields and the account fit the bar apart (657ms)
+  ✓  4 tests/e2e/hosted-search-fit.spec.ts:69:2 › at 1251 pixels the search, the revision fields and the account fit the bar apart (736ms)
+  ✓  5 tests/e2e/hosted-search-fit.spec.ts:69:2 › at 920 pixels the search, the revision fields and the account fit the bar apart (695ms)
+  ✓  6 tests/e2e/hosted-search-fit.spec.ts:69:2 › at 768 pixels the search, the revision fields and the account fit the bar apart (684ms)
+  ✘  7 tests/e2e/hosted-search-fit.spec.ts:69:2 › at 390 pixels the search, the revision fields and the account fit the bar apart (471ms)
+
+
+  1) tests/e2e/hosted-search-fit.spec.ts:69:2 › at 390 pixels the search, the revision fields and the account fit the bar apart 
+
+    Error: Search and account controls must leave room for focus rings
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -2,7 +2,7 @@
+        false,
+        false,
+        false,
+        false,
+        false,
+    -   false,
+    +   true,
+      ]
+
+      42 | 		placed.map((one) => meet(search, one)),
+      43 | 		'Search and account controls must leave room for focus rings'
+    > 44 | 	).toEqual(placed.map(() => false));
+         | 	  ^
+      45 | 	const shown = (one: Box) => one.x >= 0 && one.x + one.width <= width;
+      46 | 	expect([search, ...placed].map(shown)).toEqual([search, ...placed].map(() => true));
+      47 | 	expect(search.width).toBeGreaterThanOrEqual(32);
+        at apart (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-29etis/packages/hub/tests/e2e/hosted-search-fit.spec.ts:44:4)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-29etis/packages/hub/tests/e2e/hosted-search-fit.spec.ts:78:3
+
+    Error Context: test-results/hosted-search-fit-at-390-p-7852d-e-account-fit-the-bar-apart/error-context.md
+
+  1 failed
+    tests/e2e/hosted-search-fit.spec.ts:69:2 › at 390 pixels the search, the revision fields and the account fit the bar apart 
+  6 passed (10.4s)
