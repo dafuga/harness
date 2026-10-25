@@ -1,3 +1,4 @@
+import type { PermissionCatalog } from '../../../../../src/services/networking-security/PermissionCatalogService.types';
 import type { ProjectDependencies } from '../../../../../src/services/explorer-ui/revision-detail-service/projectDependencies.types';
 import type { ModuleCatalog } from '../../../../../src/services/module-system/moduleDefinition.types';
 import type { PlatformCatalog } from '../../../../../src/core/explorer-ui/Platform.types';
@@ -11,6 +12,7 @@ import type {
 } from './Harness.types';
 
 export interface HarnessRevision {
+	permissions?: PermissionCatalog;
 	modules?: ModuleCatalog;
 	projectDependencies?: ProjectDependencies;
 	platforms?: PlatformCatalog;

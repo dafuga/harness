@@ -3,6 +3,7 @@ import type { ExplorerTab } from '../explorer-route/explorerTabs';
 import type { explorerSections } from './explorerRoute';
 
 export type ExplorerScreen =
+	| 'permissions'
 	| 'styles'
 	| 'dependencies'
 	| 'translations'
