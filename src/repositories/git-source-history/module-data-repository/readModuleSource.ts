@@ -14,7 +14,7 @@ export async function readModuleSource(
 	const tip = await tree.tip(repository.ref);
 	if (!tip) return undefined;
 	const reviews = await moduleReviewDigest(repository.root, identity);
-	const paths = [...(await tree.list(tip)).keys()].filter((path) =>
+	const paths = [...(await tree.list(tip, `modules/${identity.commit}/`)).keys()].filter((path) =>
 		path.startsWith(`modules/${identity.commit}/`)
 	);
 	for (const path of paths) {

@@ -8,6 +8,19 @@ import { expect } from './verificationExpect';
 
 afterEach(() => vi.restoreAllMocks());
 
+test('a scoped Git listing retains full paths and excludes unrelated evidence', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-evidence-scope-'));
+	try {
+		const tree = new EvidenceTreeAdapter(root);
+		const { commit } = await binaryRepo(tree, root);
+		expect([...(await tree.list(commit, 'logs/')).keys()]).toEqual(['logs/a.txt', 'logs/copy.txt']);
+		expect([...(await tree.list(commit, 'media/')).keys()]).toEqual(['media/binary\nname.png']);
+		expect(await tree.list(commit, 'absent/')).toEqual(new Map());
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+});
+
 async function binaryRepo(tree: EvidenceTreeAdapter, root: string) {
 	await tree.git.run(['init', '-b', 'main']);
 	await tree.git.run(['config', 'user.name', 'Harness Evidence Fixture']);

@@ -18,8 +18,8 @@ export class ModuleDataReviewRepository {
 	async read(identity: ModuleDataIdentity): Promise<ModuleReview[]> {
 		const tip = await this.tree.tip(moduleDataRef);
 		if (!tip) return [];
-		const paths = [...(await this.tree.list(tip)).keys()].filter((path) =>
-			path.startsWith(`reviews/${identity.commit}/`)
+		const paths = [...(await this.tree.list(tip, `reviews/${identity.commit}/`)).keys()].filter(
+			(path) => path.startsWith(`reviews/${identity.commit}/`)
 		);
 		return Promise.all(
 			paths.map(async (path) => {

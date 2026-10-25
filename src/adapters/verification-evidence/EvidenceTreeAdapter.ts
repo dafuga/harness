@@ -55,9 +55,15 @@ export class EvidenceTreeAdapter {
 		return new Map(requested.map(([path, hash]) => [path, Buffer.from(blobs.get(hash)!)]));
 	}
 
-	/** Every file path at a commit with its blob id. */
-	async list(commit: string): Promise<Map<string, string>> {
-		const output = await this.git.run(['ls-tree', '-r', '-z', commit]);
+	/** Full file paths and blob IDs, optionally restricted to one Git subtree. */
+	async list(commit: string, path?: string): Promise<Map<string, string>> {
+		const output = await this.git.run([
+			'ls-tree',
+			'-r',
+			'-z',
+			commit,
+			...(path ? ['--', path] : [])
+		]);
 		const entries = output
 			.split('\0')
 			.map((line) => /^\d+ blob ([0-9a-f]+)\t(.+)$/s.exec(line))
