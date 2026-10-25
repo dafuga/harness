@@ -2,7 +2,7 @@
 	"name": "module-data-validation",
 	"goal": "Require complete committed module metadata for CLI and app reads; validate whole projects, types and modules with cache-safe historical backfill",
 	"createdAt": "2026-10-25T08:35:38.744Z",
-	"updatedAt": "2026-10-25T08:35:38.744Z",
+	"updatedAt": "2026-10-25T08:38:34.605Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -13,12 +13,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T08:38:33.900Z",
+			"evidence": "CLI/app readers reconstruct transitive APIs without a committed complete module snapshot; require persisted per-module facts and scoped gap diagnostics"
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T08:38:34.605Z",
+			"evidence": "units check covers manifests but no committed query snapshot, cache identity or scoped historical validation. Extend standardized command and temporary-project CLI coverage."
 		},
 		{
 			"id": "red",

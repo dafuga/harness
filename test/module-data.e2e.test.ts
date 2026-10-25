@@ -9,8 +9,7 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 	const git = (args: string[]) => runCommand(['git', ...args], project.root);
 	try {
 		await git(['init', '-b', 'main']);
-		await git(['config', 'user.name', 'Harness Test']);
-		await git(['config', 'user.email', 'harness@example.invalid']);
+		await configureTestAuthor(project.root);
 		await project.write('src/utils/slugify.ts', slugifySource);
 		await project.write('src/services/TitleService.ts', titleServiceSource);
 		await project.harness(['units', 'index', '--write']);
@@ -60,3 +59,8 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 		await rm(join(project.root, '..'), { recursive: true, force: true });
 	}
 }, 180_000);
+
+async function configureTestAuthor(root: string) {
+	await runCommand(['git', 'config', 'user.name', 'Harness Test'], root);
+	await runCommand(['git', 'config', 'user.email', 'harness@example.invalid'], root);
+}
