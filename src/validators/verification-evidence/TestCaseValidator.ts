@@ -3,6 +3,8 @@ import type { ComponentManifest } from '../../core/development-tooling/unitTypes
 import type { TestContract } from '../../services/verification-evidence/TestContractService.types';
 import type { TestCaseValidatorResult } from './TestCaseValidator.types';
 import { testContractSchema } from '../../services/verification-evidence/test-contract-service/testContractSchema';
+import { exampleCaseErrors } from './test-case-validator/exampleCaseErrors';
+import { declaredStateErrors, methodCaseErrors } from './test-case-validator/declaredCaseErrors';
 
 /** Admission checks authored coverage, not merely test-file naming. */
 export class TestCaseValidator {
@@ -31,66 +33,17 @@ export class TestCaseValidator {
 		});
 	}
 	private coverage(unit: ComponentManifest, contract: TestContract): string[] {
-		const errors = (contract.states ?? [])
-			.filter((state) => !contract.cases.some((item) => item.state === state))
-			.map((state) => `${unit.id}: missing state ${state}`);
+		const errors = [
+			...declaredStateErrors(unit.id, contract),
+			...(contract.states ?? [])
+				.filter((state) => !contract.cases.some((item) => item.state === state))
+				.map((state) => `${unit.id}: missing state ${state}`)
+		];
 		if (contract.shape === 'component' && !contract.cases.some((item) => item.state === 'rest'))
 			errors.push(`${unit.id}: component requires its rest state`);
-		if (contract.shape === 'helper') errors.push(...this.examples(unit, contract));
-		if (contract.shape === 'service') errors.push(...this.methods(unit, contract));
+		if (contract.shape === 'helper') errors.push(...exampleCaseErrors(unit, contract));
+		if (contract.shape === 'service') errors.push(...methodCaseErrors(unit, contract));
 		errors.push(...declaredInputErrors(unit, contract));
-		return errors;
-	}
-	private examples(unit: ComponentManifest, contract: TestContract): string[] {
-		const examples = [
-			...(unit.helperContracts ?? []).flatMap((helper) =>
-				(helper.examples ?? []).map((example) => ({ subject: helper.name, name: example.name }))
-			),
-			...(contract.examples ?? [])
-		];
-		const errors = examples.length ? [] : [`${unit.id}: helper requires authored Examples`];
-		const identities = examples.map((item) => `${item.subject}/${item.name}`);
-		if (new Set(identities).size !== identities.length)
-			errors.push(`${unit.id}: duplicate authored example`);
-		for (const example of examples) {
-			const matches = contract.cases.filter(
-				(item) => item.subject === example.subject && item.example === example.name
-			);
-			if (matches.length !== 1 || matches[0].test.title !== `${example.subject}: ${example.name}`)
-				errors.push(
-					`${unit.id}: example ${example.subject}/${example.name} requires exactly one case with its canonical registered title`
-				);
-		}
-		for (const item of contract.cases)
-			if (
-				!examples.some(
-					(example) => example.subject === item.subject && example.name === item.example
-				)
-			)
-				errors.push(`${unit.id}: orphaned example case ${item.id}`);
-		return errors;
-	}
-	private methods(unit: ComponentManifest, contract: TestContract): string[] {
-		const methods = [...new Set(unit.owns.symbols)].filter(
-			(name) => name.includes('.') && !name.endsWith('.constructor')
-		);
-		const errors = methods.flatMap((subject) =>
-			(contract.states ?? ['initialized'])
-				.filter(
-					(state) =>
-						!contract.cases.some((item) => item.subject === subject && item.state === state)
-				)
-				.map((state) => `${unit.id}: missing method/state ${subject}/${state}`)
-		);
-		const seen = new Set<string>();
-		for (const item of contract.cases) {
-			const identity = `${item.subject}/${item.state}`;
-			if (seen.has(identity))
-				errors.push(`${unit.id}: requires exactly one method/state ${identity}`);
-			seen.add(identity);
-			if (item.subject && !unit.owns.symbols.includes(item.subject))
-				errors.push(`${unit.id}: unknown method ${item.subject}`);
-		}
 		return errors;
 	}
 }

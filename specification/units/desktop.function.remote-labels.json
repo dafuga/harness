@@ -507,7 +507,9 @@
 						"origin": "https://relay.example.invalid/ignored?x=1",
 						"pairing": null,
 						"requests": [],
-						"devices": [{}],
+						"devices": [
+							{}
+						],
 						"projects": []
 					}
 				],
@@ -530,7 +532,10 @@
 						"origin": "https://relay.example.invalid/ignored?x=1",
 						"pairing": null,
 						"requests": [],
-						"devices": [{}, {}],
+						"devices": [
+							{},
+							{}
+						],
 						"projects": []
 					}
 				],
@@ -752,7 +757,9 @@
 				"call": "grantSummary({ projects: [{}], agents: false })",
 				"input": [
 					{
-						"projects": [{}],
+						"projects": [
+							{}
+						],
 						"agents": false
 					}
 				],
@@ -767,7 +774,10 @@
 				"call": "grantSummary({ projects: [{}, {}], agents: true })",
 				"input": [
 					{
-						"projects": [{}, {}],
+						"projects": [
+							{},
+							{}
+						],
 						"agents": true
 					}
 				],

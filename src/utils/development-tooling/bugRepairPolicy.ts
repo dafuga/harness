@@ -14,6 +14,7 @@ const rules = [
 	'Do not write standalone bug regression tests. A reported bug strengthens the existing case of its form under the same registered title.',
 	"For bug repairs, do not increase case counts. Keep each form's case count fixed. Add or remove a case only when the contract explicitly changes a capability: a declared state, prop, example, method, lifecycle state, error or matrix row.",
 	'Keep registered case titles and identities stable; verification records bind to them.',
+	'Declare all states. New props or errors strengthen their existing row; add a row only when declaring a distinct state, example or method.',
 	'Artifact validation, hashing and storage must consume the same byte snapshot; strengthen the existing method case with accepted getter or aliased-buffer inputs before changing an artifact producer.',
 	'API comparisons keep every response field, including reserved JSON keys. Before changing a comparison or authored-data parser, strengthen its existing method case to prove field retention and preserve admitted getters, arrays and invalid values.',
 	'Freeze executable tests and authored Examples, states, methods and expected results together. Admit test-only edits to those contract fields, reject product metadata hidden among named tests, and keep original Git blob provenance separate from semantic expectation hashes.',

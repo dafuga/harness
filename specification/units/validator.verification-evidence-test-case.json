@@ -9,13 +9,21 @@
 	"owns": {
 		"source": [
 			"src/validators/verification-evidence/TestCaseValidator.ts",
-			"src/validators/verification-evidence/TestCaseValidator.types.ts"
+			"src/validators/verification-evidence/TestCaseValidator.types.ts",
+			"src/validators/verification-evidence/test-case-validator/declaredCaseErrors.ts",
+			"src/validators/verification-evidence/test-case-validator/exampleCaseErrors.ts",
+			"src/validators/verification-evidence/test-case-validator/exampleCaseErrors.types.ts"
 		],
 		"symbols": [
 			"TestCaseValidator",
 			"TestCaseValidator.validate",
 			"TestCaseValidatorResult",
-			"TestCaseValidatorResult"
+			"TestCaseValidatorResult",
+			"declaredStateErrors",
+			"methodCaseErrors",
+			"exampleCaseErrors",
+			"AuthoredExampleField",
+			"ExampleReference"
 		]
 	},
 	"contract": {
@@ -28,17 +36,58 @@
 			{
 				"name": "TestCaseValidator.validate.input",
 				"type": "unknown"
+			},
+			{
+				"name": "declaredStateErrors.unit",
+				"type": "string"
+			},
+			{
+				"name": "declaredStateErrors.contract",
+				"type": "TestContract"
+			},
+			{
+				"name": "methodCaseErrors.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "methodCaseErrors.contract",
+				"type": "TestContract"
+			},
+			{
+				"name": "exampleCaseErrors.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "exampleCaseErrors.contract",
+				"type": "TestContract"
 			}
 		],
 		"outputs": [
 			{
 				"name": "TestCaseValidator.validate",
 				"type": "TestCaseValidatorResult"
+			},
+			{
+				"name": "declaredStateErrors",
+				"type": "string[]"
+			},
+			{
+				"name": "methodCaseErrors",
+				"type": "string[]"
+			},
+			{
+				"name": "exampleCaseErrors",
+				"type": "string[]"
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.unit-types",
 			"via": "import",

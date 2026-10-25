@@ -409,3 +409,5 @@ Use exactly these five forms. Each draws its cases from the entity's declared co
 - API comparisons keep every response field, including reserved JSON keys. Before changing a comparison or authored-data parser, strengthen its existing method case to prove field retention and preserve admitted getters, arrays and invalid values.
 
 - Freeze executable tests and authored Examples, states, methods and expected results together. Admit test-only edits to those contract fields, reject product metadata hidden among named tests, and keep original Git blob provenance separate from semantic expectation hashes.
+
+- Declare all states. New props or errors strengthen their existing row; add a row only when declaring a distinct state, example or method.

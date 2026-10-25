@@ -84,24 +84,5 @@ function addedCapability(
 		!before.owns.symbols.includes(item.subject)
 	)
 		return true;
-	return addedInput(before, after, item);
-}
-function addedInput(
-	before: ComponentManifest,
-	after: ComponentManifest,
-	item: ContractCase
-): boolean {
-	if (
-		item.props?.some(
-			(prop) => after.testing!.props?.includes(prop) && !before.testing!.props?.includes(prop)
-		)
-	)
-		return true;
-	return Boolean(
-		item.errors?.some(
-			(error) =>
-				after.contract.errors.some((field) => field.name === error) &&
-				!before.contract.errors.some((field) => field.name === error)
-		)
-	);
+	return false;
 }

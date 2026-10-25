@@ -135,7 +135,9 @@
 				"subject": "canonicalJson",
 				"name": "Serialize an empty object",
 				"call": "canonicalJson({})",
-				"input": [{}],
+				"input": [
+					{}
+				],
 				"expected": {
 					"kind": "value",
 					"value": "{}"
@@ -145,7 +147,9 @@
 				"subject": "canonicalJson",
 				"name": "Serialize an empty array",
 				"call": "canonicalJson([])",
-				"input": [[]],
+				"input": [
+					[]
+				],
 				"expected": {
 					"kind": "value",
 					"value": "[]"
@@ -302,7 +306,9 @@
 				"input": [
 					{
 						"$fixture": "map",
-						"entries": [["a", 1]]
+						"entries": [
+							["a", 1]
+						]
 					}
 				],
 				"expected": {

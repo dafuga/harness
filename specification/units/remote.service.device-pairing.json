@@ -164,6 +164,7 @@
 				"state": "initialized",
 				"subject": "DevicePairingService.scanned",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "scanned initialized accepts a current offer and sends the exact request"
@@ -178,14 +179,14 @@
 					}
 				},
 				"props": ["text", "device", "reading", "reading.environments", "reading.now"],
-				"errors": ["Error"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"errors": ["Error"]
 			},
 			{
 				"id": "request-initialized",
 				"state": "initialized",
 				"subject": "DevicePairingService.request",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "request initialized preserves encrypted wire and validation boundaries"
@@ -208,14 +209,14 @@
 					"deviceName",
 					"platform"
 				],
-				"errors": ["Error"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"errors": ["Error"]
 			},
 			{
 				"id": "poll-initialized",
 				"state": "initialized",
 				"subject": "DevicePairingService.poll",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "poll initialized rejects an absent pending pairing"
@@ -227,14 +228,14 @@
 					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"errors": ["Error"]
 			},
 			{
 				"id": "exchange-initialized",
 				"state": "initialized",
 				"subject": "DevicePairingService.exchange",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "exchange initialized rejects an absent pending pairing"
@@ -246,14 +247,14 @@
 					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"errors": ["Error"]
 			},
 			{
 				"id": "scanned-requested",
 				"state": "requested",
 				"subject": "DevicePairingService.scanned",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "scanned requested keeps an earlier code from replacing the current offer"
@@ -266,14 +267,14 @@
 					}
 				},
 				"props": ["text", "reading"],
-				"errors": ["Error"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"errors": ["Error"]
 			},
 			{
 				"id": "request-requested",
 				"state": "requested",
 				"subject": "DevicePairingService.request",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "request requested keeps the host refusal boundary"
@@ -285,14 +286,14 @@
 						"secondRelayRequest": null
 					}
 				},
-				"props": ["input"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"props": ["input"]
 			},
 			{
 				"id": "poll-requested",
 				"state": "requested",
 				"subject": "DevicePairingService.poll",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "poll requested reports requested"
@@ -303,14 +304,14 @@
 						"state": "requested"
 					}
 				},
-				"props": ["pending"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"props": ["pending"]
 			},
 			{
 				"id": "exchange-requested",
 				"state": "requested",
 				"subject": "DevicePairingService.exchange",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "exchange requested refuses before approval"
@@ -322,14 +323,14 @@
 					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"errors": ["Error"]
 			},
 			{
 				"id": "scanned-approved",
 				"state": "approved",
 				"subject": "DevicePairingService.scanned",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "scanned approved can start a separate current offer"
@@ -341,14 +342,14 @@
 						"pendingRequests": 1
 					}
 				},
-				"props": ["text", "device", "reading"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"props": ["text", "device", "reading"]
 			},
 			{
 				"id": "request-approved",
 				"state": "approved",
 				"subject": "DevicePairingService.request",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "request approved can start a separate current offer"
@@ -360,14 +361,14 @@
 						"pendingRequests": 1
 					}
 				},
-				"props": ["input"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"props": ["input"]
 			},
 			{
 				"id": "poll-approved",
 				"state": "approved",
 				"subject": "DevicePairingService.poll",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "poll approved reports approved"
@@ -378,14 +379,14 @@
 						"state": "approved"
 					}
 				},
-				"props": ["pending"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"props": ["pending"]
 			},
 			{
 				"id": "exchange-approved",
 				"state": "approved",
 				"subject": "DevicePairingService.exchange",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "exchange approved returns credentials once"
@@ -409,14 +410,14 @@
 					}
 				},
 				"props": ["pending", "approval.deviceId", "approval.sealed"],
-				"errors": ["Error"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"errors": ["Error"]
 			},
 			{
 				"id": "scanned-denied",
 				"state": "denied",
 				"subject": "DevicePairingService.scanned",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "scanned denied can start a separate current offer"
@@ -428,14 +429,14 @@
 						"pendingRequests": 1
 					}
 				},
-				"props": ["text", "device", "reading"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"props": ["text", "device", "reading"]
 			},
 			{
 				"id": "request-denied",
 				"state": "denied",
 				"subject": "DevicePairingService.request",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "request denied can start a separate current offer"
@@ -447,14 +448,14 @@
 						"pendingRequests": 1
 					}
 				},
-				"props": ["input"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"props": ["input"]
 			},
 			{
 				"id": "poll-denied",
 				"state": "denied",
 				"subject": "DevicePairingService.poll",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "poll denied reports denied"
@@ -465,14 +466,14 @@
 						"state": "denied"
 					}
 				},
-				"props": ["pending"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"props": ["pending"]
 			},
 			{
 				"id": "exchange-denied",
 				"state": "denied",
 				"subject": "DevicePairingService.exchange",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "exchange denied refuses credentials"
@@ -484,14 +485,14 @@
 					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"errors": ["Error"]
 			},
 			{
 				"id": "scanned-exchanged",
 				"state": "exchanged",
 				"subject": "DevicePairingService.scanned",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "scanned exchanged can start a separate current offer"
@@ -503,14 +504,14 @@
 						"pendingRequests": 1
 					}
 				},
-				"props": ["text", "device", "reading"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"props": ["text", "device", "reading"]
 			},
 			{
 				"id": "request-exchanged",
 				"state": "exchanged",
 				"subject": "DevicePairingService.request",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "request exchanged can start a separate current offer"
@@ -522,14 +523,14 @@
 						"pendingRequests": 1
 					}
 				},
-				"props": ["input"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"props": ["input"]
 			},
 			{
 				"id": "poll-exchanged",
 				"state": "exchanged",
 				"subject": "DevicePairingService.poll",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "poll exchanged refuses the consumed pairing"
@@ -541,14 +542,14 @@
 					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"errors": ["Error"]
 			},
 			{
 				"id": "exchange-exchanged",
 				"state": "exchanged",
 				"subject": "DevicePairingService.exchange",
 				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
 				"test": {
 					"file": "packages/remote/test/services/device-pairing.test.ts",
 					"title": "exchange exchanged refuses a second credential"
@@ -560,8 +561,7 @@
 					}
 				},
 				"props": ["pending"],
-				"errors": ["Error"],
-				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions."
+				"errors": ["Error"]
 			}
 		]
 	},

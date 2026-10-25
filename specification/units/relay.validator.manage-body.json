@@ -106,6 +106,7 @@
 				"state": "initialized",
 				"subject": "ManageBodyValidator.owner",
 				"fixture": "packages/relay/test/support/relayActors.ts",
+				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions.",
 				"test": {
 					"file": "packages/relay/test/validators/manage-body.test.ts",
 					"title": "ManageBodyValidator reads the owner and the host of every call"
@@ -118,14 +119,14 @@
 					}
 				},
 				"props": ["owner.id", "owner.id length", "hostId", "hostId length", "extra fields"],
-				"errors": ["invalid input props"],
-				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions."
+				"errors": ["invalid input props"]
 			},
 			{
 				"id": "register-initialized",
 				"state": "initialized",
 				"subject": "ManageBodyValidator.register",
 				"fixture": "packages/relay/test/support/relayActors.ts",
+				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions.",
 				"test": {
 					"file": "packages/relay/test/validators/manage-body.test.ts",
 					"title": "ManageBodyValidator reads a registration"
@@ -152,14 +153,14 @@
 					"hostId",
 					"extra fields"
 				],
-				"errors": ["invalid input props"],
-				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions."
+				"errors": ["invalid input props"]
 			},
 			{
 				"id": "device-initialized",
 				"state": "initialized",
 				"subject": "ManageBodyValidator.device",
 				"fixture": "packages/relay/test/support/relayActors.ts",
+				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions.",
 				"test": {
 					"file": "packages/relay/test/validators/manage-body.test.ts",
 					"title": "ManageBodyValidator reads the device of a revocation"
@@ -180,8 +181,7 @@
 					"hostId",
 					"extra fields"
 				],
-				"errors": ["invalid input props"],
-				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions."
+				"errors": ["invalid input props"]
 			}
 		]
 	},

@@ -81,6 +81,7 @@
 				"state": "initialized",
 				"subject": "PairingBodyValidator.request",
 				"fixture": "packages/relay/test/support/relayActors.ts",
+				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions.",
 				"test": {
 					"file": "packages/relay/test/validators/pairing-body.test.ts",
 					"title": "request initialized reads a pairing request and refuses a missing, malformed or unknown field"
@@ -94,14 +95,14 @@
 					}
 				},
 				"props": ["ephemeralKey", "sealed", "challenge"],
-				"errors": ["invalid input props"],
-				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions."
+				"errors": ["invalid input props"]
 			},
 			{
 				"id": "verifier-initialized",
 				"state": "initialized",
 				"subject": "PairingBodyValidator.verifier",
 				"fixture": "packages/remote/src/index.ts",
+				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions.",
 				"test": {
 					"file": "packages/relay/test/validators/pairing-body.test.ts",
 					"title": "verifier initialized reads the verifier of an exchange and refuses a verifier of another shape"
@@ -111,8 +112,7 @@
 					"value": "string"
 				},
 				"props": ["verifier"],
-				"errors": ["invalid input props"],
-				"call": "Return the types of the real validated fields after the original full-value, boundary and invalid-input assertions."
+				"errors": ["invalid input props"]
 			}
 		]
 	},

@@ -228,7 +228,11 @@
 				"subject": "commitHref",
 				"name": "Open a commit's history under its branch",
 				"call": "commitHref(\"/harness\", \"0123456789abcdef0123456789abcdef01234567\", [\"feature/kept#1\"])",
-				"input": ["/harness", "0123456789abcdef0123456789abcdef01234567", ["feature/kept#1"]],
+				"input": [
+					"/harness",
+					"0123456789abcdef0123456789abcdef01234567",
+					["feature/kept#1"]
+				],
 				"expected": {
 					"kind": "value",
 					"value": "/harness/branch/feature/kept%231/commit/0123456789abcdef0123456789abcdef01234567/history"
@@ -238,7 +242,11 @@
 				"subject": "commitHref",
 				"name": "Use the retained-commit route when no branch is listed",
 				"call": "commitHref(\"/harness\", \"0123456789abcdef0123456789abcdef01234567\", [])",
-				"input": ["/harness", "0123456789abcdef0123456789abcdef01234567", []],
+				"input": [
+					"/harness",
+					"0123456789abcdef0123456789abcdef01234567",
+					[]
+				],
 				"expected": {
 					"kind": "value",
 					"value": "/harness/commit/0123456789abcdef0123456789abcdef01234567/history"
