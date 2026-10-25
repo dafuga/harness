@@ -2,7 +2,7 @@
 	"name": "contract-proof-resource-identity",
 	"goal": "Ignore transient resource lease identities while retaining meaningful proof environment differences",
 	"createdAt": "2026-10-25T17:44:05.103Z",
-	"updatedAt": "2026-10-25T17:44:06.367Z",
+	"updatedAt": "2026-10-25T17:46:44.143Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T17:46:43.202Z",
+			"evidence": "The existing eight-case regression guidance/profile suite fails at ad7672b87b on the named resource-lease identity equality assertion. Its PATH and FEATURE_FLAG distinction checks remain intact, and no test declarations were added."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T17:46:44.143Z",
+			"evidence": "Exclude only the transient HARNESS_RESOURCE_LEASE from environment identity. Resource CPU and memory amounts, runtime paths and feature flags remain part of the proof hash; resource admission and safety guards are unchanged."
 		},
 		{
 			"id": "green",
