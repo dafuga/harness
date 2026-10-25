@@ -217,3 +217,18 @@ for (const [screen, width, height] of screens) {
 		expect(await fits(page)).toBe(true);
 	});
 }
+
+for (const [screen, width, height] of screens) {
+	test(`module discovery retains branch and revision at ${screen}`, async ({ page }) => {
+		const bar = await opened(page, width, height);
+		await combo(bar, 'Commit').selectOption(sha(3));
+		await pictured(page, `modules-navigation-${screen}`);
+		await captureShell(page, home, { state: 'module-discovery', viewport: screen });
+		const modules = bar.getByRole('link', { name: 'Modules', exact: true });
+		await expect(modules, 'Modules is a discoverable primary section').toBeVisible();
+		await modules.click();
+		await expect(page).toHaveURL(at(`${earlier}/modules`));
+		await expect(modules).toHaveAttribute('aria-current', 'page');
+		await expect.poll(() => fits(page)).toBe(true);
+	});
+}

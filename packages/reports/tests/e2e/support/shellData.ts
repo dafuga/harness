@@ -84,4 +84,4 @@ export function shellHref(to: ExplorerLocation): string {
 	return `${shellMount}${explorerRoutePath(to)}`;
 }
 
-export const shellCategories = ['Pages', 'APIs', 'Code', 'Translations', 'Platforms'];
+export const shellCategories = ['Pages', 'APIs', 'Code', 'Modules', 'Translations', 'Platforms'];

@@ -194,3 +194,7 @@ export { ModuleTaskRunnerAdapter } from './adapters/agents-providers/ModuleTaskR
 export { ModuleTaskWorkerService } from './services/agents-providers/ModuleTaskWorkerService';
 export { ModuleTaskAnalyticsService } from './services/agents-providers/ModuleTaskAnalyticsService';
 export { ModuleTaskWorktreeAdapter } from './adapters/agents-providers/ModuleTaskWorktreeAdapter';
+export { ModuleCatalogService } from './services/module-system/ModuleCatalogService';
+export { ModuleCommand } from './commands/module-system/ModuleCommand';
+export { ModuleInstallService } from './services/module-system/ModuleInstallService';
+export { ModuleResourceService } from './services/module-system/ModuleResourceService';

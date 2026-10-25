@@ -43,11 +43,12 @@ test('the bar groups module categories under five scoped primary destinations', 
 			['pages', 'Pages', 'pages'],
 			['apis', 'APIs', 'route'],
 			['modules', 'Code', 'layers'],
+			['module-library', 'Modules', 'layers'],
 			['translations', 'Translations', 'web'],
 			['platforms', 'Platforms', 'platforms']
 		]);
 		expect(categories.map((item) => item.href)).toEqual(
-			['pages', 'apis', 'components', 'translations', 'platforms'].map(
+			['pages', 'apis', 'components', 'modules', 'translations', 'platforms'].map(
 				(category) => `${scoped}/commit/${sha(4)}/${category}`
 			)
 		);
