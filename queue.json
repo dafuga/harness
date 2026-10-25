@@ -4769,8 +4769,20 @@
 			},
 			"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
 			"contractHash": "874b754790ae2ba8b36f72acdbe85134b1bbb7b02e5282d3b1fe17864c37cf45",
-			"status": "review",
-			"reviews": [],
+			"status": "accepted",
+			"reviews": [
+				{
+					"attempt": "3e247798-c779-4f0e-bed2-38435b8a71b8",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "Haiku reported claude-haiku-5-5; 21 examples. Integrated at bd539aefa6. Original assertions and real boundaries retained. Combined 138 unit cases pass; affected relay compiler, lint and audit pass; root compiler and audit pass. Full migration and aggregate E2Es remain pending.",
+					"at": "2026-10-25T18:50:38.553Z",
+					"provider": "claude",
+					"model": "claude-haiku-5-5",
+					"intelligence": "max",
+					"reportedModel": "claude-haiku-5-5"
+				}
+			],
 			"createdAt": "2026-10-25T18:00:29.318Z",
 			"claim": {
 				"worker": "haiku-helpers-b",
