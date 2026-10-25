@@ -2,6 +2,7 @@ import { setImmediate } from 'node:timers';
 import type { SourceTree, TreeEntry } from '../../core/development-tooling/sourceTypes';
 import { fail } from '../../core/development-tooling/errors';
 import { GitAdapter } from './GitAdapter';
+import { cachedBlobText, keepBlobText } from './commit-tree-adapter/blobTexts';
 
 /** Reads the files of one exact commit straight from the object database. */
 export class CommitTreeAdapter implements SourceTree {
@@ -12,7 +13,8 @@ export class CommitTreeAdapter implements SourceTree {
 
 	private constructor(
 		private readonly git: GitAdapter,
-		readonly revision: string
+		readonly revision: string,
+		private readonly format: string
 	) {}
 
 	/** Resolves any revision expression to a commit, failing when it does not name one. */
@@ -20,7 +22,10 @@ export class CommitTreeAdapter implements SourceTree {
 		const git = new GitAdapter(root);
 		const commit = await git.attempt(['rev-parse', '--verify', '--quiet', `${reference}^{commit}`]);
 		if (!commit) return fail(`"${reference}" does not name a commit in this repository.`);
-		return new CommitTreeAdapter(git, commit);
+		const format = await git.run(['rev-parse', '--show-object-format']);
+		if (!['sha1', 'sha256'].includes(format))
+			return fail(`Unsupported Git object format: ${format}`);
+		return new CommitTreeAdapter(git, commit, format);
 	}
 
 	list(): Promise<TreeEntry[]> {
@@ -39,6 +44,8 @@ export class CommitTreeAdapter implements SourceTree {
 		if (!entry) throw new Error(`${path} does not exist at ${this.revision}`);
 		const known = this.texts.get(entry.hash);
 		if (known) return known;
+		const cached = cachedBlobText(`${this.format}/${entry.hash}`);
+		if (cached !== undefined) return cached;
 		const pending = new Promise<string>((resolve) => {
 			this.waiting.set(entry.hash, [...(this.waiting.get(entry.hash) ?? []), resolve]);
 			if (this.flushing) return;
@@ -56,11 +63,12 @@ export class CommitTreeAdapter implements SourceTree {
 		const input = [...requested.keys()].join('\n') + '\n';
 		const output = await this.git.bytes(['cat-file', '--batch'], { input });
 		let offset = 0;
-		for (const resolvers of requested.values()) {
+		for (const [hash, resolvers] of requested) {
 			const end = output.indexOf(10, offset);
 			const size = Number(output.subarray(offset, end).toString('utf8').split(' ')[2]);
 			const text = output.subarray(end + 1, end + 1 + size).toString('utf8');
 			offset = end + size + 2;
+			keepBlobText(`${this.format}/${hash}`, text);
 			for (const resolve of resolvers) resolve(text);
 		}
 	}

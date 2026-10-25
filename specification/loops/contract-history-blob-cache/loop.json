@@ -2,11 +2,9 @@
 	"name": "contract-history-blob-cache",
 	"goal": "History reconstruction shares bounded immutable blob reads across source revisions with verified Git object formats",
 	"createdAt": "2026-10-25T16:36:10.753Z",
-	"updatedAt": "2026-10-25T16:36:11.811Z",
+	"updatedAt": "2026-10-25T16:38:39.344Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:37:47.669Z",
+			"evidence": "Atdc692ee914 the same six owning method/state cases fail: read/populated reads one unchanged immutable blob twice across trees; open/populated accepts an unknown object format. Both retained red checkpoints contain the named immutable-blob assertion. No product edits preceded the retained failure."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:38:39.344Z",
+			"evidence": "CommitTreeAdapter establishes sha1/sha256 before cache use and shares only immutable blob text through an LRU with a64MiB retained-byte bound. Branch and path resolution still read each exact tree. The unchanged six adapter cases and eleven platform-catalog cases pass, including SHA-1/SHA-256, source changes and missing paths; focused lint passes."
 		},
 		{
 			"id": "green",

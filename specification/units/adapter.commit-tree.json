@@ -9,14 +9,16 @@
 	"owns": {
 		"source": [
 			"src/adapters/CommitTreeAdapter.ts",
-			"src/adapters/git-source-history/CommitTreeAdapter.ts"
+			"src/adapters/git-source-history/CommitTreeAdapter.ts",
+			"src/adapters/git-source-history/commit-tree-adapter/blobTexts.ts"
 		],
 		"symbols": [
 			"CommitTreeAdapter",
-			"CommitTreeAdapter",
 			"CommitTreeAdapter.open",
 			"CommitTreeAdapter.list",
-			"CommitTreeAdapter.read"
+			"CommitTreeAdapter.read",
+			"cachedBlobText",
+			"keepBlobText"
 		]
 	},
 	"contract": {
@@ -92,5 +94,120 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
+	},
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["empty", "populated"],
+		"cases": [
+			{
+				"id": "open.empty",
+				"subject": "CommitTreeAdapter.open",
+				"state": "empty",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "empty",
+						"method": "open",
+						"preservesImmutableSource": true
+					}
+				},
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.open empty resolves the exact commit and refuses absent revisions"
+				}
+			},
+			{
+				"id": "open.populated",
+				"subject": "CommitTreeAdapter.open",
+				"state": "populated",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "populated",
+						"method": "open",
+						"preservesImmutableSource": true
+					}
+				},
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.open populated establishes the object format before caching"
+				}
+			},
+			{
+				"id": "list.empty",
+				"subject": "CommitTreeAdapter.list",
+				"state": "empty",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "empty",
+						"method": "list",
+						"preservesImmutableSource": true
+					}
+				},
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.list empty returns no source entries"
+				}
+			},
+			{
+				"id": "list.populated",
+				"subject": "CommitTreeAdapter.list",
+				"state": "populated",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "populated",
+						"method": "list",
+						"preservesImmutableSource": true
+					}
+				},
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.list populated retains blob identities and paths"
+				}
+			},
+			{
+				"id": "read.empty",
+				"subject": "CommitTreeAdapter.read",
+				"state": "empty",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "empty",
+						"method": "read",
+						"preservesImmutableSource": true
+					}
+				},
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.read empty rejects missing paths"
+				}
+			},
+			{
+				"id": "read.populated",
+				"subject": "CommitTreeAdapter.read",
+				"state": "populated",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "populated",
+						"method": "read",
+						"preservesImmutableSource": true
+					}
+				},
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths"
+				}
+			}
+		]
 	}
 }
