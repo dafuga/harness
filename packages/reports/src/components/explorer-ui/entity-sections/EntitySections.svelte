@@ -72,6 +72,12 @@
 				<!-- Creation leads; recorded verification stays apart from authored uses. -->
 				<EntityExamples documentation={entity.unit.documentation} setupTitle="Create the service" />
 				<hx-p class="ex-soft">These examples are authored documentation, not test results.</hx-p>
+				<EntityAudio
+					evidence={host.lens.evidence(entity.unit)}
+					scope={host.scope}
+					mediaBase={host.mediaBase}
+					idPrefix="examples-"
+				/>
 				<hx-details
 					><hx-summary>Verification details</hx-summary>{@render verificationPanel()}</hx-details
 				>

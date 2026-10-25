@@ -13,12 +13,15 @@
 		evidence,
 		scope,
 		mediaBase,
-		empty = false
+		empty = false,
+		idPrefix = ''
 	}: {
 		evidence: ExplorerEvidence;
 		scope: ExplorerScope;
 		mediaBase: string;
 		empty?: boolean;
+		/** Keep Examples and its verification disclosure independently addressable. */
+		idPrefix?: string;
 	} = $props();
 	let clips = $derived(galleryItems(evidence).filter((item) => item.mediaType === 'audio'));
 	let paired = $derived(evidence.mode === 'commit');
@@ -43,12 +46,12 @@
 {#if clips.length}
 	<hx-section
 		class="ex-card ex-evidence"
-		aria-labelledby="ex-audio-title"
+		aria-labelledby={`${idPrefix}ex-audio-title`}
 		data-harness-component="harness-entity-audio"
 	>
 		<hx-header class="ex-evidence-head">
 			<hx-div>
-				<hx-h2 id="ex-audio-title">{paired ? 'Audio comparison' : 'Current audio'}</hx-h2>
+				<hx-h2 id={`${idPrefix}ex-audio-title`}>{paired ? 'Audio comparison' : 'Current audio'}</hx-h2>
 				<hx-p class="ex-soft">
 					{paired
 						? 'The same clip before and after the selected commit, each with its transcript.'
@@ -68,7 +71,7 @@
 							</hx-p>
 						{/if}
 						{#if clip}
-							<AudioEvidence item={clip} assetBase={mediaBase} idPrefix="overview-audio-" />
+							<AudioEvidence item={clip} assetBase={mediaBase} idPrefix={`${idPrefix}overview-audio-`} />
 						{:else}
 							<hx-p class="ex-gap">
 								<HarnessVerdict passed={false} label="No clip" />
@@ -83,10 +86,10 @@
 {:else if empty}
 	<hx-section
 		class="ex-card ex-evidence"
-		aria-labelledby="ex-audio-title"
+		aria-labelledby={`${idPrefix}ex-audio-title`}
 		data-harness-component="harness-entity-audio"
 	>
-		<hx-h2 id="ex-audio-title">Audio evidence</hx-h2>
+		<hx-h2 id={`${idPrefix}ex-audio-title`}>Audio evidence</hx-h2>
 		<hx-p class="ex-soft">No audio evidence is recorded for this component at this revision.</hx-p>
 	</hx-section>
 {/if}
