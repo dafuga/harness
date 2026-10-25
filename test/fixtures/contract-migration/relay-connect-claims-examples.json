@@ -1,0 +1,659 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.connect-claims",
+	"kind": "function",
+	"title": "Relay connection claims",
+	"responsibility": "Reads syntactically valid host or device connection claims from request headers.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/relay/src/utils/connectClaims.ts",
+			"packages/relay/src/utils/development-tooling/connectClaims.ts"
+		],
+		"symbols": ["connectClaims", "connectClaims"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "connectClaims.headers",
+				"type": "Headers",
+				"description": "Headers containing Bearer authorization and the protocol role/device headers. The Bearer scheme is case-insensitive; the credential must match the protocol pattern."
+			}
+		],
+		"outputs": [
+			{
+				"name": "connectClaims",
+				"type": "ConnectClaims | undefined",
+				"description": "Host claims with an empty device identifier, or device claims with a valid protocol device identifier. Returns undefined for missing/malformed credential, unknown role or invalid device identity."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "relay.function.matches-pattern",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.model.relay-host-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/development-tooling/connectClaims.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/development-tooling/connectClaims.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "connectClaims",
+				"name": "Read a host claim with an empty device id",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"role": "host",
+						"credential": "Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+						"deviceId": ""
+					}
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Read a device claim with its well-formed device id",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'device', 'X-Harness-Device': 'c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "device",
+							"X-Harness-Device": "c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"role": "device",
+						"credential": "Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+						"deviceId": "c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3"
+					}
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Ignore a device id header on a host claim",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'host', 'X-Harness-Device': 'c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "host",
+							"X-Harness-Device": "c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"role": "host",
+						"credential": "Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+						"deviceId": ""
+					}
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Accept the Bearer scheme in any letter case",
+				"call": "connectClaims(new Headers({ Authorization: 'bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"role": "host",
+						"credential": "Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+						"deviceId": ""
+					}
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse a credential one character shorter than 43",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer b0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer b0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse a credential one character longer than 43",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyzA', 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyzA",
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse a padded credential ending in an equals sign",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz=', 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz=",
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse a credential ending in a plus sign",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xy+', 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xy+",
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse a device id two characters shorter than 40",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'device', 'X-Harness-Device': 'c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "device",
+							"X-Harness-Device": "c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse an uppercase device id",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'device', 'X-Harness-Device': 'C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "device",
+							"X-Harness-Device": "C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3C3"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse a role in other letter case",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'Host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "Host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse a request without an Authorization header",
+				"call": "connectClaims(new Headers({ 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse an empty Authorization value",
+				"call": "connectClaims(new Headers({ Authorization: '', 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "",
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse a bare credential without the Bearer scheme",
+				"call": "connectClaims(new Headers({ Authorization: 'Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse the Basic authorization scheme",
+				"call": "connectClaims(new Headers({ Authorization: 'Basic Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Basic Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse two credentials in one Authorization value",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse extra whitespace after the Bearer scheme",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer  Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'host' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer  Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "host"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse a request without a role header",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse an unknown role",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'admin' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "admin"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "connectClaims",
+				"name": "Refuse a device role without a device id header",
+				"call": "connectClaims(new Headers({ Authorization: 'Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz', 'X-Harness-Role': 'device' }))",
+				"input": [
+					{
+						"fixture": "Headers",
+						"init": {
+							"Authorization": "Bearer Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-Ab0_-xyz",
+							"X-Harness-Role": "device"
+						}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			}
+		],
+		"states": ["input", "boundary", "invalid"],
+		"props": ["Authorization", "X-Harness-Role", "X-Harness-Device"],
+		"cases": [
+			{
+				"id": "connect-claims.host-read",
+				"state": "input",
+				"subject": "connectClaims",
+				"example": "Read a host claim with an empty device id",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Read a host claim with an empty device id"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.device-read",
+				"state": "input",
+				"subject": "connectClaims",
+				"example": "Read a device claim with its well-formed device id",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Read a device claim with its well-formed device id"
+				},
+				"props": ["Authorization", "X-Harness-Role", "X-Harness-Device"]
+			},
+			{
+				"id": "connect-claims.host-ignores-device",
+				"state": "boundary",
+				"subject": "connectClaims",
+				"example": "Ignore a device id header on a host claim",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Ignore a device id header on a host claim"
+				},
+				"props": ["Authorization", "X-Harness-Role", "X-Harness-Device"]
+			},
+			{
+				"id": "connect-claims.scheme-any-case",
+				"state": "boundary",
+				"subject": "connectClaims",
+				"example": "Accept the Bearer scheme in any letter case",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Accept the Bearer scheme in any letter case"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.credential-shorter",
+				"state": "boundary",
+				"subject": "connectClaims",
+				"example": "Refuse a credential one character shorter than 43",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse a credential one character shorter than 43"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.credential-longer",
+				"state": "boundary",
+				"subject": "connectClaims",
+				"example": "Refuse a credential one character longer than 43",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse a credential one character longer than 43"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.credential-padded",
+				"state": "boundary",
+				"subject": "connectClaims",
+				"example": "Refuse a padded credential ending in an equals sign",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse a padded credential ending in an equals sign"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.credential-plus",
+				"state": "boundary",
+				"subject": "connectClaims",
+				"example": "Refuse a credential ending in a plus sign",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse a credential ending in a plus sign"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.device-shorter",
+				"state": "boundary",
+				"subject": "connectClaims",
+				"example": "Refuse a device id two characters shorter than 40",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse a device id two characters shorter than 40"
+				},
+				"props": ["Authorization", "X-Harness-Role", "X-Harness-Device"]
+			},
+			{
+				"id": "connect-claims.device-uppercase",
+				"state": "boundary",
+				"subject": "connectClaims",
+				"example": "Refuse an uppercase device id",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse an uppercase device id"
+				},
+				"props": ["Authorization", "X-Harness-Role", "X-Harness-Device"]
+			},
+			{
+				"id": "connect-claims.role-case",
+				"state": "boundary",
+				"subject": "connectClaims",
+				"example": "Refuse a role in other letter case",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse a role in other letter case"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.missing-authorization",
+				"state": "invalid",
+				"subject": "connectClaims",
+				"example": "Refuse a request without an Authorization header",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse a request without an Authorization header"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.empty-authorization",
+				"state": "invalid",
+				"subject": "connectClaims",
+				"example": "Refuse an empty Authorization value",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse an empty Authorization value"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.bare-credential",
+				"state": "invalid",
+				"subject": "connectClaims",
+				"example": "Refuse a bare credential without the Bearer scheme",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse a bare credential without the Bearer scheme"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.basic-scheme",
+				"state": "invalid",
+				"subject": "connectClaims",
+				"example": "Refuse the Basic authorization scheme",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse the Basic authorization scheme"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.two-credentials",
+				"state": "invalid",
+				"subject": "connectClaims",
+				"example": "Refuse two credentials in one Authorization value",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse two credentials in one Authorization value"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.extra-whitespace",
+				"state": "invalid",
+				"subject": "connectClaims",
+				"example": "Refuse extra whitespace after the Bearer scheme",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse extra whitespace after the Bearer scheme"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.missing-role",
+				"state": "invalid",
+				"subject": "connectClaims",
+				"example": "Refuse a request without a role header",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse a request without a role header"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.unknown-role",
+				"state": "invalid",
+				"subject": "connectClaims",
+				"example": "Refuse an unknown role",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse an unknown role"
+				},
+				"props": ["Authorization", "X-Harness-Role"]
+			},
+			{
+				"id": "connect-claims.device-missing-id",
+				"state": "invalid",
+				"subject": "connectClaims",
+				"example": "Refuse a device role without a device id header",
+				"test": {
+					"file": "packages/relay/test/utils/connect-claims.test.ts",
+					"title": "connectClaims: Refuse a device role without a device id header"
+				},
+				"props": ["Authorization", "X-Harness-Role", "X-Harness-Device"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
