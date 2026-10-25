@@ -2389,7 +2389,7 @@
 			},
 			"sourceCommit": "06f8ce220e28621b9b139898ab4aa90bf2014c69",
 			"contractHash": "9b39f15b1beca24bba843746902293612bfb5e32db99824864314fc3fb44bd27",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T15:25:10.173Z",
 			"claim": {
@@ -2403,6 +2403,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’ll inspect the current worktree and Harness contract guidance first, then map the existing entity-lens assertions to stable helper examples and the proposed manifest. I’ll keep the change limited to the listed files and run only focused unit checks.\nThe Harness skill is loaded. The required activity command is currently blocked by the worktree’s existing dependency state (`@electron/asar` is missing), and Git status also hits an LFS filter permission error; I’ll keep those as environment gaps while using read-only source inspection to map the contract.\nThe current suite has no prior edits in the allowed files. I’ve mapped the callable ownership: `entityLabels` is a static collection assertion and will remain intact; `entityLens` gets authored JSON examples; existing `shortCommit` helper examples remain registered through the public forwarding export.\nI’ll now add the proposed full manifest and replace only the direct `entityLens` assertions with canonical example registration. The static `entityLabels` test and the unchanged forwarding checks remain outside this migration.\nThe migration source now keeps one static collection test and registers 13 authored cases: 11 `entityLens` cases plus the 2 existing `shortCommit` helper examples. I’m checking the focused suite and manifest admission next.\nThe focused Vitest command is blocked before test collection because Vite cannot write its temporary config bundle under this worktree’s `node_modules/.vite-temp` (`EPERM`). I’ll inspect the local test config for a safe existing cache override, then validate the manifest and source with non-broad checks.\nThe focused Reports suite now passes all 14 tests (1 retained static assertion plus 13 registered examples). The manifest is valid JSON but fails the repository’s formatter, so I’ll format only that fixture and recheck its size/coverage before rerunning focused verification.\nFocused verification is green: the Reports lens suite passes 14/14, the expectation-service and case-validator guards pass 4/4, and the unchanged module-groups forwarding checks pass 6/6. I’m doing final manifest equivalence, diff-scope, and whitespace checks; the activity registration remains blocked by the same missing `@electron/asar` dependency.\nThe final focused rerun passes 20/20 across the lens migration and forwarding tests. The proposed manifest matches the current unit metadata byte-for-byte after removing only the new `.testing` section; activity was completed, though Harness analytics emitted a non-blocking warning.\nImplemented in:\n\n- [entity-lens.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/261926ea-fe54-4105-a86a-06e2f9666299/packages/reports/test/utils/entity-lens.test.ts:1)\n- [lens-examples.json](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/261926ea-fe54-4105-a86a-06e2f9666299/test/fixtures/contract-migration/lens-examples.json:1)\n\nBefore → after:\n\n- 4 direct `entityLens` tests / 11 calls → 11 stable `entitylens.*` helper cases.\n- 2 existing `shortCommit` examples → 2 stable `shortcommit.*` cases.\n- Static `entityLabels` collection assertion remains intact.\n- Public forwarding checks remain unchanged.\n\nVerification:\n\n- Reports lens + module forwarding tests: 20/20 passed.\n- Expectation-service and case-validator tests: 4/4 passed.\n- Prettier check passed.\n- Proposed manifest matches current metadata except for the added `testing` section.\n- No specification, source, shared-contract, commit, push, E2E, or broad-check changes.\n\nRemaining gaps: primary must promote the proposed metadata; full project verification remains intentionally unrun. Git-wide status was blocked by the pre-existing LFS filter permission error.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/261926ea-fe54-4105-a86a-06e2f9666299",
+				"changedFiles": [
+					"packages/reports/test/utils/entity-lens.test.ts",
+					"test/fixtures/contract-migration/lens-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T15:30:26.163Z",
+				"attempt": "261926ea-fe54-4105-a86a-06e2f9666299",
+				"sourceCommit": "06f8ce220e28621b9b139898ab4aa90bf2014c69",
+				"checkpointCommit": "e6b7983eb76171ea2b0b532342dc490814ad4cb4",
+				"usage": {
+					"inputTokens": 5463405,
+					"outputTokens": 37924,
+					"cacheReadTokens": 5290240,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 5463405,
+							"outputTokens": 37924,
+							"cacheReadTokens": 5290240,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T15:25:17.189Z",
+						"finishedAt": "2026-10-25T15:30:25.793Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
