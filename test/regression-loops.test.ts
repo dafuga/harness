@@ -114,6 +114,14 @@ test.each(['app', 'lib'] as const)(
 			expect(text).toContain('earliest responsible generator, skill or review checkpoint');
 			expect(text).toContain('one selected callable per detail page');
 			expect(text).toContain('src/configs/<category>/');
+			expect(text).toContain('## Stable-Case Bug Policy');
+			expect(text).toContain('Do not write standalone bug regression tests');
+			expect(text).toContain("Keep each form's case count fixed");
+			expect(text).toContain('explicitly changes a capability');
+			expect(text).toContain('reproduce with its strengthened standardized case failing');
+			expect(text).toContain('a strengthened standardized case, in normal project verification');
+			expect(text).not.toContain('reproduce with a failing test before implementation');
+			expect(text).not.toContain('include the guard in normal project verification');
 		}
 	}
 );
