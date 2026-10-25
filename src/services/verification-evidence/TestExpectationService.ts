@@ -6,6 +6,7 @@ import type { UsageExample } from '../../utils/explorer-ui/unit-documentation/un
 import type { ExampleInvocation, ExampleObservation } from './TestExpectationService.types';
 import type { ExampleRegistrar, ExampleFunctions } from './TestExpectationService.types';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
+import type { ContractCase } from './TestContractService.types';
 
 /** Expectations come from authored contracts, never from the execution being checked. */
 export class TestExpectationService {
@@ -29,9 +30,9 @@ export class TestExpectationService {
 			const invoke = functions[item.id];
 			if (!invoke) throw new Error(`Missing case implementation: ${item.id}`);
 			register(item.test.title, async () => {
-				const actual = await invoke();
 				if (contract.shape === 'api' && item.expected?.kind === 'json')
-					this.json(actual, item.expected.value, item.expected.normalize);
+					this.json(await invoke(), item.expected.value, item.expected.normalize);
+				else await this.example(invoke, registeredExample(item));
 			});
 		}
 	}
@@ -47,6 +48,7 @@ export class TestExpectationService {
 		const admission = new TestCaseValidator().validate(unit, unit.testing);
 		if (!admission.valid)
 			throw new Error(`Invalid authored Examples: ${admission.errors.join('; ')}`);
+		assertExampleImplementations(functions, groups);
 		for (const helper of groups) {
 			const invoke = functions[helper.name];
 			if (!invoke || !helper.examples?.length)
@@ -129,4 +131,26 @@ function exampleGroups(unit: ComponentManifest) {
 			examples: [usageExample(item)]
 		}))
 	];
+}
+
+function registeredExample(item: ContractCase): UsageExample {
+	const expected = item.expected;
+	if (!expected || expected.kind === 'json' || expected.kind === 'screenshot')
+		throw new Error('Class cases require an authored value, error or void result');
+	return usageExample({
+		subject: item.subject ?? '',
+		name: item.test.title,
+		call: item.call ?? item.test.title,
+		input: item.input ?? null,
+		expected
+	});
+}
+
+function assertExampleImplementations(
+	functions: ExampleFunctions,
+	groups: ReturnType<typeof exampleGroups>
+): void {
+	for (const name of Object.keys(functions))
+		if (!groups.some((group) => group.name === name))
+			throw new Error(`Unsupported example implementation: ${name}`);
 }
