@@ -1,0 +1,32 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-iutUBe
+
+(node:19784) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ test/browser-error-evidence.test.ts (2 tests | 1 failed) 2866ms
+   × CheckRunService.run initialized keeps diagnostics, settlement and inherited resource budget 2518ms
+     → check children must inherit the parent memory reservation: expected [ …(4) ] to include 'HARNESS_RESOURCE_MEMORY_MIB=2048'
+   ✓ CheckRunService.version initialized reports only a passing tool's first nonempty line  340ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/browser-error-evidence.test.ts > CheckRunService.run initialized keeps diagnostics, settlement and inherited resource budget
+AssertionError: check children must inherit the parent memory reservation: expected [ …(4) ] to include 'HARNESS_RESOURCE_MEMORY_MIB=2048'
+ ❯ Module.inheritedBudget test/support/checkRunCases.ts:196:88
+    194|   expect(reads, 'accepted getters retain admission and child-environme…
+    195|   const inherited = process.env.HARNESS_RESOURCE_MEMORY_MIB ?? '2048';
+    196|   expect(log.split('\n'), 'check children must inherit the parent memo…
+       |                                                                                        ^
+    197|    `HARNESS_RESOURCE_MEMORY_MIB=${inherited}`
+    198|   );
+ ❯ runInitialized test/browser-error-evidence.test.ts:36:2
+ ❯ src/services/verification-evidence/TestExpectationService.ts:34:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  19:32:06
+   Duration  6.90s (transform 262ms, setup 164ms, collect 241ms, tests 2.87s, environment 0ms, prepare 35ms)
+
