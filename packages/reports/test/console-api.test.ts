@@ -8,6 +8,7 @@ import { join } from 'node:path';
 import { ConsoleAgentService } from '../src/services/ConsoleAgentService';
 import { recordedRepo, binding, page, git } from '../../desktop/test/recorded-evidence-fixture';
 import type { Recorded } from '../../desktop/test/recorded-evidence-fixture';
+import type * as HistoryIndexFixture from '../../../test/support/historyIndexFixture';
 import type { EntityDetail } from '../../desktop/src/models/development-tooling/Desktop.types';
 import type {
 	EntityEvidenceResult,
@@ -16,7 +17,7 @@ import type {
 
 // A parent repository may have empty local identity fields; host defaults must not hide that.
 vi.mock('../../../test/support/historyIndexFixture', async (original) => {
-	const fixture = await original<typeof import('../../../test/support/historyIndexFixture')>();
+	const fixture = await original<typeof HistoryIndexFixture>();
 	return {
 		...fixture,
 		async indexedRepo() {
