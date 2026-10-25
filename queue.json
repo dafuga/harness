@@ -6483,78 +6483,93 @@
 			},
 			"sourceCommit": "6591099341ac0f3d0f5de2f1a439d854162f2719",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "review",
-			"reviews": [],
-			"createdAt": "2026-10-25T20:59:36.552Z",
-			"claim": {
-				"worker": "source-branches-examples",
-				"token": "015b4d97-c960-4e48-bfc8-7439e1b0849a",
-				"startedAt": "2026-10-25T20:59:38.150Z",
-				"owner": {
-					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
-					"pid": 17439,
-					"startedAt": "Sun Oct 25 20:59:37 2026"
+			"status": "queued",
+			"repairCommit": "d2d96fbfafd1003be6a7f0b5b22ee72831ea90c7",
+			"reviews": [
+				{
+					"attempt": "015b4d97-c960-4e48-bfc8-7439e1b0849a",
+					"verdict": "incomplete",
+					"reviewer": "contract-policy-primary",
+					"feedback": "Preserve the proposal. Displayed calls must describe the returned name/head projections: sourceBranches returns an array, not an object of repository and utility results. Keep alias equality and console-route integration assertions inside a sourceBranches Example that actually exercises a representative remote ref; do not give consoleRoute an empty sourceBranches-only case. Include declared invalid refs/remotes TypeError outcomes. Use stable synthetic commit IDs rather than current real source revisions. Backend reportedModel is still null, so execution identity is unverified; do not claim exact model proof. Do not launch an alternate model.",
+					"at": "2026-10-25T21:08:50.623Z",
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null
 				}
-			},
-			"claimHistory": [],
-			"result": {
-				"provider": "codex",
-				"model": "gpt-5.6-luna",
-				"intelligence": "max",
-				"reportedModel": null,
-				"text": "I’m using the Harness skill because this is a contract-driven test migration in the Harness repository. I’ll inspect the current task state and allowed files, register activity, then edit only the verification files requested. I will not run tests/build/lint/audit, commit, publish, delegate, or touch product/specification files.\nThe Harness skill is read. The initial Git status check hit a repository Git-LFS clean-filter permission error before returning status; I’ll use read-only LFS bypass options and inspect the task files directly. No repository content has been changed by that check.\nThe activity-info command is blocked by an existing missing dependency (`@electron/asar`); I won’t install or alter dependencies. I confirmed the worktree already contains unrelated screenshot edits, and the requested source-branches support files are currently absent. I’m now comparing the existing source test with neighboring contract-migration patterns so identities and assertions can be preserved.\nI found the existing source test’s five assertion groups and the contract registration API. The migration will use the helper-shaped form with seven authored `sourceBranches` Examples: grouped original assertions, an explicit empty-input boundary, and the existing console-route round trip. The runner will call both public source-branch aliases and retain the Reports route alias, returning only explicit projections of real results.\nThe migration files are now written: the test registers the direct full manifest, the support runner preserves both source-branch aliases plus the Reports route projection, and the fixture contains the complete proposed manifest with stable example/case identities. I’m doing a read-only consistency pass over the changed files and JSON shape; I will not execute the test suite.\nThe structural pass is clean: JSON parses, it contains seven unique authored Examples and seven matching canonical case titles, all case fixture/test paths exist, and all commit-like heads are 40 characters. No tests, build, lint, audit, install, commit, or product/specification edits were performed.\nImplemented the source-branches contract migration:\n\n- Registered seven stable `sourceBranches` Examples and canonical cases.\n- Preserved remote/local conflicts, symbolic HEAD filtering, collisions, malformed refs, empty input, both aliases, and Reports route assertions.\n- Added the full proposed manifest and typed fixture runner:\n  - [source-branches.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/015b4d97-c960-4e48-bfc8-7439e1b0849a/test/utils/source-branches.test.ts)\n  - [sourceBranchesExamples.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/015b4d97-c960-4e48-bfc8-7439e1b0849a/test/support/sourceBranchesExamples.ts)\n  - [sourceBranchesExamples.types.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/015b4d97-c960-4e48-bfc8-7439e1b0849a/test/support/sourceBranchesExamples.types.ts)\n  - [source-branches-examples.json](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/015b4d97-c960-4e48-bfc8-7439e1b0849a/test/fixtures/contract-migration/source-branches-examples.json)\n\nJSON and diff checks passed. Tests/build/lint/audit/install were not run as instructed. Harness activity registration was blocked by the existing missing `@electron/asar` dependency. No commit or product/specification changes were made.",
-				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/015b4d97-c960-4e48-bfc8-7439e1b0849a",
-				"changedFiles": [
-					"test/utils/source-branches.test.ts",
-					"test/fixtures/contract-migration/source-branches-examples.json",
-					"test/support/sourceBranchesExamples.ts",
-					"test/support/sourceBranchesExamples.types.ts"
-				],
-				"fallback": false,
-				"finishedAt": "2026-10-25T21:04:31.696Z",
-				"attempt": "015b4d97-c960-4e48-bfc8-7439e1b0849a",
-				"sourceCommit": "6591099341ac0f3d0f5de2f1a439d854162f2719",
-				"checkpointCommit": "d2d96fbfafd1003be6a7f0b5b22ee72831ea90c7",
-				"usage": {
-					"inputTokens": 2525516,
-					"outputTokens": 42832,
-					"cacheReadTokens": 2381952,
-					"cacheWriteTokens": null,
-					"cacheWriteLongTokens": null,
-					"reportedCostUsd": null,
-					"reasoningTokens": null
-				},
-				"executions": [
-					{
-						"provider": "codex",
-						"model": "gpt-5.6-luna",
-						"intelligence": "max",
-						"reportedModel": null,
-						"usage": {
-							"inputTokens": 2525516,
-							"outputTokens": 42832,
-							"cacheReadTokens": 2381952,
-							"cacheWriteTokens": null,
-							"cacheWriteLongTokens": null,
-							"reportedCostUsd": null,
-							"reasoningTokens": null
-						},
-						"apiCost": {
-							"usd": null,
-							"minimumUsd": null,
-							"maximumUsd": null,
-							"basis": "unavailable",
-							"rateCard": "standard-global-2026-10-25",
-							"source": null,
-							"note": "No verified rates for this exact model."
-						},
-						"status": "succeeded",
-						"startedAt": "2026-10-25T20:59:39.150Z",
-						"finishedAt": "2026-10-25T21:04:31.471Z"
+			],
+			"createdAt": "2026-10-25T20:59:36.552Z",
+			"claimHistory": [
+				{
+					"worker": "source-branches-examples",
+					"token": "015b4d97-c960-4e48-bfc8-7439e1b0849a",
+					"startedAt": "2026-10-25T20:59:38.150Z",
+					"owner": {
+						"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+						"pid": 17439,
+						"startedAt": "Sun Oct 25 20:59:37 2026"
 					}
-				]
-			},
-			"attempts": []
+				}
+			],
+			"attempts": [
+				{
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null,
+					"text": "I’m using the Harness skill because this is a contract-driven test migration in the Harness repository. I’ll inspect the current task state and allowed files, register activity, then edit only the verification files requested. I will not run tests/build/lint/audit, commit, publish, delegate, or touch product/specification files.\nThe Harness skill is read. The initial Git status check hit a repository Git-LFS clean-filter permission error before returning status; I’ll use read-only LFS bypass options and inspect the task files directly. No repository content has been changed by that check.\nThe activity-info command is blocked by an existing missing dependency (`@electron/asar`); I won’t install or alter dependencies. I confirmed the worktree already contains unrelated screenshot edits, and the requested source-branches support files are currently absent. I’m now comparing the existing source test with neighboring contract-migration patterns so identities and assertions can be preserved.\nI found the existing source test’s five assertion groups and the contract registration API. The migration will use the helper-shaped form with seven authored `sourceBranches` Examples: grouped original assertions, an explicit empty-input boundary, and the existing console-route round trip. The runner will call both public source-branch aliases and retain the Reports route alias, returning only explicit projections of real results.\nThe migration files are now written: the test registers the direct full manifest, the support runner preserves both source-branch aliases plus the Reports route projection, and the fixture contains the complete proposed manifest with stable example/case identities. I’m doing a read-only consistency pass over the changed files and JSON shape; I will not execute the test suite.\nThe structural pass is clean: JSON parses, it contains seven unique authored Examples and seven matching canonical case titles, all case fixture/test paths exist, and all commit-like heads are 40 characters. No tests, build, lint, audit, install, commit, or product/specification edits were performed.\nImplemented the source-branches contract migration:\n\n- Registered seven stable `sourceBranches` Examples and canonical cases.\n- Preserved remote/local conflicts, symbolic HEAD filtering, collisions, malformed refs, empty input, both aliases, and Reports route assertions.\n- Added the full proposed manifest and typed fixture runner:\n  - [source-branches.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/015b4d97-c960-4e48-bfc8-7439e1b0849a/test/utils/source-branches.test.ts)\n  - [sourceBranchesExamples.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/015b4d97-c960-4e48-bfc8-7439e1b0849a/test/support/sourceBranchesExamples.ts)\n  - [sourceBranchesExamples.types.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/015b4d97-c960-4e48-bfc8-7439e1b0849a/test/support/sourceBranchesExamples.types.ts)\n  - [source-branches-examples.json](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/015b4d97-c960-4e48-bfc8-7439e1b0849a/test/fixtures/contract-migration/source-branches-examples.json)\n\nJSON and diff checks passed. Tests/build/lint/audit/install were not run as instructed. Harness activity registration was blocked by the existing missing `@electron/asar` dependency. No commit or product/specification changes were made.",
+					"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/015b4d97-c960-4e48-bfc8-7439e1b0849a",
+					"changedFiles": [
+						"test/utils/source-branches.test.ts",
+						"test/fixtures/contract-migration/source-branches-examples.json",
+						"test/support/sourceBranchesExamples.ts",
+						"test/support/sourceBranchesExamples.types.ts"
+					],
+					"fallback": false,
+					"finishedAt": "2026-10-25T21:04:31.696Z",
+					"attempt": "015b4d97-c960-4e48-bfc8-7439e1b0849a",
+					"sourceCommit": "6591099341ac0f3d0f5de2f1a439d854162f2719",
+					"checkpointCommit": "d2d96fbfafd1003be6a7f0b5b22ee72831ea90c7",
+					"usage": {
+						"inputTokens": 2525516,
+						"outputTokens": 42832,
+						"cacheReadTokens": 2381952,
+						"cacheWriteTokens": null,
+						"cacheWriteLongTokens": null,
+						"reportedCostUsd": null,
+						"reasoningTokens": null
+					},
+					"executions": [
+						{
+							"provider": "codex",
+							"model": "gpt-5.6-luna",
+							"intelligence": "max",
+							"reportedModel": null,
+							"usage": {
+								"inputTokens": 2525516,
+								"outputTokens": 42832,
+								"cacheReadTokens": 2381952,
+								"cacheWriteTokens": null,
+								"cacheWriteLongTokens": null,
+								"reportedCostUsd": null,
+								"reasoningTokens": null
+							},
+							"apiCost": {
+								"usd": null,
+								"minimumUsd": null,
+								"maximumUsd": null,
+								"basis": "unavailable",
+								"rateCard": "standard-global-2026-10-25",
+								"source": null,
+								"note": "No verified rates for this exact model."
+							},
+							"status": "succeeded",
+							"startedAt": "2026-10-25T20:59:39.150Z",
+							"finishedAt": "2026-10-25T21:04:31.471Z"
+						}
+					]
+				}
+			]
 		},
 		{
 			"id": "contract-tests.resource-request-examples",
