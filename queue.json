@@ -3829,7 +3829,7 @@
 			},
 			"sourceCommit": "d529e6b4531763c4d09213cceca5dc5b498a26eb",
 			"contractHash": "9aee2731de88769b388eaeed07d7195c75f65dd8901f2fba1bd2eb3fbce60434",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T17:38:42.789Z",
 			"claim": {
@@ -3843,6 +3843,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The `relay.validator.pairing-body` migration is drafted in both allowed files. Nothing is run beyond read-only checks, nothing is committed, and the specification manifest is unchanged.\n\n**Linked units** (explorer routes from registered kinds; `validator` and `function` map to `/functions`, `service` and `controller` to `/services`)\n- Changed: [relay.validator.pairing-body](/functions/relay.validator.pairing-body). History: `/functions/relay.validator.pairing-body/history`. No commit yet; base is `d529e6b453`.\n- Checked, not edited: [service.verification-evidence-test-expectation](/services/service.verification-evidence-test-expectation) (`registerCases`) and [validator.verification-evidence-test-case](/functions/validator.verification-evidence-test-case) (admission).\n- Used In, not edited: [relay.controller.pairing](/services/relay.controller.pairing). Scenario `remote-desktop-boundaries` has no explorer category, so its source is `specification/scenarios/remote-desktop-boundaries.json`.\n- Uses, not edited: [relay.function.is-record](/functions/relay.function.is-record) and [relay.function.matches-pattern](/functions/relay.function.matches-pattern). `remote.entry.index` has kind `entry`, which maps to no explorer category, so its source is `packages/remote/src/index.ts`.\n- Gap: the proposed fixture is not a unit, so it is linked by source only: `test/fixtures/contract-migration/relay-pairing-methods.json`.\n\nI resolved these before editing but am only stating them now.\n\n**What changed**\n- `packages/relay/test/validators/pairing-body.test.ts`: four `test()` declarations became two registered cases, one per public method in `initialized`. Each case builds its own validator and body through `newRequest`, and `beforeAll` is gone. Registration uses the imported manifest, the literal test path and a case-id map. The `PairingBodyValidator` forwarding import, `randomCredential` and `newRequest` are kept.\n- `test/fixtures/contract-migration/relay-pairing-methods.json`: a byte-identical copy of the spec manifest plus one `testing` block between `scenarios` and `budgets`. Removing `testing` gives back the original object exactly.\n\n**Counts**\n\n| | Original | Proposed |\n|---|---|---|\n| Test declarations | 4 | 2 |\n| `expect` calls per run | 27 | 53 (request 16→33, verifier 11→20) |\n| Refused inputs | 15 request, 10 verifier | 30 request, 17 verifier |\n| Accepted boundaries | 0 | 4 |\n\n**Retained assertions**\n- Request read: `validator.request({ ...body })` equals the body.\n- Request refusals: null, `[]`, `{}`; `ephemeralKey` undefined, equal to challenge, or with an extra `A`; `sealed` undefined, `''`, `'not base64url!'`, or `7`; `challenge` undefined, sliced, or with `=`; extra `deviceId`; extra `state`.\n- Verifier read: `validator.verifier({ verifier })` returns the verifier.\n- Verifier refusals: null, `[]`, `{}`; `''`; sliced; with an extra `A`; 42 characters plus `+`; `7`; `[verifier]`; with an extra `credential`.\n\n**Added inside the same cases**\n- Request refusals: undefined, a string, a number, an array of the three values, `null`/`7`/`''` for each field, `ephemeralKey` at 86 characters, `sealed` at 21 and 8193 characters, and a three-key object with `challenge` replaced by `deviceId`.\n- Request accepted: `sealed` at 22 and 8192 characters.\n- Verifier refusals: undefined, a raw string, a raw array, `{verifier: undefined}`, `{verifier: null}`, `+ \"=\"`, and `{credential}` alone.\n- Verifier accepted: 43 characters of `-` and of `_`.\n\nI checked each new input by reading the implementation and the pattern definitions. I did not execute them.\n\n**Decisions you may want to change**\n- `contract.errors` stays `[]`, since non-testing fields must be preserved. \"invalid input props\" appears only in the case `errors` arrays, and the validator does not enforce it against the unit contract. Declaring it on the unit would be a change outside `testing`.\n- `expected` uses structural placeholders, following the device-pairing precedent, because the bodies and verifiers are random.\n- The verifier case's `fixture` is `packages/remote/src/index.ts`, the source of `randomCredential`. The registry should accept it, since `remote.entry.index` owns that file.\n- No old titles were registered in `specification/`, so the four original titles are retired and two new ones are introduced.\n\n**Verification performed**\n- Read the validator, its helpers, the remote patterns, `TestExpectationService`, `TestCaseValidator` with its schema, the device-pairing precedent, and the relay vitest and eslint configs.\n- Parsed the fixture with `python3 -I`. Confirmed non-testing fields match the original, declared props are covered, and both cases carry `invalid input props`.\n- `git status` shows only the two permitted paths changed.\n- Harness activity `07f4c696-e209-4f05-99f1-15885d3748bc` was registered, heartbeaten and finished.\n\n**Not run (for primary)**\n- Vitest for the test file.\n- Relay typecheck. The `unit as ComponentManifest` cast and root `src` imports follow the remote precedent but are unverified.\n- Prettier and eslint on both files. I wrote them to the repo's prettier settings by hand.\n- `units check` and `test/readable-unit-contracts.test.ts`, which are needed once the manifest is moved into `specification/`.\n- Audit.\n\nNo red/green loop record applies, since this is a migration and not a bug repair, and nothing is committed. The spec manifest still needs to be replaced with the fixture after review.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/4675affe-a30b-4ac9-8abc-700ed826830c",
+				"changedFiles": [
+					"packages/relay/test/validators/pairing-body.test.ts",
+					"test/fixtures/contract-migration/relay-pairing-methods.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T17:46:14.090Z",
+				"attempt": "4675affe-a30b-4ac9-8abc-700ed826830c",
+				"sourceCommit": "d529e6b4531763c4d09213cceca5dc5b498a26eb",
+				"checkpointCommit": "ccc65b61e7a9f702c7b09fcd1638209b5b4e815f",
+				"usage": {
+					"inputTokens": 4579055,
+					"outputTokens": 109358,
+					"cacheReadTokens": 4401424,
+					"cacheWriteTokens": 177555,
+					"cacheWriteLongTokens": 177555,
+					"reportedCostUsd": 0.4857798400000001,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 4579055,
+							"outputTokens": 109358,
+							"cacheReadTokens": 4401424,
+							"cacheWriteTokens": 177555,
+							"cacheWriteLongTokens": 177555,
+							"reportedCostUsd": 0.4857798400000001,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.4857798400000001,
+							"minimumUsd": 0.4857798400000001,
+							"maximumUsd": 0.4857798400000001,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T17:38:52.312Z",
+						"finishedAt": "2026-10-25T17:46:13.954Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
