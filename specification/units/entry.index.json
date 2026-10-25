@@ -155,7 +155,8 @@
 			"formatModuleDataFailure",
 			"ModuleDataSnapshotValidator",
 			"ModuleDataReviewRepository",
-			"ModuleDataSourceAdapter"
+			"ModuleDataSourceAdapter",
+			"moduleScenarioReviews"
 		]
 	},
 	"contract": {
@@ -357,6 +358,11 @@
 		},
 		{
 			"unit": "function.gateway-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.git-source-history-module-scenario-reviews",
 			"via": "reexport",
 			"origin": "derived"
 		},
