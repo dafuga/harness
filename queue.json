@@ -7191,6 +7191,66 @@
 			"createdAt": "2026-10-25T22:38:58.920Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-first.contract-authoring-luna",
+			"title": "Add CLI-only declared module contract authoring",
+			"moduleGoal": "Let users author and validate existing module contracts without reading implementation or editing manifests by hand.",
+			"verificationFiles": ["test/units-policy.e2e.test.ts", "test/units-policy.e2e.test.types.ts"],
+			"instructions": "Objective: implement `harness units contract <id> --input <json-file> [--json]` to validate and persist responsibility and a declared contract on an existing module. The input is {responsibility, contract:{inputs,outputs,errors}}. Preserve identity, ownership, runtime, dependencies, scenarios, budgets and all unrelated fields; set contract.origin=declared and responsibilityOrigin=declared. Reject malformed JSON, unsupported keys, unknown/retired units, missing or invalid contract fields, with no partial writes. Use existing public schema/registry APIs; do not invent a second schema or change other modules. Only assigned source files and explicitly listed verification/manifest files may be changed; no source/test discovery outside assignment. Read app dependency contracts through `bun src/index.ts units show <id> --json`. Do not inspect other modules' code or test suites. Other agents are working in shared history; preserve their changes. Do not delegate, commit, push, deploy, install dependencies or credentials, mutate persistent databases, start browser E2Es or broad aggregate checks. Add focused existing standardized CLI unit coverage; do not run automated E2Es on this primary Mac. Extend the existing assigned CLI E2E matrix and report the command for the primary to run later under the approved guarded check. Run formatting and typechecking appropriate to owned files. Return exact changed paths, commands/results, unresolved gaps. Files220/functions55; named types in companion .types files. Existing command module should remain thin; use existing public registry and schema APIs; keep helper functions small inside this assigned command if no service update is needed. Do not edit manageUnits or any other source. This is a bootstrap: primary will use the resulting command to author the rest of the contracts and a server will then dispatch remaining work.",
+			"wantedContract": {
+				"responsibility": "Expose atomic CLI authoring for an existing module declared responsibility and input/output/error contract without reading implementation source or editing registry files manually.",
+				"inputs": [
+					{
+						"name": "id",
+						"type": "stable active unit id"
+					},
+					{
+						"name": "input",
+						"type": "{responsibility:string,contract:{inputs:ContractItem[],outputs:ContractItem[],errors:ContractItem[]}}"
+					}
+				],
+				"outputs": [
+					{
+						"name": "updated contract",
+						"type": "validated ComponentManifest",
+						"description": "Persisted atomically with identity and all non-contract fields preserved; structured CLI output includes module identity."
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid contract",
+						"type": "explicit nonzero diagnostic",
+						"description": "Malformed/unknown keys, unsupported identity, retired unit or incomplete typed fields leave prior bytes untouched."
+					}
+				]
+			},
+			"model": "gpt-6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "contract-first-authoring-luna",
+			"feature": {
+				"id": "contract-first-execution",
+				"goal": "Harness users and agents develop from committed contracts; server-managed workers can read app-wide contracts and modify only their assigned files, with complete metadata validation and tracked executions.",
+				"tldr": "Extend the API-backed CLI and mandatory revision metadata with contract authoring, contract-first Codex guidance, enforced worker scopes, and automatic server task creation and dispatch. Preserve local and hosted permissions, existing history and exact model/usage/cost/bounce records."
+			},
+			"module": {
+				"id": "command.units",
+				"goal": "Let users author and validate existing module contracts without reading implementation or editing manifests by hand.",
+				"files": [
+					"src/cli/program/UnitsCommand.ts",
+					"src/cli/program/UnitsCommand.types.ts",
+					"test/units-policy.e2e.test.ts",
+					"test/units-policy.e2e.test.types.ts"
+				]
+			},
+			"sourceCommit": "0ff03ffbcec57641920ec1a086d19ff58e818bbf",
+			"contractHash": "b301c76294cab07396cefcbc8108cd1bc4ece0ccdccabcddd0f0269200027912",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T23:04:35.638Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
