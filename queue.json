@@ -1236,8 +1236,20 @@
 			},
 			"sourceCommit": "c7775b5b6e1355f6b3df0f1a7f7e84706bb148ad",
 			"contractHash": "7e0e07358c84ed06e3577313a054433fd51dd071a8c2be8a2cb39ae1725296d6",
-			"status": "review",
-			"reviews": [],
+			"status": "accepted",
+			"reviews": [
+				{
+					"attempt": "e14a5e14-33e5-476a-b21c-d37dc53b045b",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "",
+					"at": "2026-10-25T13:22:00.161Z",
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null
+				}
+			],
 			"createdAt": "2026-10-25T12:57:08.097Z",
 			"claim": {
 				"worker": "contract-policy",
