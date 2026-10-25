@@ -1,0 +1,897 @@
+Active profiler cold bootstrap measured in its real child process.
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun build src/index.ts --target bun --outdir dist "$@"' --
+[harness resources] Waiting for CPU and memory reservations
+Bundled 1535 modules in 241ms
+
+  index.js  14.96 MB  (entry point)
+
+{
+  "source": "89d33d0427882a031c09698b1e1e30d70d2b3848",
+  "measurements": [
+    {
+      "unit": "adapter.agents-providers-module-task-runner",
+      "metric": "source-bytes",
+      "value": 7715,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-runner",
+      "metric": "source-lines",
+      "value": 243,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-runner",
+      "metric": "complexity",
+      "value": 51,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-runner",
+      "metric": "dependencies",
+      "value": 5,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-runner",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
+      "metric": "source-bytes",
+      "value": 1586,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
+      "metric": "source-lines",
+      "value": 35,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
+      "metric": "complexity",
+      "value": 14,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
+      "metric": "dependencies",
+      "value": 2,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-worktree",
+      "metric": "source-bytes",
+      "value": 1774,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-worktree",
+      "metric": "source-lines",
+      "value": 41,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-worktree",
+      "metric": "complexity",
+      "value": 5,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-worktree",
+      "metric": "dependencies",
+      "value": 5,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "adapter.agents-providers-module-task-worktree",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "adapter.source-profile",
+      "metric": "source-bytes",
+      "value": 22325,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "adapter.source-profile",
+      "metric": "source-lines",
+      "value": 576,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "adapter.source-profile",
+      "metric": "complexity",
+      "value": 188,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "adapter.source-profile",
+      "metric": "dependencies",
+      "value": 12,
+      "unitOfMeasure": "count",
+      "partial": "1 reference could not be resolved in src/adapters/verification-evidence/source-profile-adapter/bunPreload.ts."
+    },
+    {
+      "unit": "adapter.source-profile",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "command.agents-providers-module-task",
+      "metric": "source-bytes",
+      "value": 4905,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "command.agents-providers-module-task",
+      "metric": "source-lines",
+      "value": 137,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "command.agents-providers-module-task",
+      "metric": "complexity",
+      "value": 18,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "command.agents-providers-module-task",
+      "metric": "dependencies",
+      "value": 5,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "command.agents-providers-module-task",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "command.analytics",
+      "metric": "source-bytes",
+      "value": 1747,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "command.analytics",
+      "metric": "source-lines",
+      "value": 47,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "command.analytics",
+      "metric": "complexity",
+      "value": 2,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "command.analytics",
+      "metric": "dependencies",
+      "value": 3,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "command.analytics",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "entry.index",
+      "metric": "source-bytes",
+      "value": 12747,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "entry.index",
+      "metric": "source-lines",
+      "value": 196,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "entry.index",
+      "metric": "complexity",
+      "value": 6,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "entry.index",
+      "metric": "dependencies",
+      "value": 123,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "entry.index",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "function.analytics-types",
+      "metric": "source-bytes",
+      "value": 1475,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "function.analytics-types",
+      "metric": "source-lines",
+      "value": 63,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "function.analytics-types",
+      "metric": "complexity",
+      "value": 0,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "function.analytics-types",
+      "metric": "dependencies",
+      "value": 1,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "function.analytics-types",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "repository.agents-providers-module-task",
+      "metric": "source-bytes",
+      "value": 9260,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "repository.agents-providers-module-task",
+      "metric": "source-lines",
+      "value": 223,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "repository.agents-providers-module-task",
+      "metric": "complexity",
+      "value": 28,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "repository.agents-providers-module-task",
+      "metric": "dependencies",
+      "value": 9,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "repository.agents-providers-module-task",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "repository.agents-providers-module-task-repository-task-usage",
+      "metric": "source-bytes",
+      "value": 1617,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "repository.agents-providers-module-task-repository-task-usage",
+      "metric": "source-lines",
+      "value": 53,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "repository.agents-providers-module-task-repository-task-usage",
+      "metric": "complexity",
+      "value": 1,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "repository.agents-providers-module-task-repository-task-usage",
+      "metric": "dependencies",
+      "value": 1,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "repository.agents-providers-module-task-repository-task-usage",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "service.agents-providers-module-task",
+      "metric": "source-bytes",
+      "value": 8118,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "service.agents-providers-module-task",
+      "metric": "source-lines",
+      "value": 196,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "service.agents-providers-module-task",
+      "metric": "complexity",
+      "value": 50,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "service.agents-providers-module-task",
+      "metric": "dependencies",
+      "value": 9,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "service.agents-providers-module-task",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics",
+      "metric": "source-bytes",
+      "value": 2441,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics",
+      "metric": "source-lines",
+      "value": 60,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics",
+      "metric": "complexity",
+      "value": 8,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics",
+      "metric": "dependencies",
+      "value": 7,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-events",
+      "metric": "source-bytes",
+      "value": 3018,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-events",
+      "metric": "source-lines",
+      "value": 91,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-events",
+      "metric": "complexity",
+      "value": 13,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-events",
+      "metric": "dependencies",
+      "value": 4,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-events",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-metrics",
+      "metric": "source-bytes",
+      "value": 2765,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-metrics",
+      "metric": "source-lines",
+      "value": 74,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-metrics",
+      "metric": "complexity",
+      "value": 15,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-metrics",
+      "metric": "dependencies",
+      "value": 1,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-metrics",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-pricing",
+      "metric": "source-bytes",
+      "value": 4026,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-pricing",
+      "metric": "source-lines",
+      "value": 117,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-pricing",
+      "metric": "complexity",
+      "value": 28,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-pricing",
+      "metric": "dependencies",
+      "value": 2,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "service.agents-providers-module-task-analytics-service-task-pricing",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "service.agents-providers-module-task-service-review-module-task",
+      "metric": "source-bytes",
+      "value": 2440,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "service.agents-providers-module-task-service-review-module-task",
+      "metric": "source-lines",
+      "value": 61,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "service.agents-providers-module-task-service-review-module-task",
+      "metric": "complexity",
+      "value": 12,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "service.agents-providers-module-task-service-review-module-task",
+      "metric": "dependencies",
+      "value": 6,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "service.agents-providers-module-task-service-review-module-task",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker",
+      "metric": "source-bytes",
+      "value": 6124,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker",
+      "metric": "source-lines",
+      "value": 172,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker",
+      "metric": "complexity",
+      "value": 30,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker",
+      "metric": "dependencies",
+      "value": 8,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker-service-dispatch-task-attempt",
+      "metric": "source-bytes",
+      "value": 1338,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker-service-dispatch-task-attempt",
+      "metric": "source-lines",
+      "value": 45,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker-service-dispatch-task-attempt",
+      "metric": "complexity",
+      "value": 5,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker-service-dispatch-task-attempt",
+      "metric": "dependencies",
+      "value": 2,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker-service-dispatch-task-attempt",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker-service-task-workspace",
+      "metric": "source-bytes",
+      "value": 1269,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker-service-task-workspace",
+      "metric": "source-lines",
+      "value": 33,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker-service-task-workspace",
+      "metric": "complexity",
+      "value": 4,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker-service-task-workspace",
+      "metric": "dependencies",
+      "value": 5,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "service.agents-providers-module-task-worker-service-task-workspace",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "service.analytics",
+      "metric": "source-bytes",
+      "value": 3993,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "service.analytics",
+      "metric": "source-lines",
+      "value": 94,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "service.analytics",
+      "metric": "complexity",
+      "value": 22,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "service.analytics",
+      "metric": "dependencies",
+      "value": 10,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "service.analytics",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "service.task-completion-service-code-audit",
+      "metric": "source-bytes",
+      "value": 2937,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "service.task-completion-service-code-audit",
+      "metric": "source-lines",
+      "value": 80,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "service.task-completion-service-code-audit",
+      "metric": "complexity",
+      "value": 10,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "service.task-completion-service-code-audit",
+      "metric": "dependencies",
+      "value": 7,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "service.task-completion-service-code-audit",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    },
+    {
+      "unit": "workflow.analytics-metrics",
+      "metric": "source-bytes",
+      "value": 4362,
+      "unitOfMeasure": "bytes"
+    },
+    {
+      "unit": "workflow.analytics-metrics",
+      "metric": "source-lines",
+      "value": 116,
+      "unitOfMeasure": "lines"
+    },
+    {
+      "unit": "workflow.analytics-metrics",
+      "metric": "complexity",
+      "value": 31,
+      "unitOfMeasure": "points"
+    },
+    {
+      "unit": "workflow.analytics-metrics",
+      "metric": "dependencies",
+      "value": 3,
+      "unitOfMeasure": "count"
+    },
+    {
+      "unit": "workflow.analytics-metrics",
+      "metric": "artifact-bytes",
+      "value": null,
+      "unitOfMeasure": "bytes",
+      "unavailable": "A module unit emits no separate artifact."
+    }
+  ],
+  "artifact": {
+    "path": "dist/index.js",
+    "bytes": 14964058,
+    "sha256": "c995cb60a05ba3bf156d7df19bcd315d5c0af4fbafa0e13a035d17e8c2bc86c0"
+  }
+}
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/analytics.test.ts (7 tests) 11ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  02:08:28
+   Duration  3.39s (transform 156ms, setup 114ms, collect 124ms, tests 11ms, environment 0ms, prepare 31ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-lO82mB/report.json
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/project-template.test.ts (5 tests) 412ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  02:08:32
+   Duration  1.14s (transform 166ms, setup 114ms, collect 451ms, tests 412ms, environment 0ms, prepare 30ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-zyyIdU/report.json
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/adapters/agents-providers/module-task-runner.test.ts (9 tests) 10ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  02:08:34
+   Duration  446ms (transform 173ms, setup 129ms, collect 135ms, tests 10ms, environment 0ms, prepare 33ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-qINDuT/report.json
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/adapters/agents-providers/module-task-worktree-adapter.test.ts (1 test) 206ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  02:08:36
+   Duration  548ms (transform 109ms, setup 112ms, collect 55ms, tests 206ms, environment 0ms, prepare 32ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-Zw7wrA/report.json
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/commands/agents-providers/module-task.test.ts (1 test) 16ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  02:08:37
+   Duration  2.73s (transform 1.40s, setup 118ms, collect 2.43s, tests 16ms, environment 0ms, prepare 30ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-p7vmUa/report.json
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/repositories/agents-providers/module-task.test.ts (1 test) 438ms
+   ✓ queue compare-and-swap retains simultaneous writers and commits without touching source HEAD  436ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  02:08:41
+   Duration  804ms (transform 131ms, setup 123ms, collect 81ms, tests 438ms, environment 0ms, prepare 30ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-pRGHhh/report.json
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/services/agents-providers/module-task-analytics-service.test.ts (2 tests) 456ms
+   ✓ committed task history emits stable IDs and excludes raw prompt text  447ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  02:08:42
+   Duration  1.02s (transform 261ms, setup 121ms, collect 274ms, tests 456ms, environment 0ms, prepare 35ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-XPWM88/report.json
+stderr | test/services/agents-providers/module-task-analytics-service.test.ts > committed task history emits stable IDs and excludes raw prompt text
+Warning: Harness module task analytics could not be recorded.
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/services/agents-providers/module-task-worker.test.ts (2 tests) 1449ms
+   ✓ module filters and assignment claims select once, then preserve changes for review  555ms
+   ✓ incomplete review commits a repair base, requeues once, and keeps prior work and contract  886ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  02:08:44
+   Duration  2.01s (transform 266ms, setup 118ms, collect 280ms, tests 1.45s, environment 0ms, prepare 32ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-OQtlUZ/report.json
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/services/agents-providers/module-task.test.ts (8 tests) 2596ms
+   ✓ admission rejects missing contracts, unknown modules and mutable task identities  305ms
+   ✓ retry preserves abandoned claims and refuses to steal an active owner  408ms
+   ✓ API quotes use versioned rates and preserve unknown models (claude-haiku-5-5, 100 input)  370ms
+   ✓ API quotes use versioned rates and preserve unknown models (claude-haiku-5-5, 100001 input)  362ms
+   ✓ API quotes use versioned rates and preserve unknown models (gpt-6.1-sol, 100 input)  371ms
+   ✓ API quotes use versioned rates and preserve unknown models (gpt-6-astra, 100 input)  388ms
+   ✓ API quotes use versioned rates and preserve unknown models (unpriced-model, 100 input)  383ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  02:08:47
+   Duration  3.17s (transform 266ms, setup 121ms, collect 286ms, tests 2.60s, environment 0ms, prepare 32ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-IbScbc/report.json
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/module-tasks.e2e.test.ts (8 tests) 51927ms
+   ✓ module task creation requires a wanted contract and leaves source HEAD and edits intact  3693ms
+   ✓ tasks share a stable goal-first prompt and keep their wanted contracts after a fresh fetch  8830ms
+   ✓ assigned worker preserves explicit claude-haiku-5-5 intelligence high  8374ms
+   ✓ assigned worker preserves explicit gpt-6-luna intelligence max  8239ms
+   ✓ auto falls back to Luna 6 max only for confirmed Claude quota (quota)  6577ms
+   ✓ auto falls back to Luna 6 max only for confirmed Claude quota (auth)  5802ms
+   ✓ explicit Claude quota failure never silently substitutes another model  4492ms
+   ✓ competing workers claim once and writes outside the module require review as failed  5918ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  02:08:51
+   Duration  52.25s (transform 102ms, setup 122ms, collect 38ms, tests 51.93s, environment 0ms, prepare 31ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-eSJEkI/report.json
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/analytics-attribution.e2e.test.ts (3 tests) 19164ms
+   ✓ failed commands and incomplete checks are recorded without supplied text  3236ms
+   ✓ analytics write failures do not change the dry-run result  1091ms
+   ✓ module task CLI reviews preserve one bounce and reconcile token costs idempotently  14835ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  02:09:44
+   Duration  19.46s (transform 93ms, setup 111ms, collect 32ms, tests 19.16s, environment 0ms, prepare 30ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-7sgVHH/report.json
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/adapters/source-profile.test.ts (5 tests) 244ms
+ ✓ test/commands/analytics.test.ts (1 test) 5ms
+
+ Test Files  2 passed (2)
+      Tests  6 passed (6)
+   Start at  02:10:04
+   Duration  1.04s (transform 184ms, setup 154ms, collect 357ms, tests 249ms, environment 0ms, prepare 63ms)
+
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/build-kernel.ts "$@"' --
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling syn v3.0.7
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling serde_derive v1.0.229
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 15.04s
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 5.28s
+Built impact kernel: wasm 161296 bytes (wasm-opt not applied), native 402080 bytes.
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/build-api.ts "$@"' --
+Built public API: atoms, contracts, runtime, verification, history, resources, sqlite, catalog, edge, console and index, declarations in dist/types.
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rY38j2
+
+ ✓ test/budget-performance.e2e.test.ts (3 tests) 152856ms
+   ✓ rule fixture: a declared slowdown beyond five percent fails, and one within it passes  14346ms
+   ✓ rule fixture: another profile is incompatible and a missing measurement never passes  9522ms
+   ✓ a real operation that is slowed without changing its result fails the end-to-end gate  118001ms
+ ✓ test/packaged-verification.e2e.test.ts (1 test) 14083ms
+   ✓ a packed consumer uses the verification contracts and evidence protocol  14081ms
+
+ Test Files  2 passed (2)
+      Tests  4 passed (4)
+   Start at  02:10:29
+   Duration  167.77s (transform 597ms, setup 159ms, collect 388ms, tests 166.94s, environment 0ms, prepare 64ms)
+
