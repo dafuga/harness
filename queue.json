@@ -3695,8 +3695,20 @@
 			},
 			"sourceCommit": "d8d334f6816acf696078cb01640612bbd4c38e22",
 			"contractHash": "053164fbb8f1f98cb2a24c69803b04af69b315de42a92d830fbcc97f44fcc3c4",
-			"status": "review",
-			"reviews": [],
+			"status": "accepted",
+			"reviews": [
+				{
+					"attempt": "a9fae37d-f367-4c72-8406-3bc813292a0d",
+					"verdict": "accepted",
+					"reviewer": "codex",
+					"feedback": "",
+					"at": "2026-10-25T18:21:03.318Z",
+					"provider": "claude",
+					"model": "claude-opus-5-5",
+					"intelligence": "xhigh",
+					"reportedModel": "claude-opus-5-5"
+				}
+			],
 			"createdAt": "2026-10-25T17:11:27.630Z",
 			"claim": {
 				"worker": "api-permission-visual",
