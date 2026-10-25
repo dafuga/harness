@@ -1,0 +1,34 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-b8V9rk
+
+ ❯ test/services/verification-evidence/test-contract.test.ts (2 tests | 1 failed) 16ms
+   ✓ validate initialized and invalid registries against declared cases 9ms
+   × compare initialized contracts preserves identities unless capabilities change 4ms
+     → expected '' to contain 'case identities/count changed'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-contract.test.ts > compare initialized contracts preserves identities unless capabilities change
+AssertionError: expected '' to contain 'case identities/count changed'
+
+- Expected
++ Received
+
+- case identities/count changed
+
+ ❯ test/services/verification-evidence/test-contract.test.ts:84:58
+     82|   }
+     83|  };
+     84|  expect(service.compare([unit], [documented]).join(' ')).toContain(
+       |                                                          ^
+     85|   'case identities/count changed'
+     86|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  13:15:20
+   Duration  3.09s (transform 169ms, setup 122ms, collect 349ms, tests 16ms, environment 0ms, prepare 30ms)
+
