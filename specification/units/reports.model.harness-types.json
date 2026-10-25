@@ -82,6 +82,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.networking-security-permission-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.revision-detail",
 			"via": "import",
 			"origin": "derived"

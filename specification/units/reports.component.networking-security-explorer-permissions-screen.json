@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.networking-security-explorer-permissions-screen",
+	"kind": "component",
+	"title": "ExplorerPermissionsScreen",
+	"responsibility": "Display user profiles and their declared API, page and data access at the selected revision.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte",
+			"packages/reports/src/components/networking-security/ExplorerPermissionsScreen.types.ts"
+		],
+		"symbols": ["ExplorerPermissionsScreen", "ExplorerPermissionsScreenProps"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ExplorerPermissionsScreen.props",
+				"type": "ExplorerPermissionsScreenProps",
+				"description": "Explorer host data with the selected revision permission catalog and optional endpoint ID restricting the view to API access."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ExplorerPermissionsScreen",
+				"type": "markup",
+				"description": "Profile index, one profile detail page or endpoint permission panel with method, data action, field and scope declarations; missing declarations remain explicit."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-screen-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/networking-security/ExplorerPermissionsScreen.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-networking-security-explorer-permissions-screen",
+		"viewport": "desktop"
+	}
+}

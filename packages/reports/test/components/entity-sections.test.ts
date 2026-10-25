@@ -1,3 +1,5 @@
+import { permissionProfiles } from '../../../../test/support/permissionProfiles';
+import EntityHeader from '../../src/components/explorer-ui/EntityHeader.svelte';
 import { createRawSnippet } from 'svelte';
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
@@ -99,4 +101,26 @@ test('a function keeps its Examples alone and another kind keeps its Tests', () 
 	expect(config).not.toMatch(/aria-label="[^"]+ examples"/);
 	expect(words(config)).toContain('Verification at bbbbbbb');
 	expect(words(config)).not.toContain('store.orders()');
+});
+
+test('an API exposes its permission tab and the selected profile/data declarations', () => {
+	const host = hostProps('commit', { category: 'apis', entity: 'app.endpoint.orders' });
+	Object.assign(host.route, { tab: 'permissions' });
+	host.head = { ...host.head, permissions: permissionProfiles };
+	const page = explorerEntities(host.head).find((item) => item.id === ids.page)!;
+	const entity = {
+		...page,
+		id: 'app.endpoint.orders',
+		category: 'apis' as const,
+		name: 'OrdersApi',
+		unit: { ...page.unit, id: 'app.endpoint.orders', kind: 'endpoint' }
+	};
+	const navigation = nav(host.route);
+	const header = render(EntityHeader, { props: { entity, nav: navigation } }).body;
+	expect(header).toContain('Permissions');
+	expect(header).toContain('tab=permissions');
+	const body = render(EntitySections, { props: { host, entity, nav: navigation, pane } }).body;
+	expect(words(body)).toContain('Own account only');
+	expect(words(body)).toContain('Administrator');
+	expect(words(body)).not.toContain('the evidence of its kind');
 });

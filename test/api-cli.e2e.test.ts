@@ -1,3 +1,4 @@
+import { assertPermissionCli } from './support/api-cli/permissionScenario';
 import { expect } from './verificationExpect';
 import { test } from 'vitest';
 import { readFile, stat, writeFile } from 'node:fs/promises';
@@ -215,3 +216,9 @@ test('API CLI raw requests retain methods and bodies, binary output and HTTP err
 		await f.close();
 	}
 }, 30000);
+
+test(
+	'API and profile CLI sections expose the same declared method and data boundaries',
+	assertPermissionCli,
+	30000
+);

@@ -207,6 +207,7 @@
 		"reports.component.modal",
 		"reports.component.module-system-explorer-module-resources-screen",
 		"reports.component.module-system-explorer-modules-screen",
+		"reports.component.networking-security-explorer-permissions-screen",
 		"reports.component.project-activity",
 		"reports.component.provider-picker",
 		"reports.component.provider-picker-cards",
@@ -1612,6 +1613,12 @@
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
+			"id": "reports-component-networking-security-explorer-permissions-screen",
+			"title": "User profile with scoped endpoint and data access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
 			"id": "reports-component-project-activity",
 			"title": "Project activity overview",
 			"coverage": "required",
@@ -2951,6 +2958,7 @@
 				"reports-component-modal",
 				"reports-component-module-system-explorer-module-resources-screen",
 				"reports-component-module-system-explorer-modules-screen",
+				"reports-component-networking-security-explorer-permissions-screen",
 				"reports-component-project-activity",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-cards",

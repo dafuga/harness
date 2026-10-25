@@ -25,21 +25,11 @@ test('module library exposes Email and Offline with instructions and resource ge
 	await measureWorkload('service.module-system-module-catalog', 'read-module-library', async () => {
 		const catalog = await new ModuleCatalogService().load(await project());
 		expect(catalog.gaps).toEqual([]);
-		expect(catalog.modules.map((item) => item.definition.id).sort()).toEqual([
-			'components',
-			'configs',
-			'dependencies',
-			'email',
-			'helpers',
-			'layouts',
-			'models',
-			'offline',
-			'rust-backend',
-			'rust-wasm',
-			'services',
-			'styles',
-			'types'
-		]);
+		expect(catalog.modules.map((item) => item.definition.id).sort()).toEqual(
+			'apis components configs dependencies email helpers layouts models modules offline permissions rust-backend rust-wasm services styles types'.split(
+				' '
+			)
+		);
 		for (const entry of catalog.modules) {
 			expect(entry.installed).toBe(Boolean(entry.definition.includedByDefault));
 			expect(entry.definition.instructions.length).toBeGreaterThan(0);
@@ -63,7 +53,7 @@ test('installing modules enables resource generation without replacing existing 
 		}
 	);
 	const catalog = await new ModuleCatalogService().load(root);
-	expect(catalog.modules.filter((item) => item.installed)).toHaveLength(11);
+	expect(catalog.modules.filter((item) => item.installed)).toHaveLength(14);
 	await measureWorkload('service.module-system-module-resource', 'generate-email-resource', () =>
 		resources.generate(root, 'email', 'email', 'Welcome')
 	);
@@ -144,7 +134,7 @@ test('module admission rejects invalid definitions, collisions and escaping outp
 test('included modules expose every existing Code catalog through the module contract', async () => {
 	const catalog = await new ModuleCatalogService().load(await project());
 	const included = catalog.modules.filter((entry) => entry.definition.includedByDefault);
-	expect(included).toHaveLength(9);
+	expect(included).toHaveLength(12);
 	expect(
 		included.every((entry) =>
 			entry.definition.resources.every((resource) => resource.files.length || resource.generator)
@@ -156,12 +146,15 @@ test('included modules expose every existing Code catalog through the module con
 			.flatMap((entry) => entry.definition.resources.map((resource) => resource.catalog))
 			.sort()
 	).toEqual([
+		'apis',
 		'components',
 		'configs',
 		'dependencies',
 		'functions',
 		'layouts',
 		'models',
+		'module-library',
+		'permissions',
 		'services',
 		'styles',
 		'types'
@@ -207,8 +200,12 @@ test('included and project modules use declared catalogs and real scaffold gener
 	await expect(generate.generate(root, 'dependencies', 'dependency', 'lit@3.3.2')).rejects.toThrow(
 		/existing|already|Resolve/
 	);
+	await generate.generate(root, 'permissions', 'profile', 'Reviewer');
+	expect(
+		JSON.parse(await readFile(join(root, 'specification/permissions/reviewer.json'), 'utf8'))
+	).toMatchObject({ id: 'reviewer', grants: [] });
 	const state = JSON.parse(await readFile(join(root, 'harness.modules.json'), 'utf8'));
-	expect(state.resources).toHaveLength(4);
+	expect(state.resources).toHaveLength(5);
 	expect(await new ModuleInstallService().add(root, 'services')).toEqual([]);
 	await measureWorkload('service.module-system-module-plan', 'install-rust-build-scripts', () =>
 		new ModuleInstallService().add(root, 'rust-wasm')

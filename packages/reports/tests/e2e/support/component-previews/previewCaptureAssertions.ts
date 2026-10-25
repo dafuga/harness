@@ -104,6 +104,17 @@ export async function assertTranslationControls(component: Locator) {
 
 /** Module previews must show the actual library and generated-resource content. */
 export async function assertModulePreview(component: Locator, id: string) {
+	if (id === 'reports.component.networking-security-explorer-permissions-screen') {
+		for (const text of [
+			'Member',
+			'app.endpoint.orders',
+			'GET',
+			'app.model.order',
+			'Own account only'
+		])
+			await expect(component.getByText(text, { exact: false }).first()).toBeVisible();
+	}
+
 	if (id === 'reports.component.module-system-explorer-modules-screen') {
 		await expect(
 			component.getByRole('link', { name: 'Rust WebAssembly', exact: true })

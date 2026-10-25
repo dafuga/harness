@@ -1,4 +1,4 @@
-import { assertApiRoutes } from './explorer-route/apis';
+import { assertApiRoutes, assertPermissionRoutes } from './explorer-route/apis';
 import { measureWorkload } from '../support/measureWorkload';
 import { expect, test } from 'vitest';
 import {
@@ -212,3 +212,5 @@ test('Models is a page tab and legacy page Contract links open Models in the sam
 });
 
 test('APIs are scoped catalog addresses and a page keeps its APIs tab', assertApiRoutes);
+
+test('API permission tabs and profile routes retain exact revision scope', assertPermissionRoutes);

@@ -162,7 +162,8 @@
 			"standardCodeModules",
 			"rustWasmModule",
 			"rustBackendModule",
-			"moduleResourceLocation"
+			"moduleResourceLocation",
+			"PermissionCatalogService"
 		]
 	},
 	"contract": {
@@ -744,6 +745,11 @@
 		},
 		{
 			"unit": "service.networking-security-harness-api",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-permission-catalog",
 			"via": "reexport",
 			"origin": "derived"
 		},

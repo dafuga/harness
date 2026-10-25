@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "service.networking-security-permission-catalog",
+	"kind": "service",
+	"title": "PermissionCatalogService",
+	"responsibility": "Read declared user profiles and their access grants from selected source files without importing project code.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/networking-security/PermissionCatalogService.ts",
+			"src/services/networking-security/PermissionCatalogService.types.ts"
+		],
+		"symbols": [
+			"profileSchema",
+			"PermissionCatalogService",
+			"PermissionCatalogService.load",
+			"PermissionCatalogService.at",
+			"PermissionProfile",
+			"PermissionCatalog",
+			"PermissionSourceTree"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "PermissionCatalogService.load._root",
+				"type": "string",
+				"description": "Project directory containing profile declarations."
+			},
+			{
+				"name": "PermissionCatalogService.at._tree",
+				"type": "PermissionSourceTree",
+				"description": "Selected source tree providing JSON profile files."
+			}
+		],
+		"outputs": [
+			{
+				"name": "profileSchema",
+				"type": "unknown",
+				"description": "Strict source-declared profile schema with API methods, page grants and scoped data fields."
+			},
+			{
+				"name": "PermissionCatalogService.load",
+				"type": "Promise<PermissionCatalog>",
+				"description": "Profiles with source paths and explicit gaps for invalid or unreadable declarations."
+			},
+			{
+				"name": "PermissionCatalogService.at",
+				"type": "Promise<PermissionCatalog>",
+				"description": "Profiles with source paths and explicit gaps for invalid or unreadable declarations."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/networking-security/PermissionCatalogService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/networking-security/PermissionCatalogService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}
