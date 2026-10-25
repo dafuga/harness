@@ -6,6 +6,7 @@ import type {
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { TaskPublicEvent } from './ModuleTaskRunnerAdapter.types';
 import { taskProcess } from './module-task-runner-adapter/taskProcess';
+import { taskUsage } from './module-task-runner-adapter/taskUsage';
 /** Run the installed CLIs with saved login, exact model/effort and public output only. */
 export class ModuleTaskRunnerAdapter implements TaskRunner {
 	constructor(private readonly execute = taskProcess) {}
@@ -36,9 +37,21 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			.split('\n')
 			.filter(Boolean)
 			.map((line) => JSON.parse(line) as TaskPublicEvent);
-		return input.provider === 'claude'
-			? this.claude(events, process.code, input)
-			: this.codex(events, process.code, input);
+		const usage = taskUsage(input.provider, events);
+		try {
+			const result =
+				input.provider === 'claude'
+					? this.claude(events, process.code, input)
+					: this.codex(events, process.code, input);
+			return { ...result, usage };
+		} catch (error) {
+			const reportedModel =
+				events.find((e) => e.type === 'system' && e.subtype === 'init')?.model ?? null;
+			throw Object.assign(error instanceof Error ? error : new Error('Task execution failed.'), {
+				usage,
+				reportedModel
+			});
+		}
 	}
 	private claude(events: TaskPublicEvent[], code: number, input: TaskRunInput): TaskRunResult {
 		const result = [...events].reverse().find((e) => e.type === 'result');

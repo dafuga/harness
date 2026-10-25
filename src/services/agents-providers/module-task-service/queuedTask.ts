@@ -25,6 +25,7 @@ export function queuedTask(
 		status: 'queued',
 		createdAt: new Date().toISOString(),
 		attempts: [],
+		reviews: [],
 		claimHistory: []
 	};
 }

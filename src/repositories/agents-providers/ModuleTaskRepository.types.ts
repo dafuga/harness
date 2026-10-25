@@ -1,5 +1,13 @@
 import type { z } from 'zod';
 import type {
+	taskUsageSchema,
+	taskExecutionSchema,
+	taskCostSchema
+} from './module-task-repository/taskUsage';
+export type TaskUsage = z.infer<typeof taskUsageSchema>;
+export type TaskExecution = z.infer<typeof taskExecutionSchema>;
+export type TaskApiCost = z.infer<typeof taskCostSchema>;
+import type {
 	featureSchema,
 	taskInputSchema,
 	queueSchema
@@ -17,6 +25,7 @@ export interface TaskRunInput extends TaskSelection {
 export interface TaskRunResult extends TaskSelection {
 	text: string;
 	reportedModel: string | null;
+	usage?: TaskUsage;
 }
 export interface TaskRunner {
 	run(input: TaskRunInput): Promise<TaskRunResult>;

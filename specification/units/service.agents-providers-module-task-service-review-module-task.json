@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task-service-review-module-task",
+	"kind": "service",
+	"title": "reviewModuleTask",
+	"responsibility": "Owns the reviewModuleTask service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/module-task-service/reviewModuleTask.ts"],
+		"symbols": ["reviewModuleTask"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reviewModuleTask.root",
+				"type": "string"
+			},
+			{
+				"name": "reviewModuleTask.repository",
+				"type": "ModuleTaskRepository"
+			},
+			{
+				"name": "reviewModuleTask.id",
+				"type": "string"
+			},
+			{
+				"name": "reviewModuleTask.input",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "reviewModuleTask",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-worktree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task-repository-task-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/module-task-service/reviewModuleTask.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/module-task-service/reviewModuleTask.ts"
+			}
+		]
+	},
+	"scenarios": ["module-tasks"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

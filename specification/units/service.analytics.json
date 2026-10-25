@@ -73,6 +73,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.agents-providers-module-task-analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "workflow.analytics-html",
 			"via": "import",
 			"origin": "derived"
@@ -103,7 +108,7 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["module-tasks"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

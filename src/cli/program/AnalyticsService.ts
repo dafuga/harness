@@ -8,6 +8,7 @@ import { importAnalytics } from '../../workflows/reports-media/importAnalytics';
 import type { AnalyticsFilter } from '../../core/reports-media/analyticsTypes';
 import { analyticsHtml } from './analyticsHtml';
 import { sameSite } from '../../utils/accounts-access/repository-identity/repositoryIdentity';
+import { ModuleTaskAnalyticsService } from '../../services/agents-providers/ModuleTaskAnalyticsService';
 export class AnalyticsService {
 	async execute(operation: string, options: AnalyticsOptions): Promise<void> {
 		if (operation === 'import') {
@@ -21,6 +22,7 @@ export class AnalyticsService {
 			return;
 		}
 		const filter = await normalizeFilter(options);
+		await new ModuleTaskAnalyticsService().sync(options.site ?? options.project ?? process.cwd());
 		const repository = new AnalyticsRepository();
 		// A site sees its own repository and nothing else, whatever other filter is asked for.
 		const events = options.site
@@ -65,6 +67,7 @@ async function renderResult(
 		loops: snapshot.loops,
 		jev: snapshot.jev,
 		models: snapshot.models,
+		tasks: snapshot.tasks,
 		benchmarks: snapshot.benchmarks,
 		events: snapshot.events
 	};
