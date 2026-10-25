@@ -1,12 +1,10 @@
+import type { EntityInput } from './entity-contract.test.types';
 import { test } from 'vitest';
 import type { ComponentManifest } from '../../../../src/core/unitTypes';
 import { TestExpectationService } from '../../../../src/services/verification-evidence/TestExpectationService';
 import type { HarnessUnit } from '../../src/models/Harness.types';
 import { entityContract, humanize, requiredStates } from '../../src/utils/entityContract';
-import type { ContractFacts } from '../../src/utils/explorer-ui/entityContract';
 import manifest from '../../../../specification/units/reports.function.entity-contract.json';
-
-type EntityInput = [HarnessUnit, ContractFacts];
 
 const invokeEntityContract = (...input: never[]) => {
 	const [rawUnit, facts] = input as unknown as EntityInput;

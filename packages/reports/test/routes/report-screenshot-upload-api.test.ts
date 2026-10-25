@@ -43,7 +43,7 @@ async function inspectError(response: Response) {
 }
 
 test('upload endpoint rejects cross-origin requests before reading files', async () => {
-	const requests = guards.input!;
+	const requests = guards.input! as Record<string, string>[];
 	const outputs = [];
 	for (const headers of requests) outputs.push(await inspectError(await attempt(headers)));
 

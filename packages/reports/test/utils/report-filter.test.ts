@@ -1,3 +1,4 @@
+import type { PairEntries } from './report-filter.test.types';
 import { expect, test } from 'vitest';
 import type { ComponentManifest } from '../../../../src/core/unitTypes';
 import { TestExpectationService } from '../../../../src/services/verification-evidence/TestExpectationService';
@@ -20,9 +21,7 @@ import { audioPairs } from '../../src/utils/audioPairs';
 import type { Filters } from '../../src/utils/verification-evidence/reportFilter.types';
 import manifest from '../../../../specification/units/reports.function.report-filter.json';
 
-type PairEntries = Array<[string, Evidence]>;
-
-function pairMap(value: unknown): ReadonlyMap<string, Evidence> | undefined {
+function pairMap(value: unknown): Map<string, Evidence> | undefined {
 	return value === undefined ? undefined : new Map(value as PairEntries);
 }
 

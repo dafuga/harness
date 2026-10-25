@@ -1,16 +1,10 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
-	import type { UnitDocumentation } from '../../../../../src/utils/unit-documentation/unitDocumentation';
+	import type { EntityExamplesProps } from './EntityExamples.types';
 	import UsageExamples from '../shared-primitives/usage-examples/UsageExamples.svelte';
-	let {
-		documentation,
-		setupTitle
-	}: {
-		documentation?: UnitDocumentation;
-		/** Names a setup shown once before the calls, such as how a service is created. */
-		setupTitle?: string;
-	} = $props();
+	import EntityAudio from './EntityAudio.svelte';
+	let { documentation, setupTitle, recorded }: EntityExamplesProps = $props();
 	let examples = $derived(documentation?.examples ?? []);
 </script>
 
@@ -22,6 +16,11 @@
 {:else}
 	<hx-p class="ex-gap">No usage examples are documented at this commit.</hx-p>
 	{#if documentation?.gap}<hx-p class="ex-gap">{documentation.gap}</hx-p>{/if}
+{/if}
+
+{#if recorded}
+	<hx-p class="ex-soft">These examples are authored documentation, not test results.</hx-p>
+	<EntityAudio {...recorded} idPrefix="examples-" />
 {/if}
 
 <style>

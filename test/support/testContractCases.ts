@@ -1,7 +1,7 @@
+import type { ContractUnit } from './testContractCases.types';
 import { expect } from 'vitest';
-import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
+import { componentManifestSchema } from '../../src/core/unitTypes';
 import type { TestContractService } from '../../src/services/verification-evidence/TestContractService';
-type ContractUnit = ComponentManifest & { testing: NonNullable<ComponentManifest['testing']> };
 
 export function assertExecutedCases(
 	registry: Parameters<TestContractService['validate']>[0],
