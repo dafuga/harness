@@ -193,6 +193,12 @@ function assertExecutedCases(registry: Parameters<TestContractService['validate'
 	);
 	expect(run([{ ...outcome, revision: 'b'.repeat(40) }]).join(' ')).toContain('wrong revision');
 	expect(run([{ ...outcome, status: 'skipped' }]).join(' ')).toContain('did not pass');
+	for (const changed of [
+		{ ...outcome, retry: -1 },
+		{ ...outcome, file: '../escape.test.ts' },
+		{ ...outcome, status: 'unknown' as never }
+	])
+		expect(run([changed]).join(' ')).toContain('invalid executed case');
 	expect(
 		run([
 			{ ...outcome, status: 'failed' },

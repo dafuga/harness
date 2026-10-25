@@ -2,11 +2,9 @@
 	"name": "contract-runtime-case-coverage",
 	"goal": "Verification rejects missing, duplicate, skipped, orphaned or wrong-revision execution of registered cases",
 	"createdAt": "2026-10-25T15:47:59.450Z",
-	"updatedAt": "2026-10-25T15:48:00.656Z",
+	"updatedAt": "2026-10-25T16:01:15.943Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:01:15.943Z",
+			"evidence": "At8339707a33 the existing validate case fails because no executed-case observations produce no validation error. Immutable proof594a5903 preserves the two-case suite and exact missing-execution assertion."
 		},
 		{
 			"id": "implement",

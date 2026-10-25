@@ -4,13 +4,14 @@ import { TestDiscoveryService } from '../../../src/services/verification-evidenc
 const service = new TestDiscoveryService();
 test('scan initialized source finds imported cases, aliases and computed registration', () => {
 	const found = service.scan(
-		`import { test as check } from 'vitest'; check('ready', () => {}); check.skip('missing', () => {}); check.each([1, 2])('row %i', () => {});`,
+		`import { test as check } from 'vitest'; check('ready', () => {}); check.skip('missing', () => {}); check.each([1, 2])('row %i', () => {}); check.fails('expected failure', () => {});`,
 		'test/service.test.ts'
 	);
 	expect(found.map((item) => [item.title, item.dynamic, item.disabled])).toEqual([
 		['ready', false, false],
 		['missing', false, true],
-		['row %i', true, false]
+		['row %i', true, false],
+		['expected failure', false, true]
 	]);
 	expect(service.scan(`const test = () => {}; test('ordinary call');`, 'src/service.ts')).toEqual(
 		[]
