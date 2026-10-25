@@ -2142,7 +2142,7 @@
 			},
 			"sourceCommit": "dc1e7d5710cde6f029fe3c538e29780543acec0e",
 			"contractHash": "0373595067587fd02eeb1059459e39d8af17fecf83bacf34c4c1c63045a8f7bf",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T14:53:00.011Z",
 			"claim": {
@@ -2156,6 +2156,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The wire-message method suite is migrated and the proposed manifest is written. Nothing is committed, promoted, or fully verified. Promotion and the broad checks are left for primary.\n\n## Units\n\n- **Direct edits:** `remote.validator.wire-message` through two files. The proposal is the new `test/fixtures/contract-migration/wire-methods.json`, which is the unit record plus a `testing` block and one declared thrown error, `RemoteFailure`. The test is `packages/remote/test/validators/wire-message.test.ts`. Source files are unchanged.\n- **Checked, not edited:** `remote.service.wire-client` and `remote.service.wire-session` (both construct `new WireMessageValidator()`), `remote.entry.index` (public export), and the unit's registered dependencies. I could not resolve explorer links from this worktree, so I cite registered ids and source paths.\n\n## Before and after\n\n- **Before:** 6 tests, 46 assertion executions, no `testing` block, `contract.errors: []`.\n- **After:** `testing` is `version 1`, `shape service`, `states [\"initialized\"]`, with two cases: `request-initialized` (23 rows) and `message-initialized` (14 rows). Both list `errors: [\"RemoteFailure\"]`. The six old titles are retired. The two new titles are in the manifest and checked by the test.\n\n## Coverage map\n\n| Old test | Old assertions | Now |\n|---|---|---|\n| a request has exactly type, id, a listed method and an object input | 1 `toEqual` | request 1 |\n| methods outside the list do not exist | 6 × code and requestId | request 2–7 |\n| malformed envelopes are invalid messages | 13 × code | request 8–20 |\n| an invalid envelope with a usable id can still be answered | 3 × requestId | request 20, 8, 21 |\n| requests above the byte bound, counting bytes | precondition, 2 × too-large | builder precondition; request 22–23 |\n| a client accepts responses and events and nothing else | 3 × `toEqual`, 11 × `toThrow(RemoteFailure)` | message 1–3 (value), 4–14 (invalid-message) |\n\n**Strengthened, so please review:**\n- The 11 message refusals now assert `code: invalid-message`. The original only checked that a `RemoteFailure` was thrown.\n- Request rows 8, 20 and 21 also assert `code`.\n- Each case asserts its registered title equals the manifest title. A missing case fails by name.\n\n**Cross-entity assertions kept in the test:** `instanceof RemoteFailure` and `remoteLimits.requestBytes` from `src/models/Remote.types`. The two forwarding imports are unchanged.\n\n## Gaps (reported, not invented)\n\n- The explicit `request(text, limit)` argument, which the contract declares as an input.\n- A request exactly at `requestBytes`. Acceptance there needs a builder-backed expected value.\n- The `message()` size bound (`messageBytes`).\n- Event channels `cache` and `connection`, and sequence 1 accepted.\n- `message()` given `[]` or `null`.\n- A response with `ok: true` and no `value`.\n\n## Candidate defect, needs primary's decision\n\nToo-large refusals carry no `requestId`, even when the envelope's id is usable. `WireSessionService.refuse` (`WireSessionService.ts:95`) treats a refusal without `requestId` as `sink.violation()`, so an oversized request closes the transport instead of being answered. The docs on `request()` and `RemoteFailure.requestId` leave this open, and skipping the parse of oversized input may be intentional. I left the too-large rows asserting only the code. If primary calls it a defect, the too-large row gets a `requestId` expectation, with red-green proof before any repair.\n\n## Verification\n\n- **Baseline before edits:** 6 passed.\n- **After:** 2 passed, covering 37 rows. The formatted file was confirmed by the sandbox control run below, which used the identical bytes. I did not re-run it directly in the worktree after prettier.\n- **Admission:** the CLI's `TestCaseValidator` on the proposal returns `valid: true`. Negative controls refuse a removed case, a removed error mapping, and an uncovered state, each with its reason.\n- **Lint and types:** ESLint on the test exits 0. It enforces the 220-line, 55-line function and complexity limits. Prettier passes on both files. A focused `tsc` on the test and its imports exits 0.\n- **Unit record:** the proposal's non-testing fields match the registry record. Only `contract.errors` changed.\n- **Mutation check (scratch copy in `/tmp`, repo untouched):** the control passes 2/2. Each of six one-line mutations fails at a named row: dropped requestId, byte count removed, sequence 0 accepted, ok-with-error accepted, unlisted refusal code accepted, unusable id reported as requestId.\n- **Measurements:** test 74 lines and 3,156 bytes; proposal 636 lines and 15,826 bytes. Validator source is unchanged, so its metrics are unchanged.\n\n## Not run\n\n- `bun run check`, the package audit, and the broad suites, excluded by your instruction.\n- `units check` and `test/readable-unit-contracts.test.ts`, which become required at promotion.\n- Screenshots (no UI) and a harness loop (promotion belongs to primary).\n\n## Notes for promotion\n\n- Promoting the proposal into `specification/units/remote.validator.wire-message.json` will change the test's relative fixture path.\n- The validator's test graph loads desktop code via `utils/networking-security/remoteIdentity.ts`. The remote vitest config does not generate SvelteKit configs, so a fresh checkout fails at collection until `packages/desktop/.svelte-kit` exists. This is outside the module.\n\n## Environment, disclosed\n\n- I temporarily symlinked `node_modules` to the main checkout (no install). I also generated `packages/desktop/.svelte-kit` with `svelte-kit`. Both are removed. Vite may have left temp bundles in the main checkout's `node_modules/.vite-temp`, which I left alone.\n- A mistaken `svelte-kit` invocation printed desktop's script list instead of running anything. The tree showed no changes afterwards.\n- Activity `7c720a1f-bf5d-4ec5-8e29-0cafc5344e02` was registered, heartbeaten and finished.\n- Working tree: `M packages/remote/test/validators/wire-message.test.ts` and `?? test/fixtures/contract-migration/`. No commits.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/8a362647-4ba2-4c62-b22b-3003578d2f72",
+				"changedFiles": [
+					"packages/remote/test/validators/wire-message.test.ts",
+					"test/fixtures/contract-migration/wire-methods.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T15:07:34.500Z",
+				"attempt": "8a362647-4ba2-4c62-b22b-3003578d2f72",
+				"sourceCommit": "dc1e7d5710cde6f029fe3c538e29780543acec0e",
+				"checkpointCommit": "20f63bea5499ef118eb3415b84f1cceefcd2c754",
+				"usage": {
+					"inputTokens": 7473815,
+					"outputTokens": 207179,
+					"cacheReadTokens": 7189792,
+					"cacheWriteTokens": 283941,
+					"cacheWriteLongTokens": 283941,
+					"reportedCostUsd": 0.9796682600000001,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 7473815,
+							"outputTokens": 207179,
+							"cacheReadTokens": 7189792,
+							"cacheWriteTokens": 283941,
+							"cacheWriteLongTokens": 283941,
+							"reportedCostUsd": 0.9796682600000001,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.9796682600000001,
+							"minimumUsd": 0.9796682600000001,
+							"maximumUsd": 0.9796682600000001,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T14:53:06.420Z",
+						"finishedAt": "2026-10-25T15:07:34.368Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
