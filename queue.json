@@ -5531,7 +5531,7 @@
 			},
 			"sourceCommit": "8dbd4d77c15833d2339864aa4ce757e20226fa04",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "failed",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:56:07.859Z",
 			"claim": {
@@ -5545,6 +5545,40 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/20a65d72-42c5-4db4-8ff9-b704a8747824",
+				"changedFiles": [],
+				"error": "Resource queue wait timed out",
+				"fallback": false,
+				"finishedAt": "2026-10-25T19:40:31.553Z",
+				"attempt": "20a65d72-42c5-4db4-8ff9-b704a8747824",
+				"sourceCommit": "8dbd4d77c15833d2339864aa4ce757e20226fa04",
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "failed",
+						"startedAt": "2026-10-25T19:10:30.684Z",
+						"finishedAt": "2026-10-25T19:40:31.553Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
