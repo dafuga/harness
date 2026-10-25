@@ -7,8 +7,8 @@ import { resourceEnvironment } from '../../../../../utils/execution-runtimes/res
 import { resourceWork } from '../../../../../utils/execution-runtimes/resourceWork';
 import { runIsolated, type IsolatedResult } from '../../../../../utils/run-isolated/runIsolated';
 import type { PlannedCheck } from '../../../../../utils/verification-evidence/verifyPlan';
-import { gatherCaptures } from './gatherCaptures';
-import { readBrowserDiagnostics } from './readBrowserDiagnostics';
+import type { readBrowserDiagnostics } from './readBrowserDiagnostics';
+import { readCheckEvidence } from './readCheckEvidence';
 
 const maxLogBytes = 2_000_000;
 
@@ -22,22 +22,19 @@ export class CheckRunService {
 		const leaf = check.scenario ? check.name : slug;
 		const evidencePath = `evidence/${commit}/${check.scenario ?? 'checks'}/${leaf}`;
 		const result = await this.execute(check, evidencePath, slug);
-		// Nothing a stopped check wrote is trusted: a timeout yields no captures at all.
-		const captures = result.timedOut
-			? { gathered: [], failures: [] }
-			: gatherCaptures(join(directory, evidencePath), evidencePath);
+		const observed = readCheckEvidence(directory, evidencePath, result.timedOut);
 		const prefix = check.scenario ? `${check.scenario}: ` : '';
-		const written = captures.failures.map((failure) => `${prefix}check ${check.name} ${failure}`);
-		const diagnostics = result.timedOut
-			? {}
-			: readBrowserDiagnostics(join(directory, evidencePath));
-		const passed = result.status === 'passed' && !diagnostics.failure;
-		if (diagnostics.failure) written.push(`${prefix}check ${check.name}: ${diagnostics.failure}`);
+		const written = observed.failures.map((failure) => `${prefix}check ${check.name}: ${failure}`);
+		const passed = result.status === 'passed' && !written.length;
 		return {
 			check,
 			passed,
-			entry: this.entry(check, result, diagnostics),
-			gathered: captures.gathered,
+			entry: {
+				...this.entry(check, result, observed.diagnostics),
+				status: passed ? 'passed' : 'failed',
+				...(observed.cases ? { cases: observed.cases } : {})
+			},
+			gathered: observed.gathered,
 			failures: [...outcomeFailures(check, result).map((failure) => prefix + failure), ...written]
 		};
 	}
@@ -118,6 +115,7 @@ export class CheckRunService {
 			HARNESS_EVIDENCE_DIR: evidence,
 			HARNESS_VERIFY_REVISION: this.context.commit,
 			HARNESS_VERIFY_TREE: this.context.tree,
+			HARNESS_VERIFY_CASE_ROOT: this.context.snapshot,
 			HARNESS_VERIFY_PROFILE: this.context.profile,
 			HARNESS_SCENARIO: check.scenario ?? '',
 			HARNESS_ANALYTICS_DISABLED: '1'

@@ -2,11 +2,9 @@
 	"name": "contract-recorded-cases",
 	"goal": "Normal verification retains hashed per-case observations and rejects missing or malformed execution coverage",
 	"createdAt": "2026-10-25T16:11:43.472Z",
-	"updatedAt": "2026-10-25T16:11:44.665Z",
+	"updatedAt": "2026-10-25T16:17:55.149Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:16:51.393Z",
+			"evidence": "Atc49390a16c the unchanged four-case CheckRunService suite fails the missing cases assertion. Immutable checkpoint retained in contract-recorded-cases; earlier resource-wait setup failure is not counted as defect proof."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:17:55.149Z",
+			"evidence": "CheckRunService now parses strict case observations, retains the original evidence bytes and hash, refuses malformed data and discards timed-out observations. Record sealing, attachment manifests, hash checks and history projection retain these results; assembly compares observed cases with registered selected cases. Focused ten tests and TypeScript pass; broad verification remains pending."
 		},
 		{
 			"id": "green",

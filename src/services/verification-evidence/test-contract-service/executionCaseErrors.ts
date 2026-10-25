@@ -1,21 +1,15 @@
 import { z } from 'zod';
 import type { ContractRegistry } from '../TestContractService.types';
+import {
+	caseOutcomeSchema,
+	caseFileSchema
+} from '../../../core/verification-evidence/caseOutcomeSchema';
 
 const text = z.string().trim().min(1);
-const path = text.refine(
-	(value) =>
-		!value.startsWith('/') && !value.split('/').some((part) => ['', '.', '..'].includes(part))
-);
-const outcome = z.strictObject({
-	file: path,
-	title: text,
-	revision: text,
-	status: z.enum(['passed', 'failed', 'skipped']),
-	retry: z.number().int().nonnegative().default(0)
-});
+const outcome = caseOutcomeSchema;
 const execution = z.strictObject({
 	revision: text,
-	files: z.array(path),
+	files: z.array(caseFileSchema),
 	outcomes: z.array(outcome)
 });
 const key = (item: { file: string; title: string }) => JSON.stringify([item.file, item.title]);

@@ -24,6 +24,7 @@ import { recordedBuilds } from './recordedBuilds';
 import { benchmarkMeasurements, recordComponents } from './sealRecord';
 import { unmeasured } from './unmeasured';
 import { ledgerGate, registryGate } from './VerificationGates';
+import { caseGate } from './caseGate';
 function outcome(failures: string[]): 'passed' | 'failed' {
 	return failures.length === 0 ? 'passed' : 'failed';
 }
@@ -82,6 +83,7 @@ export class RecordAssemblyService {
 				: {}),
 			snapshot: snapshotFailures(input.executed),
 			registry: registryGate(this.context.base, this.context.head),
+			cases: caseGate(this.context.head, this.context.commit, outcomes),
 			ledger: judged.budgets.ledger,
 			tests: outcomes.filter((item) => !item.check.scenario).flatMap((item) => item.failures),
 			scenarios: input.scenarios.flatMap((scenario) => scenario.failures),

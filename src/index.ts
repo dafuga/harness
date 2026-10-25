@@ -199,3 +199,4 @@ export { TestCaseValidator } from './validators/verification-evidence/TestCaseVa
 export { TestDiscoveryService } from './services/verification-evidence/TestDiscoveryService';
 export { TestExpectationService } from './services/verification-evidence/TestExpectationService';
 export { TestArtifactService } from './services/verification-evidence/TestArtifactService';
+export { CaseResultAdapter } from './adapters/verification-evidence/CaseResultAdapter';
