@@ -860,7 +860,7 @@
 			},
 			"sourceCommit": "a89292560d6347d4288b468c0b344e333dfd1090",
 			"contractHash": "7ca286e86e94f11e212ad646e5d524735a42408e5456873ac1d1ff238a770eb0",
-			"status": "review",
+			"status": "accepted",
 			"repairCommit": "f16197f8dadafff5716b7fdb74cb10f26a741e8f",
 			"reviews": [
 				{
@@ -869,6 +869,17 @@
 					"reviewer": "primary",
 					"feedback": "Complete every app scaffold, including layout and partial screenshot cases and behavioral store/hook examples; remove remaining path/string/type smoke assertions. Remove the invented Toggle details production interaction: the generated component should stay minimal and test its actual label/error props at rest. Pages must match the whole page; components/layouts/partials match their own region. Use declared desktop/tablet/mobile viewports, render readiness and no automatic baseline acceptance. Test-only preview routes must be unavailable outside development/test. Keep existing meaningful assertions and current stable test declarations. Do not add unrelated production features. Primary has the full dependency environment and will run integration tests; report sandbox blockers honestly.",
 					"at": "2026-10-25T12:48:06.048Z",
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null
+				},
+				{
+					"attempt": "c121b9ac-8440-4521-88b1-e8314d18e60a",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "Integrated with shared screenshot fixture, canonical 3-viewport states, original API JSON preserved, and duplicate resource/view generation corrected. Existing generator suites and typecheck pass; browser execution and reviewed-baseline materialization remain acceptance work.",
+					"at": "2026-10-25T14:39:19.712Z",
 					"provider": "codex",
 					"model": "gpt-5.6-luna",
 					"intelligence": "max",
