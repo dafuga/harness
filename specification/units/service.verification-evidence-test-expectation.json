@@ -14,6 +14,7 @@
 		],
 		"symbols": [
 			"TestExpectationService",
+			"TestExpectationService.registerCases",
 			"TestExpectationService.registerExamples",
 			"TestExpectationService.json",
 			"TestExpectationService.example",
@@ -29,6 +30,22 @@
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "TestExpectationService.registerCases.register",
+				"type": "ExampleRegistrar"
+			},
+			{
+				"name": "TestExpectationService.registerCases.unit",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "TestExpectationService.registerCases.file",
+				"type": "string"
+			},
+			{
+				"name": "TestExpectationService.registerCases.functions",
+				"type": "Readonly<Record<string, () => unknown>>"
+			},
 			{
 				"name": "TestExpectationService.registerExamples.register",
 				"type": "ExampleRegistrar"
@@ -71,6 +88,10 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "TestExpectationService.registerCases",
+				"type": "void"
+			},
 			{
 				"name": "TestExpectationService.registerExamples",
 				"type": "void"
@@ -166,6 +187,19 @@
 				"test": {
 					"file": "test/services/verification-evidence/test-expectation.test.ts",
 					"title": "registerExamples registers exactly the authored examples and rejects absent implementations"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"errors": ["Error"]
+			},
+			{
+				"id": "registercases-initialized",
+				"state": "initialized",
+				"subject": "TestExpectationService.registerCases",
+				"test": {
+					"file": "test/services/verification-evidence/test-expectation.test.ts",
+					"title": "registerCases binds complete method matrices and API results to canonical file identities"
 				},
 				"expected": {
 					"kind": "void"

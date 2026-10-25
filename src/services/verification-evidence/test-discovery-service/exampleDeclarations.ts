@@ -15,6 +15,30 @@ export async function exampleDeclarations(
 	const tests: DiscoveredTest[] = [];
 	for (const call of calls) {
 		const unit = componentManifestSchema.parse(JSON.parse(await tree.read(call.path)));
+		if (call.method === 'registerCases') {
+			if (!call.file) {
+				tests.push({
+					file,
+					title: '<computed registration file>',
+					line: call.line,
+					dynamic: true,
+					disabled: false
+				});
+				continue;
+			}
+			tests.push(
+				...(unit.testing?.cases ?? [])
+					.filter((item) => item.test.file === call.file)
+					.map((item) => ({
+						file,
+						title: item.test.title,
+						line: call.line,
+						dynamic: false,
+						disabled: false
+					}))
+			);
+			continue;
+		}
 		const examples = [
 			...(unit.helperContracts ?? []).flatMap((helper) =>
 				(helper.examples ?? []).map((example) => ({ subject: helper.name, name: example.name }))
@@ -50,22 +74,32 @@ function manifestImports(source: ts.SourceFile, file: string): Map<string, strin
 	return manifests;
 }
 function registeredCalls(source: ts.SourceFile, manifests: Map<string, string>) {
-	const calls: Array<{ path: string; line: number }> = [];
+	const calls: Array<{ path: string; line: number; method: string; file?: string }> = [];
 	const visit = (node: ts.Node) => {
 		if (
 			ts.isCallExpression(node) &&
 			ts.isPropertyAccessExpression(node.expression) &&
-			node.expression.name.text === 'registerExamples'
+			['registerExamples', 'registerCases'].includes(node.expression.name.text)
 		) {
 			let input = node.arguments[1];
 			while (input && (ts.isAsExpression(input) || ts.isParenthesizedExpression(input)))
 				input = input.expression;
 			const path = input && ts.isIdentifier(input) ? manifests.get(input.text) : undefined;
 			if (path)
-				calls.push({ path, line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1 });
+				calls.push({
+					path,
+					line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
+					method: node.expression.name.text,
+					...registrationFile(node)
+				});
 		}
 		ts.forEachChild(node, visit);
 	};
 	visit(source);
 	return calls;
+}
+
+function registrationFile(call: ts.CallExpression): { file?: string } {
+	const file = call.arguments[2];
+	return file && ts.isStringLiteralLike(file) ? { file: file.text } : {};
 }

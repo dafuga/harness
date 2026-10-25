@@ -2,11 +2,9 @@
 	"name": "contract-method-registration",
 	"goal": "Class and API matrices register exact canonical cases with no computed, missing, duplicate or extra callbacks",
 	"createdAt": "2026-10-25T16:44:04.544Z",
-	"updatedAt": "2026-10-25T16:44:05.763Z",
+	"updatedAt": "2026-10-25T16:53:11.408Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:50:35.809Z",
+			"evidence": "The existing TestExpectationService method suite now declares the new fourth capability. Its retained b14d66e37d red fails registerCases is not a function, checkpoint440fd4fe. The same TestDiscoveryService.discover case is also strengthened for canonical method matrices; no discovery test declaration is added."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:53:11.408Z",
+			"evidence": "registerCases admits only class/API contracts, validates the finite matrix, scopes callbacks to a literal canonical test file, refuses missing/extra callbacks and compares complete API JSON results. Static discovery reads the same manifest case titles. The unchanged six owning method cases pass and focused lint is clean; full verification remains pending."
 		},
 		{
 			"id": "green",

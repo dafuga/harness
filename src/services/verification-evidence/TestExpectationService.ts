@@ -9,6 +9,32 @@ import type { ComponentManifest } from '../../core/development-tooling/unitTypes
 
 /** Expectations come from authored contracts, never from the execution being checked. */
 export class TestExpectationService {
+	registerCases(
+		register: ExampleRegistrar,
+		unit: ComponentManifest,
+		file: string,
+		functions: Readonly<Record<string, () => unknown>>
+	): void {
+		const contract = unit.testing;
+		if (!contract || !['service', 'api'].includes(contract.shape))
+			throw new Error('Case registration requires class or API contracts');
+		const admission = new TestCaseValidator().validate(unit, contract);
+		if (!admission.valid) throw new Error(`Invalid case contract: ${admission.errors.join('; ')}`);
+		const cases = contract.cases.filter((item) => item.test.file === file);
+		if (!cases.length) throw new Error(`No declared cases for ${file}`);
+		for (const id of Object.keys(functions))
+			if (!cases.some((item) => item.id === id))
+				throw new Error(`Unsupported case implementation: ${id}`);
+		for (const item of cases) {
+			const invoke = functions[item.id];
+			if (!invoke) throw new Error(`Missing case implementation: ${item.id}`);
+			register(item.test.title, async () => {
+				const actual = await invoke();
+				if (contract.shape === 'api' && item.expected?.kind === 'json')
+					this.json(actual, item.expected.value, item.expected.normalize);
+			});
+		}
+	}
 	registerExamples(
 		register: ExampleRegistrar,
 		unit: ComponentManifest,
