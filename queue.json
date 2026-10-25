@@ -3241,6 +3241,64 @@
 			"createdAt": "2026-10-25T16:27:02.466Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.device-pairing-methods",
+			"title": "Migrate remote.service.device-pairing complete method and lifecycle matrix",
+			"moduleGoal": "Preserve every wire protocol and error assertion in stable public-method initialization cases",
+			"verificationFiles": [
+				"packages/remote/test/services/device-pairing.test.ts",
+				"test/fixtures/contract-migration/device-pairing-methods.json"
+			],
+			"instructions": "Migrate remote.service.device-pairing using its real current source and packages/remote/test/services/device-pairing.test.ts. Edit only listed suites and FULL proposed manifest test/fixtures/contract-migration/device-pairing-methods.json; primary owns specification, product code, shared contracts, integration and commits. Declare service testing shape with a finite documented matrix of EVERY public method/getter across real initialization/lifecycle states, including roles if they change behavior and invalid/error props. Do not hide all meaningful lifecycle states inside one initialized case. A method unsupported in a lifecycle state should assert its actual failure there rather than skip. Each stable case initializes its own state via existing realistic fixtures. Preserve every original assertion, integration handshake/encryption/network-disposable boundary, workload and public forwarding import. This is an initial contract migration: cases may change only to match explicitly declared supported methods/states; record before/after counts and why. Check canonical schema and TestCaseValidator. Non-JSON fixtures and crypto values need explicit authored fixture references/structural outcomes; never derive expected values from implementation under test. Errors must be explicit expected outcomes in responsible cases, no skip/fails/only or standalone regressions. Constructor checks can remain within initialized method cases or a declared constructor/initialized case. Do not mutate product or shared files to make tests pass. No personal memory reads/writes, delegation, commits, pushes, installs, credentials, E2Es, browser/server launches or broad checks. Run ONLY the focused unit suite; if node_modules symlink is stale report it without installing or substituting runners. Keep220/55/120/35 limits. Return all owned files, test counts, exact focused command/result, and all uncovered behavior or blockers. Do not claim migration complete if any existing assertion or supported method/state is omitted.",
+			"wantedContract": {
+				"responsibility": "Complete canonical lifecycle coverage for remote.service.device-pairing",
+				"inputs": [
+					{
+						"name": "declared methods and existing fixtures",
+						"type": "class contract"
+					}
+				],
+				"outputs": [
+					{
+						"name": "stable method suite and proposed manifest",
+						"type": "reviewable source"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid inputs and missing coverage",
+						"type": "documented failure outcomes"
+					}
+				]
+			},
+			"model": "gpt-5.6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "device-pairing-methods",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "remote.service.device-pairing",
+				"goal": "Preserve every wire protocol and error assertion in stable public-method initialization cases",
+				"files": [
+					"packages/remote/src/services/device-pairing-service/DevicePairingService.ts",
+					"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.ts",
+					"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.types.ts",
+					"packages/remote/test/services/device-pairing.test.ts",
+					"test/fixtures/contract-migration/device-pairing-methods.json"
+				]
+			},
+			"sourceCommit": "96a034905fd30aa4f0d95385266f39e831f8d152",
+			"contractHash": "601f94368cc49272b527705ed29b261c2114869a2b6c30c774f4fbf2da2cc73e",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T16:27:03.119Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
