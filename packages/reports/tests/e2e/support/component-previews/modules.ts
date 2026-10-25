@@ -37,18 +37,6 @@ const definition = (id: string, title: string, resource: string, resourceTitle: 
 export const moduleData = {
 	gaps: [],
 	modules: [
-		...standardCodeModules.map((definition) => ({
-			definition,
-			source: 'builtin' as const,
-			installed: true,
-			instances: []
-		})),
-		...[rustWasmModule, rustBackendModule].map((definition) => ({
-			definition,
-			source: 'builtin' as const,
-			installed: false,
-			instances: []
-		})),
 		{
 			definition: definition('email', 'Email', 'email', 'Emails'),
 			source: 'builtin' as const,
@@ -70,6 +58,24 @@ export const moduleData = {
 		}
 	]
 };
+const completeModuleData = {
+	gaps: moduleData.gaps,
+	modules: [
+		...standardCodeModules.map((definition) => ({
+			definition,
+			source: 'builtin' as const,
+			installed: true,
+			instances: []
+		})),
+		...[rustWasmModule, rustBackendModule].map((definition) => ({
+			definition,
+			source: 'builtin' as const,
+			installed: false,
+			instances: []
+		})),
+		...moduleData.modules
+	]
+};
 export function modulePreview(host: ExplorerScreenProps, entity?: string): ExplorerScreenProps {
 	const route = {
 		branch: host.route.branch,
@@ -82,7 +88,7 @@ export function modulePreview(host: ExplorerScreenProps, entity?: string): Explo
 		...host,
 		route,
 		scope: { ...host.scope, location: route },
-		head: { ...host.head, modules: moduleData }
+		head: { ...host.head, modules: completeModuleData }
 	};
 }
 
