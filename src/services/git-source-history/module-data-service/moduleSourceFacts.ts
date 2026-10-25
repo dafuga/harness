@@ -9,7 +9,7 @@ import type { RevisionRegistry } from '../../../utils/revisionRegistry';
 import type { LoadedUnits } from '../../../workflows/development-tooling/load-units/loadUnits';
 import { componentVersion } from '../../../utils/development-tooling/componentVersion';
 import type { ModuleDataIdentity } from '../../../repositories/git-source-history/ModuleDataRepository.types';
-import { CommitTreeAdapter } from '../../../adapters/git-source-history/CommitTreeAdapter';
+import { ModuleDataSourceAdapter } from '../../../adapters/git-source-history/ModuleDataSourceAdapter';
 import { loadUnits, graphOf } from '../../../workflows/development-tooling/load-units/loadUnits';
 import { revisionRegistry } from '../../../utils/revisionRegistry';
 import { unitMetadata } from '../../explorer-ui/revision-detail-service/unitMetadata';
@@ -34,7 +34,7 @@ async function scanModuleSourceFacts(
 	identity: ModuleDataIdentity,
 	indexer: SourceIndexService
 ) {
-	const tree = await CommitTreeAdapter.open(root, identity.commit),
+	const tree = await ModuleDataSourceAdapter.open(root, identity.commit),
 		loaded = await loadUnits(root, tree, indexer);
 	const declarations = loaded.fresh.manifests,
 		ledger = await new BudgetLedgerRepository(root).read(tree);
@@ -82,7 +82,7 @@ function measureSource(registry: RevisionRegistry, loaded: LoadedUnits, commit: 
 }
 
 async function sourceGaps(root: string, identity: ModuleDataIdentity, cause: unknown) {
-	const tree = await CommitTreeAdapter.open(root, identity.commit);
+	const tree = await ModuleDataSourceAdapter.open(root, identity.commit);
 	const [units, scenarios] = await Promise.all([
 		new UnitRegistryRepository(root).read(tree),
 		new ScenarioRepository(root).read(tree)

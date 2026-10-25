@@ -1,5 +1,5 @@
 import type { ModuleData } from '../ModuleDataService.types';
-import { CommitTreeAdapter } from '../../../adapters/git-source-history/CommitTreeAdapter';
+import { ModuleDataSourceAdapter } from '../../../adapters/git-source-history/ModuleDataSourceAdapter';
 import { ModuleDataReviewRepository } from '../../../repositories/git-source-history/ModuleDataReviewRepository';
 import { ScenarioRepository } from '../../../repositories/ScenarioRepository';
 import { revisionRegistry } from '../../../utils/revisionRegistry';
@@ -35,7 +35,7 @@ export function applyModuleReviews(
 
 /** Re-author descriptions against cached, sealed source facts without indexing unchanged source. */
 export async function reviewedModuleFacts(root: string, prior: ModuleData) {
-	const tree = await CommitTreeAdapter.open(root, prior.commit);
+	const tree = await ModuleDataSourceAdapter.open(root, prior.commit);
 	const blobs = new Map((await tree.list()).map((entry) => [entry.path, entry.hash]));
 	const reviews = await new ModuleDataReviewRepository(root).read(prior);
 	const declarations = globalThis.structuredClone(prior.declarations);

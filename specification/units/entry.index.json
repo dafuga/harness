@@ -154,7 +154,8 @@
 			"ModuleDataValidator",
 			"formatModuleDataFailure",
 			"ModuleDataSnapshotValidator",
-			"ModuleDataReviewRepository"
+			"ModuleDataReviewRepository",
+			"ModuleDataSourceAdapter"
 		]
 	},
 	"contract": {
@@ -201,6 +202,11 @@
 		},
 		{
 			"unit": "adapter.desktop-integrity",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git-source-history-module-data-source",
 			"via": "reexport",
 			"origin": "derived"
 		},
