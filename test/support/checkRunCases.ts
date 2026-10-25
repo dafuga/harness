@@ -6,12 +6,7 @@ import { CheckRunService } from '../../src/services/check-run-service/CheckRunSe
 import { verificationRecordSchema } from '../../src/core/verificationTypes';
 import { recordView } from '../../src/utils/recordView';
 import { verificationSample } from './verificationSample';
-import type {
-	CheckInput,
-	DiagnosticsExit,
-	RefusedDiagnostics,
-	ToolCheck
-} from './checkRunCases.types';
+import type { CheckInput, DiagnosticsExit, RefusedDiagnostics } from './checkRunCases.types';
 
 const caseOutcome = {
 	file: 'orders.spec.ts',
@@ -50,7 +45,7 @@ function refusal(mode: RefusedDiagnostics): string {
 	return "\nfs.appendFileSync(path.join(directory, 'browser-errors.ndjson'), 'not-json\\n');fs.appendFileSync(path.join(directory, 'case-results.ndjson'), 'not-json\\n');";
 }
 
-function runnerFor(
+export function runnerFor(
 	root: string,
 	env: Record<string, string | undefined> = process.env
 ): CheckRunService {
@@ -77,10 +72,6 @@ function runnerCheck(timeoutMs: number): CheckInput {
 		command: `'${process.execPath.replaceAll("'", "'\\''")}' writer.cjs`,
 		timeoutMs
 	};
-}
-
-function tool(id: string, command: string): ToolCheck {
-	return { id, command };
 }
 
 /** A passing runner retains its browser diagnostics and projects them into evidence records. */
@@ -207,30 +198,6 @@ export async function inheritedBudget(): Promise<void> {
 		);
 		expect(log.split('\n'), 'check children must inherit the parent CPU reservation').toContain(
 			`HARNESS_RESOURCE_CPUS=${process.env.HARNESS_RESOURCE_CPUS ?? '1'}`
-		);
-	} finally {
-		await rm(root, { recursive: true, force: true });
-	}
-}
-
-/** Real disposable tools: first nonempty stdout line, empty stdout, nonzero exit, missing tool. */
-export async function versionInitialized(): Promise<void> {
-	const root = await mkdtemp(join(tmpdir(), 'harness-version-'));
-	try {
-		const service = runnerFor(root);
-		await expect(service.version(null as never)).rejects.toThrow(TypeError);
-		const firstLine = "printf '\\n   \\n  harness 2.4.1  \\nsecond line\\n'";
-		await expect(service.version(tool('first-line', firstLine))).resolves.toBe('harness 2.4.1');
-		expect(await readFile(join(root, 'logs', 'tool-first-line.log'), 'utf8')).toContain(
-			'second line'
-		);
-		await expect(service.version(tool('empty', 'true'))).resolves.toBeUndefined();
-		await expect(service.version(tool('nonzero', 'echo 9.9.9; exit 3'))).resolves.toBeUndefined();
-		await expect(
-			service.version(tool('missing', 'harness-missing-tool-for-version --version'))
-		).resolves.toBeUndefined();
-		expect(await readFile(join(root, 'logs', 'tool-missing.log'), 'utf8')).toContain(
-			'harness-missing-tool-for-version'
 		);
 	} finally {
 		await rm(root, { recursive: true, force: true });

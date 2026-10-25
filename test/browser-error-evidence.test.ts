@@ -1,3 +1,4 @@
+import { versionInitialized } from './support/checkRunVersion';
 import { expect, test, vi } from 'vitest';
 import type { IsolatedResult } from '../src/utils/run-isolated/runIsolated';
 import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService';
@@ -7,8 +8,7 @@ import {
 	browserDiagnostics,
 	inheritedBudget,
 	invalidPriority,
-	refusedDiagnostics,
-	versionInitialized
+	refusedDiagnostics
 } from './support/checkRunCases';
 
 // The run case starts real children and waits for a real timeout, so it needs more than the default.
