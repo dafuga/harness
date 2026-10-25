@@ -189,6 +189,7 @@ test('source-bound reviews repair historical default runtime targets without cha
 		);
 		const repaired = await invoke(['--write', '--review', review, '--module', 'service.title']);
 		expect(repaired.valid, JSON.stringify(repaired)).toBe(true);
+		expect(repaired.committed).toBe(true);
 		expect((await invoke(['--write', '--refresh', '--module', 'service.title'])).valid).toBe(true);
 		expect((await git(['rev-parse', 'HEAD'])).stdout.trim()).toBe(head);
 	} finally {

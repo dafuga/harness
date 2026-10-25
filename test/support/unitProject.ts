@@ -90,6 +90,6 @@ export function validationInvoker(project: Awaited<ReturnType<typeof unitProject
 			result.stdout,
 			'Validation returns structured per-module diagnostics: ' + result.stderr
 		).toContain('"modules"');
-		return { ...JSON.parse(result.stdout), exitCode: result.exitCode };
+		return { ...(JSON.parse(result.stdout) as ValidationReport), exitCode: result.exitCode };
 	};
 }
