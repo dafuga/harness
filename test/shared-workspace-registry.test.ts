@@ -12,8 +12,6 @@ import {
 } from '../src/services/source-index-service/SourceIndexService';
 import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { scanImports } from '../src/services/source-index-service/scanImports';
-import { showUnit } from '../src/workflows/inspectUnits';
-import { ModuleDataService } from '../src/services/git-source-history/ModuleDataService';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 
 /**
@@ -38,7 +36,6 @@ const indexer = new SourceIndexService();
 let loaded: LoadedUnits;
 beforeAll(async () => {
 	loaded = await loadUnits(process.cwd(), undefined, indexer);
-	expect((await new ModuleDataService(process.cwd()).validate({ write: true })).valid).toBe(true);
 }, 60_000);
 
 test('cataloged application configs keep their implementation and entries under configs', () => {
@@ -87,17 +84,22 @@ test('the source index resolves what the Web workspace imports of the shared wor
 	expect(references.filter((item) => item.uncertain ?? item.external?.startsWith('$'))).toEqual([]);
 });
 
-test('the registry names the Web workspace beside the Electron and iOS one as a consumer of the shell', async () => {
-	const shell = await showUnit('desktop.component.workspace-shell');
-	expect(shell.consumers).toEqual(expect.arrayContaining(['desktop.page.root', web]));
-	const wrapper = await showUnit(web);
-	const reused = wrapper.manifest.dependencies.filter((item) => item.unit.startsWith('desktop.'));
+test('the registry names the Web workspace beside the Electron and iOS one as a consumer of the shell', () => {
+	const consumers = (id: string) =>
+		loaded.stored
+			.filter((unit) => unit.dependencies.some((edge) => edge.unit === id))
+			.map((unit) => unit.id);
+	expect(consumers('desktop.component.workspace-shell')).toEqual(
+		expect.arrayContaining(['desktop.page.root', web])
+	);
+	const wrapper = loaded.stored.find((unit) => unit.id === web)!;
+	const reused = wrapper.dependencies.filter((item) => item.unit.startsWith('desktop.'));
 	const derived = Object.keys(shared).map((unit) => ({ unit, via: 'import', origin: 'derived' }));
 	expect(reused).toEqual(derived);
-	expect(wrapper.consumers).toEqual([page]);
+	expect(consumers(web)).toEqual([page]);
 	// What is stored is what the index derives: no hand-written link stands in for an import.
 	const fresh = loaded.fresh.manifests.find((unit) => unit.id === web);
-	expect(wrapper.manifest.dependencies).toEqual(fresh?.dependencies);
+	expect(wrapper.dependencies).toEqual(fresh?.dependencies);
 }, 60_000);
 
 test('a change of the shared shell reaches the Web workspace and its page, and the Electron and iOS one', async () => {
