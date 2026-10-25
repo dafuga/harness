@@ -2702,13 +2702,13 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
+			"definition": "2b843459cf709115f85547642f177bb4a7e2560b5ca27e760f11b62b8e4c4841",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+				"commit": "96a034905fd30aa4f0d95385266f39e831f8d152",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
-				"reason": "Validate required representative performance observations and retain unavailable source measurements and current failure reporting."
+				"definition": "2b843459cf709115f85547642f177bb4a7e2560b5ca27e760f11b62b8e4c4841",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 			},
 			"previousReviews": [
 				{
@@ -2722,6 +2722,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 					"definition": "621bfc86dd6c9e81c8e8cc09bd3b64d6efcfd9755e7822acdd0934863c485bf2",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
+					"reason": "Validate required representative performance observations and retain unavailable source measurements and current failure reporting."
 				}
 			]
 		},
@@ -3707,13 +3713,13 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "44e5129b4a7794f6aac2f13c0e044c841a795cd8af599cc9d11320c8ac6cefdf",
+			"definition": "7d4f45259c62a8df15ba969556cede684b3f61de266a62d9b9b10d370f922e63",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
+				"commit": "96a034905fd30aa4f0d95385266f39e831f8d152",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "44e5129b4a7794f6aac2f13c0e044c841a795cd8af599cc9d11320c8ac6cefdf",
-				"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+				"definition": "7d4f45259c62a8df15ba969556cede684b3f61de266a62d9b9b10d370f922e63",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 			},
 			"previousReviews": [
 				{
@@ -3727,6 +3733,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
 					"definition": "a9e91f3446297034bc4f2cc3cc62dff0526a4823a63902fb45973e6d3460ab7d",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "44e5129b4a7794f6aac2f13c0e044c841a795cd8af599cc9d11320c8ac6cefdf",
+					"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
 				}
 			]
 		},

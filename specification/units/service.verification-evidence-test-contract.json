@@ -20,12 +20,14 @@
 			"TestContract",
 			"ContractCase",
 			"ContractRegistry",
+			"CaseOutcome",
+			"CaseExecution",
 			"TestContract",
 			"ContractCase",
 			"ContractRegistry",
-			"caseIdentityChanges",
 			"CaseOutcome",
 			"CaseExecution",
+			"caseIdentityChanges",
 			"executionCaseErrors"
 		]
 	},
@@ -51,6 +53,10 @@
 			{
 				"name": "caseIdentityChanges.after",
 				"type": "ComponentManifest"
+			},
+			{
+				"name": "executionCaseErrors.registry",
+				"type": "ContractRegistry"
 			}
 		],
 		"outputs": [
@@ -65,6 +71,10 @@
 			{
 				"name": "caseIdentityChanges",
 				"type": "string[]"
+			},
+			{
+				"name": "executionCaseErrors",
+				"type": "string[]"
 			}
 		],
 		"errors": []
@@ -77,6 +87,11 @@
 		},
 		{
 			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-case-outcome-schema",
 			"via": "import",
 			"origin": "derived"
 		},

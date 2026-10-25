@@ -26,7 +26,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ResponseLedgerService.constructor.options",
@@ -47,7 +47,12 @@
 				"type": "Promise<unknown>"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "RemoteFailure",
+				"type": "thrown"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -67,6 +72,145 @@
 		]
 	},
 	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": [
+			"initialized-settled-replay",
+			"pending-replay",
+			"digest-conflict",
+			"remembered-failure",
+			"expired-evicted",
+			"pending-capacity-full"
+		],
+		"cases": [
+			{
+				"id": "run-initialized-settled-replay",
+				"state": "initialized-settled-replay",
+				"subject": "ResponseLedgerService.run",
+				"fixture": "packages/remote/test/support/wireHarness.ts",
+				"test": {
+					"file": "packages/remote/test/services/response-ledger.test.ts",
+					"title": "run initialized settled replay preserves the first answer"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"first": {
+							"run": 1
+						},
+						"replay": {
+							"run": 1
+						},
+						"runs": 1
+					}
+				},
+				"props": ["id", "digest", "execute", "settled operation"]
+			},
+			{
+				"id": "run-pending-replay",
+				"state": "pending-replay",
+				"subject": "ResponseLedgerService.run",
+				"fixture": "packages/remote/test/support/wireHarness.ts",
+				"test": {
+					"file": "packages/remote/test/services/response-ledger.test.ts",
+					"title": "run pending replay joins an answer that is still being produced"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"answers": ["done", "done"],
+						"runs": 1
+					}
+				},
+				"props": ["id", "digest", "execute", "pending operation"]
+			},
+			{
+				"id": "run-digest-conflict",
+				"state": "digest-conflict",
+				"subject": "ResponseLedgerService.run",
+				"fixture": "packages/remote/test/support/wireHarness.ts",
+				"test": {
+					"file": "packages/remote/test/services/response-ledger.test.ts",
+					"title": "run digest conflict rejects another digest and runs nothing"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"code": "request-conflict",
+						"runs": 1
+					}
+				},
+				"props": ["id", "digest", "execute", "settled operation"],
+				"errors": ["RemoteFailure"]
+			},
+			{
+				"id": "run-remembered-failure",
+				"state": "remembered-failure",
+				"subject": "ResponseLedgerService.run",
+				"fixture": "packages/remote/test/support/wireHarness.ts",
+				"test": {
+					"file": "packages/remote/test/services/response-ledger.test.ts",
+					"title": "run remembered failure is not retried"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"message": "refused",
+						"runs": 1
+					}
+				},
+				"props": ["id", "digest", "execute", "failed operation"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "run-expired-evicted",
+				"state": "expired-evicted",
+				"subject": "ResponseLedgerService.run",
+				"fixture": "packages/remote/test/support/wireHarness.ts",
+				"test": {
+					"file": "packages/remote/test/services/response-ledger.test.ts",
+					"title": "run expired or evicted answer is refused and never runs again"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"expired": {
+							"code": "request-expired"
+						},
+						"evicted": {
+							"code": "request-expired"
+						},
+						"runs": {
+							"expired": 1,
+							"evicted": 3
+						}
+					}
+				},
+				"props": ["id", "digest", "execute", "capacity", "ttlMs", "now", "settled operation"],
+				"errors": ["RemoteFailure"]
+			},
+			{
+				"id": "run-pending-capacity-full",
+				"state": "pending-capacity-full",
+				"subject": "ResponseLedgerService.run",
+				"fixture": "packages/remote/test/support/wireHarness.ts",
+				"test": {
+					"file": "packages/remote/test/services/response-ledger.test.ts",
+					"title": "run pending capacity full refuses new ones"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"code": "too-many-requests",
+						"answer": "a"
+					}
+				},
+				"props": ["id", "digest", "execute", "capacity", "tombstones", "pending operation"],
+				"errors": ["RemoteFailure"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

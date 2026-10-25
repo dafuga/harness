@@ -2,7 +2,7 @@
 	"name": "contract-recorded-cases",
 	"goal": "Normal verification retains hashed per-case observations and rejects missing or malformed execution coverage",
 	"createdAt": "2026-10-25T16:11:43.472Z",
-	"updatedAt": "2026-10-25T16:17:55.149Z",
+	"updatedAt": "2026-10-25T16:19:07.616Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:19:07.616Z",
+			"evidence": "Same four-case suite fails atc49390a16c and passes at96a034905f without any tracked test changes. Paired retained checkpointse38247b2 and2cf8a89a prove the missing observations repair; full registry adoption, real runner and browser acceptance remain pending."
 		},
 		{
 			"id": "verify",

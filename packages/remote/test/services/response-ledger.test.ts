@@ -1,6 +1,15 @@
+import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { ResponseLedgerService } from '../../src/services/ResponseLedgerService';
 import { deferred } from '../support/wireHarness';
+
+const manifest = JSON.parse(
+	readFileSync(
+		new URL('../../../../specification/units/remote.service.response-ledger.json', import.meta.url),
+		'utf8'
+	)
+) as { testing: { cases: { id: string; test: { title: string } }[] } };
+const contractCases = new Map(manifest.testing.cases.map((item) => [item.id, item]));
 
 function counted() {
 	const state = { runs: 0 };
@@ -8,14 +17,49 @@ function counted() {
 }
 const entry = (id: string, digest = 'd') => ({ id, digest });
 
-test('the same id and digest runs once and returns the first answer', async () => {
+function assertRegisteredCase(id: string) {
+	expect(contractCases.get(id)?.test.title).toBe(expect.getState().currentTestName);
+}
+
+test('run initialized settled replay preserves the first answer', async () => {
+	assertRegisteredCase('run-initialized-settled-replay');
+	await assertSettledReplay();
+});
+
+test('run pending replay joins an answer that is still being produced', async () => {
+	assertRegisteredCase('run-pending-replay');
+	await assertPendingReplay();
+});
+
+test('run digest conflict rejects another digest and runs nothing', async () => {
+	assertRegisteredCase('run-digest-conflict');
+	await assertDigestConflict();
+});
+
+test('run remembered failure is not retried', async () => {
+	assertRegisteredCase('run-remembered-failure');
+	await assertFailedReplay();
+});
+
+test('run expired or evicted answer is refused and never runs again', async () => {
+	assertRegisteredCase('run-expired-evicted');
+	await assertRetention();
+});
+
+test('run pending capacity full refuses new ones', async () => {
+	assertRegisteredCase('run-pending-capacity-full');
+	await assertPendingCapacity();
+});
+
+async function assertSettledReplay() {
 	const ledger = new ResponseLedgerService(),
 		{ state, execute } = counted();
 	expect(await ledger.run(entry('a'), execute)).toEqual({ run: 1 });
 	expect(await ledger.run(entry('a'), execute)).toEqual({ run: 1 });
 	expect(state.runs).toBe(1);
-});
-test('a re-send joins an answer that is still being produced', async () => {
+}
+
+async function assertPendingReplay() {
 	const ledger = new ResponseLedgerService(),
 		gate = deferred<string>();
 	let runs = 0;
@@ -28,8 +72,9 @@ test('a re-send joins an answer that is still being produced', async () => {
 	gate.resolve('done');
 	expect(await Promise.all([first, second])).toEqual(['done', 'done']);
 	expect(runs).toBe(1);
-});
-test('the same id with another digest is a conflict and runs nothing', async () => {
+}
+
+async function assertDigestConflict() {
 	const ledger = new ResponseLedgerService(),
 		{ state, execute } = counted();
 	await ledger.run(entry('a'), execute);
@@ -37,8 +82,9 @@ test('the same id with another digest is a conflict and runs nothing', async () 
 		code: 'request-conflict'
 	});
 	expect(state.runs).toBe(1);
-});
-test('a failed operation is remembered as failed, not retried', async () => {
+}
+
+async function assertFailedReplay() {
 	const ledger = new ResponseLedgerService();
 	let runs = 0;
 	const execute = async () => {
@@ -48,8 +94,9 @@ test('a failed operation is remembered as failed, not retried', async () => {
 	await expect(ledger.run(entry('a'), execute)).rejects.toThrow('refused');
 	await expect(ledger.run(entry('a'), execute)).rejects.toThrow('refused');
 	expect(runs).toBe(1);
-});
-test('an expired or evicted answer is refused, and its operation never runs again', async () => {
+}
+
+async function assertRetention() {
 	let now = 1000;
 	const expiring = new ResponseLedgerService({ ttlMs: 1000, now: () => now }),
 		first = counted();
@@ -66,8 +113,9 @@ test('an expired or evicted answer is refused, and its operation never runs agai
 		code: 'request-expired'
 	});
 	expect(second.state.runs).toBe(3);
-});
-test('a ledger full of unfinished operations refuses new ones', async () => {
+}
+
+async function assertPendingCapacity() {
 	const ledger = new ResponseLedgerService({ capacity: 1 }),
 		gate = deferred<string>();
 	const waiting = ledger.run(entry('a'), () => gate.promise);
@@ -76,4 +124,4 @@ test('a ledger full of unfinished operations refuses new ones', async () => {
 	});
 	gate.resolve('a');
 	expect(await waiting).toBe('a');
-});
+}

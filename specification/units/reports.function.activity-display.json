@@ -165,6 +165,302 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "plural",
+				"name": "Use the plural form for zero items",
+				"call": "plural(0, \"task\")",
+				"input": [0, "task"],
+				"expected": {
+					"kind": "value",
+					"value": "0 tasks"
+				}
+			},
+			{
+				"subject": "activityDisplay",
+				"name": "Say unknown when no agent has registered",
+				"call": "activityDisplay({ tracking: \"never-used\", working: null, unreadable: 0, roster: [] })",
+				"input": {
+					"tracking": "never-used",
+					"working": null,
+					"unreadable": 0,
+					"roster": []
+				},
+				"expected": {
+					"kind": "value",
+					"value": "No agent has registered in this repository, so who is working is not known."
+				}
+			},
+			{
+				"subject": "activityDisplay",
+				"name": "Use the singular verb for one working agent",
+				"call": "activityDisplay({ tracking: \"available\", working: 1, unreadable: 0, roster: [] })",
+				"input": {
+					"tracking": "available",
+					"working": 1,
+					"unreadable": 0,
+					"roster": []
+				},
+				"expected": {
+					"kind": "value",
+					"value": "1 registered agent is working now. Agents that do not register are not counted."
+				}
+			},
+			{
+				"subject": "activityDisplay",
+				"name": "Use the plural verb when no registered agent is working",
+				"call": "activityDisplay({ tracking: \"available\", working: 0, unreadable: 0, roster: [] })",
+				"input": {
+					"tracking": "available",
+					"working": 0,
+					"unreadable": 0,
+					"roster": []
+				},
+				"expected": {
+					"kind": "value",
+					"value": "0 registered agents are working now. Agents that do not register are not counted."
+				}
+			},
+			{
+				"subject": "commitHref",
+				"name": "Open a commit's history under its branch",
+				"call": "commitHref(\"/harness\", \"0123456789abcdef0123456789abcdef01234567\", [\"feature/kept#1\"])",
+				"input": [
+					"/harness",
+					"0123456789abcdef0123456789abcdef01234567",
+					["feature/kept#1"]
+				],
+				"expected": {
+					"kind": "value",
+					"value": "/harness/branch/feature/kept%231/commit/0123456789abcdef0123456789abcdef01234567/history"
+				}
+			},
+			{
+				"subject": "commitHref",
+				"name": "Use the retained-commit route when no branch is listed",
+				"call": "commitHref(\"/harness\", \"0123456789abcdef0123456789abcdef01234567\", [])",
+				"input": [
+					"/harness",
+					"0123456789abcdef0123456789abcdef01234567",
+					[]
+				],
+				"expected": {
+					"kind": "value",
+					"value": "/harness/commit/0123456789abcdef0123456789abcdef01234567/history"
+				}
+			},
+			{
+				"subject": "commitHref",
+				"name": "Use the first of several branches",
+				"call": "commitHref(\"/harness\", \"0123456789abcdef0123456789abcdef01234567\", [\"main\", \"feature/kept#1\"])",
+				"input": [
+					"/harness",
+					"0123456789abcdef0123456789abcdef01234567",
+					["main", "feature/kept#1"]
+				],
+				"expected": {
+					"kind": "value",
+					"value": "/harness/branch/main/commit/0123456789abcdef0123456789abcdef01234567/history"
+				}
+			},
+			{
+				"subject": "activityTime",
+				"name": "Show a UTC timestamp as its day and minute",
+				"call": "activityTime(\"2026-10-11T09:45:30.000Z\")",
+				"input": "2026-10-11T09:45:30.000Z",
+				"expected": {
+					"kind": "value",
+					"value": "2026-10-11 09:45"
+				}
+			},
+			{
+				"subject": "activityTime",
+				"name": "Convert an offset timestamp to UTC",
+				"call": "activityTime(\"2026-10-11T11:30:00+02:00\")",
+				"input": "2026-10-11T11:30:00+02:00",
+				"expected": {
+					"kind": "value",
+					"value": "2026-10-11 09:30"
+				}
+			},
+			{
+				"subject": "activityTime",
+				"name": "Keep text that is not a timestamp unchanged",
+				"call": "activityTime(\"not a timestamp\")",
+				"input": "not a timestamp",
+				"expected": {
+					"kind": "value",
+					"value": "not a timestamp"
+				}
+			},
+			{
+				"subject": "activityDisplay",
+				"name": "Reject a missing agent roster",
+				"call": "activityDisplay(null)",
+				"input": [null],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of null (reading 'working')"
+				}
+			},
+			{
+				"subject": "commitHref",
+				"name": "Reject a missing branches list",
+				"call": "commitHref('/harness', 'cccccccccccccccccccccccccccccccccccccccc', null)",
+				"input": ["/harness", "cccccccccccccccccccccccccccccccccccccccc", null],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of null (reading '0')"
+				}
+			}
+		],
+		"states": ["input", "boundary", "unknown", "invalid"],
+		"cases": [
+			{
+				"id": "plural.singular-one",
+				"state": "boundary",
+				"subject": "plural",
+				"example": "Keep the singular word for one item",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "plural: Keep the singular word for one item"
+				}
+			},
+			{
+				"id": "plural.other-counts",
+				"state": "input",
+				"subject": "plural",
+				"example": "Add s for other counts",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "plural: Add s for other counts"
+				}
+			},
+			{
+				"id": "plural.zero-items",
+				"state": "boundary",
+				"subject": "plural",
+				"example": "Use the plural form for zero items",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "plural: Use the plural form for zero items"
+				}
+			},
+			{
+				"id": "activity-display.unknown",
+				"state": "unknown",
+				"subject": "activityDisplay",
+				"example": "Say unknown when no agent has registered",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "activityDisplay: Say unknown when no agent has registered"
+				}
+			},
+			{
+				"id": "activity-display.one-working",
+				"state": "boundary",
+				"subject": "activityDisplay",
+				"example": "Use the singular verb for one working agent",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "activityDisplay: Use the singular verb for one working agent"
+				}
+			},
+			{
+				"id": "activity-display.none-working",
+				"state": "boundary",
+				"subject": "activityDisplay",
+				"example": "Use the plural verb when no registered agent is working",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "activityDisplay: Use the plural verb when no registered agent is working"
+				}
+			},
+			{
+				"id": "commit-href.branch",
+				"state": "input",
+				"subject": "commitHref",
+				"example": "Open a commit's history under its branch",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "commitHref: Open a commit's history under its branch"
+				}
+			},
+			{
+				"id": "commit-href.no-branch",
+				"state": "boundary",
+				"subject": "commitHref",
+				"example": "Use the retained-commit route when no branch is listed",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "commitHref: Use the retained-commit route when no branch is listed"
+				}
+			},
+			{
+				"id": "commit-href.first-branch",
+				"state": "input",
+				"subject": "commitHref",
+				"example": "Use the first of several branches",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "commitHref: Use the first of several branches"
+				}
+			},
+			{
+				"id": "activity-time.utc",
+				"state": "input",
+				"subject": "activityTime",
+				"example": "Show a UTC timestamp as its day and minute",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "activityTime: Show a UTC timestamp as its day and minute"
+				}
+			},
+			{
+				"id": "activity-time.offset",
+				"state": "input",
+				"subject": "activityTime",
+				"example": "Convert an offset timestamp to UTC",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "activityTime: Convert an offset timestamp to UTC"
+				}
+			},
+			{
+				"id": "activity-time.invalid",
+				"state": "invalid",
+				"subject": "activityTime",
+				"example": "Keep text that is not a timestamp unchanged",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "activityTime: Keep text that is not a timestamp unchanged"
+				}
+			},
+			{
+				"id": "activitydisplay-reject-a-missing-agent-roster",
+				"state": "invalid",
+				"subject": "activityDisplay",
+				"example": "Reject a missing agent roster",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "activityDisplay: Reject a missing agent roster"
+				}
+			},
+			{
+				"id": "commithref-reject-a-missing-branches-list",
+				"state": "invalid",
+				"subject": "commitHref",
+				"example": "Reject a missing branches list",
+				"test": {
+					"file": "packages/reports/test/utils/activity-display.test.ts",
+					"title": "commitHref: Reject a missing branches list"
+				}
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

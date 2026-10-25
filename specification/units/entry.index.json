@@ -152,7 +152,8 @@
 			"TestCaseValidator",
 			"TestDiscoveryService",
 			"TestExpectationService",
-			"TestArtifactService"
+			"TestArtifactService",
+			"CaseResultAdapter"
 		]
 	},
 	"contract": {
@@ -219,6 +220,11 @@
 		},
 		{
 			"unit": "adapter.sqlite",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.verification-evidence-case-result",
 			"via": "reexport",
 			"origin": "derived"
 		},

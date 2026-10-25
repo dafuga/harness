@@ -1,12 +1,175 @@
 {
 	"schemaVersion": 1,
+	"status": "in-progress",
 	"base": "e463e31854366174e5fb338b58e3734ce2b8d12d",
-	"initial": {
-		"files": 1105,
-		"declarations": 3960,
-		"standardizedUnits": 0,
-		"standardizedCases": 0
+	"scope": "Harness repository workspaces and generators only; external applications and production excluded",
+	"inventory": {
+		"files": 1109,
+		"declarations": 4209,
+		"standardizedUnits": 21,
+		"standardizedCases": 229,
+		"errors": 6004
 	},
-	"policy": "Only page, component, helper, service and API cases; migrate assertions before retiring entrypoints",
-	"status": "in-progress"
+	"migrations": [
+		{
+			"unit": "adapter.verification-evidence-case-result",
+			"shape": "service",
+			"cases": 4,
+			"states": ["configured", "disabled"],
+			"testFiles": ["test/adapters/verification-evidence/case-result.test.ts"]
+		},
+		{
+			"unit": "desktop.function.remote-labels",
+			"shape": "helper",
+			"cases": 53,
+			"states": ["input", "boundary", "invalid"],
+			"testFiles": ["packages/desktop/test/utils/remote-labels.test.ts"]
+		},
+		{
+			"unit": "function.case",
+			"shape": "helper",
+			"cases": 24,
+			"states": ["input", "invalid"],
+			"testFiles": ["test/case.test.ts"]
+		},
+		{
+			"unit": "remote.service.event-log",
+			"shape": "service",
+			"cases": 10,
+			"states": ["initialized", "recorded", "trimmed"],
+			"testFiles": ["packages/remote/test/services/event-log.test.ts"]
+		},
+		{
+			"unit": "remote.service.response-ledger",
+			"shape": "service",
+			"cases": 6,
+			"states": [
+				"initialized-settled-replay",
+				"pending-replay",
+				"digest-conflict",
+				"remembered-failure",
+				"expired-evicted",
+				"pending-capacity-full"
+			],
+			"testFiles": ["packages/remote/test/services/response-ledger.test.ts"]
+		},
+		{
+			"unit": "remote.validator.remote-input",
+			"shape": "service",
+			"cases": 6,
+			"states": ["initialized"],
+			"testFiles": ["packages/remote/test/validators/remote-input.test.ts"]
+		},
+		{
+			"unit": "remote.validator.secure-packet",
+			"shape": "service",
+			"cases": 2,
+			"states": ["initialized"],
+			"testFiles": ["packages/remote/test/validators/secure-packet.test.ts"]
+		},
+		{
+			"unit": "remote.validator.wire-message",
+			"shape": "service",
+			"cases": 2,
+			"states": ["initialized"],
+			"testFiles": ["packages/remote/test/validators/wire-message.test.ts"]
+		},
+		{
+			"unit": "reports.endpoint.api-report-audio-comparison",
+			"shape": "api",
+			"cases": 1,
+			"states": ["request-matrix"],
+			"testFiles": ["packages/reports/test/routes/report-audio-comparison-api.test.ts"]
+		},
+		{
+			"unit": "reports.endpoint.api-report-audio-upload",
+			"shape": "api",
+			"cases": 1,
+			"states": ["request-matrix"],
+			"testFiles": ["packages/reports/test/routes/report-audio-upload-api.test.ts"]
+		},
+		{
+			"unit": "reports.endpoint.api-report-screenshot-upload",
+			"shape": "api",
+			"cases": 2,
+			"states": ["request-guards", "request-matrix"],
+			"testFiles": ["packages/reports/test/routes/report-screenshot-upload-api.test.ts"]
+		},
+		{
+			"unit": "reports.function.activity-display",
+			"shape": "helper",
+			"cases": 14,
+			"states": ["input", "boundary", "unknown", "invalid"],
+			"testFiles": ["packages/reports/test/utils/activity-display.test.ts"]
+		},
+		{
+			"unit": "reports.function.entity-contract",
+			"shape": "helper",
+			"cases": 27,
+			"states": ["input", "invalid"],
+			"testFiles": ["packages/reports/test/utils/entity-contract.test.ts"]
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"shape": "helper",
+			"cases": 16,
+			"states": ["input", "boundary", "invalid"],
+			"testFiles": ["packages/reports/test/utils/entity-lens.test.ts"]
+		},
+		{
+			"unit": "reports.function.evidence-media",
+			"shape": "helper",
+			"cases": 20,
+			"states": ["input", "boundary", "invalid"],
+			"testFiles": ["packages/reports/test/utils/evidence-media.test.ts"]
+		},
+		{
+			"unit": "reports.function.report-filter",
+			"shape": "helper",
+			"cases": 32,
+			"states": ["typical", "boundary", "invalid"],
+			"testFiles": ["packages/reports/test/utils/report-filter.test.ts"]
+		},
+		{
+			"unit": "service.verification-evidence-test-artifact",
+			"shape": "service",
+			"cases": 1,
+			"states": ["initialized"],
+			"testFiles": ["test/services/verification-evidence/test-artifact.test.ts"]
+		},
+		{
+			"unit": "service.verification-evidence-test-contract",
+			"shape": "service",
+			"cases": 2,
+			"states": ["initialized"],
+			"testFiles": ["test/services/verification-evidence/test-contract.test.ts"]
+		},
+		{
+			"unit": "service.verification-evidence-test-discovery",
+			"shape": "service",
+			"cases": 2,
+			"states": ["initialized"],
+			"testFiles": ["test/services/verification-evidence/test-discovery.test.ts"]
+		},
+		{
+			"unit": "service.verification-evidence-test-expectation",
+			"shape": "service",
+			"cases": 3,
+			"states": ["initialized"],
+			"testFiles": ["test/services/verification-evidence/test-expectation.test.ts"]
+		},
+		{
+			"unit": "validator.verification-evidence-test-case",
+			"shape": "service",
+			"cases": 1,
+			"states": ["initialized"],
+			"testFiles": ["test/validators/verification-evidence/test-case.test.ts"]
+		}
+	],
+	"remaining": [
+		"Migrate all unsupported declarations before enabling root testing:1; no subset is full policy acceptance.",
+		"Complete normal runner observations for Playwright and generated projects, reviewed baselines and current Explorer Tests/Examples/History.",
+		"Rebuild all source history from a frozen ref set, retain missing historical proof and verify record/media hashes.",
+		"Run full aggregate checks on harbor-mbp-2 and current-revision manual UI/audio verification."
+	]
 }

@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "function.verification-evidence-case-outcome-schema",
+	"kind": "function",
+	"title": "caseOutcomeSchema",
+	"responsibility": "Owns the caseOutcomeSchema shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/verification-evidence/caseOutcomeSchema.ts"],
+		"symbols": ["caseFileSchema", "caseOutcomeSchema", "evidenceArtifactSchema"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "caseFileSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "caseOutcomeSchema",
+				"type": "unknown"
+			},
+			{
+				"name": "evidenceArtifactSchema",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/verification-evidence/caseOutcomeSchema.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/verification-evidence/caseOutcomeSchema.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

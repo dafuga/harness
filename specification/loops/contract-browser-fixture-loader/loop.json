@@ -2,11 +2,9 @@
 	"name": "contract-browser-fixture-loader",
 	"goal": "Generated shared screenshot fixtures register with Playwright and preserve API-only lazy browser setup",
 	"createdAt": "2026-10-25T14:58:42.064Z",
-	"updatedAt": "2026-10-25T15:41:51.762Z",
+	"updatedAt": "2026-10-25T16:28:23.455Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -48,7 +46,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:28:23.455Z",
+			"evidence": "Onharbor-mbp-2 unchanged three cases fail at7f636f855c and pass atacde70a28e with identical command/environment. Retained redbdf2333a andgreen9b9117d7; two outer Vitest workers and project-limited one Playwright worker retained in run output. Proof fetched with Harness CLI; no primary automated E2Es."
 		},
 		{
 			"id": "guard",

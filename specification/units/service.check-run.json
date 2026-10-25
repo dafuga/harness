@@ -13,7 +13,9 @@
 			"src/workflows/run-verify/verification-service/CheckRunService.ts",
 			"src/workflows/run-verify/verification-service/check-run-service/CheckRunService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.types.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readCaseResults.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readCheckEvidence.ts"
 		],
 		"symbols": [
 			"RunContext",
@@ -33,7 +35,9 @@
 			"CheckRunService.run",
 			"CheckRunService.version",
 			"RunContext",
-			"CheckOutcome"
+			"CheckOutcome",
+			"readCaseResults",
+			"readCheckEvidence"
 		]
 	},
 	"contract": {
@@ -50,6 +54,26 @@
 			{
 				"name": "CheckRunService.version.tool",
 				"type": "{ id: string; command: string }"
+			},
+			{
+				"name": "readCaseResults.directory",
+				"type": "string"
+			},
+			{
+				"name": "readCaseResults.relative",
+				"type": "string"
+			},
+			{
+				"name": "readCheckEvidence.directory",
+				"type": "string"
+			},
+			{
+				"name": "readCheckEvidence.path",
+				"type": "string"
+			},
+			{
+				"name": "readCheckEvidence.timedOut",
+				"type": "boolean"
 			}
 		],
 		"outputs": [
@@ -60,9 +84,22 @@
 			{
 				"name": "CheckRunService.version",
 				"type": "Promise<string | undefined>"
+			},
+			{
+				"name": "readCaseResults",
+				"type": "unknown"
+			},
+			{
+				"name": "readCheckEvidence",
+				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -92,6 +129,11 @@
 		},
 		{
 			"unit": "function.run-isolated",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-evidence-case-outcome-schema",
 			"via": "import",
 			"origin": "derived"
 		},

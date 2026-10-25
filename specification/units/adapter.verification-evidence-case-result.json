@@ -1,0 +1,137 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.verification-evidence-case-result",
+	"kind": "adapter",
+	"title": "CaseResultAdapter",
+	"responsibility": "Retains exact revision-bound Vitest and Playwright case outcomes as immutable verification evidence.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/verification-evidence/CaseResultAdapter.ts",
+			"src/adapters/verification-evidence/CaseResultAdapter.types.ts"
+		],
+		"symbols": [
+			"CaseResultAdapter",
+			"CaseResultAdapter.constructor",
+			"CaseResultAdapter.onFinished",
+			"CaseResultAdapter.onTestEnd",
+			"CaseResultAdapterConfig",
+			"default",
+			"CaseResultAdapterConfig",
+			"RunnerTask",
+			"BrowserCase",
+			"BrowserResult"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "CaseResultAdapter.constructor.config",
+				"type": "CaseResultAdapterConfig"
+			},
+			{
+				"name": "CaseResultAdapter.onFinished.files",
+				"type": "RunnerTask[]"
+			},
+			{
+				"name": "CaseResultAdapter.onTestEnd.test",
+				"type": "BrowserCase"
+			},
+			{
+				"name": "CaseResultAdapter.onTestEnd.result",
+				"type": "BrowserResult"
+			}
+		],
+		"outputs": [
+			{
+				"name": "CaseResultAdapter.onFinished",
+				"type": "void"
+			},
+			{
+				"name": "CaseResultAdapter.onTestEnd",
+				"type": "void"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.verification-evidence-case-outcome-schema",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/verification-evidence/CaseResultAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/verification-evidence/CaseResultAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["configured", "disabled"],
+		"cases": [
+			{
+				"id": "onfinished.configured",
+				"state": "configured",
+				"subject": "CaseResultAdapter.onFinished",
+				"test": {
+					"file": "test/adapters/verification-evidence/case-result.test.ts",
+					"title": "CaseResultAdapter.onFinished configured retains nested results, retries and failures"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"id": "onfinished.disabled",
+				"state": "disabled",
+				"subject": "CaseResultAdapter.onFinished",
+				"test": {
+					"file": "test/adapters/verification-evidence/case-result.test.ts",
+					"title": "CaseResultAdapter.onFinished disabled writes no evidence"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"id": "ontestend.configured",
+				"state": "configured",
+				"subject": "CaseResultAdapter.onTestEnd",
+				"test": {
+					"file": "test/adapters/verification-evidence/case-result.test.ts",
+					"title": "CaseResultAdapter.onTestEnd configured retains browser status and suite identity"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"id": "ontestend.disabled",
+				"state": "disabled",
+				"subject": "CaseResultAdapter.onTestEnd",
+				"test": {
+					"file": "test/adapters/verification-evidence/case-result.test.ts",
+					"title": "CaseResultAdapter.onTestEnd disabled writes no evidence"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
