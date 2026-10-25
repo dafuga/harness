@@ -4879,8 +4879,20 @@
 			},
 			"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
 			"contractHash": "aaaa8c20a02290d00516311a765f39585518bfb902ab21d1b98a1327ee2b6cff",
-			"status": "review",
-			"reviews": [],
+			"status": "accepted",
+			"reviews": [
+				{
+					"attempt": "f586bb95-2e44-4cc7-b307-0ae21388769c",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "Luna requested gpt-5.6-luna/max, backend identity unreported. Primary repaired compiler and static discovery; 13 stream examples. Integrated at bd539aefa6. Original assertions and real boundaries retained. Combined 138 unit cases pass; affected relay compiler, lint and audit pass; root compiler and audit pass. Full migration and aggregate E2Es remain pending.",
+					"at": "2026-10-25T18:50:37.691Z",
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null
+				}
+			],
 			"createdAt": "2026-10-25T18:00:29.956Z",
 			"claim": {
 				"worker": "luna-helpers",
