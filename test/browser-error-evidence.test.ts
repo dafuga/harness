@@ -64,7 +64,10 @@ for (const exitCode of [0, 1]) {
 				problems: [],
 				resolve: () => ({ media: null })
 			});
-			expect(view.tests[0]).toMatchObject({ browserErrors: [diagnostics] });
+			expect(view.tests[0]).toMatchObject({
+				browserErrors: [diagnostics],
+				cases: outcome.entry.cases
+			});
 			const inherited = recordView(
 				{
 					...sample,
@@ -109,13 +112,15 @@ for (const mode of ['malformed', 'timeout']) {
 				join(root, 'writer.cjs'),
 				mode === 'timeout'
 					? '\nsetInterval(() => {}, 1000);'
-					: "\nfs.appendFileSync(path.join(directory, 'browser-errors.ndjson'), 'not-json\\n');"
+					: "\nfs.appendFileSync(path.join(directory, 'browser-errors.ndjson'), 'not-json\\n');fs.appendFileSync(path.join(directory, 'case-results.ndjson'), 'not-json\\n');"
 			);
 			const outcome = await runDiagnosticCheck(root, mode === 'timeout' ? 1500 : 10_000);
 			expect(outcome.passed).toBe(false);
 			expect(outcome.entry.status).toBe('failed');
 			expect(outcome.entry.browserErrors).toBeUndefined();
-			if (mode === 'timeout') expect(outcome.entry).not.toHaveProperty('cases');
+			expect(outcome.entry).not.toHaveProperty('cases');
+			if (mode === 'malformed')
+				expect(outcome.failures.join(' ')).toContain('Invalid case results');
 			expect(outcome.failures.join(' ')).toMatch(
 				mode === 'timeout' ? /timed out/ : /Browser diagnostics/
 			);
