@@ -4397,6 +4397,63 @@
 			"createdAt": "2026-10-25T18:00:28.669Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.relay-connect-claims-examples",
+			"title": "Migrate relay.function.connect-claims executable Examples",
+			"moduleGoal": "Keep every original assertion in finite authored helper Examples",
+			"verificationFiles": [
+				"packages/relay/test/utils/connect-claims.test.ts",
+				"test/fixtures/contract-migration/relay-connect-claims-examples.json"
+			],
+			"instructions": "Initial helper-example migration for relay.function.connect-claims. Edit ONLY packages/relay/test/utils/connect-claims.test.ts and a full proposed copy of specification/units/relay.function.connect-claims.json at test/fixtures/contract-migration/relay-connect-claims-examples.json. Preserve all original assertions, integration boundaries, public forwarding imports, workloads and fixture edge cases. Primary owns specification, shared contracts, integration, commits and verification. Do not run test/build/lint/install/audit commands, delegate, publish, access credentials or update any memory. Keep work bounded to these two files and finish with reviewable edits.\nUse helper testing shape and exactly one registered case for each authored Example. Keep pre-existing helperContracts examples when present; add testing.examples for additional ordinary-function behaviors without duplicate example names. Each Example must declare the actual invocation and expected returned result, expected error, or expected undefined/void. registerExamples must invoke the actual imported function: no callback returning an expected constant, no skipped/fails/only tests and no standalone regressions. Preserve original assertions in the responsible callback when realistic integration or stateful repeat behavior requires them. Describe actual state or error behavior in the Example title and comment.\nRegister with TestExpectationService.registerExamples(test, imported proposed manifest as ComponentManifest, callback map). Import test from vitest explicitly. Non-JSON inputs such as Headers, Request, RegExp, ArrayBuffer, undefined, null-prototype objects or streams need explicit authored fixture markers in JSON input plus transparent reconstruction in the test callback. The displayed call must explain the real reconstructed invocation. If output needs projection, display that projection in the call; preserve all original fields, types, error/undefined differences and assertions. Do not invent an error in projection when the helper itself succeeds. Never derive authored expectations from observed implementation output. Include each meaningful supported prop, boundary and null/error prop state in a finite matrix. Keep every old input covered and report counts, retained boundaries and unresolved metadata/runtime issues. Use companion .types.ts only if already allowed by these two files; otherwise inline type expressions without new named declarations. Do not alter any non-testing manifest fields; primary reviews missing declared errors separately.",
+			"wantedContract": {
+				"responsibility": "Canonical helper examples for relay.function.connect-claims",
+				"inputs": [
+					{
+						"name": "authored calls and realistic fixtures",
+						"type": "declared Examples"
+					}
+				],
+				"outputs": [
+					{
+						"name": "one registered case per Example",
+						"type": "test source and full proposed manifest"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid props and rejected inputs",
+						"type": "authored result or error"
+					}
+				]
+			},
+			"model": "claude-haiku-5-5",
+			"provider": "claude",
+			"intelligence": "max",
+			"assignee": "haiku-helpers-b",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "relay.function.connect-claims",
+				"goal": "Keep every original assertion in finite authored helper Examples",
+				"files": [
+					"packages/relay/src/utils/connectClaims.ts",
+					"packages/relay/src/utils/development-tooling/connectClaims.ts",
+					"packages/relay/test/utils/connect-claims.test.ts",
+					"test/fixtures/contract-migration/relay-connect-claims-examples.json"
+				]
+			},
+			"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
+			"contractHash": "874b754790ae2ba8b36f72acdbe85134b1bbb7b02e5282d3b1fe17864c37cf45",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T18:00:29.318Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
