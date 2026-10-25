@@ -14,7 +14,8 @@ export const moduleReviewSchema = z.strictObject({
 			contract: true,
 			helperContracts: true,
 			configControls: true,
-			preview: true
+			preview: true,
+			runtime: true
 		})
 		.partial()
 		.refine((metadata) => Object.keys(metadata).length > 0)

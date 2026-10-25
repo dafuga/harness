@@ -8,7 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/git-source-history/module-data-service/moduleReviews.ts"],
-		"symbols": ["readModuleReviews", "applyModuleReviews", "reviewedModuleFacts"]
+		"symbols": [
+			"readModuleReviews",
+			"applyModuleReviews",
+			"reviewedModuleFacts",
+			"unresolvedReviewIssues"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -36,6 +41,14 @@
 			{
 				"name": "reviewedModuleFacts.prior",
 				"type": "ModuleData"
+			},
+			{
+				"name": "unresolvedReviewIssues.issues",
+				"type": "string[]"
+			},
+			{
+				"name": "unresolvedReviewIssues.reviews",
+				"type": "ModuleReview[]"
 			}
 		],
 		"outputs": [
@@ -49,6 +62,10 @@
 			},
 			{
 				"name": "reviewedModuleFacts",
+				"type": "unknown"
+			},
+			{
+				"name": "unresolvedReviewIssues",
 				"type": "unknown"
 			}
 		],

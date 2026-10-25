@@ -1,5 +1,5 @@
 import { ModuleDataReviewRepository } from '../../../repositories/git-source-history/ModuleDataReviewRepository';
-import { applyModuleReviews } from './moduleReviews';
+import { applyModuleReviews, unresolvedReviewIssues } from './moduleReviews';
 import { SourceIndexService } from '../../development-tooling/source-index-service/SourceIndexService';
 import { modulePreviewBindings } from './modulePreviewBindings';
 import { UnitRegistryRepository } from '../../../repositories/UnitRegistryRepository';
@@ -58,7 +58,7 @@ async function scanModuleSourceFacts(
 		references: sourceGraph.uncertain,
 		relationships: moduleRelationships(registry),
 		sourceIssues: [
-			...loaded.errors,
+			...unresolvedReviewIssues(loaded.errors, reviews),
 			...declarations.flatMap((unit) => previewBinding(unit, loaded.scenarios)),
 			...new UnitRegistryValidator().validate(declarations, new Set(loaded.index.files.keys()))
 		]

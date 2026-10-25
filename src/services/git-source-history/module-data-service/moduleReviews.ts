@@ -67,7 +67,10 @@ export async function reviewedModuleFacts(root: string, prior: ModuleData) {
 	const validator = new UnitRegistryValidator();
 	const oldIssues = new Set(validator.validate(prior.declarations, new Set(blobs.keys())));
 	const sourceIssues = [
-		...prior.sourceIssues.filter((issue) => !oldIssues.has(issue)),
+		...unresolvedReviewIssues(
+			prior.sourceIssues.filter((issue) => !oldIssues.has(issue)),
+			reviews
+		),
 		...validator.validate(declarations, new Set(blobs.keys()))
 	];
 	return {
@@ -80,4 +83,12 @@ export async function reviewedModuleFacts(root: string, prior: ModuleData) {
 		relationships: prior.relationships,
 		sourceIssues
 	};
+}
+
+/** An explicit, source-bound default-target repair supersedes its old manifest diagnostic. */
+export function unresolvedReviewIssues(issues: string[], reviews: ModuleReview[]) {
+	const repaired = reviews
+		.filter((review) => review.metadata.runtime)
+		.map((review) => `${review.unit}: runtime.targets must include the default `);
+	return issues.filter((issue) => !repaired.some((prefix) => issue.startsWith(prefix)));
 }

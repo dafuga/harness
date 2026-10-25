@@ -58,6 +58,7 @@ export class ModuleDataReviewRepository {
 			throw new Error('Review belongs to a different source commit.');
 		const unit = units.find((unit) => unit.id === requested.unit);
 		if (!unit) throw new Error(`Unknown review module: ${requested.unit}`);
+		this.checkRuntime(requested.metadata.runtime, unit);
 		const files = Object.fromEntries(
 			unit.owns.source.map((path) => {
 				const hash = blobs.get(path);
@@ -73,6 +74,20 @@ export class ModuleDataReviewRepository {
 			files
 		};
 		return { ...body, digest: seal(body) };
+	}
+
+	private checkRuntime(runtime: ComponentManifest['runtime'] | undefined, unit: ComponentManifest) {
+		if (
+			runtime &&
+			(runtime.kind !== 'module' ||
+				!unit.owns.source.includes(runtime.entry) ||
+				!runtime.targets.some(
+					(target) => target.kind === runtime.kind && target.entry === runtime.entry
+				))
+		)
+			throw new Error(
+				'Runtime reviews must name an owned module entry and include its default target.'
+			);
 	}
 
 	private async commit(reviews: ModuleReview[]) {
