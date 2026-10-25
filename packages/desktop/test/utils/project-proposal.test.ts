@@ -68,7 +68,9 @@ test('the question asks for the fixed form, bounds what may be read and says to 
 	expect(prompt).toContain('exactly these five fields');
 	expect(prompt).toContain('"contract": {"inputs": [{"name", "type"}]');
 	expect(prompt).toContain('Do not\nread the implementation of other registered units');
-	expect(prompt).toContain('pages, layouts, components, functions, configs, services, models');
+	expect(prompt).toContain(
+		'pages, apis, layouts, components, functions, configs, services, models'
+	);
 	expect(prompt).toContain('made in the components catalog');
 	expect(prompt.endsWith('Request:\nAdd an order badge')).toBe(true);
 });

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { content, words } from './entityRender';
+import { content, sectionWords as card, words } from './entityRender';
 import { commits, ids } from './entityUnits';
 
 /**
@@ -27,12 +27,6 @@ const tabs = (body: string) =>
 	[...body.matchAll(/role="tab"[^>]*>(.*?)<\/(?:a|button)>/gs)].map((match) =>
 		words(match[1]).trim()
 	);
-function card(body: string, name: string): string {
-	const from = body.indexOf(`aria-label="${name}"`);
-	if (from < 0) return '';
-	const text = words(body.slice(body.indexOf('>', from) + 1, body.indexOf('</section>', from)));
-	return text.replace(/\s+/g, ' ').trim();
-}
 const times = (text: string, part: string) => text.split(part).length - 1;
 
 test('a config and a service have the sections of every entity, a service showing Examples where a config shows Tests, and none is named Used by', () => {
