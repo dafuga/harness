@@ -1,3 +1,0 @@
-{"event":"loop.created","timestamp":"2026-10-22T20:18:22.917Z","name":"unified-module-cards","goal":"Every module card shares optional visuals and a flat first-three Used In footer","template":"bug-fix","templateLineage":["bug-fix"]}
-{"event":"step.completed","timestamp":"2026-10-22T20:25:59.575Z","loop":"unified-module-cards","step":"spec","evidence":"All module cards share one renderer, optional visual evidence and first-three flat Used In links."}
-{"event":"step.completed","timestamp":"2026-10-22T20:26:04.995Z","loop":"unified-module-cards","step":"coverage","evidence":"Existing catalog and relationship tests accepted separate card renderers and category-grouped footers. Extend the standard card matrix, footer distinctness/cap checks and host identity coverage."}

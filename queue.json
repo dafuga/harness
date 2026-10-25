@@ -1,0 +1,11 @@
+{
+	"schemaVersion": 1,
+	"features": [
+		{
+			"id": "contract-test-policy",
+			"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+			"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+		}
+	],
+	"tasks": []
+}

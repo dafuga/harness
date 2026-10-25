@@ -1,3 +1,0 @@
-{"event":"loop.created","timestamp":"2026-10-22T20:04:36.160Z","name":"service-errors-last","goal":"Service-wide errors follow all methods in the Contract tab","template":"bug-fix","templateLineage":["bug-fix"]}
-{"event":"step.completed","timestamp":"2026-10-22T20:05:20.443Z","loop":"service-errors-last","step":"spec","evidence":"Service-wide errors must follow every method; method errors stay scoped."}
-{"event":"step.completed","timestamp":"2026-10-22T20:05:21.234Z","loop":"service-errors-last","step":"coverage","evidence":"Existing service-contract unit and browser scenarios asserted presence and uniqueness but omitted document order; extend both."}

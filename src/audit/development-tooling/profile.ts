@@ -1,9 +1,0 @@
-import type { AuditProfile } from './adapters/types';
-import { fail } from '../../core/development-tooling/errors';
-
-export function parseAuditProfile(profile: string): AuditProfile {
-	if (profile === 'app' || profile === 'auto' || profile === 'dapp' || profile === 'lib') {
-		return profile;
-	}
-	return fail(`Unsupported audit profile "${profile}". Use one of: auto, app, dapp, lib.`);
-}

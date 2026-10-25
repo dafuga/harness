@@ -1,8 +1,0 @@
-import type { ReportRepository } from '../../repositories/reports-media/report-repository/ReportRepository';
-import { SiteReportRepository } from '../../routes/api/health/SiteReportRepository';
-
-/** Everything this server serves or changes comes through here, limited to its own site. */
-export const repository: ReportRepository = new SiteReportRepository();
-
-export { reportHttp } from '../../routes/api/health/reportHttp';
-export { reportFile } from '../../routes/api/reports/[id]/[type]/[file]/reportHttp';
