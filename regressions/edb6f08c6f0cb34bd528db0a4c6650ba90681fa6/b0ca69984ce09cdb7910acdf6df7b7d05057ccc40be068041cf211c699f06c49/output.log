@@ -1,0 +1,811 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ldTbcz
+
+ ❯ test/utils/regression-files.test.ts (23 tests | 5 failed) 3514ms
+   ✓ testPath: Classify packages/app/test/x.ts 1ms
+   ✓ testPath: Classify src/x.spec.ts 0ms
+   ✓ testPath: Classify specification/scenarios/x.json 0ms
+   ✓ testPath: Classify src/x.ts 0ms
+   ✓ testPath: Classify vitest.config.ts 0ms
+   ✓ metadata: Classify specification/loops/x/trace.ndjson 0ms
+   ✓ metadata: Classify .codex/skills/harness/SKILL.md 0ms
+   ✓ metadata: Classify src/x.ts 0ms
+   × regressionFiles: Freeze real blobs and authored expectation semantics 251ms
+     → Example output differs from its comment
++ actual - expected
+
+  {
++   expectations: [],
+-   expectations: [
+-     {
+-       path: 'specification/units/function.sample.json',
+-       sha256: 'fd63e897e7a32736971982f3ea0391e224e13f115cbfe9c61246fc8cc407cf83',
+-       unit: 'function.sample'
+-     }
+-   ],
+    files: [
+      'harness.verify.json',
+      'package.json',
+      'test/proof.ts',
+      'test/support/data.json',
+
+   ✓ regressionFiles: Reject an untracked selected test 188ms
+   ✓ regressionFiles: Reject product source named as a test 199ms
+   ✓ regressionFixCommit: Permit a product repair with unrelated documentation changes 257ms
+   ✓ regressionFixCommit: Reject reuse of the failing revision 165ms
+   ✓ regressionFixCommit: Reject changed executable test bytes 252ms
+   × regressionFixCommit: Reject wrong source hidden by a changed authored answer 537ms
+     → Example error differs from its comment
++ actual - expected
+
+  {
++   actual: undefined,
++   expected: Error: rejected promise
++       at file:///Users/danielfugere/projects/harness-contract-test-policy-20261025/node_modules/@vitest/expect/dist/index.js:1632:17
++       at assertAuthoredInputVariants (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ldTbcz/test/support/regressionInputExamples.ts:119:3)
++       at invokeRegressionFix (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ldTbcz/test/support/regressionInputExamples.ts:59:4)
++       at TestExpectationService.example (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ldTbcz/src/services/verification-evidence/TestExpectationService.ts:80:13)
++       at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ldTbcz/src/services/verification-evidence/TestExpectationService.ts:58:6
++       at file:///Users/danielfugere/projects/harness-contract-test-policy-20261025/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20,
++   message: 'promise resolved "undefined" instead of rejecting',
++   name: 'AssertionError',
++   showDiff: true
+-   message: 'The authored regression expectations must remain unchanged.',
+-   name: 'ExpectedCliError'
+  }
+
+   ✓ regressionTestCommit: Admit a strengthened executable test 220ms
+   × regressionTestCommit: Admit a strengthened authored comment without changing its adapter 202ms
+     → Example unexpectedly failed
+
+true !== false
+
+   ✓ regressionTestCommit: Reject product repair in a test checkpoint 197ms
+   × regressionTestCommit: Reject product metadata disguised as a named test 203ms
+     → Expected example to fail
+
+false !== true
+
+   ✓ regressionFiles: Reject an empty selected test list 166ms
+   ✓ regressionFixCommit: Reject documentation without a product repair 247ms
+   ✓ regressionTestCommit: Reject documentation without strengthening a named test 209ms
+   × regressionTestCommit: Reject product source disguised as a named test 211ms
+     → Expected example to fail
+
+false !== true
+
+ ❯ test/regression-loops.test.ts (8 tests | 2 failed) 95ms
+   ✓ regression profiles ignore volatile macOS launcher identity while retaining workload settings 2ms
+   ✓ bug-fix exposes ordered proof and project checks 17ms
+   ✓ fix exposes ordered proof and project checks 17ms
+   ✓ regression-prevention exposes ordered proof and project checks 16ms
+   ✓ project templates can extend regression prevention and override its guard 3ms
+   × generated app guidance selects loops and explains retries 27ms
+     → expected '# AGENTS.md\n\nThis is a Harness Svel…' to contain 'Freeze executable tests and authored …'
+   × generated lib guidance selects loops and explains retries 2ms
+     → expected '# AGENTS.md\n\nThis is a Harness Bun …' to contain 'Freeze executable tests and authored …'
+   ✓ loop guide explains red-green evidence, prevention guards, and agent retries 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/regression-loops.test.ts > generated app guidance selects loops and explains retries
+AssertionError: expected '# AGENTS.md\n\nThis is a Harness Svel…' to contain 'Freeze executable tests and authored …'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Freeze executable tests and authored Examples, states, methods and expected results together. Admit test-only edits to those contract fields, reject product metadata hidden among named tests, and keep original Git blob provenance separate from semantic expectation hashes.[39m
+[31m+ # AGENTS.md[39m
+[31m+[39m
+[31m+ This is a Harness SvelteKit app. Treat Harness as the operating contract for every code change in this project.[39m
+[31m+[39m
+[31m+ ## Required Harness Workflow[39m
+[31m+[39m
+[31m+ - Read this file and the `.codex/skills/harness/SKILL.md` skill before changing code.[39m
+[31m+ - Use Harness generators for supported code shapes instead of hand-rolling new structure.[39m
+[31m+ - Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.[39m
+[31m+ - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.[39m
+[31m+ - Add or update a feature spec before implementation.[39m
+[31m+ - Write tests only in the five standard forms, and fix reported bugs by strengthening existing cases; see Standard Test Forms and Stable-Case Bug Policy.[39m
+[31m+ - Keep files small, focused, and aligned with `harness.audit.json` limits.[39m
+[31m+ - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`.[39m
+[31m+[39m
+[31m+ ## Machine Resources[39m
+[31m+[39m
+[31m+ - Run coding tools through `harness resources run --priority coding --cpus auto --memory-mib auto -- <command>`.[39m
+[31m+ - Queue agent-needed tests with `--priority agent-test`; use `--priority environment` for background checks.[39m
+[31m+ - Use `harness resources status --json` before heavy work. Keep 10% CPU and max(10% RAM, 2 GiB) free.[39m
+[31m+ - Finish current tests under pressure and hold subsequent work; never suspend unrelated processes.[39m
+[31m+[39m
+[31m+ ## Clean Code Review[39m
+[31m+[39m
+[31m+ - Use `harness info clean-code` for optional Jev reviews.[39m
+[31m+ - Preview with `harness audit . --clean-code --dry-run`; reviews remain disabled until enabled.[39m
+[31m+ - Configure a project-owned credential and assess advisory results before enabling the gate.[39m
+[31m+ - Keep uncertain judgments visible and never call incomplete reviews clean.[39m
+[31m+[39m
+[31m+ ## Module task handoff[39m
+[31m+[39m
+[31m+ - When a Codex session assigns module implementation, use `harness task feature <id> --goal <text> --tldr <text>` then `harness task add --input <file>`.[39m
+[31m+ - Tasks require a registered module and a wantedContract with responsibility, inputs, outputs and errors. Harness commits the contract to refs/harness/tasks before pickup, preserving source HEAD and unrelated edits.[39m
+[31m+ - Task prompts start with the shared feature goal and TLDR, followed by the module's overall goal and pinned wanted contract. Keep shared context stable across related tasks.[39m
+[31m+ - Omitted models use auto: claude-haiku-5-5/medium, then gpt-6-luna/max only after confirmed Claude quota rejection. Explicit --model and --intelligence settings never silently fall back.[39m
+[31m+ - Run `harness task worker --worker <id> --watch` for assignment pickup. Workers preserve isolated worktrees for review; normal verification is still required. Use one repository as the active queue owner and `harness task sync <remote>` for explicit handoff; divergence is never overwritten.[39m
+[31m+[39m
+[31m+ ## Scaffold export coherence[39m
+[31m+[39m
+[31m+ - Change generated source, tests and public export plans together. Verify every generated export targets an emitted scaffold and run the standard focused CLI project-check scenario after a scaffold shape change.[39m
+[31m+[39m
+[31m+ ## Helper implementation ownership[39m
+[31m+[39m
+[31m+ - Public shared helper implementations belong under src/helpers/<responsibility>/<camelName>.ts, with pure functions separated from component/service orchestration. Keep single-consumer helpers with their owner. Point helper source contracts and Source tabs only at the selected callable implementation, never all files of its owning module. Preserve supported import addresses with forwarding exports when needed; update active callers to the canonical helper source. Run the registry helper-source guard and the standard selected-helper Source browser test.[39m
+[31m+[39m
+[31m+ ## Callable usage examples[39m
+[31m+[39m
+[31m+ - Every public helper needs committed usage examples in its callable contract: a real call, argument values, and expected output or error. Verify examples against the implementation; never invent outcomes.[39m
+[31m+ - Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review the implementation to identify features, including meaningful error or empty states. Equal outputs alone do not establish duplication. A helper's unit cases are exactly its authored examples; add a boundary input as an example only when it documents a distinct behavior.[39m
+[31m+ - Run `harness units check`: missing helper examples, placeholder titles and repeated titles or calls must fail. Re-indexing must preserve authored examples. Each helper detail page shows only its own examples at the viewed commit.[39m
+[31m+[39m
+[31m+ ## Standard Test Forms[39m
+[31m+[39m
+[31m+ Use exactly these five forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.[39m
+[31m+[39m
+[31m+ 1. Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile).[39m
+[31m+ 2. Components: Playwright screenshot matches of the component at rest, plus each declared interaction, prop and error state.[39m
+[31m+ 3. Helpers: one unit case per authored example, asserting its documented output or error.[39m
+[31m+ 4. Classes: one case per method and declared initialization or lifecycle state, including each declared error.[39m
+[31m+ 5. APIs: structural complete JSON response matches for each supported prop and error matrix row.[39m
+[31m+[39m
+[31m+ - Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.[39m
+[31m+ - Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.[39m
+[31m+ - Projects without UI have no page or component cases; their modules use the helper, class and API forms.[39m
+[31m+ - Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.[39m
+[31m+ - Retain reviewed baselines through Harness evidence with source revision, media hash and review provenance. Never automatically accept a missing or changed image.[39m
+[31m+ - Matrices include boundaries, invalid inputs and prop combinations that change behavior. Static types and configuration use compiler, lint, build and audit checks.[39m
+[31m+ - Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.[39m
+[31m+[39m
+[31m+ ## Stable-Case Bug Policy[39m
+[31m+[39m
+[31m+ - Do not write standalone bug regression tests. A reported bug strengthens the existing case of its form (its input, fixture, state or assertion) under the same registered title.[39m
+[31m+ - Keep each form's case count fixed. Add or remove a case only when the contract explicitly changes a capability: a declared state, prop, example, method, lifecycle state, error or matrix row.[39m
+[31m+ - A behavior with no existing case is a missing coverage category. Declare its capability in the contract first, then add one case of its form before the product repair.[39m
+[31m+ - Keep registered case titles and identities stable; verification records bind to them.[39m
+[31m+[39m
+[31m+ ## Bug and Regression Loops[39m
+[31m+[39m
+[31m+ - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.[39m
+[31m+ - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.[39m
+[31m+ - Use exactly these five contract-driven test forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.[39m
+[31m+ - Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile).[39m
+[31m+ - Components: Playwright screenshot matches of the component at rest, plus each declared interaction, prop and error state.[39m
+[31m+ - Helpers: one unit case per authored example, asserting its documented output or error.[39m
+[31m+ - Classes: one case per method and declared initialization or lifecycle state, including each declared error.[39m
+[31m+ - APIs: structural complete JSON response matches for each supported prop and error matrix row.[39m
+[31m+ - Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.[39m
+[31m+ - Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.[39m
+[31m+ - Unsupported or missing test coverage is an explicit validation failure; report the missing coverage category and declare the capability in the contract before adding its matching case. Never skip it, invent a case, or use another form.[39m
+[31m+ - Do not write standalone bug regression tests. A reported bug strengthens the existing case of its form under the same registered title.[39m
+[31m+ - For bug repairs, do not increase case counts. Keep each form's case count fixed. Add or remove a case only when the contract explicitly changes a capability: a declared state, prop, example, method, lifecycle state, error or matrix row.[39m
+[31m+ - Keep registered case titles and identities stable; verification records bind to them.[39m
+[31m+ - Artifact validation, hashing and storage must consume the same byte snapshot; strengthen the existing method case with accepted getter or aliased-buffer inputs before changing an artifact producer.[39m
+[31m+ - API comparisons keep every response field, including reserved JSON keys. Before changing a comparison or authored-data parser, strengthen its existing method case to prove field retention and preserve admitted getters, arrays and invalid values.[39m
+[31m+ - Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.[39m
+[31m+ - Retain reviewed baselines through Harness evidence with source revision, media hash and review provenance. Never automatically accept a missing or changed image.[39m
+[31m+ - Matrices include boundaries, invalid inputs and prop combinations that change behavior. Static types and configuration use compiler, lint, build and audit checks.[39m
+[31m+ - Before accepting a test migration, run the compiler and structure audit for the root and every affected workspace. Check companion type files and Svelte source explicitly; an ignored-file lint warning is not Svelte verification.[39m
+[31m+ - Run the strengthened test against the broken implementation and record the failing command, assertion and observed result before repair. A fixture or environment error is not defect proof; never manufacture a failure.[39m
+[31m+ - Before changing product code, commit the failing test separately. Run harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure> on that commit. Then make a separate fix commit and run loop record --phase green: the tests, fixtures, command and environment must be unchanged. Preserve both commits when landing; do not squash away the failing-test commit. Focused regression results do not replace full verification.[39m
+[31m+ - Repair the product while keeping the strengthened test unchanged. Repeat repair and the same unchanged test until it passes; retain failing and passing evidence at their tested revisions, then run normal verification.[39m
+[31m+ - When correcting function names or APIs, parameter names describe their domain role; rename source declarations and update callers and contracts, rather than inventing display labels. Diagnose why the original name or API was accepted, then repair the earliest responsible generator, skill or review checkpoint within the authorized project scope. Verify the revised guidance is emitted for generated projects.[39m
+[31m+ - For helper catalogs, prove one selected callable per detail page: distinct links for functions sharing a source module, only that callable’s parameters, return and throws, and selection retained across tabs and revisions. Keep module ownership/history explicit; a missing callable must not silently show a sibling.[39m
+[31m+ - During read-only planning, report the coverage diagnosis and propose the standardized test change; do not edit tests or product source. Write only within an approved implementation request.[39m
+[31m+ - Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with its strengthened standardized case failing before implementation, then repeat repair and the same unchanged case until it passes.[39m
+[31m+ - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard, a strengthened standardized case, in normal project verification.[39m
+[31m+ - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.[39m
+[31m+ - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.[39m
+[31m+ - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.[39m
+[31m+ - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.[39m
+[31m+ - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.[39m
+[31m+[39m
+[31m+ ## Atomic UI composition[39m
+[31m+[39m
+[31m+ - Build Svelte UI as atoms → molecules → organisms → layouts/templates → pages. Keep the responsibility category and stable unit identity independent of this level.[39m
+[31m+ - Use the existing shared control first. Molecules compose atoms; organisms compose atoms, molecules and smaller organisms. Layouts frame these with a real child-content slot; pages supply route data. Never import a page/layout into a molecule or organism.[39m
+[31m+ - Native elements belong in atoms. Harness provides a separate atom for every conforming HTML element, each input type, SVG elements and dynamic elements. Discover them with `harness info component`; install the library with `harness generate elements`.[39m
+[31m+ - Declare `<!-- @harness-tier molecule -->` (or atom, organism, layout, page). Generated components default to molecule; use `--level organism` for a feature section. An atom owns native presentation, never feature data loading or composed components.[39m
+[31m+ - Native atom calls such as `<hx-button type="button">Save</hx-button>` use the canonical HtmlButton component definition. Declare its relative library directory with `<!-- @harness-atoms ./atoms -->`. Native bindings, actions, events, semantics and scoped styles are preserved by `atomicComponents()` before Svelte compilation. Keep its generated native typings and Svelte integration installed; these tags are compiled atoms, not runtime custom elements.[39m
+[31m+ - Basic static atoms also support direct Svelte imports. For native bindings/actions, use the native atom call. Keep native atom definitions generated and free of feature logic/styles; put themed controls and validation in reusable molecules using the project's own design tokens.[39m
+[31m+ - Framework document entry files and Svelte framework directives retain their supported syntax. Third-party component internals and trusted rendered source/HTML content are not an instruction to duplicate those implementations.[39m
+[31m+ - Run `harness audit`, `harness units check`, focused interaction tests and the standard visual catalog. Check value binding, form submission, disabled/required states, labels, focus, dialogs and each affected viewport. Do not accept imports or an unchanged-looking screenshot as interaction proof.[39m
+[31m+[39m
+[31m+ ## Naming[39m
+[31m+[39m
+[31m+ Read `harness info naming` and the scaffold guide before naming code. Keep code names consistent across cards, usage links and detail headings.[39m
+[31m+[39m
+[31m+ - Naming: Helpers are pure camelCase functions; colliding SDK exports use <camelName>Helper while retaining the existing binding. Implementations belong in src/helpers/<responsibility>/<camelName>.ts; keep single-consumer functions in their owner folder.[39m
+[31m+ - Naming: Controller classes use <PascalName>Controller.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner folder. Shared service catalogs require instantiated classes with multiple public instance methods and two distinct active runtime owners; functions, objects and static namespaces are not service classes.[39m
+[31m+ - Naming: Decorator classes use <PascalName>Decorator.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Adapter classes use <PascalName>Adapter.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Repository classes use <PascalName>Repository.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Validator classes use <PascalName>Validator.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Serializer classes use <PascalName>Serializer.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Policy classes use <PascalName>Policy.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Job classes use <PascalName>Job.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Notification classes use <PascalName>Notification.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Command classes use <PascalName>Command.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Mailer classes use <PascalName>Mailer.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Channel classes use <PascalName>Channel.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Form classes use <PascalName>Form.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Middleware classes use <PascalName>Middleware.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Game views use <camelName>ViewConfig.ts with a matching camelCase config export.[39m
+[31m+ - Naming: Mechanic functions use <camelName>.ts and export the matching descriptive camelCase function.[39m
+[31m+ - Naming: Checkpoints use <camelName>CheckpointConfig.ts with a matching camelCase config export.[39m
+[31m+ - Naming: Models use <PascalName>.ts with a matching persistence class; type collections use <PascalName>.types.ts. Persisted data wrappers belong under Models; existing shared type modules belong under Types. Omit .types from displayed names and preserve registered IDs and source paths.[39m
+[31m+ - Naming: Components use <PascalName>.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Partials use <PascalName>Partial.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Shell components use <PascalName>.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Functions and pure helper callables use descriptive camelCase names; utility modules use <camelName>.ts. Review the actual input-to-output operation, not only casing.[39m
+[31m+ - Naming: Utilities use <camelName>.ts with a matching camelCase export that describes its actual operation.[39m
+[31m+ - Naming: Value modules use <camelName>.ts; class and type modules follow their own type rules. Keep framework .client, .server, .svelte and .d suffixes where required.[39m
+[31m+ - Naming: Workflow modules use <camelName>.ts; exported operations use descriptive camelCase names.[39m
+[31m+ - Naming: Config objects use <camelName>Config.ts with a matching camelCase export.[39m
+[31m+ - Naming: Stores use <camelName>.svelte.ts and export create<PascalName>Store.[39m
+[31m+ - Naming: Hooks use <camelName>Hook.server.ts and export <camelName>Hook; preserve the framework hooks.server.ts entry.[39m
+[31m+ - Naming: Concerns use with<PascalName>.ts and export with<PascalName>.[39m
+[31m+ - Naming: Initializers use initialize<PascalName>.ts and export initialize<PascalName>.[39m
+[31m+ - Naming: Seeders use <kebab-name>.ts and export seed<PascalName>.[39m
+[31m+ - Naming: Pages preserve src/routes/<kebab-name>/+page.svelte; their screen labels may be human readable.[39m
+[31m+ - Naming: Pages preserve framework +page.svelte and +page.server.ts filenames and their exported handlers.[39m
+[31m+ - Naming: Layouts preserve src/routes/<kebab-name>/+layout.svelte and framework handler names.[39m
+[31m+ - Naming: API routes preserve src/routes/api/<kebab-name>/+server.ts and HTTP method exports such as GET and POST.[39m
+[31m+ - Naming: Entrypoints keep framework-required filenames and exports; other operation modules use <camelName>.ts.[39m
+[31m+ - Naming: Unit tests use <kebab-name>.test.ts.[39m
+[31m+ - Naming: Browser tests use <kebab-name>.spec.ts.[39m
+[31m+ - Naming: Feature specifications use <kebab-name>.md.[39m
+[31m+ - Naming: Migrations use lowercase kebab-case or snake_case .sql filenames.[39m
+[31m+ - Naming: Each generated resource piece follows its own model, controller, policy, serializer, route or test naming rule.[39m
+[31m+ - Group related list, detail and history pages by feature, using meaningful domain folders instead of broad technical catch-alls. Reuse that feature category with --group; use route groups when public URLs must stay unchanged.[39m
+[31m+ - Config modules live in src/configs/<category>/, with one focused file per config. Update generator output and public SDK export plans together; prove every planned export targets an emitted file. Keep source-based config documentation static; do not execute configuration to discover values.[39m
+[31m+ - Expose only important controls a user, operator or app developer needs to change. Declare each public configControl with its exact source, name, audience and purpose. Prefer a sensible fixed default when no real tuning need exists. Keep schemas, protocol invariants, lookup tables, fixture machinery and documentation internal; design tokens belong in Styles. New config scaffolds start internal and do not invent name or enabled settings.[39m
+[31m+ - General text helpers belong in Strings: casing, pluralization, identifier shortening and duration display formatting are reusable operations, not the domains of their callers. Keep domain-specific helpers in their domain and derive each helper category from its own implementation folder.[39m
+[31m+ - Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.[39m
+[31m+ - Use harness generate <kind> <name> --group <category> when adding code. Reuse a project category; an explicit new category extends harness.groups.json. Categories are not a fixed list.[39m
+[31m+ - Categorized projects infer only an unambiguous whole-word match from the name or responsibility. Missing or ambiguous matches require --group; do not invent a misleading category.[39m
+[31m+ - Share one project taxonomy across components, helpers, configs, models, services and all other module kinds. Folders drive revision-bound explorer headings and filters.[39m
+[31m+ - Keep framework entry filenames and public routes stable; generated route groups organize files without changing URLs. Keep single-owner implementations with that owner.[39m
+[31m+[39m
+[31m+ ## Screenshot Evidence[39m
+[31m+[39m
+[31m+ - A changed UI is not ready to hand off or merge while any required screenshot is missing. Capture each applicable page, tab/state and desktop, tablet and mobile viewport through its standard test, from the exact committed build. Fix capture failures and rerun; a green assertion alone is insufficient.[39m
+[31m+ - Register and retain the original image bytes, hashes, unit, state, viewport, served build and revision in Harness evidence before temporary workspace cleanup. A scratch path, broken image URL or image in chat is not durable screenshot delivery.[39m
+[31m+ - Layouts are reusable visual frames with a child-content slot; routing hosts, data loaders and options-only modules are not layouts. Reuse component cards with title, image and page-usage links. Capture the actual layout with a labelled Child content placeholder in its real child slot.[39m
+[31m+ - Public category or route renames must inventory canonical and compatibility titles and links. Update exposed labels, preserve stable IDs and aliases, and extend the standard composition check across overview, details and history. Run affected downstream consumer tests alongside their typechecks. Run the affected package lint and audit as well. Include affected public-entry navigation checks even when broader suites are deferred. Preserve route, revision and access assertions while updating expected names.[39m
+[31m+ - Full-frame previews own their content boundaries. Apply content-container styling inside the frame, never around its navigation. When changing fixture context, extend the existing standard acceptance assertions for affected controls and inspect retained pixels before accepting the UI.[39m
+[31m+ - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.[39m
+[31m+ - Rebuild or reopen the delivered history from its Git evidence, decode every required image, and inspect fresh screenshots before reporting completion. Both comparison sides need their own images; never substitute another unit, state or revision.[39m
+[31m+ - After squash landing, check the actual remote base commit's prepared history and decode its visible previews. Identical complete Git trees may retain focused captures with their original revision and status; a different tree requires new captures. Feature-branch screenshots alone do not prove merged delivery.[39m
+[31m+ - Complete and format tracked loop metadata before the final capture run. Keep that captured tree unchanged through landing; further tracked changes require fresh captures.[39m
+[31m+ - Keep focused screenshots available even when full verification fails, with their focused run and outcome clearly labelled. They grant no full verification verdict. Missing or corrupt bytes keep the visual check open; report the exact blocker and continue the repair.[39m
+[31m+[39m
+[31m+ ## Code Rules[39m
+[31m+[39m
+[31m+ - Files stay at or below 220 lines.[39m
+[31m+ - Functions stay at or below 55 lines.[39m
+[31m+ - Classes stay at or below 120 lines.[39m
+[31m+ - Methods stay at or below 35 lines.[39m
+[31m+ - Nesting stays at or below 4 levels.[39m
+[31m+ - Functions and methods take at most 4 parameters.[39m
+[31m+ - Cyclomatic complexity stays at or below 10.[39m
+[31m+ - Each file defines at most 1 class.[39m
+[31m+ - Use harness info naming and the scaffold guide before naming a module.[39m
+[31m+ - Naming: Helpers are pure camelCase functions; colliding SDK exports use <camelName>Helper while retaining the existing binding. Implementations belong in src/helpers/<responsibility>/<camelName>.ts; keep single-consumer functions in their owner folder.[39m
+[31m+ - Naming: Controller classes use <PascalName>Controller.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner folder. Shared service catalogs require instantiated classes with multiple public instance methods and two distinct active runtime owners; functions, objects and static namespaces are not service classes.[39m
+[31m+ - Naming: Decorator classes use <PascalName>Decorator.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Adapter classes use <PascalName>Adapter.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Repository classes use <PascalName>Repository.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Validator classes use <PascalName>Validator.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Serializer classes use <PascalName>Serializer.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Policy classes use <PascalName>Policy.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Job classes use <PascalName>Job.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Notification classes use <PascalName>Notification.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Command classes use <PascalName>Command.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Mailer classes use <PascalName>Mailer.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Channel classes use <PascalName>Channel.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Form classes use <PascalName>Form.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Middleware classes use <PascalName>Middleware.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Game views use <camelName>ViewConfig.ts with a matching camelCase config export.[39m
+[31m+ - Naming: Mechanic functions use <camelName>.ts and export the matching descriptive camelCase function.[39m
+[31m+ - Naming: Checkpoints use <camelName>CheckpointConfig.ts with a matching camelCase config export.[39m
+[31m+ - Naming: Models use <PascalName>.ts with a matching persistence class; type collections use <PascalName>.types.ts. Persisted data wrappers belong under Models; existing shared type modules belong under Types. Omit .types from displayed names and preserve registered IDs and source paths.[39m
+[31m+ - Naming: Components use <PascalName>.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Partials use <PascalName>Partial.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Shell components use <PascalName>.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Functions and pure helper callables use descriptive camelCase names; utility modules use <camelName>.ts. Review the actual input-to-output operation, not only casing.[39m
+[31m+ - Naming: Utilities use <camelName>.ts with a matching camelCase export that describes its actual operation.[39m
+[31m+ - Naming: Value modules use <camelName>.ts; class and type modules follow their own type rules. Keep framework .client, .server, .svelte and .d suffixes where required.[39m
+[31m+ - Naming: Workflow modules use <camelName>.ts; exported operations use descriptive camelCase names.[39m
+[31m+ - Naming: Config objects use <camelName>Config.ts with a matching camelCase export.[39m
+[31m+ - Naming: Stores use <camelName>.svelte.ts and export create<PascalName>Store.[39m
+[31m+ - Naming: Hooks use <camelName>Hook.server.ts and export <camelName>Hook; preserve the framework hooks.server.ts entry.[39m
+[31m+ - Naming: Concerns use with<PascalName>.ts and export with<PascalName>.[39m
+[31m+ - Naming: Initializers use initialize<PascalName>.ts and export initialize<PascalName>.[39m
+[31m+ - Naming: Seeders use <kebab-name>.ts and export seed<PascalName>.[39m
+[31m+ - Naming: Pages preserve src/routes/<kebab-name>/+page.svelte; their screen labels may be human readable.[39m
+[31m+ - Naming: Pages preserve framework +page.svelte and +page.server.ts filenames and their exported handlers.[39m
+[31m+ - Naming: Layouts preserve src/routes/<kebab-name>/+layout.svelte and framework handler names.[39m
+[31m+ - Naming: API routes preserve src/routes/api/<kebab-name>/+server.ts and HTTP method exports such as GET and POST.[39m
+[31m+ - Naming: Entrypoints keep framework-required filenames and exports; other operation modules use <camelName>.ts.[39m
+[31m+ - Naming: Unit tests use <kebab-name>.test.ts.[39m
+[31m+ - Naming: Browser tests use <kebab-name>.spec.ts.[39m
+[31m+ - Naming: Feature specifications use <kebab-name>.md.[39m
+[31m+ - Naming: Migrations use lowercase kebab-case or snake_case .sql filenames.[39m
+[31m+ - Naming: Each generated resource piece follows its own model, controller, policy, serializer, route or test naming rule.[39m
+[31m+ - Group related list, detail and history pages by feature, using meaningful domain folders instead of broad technical catch-alls. Reuse that feature category with --group; use route groups when public URLs must stay unchanged.[39m
+[31m+ - Config modules live in src/configs/<category>/, with one focused file per config. Update generator output and public SDK export plans together; prove every planned export targets an emitted file. Keep source-based config documentation static; do not execute configuration to discover values.[39m
+[31m+ - Expose only important controls a user, operator or app developer needs to change. Declare each public configControl with its exact source, name, audience and purpose. Prefer a sensible fixed default when no real tuning need exists. Keep schemas, protocol invariants, lookup tables, fixture machinery and documentation internal; design tokens belong in Styles. New config scaffolds start internal and do not invent name or enabled settings.[39m
+[31m+ - General text helpers belong in Strings: casing, pluralization, identifier shortening and duration display formatting are reusable operations, not the domains of their callers. Keep domain-specific helpers in their domain and derive each helper category from its own implementation folder.[39m
+[31m+ - Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.[39m
+[31m+ - Use harness generate <kind> <name> --group <category> when adding code. Reuse a project category; an explicit new category extends harness.groups.json. Categories are not a fixed list.[39m
+[31m+ - Categorized projects infer only an unambiguous whole-word match from the name or responsibility. Missing or ambiguous matches require --group; do not invent a misleading category.[39m
+[31m+ - Share one project taxonomy across components, helpers, configs, models, services and all other module kinds. Folders drive revision-bound explorer headings and filters.[39m
+[31m+ - Keep framework entry filenames and public routes stable; generated route groups organize files without changing URLs. Keep single-owner implementations with that owner.[39m
+[31m+ - Code catalogs, usage links and detail headings retain the same recorded code name; stable dotted unit IDs and framework filenames do not change with a display title.[39m
+[31m+ - Classes should not use catch-all Manager names.[39m
+[31m+ - Keep named interfaces and type aliases in sibling .types.ts files; import them with import type and preserve public type paths with type-only re-exports. Index new companions under their implementation unit while retaining existing explicit type-module identities.[39m
+[31m+ - Separate type declarations from runtime values in components, services, helpers, configs, tests and scripts. Keep existing shared type modules with their established owner.[39m
+[31m+ - Command modules delegate to workflows instead of importing templates or file-generation helpers.[39m
+[31m+ - Core, template, workflow, and command imports move in one direction.[39m
+[31m+ - Harness audit applies ecosystem adapters for app and library code surfaces.[39m
+[31m+ - Unsupported file types must appear in audit coverage instead of being skipped silently.[39m
+[31m+[39m
+[31m+ Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.[39m
+[31m+[39m
+
+ ❯ test/regression-loops.test.ts:158:18
+    156|    expect(text).toContain('src/configs/<category>/');
+    157|    for (const term of [...standardFormGuidance, ...stableCaseGuidance])
+    158|     expect(text).toContain(term);
+       |                  ^
+    159|    expect(text).toContain('## Stable-Case Bug Policy');
+    160|    expect(text).toContain('Do not write standalone bug regression test…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/regression-loops.test.ts > generated lib guidance selects loops and explains retries
+AssertionError: expected '# AGENTS.md\n\nThis is a Harness Bun …' to contain 'Freeze executable tests and authored …'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Freeze executable tests and authored Examples, states, methods and expected results together. Admit test-only edits to those contract fields, reject product metadata hidden among named tests, and keep original Git blob provenance separate from semantic expectation hashes.[39m
+[31m+ # AGENTS.md[39m
+[31m+[39m
+[31m+ This is a Harness Bun TypeScript library. Treat Harness as the operating contract for every code change in this project.[39m
+[31m+[39m
+[31m+ ## Required Harness Workflow[39m
+[31m+[39m
+[31m+ - Read this file and the `.codex/skills/harness/SKILL.md` skill before changing code.[39m
+[31m+ - Use Harness generators for supported code shapes instead of hand-rolling new structure.[39m
+[31m+ - Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.[39m
+[31m+ - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.[39m
+[31m+ - Add or update a feature spec before implementation.[39m
+[31m+ - Write tests only in the five standard forms, and fix reported bugs by strengthening existing cases; see Standard Test Forms and Stable-Case Bug Policy.[39m
+[31m+ - Keep files small, focused, and aligned with `harness.audit.json` limits.[39m
+[31m+ - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`.[39m
+[31m+[39m
+[31m+ ## Machine Resources[39m
+[31m+[39m
+[31m+ - Run coding tools through `harness resources run --priority coding --cpus auto --memory-mib auto -- <command>`.[39m
+[31m+ - Queue agent-needed tests with `--priority agent-test`; use `--priority environment` for background checks.[39m
+[31m+ - Use `harness resources status --json` before heavy work. Keep 10% CPU and max(10% RAM, 2 GiB) free.[39m
+[31m+ - Finish current tests under pressure and hold subsequent work; never suspend unrelated processes.[39m
+[31m+[39m
+[31m+ ## Clean Code Review[39m
+[31m+[39m
+[31m+ - Use `harness info clean-code` for optional Jev reviews.[39m
+[31m+ - Preview with `harness audit . --clean-code --dry-run`; reviews remain disabled until enabled.[39m
+[31m+ - Configure a project-owned credential and assess advisory results before enabling the gate.[39m
+[31m+ - Keep uncertain judgments visible and never call incomplete reviews clean.[39m
+[31m+[39m
+[31m+ ## Module task handoff[39m
+[31m+[39m
+[31m+ - When a Codex session assigns module implementation, use `harness task feature <id> --goal <text> --tldr <text>` then `harness task add --input <file>`.[39m
+[31m+ - Tasks require a registered module and a wantedContract with responsibility, inputs, outputs and errors. Harness commits the contract to refs/harness/tasks before pickup, preserving source HEAD and unrelated edits.[39m
+[31m+ - Task prompts start with the shared feature goal and TLDR, followed by the module's overall goal and pinned wanted contract. Keep shared context stable across related tasks.[39m
+[31m+ - Omitted models use auto: claude-haiku-5-5/medium, then gpt-6-luna/max only after confirmed Claude quota rejection. Explicit --model and --intelligence settings never silently fall back.[39m
+[31m+ - Run `harness task worker --worker <id> --watch` for assignment pickup. Workers preserve isolated worktrees for review; normal verification is still required. Use one repository as the active queue owner and `harness task sync <remote>` for explicit handoff; divergence is never overwritten.[39m
+[31m+[39m
+[31m+ ## Scaffold export coherence[39m
+[31m+[39m
+[31m+ - Change generated source, tests and public export plans together. Verify every generated export targets an emitted scaffold and run the standard focused CLI project-check scenario after a scaffold shape change.[39m
+[31m+[39m
+[31m+ ## Helper implementation ownership[39m
+[31m+[39m
+[31m+ - Public shared helper implementations belong under src/helpers/<responsibility>/<camelName>.ts, with pure functions separated from component/service orchestration. Keep single-consumer helpers with their owner. Point helper source contracts and Source tabs only at the selected callable implementation, never all files of its owning module. Preserve supported import addresses with forwarding exports when needed; update active callers to the canonical helper source. Run the registry helper-source guard and the standard selected-helper Source browser test.[39m
+[31m+[39m
+[31m+ ## Callable usage examples[39m
+[31m+[39m
+[31m+ - Every public helper needs committed usage examples in its callable contract: a real call, argument values, and expected output or error. Verify examples against the implementation; never invent outcomes.[39m
+[31m+ - Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review the implementation to identify features, including meaningful error or empty states. Equal outputs alone do not establish duplication. A helper's unit cases are exactly its authored examples; add a boundary input as an example only when it documents a distinct behavior.[39m
+[31m+ - Run `harness units check`: missing helper examples, placeholder titles and repeated titles or calls must fail. Re-indexing must preserve authored examples. Each helper detail page shows only its own examples at the viewed commit.[39m
+[31m+[39m
+[31m+ ## Standard Test Forms[39m
+[31m+[39m
+[31m+ Use exactly these five forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.[39m
+[31m+[39m
+[31m+ 1. Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile).[39m
+[31m+ 2. Components: Playwright screenshot matches of the component at rest, plus each declared interaction, prop and error state.[39m
+[31m+ 3. Helpers: one unit case per authored example, asserting its documented output or error.[39m
+[31m+ 4. Classes: one case per method and declared initialization or lifecycle state, including each declared error.[39m
+[31m+ 5. APIs: structural complete JSON response matches for each supported prop and error matrix row.[39m
+[31m+[39m
+[31m+ - Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.[39m
+[31m+ - Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.[39m
+[31m+ - Projects without UI have no page or component cases; their modules use the helper, class and API forms.[39m
+[31m+ - Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.[39m
+[31m+ - Retain reviewed baselines through Harness evidence with source revision, media hash and review provenance. Never automatically accept a missing or changed image.[39m
+[31m+ - Matrices include boundaries, invalid inputs and prop combinations that change behavior. Static types and configuration use compiler, lint, build and audit checks.[39m
+[31m+ - Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.[39m
+[31m+[39m
+[31m+ ## Stable-Case Bug Policy[39m
+[31m+[39m
+[31m+ - Do not write standalone bug regression tests. A reported bug strengthens the existing case of its form (its input, fixture, state or assertion) under the same registered title.[39m
+[31m+ - Keep each form's case count fixed. Add or remove a case only when the contract explicitly changes a capability: a declared state, prop, example, method, lifecycle state, error or matrix row.[39m
+[31m+ - A behavior with no existing case is a missing coverage category. Declare its capability in the contract first, then add one case of its form before the product repair.[39m
+[31m+ - Keep registered case titles and identities stable; verification records bind to them.[39m
+[31m+[39m
+[31m+ ## Bug and Regression Loops[39m
+[31m+[39m
+[31m+ - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.[39m
+[31m+ - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.[39m
+[31m+ - Use exactly these five contract-driven test forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.[39m
+[31m+ - Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile).[39m
+[31m+ - Components: Playwright screenshot matches of the component at rest, plus each declared interaction, prop and error state.[39m
+[31m+ - Helpers: one unit case per authored example, asserting its documented output or error.[39m
+[31m+ - Classes: one case per method and declared initialization or lifecycle state, including each declared error.[39m
+[31m+ - APIs: structural complete JSON response matches for each supported prop and error matrix row.[39m
+[31m+ - Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.[39m
+[31m+ - Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.[39m
+[31m+ - Unsupported or missing test coverage is an explicit validation failure; report the missing coverage category and declare the capability in the contract before adding its matching case. Never skip it, invent a case, or use another form.[39m
+[31m+ - Do not write standalone bug regression tests. A reported bug strengthens the existing case of its form under the same registered title.[39m
+[31m+ - For bug repairs, do not increase case counts. Keep each form's case count fixed. Add or remove a case only when the contract explicitly changes a capability: a declared state, prop, example, method, lifecycle state, error or matrix row.[39m
+[31m+ - Keep registered case titles and identities stable; verification records bind to them.[39m
+[31m+ - Artifact validation, hashing and storage must consume the same byte snapshot; strengthen the existing method case with accepted getter or aliased-buffer inputs before changing an artifact producer.[39m
+[31m+ - API comparisons keep every response field, including reserved JSON keys. Before changing a comparison or authored-data parser, strengthen its existing method case to prove field retention and preserve admitted getters, arrays and invalid values.[39m
+[31m+ - Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.[39m
+[31m+ - Retain reviewed baselines through Harness evidence with source revision, media hash and review provenance. Never automatically accept a missing or changed image.[39m
+[31m+ - Matrices include boundaries, invalid inputs and prop combinations that change behavior. Static types and configuration use compiler, lint, build and audit checks.[39m
+[31m+ - Before accepting a test migration, run the compiler and structure audit for the root and every affected workspace. Check companion type files and Svelte source explicitly; an ignored-file lint warning is not Svelte verification.[39m
+[31m+ - Run the strengthened test against the broken implementation and record the failing command, assertion and observed result before repair. A fixture or environment error is not defect proof; never manufacture a failure.[39m
+[31m+ - Before changing product code, commit the failing test separately. Run harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure> on that commit. Then make a separate fix commit and run loop record --phase green: the tests, fixtures, command and environment must be unchanged. Preserve both commits when landing; do not squash away the failing-test commit. Focused regression results do not replace full verification.[39m
+[31m+ - Repair the product while keeping the strengthened test unchanged. Repeat repair and the same unchanged test until it passes; retain failing and passing evidence at their tested revisions, then run normal verification.[39m
+[31m+ - When correcting function names or APIs, parameter names describe their domain role; rename source declarations and update callers and contracts, rather than inventing display labels. Diagnose why the original name or API was accepted, then repair the earliest responsible generator, skill or review checkpoint within the authorized project scope. Verify the revised guidance is emitted for generated projects.[39m
+[31m+ - For helper catalogs, prove one selected callable per detail page: distinct links for functions sharing a source module, only that callable’s parameters, return and throws, and selection retained across tabs and revisions. Keep module ownership/history explicit; a missing callable must not silently show a sibling.[39m
+[31m+ - During read-only planning, report the coverage diagnosis and propose the standardized test change; do not edit tests or product source. Write only within an approved implementation request.[39m
+[31m+ - Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with its strengthened standardized case failing before implementation, then repeat repair and the same unchanged case until it passes.[39m
+[31m+ - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard, a strengthened standardized case, in normal project verification.[39m
+[31m+ - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.[39m
+[31m+ - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.[39m
+[31m+ - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.[39m
+[31m+ - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.[39m
+[31m+ - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.[39m
+[31m+[39m
+[31m+ ## Atomic UI composition[39m
+[31m+[39m
+[31m+ - Build Svelte UI as atoms → molecules → organisms → layouts/templates → pages. Keep the responsibility category and stable unit identity independent of this level.[39m
+[31m+ - Use the existing shared control first. Molecules compose atoms; organisms compose atoms, molecules and smaller organisms. Layouts frame these with a real child-content slot; pages supply route data. Never import a page/layout into a molecule or organism.[39m
+[31m+ - Native elements belong in atoms. Harness provides a separate atom for every conforming HTML element, each input type, SVG elements and dynamic elements. Discover them with `harness info component`; install the library with `harness generate elements`.[39m
+[31m+ - Declare `<!-- @harness-tier molecule -->` (or atom, organism, layout, page). Generated components default to molecule; use `--level organism` for a feature section. An atom owns native presentation, never feature data loading or composed components.[39m
+[31m+ - Native atom calls such as `<hx-button type="button">Save</hx-button>` use the canonical HtmlButton component definition. Declare its relative library directory with `<!-- @harness-atoms ./atoms -->`. Native bindings, actions, events, semantics and scoped styles are preserved by `atomicComponents()` before Svelte compilation. Keep its generated native typings and Svelte integration installed; these tags are compiled atoms, not runtime custom elements.[39m
+[31m+ - Basic static atoms also support direct Svelte imports. For native bindings/actions, use the native atom call. Keep native atom definitions generated and free of feature logic/styles; put themed controls and validation in reusable molecules using the project's own design tokens.[39m
+[31m+ - Framework document entry files and Svelte framework directives retain their supported syntax. Third-party component internals and trusted rendered source/HTML content are not an instruction to duplicate those implementations.[39m
+[31m+ - Run `harness audit`, `harness units check`, focused interaction tests and the standard visual catalog. Check value binding, form submission, disabled/required states, labels, focus, dialogs and each affected viewport. Do not accept imports or an unchanged-looking screenshot as interaction proof.[39m
+[31m+[39m
+[31m+ ## Naming[39m
+[31m+[39m
+[31m+ Read `harness info naming` and the scaffold guide before naming code. Keep code names consistent across cards, usage links and detail headings.[39m
+[31m+[39m
+[31m+ - Naming: Helpers are pure camelCase functions; colliding SDK exports use <camelName>Helper while retaining the existing binding. Implementations belong in src/helpers/<responsibility>/<camelName>.ts; keep single-consumer functions in their owner folder.[39m
+[31m+ - Naming: Controller classes use <PascalName>Controller.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner folder. Shared service catalogs require instantiated classes with multiple public instance methods and two distinct active runtime owners; functions, objects and static namespaces are not service classes.[39m
+[31m+ - Naming: Decorator classes use <PascalName>Decorator.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Adapter classes use <PascalName>Adapter.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Repository classes use <PascalName>Repository.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Validator classes use <PascalName>Validator.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Serializer classes use <PascalName>Serializer.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Policy classes use <PascalName>Policy.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Job classes use <PascalName>Job.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Notification classes use <PascalName>Notification.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Command classes use <PascalName>Command.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Mailer classes use <PascalName>Mailer.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Channel classes use <PascalName>Channel.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Form classes use <PascalName>Form.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Middleware classes use <PascalName>Middleware.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Game views use <camelName>ViewConfig.ts with a matching camelCase config export.[39m
+[31m+ - Naming: Mechanic functions use <camelName>.ts and export the matching descriptive camelCase function.[39m
+[31m+ - Naming: Checkpoints use <camelName>CheckpointConfig.ts with a matching camelCase config export.[39m
+[31m+ - Naming: Models use <PascalName>.ts with a matching persistence class; type collections use <PascalName>.types.ts. Persisted data wrappers belong under Models; existing shared type modules belong under Types. Omit .types from displayed names and preserve registered IDs and source paths.[39m
+[31m+ - Naming: Components use <PascalName>.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Partials use <PascalName>Partial.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Shell components use <PascalName>.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Functions and pure helper callables use descriptive camelCase names; utility modules use <camelName>.ts. Review the actual input-to-output operation, not only casing.[39m
+[31m+ - Naming: Utilities use <camelName>.ts with a matching camelCase export that describes its actual operation.[39m
+[31m+ - Naming: Value modules use <camelName>.ts; class and type modules follow their own type rules. Keep framework .client, .server, .svelte and .d suffixes where required.[39m
+[31m+ - Naming: Workflow modules use <camelName>.ts; exported operations use descriptive camelCase names.[39m
+[31m+ - Naming: Config objects use <camelName>Config.ts with a matching camelCase export.[39m
+[31m+ - Naming: Stores use <camelName>.svelte.ts and export create<PascalName>Store.[39m
+[31m+ - Naming: Hooks use <camelName>Hook.server.ts and export <camelName>Hook; preserve the framework hooks.server.ts entry.[39m
+[31m+ - Naming: Concerns use with<PascalName>.ts and export with<PascalName>.[39m
+[31m+ - Naming: Initializers use initialize<PascalName>.ts and export initialize<PascalName>.[39m
+[31m+ - Naming: Seeders use <kebab-name>.ts and export seed<PascalName>.[39m
+[31m+ - Naming: Pages preserve src/routes/<kebab-name>/+page.svelte; their screen labels may be human readable.[39m
+[31m+ - Naming: Pages preserve framework +page.svelte and +page.server.ts filenames and their exported handlers.[39m
+[31m+ - Naming: Layouts preserve src/routes/<kebab-name>/+layout.svelte and framework handler names.[39m
+[31m+ - Naming: API routes preserve src/routes/api/<kebab-name>/+server.ts and HTTP method exports such as GET and POST.[39m
+[31m+ - Naming: Entrypoints keep framework-required filenames and exports; other operation modules use <camelName>.ts.[39m
+[31m+ - Naming: Unit tests use <kebab-name>.test.ts.[39m
+[31m+ - Naming: Browser tests use <kebab-name>.spec.ts.[39m
+[31m+ - Naming: Feature specifications use <kebab-name>.md.[39m
+[31m+ - Naming: Migrations use lowercase kebab-case or snake_case .sql filenames.[39m
+[31m+ - Naming: Each generated resource piece follows its own model, controller, policy, serializer, route or test naming rule.[39m
+[31m+ - Group related list, detail and history pages by feature, using meaningful domain folders instead of broad technical catch-alls. Reuse that feature category with --group; use route groups when public URLs must stay unchanged.[39m
+[31m+ - Config modules live in src/configs/<category>/, with one focused file per config. Update generator output and public SDK export plans together; prove every planned export targets an emitted file. Keep source-based config documentation static; do not execute configuration to discover values.[39m
+[31m+ - Expose only important controls a user, operator or app developer needs to change. Declare each public configControl with its exact source, name, audience and purpose. Prefer a sensible fixed default when no real tuning need exists. Keep schemas, protocol invariants, lookup tables, fixture machinery and documentation internal; design tokens belong in Styles. New config scaffolds start internal and do not invent name or enabled settings.[39m
+[31m+ - General text helpers belong in Strings: casing, pluralization, identifier shortening and duration display formatting are reusable operations, not the domains of their callers. Keep domain-specific helpers in their domain and derive each helper category from its own implementation folder.[39m
+[31m+ - Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.[39m
+[31m+ - Use harness generate <kind> <name> --group <category> when adding code. Reuse a project category; an explicit new category extends harness.groups.json. Categories are not a fixed list.[39m
+[31m+ - Categorized projects infer only an unambiguous whole-word match from the name or responsibility. Missing or ambiguous matches require --group; do not invent a misleading category.[39m
+[31m+ - Share one project taxonomy across components, helpers, configs, models, services and all other module kinds. Folders drive revision-bound explorer headings and filters.[39m
+[31m+ - Keep framework entry filenames and public routes stable; generated route groups organize files without changing URLs. Keep single-owner implementations with that owner.[39m
+[31m+[39m
+[31m+ ## Screenshot Evidence[39m
+[31m+[39m
+[31m+ - A changed UI is not ready to hand off or merge while any required screenshot is missing. Capture each applicable page, tab/state and desktop, tablet and mobile viewport through its standard test, from the exact committed build. Fix capture failures and rerun; a green assertion alone is insufficient.[39m
+[31m+ - Register and retain the original image bytes, hashes, unit, state, viewport, served build and revision in Harness evidence before temporary workspace cleanup. A scratch path, broken image URL or image in chat is not durable screenshot delivery.[39m
+[31m+ - Layouts are reusable visual frames with a child-content slot; routing hosts, data loaders and options-only modules are not layouts. Reuse component cards with title, image and page-usage links. Capture the actual layout with a labelled Child content placeholder in its real child slot.[39m
+[31m+ - Public category or route renames must inventory canonical and compatibility titles and links. Update exposed labels, preserve stable IDs and aliases, and extend the standard composition check across overview, details and history. Run affected downstream consumer tests alongside their typechecks. Run the affected package lint and audit as well. Include affected public-entry navigation checks even when broader suites are deferred. Preserve route, revision and access assertions while updating expected names.[39m
+[31m+ - Full-frame previews own their content boundaries. Apply content-container styling inside the frame, never around its navigation. When changing fixture context, extend the existing standard acceptance assertions for affected controls and inspect retained pixels before accepting the UI.[39m
+[31m+ - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.[39m
+[31m+ - Rebuild or reopen the delivered history from its Git evidence, decode every required image, and inspect fresh screenshots before reporting completion. Both comparison sides need their own images; never substitute another unit, state or revision.[39m
+[31m+ - After squash landing, check the actual remote base commit's prepared history and decode its visible previews. Identical complete Git trees may retain focused captures with their original revision and status; a different tree requires new captures. Feature-branch screenshots alone do not prove merged delivery.[39m
+[31m+ - Complete and format tracked loop metadata before the final capture run. Keep that captured tree unchanged through landing; further tracked changes require fresh captures.[39m
+[31m+ - Keep focused screenshots available even when full verification fails, with their focused run and outcome clearly labelled. They grant no full verification verdict. Missing or corrupt bytes keep the visual check open; report the exact blocker and continue the repair.[39m
+[31m+[39m
+[31m+ ## Code Rules[39m
+[31m+[39m
+[31m+ - Files stay at or below 220 lines.[39m
+[31m+ - Functions stay at or below 55 lines.[39m
+[31m+ - Classes stay at or below 120 lines.[39m
+[31m+ - Methods stay at or below 35 lines.[39m
+[31m+ - Nesting stays at or below 4 levels.[39m
+[31m+ - Functions and methods take at most 4 parameters.[39m
+[31m+ - Cyclomatic complexity stays at or below 10.[39m
+[31m+ - Each file defines at most 1 class.[39m
+[31m+ - Use harness info naming and the scaffold guide before naming a module.[39m
+[31m+ - Naming: Helpers are pure camelCase functions; colliding SDK exports use <camelName>Helper while retaining the existing binding. Implementations belong in src/helpers/<responsibility>/<camelName>.ts; keep single-consumer functions in their owner folder.[39m
+[31m+ - Naming: Controller classes use <PascalName>Controller.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner folder. Shared service catalogs require instantiated classes with multiple public instance methods and two distinct active runtime owners; functions, objects and static namespaces are not service classes.[39m
+[31m+ - Naming: Decorator classes use <PascalName>Decorator.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Adapter classes use <PascalName>Adapter.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Repository classes use <PascalName>Repository.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Validator classes use <PascalName>Validator.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Serializer classes use <PascalName>Serializer.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Policy classes use <PascalName>Policy.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Job classes use <PascalName>Job.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Notification classes use <PascalName>Notification.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Command classes use <PascalName>Command.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Mailer classes use <PascalName>Mailer.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Channel classes use <PascalName>Channel.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Form classes use <PascalName>Form.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Middleware classes use <PascalName>Middleware.ts and export the matching class, including inside an owner's folder.[39m
+[31m+ - Naming: Game views use <camelName>ViewConfig.ts with a matching camelCase config export.[39m
+[31m+ - Naming: Mechanic functions use <camelName>.ts and export the matching descriptive camelCase function.[39m
+[31m+ - Naming: Checkpoints use <camelName>CheckpointConfig.ts with a matching camelCase config export.[39m
+[31m+ - Naming: Models use <PascalName>.ts with a matching persistence class; type collections use <PascalName>.types.ts. Persisted data wrappers belong under Models; existing shared type modules belong under Types. Omit .types from displayed names and preserve registered IDs and source paths.[39m
+[31m+ - Naming: Components use <PascalName>.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Partials use <PascalName>Partial.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Shell components use <PascalName>.svelte and the same PascalCase import name.[39m
+[31m+ - Naming: Functions and pure helper callables use descriptive camelCase names; utility modules use <camelName>.ts. Review the actual input-to-output operation, not only casing.[39m
+[31m+ - Naming: Utilities use <camelName>.ts with a matching camelCase export that describes its actual operation.[39m
+[31m+ - Naming: Value modules use <camelName>.ts; class and type modules follow their own type rules. Keep framework .client, .server, .svelte and .d suffixes where required.[39m
+[31m+ - Naming: Workflow modules use <camelName>.ts; exported operations use descriptive camelCase names.[39m
+[31m+ - Naming: Config objects use <camelName>Config.ts with a matching camelCase export.[39m
+[31m+ - Naming: Stores use <camelName>.svelte.ts and export create<PascalName>Store.[39m
+[31m+ - Naming: Hooks use <camelName>Hook.server.ts and export <camelName>Hook; preserve the framework hooks.server.ts entry.[39m
+[31m+ - Naming: Concerns use with<PascalName>.ts and export with<PascalName>.[39m
+[31m+ - Naming: Initializers use initialize<PascalName>.ts and export initialize<PascalName>.[39m
+[31m+ - Naming: Seeders use <kebab-name>.ts and export seed<PascalName>.[39m
+[31m+ - Naming: Pages preserve src/routes/<kebab-name>/+page.svelte; their screen labels may be human readable.[39m
+[31m+ - Naming: Pages preserve framework +page.svelte and +page.server.ts filenames and their exported handlers.[39m
+[31m+ - Naming: Layouts preserve src/routes/<kebab-name>/+layout.svelte and framework handler names.[39m
+[31m+ - Naming: API routes preserve src/routes/api/<kebab-name>/+server.ts and HTTP method exports such as GET and POST.[39m
+[31m+ - Naming: Entrypoints keep framework-required filenames and exports; other operation modules use <camelName>.ts.[39m
+[31m+ - Naming: Unit tests use <kebab-name>.test.ts.[39m
+[31m+ - Naming: Browser tests use <kebab-name>.spec.ts.[39m
+[31m+ - Naming: Feature specifications use <kebab-name>.md.[39m
+[31m+ - Naming: Migrations use lowercase kebab-case or snake_case .sql filenames.[39m
+[31m+ - Naming: Each generated resource piece follows its own model, controller, policy, serializer, route or test naming rule.[39m
+[31m+ - Group related list, detail and history pages by feature, using meaningful domain folders instead of broad technical catch-alls. Reuse that feature category with --group; use route groups when public URLs must stay unchanged.[39m
+[31m+ - Config modules live in src/configs/<category>/, with one focused file per config. Update generator output and public SDK export plans together; prove every planned export targets an emitted file. Keep source-based config documentation static; do not execute configuration to discover values.[39m
+[31m+ - Expose only important controls a user, operator or app developer needs to change. Declare each public configControl with its exact source, name, audience and purpose. Prefer a sensible fixed default when no real tuning need exists. Keep schemas, protocol invariants, lookup tables, fixture machinery and documentation internal; design tokens belong in Styles. New config scaffolds start internal and do not invent name or enabled settings.[39m
+[31m+ - General text helpers belong in Strings: casing, pluralization, identifier shortening and duration display formatting are reusable operations, not the domains of their callers. Keep domain-specific helpers in their domain and derive each helper category from its own implementation folder.[39m
+[31m+ - Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.[39m
+[31m+ - Use harness generate <kind> <name> --group <category> when adding code. Reuse a project category; an explicit new category extends harness.groups.json. Categories are not a fixed list.[39m
+[31m+ - Categorized projects infer only an unambiguous whole-word match from the name or responsibility. Missing or ambiguous matches require --group; do not invent a misleading category.[39m
+[31m+ - Share one project taxonomy across components, helpers, configs, models, services and all other module kinds. Folders drive revision-bound explorer headings and filters.[39m
+[31m+ - Keep framework entry filenames and public routes stable; generated route groups organize files without changing URLs. Keep single-owner implementations with that owner.[39m
+[31m+ - Code catalogs, usage links and detail headings retain the same recorded code name; stable dotted unit IDs and framework filenames do not change with a display title.[39m
+[31m+ - Classes should not use catch-all Manager names.[39m
+[31m+ - Keep named interfaces and type aliases in sibling .types.ts files; import them with import type and preserve public type paths with type-only re-exports. Index new companions under their implementation unit while retaining existing explicit type-module identities.[39m
+[31m+ - Separate type declarations from runtime values in components, services, helpers, configs, tests and scripts. Keep existing shared type modules with their established owner.[39m
+[31m+ - Command modules delegate to workflows instead of importing templates or file-generation helpers.[39m
+[31m+ - Core, template, workflow, and command imports move in one direction.[39m
+[31m+ - Harness audit applies ecosystem adapters for app and library code surfaces.[39m
+[31m+ - Unsupported file types must appear in audit coverage instead of being skipped silently.[39m
+[31m+[39m
+[31m+ Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.[39m
+[31m+[39m
+
+ ❯ test/regression-loops.test.ts:158:18
+    156|    expect(text).toContain('src/configs/<category>/');
+    157|    for (const term of [...standardFormGuidance, ...stableCaseGuidance])
+    158|     expect(text).toContain(term);
+       |                  ^
+    159|    expect(text).toContain('## Stable-Case Bug Policy');
+    160|    expect(text).toContain('Do not write standalone bug regression test…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  test/utils/regression-files.test.ts > regressionFiles: Freeze real blobs and authored expectation semantics
+AssertionError: Example output differs from its comment
++ actual - expected
+
+  {
++   expectations: [],
+-   expectations: [
+-     {
+-       path: 'specification/units/function.sample.json',
+-       sha256: 'fd63e897e7a32736971982f3ea0391e224e13f115cbfe9c61246fc8cc407cf83',
+-       unit: 'function.sample'
+-     }
+-   ],
+    files: [
+      'harness.verify.json',
+      'package.json',
+      'test/proof.ts',
+      'test/support/data.json',
+
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -1,13 +1,7 @@[39m
+[2m  {[22m
+[32m-   "expectations": [[39m
+[32m-     {[39m
+[32m-       "path": "specification/units/function.sample.json",[39m
+[32m-       "sha256": "fd63e897e7a32736971982f3ea0391e224e13f115cbfe9c61246fc8cc407cf83",[39m
+[32m-       "unit": "function.sample",[39m
+[32m-     },[39m
+[32m-   ],[39m
+[31m+   "expectations": [],[39m
+[2m    "files": [[22m
+[2m      "harness.verify.json",[22m
+[2m      "package.json",[22m
+[2m      "test/proof.ts",[22m
+[2m      "test/support/data.json",[22m
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:97:4
+     95|    deepStrictEqual(
+     96|     observation.output,
+     97|     example.output,
+       |    ^
+     98|     'Example output differs from its comment'
+     99|    );
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ src/services/verification-evidence/TestExpectationService.ts:58:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  test/utils/regression-files.test.ts > regressionFixCommit: Reject wrong source hidden by a changed authored answer
+AssertionError: Example error differs from its comment
++ actual - expected
+
+  {
++   actual: undefined,
++   expected: Error: rejected promise
++       at file:///Users/danielfugere/projects/harness-contract-test-policy-20261025/node_modules/@vitest/expect/dist/index.js:1632:17
++       at assertAuthoredInputVariants (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ldTbcz/test/support/regressionInputExamples.ts:119:3)
++       at invokeRegressionFix (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ldTbcz/test/support/regressionInputExamples.ts:59:4)
++       at TestExpectationService.example (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ldTbcz/src/services/verification-evidence/TestExpectationService.ts:80:13)
++       at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ldTbcz/src/services/verification-evidence/TestExpectationService.ts:58:6
++       at file:///Users/danielfugere/projects/harness-contract-test-policy-20261025/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20,
++   message: 'promise resolved "undefined" instead of rejecting',
++   name: 'AssertionError',
++   showDiff: true
+-   message: 'The authored regression expectations must remain unchanged.',
+-   name: 'ExpectedCliError'
+  }
+
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "message": "The authored regression expectations must remain unchanged.",[39m
+[32m-   "name": "ExpectedCliError",[39m
+[31m+   "actual": undefined,[39m
+[31m+   "expected": Error {[39m
+[31m+     "message": "rejected promise",[39m
+[31m+   },[39m
+[31m+   "message": "promise resolved \"undefined\" instead of rejecting",[39m
+[31m+   "name": "AssertionError",[39m
+[31m+   "showDiff": true,[39m
+[2m  }[22m
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:94:4
+     92|    deepStrictEqual(observation.error, example.error, 'Example error di…
+     93|   } else {
+     94|    deepStrictEqual(Object.hasOwn(observation, 'error'), false, 'Exampl…
+       |    ^
+     95|    deepStrictEqual(
+     96|     observation.output,
+ ❯ src/services/verification-evidence/TestExpectationService.ts:58:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  test/utils/regression-files.test.ts > regressionTestCommit: Admit a strengthened authored comment without changing its adapter
+AssertionError: Example unexpectedly failed
+
+true !== false
+
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:90:4
+     88|    deepStrictEqual(Object.hasOwn(observation, 'error'), false, 'Exampl…
+     89|    deepStrictEqual(observation.output, undefined, 'Example output diff…
+     90|   } else if (Object.hasOwn(example, 'error')) {
+       |    ^
+     91|    deepStrictEqual(Object.hasOwn(observation, 'error'), true, 'Expecte…
+     92|    deepStrictEqual(observation.error, example.error, 'Example error di…
+ ❯ src/services/verification-evidence/TestExpectationService.ts:58:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  test/utils/regression-files.test.ts > regressionTestCommit: Reject product metadata disguised as a named test
+ FAIL  test/utils/regression-files.test.ts > regressionTestCommit: Reject product source disguised as a named test
+AssertionError: Expected example to fail
+
+false !== true
+
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:93:4
+     91|    deepStrictEqual(Object.hasOwn(observation, 'error'), true, 'Expecte…
+     92|    deepStrictEqual(observation.error, example.error, 'Example error di…
+     93|   } else {
+       |    ^
+     94|    deepStrictEqual(Object.hasOwn(observation, 'error'), false, 'Exampl…
+     95|    deepStrictEqual(
+ ❯ src/services/verification-evidence/TestExpectationService.ts:58:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  7 failed | 24 passed (31)
+   Start at  22:40:05
+   Duration  8.66s (transform 464ms, setup 214ms, collect 972ms, tests 3.61s, environment 0ms, prepare 72ms)
+
