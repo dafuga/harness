@@ -5599,9 +5599,19 @@
 			},
 			"sourceCommit": "97aec09ddf11b7e6011c2a84b6eb564f53cae7f9",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "queued",
+			"status": "running",
 			"reviews": [],
 			"createdAt": "2026-10-25T19:13:07.614Z",
+			"claim": {
+				"worker": "explorer-name-examples-repair",
+				"token": "f6fc6526-063c-4d52-ac07-f93323a74271",
+				"startedAt": "2026-10-25T19:13:08.031Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 73662,
+					"startedAt": "Sun Oct 25 19:13:06 2026"
+				}
+			},
 			"claimHistory": [],
 			"attempts": []
 		}
