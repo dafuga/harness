@@ -48,6 +48,7 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 			contracts.cached,
 			'Replacing a review must remove omitted fields from cached facts'
 		).toEqual(contracts.refreshed);
+		expect(contracts.refreshed.origin).toBe('derived');
 		await rejectStaleReview(project);
 		await git(['update-ref', 'refs/heads/harness-evidence', head]);
 		expect(
