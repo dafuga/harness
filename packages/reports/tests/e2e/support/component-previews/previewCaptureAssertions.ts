@@ -101,3 +101,18 @@ export async function assertTranslationControls(component: Locator) {
 	await component.getByRole('searchbox', { name: 'Search translations' }).clear();
 	await expect(component.locator('tbody tr')).toHaveCount(50);
 }
+
+/** Module previews must show the actual library and generated-resource content. */
+export async function assertModulePreview(component: Locator, id: string) {
+	if (id === 'reports.component.module-system-explorer-modules-screen') {
+		await expect(component.getByRole('heading', { name: 'Modules', exact: true })).toBeVisible();
+		await expect(component.getByRole('link', { name: 'Email', exact: true })).toBeVisible();
+		await expect(component.getByText('Installed', { exact: true })).toBeVisible();
+		await expect(component).toContainText('harness module add offline');
+	}
+	if (id === 'reports.component.module-system-explorer-module-resources-screen') {
+		await expect(component.getByRole('heading', { name: 'Emails', exact: true })).toBeVisible();
+		await expect(component.getByRole('heading', { name: 'Welcome', exact: true })).toBeVisible();
+		await expect(component).toContainText('harness module generate email email');
+	}
+}

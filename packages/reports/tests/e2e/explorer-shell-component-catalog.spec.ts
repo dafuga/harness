@@ -17,6 +17,7 @@ import {
 import { profilePreview } from './support/component-previews/profilePreview';
 import {
 	assertComponentCapture,
+	assertModulePreview,
 	assertTranslationControls
 } from './support/component-previews/previewCaptureAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
@@ -93,21 +94,7 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, viewport.id);
 			await assertComponentCapture(page, unit.id, viewport.id);
-			if (unit.id === 'reports.component.module-system-explorer-modules-screen') {
-				await expect(
-					component.getByRole('heading', { name: 'Modules', exact: true })
-				).toBeVisible();
-				await expect(component.getByRole('link', { name: 'Email', exact: true })).toBeVisible();
-				await expect(component.getByText('Installed', { exact: true })).toBeVisible();
-				await expect(component).toContainText('harness module add offline');
-			}
-			if (unit.id === 'reports.component.module-system-explorer-module-resources-screen') {
-				await expect(component.getByRole('heading', { name: 'Emails', exact: true })).toBeVisible();
-				await expect(
-					component.getByRole('heading', { name: 'Welcome', exact: true })
-				).toBeVisible();
-				await expect(component).toContainText('harness module generate email email');
-			}
+			await assertModulePreview(component, unit.id);
 
 			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
 

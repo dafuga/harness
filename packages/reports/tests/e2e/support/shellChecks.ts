@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { captureShell, shellOrigin } from './shellFixture';
+import { captureShell, shellOrigin, openShellPage } from './shellFixture';
 import { fits, pictured } from './sharedSelect';
 
 /** What the specs of the shell ask of what is drawn: where it is, and how it is styled. */
@@ -174,4 +174,23 @@ export async function dependencyTables(component: Locator, page: Page, width: nu
 	await expect
 		.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
 		.toBeLessThanOrEqual(width);
+}
+
+/** The line under a category: how thick it is and what colour; nothing when there is none. */
+export const underline = (locator: Locator) =>
+	locator.evaluate((element) => {
+		const style = getComputedStyle(element, '::after');
+		return style.content === 'none' ? null : [parseFloat(style.height), style.backgroundColor];
+	});
+/** Opens the bar over the made-up history and waits for the name both headers show. */
+export async function openNavbar(
+	page: Page,
+	home: string,
+	width: number,
+	height: number
+): Promise<Locator> {
+	await page.setViewportSize({ width, height });
+	await openShellPage(page, home, 'navbar');
+	await expect(page.getByText('Harness', { exact: true }).first()).toBeVisible();
+	return page.getByRole('banner');
 }
