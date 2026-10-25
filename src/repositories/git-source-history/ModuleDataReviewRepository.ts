@@ -42,12 +42,22 @@ export class ModuleDataReviewRepository {
 		units: ComponentManifest[],
 		input: unknown
 	): Promise<void> {
+		const blobs = await this.tree.list(identity.commit);
+		const inputs = Array.isArray(input) ? input : [input];
+		const reviews = inputs.map((item) => this.bind(identity, units, item, blobs));
+		if (reviews.length) await this.commit(reviews);
+	}
+	private bind(
+		identity: ModuleDataIdentity,
+		units: ComponentManifest[],
+		input: unknown,
+		blobs: Map<string, string>
+	) {
 		const requested = moduleReviewSchema.parse(input);
 		if (requested.commit && requested.commit !== identity.commit)
 			throw new Error('Review belongs to a different source commit.');
 		const unit = units.find((unit) => unit.id === requested.unit);
 		if (!unit) throw new Error(`Unknown review module: ${requested.unit}`);
-		const blobs = await this.tree.list(identity.commit);
 		const files = Object.fromEntries(
 			unit.owns.source.map((path) => {
 				const hash = blobs.get(path);
@@ -62,22 +72,37 @@ export class ModuleDataReviewRepository {
 			tree: identity.tree,
 			files
 		};
-		const review = { ...body, digest: seal(body) };
-		await this.commit(review);
+		return { ...body, digest: seal(body) };
 	}
-	private async commit(review: ModuleReview) {
-		const path = `reviews/${review.commit}/${review.unit}.json`,
-			bytes = Buffer.from(canonicalJson(review));
+
+	private async commit(reviews: ModuleReview[]) {
+		const files = reviews.flatMap((review) => {
+			const bytes = Buffer.from(canonicalJson(review));
+			return [
+				`reviews/${review.commit}/${review.unit}.json`,
+				`review-snapshots/${review.commit}/${review.unit}/${review.digest}.json`
+			].map((path) => ({ path, content: { bytes } }));
+		});
 		for (let attempt = 0; attempt < 20; attempt++) {
 			const prior = await this.tree.tip(moduleDataRef);
-			if (prior && (await this.tree.read(prior, path))?.equals(bytes)) return;
-			const parents = [...new Set([...(prior ? [prior] : []), review.commit])];
+			if (
+				prior &&
+				(
+					await Promise.all(
+						files.map(async (file) =>
+							(await this.tree.read(prior, file.path))?.equals(file.content.bytes)
+						)
+					)
+				).every(Boolean)
+			)
+				return;
+			const parents = [
+				...new Set([...(prior ? [prior] : []), ...reviews.map((review) => review.commit)])
+			];
 			const next = await this.tree.commit({
 				parents,
 				message: 'chore: review historical module metadata',
-				files: [path, `review-snapshots/${review.commit}/${review.unit}/${review.digest}.json`].map(
-					(path) => ({ path, content: { bytes } })
-				)
+				files
 			});
 			if (await this.tree.advance(moduleDataRef, next, prior)) return;
 		}

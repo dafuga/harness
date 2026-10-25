@@ -30,12 +30,11 @@ export class ModuleDataService {
 		const requested = reviews ?? (await readModuleReviews(options.review));
 		if (requested.length) {
 			if (!options.write) throw new Error('--review requires --write.');
-			for (const review of requested)
-				await new ModuleDataReviewRepository(this.root).write(
-					identity,
-					cache.data.declarations,
-					review
-				);
+			await new ModuleDataReviewRepository(this.root).write(
+				identity,
+				cache.data.declarations,
+				requested
+			);
 			cache = await this.load(identity, true);
 		}
 		await new ModuleDataCache(this.repository).write(cache.data);

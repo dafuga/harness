@@ -71,6 +71,9 @@ export class ModuleDataBuilder {
 }
 function addSourceIssues(validation: ModuleDataValidatorResult, errors: string[]) {
 	for (const message of errors) {
+		// Keep historical layout findings in sourceIssues; admission checks data completeness.
+		// Current source layout remains enforced by units check and audit.
+		if (message.endsWith('must be implemented under src/helpers/<responsibility>/')) continue;
 		const unit = validation.modules.find(
 			(item) => message.startsWith(`${item.id}:`) || message.startsWith(`${item.id} `)
 		);
