@@ -208,13 +208,15 @@ for (const [screen, width, height] of screens) {
 		const bar = await openNavbar(page, home, width, height);
 		await combo(bar, 'Commit').selectOption(sha(3));
 		await pictured(page, `modules-navigation-${screen}`);
-		await captureShell(page, home, { state: 'module-discovery', viewport: screen });
 		await bar.getByRole('link', { name: 'Code', exact: true }).click();
 		const modules = bar.getByRole('tab', { name: 'Modules', exact: true });
 		await expect(modules, 'Modules is contributed under Code').toBeVisible();
 		await modules.click();
 		await expect(page).toHaveURL(at(`${earlier}/modules`));
 		await expect(modules).toHaveAttribute('aria-selected', 'true');
+		await page.reload();
+		await expect(modules).toHaveAttribute('aria-selected', 'true');
+		await captureShell(page, home, { state: 'module-discovery', viewport: screen });
 		await expect.poll(() => fits(page)).toBe(true);
 	});
 }

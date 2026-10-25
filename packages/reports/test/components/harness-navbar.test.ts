@@ -101,24 +101,28 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 	expect([...order].sort((a, b) => a - b)).toEqual(order);
 });
 
-test('Styles has its own active state and keeps the selected revision in its address', () => {
-	const html = body(styles);
-	const menu = links(html);
-	expect(menu.filter((item) => item.current).map((item) => item.label)).toEqual(['Code']);
-	expect(menu[1]).toMatchObject({
-		label: 'Code',
-		href: `${scoped}/commit/${sha(4)}/components`,
-		current: true
-	});
-	const strip =
-		/<div\b[^>]*role="tablist"[^>]*aria-label="Code categories"[^>]*>(.*?)<\/div>/s.exec(
-			html
-		)?.[1] ?? '';
-	const selected = [...strip.matchAll(/<a\b([^>]*)>(.*?)<\/a>/gs)].find(
-		([, , content]) => text(content) === 'Styles'
-	);
-	expect(selected?.[1]).toContain('aria-selected="true"');
-	expect(selected?.[1]).toContain(`href="${scoped}/commit/${sha(4)}/styles"`);
+test('Code screens select their module tab and retain the selected revision', () => {
+	for (const [screen, title] of [
+		['styles', 'Styles'],
+		['modules', 'Modules'],
+		['permissions', 'Users &amp; Permissions']
+	] as const) {
+		const html = body({ ...styles, screen });
+		expect(
+			links(html)
+				.filter((item) => item.current)
+				.map((item) => item.label)
+		).toEqual(['Code']);
+		const strip =
+			/<div\b[^>]*role="tablist"[^>]*aria-label="Code categories"[^>]*>(.*?)<\/div>/s.exec(
+				html
+			)?.[1] ?? '';
+		const selected = [...strip.matchAll(/<a\b([^>]*)>(.*?)<\/a>/gs)].filter(([, attributes]) =>
+			attributes.includes('aria-selected="true"')
+		);
+		expect(selected.map(([, , content]) => text(content))).toEqual([title]);
+		expect(selected[0]?.[1]).toContain(`href="${scoped}/commit/${sha(4)}/${screen}"`);
+	}
 });
 
 test('the bar has no reports, analytics, activity, growth or legacy view in it', () => {
