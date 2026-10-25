@@ -2,7 +2,7 @@
 	"name": "contract-lossless-json",
 	"goal": "Retain every API JSON field and authored example value while preserving admitted input behavior",
 	"createdAt": "2026-10-25T20:20:40.050Z",
-	"updatedAt": "2026-10-25T20:35:20.098Z",
+	"updatedAt": "2026-10-25T20:58:27.052Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T20:56:52.211Z",
+			"evidence": "At fa02ed33dd the unchanged 12 existing cases fail: the API JSON comparison accepts changed reserved fields; authored Examples lose those fields; generated policy lacks the parser-review rule. The named comparator assertion is retained in immutable Harness evidence."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T20:56:52.743Z",
+			"evidence": "Use an internal JSON schema whose record parser safely defines every own string field while retaining Zod schema export, parse context, cycle memoization, getter order and array admission. Share it between authored Examples and API expectations. Keep the same four method cases and eight generated-guidance cases; add the parser-review checkpoint to shared and repository instructions."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T20:58:27.052Z",
+			"evidence": "The internal testJsonSchema defines lossless record fields safely before deferred Zod memoization, preserving schema export and parse context. API comparison and authored Examples share it. The existing 12 comparator, Examples and generated-guidance cases pass; compiler and lint pass, audit reports zero findings, registry zero errors."
 		},
 		{
 			"id": "green",

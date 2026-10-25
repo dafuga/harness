@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { compositionSchema } from './composition';
+import { testJsonSchema } from '../verification-evidence/testJsonSchema';
 import { testContractSchema } from '../../services/verification-evidence/test-contract-service/testContractSchema';
 
 export const unitIdPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
@@ -37,7 +38,7 @@ export const contractItemSchema = z.strictObject({
 	type: text,
 	description: z.string().optional(),
 	/** Values a person declared as examples of the item; any JSON, kept exactly as written. */
-	examples: z.array(z.json()).optional()
+	examples: z.array(testJsonSchema).optional()
 });
 
 /** Authored usage, distinct from observed verification evidence. */
@@ -46,10 +47,10 @@ export const usageExampleSchema = z
 		name: text.max(160),
 		description: z.string().max(500).optional(),
 		call: text.max(16_000).optional(),
-		input: z.json(),
-		output: z.json().optional(),
+		input: testJsonSchema,
+		output: testJsonSchema.optional(),
 		returns: z.literal('void').optional(),
-		error: z.json().optional()
+		error: testJsonSchema.optional()
 	})
 	.refine(
 		(example) =>

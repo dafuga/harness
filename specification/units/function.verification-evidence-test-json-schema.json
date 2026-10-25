@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"id": "function.verification-evidence-test-json-schema",
+	"kind": "function",
+	"title": "testJsonSchema",
+	"responsibility": "Defines lossless authored test JSON and response schemas while preserving field names, parser admission and JSON Schema exports.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/core/verification-evidence/testJsonSchema.ts",
+			"src/core/verification-evidence/testJsonSchema.types.ts"
+		],
+		"symbols": [
+			"testJsonSchema",
+			"TestJson",
+			"JsonRecordSchema",
+			"JsonParsePayload",
+			"JsonParseContext",
+			"JsonMemoizer"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "testJsonSchema",
+				"type": "z.ZodType<TestJson>",
+				"description": "JSON-compatible data schema retaining every enumerable own string field without invoking prototype setters."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/verification-evidence/testJsonSchema.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/verification-evidence/testJsonSchema.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"catalog": {
+		"visibility": "internal"
+	}
+}

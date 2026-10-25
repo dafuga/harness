@@ -1,5 +1,5 @@
 import { deepStrictEqual } from 'node:assert';
-import { z } from 'zod';
+import { testJsonSchema } from '../../core/verification-evidence/testJsonSchema';
 import { TestCaseValidator } from '../../validators/verification-evidence/TestCaseValidator';
 import { normalizeJson } from './test-expectation-service/normalizeJson';
 import type { UsageExample } from '../../utils/explorer-ui/unit-documentation/unitDocumentation.types';
@@ -61,8 +61,8 @@ export class TestExpectationService {
 		}
 	}
 	json(actual: unknown, expected: unknown, normalize: string[] = []): void {
-		const left = globalThis.structuredClone(z.json().parse(actual));
-		const right = globalThis.structuredClone(z.json().parse(expected));
+		const left = globalThis.structuredClone(testJsonSchema.parse(actual));
+		const right = globalThis.structuredClone(testJsonSchema.parse(expected));
 		for (const path of normalize) {
 			normalizeJson(left, path);
 			normalizeJson(right, path);

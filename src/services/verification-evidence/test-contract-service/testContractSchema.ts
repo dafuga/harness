@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { testJsonSchema } from '../../../core/verification-evidence/testJsonSchema';
 
 const id = z.string().regex(/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/);
 const text = z.string().trim().min(1);
@@ -10,9 +11,13 @@ const path = text.refine(
 const expected = z.discriminatedUnion('kind', [
 	z.strictObject({ kind: z.literal('void') }),
 	z.strictObject({ kind: z.literal('screenshot'), file: path }),
-	z.strictObject({ kind: z.literal('json'), value: z.json(), normalize: z.array(text).optional() }),
-	z.strictObject({ kind: z.literal('value'), value: z.json() }),
-	z.strictObject({ kind: z.literal('error'), value: z.json() })
+	z.strictObject({
+		kind: z.literal('json'),
+		value: testJsonSchema,
+		normalize: z.array(text).optional()
+	}),
+	z.strictObject({ kind: z.literal('value'), value: testJsonSchema }),
+	z.strictObject({ kind: z.literal('error'), value: testJsonSchema })
 ]);
 
 /** Stable authored cases; observations never replace these expectations. */
@@ -25,11 +30,11 @@ export const testContractSchema = z.strictObject({
 				subject: text,
 				name: text,
 				call: text,
-				input: z.json(),
+				input: testJsonSchema,
 				expected: z.discriminatedUnion('kind', [
 					z.strictObject({ kind: z.literal('void') }),
-					z.strictObject({ kind: z.literal('value'), value: z.json() }),
-					z.strictObject({ kind: z.literal('error'), value: z.json() })
+					z.strictObject({ kind: z.literal('value'), value: testJsonSchema }),
+					z.strictObject({ kind: z.literal('error'), value: testJsonSchema })
 				])
 			})
 		)
@@ -46,7 +51,7 @@ export const testContractSchema = z.strictObject({
 				example: text.optional(),
 				fixture: path.optional(),
 				call: text.optional(),
-				input: z.json().optional(),
+				input: testJsonSchema.optional(),
 				test: z.strictObject({ file: path, title: text }),
 				expected: expected.optional(),
 				viewports: z.array(id).min(1).optional(),
