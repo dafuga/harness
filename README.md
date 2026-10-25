@@ -39,6 +39,76 @@ bun run check
 
 The Explorer’s APIs catalog lists HTTP endpoints and method exports at the selected project revision. Each page has an APIs tab for source-recorded usage through its components and services. API cards open contracts and consumer links in the same revision. Computed or external requests are not presented as confirmed same-app endpoint dependencies.
 
+## Committed module data
+
+Run validation after committing source. Resource reads in an opted-in project require complete,
+committed module metadata; validation and repair remain available when reads are blocked.
+Missing screenshots and measurement observations are reported as evidence gaps and do not block reads.
+Enable this admission policy with `harness.validation.json` containing `{"schemaVersion":1}`.
+
+```bash
+harness validate --write
+harness validate --module page.checkout --json
+harness validate --type pages --json
+harness validate --type component --refresh --json
+harness validate --history --all --write --json
+harness history sync origin
+harness validate --sync origin --write
+harness api --branch main get validation
+harness api --branch main get used-apis page.checkout
+harness api --branch main get relations page.checkout
+```
+
+`--module` (or a positional stable ID) selects one module. `--type` accepts a kind or catalog
+category. Reports list each missing field, its repair action, whether it is metadata or evidence,
+and whether the result was cached and committed. Exit status 1 means metadata is incomplete or
+has not been committed. Cached reports are bound to the exact source and review inputs;
+`--refresh` rechecks source and evidence. Page API usage, including transitive dependencies,
+is committed with the module relationships, so callers need no source-search script.
+
+`--history` checks the selected commit's ancestors; `--history --all` includes source branches and
+retained source commits. Facts and gap reports live on `refs/harness/module-data`, with immutable
+snapshots and source ancestry. History sync exchanges this ref alongside notes and evidence;
+source SHAs are preserved. Missing historical observations stay missing.
+
+Repair current declarations in source and commit them. For historical authoring, use
+`harness validate --commit SOURCE_SHA --review review.json --write`. A review names `unit`,
+`reason`, and `metadata` containing authored responsibility, contracts, helper examples, config
+controls, preview or owned module runtime declarations. Historical batches must also name the
+exact `commit` on each review. Reviews bind to that source tree and its owned blob hashes;
+they cannot replace dependencies, source ownership, budgets or observations. A review replaces
+that module's earlier review, so retain any fields that still apply.
+
+A review may also declare wanted scenario evidence for a scenario covering that module:
+
+```json
+{
+	"unit": "service.agent-activity",
+	"reason": "Require the lifecycle assertions from the existing integration test.",
+	"metadata": {},
+	"scenarios": [
+		{
+			"id": "agent-activity",
+			"evidence": [
+				{
+					"id": "lifecycle-assertions",
+					"kind": "assertions",
+					"states": ["lifecycle"],
+					"viewports": [],
+					"required": true
+				}
+			]
+		}
+	]
+}
+```
+
+This changes the wanted contract, retaining the scenario's original states and test targets.
+It supplies no execution evidence. Unknown scenarios, uncovered modules and invalid state or
+viewport references are rejected before a review is committed. Sync preserves every immutable
+snapshot while advancing repaired lookup paths; conflicting producer output or concurrent
+incompatible reviews is rejected for explicit repair.
+
 ## API access from the CLI
 
 `harness api` calls the same HTTP APIs as the app. It works from any directory;
