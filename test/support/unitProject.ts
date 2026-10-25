@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import assert from 'node:assert/strict';
 import type { UnitProject } from './unitProject.types';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -89,10 +89,10 @@ export async function configureTestAuthor(root: string) {
 export function validationInvoker(project: Awaited<ReturnType<typeof unitProject>>) {
 	return async (args: string[]) => {
 		const result = await project.harness(['validate', ...args, '--json'], false);
-		expect(
-			result.stdout,
+		assert.ok(
+			result.stdout.includes('"modules"'),
 			'Validation returns structured per-module diagnostics: ' + result.stderr
-		).toContain('"modules"');
+		);
 		return { ...(JSON.parse(result.stdout) as ValidationReport), exitCode: result.exitCode };
 	};
 }
@@ -113,7 +113,7 @@ export async function verifyReview(
 		})
 	);
 	const reviewed = await invoke(['--review', review, '--write']);
-	expect(reviewed.committed).toBe(true);
+	assert.equal(reviewed.committed, true);
 	const refreshed = await invoke(['--refresh', '--write']);
 	const retained = (await git(['ls-tree', '-r', '--name-only', refreshed.metadataCommit!])).stdout
 		.split('\n')
@@ -121,7 +121,8 @@ export async function verifyReview(
 	const reviewedData = JSON.parse(
 		(await git(['show', `${refreshed.metadataCommit}:${retained}`])).stdout
 	) as ModuleData;
-	expect(
-		reviewedData.declarations.find((unit) => unit.id === 'service.title')!.responsibility
-	).toBe('Serve normalized titles through the declared title service.');
+	assert.equal(
+		reviewedData.declarations.find((unit) => unit.id === 'service.title')!.responsibility,
+		'Serve normalized titles through the declared title service.'
+	);
 }
