@@ -1,0 +1,122 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.validator.pairing-body",
+	"kind": "validator",
+	"title": "PairingBodyValidator",
+	"responsibility": "Owns the PairingBodyValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/relay/src/validators/PairingBodyValidator.ts",
+			"packages/relay/src/validators/networking-security/PairingBodyValidator.ts"
+		],
+		"symbols": [
+			"PairingBodyValidator",
+			"PairingBodyValidator",
+			"PairingBodyValidator.request",
+			"PairingBodyValidator.verifier"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "PairingBodyValidator.request.value",
+				"type": "unknown"
+			},
+			{
+				"name": "PairingBodyValidator.verifier.value",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "PairingBodyValidator.request",
+				"type": "RelayPairingRequest | undefined"
+			},
+			{
+				"name": "PairingBodyValidator.verifier",
+				"type": "string | undefined"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "relay.function.is-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.function.matches-pattern",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/validators/networking-security/PairingBodyValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/validators/networking-security/PairingBodyValidator.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"props": ["ephemeralKey", "sealed", "challenge", "verifier"],
+		"cases": [
+			{
+				"id": "request-initialized",
+				"state": "initialized",
+				"subject": "PairingBodyValidator.request",
+				"fixture": "packages/relay/test/support/relayActors.ts",
+				"test": {
+					"file": "packages/relay/test/validators/pairing-body.test.ts",
+					"title": "request initialized reads a pairing request and refuses a missing, malformed or unknown field"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"ephemeralKey": "structural P-256 public key",
+						"sealed": "structural sealed envelope",
+						"challenge": "structural PKCE challenge"
+					}
+				},
+				"props": ["ephemeralKey", "sealed", "challenge"],
+				"errors": ["invalid input props"]
+			},
+			{
+				"id": "verifier-initialized",
+				"state": "initialized",
+				"subject": "PairingBodyValidator.verifier",
+				"fixture": "packages/remote/src/index.ts",
+				"test": {
+					"file": "packages/relay/test/validators/pairing-body.test.ts",
+					"title": "verifier initialized reads the verifier of an exchange and refuses a verifier of another shape"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "structural PKCE verifier"
+				},
+				"props": ["verifier"],
+				"errors": ["invalid input props"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
