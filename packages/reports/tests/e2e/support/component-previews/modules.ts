@@ -1,3 +1,6 @@
+import { standardCodeModules } from '../../../../../../src/templates/module-system/standardCodeModules';
+import { rustWasmModule } from '../../../../../../src/templates/module-system/rustWasmModule';
+import { rustBackendModule } from '../../../../../../src/templates/module-system/rustBackendModule';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 const definition = (id: string, title: string, resource: string, resourceTitle: string) => ({
 	schemaVersion: 1 as const,
@@ -34,6 +37,18 @@ const definition = (id: string, title: string, resource: string, resourceTitle: 
 export const moduleData = {
 	gaps: [],
 	modules: [
+		...standardCodeModules.map((definition) => ({
+			definition,
+			source: 'builtin' as const,
+			installed: true,
+			instances: []
+		})),
+		...[rustWasmModule, rustBackendModule].map((definition) => ({
+			definition,
+			source: 'builtin' as const,
+			installed: false,
+			instances: []
+		})),
 		{
 			definition: definition('email', 'Email', 'email', 'Emails'),
 			source: 'builtin' as const,

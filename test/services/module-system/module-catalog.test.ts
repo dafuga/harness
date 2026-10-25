@@ -145,6 +145,11 @@ test('included modules expose every existing Code catalog through the module con
 	const catalog = await new ModuleCatalogService().load(await project());
 	const included = catalog.modules.filter((entry) => entry.definition.includedByDefault);
 	expect(included).toHaveLength(9);
+	expect(
+		included.every((entry) =>
+			entry.definition.resources.every((resource) => resource.files.length || resource.generator)
+		)
+	).toBe(true);
 	expect(included.every((entry) => entry.installed && entry.source === 'builtin')).toBe(true);
 	expect(
 		included
