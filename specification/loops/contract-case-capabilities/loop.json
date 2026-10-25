@@ -1,0 +1,56 @@
+{
+	"name": "contract-case-capabilities",
+	"goal": "Prevent documentation or declaration ordering changes from authorizing unexplained growth in an existing entity case suite",
+	"createdAt": "2026-10-25T13:13:48.691Z",
+	"updatedAt": "2026-10-25T13:14:00.778Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-25T13:14:00.274Z",
+			"evidence": "The existing compare method accepts added case IDs when a declaration description or origin changes. Expected: only actual supported signatures, examples, states, props or errors authorize case identity changes."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-25T13:14:00.778Z",
+			"evidence": "The original comparison case varied only case IDs and states. It missed non-capability metadata and order changes. Strengthened the same existing compare case with description/origin and symbol-order matrices; test count stays two."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
