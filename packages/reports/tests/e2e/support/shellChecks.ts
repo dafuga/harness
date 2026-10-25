@@ -105,6 +105,7 @@ export async function moduleNavigation(
 	await expect(bar.locator('[popover], [popovertarget]')).toHaveCount(0);
 	const tabs = modules.getByRole('tab');
 	await expect(tabs).toHaveText([
+		'APIs',
 		'Layouts',
 		'Components',
 		'Models',
@@ -113,7 +114,9 @@ export async function moduleNavigation(
 		'Types',
 		'Configs',
 		'Styles',
-		'Dependencies'
+		'Dependencies',
+		'Users & Permissions',
+		'Modules'
 	]);
 	const [row, primary] = await Promise.all([box(modules), box(bar.locator('.hx-categories'))]);
 	expect(row.y, 'module categories sit below the primary row').toBeGreaterThanOrEqual(
@@ -135,6 +138,9 @@ export async function moduleNavigation(
 /** Each additional Code destination retains the current branch and commit scope. */
 async function codeDestinations(page: Page, row: Locator, scoped: string): Promise<void> {
 	for (const [name, path] of [
+		['APIs', 'apis'],
+		['Users & Permissions', 'permissions'],
+		['Modules', 'modules'],
 		['Configs', 'configs'],
 		['Styles', 'styles'],
 		['Dependencies', 'dependencies'],
