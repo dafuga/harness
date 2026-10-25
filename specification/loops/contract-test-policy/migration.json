@@ -5,10 +5,10 @@
 	"scope": "Harness repository workspaces and generators only; external applications and production excluded",
 	"inventory": {
 		"files": 1110,
-		"declarations": 4230,
-		"standardizedUnits": 23,
-		"standardizedCases": 256,
-		"errors": 5996
+		"declarations": 4241,
+		"standardizedUnits": 26,
+		"standardizedCases": 278,
+		"errors": 5982
 	},
 	"migrations": [
 		{
@@ -38,6 +38,27 @@
 			"cases": 24,
 			"states": ["input", "invalid"],
 			"testFiles": ["test/case.test.ts"]
+		},
+		{
+			"unit": "relay.function.relay-response",
+			"shape": "helper",
+			"cases": 17,
+			"states": ["input", "boundary", "invalid"],
+			"testFiles": ["packages/relay/test/utils/relay-response.test.ts"]
+		},
+		{
+			"unit": "relay.validator.manage-body",
+			"shape": "service",
+			"cases": 3,
+			"states": ["initialized"],
+			"testFiles": ["packages/relay/test/validators/manage-body.test.ts"]
+		},
+		{
+			"unit": "relay.validator.pairing-body",
+			"shape": "service",
+			"cases": 2,
+			"states": ["initialized"],
+			"testFiles": ["packages/relay/test/validators/pairing-body.test.ts"]
 		},
 		{
 			"unit": "remote.service.device-pairing",

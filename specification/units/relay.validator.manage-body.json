@@ -79,6 +79,96 @@
 		]
 	},
 	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"props": [
+			"credentialHash",
+			"credentialHash casing",
+			"credentialHash length",
+			"deviceId",
+			"deviceId casing",
+			"deviceId length",
+			"extra fields",
+			"hostId",
+			"hostId length",
+			"hostKey",
+			"hostKey length",
+			"name",
+			"name length",
+			"owner.id",
+			"owner.id length"
+		],
+		"cases": [
+			{
+				"id": "owner-initialized",
+				"state": "initialized",
+				"subject": "ManageBodyValidator.owner",
+				"fixture": "packages/relay/test/support/relayActors.ts",
+				"test": {
+					"file": "packages/relay/test/validators/manage-body.test.ts",
+					"title": "ManageBodyValidator reads the owner and the host of every call"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["owner id and hostId only", "undefined"]
+				},
+				"props": ["owner.id", "owner.id length", "hostId", "hostId length", "extra fields"],
+				"errors": ["invalid input props"]
+			},
+			{
+				"id": "register-initialized",
+				"state": "initialized",
+				"subject": "ManageBodyValidator.register",
+				"fixture": "packages/relay/test/support/relayActors.ts",
+				"test": {
+					"file": "packages/relay/test/validators/manage-body.test.ts",
+					"title": "ManageBodyValidator reads a registration"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["owner, hostId, hostKey, credentialHash and name only", "undefined"]
+				},
+				"props": [
+					"hostKey",
+					"hostKey length",
+					"credentialHash",
+					"credentialHash length",
+					"credentialHash casing",
+					"name",
+					"name length",
+					"owner.id",
+					"hostId",
+					"extra fields"
+				],
+				"errors": ["invalid input props"]
+			},
+			{
+				"id": "device-initialized",
+				"state": "initialized",
+				"subject": "ManageBodyValidator.device",
+				"fixture": "packages/relay/test/support/relayActors.ts",
+				"test": {
+					"file": "packages/relay/test/validators/manage-body.test.ts",
+					"title": "ManageBodyValidator reads the device of a revocation"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["owner, hostId and deviceId only", "undefined"]
+				},
+				"props": [
+					"deviceId",
+					"deviceId length",
+					"deviceId casing",
+					"owner.id",
+					"hostId",
+					"extra fields"
+				],
+				"errors": ["invalid input props"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
