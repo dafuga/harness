@@ -142,10 +142,33 @@ header.topbar {
 		width: 100%;
 	}
 }
-/* A final empty cell keeps the phone's search/settings clear as categories grow. */
+/* Use the existing top row for phone controls so categories keep the compact header. */
 @media (max-width: 560px) {
-	.topbar nav::after {
-		content: '';
+	header.topbar {
+		grid-template-areas:
+			'brand project project search search'
+			'environment environment revision tip tip'
+			'summary summary summary summary summary'
+			'tools tools tools tools tools';
+	}
+	header.topbar.with-activity {
+		grid-template-areas:
+			'brand project search search account'
+			'environment environment revision tip tip'
+			'summary summary summary summary summary'
+			'tools tools tools tools tools';
+	}
+	header.topbar.with-account {
+		grid-template-areas:
+			'brand project project search search'
+			'account account account account account'
+			'environment environment revision tip tip'
+			'summary summary summary summary summary'
+			'tools tools tools tools tools';
+	}
+	.topbar-search {
+		grid-area: search;
+		place-self: center end;
 	}
 }
 /* A phone arranges the same places in rows of its own, in responsive.css. */
