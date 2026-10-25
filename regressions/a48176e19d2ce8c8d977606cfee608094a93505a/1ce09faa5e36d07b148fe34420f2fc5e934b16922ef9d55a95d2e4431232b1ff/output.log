@@ -1,0 +1,36 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-AV2P5I
+
+ ❯ test/audit.test.ts (9 tests | 1 failed) 42ms
+   ✓ audit reports oversized files 9ms
+   ✓ audit reports oversized functions and ignores build folders 3ms
+   ✓ audit ignores symlinks without following missing build outputs 1ms
+   ✓ audit reports class, method, complexity, nesting, parameter, count, and naming rules 5ms
+   ✓ audit reports architecture rule violations 2ms
+   × audit reports Harness scaffold file and function naming violations 9ms
+     → expected [ 'src/extensions/', …(7) ] to not include 'src/types/Invoice.ts'
+   ✓ audit rejects files and folders outside the Harness structure 3ms
+   ✓ audit honors local ignored finding baselines 2ms
+   ✓ every SvelteKit route segment form is a valid folder name, and nothing else in brackets is 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/audit.test.ts > audit reports Harness scaffold file and function naming violations
+AssertionError: expected [ 'src/extensions/', …(7) ] to not include 'src/types/Invoice.ts'
+ ❯ assertModuleAuditAdmission test/support/moduleAuditAdmission.ts:53:24
+     51|    .map((finding) => finding.path);
+     52|  const available = await sources();
+     53|  expect(available).not.toContain('src/types/Invoice.ts');
+       |                        ^
+     54|  expect(available).not.toContain('src/styles/invoice.css');
+     55|  expect(available).toContain('src/extensions/example.ts');
+ ❯ test/audit.test.ts:128:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  15:48:14
+   Duration  2.80s (transform 177ms, setup 77ms, collect 379ms, tests 42ms, environment 0ms, prepare 24ms)
+
