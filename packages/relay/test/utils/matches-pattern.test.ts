@@ -1,29 +1,41 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import type { ComponentManifest } from '../../../../src/core/unitTypes';
+import { TestExpectationService } from '../../../../src/services/verification-evidence/TestExpectationService';
+import unit from '../../../../specification/units/relay.function.matches-pattern.json' with { type: 'json' };
 import { matchesPattern } from '../../src/utils/matchesPattern';
 
-const hex = /^[a-f0-9]{4}$/;
+/** JSON cannot carry undefined, so an authored example marks that argument explicitly. */
+function isUndefinedMarker(value: unknown): boolean {
+	return (value as { $fixture?: unknown } | null)?.$fixture === 'undefined';
+}
 
-test('matchesPattern accepts a text of the pattern', () => {
-	expect(matchesPattern('a1b2', hex)).toBe(true);
-});
+/** Rebuilds an authored RegExp, including a position left on the pattern before the call. */
+function regExpFrom(marker: unknown): RegExp {
+	if (marker === null) return null as never;
+	const { $fixture, source, flags, lastIndex } = marker as {
+		$fixture?: unknown;
+		source: string;
+		flags: string;
+		lastIndex?: number;
+	};
+	if ($fixture !== 'RegExp') throw new Error('Pattern must be an authored RegExp marker');
+	const pattern = new RegExp(source, flags);
+	if (lastIndex !== undefined) pattern.lastIndex = lastIndex;
+	return pattern;
+}
 
-test('matchesPattern refuses another text and whatever is not a text', () => {
-	for (const value of [
-		'a1b',
-		'a1b2c',
-		'A1B2',
-		'',
-		1234,
-		null,
-		undefined,
-		['a1b2'],
-		{ length: 4 }
-	]) {
-		expect(matchesPattern(value, hex), JSON.stringify(value)).toBe(false);
-	}
-});
+/**
+ * Calls the public guard with the authored arguments. A repeat count makes that many calls with
+ * one RegExp instance, so a global pattern keeps whatever state it has between calls.
+ */
+function invokeMatchesPattern(...input: never[]) {
+	const [value, marker, repeats] = input as unknown as [unknown, unknown, number | undefined];
+	const candidate = isUndefinedMarker(value) ? undefined : value;
+	const pattern = regExpFrom(marker);
+	if (repeats === undefined) return matchesPattern(candidate, pattern);
+	return Array.from({ length: repeats }, () => matchesPattern(candidate, pattern));
+}
 
-test('matchesPattern gives the same answer every time, also for a global pattern', () => {
-	const global = /[a-f0-9]{4}/g;
-	expect([1, 2, 3].map(() => matchesPattern('a1b2', global))).toEqual([true, true, true]);
+new TestExpectationService().registerExamples(test, unit as ComponentManifest, {
+	matchesPattern: invokeMatchesPattern
 });

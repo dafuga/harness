@@ -5,10 +5,10 @@
 	"scope": "Harness repository workspaces and generators only; external applications and production excluded",
 	"inventory": {
 		"files": 1110,
-		"declarations": 4241,
-		"standardizedUnits": 26,
-		"standardizedCases": 278,
-		"errors": 5982
+		"declarations": 4352,
+		"standardizedUnits": 32,
+		"standardizedCases": 416,
+		"errors": 5949
 	},
 	"migrations": [
 		{
@@ -38,6 +38,48 @@
 			"cases": 24,
 			"states": ["input", "invalid"],
 			"testFiles": ["test/case.test.ts"]
+		},
+		{
+			"unit": "relay.function.connect-claims",
+			"shape": "helper",
+			"cases": 21,
+			"states": ["input", "boundary", "invalid"],
+			"testFiles": ["packages/relay/test/utils/connect-claims.test.ts"]
+		},
+		{
+			"unit": "relay.function.frame-too-large",
+			"shape": "helper",
+			"cases": 15,
+			"states": ["input", "boundary", "invalid"],
+			"testFiles": ["packages/relay/test/utils/frame-too-large.test.ts"]
+		},
+		{
+			"unit": "relay.function.is-record",
+			"shape": "helper",
+			"cases": 17,
+			"states": ["input", "boundary", "invalid"],
+			"testFiles": ["packages/relay/test/utils/is-record.test.ts"]
+		},
+		{
+			"unit": "relay.function.matches-pattern",
+			"shape": "helper",
+			"cases": 14,
+			"states": ["input", "boundary", "invalid"],
+			"testFiles": ["packages/relay/test/utils/matches-pattern.test.ts"]
+		},
+		{
+			"unit": "relay.function.public-route",
+			"shape": "helper",
+			"cases": 58,
+			"states": ["input", "combination", "boundary", "invalid"],
+			"testFiles": ["packages/relay/test/utils/public-route.test.ts"]
+		},
+		{
+			"unit": "relay.function.read-json-body",
+			"shape": "helper",
+			"cases": 13,
+			"states": ["input", "boundary", "invalid"],
+			"testFiles": ["packages/relay/test/utils/read-json-body.test.ts"]
 		},
 		{
 			"unit": "relay.function.relay-response",
