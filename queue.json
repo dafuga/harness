@@ -848,7 +848,7 @@
 			},
 			"sourceCommit": "a89292560d6347d4288b468c0b344e333dfd1090",
 			"contractHash": "7ca286e86e94f11e212ad646e5d524735a42408e5456873ac1d1ff238a770eb0",
-			"status": "running",
+			"status": "review",
 			"repairCommit": "f16197f8dadafff5716b7fdb74cb10f26a741e8f",
 			"reviews": [
 				{
@@ -886,6 +886,58 @@
 					}
 				}
 			],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’m using the Harness skill because this is a contract-scoped Harness module change. I’ll inspect the current worktree, module contract guidance, and existing generated test declarations before editing only the three allowed files; I’ll leave commits, E2Es, broad checks, and baselines untouched.\nThe worktree is currently clean by intent, but Git status is blocked by an existing Git LFS clean-filter permission error on an unrelated design asset. I’m treating that as an environment check blocker only and will continue with read-only inspection using commands that avoid modifying or normalizing LFS content.\nThe current repair already migrated components/pages/API tests partially, but it still has the review gaps: invented toggle behavior, string-only layout/partial tests, type-only hook coverage, and no stable behavioral store/hook or layout/partial visual cases. I’ll preserve the existing route/API matrices and extend them with finite declared states and evidence, without adding product features beyond the generated scaffolds.\nHarness CLI inspection and activity commands are blocked before dispatch because this worktree lacks the repository’s `@electron/asar` dependency; I won’t install dependencies or widen scope. I’m proceeding with the source-level contract repair and will run the focused test/format checks that the sandbox supports.\nThe first generated-output inspection caught and I’m fixing a partial-preview identifier bug before verification: the source filename includes `.svelte`, but the component symbol must not. I’m also checking generated TypeScript formatting because the existing scaffold test enforces formatter-clean emitted files.\nThe generated contracts now cover all eight app-piece builders without changing their production behavior: component props are minimal, page captures are full-page, region captures are scoped, preview routes are guarded, APIs remain exact JSON matrices, and store/hook tests exercise behavior. I’m moving through focused formatting, generation, and unit verification next.\nFocused verification is mostly green: formatter, ESLint, generated TypeScript formatting, Svelte parsing, and generated TypeScript parsing all pass. The repository unit runner remains environment-blocked by its global SvelteKit setup (`@sveltejs/adapter-static` absent and the parent worktree’s `.vite-temp` is not writable); I’ll record that exact gap and do one final diff/scope review.\nImplemented the `template.app-pieces` contract repair.\n\nChanged:\n\n- Minimal component label/error props; removed invented toggle behavior.\n- Full-page screenshots for pages/e2E routes.\n- Region screenshots for components, layouts, and partials.\n- Desktop/tablet/mobile viewport matrices with render readiness.\n- Development/test-only preview route guards.\n- Behavioral store/hook tests.\n- Exact API JSON success/error matrices.\n- Expanded focused generator assertions in [test/pieces.test.ts](</Users/danielfugere/projects/harness/.cache/harness/task-worktrees/c121b9ac-8440-4521-88b1-e8314d18e60a/test/pieces.test.ts).\n\nVerification passed: Prettier, ESLint, generated TypeScript formatting, Svelte compilation, TypeScript parsing, and direct contract assertions.\n\nVitest was blocked by missing Svelte adapters and an unwritable parent `node_modules/.vite-temp`. No E2Es, broad checks, baselines, commits, pushes, or CLI completion claims were made. Unrelated design-image changes remain preserved.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/c121b9ac-8440-4521-88b1-e8314d18e60a",
+				"changedFiles": ["src/templates/development-tooling/appPieces.ts", "test/pieces.test.ts"],
+				"fallback": false,
+				"finishedAt": "2026-10-25T13:13:25.233Z",
+				"attempt": "c121b9ac-8440-4521-88b1-e8314d18e60a",
+				"sourceCommit": "f16197f8dadafff5716b7fdb74cb10f26a741e8f",
+				"checkpointCommit": "5d3eef2c755cfab9d0f9614b23fc58c1c7f6051d",
+				"usage": {
+					"inputTokens": 18050416,
+					"outputTokens": 79313,
+					"cacheReadTokens": 17807104,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 18050416,
+							"outputTokens": 79313,
+							"cacheReadTokens": 17807104,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T13:01:28.889Z",
+						"finishedAt": "2026-10-25T13:13:24.405Z"
+					}
+				]
+			},
 			"attempts": [
 				{
 					"provider": "codex",
