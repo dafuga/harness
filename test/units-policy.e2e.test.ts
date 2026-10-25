@@ -1,3 +1,4 @@
+import type { ComponentManifest } from '../src/core/development-tooling/unitTypes';
 import { runCommand } from './support/cli';
 import type { Shown, Labelled } from './units-policy.e2e.test.types';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
@@ -163,11 +164,7 @@ test('source-bound reviews repair historical default runtime targets without cha
 		);
 		await project.harness(['units', 'index', '--write']);
 		const path = 'specification/units/service.title.json';
-		const manifest = await project.json<{
-			responsibility: string;
-			responsibilityOrigin: string;
-			runtime: { kind: string; entry: string; targets: Array<{ kind: string; entry: string }> };
-		}>(path);
+		const manifest = await project.json<ComponentManifest>(path);
 		const wanted = {
 			...manifest.runtime,
 			targets: [{ kind: manifest.runtime.kind, entry: manifest.runtime.entry }]
@@ -175,6 +172,7 @@ test('source-bound reviews repair historical default runtime targets without cha
 		manifest.runtime.targets = [{ kind: 'module', entry: 'src/services/old/TitleService.ts' }];
 		manifest.responsibility = 'Serve the title from this module implementation.';
 		manifest.responsibilityOrigin = 'derived';
+		manifest.preview = { scenario: 'obsolete-preview', state: 'old', viewport: 'desktop' };
 		await project.write(path, JSON.stringify(manifest));
 		await git(['add', '.']);
 		await git(['commit', '-m', 'feat: retain historical runtime target']);
@@ -189,10 +187,15 @@ test('source-bound reviews repair historical default runtime targets without cha
 			JSON.stringify({
 				unit: 'service.title',
 				reason: 'Bind the default target to the owned implementation at this source commit.',
-				metadata: { runtime: wanted, responsibility: manifest.responsibility }
+				metadata: { runtime: wanted, responsibility: manifest.responsibility, preview: null }
 			})
 		);
-		const repaired = await invoke(['--write', '--review', review, '--module', 'service.title']);
+		const accepted = await project.harness(
+			['validate', '--write', '--review', review, '--module', 'service.title', '--json'],
+			false
+		);
+		expect(accepted.exitCode, 'Obsolete preview declarations must be withdrawable').toBe(0);
+		const repaired = JSON.parse(accepted.stdout);
 		expect(repaired.valid, JSON.stringify(repaired)).toBe(true);
 		expect(repaired.committed).toBe(true);
 		expect((await invoke(['--write', '--refresh', '--module', 'service.title'])).valid).toBe(true);
