@@ -225,7 +225,7 @@ folders and titles from the selected source revision for every collection.
 
 Every public helper needs committed examples with a real invocation, argument values and expected output or error. Execute authored examples against the actual implementation. `harness units check` rejects missing examples; indexing must preserve them and the detail page must select only the current callable and revision.
 
-Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review implementation features and meaningful error or empty states. Equal outputs alone do not establish duplication. Keep exhaustive boundary cases in tests. Registry checks reject placeholder titles and repeated titles or calls; semantic overlap requires agent review.
+Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review implementation features and meaningful error or empty states. Equal outputs alone do not establish duplication. Document boundary and error inputs in Examples and run each through its corresponding standard case; do not retain hidden helper-only boundary suites. Registry checks reject placeholder titles and repeated titles or calls; semantic overlap requires agent review.
 
 ## Route identity and UI state
 

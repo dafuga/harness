@@ -1,3 +1,5 @@
+import type { Fixture, State } from './devicePairingFixture.types';
+export type { Fixture, State } from './devicePairingFixture.types';
 import { expect } from 'vitest';
 import type { PendingPairing } from '../../src/services/device-pairing-service/DevicePairingService';
 import { DevicePairingService } from '../../src/services/device-pairing-service/DevicePairingService';
@@ -15,8 +17,6 @@ export const origin = 'https://relay.example',
 	grant = { projects: [{ id: 'local-' + 'a'.repeat(64), name: 'Harness' }], agents: true },
 	approval = { hostName: 'Fixture Mac', generation: 1, grant };
 
-export type Fixture = Awaited<ReturnType<typeof setup>>;
-export type State = 'requested' | 'approved' | 'denied' | 'exchanged';
 const reading = (now = Date.now(), environments = production) => ({ now, environments });
 export const offerText = (f: Fixture, offer = f.offer) =>
 	pairingOffer({ origin, hostId: f.hostId, ...offer });
