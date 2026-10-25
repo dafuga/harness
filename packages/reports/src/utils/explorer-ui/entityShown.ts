@@ -50,7 +50,16 @@ function helperDocumentation(
 	unit: HarnessUnit,
 	helper: NonNullable<HarnessUnit['helpers']>[number]
 ) {
-	if (helper.examples?.length) return { path: '', examples: helper.examples };
+	const canonical = (unit.testing?.examples ?? [])
+		.filter((item) => item.subject === helper.name)
+		.map((item) => {
+			const example = { name: item.name, call: item.call, input: item.input };
+			if (item.expected.kind === 'void') return { ...example, returns: 'void' as const };
+			if (item.expected.kind === 'error') return { ...example, error: item.expected.value };
+			return { ...example, output: item.expected.value };
+		});
+	const examples = [...(helper.examples ?? []), ...canonical];
+	if (examples.length) return { path: '', examples };
 	if (unit.helpers?.length === 1) return unit.documentation;
 	return undefined;
 }

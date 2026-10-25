@@ -1,3 +1,4 @@
+import type { ComponentManifest } from '../../../../../src/core/unitTypes';
 import type { HarnessReview, HarnessUnitLimits } from './HarnessBudget.types';
 import type { HarnessLegacyReport } from './HarnessLegacy.types';
 import type { Status } from '../reports-media/Report.types';
@@ -62,6 +63,7 @@ export interface HarnessIndex {
 	problems: string[];
 }
 export interface HarnessUnit extends HarnessUnitLimits, UnitMetadata {
+	testing?: ComponentManifest['testing'];
 	preview?: { scenario: string; state: string; viewport: string };
 	id: string;
 	kind: string;
