@@ -71,9 +71,8 @@ export class RevisionDetailService {
 	}
 	private async sourceMeasures(commit: string, registry: RevisionRegistry): Promise<void> {
 		const measured = await this.kept.source.measurements(commit);
-		for (const unit of registry.units) {
-			unit.sourceMeasurements = measured.filter((item) => item.unit === unit.id);
-		}
+		const byUnit = groupMeasurements(measured);
+		for (const unit of registry.units) unit.sourceMeasurements = [...(byUnit.get(unit.id) ?? [])];
 	}
 	/** Every capture is looked up in the record that produced it, which may be an earlier one. */
 	private async media(
@@ -121,6 +120,7 @@ export class RevisionDetailService {
 		const ledger = (await new BudgetLedgerRepository(this.root).read(tree)).events;
 		const limits = new BudgetService().baselines(ledger, units.manifests);
 		const registry = revisionRegistry(units.manifests, scenarios.manifests, blobs, limits);
+		await prefetchMetadata(tree, registry.units);
 		await unitMetadata(tree, registry.units);
 		const stored = {
 			registry,
@@ -143,6 +143,16 @@ export class RevisionDetailService {
 		const parent = (await this.kept.source.parent(commit)) ?? null;
 		return revisionReasons({ parent, own: await this.kept.source.reasons(commit), noted, records });
 	}
+}
+
+function groupMeasurements<T extends { unit: string }>(values: T[]): Map<string, T[]> {
+	const groups = new Map<string, T[]>();
+	for (const value of values) {
+		const group = groups.get(value.unit) ?? [];
+		group.push(value);
+		groups.set(value.unit, group);
+	}
+	return groups;
 }
 /** Why the bytes of a capture are not available, in the words of what is wrong with them. */
 function gapFor(source: AttachedRecord | undefined, path: string, origin: string): string {
@@ -191,4 +201,18 @@ async function readCatalogs(tree: SourceTree, registry: RevisionRegistry) {
 function cacheRegistry(registries: Map<string, Stored>, key: string, stored: Stored): void {
 	registries.set(key, stored);
 	if (registries.size > 4) registries.delete(registries.keys().next().value!);
+}
+
+/** Prefetch only immutable committed text; projection keeps its original iteration semantics. */
+async function prefetchMetadata(tree: CommitTreeAdapter, units: RevisionRegistry['units']) {
+	const paths = [
+		...new Set(
+			units.flatMap((unit) => [
+				...unit.owns.source.filter((path) => /\.(?:[cm]?[jt]sx?|svelte|json)$/.test(path)),
+				...(unit.documentation?.path ? [unit.documentation.path] : [])
+			])
+		)
+	];
+	for (let start = 0; start < paths.length; start += 64)
+		await Promise.allSettled(paths.slice(start, start + 64).map((path) => tree.read(path)));
 }

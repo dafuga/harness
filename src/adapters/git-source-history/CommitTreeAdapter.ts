@@ -7,6 +7,7 @@ import { GitAdapter } from './GitAdapter';
 export class CommitTreeAdapter implements SourceTree {
 	private listed: Promise<TreeEntry[]> | undefined;
 	private readonly waiting = new Map<string, Array<(text: string) => void>>();
+	private readonly texts = new Map<string, Promise<string>>();
 	private flushing = false;
 
 	private constructor(
@@ -36,12 +37,16 @@ export class CommitTreeAdapter implements SourceTree {
 	async read(path: string): Promise<string> {
 		const entry = (await this.list()).find((item) => item.path === path);
 		if (!entry) throw new Error(`${path} does not exist at ${this.revision}`);
-		return new Promise((resolve) => {
+		const known = this.texts.get(entry.hash);
+		if (known) return known;
+		const pending = new Promise<string>((resolve) => {
 			this.waiting.set(entry.hash, [...(this.waiting.get(entry.hash) ?? []), resolve]);
 			if (this.flushing) return;
 			this.flushing = true;
 			setImmediate(() => void this.flush());
 		});
+		this.texts.set(entry.hash, pending);
+		return pending;
 	}
 
 	private async flush(): Promise<void> {

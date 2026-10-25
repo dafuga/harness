@@ -1,6 +1,6 @@
 import type { LoadedUnits } from './loadUnits.types';
 import { revisionRegistry } from '../../../utils/revisionRegistry';
-import { unitMetadata } from '../../../utils/explorer-ui/unitMetadata';
+import { type unitMetadata, hydrateContractMetadata } from '../../../utils/explorer-ui/unitMetadata';
 import { helperContract } from '../../../utils/development-tooling/helperContract';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
 import { resolve } from 'node:path';
@@ -80,7 +80,7 @@ async function committedHelpers(
 	stored: ComponentManifest[]
 ): Promise<string[]> {
 	const enriched = revisionRegistry(fresh.manifests, []).units;
-	await unitMetadata(tree, enriched);
+	await hydrateContractMetadata(tree, enriched);
 	for (const unit of fresh.manifests) {
 		const helpers =
 			enriched.find((item) => item.id === unit.id)?.helpers?.filter(helperContract) ?? [];
