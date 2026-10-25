@@ -105,9 +105,14 @@ test('Code screens select their module tab and retain the selected revision', ()
 	for (const [screen, title] of [
 		['styles', 'Styles'],
 		['modules', 'Plugins'],
-		['permissions', 'Users &amp; Permissions']
+		['permissions', 'Users &amp; Permissions'],
+		['module-resources', 'Plugins']
 	] as const) {
-		const html = body({ ...styles, screen });
+		const html = body({
+			...styles,
+			screen,
+			...(screen === 'module-resources' ? { entity: 'playwright.test' } : {})
+		});
 		expect(
 			links(html)
 				.filter((item) => item.current)
@@ -122,7 +127,7 @@ test('Code screens select their module tab and retain the selected revision', ()
 		);
 		expect(selected.map(([, , content]) => text(content))).toEqual([title]);
 		expect(selected[0]?.[1]).toContain(
-			`href="${scoped}/commit/${sha(4)}/${screen === 'modules' ? 'plugins' : screen}"`
+			`href="${scoped}/commit/${sha(4)}/${screen === 'modules' || screen === 'module-resources' ? 'plugins' : screen}"`
 		);
 	}
 });
