@@ -1,0 +1,125 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run "$@"' -- test/utils/module-data.test.ts
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-Yg5Xod/packages/reports
+
+ ❯ test/utils/module-data.test.ts (6 tests | 1 failed) 30ms
+   ✓ relationship readers use committed empty results without searching the source graph 4ms
+   ✓ required missing relationships fail instead of silently recomputing them 1ms
+   ✓ the app refuses incomplete committed metadata and exposes the exact module and field 6ms
+   × the app requires committed metadata for legacy and current projects 12ms
+     → promise resolved "{ …(6) }" instead of rejecting
+   ✓ an incomplete report is reloaded after a committed repair rather than cached forever 1ms
+   ✓ the app rejects a re-sealed snapshot that omits a module report 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/module-data.test.ts > the app requires committed metadata for legacy and current projects
+AssertionError: promise resolved "{ …(6) }" instead of rejecting
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Error {[39m
+[32m-   "message": "rejected promise",[39m
+[31m+ {[39m
+[31m+   "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",[39m
+[31m+   "comparison": null,[39m
+[31m+   "explanations": [],[39m
+[31m+   "records": [],[39m
+[31m+   "registry": {[39m
+[31m+     "available": true,[39m
+[31m+     "graph": {[39m
+[31m+       "edges": [],[39m
+[31m+     },[39m
+[31m+     "scenarios": [],[39m
+[31m+     "units": [],[39m
+[31m+   },[39m
+[31m+   "sourceImpact": null,[39m
+[2m  }[22m
+
+ ❯ test/utils/module-data.test.ts:88:80
+     86|  ).rejects.toThrow('Missing committed module data');
+     87|  const legacy = revision([], [], []);
+     88|  await expect(harnessClient('/legacy', respond(legacy)).revision(legac…
+       |                                                                                ^
+     89|   'Missing committed module data'
+     90|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  17:41:45
+   Duration  1.30s (transform 345ms, setup 233ms, collect 315ms, tests 30ms, environment 0ms, prepare 63ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1
