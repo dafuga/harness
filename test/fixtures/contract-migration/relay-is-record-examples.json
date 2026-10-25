@@ -1,0 +1,367 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.is-record",
+	"kind": "function",
+	"title": "Object shape guard",
+	"responsibility": "Distinguishes non-null, non-array objects from scalar values.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/relay/src/utils/development-tooling/isRecord.ts",
+			"packages/relay/src/utils/isRecord.ts"
+		],
+		"symbols": ["isRecord", "isRecord"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "isRecord.value",
+				"type": "unknown",
+				"description": "Unknown value to inspect."
+			}
+		],
+		"outputs": [
+			{
+				"name": "isRecord",
+				"type": "value is Record<string, unknown>",
+				"description": "True for a non-null object that is not an array, narrowing its static type to a string-keyed record."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/development-tooling/isRecord.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/development-tooling/isRecord.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "isRecord",
+				"name": "Accept an empty object",
+				"call": "isRecord({})",
+				"input": [{}],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Accept an object with JSON fields",
+				"call": "isRecord({ type: 'ack', ok: true })",
+				"input": [{ "type": "ack", "ok": true }],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Accept an object without a prototype",
+				"call": "isRecord(Object.create(null))",
+				"input": [{ "$fixture": "null-prototype" }],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Accept an object whose properties include null and an array",
+				"call": "isRecord({ value: null, items: [] })",
+				"input": [{ "value": null, "items": [] }],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Accept an array-like object that is not an array",
+				"call": "isRecord({ length: 0 })",
+				"input": [{ "length": 0 }],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse null",
+				"call": "isRecord(null)",
+				"input": [null],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse undefined",
+				"call": "isRecord(undefined)",
+				"input": [{ "$fixture": "undefined" }],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse an empty array",
+				"call": "isRecord([])",
+				"input": [[]],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse an array holding an object",
+				"call": "isRecord([{}])",
+				"input": [[{}]],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse a non-empty string",
+				"call": "isRecord('text')",
+				"input": ["text"],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse an empty string",
+				"call": "isRecord('')",
+				"input": [""],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse zero",
+				"call": "isRecord(0)",
+				"input": [0],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse a positive number",
+				"call": "isRecord(7)",
+				"input": [7],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse true",
+				"call": "isRecord(true)",
+				"input": [true],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse false",
+				"call": "isRecord(false)",
+				"input": [false],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse a symbol",
+				"call": "isRecord(Symbol('record'))",
+				"input": [{ "$fixture": "symbol", "description": "record" }],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "isRecord",
+				"name": "Refuse a bigint",
+				"call": "isRecord(BigInt('1'))",
+				"input": [{ "$fixture": "bigint", "value": "1" }],
+				"expected": { "kind": "value", "value": false }
+			}
+		],
+		"states": ["input", "boundary", "invalid"],
+		"props": ["value"],
+		"cases": [
+			{
+				"id": "is-record.empty-object",
+				"state": "input",
+				"subject": "isRecord",
+				"example": "Accept an empty object",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Accept an empty object"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.json-fields",
+				"state": "input",
+				"subject": "isRecord",
+				"example": "Accept an object with JSON fields",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Accept an object with JSON fields"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.null-prototype",
+				"state": "boundary",
+				"subject": "isRecord",
+				"example": "Accept an object without a prototype",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Accept an object without a prototype"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.nested-values",
+				"state": "boundary",
+				"subject": "isRecord",
+				"example": "Accept an object whose properties include null and an array",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Accept an object whose properties include null and an array"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.array-like",
+				"state": "boundary",
+				"subject": "isRecord",
+				"example": "Accept an array-like object that is not an array",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Accept an array-like object that is not an array"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.null",
+				"state": "invalid",
+				"subject": "isRecord",
+				"example": "Refuse null",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse null"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.undefined",
+				"state": "invalid",
+				"subject": "isRecord",
+				"example": "Refuse undefined",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse undefined"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.empty-array",
+				"state": "invalid",
+				"subject": "isRecord",
+				"example": "Refuse an empty array",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse an empty array"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.array-with-object",
+				"state": "invalid",
+				"subject": "isRecord",
+				"example": "Refuse an array holding an object",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse an array holding an object"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.non-empty-string",
+				"state": "invalid",
+				"subject": "isRecord",
+				"example": "Refuse a non-empty string",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse a non-empty string"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.empty-string",
+				"state": "boundary",
+				"subject": "isRecord",
+				"example": "Refuse an empty string",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse an empty string"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.zero",
+				"state": "boundary",
+				"subject": "isRecord",
+				"example": "Refuse zero",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse zero"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.positive-number",
+				"state": "invalid",
+				"subject": "isRecord",
+				"example": "Refuse a positive number",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse a positive number"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.true",
+				"state": "invalid",
+				"subject": "isRecord",
+				"example": "Refuse true",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse true"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.false",
+				"state": "boundary",
+				"subject": "isRecord",
+				"example": "Refuse false",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse false"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.symbol",
+				"state": "invalid",
+				"subject": "isRecord",
+				"example": "Refuse a symbol",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse a symbol"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "is-record.bigint",
+				"state": "invalid",
+				"subject": "isRecord",
+				"example": "Refuse a bigint",
+				"test": {
+					"file": "packages/relay/test/utils/is-record.test.ts",
+					"title": "isRecord: Refuse a bigint"
+				},
+				"props": ["value"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
