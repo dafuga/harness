@@ -2,7 +2,7 @@
 	"name": "contract-artifact-case-binding",
 	"goal": "Bind generated class audio to an active registered case, state and artifact slot",
 	"createdAt": "2026-10-25T18:04:56.821Z",
-	"updatedAt": "2026-10-25T18:06:44.140Z",
+	"updatedAt": "2026-10-25T18:10:45.520Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T18:10:45.520Z",
+			"evidence": "The same one capture case fails before repair and passes at 971c526e92. Registered unit/case/state/slot checks, exact WAV bytes, authored SHA256 and transcript are retained. Paired execution uses the same environment; full verification and visible Examples playback remain pending."
 		},
 		{
 			"id": "verify",

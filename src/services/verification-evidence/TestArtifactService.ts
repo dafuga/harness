@@ -1,3 +1,4 @@
+import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
@@ -58,6 +59,9 @@ export class TestArtifactService {
 		}
 		if (unit.id !== input.unit || unit.status !== 'active')
 			throw new Error('Audio artifacts require an active registered unit');
+		this.slot(input, unit);
+	}
+	private slot(input: TestArtifact, unit: ComponentManifest): void {
 		const cases = unit.testing?.cases.filter((item) => item.id === input.case) ?? [];
 		if (
 			cases.length !== 1 ||
