@@ -1,3 +1,4 @@
+import type { TaskAnalyticsDetail } from '../../services/agents-providers/ModuleTaskAnalyticsService.types';
 export interface AnalyticsContext {
 	loop?: string;
 	loopRun?: string;
@@ -10,7 +11,8 @@ export interface AnalyticsEvent extends AnalyticsContext {
 	id: string;
 	timestamp: string;
 	project: string;
-	kind: 'command' | 'loop' | 'step' | 'evaluation' | 'jev' | 'benchmark';
+	kind: 'command' | 'loop' | 'step' | 'evaluation' | 'jev' | 'benchmark' | 'task';
+	moduleTask?: TaskAnalyticsDetail;
 	benchmark?: {
 		run: string;
 		name: string;
