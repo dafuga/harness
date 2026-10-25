@@ -113,3 +113,70 @@ async function assertFixtureExamples(unit: ComponentManifest) {
 		)
 	).toThrow('Invalid authored Examples');
 }
+
+test('registerCases binds complete method matrices and API results to canonical file identities', async () => {
+	const loaded = await import('../../../specification/units/function.case.json');
+	const file = 'test/runner.test.ts';
+	const unit: ComponentManifest = {
+		...(loaded.default as ComponentManifest),
+		helperContracts: [],
+		owns: { source: [], symbols: ['Runner.run'] },
+		contract: { origin: 'declared', inputs: [], outputs: [], errors: [] },
+		testing: {
+			version: 1,
+			shape: 'service',
+			states: ['initialized'],
+			cases: [
+				{
+					id: 'run.initialized',
+					subject: 'Runner.run',
+					state: 'initialized',
+					test: { file, title: 'Runner.run initialized' },
+					expected: { kind: 'void' }
+				}
+			]
+		}
+	};
+	const registered: Array<{ title: string; run: () => Promise<void> }> = [];
+	const register = (title: string, run: () => Promise<void>) => registered.push({ title, run });
+	let calls = 0;
+	service.registerCases(register, unit, file, {
+		'run.initialized': () => {
+			calls++;
+		}
+	});
+	expect(registered.map((item) => item.title)).toEqual(['Runner.run initialized']);
+	expect(calls).toBe(0);
+	await registered[0].run();
+	expect(calls).toBe(1);
+	expect(() => service.registerCases(register, unit, file, {})).toThrow(
+		'Missing case implementation'
+	);
+	expect(() => service.registerCases(register, unit, file, { extra: () => {} })).toThrow(
+		'Unsupported case implementation'
+	);
+	expect(() => service.registerCases(register, unit, 'test/other.test.ts', {})).toThrow(
+		'No declared cases'
+	);
+	const api = {
+		...unit,
+		testing: {
+			...unit.testing!,
+			shape: 'api' as const,
+			cases: [
+				{
+					...unit.testing!.cases[0],
+					expected: { kind: 'json' as const, value: { ok: true, count: 0 } }
+				}
+			]
+		}
+	};
+	registered.length = 0;
+	service.registerCases(register, api, file, { 'run.initialized': () => ({ ok: true, count: 0 }) });
+	await registered[0].run();
+	registered.length = 0;
+	service.registerCases(register, api, file, {
+		'run.initialized': () => ({ ok: true, count: '0' })
+	});
+	await expect(registered[0].run()).rejects.toThrow('API JSON differs');
+});
