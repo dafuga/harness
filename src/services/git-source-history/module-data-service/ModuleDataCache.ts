@@ -1,5 +1,6 @@
 import { moduleReviewDigest } from '../../../repositories/git-source-history/module-data-repository/readModuleSource';
 import { ModuleDataSnapshotValidator } from '../../../validators/development-tooling/ModuleDataSnapshotValidator';
+import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { moduleDataProducer } from './moduleDataProtocol';
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -8,6 +9,7 @@ import type { ModuleDataIdentity } from '../../../repositories/git-source-histor
 import type { ModuleDataRepository } from '../../../repositories/git-source-history/ModuleDataRepository';
 import type { ModuleData } from '../ModuleDataService.types';
 export class ModuleDataCache {
+	private directory?: Promise<string>;
 	constructor(private repository: ModuleDataRepository) {}
 	async read(identity: ModuleDataIdentity, source = false): Promise<ModuleData | undefined> {
 		const current = await this.readVersion(identity, source, moduleDataProducer);
@@ -18,9 +20,7 @@ export class ModuleDataCache {
 	}
 	private async readVersion(identity: ModuleDataIdentity, source: boolean, producer: string) {
 		try {
-			const data = JSON.parse(
-				await readFile(this.path(identity, source, producer), 'utf8')
-			) as ModuleData;
+			const data = JSON.parse(await this.text(identity, source, producer)) as ModuleData;
 			const { digest, ...body } = data;
 			return data.producer === producer &&
 				(data.reviews ?? [])
@@ -40,21 +40,33 @@ export class ModuleDataCache {
 	}
 
 	async write(data: ModuleData) {
-		await mkdir(join(this.repository.root, '.cache/harness/module-data'), { recursive: true });
+		const directory = await this.cacheDirectory();
+		await mkdir(directory, { recursive: true });
 		const text = JSON.stringify(data);
 		for (const source of [false, true]) {
-			const path = this.path(data, source),
+			const path = join(directory, this.filename(data, source)),
 				temporary = `${path}.${randomUUID()}.tmp`;
 			await writeFile(temporary, text);
 			await rename(temporary, path);
 		}
 	}
 
-	private path(identity: ModuleDataIdentity, source = false, producer = moduleDataProducer) {
-		return join(
-			this.repository.root,
-			'.cache/harness/module-data',
-			`${source ? 'source-' + this.repository.digest([identity.commit, identity.tree, producer]) : this.repository.key(identity)}.json`
-		);
+	private filename(identity: ModuleDataIdentity, source = false, producer = moduleDataProducer) {
+		return `${source ? 'source-' + this.repository.digest([identity.commit, identity.tree, producer]) : this.repository.key(identity)}.json`;
+	}
+	private cacheDirectory() {
+		return (this.directory ??= new GitAdapter(this.repository.root)
+			.run(['rev-parse', '--absolute-git-dir'])
+			.then((directory) => join(directory, 'harness/module-data')));
+	}
+	private async text(identity: ModuleDataIdentity, source: boolean, producer: string) {
+		const name = this.filename(identity, source, producer);
+		try {
+			return await readFile(join(await this.cacheDirectory(), name), 'utf8');
+		} catch (error) {
+			if ((error as { code?: string }).code !== 'ENOENT') throw error;
+			// Existing sealed caches remain readable; new cache files never enter source worktrees.
+			return readFile(join(this.repository.root, '.cache/harness/module-data', name), 'utf8');
+		}
 	}
 }
