@@ -51,7 +51,10 @@ function lifecycle(file: string) {
 		(node.type === 'Literal' && node.value === 'Escape') ||
 		(node.type === 'Attribute' && node.name === 'oncancel');
 	return {
-		dialog: count((node) => node.type === 'RegularElement' && node.name === 'dialog'),
+		dialog: count(
+			(node) =>
+				node.type === 'RegularElement' && ['dialog', 'hx-dialog'].includes(String(node.name))
+		),
 		showModal: count((node) => node.type === 'CallExpression' && called(node) === 'showModal'),
 		escape: count(escape),
 		backdrop: count((node) => node.type === 'PseudoElementSelector' && node.name === 'backdrop')
