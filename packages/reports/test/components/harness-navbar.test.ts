@@ -121,7 +121,9 @@ test('Code screens select their module tab and retain the selected revision', ()
 			attributes.includes('aria-selected="true"')
 		);
 		expect(selected.map(([, , content]) => text(content))).toEqual([title]);
-		expect(selected[0]?.[1]).toContain(`href="${scoped}/commit/${sha(4)}/${screen}"`);
+		expect(selected[0]?.[1]).toContain(
+			`href="${scoped}/commit/${sha(4)}/${screen === 'modules' ? 'plugins' : screen}"`
+		);
 	}
 });
 
