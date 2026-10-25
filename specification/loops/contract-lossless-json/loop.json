@@ -2,7 +2,7 @@
 	"name": "contract-lossless-json",
 	"goal": "Retain every API JSON field and authored example value while preserving admitted input behavior",
 	"createdAt": "2026-10-25T20:20:40.050Z",
-	"updatedAt": "2026-10-25T20:58:27.052Z",
+	"updatedAt": "2026-10-25T20:59:11.670Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -48,7 +48,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T20:59:11.670Z",
+			"evidence": "Paired immutable snapshots at fa02ed33dd and 1b172612e9 ran the same 12 cases under one 1CPU/768MiB lease and unchanged command. Reserved JSON field comparisons and authored Examples fail at the broken revision and pass at the fix; generated parser-review guidance passes."
 		},
 		{
 			"id": "guard",
