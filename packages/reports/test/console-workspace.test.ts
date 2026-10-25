@@ -69,7 +69,13 @@ test('module screens retain revision-scoped project chat without selecting a sou
 	const navigate = vi.fn();
 	const host = createConsoleWorkspaceStore(navigate);
 	try {
-		for (const route of ['/modules', '/modules/email', '/module-resources/email.email']) {
+		for (const route of [
+			'/modules',
+			'/modules/email',
+			'/module-resources/email.email',
+			'/permissions',
+			'/permissions/member'
+		]) {
 			for (const at of ['', `/commit/${commit}`]) {
 				await host.workspace.navigate(`/harness/branch/feature%2Fmodules${at}${route}`, false);
 				expect(host.workspace.error).toBe('');
