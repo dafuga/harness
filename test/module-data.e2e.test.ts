@@ -45,6 +45,11 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 		);
 		await verifyReview(project.root, git, invoke, head);
 		await rejectStaleReview(project);
+		await git(['update-ref', 'refs/heads/harness-evidence', head]);
+		expect(
+			(await invoke([])).committed,
+			'Evidence updates must preserve committed metadata admission'
+		).toBe(true);
 		const cached = await invoke(['--module', 'service.title']);
 		expect(cached.cached).toBe(true);
 		expect(cached.modules.map((item: { id: string }) => item.id)).toEqual(['service.title']);
