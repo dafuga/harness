@@ -165,24 +165,7 @@ test('historical helper layout does not masquerade as missing module metadata', 
 		await project.harness(['units', 'index', '--write']);
 		const path = 'specification/units/function.slugify.json';
 		const manifest = await project.json<Record<string, unknown>>(path);
-		manifest.helperContracts = [
-			{
-				name: 'slugify',
-				source: 'src/utils/slugify.ts',
-				inputs: [{ name: 'input', type: 'string' }],
-				output: 'string',
-				pure: true,
-				consumers: [{ unit: 'function.first' }, { unit: 'function.second' }],
-				examples: [
-					{
-						name: 'Normalize a title',
-						call: 'slugify("Hello World")',
-						input: ['Hello World'],
-						output: 'hello-world'
-					}
-				]
-			}
-		];
+		manifest.helperContracts = historicalSlugifyContract();
 		await project.write(path, JSON.stringify(manifest));
 		await git(['add', '.']);
 		await git(['commit', '-m', 'feat: retain historical helper source']);
@@ -212,3 +195,24 @@ test('historical helper layout does not masquerade as missing module metadata', 
 		await rm(join(project.root, '..'), { recursive: true, force: true });
 	}
 }, 180_000);
+
+function historicalSlugifyContract() {
+	return [
+		{
+			name: 'slugify',
+			source: 'src/utils/slugify.ts',
+			inputs: [{ name: 'input', type: 'string' }],
+			output: 'string',
+			pure: true,
+			consumers: [{ unit: 'function.first' }, { unit: 'function.second' }],
+			examples: [
+				{
+					name: 'Normalize a title',
+					call: 'slugify("Hello World")',
+					input: ['Hello World'],
+					output: 'hello-world'
+				}
+			]
+		}
+	];
+}
