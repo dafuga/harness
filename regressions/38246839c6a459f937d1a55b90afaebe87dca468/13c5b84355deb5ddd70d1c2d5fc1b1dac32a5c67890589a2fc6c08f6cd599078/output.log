@@ -1,0 +1,25 @@
+
+Running 12 tests using 4 workers
+
+(node:29239) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:29242) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:29240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:29241) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 tests/e2e/explorer-shell.spec.ts:194:2 › module discovery retains branch and revision at desktop (408ms)
+  ✓   1 tests/e2e/explorer-shell.spec.ts:157:2 › Go to tip, back, a reload and another branch each keep their place at tablet width (432ms)
+  ✓   2 tests/e2e/explorer-shell.spec.ts:112:2 › the branch with its tip and the viewed commit are told apart at mobile width (439ms)
+  ✓   6 tests/e2e/explorer-shell.spec.ts:194:2 › module discovery retains branch and revision at tablet (221ms)
+  ✓   7 tests/e2e/explorer-shell.spec.ts:157:2 › Go to tip, back, a reload and another branch each keep their place at mobile width (260ms)
+  ✓   4 tests/e2e/explorer-shell.spec.ts:36:2 › the bar shows its navigation with an icon above each label at desktop width (811ms)
+  ✓   9 tests/e2e/explorer-shell.spec.ts:194:2 › module discovery retains branch and revision at mobile (205ms)
+  ✓   5 tests/e2e/explorer-shell.spec.ts:36:2 › the bar shows its navigation with an icon above each label at tablet width (649ms)
+  ✓  10 tests/e2e/explorer-shell.spec.ts:112:2 › the branch with its tip and the viewed commit are told apart at desktop width (283ms)
+  ✓   8 tests/e2e/explorer-shell.spec.ts:36:2 › the bar shows its navigation with an icon above each label at mobile width (642ms)
+  ✓  11 tests/e2e/explorer-shell.spec.ts:112:2 › the branch with its tip and the viewed commit are told apart at tablet width (277ms)
+  ✓  12 tests/e2e/explorer-shell.spec.ts:157:2 › Go to tip, back, a reload and another branch each keep their place at desktop width (246ms)
+
+  12 passed (3.5s)
