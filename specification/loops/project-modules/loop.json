@@ -32,7 +32,7 @@
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
 			"status": "pending",
-			"evidence": "Reports package check passes at c276d6ea77 (774 tests). Independent module component captures pass at 5fd7e16d12 on harbor-mbp-2. Repository check and highest-memory-supported six-worker browser/navigation rerun remain pending resource admission; SSH PATH corrected to include the already installed Rust toolchain. Root unit failures require generated kernel artifacts; kernel build is queued. Do not finalize the report or claim full repository verification."
+			"evidence": "Reports package check passes at c276d6ea77 (774 tests). Independent module component captures pass at 5fd7e16d12 on harbor-mbp-2. Repository check and highest-memory-supported six-worker browser/navigation rerun remain pending resource admission; SSH PATH corrected to include the already installed Rust toolchain. Initial root unit failures were missing kernel artifacts; building the pinned kernel and rerunning all five affected files passes all 21 cases. Do not finalize the report or claim full repository verification."
 		}
 	],
 	"evaluators": [
