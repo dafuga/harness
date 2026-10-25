@@ -12,6 +12,7 @@ import { join } from 'node:path';
 import {
 	unitProject,
 	slugifySource,
+	commitTitleModules,
 	titleServiceSource,
 	configureTestAuthor,
 	validationInvoker,
@@ -23,14 +24,7 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 	const project = await unitProject('lib');
 	const git = (args: string[]) => runCommand(['git', ...args], project.root);
 	try {
-		await git(['init', '-b', 'main']);
-		await configureTestAuthor(project.root);
-		await project.write('src/utils/slugify.ts', slugifySource);
-		await project.write('src/services/TitleService.ts', titleServiceSource);
-		await project.harness(['units', 'index', '--write']);
-		await git(['add', '.']);
-		await git(['commit', '-m', 'feat: define title modules']);
-		const head = (await git(['rev-parse', 'HEAD'])).stdout.trim();
+		const head = await commitTitleModules(project);
 		const invoke = validationInvoker(project);
 		const before = await invoke([]);
 		expect(before.commit).toBe(head);

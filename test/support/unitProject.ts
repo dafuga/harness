@@ -126,3 +126,16 @@ export async function verifyReview(
 		'Serve normalized titles through the declared title service.'
 	);
 }
+
+/** A committed title service and normalization helper for metadata/history boundary tests. */
+export async function commitTitleModules(project: UnitProject) {
+	const git = (args: string[]) => runCommand(['git', ...args], project.root);
+	await git(['init', '-b', 'main']);
+	await configureTestAuthor(project.root);
+	await project.write('src/utils/slugify.ts', slugifySource);
+	await project.write('src/services/TitleService.ts', titleServiceSource);
+	await project.harness(['units', 'index', '--write']);
+	await git(['add', '.']);
+	await git(['commit', '-m', 'feat: define title modules']);
+	return (await git(['rev-parse', 'HEAD'])).stdout.trim();
+}
