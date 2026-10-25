@@ -1,4 +1,5 @@
 import { assertAuthoredJsonFields } from '../../support/testExpectationAuthoredCases';
+import { assertRegisteredResults } from '../../support/testExpectationRegistrationCases';
 import {
 	assertJsonAdmission,
 	assertCompleteJsonFields
@@ -66,6 +67,12 @@ test('registerExamples registers exactly the authored examples and rejects absen
 		unit.helperContracts!.reduce((count, helper) => count + helper.examples!.length, 0)
 	);
 	for (const item of registered) await item.run();
+	expect(() =>
+		service.registerExamples(() => {}, unit, {
+			...functions,
+			unregistered: () => 'unregistered'
+		})
+	).toThrow('Unsupported example implementation');
 	await assertFixtureExamples(unit);
 	await assertAuthoredJsonFields(service);
 	expect(() => service.registerExamples(() => {}, unit, {})).toThrow('Missing executable examples');
@@ -137,6 +144,7 @@ test('registerCases binds complete method matrices and API results to canonical 
 	expect(calls).toBe(0);
 	await registered[0].run();
 	expect(calls).toBe(1);
+	await assertRegisteredResults(service, unit, file);
 	expect(() => service.registerCases(register, unit, file, {})).toThrow(
 		'Missing case implementation'
 	);
