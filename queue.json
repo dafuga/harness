@@ -2660,7 +2660,7 @@
 			},
 			"sourceCommit": "06f8ce220e28621b9b139898ab4aa90bf2014c69",
 			"contractHash": "bedb66cb8a24a66662e4f5e72e0cddcdad5ad713a2fe03f4ab8045d3b0057f1f",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T15:25:11.630Z",
 			"claim": {
@@ -2674,6 +2674,63 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’m using the Harness workflow for this contract-owned migration, including activity tracking and focused verification only. I’ll first inspect prior edits, the module contract context, and the existing helper/public-forwarding suites before changing the allowed files.\nThe Harness activity episode is registered as `efb1196a-427b-48ce-8221-8d62d7d7e3d0`. The repository’s status probe is hitting a pre-existing Git LFS clean-filter failure on a design PNG, so I’m isolating the task files with path-scoped Git/read-only checks rather than treating that environment error as a code change.\nThe target unit has no committed `helperContracts` yet (its implementations are under component/utils paths), so the proposed manifest will use the ordinary `testing.examples` rows for `screenSize`, `galleryEvidence`, `reportFilter`, and `projectFilter`; the primary can promote metadata later. I’ll preserve the audio-pair/media assertions in their owning suites and move only gallery/filter assertions into the new registered example suite.\nThe migration source is now drafted: a new registered helper-shape suite uses a full proposed manifest, adapts JSON pair entries into the executable `Map` inputs, and checks all legacy forwarding identities inside the registered invocations. I also removed only the moved gallery/filter assertions from the audio/media suites. Next I’m validating manifest admission and running the focused unit matrix.\nThe Harness-wrapped focused command is blocked before Vitest starts by the environment’s existing resource-queue `chmod` failure under `/Users/danielfugere/.codex`; this is not a test failure. I’m switching to the same three focused Vitest files directly, preserving the requested narrow scope.\nThe direct focused run reached all 24 tests: 23 passed and one authored expectation exposed an incorrect boundary assumption—`\" release\"` legitimately matches the separator before the title. I’m correcting that authored input to two leading spaces, which tests the documented non-trimming behavior without changing production code.\nThe corrected suite now passes 27/27 focused tests (23 registered report-filter examples plus the 4 retained owner-suite tests), and the proposed manifest passes `componentManifestSchema` plus `TestCaseValidator` with 23 matching examples/cases. I’m doing focused formatting/lint and a final ownership/diff audit; no production or specification files have been touched.\nFocused formatting and ESLint both pass. A final audit command accidentally used zsh’s special `path` variable, temporarily overwriting that command’s `PATH`; its “changed” results are invalid. I’m rerunning the audit with a non-special variable and will not treat the earlier output as evidence.\nThe final focused matrix passes 33/33 (including unchanged `module-groups.test.ts`), with no production/specification changes. The only remaining scope gaps are contract-level: the current contract declares no errors, and search aliases beyond the migrated transcript/source assertions are not independently exercised; I’ll report those explicitly rather than inventing cases.\nImplemented the report-filter migration.\n\nBefore: assertions were embedded in audio-pairs/evidence-media; no canonical report-filter suite existed.\n\nAfter:\n\n- Added 23 stable registered examples/cases: screenSize (6), galleryEvidence (8), reportFilter (4), projectFilter (5).\n- Preserved audio-pair/media ownership and public forwarding checks.\n- Added JSON pair-entry adapters for non-JSON `Map` inputs.\n- Added proposed full manifest: [filter-examples.json](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/43d3fdf2-3050-4424-919f-ff27766275f6/test/fixtures/contract-migration/filter-examples.json).\n- Updated [report-filter.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/43d3fdf2-3050-4424-919f-ff27766275f6/packages/reports/test/utils/report-filter.test.ts).\n\nVerification: 33/33 focused tests passed, manifest schema/validator passed, Prettier and ESLint passed. Harness resource-wrapper execution was blocked by an existing queue `chmod` permission error; direct focused Vitest passed.\n\nGaps: the current contract declares no errors, and title/note/category/viewport search aliases are not independently covered. No commits or specification changes were made.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/43d3fdf2-3050-4424-919f-ff27766275f6",
+				"changedFiles": [
+					"packages/reports/test/utils/audio-pairs.test.ts",
+					"packages/reports/test/utils/evidence-media.test.ts",
+					"packages/reports/test/utils/report-filter.test.ts",
+					"test/fixtures/contract-migration/filter-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T15:51:50.112Z",
+				"attempt": "43d3fdf2-3050-4424-919f-ff27766275f6",
+				"sourceCommit": "06f8ce220e28621b9b139898ab4aa90bf2014c69",
+				"checkpointCommit": "c944544b149935803996528a073ca04d6b414578",
+				"usage": {
+					"inputTokens": 11834287,
+					"outputTokens": 63763,
+					"cacheReadTokens": 11601920,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 11834287,
+							"outputTokens": 63763,
+							"cacheReadTokens": 11601920,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T15:25:19.496Z",
+						"finishedAt": "2026-10-25T15:51:49.581Z"
+					}
+				]
+			},
 			"attempts": []
 		}
 	]
