@@ -6,6 +6,9 @@
 	"responsibility": "Read declared user profiles and their access grants from selected source files without importing project code.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": [
 			"src/services/networking-security/PermissionCatalogService.ts",
@@ -25,12 +28,12 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "PermissionCatalogService.load._root",
+				"name": "PermissionCatalogService.load.root",
 				"type": "string",
 				"description": "Project directory containing profile declarations."
 			},
 			{
-				"name": "PermissionCatalogService.at._tree",
+				"name": "PermissionCatalogService.at.tree",
 				"type": "PermissionSourceTree",
 				"description": "Selected source tree providing JSON profile files."
 			}
@@ -70,8 +73,5 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
-	},
-	"catalog": {
-		"visibility": "internal"
 	}
 }

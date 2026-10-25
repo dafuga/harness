@@ -22,6 +22,7 @@
 			"reports.component.harness-explorer-pages-screen",
 			"reports.component.module-system-explorer-module-resources-screen",
 			"reports.component.module-system-explorer-modules-screen",
+			"reports.component.networking-security-explorer-permissions-screen",
 			"reports.component.shared-primitives-atoms-html-div"
 		]
 	},
@@ -174,6 +175,11 @@
 		},
 		{
 			"unit": "reports.component.module-system-explorer-modules-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.networking-security-explorer-permissions-screen",
 			"via": "import",
 			"origin": "derived"
 		},

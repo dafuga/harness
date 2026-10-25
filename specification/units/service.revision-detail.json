@@ -213,6 +213,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.networking-security-permission-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.source-impact",
 			"via": "import",
 			"origin": "derived"

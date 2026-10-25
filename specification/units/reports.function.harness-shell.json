@@ -51,12 +51,12 @@
 			{
 				"name": "plainClick",
 				"type": "boolean",
-				"description": "True only for an unmodified primary-button click that has not already been prevented."
+				"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
 			},
 			{
 				"name": "harnessShell",
 				"type": "HarnessShellView",
-				"description": "Brand, six primary destinations, module-declared Code destinations and revision controls. All addresses retain branch and commit while clearing unrelated entity context."
+				"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
 			}
 		],
 		"errors": []

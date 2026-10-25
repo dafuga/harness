@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "command.networking-security-permissions",
+	"kind": "command",
+	"title": "PermissionsCommand",
+	"responsibility": "Expose source-declared user profiles and endpoint/data grants through revision-aware CLI queries.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": [
+			"src/commands/networking-security/PermissionsCommand.ts",
+			"src/commands/networking-security/PermissionsCommand.types.ts"
+		],
+		"symbols": [
+			"PermissionsCommand",
+			"PermissionsCommand.register",
+			"PermissionsCommand.registerApi",
+			"PermissionReadOptions"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "PermissionsCommand.register.program",
+				"type": "Command",
+				"description": "Commander root receiving the permissions list/show namespace."
+			},
+			{
+				"name": "PermissionsCommand.registerApi.api",
+				"type": "Command",
+				"description": "Commander API namespace receiving endpoint permission queries."
+			}
+		],
+		"outputs": [
+			{
+				"name": "PermissionsCommand.register",
+				"type": "void",
+				"description": "Registers read-only JSON commands using the selected project source and optional Git revision."
+			},
+			{
+				"name": "PermissionsCommand.registerApi",
+				"type": "void",
+				"description": "Registers read-only JSON commands using the selected project source and optional Git revision."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Registered read actions reject unknown profiles and unreadable selected Git revisions."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-permission-catalog",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/networking-security/PermissionsCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/networking-security/PermissionsCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -163,7 +163,8 @@
 			"rustWasmModule",
 			"rustBackendModule",
 			"moduleResourceLocation",
-			"PermissionCatalogService"
+			"PermissionCatalogService",
+			"PermissionsCommand"
 		]
 	},
 	"contract": {
@@ -260,6 +261,11 @@
 		},
 		{
 			"unit": "command.networking-security-api",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.networking-security-permissions",
 			"via": "reexport",
 			"origin": "derived"
 		},
