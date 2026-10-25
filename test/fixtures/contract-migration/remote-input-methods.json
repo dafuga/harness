@@ -1,0 +1,218 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.validator.remote-input",
+	"kind": "validator",
+	"title": "RemoteInputValidator",
+	"responsibility": "Owns the RemoteInputValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/remote/src/validators/RemoteInputValidator.ts",
+			"packages/remote/src/validators/networking-security/RemoteInputValidator.ts",
+			"packages/remote/src/validators/networking-security/RemoteInputValidator.types.ts"
+		],
+		"symbols": [
+			"RemoteInputValidator",
+			"RemoteInputValidator",
+			"RemoteInputValidator.attach",
+			"RemoteInputValidator.projectId",
+			"RemoteInputValidator.revision",
+			"RemoteInputValidator.approval",
+			"RemoteInputValidator.pairing",
+			"RemoteInputValidator.device",
+			"Fields"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RemoteInputValidator.attach.input",
+				"type": "unknown"
+			},
+			{
+				"name": "RemoteInputValidator.projectId.input",
+				"type": "Fields"
+			},
+			{
+				"name": "RemoteInputValidator.revision.input",
+				"type": "Fields"
+			},
+			{
+				"name": "RemoteInputValidator.approval.input",
+				"type": "unknown"
+			},
+			{
+				"name": "RemoteInputValidator.pairing.input",
+				"type": "unknown"
+			},
+			{
+				"name": "RemoteInputValidator.device.input",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "RemoteInputValidator.attach",
+				"type": "AttachInput"
+			},
+			{
+				"name": "RemoteInputValidator.projectId",
+				"type": "string"
+			},
+			{
+				"name": "RemoteInputValidator.revision",
+				"type": "RemoteRevision"
+			},
+			{
+				"name": "RemoteInputValidator.approval",
+				"type": "RemoteApprovalInput"
+			},
+			{
+				"name": "RemoteInputValidator.pairing",
+				"type": "{ pairingId: string }"
+			},
+			{
+				"name": "RemoteInputValidator.device",
+				"type": "{ deviceId: string }"
+			}
+		],
+		"errors": [
+			{
+				"name": "RemoteFailure",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-control-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/validators/networking-security/RemoteInputValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/validators/networking-security/RemoteInputValidator.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "attach-initialized",
+				"state": "initialized",
+				"subject": "RemoteInputValidator.attach",
+				"test": {
+					"file": "packages/remote/test/validators/remote-input.test.ts",
+					"title": "attach initialized validates protocol, client and resume inputs"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["fresh", "resumed", "protocol-unsupported", "invalid-message"]
+				},
+				"props": ["protocol", "client", "resume", "extra fields"],
+				"errors": ["RemoteFailure"]
+			},
+			{
+				"id": "project-id-initialized",
+				"state": "initialized",
+				"subject": "RemoteInputValidator.projectId",
+				"test": {
+					"file": "packages/remote/test/validators/remote-input.test.ts",
+					"title": "projectId initialized accepts local projects and rejects hosted paths"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["local project id", "project-required", "project-denied"]
+				},
+				"props": ["projectId", "missing field", "hosted id", "path", "input type"],
+				"errors": ["RemoteFailure"]
+			},
+			{
+				"id": "revision-initialized",
+				"state": "initialized",
+				"subject": "RemoteInputValidator.revision",
+				"test": {
+					"file": "packages/remote/test/validators/remote-input.test.ts",
+					"title": "revision initialized validates branch and full commit inputs"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["feat/a", "40 lowercase hexadecimal characters", "revision-required"]
+				},
+				"props": ["revision.branch", "revision.commit", "branch length", "commit format"],
+				"errors": ["RemoteFailure"]
+			},
+			{
+				"id": "approval-initialized",
+				"state": "initialized",
+				"subject": "RemoteInputValidator.approval",
+				"test": {
+					"file": "packages/remote/test/validators/remote-input.test.ts",
+					"title": "approval initialized validates exact control inputs"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["agents true", "comments false", "comments true", "invalid-message"]
+				},
+				"props": ["pairingId", "deviceId", "projectIds", "agents", "comments"],
+				"errors": ["RemoteFailure"]
+			},
+			{
+				"id": "pairing-initialized",
+				"state": "initialized",
+				"subject": "RemoteInputValidator.pairing",
+				"test": {
+					"file": "packages/remote/test/validators/remote-input.test.ts",
+					"title": "pairing initialized validates pairing ids"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["32 lowercase hexadecimal characters", "invalid-message"]
+				},
+				"props": ["pairingId", "hexadecimal casing"],
+				"errors": ["RemoteFailure"]
+			},
+			{
+				"id": "device-initialized",
+				"state": "initialized",
+				"subject": "RemoteInputValidator.device",
+				"test": {
+					"file": "packages/remote/test/validators/remote-input.test.ts",
+					"title": "device initialized validates device ids"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["40 lowercase hexadecimal characters", "invalid-message"]
+				},
+				"props": ["deviceId", "hexadecimal casing"],
+				"errors": ["RemoteFailure"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
