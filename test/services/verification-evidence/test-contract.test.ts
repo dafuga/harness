@@ -108,9 +108,45 @@ test('compare initialized contracts preserves identities unless capabilities cha
 	expect(
 		service.compare(
 			[unit],
-			[{ ...changed, testing: { ...changed.testing, states: ['ready', 'error'] } }]
+			[
+				{
+					...changed,
+					testing: {
+						...changed.testing,
+						states: ['ready', 'error'],
+						cases: [
+							changed.testing.cases[0],
+							{
+								...changed.testing.cases[1],
+								state: 'error',
+								test: { ...changed.testing.cases[1].test, title: 'rank error' }
+							}
+						]
+					}
+				}
+			]
 		)
 	).toEqual([]);
+
+	const expanded = { ...changed, testing: { ...changed.testing, states: ['ready', 'error'] } };
+	expect(
+		service.compare([unit], [expanded]).join(' '),
+		'a new state cannot excuse another case for the old state'
+	).toContain('case identities/count changed');
+	const renamed = {
+		...expanded,
+		testing: {
+			...expanded.testing,
+			cases: [
+				{ ...unit.testing.cases[0], id: 'renamed' },
+				{ ...unit.testing.cases[0], id: 'error', state: 'error' }
+			]
+		}
+	};
+	expect(
+		service.compare([unit], [renamed]).join(' '),
+		'an existing supported state retains its case identity'
+	).toContain('case identities/count changed');
 	expect(service.compare([], [unit])).toEqual([]);
 	assertSiblingCaseIdentity(unit);
 });
