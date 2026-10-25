@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { componentManifestSchema } from '../../../../src/core/unitTypes';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { readFileSync } from 'node:fs';
+import { moduleDataRef } from '../../../../src/services/git-source-history/module-data-service/moduleDataProtocol';
 import {
 	actor,
 	outsider,
@@ -13,6 +14,15 @@ import {
 	evidence,
 	projectionFixture
 } from '../support/projectionFixture';
+test('hosted reads reject missing metadata without a project opt-in', async () => {
+	const f = projectionFixture(),
+		original = f.source.optionalRef;
+	f.source.optionalRef = (repository, ref) =>
+		ref === moduleDataRef ? Promise.resolve(null) : original(repository, ref);
+	await expect(
+		f.projection.snapshot(actor, project.id, { branch: 'feat/a/b', commit: null })
+	).rejects.toThrow('Missing committed module data');
+});
 test('GitHub snapshot binds exact project, slash branch and all cache revisions', async () => {
 	const f = projectionFixture(),
 		view = await f.projection.snapshot(actor, project.id, { branch: 'feat/a/b', commit: null });
