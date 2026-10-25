@@ -204,3 +204,4 @@ export { ModuleDataReviewRepository } from './repositories/git-source-history/Mo
 export { ModuleDataSourceAdapter } from './adapters/git-source-history/ModuleDataSourceAdapter';
 export { moduleScenarioReviews } from './utils/git-source-history/moduleScenarioReviews';
 export { ModuleTaskServerService } from './services/agents-providers/ModuleTaskServerService';
+export { ModuleTaskSandboxAdapter } from './adapters/agents-providers/ModuleTaskSandboxAdapter';

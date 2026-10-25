@@ -157,7 +157,8 @@
 			"ModuleDataReviewRepository",
 			"ModuleDataSourceAdapter",
 			"moduleScenarioReviews",
-			"ModuleTaskServerService"
+			"ModuleTaskServerService",
+			"ModuleTaskSandboxAdapter"
 		]
 	},
 	"contract": {
@@ -169,6 +170,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-sandbox",
 			"via": "reexport",
 			"origin": "derived"
 		},
