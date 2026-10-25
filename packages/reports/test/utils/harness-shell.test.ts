@@ -1,3 +1,4 @@
+import { assertModuleArrayAdmission } from '../moduleNavigationCases';
 import { moduleData } from '../../tests/e2e/support/component-previews/modules';
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
@@ -205,12 +206,14 @@ test('Styles stays active across branch and commit selection without becoming an
 test('installed modules contribute scoped Code entries from their resource definitions', () => {
 	const props = input(historical);
 	props.modules = moduleData;
+	assertModuleArrayAdmission(props);
 	const menu = harnessShell(props).modules;
 	expect(menu.find((item) => item.label === 'Emails')).toMatchObject({
 		id: 'resource:email.email',
 		to: { screen: 'module-resources', entity: 'email.email', branch: shellBranch, commit: sha(4) }
 	});
 	expect(menu.some((item) => item.label === 'Offline collections')).toBe(false);
+	expect(menu.map((item) => item.id)).toEqual(['resource:email.email']);
 	const library = harnessShell(props).categories.find((item) => item.label === 'Modules');
 	expect(library?.to).toMatchObject({ screen: 'modules', branch: shellBranch, commit: sha(4) });
 });

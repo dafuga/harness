@@ -1,3 +1,4 @@
+import { assertRustModuleProject } from './rustModuleScenario';
 import { expect } from 'vitest';
 import { join } from 'node:path';
 import { runCommand, runHarness } from './cli';
@@ -12,14 +13,21 @@ export async function assertModuleProject(root: string): Promise<void> {
 	await runHarness(['module', 'add', 'offline'], project);
 	await runHarness(['module', 'generate', 'email', 'email', 'Welcome'], project);
 	await runHarness(['module', 'generate', 'offline', 'collection', 'Notes'], project);
+	await runHarness(
+		['module', 'generate', 'services', 'service', 'Invoice', '--group', 'billing'],
+		project
+	);
+	await runHarness(['module', 'generate', 'types', 'type', 'Invoice'], project);
+	await runHarness(['module', 'generate', 'styles', 'style', 'Invoice'], project);
 	const catalog = await runHarness(['module', 'list', '--json'], project);
 	expect(
 		JSON.parse(catalog.stdout).modules.filter((entry: { installed: boolean }) => entry.installed)
-	).toHaveLength(2);
+	).toHaveLength(11);
 	const repeated = await runHarness(['module', 'add', 'email'], project);
 	expect(repeated.stdout).toContain('already installed');
 	await runCommand(['bun', 'install'], project);
 	await runCommand(['bun', 'run', 'format'], project);
 	const check = await runCommand(['bun', 'run', 'check'], project);
 	expect(check.stdout + check.stderr).toContain('Harness audit passed');
+	await assertRustModuleProject(project);
 }

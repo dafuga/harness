@@ -206,4 +206,4 @@ test('CLI installs module foundations and generates their declared resources', a
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
-}, 180_000);
+}, 600_000);
