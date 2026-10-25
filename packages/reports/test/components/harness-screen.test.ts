@@ -6,8 +6,10 @@ import { explorerEntityCategories } from '../../../../src/utils/explorerRoute';
 const routes = join(import.meta.dirname, '../../src/routes/harness/branch/[branch]/[...at]');
 
 test('every category has a page of its own for its catalog and for each view of an entity', () => {
-	const screens = ['', '/[entity]', '/[entity]/details', '/[entity]/history'];
+	const screens = ['', '/[entity]', '/[entity]/history'];
 	for (const category of explorerEntityCategories) {
+		const legacy = join(routes, category, '[entity]/details/+page.svelte');
+		expect(existsSync(legacy), `${category} legacy alias`).toBe(category !== 'apis');
 		for (const screen of screens) {
 			const file = join(routes, `${category}${screen}`, '+page.svelte');
 			expect([file.slice(routes.length), existsSync(file)]).toEqual([

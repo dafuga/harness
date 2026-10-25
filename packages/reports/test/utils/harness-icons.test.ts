@@ -35,6 +35,7 @@ test('every icon is path data drawn on the same 24 by 24 grid', () => {
 test('each entity category has its own icon, and only the two verdicts are solid', () => {
 	expect(Object.keys(categoryIcon)).toEqual([
 		'pages',
+		'apis',
 		'layouts',
 		'components',
 		'functions',
@@ -45,6 +46,6 @@ test('each entity category has its own icon, and only the two verdicts are solid
 		'platforms'
 	]);
 	const drawings = Object.values(categoryIcon).map((name) => harnessIcons[name]);
-	expect(new Set(drawings).size).toBe(9);
+	expect(new Set(drawings).size).toBe(10);
 	expect([...solidIcons].sort()).toEqual(['failed', 'passed']);
 });
