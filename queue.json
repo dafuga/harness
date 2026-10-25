@@ -5982,6 +5982,70 @@
 			"createdAt": "2026-10-25T20:38:32.426Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.commit-message-examples",
+			"title": "Migrate function.commit-message standard test cases",
+			"moduleGoal": "Complete canonical coverage without losing existing assertions",
+			"verificationFiles": [
+				"test/utils/commit-message.test.ts",
+				"test/support/commitMessageExamples.ts",
+				"test/support/commitMessageExamples.types.ts",
+				"test/fixtures/contract-migration/commit-message-examples.json"
+			],
+			"instructions": "Initial contract-test migration. Edit ONLY the listed verification files. Write a full proposed copy of specification/units/function.commit-message.json at the listed test/fixtures/contract-migration path; do not edit specification or product code. Primary owns shared contracts, integration, product fixes, verification and commits. Do not run tests/build/lint/audit/install, delegate, update memory, access credentials, commit or publish. Run permitted Harness activity registration/heartbeat. Keep one registered helper Example per authored Example with registerExamples(test, direct imported full JSON manifest as ComponentManifest if needed, callbacks). Import test explicitly from vitest. Preserve every original assertion, realistic fixture, public alias boundary and benchmark before retiring its old entrypoint. Declare finite states/props/error matrix, stable case IDs, canonical subject: Example titles, actual test/fixture paths, exact authored output/error comments. Preserve helperContracts Examples without duplicate names; other functions use testing.examples without claiming pure-helper eligibility. Invoke the actual callable and return its real result or an explicitly displayed projection; never compute expected values from observed results or manufacture a projection error. Reconstruct non-JSON fixtures with explicit markers; preserve getters/prototypes/iterators instead of JSON-normalizing them away. No dynamic tests, skip/fails/only, standalone regressions or afterAll acceptance/benchmark hooks. Keep files220/functions55, named types in companion files; use the allowed support files when necessary. Report static gaps truthfully. No unverified model substitution.\nPreserve every original assertion, Unicode/codepoint boundary, all cleanup/comment/scissors modes, every prefix, trailers and Git whitespace behavior. Keep the 200000-space timing workload and its full-string assertion inside the responsible Example. Use concise explicitly displayed projections for very large outputs; never store hundreds of kilobytes of repeated text merely to display an Example. Preserve both owner and public forwarding entry boundaries.",
+			"wantedContract": {
+				"responsibility": "Preserve existing assertions in canonical method or Example cases",
+				"inputs": [
+					{
+						"name": "existing source contracts and realistic fixtures",
+						"type": "authored capability matrix"
+					}
+				],
+				"outputs": [
+					{
+						"name": "registered suite and proposed full manifest",
+						"type": "reviewable source"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid properties and failure outcomes",
+						"type": "explicit assertions"
+					}
+				]
+			},
+			"model": "gpt-5.6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "commit-message-examples",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "function.commit-message",
+				"goal": "Complete canonical coverage without losing existing assertions",
+				"files": [
+					"src/services/commit-message-service/commitMessage.ts",
+					"src/services/git-source-history/commit-message-service/commitMessage.ts",
+					"src/utils/commitMessage.ts",
+					"src/utils/git-source-history/commitMessage.ts",
+					"src/utils/git-source-history/commitMessage.types.ts",
+					"test/utils/commit-message.test.ts",
+					"test/support/commitMessageExamples.ts",
+					"test/support/commitMessageExamples.types.ts",
+					"test/fixtures/contract-migration/commit-message-examples.json"
+				]
+			},
+			"sourceCommit": "7d263753ece7aa867f9bc067322647c3ba136058",
+			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T20:38:33.075Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
