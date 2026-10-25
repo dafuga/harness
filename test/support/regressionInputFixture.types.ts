@@ -28,3 +28,15 @@ export interface FixtureRecordInput {
 	commit: string;
 	inputs: FrozenFixtureInputs['inputs'];
 }
+
+export interface ObservedRegressionRecord { record: RegressionInputFixture['red']; verify: () => void; }
+
+export interface CheckpointReads {
+	source: number;
+	tests: number;
+	inputs: number;
+	testsIterator: number;
+	inputIterator: number;
+	inputItems: number;
+	species: number;
+}

@@ -1,3 +1,4 @@
+import { observeRegressionRecord } from './regressionInputObservation';
 import { expect } from 'vitest';
 import {
 	regressionFiles,
@@ -67,6 +68,12 @@ export async function invokeRegressionFix(input: RegressionInputExample): Promis
 			changes[fixtureUnitPath] = JSON.stringify(fixture.unit);
 		}
 		if (Object.keys(changes).length) commit = await fixture.commit(changes);
+		if (input.fixture === 'documentation') {
+			const observed = observeRegressionRecord(fixture.red);
+			await regressionFixCommit(fixture.root, commit, observed.record);
+			observed.verify();
+			return;
+		}
 		await regressionFixCommit(fixture.root, commit, fixture.red);
 	} finally {
 		await fixture.close();
