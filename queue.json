@@ -6741,9 +6741,19 @@
 			},
 			"sourceCommit": "f61a565ae23974d4db93b5877fb0156470cd5962",
 			"contractHash": "b301c76294cab07396cefcbc8108cd1bc4ece0ccdccabcddd0f0269200027912",
-			"status": "queued",
+			"status": "running",
 			"reviews": [],
 			"createdAt": "2026-10-25T22:24:43.693Z",
+			"claim": {
+				"worker": "contract-first-authoring",
+				"token": "3f8c6f6f-8976-4368-b939-5053565857ff",
+				"startedAt": "2026-10-25T22:24:44.154Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 44508,
+					"startedAt": "Sun Oct 25 22:24:43 2026"
+				}
+			},
 			"claimHistory": [],
 			"attempts": []
 		}
