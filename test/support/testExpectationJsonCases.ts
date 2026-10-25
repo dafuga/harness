@@ -114,5 +114,5 @@ function assertInvalidValues(service: TestExpectationService) {
 	expect(() => service.json(Array(1), [])).toThrow(z.ZodError);
 	const circular: unknown[] = [];
 	circular.push(circular);
-	expect(() => service.json(circular, [])).toThrow(RangeError);
+	expect(() => service.json(circular, [])).toThrow('API JSON differs');
 }
