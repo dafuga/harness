@@ -2300,8 +2300,20 @@
 			},
 			"sourceCommit": "dc1e7d5710cde6f029fe3c538e29780543acec0e",
 			"contractHash": "db3d4a500bd8786221d254c250c19ff690e98ef460418e95e66d88685c875ab2",
-			"status": "review",
-			"reviews": [],
+			"status": "accepted",
+			"reviews": [
+				{
+					"attempt": "8c92ebad-1a9e-40e9-b2d2-421fbb364056",
+					"verdict": "accepted",
+					"reviewer": "primary",
+					"feedback": "Primary integrated the reviewed proposal with canonical manifests, retained original assertions and fixtures, strengthened invalid-prop coverage where needed, and verified owning focused Vitest suites. Integration commit4c746db7ed; repository-wide migration and full acceptance remain pending.",
+					"at": "2026-10-25T16:31:57.389Z",
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null
+				}
+			],
 			"createdAt": "2026-10-25T14:53:00.816Z",
 			"claim": {
 				"worker": "packet-methods",
