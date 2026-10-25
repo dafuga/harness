@@ -1,0 +1,54 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TgFoE1
+
+ ❯ test/source-profile-runners.test.ts (14 tests | 1 failed | 13 skipped) 5210ms
+   ↓ normal Vitest imports and its Bun commands capture their own real operations
+   × Bun runtime profiling leaves actual build artifacts uninstrumented 5209ms
+     → real registry bootstrap must not await itself: expected [ 'spawnSync bun ETIMEDOUT', null, '' ] to deeply equal [ undefined, +0, 'true' ]
+   ↓ ordinary runs and explicit benchmark boundaries retain the original operation
+   ↓ unowned source and fixture copies never borrow a registered unit identity
+   ↓ registered 'Map data' modules retain only actual initialization observations
+   ↓ registered 'nested data' modules retain only actual initialization observations
+   ↓ registered 'deferred method' modules retain only actual initialization observations
+   ↓ registered 'nested callback' modules retain only actual initialization observations
+   ↓ registered 'Map callback' modules retain only actual initialization observations
+   ↓ registered 'imported object callback' modules retain only actual initialization observations
+   ↓ registered 'imported Map callback' modules retain only actual initialization observations
+   ↓ registered 'getter' modules retain only actual initialization observations
+   ↓ registered 'nested class' modules retain only actual initialization observations
+   ↓ failed initialization and type-only modules never gain successful scope observations
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/source-profile-runners.test.ts > Bun runtime profiling leaves actual build artifacts uninstrumented
+AssertionError: real registry bootstrap must not await itself: expected [ 'spawnSync bun ETIMEDOUT', null, '' ] to deeply equal [ undefined, +0, 'true' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   undefined,[39m
+[32m-   0,[39m
+[32m-   "true",[39m
+[31m+   "spawnSync bun ETIMEDOUT",[39m
+[31m+   null,[39m
+[31m+   "",[39m
+[2m  ][22m
+
+ ❯ assertProjectBootstrap test/support/sourceProfileRunners.ts:172:4
+    170|   [cold.error?.message, cold.status, cold.stdout.trim()],
+    171|   'real registry bootstrap must not await itself'
+    172|  ).toEqual([undefined, 0, 'true']);
+       |    ^
+    173| }
+    174| 
+ ❯ test/source-profile-runners.test.ts:66:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 skipped (14)
+   Start at  02:32:19
+   Duration  8.35s (transform 89ms, setup 115ms, collect 24ms, tests 5.21s, environment 0ms, prepare 33ms)
+
