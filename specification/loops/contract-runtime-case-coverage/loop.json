@@ -2,9 +2,11 @@
 	"name": "contract-runtime-case-coverage",
 	"goal": "Verification rejects missing, duplicate, skipped, orphaned or wrong-revision execution of registered cases",
 	"createdAt": "2026-10-25T15:47:59.450Z",
-	"updatedAt": "2026-10-25T16:08:28.764Z",
+	"updatedAt": "2026-10-25T16:09:28.862Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -39,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:09:28.862Z",
+			"evidence": "Unchanged two-case suite fails at6668a1271e and passes at57f9da6ec2; paired immutable checkpoints retained with identical command and runtime profile. Registry validation proof only; actual runner integration still pending."
 		},
 		{
 			"id": "verify",

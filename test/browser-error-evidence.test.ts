@@ -7,6 +7,14 @@ import { verificationRecordSchema } from '../src/core/verificationTypes';
 import { recordView } from '../src/utils/recordView';
 import { verificationSample } from './support/verificationSample';
 
+const caseOutcome = {
+	file: 'orders.spec.ts',
+	title: 'Orders > recovers from a failed request',
+	revision: verificationSample().source.commit,
+	status: 'passed',
+	retry: 0
+};
+
 const diagnostics = {
 	test: 'Orders › recovers from a failed request',
 	file: 'orders.spec.ts',
@@ -43,7 +51,13 @@ for (const exitCode of [0, 1]) {
 				timeoutMs: 10_000
 			});
 			expect(outcome.passed).toBe(exitCode === 0);
-			expect(outcome.entry).toMatchObject({ browserErrors: [diagnostics] });
+			expect(outcome.entry).toMatchObject({
+				browserErrors: [diagnostics],
+				cases: {
+					outcomes: [caseOutcome],
+					artifact: { bytes: expect.any(Number), sha256: expect.stringMatching(/^[a-f0-9]{64}$/) }
+				}
+			});
 			const record = verificationRecordSchema.parse({ ...sample, tests: [outcome.entry] });
 			const view = recordView(record, {
 				valid: true,
@@ -80,6 +94,7 @@ async function writeDiagnostics(root: string, exitCode: number) {
 const path = require('node:path');
 const directory = process.env.HARNESS_EVIDENCE_DIR;
 fs.mkdirSync(directory, { recursive: true });
+fs.writeFileSync(path.join(directory, 'case-results.ndjson'), ${JSON.stringify(JSON.stringify(caseOutcome) + '\n')});
 fs.writeFileSync(path.join(directory, 'browser-errors.ndjson'), ${JSON.stringify(JSON.stringify(diagnostics) + '\n')});
 process.exitCode = ${exitCode};`;
 	await writeFile(join(root, 'writer.cjs'), writer);
@@ -100,6 +115,7 @@ for (const mode of ['malformed', 'timeout']) {
 			expect(outcome.passed).toBe(false);
 			expect(outcome.entry.status).toBe('failed');
 			expect(outcome.entry.browserErrors).toBeUndefined();
+			if (mode === 'timeout') expect(outcome.entry).not.toHaveProperty('cases');
 			expect(outcome.failures.join(' ')).toMatch(
 				mode === 'timeout' ? /timed out/ : /Browser diagnostics/
 			);

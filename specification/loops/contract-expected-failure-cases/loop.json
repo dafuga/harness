@@ -2,9 +2,11 @@
 	"name": "contract-expected-failure-cases",
 	"goal": "Expected-failure runner modifiers cannot count as passing standard cases",
 	"createdAt": "2026-10-25T16:01:16.604Z",
-	"updatedAt": "2026-10-25T16:08:29.700Z",
+	"updatedAt": "2026-10-25T16:09:29.982Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -39,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:09:29.982Z",
+			"evidence": "The unchanged two-case discovery suite fails expected-failure assertion at6668a1271e and passes at57f9da6ec2; paired immutable checkpoints retained with identical command and profile."
 		},
 		{
 			"id": "verify",
