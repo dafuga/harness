@@ -2910,7 +2910,7 @@
 			},
 			"sourceCommit": "57f9da6ec2ee2cc280605e1f897f0ddf6751cf0f",
 			"contractHash": "74e3388ce3a3cf2158b60074f58861eaa80ab6be5dfa94da4c93ebec2d02e321",
-			"status": "queued",
+			"status": "running",
 			"repairCommit": "0051554a51cb9555f3f253f57a9ad89cff117871",
 			"reviews": [
 				{
@@ -2926,6 +2926,16 @@
 				}
 			],
 			"createdAt": "2026-10-25T16:09:28.058Z",
+			"claim": {
+				"worker": "response-ledger-methods",
+				"token": "3595c670-a4fc-4077-8426-89eba377a8c2",
+				"startedAt": "2026-10-25T16:20:56.936Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 77038,
+					"startedAt": "Sun Oct 25 16:20:56 2026"
+				}
+			},
 			"claimHistory": [
 				{
 					"worker": "response-ledger-methods",
