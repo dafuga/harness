@@ -14,24 +14,24 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "recordedRelations.head",
+				"name": "explorerRelationsRecorded.head",
 				"type": "HarnessRevision",
 				"description": "Selected revision with its committed registry and relationship collections."
 			},
 			{
-				"name": "recordedRelations.id",
+				"name": "explorerRelationsRecorded.id",
 				"type": "string",
 				"description": "Stable identity of the module whose relationships are requested."
 			},
 			{
-				"name": "recordedRelations.entity",
+				"name": "explorerRelationsRecorded.entity",
 				"type": "Entity",
 				"description": "Catalog projection for each resolved registered module."
 			}
 		],
 		"outputs": [
 			{
-				"name": "recordedRelations",
+				"name": "explorerRelationsRecorded",
 				"type": "ExplorerRelations | undefined",
 				"description": "Stored relationship groups, or undefined for a legacy revision without committed relationships."
 			}
