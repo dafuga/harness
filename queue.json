@@ -10,6 +10,11 @@
 			"id": "api-permission-profiles",
 			"goal": "Expose API/data grants and user-profile pages through UI and CLI, with APIs and Modules under Code",
 			"tldr": "One revision-bound profile catalog; four top-level navigation destinations"
+		},
+		{
+			"id": "contract-first-execution",
+			"goal": "Harness users and agents develop from committed contracts; server-managed workers can read app-wide contracts and modify only their assigned files, with complete metadata validation and tracked executions.",
+			"tldr": "Extend the API-backed CLI and mandatory revision metadata with contract authoring, contract-first Codex guidance, enforced worker scopes, and automatic server task creation and dispatch. Preserve local and hosted permissions, existing history and exact model/usage/cost/bounce records."
 		}
 	],
 	"tasks": [
