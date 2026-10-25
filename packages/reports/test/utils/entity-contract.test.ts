@@ -1,128 +1,31 @@
-import { expect, test } from 'vitest';
-import type { HarnessScenario, HarnessUnit } from '../../src/models/Harness.types';
+import { test } from 'vitest';
+import type { ComponentManifest } from '../../../../src/core/unitTypes';
+import { TestExpectationService } from '../../../../src/services/verification-evidence/TestExpectationService';
+import type { HarnessUnit } from '../../src/models/Harness.types';
 import { entityContract, humanize, requiredStates } from '../../src/utils/entityContract';
-import { scenarioFor } from '../../src/utils/explorerState';
-import { ids, scenarios, units } from '../entityUnits';
+import type { ContractFacts } from '../../src/utils/explorer-ui/entityContract';
+import manifest from '../../../../test/fixtures/contract-migration/contract-examples.json';
 
-const find = (id: string) => units.find((unit) => unit.id === id)!;
-const row = (rows: Array<{ label: string; value: string }>, label: string) =>
-	rows.find((item) => item.label === label)?.value;
+type EntityInput = [HarnessUnit, ContractFacts];
 
-test('a contract reads as inputs and output in plain words, without the symbol that owns them', () => {
-	const rows = entityContract(find(ids.filter), { category: 'functions' });
-	expect(row(rows, 'Inputs')).toBe('orders, search text');
-	expect(row(rows, 'Output')).toBe('matching orders');
-	expect(row(rows, 'Fails with')).toBeUndefined();
-	expect(JSON.stringify(rows)).not.toMatch(/filterOrders|src\/|\.ts/);
-});
+const invokeEntityContract = (...input: never[]) => {
+	const [rawUnit, facts] = input as unknown as EntityInput;
+	if (rawUnit.id !== 'fixture.admitted-fields') return entityContract(rawUnit, facts);
 
-test('a page contract has its purpose and web address, without verification states', () => {
-	const rows = entityContract(find(ids.page), { category: 'pages', appRoute: '/orders' });
-	expect(rows.map((item) => item.label)).toEqual(['Purpose', 'App route', 'Inputs', 'Output']);
-	expect(row(rows, 'Purpose')).toBe('Lists the orders of an account.');
-	expect(row(rows, 'App route')).toBe('/orders');
-	expect(row(rows, 'Required states')).toBeUndefined();
-});
-
-test('a page whose address is not recorded says so instead of showing a file', () => {
-	const rows = entityContract(find(ids.page), { category: 'pages', appRoute: null });
-	expect(row(rows, 'App route')).toBe('Not recorded');
-	expect(row(rows, 'Required states')).toBeUndefined();
-});
-
-test('a config says what it provides and a service how it runs', () => {
-	const config = entityContract(find(ids.settings), { category: 'configs' });
-	expect(row(config, 'Provides')).toBe('page size, default sort');
-	expect(row(config, 'Inputs')).toBeUndefined();
-	const service = entityContract(find(ids.store), { category: 'services' });
-	expect(row(service, 'Runs as')).toBe('Module, Wasm, Native process');
-	expect(row(service, 'Fails with')).toBeUndefined();
-	expect(row(service, 'States')).toBeUndefined();
-});
-
-test('names of any casing become words, and required states leave out the unproven ones', () => {
-	expect(humanize('searchText')).toBe('search text');
-	expect(humanize('page_size')).toBe('page size');
-	expect(humanize('on-select')).toBe('on select');
-	expect(humanize('HTTPStatus')).toBe('http status');
-	expect(requiredStates(find(ids.filter), scenarios, units)).toEqual(['match', 'no-match']);
-});
-
-test('what a page or a component draws is called rendered markup, not by the name of its file', () => {
-	const page = units.find((unit) => unit.id === ids.page)!;
-	const drawn = {
-		...page,
-		contract: { ...page.contract, outputs: [{ name: '+page', type: 'markup' }] }
-	};
-	const rows = entityContract(drawn, { category: 'pages', appRoute: '/orders' });
-	expect(rows.find((item) => item.label === 'Output')?.value).toBe('rendered markup');
-	const list = units.find((unit) => unit.id === ids.list)!;
-	const named = {
-		...list,
-		contract: { ...list.contract, outputs: [{ name: 'OrderList', type: 'markup' }] }
-	};
-	const told = entityContract(named, { category: 'components' });
-	expect(row(told, 'Props')).toBe('orders, search text');
-	expect(row(told, 'Inputs')).toBeUndefined();
-	expect(row(told, 'Output')).toBeUndefined();
-	expect(row(told, 'Fails with')).toBeUndefined();
-	// A contract that declares what is drawn keeps the name it was given.
-	const declared = {
-		...list,
-		contract: { ...list.contract, outputs: [{ name: 'OrderList.searchableList', type: 'markup' }] }
-	};
-	expect(row(entityContract(declared, { category: 'components' }), 'Output')).toBeUndefined();
-});
-
-test('a declared contract says what each item is, and a derived one only names it', () => {
-	const declared = {
-		...find(ids.page),
-		contract: {
-			inputs: [
-				{ name: 'branch', type: 'string', description: 'The branch, as one path segment.' },
-				{ name: 'tab', type: 'string' }
-			],
-			outputs: [{ name: '+page', type: 'markup', description: 'The page with its verdict.' }],
-			errors: [{ name: 'not-at-revision', type: 'notice', description: 'A missing page is said.' }]
-		}
-	};
-	const rows = entityContract(declared, { category: 'pages', appRoute: '/orders' });
-	const of = (label: string) => rows.find((item) => item.label === label);
-	expect(of('Inputs')).toEqual({
-		label: 'Inputs',
-		value: 'branch, tab',
-		items: [
-			{ name: 'branch', text: 'The branch, as one path segment.' },
-			{ name: 'tab', text: 'No description recorded.' }
-		]
-	});
-	expect(of('Output')?.items).toEqual([
-		{ name: 'rendered markup', text: 'The page with its verdict.' }
-	]);
-	// What a page does when it cannot show what was asked is part of its contract once declared.
-	expect(of('Fails with')).toEqual({
-		label: 'Fails with',
-		value: 'not at revision',
-		items: [{ name: 'not at revision', text: 'A missing page is said.' }]
-	});
-	const derived = entityContract(find(ids.filter), { category: 'functions' });
-	expect(derived.every((item) => item.items === undefined)).toBe(true);
-});
-
-test('contract fields preserve admitted iterators, species and getter reads', () => {
 	let descriptions = 0;
 	let species = 0;
-	const fields = [
-		{
-			name: 'searchText',
-			type: 'string',
-			get description() {
-				descriptions++;
-				return 'Words to find.';
-			}
-		},
-		{ name: 'pageSize', type: 'number' }
-	];
+	const fields = rawUnit.contract.inputs.map((field, index) =>
+		index === 0
+			? {
+					name: field.name,
+					type: field.type,
+					get description() {
+						descriptions++;
+						return field.description;
+					}
+				}
+			: field
+	) as HarnessUnit['contract']['inputs'];
 	Object.defineProperty(fields, Symbol.iterator, {
 		value: () => {
 			throw new Error('Must not iterate');
@@ -141,77 +44,15 @@ test('contract fields preserve admitted iterators, species and getter reads', ()
 			}
 		}
 	});
-	const original = find(ids.filter);
-	const unit = { ...original, contract: { ...original.contract, inputs: fields } };
-	const inputs = entityContract(unit, { category: 'functions' }).find(
-		(item) => item.label === 'Inputs'
-	);
-	expect(inputs).toMatchObject({
-		value: 'search text, page size',
-		items: [
-			{ name: 'search text', text: 'Words to find.' },
-			{ name: 'page size', text: 'No description recorded.' }
-		]
-	});
-	expect(descriptions).toBe(2);
-	expect(species).toBe(2);
-});
-
-/** A unit of a small registry: what it uses is all that matters of it here. */
-const made = (id: string, uses: string[] = []): HarnessUnit => ({
-	...find(ids.page),
-	id,
-	kind: id.startsWith('page.')
-		? 'page'
-		: ({ shared: 'component', endpoint: 'endpoint' }[id] ?? 'function'),
-	dependencies: uses.map((unit) => ({ unit, via: 'import' }))
-});
-// Three pages: two are made of one shared component, and an endpoint is behind none of them.
-const registry = [
-	made('page.a', ['shared']),
-	made('page.b', ['shared']),
-	made('page.c'),
-	made('shared', ['helper']),
-	made('helper'),
-	made('endpoint')
-];
-const screens: HarnessScenario = {
-	...scenarios[0],
-	id: 'screens',
-	units: registry.map((unit) => unit.id),
-	states: [
-		{ id: 'a', coverage: 'required', units: ['page.a'] },
-		{ id: 'a-empty', coverage: 'required', units: ['page.a'] },
-		{ id: 'a-denied', coverage: 'inapplicable', reason: 'no sign-in', units: ['page.a'] },
-		{ id: 'b', coverage: 'required', units: ['page.b'] },
-		{ id: 'c', coverage: 'required', units: ['page.c'] }
-	]
+	const unit = { ...rawUnit, contract: { ...rawUnit.contract, inputs: fields } };
+	const output = entityContract(unit, facts);
+	if (descriptions !== 2 || species !== 2)
+		throw new Error(`Admitted field reads changed: ${descriptions}/${species}`);
+	return output;
 };
-const required = (id: string, units = registry) =>
-	requiredStates(units.find((unit) => unit.id === id) ?? made(id), [screens], units);
 
-test('a page that states name is required in those states, and in no state of another page', () => {
-	expect(required('page.a')).toEqual(['a', 'a-empty']);
-	expect(required('page.c')).toEqual(['c']);
-});
-
-test('a visual component needs explicit states; nonvisual helpers retain execution scope', () => {
-	expect(required('shared')).toEqual([]);
-	// Through what uses what uses it, to any depth.
-	expect(required('helper')).toEqual(['a', 'a-empty', 'b']);
-});
-
-test('a unit that nothing named is made of stays required in every state, as its proof keeps it', () => {
-	expect(required('endpoint')).toEqual(['a', 'a-empty', 'b', 'c']);
-	// A registry that holds no units cannot say what is made of what: nothing is narrowed by it.
-	expect(required('shared', [])).toEqual(['a', 'a-empty', 'b', 'c']);
-});
-
-test('the states listed are the required ones of exactly what the proof judges a unit in', () => {
-	for (const unit of registry) {
-		const judged = scenarioFor(screens, unit.id, registry)
-			.states.filter((state) => state.coverage === 'required')
-			.map((state) => state.id);
-		expect(requiredStates(unit, [screens], registry), unit.id).toEqual(judged);
-	}
+new TestExpectationService().registerExamples(test, manifest as ComponentManifest, {
+	entityContract: invokeEntityContract,
+	humanize,
+	requiredStates
 });

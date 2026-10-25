@@ -1,0 +1,2073 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.entity-contract",
+	"kind": "function",
+	"title": "Readable entity contracts",
+	"responsibility": "Converts declared interfaces and category-specific context into readable contract rows.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/explorer-ui/entity-sections/entityContract.ts",
+			"packages/reports/src/components/explorer-ui/entity-sections/entityContract.types.ts",
+			"packages/reports/src/helpers/strings/humanize.ts",
+			"packages/reports/src/utils/entityContract.ts",
+			"packages/reports/src/utils/explorer-ui/entityContract.ts",
+			"packages/reports/src/utils/explorer-ui/entityContract.types.ts"
+		],
+		"symbols": [
+			"requiredStates",
+			"entityContract",
+			"Field",
+			"humanize",
+			"requiredStates",
+			"entityContract",
+			"humanize",
+			"requiredStates",
+			"entityContract",
+			"ContractRow",
+			"ContractFacts",
+			"humanize",
+			"ContractRow",
+			"ContractFacts"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "humanize.name",
+				"type": "string",
+				"description": "Identifier to split into ordinary lowercase words."
+			},
+			{
+				"name": "requiredStates.unit",
+				"type": "HarnessUnit",
+				"description": "Unit whose required states are requested."
+			},
+			{
+				"name": "requiredStates.scenarios",
+				"type": "HarnessScenario[]",
+				"description": "Scenario declarations to examine."
+			},
+			{
+				"name": "requiredStates.units",
+				"type": "HarnessUnit[]",
+				"description": "Registry units used to determine which scenario states actually show the unit."
+			},
+			{
+				"name": "entityContract.unit",
+				"type": "HarnessUnit",
+				"description": "Unit supplying its responsibility, contract and runtime."
+			},
+			{
+				"name": "entityContract.facts",
+				"type": "ContractFacts",
+				"description": "Display category plus an optional app route."
+			}
+		],
+		"outputs": [
+			{
+				"name": "humanize",
+				"type": "string",
+				"description": "Words separated at camel-case, acronym and underscore/dot/hyphen boundaries, trimmed and lowercased."
+			},
+			{
+				"name": "requiredStates",
+				"type": "string[]",
+				"description": "Unique required state identifiers from scenarios naming the unit, narrowed through scenarioFor."
+			},
+			{
+				"name": "entityContract",
+				"type": "ContractRow[]",
+				"description": "Category-specific rows: pages include purpose and address; configs show purpose and provided outputs; other categories show inputs, outputs and errors, with service runtime. Verification states appear only in evidence views. Field descriptions are retained, with missing descriptions stated when some fields are described. Component-self markup outputs read rendered markup."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.explorer-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"helperContracts": [
+		{
+			"name": "humanize",
+			"source": "packages/reports/src/helpers/strings/humanize.ts",
+			"inputs": [
+				{
+					"name": "humanize.name",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"examples": [
+				{
+					"name": "Separate lowercase words from uppercase letters",
+					"call": "humanize(\"orderID\")",
+					"input": ["orderID"],
+					"output": "order id"
+				},
+				{
+					"name": "Separate an acronym from the following word",
+					"call": "humanize(\"HTTPServer\")",
+					"input": ["HTTPServer"],
+					"output": "http server"
+				},
+				{
+					"name": "Replace identifier separators with spaces and trim",
+					"call": "humanize(\" order-item_count.total \")",
+					"input": [" order-item_count.total "],
+					"output": "order item count total"
+				},
+				{
+					"name": "Leave an empty identifier blank",
+					"call": "humanize(\"\")",
+					"input": [""],
+					"output": ""
+				},
+				{
+					"name": "Separate a lower camel identifier",
+					"call": "humanize(\"searchText\")",
+					"input": ["searchText"],
+					"output": "search text"
+				},
+				{
+					"name": "Replace an underscore separator",
+					"call": "humanize(\"page_size\")",
+					"input": ["page_size"],
+					"output": "page size"
+				},
+				{
+					"name": "Replace a hyphen separator",
+					"call": "humanize(\"on-select\")",
+					"input": ["on-select"],
+					"output": "on select"
+				},
+				{
+					"name": "Separate an acronym before a suffix",
+					"call": "humanize(\"HTTPStatus\")",
+					"input": ["HTTPStatus"],
+					"output": "http status"
+				},
+				{
+					"name": "Reject a null identifier",
+					"call": "humanize(null)",
+					"input": [null],
+					"error": "Cannot read properties of null (reading 'replace')"
+				}
+			],
+			"consumers": [
+				{
+					"unit": "desktop.component.contract-panel"
+				},
+				{
+					"unit": "reports.component.harness-entity-change"
+				},
+				{
+					"unit": "reports.component.harness-entity-config"
+				},
+				{
+					"unit": "reports.component.harness-entity-measures"
+				},
+				{
+					"unit": "reports.component.harness-explorer-table"
+				},
+				{
+					"unit": "reports.component.recorded-value"
+				},
+				{
+					"unit": "reports.function.contract-fields",
+					"symbol": "nameOf"
+				},
+				{
+					"unit": "reports.function.entity-contract",
+					"symbol": "row"
+				},
+				{
+					"unit": "reports.function.entity-history",
+					"symbol": "named"
+				},
+				{
+					"unit": "reports.function.entity-measure",
+					"symbol": "metricLabel"
+				},
+				{
+					"unit": "reports.function.entity-measure",
+					"symbol": "timing"
+				},
+				{
+					"unit": "reports.function.entity-reasons",
+					"symbol": "attempts"
+				},
+				{
+					"unit": "reports.function.entity-reasons",
+					"symbol": "subject"
+				},
+				{
+					"unit": "reports.function.entity-reasons",
+					"symbol": "uses"
+				}
+			]
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/explorer-ui/entityContract.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/explorer-ui/entityContract.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"states": ["input", "invalid"],
+		"examples": [
+			{
+				"subject": "requiredStates",
+				"name": "Returns both states named by a filter",
+				"call": "requiredStates(filter, [filtering], [filter])",
+				"input": [
+					{
+						"id": "filter",
+						"kind": "function",
+						"status": "active",
+						"dependencies": []
+					},
+					[
+						{
+							"id": "filtering",
+							"title": "Filter states",
+							"kind": "headless",
+							"units": ["filter"],
+							"states": [
+								{
+									"id": "match",
+									"coverage": "required",
+									"units": ["filter"]
+								},
+								{
+									"id": "no-match",
+									"coverage": "required",
+									"units": ["filter"]
+								}
+							],
+							"viewports": [],
+							"tests": []
+						}
+					],
+					[
+						{
+							"id": "filter",
+							"kind": "function",
+							"status": "active",
+							"dependencies": []
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": ["match", "no-match"]
+				}
+			},
+			{
+				"subject": "requiredStates",
+				"name": "Limits a page to its named visual states",
+				"call": "requiredStates(pageA, [screens], registry)",
+				"input": [
+					{
+						"id": "page.a",
+						"kind": "page",
+						"status": "active",
+						"dependencies": [
+							{
+								"unit": "shared",
+								"via": "import"
+							}
+						]
+					},
+					[
+						{
+							"id": "screens",
+							"title": "Named screen states",
+							"kind": "ui",
+							"units": ["page.a", "page.b", "page.c", "shared", "helper", "endpoint"],
+							"states": [
+								{
+									"id": "a",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-empty",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-denied",
+									"coverage": "inapplicable",
+									"reason": "no sign-in",
+									"units": ["page.a"]
+								},
+								{
+									"id": "b",
+									"coverage": "required",
+									"units": ["page.b"]
+								},
+								{
+									"id": "c",
+									"coverage": "required",
+									"units": ["page.c"]
+								}
+							],
+							"viewports": [],
+							"tests": []
+						}
+					],
+					[
+						{
+							"id": "page.a",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.b",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.c",
+							"kind": "page",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "shared",
+							"kind": "component",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "helper",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "helper",
+							"kind": "function",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "endpoint",
+							"kind": "endpoint",
+							"status": "active",
+							"dependencies": []
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": ["a", "a-empty"]
+				}
+			},
+			{
+				"subject": "requiredStates",
+				"name": "Limits the second page to its named visual state",
+				"call": "requiredStates(pageB, [screens], registry)",
+				"input": [
+					{
+						"id": "page.b",
+						"kind": "page",
+						"status": "active",
+						"dependencies": [
+							{
+								"unit": "shared",
+								"via": "import"
+							}
+						]
+					},
+					[
+						{
+							"id": "screens",
+							"title": "Named screen states",
+							"kind": "ui",
+							"units": ["page.a", "page.b", "page.c", "shared", "helper", "endpoint"],
+							"states": [
+								{
+									"id": "a",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-empty",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-denied",
+									"coverage": "inapplicable",
+									"reason": "no sign-in",
+									"units": ["page.a"]
+								},
+								{
+									"id": "b",
+									"coverage": "required",
+									"units": ["page.b"]
+								},
+								{
+									"id": "c",
+									"coverage": "required",
+									"units": ["page.c"]
+								}
+							],
+							"viewports": [],
+							"tests": []
+						}
+					],
+					[
+						{
+							"id": "page.a",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.b",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.c",
+							"kind": "page",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "shared",
+							"kind": "component",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "helper",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "helper",
+							"kind": "function",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "endpoint",
+							"kind": "endpoint",
+							"status": "active",
+							"dependencies": []
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": ["b"]
+				}
+			},
+			{
+				"subject": "requiredStates",
+				"name": "Limits another page to its named visual state",
+				"call": "requiredStates(pageC, [screens], registry)",
+				"input": [
+					{
+						"id": "page.c",
+						"kind": "page",
+						"status": "active",
+						"dependencies": []
+					},
+					[
+						{
+							"id": "screens",
+							"title": "Named screen states",
+							"kind": "ui",
+							"units": ["page.a", "page.b", "page.c", "shared", "helper", "endpoint"],
+							"states": [
+								{
+									"id": "a",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-empty",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-denied",
+									"coverage": "inapplicable",
+									"reason": "no sign-in",
+									"units": ["page.a"]
+								},
+								{
+									"id": "b",
+									"coverage": "required",
+									"units": ["page.b"]
+								},
+								{
+									"id": "c",
+									"coverage": "required",
+									"units": ["page.c"]
+								}
+							],
+							"viewports": [],
+							"tests": []
+						}
+					],
+					[
+						{
+							"id": "page.a",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.b",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.c",
+							"kind": "page",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "shared",
+							"kind": "component",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "helper",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "helper",
+							"kind": "function",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "endpoint",
+							"kind": "endpoint",
+							"status": "active",
+							"dependencies": []
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": ["c"]
+				}
+			},
+			{
+				"subject": "requiredStates",
+				"name": "Leaves an unnamed visual component without states",
+				"call": "requiredStates(shared, [screens], registry)",
+				"input": [
+					{
+						"id": "shared",
+						"kind": "component",
+						"status": "active",
+						"dependencies": [
+							{
+								"unit": "helper",
+								"via": "import"
+							}
+						]
+					},
+					[
+						{
+							"id": "screens",
+							"title": "Named screen states",
+							"kind": "ui",
+							"units": ["page.a", "page.b", "page.c", "shared", "helper", "endpoint"],
+							"states": [
+								{
+									"id": "a",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-empty",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-denied",
+									"coverage": "inapplicable",
+									"reason": "no sign-in",
+									"units": ["page.a"]
+								},
+								{
+									"id": "b",
+									"coverage": "required",
+									"units": ["page.b"]
+								},
+								{
+									"id": "c",
+									"coverage": "required",
+									"units": ["page.c"]
+								}
+							],
+							"viewports": [],
+							"tests": []
+						}
+					],
+					[
+						{
+							"id": "page.a",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.b",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.c",
+							"kind": "page",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "shared",
+							"kind": "component",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "helper",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "helper",
+							"kind": "function",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "endpoint",
+							"kind": "endpoint",
+							"status": "active",
+							"dependencies": []
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": []
+				}
+			},
+			{
+				"subject": "requiredStates",
+				"name": "Includes states through nested nonvisual consumers",
+				"call": "requiredStates(helper, [screens], registry)",
+				"input": [
+					{
+						"id": "helper",
+						"kind": "function",
+						"status": "active",
+						"dependencies": []
+					},
+					[
+						{
+							"id": "screens",
+							"title": "Named screen states",
+							"kind": "ui",
+							"units": ["page.a", "page.b", "page.c", "shared", "helper", "endpoint"],
+							"states": [
+								{
+									"id": "a",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-empty",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-denied",
+									"coverage": "inapplicable",
+									"reason": "no sign-in",
+									"units": ["page.a"]
+								},
+								{
+									"id": "b",
+									"coverage": "required",
+									"units": ["page.b"]
+								},
+								{
+									"id": "c",
+									"coverage": "required",
+									"units": ["page.c"]
+								}
+							],
+							"viewports": [],
+							"tests": []
+						}
+					],
+					[
+						{
+							"id": "page.a",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.b",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.c",
+							"kind": "page",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "shared",
+							"kind": "component",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "helper",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "helper",
+							"kind": "function",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "endpoint",
+							"kind": "endpoint",
+							"status": "active",
+							"dependencies": []
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": ["a", "a-empty", "b"]
+				}
+			},
+			{
+				"subject": "requiredStates",
+				"name": "Retains all required states for an unowned endpoint",
+				"call": "requiredStates(endpoint, [screens], registry)",
+				"input": [
+					{
+						"id": "endpoint",
+						"kind": "endpoint",
+						"status": "active",
+						"dependencies": []
+					},
+					[
+						{
+							"id": "screens",
+							"title": "Named screen states",
+							"kind": "ui",
+							"units": ["page.a", "page.b", "page.c", "shared", "helper", "endpoint"],
+							"states": [
+								{
+									"id": "a",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-empty",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-denied",
+									"coverage": "inapplicable",
+									"reason": "no sign-in",
+									"units": ["page.a"]
+								},
+								{
+									"id": "b",
+									"coverage": "required",
+									"units": ["page.b"]
+								},
+								{
+									"id": "c",
+									"coverage": "required",
+									"units": ["page.c"]
+								}
+							],
+							"viewports": [],
+							"tests": []
+						}
+					],
+					[
+						{
+							"id": "page.a",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.b",
+							"kind": "page",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "shared",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "page.c",
+							"kind": "page",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "shared",
+							"kind": "component",
+							"status": "active",
+							"dependencies": [
+								{
+									"unit": "helper",
+									"via": "import"
+								}
+							]
+						},
+						{
+							"id": "helper",
+							"kind": "function",
+							"status": "active",
+							"dependencies": []
+						},
+						{
+							"id": "endpoint",
+							"kind": "endpoint",
+							"status": "active",
+							"dependencies": []
+						}
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": ["a", "a-empty", "b", "c"]
+				}
+			},
+			{
+				"subject": "requiredStates",
+				"name": "Keeps the whole scenario without registry evidence",
+				"call": "requiredStates(shared, [screens], [])",
+				"input": [
+					{
+						"id": "shared",
+						"kind": "component",
+						"status": "active",
+						"dependencies": [
+							{
+								"unit": "helper",
+								"via": "import"
+							}
+						]
+					},
+					[
+						{
+							"id": "screens",
+							"title": "Named screen states",
+							"kind": "ui",
+							"units": ["page.a", "page.b", "page.c", "shared", "helper", "endpoint"],
+							"states": [
+								{
+									"id": "a",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-empty",
+									"coverage": "required",
+									"units": ["page.a"]
+								},
+								{
+									"id": "a-denied",
+									"coverage": "inapplicable",
+									"reason": "no sign-in",
+									"units": ["page.a"]
+								},
+								{
+									"id": "b",
+									"coverage": "required",
+									"units": ["page.b"]
+								},
+								{
+									"id": "c",
+									"coverage": "required",
+									"units": ["page.c"]
+								}
+							],
+							"viewports": [],
+							"tests": []
+						}
+					],
+					[]
+				],
+				"expected": {
+					"kind": "value",
+					"value": ["a", "a-empty", "b", "c"]
+				}
+			},
+			{
+				"subject": "entityContract",
+				"name": "Reads function inputs and output in words",
+				"call": "entityContract(filterEntity, { category: \"functions\" })",
+				"input": [
+					{
+						"id": "app.function.filter-orders",
+						"kind": "function",
+						"status": "active",
+						"title": "filterOrders",
+						"responsibility": "Returns the orders whose name matches a search.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["src/functions/filterOrders.ts"],
+							"symbols": ["filterOrders"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "filterOrders.orders",
+									"type": "Order[]"
+								},
+								{
+									"name": "filterOrders.searchText",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "filterOrders.matchingOrders",
+									"type": "Order[]"
+								}
+							],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/functions/filterOrders.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "fixture-app.function.filter-orders"
+					},
+					{
+						"category": "functions"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"label": "Inputs",
+							"value": "orders, search text"
+						},
+						{
+							"label": "Output",
+							"value": "matching orders"
+						}
+					]
+				}
+			},
+			{
+				"subject": "entityContract",
+				"name": "Reads a page purpose and route",
+				"call": "entityContract(pageEntity, { category: \"pages\", appRoute: \"/orders\" })",
+				"input": [
+					{
+						"id": "app.page.orders",
+						"kind": "page",
+						"status": "active",
+						"title": "OrdersPage",
+						"responsibility": "Lists the orders of an account.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["src/routes/orders/+page.svelte"],
+							"symbols": ["OrdersPage"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "accountId",
+									"type": "string"
+								},
+								{
+									"name": "searchText",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "+page",
+									"type": "markup"
+								}
+							],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/routes/orders/+page.svelte"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "fixture-app.page.orders"
+					},
+					{
+						"category": "pages",
+						"appRoute": "/orders"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"label": "Purpose",
+							"value": "Lists the orders of an account."
+						},
+						{
+							"label": "App route",
+							"value": "/orders"
+						},
+						{
+							"label": "Inputs",
+							"value": "account id, search text"
+						},
+						{
+							"label": "Output",
+							"value": "rendered markup"
+						}
+					]
+				}
+			},
+			{
+				"subject": "entityContract",
+				"name": "Marks a page route that is not recorded",
+				"call": "entityContract(pageEntity, { category: \"pages\", appRoute: null })",
+				"input": [
+					{
+						"id": "app.page.orders",
+						"kind": "page",
+						"status": "active",
+						"title": "OrdersPage",
+						"responsibility": "Lists the orders of an account.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["src/routes/orders/+page.svelte"],
+							"symbols": ["OrdersPage"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "accountId",
+									"type": "string"
+								},
+								{
+									"name": "searchText",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "+page",
+									"type": "markup"
+								}
+							],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/routes/orders/+page.svelte"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "fixture-app.page.orders"
+					},
+					{
+						"category": "pages",
+						"appRoute": null
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"label": "Purpose",
+							"value": "Lists the orders of an account."
+						},
+						{
+							"label": "App route",
+							"value": "Not recorded"
+						},
+						{
+							"label": "Inputs",
+							"value": "account id, search text"
+						},
+						{
+							"label": "Output",
+							"value": "rendered markup"
+						}
+					]
+				}
+			},
+			{
+				"subject": "entityContract",
+				"name": "Reads provided config values",
+				"call": "entityContract(configEntity, { category: \"configs\" })",
+				"input": [
+					{
+						"id": "app.config.order-settings",
+						"kind": "config",
+						"status": "active",
+						"title": "orderSettings",
+						"responsibility": "Defines how many orders a page shows.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["src/configs/orders/orderSettings.ts"],
+							"symbols": ["orderSettings"]
+						},
+						"contract": {
+							"inputs": [],
+							"outputs": [
+								{
+									"name": "orderSettings.pageSize",
+									"type": "number"
+								},
+								{
+									"name": "orderSettings.defaultSort",
+									"type": "string"
+								}
+							],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/configs/orders/orderSettings.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "fixture-app.config.order-settings"
+					},
+					{
+						"category": "configs"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"label": "Purpose",
+							"value": "Defines how many orders a page shows."
+						},
+						{
+							"label": "Provides",
+							"value": "page size, default sort"
+						}
+					]
+				}
+			},
+			{
+				"subject": "entityContract",
+				"name": "Reads service runtime targets",
+				"call": "entityContract(serviceEntity, { category: \"services\" })",
+				"input": [
+					{
+						"id": "app.service.order-store",
+						"kind": "service",
+						"status": "active",
+						"title": "OrderStore",
+						"responsibility": "Reads the orders of one account.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["src/services/orders/OrderStore.ts"],
+							"symbols": ["OrderStore"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "OrderStore.accountId",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "OrderStore.orders",
+									"type": "Order[]"
+								}
+							],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/services/orders/OrderStore.ts"
+								},
+								{
+									"kind": "wasm",
+									"entry": "src/services/orders/OrderStore.ts"
+								},
+								{
+									"kind": "process",
+									"entry": "src/services/orders/OrderStore.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "fixture-app.service.order-store"
+					},
+					{
+						"category": "services"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"label": "Inputs",
+							"value": "account id"
+						},
+						{
+							"label": "Output",
+							"value": "orders"
+						},
+						{
+							"label": "Runs as",
+							"value": "Module, Wasm, Native process"
+						}
+					]
+				}
+			},
+			{
+				"subject": "entityContract",
+				"name": "Calls page markup rendered markup",
+				"call": "entityContract(pageEntity, { category: \"pages\", appRoute: \"/orders\" })",
+				"input": [
+					{
+						"id": "app.page.orders",
+						"kind": "page",
+						"status": "active",
+						"title": "OrdersPage",
+						"responsibility": "Lists the orders of an account.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["src/routes/orders/+page.svelte"],
+							"symbols": ["OrdersPage"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "accountId",
+									"type": "string"
+								},
+								{
+									"name": "searchText",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "+page",
+									"type": "markup"
+								}
+							],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/routes/orders/+page.svelte"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "fixture-app.page.orders"
+					},
+					{
+						"category": "pages",
+						"appRoute": "/orders"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"label": "Purpose",
+							"value": "Lists the orders of an account."
+						},
+						{
+							"label": "App route",
+							"value": "/orders"
+						},
+						{
+							"label": "Inputs",
+							"value": "account id, search text"
+						},
+						{
+							"label": "Output",
+							"value": "rendered markup"
+						}
+					]
+				}
+			},
+			{
+				"subject": "entityContract",
+				"name": "Shows component props without a markup output row",
+				"call": "entityContract(componentEntity, { category: \"components\" })",
+				"input": [
+					{
+						"id": "app.component.order-list",
+						"kind": "component",
+						"status": "active",
+						"title": "OrderList",
+						"responsibility": "Arranges orders into a searchable list.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["src/components/OrderList.svelte"],
+							"symbols": ["OrderList"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "orders",
+									"type": "Order[]"
+								},
+								{
+									"name": "searchText",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "OrderList",
+									"type": "markup"
+								}
+							],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/components/OrderList.svelte"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "fixture-app.component.order-list"
+					},
+					{
+						"category": "components"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"label": "Props",
+							"value": "orders, search text"
+						}
+					]
+				}
+			},
+			{
+				"subject": "entityContract",
+				"name": "Retains descriptions for declared fields",
+				"call": "entityContract(describedPage, { category: \"pages\", appRoute: \"/orders\" })",
+				"input": [
+					{
+						"id": "app.page.described",
+						"kind": "page",
+						"status": "active",
+						"title": "DescribedPage",
+						"responsibility": "Shows a page with its verdict.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["src/routes/described/+page.svelte"],
+							"symbols": ["DescribedPage"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "branch",
+									"type": "string",
+									"description": "The branch, as one path segment."
+								},
+								{
+									"name": "tab",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "+page",
+									"type": "markup",
+									"description": "The page with its verdict."
+								}
+							],
+							"errors": [
+								{
+									"name": "not-at-revision",
+									"type": "notice",
+									"description": "A missing page is said."
+								}
+							]
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/routes/described/+page.svelte"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "fixture-app.page.described"
+					},
+					{
+						"category": "pages",
+						"appRoute": "/orders"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"label": "Purpose",
+							"value": "Shows a page with its verdict."
+						},
+						{
+							"label": "App route",
+							"value": "/orders"
+						},
+						{
+							"label": "Inputs",
+							"value": "branch, tab",
+							"items": [
+								{
+									"name": "branch",
+									"text": "The branch, as one path segment."
+								},
+								{
+									"name": "tab",
+									"text": "No description recorded."
+								}
+							]
+						},
+						{
+							"label": "Output",
+							"value": "rendered markup",
+							"items": [
+								{
+									"name": "rendered markup",
+									"text": "The page with its verdict."
+								}
+							]
+						},
+						{
+							"label": "Fails with",
+							"value": "not at revision",
+							"items": [
+								{
+									"name": "not at revision",
+									"text": "A missing page is said."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"subject": "entityContract",
+				"name": "Omits descriptions for derived fields",
+				"call": "entityContract(filterEntity, { category: \"functions\" })",
+				"input": [
+					{
+						"id": "app.function.filter-orders",
+						"kind": "function",
+						"status": "active",
+						"title": "filterOrders",
+						"responsibility": "Returns the orders whose name matches a search.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["src/functions/filterOrders.ts"],
+							"symbols": ["filterOrders"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "filterOrders.orders",
+									"type": "Order[]"
+								},
+								{
+									"name": "filterOrders.searchText",
+									"type": "string"
+								}
+							],
+							"outputs": [
+								{
+									"name": "filterOrders.matchingOrders",
+									"type": "Order[]"
+								}
+							],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/functions/filterOrders.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "fixture-app.function.filter-orders"
+					},
+					{
+						"category": "functions"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"label": "Inputs",
+							"value": "orders, search text"
+						},
+						{
+							"label": "Output",
+							"value": "matching orders"
+						}
+					]
+				}
+			},
+			{
+				"subject": "entityContract",
+				"name": "Preserves admitted field collection behavior",
+				"call": "entityContract(customEntity, { category: \"functions\" })",
+				"input": [
+					{
+						"id": "fixture.admitted-fields",
+						"kind": "function",
+						"status": "active",
+						"title": "filterOrders",
+						"responsibility": "Returns the orders whose name matches a search.",
+						"dependencies": [],
+						"scenarios": [],
+						"owns": {
+							"source": ["src/functions/filterOrders.ts"],
+							"symbols": ["filterOrders"]
+						},
+						"contract": {
+							"inputs": [
+								{
+									"name": "searchText",
+									"type": "string",
+									"description": "Words to find."
+								},
+								{
+									"name": "pageSize",
+									"type": "number"
+								}
+							],
+							"outputs": [
+								{
+									"name": "filterOrders.matchingOrders",
+									"type": "Order[]"
+								}
+							],
+							"errors": []
+						},
+						"runtime": {
+							"kind": "module",
+							"targets": [
+								{
+									"kind": "module",
+									"entry": "src/functions/filterOrders.ts"
+								}
+							]
+						},
+						"budgets": {
+							"size": "frozen",
+							"complexity": "frozen",
+							"performance": []
+						},
+						"version": "fixture-fixture.admitted-fields"
+					},
+					{
+						"category": "functions"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"label": "Inputs",
+							"value": "search text, page size",
+							"items": [
+								{
+									"name": "search text",
+									"text": "Words to find."
+								},
+								{
+									"name": "page size",
+									"text": "No description recorded."
+								}
+							]
+						},
+						{
+							"label": "Output",
+							"value": "matching orders"
+						}
+					]
+				}
+			}
+		],
+		"cases": [
+			{
+				"id": "humanize.1",
+				"state": "input",
+				"subject": "humanize",
+				"example": "Separate lowercase words from uppercase letters",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "humanize: Separate lowercase words from uppercase letters"
+				}
+			},
+			{
+				"id": "humanize.2",
+				"state": "input",
+				"subject": "humanize",
+				"example": "Separate an acronym from the following word",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "humanize: Separate an acronym from the following word"
+				}
+			},
+			{
+				"id": "humanize.3",
+				"state": "input",
+				"subject": "humanize",
+				"example": "Replace identifier separators with spaces and trim",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "humanize: Replace identifier separators with spaces and trim"
+				}
+			},
+			{
+				"id": "humanize.4",
+				"state": "input",
+				"subject": "humanize",
+				"example": "Leave an empty identifier blank",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "humanize: Leave an empty identifier blank"
+				}
+			},
+			{
+				"id": "humanize.5",
+				"state": "input",
+				"subject": "humanize",
+				"example": "Separate a lower camel identifier",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "humanize: Separate a lower camel identifier"
+				}
+			},
+			{
+				"id": "humanize.6",
+				"state": "input",
+				"subject": "humanize",
+				"example": "Replace an underscore separator",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "humanize: Replace an underscore separator"
+				}
+			},
+			{
+				"id": "humanize.7",
+				"state": "input",
+				"subject": "humanize",
+				"example": "Replace a hyphen separator",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "humanize: Replace a hyphen separator"
+				}
+			},
+			{
+				"id": "humanize.8",
+				"state": "input",
+				"subject": "humanize",
+				"example": "Separate an acronym before a suffix",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "humanize: Separate an acronym before a suffix"
+				}
+			},
+			{
+				"id": "humanize.9",
+				"state": "invalid",
+				"subject": "humanize",
+				"example": "Reject a null identifier",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "humanize: Reject a null identifier"
+				}
+			},
+			{
+				"id": "requiredstates.1",
+				"state": "input",
+				"subject": "requiredStates",
+				"example": "Returns both states named by a filter",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "requiredStates: Returns both states named by a filter"
+				}
+			},
+			{
+				"id": "requiredstates.2",
+				"state": "input",
+				"subject": "requiredStates",
+				"example": "Limits a page to its named visual states",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "requiredStates: Limits a page to its named visual states"
+				}
+			},
+			{
+				"id": "requiredstates.3",
+				"state": "input",
+				"subject": "requiredStates",
+				"example": "Limits the second page to its named visual state",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "requiredStates: Limits the second page to its named visual state"
+				}
+			},
+			{
+				"id": "requiredstates.4",
+				"state": "input",
+				"subject": "requiredStates",
+				"example": "Limits another page to its named visual state",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "requiredStates: Limits another page to its named visual state"
+				}
+			},
+			{
+				"id": "requiredstates.5",
+				"state": "input",
+				"subject": "requiredStates",
+				"example": "Leaves an unnamed visual component without states",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "requiredStates: Leaves an unnamed visual component without states"
+				}
+			},
+			{
+				"id": "requiredstates.6",
+				"state": "input",
+				"subject": "requiredStates",
+				"example": "Includes states through nested nonvisual consumers",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "requiredStates: Includes states through nested nonvisual consumers"
+				}
+			},
+			{
+				"id": "requiredstates.7",
+				"state": "input",
+				"subject": "requiredStates",
+				"example": "Retains all required states for an unowned endpoint",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "requiredStates: Retains all required states for an unowned endpoint"
+				}
+			},
+			{
+				"id": "requiredstates.8",
+				"state": "input",
+				"subject": "requiredStates",
+				"example": "Keeps the whole scenario without registry evidence",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "requiredStates: Keeps the whole scenario without registry evidence"
+				}
+			},
+			{
+				"id": "entitycontract.1",
+				"state": "input",
+				"subject": "entityContract",
+				"example": "Reads function inputs and output in words",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "entityContract: Reads function inputs and output in words"
+				}
+			},
+			{
+				"id": "entitycontract.2",
+				"state": "input",
+				"subject": "entityContract",
+				"example": "Reads a page purpose and route",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "entityContract: Reads a page purpose and route"
+				}
+			},
+			{
+				"id": "entitycontract.3",
+				"state": "input",
+				"subject": "entityContract",
+				"example": "Marks a page route that is not recorded",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "entityContract: Marks a page route that is not recorded"
+				}
+			},
+			{
+				"id": "entitycontract.4",
+				"state": "input",
+				"subject": "entityContract",
+				"example": "Reads provided config values",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "entityContract: Reads provided config values"
+				}
+			},
+			{
+				"id": "entitycontract.5",
+				"state": "input",
+				"subject": "entityContract",
+				"example": "Reads service runtime targets",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "entityContract: Reads service runtime targets"
+				}
+			},
+			{
+				"id": "entitycontract.6",
+				"state": "input",
+				"subject": "entityContract",
+				"example": "Calls page markup rendered markup",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "entityContract: Calls page markup rendered markup"
+				}
+			},
+			{
+				"id": "entitycontract.7",
+				"state": "input",
+				"subject": "entityContract",
+				"example": "Shows component props without a markup output row",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "entityContract: Shows component props without a markup output row"
+				}
+			},
+			{
+				"id": "entitycontract.8",
+				"state": "input",
+				"subject": "entityContract",
+				"example": "Retains descriptions for declared fields",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "entityContract: Retains descriptions for declared fields"
+				}
+			},
+			{
+				"id": "entitycontract.9",
+				"state": "input",
+				"subject": "entityContract",
+				"example": "Omits descriptions for derived fields",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "entityContract: Omits descriptions for derived fields"
+				}
+			},
+			{
+				"id": "entitycontract.10",
+				"state": "input",
+				"subject": "entityContract",
+				"example": "Preserves admitted field collection behavior",
+				"test": {
+					"file": "packages/reports/test/utils/entity-contract.test.ts",
+					"title": "entityContract: Preserves admitted field collection behavior"
+				}
+			}
+		]
+	}
+}
