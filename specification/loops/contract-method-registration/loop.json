@@ -2,7 +2,7 @@
 	"name": "contract-method-registration",
 	"goal": "Class and API matrices register exact canonical cases with no computed, missing, duplicate or extra callbacks",
 	"createdAt": "2026-10-25T16:44:04.544Z",
-	"updatedAt": "2026-10-25T16:53:11.408Z",
+	"updatedAt": "2026-10-25T16:57:05.644Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T16:57:05.644Z",
+			"evidence": "Unchanged six owning method cases fail atf40d118b7d and pass at096b5f31c5 with identical command/profile. The passing checkpoint retains four TestExpectationService method cases (the fourth is the newly declared registerCases capability) and two unchanged discovery cases. Full migration and real-runner/browser acceptance remain pending."
 		},
 		{
 			"id": "verify",
