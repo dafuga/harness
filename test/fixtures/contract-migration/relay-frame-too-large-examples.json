@@ -1,0 +1,180 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.frame-too-large",
+	"kind": "function",
+	"title": "Relay frame size check",
+	"responsibility": "Determines whether a text or binary frame exceeds the byte limit.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/relay/src/lib/execution-runtimes/host-runtime/socket-frame-service/frameTooLarge.ts",
+			"packages/relay/src/lib/host-runtime/socket-frame-service/frameTooLarge.ts",
+			"packages/relay/src/services/socket-frame-service/frameTooLarge.ts",
+			"packages/relay/src/utils/frameTooLarge.ts"
+		],
+		"symbols": ["frameTooLarge", "frameTooLarge", "frameTooLarge", "frameTooLarge"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "frameTooLarge.message",
+				"type": "string | ArrayBuffer",
+				"description": "Text frame or binary ArrayBuffer. Text is measured as UTF-8 bytes."
+			},
+			{
+				"name": "frameTooLarge.limit",
+				"type": "number",
+				"description": "Optional byte limit, defaulting to the protocol’s 262,144 bytes."
+			}
+		],
+		"outputs": [
+			{
+				"name": "frameTooLarge",
+				"type": "boolean",
+				"description": "True only when frame bytes exceed the limit; equal size is accepted. Text-length bounds avoid encoding when the answer is already certain."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/frameTooLarge.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/frameTooLarge.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow a short text frame below the default byte limit",
+				"call": "frameTooLarge(\"ping\")",
+				"input": ["ping"],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow text exactly at the default byte limit",
+				"call": "frameTooLarge(\"x\".repeat(262144))",
+				"input": [
+					{
+						"$fixture": "repeat-string",
+						"character": "x",
+						"count": 262144
+					}
+				],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject text one byte over the default byte limit",
+				"call": "frameTooLarge(\"x\".repeat(262145))",
+				"input": [
+					{
+						"$fixture": "repeat-string",
+						"character": "x",
+						"count": 262145
+					}
+				],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow two-byte UTF-8 text exactly at the default byte limit",
+				"call": "frameTooLarge(\"é\".repeat(131072))",
+				"input": [
+					{
+						"$fixture": "repeat-string",
+						"character": "é",
+						"count": 131072
+					}
+				],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject two-byte UTF-8 text one character over the default byte limit",
+				"call": "frameTooLarge(\"é\".repeat(131073))",
+				"input": [
+					{
+						"$fixture": "repeat-string",
+						"character": "é",
+						"count": 131073
+					}
+				],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject three-byte UTF-8 text beyond the default byte limit",
+				"call": "frameTooLarge(\"€\".repeat(Math.ceil(262144 / 3) + 1))",
+				"input": [
+					{
+						"$fixture": "repeat-string",
+						"character": "€",
+						"count": 87383
+					}
+				],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow a binary frame exactly at the default byte limit",
+				"call": "frameTooLarge(new ArrayBuffer(262144))",
+				"input": [
+					{
+						"$fixture": "ArrayBuffer",
+						"byteLength": 262144
+					}
+				],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject a binary frame one byte over the default byte limit",
+				"call": "frameTooLarge(new ArrayBuffer(262145))",
+				"input": [
+					{
+						"$fixture": "ArrayBuffer",
+						"byteLength": 262145
+					}
+				],
+				"expected": { "kind": "value", "value": true }
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow text exactly at a custom byte limit",
+				"call": "frameTooLarge(\"abc\", 3)",
+				"input": ["abc", 3],
+				"expected": { "kind": "value", "value": false }
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject text one byte over a custom byte limit",
+				"call": "frameTooLarge(\"abcd\", 3)",
+				"input": ["abcd", 3],
+				"expected": { "kind": "value", "value": true }
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

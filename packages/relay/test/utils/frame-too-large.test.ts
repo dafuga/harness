@@ -1,26 +1,32 @@
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import type { ComponentManifest } from '../../../../src/core/unitTypes';
+import { TestExpectationService } from '../../../../src/services/verification-evidence/TestExpectationService';
+import manifest from '../../../../test/fixtures/contract-migration/relay-frame-too-large-examples.json' with {
+	type: 'json'
+};
 import { frameTooLarge } from '../../src/services/socket-frame-service/frameTooLarge';
 
-const limit = 262144;
+/** Rebuild authored repeat and ArrayBuffer markers before the real helper call. */
+function invokeFrameTooLarge(...input: never[]) {
+	const [message, limit] = input as unknown as [unknown, number?];
+	const marker =
+		typeof message === 'object' && message !== null
+			? (message as {
+					$fixture?: unknown;
+					character?: unknown;
+					count?: unknown;
+					byteLength?: unknown;
+			  })
+			: undefined;
+	const actualMessage =
+		marker?.$fixture === 'repeat-string'
+			? String(marker.character).repeat(Number(marker.count))
+			: marker?.$fixture === 'ArrayBuffer'
+				? new ArrayBuffer(Number(marker.byteLength))
+				: message;
+	return frameTooLarge(actualMessage as string | ArrayBuffer, limit);
+}
 
-test('frameTooLarge allows a frame of exactly the contract limit', () => {
-	expect(frameTooLarge('ping')).toBe(false);
-	expect(frameTooLarge('x'.repeat(limit))).toBe(false);
-	expect(frameTooLarge('x'.repeat(limit + 1))).toBe(true);
-});
-
-test('frameTooLarge counts UTF-8 bytes, not characters', () => {
-	expect(frameTooLarge('é'.repeat(limit / 2))).toBe(false);
-	expect(frameTooLarge('é'.repeat(limit / 2 + 1))).toBe(true);
-	expect(frameTooLarge('€'.repeat(Math.ceil(limit / 3) + 1))).toBe(true);
-});
-
-test('frameTooLarge measures a binary frame by its length', () => {
-	expect(frameTooLarge(new ArrayBuffer(limit))).toBe(false);
-	expect(frameTooLarge(new ArrayBuffer(limit + 1))).toBe(true);
-});
-
-test('frameTooLarge takes another limit', () => {
-	expect(frameTooLarge('abc', 3)).toBe(false);
-	expect(frameTooLarge('abcd', 3)).toBe(true);
+new TestExpectationService().registerExamples(test, manifest as ComponentManifest, {
+	frameTooLarge: invokeFrameTooLarge
 });
