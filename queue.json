@@ -2516,7 +2516,7 @@
 			},
 			"sourceCommit": "06f8ce220e28621b9b139898ab4aa90bf2014c69",
 			"contractHash": "9096d394bbcfe26f991129e05a5700c6f10759420067c0fc896aae53afd97910",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T15:25:10.854Z",
 			"claim": {
@@ -2530,6 +2530,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The proposed manifest and a canonical example suite are written. Nothing is committed, and no production or specification files changed.\n\n- `test/fixtures/contract-migration/activity-examples.json` is the full proposed manifest: the committed spec with a `testing` block added (248 insertions, 0 deletions).\n- `packages/reports/test/utils/activity-display.test.ts` makes one `registerExamples` call. `plural` runs from its canonical source, `src/helpers/strings/plural.ts`. The other three callables run from the unit's runtime entry, `src/utils/projects-sessions/activityDisplay.ts`.\n\n## Before and after\n\nBefore, the committed unit had two helper examples (`plural`), run only by the root public-helper test. `activityDisplay` and `commitHref` were asserted only through rendered page text in `project-activity.test.ts`. `activityTime` had no assertion anywhere.\n\nAfter, there are 12 registered cases:\n\n| Case | Provenance | State |\n|---|---|---|\n| plural: Keep the singular word for one item | preserved helper example | boundary |\n| plural: Add s for other counts | preserved helper example | input |\n| plural: Use the plural form for zero items | new, test-only | boundary |\n| activityDisplay: Say unknown when no agent has registered | from `project-activity.test.ts:166` | unknown |\n| activityDisplay: Use the singular verb for one working agent | from `:146` | boundary |\n| activityDisplay: Use the plural verb when no registered agent is working | new | boundary |\n| commitHref: Open a commit's history under its branch | from `:191` | input |\n| commitHref: Use the retained-commit route when no branch is listed | from `:192` | boundary |\n| commitHref: Use the first of several branches | new | input |\n| activityTime: Show a UTC timestamp as its day and minute | new | input |\n| activityTime: Convert an offset timestamp to UTC | new | input |\n| activityTime: Keep text that is not a timestamp unchanged | new | invalid |\n\nExpected values come from the unit's contract and the source sentences, not from running the functions.\n\n## Verification\n\nFocused runs only:\n- New suite, `module-groups.test.ts` and `project-activity.test.ts` (in `packages/reports`): 22/22 pass.\n- Root `unit-documentation.test.ts` and `test-expectation.test.ts`: 6/6 pass, before and after the last regeneration. No root test reads the fixture.\n- Before any edits, module-groups and the root pair were both green.\n- The manifest passes the strict unit schema. Static discovery finds the same 12 titles.\n- Read-only sensitivity check: the expectations pass on the real code (12/12). Eight deliberately broken variants each fail at least one example. Before I added the zero row, `plural` treating 0 as singular passed every example.\n- Focused `tsc` (exit 0), focused ESLint (exit 0), Prettier check (pass).\n- I ran `svelte-kit sync` in `packages/reports` so typechecking could run. It generated gitignored files and installed nothing.\n\nNot run: `bun run check`, root `audit .`, E2E, native/UI, `units check`, and `readable-unit-contracts`. The manifest isn't in `specification/` yet, so those apply after promotion.\n\n## Blocker for you to decide\n\n`test/fixtures/` isn't in the audit's test-folder catalogue. Running the structure rule on the fixture path flags `test/fixtures` and `test/fixtures/contract-migration` as `harness-test-structure`. A control folder is flagged too, so the rule is active. The root audit applies the same rule, so `bun run check` would fail on this path. I kept the path you specified. The options are to add `fixtures` to `allowedTestFolders` (outside my allowed files), or move the manifest to `test/support/contract-migration/`, which changes the test import.\n\n## Gaps\n\n- **Promotion:** copy the manifest to `specification/units/reports.function.activity-display.json`, update the test import, then run `units check` and `test/readable-unit-contracts.test.ts`.\n- **Zero boundary:** `plural(0)` is test-only, so the public Helper examples are unchanged. That keeps the earlier \"without repeating zero\" docs decision. Promote it into `helperContracts` if you want zero shown.\n- **Error examples:** none. No callable declares errors, and unparseable text returns its input, which is covered as a value.\n- **`activityTime` offset-free strings:** not authored, because the result depends on the host timezone and the source says the function is not pure.\n- **`agentStates`:** a constant, so no wrapper. Its labels are asserted only indirectly by `reports.function.activity-reading`. The `gone` → \"Process ended\" label has no assertion anywhere.\n- **Forwarding entries:** the suite doesn't check identity for `utils/activityDisplay.ts` or the two component forwarders. `module-groups` still checks only `plural` through `utils/activityDisplay.ts`.\n- **Rendered assertions:** `project-activity.test.ts` is unchanged. It's outside my allowed files and checks page output, so the examples now duplicate those values at callable level.\n- **Workloads:** none added. `module-groups` keeps its `strings-plural` workload. `activityDisplay`, `commitHref` and `activityTime` have none. If the manifest counts as a changed unit, they need one.\n- **Size:** the manifest is 421 lines. The audit doesn't measure JSON, and the two committed helper manifests are 877 and 2,073 lines. The test file is 18 lines.\n- **Measurements:** working-tree figures only, since nothing is committed. Test file: 18 lines, 724 bytes. Manifest: 421 lines, 11,931 bytes. Complexity and dependency counts weren't collected.\n\n## Units\n\nI didn't post these links before editing, as the Harness rules ask. The base is commit `06f8ce22`, which doesn't include this change, so the History pages won't show it yet. The URL pattern comes from the repo's Harness docs, and I didn't open the links.\n\n- **Edited:** [reports.function.activity-display](http://127.0.0.1:5688/harness/commit/06f8ce220e28621b9b139898ab4aa90bf2014c69/functions/reports.function.activity-display/history). Proposed manifest and suite.\n- **Read, not edited:** [function.activity-types](http://127.0.0.1:5688/harness/commit/06f8ce220e28621b9b139898ab4aa90bf2014c69/functions/function.activity-types/history), [function.console-route](http://127.0.0.1:5688/harness/commit/06f8ce220e28621b9b139898ab4aa90bf2014c69/functions/function.console-route/history).\n- **Used In, not edited:** [activity-agents](http://127.0.0.1:5688/harness/commit/06f8ce220e28621b9b139898ab4aa90bf2014c69/components/reports.component.activity-agents/history), [activity-loops](http://127.0.0.1:5688/harness/commit/06f8ce220e28621b9b139898ab4aa90bf2014c69/components/reports.component.activity-loops/history), [activity-work](http://127.0.0.1:5688/harness/commit/06f8ce220e28621b9b139898ab4aa90bf2014c69/components/reports.component.activity-work/history), [project-activity](http://127.0.0.1:5688/harness/commit/06f8ce220e28621b9b139898ab4aa90bf2014c69/components/reports.component.project-activity/history) (components); [activity-reading](http://127.0.0.1:5688/harness/commit/06f8ce220e28621b9b139898ab4aa90bf2014c69/functions/reports.function.activity-reading/history) (function).\n- **No explorer page:** the test file and the fixture. Their source paths are above.\n- **Activity:** registered as `a91abb03-0706-4889-8bf5-2a9e20f394c5` and finished.\n\nI also added one note to your Harness gotchas memory: a scoped `harness audit <dir>` never runs the `test/`-prefixed structure rule, so folder checks need the rule function called directly.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/4fac3a68-84cd-4bfb-a310-98f1fd11b867",
+				"changedFiles": [
+					"packages/reports/test/utils/activity-display.test.ts",
+					"test/fixtures/contract-migration/activity-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T15:43:44.625Z",
+				"attempt": "4fac3a68-84cd-4bfb-a310-98f1fd11b867",
+				"sourceCommit": "06f8ce220e28621b9b139898ab4aa90bf2014c69",
+				"checkpointCommit": "f5f5be45cb99cd8474fef4a3e13f48f063c85a12",
+				"usage": {
+					"inputTokens": 17148001,
+					"outputTokens": 173921,
+					"cacheReadTokens": 16846973,
+					"cacheWriteTokens": 300848,
+					"cacheWriteLongTokens": 300848,
+					"reportedCostUsd": 1.41916415,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 17148001,
+							"outputTokens": 173921,
+							"cacheReadTokens": 16846973,
+							"cacheWriteTokens": 300848,
+							"cacheWriteLongTokens": 300848,
+							"reportedCostUsd": 1.41916415,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 1.41916415,
+							"minimumUsd": 1.41916415,
+							"maximumUsd": 1.41916415,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T15:25:18.477Z",
+						"finishedAt": "2026-10-25T15:43:44.425Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
