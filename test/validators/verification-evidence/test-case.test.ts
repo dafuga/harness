@@ -3,19 +3,20 @@ import type { ComponentManifest } from '../../../src/core/unitTypes';
 import type { ContractCase } from '../../../src/services/verification-evidence/TestContractService';
 import { TestCaseValidator } from '../../../src/validators/verification-evidence/TestCaseValidator';
 import { indexFiles, unitOf } from '../../support/memoryTree';
+import { assertDeclaredCases } from '../../support/testCaseAdmissionCases';
 
 const validator = new TestCaseValidator();
 test('validate each allowed shape and its missing or invalid states', async () => {
-	const unit = unitOf(
-		await indexFiles({
-			'src/utils/rank.ts': 'export function rank(value: number): number { return value; }'
-		}),
-		'function.rank'
-	);
+	const indexed = await indexFiles({
+		'src/utils/rank.ts': 'export function rank(value: number): number { return value; }',
+		'src/services/runner.ts': 'export class Runner { run(value: number): number { return value; } }'
+	});
+	const unit = unitOf(indexed, 'service.runner');
+	const helper = unitOf(indexed, 'function.rank');
 	const item = {
 		id: 'rest',
 		state: 'rest',
-		subject: 'rank',
+		subject: 'Runner.run',
 		test: { file: 'test/rank.test.ts', title: 'rank rest' },
 		expected: { kind: 'value' as const, value: 1 }
 	};
@@ -49,8 +50,9 @@ test('validate each allowed shape and its missing or invalid states', async () =
 	expect(validator.validate(unit, { ...contract, shape: 'helper' }).errors.join(' ')).toContain(
 		'authored Examples'
 	);
-	assertAuthoredExampleCases(unit, item);
+	assertAuthoredExampleCases(helper, { ...item, subject: 'rank' });
 	assertMethodStateCases(unit, item);
+	assertDeclaredCases(validator, unit, helper, item);
 	expect(
 		validator.validate(unit, {
 			...contract,
@@ -76,6 +78,18 @@ function assertAuthoredExampleCases(unit: ComponentManifest, item: ContractCase)
 		cases: [{ ...item, example: 'Identity', test: { ...item.test, title: 'rank: Identity' } }]
 	};
 	expect(validator.validate(unit, authored).errors).toEqual([]);
+	expect(
+		validator.validate(unit, {
+			...authored,
+			cases: [
+				{
+					...authored.cases[0],
+					expected: { kind: 'value', value: 2 }
+				}
+			]
+		}).valid,
+		'helper case expectations must match their authored Example'
+	).toBe(false);
 	expect(
 		validator
 			.validate(unit, { ...authored, examples: [...authored.examples, ...authored.examples] })

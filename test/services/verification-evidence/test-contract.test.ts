@@ -7,6 +7,7 @@ import { expect, test } from 'vitest';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { TestContractService } from '../../../src/services/verification-evidence/TestContractService';
 import { indexFiles, unitOf } from '../../support/memoryTree';
+import { assertPropCaseInflation } from '../../support/testCaseAdmissionCases';
 
 const service = new TestContractService();
 async function fixture() {
@@ -70,6 +71,7 @@ test('validate initialized and invalid registries against declared cases', async
 test('compare initialized contracts preserves identities unless capabilities change', async () => {
 	const unit = await fixture();
 	assertCaseAdmissionInputs(unit, service);
+	assertPropCaseInflation(unit, service);
 	const changed = {
 		...unit,
 		testing: {

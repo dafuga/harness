@@ -72,6 +72,7 @@ const standardFormGuidance = [
 ];
 
 const stableCaseGuidance = [
+	'Declare all states. New props or errors strengthen their existing row; add a row only when declaring a distinct state, example or method.',
 	'Do not write standalone bug regression tests.',
 	"Keep each form's case count fixed.",
 	'Add or remove a case only when the contract explicitly changes a capability',
