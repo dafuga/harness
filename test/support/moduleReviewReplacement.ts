@@ -84,3 +84,24 @@ async function declaration(project: UnitProject, id: string) {
 	const held = (await repository.read(await repository.identity('HEAD')))!;
 	return held.data.declarations.find((unit) => unit.id === id)!;
 }
+
+export function historicalSlugifyContract() {
+	return [
+		{
+			name: 'slugify',
+			source: 'src/utils/slugify.ts',
+			inputs: [{ name: 'input', type: 'string' }],
+			output: 'string',
+			pure: true,
+			consumers: [{ unit: 'function.first' }, { unit: 'function.second' }],
+			examples: [
+				{
+					name: 'Normalize a title',
+					call: 'slugify("Hello World")',
+					input: ['Hello World'],
+					output: 'hello-world'
+				}
+			]
+		}
+	];
+}

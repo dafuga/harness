@@ -19,7 +19,11 @@ import {
 	verifyReview
 } from './support/unitProject';
 import { runCommand } from './support/cli';
-import { replacedReviewContracts, replacedReviewPreviews } from './support/moduleReviewReplacement';
+import {
+	historicalSlugifyContract,
+	replacedReviewContracts,
+	replacedReviewPreviews
+} from './support/moduleReviewReplacement';
 
 test('validate persists revision-bound module gaps, filters them and invalidates cached searches', async () => {
 	const project = await unitProject('lib');
@@ -174,27 +178,6 @@ test('historical helper layout does not masquerade as missing module metadata', 
 		await rm(join(project.root, '..'), { recursive: true, force: true });
 	}
 }, 180_000);
-
-function historicalSlugifyContract() {
-	return [
-		{
-			name: 'slugify',
-			source: 'src/utils/slugify.ts',
-			inputs: [{ name: 'input', type: 'string' }],
-			output: 'string',
-			pure: true,
-			consumers: [{ unit: 'function.first' }, { unit: 'function.second' }],
-			examples: [
-				{
-					name: 'Normalize a title',
-					call: 'slugify("Hello World")',
-					input: ['Hello World'],
-					output: 'hello-world'
-				}
-			]
-		}
-	];
-}
 
 async function rejectStaleReview(project: Awaited<ReturnType<typeof unitProject>>) {
 	const repository = new ModuleDataRepository(project.root);
