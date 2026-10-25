@@ -2024,6 +2024,64 @@
 					]
 				}
 			]
+		},
+		{
+			"id": "contract-tests.wire-methods",
+			"title": "Migrate remote.validator.wire-message method states",
+			"moduleGoal": "Preserve every wire protocol and error assertion in stable public-method initialization cases",
+			"verificationFiles": [
+				"packages/remote/test/validators/wire-message.test.ts",
+				"test/fixtures/contract-migration/wire-methods.json"
+			],
+			"instructions": "Migrate the owning class suite to stable public-method / declared initialization-and-lifecycle-state cases. Inspect constructor and public methods first. Stateless validators have one initialized state and one case per method; put all meaningful input boundaries, response variants, invalid fields, size limits and errors INSIDE its responsible method case. Preserve every substantive assertion and realistic fixture, existing public forwarding imports and structured error details. Do not turn input categories into invented constructor states or fabricate results. Propose the FULL unit manifest at test/fixtures/contract-migration/wire-methods.json with testing shape service, finite states, cases with exact method subjects, stable IDs and test file/title, authored expected output/error or a documented outcome matrix. Primary owns specification/shared-schema changes and will promote the proposal. Test may import proposed JSON so expectations remain authored, separate from observed outputs. Preserve any cross-entity assertions explicitly until primary transfers them. Do not add standalone regression suites. Do not change production behavior; report genuine defects for primary immutable red-green proof first. No delegate, commits, pushes, publish, credentials, installs, E2Es or broad checks. Only relevant unit commands allowed. Keep220/55 limits. Return before/after declarations and full assertion coverage mapping.",
+			"wantedContract": {
+				"responsibility": "Preserve remote.validator.wire-message behavior in finite method-state cases",
+				"inputs": [
+					{
+						"name": "declared methods and existing fixtures",
+						"type": "class contract"
+					}
+				],
+				"outputs": [
+					{
+						"name": "stable method suite and proposed manifest",
+						"type": "reviewable source"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid inputs and missing coverage",
+						"type": "documented failure outcomes"
+					}
+				]
+			},
+			"model": "claude-haiku-5-5",
+			"provider": "claude",
+			"intelligence": "max",
+			"assignee": "wire-methods",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "remote.validator.wire-message",
+				"goal": "Preserve every wire protocol and error assertion in stable public-method initialization cases",
+				"files": [
+					"packages/remote/src/validators/WireMessageValidator.ts",
+					"packages/remote/src/validators/networking-security/WireMessageValidator.ts",
+					"packages/remote/src/validators/networking-security/WireMessageValidator.types.ts",
+					"packages/remote/test/validators/wire-message.test.ts",
+					"test/fixtures/contract-migration/wire-methods.json"
+				]
+			},
+			"sourceCommit": "dc1e7d5710cde6f029fe3c538e29780543acec0e",
+			"contractHash": "0373595067587fd02eeb1059459e39d8af17fecf83bacf34c4c1c63045a8f7bf",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T14:53:00.011Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
