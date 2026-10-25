@@ -5977,7 +5977,7 @@
 			},
 			"sourceCommit": "7d263753ece7aa867f9bc067322647c3ba136058",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T20:38:32.426Z",
 			"claim": {
@@ -5991,6 +5991,63 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The LFS pointer migration is written in the working tree but not verified, and nothing is committed. I ran only read-only checks and Harness activity commands, per your instructions. The other tests, compile, lint, and audit are yours to run.\n\n**Decision for you:** the proposed manifest adds one declared contract error, `TypeError` (thrown). The three error cases need it, and the spec has no errors today. That changes the shared contract, so approve it or tell me to drop those three cases.\n\n**Files (all four are in your allowed list):**\n- `test/utils/lfs-pointer.test.ts`: one `registerExamples` call that imports the proposed manifest directly.\n- `test/support/lfsPointerExamples.ts` and `.types.ts`: the function map, plus rebuilding of non-JSON inputs from explicit `$fixture` markers.\n- `test/fixtures/contract-migration/lfs-pointer-examples.json`: a full copy of `specification/units/function.lfs-pointer.json`. Compared against `HEAD`, the only differences are the `TypeError` contract entry and the new `testing` block.\n\n**Coverage:** 38 helper examples and 38 cases. States are input (9), boundary (17) and invalid (12). Props are file, sha256, bytes, text and path. Subjects are `lfsPointer` 7, `parseLfsPointer` 17, `lfsStored` 13 and `lfsAttributes` 1. The three error cases declare `TypeError`.\n\n**Original assertions:** all seven `expect` sites are preserved with the same inputs and expected values. The round trip is kept by calling the real serializer inside the parse input. The batch `.map(lfsStored)` checks are split into single-path examples, which is equivalent because `lfsStored` ignores extra arguments.\n\n**Choices to confirm:**\n- Callables are reached through the same public entries the original test imported.\n- `undefined` results use `kind: \"void\"`, the only JSON form for undefined.\n- `fixture` points at the test file, following `relay.function.is-record`.\n- Pinned as current behaviour: a `.png` dotfile is selected, and `lfsStored(undefined)` returns false.\n- Not pinned, because they look like product questions: `parseLfsPointer` accepts any version token, and `lfsPointer` writes `bytes` of 1e21 or more in exponent form.\n\n**Verification performed (static only):**\n- Read-only structure check of the manifest: titles pair with cases, every state, prop and error is covered, and digest lengths are exact.\n- Hand trace of every expected value against the implementation.\n\n**Gaps:**\n- Not run: vitest, tsc (root and affected workspaces), eslint, prettier, `harness audit`, `units check` and the readable-contract test. The `as ComponentManifest` cast is unverified under TypeScript.\n- Three error examples use V8 messages. This matches the `matches-pattern` and `wav-info` precedent, but they fail under a JSC runtime, so confirm the runner is Node.\n- Not covered: `src/lib/history.ts`, a public re-export of the same callables outside this unit's `owns.source`, and two forwarding paths with no importers.\n- The eight extensions beyond png, uppercase WAV and webm are pinned only through the `lfsAttributes` output.\n- No benchmark existed, `budgets.performance` is empty, and no executable source changed. No red/green loop applies.\n- Formatting was done by hand, not with prettier.\n\n**Handoff:** to activate the registry, move the manifest to `specification/units/function.lfs-pointer.json` and change line 2 of the test to that path.\n\n**Unit and history:** the registered unit is `function.lfs-pointer`, with runtime entry `src/utils/verification-evidence/lfsPointer.ts`. I could not find the explorer route builder in source, so there is no explorer URL, and I did not read the History section. Direct edits are the manifest and the three test files. Dependencies I read only are the eight owned sources, `TestExpectationService`, `TestCaseValidator`, `exampleDeclarations`, and the importers `EvidenceAttachService`, `evidenceManifest`, `LegacyImportService`, `LegacyHistoryService`, `AttachedRecordService`, `LfsAdapter`, `src/lib/history.ts` and Hub's test support.\n\n**Activity:** registered as `cc4f61c4-7788-4b2d-9ec8-ca9fb471c986` with model `claude-haiku-5-5`, heartbeated, and finished with the outcome \"static checks only\".",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/cb2dabf0-8b1e-4e40-9706-6e4b639fb187",
+				"changedFiles": [
+					"test/utils/lfs-pointer.test.ts",
+					"test/fixtures/contract-migration/lfs-pointer-examples.json",
+					"test/support/lfsPointerExamples.ts",
+					"test/support/lfsPointerExamples.types.ts"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T20:51:37.481Z",
+				"attempt": "cb2dabf0-8b1e-4e40-9706-6e4b639fb187",
+				"sourceCommit": "7d263753ece7aa867f9bc067322647c3ba136058",
+				"checkpointCommit": "4c5ca96bc2177147a772e1141882a892e8436280",
+				"usage": {
+					"inputTokens": 6403512,
+					"outputTokens": 194742,
+					"cacheReadTokens": 6136890,
+					"cacheWriteTokens": 266544,
+					"cacheWriteLongTokens": 266544,
+					"reportedCostUsd": 0.88732658,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 6403512,
+							"outputTokens": 194742,
+							"cacheReadTokens": 6136890,
+							"cacheWriteTokens": 266544,
+							"cacheWriteLongTokens": 266544,
+							"reportedCostUsd": 0.88732658,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.88732658,
+							"minimumUsd": 0.88732658,
+							"maximumUsd": 0.88732658,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T20:38:46.731Z",
+						"finishedAt": "2026-10-25T20:51:37.363Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
