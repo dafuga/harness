@@ -5383,9 +5383,18 @@
 		{
 			"unit": "function.unit-identity",
 			"name": "unitIdentity",
-			"commit": "fa97dd5a1c76d3cd0dbbec7c0ef99298ebcb1fdd",
+			"commit": "1ab7722ee1ecd832a5d9a415dd5834a47202192d",
 			"definition": "c1ed556d07e4885e72f7b4cb9aab7f8e9a67cad48ac179bf74f93d6d08cfc674",
-			"reason": "Recognize the generator canonical configs folder alongside the supported legacy config folder."
+			"reason": "Exclude planning message data from automatic module identity while preserving the owner-local helper and its original relocation definition.",
+			"previousDefinitions": [
+				{
+					"unit": "function.unit-identity",
+					"name": "unitIdentity",
+					"commit": "fa97dd5a1c76d3cd0dbbec7c0ef99298ebcb1fdd",
+					"definition": "c1ed556d07e4885e72f7b4cb9aab7f8e9a67cad48ac179bf74f93d6d08cfc674",
+					"reason": "Recognize the generator canonical configs folder alongside the supported legacy config folder."
+				}
+			]
 		},
 		{
 			"unit": "function.scan-imports",
