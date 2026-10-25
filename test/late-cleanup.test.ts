@@ -128,7 +128,8 @@ test.skipIf(!mac)(
 		const { processProbes } = await import('../src/utils/processProbes');
 		const late = tool('late-tool');
 		const began = Date.now();
-		const answer = await processProbes({ timeoutMs: 500 }).ran(late.script, []);
+		// Use the installed interpreter so fresh-script admission cannot consume the probe limit.
+		const answer = await processProbes({ timeoutMs: 500 }).ran('/bin/sh', [late.script]);
 		const started = late.started();
 		expect(answer.ok).toBe(false);
 		expect(Date.now() - began).toBeLessThan(4000);
@@ -144,7 +145,7 @@ test.skipIf(!mac)(
 		const { processProbes } = await import('../src/utils/processProbes');
 		const cancelled = tool('cancelled-tool');
 		const control = new AbortController();
-		const running = processProbes({ signal: control.signal }).ran(cancelled.script, []);
+		const running = processProbes({ signal: control.signal }).ran('/bin/sh', [cancelled.script]);
 		for (let waited = 0; waited < 5000 && cancelled.started().length === 0; waited += 50)
 			await pause(50);
 		const started = cancelled.started();
