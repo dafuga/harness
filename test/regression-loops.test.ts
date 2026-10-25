@@ -65,7 +65,8 @@ const standardFormGuidance = [
 	'Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.',
 	'Unsupported or missing test coverage is an explicit validation failure',
 	'Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.',
-	'Static types and configuration use compiler, lint, build and audit checks.'
+	'Static types and configuration use compiler, lint, build and audit checks.',
+	'Artifact validation, hashing and storage must consume the same byte snapshot; strengthen the existing method case with accepted getter or aliased-buffer inputs before changing an artifact producer.'
 ];
 
 const stableCaseGuidance = [
