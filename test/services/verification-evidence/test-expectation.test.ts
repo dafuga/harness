@@ -115,28 +115,8 @@ async function assertFixtureExamples(unit: ComponentManifest) {
 }
 
 test('registerCases binds complete method matrices and API results to canonical file identities', async () => {
-	const loaded = await import('../../../specification/units/function.case.json');
 	const file = 'test/runner.test.ts';
-	const unit: ComponentManifest = {
-		...(loaded.default as ComponentManifest),
-		helperContracts: [],
-		owns: { source: [], symbols: ['Runner.run'] },
-		contract: { origin: 'declared', inputs: [], outputs: [], errors: [] },
-		testing: {
-			version: 1,
-			shape: 'service',
-			states: ['initialized'],
-			cases: [
-				{
-					id: 'run.initialized',
-					subject: 'Runner.run',
-					state: 'initialized',
-					test: { file, title: 'Runner.run initialized' },
-					expected: { kind: 'void' }
-				}
-			]
-		}
-	};
+	const unit = await registrationUnit(file);
 	const registered: Array<{ title: string; run: () => Promise<void> }> = [];
 	const register = (title: string, run: () => Promise<void>) => registered.push({ title, run });
 	let calls = 0;
@@ -180,3 +160,27 @@ test('registerCases binds complete method matrices and API results to canonical 
 	});
 	await expect(registered[0].run()).rejects.toThrow('API JSON differs');
 });
+
+async function registrationUnit(file: string): Promise<ComponentManifest> {
+	const loaded = await import('../../../specification/units/function.case.json');
+	return {
+		...(loaded.default as ComponentManifest),
+		helperContracts: [],
+		owns: { source: [], symbols: ['Runner.run'] },
+		contract: { origin: 'declared', inputs: [], outputs: [], errors: [] },
+		testing: {
+			version: 1,
+			shape: 'service',
+			states: ['initialized'],
+			cases: [
+				{
+					id: 'run.initialized',
+					subject: 'Runner.run',
+					state: 'initialized',
+					test: { file, title: 'Runner.run initialized' },
+					expected: { kind: 'void' }
+				}
+			]
+		}
+	};
+}
