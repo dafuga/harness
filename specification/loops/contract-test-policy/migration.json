@@ -4,11 +4,11 @@
 	"base": "e463e31854366174e5fb338b58e3734ce2b8d12d",
 	"scope": "Harness repository workspaces and generators only; external applications and production excluded",
 	"inventory": {
-		"files": 1109,
-		"declarations": 4553,
-		"standardizedUnits": 42,
-		"standardizedCases": 659,
-		"errors": 5895
+		"files": 1110,
+		"declarations": 4581,
+		"standardizedUnits": 44,
+		"standardizedCases": 692,
+		"errors": 5887
 	},
 	"migrations": [
 		{
@@ -24,6 +24,13 @@
 			"cases": 4,
 			"states": ["configured", "disabled"],
 			"testFiles": ["test/adapters/verification-evidence/case-result.test.ts"]
+		},
+		{
+			"unit": "command.loop",
+			"shape": "helper",
+			"cases": 10,
+			"states": ["registered", "invalid"],
+			"testFiles": ["test/loop.e2e.test.ts"]
 		},
 		{
 			"unit": "desktop.function.remote-labels",
@@ -66,6 +73,13 @@
 			"cases": 38,
 			"states": ["input", "boundary", "invalid"],
 			"testFiles": ["test/utils/lfs-pointer.test.ts"]
+		},
+		{
+			"unit": "function.regression-files",
+			"shape": "helper",
+			"cases": 23,
+			"states": ["input", "invalid"],
+			"testFiles": ["test/utils/regression-files.test.ts"]
 		},
 		{
 			"unit": "function.resource-environment",

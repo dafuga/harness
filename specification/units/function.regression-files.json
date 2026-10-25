@@ -9,13 +9,13 @@
 	"owns": {
 		"source": [
 			"src/utils/regressionFiles.ts",
-			"src/utils/verification-evidence/regressionFiles.ts",
-			"src/workflows/record-regression/regressionFiles.ts",
-			"src/workflows/verification-evidence/record-regression/regressionFiles.ts",
-			"src/utils/verification-evidence/regressionFiles.types.ts",
 			"src/utils/verification-evidence/regression-files/authoredInputs.ts",
 			"src/utils/verification-evidence/regression-files/authoredUnitData.ts",
-			"src/utils/verification-evidence/regression-files/unitTestEdit.ts"
+			"src/utils/verification-evidence/regression-files/unitTestEdit.ts",
+			"src/utils/verification-evidence/regressionFiles.ts",
+			"src/utils/verification-evidence/regressionFiles.types.ts",
+			"src/workflows/record-regression/regressionFiles.ts",
+			"src/workflows/verification-evidence/record-regression/regressionFiles.ts"
 		],
 		"symbols": [
 			"regressionTestCommit",
@@ -23,11 +23,19 @@
 			"metadata",
 			"regressionFiles",
 			"regressionFixCommit",
+			"unitManifestPath",
+			"authoredInputs",
+			"readAuthoredUnit",
+			"authoredUnitData",
+			"productUnitData",
+			"unitTestEdit",
 			"testPath",
 			"metadata",
 			"regressionFiles",
 			"regressionFixCommit",
 			"regressionTestCommit",
+			"FrozenRegressionInputs",
+			"UnitTestEdit",
 			"regressionTestCommit",
 			"regressionTestCommit"
 		]
@@ -113,6 +121,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
@@ -123,12 +136,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.units-config",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "repository.unit-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.component-manifest",
 			"via": "import",
 			"origin": "derived"
 		}

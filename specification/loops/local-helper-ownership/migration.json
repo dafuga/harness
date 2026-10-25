@@ -4969,7 +4969,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5441,6 +5441,13 @@
 					"definition": "4fae902a3e068821f4786e261db6166ff1b97ea13432a5cb915feffc944b7127"
 				}
 			]
+		},
+		{
+			"unit": "function.regression-files",
+			"name": "regressionTestCommit",
+			"commit": "bfc281f4b374dec4b8bfbaf98dfe88a967109570",
+			"reason": "Admit authored contract edits while rejecting disguised product changes; preserve owner-local source and the original move definition.",
+			"definition": "f96e34ebc9d513585f5976e25fdd9eb3d31751f3b9afc245c9612c180dad389f"
 		}
 	]
 }
