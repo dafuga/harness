@@ -73,7 +73,7 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 	expect(html).toMatch(/^\s*<header class="hx-nav"/);
 	expect(html.match(/<header\b/g)).toHaveLength(1);
 	expect(links(html)).toEqual(
-		['Pages', 'APIs', 'Code', 'Translations', 'Platforms'].map((label) => ({
+		['Pages', 'APIs', 'Code', 'Modules', 'Translations', 'Platforms'].map((label) => ({
 			label,
 			href: `${scoped}/commit/${sha(4)}/${label === 'Code' ? 'components' : label.toLowerCase()}`,
 			current: label === 'Code',

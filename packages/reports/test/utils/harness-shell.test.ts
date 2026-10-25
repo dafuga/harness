@@ -1,3 +1,4 @@
+import { moduleData } from '../../tests/e2e/support/component-previews/modules';
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import type { ExplorerLocation } from '../../src/models/Explorer.types';
@@ -174,6 +175,7 @@ test('without a resolved address the bar keeps its navigation and offers no revi
 		'Pages',
 		'APIs',
 		'Code',
+		'Modules',
 		'Translations',
 		'Platforms'
 	]);
@@ -198,4 +200,17 @@ test('Styles stays active across branch and commit selection without becoming an
 	});
 	expect(revision?.branchTo('main')).toEqual({ ...styles, branch: 'main', commit: null });
 	expect(revision?.commitTo(sha(3))).toEqual({ ...styles, commit: sha(3) });
+});
+
+test('installed modules contribute scoped Code entries from their resource definitions', () => {
+	const props = input(historical);
+	props.modules = moduleData;
+	const menu = harnessShell(props).modules;
+	expect(menu.find((item) => item.label === 'Emails')).toMatchObject({
+		id: 'resource:email.email',
+		to: { screen: 'module-resources', entity: 'email.email', branch: shellBranch, commit: sha(4) }
+	});
+	expect(menu.some((item) => item.label === 'Offline collections')).toBe(false);
+	const library = harnessShell(props).categories.find((item) => item.label === 'Modules');
+	expect(library?.to).toMatchObject({ screen: 'modules', branch: shellBranch, commit: sha(4) });
 });
