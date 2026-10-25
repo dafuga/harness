@@ -44,16 +44,9 @@ export class CheckRunService {
 		evidencePath: string,
 		slug: string
 	): Promise<IsolatedResult> {
-		const { directory, env } = this.context;
-		const budget = resourceEnvironment();
+		const { directory } = this.context;
 		return resourceWork(
-			{
-				priority: resourcePriority.parse(env.HARNESS_RESOURCE_PRIORITY ?? 'environment'),
-				cpus: Number(env.HARNESS_RESOURCE_CPUS ?? budget.HARNESS_RESOURCE_CPUS ?? 1),
-				memoryMiB: Number(
-					env.HARNESS_RESOURCE_MEMORY_MIB ?? budget.HARNESS_RESOURCE_MEMORY_MIB ?? 2048
-				)
-			},
+			checkResourceRequest(this.context.env),
 			(context) =>
 				runIsolated({
 					command: 'sh',
@@ -68,7 +61,7 @@ export class CheckRunService {
 					log: join(directory, 'logs', `${slug}.log`),
 					maxLogBytes
 				}),
-			env
+			this.context.env
 		);
 	}
 
@@ -153,4 +146,14 @@ function outcomeFailures(check: PlannedCheck, result: IsolatedResult): string[] 
 			? []
 			: [`test ${check.name} failed with exit code ${result.exitCode ?? 'unknown'}`];
 	return [...failed, ...leaked];
+}
+
+/** Resolve only scheduling fields; keep caller application getters on their existing path. */
+function checkResourceRequest(env: RunContext['env']) {
+	const budget = resourceEnvironment();
+	return {
+		priority: resourcePriority.parse(env.HARNESS_RESOURCE_PRIORITY ?? 'environment'),
+		cpus: Number(env.HARNESS_RESOURCE_CPUS ?? budget.HARNESS_RESOURCE_CPUS ?? 1),
+		memoryMiB: Number(env.HARNESS_RESOURCE_MEMORY_MIB ?? budget.HARNESS_RESOURCE_MEMORY_MIB ?? 2048)
+	};
 }
