@@ -145,20 +145,11 @@ test('included modules expose every existing Code catalog through the module con
 		included
 			.flatMap((entry) => entry.definition.resources.map((resource) => resource.catalog))
 			.sort()
-	).toEqual([
-		'apis',
-		'components',
-		'configs',
-		'dependencies',
-		'functions',
-		'layouts',
-		'models',
-		'module-library',
-		'permissions',
-		'services',
-		'styles',
-		'types'
-	]);
+	).toEqual(
+		'apis components configs dependencies functions layouts models module-library permissions services styles types'.split(
+			' '
+		)
+	);
 	const optional = catalog.modules.filter((entry) => !entry.definition.includedByDefault);
 	expect(optional.map((entry) => entry.definition.id).sort()).toEqual([
 		'email',
@@ -204,8 +195,20 @@ test('included and project modules use declared catalogs and real scaffold gener
 	expect(
 		JSON.parse(await readFile(join(root, 'specification/permissions/reviewer.json'), 'utf8'))
 	).toMatchObject({ id: 'reviewer', grants: [] });
+	await measureWorkload(
+		'template.module-system-standard-code-modules',
+		'author-and-generate-project-module',
+		async () => {
+			await generate.generate(root, 'modules', 'module', 'Billing');
+			await new ModuleInstallService().add(root, 'billing');
+			await generate.generate(root, 'billing', 'service', { name: 'Meeting', group: 'billing' });
+			expect(
+				await readFile(join(root, 'src/services/billing/MeetingService.ts'), 'utf8')
+			).toContain('class MeetingService');
+		}
+	);
 	const state = JSON.parse(await readFile(join(root, 'harness.modules.json'), 'utf8'));
-	expect(state.resources).toHaveLength(5);
+	expect(state.resources).toHaveLength(7);
 	expect(await new ModuleInstallService().add(root, 'services')).toEqual([]);
 	await measureWorkload('service.module-system-module-plan', 'install-rust-build-scripts', () =>
 		new ModuleInstallService().add(root, 'rust-wasm')
