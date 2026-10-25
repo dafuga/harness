@@ -59,6 +59,7 @@ test('the bar has entity categories and a separate Styles screen link', () => {
 		['pages', 'Pages', 'pages', false],
 		['apis', 'APIs', 'route', false],
 		['modules', 'Code', 'layers', true],
+		['module-library', 'Modules', 'layers', false],
 		['translations', 'Translations', 'web', false],
 		['platforms', 'Platforms', 'platforms', false]
 	]);
