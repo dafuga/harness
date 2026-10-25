@@ -18,6 +18,7 @@ test('code under test runs without write credentials', () => {
 	expect(verify).toMatch(/branches-ignore:\n\s+- harness-evidence/);
 	expect(verify).toContain('pull_request:');
 	expect(verify).toContain('bun run check');
+	expect(verify).toContain('refs/harness/module-data:refs/harness/module-data');
 	expect(verify).toMatch(/verify run --commit/);
 	expect(verify).toMatch(/npm install --global bun@\d+\.\d+\.\d+/);
 	expect(verify).toContain('rustup show');

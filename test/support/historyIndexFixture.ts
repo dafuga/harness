@@ -51,10 +51,10 @@ export async function expectSourceMeasures(
 			expect.objectContaining({ metric: 'complexity', value: expect.any(Number) })
 		])
 	);
-	await expectLegacySourceMeasures(cache, commit);
+	await expectLegacyMeasurementGaps(cache, commit);
 }
 
-async function expectLegacySourceMeasures(
+async function expectLegacyMeasurementGaps(
 	cache: { repo: VerifyRepo; out: string },
 	commit: string
 ): Promise<void> {
@@ -74,18 +74,20 @@ async function expectLegacySourceMeasures(
 		const { consoleData } =
 			await import('../../packages/reports/src/utils/console-server/consoleServer');
 		const fresh = JSON.parse((await consoleData.json(`revisions/${commit}.json`))!) as Detail;
-		for (const id of ['function.slugify', 'service.title', 'page.titles']) {
-			const measures = fresh.registry.units.find((unit) => unit.id === id)?.sourceMeasurements;
-			for (const metric of ['source-bytes', 'complexity'])
-				expect(
-					measures ?? [],
-					'older prepared revisions gain selected-commit source measurements'
-				).toContainEqual(
-					expect.objectContaining({ metric, value: expect.any(Number), testedRevision: commit })
-				);
-		}
+		for (const id of ['function.slugify', 'service.title', 'page.titles'])
+			expect(
+				fresh.registry.units.find((unit) => unit.id === id)?.sourceMeasurements ?? [],
+				'reads retain evidence gaps without deriving measurements from source'
+			).toEqual([]);
 		expect(await readFile(path, 'utf8'), 'stored historical evidence is unchanged').toBe(bytes);
 		await benchmarkReader(() => consoleData.json(`revisions/${commit}.json`));
+		await build(cache.repo, cache.out);
+		const rebuilt = JSON.parse((await consoleData.json(`revisions/${commit}.json`))!) as Detail;
+		expect(
+			rebuilt.registry.units.find((unit) => unit.id === 'function.slugify')?.sourceMeasurements
+		).toContainEqual(
+			expect.objectContaining({ metric: 'source-bytes', value: 100, testedRevision: commit })
+		);
 	} finally {
 		await writeFile(path, original);
 		for (const [key, value] of Object.entries(saved)) {
@@ -117,7 +119,7 @@ async function benchmarkReader(read: () => Promise<string | undefined>): Promise
 			unitOfMeasure: 'ms',
 			value: samples.sort((a, b) => a - b)[2],
 			method:
-				'Median of five batches of 20 disk-backed legacy-revision reads with source observations cached after the checked cold read.'
+				'Median of five batches of 20 disk-backed legacy-revision reads; readers preserve missing observations without source discovery.'
 		},
 		{
 			...context,

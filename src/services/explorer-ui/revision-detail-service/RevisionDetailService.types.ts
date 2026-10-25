@@ -1,3 +1,4 @@
+import type { PreparedModuleData } from '../../git-source-history/ModuleDataService.types';
 import type { TranslationCatalog } from '../../../core/explorer-ui/Translation.types';
 import type { PlatformCatalog } from '../../../core/explorer-ui/Platform.types';
 import type { RevisionRegistry } from '../../../utils/revisionRegistry';
@@ -12,6 +13,7 @@ import type { CommitStatus } from '../../history-status-service/HistoryStatusSer
 import type { ProjectDependencies } from './projectDependencies.types';
 
 export interface RevisionDetail {
+	moduleData?: PreparedModuleData;
 	schemaVersion: 1;
 	commit: string;
 	platforms?: PlatformCatalog;

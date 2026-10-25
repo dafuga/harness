@@ -1,3 +1,4 @@
+import { fixtureGit as git } from '../scripts/committed-fixture';
 import { afterEach } from 'vitest';
 import { mkdtemp, mkdir, writeFile, rm, realpath } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -29,8 +30,7 @@ const definitions = [
 	['service.analytics', 'service', 'src/services/Analytics.ts'],
 	['config.flags', 'config', 'src/configs/flags.ts']
 ];
-export const git = (root: string, ...args: string[]) =>
-	execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+export { git };
 afterEach(async () => {
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
 });
@@ -53,28 +53,11 @@ export async function fixture() {
 	git(root, 'config', 'user.email', 'fixture@example.invalid');
 	git(root, 'lfs', 'install', '--local');
 	for (const [id, kind, path] of definitions) {
-		await put(root, path, id === 'function.filter' ? filterSource('flag') : text);
+		await put(root, path, fixtureSource(id));
 		await put(
 			root,
 			`specification/units/${id}.json`,
-			JSON.stringify({
-				schemaVersion: 1,
-				id,
-				kind,
-				title: id,
-				responsibility: 'Fixture responsibility',
-				responsibilityOrigin: 'declared',
-				runtime: { kind: 'module', entry: path, targets: [{ kind: 'module', entry: path }] },
-				scenarios: [],
-				budgets: { size: 'frozen', complexity: 'frozen', performance: [] },
-				status: 'active',
-				owns: { source: [path], symbols: id === 'function.filter' ? ['filter'] : [] },
-				contract: { origin: 'declared', inputs: [], outputs: [], errors: [] },
-				...(id === 'function.filter' ? { helperContracts: [filterContract] } : {}),
-				dependencies: ['page.home', 'reports.component.select', 'service.analytics'].includes(id)
-					? [{ unit: 'function.filter', via: 'import', origin: 'declared' }]
-					: []
-			})
+			JSON.stringify(fixtureManifest(id, kind, path))
 		);
 	}
 	await put(root, 'private.txt', 'PRIVATE_SOURCE_BODY');
@@ -95,4 +78,43 @@ export async function fixture() {
 	const session = new ProjectSessionService();
 	await session.open(root);
 	return { session, base, feature, tip, ...session.requireProject() };
+}
+
+function fixtureSource(id: string) {
+	if (id === 'function.filter') return filterSource('flag');
+	if (id === 'config.flags') return 'export const flags = { enabled: true };\n';
+	return text;
+}
+
+function fixtureManifest(id: string, kind: string, path: string) {
+	return {
+		schemaVersion: 1,
+		id,
+		kind,
+		title: id,
+		responsibility: 'Fixture responsibility',
+		responsibilityOrigin: 'declared',
+		runtime: { kind: 'module', entry: path, targets: [{ kind: 'module', entry: path }] },
+		scenarios: [],
+		budgets: { size: 'frozen', complexity: 'frozen', performance: [] },
+		status: 'active',
+		owns: { source: [path], symbols: id === 'function.filter' ? ['filter'] : [] },
+		contract: { origin: 'declared', inputs: [], outputs: [], errors: [] },
+		...(id === 'function.filter' ? { helperContracts: [filterContract] } : {}),
+		...(id === 'config.flags'
+			? {
+					configControls: [
+						{
+							source: path,
+							name: 'flags.enabled',
+							audience: 'developer',
+							purpose: 'Enable the fixture feature for catalog assertions.'
+						}
+					]
+				}
+			: {}),
+		dependencies: ['page.home', 'reports.component.select', 'service.analytics'].includes(id)
+			? [{ unit: 'function.filter', via: 'import', origin: 'declared' }]
+			: []
+	};
 }

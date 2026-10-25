@@ -36,3 +36,27 @@ test('a command a test starts does not believe it runs inside the verification a
 	// The test's own process keeps the context, so a scenario test can still record evidence.
 	expect(process.env.HARNESS_EVIDENCE_DIR).toBe('/tmp/outer');
 });
+
+// Browser fixture seeders also import these modules without a Vitest worker.
+// Keep this reusable boundary check in the normal CLI integration gate.
+test.each(['cli', 'unitProject', 'impactRepo', 'verifyRepo'])(
+	'shared fixture support %s imports in a standalone Bun process',
+	async (name) => {
+		const result = await runCommand(
+			[
+				'bun',
+				'-e',
+				`await import("./test/support/${name}.ts"); console.log("fixture support ready");`
+			],
+			process.cwd(),
+			false
+		);
+		expect(
+			result.exitCode,
+			'Shared fixture support must remain independent of test-runner initialization: ' +
+				result.stderr
+		).toBe(0);
+		expect(result.stdout).toContain('fixture support ready');
+	},
+	30_000
+);

@@ -1,0 +1,82 @@
+{
+	"schemaVersion": 1,
+	"id": "service.git-source-history-module-data-service-prepared-module-data",
+	"kind": "service",
+	"title": "preparedModuleData",
+	"responsibility": "Owns the preparedModuleData service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/git-source-history/module-data-service/preparedModuleData.ts"],
+		"symbols": ["preparedModuleData", "committedRegistry"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "preparedModuleData.root",
+				"type": "string"
+			},
+			{
+				"name": "preparedModuleData.commit",
+				"type": "string"
+			},
+			{
+				"name": "committedRegistry.root",
+				"type": "string"
+			},
+			{
+				"name": "committedRegistry.commit",
+				"type": "string"
+			},
+			{
+				"name": "committedRegistry.fallback",
+				"type": "RevisionRegistry"
+			}
+		],
+		"outputs": [
+			{
+				"name": "preparedModuleData",
+				"type": "unknown"
+			},
+			{
+				"name": "committedRegistry",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.revision-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-admission",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/git-source-history/module-data-service/preparedModuleData.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/git-source-history/module-data-service/preparedModuleData.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

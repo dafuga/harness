@@ -1,8 +1,7 @@
-/**
- * Builds the fixed synthetic history the /harness browser acceptance inspects: a throwaway Git
+/** Builds the fixed synthetic history the /harness browser acceptance inspects: a throwaway Git
  * repository with a shared function, a service, a page scenario at three viewports and an audio
- * scenario, verified commit by commit through the real CLI. Nothing here touches this
- * repository's own refs. The audio is a generated tone and its transcript says so.
+ * scenario, verified through the real CLI without touching this repository's own refs.
+ * The audio is a generated tone and its transcript says so.
  */
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -202,6 +201,7 @@ await repo.harness(['history', 'import-reports', '--from', legacy.store]);
 await repo.git(['branch', '-q', explorerBranch, commits.approved]);
 Object.assign(commits, await seedShells(repo, { verified, explain }, commits.approved));
 await attacher.close();
+await repo.harness(['validate', '--history', '--all', '--write', '--json']);
 const refs = await repo.git(['for-each-ref', '--format=%(refname) %(objectname)']);
 await repo.harness(['history', 'build', '--out', join(root, 'data')]);
 await writeScaleData(join(root, 'data'), join(root, 'scale'), {

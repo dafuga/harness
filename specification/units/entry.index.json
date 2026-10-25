@@ -147,7 +147,16 @@
 			"ModuleTaskRunnerAdapter",
 			"ModuleTaskWorkerService",
 			"ModuleTaskAnalyticsService",
-			"ModuleTaskWorktreeAdapter"
+			"ModuleTaskWorktreeAdapter",
+			"ValidateCommand",
+			"ModuleDataService",
+			"ModuleDataRepository",
+			"ModuleDataValidator",
+			"formatModuleDataFailure",
+			"ModuleDataSnapshotValidator",
+			"ModuleDataReviewRepository",
+			"ModuleDataSourceAdapter",
+			"moduleScenarioReviews"
 		]
 	},
 	"contract": {
@@ -198,6 +207,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.git-source-history-module-data-source",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.networking-security-harness-http",
 			"via": "reexport",
 			"origin": "derived"
@@ -234,6 +248,11 @@
 		},
 		{
 			"unit": "command.codex-picker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.development-tooling-validate",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -339,6 +358,11 @@
 		},
 		{
 			"unit": "function.gateway-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.git-source-history-module-scenario-reviews",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -449,6 +473,11 @@
 		},
 		{
 			"unit": "function.writing-limits",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.git-source-history-format-module-data-failure",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -578,6 +607,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.git-source-history-module-data",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data-review",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.provider-switch",
 			"via": "reexport",
 			"origin": "derived"
@@ -668,6 +707,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.git-source-history-module-data",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.model-dependency",
 			"via": "reexport",
 			"origin": "derived"
@@ -734,6 +778,16 @@
 		},
 		{
 			"unit": "validator.codex-request",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data-snapshot",
 			"via": "reexport",
 			"origin": "derived"
 		},

@@ -1,3 +1,4 @@
+import { ModuleDataService } from '../../../../../../src/services/git-source-history/ModuleDataService';
 import { mkdir, rm } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -55,6 +56,10 @@ async function initialize(git: GitAdapter, kind: string) {
 	await git.run(['init', '-b', 'main']);
 	await git.run(['add', '.']);
 	await git.run(['commit', '-m', 'feat: initialize ' + kind + ' project']);
+	const commit = await git.run(['rev-parse', 'HEAD']);
+	const metadata = new ModuleDataService(git.root);
+	await metadata.validate({ commit, write: true });
+	await metadata.require(commit);
 }
 
 async function initializePlanning(root: string) {

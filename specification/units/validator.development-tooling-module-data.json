@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.development-tooling-module-data",
+	"kind": "validator",
+	"title": "ModuleDataValidator",
+	"responsibility": "Report missing contracts, ownership and dependencies separately from screenshot and workload evidence gaps.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/validators/development-tooling/ModuleDataValidator.ts",
+			"src/validators/development-tooling/ModuleDataValidator.types.ts"
+		],
+		"symbols": [
+			"ModuleDataValidator",
+			"ModuleDataValidator.validate",
+			"ModuleDataValidatorResult",
+			"ModuleDataValidatorResult",
+			"ModuleValidationInput"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleDataValidator.validate.detail",
+				"type": "ModuleValidationInput"
+			},
+			{
+				"name": "ModuleDataValidator.validate.tree",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleDataValidator.validate",
+				"type": "ModuleDataValidatorResult"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.explorer-category",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.revision-detail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data-validator-module-evidence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data-validator-module-fields",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/development-tooling/ModuleDataValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/development-tooling/ModuleDataValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

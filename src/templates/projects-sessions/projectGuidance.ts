@@ -48,6 +48,9 @@ ${bugRepairPolicy()
 function moduleTaskRules(): string {
 	return `## Module task handoff
 
+- Every project requires committed module metadata before normal CLI and app resource reads. After committing source, run \`harness validate --write\`; repair its missing metadata before delivery. Screenshots and measurements remain explicit evidence gaps.
+- Narrow diagnostics with \`harness validate --module <id>\` or \`--type <kind-or-category>\`. Resource readers use committed facts; do not substitute a source-search script.
+- Internal Git writers must publish metadata for their exact returned commit before returning. Keep a historical commit's selected tree distinct from the requesting cache identity.
 - When a Codex session assigns module implementation, use \`harness task feature <id> --goal <text> --tldr <text>\` then \`harness task add --input <file>\`.
 - Tasks require a registered module and a wantedContract with responsibility, inputs, outputs and errors. Harness commits the contract to refs/harness/tasks before pickup, preserving source HEAD and unrelated edits.
 - Task prompts start with the shared feature goal and TLDR, followed by the module's overall goal and pinned wanted contract. Keep shared context stable across related tasks.

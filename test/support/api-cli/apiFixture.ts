@@ -7,7 +7,6 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { runHarness } from '../cli';
-
 export const projectId = '22222222-2222-4222-8222-222222222222';
 export const requestId = '8775318f-d765-4e78-9d40-6cb92e1f6b11';
 export const commit = 'a'.repeat(40);
@@ -94,6 +93,15 @@ function answer(operation: string, input: Record<string, unknown>, endpoints: bo
 						]
 					: [])
 			]
+		};
+	if (operation === 'moduleData')
+		return {
+			schemaVersion: 1,
+			commit,
+			modules: [],
+			issues: [],
+			registry: { units: [{ id: 'endpoint.orders', kind: 'endpoint', title: '/api/orders' }] },
+			relationships: { 'page.example': { apis: ['endpoint.orders'] } }
 		};
 	if (operation === 'entity') return { id: input.entityId, contract };
 	if (operation === 'createPlan') return { id: 'function.format-totals', contract: input.contract };

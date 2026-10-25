@@ -8,6 +8,8 @@ import type { Unit, Detail } from './harness-scale-data.types';
  */
 import { cp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { moduleRelationships } from '../../../src/services/git-source-history/module-data-service/moduleRelationships';
+import { explorerCategory } from '../src/utils/explorer-ui/explorerCategory';
 
 export const generatedUnits = 480;
 const perLayer = 120;
@@ -77,5 +79,17 @@ export async function writeScaleData(
 			detail.registry.graph.edges.push({ from: unit.id, to: dependency.unit, via: 'import' });
 		}
 	}
+	if (!detail.moduleData?.committed)
+		throw new Error('Scale fixtures require admitted seed metadata.');
+	// This explicitly synthetic registry grows together with its synthetic admission data.
+	detail.moduleData.relationships = moduleRelationships(detail.registry);
+	detail.moduleData.modules.push(
+		...added.map((unit) => ({
+			id: unit.id,
+			kind: unit.kind,
+			category: explorerCategory(unit),
+			issues: []
+		}))
+	);
 	await writeFile(path, JSON.stringify(detail));
 }

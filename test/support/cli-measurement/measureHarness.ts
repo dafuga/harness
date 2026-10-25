@@ -28,13 +28,8 @@ export async function measureHarness(input: Input, run: Runner): Promise<Command
 			input.env
 		);
 		const duration = performance.now() - start;
-		if (result.exitCode === 0)
-			recordUsage(
-				units,
-				input.args[0] === 'api' ? apiWorkloadArgs(input.args) : input.args,
-				duration,
-				await readFile(usage, 'utf8')
-			);
+		if (result.exitCode === 0 || input.args[0] === 'validate')
+			recordUsage(units, measurementArguments(input.args), duration, await readFile(usage, 'utf8'));
 		return result;
 	} finally {
 		await rm(directory, { recursive: true, force: true });
@@ -43,6 +38,15 @@ export async function measureHarness(input: Input, run: Runner): Promise<Command
 
 function measuredUnits(args: string[]): string[] {
 	if (args[0] === 'api') return apiMeasuredUnits(args);
+	if (args[0] === 'validate')
+		return [
+			'command.development-tooling-validate',
+			'service.git-source-history-module-data',
+			'repository.git-source-history-module-data',
+			'validator.development-tooling-module-data',
+			'entry.program',
+			'entry.index'
+		];
 	const workload = measuredWorkloads[args.slice(0, 2).join(':')];
 	if (workload) return workload;
 	if (args[0] === 'new') return ['template.project-guidance'];
@@ -185,4 +189,13 @@ function recordUsage(units: string[], args: string[], duration: number, usage: s
 		},
 		JSON.stringify({ measurements })
 	);
+}
+
+function measurementArguments(args: string[]): string[] {
+	if (args[0] === 'api') return apiWorkloadArgs(args);
+	if (args[0] === 'validate') {
+		if (args.includes('--history')) return ['validate', 'history'];
+		return ['validate', args.includes('--write') ? 'write' : 'read'];
+	}
+	return args;
 }

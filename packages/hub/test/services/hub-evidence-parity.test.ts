@@ -1,20 +1,18 @@
+import { moduleFixtureSnapshot } from '../support/moduleFixtureSnapshot';
 import type { Held } from './hub-evidence-parity.test.types';
 import { expect, test } from 'vitest';
-import { BudgetService } from '../../../../src/services/budget-service/BudgetService';
 import { mediaPlace } from '../../../../src/services/history-media-service/mediaPlace';
 import { recordView } from '../../../../src/utils/recordView';
-import { revisionRegistry } from '../../../../src/utils/revision-registry/revisionRegistry';
 import { revisionSummary } from '../../../../src/utils/revisionSummary';
 import { recordedAnswer } from '../../../desktop/src/utils/recorded-answer/recordedAnswer';
 import { recordedScope } from '../../../desktop/src/utils/recordedScope';
 import type { HarnessRevision } from '../../../reports/src/models/Harness.types';
 import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';
 import { asked, evidenceFixture, read, type EvidenceFixture } from '../support/evidenceFixture';
-import { blobId } from '../support/evidenceGit';
-import { clock, page, scenarios, units } from '../support/evidenceRecords';
+import { clock, page, units } from '../support/evidenceRecords';
 
 /** One commit as the local backend holds it, from the same data and the same pure functions. */
-function local(f: EvidenceFixture, commit: string, held: Held) {
+async function local(f: EvidenceFixture, commit: string, held: Held) {
 	const { record } = held.stored;
 	const all = [f.records.first, f.records.second];
 	const origin = (id: string) => all.find((item) => item.record.id === id);
@@ -28,12 +26,19 @@ function local(f: EvidenceFixture, commit: string, held: Held) {
 		origins: (id) => origin(id)?.record.tests
 	});
 	const files = f.git.commits.get(commit)?.files as Map<string, Uint8Array>;
-	const blobs = new Map([...files].map(([path, bytes]) => [path, blobId(bytes)]));
+	const metadata = await moduleFixtureSnapshot(
+		{
+			commit,
+			tree: f.git.tree(commit),
+			inputs: { notes: f.pins.notesRevision, evidence: f.pins.evidenceRevision }
+		},
+		files
+	);
 	const { units: reached, changed, uncertain } = record.impact;
 	const fresh = record.scenarios.filter((item) => item.status !== 'referenced');
 	const detail = {
 		commit,
-		registry: revisionRegistry(units, scenarios, blobs, new BudgetService().baselines([], units)),
+		registry: metadata.registry,
 		comparison: {
 			...{ base: record.source.base, record: record.id, units: reached, changed, uncertain },
 			scenarios: fresh.map((item) => item.id)
@@ -56,8 +61,8 @@ for (const entity of [page, clock])
 		const { root, changed, tip } = f.commits;
 		const query = asked(changed, 'main', 'commit', entity);
 		const result = await read(f, query);
-		const head = local(f, changed, { stored: f.records.second, pointer: f.pointers.second });
-		const parent = local(f, root, { stored: f.records.first, pointer: f.pointers.first });
+		const head = await local(f, changed, { stored: f.records.second, pointer: f.pointers.second });
+		const parent = await local(f, root, { stored: f.records.first, pointer: f.pointers.first });
 		const revision = {
 			...{ commit: changed, parents: [root], subject: 'feat: changed' },
 			...{ author: 'Harness Fixture', committedAt: '2026-10-12T08:00:00Z' }

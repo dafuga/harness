@@ -11,9 +11,10 @@ const template = resolve(
 	'../../../specification/units/desktop.function.time-label.json'
 );
 function referenceUnit(base: Record<string, unknown>, kind: 'function' | 'component' | 'service') {
-	const entry = `src/${kind}.ts`;
+	const entry = kind === 'function' ? 'src/helpers/examples/owned.ts' : `src/${kind}.ts`;
 	return {
 		...base,
+		catalog: { visibility: 'public' },
 		id: kind === 'function' ? 'app.function.owned' : `app.${kind}.consumer`,
 		kind,
 		title: kind === 'function' ? 'owned' : kind,
@@ -33,7 +34,7 @@ async function registered(root: string) {
 		helperContracts: [
 			{
 				name: 'owned',
-				source: 'src/function.ts',
+				source: 'src/helpers/examples/owned.ts',
 				inputs: [],
 				output: 'number',
 				pure: true,
@@ -42,8 +43,9 @@ async function registered(root: string) {
 			}
 		]
 	};
+	await mkdir(join(root, 'src/helpers/examples'), { recursive: true });
 	await writeFile(
-		join(root, 'src/function.ts'),
+		join(root, 'src/helpers/examples/owned.ts'),
 		'/** @pure */\nexport function owned(): number { return 0; }\n'
 	);
 	for (const kind of ['component', 'service'] as const) {
@@ -54,7 +56,7 @@ async function registered(root: string) {
 		);
 		await writeFile(
 			join(root, `src/${kind}.ts`),
-			"import { owned } from './function';\nexport const consumer = owned();\n"
+			"import { owned } from './helpers/examples/owned';\nexport const consumer = owned();\n"
 		);
 	}
 	await writeFile(join(root, 'specification/units/app.function.owned.json'), JSON.stringify(owned));
@@ -62,7 +64,7 @@ async function registered(root: string) {
 		'bun',
 		[
 			'-e',
-			"import { owned } from './src/function.ts'; if (owned() !== 0) throw Error('Fixture example failed');"
+			"import { owned } from './src/helpers/examples/owned.ts'; if (owned() !== 0) throw Error('Fixture example failed');"
 		],
 		{ cwd: root }
 	);
@@ -95,7 +97,7 @@ test('a pages request is asked with a registered function it names, and its chec
 	await registered(f.root);
 	expect(await created(f, JSON.stringify(proposal))).toEqual([notes]);
 	const prompt = f.run.mock.calls[0][0].prompt;
-	expect(named(prompt).startsWith('[[unit:app.function.owned]]')).toBe(true);
+	expect(named(prompt), prompt).toMatch(/^\[\[unit:app\.function\.owned\]\]/);
 	// The planned target of the fixture has no registry entry; no source is in the prompt.
 	expect(named(prompt)).not.toContain(f.request.entityId);
 	expect(prompt).not.toContain('committed source');

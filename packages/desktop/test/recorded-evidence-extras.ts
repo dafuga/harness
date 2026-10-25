@@ -1,3 +1,4 @@
+import { publishFixture } from '../scripts/committed-fixture';
 import { execFileSync } from 'node:child_process';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -30,11 +31,13 @@ export async function limitRecords(repo: VerifyRepo): Promise<{ exact: string; o
 	const exact = await repo.change('scripts/fixture.mjs', patched);
 	await repo.verify([], { FIXTURE_OUTPUT_BYTES: String(limit), FIXTURE_MEDIA: 'html' });
 	await attach(repo);
+	publishFixture(repo.root, exact);
 	const over = await repo.change('src/utils/clock.ts', (source) =>
 		source.replace('return value;', 'return value.trim();')
 	);
 	await repo.verify([], { FIXTURE_OUTPUT_BYTES: String(limit + 1) });
 	await attach(repo);
+	publishFixture(repo.root, over);
 	return { exact, over };
 }
 

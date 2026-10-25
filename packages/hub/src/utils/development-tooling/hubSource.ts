@@ -20,6 +20,7 @@ export async function hubSource(input: {
 		source: input.source,
 		repository,
 		commit: revision.commit,
+		sourceTree: revision.tree,
 		cache: input.cache,
 		entries: await input.source.tree(repository, revision.commit),
 		identity: {

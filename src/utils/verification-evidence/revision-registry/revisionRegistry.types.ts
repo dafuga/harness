@@ -64,7 +64,13 @@ export interface RevisionRegistry {
 		}>;
 		viewports: ScenarioManifest['viewports'];
 		tests: Array<{ id: string; kind: string; runner: string }>;
-		evidence: Array<{ id: string; kind: string; states: string[]; viewports: string[] }>;
+		evidence: Array<{
+			id: string;
+			kind: string;
+			states: string[];
+			viewports: string[];
+			required?: boolean;
+		}>;
 	}>;
 	graph: {
 		nodes: Array<{ id: string; kind: 'unit' | 'scenario' }>;

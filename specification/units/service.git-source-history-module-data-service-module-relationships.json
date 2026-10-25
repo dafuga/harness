@@ -1,0 +1,62 @@
+{
+	"schemaVersion": 1,
+	"id": "service.git-source-history-module-data-service-module-relationships",
+	"kind": "service",
+	"title": "moduleRelationships",
+	"responsibility": "Owns the moduleRelationships service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/git-source-history/module-data-service/moduleRelationships.ts"],
+		"symbols": ["moduleRelationships"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "moduleRelationships.registry",
+				"type": "RevisionRegistry"
+			}
+		],
+		"outputs": [
+			{
+				"name": "moduleRelationships",
+				"type": "Record<string, ModuleRelationships>"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.revision-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.explorer-category",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/git-source-history/module-data-service/moduleRelationships.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/git-source-history/module-data-service/moduleRelationships.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

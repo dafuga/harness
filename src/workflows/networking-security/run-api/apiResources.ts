@@ -1,3 +1,4 @@
+import type { ModuleData } from '../../../services/git-source-history/ModuleDataService.types';
 import type { ComponentManifest } from '../../../core/unitTypes';
 import { explorerCategories } from '../../../utils/explorerRoute';
 import type { HarnessApiService } from '../../../services/networking-security/HarnessApiService';
@@ -15,6 +16,9 @@ export const apiResources = {
 		'entities',
 		'units',
 		'registry',
+		'relations',
+		'used-apis',
+		'validation',
 		'contracts',
 		'source',
 		'history',
@@ -28,6 +32,7 @@ export const apiResources = {
 	],
 	reads: [
 		'registry',
+		'moduleData',
 		'snapshot',
 		'entity',
 		'source',
@@ -57,11 +62,13 @@ export async function apiResource(
 		providers: () => client.call('providers', {})
 	};
 	if (Object.hasOwn(direct, resource)) return direct[resource]();
-	if (resource === 'projects')
-		return client.hosted ? client.read('projects') : [(await client.snapshot()).project];
+
+	if (['projects', 'validation'].includes(resource)) return projectResource(client, resource);
 	const snapshot = await client.snapshot();
 	if (['registry', 'units', 'contracts', 'apis'].includes(resource))
 		return registeredResource(client, snapshot, resource, id);
+	if (['relations', 'used-apis'].includes(resource))
+		return relationshipResource(client, snapshot, resource, id);
 	const collection = catalogResource(snapshot, resource);
 	if (collection !== undefined) return collection;
 	if (!id) fail('Name the entity id after this resource, or use a raw /api/ path.');
@@ -120,4 +127,35 @@ async function registeredResource(
 ): Promise<unknown> {
 	const result = await apiRegistry(client, snapshot, resource === 'apis' ? 'units' : resource, id);
 	return resource === 'apis' ? (result as ComponentManifest[]).filter(endpoint) : result;
+}
+
+async function relationshipResource(
+	client: HarnessApiService,
+	snapshot: ApiSnapshot,
+	resource: string,
+	id?: string
+) {
+	const data = (
+		await client.read('moduleData', {
+			branch: snapshot.revision.branch,
+			commit: snapshot.revision.commit
+		})
+	).data as ModuleData;
+	if (!id || !data.relationships[id])
+		fail('Name a registered module with committed relationships.');
+	if (resource === 'relations') return data.relationships[id];
+	return data.relationships[id].apis.map((api) =>
+		data.registry.units.find((unit) => unit.id === api)
+	);
+}
+
+async function projectResource(client: HarnessApiService, resource: string) {
+	if (resource === 'projects')
+		return client.hosted ? client.read('projects') : [(await client.snapshot()).project];
+	return (
+		await client.read('moduleData', {
+			branch: client.options.branch ?? null,
+			commit: client.options.commit ?? null
+		})
+	).data;
 }

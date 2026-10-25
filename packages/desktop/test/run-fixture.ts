@@ -1,9 +1,9 @@
+import { fixtureGit as git, seedOwnedFixture } from '../scripts/committed-fixture';
 import { expect } from '../../../test/verificationExpect';
 import { afterEach, vi } from 'vitest';
 import { mkdtemp, mkdir, writeFile, rm, realpath } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { execFileSync } from 'node:child_process';
 import { PNG } from 'pngjs';
 import { ProjectSessionService } from '../src/services/ProjectSessionService';
 import { DesktopRunService } from '../src/services/desktop-run-service/DesktopRunService';
@@ -13,8 +13,7 @@ import type { RunEvent, RunRequest } from '../src/models/DesktopBridge.types';
 import { createPlanning } from '../../planning/src/lib/planning/index';
 const roots: string[] = [];
 export const bytes = PNG.sync.write(new PNG({ width: 2, height: 2 }));
-export const git = (root: string, ...args: string[]) =>
-	execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+export { git };
 afterEach(async () => {
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
 });
@@ -67,6 +66,7 @@ export async function fixture(action: (turn: AgentTurn) => Promise<void> = async
 	git(root, 'lfs', 'install', '--local');
 	await mkdir(join(root, 'src'));
 	await writeFile(join(root, 'src/owned.ts'), 'committed source');
+	seedOwnedFixture(root);
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'initial');
 	const session = new ProjectSessionService();

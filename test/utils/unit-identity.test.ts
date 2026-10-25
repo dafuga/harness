@@ -38,6 +38,10 @@ test('unitIdentity prefixes named workspaces and skips tests and unknown files',
 	);
 	expect(unitIdentity('test/services/analytics.test.ts')).toBeUndefined();
 	expect(unitIdentity('README.md')).toBeUndefined();
+	for (const extension of ['ndjson', 'jsonl'])
+		expect(
+			unitIdentity(`src/components/item/threads/thread/messages.${extension}`)
+		).toBeUndefined();
 });
 
 /** Classify representative visual, support, service and route paths without filesystem I/O. */

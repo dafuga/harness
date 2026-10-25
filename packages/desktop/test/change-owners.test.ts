@@ -1,6 +1,6 @@
 import { expect } from '../../../test/verificationExpect';
 import { test } from 'vitest';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { createPlanning } from '../../planning/src/lib/planning/index';
 import { approve, fixture, git, settled } from './run-fixture';
@@ -29,6 +29,7 @@ async function registered(root: string) {
 		scenarios: []
 	};
 	await mkdir(join(root, 'specification/units'), { recursive: true });
+	await rm(join(root, 'specification/units/entry.owned.json'));
 	await writeFile(join(root, 'specification/units/app.function.owned.json'), JSON.stringify(owned));
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'register the owned unit');

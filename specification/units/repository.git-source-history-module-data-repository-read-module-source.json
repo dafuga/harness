@@ -1,0 +1,112 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.git-source-history-module-data-repository-read-module-source",
+	"kind": "repository",
+	"title": "readModuleSource",
+	"responsibility": "Owns the readModuleSource persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/git-source-history/module-data-repository/readModuleSource.ts"],
+		"symbols": ["readModuleSource", "matchesModuleSource", "moduleReviewDigest"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readModuleSource.tree",
+				"type": "EvidenceTreeAdapter"
+			},
+			{
+				"name": "readModuleSource.identity",
+				"type": "ModuleDataIdentity"
+			},
+			{
+				"name": "readModuleSource.repository",
+				"type": "ModuleDataRepository"
+			},
+			{
+				"name": "matchesModuleSource.data",
+				"type": "ModuleData"
+			},
+			{
+				"name": "matchesModuleSource.identity",
+				"type": "ModuleDataIdentity"
+			},
+			{
+				"name": "matchesModuleSource.reviews",
+				"type": "string"
+			},
+			{
+				"name": "matchesModuleSource.repository",
+				"type": "ModuleDataRepository"
+			},
+			{
+				"name": "moduleReviewDigest.root",
+				"type": "string"
+			},
+			{
+				"name": "moduleReviewDigest.identity",
+				"type": "ModuleDataIdentity"
+			}
+		],
+		"outputs": [
+			{
+				"name": "readModuleSource",
+				"type": "unknown"
+			},
+			{
+				"name": "matchesModuleSource",
+				"type": "unknown"
+			},
+			{
+				"name": "moduleReviewDigest",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.evidence-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.git-source-history-module-data-review",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.development-tooling-module-data-snapshot",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/git-source-history/module-data-repository/readModuleSource.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/git-source-history/module-data-repository/readModuleSource.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

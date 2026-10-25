@@ -1,13 +1,22 @@
+import type { ComponentManifest } from '../src/core/development-tooling/unitTypes';
+import { runCommand } from './support/cli';
 import type { Shown, Labelled } from './units-policy.e2e.test.types';
-import { mkdir, rm } from 'node:fs/promises';
+import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { slugifySource, unitProject } from './support/unitProject';
+import {
+	slugifySource,
+	unitProject,
+	configureTestAuthor,
+	validationInvoker,
+	commitModuleData
+} from './support/unitProject';
 
 test('CLI exposes execution targets and component versions, and refuses relaxed tolerance', async () => {
 	const project = await unitProject('lib');
 	await project.write('src/utils/slugify.ts', slugifySource);
 	await project.harness(['units', 'index', '--write']);
+	await commitModuleData(project);
 	const shown = await project.harnessJson<Shown>(['units', 'show', 'function.slugify']);
 	expect(shown.manifest.runtime).toEqual({
 		kind: 'module',
@@ -38,6 +47,7 @@ test('CLI exposes execution targets and component versions, and refuses relaxed 
 	);
 	await project.harness(['units', 'index', '--write']);
 	await project.harness(['units', 'check']);
+	await commitModuleData(project);
 	const documented = await project.harnessJson<Shown>(['units', 'show', 'function.slugify']);
 	expect(documented.manifest.contract.inputs[0].examples).toEqual(examples);
 	expect(documented.version.contract).not.toBe(shown.version.contract);
@@ -64,6 +74,7 @@ test('CLI records lineage when retired source is recreated under a new identity'
 	await project.write('src/core/slug.ts', slugifySource);
 	const index = await project.harnessJson<{ added: string[] }>(['units', 'index', '--write']);
 	expect(index.added).toEqual(['function.slug']);
+	await commitModuleData(project);
 	const shown = await project.harnessJson<Shown>(['units', 'show', 'function.slug']);
 	expect(shown.manifest.lineage).toEqual({ predecessors: ['function.slugify'] });
 	await project.harness(['units', 'check']);
@@ -144,3 +155,56 @@ test('public configs require real source controls and retain their reviewed decl
 		await rm(join(project.root, '..'), { recursive: true, force: true });
 	}
 }, 60_000);
+
+test('source-bound reviews repair historical default runtime targets without changing source commits', async () => {
+	const project = await unitProject('lib');
+	const git = (args: string[]) => runCommand(['git', ...args], project.root);
+	try {
+		await git(['init', '-b', 'main']);
+		await configureTestAuthor(project.root);
+		await project.write(
+			'src/services/TitleService.ts',
+			'export class TitleService { run(): string { return "Title"; } }'
+		);
+		await project.harness(['units', 'index', '--write']);
+		const path = 'specification/units/service.title.json';
+		const manifest = await project.json<ComponentManifest>(path);
+		const wanted = {
+			...manifest.runtime,
+			targets: [{ kind: manifest.runtime.kind, entry: manifest.runtime.entry }]
+		};
+		manifest.runtime.targets = [{ kind: 'module', entry: 'src/services/old/TitleService.ts' }];
+		manifest.responsibility = 'Serve the title from this module implementation.';
+		manifest.responsibilityOrigin = 'derived';
+		manifest.preview = { scenario: 'obsolete-preview', state: 'old', viewport: 'desktop' };
+		await project.write(path, JSON.stringify(manifest));
+		await git(['add', '.']);
+		await git(['commit', '-m', 'feat: retain historical runtime target']);
+		const head = (await git(['rev-parse', 'HEAD'])).stdout.trim();
+		const invoke = validationInvoker(project);
+		const before = await invoke(['--write', '--module', 'service.title']);
+		expect(before.valid).toBe(false);
+		expect(JSON.stringify(before.modules)).toContain('runtime.targets must include');
+		const review = join(project.root, '..', 'runtime-review.json');
+		await writeFile(
+			review,
+			JSON.stringify({
+				unit: 'service.title',
+				reason: 'Bind the default target to the owned implementation at this source commit.',
+				metadata: { runtime: wanted, responsibility: manifest.responsibility, preview: null }
+			})
+		);
+		const accepted = await project.harness(
+			['validate', '--write', '--review', review, '--module', 'service.title', '--json'],
+			false
+		);
+		expect(accepted.exitCode, 'Obsolete preview declarations must be withdrawable').toBe(0);
+		const repaired = JSON.parse(accepted.stdout);
+		expect(repaired.valid, JSON.stringify(repaired)).toBe(true);
+		expect(repaired.committed).toBe(true);
+		expect((await invoke(['--write', '--refresh', '--module', 'service.title'])).valid).toBe(true);
+		expect((await git(['rev-parse', 'HEAD'])).stdout.trim()).toBe(head);
+	} finally {
+		await rm(join(project.root, '..'), { recursive: true, force: true });
+	}
+}, 180_000);

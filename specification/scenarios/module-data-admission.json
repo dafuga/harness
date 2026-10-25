@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "module-data-admission",
+	"title": "Committed module data admission and repair in the standard catalog",
+	"kind": "ui",
+	"units": ["reports.page.harness-branch-branch-at-functions", "reports.function.harness-client"],
+	"states": [
+		{
+			"id": "metadata-incomplete",
+			"title": "A module field gap blocks normal project data",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions"]
+		},
+		{
+			"id": "metadata-repaired",
+			"title": "Committed repaired metadata admits the catalog",
+			"coverage": "required",
+			"units": ["reports.page.harness-branch-branch-at-functions"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 800
+		},
+		{
+			"id": "mobile",
+			"width": 390,
+			"height": 844
+		}
+	],
+	"tests": [
+		{
+			"id": "admission",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x playwright test tests/e2e/harness-explorer-catalog.spec.ts --grep 'catalog requires committed module data'",
+			"cwd": "packages/reports"
+		}
+	],
+	"evidence": [
+		{
+			"id": "reports.page.harness-branch-branch-at-functions",
+			"kind": "screenshot",
+			"states": ["metadata-incomplete", "metadata-repaired"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"provenance": "actual-capture",
+			"capture": "full-page",
+			"build": "reports",
+			"required": true
+		}
+	]
+}

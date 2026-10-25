@@ -19,6 +19,7 @@
 			"RevisionDetailService",
 			"RevisionDetailService.constructor",
 			"RevisionDetailService.build",
+			"RevisionDetailService.recorded",
 			"RevisionDetail",
 			"BuiltRevision",
 			"RevisionDetail",
@@ -61,6 +62,18 @@
 				"type": "MediaPlacer"
 			},
 			{
+				"name": "RevisionDetailService.build.includeModuleData",
+				"type": "unknown"
+			},
+			{
+				"name": "RevisionDetailService.recorded.commit",
+				"type": "string"
+			},
+			{
+				"name": "RevisionDetailService.recorded.media",
+				"type": "MediaPlacer"
+			},
+			{
 				"name": "projectDependencies.tree",
 				"type": "SourceTree"
 			}
@@ -75,6 +88,10 @@
 				"type": "Promise<BuiltRevision>"
 			},
 			{
+				"name": "RevisionDetailService.recorded",
+				"type": "unknown"
+			},
+			{
 				"name": "projectDependencies",
 				"type": "Promise<ProjectDependencies>"
 			}
@@ -82,11 +99,6 @@
 		"errors": []
 	},
 	"dependencies": [
-		{
-			"unit": "adapter.commit-tree",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "adapter.git",
 			"via": "import",
@@ -128,11 +140,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.revision-reasons",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.revision-registry",
 			"via": "import",
 			"origin": "derived"
@@ -148,11 +155,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.unit-metadata",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.units-config",
 			"via": "import",
 			"origin": "derived"
@@ -163,22 +165,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "repository.budget-ledger",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "repository.regression-proof",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "repository.scenario",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "repository.unit-registry",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -188,12 +175,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "service.budget",
+			"unit": "service.explorer-ui-revision-detail-service-revision-stored-data",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "service.explorer-ui-revision-detail-service-platform-catalog",
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-prepared-module-data",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -4,11 +4,16 @@ import { writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { RunCancelled } from '../src/models/AgentRunner.types';
+import { ModuleDataRepository } from '../../../src/repositories/git-source-history/ModuleDataRepository';
 import { fixture, settled, approve, records, git, bytes } from './run-fixture';
 test('Plan uses read-only CLI and saves a committed immutable version without claiming verification', async () => {
 	const f = await fixture();
 	// A case of one design: it asks for a single design option.
 	await settled(f, { ...f.request, designOptions: 1 });
+	const metadata = new ModuleDataRepository(f.root);
+	expect((await metadata.read(await metadata.identity('HEAD')))?.data.commit).toBe(
+		git(f.root, 'rev-parse', 'HEAD')
+	);
 	expect(f.run).toHaveBeenCalledOnce();
 	expect(f.run.mock.calls[0][0]).toMatchObject({
 		access: 'read-only',

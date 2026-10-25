@@ -145,7 +145,7 @@ test('existing canonical entities gain bound plans without duplicate draft ident
 	expect(thread.version).toBeNull();
 	const tip = git(f.root, 'rev-parse', 'HEAD');
 	const entities = await f.catalog.list(tip);
-	expect(entities).toHaveLength(5);
+	expect(entities, entities.map((entry) => entry.id).join(', ')).toHaveLength(5);
 	expect(entities.filter((e) => e.id === unit.id)).toHaveLength(1);
 	expect(entities.find((e) => e.id === unit.id)).toMatchObject({
 		planned: false,

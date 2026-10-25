@@ -1,3 +1,4 @@
+import { moduleFixtureSource } from './moduleFixtureSource';
 import type { FakeCommit, FakeGit, Reader } from './evidenceGit.types';
 import { createHash } from 'node:crypto';
 import type { RepositoryIdentity, SourceEntry, SourceHistoryAdapter } from 'collaboration';
@@ -148,7 +149,7 @@ export function gitSource(repositories: Map<number, FakeGit>) {
 		validateAnchor: async () => {},
 		...history(read, calls)
 	};
-	return { source, calls };
+	return { source: moduleFixtureSource(source), calls };
 }
 
 export type { FakeCommit, FakeGit } from './evidenceGit.types';

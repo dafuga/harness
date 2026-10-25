@@ -1,24 +1,18 @@
-import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
-import { translationCatalog } from './translationCatalog';
+import { revisionRegistryAt, revisionReasonsAt } from './revisionStoredData';
+import {
+	preparedModuleData,
+	committedRegistry
+} from '../../git-source-history/module-data-service/preparedModuleData';
 import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailService.types';
-import { BudgetLedgerRepository } from '../../../repositories/BudgetLedgerRepository';
-import { BudgetService } from '../../budget-service/BudgetService';
-import { CommitTreeAdapter } from '../../../adapters/CommitTreeAdapter';
 import { GitAdapter } from '../../../adapters/GitAdapter';
 import type { VerificationRecord } from '../../../core/verificationTypes';
-import { ScenarioRepository } from '../../../repositories/ScenarioRepository';
-import { UnitRegistryRepository } from '../../../repositories/UnitRegistryRepository';
 import type { MediaPlacer } from '../../../utils/mediaPlace';
 import { recordView, type RecordView, type ResolvedMedia } from '../../../utils/recordView';
-import { revisionReasons, type RevisionReasons } from '../../../utils/revisionReasons';
-import { revisionRegistry, type RevisionRegistry } from '../../../utils/revisionRegistry';
+import type { RevisionRegistry } from '../../../utils/revisionRegistry';
 import type { AttachedRecord } from '../../history-status-service/attached-record-service/AttachedRecordService';
 import type { HistoryStatusService } from '../../history-status-service/HistoryStatusService';
 import * as sourceImpact from './source-impact-service/SourceImpactService';
 import { RegressionProofRepository } from '../../../repositories/RegressionProofRepository';
-import { unitMetadata } from './unitMetadata';
-import { readPlatformCatalog } from './platformCatalog';
-import { projectDependencies } from './projectDependencies';
 /** What the source of a commit says, whatever is noted on it: shared, it is read only once. */
 export const revisionSources = (root: string) => ({
 	source: new sourceImpact.SourceImpactService(root),
@@ -34,7 +28,36 @@ export class RevisionDetailService {
 	) {
 		this.git = new GitAdapter(root);
 	}
-	async build(commit: string, media: MediaPlacer): Promise<BuiltRevision> {
+	async build(
+		commit: string,
+		media: MediaPlacer,
+		includeModuleData = true
+	): Promise<BuiltRevision> {
+		const { status, records, sound } = await this.recorded(commit, media);
+		const side = await this.kept.source.stored(commit);
+		const tree = await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`]);
+		const stored = await revisionRegistryAt(this.root, commit, this.kept);
+		await this.sourceMeasures(commit, stored.registry);
+		const reasons = await revisionReasonsAt(commit, sound, this.kept, this.history);
+		const detail: RevisionDetail = {
+			schemaVersion: 1,
+			commit,
+			...catalogFields(stored),
+			registry: includeModuleData
+				? await committedRegistry(this.root, commit, stored.registry)
+				: stored.registry,
+			...(includeModuleData ? { moduleData: await preparedModuleData(this.root, commit) } : {}),
+			comparison: comparison(sound),
+			sourceImpact: (await this.kept.source.of(commit)) ?? null,
+			side: side && tree ? `sides/${tree}.json` : null,
+			records,
+			explanations: reasons.explanations,
+			rangeReasons: reasons.range,
+			regressions: await regressionProofs(this.root, this.history, commit, media)
+		};
+		return { detail, status, sound, ledger: stored.ledger, ...(side ? { side } : {}) };
+	}
+	async recorded(commit: string, media: MediaPlacer) {
 		const status = await this.history.status(commit);
 		const records: RecordView[] = [];
 		const sound: VerificationRecord[] = [];
@@ -49,26 +72,9 @@ export class RevisionDetailService {
 			records.push(recordView(loaded.record, { ...context, origins: (id) => ran.get(id) }));
 			if (item.valid) sound.push(loaded.record);
 		}
-		const side = await this.kept.source.stored(commit);
-		const tree = await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`]);
-		const stored = await this.registry(commit);
-		await this.sourceMeasures(commit, stored.registry);
-		const reasons = await this.reasons(commit, sound);
-		const detail: RevisionDetail = {
-			schemaVersion: 1,
-			commit,
-			...catalogFields(stored),
-			registry: stored.registry,
-			comparison: comparison(sound),
-			sourceImpact: (await this.kept.source.of(commit)) ?? null,
-			side: side && tree ? `sides/${tree}.json` : null,
-			records,
-			explanations: reasons.explanations,
-			rangeReasons: reasons.range,
-			regressions: await regressionProofs(this.root, this.history, commit, media)
-		};
-		return { detail, status, sound, ledger: stored.ledger, ...(side ? { side } : {}) };
+		return { status, records, sound };
 	}
+
 	private async sourceMeasures(commit: string, registry: RevisionRegistry): Promise<void> {
 		const measured = await this.kept.source.measurements(commit);
 		for (const unit of registry.units) {
@@ -108,41 +114,6 @@ export class RevisionDetailService {
 		const line = (await this.history.verifications()).find((item) => item.record === id);
 		return line ? this.history.attached.load(line.evidence) : undefined;
 	}
-	/** Revisions with one tree share its registry and frozen budget ledger. */
-	private async registry(commit: string): Promise<Stored> {
-		const key =
-			(await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`])) ?? commit;
-		const known = this.kept.registries.get(key);
-		if (known) return known;
-		const tree = await CommitTreeAdapter.open(this.root, commit);
-		const units = await new UnitRegistryRepository(this.root).read(tree);
-		const scenarios = await new ScenarioRepository(this.root).read(tree);
-		const blobs = new Map((await tree.list()).map((entry) => [entry.path, entry.hash]));
-		const ledger = (await new BudgetLedgerRepository(this.root).read(tree)).events;
-		const limits = new BudgetService().baselines(ledger, units.manifests);
-		const registry = revisionRegistry(units.manifests, scenarios.manifests, blobs, limits);
-		await unitMetadata(tree, registry.units);
-		const stored = {
-			registry,
-			ledger,
-			...(await readCatalogs(tree, registry))
-		};
-		this.kept.registries.set(key, stored);
-		return stored;
-	}
-	/** Reasons of this commit itself, excluding the earlier commits of a verified range. */
-	private async reasons(commit: string, sound: VerificationRecord[]): Promise<RevisionReasons> {
-		const note = (await this.history.all()).get(commit);
-		const noted = (note?.entries ?? []).flatMap((entry) =>
-			entry.kind === 'reason' ? [entry.explanation] : []
-		);
-		const records = sound.map((record) => ({
-			base: record.source.base,
-			entries: record.reasons.entries ?? []
-		}));
-		const parent = (await this.kept.source.parent(commit)) ?? null;
-		return revisionReasons({ parent, own: await this.kept.source.reasons(commit), noted, records });
-	}
 }
 /** Why the bytes of a capture are not available, in the words of what is wrong with them. */
 function gapFor(source: AttachedRecord | undefined, path: string, origin: string): string {
@@ -177,13 +148,5 @@ function catalogFields(stored: Stored) {
 		platforms: stored.platforms,
 		translations: stored.translations,
 		projectDependencies: stored.projectDependencies
-	};
-}
-
-async function readCatalogs(tree: SourceTree, registry: RevisionRegistry) {
-	return {
-		platforms: await readPlatformCatalog(tree),
-		projectDependencies: await projectDependencies(tree),
-		translations: await translationCatalog(tree, registry.units)
 	};
 }

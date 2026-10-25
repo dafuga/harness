@@ -25,8 +25,9 @@
 
 <!-- The frame of every explorer page: the bar and its notices above the column a page fills. -->
 <hx-div class="hx-shell" data-harness-component="explorer-ui-explorer-layout">
-	<HarnessHeader {base} {problem} {missing} {navbar} />
+	<HarnessHeader {base} problem="" {missing} {navbar} />
 	<hx-main class="hx-main">
+		{#if problem}<hx-p class="hc-notice" role="alert">{problem}</hx-p>{/if}
 		{@render children()}
 	</hx-main>
 </hx-div>

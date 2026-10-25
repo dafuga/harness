@@ -1,3 +1,4 @@
+import { moduleFixtureSource } from './moduleFixtureSource';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import type {
@@ -56,7 +57,7 @@ export function projectionFixture() {
 		]
 	]);
 	const cache = hubCache();
-	const source = projectionSource(files);
+	const source = moduleFixtureSource(projectionSource(files));
 	const repository = {
 		read: async () => ({ revision, records: structuredClone(records) }),
 		compareAndSwap: async (expected: string, value: typeof records) => {

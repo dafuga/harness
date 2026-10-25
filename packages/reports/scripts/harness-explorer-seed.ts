@@ -1,11 +1,8 @@
-/**
- * Adds to the synthetic history what the explorer has to be able to show: a page that contains
- * a component, which contains another, which uses a function; a config; and two scenarios of
- * their own. One captures the components at three viewports. The other runs the function end to
- * end and records what it was given, what it returned and what was asserted, so a change of its
- * behaviour is a change of recorded bytes. Everything here is made up for the test.
+/** Adds a synthetic graph, a config and two scenarios. They capture components at three
+ * viewports and record function inputs, results and assertions.
  */
 import type { VerifyRepo } from '../../../test/support/verifyRepo';
+import { execFileSync } from 'node:child_process';
 
 /** A branch whose tip is a verified commit, with a slash that an address has to encode. */
 export const explorerBranch = 'explorer/tip';
@@ -183,4 +180,40 @@ export async function seedExplorer(repo: VerifyRepo): Promise<void> {
 		await repo.write(`specification/scenarios/${scenario.id}.json`, JSON.stringify(scenario));
 	}
 	await repo.harness(['units', 'index', '--write']);
+	const path = 'specification/units/config.titles.json';
+	const manifest = await repo.json<Record<string, unknown>>(path);
+	await repo.write(
+		path,
+		JSON.stringify({
+			...manifest,
+			catalog: { visibility: 'public' },
+			configControls: [
+				{
+					source: 'src/config/titlesConfig.ts',
+					name: 'titlesConfig.limit',
+					audience: 'developer',
+					purpose: 'Limit the number of titles rendered by the synthetic list fixture.'
+				}
+			]
+		})
+	);
+	const helperPath = 'specification/units/function.slugify.json';
+	const helper = await repo.json<{ helperContracts: Array<Record<string, unknown>> }>(helperPath);
+	const examples = [
+		{ name: 'Trim a numeric title', call: 'slugify(" 123 ")', input: [' 123 '], output: '123' }
+	];
+	const actual = execFileSync(
+		'bun',
+		['-e', 'import {slugify} from "./src/utils/slugify.ts"; console.log(slugify(" 123 "));'],
+		{ cwd: repo.root, encoding: 'utf8' }
+	).trim();
+	if (actual !== '123')
+		throw new Error('The committed fixture helper must execute its documented example.');
+	await repo.write(
+		helperPath,
+		JSON.stringify({
+			...helper,
+			helperContracts: helper.helperContracts.map((contract) => ({ ...contract, examples }))
+		})
+	);
 }

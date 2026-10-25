@@ -11,7 +11,8 @@
 		"uses": [
 			"reports.component.harness-harness-header",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-main"
+			"reports.component.shared-primitives-atoms-html-main",
+			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
 	"owns": {
@@ -73,6 +74,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.harness-shell",
 			"via": "import",
 			"origin": "derived"
@@ -88,7 +94,7 @@
 			}
 		]
 	},
-	"scenarios": ["component-catalog-previews"],
+	"scenarios": ["component-catalog-previews", "harness-console"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

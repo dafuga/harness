@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { ModuleDataService } from '../../../src/services/git-source-history/ModuleDataService';
 import { ConsoleAgentService } from '../src/services/ConsoleAgentService';
 import { recordedRepo, binding, page, git } from '../../desktop/test/recorded-evidence-fixture';
 import type { Recorded } from '../../desktop/test/recorded-evidence-fixture';
@@ -59,7 +60,9 @@ beforeAll(async () => {
 		contract: {
 			origin: 'declared',
 			inputs: [],
-			outputs: [{ name: 'start', type: 'string' }],
+			outputs: [
+				{ name: 'start', type: 'string', description: 'Ready signal from the backend entry.' }
+			],
 			errors: []
 		},
 		dependencies: [],
@@ -74,6 +77,8 @@ beforeAll(async () => {
 	git(fixture.root, 'add', path, 'specification/units/entry.private.json');
 	git(fixture.root, 'commit', '-m', 'chore: add backend fixture entry');
 	registryCommit = git(fixture.root, 'rev-parse', 'HEAD');
+	const metadata = await new ModuleDataService(fixture.root).validate({ write: true });
+	expect([metadata.valid, metadata.committed]).toEqual([true, true]);
 	site.root = fixture.root;
 	client = new ConsoleAgentService();
 	await client.open();
@@ -92,7 +97,7 @@ test('the real local API exposes backend unit contracts outside its visual catal
 	};
 	expect(result.commit).toBe(registryCommit);
 	expect(result.units.find((unit) => unit.id === 'entry.private')?.contract.outputs).toEqual([
-		{ name: 'start', type: 'string' }
+		{ name: 'start', type: 'string', description: 'Ready signal from the backend entry.' }
 	]);
 });
 

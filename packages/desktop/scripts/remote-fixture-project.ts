@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process';
+import { fixtureGit as git, seedOwnedFixture } from './committed-fixture';
 import { mkdir, mkdtemp, realpath, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -13,8 +13,7 @@ import type { ProviderId, ProviderState } from '../src/models/development-toolin
 import { ProjectSessionService } from '../src/services/projects-sessions/project-session-service/ProjectSessionService';
 
 const model = 'fixture-model';
-const git = (root: string, ...args: string[]) =>
-	execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+
 /**
  * A picture with a visible gradient, so a cached copy is recognisable on a screen. A `variant`
  * other than 0 shifts its blue, so each generated picture differs; 0 is the picture it always was.
@@ -38,6 +37,7 @@ export async function remoteFixtureProject() {
 	git(root, 'lfs', 'install', '--local');
 	await mkdir(join(root, 'src'));
 	await writeFile(join(root, 'src/fixture.ts'), 'export const synthetic = true;\n');
+	seedOwnedFixture(root, 'src/fixture.ts');
 	git(root, 'add', '.');
 	git(root, 'commit', '-m', 'chore: seed synthetic remote fixture');
 	const session = new ProjectSessionService();

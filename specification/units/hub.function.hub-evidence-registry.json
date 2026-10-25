@@ -34,42 +34,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "function.budget-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.revision-registry",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.unit-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.units-config",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.hub-json",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.hub-records",
+			"unit": "hub.function.development-tooling-hub-module-data",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "hub.function.hub-source",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.budget",
 			"via": "import",
 			"origin": "derived"
 		}

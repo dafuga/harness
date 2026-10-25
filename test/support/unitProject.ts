@@ -1,8 +1,13 @@
+import assert from 'node:assert/strict';
 import type { UnitProject } from './unitProject.types';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { runHarness } from './cli';
+import type {
+	ModuleData,
+	ValidationReport
+} from '../../src/services/git-source-history/ModuleDataService.types';
+import { runHarness, runCommand } from './cli';
 
 export async function unitProject(kind: 'app' | 'lib'): Promise<UnitProject> {
 	const parent = await mkdtemp(join(tmpdir(), `harness-units-${kind}-`));
@@ -75,3 +80,80 @@ export const utcDateExamples = [
 ];
 
 export type { UnitProject } from './unitProject.types';
+
+export async function configureTestAuthor(root: string) {
+	await runCommand(['git', 'config', 'user.name', 'Harness Test'], root);
+	await runCommand(['git', 'config', 'user.email', 'harness@example.invalid'], root);
+}
+
+/** Publish real fixture metadata before exercising the committed resource readers. */
+export async function commitModuleData(project: UnitProject) {
+	await runCommand(['git', 'init', '-q'], project.root);
+	await configureTestAuthor(project.root);
+	await runCommand(['git', 'add', '.'], project.root);
+	await runCommand(
+		['git', 'commit', '-q', '--allow-empty', '-m', 'chore: commit reader fixture'],
+		project.root
+	);
+	await project.harness(['validate', '--write']);
+}
+
+export function validationInvoker(project: Awaited<ReturnType<typeof unitProject>>) {
+	return async (args: string[]) => {
+		const result = await project.harness(['validate', ...args, '--json'], false);
+		assert.ok(
+			result.stdout.includes('"modules"'),
+			'Validation returns structured per-module diagnostics: ' + result.stderr
+		);
+		return { ...(JSON.parse(result.stdout) as ValidationReport), exitCode: result.exitCode };
+	};
+}
+
+export async function verifyReview(
+	root: string,
+	git: (args: string[]) => ReturnType<typeof runCommand>,
+	invoke: (args: string[]) => Promise<ValidationReport & { exitCode: number }>,
+	head: string
+) {
+	assert.equal(
+		(await git(['status', '--porcelain'])).stdout.trim(),
+		'',
+		'Validation cache must stay outside the source worktree'
+	);
+	const review = join(root, '..', 'module-review.json');
+	await writeFile(
+		review,
+		JSON.stringify({
+			unit: 'service.title',
+			reason: 'Review the responsibility against this revision source.',
+			metadata: { responsibility: 'Serve normalized titles through the declared title service.' }
+		})
+	);
+	const reviewed = await invoke(['--review', review, '--write']);
+	assert.equal(reviewed.committed, true);
+	const refreshed = await invoke(['--refresh', '--write']);
+	const retained = (await git(['ls-tree', '-r', '--name-only', refreshed.metadataCommit!])).stdout
+		.split('\n')
+		.find((path: string) => path.startsWith(`modules/${head}/`) && path.endsWith('.json'))!;
+	const reviewedData = JSON.parse(
+		(await git(['show', `${refreshed.metadataCommit}:${retained}`])).stdout
+	) as ModuleData;
+	assert.equal(
+		reviewedData.declarations.find((unit) => unit.id === 'service.title')!.responsibility,
+		'Serve normalized titles through the declared title service.'
+	);
+}
+
+/** A committed title service and normalization helper for metadata/history boundary tests. */
+export async function commitTitleModules(project: UnitProject) {
+	const git = (args: string[]) => runCommand(['git', ...args], project.root);
+	await project.write('.gitignore', '');
+	await git(['init', '-b', 'main']);
+	await configureTestAuthor(project.root);
+	await project.write('src/utils/slugify.ts', slugifySource);
+	await project.write('src/services/TitleService.ts', titleServiceSource);
+	await project.harness(['units', 'index', '--write']);
+	await git(['add', '.']);
+	await git(['commit', '-m', 'feat: define title modules']);
+	return (await git(['rev-parse', 'HEAD'])).stdout.trim();
+}

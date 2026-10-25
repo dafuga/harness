@@ -129,6 +129,7 @@
 		const [at, from] = [commit, client];
 		if (!at) return;
 		head = null;
+		problem = '';
 		// An answer for a commit that is no longer looked at, or from another history, is dropped.
 		const live = () => at === commit && from === client;
 		void from.revision(at).then(

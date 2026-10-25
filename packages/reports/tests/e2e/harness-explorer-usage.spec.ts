@@ -58,9 +58,15 @@ test('a former relationships address opens the overview without embedded usage s
 	await page.goto(main(`pages/${units.page}?tab=relationships`));
 	await expect(heading(page, 'Titles')).toBeVisible();
 	await checkpoint(page, 'usage-former-address');
-	await expect(sectionsOf(page, 'Titles')).toHaveText(
-		named.filter((tab) => !['Used In', 'Audio'].includes(tab))
-	);
+	await expect(sectionsOf(page, 'Titles')).toHaveText([
+		'Overview',
+		'Models',
+		'APIs',
+		'Uses',
+		'States',
+		'History',
+		'Source'
+	]);
 	await expect(card(page, 'Used In')).toHaveCount(0);
 	await expect(card(page, 'Uses')).toHaveCount(0);
 	await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute(

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { componentManifestSchema } from '../../../../src/core/unitTypes';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { readFileSync } from 'node:fs';
+import { moduleDataRef } from '../../../../src/services/git-source-history/module-data-service/moduleDataProtocol';
 import {
 	actor,
 	outsider,
@@ -13,6 +14,15 @@ import {
 	evidence,
 	projectionFixture
 } from '../support/projectionFixture';
+test('hosted reads reject missing metadata without a project opt-in', async () => {
+	const f = projectionFixture(),
+		original = f.source.optionalRef;
+	f.source.optionalRef = (repository, ref) =>
+		ref === moduleDataRef ? Promise.resolve(null) : original(repository, ref);
+	await expect(
+		f.projection.snapshot(actor, project.id, { branch: 'feat/a/b', commit: null })
+	).rejects.toThrow('Missing committed module data');
+});
 test('GitHub snapshot binds exact project, slash branch and all cache revisions', async () => {
 	const f = projectionFixture(),
 		view = await f.projection.snapshot(actor, project.id, { branch: 'feat/a/b', commit: null });
@@ -70,6 +80,11 @@ test('registry reads include backend contracts and recheck project membership be
 		new URL('../../../../specification/units/entry.program.json', import.meta.url)
 	);
 	f.files.set('specification/units/entry.program.json', new Uint8Array(manifest));
+	for (const path of componentManifestSchema.parse(JSON.parse(manifest.toString())).owns.source)
+		f.files.set(
+			path,
+			new Uint8Array(readFileSync(new URL('../../../../' + path, import.meta.url)))
+		);
 	const request = () =>
 		new Request(
 			`https://fixture.example/api/projects/${project.id}/registry?commit=${commit}&branch=feat%2Fa%2Fb`

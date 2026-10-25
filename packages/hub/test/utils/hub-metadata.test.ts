@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { hubMetadata } from '../../src/utils/hub-metadata/hubMetadata';
-import { hubSource } from '../../src/utils/hubSource';
+import { hubSource, hubRead } from '../../src/utils/hubSource';
 import { hubRecords } from '../../src/utils/hubRecords';
 import {
 	actor,
@@ -40,5 +40,6 @@ test('cached metadata bytes remain bound to the selected Git tree', async () => 
 		project,
 		ref: commit
 	});
-	await expect(hubRecords(context)).rejects.toThrow();
+	await hubMetadata(context);
+	await expect(hubRead(context, unitPath)).rejects.toThrow();
 });

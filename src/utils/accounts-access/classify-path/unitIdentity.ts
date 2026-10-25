@@ -64,7 +64,7 @@ function crate(segments: string[]): Omit<UnitIdentity, 'id'> | undefined {
 
 function derive(segments: string[]): Omit<UnitIdentity, 'id'> | undefined {
 	const [root, folder, ...rest] = segments;
-	if (/\.(?:md|json|lock|toml)$/.test(segments.at(-1) ?? '')) return undefined;
+	if (/\.(?:md|json|ndjson|jsonl|lock|toml)$/.test(segments.at(-1) ?? '')) return undefined;
 	if (root === 'src') return sourceIdentity(segments.length, folder, rest);
 	if (root === 'db' && dbFolders[folder]) return named(dbFolders[folder], rest.map(stem));
 	if (rootFolders[root]) return named(rootFolders[root], [folder, ...rest].map(stem));
