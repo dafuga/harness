@@ -5049,7 +5049,7 @@
 			},
 			"sourceCommit": "bd539aefa6bb3b91feab615ec49fb9b86263d6d2",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:42:02.932Z",
 			"claim": {
@@ -5063,6 +5063,64 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The migration is written in the allowed files, but nothing is verified yet. I ran no tests, typecheck, lint, format, audit or build, as the task required. The budget failure below is predicted from reading the source, so primary still has to observe it.\n\n**Files**\n- `test/browser-error-evidence.test.ts` (75 lines): registers `run.initialized` and `version.initialized` through `TestExpectationService.registerCases`, using the manifest imported directly and cast. It also holds the run orchestration and the fake-settlement case, which needs its `vi.doMock` path resolved from this file.\n- `test/support/checkRunCases.ts` (209 lines): the two exit-code diagnostics runs, the malformed and timeout refusals, the invalid priority, the inherited budget, and the version case. The writer now also prints `HARNESS_RESOURCE_MEMORY_MIB`.\n- `test/support/checkRunCases.types.ts` (6 lines).\n- `test/fixtures/contract-migration/check-run-methods.json`: a full copy of the unit spec with a `testing` block after `scenarios`, which matches the other service manifests.\n- `test/check-settlement-evidence.test.ts`: deleted. Nothing references it.\n\n**Why the four old cases missed the budget error**\n- The four browser-error-evidence cases passed the real parent env, but their writer only wrote evidence and set an exit code. Their assertions read the outcome, the entry, the record projections and scenario inheritance. None of those carries the child's `HARNESS_RESOURCE_MEMORY_MIB`, so 512 versus 2048 changed no asserted value.\n- The settlement test is the only other test on the run path, but it replaces `runIsolated`, so no child starts, and it passes `env: {}`.\n- Missing: a child that reports its own resource env, a comparison against the parent's reservation, and the assertion for that comparison. The parent value comes from the `resources run --memory-mib` wrapper in `test:unit`, and no old test read it.\n\n**Expected red (predicted, not observed)**\n- `run.initialized` should fail only at its last step, `inheritedBudget`. I expect the log to show `HARNESS_RESOURCE_MEMORY_MIB=512` where `=2048` is required. Every original check runs before it.\n- `version.initialized` should pass.\n\n**Choices I made**\n- Titles: `CheckRunService.run initialized keeps diagnostics, settlement and inherited resource budget` and `CheckRunService.version initialized reports only a passing tool's first nonempty line`.\n- Representative expected values: run is the exit-0 success path (`passed: true`, `entry.status: passed`), and version is `\"harness 2.4.1\"`.\n- The declared `Error` is covered by an explicit assertion inside the run case: an invalid priority rejects before any file is written. I also assert `entry.status` on the exit paths. No cases were added.\n- `vi.setConfig({ testTimeout: 60_000 })` is set in the test file. The merged case runs five real children, one with a 1.5 s timeout, which probably exceeds the 5 s default. I have not measured it.\n- The version case sits in `browser-error-evidence.test.ts` because that file is the scenario target. Renaming would change file identity, so I left it.\n- Nothing is generated in a loop; there are no `skip`, `only` or `fails` cases.\n\n**Verification performed (static only)**\n- The manifest parses, equals the spec once `testing` is removed, covers both methods, and covers the declared `Error`.\n- All 19 original `expect` statements (11 browser, 8 settlement) are present after whitespace normalization. Two literals changed on purpose.\n- In vitest 3.2.4 source, `test()` captures `testTimeout` at collection, `vi.doMock` resolves relative to the calling file, and `setConfig` mutates the runner's config. I have not executed any of this.\n- Discovery parses `registerCases` by argument position, and it rejects computed `test()` titles, which is why there is no timeout wrapper.\n\n**Gaps for primary**\n- Pending: `tsc`, prettier and lint (some lines in `checkRunCases.ts` may exceed 100 columns), `harness audit`, `units check`, the readable-contract guard, and the build.\n- The spec is untouched. The `testing` block must move into `specification/units/service.check-run.json`.\n- The red result is not recorded. The test-only change needs its own commit, then `loop record --phase red`.\n- The budget check does not discriminate when the parent value is 512, because the current 512 would match by coincidence. Standalone (2048) and `test:unit` (2048) do discriminate.\n- `readCaseResults` and `readCheckEvidence` have no case of their own and are covered only through `run()`. Helper examples would need a capability declared in the contract, which is out of scope here.\n- The five retired titles are gone. Any verification records bound to them need re-recording. I did not check records.\n- Under load, the shared resource queue can delay admission, which may slow the run case beyond its bound.\n- No product source changed, so no executable-unit measurement was taken.\n\n**Links**\n- `service.check-run`: `specification/units/service.check-run.json`, edited only in the proposal copy. Referenced by `service.snapshot-run` and `service.record-assembly` and by the `browser-error-evidence` scenario. Its nine `function.*` dependencies were read, not edited.\n- `service.verification-evidence-test-expectation`: the `TestExpectationService` used by the registration, not edited.\n- I did not verify explorer page URLs, so entity links are given by registered id and source path.\n- Ledgers that mention `service.check-run` are unaffected, since no product source changed.\n\nHarness activity `db84b58a-9f5b-491f-914d-d79587a57c07` was registered, heartbeated and finished as handed off. No commits, memory writes or delegation.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/1c686dc7-cd75-4f22-978a-ffbcdd60ce4b",
+				"changedFiles": [
+					"test/browser-error-evidence.test.ts",
+					"test/check-settlement-evidence.test.ts",
+					"test/fixtures/contract-migration/check-run-methods.json",
+					"test/support/checkRunCases.ts",
+					"test/support/checkRunCases.types.ts"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T19:09:17.743Z",
+				"attempt": "1c686dc7-cd75-4f22-978a-ffbcdd60ce4b",
+				"sourceCommit": "bd539aefa6bb3b91feab615ec49fb9b86263d6d2",
+				"checkpointCommit": "4a1b08dc83d0bbad2cac923aebe2acb2c295eba5",
+				"usage": {
+					"inputTokens": 8717755,
+					"outputTokens": 212431,
+					"cacheReadTokens": 8414249,
+					"cacheWriteTokens": 303410,
+					"cacheWriteLongTokens": 303410,
+					"reportedCostUsd": 1.10537207,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 8717755,
+							"outputTokens": 212431,
+							"cacheReadTokens": 8414249,
+							"cacheWriteTokens": 303410,
+							"cacheWriteLongTokens": 303410,
+							"reportedCostUsd": 1.10537207,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 1.10537207,
+							"minimumUsd": 1.10537207,
+							"maximumUsd": 1.10537207,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T18:42:12.717Z",
+						"finishedAt": "2026-10-25T19:09:17.599Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
