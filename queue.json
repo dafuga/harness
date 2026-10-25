@@ -1753,7 +1753,7 @@
 			},
 			"sourceCommit": "77fb497a3053aa1ada14c498718d2f80ac4af7c1",
 			"contractHash": "0871206b142e4b9274c4bf7835a0d2ec0728553a94b51f434187a7b18567775a",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T14:38:33.001Z",
 			"claim": {
@@ -1767,6 +1767,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-5.6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "I’m using the Harness skill because this is a Harness contract/test-shape migration. I’ll inspect memory, the current worktree, the module contract, and the named specification/test guidance before editing only the allowed files.\nThe Harness skill confirms this is a standard helper-example migration: finite authored examples, stable identities, no standalone regression cases, and focused verification only. Memory had no matching prior note, so I’m proceeding from the current checkout.\nThe checkout is clean at the assigned revision. The owned implementation is already behaviorally complete; the migration target is the reports utility suite plus a new proposal manifest. The current manifest has three owned callable identities (`humanize`, `requiredStates`, `entityContract`) and four existing `humanize` helper examples.\nI’ll convert the utility suite to Harness-registered examples and keep the component suite untouched because it belongs to `reports.component.entity-contract`. The only non-JSON fixture is the existing iterator/species/getter boundary; I’ll preserve it inside the registered `entityContract` example adapter, with its original counters and failure behavior intact.\nThe proposal and test adapter are now authored. The proposal contains the full current unit manifest plus five `humanize` cases (including null error), seven `requiredStates` examples, and ten `entityContract` examples; the generated suite will have 22 stable cases. I’m validating the manifest and running only the owned Reports utility test next.\nThe proposal shape is valid and the test file is 58 lines. The focused Vitest command is currently blocked before collection: Vite tries to write its config bundle under the shared parent `node_modules/.vite-temp`, which this worktree cannot modify. I’ll do a read-only config check and try the repository’s supported isolated cache override if available; no broad checks or E2Es.\nThe manual Harness registrar caught one portability detail before the suite could pass: Bun’s existing `humanize(null)` runtime error text is `\"null is not an object (evaluating 'name.replace')\"` in this checkout, not the Node wording. I’ll pin the authored error to the actual Bun test runtime, then rerun the registrar; no production behavior changes are needed.\nThe registrar now passes all 22 authored examples, including the preserved getter/species boundary. The test source formats cleanly; the proposal JSON is intentionally compact to stay within the file-size guidance, but the Reports workspace’s normal formatter would reject that representation. I’m formatting the proposal as the repository expects; the resulting manifest will be larger because its authored JSON inputs are fully expanded.\nThe package-level Vitest run is now collecting the migrated suite: 21/22 passed, with only the authored null-error wording differing because Vitest executes under Node. I’ve corrected the proposal to the Node wording used by the actual test runner and am rerunning the same unchanged focused command.\nThe standard package command now passes after the package’s generated SvelteKit types were present: 1 file, 22 tests, all passed. The migration still changes only the utility test and proposal fixture; no production or component-unit files were touched.\nA final coverage audit found two assertions that needed explicit authored cases: the state loop’s `page.b` result and the four exact `humanize` boundary inputs (`searchText`, `page_size`, `on-select`, `HTTPStatus`). I’m declaring those existing behaviors in the proposal, not adding new product behavior.\nThe explicit boundary additions are in place. The same standard package Vitest command now passes 27/27 authored cases, including the added `page.b` and exact `humanize` boundaries. I’m doing the final manifest-preservation and scope checks now.\nImplemented the contract-example migration.\n\nChanged:\n\n- [entity-contract.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/e8138a4b-8788-4069-9491-9bf5d0edd668/packages/reports/test/utils/entity-contract.test.ts)\n- [contract-examples.json](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/e8138a4b-8788-4069-9491-9bf5d0edd668/test/fixtures/contract-migration/contract-examples.json)\n\nTest cases: 12 direct tests → 27 stable authored cases.\n\nCoverage preserves humanize boundaries/errors, required-state narrowing, contract rows, routes, runtime targets, markup handling, descriptions, and iterator/species/getter fixtures. The component suite remains unchanged under its own module ownership.\n\nVerification passed:\n\n- `bun x vitest run test/utils/entity-contract.test.ts` — 27/27\n- Prettier check\n- Manifest/schema/count checks\n- `git diff --check`\n\nNo production/specification files, commits, pushes, E2Es, or broad checks were performed. Primary still needs to promote the proposal into the specification manifest. Harness activity registration was blocked by missing `@electron/asar`.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/e8138a4b-8788-4069-9491-9bf5d0edd668",
+				"changedFiles": [
+					"packages/reports/test/utils/entity-contract.test.ts",
+					"test/fixtures/contract-migration/contract-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T14:48:06.742Z",
+				"attempt": "e8138a4b-8788-4069-9491-9bf5d0edd668",
+				"sourceCommit": "77fb497a3053aa1ada14c498718d2f80ac4af7c1",
+				"checkpointCommit": "744e6c33d327a4468f859780c85d8bde3f434e29",
+				"usage": {
+					"inputTokens": 12797047,
+					"outputTokens": 68547,
+					"cacheReadTokens": 12560768,
+					"cacheWriteTokens": null,
+					"cacheWriteLongTokens": null,
+					"reportedCostUsd": null,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-5.6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 12797047,
+							"outputTokens": 68547,
+							"cacheReadTokens": 12560768,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": null,
+							"note": "No verified rates for this exact model."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T14:38:40.039Z",
+						"finishedAt": "2026-10-25T14:48:06.594Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
