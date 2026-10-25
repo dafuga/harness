@@ -1,3 +1,5 @@
+import { standardCodeModules } from '../../../../../../src/templates/module-system/standardCodeModules';
+import { moduleResourceLocation } from '../../../../../../src/helpers/module-system/moduleResourceLocation';
 import type {
 	HarnessNavbarInput,
 	HarnessShellCategory,
@@ -18,28 +20,13 @@ const labels: Array<[HarnessShellCategory['id'], string]> = [
 	['translations', 'Translations'],
 	['platforms', 'Platforms']
 ];
-const moduleLabels: Array<[Exclude<HarnessShellCategory['id'], 'modules'>, string]> = [
-	['layouts', 'Layouts'],
-	['components', 'Components'],
-	['models', 'Models'],
-	['services', 'Services'],
-	['functions', 'Helpers'],
-	['types', 'Types'],
-	['configs', 'Configs'],
-	['styles', 'Styles'],
-	['dependencies', 'Dependencies']
-];
 
 function categoryActive(place: ExplorerLocation | null, id: HarnessShellCategory['id']): boolean {
 	if (!place) return false;
 	if (id === 'module-library') return place.screen === 'modules';
 	if (id.startsWith('resource:'))
 		return place.screen === 'module-resources' && place.entity === id.slice(9);
-	if (id === 'modules')
-		return (
-			['styles', 'dependencies', 'module-resources'].includes(place.screen ?? '') ||
-			(!place.screen && moduleLabels.some(([category]) => category === place.category))
-		);
+	if (id === 'modules') return false;
 	if (place.screen) return id === place.screen;
 	return place.category === id;
 }
@@ -111,7 +98,8 @@ function categoryTarget(
 			screen: 'module-resources',
 			entity: id.slice(9)
 		};
-	const category = id === 'modules' ? 'components' : id;
+	if (id === 'modules') return null;
+	const category = id;
 	const screen = (['styles', 'dependencies', 'translations'] as const).find(
 		(value) => value === id
 	);
@@ -136,18 +124,19 @@ export function harnessShell(input: HarnessNavbarInput): HarnessShellView {
 		scope && scope.branch !== null
 			? { branch: scope.branch, commit: null, category: 'pages' }
 			: null;
-	const categories = labels.map(([id, label]) => categoryItem(input, id, label));
-	const contributed =
-		input.modules?.modules
-			.filter((entry) => entry.installed)
-			.flatMap((entry) =>
-				entry.definition.resources.map((resource) =>
-					categoryItem(input, `resource:${entry.definition.id}.${resource.id}`, resource.title)
-				)
-			) ?? [];
-	const modules = scope
-		? [...moduleLabels.map(([id, label]) => categoryItem(input, id, label)), ...contributed]
-		: [];
+	const modules = scope ? codeItems(input) : [];
+	const primary = modules.find((item) => item.primary) ?? modules[0];
+	const categories = labels.map(([id, label]) => {
+		const item = categoryItem(input, id, label);
+		return id === 'modules' && scope
+			? {
+					...item,
+					active: modules.some((entry) => entry.active),
+					to: primary?.to ?? null,
+					href: primary?.href ?? null
+				}
+			: item;
+	});
 
 	return {
 		home: { href: tip ? input.href(tip) : input.base, to: tip },
@@ -155,4 +144,31 @@ export function harnessShell(input: HarnessNavbarInput): HarnessShellView {
 		modules,
 		revision: scope ? revision(input, scope) : null
 	};
+}
+
+/** Included and installed definitions are the only source of Code destinations. */
+function codeItems(input: HarnessNavbarInput): HarnessShellCategory[] {
+	const place = input.scope!.location;
+	const source =
+		input.modules?.modules ??
+		standardCodeModules.map((definition) => ({ definition, installed: true }));
+	return source
+		.filter((entry) => entry.installed)
+		.sort((a, b) => (a.definition.order ?? 100) - (b.definition.order ?? 100))
+		.flatMap((entry) =>
+			entry.definition.resources.map((resource) => {
+				const id = resource.catalog ?? (`resource:${entry.definition.id}.${resource.id}` as const);
+				const to = moduleResourceLocation(place, entry.definition.id, resource);
+				return {
+					id,
+					label: resource.title,
+					icon: categoryGlyph(id),
+					active: categoryActive(place, id),
+					href: input.href(to),
+					to,
+					primary: resource.primary
+				};
+			})
+		)
+		.filter((item, index, items) => items.findIndex((other) => other.id === item.id) === index);
 }

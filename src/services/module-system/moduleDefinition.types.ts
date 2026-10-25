@@ -1,3 +1,4 @@
+import type { PlannedFile } from '../../core/development-tooling/files';
 import type { z } from 'zod';
 import type {
 	moduleDefinitionSchema,
@@ -18,4 +19,15 @@ export interface ModuleEntry {
 export interface ModuleCatalog {
 	modules: ModuleEntry[];
 	gaps: string[];
+}
+
+export interface ModuleResourceRequest {
+	name: string;
+	group?: string;
+}
+
+export interface ModuleResourcePlan {
+	files: PlannedFile[];
+	generated: string[];
+	replace: string[];
 }

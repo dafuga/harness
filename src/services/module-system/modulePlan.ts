@@ -15,6 +15,8 @@ export async function modulePackagePlan(
 		if (Object.keys(definition[field] ?? {}).length)
 			manifest[field] = moduleDependencies(manifest[field], definition[field]);
 	}
+	if (definition.packageScripts)
+		manifest.scripts = moduleDependencies(manifest.scripts, definition.packageScripts);
 	return { path: 'package.json', contents: JSON.stringify(manifest, null, '\t') + '\n' };
 }
 

@@ -60,6 +60,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "helper.module-system-module-resource-location",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.harness-explorer-frame",
 			"via": "import",
 			"origin": "derived"

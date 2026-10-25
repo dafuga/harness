@@ -23,9 +23,15 @@ export class ModuleCommand {
 		module
 			.command('generate <module> <type> <name>')
 			.description('Generate a resource declared by an installed module.')
-			.action(async (id: string, type: string, name: string) => {
+			.option('--group <group>', 'Responsibility category for a standard scaffold.')
+			.action(async (id: string, type: string, name: string, options: { group?: string }) => {
 				console.log(
-					(await new ModuleResourceService().generate(process.cwd(), id, type, name)).join('\n')
+					(
+						await new ModuleResourceService().generate(process.cwd(), id, type, {
+							name,
+							group: options.group
+						})
+					).join('\n')
 				);
 			});
 	}

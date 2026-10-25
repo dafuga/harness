@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import { moduleResourceLocation } from '../../../../../src/helpers/module-system/moduleResourceLocation';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type {
@@ -31,7 +32,6 @@
 	<hx-a href={host.lens.href(to)} onclick={(event) => follow(event, to)}>{text}</hx-a>
 {/snippet}
 
-<!-- A command is copied into a terminal: this page installs and generates nothing itself. -->
 {#snippet command(label: string, text: string)}
 	<hx-figure class="mod-command">
 		<hx-figcaption>{label}</hx-figcaption>
@@ -41,11 +41,14 @@
 
 <!-- Installation is what this revision's state file records, never a guess. -->
 {#snippet state(entry: ModuleEntry)}
-	{@const label = entry.installed ? 'Installed' : 'Available'}
+	{@const label = entry.definition.includedByDefault
+		? 'Included'
+		: entry.installed
+			? 'Installed'
+			: 'Available'}
 	<hx-span class="ex-pill mod-state" data-state={label}>{label}</hx-span>
 {/snippet}
 
-<!-- Instructions are shown as text; no manifest content is read as markup or run. -->
 {#snippet steps(lines: string[])}
 	<hx-ul class="ex-reasons mod-steps">
 		{#each lines as line, position (position)}<hx-li>{line}</hx-li>{/each}
@@ -91,7 +94,7 @@
 <!-- Generation needs the module installed first, so an available module says so. -->
 {#snippet kind(entry: ModuleEntry, resource: ModuleResource)}
 	{@const id = entry.definition.id}
-	{@const list = entry.installed ? at('module-resources', `${id}.${resource.id}`) : null}
+	{@const list = entry.installed ? moduleResourceLocation(host.route, id, resource) : null}
 	<hx-article class="ex-card mod-card">
 		<hx-h3
 			>{#if list}{@render link(list, resource.title)}{:else}{resource.title}{/if}</hx-h3

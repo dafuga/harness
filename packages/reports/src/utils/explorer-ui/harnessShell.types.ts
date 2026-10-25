@@ -41,6 +41,7 @@ export interface HarnessShellLink {
 }
 
 export interface HarnessShellCategory {
+	primary?: boolean;
 	id:
 		| ExplorerCategory
 		| 'styles'

@@ -25,7 +25,9 @@
 			"ModuleState",
 			"ModuleInstance",
 			"ModuleEntry",
-			"ModuleCatalog"
+			"ModuleCatalog",
+			"ModuleResourceRequest",
+			"ModuleResourcePlan"
 		]
 	},
 	"contract": {
@@ -60,7 +62,18 @@
 		],
 		"errors": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.scaffold-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/module-system/moduleDefinition.ts",

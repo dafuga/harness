@@ -3,25 +3,52 @@
 	"id": "service.module-system-module-package",
 	"kind": "service",
 	"title": "ModulePackageService",
-	"responsibility": "Owns the ModulePackageService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Plan pinned dependency declarations without installing packages.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/services/module-system/ModulePackageService.ts"],
-		"symbols": ["ModulePackageService", "ModulePackageService.run"]
+		"symbols": ["ModulePackageService", "ModulePackageService.plan"]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [
+		"origin": "declared",
+		"inputs": [
 			{
-				"name": "ModulePackageService.run",
-				"type": "string"
+				"name": "ModulePackageService.plan.root",
+				"type": "string",
+				"description": "Absolute project directory containing package.json."
+			},
+			{
+				"name": "ModulePackageService.plan.name",
+				"type": "string",
+				"description": "Registry package with an exact semantic version, including an optional scope."
 			}
 		],
-		"errors": []
+		"outputs": [
+			{
+				"name": "ModulePackageService.plan",
+				"type": "Promise<PlannedFile>",
+				"description": "A package.json write plan preserving unrelated settings."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Invalid package pins, conflicting existing versions or unreadable manifests reject the plan."
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.files",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/module-system/ModulePackageService.ts",

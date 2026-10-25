@@ -161,7 +161,8 @@
 			"ModulePackageService",
 			"standardCodeModules",
 			"rustWasmModule",
-			"rustBackendModule"
+			"rustBackendModule",
+			"moduleResourceLocation"
 		]
 	},
 	"contract": {
@@ -468,6 +469,11 @@
 		},
 		{
 			"unit": "function.writing-limits",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.module-system-module-resource-location",
 			"via": "reexport",
 			"origin": "derived"
 		},

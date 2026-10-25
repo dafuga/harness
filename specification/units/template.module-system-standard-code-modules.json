@@ -3,30 +3,46 @@
 	"id": "template.module-system-standard-code-modules",
 	"kind": "template",
 	"title": "standardCodeModules",
-	"responsibility": "Owns the standardCodeModules scaffold template.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Declare the nine default-included Code capabilities and their existing generators and catalog destinations.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/templates/module-system/standardCodeModules.ts"],
 		"symbols": ["standardCodeModules"]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [
-			{
-				"name": "standardCodeModules.value",
-				"type": "string"
-			}
-		],
+		"origin": "declared",
+		"inputs": [],
 		"outputs": [
 			{
 				"name": "standardCodeModules",
-				"type": "string"
+				"type": "ModuleDefinition[]",
+				"description": "Declarative module source files, generators, package scripts and developer instructions."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An unknown standard scaffold cannot form a default module declaration."
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.scaffold-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/templates/module-system/standardCodeModules.ts",

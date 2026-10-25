@@ -3,25 +3,62 @@
 	"id": "service.module-system-module-scaffold",
 	"kind": "service",
 	"title": "ModuleScaffoldService",
-	"responsibility": "Owns the ModuleScaffoldService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Run existing Harness scaffold workflows for a module-declared generator.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
 	"owns": {
 		"source": ["src/services/module-system/ModuleScaffoldService.ts"],
-		"symbols": ["ModuleScaffoldService", "ModuleScaffoldService.run"]
+		"symbols": ["ModuleScaffoldService", "ModuleScaffoldService.generate"]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [
+		"origin": "declared",
+		"inputs": [
 			{
-				"name": "ModuleScaffoldService.run",
-				"type": "string"
+				"name": "ModuleScaffoldService.generate.root",
+				"type": "string",
+				"description": "Absolute destination project directory."
+			},
+			{
+				"name": "ModuleScaffoldService.generate.resource",
+				"type": "ModuleResource",
+				"description": "Validated resource declaring a standard scaffold generator."
+			},
+			{
+				"name": "ModuleScaffoldService.generate.request",
+				"type": "ModuleResourceRequest",
+				"description": "Validated resource name and optional responsibility group."
 			}
 		],
-		"errors": []
+		"outputs": [
+			{
+				"name": "ModuleScaffoldService.generate",
+				"type": "Promise<string[]>",
+				"description": "Relative paths processed by the existing scaffold workflow."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Invalid names, ineligible scaffold kinds, groups or source conflicts reject generation."
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.generate-code",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/module-system/ModuleScaffoldService.ts",

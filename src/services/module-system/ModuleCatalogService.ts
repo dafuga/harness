@@ -23,12 +23,16 @@ export class ModuleCatalogService {
 			modules: [...entries.values()]
 				.map((entry) => ({
 					...entry,
-					installed: state.modules.some(
-						(installed) => installed.definition.id === entry.definition.id
-					),
+					installed:
+						Boolean(entry.definition.includedByDefault) ||
+						state.modules.some((installed) => installed.definition.id === entry.definition.id),
 					instances: state.resources.filter((instance) => instance.module === entry.definition.id)
 				}))
-				.sort((a, b) => a.definition.title.localeCompare(b.definition.title))
+				.sort(
+					(a, b) =>
+						(a.definition.order ?? 100) - (b.definition.order ?? 100) ||
+						a.definition.title.localeCompare(b.definition.title)
+				)
 		};
 	}
 

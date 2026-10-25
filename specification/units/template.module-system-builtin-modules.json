@@ -3,7 +3,7 @@
 	"id": "template.module-system-builtin-modules",
 	"kind": "template",
 	"title": "builtinModules",
-	"responsibility": "Admit built-in Email and Offline definitions through the same schema used by project modules.",
+	"responsibility": "Admit included Code capabilities and optional Email, Offline and Rust definitions through one module schema.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"catalog": {
@@ -38,6 +38,21 @@
 		},
 		{
 			"unit": "template.module-system-offline-module",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-rust-backend-module",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-rust-wasm-module",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-standard-code-modules",
 			"via": "import",
 			"origin": "derived"
 		}

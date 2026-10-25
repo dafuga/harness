@@ -3,7 +3,7 @@
 	"id": "service.module-system-module-resource",
 	"kind": "service",
 	"title": "ModuleResourceService",
-	"responsibility": "Expand an installed module resource template and record the generated source files.",
+	"responsibility": "Generate declared module resources through templates, standard scaffolds or pinned package plans and persist their records.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"catalog": {
@@ -34,7 +34,7 @@
 			{
 				"name": "ModuleResourceService.generate.requested",
 				"type": "string",
-				"description": "Developer-supplied resource name, normalized for generated code identifiers."
+				"description": "Resource name, or a name with its responsibility group; dependency resources require an exact package pin."
 			}
 		],
 		"outputs": [
@@ -70,6 +70,16 @@
 		},
 		{
 			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-package",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-scaffold",
 			"via": "import",
 			"origin": "derived"
 		},

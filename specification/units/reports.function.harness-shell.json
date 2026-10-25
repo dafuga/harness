@@ -56,7 +56,7 @@
 			{
 				"name": "harnessShell",
 				"type": "HarnessShellView",
-				"description": "Brand destination, five primary destinations, six module-category links from every resolved route and optional revision controls. Every destination retains branch and selected commit while clearing entity context; the host formats addresses."
+				"description": "Brand, six primary destinations, module-declared Code destinations and revision controls. All addresses retain branch and commit while clearing unrelated entity context."
 			}
 		],
 		"errors": []
@@ -64,6 +64,11 @@
 	"dependencies": [
 		{
 			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.module-system-module-resource-location",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -94,6 +99,11 @@
 		},
 		{
 			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-standard-code-modules",
 			"via": "import",
 			"origin": "derived"
 		}
