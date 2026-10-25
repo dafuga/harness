@@ -805,73 +805,88 @@
 			},
 			"sourceCommit": "a89292560d6347d4288b468c0b344e333dfd1090",
 			"contractHash": "7ca286e86e94f11e212ad646e5d524735a42408e5456873ac1d1ff238a770eb0",
-			"status": "review",
-			"reviews": [],
-			"createdAt": "2026-10-25T12:22:30.751Z",
-			"claim": {
-				"worker": "contract-generators",
-				"token": "3d4e2092-2c3a-4b5c-bff2-c3399cef93c0",
-				"startedAt": "2026-10-25T12:22:31.306Z",
-				"owner": {
-					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
-					"pid": 21725,
-					"startedAt": "Sun Oct 25 12:19:22 2026"
+			"status": "queued",
+			"repairCommit": "f16197f8dadafff5716b7fdb74cb10f26a741e8f",
+			"reviews": [
+				{
+					"attempt": "3d4e2092-2c3a-4b5c-bff2-c3399cef93c0",
+					"verdict": "incomplete",
+					"reviewer": "primary",
+					"feedback": "Complete every app scaffold, including layout and partial screenshot cases and behavioral store/hook examples; remove remaining path/string/type smoke assertions. Remove the invented Toggle details production interaction: the generated component should stay minimal and test its actual label/error props at rest. Pages must match the whole page; components/layouts/partials match their own region. Use declared desktop/tablet/mobile viewports, render readiness and no automatic baseline acceptance. Test-only preview routes must be unavailable outside development/test. Keep existing meaningful assertions and current stable test declarations. Do not add unrelated production features. Primary has the full dependency environment and will run integration tests; report sandbox blockers honestly.",
+					"at": "2026-10-25T12:48:06.048Z",
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null
 				}
-			},
-			"claimHistory": [],
-			"result": {
-				"provider": "codex",
-				"model": "gpt-5.6-luna",
-				"intelligence": "max",
-				"reportedModel": null,
-				"text": "I’m using the Harness skill because this is a contract-driven change in the Harness repository. I’ll first inspect the current worktree, required guidance, and existing `appPieces` contract/tests, then edit only the three permitted files and run focused checks—without committing, pushing, delegating, E2Es, or broad verification.\nThe worktree is clean, and the required Harness guidance is loaded. The requested contract maps to generator templates plus their focused test; I’m now checking registered identity, current declarations, and any prior attempt diff before deciding the smallest compatible edit.\nThe repository CLI is currently blocked before command dispatch by a missing `@electron/asar` import, so `info` and activity registration cannot run in this worktree without installing/repairing dependencies. I’ll keep that as an explicit gap, inspect the generator’s neighboring conventions and focused contract test, and avoid changing dependency state.\nThe current generator has only placeholder Vitest/source-presence checks, a static page, a GET-only success response, and a visibility-only E2E case. I’m converting those existing generated cases into finite declared-state matrices: component rest/interaction/error screenshots, page default/error screenshots, and exact API status/headers/body JSON cases.\nThe generated outputs now parse successfully in Bun and show the intended finite matrices. I also caught and fixed two template-escaping mistakes during readback (`{label}`/`{error}` must remain Svelte expressions). Next I’m checking generated formatting/shape invariants and the focused test’s exact diff; no baselines are being created or updated.\nFocused formatting is green, and generated-source shape checks are green. The focused Vitest invocation is blocked by the sandboxed worktree: Vitest tries to write its Vite temp bundle under the parent checkout’s `node_modules/.vite-temp` (EPERM), while the Harness CLI also remains blocked by missing `@electron/asar`; I’m trying one worktree-rooted invocation before recording that verification gap.\nThe generated state declarations are now explicitly typed so optional `error`/`interaction` fields remain valid under strict TypeScript. I’m doing the last focused checks now: generated-file Prettier admission, Svelte/TypeScript syntax, and diff/status review. The only unavailable checks remain Vitest/Harness CLI startup due the worktree dependency/sandbox blockers.\nImplemented in:\n\n- [appPieces.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/3d4e2092-2c3a-4b5c-bff2-c3399cef93c0/src/templates/development-tooling/appPieces.ts)\n- [pieces.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/3d4e2092-2c3a-4b5c-bff2-c3399cef93c0/test/pieces.test.ts)\n\nChanges include finite screenshot state matrices, accessibility/keyboard assertions, exact API JSON success/error cases, and no automatic baseline updates.\n\nVerification passed:\n\n- Prettier checks\n- `git diff --check`\n- Generated Svelte/TypeScript syntax parsing\n- Generated formatting and contract-shape assertions\n\nFocused Vitest and Harness CLI runs remain blocked by sandbox EPERM writes and missing `@electron/asar`. No E2Es, broad checks, commits, or baselines were run.\n\n",
-				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/3d4e2092-2c3a-4b5c-bff2-c3399cef93c0",
-				"changedFiles": ["src/templates/development-tooling/appPieces.ts", "test/pieces.test.ts"],
-				"fallback": false,
-				"finishedAt": "2026-10-25T12:44:31.275Z",
-				"attempt": "3d4e2092-2c3a-4b5c-bff2-c3399cef93c0",
-				"sourceCommit": "a89292560d6347d4288b468c0b344e333dfd1090",
-				"checkpointCommit": "f16197f8dadafff5716b7fdb74cb10f26a741e8f",
-				"usage": {
-					"inputTokens": 17164126,
-					"outputTokens": 64915,
-					"cacheReadTokens": 16909824,
-					"cacheWriteTokens": null,
-					"cacheWriteLongTokens": null,
-					"reportedCostUsd": null,
-					"reasoningTokens": null
-				},
-				"executions": [
-					{
-						"provider": "codex",
-						"model": "gpt-5.6-luna",
-						"intelligence": "max",
-						"reportedModel": null,
-						"usage": {
-							"inputTokens": 17164126,
-							"outputTokens": 64915,
-							"cacheReadTokens": 16909824,
-							"cacheWriteTokens": null,
-							"cacheWriteLongTokens": null,
-							"reportedCostUsd": null,
-							"reasoningTokens": null
-						},
-						"apiCost": {
-							"usd": null,
-							"minimumUsd": null,
-							"maximumUsd": null,
-							"basis": "unavailable",
-							"rateCard": "standard-global-2026-10-25",
-							"source": null,
-							"note": "No verified rates for this exact model."
-						},
-						"status": "succeeded",
-						"startedAt": "2026-10-25T12:22:32.167Z",
-						"finishedAt": "2026-10-25T12:44:31.150Z"
+			],
+			"createdAt": "2026-10-25T12:22:30.751Z",
+			"claimHistory": [
+				{
+					"worker": "contract-generators",
+					"token": "3d4e2092-2c3a-4b5c-bff2-c3399cef93c0",
+					"startedAt": "2026-10-25T12:22:31.306Z",
+					"owner": {
+						"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+						"pid": 21725,
+						"startedAt": "Sun Oct 25 12:19:22 2026"
 					}
-				]
-			},
-			"attempts": []
+				}
+			],
+			"attempts": [
+				{
+					"provider": "codex",
+					"model": "gpt-5.6-luna",
+					"intelligence": "max",
+					"reportedModel": null,
+					"text": "I’m using the Harness skill because this is a contract-driven change in the Harness repository. I’ll first inspect the current worktree, required guidance, and existing `appPieces` contract/tests, then edit only the three permitted files and run focused checks—without committing, pushing, delegating, E2Es, or broad verification.\nThe worktree is clean, and the required Harness guidance is loaded. The requested contract maps to generator templates plus their focused test; I’m now checking registered identity, current declarations, and any prior attempt diff before deciding the smallest compatible edit.\nThe repository CLI is currently blocked before command dispatch by a missing `@electron/asar` import, so `info` and activity registration cannot run in this worktree without installing/repairing dependencies. I’ll keep that as an explicit gap, inspect the generator’s neighboring conventions and focused contract test, and avoid changing dependency state.\nThe current generator has only placeholder Vitest/source-presence checks, a static page, a GET-only success response, and a visibility-only E2E case. I’m converting those existing generated cases into finite declared-state matrices: component rest/interaction/error screenshots, page default/error screenshots, and exact API status/headers/body JSON cases.\nThe generated outputs now parse successfully in Bun and show the intended finite matrices. I also caught and fixed two template-escaping mistakes during readback (`{label}`/`{error}` must remain Svelte expressions). Next I’m checking generated formatting/shape invariants and the focused test’s exact diff; no baselines are being created or updated.\nFocused formatting is green, and generated-source shape checks are green. The focused Vitest invocation is blocked by the sandboxed worktree: Vitest tries to write its Vite temp bundle under the parent checkout’s `node_modules/.vite-temp` (EPERM), while the Harness CLI also remains blocked by missing `@electron/asar`; I’m trying one worktree-rooted invocation before recording that verification gap.\nThe generated state declarations are now explicitly typed so optional `error`/`interaction` fields remain valid under strict TypeScript. I’m doing the last focused checks now: generated-file Prettier admission, Svelte/TypeScript syntax, and diff/status review. The only unavailable checks remain Vitest/Harness CLI startup due the worktree dependency/sandbox blockers.\nImplemented in:\n\n- [appPieces.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/3d4e2092-2c3a-4b5c-bff2-c3399cef93c0/src/templates/development-tooling/appPieces.ts)\n- [pieces.test.ts](/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/3d4e2092-2c3a-4b5c-bff2-c3399cef93c0/test/pieces.test.ts)\n\nChanges include finite screenshot state matrices, accessibility/keyboard assertions, exact API JSON success/error cases, and no automatic baseline updates.\n\nVerification passed:\n\n- Prettier checks\n- `git diff --check`\n- Generated Svelte/TypeScript syntax parsing\n- Generated formatting and contract-shape assertions\n\nFocused Vitest and Harness CLI runs remain blocked by sandbox EPERM writes and missing `@electron/asar`. No E2Es, broad checks, commits, or baselines were run.\n\n",
+					"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/3d4e2092-2c3a-4b5c-bff2-c3399cef93c0",
+					"changedFiles": ["src/templates/development-tooling/appPieces.ts", "test/pieces.test.ts"],
+					"fallback": false,
+					"finishedAt": "2026-10-25T12:44:31.275Z",
+					"attempt": "3d4e2092-2c3a-4b5c-bff2-c3399cef93c0",
+					"sourceCommit": "a89292560d6347d4288b468c0b344e333dfd1090",
+					"checkpointCommit": "f16197f8dadafff5716b7fdb74cb10f26a741e8f",
+					"usage": {
+						"inputTokens": 17164126,
+						"outputTokens": 64915,
+						"cacheReadTokens": 16909824,
+						"cacheWriteTokens": null,
+						"cacheWriteLongTokens": null,
+						"reportedCostUsd": null,
+						"reasoningTokens": null
+					},
+					"executions": [
+						{
+							"provider": "codex",
+							"model": "gpt-5.6-luna",
+							"intelligence": "max",
+							"reportedModel": null,
+							"usage": {
+								"inputTokens": 17164126,
+								"outputTokens": 64915,
+								"cacheReadTokens": 16909824,
+								"cacheWriteTokens": null,
+								"cacheWriteLongTokens": null,
+								"reportedCostUsd": null,
+								"reasoningTokens": null
+							},
+							"apiCost": {
+								"usd": null,
+								"minimumUsd": null,
+								"maximumUsd": null,
+								"basis": "unavailable",
+								"rateCard": "standard-global-2026-10-25",
+								"source": null,
+								"note": "No verified rates for this exact model."
+							},
+							"status": "succeeded",
+							"startedAt": "2026-10-25T12:22:32.167Z",
+							"finishedAt": "2026-10-25T12:44:31.150Z"
+						}
+					]
+				}
+			]
 		},
 		{
 			"id": "contract-tests.project-test-scaffolds-luna56",
