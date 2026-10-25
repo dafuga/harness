@@ -3,35 +3,39 @@
 	"id": "function.git-source-history-module-scenario-reviews",
 	"kind": "function",
 	"title": "moduleScenarioReviews",
-	"responsibility": "Owns the moduleScenarioReviews shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Validate and apply reviewed scenario evidence declarations while preserving original states and test targets, returning superseded diagnostics.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/git-source-history/moduleScenarioReviews.ts"],
 		"symbols": ["moduleScenarioReviews"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "moduleScenarioReviews.scenarios",
-				"type": "ScenarioManifest[]"
+				"type": "ScenarioManifest[]",
+				"description": "Mutable manifests from the exact source revision; matching scenarios receive reviewed evidence without changes to states or test targets."
 			},
 			{
 				"name": "moduleScenarioReviews.reviews",
-				"type": "ModuleReviewInput[]"
+				"type": "ModuleReviewInput[]",
+				"description": "Source-bound module reviews; each requested scenario must exist, cover the reviewed module and have only one declaration in this batch."
 			}
 		],
 		"outputs": [
 			{
 				"name": "moduleScenarioReviews",
-				"type": "unknown"
+				"type": "Set<string>",
+				"description": "Original scenario validation diagnostics superseded by the reviewed declarations, for removal from the cached source issue list."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Thrown for missing, uncovered or duplicate scenarios, or invalid evidence declarations such as unknown states or viewports."
 			}
 		]
 	},

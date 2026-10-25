@@ -29,7 +29,12 @@ export function applyModuleReviews(
 			unit.owns.source.some((path) => blobs.get(path) !== review.files[path])
 		)
 			throw new Error(`Metadata review source changed: ${review.unit}`);
-		Object.assign(unit, globalThis.structuredClone(review.metadata));
+		const metadata = globalThis.structuredClone(review.metadata);
+		if (metadata.preview === null) {
+			delete unit.preview;
+			delete metadata.preview;
+		}
+		Object.assign(unit, metadata);
 		if (review.metadata.responsibility) unit.responsibilityOrigin = 'declared';
 	}
 }
@@ -93,6 +98,13 @@ export function unresolvedReviewIssues(issues: string[], reviews: ModuleReview[]
 	const repaired = reviews.flatMap((review) => [
 		...(review.metadata.runtime
 			? [`${review.unit}: runtime.targets must include the default `]
+			: []),
+		...(review.metadata.preview === null
+			? [
+					`${review.unit}: only page and component units may declare a preview`,
+					`${review.unit}: unknown preview scenario `,
+					`${review.unit}: preview state `
+				]
 			: []),
 		...(review.metadata.responsibility
 			? [

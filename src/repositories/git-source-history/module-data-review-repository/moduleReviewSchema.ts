@@ -21,7 +21,8 @@ export const moduleReviewSchema = z
 				preview: true,
 				runtime: true
 			})
-			.partial(),
+			.partial()
+			.extend({ preview: componentManifestSchema.shape.preview.nullable() }),
 		scenarios: z
 			.array(scenarioManifestSchema.pick({ id: true, evidence: true }))
 			.min(1)

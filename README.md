@@ -76,7 +76,8 @@ Repair current declarations in source and commit them. For historical authoring,
 `reason`, and `metadata` containing authored responsibility, contracts, helper examples, config
 controls, preview or owned module runtime declarations. Historical batches must also name the
 exact `commit` on each review. Reviews bind to that source tree and its owned blob hashes;
-they cannot replace dependencies, source ownership, budgets or observations. A review replaces
+they cannot replace dependencies, source ownership, budgets or observations. Set `metadata.preview`
+to `null` to withdraw an obsolete optional preview declaration. A review replaces
 that module's earlier review, so retain any fields that still apply.
 
 A review may also declare wanted scenario evidence for a scenario covering that module:
