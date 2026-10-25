@@ -1,3 +1,4 @@
+import { expect } from 'vitest';
 import type { UnitProject } from './unitProject.types';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
