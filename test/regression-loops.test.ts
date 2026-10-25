@@ -38,6 +38,26 @@ const orders = {
 	]
 };
 
+const standardFormGuidance = [
+	'Use exactly these five contract-driven test forms',
+	'Pages: Playwright screenshot matches of each declared page state at every required viewport',
+	'Components: Playwright screenshot matches of the component at rest, plus each declared interaction and error-prop state.',
+	'Helpers: one unit case per authored example, asserting its documented output or error.',
+	'Classes: one case per method and declared initialization or lifecycle state, including each declared error.',
+	'APIs: structural complete JSON response matches for each supported prop and error matrix row.',
+	'Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.',
+	'Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.',
+	'Unsupported or missing test coverage is an explicit validation failure',
+	'Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.'
+];
+
+const stableCaseGuidance = [
+	'Do not write standalone bug regression tests.',
+	"Keep each form's case count fixed.",
+	'Add or remove a case only when the contract explicitly changes a capability',
+	'Keep registered case titles and identities stable; verification records bind to them.'
+];
+
 test.each(Object.entries(orders))(
 	'%s exposes ordered proof and project checks',
 	async (id, order) => {
@@ -114,6 +134,9 @@ test.each(['app', 'lib'] as const)(
 			expect(text).toContain('earliest responsible generator, skill or review checkpoint');
 			expect(text).toContain('one selected callable per detail page');
 			expect(text).toContain('src/configs/<category>/');
+			for (const term of [...standardFormGuidance, ...stableCaseGuidance]) {
+				expect(text).toContain(term);
+			}
 		}
 	}
 );
