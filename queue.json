@@ -5040,6 +5040,64 @@
 			"createdAt": "2026-10-25T18:42:03.613Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.explorer-name-examples",
+			"title": "Migrate reports.function.explorer-name standard test cases",
+			"moduleGoal": "Complete canonical coverage without losing existing assertions",
+			"verificationFiles": [
+				"packages/reports/test/utils/explorer-name.test.ts",
+				"test/fixtures/contract-migration/explorer-name-examples.json"
+			],
+			"instructions": "Initial test-contract migration for reports.function.explorer-name. Edit ONLY the listed verification files. Write a full proposed copy of specification/units/reports.function.explorer-name.json at test/fixtures/contract-migration/explorer-name-examples.json; do not edit specification or product source. Primary owns shared contracts, product repairs, integration, final commits, compiler/audit and runtime checks. Do not run tests/build/lint/install/audit, delegate, access credentials, update memory, commit or publish. Preserve every original assertion, public forwarding boundary, fixture and benchmark. Register canonical callbacks with TestExpectationService and a direct imported JSON manifest (an as-cast is fine). No dynamic test loops, standalone regression tests, skipped/fails/only cases, fake expected constants or observed-output-generated expectations. Keep files/functions small and types in allowed companion files or inline type expressions.\nUse helper shape, finite states and exactly one registered case per authored Example. Import test explicitly from vitest and use registerExamples(test, imported proposed full manifest, callbacks). Preserve pre-existing helperContracts Examples without duplicating their names; add ordinary-function testing.examples for other behaviors. Declare cases, stable IDs, actual test file and canonical subject: Example title for every Example. Include supported props, boundaries, null/error props and exact authored output/error comments. Reconstruct non-JSON inputs with explicit fixture markers; the displayed call must explain the actual reconstruction or projection. Never turn successful helper output into a projection-generated error. Callback must invoke the real imported helper and return its result or an explicitly displayed projection, with all original assertions retained. Use complete parsed WAV metadata where applicable; preserve bad format and missing chunk errors. For explorerName, preserve the original layout-catalog-behavior benchmark inside its responsible registered Example, not afterAll or a separate test. Authored input matrices can combine distinct related assertions if the displayed call and expected array clearly match the real calls. No unverified model substitution.",
+			"wantedContract": {
+				"responsibility": "Preserve existing assertions in canonical method or Example cases",
+				"inputs": [
+					{
+						"name": "existing source contracts and realistic fixtures",
+						"type": "authored capability matrix"
+					}
+				],
+				"outputs": [
+					{
+						"name": "registered suite and proposed full manifest",
+						"type": "reviewable source"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid properties and failure outcomes",
+						"type": "explicit assertions"
+					}
+				]
+			},
+			"model": "claude-haiku-5-5",
+			"provider": "claude",
+			"intelligence": "max",
+			"assignee": "explorer-name-examples",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "reports.function.explorer-name",
+				"goal": "Complete canonical coverage without losing existing assertions",
+				"files": [
+					"packages/reports/src/utils/explorer-ui/explorerName.ts",
+					"packages/reports/src/utils/explorer-ui/explorerName.types.ts",
+					"packages/reports/src/utils/explorerName.ts",
+					"packages/reports/test/utils/explorer-name.test.ts",
+					"test/fixtures/contract-migration/explorer-name-examples.json"
+				]
+			},
+			"sourceCommit": "bd539aefa6bb3b91feab615ec49fb9b86263d6d2",
+			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T18:42:04.273Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
