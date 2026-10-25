@@ -217,8 +217,4 @@ test('API CLI raw requests retain methods and bodies, binary output and HTTP err
 	}
 }, 30000);
 
-test(
-	'API and profile CLI sections expose the same declared method and data boundaries',
-	assertPermissionCli,
-	30000
-);
+test('API CLI reads permission profiles', assertPermissionCli, 30000);
