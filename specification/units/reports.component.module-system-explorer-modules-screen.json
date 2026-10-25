@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.module-system-explorer-modules-screen",
+	"kind": "component",
+	"title": "ExplorerModulesScreen",
+	"responsibility": "Discover capability modules and their installation and generation instructions.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": []
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/module-system/ExplorerModulesScreen.svelte"],
+		"symbols": ["ExplorerModulesScreen"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "host",
+				"type": "ExplorerScreenProps",
+				"description": "Revision-bound module definitions, installation state and navigation."
+			}
+		],
+		"outputs": [
+			{
+				"name": "catalog",
+				"type": "markup",
+				"description": "Discover capability modules and their installation and generation instructions."
+			}
+		],
+		"errors": [
+			{
+				"name": "missing-catalog",
+				"type": "stated",
+				"description": "Missing historical module metadata is shown explicitly."
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/module-system/ExplorerModulesScreen.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/module-system/ExplorerModulesScreen.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	},
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-module-system-explorer-modules-screen",
+		"viewport": "desktop"
+	}
+}

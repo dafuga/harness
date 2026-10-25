@@ -73,7 +73,7 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 	expect(html).toMatch(/^\s*<header class="hx-nav"/);
 	expect(html.match(/<header\b/g)).toHaveLength(1);
 	expect(links(html)).toEqual(
-		['Pages', 'APIs', 'Code', 'Translations', 'Platforms'].map((label) => ({
+		['Pages', 'APIs', 'Code', 'Modules', 'Translations', 'Platforms'].map((label) => ({
 			label,
 			href: `${scoped}/commit/${sha(4)}/${label === 'Code' ? 'components' : label.toLowerCase()}`,
 			current: label === 'Code',
@@ -169,9 +169,9 @@ test('both selectors are the shared select, and the bar writes no field of its o
 
 test('without a resolved address the bar keeps its navigation and offers nothing to choose', () => {
 	const html = body(null, { repository: null, index: null });
-	expect(text(categories(html))).toBe('Pages APIs Code Translations Platforms');
+	expect(text(categories(html))).toBe('Pages APIs Code Modules Translations Platforms');
 	expect(links(html)).toEqual([]);
-	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(5);
+	expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(6);
 	expect(html).not.toMatch(/<select\b|Go to tip|hx-repository/);
 	expect(html).toMatch(new RegExp(`<a\\b[^>]*class="hx-brand"[^>]*href="${shellMount}"`));
 });
