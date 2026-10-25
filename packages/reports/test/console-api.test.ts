@@ -8,12 +8,26 @@ import { join } from 'node:path';
 import { ConsoleAgentService } from '../src/services/ConsoleAgentService';
 import { recordedRepo, binding, page, git } from '../../desktop/test/recorded-evidence-fixture';
 import type { Recorded } from '../../desktop/test/recorded-evidence-fixture';
+import type * as HistoryIndexFixture from '../../../test/support/historyIndexFixture';
 import type { EntityDetail } from '../../desktop/src/models/development-tooling/Desktop.types';
 import type {
 	EntityEvidenceResult,
 	EvidenceArtifactResult
 } from '../../desktop/src/models/verification-evidence/DesktopEvidence.types';
 
+// A parent repository may have empty local identity fields; host defaults must not hide that.
+vi.mock('../../../test/support/historyIndexFixture', async (original) => {
+	const fixture = await original<typeof HistoryIndexFixture>();
+	return {
+		...fixture,
+		async indexedRepo() {
+			const prepared = await fixture.indexedRepo();
+			await prepared.repo.git(['config', '--local', 'user.name', '']);
+			await prepared.repo.git(['config', '--local', 'user.email', '']);
+			return prepared;
+		}
+	};
+});
 const site = vi.hoisted(() => ({ root: process.cwd() }));
 vi.mock('../src/utils/reports-media/reportSite', () => ({ reportSite: () => site }));
 let fixture: Recorded;
@@ -21,6 +35,13 @@ let client: ConsoleAgentService;
 let registryCommit: string;
 beforeAll(async () => {
 	fixture = await recordedRepo();
+	expect(git(fixture.root, 'config', '--local', 'user.name'), 'Fixture owns its author name').toBe(
+		'Harness Fixture'
+	);
+	expect(
+		git(fixture.root, 'config', '--local', 'user.email'),
+		'Fixture owns its author email'
+	).toBe('fixture@harness.invalid');
 	const path = 'src/private.ts';
 	await writeFile(
 		join(fixture.root, path),
