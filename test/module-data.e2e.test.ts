@@ -53,8 +53,9 @@ test('validate persists revision-bound module gaps, filters them and invalidates
 		const cached = await invoke(['--module', 'service.title']);
 		expect(cached.cached).toBe(true);
 		expect(cached.modules.map((item: { id: string }) => item.id)).toEqual(['service.title']);
-		const typed = await invoke(['--type', 'services']);
-		expect(typed.modules.map((item: { kind: string }) => item.kind)).toEqual(['service']);
+		expect((await invoke(['--type', 'services'])).modules.map((item) => item.kind)).toEqual([
+			'service'
+		]);
 		expect((await invoke(['--module', 'absent.unit'])).issues.join(' ')).toContain(
 			'Unknown module'
 		);
