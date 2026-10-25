@@ -21,6 +21,22 @@ test('regression profiles ignore volatile macOS launcher identity while retainin
 	).toBe(first);
 	expect(environmentProfile({ ...source, PATH: '/another/runtime' })).not.toBe(first);
 	expect(environmentProfile({ ...source, FEATURE_FLAG: 'disabled' })).not.toBe(first);
+	const managed = {
+		...source,
+		HARNESS_RESOURCE_LEASE: 'lease-one',
+		HARNESS_RESOURCE_CPUS: '1',
+		HARNESS_RESOURCE_MEMORY_MIB: '768'
+	};
+	expect(
+		environmentProfile({ ...managed, HARNESS_RESOURCE_LEASE: 'lease-two' }),
+		'resource lease identity is not workload configuration'
+	).toBe(environmentProfile(managed));
+	expect(environmentProfile({ ...managed, HARNESS_RESOURCE_CPUS: '2' })).not.toBe(
+		environmentProfile(managed)
+	);
+	expect(environmentProfile({ ...managed, HARNESS_RESOURCE_MEMORY_MIB: '1024' })).not.toBe(
+		environmentProfile(managed)
+	);
 });
 
 const orders = {
