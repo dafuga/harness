@@ -1175,20 +1175,21 @@
 			},
 			"sourceCommit": "c7775b5b6e1355f6b3df0f1a7f7e84706bb148ad",
 			"contractHash": "2a4b6a9e5e8eab94a10031593b49b620b820fc8f7a33de5ed48dbf26a0adda8c",
-			"status": "running",
+			"status": "queued",
 			"reviews": [],
 			"createdAt": "2026-10-25T12:57:07.388Z",
-			"claim": {
-				"worker": "contract-generators",
-				"token": "6bcac664-0c25-4061-8175-ea42c2b33494",
-				"startedAt": "2026-10-25T13:13:30.347Z",
-				"owner": {
-					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
-					"pid": 21725,
-					"startedAt": "Sun Oct 25 12:19:22 2026"
+			"claimHistory": [
+				{
+					"worker": "contract-generators",
+					"token": "6bcac664-0c25-4061-8175-ea42c2b33494",
+					"startedAt": "2026-10-25T13:13:30.347Z",
+					"owner": {
+						"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+						"pid": 21725,
+						"startedAt": "Sun Oct 25 12:19:22 2026"
+					}
 				}
-			},
-			"claimHistory": [],
+			],
 			"attempts": []
 		},
 		{
