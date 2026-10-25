@@ -1,0 +1,22 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-PSbd1u/packages/reports
+
+ ✓ test/utils/module-data.test.ts (7 tests) 8ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  20:12:33
+   Duration  267ms (transform 113ms, setup 72ms, collect 90ms, tests 8ms, environment 0ms, prepare 28ms)
+
