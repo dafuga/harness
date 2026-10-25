@@ -3,7 +3,7 @@ import type { HarnessNavbarInput } from '../src/utils/explorer-ui/harnessShell.t
 import { harnessShell } from '../src/components/explorer-ui/harness-navbar/harnessShell';
 /** In-memory inputs keep array admission behavior; JSON serialization is not a characterization. */
 export function assertModuleArrayAdmission(input: HarnessNavbarInput): void {
-	const original = input.modules!.modules.find((entry) => entry.installed)!;
+	const original = input.modules!.modules.find((entry) => entry.definition.id === 'email')!;
 	let reads = 0;
 	const definition = { ...original.definition };
 	Object.defineProperty(definition, 'resources', {
