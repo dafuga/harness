@@ -1,3 +1,4 @@
+import { assertModuleAuditAdmission } from './support/moduleAuditAdmission';
 import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -124,6 +125,7 @@ test('audit reports Harness scaffold file and function naming violations', async
 		[]
 	);
 	expect(findings.filter((finding) => finding.rule === 'harness-source-structure')).toEqual([]);
+	await assertModuleAuditAdmission(root);
 	expect(
 		findings.some(
 			(finding) =>

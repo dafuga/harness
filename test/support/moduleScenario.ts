@@ -25,9 +25,9 @@ export async function assertModuleProject(root: string): Promise<void> {
 	).toHaveLength(11);
 	const repeated = await runHarness(['module', 'add', 'email'], project);
 	expect(repeated.stdout).toContain('already installed');
+	await assertRustModuleProject(project);
 	await runCommand(['bun', 'install'], project);
 	await runCommand(['bun', 'run', 'format'], project);
 	const check = await runCommand(['bun', 'run', 'check'], project);
 	expect(check.stdout + check.stderr).toContain('Harness audit passed');
-	await assertRustModuleProject(project);
 }
