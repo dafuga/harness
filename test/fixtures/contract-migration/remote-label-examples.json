@@ -431,6 +431,16 @@
 				}
 			},
 			{
+				"id": "host-line.null",
+				"state": "invalid",
+				"subject": "hostLine",
+				"example": "Reject a missing host status",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "hostLine: Reject a missing host status"
+				}
+			},
+			{
 				"id": "host-summary.disabled",
 				"state": "boundary",
 				"subject": "hostSummary",
@@ -468,6 +478,26 @@
 				"test": {
 					"file": "packages/desktop/test/utils/remote-labels.test.ts",
 					"title": "hostSummary: Use plural phone wording"
+				}
+			},
+			{
+				"id": "host-summary.null",
+				"state": "invalid",
+				"subject": "hostSummary",
+				"example": "Reject a missing host status",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "hostSummary: Reject a missing host status"
+				}
+			},
+			{
+				"id": "host-summary.missing-devices",
+				"state": "invalid",
+				"subject": "hostSummary",
+				"example": "Reject enabled access without devices",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "hostSummary: Reject enabled access without devices"
 				}
 			},
 			{
@@ -521,6 +551,26 @@
 				}
 			},
 			{
+				"id": "time-left.invalid",
+				"state": "invalid",
+				"subject": "timeLeft",
+				"example": "Render a non-numeric time as NaN text",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "timeLeft: Render a non-numeric time as NaN text"
+				}
+			},
+			{
+				"id": "time-left.null",
+				"state": "invalid",
+				"subject": "timeLeft",
+				"example": "Coerce a null time to zero",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "timeLeft: Coerce a null time to zero"
+				}
+			},
+			{
 				"id": "key-label.identity",
 				"state": "input",
 				"subject": "keyLabel",
@@ -538,6 +588,16 @@
 				"test": {
 					"file": "packages/desktop/test/utils/remote-labels.test.ts",
 					"title": "keyLabel: Leave an empty key blank"
+				}
+			},
+			{
+				"id": "key-label.null",
+				"state": "invalid",
+				"subject": "keyLabel",
+				"example": "Reject a missing key identity",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "keyLabel: Reject a missing key identity"
 				}
 			},
 			{
@@ -591,6 +651,16 @@
 				}
 			},
 			{
+				"id": "grant-label.null",
+				"state": "invalid",
+				"subject": "grantLabel",
+				"example": "Reject a missing grant",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "grantLabel: Reject a missing grant"
+				}
+			},
+			{
 				"id": "grant-summary.single",
 				"state": "boundary",
 				"subject": "grantSummary",
@@ -608,6 +678,26 @@
 				"test": {
 					"file": "packages/desktop/test/utils/remote-labels.test.ts",
 					"title": "grantSummary: Summarize multiple projects with Plan and Change access"
+				}
+			},
+			{
+				"id": "grant-summary.missing-projects",
+				"state": "invalid",
+				"subject": "grantSummary",
+				"example": "Reject a grant without projects",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "grantSummary: Reject a grant without projects"
+				}
+			},
+			{
+				"id": "grant-summary.null-projects",
+				"state": "invalid",
+				"subject": "grantSummary",
+				"example": "Reject a grant with null projects",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "grantSummary: Reject a grant with null projects"
 				}
 			},
 			{
@@ -728,6 +818,16 @@
 				"test": {
 					"file": "packages/desktop/test/utils/remote-labels.test.ts",
 					"title": "remoteLabels: Reject an unknown mobile state"
+				}
+			},
+			{
+				"id": "remote-labels.null",
+				"state": "invalid",
+				"subject": "remoteLabels",
+				"example": "Reject a missing mobile status",
+				"test": {
+					"file": "packages/desktop/test/utils/remote-labels.test.ts",
+					"title": "remoteLabels: Reject a missing mobile status"
 				}
 			}
 		],
@@ -855,6 +955,16 @@
 				}
 			},
 			{
+				"subject": "hostLine",
+				"name": "Reject a missing host status",
+				"call": "hostLine(null)",
+				"input": [null],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of null (reading 'origin')"
+				}
+			},
+			{
 				"subject": "hostSummary",
 				"name": "Turn disabled phone access off",
 				"call": "hostSummary({ enabled: false, devices: [] })",
@@ -947,6 +1057,26 @@
 				}
 			},
 			{
+				"subject": "hostSummary",
+				"name": "Reject a missing host status",
+				"call": "hostSummary(null)",
+				"input": [null],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of null (reading 'enabled')"
+				}
+			},
+			{
+				"subject": "hostSummary",
+				"name": "Reject enabled access without devices",
+				"call": "hostSummary({ enabled: true })",
+				"input": [{ "enabled": true }],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of undefined (reading 'length')"
+				}
+			},
+			{
 				"subject": "timeLeft",
 				"name": "Format whole minutes with zero seconds",
 				"call": "timeLeft(240000)",
@@ -997,6 +1127,26 @@
 				}
 			},
 			{
+				"subject": "timeLeft",
+				"name": "Render a non-numeric time as NaN text",
+				"call": "timeLeft(\"not-a-time\")",
+				"input": ["not-a-time"],
+				"expected": {
+					"kind": "value",
+					"value": "NaN:NaN"
+				}
+			},
+			{
+				"subject": "timeLeft",
+				"name": "Coerce a null time to zero",
+				"call": "timeLeft(null)",
+				"input": [null],
+				"expected": {
+					"kind": "value",
+					"value": "0:00"
+				}
+			},
+			{
 				"subject": "keyLabel",
 				"name": "Group the first twelve identity characters",
 				"call": "keyLabel(\"4f2a91c07b3e\" + \"d\".repeat(28))",
@@ -1014,6 +1164,16 @@
 				"expected": {
 					"kind": "value",
 					"value": ""
+				}
+			},
+			{
+				"subject": "keyLabel",
+				"name": "Reject a missing key identity",
+				"call": "keyLabel(null)",
+				"input": [null],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of null (reading 'slice')"
 				}
 			},
 			{
@@ -1067,6 +1227,16 @@
 				}
 			},
 			{
+				"subject": "grantLabel",
+				"name": "Reject a missing grant",
+				"call": "grantLabel(null)",
+				"input": [null],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of null (reading 'comments')"
+				}
+			},
+			{
 				"subject": "grantSummary",
 				"name": "Summarize one project with read-and-comment access",
 				"call": "grantSummary({ projects: [{}], agents: false })",
@@ -1084,6 +1254,26 @@
 				"expected": {
 					"kind": "value",
 					"value": "2 projects · Plan and Change allowed"
+				}
+			},
+			{
+				"subject": "grantSummary",
+				"name": "Reject a grant without projects",
+				"call": "grantSummary({ agents: false })",
+				"input": [{ "agents": false }],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of undefined (reading 'length')"
+				}
+			},
+			{
+				"subject": "grantSummary",
+				"name": "Reject a grant with null projects",
+				"call": "grantSummary({ projects: null, agents: false })",
+				"input": [{ "projects": null, "agents": false }],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of null (reading 'length')"
 				}
 			},
 			{
@@ -1285,6 +1475,16 @@
 				"expected": {
 					"kind": "error",
 					"value": "words[status.state] is not a function"
+				}
+			},
+			{
+				"subject": "remoteLabels",
+				"name": "Reject a missing mobile status",
+				"call": "remoteLabels(null)",
+				"input": [null],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of null (reading 'state')"
 				}
 			}
 		]
