@@ -1,8 +1,7 @@
-/**
- * Builds the fixed synthetic history the /harness browser acceptance inspects: a throwaway Git
+/** Builds the fixed synthetic history the /harness browser acceptance inspects: a throwaway Git
  * repository with a shared function, a service, a page scenario at three viewports and an audio
- * scenario, verified commit by commit through the real CLI. Nothing here touches this
- * repository's own refs. The audio is a generated tone and its transcript says so.
+ * scenario, verified through the real CLI without touching this repository's own refs.
+ * The audio is a generated tone and its transcript says so.
  */
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';

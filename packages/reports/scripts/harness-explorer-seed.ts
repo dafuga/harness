@@ -1,5 +1,4 @@
-/**
- * Adds a synthetic graph, a config and two scenarios. They capture components at three
+/** Adds a synthetic graph, a config and two scenarios. They capture components at three
  * viewports and record function inputs, results and assertions.
  */
 import type { VerifyRepo } from '../../../test/support/verifyRepo';

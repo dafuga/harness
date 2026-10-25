@@ -189,7 +189,6 @@ test('the history of an entity lists the commits behind the shown one, with grow
 }) => {
 	await page.goto(main(`functions/${units.slugify}/history`));
 	await checkpoint(page, 'evidence-history');
-	// A row of the table is the one that names the commit in a cell of its own.
 	const rows = content(page).locator('tbody tr');
 	const of = (sha: string) => rows.filter({ has: page.getByText(short(sha), { exact: true }) });
 	await expect(of(commits.grown).first()).toContainText('Budget increase approved');

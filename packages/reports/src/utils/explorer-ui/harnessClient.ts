@@ -58,7 +58,6 @@ function reading(base: string, fetcher: typeof fetch): HarnessClient {
 						`Incomplete module data: ${coverage.errors.join(' ')} Run harness validate --write.`
 					);
 				}
-
 				const failure = metadata.committed
 					? formatModuleDataFailure(metadata)
 					: 'Missing committed module data. Run harness validate --write.';
