@@ -1,0 +1,46 @@
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run --exclude "test/**/*.e2e.test.ts" --exclude "test/packaged-reports.e2e.test.ts" "$@"' -- test/services/verification-evidence/test-discovery.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0GO3vn
+
+ ❯ test/services/verification-evidence/test-discovery.test.ts (2 tests | 1 failed) 16ms
+   × scan initialized source finds imported cases, aliases and computed registration 8ms
+     → expected [ [ 'ready', false, false ], …(3) ] to deeply equal [ [ 'ready', false, false ], …(3) ]
+   ✓ discover initialized and unreadable sources retain explicit discovery gaps 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-discovery.test.ts > scan initialized source finds imported cases, aliases and computed registration
+AssertionError: expected [ [ 'ready', false, false ], …(3) ] to deeply equal [ [ 'ready', false, false ], …(3) ]
+
+- Expected
++ Received
+
+@@ -15,8 +15,8 @@
+      false,
+    ],
+    [
+      "expected failure",
+      false,
+-     true,
++     false,
+    ],
+  ]
+
+ ❯ test/services/verification-evidence/test-discovery.test.ts:10:73
+      8|   'test/service.test.ts'
+      9|  );
+     10|  expect(found.map((item) => [item.title, item.dynamic, item.disabled])…
+       |                                                                         ^
+     11|   ['ready', false, false],
+     12|   ['missing', false, true],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  16:01:29
+   Duration  2.57s (transform 70ms, setup 89ms, collect 153ms, tests 16ms, environment 0ms, prepare 21ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1
