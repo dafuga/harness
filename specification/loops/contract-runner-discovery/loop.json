@@ -2,11 +2,9 @@
 	"name": "contract-runner-discovery",
 	"goal": "Discover exact runner case identities and inherited disabled state without inventing group tests",
 	"createdAt": "2026-10-25T14:40:57.206Z",
-	"updatedAt": "2026-10-25T14:51:16.366Z",
+	"updatedAt": "2026-10-25T14:52:48.531Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T14:52:48.531Z",
+			"evidence": "Paired immutable proof passes at dc1e7d5710 after the same two-test suite failed at3479a7da01. Test corpus, command and runtime profile are unchanged."
 		},
 		{
 			"id": "verify",

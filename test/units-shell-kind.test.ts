@@ -7,9 +7,13 @@ import { unitProject } from './support/unitProject';
 test('a declared shell kind survives reindexing under the same id, and new components stay components', async () => {
 	const project = await unitProject('app');
 	await project.harness(['generate', 'component', 'AppFrame']);
+	expect(await project.read('src/routes/__harness/components/app-frame/+page.svelte')).toContain(
+		'@harness-tier page'
+	);
 	await project.harness(['units', 'index', '--write']);
 	const listed = async () => (await readdir(join(project.root, 'specification/units'))).sort();
 	const before = await listed();
+	expect(before.filter((path) => path.includes('harness-components'))).toEqual([]);
 	const file = before.find((name) => name.includes('app-frame'));
 	expect(file).toBeDefined();
 	const path = `specification/units/${file}`;
