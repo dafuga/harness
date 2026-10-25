@@ -7,7 +7,6 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { runHarness } from '../cli';
-
 export const projectId = '22222222-2222-4222-8222-222222222222';
 export const requestId = '8775318f-d765-4e78-9d40-6cb92e1f6b11';
 export const commit = 'a'.repeat(40);

@@ -12,4 +12,24 @@ test('formatModuleDataFailure describes complete, scoped missing and unknown mod
 		`Incomplete module data for ${complete.commit}. Run harness validate --commit ${complete.commit} --json. Missing source`
 	);
 	expect(incomplete.issues).toEqual(['Missing source']);
+	const module = {
+		id: 'page.orders',
+		kind: 'page',
+		category: 'pages',
+		issues: [
+			{
+				kind: 'evidence' as const,
+				field: 'screenshots.desktop',
+				message: 'Missing image.',
+				repair: 'Capture it.'
+			}
+		]
+	};
+	expect(formatModuleDataFailure({ ...complete, modules: [module] })).toBeNull();
+	expect(
+		formatModuleDataFailure({
+			...complete,
+			modules: [{ ...module, issues: [{ ...module.issues[0], kind: 'metadata' as const }] }]
+		})
+	).toContain('page.orders: screenshots.desktop');
 });
