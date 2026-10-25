@@ -148,3 +148,45 @@ function validationInvoker(project: Awaited<ReturnType<typeof unitProject>>) {
 		return { ...JSON.parse(result.stdout), exitCode: result.exitCode };
 	};
 }
+
+// Historical source layout is preserved; data admission must still demand owned source and examples.
+test('historical helper layout does not masquerade as missing module metadata', async () => {
+	const project = await unitProject('lib');
+	const git = (args: string[]) => runCommand(['git', ...args], project.root);
+	try {
+		await git(['init', '-b', 'main']);
+		await configureTestAuthor(project.root);
+		await project.write('src/utils/slugify.ts', '/** @pure */\n' + slugifySource);
+		await project.harness(['units', 'index', '--write']);
+		const path = 'specification/units/function.slugify.json';
+		const manifest = await project.json<Record<string, unknown>>(path);
+		manifest.helperContracts = [
+			{
+				name: 'slugify',
+				source: 'src/utils/slugify.ts',
+				inputs: [{ name: 'input', type: 'string' }],
+				output: 'string',
+				pure: true,
+				consumers: [],
+				examples: [
+					{
+						name: 'Normalize a title',
+						call: 'slugify("Hello World")',
+						input: ['Hello World'],
+						output: 'hello-world'
+					}
+				]
+			}
+		];
+		await project.write(path, JSON.stringify(manifest));
+		await git(['add', '.']);
+		await git(['commit', '-m', 'feat: retain historical helper source']);
+		const report = await validationInvoker(project)(['--write', '--module', 'function.slugify']);
+		expect(report.valid, JSON.stringify(report.modules)).toBe(true);
+		expect(report.modules[0].issues.filter((issue) => issue.kind !== 'evidence')).toEqual([]);
+		const audit = await project.harness(['units', 'check'], false);
+		expect(audit.stdout + audit.stderr).toContain('must be implemented under src/helpers/');
+	} finally {
+		await rm(join(project.root, '..'), { recursive: true, force: true });
+	}
+}, 180_000);
