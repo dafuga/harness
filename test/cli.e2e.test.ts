@@ -197,3 +197,28 @@ async function waitForUrl(url: string): Promise<void> {
 
 	throw new Error(`Timed out waiting for ${url}`);
 }
+
+test('CLI installs module foundations and generates their declared resources', async () => {
+	const root = await mkdtemp(join(tmpdir(), 'harness-cli-modules-'));
+	try {
+		await runHarness(['new', 'app', 'module-app'], root);
+		const project = join(root, 'module-app');
+		await sqliteRuntimePackage(project);
+		await runHarness(['module', 'add', 'email'], project);
+		await runHarness(['module', 'add', 'offline'], project);
+		await runHarness(['module', 'generate', 'email', 'email', 'Welcome'], project);
+		await runHarness(['module', 'generate', 'offline', 'collection', 'Notes'], project);
+		const catalog = await runHarness(['module', 'list', '--json'], project);
+		expect(
+			JSON.parse(catalog.stdout).modules.filter((entry: { installed: boolean }) => entry.installed)
+		).toHaveLength(2);
+		const repeated = await runHarness(['module', 'add', 'email'], project);
+		expect(repeated.stdout).toContain('already installed');
+		await runCommand(['bun', 'install'], project);
+		await runCommand(['bun', 'run', 'format'], project);
+		const check = await runCommand(['bun', 'run', 'check'], project);
+		expect(check.stdout + check.stderr).toContain('Harness audit passed');
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+}, 180_000);
