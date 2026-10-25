@@ -98,10 +98,9 @@ async function assertRustBrowser(project: string): Promise<void> {
 			});
 		});
 		await page.goto('http://rust-module.fixture/');
-		const total = await page.evaluate(async (moduleUrl) => {
-			const { MetricsWasmService } = await import(moduleUrl);
-			return new MetricsWasmService('/metrics.wasm').sumSquares(4);
-		}, '/service.js');
+		const total = await page.evaluate<number>(
+			"(async () => { const { MetricsWasmService } = await import('/service.js'); return new MetricsWasmService('/metrics.wasm').sumSquares(4); })()"
+		);
 		expect(total).toBe(14);
 		await errors.finish();
 	} finally {
