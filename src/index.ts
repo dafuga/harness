@@ -212,3 +212,4 @@ export { standardCodeModules } from './templates/module-system/standardCodeModul
 export { rustWasmModule } from './templates/module-system/rustWasmModule';
 export { rustBackendModule } from './templates/module-system/rustBackendModule';
 export { moduleResourceLocation } from './helpers/module-system/moduleResourceLocation';
+export { PermissionCatalogService } from './services/networking-security/PermissionCatalogService';
