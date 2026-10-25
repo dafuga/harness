@@ -1680,7 +1680,7 @@
 			},
 			"sourceCommit": "77fb497a3053aa1ada14c498718d2f80ac4af7c1",
 			"contractHash": "55f1ad99f4a55051effe8b5f4cb3e5bbf7c197cf322ee88299131e6ac7a8712b",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T14:38:32.262Z",
 			"claim": {
@@ -1694,6 +1694,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The `reports.function.evidence-media` migration is finished in this worktree, but nothing is committed. The focused Vitest file passes 17 of 17. No product source changed, and I found no defect in the three functions.\n\n**Files**\n- `packages/reports/test/utils/evidence-media.test.ts` (modified): registers the cases through `TestExpectationService.registerExamples` from the proposal JSON. The `reportFilter` test is kept verbatim.\n- `test/fixtures/contract-migration/evidence-examples.json` (new): the full proposed manifest. Its only new field is `testing`. Every other field deep-equals `specification/units/reports.function.evidence-media.json`.\n- Unchanged: `formatDuration.ts`, `utils/evidenceMedia.ts`, `utils/verification-evidence/evidenceMedia.ts`.\n\n**Counts**\n- Registered tests in the file: 2 before, 17 after (16 unit cases plus the preserved `reportFilter` test).\n- Declared cases: 0 before, 16 after, with states `input`, `boundary` and `invalid`. formatDuration has 3 canonical helper cases and 6 testing cases. mediaMime has 3 and evidenceMedia has 4.\n\n**Coverage**\nAll 14 `expect` statements in the old unit test are kept:\n- 12 are cases: the png, wav and data:audio checks, the m4a MIME check, and the 8 formatDuration table rows.\n- 2 are the export checks (`formatDuration` present, `audioDuration` absent). They run inside every formatDuration case, with the original message.\n\nFour cases are additions. One is `formatDuration(90.9)`, which the canonical helper contract requires. The other three are declared behaviours the old test didn't cover: mediaMime case-insensitivity, the octet-stream fallback, and evidenceMedia's explicit `mediaType`. Drop them if you want no new coverage.\n\n**Design choices (redirect if you disagree)**\n- The three canonical helper examples stay in `helperContracts`, unchanged. The extra formatDuration rows sit in `testing.examples`, so repeated blank results don't reach the helper docs. A prior loop flagged those repetitions.\n- JSON can't carry NaN or Infinity. They are stored as `{ \"nonFinite\": \"NaN\" }` and decoded in the test adapter. `undefined` is a zero-argument call (`input: []`).\n- No `error` or `void` examples. The unit declares no errors. The only throw is a TypeError on a non-string filename, which is undeclared and engine-specific, so I didn't pin it.\n\n**Verification performed**\n- Focused Vitest: `packages/reports/test/utils/evidence-media.test.ts` passes 17 of 17. This worktree has no `node_modules`, and I didn't install anything. I ran the vitest binary from the main checkout, which module resolution reaches from here. The run prints a non-fatal warning about missing `.svelte-kit/tsconfig.json`.\n- Probe at `/tmp/evidence-media-migration/probe.ts`, outside the repo, using the real modules:\n  - the real `componentManifestSchema` accepts both the proposal and the spec;\n  - the real `TestCaseValidator` accepts the testing block;\n  - all 16 examples pass against the real helpers;\n  - a deliberately wrong expectation fails with \"Example output differs from its comment\";\n  - discovery reports no errors.\n- `prettier --check` passes on both changed files.\n\n**Not run or blocked**\n- Harness activity: `bun src/index.ts info activity` fails with `Cannot find module '@electron/asar'`, so I could not register activity. This needs an install, which I didn't do.\n- Not run: typecheck, lint, `units check`, `readable-unit-contracts`, `harness audit`, the unit-index guard, `bun run check`, and browser or E2E tests. The `manifest as ComponentManifest` cast is unchecked by tsc.\n- Measurements: no executable source changed, so I added no workload. Primary should collect source measures at the committed tree.\n- No commits, and no app thread, run or approval was created.\n\n**Remaining gaps for primary**\n1. `search finds audio transcript and source` belongs to `reports.function.report-filter`, which has no `testing` block. Nothing claims it, so it becomes an orphan error once discovery is enabled.\n2. Module-page docs: when a unit has no documentation path, `hydrateUnitDocumentation` shows its `testing.examples` as usage docs (`src/services/explorer-ui/revision-detail-service/unitDocumentation.ts:18-21`, called from `unitMetadata.ts:77`). So the 13 test-only rows would appear on the module page, including the `nonFinite` inputs. The three canonical helper examples would not. This needs a decision: add a documentation path, narrow the rule, or accept it.\n3. NaN and Infinity need formal schema support in the example input, or those two rows should be dropped.\n4. The export checks run inside the formatDuration adapter. A dedicated export contract might be cleaner.\n5. `formatDuration(90)` and `formatDuration(90.9)` both return `1:30`. I kept the first because it's an existing assertion.\n6. Promotion: change the test import to the `specification/units` path. Duplicate `owns.symbols` entries carry over unchanged. Audit may not catalogue `test/fixtures`; if it rejects it, move the file to `test/support`. Other tests that reference this unit (`module-groups.test.ts:99`, `corrected-location.test.ts`, `explorer-name.test.ts:128`) are outside my files and unchanged.\n7. Loop: `duration-formatter-naming` still has its verification step pending. Its frozen commits (213ae47f, 741c2b5e) are untouched, but the current test body differs.\n8. Decide whether the missing-filename TypeError should become a declared error.\n\n**Change links**\n- Changed unit: `reports.function.evidence-media` (function, `functions` category). History path: `functions/reports.function.evidence-media/history`. I couldn't open the live explorer, so this is a route pattern, not a verified link. The change is not on main.\n- Dependency checked, not edited: `reports.function.report-filter` (owns `reportFilter.ts`).\n- Consumers, not edited: `reports.component.audio-comparison`, `audio-evidence` and `replay-controls`.\n- No explorer page: the test file and the fixture JSON, linked by source path above.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/955c1f27-a7b8-415f-a32b-637dad27d9e8",
+				"changedFiles": [
+					"packages/reports/test/utils/evidence-media.test.ts",
+					"test/fixtures/contract-migration/evidence-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T14:52:12.279Z",
+				"attempt": "955c1f27-a7b8-415f-a32b-637dad27d9e8",
+				"sourceCommit": "77fb497a3053aa1ada14c498718d2f80ac4af7c1",
+				"checkpointCommit": "a83d35f6d0a86dee28ba16ce8f5d0e468a689889",
+				"usage": {
+					"inputTokens": 7364184,
+					"outputTokens": 182015,
+					"cacheReadTokens": 7083386,
+					"cacheWriteTokens": 280718,
+					"cacheWriteLongTokens": 280718,
+					"reportedCostUsd": 0.91176824,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 7364184,
+							"outputTokens": 182015,
+							"cacheReadTokens": 7083386,
+							"cacheWriteTokens": 280718,
+							"cacheWriteLongTokens": 280718,
+							"reportedCostUsd": 0.91176824,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.91176824,
+							"minimumUsd": 0.91176824,
+							"maximumUsd": 0.91176824,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T14:38:38.834Z",
+						"finishedAt": "2026-10-25T14:52:12.086Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
