@@ -20,6 +20,7 @@ const at = 'reports.page.harness-branch-branch-at-';
 const part = 'reports.component.harness-';
 const categories = [
 	'pages',
+	'apis',
 	'layouts',
 	'components',
 	'functions',
@@ -28,10 +29,19 @@ const categories = [
 	'models',
 	'types'
 ];
-// What a unit is made of: the shells it mounts and the components it holds.
+// Direct registered composition, before catalog folding or transitive relationship projection.
 const drawn = (id: string) => {
-	const { layouts, components } = explorerRelations(head, id);
-	return [...layouts, ...components].map((item) => item.id.replace(part, '')).sort();
+	const source = units.find((unit) => unit.id === id)!;
+	return source.dependencies
+		.flatMap(({ unit: dependency }) => {
+			const target = units.find((unit) => unit.id === dependency);
+			return target &&
+				['component', 'layout', 'shell', 'partial'].includes(target.kind) &&
+				target.composition?.level !== 'atom'
+				? [dependency.replace(part, '')]
+				: [];
+		})
+		.sort();
 };
 const statesOf = (id: string) => scenarioFor(scenario, id, units).states.map((state) => state.id);
 const pagesOf = (id: string) =>
@@ -42,6 +52,7 @@ const pagesOf = (id: string) =>
 test('the registry records each page as made of the host and the one screen it mounts', () => {
 	const overview: Record<string, string> = {
 		pages: 'entity-visual-screen',
+		apis: 'entity-behavior-screen',
 		layouts: 'entity-visual-screen',
 		components: 'entity-visual-screen',
 		functions: 'entity-behavior-screen',
@@ -52,37 +63,32 @@ test('the registry records each page as made of the host and the one screen it m
 	};
 	for (const category of categories) {
 		const catalog = category === 'pages' ? 'explorer-pages-screen' : 'explorer-catalog-screen';
-		expect([category, drawn(at + category)]).toEqual([
-			category,
-			[catalog, 'reports.layout.root', 'screen']
-		]);
+		expect([category, drawn(at + category)]).toEqual([category, [catalog, 'screen']]);
 		expect([category, drawn(`${at}${category}-entity`)]).toEqual([
 			category,
-			[overview[category], 'reports.layout.root', 'screen'].sort()
+			[overview[category], 'screen'].sort()
 		]);
-		expect([category, drawn(`${at}${category}-entity-details`)]).toEqual([
-			category,
-			['entity-details-screen', 'reports.layout.root', 'screen']
-		]);
+		if (category !== 'apis')
+			expect([category, drawn(`${at}${category}-entity-details`)]).toEqual([
+				category,
+				['entity-details-screen', 'screen']
+			]);
 		expect([category, drawn(`${at}${category}-entity-history`)]).toEqual([
 			category,
-			['entity-history-screen', 'reports.layout.root', 'screen']
+			['entity-history-screen', 'screen']
 		]);
 	}
 });
 
 test('the host uses shared frame pieces, and only the page of no screen names every screen', () => {
+	expect(drawn('reports.layout.root')).toEqual(['reports.component.console-chat']);
 	expect(drawn(`${part}screen`)).toEqual(['harness-console']);
 	expect(drawn(`${part}harness-console`)).toEqual([
 		'reports.component.shared-primitives-loading-state',
 		'reports.layout.explorer-layout'
 	]);
 	expect(drawn('reports.layout.explorer-layout')).toEqual(['harness-header']);
-	expect(drawn('reports.page.harness-view')).toEqual([
-		'explorer-content',
-		'reports.layout.root',
-		'screen'
-	]);
+	expect(drawn('reports.page.harness-view')).toEqual(['explorer-content', 'screen']);
 	const users = units.filter((unit) =>
 		unit.dependencies.some((used) => used.unit === `${part}explorer-content`)
 	);
@@ -109,7 +115,11 @@ test('a screen is recorded on the pages that mount it and on no other route page
 		'layouts-entity',
 		'pages-entity'
 	]);
-	expect(routed(`${part}entity-behavior-screen`)).toEqual(['functions-entity', 'services-entity']);
+	expect(routed(`${part}entity-behavior-screen`)).toEqual([
+		'apis-entity',
+		'functions-entity',
+		'services-entity'
+	]);
 	expect(routed(`${part}entity-history-screen`)).toEqual(
 		entity.map((page) => `${page}-history`).sort()
 	);
@@ -119,7 +129,10 @@ test('a screen is recorded on the pages that mount it and on no other route page
 		.map((item) => item.id.replace(at, ''))
 		.sort();
 	expect(aliases).toEqual(
-		[...entity.map((page) => `${page}-details`), 'shells-entity-details'].sort()
+		[
+			...entity.filter((page) => page !== 'apis-entity').map((page) => `${page}-details`),
+			'shells-entity-details'
+		].sort()
 	);
 });
 
