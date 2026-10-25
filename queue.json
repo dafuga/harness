@@ -4219,7 +4219,7 @@
 			},
 			"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
 			"contractHash": "6e5ca0f5596f00463faf7baf7185918e2ae9c84f1efbe9c67b0265f3d84faa23",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:00:26.701Z",
 			"claim": {
@@ -4233,6 +4233,61 @@
 				}
 			},
 			"claimHistory": [],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The two files are written for review. Nothing is committed, and I ran only read-only checks. The Vitest run, TypeScript compile, Prettier, `units check`, and the audit are still open.\n\n**Changed**\n- `packages/relay/test/utils/is-record.test.ts` (34 lines): the two `test()` blocks are replaced by one `registerExamples(test, unit as ComponentManifest, { isRecord: invokeIsRecord })` call. The import from `../../src/utils/isRecord`, the public forwarding entry, is kept. `reconstructArgument` rebuilds the four values JSON cannot carry.\n- `test/fixtures/contract-migration/relay-is-record-examples.json` (new directory): a full copy of `specification/units/relay.function.is-record.json` with a `testing` block added between `scenarios` and `budgets`. Shape is `helper`, states are `input`/`boundary`/`invalid` (the same vocabulary as the other helper units), prop is `value`. There are 17 examples and 17 cases, and no `helperContracts` exist.\n\n**Coverage**\n- All 13 original inputs are kept, in their original order. Three are accepted (`{}`, `{ type, ok }`, null-prototype). Ten are refused (`null`, `undefined`, `[]`, `[{}]`, `'text'`, `''`, `0`, `7`, `true`, `false`).\n- Four additions come from the contract's output text, not from running the code: a record whose properties include null and an array, an array-like non-array, a symbol, and a bigint.\n- State counts are input 2, boundary 6, invalid 9. The registered test count goes from 2 to 17.\n- There are no error Examples. `isRecord` does not throw on any covered input, and `contract.errors` is `[]`, so I did not invent one.\n- Markers are `{\"$fixture\": \"undefined\" | \"null-prototype\" | \"symbol\" | \"bigint\"}` with `description` or `value` fields. Each `call` shows the rebuilt invocation, such as `isRecord(Symbol('record'))`. The repo had no earlier marker convention.\n\n**Verified (read-only)**\n- The fixture parses, and every non-`testing` field equals the spec.\n- Example names and calls are unique. Each example maps to exactly one case titled `isRecord: <name>`, and there are no orphan cases. Every state and the prop are covered, and all 13 original inputs appear.\n- All imported paths exist. Indentation uses tabs with no trailing whitespace. Only the two import lines exceed 100 columns, which matches the repo's existing long JSON imports.\n\n**Not verified**: the Vitest run, TypeScript compile, Prettier, `units check`, `bun run check`, and `harness audit`. The admission rules were checked only by reading `testContractSchema` and `TestCaseValidator`.\n\n**Open items for you**\n1. `owns.symbols` lists `isRecord` twice. I did not change it.\n2. A possible missing declared error: `Array.isArray` throws a TypeError for a revoked Proxy. This follows from the ECMAScript IsArray rule, and I did not execute it. The message is engine-specific, so I added no Example. The error needs a decision.\n3. The doc comment says \"JSON object\", but the output text and the implementation accept any non-null, non-array object, such as Date, Map, class instances, and typed arrays. The Examples follow the output text. This needs a decision.\n4. Functions and NaN/Infinity are not covered. Functions are ambiguous under the contract, and NaN is a repeat of the number category.\n5. `budgets.performance` is empty and I added no measured workload. The measurement rules in AGENTS.md may require one.\n6. If you move the fixture into `specification/units/`, update the import path in the test in the same change.\n7. The marker reconstruction lives in the test file. If other units need Headers, Request, RegExp, ArrayBuffer, or streams, it should move into a shared support module as a separate change.\n8. The examples schema has no description field, so state descriptions live in the titles, and the marker rationale is in the JSDoc.\n\n**Harness**: activity `dae0a760-5548-4ee4-ab6b-99ed94526bbb` was registered, heartbeated, and finished as handed off for review.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/b5c5b0f3-cd39-48fd-a0ea-5ed04669f145",
+				"changedFiles": [
+					"packages/relay/test/utils/is-record.test.ts",
+					"test/fixtures/contract-migration/relay-is-record-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-25T18:08:18.918Z",
+				"attempt": "b5c5b0f3-cd39-48fd-a0ea-5ed04669f145",
+				"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
+				"checkpointCommit": "a329cbb495c822a49f73abb4488e2209f54d3cc9",
+				"usage": {
+					"inputTokens": 3066864,
+					"outputTokens": 116465,
+					"cacheReadTokens": 2894869,
+					"cacheWriteTokens": 171935,
+					"cacheWriteLongTokens": 171935,
+					"reportedCostUsd": 0.40621207000000004,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 3066864,
+							"outputTokens": 116465,
+							"cacheReadTokens": 2894869,
+							"cacheWriteTokens": 171935,
+							"cacheWriteLongTokens": 171935,
+							"reportedCostUsd": 0.40621207000000004,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.40621207000000004,
+							"minimumUsd": 0.40621207000000004,
+							"maximumUsd": 0.40621207000000004,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-25T18:00:50.043Z",
+						"finishedAt": "2026-10-25T18:08:18.795Z"
+					}
+				]
+			},
 			"attempts": []
 		},
 		{
