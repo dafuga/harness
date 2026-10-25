@@ -3,7 +3,7 @@ import { formatModuleDataFailure } from '../../../src/helpers/git-source-history
 
 test('formatModuleDataFailure describes complete, scoped missing and unknown module data', () => {
 	const complete = { commit: 'a'.repeat(40), modules: [], issues: [] };
-	expect(formatModuleDataFailure(complete)).toBeUndefined();
+	expect(formatModuleDataFailure(complete)).toBeNull();
 	expect(formatModuleDataFailure(complete, 'page.orders')).toBe(
 		`Incomplete module data for ${complete.commit}. Run harness validate --module page.orders --commit ${complete.commit} --json. Unknown module: page.orders`
 	);

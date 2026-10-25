@@ -1,5 +1,8 @@
 import { expect, test } from 'vitest';
-import type { ModuleValidation } from '../../../../src/services/git-source-history/ModuleDataService.types';
+import type {
+	ModuleRelationships,
+	ModuleValidation
+} from '../../../../src/services/git-source-history/ModuleDataService.types';
 import { explorerRelations } from '../../src/utils/explorerRelations';
 import { harnessClient } from '../../src/utils/explorer-ui/harnessClient';
 import { revision, unit } from '../explorerFixture';
@@ -36,8 +39,16 @@ function stored() {
 			commit: head.commit,
 			digest: 'a'.repeat(64),
 			issues: [],
-			modules: [] as ModuleValidation[],
-			relationships: { 'page.orders': { ...empty } }
+			modules: head.registry.units.map((unit) => ({
+				id: unit.id,
+				kind: unit.kind,
+				category: null,
+				issues: []
+			})) as ModuleValidation[],
+			relationships: { 'page.orders': { ...empty }, 'endpoint.orders': { ...empty } } as Record<
+				string,
+				ModuleRelationships
+			>
 		}
 	});
 }
@@ -47,22 +58,23 @@ test('relationship readers use committed empty results without searching the sou
 });
 test('required missing relationships fail instead of silently recomputing them', () => {
 	const head = stored();
+	delete head.moduleData.relationships['endpoint.orders'];
 	expect(() => explorerRelations(head, 'endpoint.orders')).toThrow(
 		'Missing committed relationships'
 	);
 });
 test('the app refuses incomplete committed metadata and exposes the exact module and field', async () => {
 	const head = stored();
-	head.moduleData.modules = [
-		{
-			id: 'page.orders',
-			kind: 'page',
-			category: 'pages',
-			issues: [
-				{ field: 'contract.inputs', message: 'Missing inputs', repair: 'Commit the contract' }
-			]
-		}
-	];
+	head.moduleData.modules = head.moduleData.modules.map((module) =>
+		module.id === 'page.orders'
+			? {
+					...module,
+					issues: [
+						{ field: 'contract.inputs', message: 'Missing inputs', repair: 'Commit the contract' }
+					]
+				}
+			: module
+	);
 	const client = harnessClient('/fixture', respond(head));
 	await expect(client.revision(head.commit)).rejects.toThrow('page.orders: contract.inputs');
 });
@@ -96,4 +108,12 @@ test('an incomplete report is reloaded after a committed repair rather than cach
 	await expect(client.revision(head.commit)).rejects.toThrow('Missing committed module data');
 	committed = true;
 	await expect(client.revision(head.commit)).resolves.toMatchObject({ commit: head.commit });
+});
+
+test('the app rejects a re-sealed snapshot that omits a module report', async () => {
+	const head = stored();
+	head.moduleData.modules = [];
+	await expect(harnessClient('/omitted', respond(head)).revision(head.commit)).rejects.toThrow(
+		'missing validation report'
+	);
 });
