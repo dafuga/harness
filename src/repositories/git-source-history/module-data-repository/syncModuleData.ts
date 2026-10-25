@@ -74,11 +74,8 @@ async function mergedFiles(
 }
 
 async function shouldReplace(tree: EvidenceTreeAdapter, input: ModulePathConflict) {
-	const { ours, theirs, path, held, blob, base } = input;
-	if (path.startsWith('modules/')) {
-		const prefer = held === base ? true : blob === base ? false : undefined;
-		return preferReviewedModule(tree, ours, theirs, path, prefer);
-	}
+	const { path, held, blob, base } = input;
+	if (path.startsWith('modules/')) return preferReviewedModule(tree, input);
 	if (!path.startsWith('reviews/')) conflict(path);
 	if (blob === base) return false;
 	if (held !== base) conflict(path);
@@ -86,13 +83,8 @@ async function shouldReplace(tree: EvidenceTreeAdapter, input: ModulePathConflic
 }
 
 /** Lookup aliases may advance after authoring. Immutable digest paths retain every version. */
-async function preferReviewedModule(
-	tree: EvidenceTreeAdapter,
-	ours: string,
-	theirs: string,
-	path: string,
-	preferIncoming?: boolean
-) {
+async function preferReviewedModule(tree: EvidenceTreeAdapter, input: ModulePathConflict) {
+	const { ours, theirs, path } = input;
 	const read = async (commit: string) =>
 		JSON.parse((await tree.read(commit, path))!.toString()) as ModuleData;
 	const [local, remote] = await Promise.all([read(ours), read(theirs)]);
@@ -100,7 +92,8 @@ async function preferReviewedModule(
 	const incoming = new Set((remote.reviews ?? []).map((review) => review.digest));
 	if (held.size === incoming.size && [...held].every((digest) => incoming.has(digest)))
 		conflict(path);
-	if (preferIncoming !== undefined) return preferIncoming;
+	if (input.held === input.base) return true;
+	if (input.blob === input.base) return false;
 	if ([...held].every((digest) => incoming.has(digest))) return true;
 	// Divergent, disjoint reviews are retained by the reviews/ union. Neither alias then
 	// passes review-vector admission until validate rebuilds their combined declaration.
