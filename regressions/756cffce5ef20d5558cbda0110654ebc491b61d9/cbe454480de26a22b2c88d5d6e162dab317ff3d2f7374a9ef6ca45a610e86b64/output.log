@@ -1,0 +1,32 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9nOc2G
+
+ ❯ test/services/module-system/module-catalog.test.ts (6 tests | 1 failed | 5 skipped) 24ms
+   ↓ module library exposes Email and Offline with instructions and resource generators
+   ↓ installing modules enables resource generation without replacing existing source
+   ↓ projects define a resource generator once and the catalog discovers it
+   ↓ module admission rejects invalid definitions, collisions and escaping output paths
+   ↓ included modules expose every existing Code catalog through the module contract
+   × included and project modules use declared catalogs and real scaffold generation 19ms
+     → expected [ 'Invoice.ts' ] to include 'invoice'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/module-system/module-catalog.test.ts > included and project modules use declared catalogs and real scaffold generation
+AssertionError: expected [ 'Invoice.ts' ] to include 'invoice'
+ ❯ test/services/module-system/module-catalog.test.ts:197:49
+    195|  await generate.generate(root, 'types', 'type', 'Invoice');
+    196|  await generate.generate(root, 'styles', 'style', 'Invoice');
+    197|  expect(await readdir(join(root, 'src/types'))).toContain('invoice');
+       |                                                 ^
+    198|  expect(await readdir(join(root, 'src/styles'))).toContain('invoice');
+    199|  await measureWorkload('service.module-system-module-package', 'declar…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  16:05:30
+   Duration  2.51s (transform 160ms, setup 70ms, collect 358ms, tests 24ms, environment 0ms, prepare 20ms)
+
