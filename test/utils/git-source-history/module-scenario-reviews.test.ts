@@ -56,7 +56,12 @@ test('historical scenario evidence contracts are reviewed without rewriting sour
 			scenarios: [{ id: 'title-lifecycle', evidence: [contract] }]
 		};
 		await project.write('../scenario-review.json', JSON.stringify(requested));
-		const repaired = await invoke(['--write', '--review', review]);
+		const accepted = await project.harness(
+			['validate', '--write', '--review', review, '--json'],
+			false
+		);
+		expect(accepted.exitCode, 'Source-bound scenario reviews must be accepted').toBe(0);
+		const repaired = JSON.parse(accepted.stdout);
 		expect(repaired.valid, JSON.stringify(repaired)).toBe(true);
 		expect(repaired.committed).toBe(true);
 		const repository = new ModuleDataRepository(project.root);
