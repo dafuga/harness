@@ -2,9 +2,11 @@
 	"name": "contract-runner-discovery",
 	"goal": "Discover exact runner case identities and inherited disabled state without inventing group tests",
 	"createdAt": "2026-10-25T14:40:57.206Z",
-	"updatedAt": "2026-10-25T14:41:06.488Z",
+	"updatedAt": "2026-10-25T14:51:16.366Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T14:49:22.225Z",
+			"evidence": "Immutable red proof fails the strengthened existing scan case: nested names are unqualified and describe.skip is incorrectly emitted as a case. Two test declarations remain unchanged."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T14:51:16.366Z",
+			"evidence": "Leaf registrations retain suite-qualified titles and inherited disabled/dynamic flags; group registrations are not invented as tests. The unchanged two-case suite and focused lint pass."
 		},
 		{
 			"id": "green",
