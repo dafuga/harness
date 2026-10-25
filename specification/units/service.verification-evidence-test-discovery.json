@@ -10,7 +10,6 @@
 		"source": [
 			"src/services/verification-evidence/TestDiscoveryService.ts",
 			"src/services/verification-evidence/TestDiscoveryService.types.ts",
-			"src/services/verification-evidence/test-discovery-service/exampleDeclarations.ts",
 			"src/services/verification-evidence/test-discovery-service/runnerDeclarations.ts"
 		],
 		"symbols": [
@@ -21,7 +20,6 @@
 			"TestDiscovery",
 			"DiscoveredTest",
 			"TestDiscovery",
-			"exampleDeclarations",
 			"runnerDeclarations"
 		]
 	},
@@ -43,6 +41,14 @@
 			{
 				"name": "TestDiscoveryService.scan.file",
 				"type": "string"
+			},
+			{
+				"name": "runnerDeclarations.text",
+				"type": "string"
+			},
+			{
+				"name": "runnerDeclarations.file",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -52,6 +58,10 @@
 			},
 			{
 				"name": "TestDiscoveryService.scan",
+				"type": "DiscoveredTest[]"
+			},
+			{
+				"name": "runnerDeclarations",
 				"type": "DiscoveredTest[]"
 			}
 		],

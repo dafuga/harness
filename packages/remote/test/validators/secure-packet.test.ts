@@ -4,19 +4,36 @@ import { SecureFailure } from '../../src/models/RemoteSecure.types';
 import { SecurePacketValidator } from '../../src/validators/SecurePacketValidator';
 import { vectors } from '../support/vectors';
 
-const validator = new SecurePacketValidator(),
-	ephemeralKey = vectors.hostEphemeral.publicKey,
+const ephemeralKey = vectors.hostEphemeral.publicKey,
 	nonce = vectors.hostNonce;
 const hello = { type: 'hello', version: 1, deviceId: vectors.deviceId, ephemeralKey, nonce },
 	accept = { type: 'accept', version: 1, ephemeralKey, nonce, generation: 3 },
 	reject = { type: 'reject', reason: 'revoked' },
 	sealed = { type: 'sealed', counter: 0, more: false, data: vectors.session.packets[0].data };
 
-test('the four packet shapes are accepted exactly', () => {
-	for (const packet of [hello, accept, reject, sealed])
-		expect(validator.packet(packet)).toEqual(packet);
-});
-test('extra fields, other versions and malformed values are refused', () => {
+function expectFailure(run: () => unknown, reason: SecureFailure['reason']): void {
+	try {
+		run();
+	} catch (error) {
+		expect(error).toBeInstanceOf(SecureFailure);
+		expect(error).toMatchObject({
+			name: 'SecureFailure',
+			reason,
+			message: `Secure channel ${reason}`
+		});
+		return;
+	}
+	throw new Error(`Expected SecureFailure(${reason}).`);
+}
+
+test('packet initialized validates secure packet shapes and rejects malformed fields', () => {
+	const validator = new SecurePacketValidator();
+	for (const packet of [hello, accept, reject, sealed]) {
+		const expected = structuredClone(packet);
+		const actual = validator.packet(packet);
+		expect(actual).toBe(packet);
+		expect(actual).toEqual(expected);
+	}
 	const refused: unknown[] = [
 		{ ...hello, version: 2 },
 		{ ...hello, extra: 1 },
@@ -39,10 +56,12 @@ test('extra fields, other versions and malformed values are refused', () => {
 		[sealed],
 		'sealed'
 	];
-	for (const packet of refused) expect(() => validator.packet(packet)).toThrow(SecureFailure);
+	for (const packet of refused) expectFailure(() => validator.packet(packet), 'packet');
 });
-test('a frame is bounded before it is parsed', () => {
+
+test('text initialized bounds frames before parsing and returns parsed packets', () => {
+	const validator = new SecurePacketValidator();
 	expect(validator.text(JSON.stringify(sealed))).toEqual(sealed);
-	expect(() => validator.text('not json')).toThrow(SecureFailure);
-	expect(() => validator.text('x'.repeat(remoteLimits.frameBytes + 1))).toThrow(SecureFailure);
+	expectFailure(() => validator.text('not json'), 'packet');
+	expectFailure(() => validator.text('x'.repeat(remoteLimits.frameBytes + 1)), 'size');
 });

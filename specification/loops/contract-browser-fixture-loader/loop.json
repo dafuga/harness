@@ -2,7 +2,7 @@
 	"name": "contract-browser-fixture-loader",
 	"goal": "Generated shared screenshot fixtures register with Playwright and preserve API-only lazy browser setup",
 	"createdAt": "2026-10-25T14:58:42.064Z",
-	"updatedAt": "2026-10-25T14:58:43.178Z",
+	"updatedAt": "2026-10-25T15:08:46.566Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T15:08:46.017Z",
+			"evidence": "harbor-mbp-2 retained failing proof1b0cef91 at7f636f855c. The same three cases fail before collection on the matchScreenshot positional fixture parameter; no new test declarations were added."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T15:08:46.566Z",
+			"evidence": "Use Playwright-required object destructuring for the fixture dependency parameter. Keep the auto fixture lazy for request-only checks. Preserve the unchanged three-case corpus on isolated proof branch7f636f855c→acde70a28e, then synchronize the root/shared fixture only after paired proof."
 		},
 		{
 			"id": "implement",

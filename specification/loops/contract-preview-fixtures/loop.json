@@ -2,7 +2,7 @@
 	"name": "contract-preview-fixtures",
 	"goal": "Generated test preview routes remain page-tier fixtures without polluting component catalog ownership",
 	"createdAt": "2026-10-25T14:54:32.656Z",
-	"updatedAt": "2026-10-25T14:59:13.983Z",
+	"updatedAt": "2026-10-25T15:09:11.950Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T15:09:10.624Z",
+			"evidence": "Frozen single shell-kind case passes at1441458fdb after failing at30543d87e6. Harness retains its exact command, corpus and runtime profile."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-25T15:09:11.950Z",
+			"evidence": "Independent isolated snapshots reintroduce30543d87e6 and fail the same existing guard, then restore1441458fdb and pass. Failed and passed capture records remain unchanged in Git evidence."
 		},
 		{
 			"id": "verify",
