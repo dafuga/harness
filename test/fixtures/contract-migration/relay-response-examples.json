@@ -1,0 +1,342 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.function.relay-response",
+	"kind": "function",
+	"title": "Relay JSON responses",
+	"responsibility": "Builds standard JSON replies and concise coded failures.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/relay/src/utils/networking-security/relayResponse.ts",
+			"packages/relay/src/utils/relayResponse.ts"
+		],
+		"symbols": ["relayResponse", "relayError", "relayResponse", "relayError"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "relayResponse.status",
+				"type": "number",
+				"description": "HTTP response status."
+			},
+			{
+				"name": "relayResponse.body",
+				"type": "unknown",
+				"description": "JSON-serializable response body."
+			},
+			{
+				"name": "relayResponse.headers",
+				"type": "Record<string, string>",
+				"description": "Optional additional headers, defaulting to empty; supplied keys override the default headers."
+			},
+			{
+				"name": "relayError.status",
+				"type": "number",
+				"description": "HTTP failure status."
+			},
+			{
+				"name": "relayError.error",
+				"type": "RelayErrorCode",
+				"description": "Typed relay error code, serialized as the only body field."
+			},
+			{
+				"name": "relayError.headers",
+				"type": "Record<string, string>",
+				"description": "Optional additional failure-response headers, defaulting to empty."
+			}
+		],
+		"outputs": [
+			{
+				"name": "relayResponse",
+				"type": "Response",
+				"description": "Response containing JSON with default application/json, no-store and nosniff headers."
+			},
+			{
+				"name": "relayError",
+				"type": "Response",
+				"description": "Response containing only the error code object, using the same response/header construction."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/utils/networking-security/relayResponse.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/utils/networking-security/relayResponse.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "relayResponse",
+				"name": "Answer requested JSON with the default relay headers",
+				"call": "relayResponse(202, { state: 'requested' })",
+				"input": [202, { "state": "requested" }],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 202,
+						"headers": {
+							"cache-control": "no-store",
+							"content-type": "application/json",
+							"x-content-type-options": "nosniff"
+						},
+						"body": { "state": "requested" }
+					}
+				}
+			},
+			{
+				"subject": "relayResponse",
+				"name": "Merge extra headers and override a default",
+				"call": "relayResponse(201, { state: 'accepted' }, { 'Cache-Control': 'public, max-age=60', 'X-Relay-Trace': 'trace-1' })",
+				"input": [
+					201,
+					{ "state": "accepted" },
+					{ "Cache-Control": "public, max-age=60", "X-Relay-Trace": "trace-1" }
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 201,
+						"headers": {
+							"cache-control": "public, max-age=60",
+							"content-type": "application/json",
+							"x-content-type-options": "nosniff",
+							"x-relay-trace": "trace-1"
+						},
+						"body": { "state": "accepted" }
+					}
+				}
+			},
+			{
+				"subject": "relayResponse",
+				"name": "Reject a status outside the Response range",
+				"call": "relayResponse(199, { state: 'requested' })",
+				"input": [199, { "state": "requested" }],
+				"expected": {
+					"kind": "error",
+					"value": "init[\"status\"] must be in the range of 200 to 599, inclusive."
+				}
+			},
+			{
+				"subject": "relayResponse",
+				"name": "Reject an omitted JSON body",
+				"call": "relayResponse(202, undefined)",
+				"input": [202],
+				"expected": {
+					"kind": "error",
+					"value": "Unexpected end of JSON input"
+				}
+			},
+			{
+				"subject": "relayResponse",
+				"name": "Reject an invalid header name",
+				"call": "relayResponse(202, { state: 'requested' }, { 'Bad Header': 'x' })",
+				"input": [202, { "state": "requested" }, { "Bad Header": "x" }],
+				"expected": {
+					"kind": "error",
+					"value": "Headers.append: \"Bad Header\" is an invalid header name."
+				}
+			},
+			{
+				"subject": "relayError",
+				"name": "Answer a not-found failure with its code and default headers",
+				"call": "relayError(404, 'not-found')",
+				"input": [404, "not-found"],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 404,
+						"headers": {
+							"cache-control": "no-store",
+							"content-type": "application/json",
+							"x-content-type-options": "nosniff"
+						},
+						"body": { "error": "not-found" }
+					}
+				}
+			},
+			{
+				"subject": "relayError",
+				"name": "Merge an extra failure header",
+				"call": "relayError(429, 'rate-limited', { 'Retry-After': '30' })",
+				"input": [429, "rate-limited", { "Retry-After": "30" }],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 429,
+						"headers": {
+							"cache-control": "no-store",
+							"content-type": "application/json",
+							"retry-after": "30",
+							"x-content-type-options": "nosniff"
+						},
+						"body": { "error": "rate-limited" }
+					}
+				}
+			},
+			{
+				"subject": "relayError",
+				"name": "Reject a status outside the Response range",
+				"call": "relayError(600, 'forbidden')",
+				"input": [600, "forbidden"],
+				"expected": {
+					"kind": "error",
+					"value": "init[\"status\"] must be in the range of 200 to 599, inclusive."
+				}
+			},
+			{
+				"subject": "relayError",
+				"name": "Serialize an unrecognized error code unchanged",
+				"call": "relayError(404, 'unknown-code')",
+				"input": [404, "unknown-code"],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 404,
+						"headers": {
+							"cache-control": "no-store",
+							"content-type": "application/json",
+							"x-content-type-options": "nosniff"
+						},
+						"body": { "error": "unknown-code" }
+					}
+				}
+			},
+			{
+				"subject": "relayError",
+				"name": "Reject an invalid failure header name",
+				"call": "relayError(404, 'not-found', { 'Bad Header': 'x' })",
+				"input": [404, "not-found", { "Bad Header": "x" }],
+				"expected": {
+					"kind": "error",
+					"value": "Headers.append: \"Bad Header\" is an invalid header name."
+				}
+			}
+		],
+		"states": ["input", "boundary", "invalid"],
+		"cases": [
+			{
+				"id": "relay-response.default",
+				"state": "input",
+				"subject": "relayResponse",
+				"example": "Answer requested JSON with the default relay headers",
+				"test": {
+					"file": "packages/relay/test/utils/relay-response.test.ts",
+					"title": "relayResponse: Answer requested JSON with the default relay headers"
+				}
+			},
+			{
+				"id": "relay-response.extra-headers",
+				"state": "boundary",
+				"subject": "relayResponse",
+				"example": "Merge extra headers and override a default",
+				"test": {
+					"file": "packages/relay/test/utils/relay-response.test.ts",
+					"title": "relayResponse: Merge extra headers and override a default"
+				}
+			},
+			{
+				"id": "relay-response.invalid-status",
+				"state": "invalid",
+				"subject": "relayResponse",
+				"example": "Reject a status outside the Response range",
+				"test": {
+					"file": "packages/relay/test/utils/relay-response.test.ts",
+					"title": "relayResponse: Reject a status outside the Response range"
+				}
+			},
+			{
+				"id": "relay-response.missing-body",
+				"state": "invalid",
+				"subject": "relayResponse",
+				"example": "Reject an omitted JSON body",
+				"test": {
+					"file": "packages/relay/test/utils/relay-response.test.ts",
+					"title": "relayResponse: Reject an omitted JSON body"
+				}
+			},
+			{
+				"id": "relay-response.invalid-header",
+				"state": "invalid",
+				"subject": "relayResponse",
+				"example": "Reject an invalid header name",
+				"test": {
+					"file": "packages/relay/test/utils/relay-response.test.ts",
+					"title": "relayResponse: Reject an invalid header name"
+				}
+			},
+			{
+				"id": "relay-error.default",
+				"state": "input",
+				"subject": "relayError",
+				"example": "Answer a not-found failure with its code and default headers",
+				"test": {
+					"file": "packages/relay/test/utils/relay-response.test.ts",
+					"title": "relayError: Answer a not-found failure with its code and default headers"
+				}
+			},
+			{
+				"id": "relay-error.extra-header",
+				"state": "boundary",
+				"subject": "relayError",
+				"example": "Merge an extra failure header",
+				"test": {
+					"file": "packages/relay/test/utils/relay-response.test.ts",
+					"title": "relayError: Merge an extra failure header"
+				}
+			},
+			{
+				"id": "relay-error.invalid-status",
+				"state": "invalid",
+				"subject": "relayError",
+				"example": "Reject a status outside the Response range",
+				"test": {
+					"file": "packages/relay/test/utils/relay-response.test.ts",
+					"title": "relayError: Reject a status outside the Response range"
+				}
+			},
+			{
+				"id": "relay-error.invalid-code",
+				"state": "invalid",
+				"subject": "relayError",
+				"example": "Serialize an unrecognized error code unchanged",
+				"test": {
+					"file": "packages/relay/test/utils/relay-response.test.ts",
+					"title": "relayError: Serialize an unrecognized error code unchanged"
+				}
+			},
+			{
+				"id": "relay-error.invalid-header",
+				"state": "invalid",
+				"subject": "relayError",
+				"example": "Reject an invalid failure header name",
+				"test": {
+					"file": "packages/relay/test/utils/relay-response.test.ts",
+					"title": "relayError: Reject an invalid failure header name"
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

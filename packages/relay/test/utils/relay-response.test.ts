@@ -1,19 +1,29 @@
-import { expect, test } from 'vitest';
+import type { ComponentManifest } from '../../../../src/core/unitTypes';
+import { TestExpectationService } from '../../../../src/services/verification-evidence/TestExpectationService';
+import unit from '../../../../test/fixtures/contract-migration/relay-response-examples.json' with {
+	type: 'json'
+};
 import { relayError, relayResponse } from '../../src/utils/relayResponse';
 
-test('relayResponse answers JSON that is neither cached nor sniffed', async () => {
-	const response = relayResponse(202, { state: 'requested' });
-	expect(response.status).toBe(202);
-	expect(response.headers.get('Content-Type')).toBe('application/json');
-	expect(response.headers.get('Cache-Control')).toBe('no-store');
-	expect(response.headers.get('X-Content-Type-Options')).toBe('nosniff');
-	expect(await response.json()).toEqual({ state: 'requested' });
-});
+async function projectResponse(response: Response) {
+	return {
+		status: response.status,
+		headers: Object.fromEntries(response.headers.entries()),
+		body: await response.json()
+	};
+}
 
-test('relayError answers a failure as its code and nothing else', async () => {
-	const response = relayError(404, 'not-found');
-	expect(response.status).toBe(404);
-	expect(response.headers.get('Cache-Control')).toBe('no-store');
-	expect(response.headers.get('X-Content-Type-Options')).toBe('nosniff');
-	expect(await response.json()).toEqual({ error: 'not-found' });
+async function invokeRelayResponse(...input: never[]) {
+	const [status, body, headers] = input as unknown as Parameters<typeof relayResponse>;
+	return projectResponse(relayResponse(status, body, headers));
+}
+
+async function invokeRelayError(...input: never[]) {
+	const [status, error, headers] = input as unknown as Parameters<typeof relayError>;
+	return projectResponse(relayError(status, error, headers));
+}
+
+new TestExpectationService().registerExamples(test, unit as ComponentManifest, {
+	relayError: invokeRelayError,
+	relayResponse: invokeRelayResponse
 });
