@@ -186,7 +186,22 @@ test('historical helper layout does not masquerade as missing module metadata', 
 		await project.write(path, JSON.stringify(manifest));
 		await git(['add', '.']);
 		await git(['commit', '-m', 'feat: retain historical helper source']);
-		const report = await validationInvoker(project)(['--write', '--module', 'function.slugify']);
+		const review = join(project.root, '..', 'historical-review.json');
+		await writeFile(
+			review,
+			JSON.stringify({
+				unit: 'function.slugify',
+				reason: 'Review the helper in its historical owned location.',
+				metadata: { helperContracts: manifest.helperContracts }
+			})
+		);
+		const report = await validationInvoker(project)([
+			'--write',
+			'--review',
+			review,
+			'--module',
+			'function.slugify'
+		]);
 		expect(report.valid, JSON.stringify(report.modules)).toBe(true);
 		expect(
 			report.modules[0].issues.filter((issue: { kind?: string }) => issue.kind !== 'evidence')
