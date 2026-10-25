@@ -1,4 +1,4 @@
-import { recordedRelations } from './explorerRelationsRecorded';
+import { explorerRelationsRecorded } from './explorerRelationsRecorded';
 import type { Graph, Edges, Reached, Entity, RelationsReader } from './explorerRelations.types';
 import type {
 	ExplorerCategory,
@@ -185,7 +185,7 @@ export function explorerRelationsReader(
 	return (id) => {
 		const known = answers.get(id);
 		if (known) return known;
-		const recorded = recordedRelations(head, id, entity);
+		const recorded = explorerRelationsRecorded(head, id, entity);
 		if (recorded) {
 			answers.set(id, recorded);
 			return recorded;

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/git-source-history/module-data-service/moduleDataAdmission.ts"],
-		"symbols": ["moduleDataRequired", "committedModuleData"]
+		"symbols": ["moduleDataRequired", "committedModuleData", "requireModuleData"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -28,6 +28,18 @@
 			{
 				"name": "committedModuleData.commit",
 				"type": "string"
+			},
+			{
+				"name": "requireModuleData.root",
+				"type": "string"
+			},
+			{
+				"name": "requireModuleData.commit",
+				"type": "string"
+			},
+			{
+				"name": "requireModuleData.module",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -37,6 +49,10 @@
 			},
 			{
 				"name": "committedModuleData",
+				"type": "unknown"
+			},
+			{
+				"name": "requireModuleData",
 				"type": "unknown"
 			}
 		],
@@ -50,6 +66,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.git-source-history-format-module-data-failure",
 			"via": "import",
 			"origin": "derived"
 		},

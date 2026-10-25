@@ -74,12 +74,7 @@
 				"type": "unknown"
 			}
 		],
-		"errors": [
-			{
-				"name": "Error",
-				"type": "thrown"
-			}
-		]
+		"errors": []
 	},
 	"dependencies": [
 		{
@@ -108,17 +103,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "helper.git-source-history-format-module-data-failure",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "repository.git-source-history-module-data",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "repository.source-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-admission",
 			"via": "import",
 			"origin": "derived"
 		},

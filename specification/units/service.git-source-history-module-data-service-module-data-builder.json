@@ -76,6 +76,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.source-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "validator.development-tooling-module-data",
 			"via": "import",
 			"origin": "derived"

@@ -1,6 +1,6 @@
-import { ModuleDataService } from '../../../../../../src/services/git-source-history/ModuleDataService';
 import {
 	committedModuleData,
+	requireModuleData,
 	moduleDataRequired
 } from '../../../../../../src/services/git-source-history/module-data-service/moduleDataAdmission';
 import { randomUUID, createHash } from 'node:crypto';
@@ -168,7 +168,7 @@ async function admitConsoleRead(session: ProjectSessionService, method: string, 
 	const { source } = session.requireProject(),
 		revision = await source.revision(query);
 	if (await moduleDataRequired(source.root, revision.commit))
-		await new ModuleDataService(source.root).require(revision.commit, query.entityId);
+		await requireModuleData(source.root, revision.commit, query.entityId);
 }
 
 const key = Symbol.for('harness.console.agents');

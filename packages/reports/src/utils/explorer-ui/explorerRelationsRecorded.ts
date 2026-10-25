@@ -5,7 +5,7 @@ import type { ExplorerRelations } from '../../models/explorer-ui/Explorer.types'
 import { explorerRole } from './explorerCategory';
 import { explorerName } from './explorerName';
 
-export function recordedRelations(
+export function explorerRelationsRecorded(
 	head: HarnessRevision,
 	id: string,
 	entity: Entity

@@ -20,6 +20,10 @@
 			{
 				"name": "moduleSourceFacts.identity",
 				"type": "ModuleDataIdentity"
+			},
+			{
+				"name": "moduleSourceFacts.indexer",
+				"type": "unknown"
 			}
 		],
 		"outputs": [
@@ -93,6 +97,11 @@
 		},
 		{
 			"unit": "service.git-source-history-module-data-service-module-relationships",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.source-index",
 			"via": "import",
 			"origin": "derived"
 		},

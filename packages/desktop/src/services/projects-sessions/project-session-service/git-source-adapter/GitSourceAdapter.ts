@@ -1,4 +1,4 @@
-import { ModuleDataService } from '../../../../../../../src/services/git-source-history/ModuleDataService';
+import { requireModuleData } from '../../../../../../../src/services/git-source-history/module-data-service/moduleDataAdmission';
 import { moduleDataRequired } from '../../../../../../../src/services/git-source-history/module-data-service/moduleDataAdmission';
 import { createHash } from 'node:crypto';
 import { basename } from 'node:path';
@@ -71,21 +71,9 @@ export class GitSourceAdapter {
 	async units(revision: string): Promise<ComponentManifest[]> {
 		const commit = await gitRevision(this.root, revision);
 		if (await moduleDataRequired(this.root, commit))
-			return (await new ModuleDataService(this.root).require(commit)).declarations;
-		if (!this.registry.has(commit)) this.registry.set(commit, this.readUnits(commit));
+			return (await requireModuleData(this.root, commit)).declarations;
+		if (!this.registry.has(commit)) this.registry.set(commit, readUnits(this.root, commit));
 		return this.registry.get(commit)!;
-	}
-	private async readUnits(commit: string): Promise<ComponentManifest[]> {
-		const paths = (await gitFiles(this.root, commit)).filter((p) =>
-			/^specification\/units\/[^/]+\.json$/.test(p)
-		);
-		const blobs = await gitBlobs(this.root, { revision: commit, paths });
-		return paths.map((path) => {
-			const unit = componentManifestSchema.parse(JSON.parse(blobs.get(path)!.toString()));
-			if (unit.id + '.json' !== basename(path))
-				throw new Error('Invalid component manifest identity: ' + path);
-			return unit;
-		});
 	}
 
 	async changed(revision: string): Promise<Set<string>> {
@@ -134,4 +122,17 @@ export class GitSourceAdapter {
 	contractHash(unit: ComponentManifest) {
 		return createHash('sha256').update(JSON.stringify(unit.contract)).digest('hex');
 	}
+}
+
+async function readUnits(root: string, commit: string): Promise<ComponentManifest[]> {
+	const paths = (await gitFiles(root, commit)).filter((p) =>
+		/^specification\/units\/[^/]+\.json$/.test(p)
+	);
+	const blobs = await gitBlobs(root, { revision: commit, paths });
+	return paths.map((path) => {
+		const unit = componentManifestSchema.parse(JSON.parse(blobs.get(path)!.toString()));
+		if (unit.id + '.json' !== basename(path))
+			throw new Error('Invalid component manifest identity: ' + path);
+		return unit;
+	});
 }

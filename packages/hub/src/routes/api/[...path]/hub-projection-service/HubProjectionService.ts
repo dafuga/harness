@@ -37,12 +37,7 @@ export class HubProjectionService {
 	artifact(actor: Actor, projectId: string, query: EvidenceArtifactQuery) {
 		return this.recorded.artifact(actor, projectId, query);
 	}
-	private async load(actor: Actor, projectId: string, ref: string | null, branch?: string | null) {
-		const project = await this.context.api.getProject(actor, projectId);
-		const selected =
-			ref ?? (await defaultModuleRef(this.context, project.sourceRepository, branch));
-		return hubSource({ ...this.context, actor, project, ref: selected });
-	}
+
 	async snapshot(
 		actor: Actor,
 		projectId: string,
@@ -52,17 +47,19 @@ export class HubProjectionService {
 		return hubSnapshot({ ...this.context, actor, project }, query);
 	}
 	async moduleData(actor: Actor, projectId: string, commit: string | null, branch?: string | null) {
-		return hubModuleData(await this.load(actor, projectId, commit, branch));
+		return hubModuleData(
+			await loadProjection(this.context, { actor, projectId, ref: commit, branch })
+		);
 	}
 	async registry(actor: Actor, projectId: string, commit: string) {
-		return readRegistry(await this.load(actor, projectId, commit));
+		return readRegistry(await loadProjection(this.context, { actor, projectId, ref: commit }));
 	}
 	async entity(
 		actor: Actor,
 		projectId: string,
 		query: { entityId: string; commit: string; branch: string }
 	) {
-		const context = await this.load(actor, projectId, query.commit);
+		const context = await loadProjection(this.context, { actor, projectId, ref: query.commit });
 		const shared = await this.context.api.listThreads(actor, {
 			projectId,
 			entityId: query.entityId,
@@ -83,7 +80,7 @@ export class HubProjectionService {
 		projectId: string,
 		query: { entityId: string; commit: string; page: number; branch: string }
 	) {
-		const context = await this.load(actor, projectId, query.commit),
+		const context = await loadProjection(this.context, { actor, projectId, ref: query.commit }),
 			data = await hubCatalog(context);
 		const unit = data.units.find((u) => u.id === query.entityId),
 			plan = data.plans.find((p) => p.unitId === query.entityId);
@@ -107,14 +104,10 @@ export class HubProjectionService {
 		projectId: string,
 		query: { entityId: string; commit: string; path: string }
 	) {
-		const context = await this.load(actor, projectId, query.commit),
-			data = await hubCatalog(context),
-			unit = data.units.find((u) => u.id === query.entityId);
-		if (!unit || !hubOwnedPaths(context, unit).includes(query.path)) return hubFail('forbidden');
-		return {
-			path: query.path,
-			text: new TextDecoder().decode(await hubRead(context, query.path))
-		};
+		return readSource(
+			await loadProjection(this.context, { actor, projectId, ref: query.commit }),
+			query
+		);
 	}
 	async image(
 		actor: Actor,
@@ -126,7 +119,7 @@ export class HubProjectionService {
 			sha256: string;
 		}
 	) {
-		const context = await this.load(actor, projectId, query.commit),
+		const context = await loadProjection(this.context, { actor, projectId, ref: query.commit }),
 			plan = (await hubPlans(context)).find((p) => p.unitId === query.entityId);
 		if (!plan) return hubFail('not-found');
 		hubAttestPlan(
@@ -167,4 +160,21 @@ async function defaultModuleRef(
 		: (branches.find((item) => item.name === 'main') ?? branches[0]);
 	if (!branch) return hubFail('not-found');
 	return `refs/heads/${branch.name}`;
+}
+
+async function loadProjection(
+	context: Dependencies,
+	input: { actor: Actor; projectId: string; ref: string | null; branch?: string | null }
+) {
+	const project = await context.api.getProject(input.actor, input.projectId);
+	const selected =
+		input.ref ?? (await defaultModuleRef(context, project.sourceRepository, input.branch));
+	return hubSource({ ...context, actor: input.actor, project, ref: selected });
+}
+
+async function readSource(context: HubSourceContext, query: { entityId: string; path: string }) {
+	const data = await hubCatalog(context),
+		unit = data.units.find((item) => item.id === query.entityId);
+	if (!unit || !hubOwnedPaths(context, unit).includes(query.path)) return hubFail('forbidden');
+	return { path: query.path, text: new TextDecoder().decode(await hubRead(context, query.path)) };
 }

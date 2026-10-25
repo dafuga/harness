@@ -1,4 +1,4 @@
-import { formatModuleDataFailure } from '../../helpers/git-source-history/formatModuleDataFailure';
+import { requireModuleData } from './module-data-service/moduleDataAdmission';
 import type { HistoryValidationReport } from './ModuleDataService.types';
 import { SourceHistoryRepository } from '../../repositories/git-source-history/source-history-repository/SourceHistoryRepository';
 import type { ModuleDataIdentity } from '../../repositories/git-source-history/ModuleDataRepository.types';
@@ -11,8 +11,10 @@ import type { ModuleData, ValidateOptions, ValidationReport } from './ModuleData
 /** Validate exact Git revisions; missing facts are cached and committed as gaps, never fabricated. */
 export class ModuleDataService {
 	private readonly repository: ModuleDataRepository;
+	private readonly builder: ModuleDataBuilder;
 	constructor(readonly root: string) {
 		this.repository = new ModuleDataRepository(root);
+		this.builder = new ModuleDataBuilder(this.repository);
 	}
 
 	async validate(options: ValidateOptions = {}): Promise<ValidationReport> {
@@ -30,12 +32,12 @@ export class ModuleDataService {
 	private async load(identity: ModuleDataIdentity, refresh: boolean, stored?: ModuleData) {
 		if (refresh)
 			return {
-				data: await new ModuleDataBuilder(this.repository).build(identity, true),
+				data: await this.builder.build(identity, true),
 				hit: false
 			};
 		const data = stored ?? (await new ModuleDataCache(this.repository).read(identity));
 		if (data) return { data, hit: true };
-		return { data: await new ModuleDataBuilder(this.repository).build(identity), hit: false };
+		return { data: await this.builder.build(identity), hit: false };
 	}
 
 	async history(options: ValidateOptions = {}): Promise<HistoryValidationReport> {
@@ -70,15 +72,7 @@ export class ModuleDataService {
 		};
 	}
 	async require(commit: string, module?: string): Promise<ModuleData> {
-		const identity = await this.repository.identity(commit),
-			stored = await this.repository.read(identity);
-		if (!stored)
-			throw new Error(
-				`Missing or stale committed module data for ${identity.commit}. Run harness validate --commit ${identity.commit} --write.`
-			);
-		const failure = formatModuleDataFailure(stored.data, module);
-		if (failure) throw new Error(failure);
-		return stored.data;
+		return requireModuleData(this.root, commit, module);
 	}
 	async sync(remote: string) {
 		return this.repository.sync(remote);

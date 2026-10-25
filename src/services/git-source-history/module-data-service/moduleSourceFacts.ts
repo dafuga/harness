@@ -1,3 +1,4 @@
+import { SourceIndexService } from '../../development-tooling/source-index-service/SourceIndexService';
 import { modulePreviewBindings } from './modulePreviewBindings';
 import { UnitRegistryRepository } from '../../../repositories/UnitRegistryRepository';
 import { ScenarioRepository } from '../../../repositories/ScenarioRepository';
@@ -15,16 +16,24 @@ import { UnitRegistryValidator } from '../../../validators/development-tooling/U
 import { BudgetLedgerRepository } from '../../../repositories/BudgetLedgerRepository';
 import { BudgetService } from '../../budget-service/BudgetService';
 import { moduleRelationships } from './moduleRelationships';
-export async function moduleSourceFacts(root: string, identity: ModuleDataIdentity) {
+export async function moduleSourceFacts(
+	root: string,
+	identity: ModuleDataIdentity,
+	indexer = new SourceIndexService()
+) {
 	try {
-		return await scanModuleSourceFacts(root, identity);
+		return await scanModuleSourceFacts(root, identity, indexer);
 	} catch (cause) {
 		return sourceGaps(root, identity, cause);
 	}
 }
-async function scanModuleSourceFacts(root: string, identity: ModuleDataIdentity) {
+async function scanModuleSourceFacts(
+	root: string,
+	identity: ModuleDataIdentity,
+	indexer: SourceIndexService
+) {
 	const tree = await CommitTreeAdapter.open(root, identity.commit),
-		loaded = await loadUnits(root, tree);
+		loaded = await loadUnits(root, tree, indexer);
 	const declarations = loaded.fresh.manifests,
 		ledger = await new BudgetLedgerRepository(root).read(tree);
 	const blobs = new Map((await tree.list()).map((entry) => [entry.path, entry.hash]));
