@@ -2394,6 +2394,68 @@
 			"createdAt": "2026-10-25T15:25:10.173Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-tests.activity-examples",
+			"title": "Migrate reports.function.activity-display authored examples",
+			"moduleGoal": "Preserve all existing callable assertions in canonical finite example cases",
+			"verificationFiles": [
+				"packages/reports/test/utils/activity-display.test.ts",
+				"test/fixtures/contract-migration/activity-examples.json"
+			],
+			"instructions": "Migrate the owned callable behavior to helper-example cases using TestExpectationService.registerExamples and a FULL proposed unit manifest at test/fixtures/contract-migration/activity-examples.json. Do not edit specification or shared contracts: primary promotes metadata. Each pure helperContracts Example and ordinary testing.examples row gets one stable canonical registered case. Use finite documented input, boundary and error-prop examples with authored exact expected values/errors, not expected values generated from the function being tested. Read the existing owning suites, root test/utils/unit-documentation.test.ts public-helper examples, and packages/reports/test/module-groups.test.ts public forwarding checks. Preserve every substantive assertion, workload observation and public forwarding entrypoint. Move only owning callable assertions into its examples. Leave cross-entity/static collection assertions explicitly intact until primary transfers them; do not invent a function wrapper around a constant to fake helper coverage. For new activity suite preserve current plural examples and the existing module-groups activity row behavior; do not edit module-groups because primary owns that shared file. For report-filter preserve audio-pairs assertions belonging to audioPairs and evidence-media assertions belonging to media; only transfer owned filter/gallery checks. A canonical call must reflect executable inputs; include fixture setup references when needed and report non-JSON inputs rather than dropping them. Do not add invented product behavior, skips, standalone regression tests or replace realistic disposable fixtures. No production edits, delegation, commits, pushes, publication, credentials, installs, E2Es or broad checks. Relevant focused unit commands only; environment failures separate. Keep220/55 limits. Return before/after cases and explicit coverage/ownership gaps.",
+			"wantedContract": {
+				"responsibility": "Canonical executable examples for reports.function.activity-display",
+				"inputs": [
+					{
+						"name": "declared behavior, public entries and existing assertions",
+						"type": "source and authored fixtures"
+					}
+				],
+				"outputs": [
+					{
+						"name": "stable example suite and proposed manifest",
+						"type": "reviewable test source"
+					}
+				],
+				"errors": [
+					{
+						"name": "invalid inputs or missing coverage",
+						"type": "authored failure outcomes"
+					}
+				]
+			},
+			"model": "claude-haiku-5-5",
+			"provider": "claude",
+			"intelligence": "max",
+			"assignee": "activity-examples",
+			"feature": {
+				"id": "contract-test-policy",
+				"goal": "Standardize all Harness tests around page/component screenshot states, helper examples, class method states and API JSON cases with stable identities",
+				"tldr": "Migrate existing assertions, enforce the five allowed shapes and stable bug case counts, update agent guidance, preserve artifacts and Git history"
+			},
+			"module": {
+				"id": "reports.function.activity-display",
+				"goal": "Preserve all existing callable assertions in canonical finite example cases",
+				"files": [
+					"packages/reports/src/components/activity-agents/activityDisplay.ts",
+					"packages/reports/src/components/project-activity/activityDisplay.ts",
+					"packages/reports/src/components/projects-sessions/activity-agents/activityDisplay.ts",
+					"packages/reports/src/components/projects-sessions/project-activity/activityDisplay.ts",
+					"packages/reports/src/helpers/strings/plural.ts",
+					"packages/reports/src/utils/activityDisplay.ts",
+					"packages/reports/src/utils/projects-sessions/activityDisplay.ts",
+					"packages/reports/test/utils/activity-display.test.ts",
+					"test/fixtures/contract-migration/activity-examples.json"
+				]
+			},
+			"sourceCommit": "06f8ce220e28621b9b139898ab4aa90bf2014c69",
+			"contractHash": "9096d394bbcfe26f991129e05a5700c6f10759420067c0fc896aae53afd97910",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-25T15:25:10.854Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
