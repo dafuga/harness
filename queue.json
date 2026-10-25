@@ -4355,9 +4355,19 @@
 			},
 			"sourceCommit": "11cd6c52e7046451ea0ff1b4a7b08c2aa9626718",
 			"contractHash": "d31f626818fbae13c091541499aefeccaeb0795d17a64581b23abf8d7778560d",
-			"status": "queued",
+			"status": "running",
 			"reviews": [],
 			"createdAt": "2026-10-25T18:00:28.021Z",
+			"claim": {
+				"worker": "luna-helpers",
+				"token": "d5a44a2f-bdde-47c0-8e61-a45a5f28b2c1",
+				"startedAt": "2026-10-25T18:00:48.821Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 18108,
+					"startedAt": "Sun Oct 25 18:00:48 2026"
+				}
+			},
 			"claimHistory": [],
 			"attempts": []
 		},
