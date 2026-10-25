@@ -1,3 +1,4 @@
+import { sha } from './shellData';
 import { expect, type Locator, type Page } from '@playwright/test';
 import { captureShell, shellOrigin, openShellPage } from './shellFixture';
 import { fits, pictured } from './sharedSelect';
@@ -199,4 +200,19 @@ export async function openNavbar(
 	await openShellPage(page, home, 'navbar');
 	await expect(page.getByText('Harness', { exact: true }).first()).toBeVisible();
 	return page.getByRole('banner');
+}
+
+/** Chooses an earlier commit, then opens Helpers there with the keyboard. */
+export async function earlierFunctions(page: Page, bar: Locator, earlier: string) {
+	const functions = bar
+		.getByRole('tablist', { name: 'Code categories' })
+		.getByRole('tab', { name: 'Helpers', exact: true });
+	await expect(combo(bar, 'Commit')).toBeVisible();
+	await combo(bar, 'Commit').selectOption(sha(3));
+	await expect(page).toHaveURL(`${earlier}/pages`);
+	await bar.getByRole('link', { name: 'Code', exact: true }).click();
+	await functions.focus();
+	await page.keyboard.press('Enter');
+	await expect(page).toHaveURL(`${earlier}/functions`);
+	return functions;
 }

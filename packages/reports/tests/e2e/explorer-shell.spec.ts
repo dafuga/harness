@@ -1,7 +1,8 @@
-import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
+import { expect, test } from '../../../../test/support/browserTest';
 import { fits, pictured, screens, sharedField, typed } from './support/sharedSelect';
 import {
 	box,
+	earlierFunctions,
 	channels,
 	combo,
 	compactRevision,
@@ -31,20 +32,6 @@ test.beforeAll(() => {
 	home = buildShellFixture(['navbar']);
 });
 test.afterAll(() => removeShellFixture(home));
-/** Chooses an earlier commit, then opens Helpers there with the keyboard. */
-async function earlierFunctions(page: Page, bar: Locator): Promise<Locator> {
-	const functions = bar
-		.getByRole('tablist', { name: 'Code categories' })
-		.getByRole('tab', { name: 'Helpers', exact: true });
-	await expect(combo(bar, 'Commit')).toBeVisible();
-	await combo(bar, 'Commit').selectOption(sha(3));
-	await expect(page).toHaveURL(at(`${earlier}/pages`));
-	await bar.getByRole('link', { name: 'Code', exact: true }).click();
-	await functions.focus();
-	await page.keyboard.press('Enter');
-	await expect(page).toHaveURL(at(`${earlier}/functions`));
-	return functions;
-}
 for (const [screen, width, height] of screens) {
 	test(`the bar shows its navigation with an icon above each label at ${screen} width`, async ({
 		page
@@ -142,7 +129,7 @@ for (const [screen, width, height] of screens) {
 		await expect(bar.locator('small').first()).not.toBeVisible();
 		await expect(tip).toBeDisabled();
 		await reachable(tip, width);
-		const functions = await earlierFunctions(page, bar);
+		const functions = await earlierFunctions(page, bar, at(earlier));
 		await expect(commit).toHaveAttribute('title', /Historical commit/);
 		await expect(branch).toHaveAttribute('title', /Tip · 0505050/);
 		await expect(functions).toHaveAttribute('aria-selected', 'true');
@@ -173,7 +160,7 @@ for (const [screen, width, height] of screens) {
 		const bar = await openNavbar(page, home, width, height);
 		const [branch, commit] = [combo(bar, 'Branch'), combo(bar, 'Commit')];
 		await pictured(page, `explorer-shell-return-${screen}`);
-		const functions = await earlierFunctions(page, bar);
+		const functions = await earlierFunctions(page, bar, at(earlier));
 		// Go to tip is the same place on the current branch.
 		const back = bar.getByRole('link', { name: 'Go to tip' });
 		await expect(back).toHaveAttribute('href', `${scoped}/functions`);
