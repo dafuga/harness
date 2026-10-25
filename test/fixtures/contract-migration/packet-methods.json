@@ -1,0 +1,169 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.validator.secure-packet",
+	"kind": "validator",
+	"title": "SecurePacketValidator",
+	"responsibility": "Owns the SecurePacketValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/remote/src/validators/SecurePacketValidator.ts",
+			"packages/remote/src/validators/networking-security/SecurePacketValidator.ts",
+			"packages/remote/src/validators/networking-security/SecurePacketValidator.types.ts"
+		],
+		"symbols": [
+			"SecurePacketValidator",
+			"SecurePacketValidator",
+			"SecurePacketValidator.packet",
+			"SecurePacketValidator.text",
+			"Check"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SecurePacketValidator.packet.value",
+				"type": "unknown"
+			},
+			{
+				"name": "SecurePacketValidator.text.text",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "SecurePacketValidator.packet",
+				"type": "SecurePacket"
+			},
+			{
+				"name": "SecurePacketValidator.text",
+				"type": "SecurePacket"
+			}
+		],
+		"errors": [
+			{
+				"name": "SecureFailure",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-secure-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/validators/networking-security/SecurePacketValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/validators/networking-security/SecurePacketValidator.ts"
+			}
+		]
+	},
+	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "packet-initialized",
+				"state": "initialized",
+				"subject": "SecurePacketValidator.packet",
+				"test": {
+					"file": "packages/remote/test/validators/secure-packet.test.ts",
+					"title": "packet initialized validates secure packet shapes and rejects malformed fields"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"accepted": {
+							"packetTypes": ["hello", "accept", "reject", "sealed"],
+							"returnsInput": true
+						},
+						"rejected": {
+							"error": "SecureFailure",
+							"reason": "packet",
+							"outcomes": [
+								"wrong versions and extra fields",
+								"malformed device, key and nonce fields",
+								"negative, fractional and unsafe counters or generations",
+								"illegal reject reasons and field types",
+								"invalid, empty and oversized sealed data",
+								"unknown packet types and non-object values"
+							]
+						}
+					}
+				},
+				"props": [
+					"type",
+					"version",
+					"deviceId",
+					"ephemeralKey",
+					"nonce",
+					"generation",
+					"reason",
+					"counter",
+					"more",
+					"data",
+					"extra fields",
+					"object shape"
+				],
+				"errors": ["SecureFailure"]
+			},
+			{
+				"id": "text-initialized",
+				"state": "initialized",
+				"subject": "SecurePacketValidator.text",
+				"test": {
+					"file": "packages/remote/test/validators/secure-packet.test.ts",
+					"title": "text initialized bounds frames before parsing and returns parsed packets"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"accepted": {
+							"packetType": "sealed",
+							"returnsParsedPacket": true
+						},
+						"rejected": [
+							{
+								"input": "malformed JSON",
+								"error": "SecureFailure",
+								"reason": "packet"
+							},
+							{
+								"input": "text longer than remoteLimits.frameBytes",
+								"error": "SecureFailure",
+								"reason": "size"
+							}
+						]
+					}
+				},
+				"props": ["text", "frame length"],
+				"errors": ["SecureFailure"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
