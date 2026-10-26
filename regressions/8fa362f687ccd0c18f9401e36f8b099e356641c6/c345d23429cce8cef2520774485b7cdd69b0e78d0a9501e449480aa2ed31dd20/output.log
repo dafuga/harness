@@ -1,0 +1,159 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-FPygeF
+
+ ❯ test/cli.e2e.test.ts (5 tests | 1 failed | 4 skipped) 91085ms
+   ↓ CLI scaffolds and checks a lib project
+   ↓ CLI scaffolds and checks an app project with routes
+   ↓ CLI reports edge errors cleanly
+   ↓ CLI supports force overwrites and generated lint failures
+   × CLI installs module foundations and generates their declared resources 91082ms
+     → bun run check failed with 1
+Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-QyaUHB/module-app
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+Harness audit passed. Files and functions are staying small.
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90m/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-QyaUHB/module-app[39m
+
+ [32m✓[39m test/services/rust-wasm/metrics.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m test/services/billing/invoice.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 1[2mms[22m[39m
+ [32m✓[39m test/services/email/email.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m test/mailers/email/welcome.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 1[2mms[22m[39m
+ [32m✓[39m test/repositories/offline/notes.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m test/services/offline/offline-stream.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m test/services/offline/offline-lifecycle.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 33[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m      Tests [22m [1m[32m10 passed[39m[22m[90m (10)[39m
+[2m   Start at [22m 12:22:42
+[2m   Duration [22m 398ms[2m (transform 204ms, setup 0ms, collect 410ms, tests 55ms, environment 1ms, prepare 500ms)[22m
+
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/app.spec.ts:3:1 › app page initial state (149ms)
+
+
+  1) tests/e2e/app.spec.ts:3:1 › app page initial state ────────────────────────────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-QyaUHB/module-app/tests/e2e/app.spec.ts-snapshots/initial-darwin.png.
+
+       at support/browserScreenshot.ts:16
+
+      14 | 		await settleScreenshot(target, options);
+      15 | 		if (screenshotEvidenceRequested()) await attachScreenshot(testInfo, target, name, options);
+    > 16 | 		await expect(target).toHaveScreenshot(name, {
+         | 		                     ^
+      17 | 			animations: 'disabled',
+      18 | 			caret: 'hide',
+      19 | 			...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-QyaUHB/module-app/tests/e2e/support/browserScreenshot.ts:16:24
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-QyaUHB/module-app/tests/e2e/app.spec.ts:5:2
+
+    Error Context: test-results/app-app-page-initial-state/error-context.md
+
+  1 failed
+    tests/e2e/app.spec.ts:3:1 › app page initial state ─────────────────────────────────────────────
+
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+$ svelte-kit sync && eslint .
+$ bun scripts/harness-audit.ts
+$ bun run test:unit
+$ vitest run --passWithNoTests
+$ playwright test
+[WebServer] $ vite dev --host --port 3322 --host "127.0.0.1" --port "3322"
+error: script "test:e2e" exited with code 1
+error: script "check" exited with code 1
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cli.e2e.test.ts > CLI installs module foundations and generates their declared resources
+Error: bun run check failed with 1
+Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-QyaUHB/module-app
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+Harness audit passed. Files and functions are staying small.
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90m/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-QyaUHB/module-app[39m
+
+ [32m✓[39m test/services/rust-wasm/metrics.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m test/services/billing/invoice.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 1[2mms[22m[39m
+ [32m✓[39m test/services/email/email.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m test/mailers/email/welcome.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 1[2mms[22m[39m
+ [32m✓[39m test/repositories/offline/notes.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m test/services/offline/offline-stream.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m test/services/offline/offline-lifecycle.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 33[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m      Tests [22m [1m[32m10 passed[39m[22m[90m (10)[39m
+[2m   Start at [22m 12:22:42
+[2m   Duration [22m 398ms[2m (transform 204ms, setup 0ms, collect 410ms, tests 55ms, environment 1ms, prepare 500ms)[22m
+
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/app.spec.ts:3:1 › app page initial state (149ms)
+
+
+  1) tests/e2e/app.spec.ts:3:1 › app page initial state ────────────────────────────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-QyaUHB/module-app/tests/e2e/app.spec.ts-snapshots/initial-darwin.png.
+
+       at support/browserScreenshot.ts:16
+
+      14 | 		await settleScreenshot(target, options);
+      15 | 		if (screenshotEvidenceRequested()) await attachScreenshot(testInfo, target, name, options);
+    > 16 | 		await expect(target).toHaveScreenshot(name, {
+         | 		                     ^
+      17 | 			animations: 'disabled',
+      18 | 			caret: 'hide',
+      19 | 			...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-QyaUHB/module-app/tests/e2e/support/browserScreenshot.ts:16:24
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-QyaUHB/module-app/tests/e2e/app.spec.ts:5:2
+
+    Error Context: test-results/app-app-page-initial-state/error-context.md
+
+  1 failed
+    tests/e2e/app.spec.ts:3:1 › app page initial state ─────────────────────────────────────────────
+
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+$ svelte-kit sync && eslint .
+$ bun scripts/harness-audit.ts
+$ bun run test:unit
+$ vitest run --passWithNoTests
+$ playwright test
+[WebServer] $ vite dev --host --port 3322 --host "127.0.0.1" --port "3322"
+error: script "test:e2e" exited with code 1
+error: script "check" exited with code 1
+
+ ❯ ../harness-cli-modules-QyaUHB/module-app/tests/e2e/support/browserScreenshot.ts:16:24
+ ❯ ../harness-cli-modules-QyaUHB/module-app/tests/e2e/app.spec.ts:5:2
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ assertModuleProject test/support/moduleScenario.ts:31:16
+ ❯ test/cli.e2e.test.ts:202:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  12:21:11
+   Duration  94.98s (transform 128ms, setup 150ms, collect 229ms, tests 91.08s, environment 0ms, prepare 34ms)
+
