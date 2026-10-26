@@ -1,0 +1,58 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-MGotm8
+
+ ❯ test/services/resource-queue.test.ts (7 tests | 2 failed) 2616ms
+   × queued cancellation releases reservations without ever starting the callback 567ms
+     → expected [Function] to throw error including 'Resource queue wait timed out; last r…' but got 'Resource queue wait timed out'
+   × pressure is observed during a running task; that task finishes and subsequent work waits 1360ms
+     → expected [Function] to throw error including 'Resource queue wait timed out; last r…' but got 'Resource queue wait timed out'
+   ✓ forged inherited reservations and impossible requests do not execute work 10ms
+   ✓ a validated nested task uses its ancestor budget rather than deadlocking 56ms
+   ✓ parallel nested tasks share a bounded parent budget instead of each borrowing the full reservation  306ms
+   ✓ a future cached sample is replaced rather than pinning admission after a clock jump 7ms
+   ✓ a queued sibling cannot block the descendant needed to release its ancestor reservation  306ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/resource-queue.test.ts > queued cancellation releases reservations without ever starting the callback
+AssertionError: expected [Function] to throw error including 'Resource queue wait timed out; last r…' but got 'Resource queue wait timed out'
+
+Expected: "Resource queue wait timed out; last reason: Waiting for CPU and memory reservations"
+Received: "Resource queue wait timed out"
+
+ ❯ test/services/resource-queue.test.ts:41:3
+     39|    { waitTimeoutMs: 300 }
+     40|   );
+     41|   await expect(timedOut).rejects.toThrow(
+       |   ^
+     42|    'Resource queue wait timed out; last reason: Waiting for CPU and me…
+     43|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/services/resource-queue.test.ts > pressure is observed during a running task; that task finishes and subsequent work waits
+AssertionError: expected [Function] to throw error including 'Resource queue wait timed out; last r…' but got 'Resource queue wait timed out'
+
+Expected: "Resource queue wait timed out; last reason: Memory pressure is critical"
+Received: "Resource queue wait timed out"
+
+ ❯ test/services/resource-queue.test.ts:84:3
+     82|    { waitTimeoutMs: 300 }
+     83|   );
+     84|   await expect(timedOut).rejects.toThrow(
+       |   ^
+     85|    'Resource queue wait timed out; last reason: Memory pressure is cri…
+     86|   );
+ ❯ ResourceQueueService.execute src/services/execution-runtimes/ResourceQueueService.ts:102:11
+ ❯ ResourceQueueService.run src/services/execution-runtimes/ResourceQueueService.ts:56:11
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ test/services/resource-queue.test.ts:60:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 5 passed (7)
+   Start at  21:16:02
+   Duration  5.21s (transform 95ms, setup 89ms, collect 56ms, tests 2.62s, environment 0ms, prepare 29ms)
+
