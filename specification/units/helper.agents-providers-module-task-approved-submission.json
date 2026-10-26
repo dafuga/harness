@@ -18,7 +18,10 @@
 			"mergePlan",
 			"prepareSubmission",
 			"SubmissionDependencies",
-			"ApprovedTaskScope"
+			"ApprovedTaskScope",
+			"ServerWorker",
+			"ApprovedExecution",
+			"ServerDependencies"
 		]
 	},
 	"contract": {
@@ -113,7 +116,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker",
 			"via": "import",
 			"origin": "derived"
 		},

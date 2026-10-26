@@ -1,6 +1,8 @@
 import type { CommitTreeAdapter } from '../../adapters/CommitTreeAdapter';
 import type { ModuleTaskRepository } from '../../repositories/agents-providers/ModuleTaskRepository';
 import type { UnitRegistryRepository } from '../../repositories/UnitRegistryRepository';
+import type { FeaturePlanService } from '../../services/agents-providers/FeaturePlanService';
+import type { ModuleTaskWorkerService } from '../../services/agents-providers/ModuleTaskWorkerService';
 import type {
 	FeaturePlan,
 	ModuleTask,
@@ -28,3 +30,17 @@ export type ApprovedTaskScope = {
 	feature: TaskFeature;
 	records: ModuleTask[];
 };
+
+export type ServerWorker = Pick<ModuleTaskWorkerService, 'once'> &
+	Partial<Pick<ModuleTaskWorkerService, 'onceApproved'>>;
+export type ApprovedExecution = { worker: string; parallelism: number; signal: AbortSignal };
+export type ServerDependencies = Partial<{
+	repository: ModuleTaskRepository;
+	openTree: typeof CommitTreeAdapter.open;
+	registry: Pick<UnitRegistryRepository, 'read'>;
+	requireMetadata: typeof requireModuleData;
+	worker: ServerWorker;
+	grantFiles: typeof taskGrantFiles;
+	validateGrant: typeof validateTaskGrant;
+	plans: Pick<FeaturePlanService, 'approved'>;
+}>;

@@ -13,6 +13,7 @@
 			"ModuleTaskServerService.constructor",
 			"ModuleTaskServerService.submit",
 			"ModuleTaskServerService.submitApproved",
+			"ModuleTaskServerService.runApproved",
 			"ModuleTaskServerService.run"
 		]
 	},
@@ -53,6 +54,16 @@
 				"name": "ModuleTaskServerService.constructor.dependencies.plans",
 				"type": "optional Pick<FeaturePlanService,\"approved\">",
 				"description": "Defaults to the real feature plan guard; test collaborators may be injected."
+			},
+			{
+				"name": "ModuleTaskServerService.runApproved.input",
+				"type": "{feature:string,expectedDigest:string}",
+				"description": "Exact latest approved plan selector."
+			},
+			{
+				"name": "ModuleTaskServerService.runApproved.execution",
+				"type": "{worker:string,parallelism:number,signal:AbortSignal}",
+				"description": "Worker id, integer concurrency from one to eight and cancellation signal; validated before submission."
 			}
 		],
 		"outputs": [
@@ -70,6 +81,11 @@
 				"name": "ModuleTaskServerService.submitApproved",
 				"type": "Promise<{created:string[],reused:string[],commit:string|undefined}>",
 				"description": "Admits only tasks from the verified approved plan and checks the identical complete plan within the queue compare-and-swap before merging. Preserves dependency IDs and returns idempotent reused tasks."
+			},
+			{
+				"name": "ModuleTaskServerService.runApproved",
+				"type": "Promise<{submission:{created:string[],reused:string[],commit:string|undefined},results:unknown[]}>",
+				"description": "Verify the approved plan and its readiness, prepare and atomically merge exact task definitions, recheck approval, then concurrently dispatch only its admitted scope with bounded workers. Wait for every started claim before returning or rejecting."
 			}
 		],
 		"errors": [
@@ -107,6 +123,11 @@
 				"name": "stale or changed approved plan",
 				"type": "Error",
 				"description": "Reject before queue mutation when the verified approval or current queued plan differs, disappears, is invalid or changes during admission."
+			},
+			{
+				"name": "Invalid or changed approved dispatch",
+				"type": "Error",
+				"description": "Invalid execution, stale approval or readiness fails before worker dispatch; worker failures propagate after every started worker settles."
 			}
 		]
 	},

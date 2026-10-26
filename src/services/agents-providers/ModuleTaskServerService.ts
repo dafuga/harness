@@ -14,6 +14,12 @@ import { requireModuleData } from '../git-source-history/module-data-service/mod
 import { FeaturePlanService } from './FeaturePlanService';
 import { ModuleTaskWorkerService } from './ModuleTaskWorkerService';
 import { taskGrantFiles, validateTaskGrant } from './module-task-service/queuedTask';
+import type {
+	ApprovedTaskScope,
+	ApprovedExecution,
+	ServerDependencies,
+	ServerWorker
+} from '../../helpers/agents-providers/moduleTaskApprovedSubmission.types';
 
 const unitId = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const isAbortSignal = (value: unknown): value is AbortSignal =>
@@ -34,12 +40,15 @@ const validateRun = (worker: unknown, modules: unknown, once: unknown, signal: u
 	if (new Set(modules).size !== modules.length) throw new Error('Duplicate module filter');
 	if (typeof once !== 'boolean') throw new Error('Invalid worker run mode');
 	if (!isAbortSignal(signal)) throw new Error('Invalid abort signal');
-	if ((signal as AbortSignal).aborted) throw abortError();
+	if (signal.aborted) throw abortError();
 };
 
 const waitForPoll = (signal: AbortSignal) =>
 	new Promise<void>((resolve) => {
-		if (signal.aborted) return resolve();
+		if (signal.aborted) {
+			resolve();
+			return;
+		}
 		const finish = () => {
 			clearTimeout(timer);
 			signal.removeEventListener('abort', finish);
@@ -49,28 +58,59 @@ const waitForPoll = (signal: AbortSignal) =>
 		signal.addEventListener('abort', finish, { once: true });
 	});
 
+async function approvedBatch(
+	worker: ServerWorker,
+	scope: ApprovedTaskScope,
+	run: ApprovedExecution
+) {
+	const once = worker.onceApproved?.bind(worker);
+	if (!once) throw new Error('Approval-scoped worker is unavailable.');
+	const outcomes = await Promise.allSettled(
+		Array.from({ length: run.parallelism }, () =>
+			Promise.resolve().then(() => once(run.worker, scope, run.signal))
+		)
+	);
+	const failure = outcomes.find(
+		(result): result is PromiseRejectedResult => result.status === 'rejected'
+	);
+	if (failure) throw failure.reason;
+	return outcomes.map((result) => (result as PromiseFulfilledResult<unknown>).value);
+}
+
+async function watch(
+	workerService: ServerWorker,
+	execution: { worker: string; modules: string[]; signal: AbortSignal }
+): Promise<never> {
+	const { worker, modules, signal } = execution;
+	const results: unknown[] = [];
+	while (!signal.aborted) {
+		try {
+			const result = await workerService.once(worker, modules, signal);
+			results.push(result);
+			if (results.length > 100) results.shift();
+			if (signal.aborted) throw abortError();
+			if (result.status === 'idle') await waitForPoll(signal);
+		} catch (error) {
+			if (signal.aborted) throw abortError();
+			throw error;
+		}
+	}
+	throw abortError();
+}
+
 export class ModuleTaskServerService {
 	private readonly repository: ModuleTaskRepository;
 	private readonly openTree: typeof CommitTreeAdapter.open;
 	private readonly registry: Pick<UnitRegistryRepository, 'read'>;
 	private readonly requireMetadata: typeof requireModuleData;
-	private readonly worker: Pick<ModuleTaskWorkerService, 'once'>;
+	private readonly worker: ServerWorker;
 	private readonly grantFiles: typeof taskGrantFiles;
 	private readonly validateGrant: typeof validateTaskGrant;
 	private readonly plans: Pick<FeaturePlanService, 'approved'>;
 
 	constructor(
 		private readonly root: string,
-		dependencies: Partial<{
-			repository: ModuleTaskRepository;
-			openTree: typeof CommitTreeAdapter.open;
-			registry: Pick<UnitRegistryRepository, 'read'>;
-			requireMetadata: typeof requireModuleData;
-			worker: Pick<ModuleTaskWorkerService, 'once'>;
-			grantFiles: typeof taskGrantFiles;
-			validateGrant: typeof validateTaskGrant;
-			plans: Pick<FeaturePlanService, 'approved'>;
-		}> = {}
+		dependencies: ServerDependencies = {}
 	) {
 		this.repository = dependencies.repository ?? new ModuleTaskRepository(root);
 		this.openTree = dependencies.openTree ?? CommitTreeAdapter.open;
@@ -91,10 +131,14 @@ export class ModuleTaskServerService {
 	async submit(
 		input: unknown
 	): Promise<ReturnType<typeof mergePlan> & { commit: string | undefined }> {
-		return this.submitPlan(input);
+		return (await this.submitPlan(input)).submission;
 	}
 
 	async submitApproved(input: { feature: string; expectedDigest: string }) {
+		return (await this.admitApproved(input)).submission;
+	}
+
+	private async admitApproved(input: { feature: string; expectedDigest: string }) {
 		const { feature, expectedDigest } = input;
 		const approved = structuredClone(await this.plans.approved({ feature, expectedDigest }));
 		if (
@@ -132,7 +176,32 @@ export class ModuleTaskServerService {
 				throw new Error('Approved plan changed before task submission.');
 			return mergePlan(draft, feature, records);
 		}, sourceCommit);
-		return { ...result.value, commit: result.commit };
+		return {
+			submission: { ...result.value, commit: result.commit },
+			scope: approved ? { plan: approved, feature, records } : undefined
+		};
+	}
+
+	async runApproved(
+		input: { feature: string; expectedDigest: string },
+		execution: ApprovedExecution
+	) {
+		const request = structuredClone(input);
+		const { worker, parallelism, signal } = execution;
+		validateRun(worker, [], true, signal);
+		if (!Number.isInteger(parallelism) || parallelism < 1 || parallelism > 8)
+			throw new Error('Parallelism must be an integer from 1 to 8.');
+		if (!this.worker.onceApproved) throw new Error('Approval-scoped worker is unavailable.');
+		const { submission, scope } = await this.admitApproved(request);
+		signal.throwIfAborted();
+		const current = await this.plans.approved(request);
+		if (!isDeepStrictEqual(current, scope!.plan))
+			throw new Error('Approved plan changed before dispatch.');
+		signal.throwIfAborted();
+		return {
+			submission,
+			results: await approvedBatch(this.worker, scope!, { worker, parallelism, signal })
+		};
 	}
 
 	async run(
@@ -143,28 +212,6 @@ export class ModuleTaskServerService {
 		validateRun(worker, modules, once, signal);
 		const submission = await this.submit(input);
 		if (once) return { submission, results: [await this.worker.once(worker, modules, signal)] };
-		return this.watch(submission, worker, modules, signal);
-	}
-
-	private async watch(
-		submission: Awaited<ReturnType<ModuleTaskServerService['submit']>>,
-		worker: string,
-		modules: string[],
-		signal: AbortSignal
-	): Promise<never> {
-		const results: unknown[] = [];
-		while (!signal.aborted) {
-			try {
-				const result = await this.worker.once(worker, modules, signal);
-				results.push(result);
-				if (results.length > 100) results.shift();
-				if (signal.aborted) throw abortError();
-				if (result.status === 'idle') await waitForPoll(signal);
-			} catch (error) {
-				if (signal.aborted) throw abortError();
-				throw error;
-			}
-		}
-		throw abortError();
+		return watch(this.worker, { worker, modules, signal });
 	}
 }
