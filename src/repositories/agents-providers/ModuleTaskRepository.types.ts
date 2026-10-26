@@ -17,10 +17,18 @@ export type ModuleTaskInput = z.infer<typeof taskInputSchema>;
 export type ModuleTaskQueue = z.infer<typeof queueSchema>;
 export type ModuleTask = ModuleTaskQueue['tasks'][number];
 export type TaskSelection = { provider: 'claude' | 'codex'; model: string; intelligence: string };
+export interface TaskRunScope {
+	files: string[];
+	snapshot: string;
+	scratch: string;
+	readPaths: string[];
+	protectedPaths: string[];
+}
 export interface TaskRunInput extends TaskSelection {
 	cwd: string;
 	prompt: string;
 	signal: AbortSignal;
+	scope?: TaskRunScope;
 }
 export interface TaskRunResult extends TaskSelection {
 	text: string;

@@ -5,6 +5,25 @@ const id = z.string().regex(unitIdPattern).max(150);
 const text = z.string().trim().min(1).max(16000);
 const commit = z.string().regex(/^[a-f0-9]{40}$/);
 const path = z.string().regex(/^(?!\/)(?!.*(?:^|\/)\.{1,2}(?:\/|$))[^\0\r\n]+$/);
+const assignedFile = z
+	.string()
+	.min(1)
+	.refine((value) => {
+		const segments = value.split('/');
+		return (
+			!value.startsWith('/') &&
+			!/^[a-zA-Z]:/.test(value) &&
+			!value.includes('\\') &&
+			!/[\u0000-\u001f\u007f-\u009f*?]/.test(value) &&
+			segments.every(
+				(segment) =>
+					segment.length > 0 &&
+					segment !== '.' &&
+					segment !== '..' &&
+					segment.toLowerCase() !== '.git'
+			)
+		);
+	}, 'must be a canonical relative file path');
 export const featureSchema = z.strictObject({ id, goal: text, tldr: text });
 export const wantedContractSchema = z.strictObject({
 	responsibility: text,
@@ -27,6 +46,15 @@ export const taskInputSchema = z.strictObject({
 		)
 		.max(64)
 		.optional(),
+	assignedFiles: z
+		.array(assignedFile)
+		.max(64)
+		.superRefine((files, context) => {
+			if (new Set(files).size !== files.length)
+				context.addIssue({ code: 'custom', message: 'must not contain duplicate file paths' });
+		})
+		.optional(),
+	role: z.enum(['implementation', 'verification']).default('implementation'),
 	instructions: text,
 	wantedContract: wantedContractSchema,
 	model: z.string().trim().min(1).max(150).default('auto'),
