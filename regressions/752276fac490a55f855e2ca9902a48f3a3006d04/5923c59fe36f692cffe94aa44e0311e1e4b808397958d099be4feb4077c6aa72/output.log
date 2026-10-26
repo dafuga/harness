@@ -1,0 +1,42 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4zqVOR
+
+ ❯ test/adapters/git-source-history/commit-tree.test.ts (6 tests | 1 failed) 657ms
+   ✓ CommitTreeAdapter.open empty resolves the exact commit and refuses absent revisions 58ms
+   ✓ CommitTreeAdapter.open populated establishes the object format before caching 62ms
+   ✓ CommitTreeAdapter.list empty returns no source entries 50ms
+   ✓ CommitTreeAdapter.list populated retains blob identities and paths 61ms
+   ✓ CommitTreeAdapter.read empty rejects missing paths 49ms
+   × CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths 375ms
+     → oversized blobs must not remain in the per-tree cache: expected 1 to be 2 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/git-source-history/commit-tree.test.ts > CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths
+AssertionError: oversized blobs must not remain in the per-tree cache: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ oversizedBlob test/adapters/git-source-history/commit-tree.test.ts:127:84
+    125|  expect((await tree.read('large.txt')).length).toBe(size);
+    126|  expect((await tree.read('large.txt')).length).toBe(size);
+    127|  expect(reads() - before, 'oversized blobs must not remain in the per-…
+       |                                                                                    ^
+    128| }
+    129| 
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:107:6
+ ❯ fixture test/adapters/git-source-history/commit-tree.test.ts:26:3
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:83:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  00:28:43
+   Duration  3.06s (transform 73ms, setup 97ms, collect 16ms, tests 657ms, environment 0ms, prepare 23ms)
+
