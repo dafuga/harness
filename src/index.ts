@@ -199,3 +199,4 @@ export { ModuleTaskLaunchAdapter } from './adapters/agents-providers/ModuleTaskL
 export { ModuleTaskSandboxProcessAdapter } from './adapters/agents-providers/ModuleTaskSandboxProcessAdapter';
 export { FeaturePlanRepository } from './repositories/agents-providers/FeaturePlanRepository';
 export { FeaturePlanService } from './services/agents-providers/FeaturePlanService';
+export { ModuleTaskProviderConfigAdapter } from './adapters/agents-providers/ModuleTaskProviderConfigAdapter';
