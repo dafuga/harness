@@ -8,11 +8,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/utils/git-source-history/regression-history/assertCaptureMedia.ts",
 			"src/utils/git-source-history/regressionHistory.ts",
 			"src/utils/git-source-history/regressionHistory.types.ts",
 			"src/utils/regressionHistory.ts"
 		],
 		"symbols": [
+			"assertCaptureMedia",
 			"regressionHash",
 			"regressionHistory",
 			"sameRegression",
@@ -83,6 +85,11 @@
 		},
 		{
 			"unit": "function.regression-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
 			"via": "import",
 			"origin": "derived"
 		}
