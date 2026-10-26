@@ -99,6 +99,30 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "build.initialized",
+				"state": "initialized",
+				"subject": "SourceGraphService.build",
+				"test": {
+					"file": "test/services/unit-index.test.ts",
+					"title": "an alternative implementation is a related unit linked by a declared contract dependency"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"nodes": [],
+						"edges": [],
+						"uncertain": []
+					}
+				}
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
