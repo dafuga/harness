@@ -132,7 +132,7 @@ for (const width of [1440, 920, 390]) {
 		const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
 		await panel.getByRole('textbox', { name: 'Message', exact: true }).fill('Keep my draft.');
 		await evidence(page, width);
-		await panel.getByRole('button', { name: /^Agents/ }).click();
+		await panel.getByRole('tab', { name: 'Agents', exact: true }).click();
 		await expect(panel.getByRole('heading', { name: 'Main chats', exact: true })).toBeVisible();
 		await expect(
 			panel.getByText('Refine shared component previews', { exact: true })
@@ -154,7 +154,7 @@ for (const width of [1440, 920, 390]) {
 		await verifyWorkRefresh(page, panel);
 		await modules.getByRole('link', { name: 'Card', exact: true }).click();
 		await expect(page).toHaveURL(/components\/component.card/);
-		await panel.getByRole('button', { name: 'Chat', exact: true }).click();
+		await panel.getByRole('tab', { name: 'Chat', exact: true }).click();
 		await expect(panel.getByRole('textbox', { name: 'Message', exact: true })).toHaveValue(
 			'Keep my draft.'
 		);
@@ -178,7 +178,7 @@ test('agent refresh failures retain the last reading and unsupported hosts stay 
 	await page.goto(`/projects/${alpha}/harness/branch/feat%2Falpha/components`);
 	await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
 	const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
-	await panel.getByRole('button', { name: /^Agents/ }).click();
+	await panel.getByRole('tab', { name: 'Agents', exact: true }).click();
 	await expect(panel.getByText('Refine shared component previews', { exact: true })).toBeVisible();
 	await page.evaluate(() => {
 		(window as unknown as { __activityFailed: boolean }).__activityFailed = true;
