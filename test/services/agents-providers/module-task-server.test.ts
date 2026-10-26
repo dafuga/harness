@@ -18,7 +18,7 @@ describe('ModuleTaskServerService.submit', () => {
 	test('validates all entries, then admits the full scope in one selected-source update', async () => {
 		const f = makeFixture(),
 			one = Object.assign(task('task-one'), {
-				verificationFiles: ['test/task-one.test.ts', 'src/alpha.ts'],
+				verificationFiles: ['test/task-one.test.ts'],
 				assignee: 'worker-one',
 				model: 'gpt-6-luna',
 				provider: 'codex',
