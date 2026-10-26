@@ -2,7 +2,7 @@
 	"name": "contract-preview-folder-audit",
 	"goal": "Accept only the generated __harness route preview folder while retaining ordinary folder-name rejections",
 	"createdAt": "2026-10-26T10:08:29.978Z",
-	"updatedAt": "2026-10-26T10:08:31.160Z",
+	"updatedAt": "2026-10-26T10:31:14.338Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T10:21:30.346Z",
+			"evidence": "Laptop record 02a8deab0b00 at e370ec02e3 fails the existing route-folder matrix: __harness inside routes is incorrectly rejected, while all non-route controls stay rejected."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T10:31:12.811Z",
+			"evidence": "Commit d26e0fdbea permits the reserved preview segment only beneath src/routes. Ordinary reserved folders remain rejected; the checkpoint tests are unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T10:31:14.338Z",
+			"evidence": "Matched laptop record 12986a17b841 passes the existing route-folder case after red 02a8deab0b00. Same resource lease, frozen tests, command and environment."
 		},
 		{
 			"id": "verify",

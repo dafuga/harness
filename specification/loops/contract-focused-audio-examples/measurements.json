@@ -1,0 +1,229 @@
+{
+	"commit": "d26e0fdbea565020e16265135834b8e87c028194",
+	"observations": [
+		{
+			"unit": "audit.structure-rules",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 9846,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "audit.structure-rules",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 300,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "audit.structure-rules",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 78,
+			"artifacts": []
+		},
+		{
+			"unit": "audit.structure-rules",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 9,
+			"artifacts": []
+		},
+		{
+			"unit": "audit.structure-rules",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 7035,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 194,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 71,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 2,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.function.explorer-evidence-focused-captures",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 7225,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 237,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 10,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.model.harness-types",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "template.package-pieces",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 10388,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "template.package-pieces",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 169,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "template.package-pieces",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 11,
+			"artifacts": []
+		},
+		{
+			"unit": "template.package-pieces",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 2,
+			"artifacts": []
+		},
+		{
+			"unit": "template.package-pieces",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "d26e0fdbea565020e16265135834b8e87c028194",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		}
+	]
+}

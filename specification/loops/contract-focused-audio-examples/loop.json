@@ -2,7 +2,7 @@
 	"name": "contract-focused-audio-examples",
 	"goal": "Project valid class audio into Examples with exact binding and original failure provenance without inventing screenshot coverage",
 	"createdAt": "2026-10-26T10:08:31.718Z",
-	"updatedAt": "2026-10-26T10:08:32.782Z",
+	"updatedAt": "2026-10-26T10:31:16.903Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T10:21:31.810Z",
+			"evidence": "Laptop record 33ba73a2ba24 at e370ec02e3 fails valid current class audio in the existing squash case. Public image getter/iterator/species admission still passes; no fixture error proves the defect."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T10:31:15.204Z",
+			"evidence": "Commit d26e0fdbea selects sealed class audio per case, slot and state, preserves original failure outcomes, and keeps audio separate from screenshot viewports."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T10:31:16.903Z",
+			"evidence": "Matched laptop record 3e43f1b4c5e6 passes the unchanged existing case after red 33ba73a2ba24, including forged bindings, case collisions and image admission controls."
 		},
 		{
 			"id": "verify",
