@@ -7887,6 +7887,86 @@
 			"createdAt": "2026-10-26T01:14:07.516Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-first.runner-diagnostics-repair",
+			"title": "Preserve safe native runner diagnostics",
+			"moduleGoal": "Expose correct contract-first execution diagnostics and identify the smallest repair needed for real Codex and Claude task launch.",
+			"instructions": "Implement only assigned runner source and its types/private taskProcess file. Do not read verification suites or foreign implementation; use CLI dependency contracts. Preserve existing success, usage, quota and unknown failure behavior. Safely classify auth/model/permission provider errors and invalid JSON, without relaying raw untrusted provider text or secrets. Capture bounded stderr in TaskProcessResult without credential leakage. Keep resource/spawn failures distinguishable; no fake provider usage or executed timestamps for queue-only work. Exact model/intelligence unchanged. Root has test-only checkpoint with 5 failed/10 passed before repair and will run frozen verification. No commits, pushes, deploys, credentials, actual provider CLI runs, E2Es or other file writes. Request changed grant if needed. This is app bootstrap not automatic/native dispatch proof.",
+			"wantedContract": {
+				"responsibility": "Run the selected native Claude or Codex CLI and report safe actionable failure categories, real usage and exact model/intelligence without exposing private provider data.",
+				"inputs": [
+					{
+						"name": "TaskRunInput",
+						"type": "existing public task input with model, intelligence, prompt, cwd and cancellation"
+					},
+					{
+						"name": "execute",
+						"type": "existing injectable native execution seam; optional bounded stderr diagnostic"
+					}
+				],
+				"outputs": [
+					{
+						"name": "TaskRunResult",
+						"type": "existing compatible successful execution including real usage"
+					},
+					{
+						"name": "failure",
+						"type": "existing Error or failed execution object retaining quotaRejected=false for authentication/model/permission/invalid response, with safe next action"
+					}
+				],
+				"errors": [
+					{
+						"name": "authentication",
+						"type": "safe reauthenticate diagnostic, never quota fallback"
+					},
+					{
+						"name": "model access",
+						"type": "safe selected-model availability diagnostic"
+					},
+					{
+						"name": "permission",
+						"type": "safe permissions diagnostic"
+					},
+					{
+						"name": "invalid response",
+						"type": "safe malformed structured output diagnostic"
+					},
+					{
+						"name": "unknown",
+						"type": "preserve existing generic message"
+					},
+					{
+						"name": "prelaunch",
+						"type": "retain resource/spawn error distinction without secrets"
+					}
+				]
+			},
+			"model": "gpt-6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "codex-app-runner-repair",
+			"feature": {
+				"id": "contract-first-execution",
+				"goal": "Harness users and agents develop from committed contracts; server-managed workers can read app-wide contracts and modify only their assigned files, with complete metadata validation and tracked executions.",
+				"tldr": "Extend the API-backed CLI and mandatory revision metadata with contract authoring, contract-first Codex guidance, enforced worker scopes, and automatic server task creation and dispatch. Preserve local and hosted permissions, existing history and exact model/usage/cost/bounce records."
+			},
+			"module": {
+				"id": "adapter.agents-providers-module-task-runner",
+				"goal": "Expose correct contract-first execution diagnostics and identify the smallest repair needed for real Codex and Claude task launch.",
+				"files": [
+					"src/adapters/agents-providers/ModuleTaskRunnerAdapter.ts",
+					"src/adapters/agents-providers/ModuleTaskRunnerAdapter.types.ts",
+					"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts"
+				]
+			},
+			"sourceCommit": "93a62bd8609a196f28f68fb6d0c0b3bf0f7deb88",
+			"contractHash": "77af79d1b955e5d393bda4814a25cc227a146e4b5a87a8886b6daca7f29ef81c",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-26T01:25:51.968Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
