@@ -113,16 +113,24 @@ test('project Work rejects a completed read after selection changes', async () =
 		release = resolve;
 	});
 	const read = vi.spyOn(FeatureWorkService.prototype, 'read').mockReturnValue(deferred);
+	const projectId = selected.session.projectId!;
+	let pending: Promise<typeof workSnapshot> | undefined;
 	try {
 		expect(bridge.projectWork).toBeTypeOf('function');
-		const pending = bridge.projectWork({ projectId: selected.session.projectId! });
-		const rejected = expect(pending).rejects.toThrow('project');
+		pending = bridge.projectWork({ projectId });
+		void pending.catch(() => undefined);
 		await vi.waitFor(() => expect(read).toHaveBeenCalledTimes(1));
-		await selected.session.open(foreign.root);
+		await expect(selected.session.open(foreign.root)).rejects.toThrow();
+		expect(selected.session.projectId).toBe(projectId);
 		release(workSnapshot);
-		await rejected;
+		await expect(pending).resolves.toEqual(workSnapshot);
+		await selected.session.open(foreign.root);
+		expect(selected.session.projectId).not.toBe(projectId);
+		await expect(bridge.projectWork({ projectId })).rejects.toThrow('project');
+		expect(read).toHaveBeenCalledTimes(1);
 	} finally {
 		release(workSnapshot);
+		await pending?.catch(() => undefined);
 		read.mockRestore();
 	}
 }, 30000);
