@@ -2,7 +2,7 @@
 	"name": "contract-generated-repository-types",
 	"goal": "Generated repository method-state examples compile with their supported record fields while keeping the existing four cases",
 	"createdAt": "2026-10-26T09:14:45.543Z",
-	"updatedAt": "2026-10-26T09:14:46.544Z",
+	"updatedAt": "2026-10-26T09:19:29.330Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T09:16:32.506Z",
+			"evidence": "Record ec1016df4e19 at b5d9fbfe57: one existing scaffold case fails TS2353 for label on RepositoryRecord; five pass. The virtual compiler reports exactly the integration defect."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T09:19:27.979Z",
+			"evidence": "Commit 8dcad2c138 initializes the existing populated-state example with typeof original. The same four generated method/state cases and authored results are retained."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T09:19:29.330Z",
+			"evidence": "Matched records ec1016df4e19 and 63944edc8630: the existing compiler case fails before repair, then all six scaffold cases pass with unchanged tests and environment."
 		},
 		{
 			"id": "verify",
