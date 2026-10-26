@@ -176,7 +176,9 @@
 			"moduleResourceLocation",
 			"PermissionCatalogService",
 			"PermissionsCommand",
-			"ModuleTaskContractContextService"
+			"ModuleTaskContractContextService",
+			"ModuleTaskLaunchAdapter",
+			"ModuleTaskSandboxProcessAdapter"
 		]
 	},
 	"contract": {
@@ -187,12 +189,22 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.agents-providers-module-task-launch",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.agents-providers-module-task-runner",
 			"via": "reexport",
 			"origin": "derived"
 		},
 		{
 			"unit": "adapter.agents-providers-module-task-sandbox",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-sandbox-process",
 			"via": "reexport",
 			"origin": "derived"
 		},

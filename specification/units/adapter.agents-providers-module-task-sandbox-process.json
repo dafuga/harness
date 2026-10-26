@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-module-task-sandbox-process",
+	"kind": "adapter",
+	"title": "ModuleTaskSandboxProcessAdapter",
+	"responsibility": "Build a trusted per-process sandbox-runtime driver that adds a native hardlink deny before the provider is launched.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/ModuleTaskSandboxProcessAdapter.ts",
+			"src/adapters/agents-providers/ModuleTaskSandboxProcessAdapter.types.ts"
+		],
+		"symbols": [
+			"ModuleTaskSandboxProcessAdapter",
+			"ModuleTaskSandboxProcessAdapter.constructor",
+			"ModuleTaskSandboxProcessAdapter.connect",
+			"ModuleTaskSandboxProcessAdapterConfig",
+			"ModuleTaskSandboxProcessAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "constructor.config",
+				"type": "{name?:string}"
+			},
+			{
+				"name": "command.sdk",
+				"type": "absolute string path to pinned sandbox-runtime index.js"
+			},
+			{
+				"name": "command.settings",
+				"type": "absolute string path to trusted immutable JSON settings"
+			},
+			{
+				"name": "command.argv",
+				"type": "string[] exact provider command arguments"
+			}
+		],
+		"outputs": [
+			{
+				"name": "connect",
+				"type": "string"
+			},
+			{
+				"name": "command",
+				"type": "string[]",
+				"description": "Node/Bun interpreter argv for a per-process trusted driver. Initializes sandbox-runtime in that process, preserves its filesystem/network policy, inserts (deny file-link) into its pinned macOS profile, then launches provider with inherited stdio. Refuses an unexpected native wrapper format. Closes native proxy state only after child exit; no nested sandbox_apply."
+			}
+		],
+		"errors": [
+			{
+				"name": "Unknown wrapper shape or sandbox initialization failure",
+				"type": "safe prelaunch nonzero process result; no unrestricted fallback"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/ModuleTaskSandboxProcessAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/ModuleTaskSandboxProcessAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

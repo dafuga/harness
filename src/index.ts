@@ -194,3 +194,5 @@ export { moduleResourceLocation } from './helpers/module-system/moduleResourceLo
 export { PermissionCatalogService } from './services/networking-security/PermissionCatalogService';
 export { PermissionsCommand } from './commands/networking-security/PermissionsCommand';
 export { ModuleTaskContractContextService } from './services/agents-providers/ModuleTaskContractContextService';
+export { ModuleTaskLaunchAdapter } from './adapters/agents-providers/ModuleTaskLaunchAdapter';
+export { ModuleTaskSandboxProcessAdapter } from './adapters/agents-providers/ModuleTaskSandboxProcessAdapter';
