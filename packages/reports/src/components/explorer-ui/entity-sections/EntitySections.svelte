@@ -44,7 +44,6 @@
 		!host.route.helper || entity.category !== 'functions' || relations.functions.length > 0
 	);
 	const said = { 'used-in': 'used in', uses: 'uses', models: 'models', apis: 'apis' } as const;
-	// A page opens its models, at its former Contract address too, and its APIs on their own tabs.
 	let related = $derived.by(() => {
 		const tab = host.route.tab === 'contract' ? 'models' : host.route.tab;
 		if (entity.category === 'pages' && (tab === 'models' || tab === 'apis')) return tab;
@@ -53,12 +52,10 @@
 	});
 	let removed = $derived(entity.change === 'removed');
 	let visual = $derived(['pages', 'components', 'layouts'].includes(entity.category));
-	// Functions and services show their authored uses; their former Tests address opens them too.
 	let examples = $derived(
 		['functions', 'services'].includes(entity.category) &&
 			(host.route.tab === 'examples' || host.route.tab === 'tests')
 	);
-	// The purpose is the sentence under the name of an overview tab; it is not said twice there.
 	let contract = $derived(summary.contract.filter((row) => row.label !== 'Purpose'));
 	let tableView = $derived(modelTableView(entity.unit));
 	let tables = $derived(tableView.tables);

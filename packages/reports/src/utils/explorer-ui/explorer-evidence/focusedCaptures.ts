@@ -164,21 +164,30 @@ function audioCase(capture: HarnessCapture, revision: string, unit: string): str
 	if (!validAudio(capture)) return null;
 	try {
 		const parsed: unknown = JSON.parse(capture.note ?? 'null');
-		if (![!!parsed, typeof parsed === 'object', !Array.isArray(parsed)].every(Boolean)) return null;
-		const binding = parsed as Record<string, unknown>;
-		if (Object.keys(binding).sort().join(',') !== 'case,revision,sha256,unit') return null;
-		if (
-			![
-				binding.unit === unit,
-				binding.revision === revision,
-				binding.sha256 === capture.sha256
-			].every(Boolean)
-		)
-			return null;
-		return typeof binding.case === 'string' && binding.case.trim() ? binding.case : null;
+		return audioBinding(parsed, capture, revision, unit);
 	} catch {
 		return null;
 	}
+}
+
+function audioBinding(
+	parsed: unknown,
+	capture: HarnessCapture,
+	revision: string,
+	unit: string
+): string | null {
+	if (![!!parsed, typeof parsed === 'object', !Array.isArray(parsed)].every(Boolean)) return null;
+	const binding = parsed as Record<string, unknown>;
+	if (Object.keys(binding).sort().join(',') !== 'case,revision,sha256,unit') return null;
+	if (
+		![
+			binding.unit === unit,
+			binding.revision === revision,
+			binding.sha256 === capture.sha256
+		].every(Boolean)
+	)
+		return null;
+	return typeof binding.case === 'string' && binding.case.trim() ? binding.case : null;
 }
 
 function validScreenshot(capture: HarnessCapture, kind: string, revision: string): boolean {

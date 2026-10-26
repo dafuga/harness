@@ -1,4 +1,5 @@
 import { permissionProfiles } from '../../../../test/support/permissionProfiles';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import EntityHeader from '../../src/components/explorer-ui/EntityHeader.svelte';
 import { createRawSnippet } from 'svelte';
 import { render } from 'svelte/server';
@@ -42,20 +43,21 @@ function evidence(
 	return render(EntitySections, { props: { host, entity, nav: nav(host.route), pane } }).body;
 }
 
-test('a page overview introduces its purpose before evidence and keeps usage in its tabs', () => {
-	const body = sections();
-	expect(body).toContain('aria-label="Orders page overview"');
-	expect(words(body)).toContain('Lists the orders of an account.');
-	expect(body.indexOf('Lists the orders of an account.')).toBeLessThan(
-		body.indexOf('the evidence of its kind')
-	);
-	expect(sections(undefined, '')).not.toContain('class="ex-lead"');
-	expect(body).not.toMatch(/aria-label="(?:Used In|Uses)"/);
-	expect(body.indexOf('the evidence of its kind')).toBeLessThan(
-		body.indexOf('aria-label="Performance profile"')
-	);
-	expect(body).not.toContain('aria-label="Size"');
-});
+test('a page overview introduces its purpose before evidence and keeps usage in its tabs', () =>
+	measureWorkload('reports.component.harness-entity-sections', 'ssr-page-overview', () => {
+		const body = sections();
+		expect(body).toContain('aria-label="Orders page overview"');
+		expect(words(body)).toContain('Lists the orders of an account.');
+		expect(body.indexOf('Lists the orders of an account.')).toBeLessThan(
+			body.indexOf('the evidence of its kind')
+		);
+		expect(sections(undefined, '')).not.toContain('class="ex-lead"');
+		expect(body).not.toMatch(/aria-label="(?:Used In|Uses)"/);
+		expect(body.indexOf('the evidence of its kind')).toBeLessThan(
+			body.indexOf('aria-label="Performance profile"')
+		);
+		expect(body).not.toContain('aria-label="Size"');
+	}));
 
 test('what it uses and its tests replace the overview, and its evidence pane with it', () => {
 	const related = sections('uses');

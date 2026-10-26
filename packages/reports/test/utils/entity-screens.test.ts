@@ -14,12 +14,13 @@ import { scope } from '../entityPlaces';
 import { commits, ids, scenarios, units } from '../entityUnits';
 import { withFocused } from '../entityStates';
 import { expectClassAudioMatrix } from '../focusedAudioExamples';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { withoutViewportSuffix } from '../../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
 const page = units.find((unit) => unit.id === ids.page)!;
 const head = revision(commits.middle, [record(commits.middle)]);
 const base = revision(commits.first, [record(commits.first, false)]);
 const tip = revision(commits.tip, [record(commits.tip)]);
-test('source-identical squash previews retain origin and reject a changed source tree', () => {
+test('source-identical squash previews retain origin and reject a changed source tree', async () => {
 	const captured = withFocused(head, ids.page);
 	const sourceTree = 'e'.repeat(40);
 	const point = { ...captured.regressions![0].green!, sourceTree };
@@ -38,7 +39,11 @@ test('source-identical squash previews retain origin and reject a changed source
 	expect(
 		catalogShot(evidence(page, { ...squashed, side: `sides/${'f'.repeat(40)}.json` }))
 	).toBeNull();
-	expectClassAudioMatrix(head, tip, sourceTree);
+	await measureWorkload(
+		'reports.function.explorer-evidence-focused-captures',
+		'focused-audio-binding-matrix',
+		() => expectClassAudioMatrix(head, tip, sourceTree)
+	);
 });
 test('device states share a picker while original metadata and missing-device gaps remain intact', () => {
 	expect(withoutViewportSuffix('choose-mobile', 'desktop')).toBe('choose-mobile');
@@ -104,7 +109,6 @@ test('the branch tip shows exactly one screenshot, the one of the picked state a
 	expect(shown.after.phase).toBe('current');
 	expect(shown.fresh).toBe(true);
 });
-
 test('a selected commit pairs the parent and the commit for the same state and viewport', () => {
 	const shown = entityScreens(evidence(page, head, base), screenPick(options, {})!);
 	expect(shown.before?.file).toBe('aaaaaaa-default-desktop.png');
@@ -113,7 +117,6 @@ test('a selected commit pairs the parent and the commit for the same state and v
 	expect(shown.before?.comparison).toBe(shown.after.comparison);
 	expect(shown.after.standing).toBe('Fresh capture');
 });
-
 test('a side with no capture is a stated gap and is never filled from the other side', () => {
 	const pick = screenPick(options, { state: 'empty' })!;
 	const shown = entityScreens(evidence(page, head, base), pick);
@@ -126,7 +129,6 @@ test('a side with no capture is a stated gap and is never filled from the other 
 	expect(shown.before?.file).not.toContain('bbbbbbb');
 	expect(shown.after.file).toBe('bbbbbbb-empty-desktop.png');
 });
-
 test('a revision without a record has a gap for its screenshot, in the words its side gives', () => {
 	const shown = entityScreens(evidence(page, revision(commits.tip, [])), screenPick(options, {})!);
 	expect(shown.after.missing).toBe(true);
@@ -134,13 +136,11 @@ test('a revision without a record has a gap for its screenshot, in the words its
 	expect(shown.after.file).toBe('');
 	expect(shown.fresh).toBe(false);
 });
-
 test('a first commit has no before pane to fill: its parent side says why', () => {
 	const shown = entityScreens(evidence(page, head, null), screenPick(options, {})!);
 	expect(shown.before).toMatchObject({ missing: true, file: '' });
 	expect(shown.before?.note).toContain('no parent');
 });
-
 test('an inherited capture is never the screenshot of the tip: it is a gap that names its origin', () => {
 	const taken = record(commits.tip);
 	const scenariosOf = taken.scenarios.map((scenario) => ({
@@ -160,7 +160,6 @@ test('an inherited capture is never the screenshot of the tip: it is a gap that 
 	});
 	expect(shown.after.note).toContain('inherited from aaaaaaa');
 });
-
 test('the gallery gets every screenshot of both sides, each side marked as what it is', () => {
 	const items = galleryItems(evidence(page, head, base));
 	expect(items.filter((item) => item.phase === 'after')).toHaveLength(4);
@@ -172,7 +171,6 @@ test('the gallery gets every screenshot of both sides, each side marked as what 
 	expect(galleryItems(evidence(page, head))).toEqual([]);
 	expect(new Set(items.map((item) => item.id)).size).toBe(items.length);
 });
-
 test('a declared catalog preview selects its exact state and viewport without a fallback', () => {
 	const shown = evidence(page, tip);
 	const preview = {
@@ -197,7 +195,6 @@ test('a declared catalog preview selects its exact state and viewport without a 
 	).toBe('ccccccc-empty-mobile.png');
 	expect(catalogShot(focused, { ...preview, state: 'uncaptured' })).toBeNull();
 });
-
 test('validated unchanged screenshots stay visible with their capture origin', () => {
 	const unchanged = {
 		...tip,
