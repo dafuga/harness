@@ -48,5 +48,41 @@
 		],
 		"limitation": "Decoding proves usable media bytes, not visual correctness or complete source-ref selection. No historical tests were rerun.",
 		"finishedAt": "2026-10-26T11:19:58.072900+00:00"
+	},
+	"recordReadback": {
+		"sourceHead": "ae98ef2ef17fb384568401618f0211a96f36f58b",
+		"pinned": {
+			"evidence": "82c2f41f83c834b59a370258875484b7224b6d5f",
+			"notes": "2c009cc15df1f891cbed54ef6b300293995a3676"
+		},
+		"indexSha256": "cc48c4b28f06b961086620a3a1f41ae91f056b3ac6016076cb0e8c1580226060",
+		"indexUnchanged": true,
+		"projectedFull": 46,
+		"projectedPoints": 2558,
+		"uniqueFull": 46,
+		"uniquePoints": 1730,
+		"issues": [],
+		"peakRssBytes": 3413360640,
+		"finishedAt": "2026-10-26T18:51:17.147Z",
+		"limitation": "Full records compare original identity, complete source, outcome and dates after Harness integrity validation. Regression points compare their entire projected fields and capture provenance, excluding derived media addresses/gaps. Historical tests are not rerun; unselected refs and newer commits remain outside scope.",
+		"fullRecordsWithProblems": 0,
+		"outcomes": {
+			"failed": 980,
+			"passed": 750
+		},
+		"originalProofGaps": [
+			{
+				"id": "d8b33e475870c3aa6e5f9203c940e20a367c05cc205930052363c8419ceac658",
+				"commit": "4d21566b665c77abb379d120816914a58bc5843d",
+				"loop": "resource-queue-cleanup"
+			},
+			{
+				"id": "fd302264f761c06e65b5e38fcd5278ba61ad5a75c67a016dfdb1c3e1316e230b",
+				"commit": "f768a89f4c1048ca3013481801a1dcc1d02f9867",
+				"loop": "source-arrow-fields"
+			}
+		],
+		"auditSha256": "1be270cf8fc2141fe5596cc75f77f34a6ed8050212b74d84482dafe0f54d79b8",
+		"memoryScope": "Whole Bun audit process peak RSS, Darwin bytes; exceeds the2GiB reservation. The first attempt was interrupted for growth before any audit result. This does not establish aggregate or history-builder memory compliance."
 	}
 }

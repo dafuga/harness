@@ -1,6 +1,6 @@
 # Migration remains incomplete
 
-Status at 2026-10-26 14:02 UTC. Global `testing: 1` remains disabled. Existing
+Status at 2026-10-26 19:10 UTC. Global `testing: 1` remains disabled. Existing
 unmigrated entrypoints and substantive assertions remain. No production action or
 remote-main delivery is claimed.
 
@@ -113,8 +113,21 @@ Both causes now have matched focused repairs; the failed aggregate remains
 visible and does not qualify the later merge. The fresh `95283a748b` run on harbor-mbp-2 reserved seven CPUs and 6 GiB after a
 live headroom check. Its fifteen-case focused capture passed, then the aggregate
 stopped at formatting in two CLI-updated loop files. Those files were corrected,
-and the complete format check passed before the next aggregate. Root Vitest
-remains single-worker; no later full verification verdict exists. All automated E2Es stay off the primary Mac.
+and the complete format check passed before the next aggregate. Root Vitest remains single-worker. At `0fea94c393`, the next aggregate passed
+1,483 root unit cases (25 live-provider skips), all 290 root E2Es in 78 files,
+28 package cases (three skips), five additional package cases, builds, root
+audit and registry validation. Reports compiler and lint passed; its unit suite
+passed 920 cases and failed one analytics case. The source is not fully verified.
+
+That isolated checkout named a temporary bundle as origin, yielding unknown
+repository identity. Site-scoped analytics correctly excluded its 4,000 fixture
+events. The unchanged two-case Reports suite fails directly before the setup
+repair and passes after preserving the bundle remote and restoring the verified
+canonical origin. No product or test source changed. Snapshot capture
+`a422c85db95d` passes independently because its temporary repository has a usable
+local identity; it is not a reproduction of the original checkout environment.
+The failed aggregate remains visible. A same-source continuation of Reports and
+the remaining workspace gates is running; it is not a single passing aggregate. All automated E2Es stay off the primary Mac.
 
 ## Execution identity
 
@@ -153,7 +166,15 @@ This is not complete source-history coverage: unselected backup/snapshot/work
 and stash refs, plus newer commits, require reconciliation. All 19,527 PNG images were decoded and rendered through ImageIO; all three WAV
 files were decoded through AVAudioFile. Their hashes match the frozen manifest,
 with zero decode failures. This proves usable bytes, not human review of every
-image. Full raw-record readback remains open. The reconstruction exceeded the 10-GB RAM
+image. Raw Git readback now matches all 46 full-record identities, complete source
+identities, outcomes and dates after Harness integrity validation. All 1,730
+unique projected proof points match every projected field and original capture
+provenance, excluding derived media addresses/gaps: 980 failed and 750 passed
+points remain unchanged across 2,558 occurrences. No mismatch or missing original
+record was found; the same two malformed original proofs remain gaps. The first
+readback attempt was interrupted for memory growth. The completed retry peaked
+at 3,413,360,640 bytes RSS, exceeding its 2-GiB reservation; it does not establish
+history-builder or aggregate memory compliance. The reconstruction exceeded the 10-GB RAM
 target (maximum RSS 19,729,809,408 bytes); its result is retained without claiming
 memory compliance.
 
@@ -161,5 +182,5 @@ The shared preview owner still serves another source checkout and revision-null
 runtime metadata. The report route redirected to the older main catalog. No
 second persistent preview was started. Fresh current-main Tests, Examples,
 History and playable-audio browser proof remain pending, as do final builds,
-latest-tree aggregate checks, complete migration and final history catch-up.
+a complete same-source verification verdict, complete migration and final history catch-up.
 The report remains active and unpublished while required checks are open.
