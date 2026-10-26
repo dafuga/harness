@@ -101,9 +101,11 @@ test('scaffold guidance tells agents what generated code contains', () =>
 		expect(generatedRules('view')).toContain('Test shape: page screenshot match.');
 		expect(generatedRules('layout')).toContain('Test shape: page screenshot match.');
 		expect(findGuide('layout')?.contains?.join(' ')).toContain('Layout page screenshot matches');
-		expect(catalogRules().split('\n').find((line) => line.startsWith('layout:'))).toContain(
-			'Test shape: page screenshot match.'
-		);
+		expect(
+			catalogRules()
+				.split('\n')
+				.find((line) => line.startsWith('layout:'))
+		).toContain('Test shape: page screenshot match.');
 		expect(generatedRules('helper')).toContain('must match the comment beside the example');
 		expect(generatedRules('api')).toContain('every field and every error body');
 		expect(generatedRules('feature')).toContain('Test shape: none.');

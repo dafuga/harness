@@ -51,8 +51,10 @@ test('validate each allowed shape and its missing or invalid states', async () =
 		'authored Examples'
 	);
 	assertAuthoredExampleCases(unit, item);
-	await measureWorkload('validator.verification-evidence-test-case', 'layout-page-case-admission', () =>
-		assertLayoutPageCases(unit, item)
+	await measureWorkload(
+		'validator.verification-evidence-test-case',
+		'layout-page-case-admission',
+		() => assertLayoutPageCases(unit, item)
 	);
 	assertMethodStateCases(unit, item);
 	expect(
@@ -78,8 +80,8 @@ function assertLayoutPageCases(unit: ComponentManifest, item: ContractCase) {
 			}
 		]
 	};
-	const observed = ['page', 'component', 'layout'].map((shape) =>
-		validator.validate(layout, { ...page, shape }).valid
+	const observed = ['page', 'component', 'layout'].map(
+		(shape) => validator.validate(layout, { ...page, shape }).valid
 	);
 	expect(observed, 'Layouts use the existing page form').toEqual([true, false, false]);
 }

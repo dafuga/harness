@@ -62,9 +62,9 @@ function assertRegionContract() {
 		'layout.locator(\'[data-harness-layout-content="blog-post"]\')'
 	);
 	expect(layoutTest?.contents).toContain("toContainText('Child content placeholder')");
-	expect(
-		layout.find((file) => file.path.endsWith('/__harness/+page.svelte'))?.contents
-	).toContain('Child content placeholder');
+	expect(layout.find((file) => file.path.endsWith('/__harness/+page.svelte'))?.contents).toContain(
+		'Child content placeholder'
+	);
 	expect(layout.find((file) => file.path.endsWith('/+layout.svelte'))?.contents).toContain(
 		'{@render children()}'
 	);
