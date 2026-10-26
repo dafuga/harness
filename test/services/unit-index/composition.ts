@@ -1,10 +1,10 @@
-import { expect } from 'vitest';
+import { expect, test } from 'vitest';
 import { indexFiles, unitOf } from '../../support/memoryTree';
 import { UnitRegistryValidator } from '../../../src/validators/UnitRegistryValidator';
 import { revisionRegistry } from '../../../src/utils/verification-evidence/revision-registry/revisionRegistry';
 
 /** Composition follows runtime component calls, independently of navigation and type imports. */
-export async function assertCompositionRegistry(): Promise<void> {
+async function assertCompositionRegistry(): Promise<void> {
 	const files = {
 		'src/components/atoms/ButtonAtom.svelte': '<!-- @harness-tier atom --><button>Save</button>',
 		'src/components/Control.svelte':
@@ -38,3 +38,5 @@ export async function assertCompositionRegistry(): Promise<void> {
 		'component.feature: molecule cannot compose molecule component.control'
 	);
 }
+
+test('atomic levels follow runtime calls and survive projections', assertCompositionRegistry);
