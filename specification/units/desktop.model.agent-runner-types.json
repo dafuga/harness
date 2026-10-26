@@ -4,7 +4,7 @@
 	"kind": "model",
 	"title": "AgentRunner",
 	"responsibility": "Owns the AgentRunner data model.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -27,10 +27,43 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [],
-		"errors": []
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ImageRequest",
+				"type": "{prompt:string,reference:string|null,cwd:string,model:string,signal:AbortSignal,onStatus:(status:string)=>void,onFile?:(path:string)=>void}",
+				"description": "reference is an original image local file path, or null for an initial design. cwd is the task-owned temporary directory and only generation write location."
+			},
+			{
+				"name": "AgentTurn",
+				"type": "{model:string,effort:string|null,cwd:string,prompt:string,reference?:string|null,access:\"read-only\"|\"write\",signal:AbortSignal,onText:(text:string)=>void,onStatus:(status:string)=>void,onFile?:(path:string)=>void}"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ImageGenerator.generateImage",
+				"type": "(request:ImageRequest)=>Promise<{bytes:Uint8Array,revisedPrompt:string|null}>"
+			},
+			{
+				"name": "AgentRunner",
+				"type": "{discover():Promise<ProviderState>,run(turn:AgentTurn):Promise<{text:string,model:string}>}"
+			},
+			{
+				"name": "CliCommand",
+				"type": "{command:string,args:string[]}"
+			},
+			{
+				"name": "RunCancelled",
+				"type": "class extends Error",
+				"description": "Sets name RunCancelled and message The run was cancelled."
+			}
+		],
+		"errors": [
+			{
+				"name": "RunCancelled",
+				"type": "Error"
+			}
+		]
 	},
 	"dependencies": [
 		{

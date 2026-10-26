@@ -4,7 +4,7 @@
 	"kind": "model",
 	"title": "RunContext",
 	"responsibility": "Owns the RunContext data model.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -14,9 +14,29 @@
 		"symbols": ["RunContext", "CreatedEntity", "RunPhase", "RunEvent"]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "RunContext",
+				"type": "{id:string,request:RunRequest,session:ProjectSessionService,root:string,revision:Revision,entity:EntityDetail,planning:PlanningPort,runner:AgentRunner,generator:ImageGenerator,imageModel:string,signal:AbortSignal,emit:(event:RunEvent)=>void,failureRecorded?:boolean}",
+				"description": "No direct image reference field; request/entity may contain additional data not described here."
+			}
+		],
+		"outputs": [
+			{
+				"name": "RunPhase",
+				"type": "\"queued\"|\"prompting\"|\"generating\"|\"saving\"|\"changing\"|\"recording\""
+			},
+			{
+				"name": "RunEvent",
+				"type": "{runId:string} & (status | text | replay | design | changes | failed | cancelled | finished)",
+				"description": "Design events expose version and DesignImage[]; finished has verified:false."
+			},
+			{
+				"name": "CreatedEntity",
+				"type": "{category:Category,entityId:string,threadId:string|null,requestSaved:boolean}"
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [

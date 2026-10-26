@@ -4,7 +4,7 @@
 	"kind": "model",
 	"title": "PlanningPort",
 	"responsibility": "Owns the PlanningPort data model.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -21,9 +21,38 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DesignDraft",
+				"type": "{entityId:string,prompt:string,generator:{provider:\"codex\"|\"claude\",model:string},baseRevision:string,expectedLatest?:string|null,state:string,viewport:string,bytes:Uint8Array|null,notes?:string,revises?:{version:string,imageSha256:string,region:Region|null,threadId:string|null,option?:string},options?:DesignOptionDraft[]}",
+				"description": "When options are supplied, bytes must be null; neither this type nor DesignOptionDraft currently has a preferred flag."
+			},
+			{
+				"name": "DesignOptionDraft",
+				"type": "{direction:string,bytes:Uint8Array,prompt:string,revisedPrompt:string|null}"
+			},
+			{
+				"name": "PlanImageQuery",
+				"type": "{entityId:string,version:string,sha256:string,revision:string,option?:string}",
+				"description": "Pins a design image by revision/hash and optional option ownership."
+			}
+		],
+		"outputs": [
+			{
+				"name": "PlanningPort.image",
+				"type": "(query:PlanImageQuery)=>Promise<Uint8Array>"
+			},
+			{
+				"name": "PlanningPort.addDesign",
+				"type": "(draft:DesignDraft)=>Promise<DesignVersion>"
+			},
+			{
+				"name": "PlanningPort",
+				"type": "{plans,createPlan,addDesign,openThread,messages,appendMessage,approve,image,history}",
+				"description": "No current screenshot capture or preferred-option mutation is declared."
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [
