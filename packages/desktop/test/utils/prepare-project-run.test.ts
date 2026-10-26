@@ -54,6 +54,9 @@ test.each([
 test('current image callback is lazy and pins exact project revision and artifact bindings', async () => {
 	const { f, query, response, evidence, prepare } = await currentFixture();
 	const context = await prepare();
+	expect(git(f.root, 'rev-parse', 'HEAD')).not.toBe(query.commit);
+	expect(response.scope.atTip).toBe(false);
+	expect(query.mode).toBe('commit');
 	expect(evidence.evidence).not.toHaveBeenCalled();
 	expect(evidence.artifact).not.toHaveBeenCalled();
 	expect(context.currentImage).toBeTypeOf('function');
@@ -106,7 +109,7 @@ test('current image chooses matching current usable nonfocused screenshots deter
 });
 
 test('no eligible recorded screenshot returns null without reading an artifact', async () => {
-	const { response, evidence, prepare } = await currentFixture();
+	const { f, query, response, evidence, prepare } = await currentFixture();
 	evidence.evidence.mockResolvedValue({
 		...response,
 		evidence: {
@@ -117,7 +120,9 @@ test('no eligible recorded screenshot returns null without reading an artifact',
 	});
 	const context = await prepare();
 	expect(context.currentImage).toBeTypeOf('function');
+	expect(git(f.root, 'rev-parse', 'HEAD')).not.toBe(query.commit);
 	await expect(context.currentImage!()).resolves.toBeNull();
+	expect(evidence.evidence).toHaveBeenCalledExactlyOnceWith(query);
 	expect(evidence.artifact).not.toHaveBeenCalled();
 });
 

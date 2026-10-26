@@ -35,7 +35,7 @@ export async function currentFixture() {
 		entityId: f.request.entityId,
 		branch: 'main',
 		commit: git(f.root, 'rev-parse', 'HEAD'),
-		mode: 'current' as const
+		mode: 'commit' as const
 	};
 	const side = {
 		commit: query.commit,
@@ -54,7 +54,7 @@ export async function currentFixture() {
 	};
 	const response = {
 		scope: {
-			mode: 'current',
+			mode: 'commit',
 			branch: 'main',
 			tip: query.commit,
 			commit: query.commit,
@@ -77,7 +77,7 @@ export async function currentFixture() {
 			profile: null
 		},
 		evidence: {
-			mode: 'current',
+			mode: 'commit',
 			scenarios: [],
 			after: side,
 			before: null,
@@ -87,7 +87,11 @@ export async function currentFixture() {
 		behavior: {}
 	};
 	const evidence = {
-		evidence: vi.fn().mockResolvedValue(response),
+		evidence: vi.fn().mockImplementation(async (input: { mode: string; commit: string }) => {
+			if (input.mode === 'current' && git(f.root, 'rev-parse', 'HEAD') !== input.commit)
+				throw new Error(`Commit ${input.commit.slice(0, 7)} is no longer the tip of branch main.`);
+			return response;
+		}),
 		artifact: vi
 			.fn()
 			.mockResolvedValue({ bytes: imageBytes, sha256: imageHash, mediaType: 'image/png' })
@@ -99,7 +103,15 @@ export async function currentFixture() {
 		evidence,
 		providers: new ProviderDiscoveryService({ codex: f.runner, claude: f.runner })
 	};
-	const prepare = (request = f.request) =>
-		prepareRun(preparation, { ...request, projectId: query.projectId }, new AbortController());
+	const prepare = async (request = f.request) => {
+		const context = await prepareRun(
+			preparation,
+			{ ...request, projectId: query.projectId },
+			new AbortController()
+		);
+		response.scope.tip = git(f.root, 'rev-parse', 'HEAD');
+		response.scope.atTip = response.scope.tip === query.commit;
+		return context;
+	};
 	return { f, query, response, evidence, prepare };
 }
