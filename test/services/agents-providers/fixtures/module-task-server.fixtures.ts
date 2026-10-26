@@ -29,15 +29,18 @@ export const task = (
 });
 
 export const plan = (tasks: unknown[], f = feature) => ({ feature: f, tasks });
-export const manifest = (id: string, changes: Record<string, unknown> = {}) => ({
-	id,
-	status: 'active',
-	responsibilityOrigin: 'declared',
-	responsibility: 'work',
-	owns: { source: [`src/${id.split('.').at(-1)}.ts`] },
-	contract: { origin: 'declared', ...contract },
-	...changes
-});
+export const manifest = (id: string, changes: Record<string, unknown> = {}) => {
+	const source = `src/${id.split('.').at(-1)}`;
+	return {
+		id,
+		status: 'active',
+		responsibilityOrigin: 'declared',
+		responsibility: 'work',
+		owns: { source: [`${source}.ts`, `${source}.alternate.ts`] },
+		contract: { origin: 'declared', ...contract },
+		...changes
+	};
+};
 
 const makeService = (d: object) => new (ModuleTaskServerService as any)(root, d) as any;
 export const invoke = (
@@ -65,6 +68,18 @@ export const makeFixture = (
 	const collaborators = {
 		repository,
 		openTree: vi.fn(async () => tree),
+		grantFiles: vi.fn(async (input: any, unit: any) => {
+			const role = input.role ?? 'implementation';
+			const files: string[] =
+				input.assignedFiles ??
+				(role === 'verification' ? input.verificationFiles : unit.owns.source.slice(0, 1));
+			const allowed: string[] =
+				role === 'verification' ? (input.verificationFiles ?? []) : unit.owns.source;
+			if (!files.length || files.some((file) => !allowed.includes(file)))
+				throw new Error('unsafe file grant');
+			return [...files];
+		}),
+		validateGrant: vi.fn(async () => {}),
 		registry: {
 			read: vi.fn(async () => ({ manifests, errors: options.errors ?? [], unformatted: [] }))
 		},
@@ -89,6 +104,23 @@ export const rejectBeforeUpdate = async (
 	const f = makeFixture(options);
 	await expect(f.service.submit(value)).rejects.toThrow();
 	expect(f.collaborators.repository.update).not.toHaveBeenCalled();
+};
+
+export const admissionTrace = (f: any) => {
+	const { collaborators } = f;
+	return {
+		grants: collaborators.grantFiles.mock.calls.map(([input, unit, tree]: any[]) => [
+			input.id,
+			unit.id,
+			tree
+		]),
+		validated: collaborators.validateGrant.mock.calls,
+		beforeUpdate:
+			Math.max(
+				...collaborators.grantFiles.mock.invocationCallOrder,
+				...collaborators.validateGrant.mock.invocationCallOrder
+			) < collaborators.repository.update.mock.invocationCallOrder[0]
+	};
 };
 
 export const outcome = (status: 'review' | 'failed' = 'review') => ({

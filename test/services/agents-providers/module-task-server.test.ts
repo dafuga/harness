@@ -1,5 +1,6 @@
 import { describe, expect, test, vi } from 'vitest';
 import {
+	admissionTrace,
 	contract,
 	feature,
 	invoke,
@@ -34,18 +35,30 @@ describe('ModuleTaskServerService.submit', () => {
 		]);
 		expect(f.collaborators.repository.update).toHaveBeenCalledTimes(1);
 		expect(f.collaborators.repository.update.mock.calls[0][1]).toBe(sourceCommit);
+		expect(admissionTrace(f)).toEqual({
+			grants: [
+				['task-one', 'service.alpha', f.tree],
+				['task-two', 'service.beta', f.tree]
+			],
+			validated: [
+				[root, ['src/alpha.ts']],
+				[root, ['src/beta.ts']]
+			],
+			beforeUpdate: true
+		});
 		const saved = f.queue();
 		expect(saved.features).toEqual([feature]);
 		expect(saved.tasks).toMatchObject([
 			{
 				id: 'task-one',
+				role: 'implementation',
 				assignee: 'worker-one',
 				model: 'gpt-6-luna',
 				provider: 'codex',
 				intelligence: 'max',
-				module: { files: ['src/alpha.ts', 'test/task-one.test.ts'] }
+				module: { files: ['src/alpha.ts'] }
 			},
-			{ id: 'task-two', module: { files: ['src/beta.ts', 'test/task-two.test.ts'] } }
+			{ id: 'task-two', role: 'implementation', module: { files: ['src/beta.ts'] } }
 		]);
 	});
 
@@ -61,6 +74,8 @@ describe('ModuleTaskServerService.submit', () => {
 		const before = f.queue();
 		for (const conflict of [
 			plan([task('task-one', 'service.alpha', { title: 'Conflict' })]),
+			plan([task('task-one', 'service.alpha', { role: 'verification' })]),
+			plan([task('task-one', 'service.alpha', { assignedFiles: ['src/alpha.alternate.ts'] })]),
 			plan([task('task-two')], { ...feature, goal: 'Conflict' })
 		])
 			await expect(f.service.submit(conflict)).rejects.toThrow();
@@ -100,6 +115,27 @@ describe('ModuleTaskServerService.submit', () => {
 			[plan([task('task-one')]), { metadataFailure: new Error('incomplete metadata') }]
 		];
 		for (const [value, options] of cases) await rejectBeforeUpdate(value, options);
+	});
+
+	test('preflights every grant before mutation or worker launch', async () => {
+		const f = makeFixture();
+		f.collaborators.validateGrant
+			.mockResolvedValueOnce(undefined)
+			.mockRejectedValueOnce(new Error('unsafe second grant'));
+		const before = f.queue();
+		await expect(
+			f.service.run(plan([task('task-one'), task('task-two', 'service.beta')]), {
+				worker: 'worker-one',
+				modules: ['service.alpha', 'service.beta'],
+				once: true,
+				signal: new AbortController().signal
+			})
+		).rejects.toThrow('unsafe second grant');
+		expect(f.collaborators.grantFiles).toHaveBeenCalledTimes(2);
+		expect(f.collaborators.validateGrant).toHaveBeenCalledTimes(2);
+		expect(f.collaborators.repository.update).not.toHaveBeenCalled();
+		expect(f.collaborators.worker.once).not.toHaveBeenCalled();
+		expect(f.queue()).toEqual(before);
 	});
 });
 
