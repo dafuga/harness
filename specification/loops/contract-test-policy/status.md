@@ -602,3 +602,54 @@ neither a real model's execution identity nor trusted provider qualification;
 worker launch remains blocked and no model was substituted. The partial baseline
 fixture has been formatted and split to meet function limits but remains
 uncommitted and still lacks real reviewed screenshot cases.
+
+## Continuation: sampler and Git history reads
+
+`89b4c54b0a` registers the existing CPU sampler method case without changing
+its title or count. It retains a real process-list sample and checks unsupported
+platform, absent counters and process-launch failures inside that case. Portable
+failure stubs were exercised in `7d89af982c` and `fbd9d5f08b`; the indexed
+manifest was reconciled in `28b3dacaab`. Capture `3fdb8190a84a` passed 16 focused
+cases, the 1,827-unit registry check, root typecheck and audit. Its earlier
+capture `12330cc6aaa3` passed the tests but failed the stale manifest check and
+remains a failed record. At `b88d23bc33`, capture `0335599827fc` passed 20 cases
+covering the sampler, Git reads, platform catalog and readable contracts. The
+native sampler workload took 34.06 ms and observed 91,602,944 bytes whole-worker
+RSS; the adapter has 1,471 source bytes, 34 lines, complexity three, six
+dependencies and no separate module artifact.
+
+The committed inventory at `28b3dacaab` has 1,118 suite files, 4,610 test
+declarations, 48 standardized units and 702 registered cases. It reports 6,101
+gaps, including 172 scenario checks without case references; the increase in
+reported gaps is the new admission check exposing existing omissions.
+
+A 40-revision isolated history probe at `28b3dacaab` crossed its 5 GiB task
+process guard after 18 revisions, peaking at 5,386,059,776 bytes attributed RSS;
+no historical tests were run. The existing CommitTreeAdapter read case then
+proved that its per-tree cache retained an oversized blob outside the shared
+64 MiB bound. Matched red `5923c59fe36f` at test-only `752276fac4` and green
+`41250f40a07d` at source-only `e9ca66832d` preserve the unchanged case. Mutant
+`bf81098540` failed capture `d98e31adf5be`; restored `d36ae02c72` matched the
+`6a384a7ffa` tree and passed `92652afaadb6`.
+
+A second 40-revision probe at `6a384a7ffa` was stopped after nine revisions when
+visible Harness and Codex RSS summed above 10 GB; the sum includes shared Codex
+processes and is an upper estimate. Its task process peaked at 4,175,659,008
+bytes. Only four revisions overlapped the first partial probe, so these are not
+comparable full runs and do not prove the builder is memory-safe.
+
+The same Git-read case exposed a missing committed blob being returned as empty
+text. Matched red `0299aac5807e` at `ae4f418b69` and green `ae7d1f3dbb29` at
+`a18ae0fa79` retain the unchanged case. The repaired batch parser rejects missing
+objects, malformed frames and failed subprocesses, preserves valid peers and
+allows retries. Mutant `bc434a1355` failed capture `0a61bc0075cf`; restored
+`97890691ea` had the same tree as `a18ae0fa79` and passed `1655ffdf51d3`.
+`b88d23bc33` extends the same case to simultaneous failed reads and retries.
+The Git adapter has 5,300 source bytes, 135 lines, complexity 34, four dependencies
+and no separate emitted artifact. Its 64 MiB-plus committed-blob workload took
+295.83 ms and observed 498,466,816 bytes whole-worker RSS including the fixture
+and runner, at `b88d23bc33`.
+
+Complete history reconstruction within the memory target, baseline fixture
+migration, provider qualification, the other-laptop E2E and aggregate gates, and
+current-main Explorer and audio proof remain open. No production action was taken.

@@ -2,7 +2,7 @@
 	"name": "history-missing-blob",
 	"goal": "Report missing or invalid committed Git blobs without substituting empty source.",
 	"createdAt": "2026-10-26T23:31:03.057Z",
-	"updatedAt": "2026-10-26T23:31:04.269Z",
+	"updatedAt": "2026-10-26T23:33:25.730Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:33:22.622Z",
+			"evidence": "Red 0299aac5807e at ae4f418b69 shows a missing committed blob is returned as empty text."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:33:23.874Z",
+			"evidence": "Commit a18ae0fa79 validates Git batch frames and rejects missing objects, malformed responses and subprocess failures."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:33:25.730Z",
+			"evidence": "Green ae7d1f3dbb29 passes the unchanged case, including valid peers and retries."
 		},
 		{
 			"id": "verify",

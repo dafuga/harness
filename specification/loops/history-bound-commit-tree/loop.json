@@ -2,7 +2,7 @@
 	"name": "history-bound-commit-tree",
 	"goal": "Keep per-tree reads within the shared immutable blob cache bound during history reconstruction.",
 	"createdAt": "2026-10-26T23:28:02.082Z",
-	"updatedAt": "2026-10-26T23:28:03.257Z",
+	"updatedAt": "2026-10-26T23:30:36.371Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:30:33.473Z",
+			"evidence": "Red 5923c59fe36f at 752276fac4 proves oversized blob text is retained by the per-tree cache."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:30:34.686Z",
+			"evidence": "Commit e9ca66832d removes completed requests from the per-tree map while retaining bounded shared caching."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:30:36.371Z",
+			"evidence": "Green 41250f40a07d passes the unchanged read case in the same environment."
 		},
 		{
 			"id": "verify",
