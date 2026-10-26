@@ -3,7 +3,7 @@
 	"id": "repository.agents-providers-feature-plan",
 	"kind": "repository",
 	"title": "FeaturePlanRepository",
-	"responsibility": "Store source-bound feature plans, page design choices, contracts and approval in the shared task queue.",
+	"responsibility": "Persist source-bound immutable feature plan revisions and exact-digest approvals atomically in the existing task queue.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -20,28 +20,76 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "FeaturePlanRepository.find.id",
+				"name": "constructor.root",
+				"type": "string",
+				"description": "Project root used by the default ModuleTaskRepository."
+			},
+			{
+				"name": "constructor.repository",
+				"type": "optional Pick<ModuleTaskRepository,'read'|'update'>",
+				"description": "Injected queue collaborator for isolated tests."
+			},
+			{
+				"name": "read.feature",
+				"type": "string",
+				"description": "Stable feature ID selecting plan revisions."
+			},
+			{
+				"name": "append.plan",
+				"type": "FeaturePlan",
+				"description": "Strict schema-valid unapproved plan; first revision is 1, later revisions are exactly previous+1."
+			},
+			{
+				"name": "approve.input",
+				"type": "{feature:string,revision:number,digest:string,reviewer:string,approvedAt:string}",
+				"description": "Approval references the latest stored revision and exact digest."
+			},
+			{
+				"name": "find.id",
 				"type": "number"
 			},
 			{
-				"name": "FeaturePlanRepository.save.record",
-				"type": "T"
+				"name": "save.record",
+				"type": "RepositoryRecord"
 			}
 		],
 		"outputs": [
 			{
-				"name": "FeaturePlanRepository.find",
-				"type": "T | undefined"
+				"name": "read",
+				"type": "Promise<{commit:string|undefined,plans:FeaturePlan[]}>",
+				"description": "Returns ordered revisions for the requested feature and the queue commit; absent plans return an empty array."
 			},
 			{
-				"name": "FeaturePlanRepository.save",
-				"type": "T"
+				"name": "append",
+				"type": "Promise<{commit:string|undefined,plan:FeaturePlan}>",
+				"description": "Atomically appends a new unapproved revision or idempotently returns an identical existing revision; conflicting or stale definitions reject before queue mutation."
+			},
+			{
+				"name": "approve",
+				"type": "Promise<{commit:string|undefined,plan:FeaturePlan}>",
+				"description": "Atomically attaches an approval to the latest matching revision, preserving its content and digest; an identical approval is idempotent."
+			},
+			{
+				"name": "find",
+				"type": "RepositoryRecord | undefined",
+				"description": "Reads an in-memory scaffold record by numeric ID."
+			},
+			{
+				"name": "save",
+				"type": "RepositoryRecord",
+				"description": "Stores an in-memory scaffold record by numeric ID."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "invalid, stale or conflicting plan",
+				"type": "Error | ZodError",
+				"description": "Reject invalid schemas, pre-approved appends, nonsequential revisions, conflicting duplicates, stale revision/digest and differing duplicate approval. No mutation on rejection."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
