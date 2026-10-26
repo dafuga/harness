@@ -1,3 +1,4 @@
+import { assertPersistedDependencies } from './module-task-dependency.test.fixtures';
 import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
 import { taskInputSchema } from '../../../src/repositories/agents-providers/ModuleTaskRepository';
 import { test } from 'vitest';
@@ -9,7 +10,6 @@ import { taskSelection } from '../../../src/services/agents-providers/module-tas
 import { observedTaskOperation } from '../../support/taskProfiles';
 import { ZodError } from 'zod';
 import { isolateAnalyticsSync, mockContexts } from './module-task-worker.test.fixtures';
-
 isolateAnalyticsSync();
 test('admission rejects missing contracts, unknown modules and mutable task identities', async () => {
 	const f = await moduleTaskFixture();
@@ -30,7 +30,7 @@ test('admission rejects missing contracts, unknown modules and mutable task iden
 		await observedTaskOperation(
 			'service.agents-providers-module-task',
 			'admit-committed-module-contract',
-			() => service.add(input)
+			() => assertPersistedDependencies(service, input)
 		);
 		await expect(service.add(input)).rejects.toThrow('already exists');
 		await expect(
