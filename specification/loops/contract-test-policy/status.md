@@ -448,3 +448,26 @@ establish the model that executed a turn; it cannot qualify Luna. The shared
 preview advertised task branch `6e1db0b` while the actual source was newer.
 Main `395e517` showed no audio service Examples or attached verification. This
 inspection is not task-head playback or delivered-revision proof.
+
+## Continuation: test discovery modifiers
+
+The discovery scan previously searched the whole parameterized call expression
+for modifiers. A data string containing `beta.function.only` therefore made a
+normal case appear exclusive; strings containing `.describe` or `.use` could
+also hide a case. The existing scan method case now covers those strings, real
+modifiers, literal bracket modifiers and unknown computed members. No executable
+case title changed or was added.
+
+Test-only `0042a498ee` and source-only `dc4ed4856c` retain matched red
+`932bd239950e` and green `491c5e06aa50`. The actual desktop case remains marked
+dynamic, requiring runner discovery, but is no longer falsely marked disabled.
+Seven focused cases passed, along with root typecheck, targeted lint, registry
+validation and audit. At `dc4ed4856c`, the unit has 5,653 source bytes, 153 lines,
+complexity 44 and three dependencies; it emits no separate artifact. Its focused
+parameterized-modifier workload took 0.4595 ms and observed 158,138,368 bytes
+whole-worker RSS. This is focused proof, not an aggregate verdict.
+
+The updated inventory has 1,117 suite files, 4,606 declarations, 45 standardized
+units, 693 registered cases and 5,937 gaps. It retains three skipped or
+expected-failure declarations and 337 computed registrations requiring runner
+discovery. Full migration remains open.

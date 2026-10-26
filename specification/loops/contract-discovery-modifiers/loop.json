@@ -2,7 +2,7 @@
 	"name": "contract-discovery-modifiers",
 	"goal": "Identify runner modifiers without interpreting parameter data as code",
 	"createdAt": "2026-10-26T22:04:41.531Z",
-	"updatedAt": "2026-10-26T22:04:42.664Z",
+	"updatedAt": "2026-10-26T22:06:43.484Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T22:05:58.284Z",
+			"evidence": "Record 932bd239950e fails the existing scan method case on modifier-like parameter data."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T22:06:42.145Z",
+			"evidence": "Read runner member chains from syntax nodes while excluding call arguments; computed member names remain explicit discovery gaps."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T22:06:43.484Z",
+			"evidence": "Record 491c5e06aa50 passes the unchanged scan method case at dc4ed4856c against red 932bd239950e."
 		},
 		{
 			"id": "verify",
