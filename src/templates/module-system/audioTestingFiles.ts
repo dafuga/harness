@@ -4,14 +4,14 @@ import { browserTestFiles } from '../development-tooling/browserTest';
 export const audioTestingFiles = [
 	...browserTestFiles().map((file) => ({
 		...file,
-		path: file.path.replace('tests/e2e/support', 'tests/plugin-support')
+		path: file.path.replace('tests/e2e/support', 'tests/e2e/plugin-support')
 	})),
 	{
 		path: 'src/configs/headless-audio/audioPlaywrightConfig.ts',
 		contents: `import { env } from 'node:process';
 import { defineConfig } from '@playwright/test';
 export default defineConfig({
- testDir: '../../../tests/audio',
+ testDir: '../../../tests/e2e/audio',
  outputDir: '../../../test-results/audio',
  use: { headless: true, browserName: 'chromium' },
  workers: Number(env.HARNESS_RESOURCE_CPUS ?? 1),

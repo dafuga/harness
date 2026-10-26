@@ -2,7 +2,7 @@ import { audioTestingFiles } from './audioTestingFiles';
 import { browserTestingFiles } from './browserTestingFiles';
 
 const audioTest = `import { test, expect } from '../plugin-support/browserTest';
-import { HeadlessAudioService } from '../../src/services/headless-audio/HeadlessAudioService';
+import { HeadlessAudioService } from '../../../src/services/headless-audio/HeadlessAudioService';
 test('{{PascalName}} renders real PCM without a microphone or speakers', async ({ page }) => {
  const samples = await page.evaluate(async () => {
   const context = new OfflineAudioContext(1, 4800, 48000);
@@ -75,7 +75,7 @@ export const testingPlugins = [
 				],
 				files: [
 					{
-						path: 'tests/browser/{{kebabName}}.spec.ts',
+						path: 'tests/e2e/browser/{{kebabName}}.spec.ts',
 						contents:
 							"import { test, expect } from '../plugin-support/browserTest';\ntest('{{PascalName}}', async ({ page }) => {\n await page.setContent('<button>Ready</button>');\n await expect(page.getByRole('button', { name: 'Ready' })).toBeVisible();\n});\n"
 					}
@@ -113,7 +113,7 @@ export const testingPlugins = [
 				instructions: [
 					'Assert rendered PCM, playout order, silence and interruption; test real application routing and provider behavior separately.'
 				],
-				files: [{ path: 'tests/audio/{{kebabName}}.spec.ts', contents: audioTest }]
+				files: [{ path: 'tests/e2e/audio/{{kebabName}}.spec.ts', contents: audioTest }]
 			}
 		]
 	}
