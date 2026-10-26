@@ -97,52 +97,62 @@ export function assertMatrixRows(
 	service: TestContractService,
 	mode: 'validate' | 'compare'
 ) {
-	for (const shape of ['api', 'page', 'component'] as const) {
-		const state = shape === 'component' ? 'rest' : 'ready';
-		const expected =
-			shape === 'api'
-				? { kind: 'json' as const, value: { result: 'error' } }
-				: { kind: 'screenshot' as const, file: 'error.png' };
-		const original = {
-			...unit.testing.cases[0],
-			state,
-			expected,
-			...(shape === 'api' ? {} : { viewports: ['desktop'] })
+	for (const shape of ['api', 'page', 'component'] as const)
+		assertShapeRows(unit, service, mode, shape);
+	assertMatrixAdmissionObjects(unit, service, mode);
+}
+
+function assertShapeRows(
+	unit: ContractUnit,
+	service: TestContractService,
+	mode: 'validate' | 'compare',
+	shape: 'api' | 'page' | 'component'
+) {
+	const state = shape === 'component' ? 'rest' : 'ready';
+	const expected =
+		shape === 'api'
+			? { kind: 'json' as const, value: { result: 'error' } }
+			: { kind: 'screenshot' as const, file: 'error.png' };
+	const original = {
+		...unit.testing.cases[0],
+		state,
+		expected,
+		...(shape === 'api' ? {} : { viewports: ['desktop'] })
+	};
+	const before = {
+		...unit,
+		testing: { ...unit.testing, shape, states: [state], cases: [original] }
+	};
+	const first = {
+		...original,
+		id: 'error.one',
+		state: 'error',
+		input: { limit: 0, mode: 'invalid' },
+		test: { ...original.test, title: 'error one' }
+	};
+	const second = {
+		...first,
+		id: 'error.two',
+		input: { mode: 'invalid', limit: 0 },
+		test: { ...first.test, title: 'error two' }
+	};
+	const check = (other: typeof second) => {
+		const after = {
+			...before,
+			testing: { ...before.testing, states: [state, 'error'], cases: [original, first, other] }
 		};
-		const before = {
-			...unit,
-			testing: { ...unit.testing, shape, states: [state], cases: [original] }
-		};
-		const first = {
-			...original,
-			id: 'error.one',
-			state: 'error',
-			input: { limit: 0, mode: 'invalid' },
-			test: { ...original.test, title: 'error one' }
-		};
-		const second = {
-			...first,
-			id: 'error.two',
-			input: { mode: 'invalid', limit: 0 },
-			test: { ...first.test, title: 'error two' }
-		};
-		const check = (other: typeof second) => {
-			const after = {
-				...before,
-				testing: { ...before.testing, states: [state, 'error'], cases: [original, first, other] }
-			};
-			return mode === 'compare'
-				? service.compare([before], [after])
-				: service.validate({ units: [after], scenarios: [], files: new Set([original.test.file]) });
-		};
-		expect(check(second).join(' '), `${shape} rejects a repeated matrix row`).toContain(
+		return mode === 'compare'
+			? service.compare([before], [after])
+			: service.validate({ units: [after], scenarios: [], files: new Set([original.test.file]) });
+	};
+	expect(check(second).join(' ')).toContain('duplicate matrix row');
+	if (shape !== 'api')
+		expect(check({ ...second, viewports: ['desktop', 'mobile'] }).join(' ')).toContain(
 			'duplicate matrix row'
 		);
-		const distinct =
-			shape === 'api'
-				? { ...second, input: { ...second.input, limit: 1 } }
-				: { ...second, viewports: ['mobile'] };
-		expect(check(distinct), `${shape} accepts a distinct boundary or viewport`).toEqual([]);
-	}
-	assertMatrixAdmissionObjects(unit, service, mode);
+	const distinct =
+		shape === 'api'
+			? { ...second, input: { ...second.input, limit: 1 } }
+			: { ...second, viewports: ['mobile'] };
+	expect(check(distinct), `${shape} accepts a distinct boundary or viewport`).toEqual([]);
 }
