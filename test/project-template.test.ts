@@ -6,7 +6,8 @@ import { measureWorkload } from './support/measureWorkload';
 import { assertAtomCompiler } from './support/project-template/atoms';
 import {
 	expectGeneratedGuidance,
-	expectCatalogGuidance
+	expectCatalogGuidance,
+	expectStaticCheckOrder
 } from './support/project-template/guidance';
 
 test(
@@ -16,7 +17,9 @@ test(
 
 test('app projects include SvelteKit and specification files', () =>
 	measureWorkload('template.project-guidance', 'layout-catalog-behavior', async () => {
-		const files = projectFiles({ kind: 'app', name: 'demo-app' });
+		const files = await measureWorkload('template.project', 'static-before-visual-app-plan', () =>
+			projectFiles({ kind: 'app', name: 'demo-app' })
+		);
 		const paths = files.map((file) => file.path);
 		const packageJson = JSON.parse(fileContents(files, 'package.json'));
 		const initialPageTest = fileContents(files, 'tests/e2e/app.spec.ts');
@@ -59,6 +62,7 @@ test('app projects include SvelteKit and specification files', () =>
 		expect(packageJson.scripts.audit).toContain('harness-audit');
 		expect(packageJson.scripts.check).toContain('format:check');
 		expect(packageJson.scripts.check).toContain('audit');
+		expectStaticCheckOrder(packageJson.scripts.check);
 		expect(packageJson.scripts['format:check']).toContain('prettier --check');
 		expect(packageJson.scripts.lint).toContain('eslint');
 		expect(packageJson.scripts.typecheck).toContain('svelte-check');

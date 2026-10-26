@@ -54,6 +54,9 @@ function expectStandardTestForms(files: ReturnType<typeof projectFiles>): void {
 		expect(text, path).toContain('Do not add a sixth shape');
 		expect(text, path).toContain('Projects without UI have no page or component cases');
 		expect(text, path).toContain('Do not auto-accept screenshot baselines');
+		expect(text, path).toContain(
+			'Keep compiler, lint and audit checks before browser screenshot gates'
+		);
 		expect(text, path).toContain('fails explicitly');
 		expect(text, path).not.toContain('Keep exhaustive boundary cases in tests');
 	}
@@ -77,4 +80,14 @@ export function expectCatalogGuidance(files: ReturnType<typeof projectFiles>): v
 
 function fileContents(files: ReturnType<typeof projectFiles>, path: string): string {
 	return files.find((file) => file.path === path)?.contents ?? '';
+}
+
+/** Static admission precedes any browser baseline decision in the generated normal check. */
+export function expectStaticCheckOrder(check: string): void {
+	expect(check.split(' && ').slice(0, 4)).toEqual([
+		'bun run format:check',
+		'bun run typecheck',
+		'bun run lint',
+		'bun run audit'
+	]);
 }

@@ -3,8 +3,8 @@
 	"id": "template.project",
 	"kind": "template",
 	"title": "project",
-	"responsibility": "Owns the project scaffold template.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Plan app, library and game project files with generated code, checks, tests and agent rules.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -22,17 +22,19 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "projectFiles.input",
-				"type": "ProjectTemplateInput"
+				"type": "ProjectTemplateInput",
+				"description": "Project name and app, lib or game kind; optional 2d or 3d dimension selects game output. This planner receives the caller-provided input without command-line validation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "projectFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Relative paths and file contents for the selected project, including companion types and the normal check pipeline. Static formatting, compiler, lint and audit checks precede browser screenshot baseline admission."
 			}
 		],
 		"errors": []
