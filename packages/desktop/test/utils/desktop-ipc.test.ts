@@ -1,5 +1,6 @@
 import type { Handler } from './desktop-ipc.test.types';
-import { test } from 'vitest';
+import { test, vi } from 'vitest';
+import { IpcRequestValidator } from '../../src/validators/IpcRequestValidator';
 import { expect } from '../../../../test/verificationExpect';
 import { bootstrapChannel } from '../../src/utils/desktopIpc';
 import { desktopIpc } from '../../src/lib/initialize-desktop/desktopIpc';
@@ -29,6 +30,30 @@ test('the main process answers one IPC channel: the ticket of the caller, or a r
 	await expect(handler({ trusted: false })).rejects.toThrow('Untrusted renderer.');
 	release();
 	expect(ipc.handlers.size).toBe(0);
+	const validator = new IpcRequestValidator();
+	for (const projectId of ['local-project', ' project-id ']) {
+		const input = { projectId, root: '/private/ignored', tasks: ['not-authorized'] };
+		expect(validator.parse('project:work', input)).toEqual({ projectId });
+		expect(input.projectId).toBe(projectId);
+	}
+	const dispatch = vi.fn();
+	for (const input of [
+		undefined,
+		null,
+		{},
+		[],
+		[{ projectId: 'local-project' }],
+		'local-project',
+		{ projectId: '' },
+		{ projectId: ' \t\n' },
+		{ projectId: null },
+		{ projectId: 7 },
+		{ projectId: false },
+		{ projectId: {} }
+	]) {
+		expect(() => dispatch(validator.parse('project:work', input))).toThrow();
+	}
+	expect(dispatch).not.toHaveBeenCalled();
 });
 test('only the top frame of the app page in this window is a trusted sender', () => {
 	const own = window(),
