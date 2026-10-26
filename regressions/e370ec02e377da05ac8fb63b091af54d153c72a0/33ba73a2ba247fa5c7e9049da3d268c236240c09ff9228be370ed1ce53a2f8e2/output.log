@@ -1,0 +1,65 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run "$@"' -- test/utils/entity-screens.test.ts
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-LrIJew/packages/reports
+
+ ❯ test/utils/entity-screens.test.ts (13 tests | 1 failed) 19ms
+   × source-identical squash previews retain origin and reject a changed source tree 8ms
+     → valid current class audio: expected [] to deeply equal [ 'generated-clip' ]
+   ✓ device states share a picker while original metadata and missing-device gaps remain intact 1ms
+   ✓ a visual entity offers the states and viewports its scenario declares; a function offers none 0ms
+   ✓ the first state and viewport are shown until a person picks; an unknown pick is not kept 0ms
+   ✓ the branch tip shows exactly one screenshot, the one of the picked state and viewport 1ms
+   ✓ a selected commit pairs the parent and the commit for the same state and viewport 1ms
+   ✓ a side with no capture is a stated gap and is never filled from the other side 1ms
+   ✓ a revision without a record has a gap for its screenshot, in the words its side gives 0ms
+   ✓ a first commit has no before pane to fill: its parent side says why 0ms
+   ✓ an inherited capture is never the screenshot of the tip: it is a gap that names its origin 0ms
+   ✓ the gallery gets every screenshot of both sides, each side marked as what it is 1ms
+   ✓ a declared catalog preview selects its exact state and viewport without a fallback 0ms
+   ✓ validated unchanged screenshots stay visible with their capture origin 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/entity-screens.test.ts > source-identical squash previews retain origin and reject a changed source tree
+AssertionError: valid current class audio: expected [] to deeply equal [ 'generated-clip' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   "generated-clip",[39m
+[32m- ][39m
+[31m+ [][39m
+
+ ❯ expectCurrentAudio test/focusedAudioExamples.ts:131:54
+    129|  const { unit, detail } = focusedAudioFixture(tip);
+    130|  const found = classAudio(detail, unit);
+    131|  expect(slotsOf(found), 'valid current class audio').toEqual(['generat…
+       |                                                      ^
+    132|  expect(found[0].current).toBe(true);
+    133|  expect(found[0].focused?.status).toBe('passed');
+ ❯ expectClassAudioMatrix test/focusedAudioExamples.ts:107:2
+ ❯ test/utils/entity-screens.test.ts:41:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+   Start at  10:17:39
+   Duration  516ms (transform 234ms, setup 137ms, collect 226ms, tests 19ms, environment 0ms, prepare 32ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1
