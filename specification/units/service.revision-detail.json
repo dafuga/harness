@@ -100,6 +100,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.git",
 			"via": "import",
 			"origin": "derived"
@@ -155,6 +160,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.unit-metadata",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.units-config",
 			"via": "import",
 			"origin": "derived"
@@ -175,6 +185,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.explorer-ui-revision-detail-service-platform-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.explorer-ui-revision-detail-service-revision-stored-data",
 			"via": "import",
 			"origin": "derived"
@@ -191,6 +206,21 @@
 		},
 		{
 			"unit": "service.history-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-permission-catalog",
 			"via": "import",
 			"origin": "derived"
 		},

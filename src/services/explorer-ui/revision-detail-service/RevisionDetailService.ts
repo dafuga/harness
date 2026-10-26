@@ -3,6 +3,9 @@ import {
 	preparedModuleData,
 	committedRegistry
 } from '../../git-source-history/module-data-service/preparedModuleData';
+import { PermissionCatalogService } from '../../networking-security/PermissionCatalogService';
+import { translationCatalog } from './translationCatalog';
+import { CommitTreeAdapter } from '../../../adapters/CommitTreeAdapter';
 import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailService.types';
 import { GitAdapter } from '../../../adapters/GitAdapter';
 import type { VerificationRecord } from '../../../core/verificationTypes';
@@ -13,6 +16,10 @@ import type { AttachedRecord } from '../../history-status-service/attached-recor
 import type { HistoryStatusService } from '../../history-status-service/HistoryStatusService';
 import * as sourceImpact from './source-impact-service/SourceImpactService';
 import { RegressionProofRepository } from '../../../repositories/RegressionProofRepository';
+import { unitMetadata } from './unitMetadata';
+import { readPlatformCatalog } from './platformCatalog';
+import { projectDependencies } from './projectDependencies';
+import { ModuleCatalogService } from '../../module-system/ModuleCatalogService';
 /** What the source of a commit says, whatever is noted on it: shared, it is read only once. */
 export const revisionSources = (root: string) => ({
 	source: new sourceImpact.SourceImpactService(root),
@@ -35,21 +42,28 @@ export class RevisionDetailService {
 	): Promise<BuiltRevision> {
 		const { status, records, sound } = await this.recorded(commit, media);
 		const side = await this.kept.source.stored(commit);
-		const tree = await this.git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`]);
+		const sideTree = await this.git.attempt([
+			'rev-parse',
+			'--verify',
+			'--quiet',
+			`${commit}^{tree}`
+		]);
 		const stored = await revisionRegistryAt(this.root, commit, this.kept);
 		await this.sourceMeasures(commit, stored.registry);
+		const catalogued = { ...stored, ...(await readCatalogs(this.root, commit, stored.registry)) };
+		this.kept.registries.set(commit, catalogued);
 		const reasons = await revisionReasonsAt(commit, sound, this.kept, this.history);
 		const detail: RevisionDetail = {
 			schemaVersion: 1,
 			commit,
-			...catalogFields(stored),
+			...catalogFields(catalogued),
 			registry: includeModuleData
 				? await committedRegistry(this.root, commit, stored.registry)
 				: stored.registry,
 			...(includeModuleData ? { moduleData: await preparedModuleData(this.root, commit) } : {}),
 			comparison: comparison(sound),
 			sourceImpact: (await this.kept.source.of(commit)) ?? null,
-			side: side && tree ? `sides/${tree}.json` : null,
+			side: side && sideTree ? `sides/${sideTree}.json` : null,
 			records,
 			explanations: reasons.explanations,
 			rangeReasons: reasons.range,
@@ -147,6 +161,20 @@ function catalogFields(stored: Stored) {
 	return {
 		platforms: stored.platforms,
 		translations: stored.translations,
-		projectDependencies: stored.projectDependencies
+		projectDependencies: stored.projectDependencies,
+		permissions: stored.permissions,
+		modules: stored.modules
+	};
+}
+
+async function readCatalogs(root: string, commit: string, registry: RevisionRegistry) {
+	const tree = await CommitTreeAdapter.open(root, commit);
+	await unitMetadata(tree, registry.units);
+	return {
+		platforms: await readPlatformCatalog(tree),
+		permissions: await new PermissionCatalogService().at(tree),
+		modules: await new ModuleCatalogService().at(tree),
+		projectDependencies: await projectDependencies(tree),
+		translations: await translationCatalog(tree, registry.units)
 	};
 }

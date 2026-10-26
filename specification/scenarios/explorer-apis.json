@@ -12,7 +12,8 @@
 		"reports.component.harness-entity-relations",
 		"reports.component.harness-explorer-index",
 		"reports.component.explorer-ui-explorer-module-card",
-		"reports.component.harness-explorer-content"
+		"reports.component.harness-explorer-content",
+		"reports.component.networking-security-explorer-permissions-screen"
 	],
 	"states": [
 		{
@@ -57,6 +58,60 @@
 				"reports.component.harness-entity-sections",
 				"reports.component.harness-entity-relations"
 			]
+		},
+		{
+			"id": "api-permissions",
+			"title": "Endpoint profile and data access",
+			"coverage": "required",
+			"units": [
+				"reports.component.harness-entity-header",
+				"reports.component.harness-entity-sections"
+			]
+		},
+		{
+			"id": "permission-profiles",
+			"title": "User profile index",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "permission-profile-guest",
+			"title": "Guest profile access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "permission-profile-member",
+			"title": "Member profile access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "permission-profile-admin",
+			"title": "Administrator profile access",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "permission-profile-missing",
+			"title": "A later profile is absent from the earlier revision",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "permission-profiles-empty",
+			"title": "The selected revision declares no profiles",
+			"coverage": "required",
+			"units": ["reports.component.networking-security-explorer-permissions-screen"]
+		},
+		{
+			"id": "api-permissions-empty",
+			"title": "The selected endpoint has no declared profile access",
+			"coverage": "required",
+			"units": [
+				"reports.component.harness-entity-header",
+				"reports.component.harness-entity-sections"
+			]
 		}
 	],
 	"viewports": [
@@ -89,7 +144,21 @@
 		{
 			"id": "api-screens",
 			"kind": "screenshot",
-			"states": ["api-entry", "api-catalog", "api-contract", "page-apis", "page-apis-empty"],
+			"states": [
+				"api-entry",
+				"api-catalog",
+				"api-contract",
+				"page-apis",
+				"page-apis-empty",
+				"api-permissions",
+				"permission-profiles",
+				"permission-profile-guest",
+				"permission-profile-member",
+				"permission-profile-admin",
+				"permission-profile-missing",
+				"permission-profiles-empty",
+				"api-permissions-empty"
+			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
 			"capture": "full-page",

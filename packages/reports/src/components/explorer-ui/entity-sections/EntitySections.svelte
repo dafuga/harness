@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+ import ExplorerPermissionsScreen from '../../networking-security/ExplorerPermissionsScreen.svelte';
 	import type { ExplorerEntity } from '../../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../../models/explorer-ui/ExplorerScreen.types';
 	import type { EntityNav } from '../../../utils/explorer-ui/entityLens';
@@ -62,7 +63,9 @@
 
 <hx-div class="ex-sections" data-harness-component="harness-entity-sections">
 	<!-- The tab of the address decides what an entity screen shows; any other shows its overview. -->
-	{#if related}
+	{#if entity.category === 'apis' && host.route.tab === 'permissions'}
+  <hx-div role="tabpanel" aria-label={`${entity.name} permissions`}><ExplorerPermissionsScreen {...host} endpoint={entity.id} /></hx-div>
+ {:else if related}
 		<hx-div role="tabpanel" aria-label={`${entity.name} ${said[related]}`}>
 			<EntityRelations {host} {relations} {nav} show={related} {removed} />
 		</hx-div>

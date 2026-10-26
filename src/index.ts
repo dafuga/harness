@@ -1,40 +1,7 @@
 #!/usr/bin/env bun
-import { CommanderError } from 'commander';
-import { commandAction } from './utils/development-tooling/commandAction';
-import { buildProgram } from './cli/program';
-import { recordAnalytics } from './workflows/reports-media/analyticsRecord';
-import { importAnalytics } from './workflows/reports-media/importAnalytics';
-import { beatFromEnvironment } from './workflows/projects-sessions/runActivity';
-import { isExpectedCliError } from './core/development-tooling/errors';
-import { pipedOutput } from './utils/development-tooling/pipedOutput';
+import { runProgram } from './cli/program';
 
-pipedOutput();
-const startedAt = Date.now();
-try {
-	await buildProgram().exitOverride().parseAsync(process.argv);
-} catch (error) {
-	if (error instanceof CommanderError) process.exitCode = error.exitCode;
-	else {
-		process.exitCode = 1;
-		if (isExpectedCliError(error)) console.error(`Error: ${error.message}`);
-		else throw error;
-	}
-} finally {
-	await recordAnalytics({
-		kind: 'command',
-		action: commandAction(process.argv.slice(2)),
-		exitCode: Number(process.exitCode ?? 0),
-		durationMs: Date.now() - startedAt
-	});
-	await beatFromEnvironment();
-	if (process.argv[2] === 'loop') {
-		try {
-			await importAnalytics(process.cwd(), false);
-		} catch {
-			console.error('Warning: loop analytics could not be synchronized.');
-		}
-	}
-}
+await runProgram();
 export { registerCodexCommand } from './cli/program/CodexCommand';
 export { ClaudeGatewayAdapter } from './cli/program/codex-gateway-service/ClaudeGatewayAdapter';
 export { CodexGatewayService } from './cli/program/codex-gateway-service/CodexGatewayService';
@@ -205,3 +172,24 @@ export { ModuleDataSourceAdapter } from './adapters/git-source-history/ModuleDat
 export { moduleScenarioReviews } from './utils/git-source-history/moduleScenarioReviews';
 export { ModuleTaskServerService } from './services/agents-providers/ModuleTaskServerService';
 export { ModuleTaskSandboxAdapter } from './adapters/agents-providers/ModuleTaskSandboxAdapter';
+
+export { ModuleCatalogService } from './services/module-system/ModuleCatalogService';
+export { ModuleCommand } from './commands/module-system/ModuleCommand';
+export { ModuleInstallService } from './services/module-system/ModuleInstallService';
+export { ModuleResourceService } from './services/module-system/ModuleResourceService';
+
+export type {
+	ModuleDefinition,
+	ModuleResource,
+	ModuleState,
+	ModuleCatalog
+} from './services/module-system/moduleDefinition.types';
+export { moduleDefinitionSchema } from './services/module-system/moduleDefinition';
+export { ModuleScaffoldService } from './services/module-system/ModuleScaffoldService';
+export { ModulePackageService } from './services/module-system/ModulePackageService';
+export { standardCodeModules } from './templates/module-system/standardCodeModules';
+export { rustWasmModule } from './templates/module-system/rustWasmModule';
+export { rustBackendModule } from './templates/module-system/rustBackendModule';
+export { moduleResourceLocation } from './helpers/module-system/moduleResourceLocation';
+export { PermissionCatalogService } from './services/networking-security/PermissionCatalogService';
+export { PermissionsCommand } from './commands/networking-security/PermissionsCommand';

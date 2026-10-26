@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "template.module-system-rust-wasm-module",
+	"kind": "template",
+	"title": "rustWasmModule",
+	"responsibility": "Declare opt-in Rust browser kernels, a typed Wasm loader and a reproducible asset build command.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/templates/module-system/rustWasmModule.ts"],
+		"symbols": ["rustWasmModule"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "rustWasmModule",
+				"type": "ModuleDefinition",
+				"description": "Declarative module source files, generators, package scripts and developer instructions."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/templates/module-system/rustWasmModule.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/templates/module-system/rustWasmModule.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

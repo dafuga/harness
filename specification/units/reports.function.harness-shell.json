@@ -51,12 +51,12 @@
 			{
 				"name": "plainClick",
 				"type": "boolean",
-				"description": "True only for an unmodified primary-button click that has not already been prevented."
+				"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
 			},
 			{
 				"name": "harnessShell",
 				"type": "HarnessShellView",
-				"description": "Brand destination, five primary destinations, six module-category links from every resolved route and optional revision controls. Every destination retains branch and selected commit while clearing entity context; the host formats addresses."
+				"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
 			}
 		],
 		"errors": []
@@ -64,6 +64,11 @@
 	"dependencies": [
 		{
 			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.module-system-module-resource-location",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -89,6 +94,16 @@
 		},
 		{
 			"unit": "reports.model.harness-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-standard-code-modules",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/cli/program.ts"],
-		"symbols": ["buildProgram"]
+		"symbols": ["buildProgram", "runProgram"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -17,6 +17,10 @@
 			{
 				"name": "buildProgram",
 				"type": "Command"
+			},
+			{
+				"name": "runProgram",
+				"type": "Promise<void>"
 			}
 		],
 		"errors": []
@@ -103,7 +107,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.module-system-module",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.networking-security-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.networking-security-permissions",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -149,6 +163,36 @@
 		},
 		{
 			"unit": "function.build-stamp",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.command-action",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.piped-output",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.analytics-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.import-analytics",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.run-activity",
 			"via": "import",
 			"origin": "derived"
 		}

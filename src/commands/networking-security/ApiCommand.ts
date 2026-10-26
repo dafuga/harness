@@ -1,3 +1,4 @@
+import { PermissionsCommand } from './PermissionsCommand';
 import type { Command } from 'commander';
 import { runApi } from '../../workflows/networking-security/runApi';
 
@@ -9,6 +10,7 @@ export class ApiCommand {
 				.command('api')
 				.description('Query local or hosted Harness resources and control authorized agents.')
 		);
+		new PermissionsCommand().registerApi(api);
 		registerReads(api);
 		registerWrites(api);
 	}

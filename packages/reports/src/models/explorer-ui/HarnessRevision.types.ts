@@ -1,5 +1,7 @@
 import type { PreparedModuleData } from '../../../../../src/services/git-source-history/ModuleDataService.types';
+import type { PermissionCatalog } from '../../../../../src/services/networking-security/PermissionCatalogService.types';
 import type { ProjectDependencies } from '../../../../../src/services/explorer-ui/revision-detail-service/projectDependencies.types';
+import type { ModuleCatalog } from '../../../../../src/services/module-system/moduleDefinition.types';
 import type { PlatformCatalog } from '../../../../../src/core/explorer-ui/Platform.types';
 import type { TranslationCatalog } from '../../../../../src/core/explorer-ui/Translation.types';
 import type { RegressionView } from '../../../../../src/core/regressionTypes';
@@ -12,6 +14,8 @@ import type {
 
 export interface HarnessRevision {
 	moduleData?: PreparedModuleData;
+	permissions?: PermissionCatalog;
+	modules?: ModuleCatalog;
 	projectDependencies?: ProjectDependencies;
 	platforms?: PlatformCatalog;
 	translations?: TranslationCatalog;

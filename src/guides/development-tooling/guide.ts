@@ -1,4 +1,5 @@
 import { validateGuide } from './validate';
+import { modulesGuide } from '../module-system/modules';
 import { resourcesGuide } from '../execution-runtimes/resources';
 import type { Guide } from './guide.types';
 import { loopGuide } from './loop';
@@ -23,6 +24,7 @@ import { verificationGuides } from '../verification-evidence/verification';
 
 export const guides: Guide[] = [
 	validateGuide,
+	modulesGuide,
 	benchmarkGuide,
 	resourcesGuide,
 	gameGuide,

@@ -1,9 +1,9 @@
+import { assertPermissionCli } from './support/api-cli/permissionScenario';
 import { expect } from './verificationExpect';
 import { test } from 'vitest';
 import { readFile, stat, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { apiFixture, commit, requestId, png } from './support/api-cli/apiFixture';
-
 test('API CLI discovers resources and reads arbitrary hosted resources, queries and large JSON', async () => {
 	const f = await apiFixture('hosted');
 	try {
@@ -215,3 +215,5 @@ test('API CLI raw requests retain methods and bodies, binary output and HTTP err
 		await f.close();
 	}
 }, 30000);
+
+test('API CLI reads permission profiles', assertPermissionCli, 30000);

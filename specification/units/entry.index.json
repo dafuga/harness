@@ -158,7 +158,24 @@
 			"ModuleDataSourceAdapter",
 			"moduleScenarioReviews",
 			"ModuleTaskServerService",
-			"ModuleTaskSandboxAdapter"
+			"ModuleTaskSandboxAdapter",
+			"ModuleCatalogService",
+			"ModuleCommand",
+			"ModuleInstallService",
+			"ModuleResourceService",
+			"ModuleDefinition",
+			"ModuleResource",
+			"ModuleState",
+			"ModuleCatalog",
+			"moduleDefinitionSchema",
+			"ModuleScaffoldService",
+			"ModulePackageService",
+			"standardCodeModules",
+			"rustWasmModule",
+			"rustBackendModule",
+			"moduleResourceLocation",
+			"PermissionCatalogService",
+			"PermissionsCommand"
 		]
 	},
 	"contract": {
@@ -264,7 +281,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.module-system-module",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.networking-security-api",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.networking-security-permissions",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -294,11 +321,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.command-action",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.commit-message",
 			"via": "reexport",
 			"origin": "derived"
@@ -311,11 +333,6 @@
 		{
 			"unit": "function.cpu-processes",
 			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.errors",
-			"via": "import",
 			"origin": "derived"
 		},
 		{
@@ -419,11 +436,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.piped-output",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.preview-binding",
 			"via": "reexport",
 			"origin": "derived"
@@ -485,6 +497,11 @@
 		},
 		{
 			"unit": "helper.git-source-history-format-module-data-failure",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.module-system-module-resource-location",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -729,6 +746,36 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.module-system-module-catalog",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-install",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-package",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-resource",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-scaffold",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.native-picker-bridge",
 			"via": "reexport",
 			"origin": "derived"
@@ -745,6 +792,11 @@
 		},
 		{
 			"unit": "service.networking-security-harness-api",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.networking-security-permission-catalog",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -784,6 +836,21 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "template.module-system-rust-backend-module",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-rust-wasm-module",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-standard-code-modules",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "validator.benchmark-definition",
 			"via": "reexport",
 			"origin": "derived"
@@ -816,21 +883,6 @@
 		{
 			"unit": "validator.performance-evidence",
 			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "workflow.analytics-record",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "workflow.import-analytics",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "workflow.run-activity",
-			"via": "import",
 			"origin": "derived"
 		}
 	],

@@ -171,6 +171,7 @@
 		{problem}
 		missing={page?.kind === 'missing' ? page : null}
 		navbar={{
+			modules: shown?.head.modules,
 			repository,
 			scope: shown?.scope ?? scope,
 			index,
