@@ -118,6 +118,16 @@ function invalidGraphs() {
 		['cross-feature task', { ...plan, tasks: [{ ...task, feature: 'different-feature' }] }],
 		['unplanned task module', { ...plan, tasks: [{ ...task, module: 'page.missing' }] }],
 		['absent change contract', { ...plan, changes: [{ ...change, wantedContract: undefined }] }],
+		[
+			'absent removal contract',
+			{
+				...plan,
+				changes: [
+					...plan.changes,
+					{ ...change, unit: 'page.retired', kind: 'remove', wantedContract: undefined }
+				]
+			}
+		],
 		['absent task contract', { ...plan, tasks: [{ ...task, wantedContract: undefined }] }]
 	] as const;
 }
@@ -173,7 +183,11 @@ test('FeaturePlanValidator.validate from default initialization covers supported
 			}
 		]
 	};
-	for (const valid of [draft, branchedPlan()]) {
+	const removal = {
+		...draft,
+		changes: [...draft.changes, { ...draft.changes[0], unit: 'page.retired', kind: 'remove' }]
+	};
+	for (const valid of [draft, branchedPlan(), removal]) {
 		const before = structuredClone(valid);
 		expect(validator.validate(valid)).toEqual({ valid: true, errors: [] });
 		expect(valid).toEqual(before);
