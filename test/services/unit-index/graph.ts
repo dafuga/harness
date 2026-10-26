@@ -4,15 +4,14 @@ import { HandlerRuntimeAdapter } from '../../../src/adapters/HandlerRuntimeAdapt
 import type { SourceIndex } from '../../../src/services/source-index-service/SourceIndexService';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { defaultUnitsConfig } from '../../../src/core/unitsConfig';
-import { SourceGraphService } from '../../../src/services/SourceGraphService';
+import type { SourceGraphService } from '../../../src/services/SourceGraphService';
 import { ImpactService } from '../../../src/services/impact-service/ImpactService';
 import { impactKernel } from '../../../src/utils/impact-kernel/impactKernel';
 import { TestCaseValidator } from '../../../src/validators/verification-evidence/TestCaseValidator';
 import { indexFiles, retire, unitOf } from '../../support/memoryTree';
 import { measureWorkload } from '../../support/measureWorkload';
 
-export async function assertContractGraph(): Promise<void> {
-	const builder = new SourceGraphService();
+export async function assertContractGraph(builder: SourceGraphService): Promise<void> {
 	expect(builder.build({ revision: 'empty', files: new Map() }, [])).toEqual(
 		sourceGraph.testing.cases[0].expected.value
 	);

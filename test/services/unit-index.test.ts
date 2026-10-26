@@ -5,6 +5,7 @@ import './unit-index/http';
 import { execFileSync } from 'node:child_process';
 import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
+import { SourceGraphService } from '../../src/services/SourceGraphService';
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
 import { indexFiles, retire, unitOf, helperMoveGaps, serviceMoveGaps } from '../support/memoryTree';
 import { resolve } from 'node:path';
@@ -157,10 +158,8 @@ test('a declared responsibility survives re-indexing while a derived one follows
 	);
 });
 
-test(
-	'an alternative implementation is a related unit linked by a declared contract dependency',
-	assertContractGraph
-);
+test('an alternative implementation is a related unit linked by a declared contract dependency', async () =>
+	assertContractGraph(new SourceGraphService()));
 
 test('several owned files produce identical metadata after one indexing pass', async () => {
 	const files = {
