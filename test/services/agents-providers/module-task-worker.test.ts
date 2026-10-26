@@ -3,48 +3,22 @@ import { expect } from '../../verificationExpect';
 import type { TaskRunInput } from './module-task-worker.test.types';
 import {
 	assertAcceptedExecutions,
+	assertWorkspaceNotRun,
+	exclusiveWorkerFixture,
 	isolateAnalyticsSync,
 	mockContexts,
 	reviewFixture,
-	seededWorkerFixture
+	seededWorkerFixture,
+	workspaceFailureFixture
 } from './module-task-worker.test.fixtures';
 import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
-import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
-import { moduleTaskFixture } from '../../support/moduleTaskFixture';
-import { readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
 import { observedTaskOperation } from '../../support/taskProfiles';
 
 isolateAnalyticsSync();
 
 test('module filters and assignment claims select once, then preserve changes for review', async () => {
-	const f = await moduleTaskFixture();
+	const { f, service, input, worker } = await exclusiveWorkerFixture();
 	try {
-		const service = new ModuleTaskService(f.root);
-		await service.feature({
-			id: 'checkout',
-			goal: 'Reliable checkout',
-			tldr: 'Build validated orders.'
-		});
-		const input = JSON.parse(await readFile(await f.input({ assignee: 'owner' }), 'utf8'));
-		await service.add(input);
-		const contexts = mockContexts();
-		const worker = new ModuleTaskWorkerService(
-			f.root,
-			{
-				run: async (input) => {
-					await writeFile(join(input.cwd, 'src/orders.ts'), 'export const orders=2;');
-					return {
-						provider: input.provider,
-						model: input.model,
-						intelligence: input.intelligence,
-						text: 'Implemented',
-						reportedModel: input.model
-					};
-				}
-			},
-			contexts.contexts
-		);
 		expect((await worker.once('other')).status).toBe('idle');
 		expect((await worker.once('owner', ['service.other'])).status).toBe('idle');
 		const outcomes = await observedTaskOperation(
@@ -213,6 +187,31 @@ test('context rejection is safe and an aborted preclaim does not write the queue
 		]).toEqual([true, 'failed', 'failed', 0, 1, 0]);
 		expect(String(JSON.stringify(result.result))).not.toContain('private sentinel');
 		expect(result.result?.usage).toBeUndefined();
+	} finally {
+		await f.dispose();
+	}
+});
+
+test('workspace preparation failure finalizes without a worktree or runner context', async () => {
+	const { f, service, input, contexts, taskWorkspaceSpy, snapshotSpy, runs, worker } =
+		await workspaceFailureFixture();
+	try {
+		const outcome = await worker.once('owner').catch(() => undefined);
+		const task = (await service.show(input.id)).task;
+		expect([outcome?.status, task.status]).toEqual(['failed', 'failed']);
+		expect(task.result).toMatchObject({
+			provider: 'codex',
+			model: 'gpt-6-luna',
+			intelligence: 'max',
+			worktree: '',
+			changedFiles: [],
+			error: expect.any(String),
+			executions: []
+		});
+		expect(task.result?.error).not.toBe('');
+		expect(task.result?.usage).toBeUndefined();
+		expect(taskWorkspaceSpy).toHaveBeenCalledOnce();
+		assertWorkspaceNotRun(contexts, [snapshotSpy.mock.calls.length, runs.calls]);
 	} finally {
 		await f.dispose();
 	}

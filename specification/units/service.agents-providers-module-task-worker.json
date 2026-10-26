@@ -110,6 +110,11 @@
 			{
 				"name": "ModuleTaskWorkerService.constructor.contexts",
 				"type": "optional Pick<ModuleTaskContractContextService,\"create\">; default real context service at root"
+			},
+			{
+				"name": "claimedTask.prepare",
+				"type": "((task:ModuleTask)=>void) | undefined",
+				"description": "Optional pure preparation callback invoked before marking a selected task running. Worker supplies it and captures copied selection/files/role; a callback rejection leaves the queue unclaimed. No I/O or persistent side effects."
 			}
 		],
 		"outputs": [
@@ -126,7 +131,7 @@
 			{
 				"name": "claimedTask",
 				"type": "ModuleTask | null",
-				"description": "Mutates the supplied queue clone. Computes busy module ids from all running tasks, then chooses the first queued task whose assignee is absent or equals worker, whose module is allowed or modules is empty, and whose module id is not busy. Returns null without mutation when none matches. Otherwise sets status running and claim {worker, token: random UUID, startedAt: ISO timestamp, owner}. It does not itself persist or validate worker/module identifiers; ModuleTaskWorkerService.once validates worker before calling it. Validates pure task preparation before changing status to running, so malformed prompt/selection cannot strand a claim."
+				"description": "Mutates the supplied queue clone. Computes busy module ids from all running tasks, then chooses the first queued task whose assignee is absent or equals worker, whose module is allowed or modules is empty, and whose module id is not busy. Returns null without mutation when none matches. Otherwise sets status running and claim {worker, token: random UUID, startedAt: ISO timestamp, owner}. It does not itself persist or validate worker/module identifiers; ModuleTaskWorkerService.once validates worker before calling it. When the optional preparation callback is supplied, invokes it before changing status to running. Worker always supplies that preflight callback."
 			},
 			{
 				"name": "finishTask",
@@ -171,6 +176,11 @@
 				"name": "ModuleTaskRepository queue data validation",
 				"type": "ZodError or SyntaxError propagated",
 				"description": "Per the committed repository contract, invalid stored queue data fails schema parsing and malformed queue.json fails JSON parsing. Repository Git, filesystem, callback and 16-attempt CAS exhaustion errors also propagate from claim or finish updates."
+			},
+			{
+				"name": "Workspace preparation failure after claim",
+				"type": "failed finalized result; worktree empty string and no provider usage",
+				"description": "If taskWorkspace rejects, finalize the valid claim as failed with a safe nonempty error, worktree:\"\", changedFiles:[], no usage/executions, and no snapshot of an unavailable worktree. The stored result schema explicitly accepts empty worktree; never invent an artifact path."
 			}
 		]
 	},

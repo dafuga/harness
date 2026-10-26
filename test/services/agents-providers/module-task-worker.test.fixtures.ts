@@ -4,6 +4,7 @@ import { expect } from '../../verificationExpect';
 import { ModuleTaskAnalyticsService } from '../../../src/services/agents-providers/ModuleTaskAnalyticsService';
 import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
+import * as taskWorkspaceApi from '../../../src/services/agents-providers/module-task-worker-service/taskWorkspace';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -38,6 +39,36 @@ export async function reviewFixture() {
 	const contexts = mockContexts();
 	const worker = new ModuleTaskWorkerService(f.root, reviewRunner(runInputs), contexts.contexts);
 	return { f, service, worker, contexts, runInputs };
+}
+
+export async function exclusiveWorkerFixture() {
+	const f = await moduleTaskFixture();
+	const service = new ModuleTaskService(f.root);
+	await service.feature({
+		id: 'checkout',
+		goal: 'Reliable checkout',
+		tldr: 'Build validated orders.'
+	});
+	const input = JSON.parse(await readFile(await f.input({ assignee: 'owner' }), 'utf8'));
+	await service.add(input);
+	const contexts = mockContexts();
+	const worker = new ModuleTaskWorkerService(
+		f.root,
+		{
+			run: async (runInput) => {
+				await writeFile(join(runInput.cwd, 'src/orders.ts'), 'export const orders=2;');
+				return {
+					provider: runInput.provider,
+					model: runInput.model,
+					intelligence: runInput.intelligence,
+					text: 'Implemented',
+					reportedModel: runInput.model
+				};
+			}
+		},
+		contexts.contexts
+	);
+	return { f, service, input, worker };
 }
 
 function reviewRunner(runInputs: TaskRunInput[]) {
@@ -108,7 +139,9 @@ export function mockContexts(fail = false) {
 	};
 }
 
-export async function seededWorkerFixture() {
+export async function seededWorkerFixture(
+	options: { model?: string; provider?: 'claude' | 'codex'; intelligence?: string } = {}
+) {
 	const f = await moduleTaskFixture();
 	const service = new ModuleTaskService(f.root);
 	await service.feature({
@@ -116,14 +149,51 @@ export async function seededWorkerFixture() {
 		goal: 'Reliable checkout',
 		tldr: 'Build validated orders.'
 	});
-	const input = JSON.parse(await readFile(await f.input({}), 'utf8'));
+	const input = JSON.parse(await readFile(await f.input(options), 'utf8'));
 	await service.add(input);
 	return { f, service, input, contexts: mockContexts() };
+}
+
+export async function workspaceFailureFixture() {
+	const { f, service, input, contexts } = await seededWorkerFixture({
+		model: 'gpt-6-luna',
+		provider: 'codex',
+		intelligence: 'max'
+	});
+	const taskWorkspaceSpy = vi
+		.spyOn(taskWorkspaceApi, 'taskWorkspace')
+		.mockRejectedValue(new Error('synthetic workspace preparation failure'));
+	const snapshotSpy = vi.spyOn(taskWorkspaceApi, 'snapshotTaskWork').mockResolvedValue(undefined);
+	const runs = { calls: 0 };
+	const worker = new ModuleTaskWorkerService(
+		f.root,
+		{
+			run: async (runInput) => {
+				runs.calls++;
+				return {
+					provider: runInput.provider,
+					model: runInput.model,
+					intelligence: runInput.intelligence,
+					text: 'Unexpected runner call',
+					reportedModel: runInput.model
+				};
+			}
+		},
+		contexts.contexts
+	);
+	return { f, service, input, contexts, taskWorkspaceSpy, snapshotSpy, runs, worker };
 }
 
 export function isolateAnalyticsSync() {
 	beforeEach(() => vi.spyOn(ModuleTaskAnalyticsService.prototype, 'sync').mockResolvedValue(0));
 	afterEach(() => vi.restoreAllMocks());
+}
+
+export function assertWorkspaceNotRun(contexts: ReturnType<typeof mockContexts>, calls: number[]) {
+	expect(calls).toEqual([0, 0]);
+	expect([contexts.calls.length, contexts.scopes.length, contexts.state.cleanups]).toEqual([
+		0, 0, 0
+	]);
 }
 
 export function assertAcceptedExecutions(task: ModuleTask, runInputs: TaskRunInput[]) {
