@@ -99,8 +99,7 @@ export async function runtimeAudio(page: Page): Promise<void> {
 			mediaType: 'audio/wav',
 			provenance: 'fixture',
 			server,
-			transcript:
-				'[One second of silence. The displayed "Order filed." transcript is synthetic fixture metadata, not audible speech.]',
+			transcript: '[One second of silence; no spoken words.]',
 			note
 		},
 		bytes

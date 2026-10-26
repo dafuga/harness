@@ -2,11 +2,9 @@
 	"name": "contract-desktop-audio-transcript",
 	"goal": "Keep Desktop audio transcript aligned with the exact playable fixture bytes",
 	"createdAt": "2026-10-26T20:01:55.643Z",
-	"updatedAt": "2026-10-26T20:01:56.710Z",
+	"updatedAt": "2026-10-26T20:02:52.421Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:02:52.421Z",
+			"evidence": "The existing component case failed on the incorrect tone transcript for the silent fixture; two companion cases passed."
 		},
 		{
 			"id": "implement",

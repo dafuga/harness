@@ -1,6 +1,6 @@
 # Migration remains incomplete
 
-Status at 2026-10-26 19:40 UTC. Global `testing: 1` remains disabled. Existing
+Status at 2026-10-26 20:05 UTC. Global `testing: 1` remains disabled. Existing
 unmigrated entrypoints and substantive assertions remain. No production action or
 remote-main delivery is claimed.
 
@@ -10,8 +10,10 @@ The qualified migration ledger remains 44 units and 692 cases:
 - 24 function/helper units: 559 authored Example cases.
 - 3 API units: 4 request-matrix cases with complete JSON comparisons.
 
-The fresh inventory at `95283a748b` records 1,117 suite files, 4,604 declarations
-and 5,934 admission gaps. These gaps are remaining work, not passing proof.
+The refreshed inventory after integrating main `395e517bd7` records 1,117 suite
+files, 4,606 declarations and 5,940 admission gaps. These gaps are remaining work,
+not passing proof. The older `95283a748b` inventory had 4,604 declarations and
+5,934 gaps.
 
 ## Layouts and generated projects
 
@@ -136,7 +138,21 @@ sixteen ownership/readability guards pass. Git capture `0c819b6c494f` passes the
 same 32 focused cases and retains fresh measured workloads for both changed
 units. Inventory remains 44 units/692 cases and 5,934 gaps. A new continuation
 runs Reports and remaining workspaces on harbor-mbp-2 with five admitted CPUs,
-a6-GiBguard and single-worker root units; this is not a single passing aggregate. All automated E2Es stay off the primary Mac.
+a 6-GiB guard and single-worker root units; this is not a single passing aggregate.
+Reports and Planning passed; Desktop stopped with 1,020 unit cases passing,
+three skipped and one failing because its silent WAV inherited a tone transcript.
+The existing case was strengthened in `cf4bfeee8f`, and focused Harness red
+`090731082929` records the fixture mismatch. This is a fixture correction, not a
+product red/green repair: Harness freezes all test fixtures between those phases.
+The corrected fixture and unchanged case pass locally; its browser case and the
+remaining laptop workspaces still need a run. All automated E2Es stay off the
+primary Mac.
+
+Merge `1f6800338e` integrates remote main `395e517bd7` without dropping its
+plugin, Rust, browser or audio assertions. Root compiler, audit, registry (1,827
+units) and 175 focused cases passed; a later 37-case Reports and 20-case Desktop
+focused run also passed. The newly imported browser and audio plugin generators
+still emit unsupported test shapes and need migration before policy admission.
 
 ## Execution identity
 
@@ -161,6 +177,13 @@ schema. The failed assignment changed no files and contains zero execution
 records; it is not an additional Haiku execution. No compatibility check was
 waived. Its prepared draft fixtures are committed, but the original three
 comparability tests remain active and its migration is still unqualified.
+
+On fresh main `395e517bd7`, the control CLI admitted exact committed contract
+metadata `ac8a4161e1ee`. Two new verification-only module tasks requested
+`claude-haiku-5-5/max` and `gpt-6-luna/max` with no fallback. The former failed
+with an invalid structured response; the latter failed with a workspace-read
+permission error. Neither reported a model or made edits, and neither assignment
+is accepted. Their exact results remain in the Harness queue.
 
 ## History and outstanding acceptance
 
@@ -187,9 +210,10 @@ history-builder or aggregate memory compliance. The reconstruction exceeded the 
 target (maximum RSS 19,729,809,408 bytes); its result is retained without claiming
 memory compliance.
 
-The shared preview owner still serves another source checkout and revision-null
-runtime metadata. The report route redirected to the older main catalog. No
-second persistent preview was started. Fresh current-main Tests, Examples,
+The shared preview now serves main `395e517bd7`; the task branch selector is
+stale and does not prove the current task head. Current-main inspection showed
+that the layout and EntitySections have no attached screenshot record. No second
+persistent preview was started. Fresh delivered-revision Tests, Examples,
 History and playable-audio browser proof remain pending, as do final builds,
 a complete same-source verification verdict, complete migration and final history catch-up.
 The report remains active and unpublished while required checks are open.

@@ -147,6 +147,10 @@ function sealed(detail: HarnessRevision, bytes: SealedHistory['bytes'], example?
 		for (const state of found.states) {
 			for (const item of state.captures) {
 				const data = bytesOf(found.testedRevision, state.id, item, { order: order++, example });
+				if (item.kind === 'audio') {
+					item.transcript = '[One second of silence; no spoken words.]';
+					item.durationSeconds = 1;
+				}
 				item.sha256 = createHash('sha256').update(data).digest('hex');
 				item.media = `media/${item.sha256}.${item.media?.split('.').pop()}`;
 				bytes[item.sha256] = { mediaType: item.mediaType, data: [...data] };
