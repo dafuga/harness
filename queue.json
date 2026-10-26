@@ -7246,9 +7246,19 @@
 			},
 			"sourceCommit": "0ff03ffbcec57641920ec1a086d19ff58e818bbf",
 			"contractHash": "b301c76294cab07396cefcbc8108cd1bc4ece0ccdccabcddd0f0269200027912",
-			"status": "queued",
+			"status": "running",
 			"reviews": [],
 			"createdAt": "2026-10-25T23:04:35.638Z",
+			"claim": {
+				"worker": "contract-first-authoring-luna",
+				"token": "6806755b-4fa9-4ee8-80f5-ad45c57de8b9",
+				"startedAt": "2026-10-26T00:08:29.546Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 9643,
+					"startedAt": "Mon Oct 26 00:08:28 2026"
+				}
+			},
 			"claimHistory": [
 				{
 					"worker": "contract-first-authoring-luna",
