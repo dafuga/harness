@@ -43,8 +43,8 @@ export async function revisionRegistryAt(
 		registry,
 		ledger,
 		platforms: await readPlatformCatalog(tree),
-		permissions: await PermissionCatalogService.at(tree),
-		modules: await ModuleCatalogService.at(tree),
+		permissions: await new PermissionCatalogService().at(tree),
+		modules: await new ModuleCatalogService().at(tree),
 		projectDependencies: await projectDependencies(tree),
 		translations: await translationCatalog(tree, registry.units)
 	};
