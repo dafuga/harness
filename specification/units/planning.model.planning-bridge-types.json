@@ -3,8 +3,8 @@
 	"id": "planning.model.planning-bridge-types",
 	"kind": "model",
 	"title": "PlanningBridge",
-	"responsibility": "Owns the PlanningBridge data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Declare planning operations for revision-addressed reads, design versions, options and approvals.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -35,9 +35,62 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "RevisionInput",
+				"type": "{revision?:string}",
+				"description": "A branch, tag or commit to read; omission uses the checked-out commit."
+			},
+			{
+				"name": "DesignImageInput",
+				"type": "{state:string,viewport:PlanViewport,bytes:Uint8Array}",
+				"description": "Complete PNG bytes for one state and viewport."
+			},
+			{
+				"name": "AddDesignInput",
+				"type": "{unitId:string,prompt:string,generator:AgentRef,images?:DesignImageInput[],options?:DesignOptionInput[],notes?:string,contract?:PlanContract,baseRevision?:string,revises?:DesignSource,expectedLatest?:string|null}",
+				"description": "Adds one design version; options describe one to ten alternatives. baseRevision records the source, and expectedLatest guards concurrent updates."
+			},
+			{
+				"name": "ApproveDesignInput",
+				"type": "{unitId:string,version:string,option?:string,images:ImageBinding[],notesSha256?:Sha256|null,contractHash:Sha256,reviewer:string}",
+				"description": "Approves the latest version and binds the selected option, image hashes and contract hash."
+			},
+			{
+				"name": "ReadImageInput",
+				"type": "{unitId:string,version:string,file:string,revision?:string,sha256?:Sha256,option?:string}",
+				"description": "Reads an image belonging to the selected unit, version and optional option at a pinned revision; sha256 checks expected content."
+			}
+		],
+		"outputs": [
+			{
+				"name": "PlanningApi",
+				"type": "interface",
+				"description": "Provides snapshot, listPlans, readPlan, listBranches, listCommits, createPlan, addDesign, openThread, appendMessage, approveDesign, readImage and entityHistory operations."
+			},
+			{
+				"name": "PlanningApi.addDesign",
+				"type": "(input:AddDesignInput)=>Promise<Committed<DesignVersion>>"
+			},
+			{
+				"name": "PlanningApi.approveDesign",
+				"type": "(input:ApproveDesignInput)=>Promise<Committed<ApprovalRecord>>"
+			},
+			{
+				"name": "PlanningApi.readImage",
+				"type": "(input:ReadImageInput)=>Promise<ImageContent>"
+			},
+			{
+				"name": "PlanningApi.readPlan",
+				"type": "(input:{unitId:string,revision?:string})=>Promise<PlanDetail>"
+			},
+			{
+				"name": "PlanningBridge",
+				"type": "mapped operations returning Promise<PlanningResult<operation output>>",
+				"description": "The bridge declares success or failure as a discriminated result rather than throwing."
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [
