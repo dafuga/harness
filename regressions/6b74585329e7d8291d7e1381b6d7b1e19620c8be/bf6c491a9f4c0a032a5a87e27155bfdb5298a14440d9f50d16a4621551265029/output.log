@@ -1,0 +1,40 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-wiULWB
+
+ ❯ test/services/agents-providers/module-task-analytics-service.test.ts (4 tests | 1 failed | 3 skipped) 293ms
+   ↓ committed task history emits stable IDs and excludes raw prompt text
+   ↓ prelaunch failures never become model executions or invented costs
+   ↓ missing Codex cache-write counts produce a priced range rather than a guessed bill
+   × quota fallback distinguishes a blocked second launch and corrects its prior event 288ms
+     → expected [ 'failed', 'not-started' ] to deeply equal [ 'failed', 'failed' ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/agents-providers/module-task-analytics-service.test.ts > quota fallback distinguishes a blocked second launch and corrects its prior event
+AssertionError: expected [ 'failed', 'not-started' ] to deeply equal [ 'failed', 'failed' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "failed",[22m
+[32m-   "failed",[39m
+[31m+   "not-started",[39m
+[2m  ][22m
+
+ ❯ test/services/agents-providers/module-task-analytics-service.test.ts:162:62
+    160|   expect((await worker.once('owner')).status).toBe('failed');
+    161|   const task = (await service.show('orders-validation')).task;
+    162|   expect(task.result?.executions.map((item) => item.status)).toEqual([…
+       |                                                              ^
+    163|   expect(task.result?.executions[1].apiCost.note).toBe(
+    164|    'Provider did not start; no usage or cost was incurred.'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  00:52:05
+   Duration  3.91s (transform 701ms, setup 119ms, collect 1.15s, tests 293ms, environment 0ms, prepare 24ms)
+
