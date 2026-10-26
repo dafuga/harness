@@ -55,7 +55,7 @@ export function layoutFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: `src/routes/${route}/__harness/+page.svelte`,
-			contents: `<script lang="ts">\n${previewGuard()}\n\n${previewCheck()}\n</script>\n\n<svelte:head>\n\t<title>${title} layout preview</title>\n</svelte:head>\n\n<div data-harness-layout-content="${route}">\n\t<h2>${title} layout content</h2>\n</div>\n`
+			contents: `<script lang="ts">\n${previewGuard()}\n\n${previewCheck()}\n</script>\n\n<svelte:head>\n\t<title>${title} layout preview</title>\n</svelte:head>\n\n<div data-harness-layout-content="${route}">\n\t<h2>${title} layout content</h2>\n\t<p>Child content placeholder</p>\n</div>\n`
 		},
 		{
 			path: `tests/e2e/${route}-layout.spec.ts`,

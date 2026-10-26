@@ -58,7 +58,7 @@ const testShapeByKind: Record<PieceKind, keyof typeof testShapes> = {
 	feature: 'none',
 	migration: 'behavior',
 	view: 'page',
-	layout: 'component',
+	layout: 'page',
 	api: 'api',
 	store: 'behavior',
 	hook: 'behavior',

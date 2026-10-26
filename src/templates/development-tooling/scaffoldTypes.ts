@@ -77,7 +77,7 @@ export const scaffoldDetails: Record<PieceKind, ScaffoldDetail> = {
 	layout: detail('layout', 'SvelteKit route layout.', true, [
 		'Route layout under src/routes/<name>/+layout.svelte.',
 		'Typed child snippet rendering.',
-		'Layout component screenshots for declared child and error states.'
+		'Layout page screenshot matches for declared child and error states, with Child content in the real child slot.'
 	]),
 	api: detail('api', 'SvelteKit API endpoint.', true, [
 		'Server route under src/routes/api/<name>/+server.ts.',

@@ -18,7 +18,7 @@ export function pageContractTest(route: string, title: string, kind: 'page' | 'e
 export function layoutContractTest(route: string, title: string): string {
 	const states = `const states = [\n\t{\n\t\tid: 'default',\n\t\tpath: '/${route}/__harness',\n\t\tscreenshot: ${screenshotSet(`${route}-layout-default`)}\n\t}\n] as const;`;
 	return screenshotContractTest(`${route} layout frame`, states, 'layout', {
-		assertions: `const layout = page.locator('[data-harness-layout="${route}"]');\n\t\t\tconst content = page.getByRole('heading', { name: '${title} layout content' });\n\t\t\tawait expect(layout).toBeVisible();\n\t\t\tawait expect(content).toBeVisible();`
+		assertions: `const layout = page.locator('[data-harness-layout="${route}"]');\n\t\t\tconst content = layout.locator('[data-harness-layout-content="${route}"]');\n\t\t\tconst heading = content.getByRole('heading', { name: '${title} layout content' });\n\t\t\tawait expect(layout).toBeVisible();\n\t\t\tawait expect(content).toBeVisible();\n\t\t\tawait expect(heading).toBeVisible();\n\t\t\tawait expect(content).toContainText('Child content placeholder');`
 	});
 }
 
@@ -44,7 +44,7 @@ function screenshotContractTest(
 	blocks: { assertions: string; postCapture?: string }
 ): string {
 	const capture =
-		target === 'page'
+		target === 'page' || target === 'layout'
 			? "await matchScreenshot(page, state.screenshot[viewport.id], {\n\t\t\t\t\t\tfullPage: true,\n\t\t\t\t\t\tanimations: 'disabled',\n\t\t\t\t\t\tcaret: 'hide'\n\t\t\t\t\t});"
 			: `await matchScreenshot(${target}, state.screenshot[viewport.id], {\n\t\t\t\t\t\tanimations: 'disabled',\n\t\t\t\t\t\tcaret: 'hide'\n\t\t\t\t\t});`;
 	const assertions = formatContractBlock(blocks.assertions);

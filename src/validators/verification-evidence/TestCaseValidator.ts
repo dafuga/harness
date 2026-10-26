@@ -34,6 +34,10 @@ export class TestCaseValidator {
 		const errors = (contract.states ?? [])
 			.filter((state) => !contract.cases.some((item) => item.state === state))
 			.map((state) => `${unit.id}: missing state ${state}`);
+		if (unit.kind === 'layout' && contract.shape !== 'page')
+			errors.push(
+				`${unit.id}: layouts require the page screenshot form with a child-slot placeholder`
+			);
 		if (contract.shape === 'component' && !contract.cases.some((item) => item.state === 'rest'))
 			errors.push(`${unit.id}: component requires its rest state`);
 		if (contract.shape === 'helper') errors.push(...this.examples(unit, contract));
