@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { expect, vi } from 'vitest';
 import { ModuleTaskServerService } from '../../../../src/services/agents-providers/ModuleTaskServerService';
 
 export const root = '/disposable/repository';
