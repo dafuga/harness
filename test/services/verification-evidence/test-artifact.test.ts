@@ -5,8 +5,9 @@ import { tmpdir } from 'node:os';
 import { TestArtifactService } from '../../../src/services/verification-evidence/TestArtifactService';
 import contract from '../../../specification/units/service.verification-evidence-test-artifact.json';
 import { audioFixture } from '../../../packages/reports/test/audioFixture';
+import { assertRetainedClassAudio } from '../../support/testArtifactRetention';
 
-test('capture initialized audio artifacts retains playable bytes and rejects invalid properties', () => {
+test('capture initialized audio artifacts retains playable bytes and rejects invalid properties', async () => {
 	const directory = mkdtempSync(join(tmpdir(), 'harness-case-artifact-'));
 	try {
 		const service = new TestArtifactService({
@@ -38,6 +39,7 @@ test('capture initialized audio artifacts retains playable bytes and rejects inv
 			revision: 'a'.repeat(40),
 			sha256: result.sha256
 		});
+		await assertRetainedClassAudio(directory);
 		assertByteSnapshot(service, artifact, directory);
 		assertInvalidArtifacts(service, artifact);
 	} finally {
