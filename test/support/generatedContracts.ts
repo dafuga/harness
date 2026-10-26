@@ -1,4 +1,6 @@
 import { expect } from 'vitest';
+import ts from 'typescript';
+import { resolve } from 'node:path';
 import { pieceFiles } from '../../src/templates/pieces';
 
 export function assertAppPieceContracts() {
@@ -99,6 +101,7 @@ function assertAppBehavior() {
 }
 
 export function assertClassMatrices() {
+	assertRepositoryTypes();
 	for (const [kind, count] of Object.entries({
 		mailer: 1,
 		channel: 4,
@@ -122,4 +125,43 @@ export function assertClassMatrices() {
 		expect(emitted, kind).not.toContain('toBeInstanceOf');
 		expect(emitted, kind).toContain('// =>');
 	}
+}
+
+/** The generated method-state examples are also compiler inputs, not only formatted text. */
+function assertRepositoryTypes() {
+	const root = resolve('.cache/harness/virtual-repository-example');
+	const files = new Map(
+		pieceFiles('repository', 'Compile').map((file) => [resolve(root, file.path), file.contents])
+	);
+	const options: ts.CompilerOptions = {
+		target: ts.ScriptTarget.ESNext,
+		module: ts.ModuleKind.ESNext,
+		moduleResolution: ts.ModuleResolutionKind.Bundler,
+		strict: true,
+		skipLibCheck: true,
+		noEmit: true,
+		types: []
+	};
+	const host = ts.createCompilerHost(options);
+	const read = host.readFile,
+		exists = host.fileExists,
+		source = host.getSourceFile;
+	const directory = host.directoryExists!;
+	host.readFile = (name) => files.get(resolve(name)) ?? read(name);
+	host.fileExists = (name) => files.has(resolve(name)) || exists(name);
+	host.directoryExists = (name) => name.startsWith(root) || directory(name);
+	host.getSourceFile = (name, language, ...rest) => {
+		const text = files.get(resolve(name));
+		return text === undefined
+			? source(name, language, ...rest)
+			: ts.createSourceFile(name, text, language, true);
+	};
+	const program = ts.createProgram([...files.keys()], options, host);
+	// => [] Every emitted repository example must compile with its authored inputs.
+	expect(
+		ts
+			.getPreEmitDiagnostics(program)
+			.map((issue) => ts.flattenDiagnosticMessageText(issue.messageText, '\n')),
+		'Generated repository method-state cases compile'
+	).toEqual([]);
 }
