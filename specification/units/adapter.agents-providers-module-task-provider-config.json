@@ -3,7 +3,7 @@
 	"id": "adapter.agents-providers-module-task-provider-config",
 	"kind": "adapter",
 	"title": "ModuleTaskProviderConfigAdapter",
-	"responsibility": "Discover narrowly scoped provider configuration and Codex rules files for isolated task launches.",
+	"responsibility": "Discover the minimum trusted provider configuration and rule paths for an isolated task launch without reading credential contents.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -20,20 +20,32 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ModuleTaskProviderConfigAdapter.constructor.config",
-				"type": "ModuleTaskProviderConfigAdapterConfig"
+				"name": "constructor.config",
+				"type": "{home?:string,codexHome?:string,claudeConfigDir?:string}",
+				"description": "Optional absolute synthetic roots for tests; default current host home and provider-specific config environment."
+			},
+			{
+				"name": "paths.provider",
+				"type": "'codex' | 'claude'"
 			}
 		],
 		"outputs": [
 			{
-				"name": "ModuleTaskProviderConfigAdapter.connect",
-				"type": "string"
+				"name": "paths",
+				"type": "Promise<{readPaths:string[],exactReadDirectories:string[]}>",
+				"description": "Returns existing canonical regular credential/config files and, for Codex, only the exact rules directory plus individual *.rules files. Never returns unrelated siblings or copies file contents."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "unsafe config path",
+				"type": "Error",
+				"description": "Reject symlink or hardlink aliases that could widen access; absence of optional files or directory is not an error."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
