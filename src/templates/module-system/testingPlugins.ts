@@ -34,7 +34,9 @@ test('{{PascalName}} renders real PCM without a microphone or speakers', async (
  expect(decoded.channels).toBe(1);
  expect(decoded.rate).toBe(48000);
  expect(decoded.samples).toHaveLength(480);
- for (let i = 0; i < played.length; i++) expect(decoded.samples[i]).toBeCloseTo(played[i] / 32768, 5);
+ // Decoder float scaling may differ within one PCM16 quantization step.
+ for (let i = 0; i < played.length; i++)
+  expect(Math.abs(decoded.samples[i] - played[i] / 32768)).toBeLessThanOrEqual(1 / 32768);
  audio.clear();
  expect([...audio.next(480)].every(sample => sample === 0)).toBe(true);
 });
