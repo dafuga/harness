@@ -28,6 +28,7 @@ async function versions(f: Made) {
 }
 
 test('a page Plan generates three separately directed options and commits them once', async () => {
+	await assertReferenceFormats();
 	await assertPageReferences();
 	const f = await fixture();
 	distinct(f);
@@ -190,4 +191,24 @@ function referenceVersion(reference: Buffer) {
 			}
 		]
 	};
+}
+
+async function assertReferenceFormats() {
+	for (const [extension, bytes] of [
+		['png', PNG.sync.write(new PNG({ width: 2, height: 2 }))],
+		['jpg', Buffer.from([255, 216, 255, 224, 0, 2, 255, 217])],
+		['webp', Buffer.from('RIFF\x04\x00\x00\x00WEBP', 'binary')]
+	] as const) {
+		const f = referenceFixture('current');
+		f.currentImage.mockResolvedValue(bytes);
+		await planDesign(f.context, 'Preserve the screenshot format');
+		expect(f.captured).toEqual([bytes, bytes, bytes]);
+		for (const [input] of f.generator.generateImage.mock.calls)
+			expect(input.reference).toMatch(new RegExp(`\\.${extension}$`));
+	}
+	const invalid = referenceFixture('current');
+	invalid.currentImage.mockResolvedValue(Buffer.from('unsupported image format'));
+	await expect(planDesign(invalid.context, 'Reject unsupported references')).rejects.toThrow();
+	expect(invalid.generator.generateImage).not.toHaveBeenCalled();
+	expect(invalid.planning.addDesign).not.toHaveBeenCalled();
 }
