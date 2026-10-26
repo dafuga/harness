@@ -413,3 +413,38 @@ standardized units and 692 registered cases, with 5,940 admission gaps. Full
 migration, aggregate verification, current-main Explorer evidence, complete
 history reconstruction within the memory target, and final delivery remain
 open. No production deployment was attempted.
+
+## Continuation: registered-case impact
+
+SourceGraphService previously omitted the graph edge from a registered test to
+its subject when the test exercised a boundary instead of importing the source.
+With another importing test present, impact selection was not widened: that
+consumer ran while the registered case was excluded. The previously uncovered
+class method is now registered against an existing test title; no executable test
+title was added.
+
+Test-only checkpoint `526eeac3b9` and source repair `953d5d7ae2` retain matched
+red `17cb7c53d645` and green `ae5ae8e0493b`. The same class case also checks
+admitted arrays with own iterators, custom species and getters. The graph now
+connects tracked test files to active units without invoking array iteration or
+species. A prior red attempt and the rejected environment-mismatched green remain
+historical attempts, not the matched pair.
+
+At `953d5d7ae2`, 31 focused cases across six files passed, as did root typecheck,
+targeted lint, registry validation and audit. The changed unit measures 4,817
+source bytes, 128 lines, complexity 23 and three dependencies; its module has no
+separately emitted artifact. The normal registered-case graph workload in the
+green capture took 0.0512 ms and observed 197,165,056 bytes whole-worker RSS,
+not unit-attributed or peak memory. The timed block builds the already prepared
+graph; its generic capture method text overstates included fixture setup. The
+refreshed inventory is 1,117 suite files, 4,606 declarations, 45 standardized
+units, 693 registered cases and 5,938 gaps. The laptop impact E2Es were queued
+with a one-CPU, 2-GiB reservation while another run occupied the machine; their
+result remains pending here.
+
+The installed Codex app-server reports the requested model in `thread/start`
+even for an intentionally nonexistent model. That field therefore does not
+establish the model that executed a turn; it cannot qualify Luna. The shared
+preview advertised task branch `6e1db0b` while the actual source was newer.
+Main `395e517` showed no audio service Examples or attached verification. This
+inspection is not task-head playback or delivered-revision proof.

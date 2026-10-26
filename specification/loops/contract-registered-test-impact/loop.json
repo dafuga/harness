@@ -2,7 +2,7 @@
 	"name": "contract-registered-test-impact",
 	"goal": "Select every registered entity test when its subject changes",
 	"createdAt": "2026-10-26T21:54:47.525Z",
-	"updatedAt": "2026-10-26T21:54:51.554Z",
+	"updatedAt": "2026-10-26T22:00:35.213Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:56:58.128Z",
+			"evidence": "Record 29a6101218b5 fails the existing class method case because the registered boundary test has no coverage edge."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T22:00:33.810Z",
+			"evidence": "Add source graph coverage edges from tracked registered test files to their active subject units."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T22:00:35.213Z",
+			"evidence": "Record ae5ae8e0493b passes the unchanged method case at 953d5d7ae2 against normalized red 17cb7c53d645."
 		},
 		{
 			"id": "verify",
