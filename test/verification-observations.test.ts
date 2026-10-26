@@ -6,7 +6,6 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { captureIndex, type CaptureLine } from '../src/core/verifyTypes';
 import { scenarioManifestSchema } from '../src/core/unitTypes';
-
 const root = resolve(import.meta.dirname, '..');
 const directories: string[] = [];
 afterEach(() => {
@@ -184,7 +183,6 @@ test.each([
 	},
 	60000
 );
-
 test('the Git evidence scenario executes metadata and binary test files and records every required state', async () => {
 	const scenario = scenarioManifestSchema.parse(
 		JSON.parse(readFileSync(join(root, 'specification/scenarios/git-evidence-read.json'), 'utf8'))
