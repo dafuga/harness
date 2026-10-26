@@ -1,7 +1,7 @@
 import { ESLint } from 'eslint';
 import { format } from 'prettier';
 import { existsSync } from 'node:fs';
-import { mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import type { PlannedFile } from '../../../src/core/development-tooling/files';
@@ -16,8 +16,10 @@ export async function assertAuthoredLibraryResult(project: string): Promise<void
 	const original = await readFile(path, 'utf8');
 	const evidence = await mkdtemp(join(tmpdir(), 'harness-library-case-result-'));
 	const revision = 'a'.repeat(40);
+	const alias = join(evidence, 'project-alias');
+	await symlink(project, alias, 'dir');
 	const env = {
-		HARNESS_VERIFY_CASE_ROOT: await realpath(project),
+		HARNESS_VERIFY_CASE_ROOT: alias,
 		HARNESS_EVIDENCE_DIR: evidence,
 		HARNESS_VERIFY_REVISION: revision
 	};
