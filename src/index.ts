@@ -207,3 +207,4 @@ export { ModuleTaskCodexProfileAdapter } from './adapters/agents-providers/Modul
 export { moduleTaskApprovedSubmission } from './helpers/agents-providers/moduleTaskApprovedSubmission';
 export { ModuleTaskDependencyBaseAdapter } from './adapters/agents-providers/ModuleTaskDependencyBaseAdapter';
 export { FeaturePlanCoverageValidator } from './validators/agents-providers/FeaturePlanCoverageValidator';
+export { moduleTaskExecution } from './helpers/agents-providers/moduleTaskExecution';

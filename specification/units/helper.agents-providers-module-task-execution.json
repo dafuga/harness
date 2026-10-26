@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "helper.agents-providers-module-task-execution",
+	"kind": "helper",
+	"title": "moduleTaskExecution",
+	"responsibility": "Execute a claimed module task with isolated dependency context and cleanup.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/helpers/agents-providers/moduleTaskExecution.ts"],
+		"symbols": ["moduleTaskExecution"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "moduleTaskExecution.textToFormat",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "moduleTaskExecution",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/helpers/agents-providers/moduleTaskExecution.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/helpers/agents-providers/moduleTaskExecution.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
