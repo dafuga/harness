@@ -2,7 +2,7 @@
 	"name": "plugin-app-dependency-compatibility",
 	"goal": "Generated Harness apps can generate both built-in browser testing plugins without dependency-version conflicts, while incompatible dependencies remain rejected.",
 	"createdAt": "2026-10-26T23:06:41.280Z",
-	"updatedAt": "2026-10-26T23:06:51.945Z",
+	"updatedAt": "2026-10-26T23:07:32.564Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:07:32.564Z",
+			"evidence": "Red proof 00585cfbce41eeacba8c9e8b2bf7b9a640c2ac9ff826cac68e59581369a47275 at 7995e8020b fails the existing app case: both plugin declarations differ from the generated app dependency."
 		},
 		{
 			"id": "implement",
