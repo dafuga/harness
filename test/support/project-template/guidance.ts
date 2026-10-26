@@ -84,7 +84,7 @@ function fileContents(files: ReturnType<typeof projectFiles>, path: string): str
 
 /** Static admission precedes any browser baseline decision in the generated normal check. */
 export function expectStaticCheckOrder(check: string): void {
-	expect(check.split(' && ').slice(0, 4)).toEqual([
+	expect(check.split(' && ').slice(0, 4), 'Static gates precede screenshot admission').toEqual([
 		'bun run format:check',
 		'bun run typecheck',
 		'bun run lint',

@@ -30,10 +30,10 @@ test.each([
 			const saved = await repository.read();
 			saved.document.views[0].title = 'Authored courtyard';
 			await repository.save(saved.document, saved.revision);
-			execFileSync('bun', ['run', 'check'], {
-				cwd,
-				stdio: 'pipe',
-				env: { ...process.env, HARNESS_CLI_PATH: cli }
+			gameCommand(['bun', 'run', 'check'], cwd, {
+				cli,
+				workload: `game-check-${dimension}-${entry}`,
+				units: ['template.game-project', 'template.project']
 			});
 			await invalidGames(cwd, saved.document);
 			expect(await readFile(join(cwd, 'src/routes/inventory/+page.svelte'), 'utf8')).toContain(

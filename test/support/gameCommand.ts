@@ -15,7 +15,7 @@ const {command,cwd}=JSON.parse(process.argv[1]);
 const started=performance.now();
 const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
 const elapsedMs=performance.now()-started;
-if(result.exitCode!==0)throw new Error(result.stderr.toString());
+if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
 console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString()}));`;
 
 /** Run the real normal command; observe its child process rather than the test worker. */
