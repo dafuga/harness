@@ -65,12 +65,9 @@ const entityShapes = new Map<string, TestContract['shape']>([
 	['endpoint', 'api'],
 	['api', 'api']
 ]);
-const staticKinds = new Set(['config', 'style', 'type', 'types']);
 
 /** Visual entities and HTTP endpoints must use the form that tests their behavior. */
 function entityShapeErrors(unit: ComponentManifest, shape: TestContract['shape']): string[] {
-	if (staticKinds.has(unit.kind))
-		return [`${unit.id}: static ${unit.kind} units use compiler, lint, build and audit checks`];
 	const required = entityShapes.get(unit.kind);
 	if (required === shape) return [];
 	if (unit.kind === 'layout')
