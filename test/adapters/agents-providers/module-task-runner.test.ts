@@ -167,3 +167,71 @@ test('failed turns preserve available usage for cost attribution', async () => {
 		})
 	).rejects.toMatchObject({ usage: { inputTokens: 7, outputTokens: 2, reportedCostUsd: 0.01 } });
 });
+
+const codexInput = () => ({
+	provider: 'codex' as const,
+	model: 'gpt-6-luna',
+	intelligence: 'max' as const,
+	cwd: '.',
+	prompt: 'Goal',
+	signal: new AbortController().signal
+});
+const runCodexFailure = (stdout: string, stderr: string) =>
+	new ModuleTaskRunnerAdapter(async () => ({ code: 1, stdout, stderr })).run(codexInput());
+
+test.each([
+	[
+		'authentication',
+		{ type: 'error', message: 'Authentication required' },
+		'Run codex login; sk-test-provider-secret https://provider.invalid/auth',
+		/codex login/i
+	],
+	[
+		'model access',
+		{ type: 'turn.failed', error: { message: 'gpt-6-luna unavailable; request model access' } },
+		'sk-test-provider-secret https://provider.invalid/model',
+		/request model access/i
+	],
+	[
+		'permission',
+		{ type: 'turn.failed', error: { message: 'Permission denied' } },
+		'Grant workspace read permission; sk-test-provider-secret https://provider.invalid/permission',
+		/grant workspace read permission/i
+	],
+	[
+		'malformed response',
+		'{invalid sk-test-provider-secret https://provider.invalid/error',
+		'',
+		/invalid response/i
+	],
+	[
+		'unknown failure',
+		{ type: 'error', message: 'Unexpected provider failure' },
+		'',
+		/^Codex task failed; inspect CLI authentication, permissions or model access\.$/
+	]
+] as const)(
+	'Codex %s failures are safe and actionable without quota fallback',
+	async (_, event, stderr, nextStep) => {
+		const stdout = typeof event === 'string' ? event : JSON.stringify(event);
+		let failure: unknown;
+		try {
+			await runCodexFailure(stdout, stderr);
+		} catch (error) {
+			failure = error;
+		}
+		expect(failure).toBeInstanceOf(Error);
+		expect(failure).toMatchObject({ quotaRejected: false });
+		const message = (failure as Error).message;
+		expect(message).toMatch(nextStep);
+		expect(message).not.toMatch(/sk-test-provider-secret|provider\.invalid/i);
+	}
+);
+
+test('Codex execute rejection remains distinct from a provider failure', async () => {
+	const spawnError = new Error('Codex process could not be spawned');
+	const runner = new ModuleTaskRunnerAdapter(async () => {
+		throw spawnError;
+	});
+	await expect(runner.run(codexInput())).rejects.toThrow(spawnError.message);
+});
