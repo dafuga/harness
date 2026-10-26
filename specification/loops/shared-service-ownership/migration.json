@@ -2606,15 +2606,21 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "fba330765587bd6206fbde4233d653d7386dbfffa1b1db2a256e0df5fc2d745e",
+			"definition": "2aeadec22d59808aca2321b043abac5171e749030dd3750d088397db0a47df00",
 			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
 			"review": {
-				"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+				"commit": "7a77ce34c5dc3332354be7c4aea2b2c8edec7a18",
 				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-				"definition": "fba330765587bd6206fbde4233d653d7386dbfffa1b1db2a256e0df5fc2d745e",
-				"reason": "Pass the explicit performance requirement through current snapshot verification without changing historical defaults."
+				"definition": "2aeadec22d59808aca2321b043abac5171e749030dd3750d088397db0a47df00",
+				"reason": "Free unneeded source facts before worker admission while retaining the reason report and every measured head source."
 			},
 			"previousReviews": [
+				{
+					"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "fba330765587bd6206fbde4233d653d7386dbfffa1b1db2a256e0df5fc2d745e",
+					"reason": "Pass the explicit performance requirement through current snapshot verification without changing historical defaults."
+				},
 				{
 					"commit": "43dacd3706aa93cc8cda40db9d6a802fde185562",
 					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
