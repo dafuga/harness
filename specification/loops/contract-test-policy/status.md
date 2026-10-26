@@ -213,6 +213,36 @@ A fresh inventory at `9b60065089` remains 1,117 suite files, 4,606 declarations,
 44 standardized units, 692 cases and 5,940 admission gaps. Registry success does
 not mean the repository-wide test-form gate is enabled or migration is complete.
 
+An earlier policy change `f4b5cdd556` incorrectly rejected every new prop or
+error row and placed the same contradiction in generated instructions. Existing
+comparison coverage asserted that rejection rather than the declared-capability
+rule. The existing cases now exercise API, page and component prop/error changes
+while still rejecting undeclared, unrelated and duplicate rows. The existing
+loop-guidance cases check generated app and library instructions as well as the
+shared guide. Red `c16eee12d185` at test-only commit `21d0c0b0e5` and green
+`3efd94c5d6c7` at source-only commit `7bdb5da65e` use the same corpus and
+environment. An isolated mutant `f35edbf6ed` failed the same case (capture
+`ba1682976d3e`); restoring it at `550a34e6e3` passed (capture `ced64983c44a`).
+The durable control is the existing contract-comparison and generated-guidance
+checks: when a declared capability rule changes, they check both admission and
+the instructions presented to future agents without introducing another test
+form. `f84637692f` only moves existing assertions into a helper for lint. Its
+capture `78ed19a30bc7` passes the same ten cases; 27 focused cases, root
+typecheck, targeted lint, registry validation and audit also pass. At the source
+commit, the service owns 11,239 bytes, 299 lines, 93 complexity points and five
+dependencies; the policy function owns 5,841 bytes, 37 lines, one complexity
+point and no dependencies. Neither emits a separate artifact. At `f84637692f`,
+the measured capability workload took 0.8107 ms with 192,430,080 bytes
+whole-worker RSS; guidance generation took 0.0080 ms with 234,586,112 bytes
+whole-worker RSS. These focused observations are not full verification.
+
+The first laptop aggregate at `ba39c194c1` failed before tests because its
+non-interactive PATH omitted an existing rustup installation. A second run found
+the pinned toolchain but nested Git fixtures failed because the same PATH also
+omitted the existing Git LFS installation. That failed run was cancelled with
+owned-process cleanup. A third run includes both verified paths and remains
+pending; no aggregate pass is claimed.
+
 ## Execution identity
 
 The current task audit preserves 58 execution records, all requesting max effort

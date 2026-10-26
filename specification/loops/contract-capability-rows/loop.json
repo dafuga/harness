@@ -2,11 +2,9 @@
 	"name": "contract-capability-rows",
 	"goal": "Allow cases for declared prop and error capability changes while rejecting unexplained count growth",
 	"createdAt": "2026-10-26T20:32:25.486Z",
-	"updatedAt": "2026-10-26T20:32:51.433Z",
+	"updatedAt": "2026-10-26T20:37:29.818Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,27 +25,37 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:34:40.310Z",
+			"evidence": "Capture at 21d0c0b0e5 fails the existing comparison case because an API row for a newly declared prop is refused; generated guidance also rejects the requested rule."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:34:40.925Z",
+			"evidence": "Restore admission for rows naming newly declared props or errors, retain duplicate and unrelated-row rejection, and make the existing generated-guidance cases check the same rule."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:35:02.147Z",
+			"evidence": "Rows that name newly declared props or errors are admitted; duplicate and unrelated rows remain rejected. The same policy now drives project, skill, generated, and agent guidance."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:36:08.552Z",
+			"evidence": "The unchanged ten cases pass at 7bdb5da65e after the same cases failed at 21d0c0b0e5; both captures use the same sanitized environment."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:37:29.818Z",
+			"evidence": "Isolated mutant f35edbf6ed rejects a newly declared prop and fails the unchanged case (capture ba1682976d3e); restored tree 550a34e6e3 passes the same ten cases (capture ced64983c44a)."
 		},
 		{
 			"id": "verify",
