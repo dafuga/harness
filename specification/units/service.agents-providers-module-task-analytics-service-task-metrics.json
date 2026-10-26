@@ -4,14 +4,14 @@
 	"kind": "service",
 	"title": "taskMetrics",
 	"responsibility": "Owns the taskMetrics service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/agents-providers/module-task-analytics-service/taskMetrics.ts"],
 		"symbols": ["taskMetrics"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "taskMetrics.events",
@@ -21,7 +21,8 @@
 		"outputs": [
 			{
 				"name": "taskMetrics",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Count confirmed provider executions separately from prelaunchFailures and unverifiedExecutions, preserving token, cost and review-derived bounce metrics."
 			}
 		],
 		"errors": []

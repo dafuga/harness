@@ -25,7 +25,7 @@ export const taskExecutionSchema = z.strictObject({
 	reportedModel: z.string().nullable(),
 	usage: taskUsageSchema.optional(),
 	apiCost: taskCostSchema,
-	status: z.enum(['succeeded', 'failed']),
+	status: z.enum(['succeeded', 'failed', 'not-started']),
 	startedAt: z.iso.datetime(),
 	finishedAt: z.iso.datetime()
 });

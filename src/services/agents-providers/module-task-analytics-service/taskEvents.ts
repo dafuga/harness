@@ -39,7 +39,7 @@ function submissionEvents(
 		...base,
 		id: fingerprint([project, task.id, attempt, 'executed', slot]),
 		timestamp: execution.finishedAt,
-		action: 'executed',
+		action: executionAction(result, execution, slot),
 		status: execution.status,
 		agentModel: execution.reportedModel ?? undefined,
 		moduleTask: {
@@ -52,6 +52,7 @@ function submissionEvents(
 			apiCost: execution.apiCost
 		}
 	}));
+	if (!executions.length) events.push(missingExecution(task, result, project, attempt));
 	if (!result.error)
 		events.push({
 			...base,
@@ -69,23 +70,70 @@ function submissionEvents(
 		});
 	return events;
 }
+function missingExecution(
+	task: ModuleTask,
+	result: NonNullable<ModuleTask['result']>,
+	project: string,
+	attempt: string
+): AnalyticsEvent {
+	return {
+		project,
+		task: task.id,
+		kind: 'task',
+		requestedModel: task.model,
+		id: fingerprint([project, task.id, attempt, 'executed', 0]),
+		timestamp: result.finishedAt,
+		action: result.attempt && result.error ? 'prelaunch-failed' : 'execution-unknown',
+		status: result.error ? 'failed' : 'unknown',
+		agentModel: result.reportedModel ?? undefined,
+		moduleTask: {
+			...identity(task, attempt),
+			provider: result.provider,
+			model: result.model,
+			intelligence: result.intelligence,
+			reportedModel: result.reportedModel
+		}
+	};
+}
 function identity(task: ModuleTask, attempt: string) {
 	return { attempt, feature: task.feature.id, module: task.module.id };
 }
 
+function executionAction(
+	result: NonNullable<ModuleTask['result']>,
+	execution: Pick<
+		NonNullable<ModuleTask['result']>['executions'][number],
+		'status' | 'usage' | 'reportedModel'
+	>,
+	slot: number
+) {
+	const oldPrelaunch = [
+		'Provider launch was blocked before execution.',
+		'Task could not start because resource admission failed.',
+		'Task CLI could not be started.'
+	].includes(result.error ?? '');
+	const provenOldFailure =
+		oldPrelaunch &&
+		slot === result.executions.length - 1 &&
+		execution.status === 'failed' &&
+		!execution.usage &&
+		!execution.reportedModel;
+	return execution.status === 'not-started' || provenOldFailure ? 'prelaunch-failed' : 'executed';
+}
+
 function executionsOf(result: NonNullable<ModuleTask['result']>) {
-	return result.executions.length
-		? result.executions
-		: [
-				{
-					provider: result.provider,
-					model: result.model,
-					intelligence: result.intelligence,
-					reportedModel: result.reportedModel,
-					usage: result.usage,
-					apiCost: taskApiCost(result.reportedModel ?? result.model, result.usage),
-					status: result.error ? 'failed' : 'succeeded',
-					finishedAt: result.finishedAt
-				}
-			];
+	if (result.executions.length) return result.executions;
+	if (result.attempt || result.error) return [];
+	return [
+		{
+			provider: result.provider,
+			model: result.model,
+			intelligence: result.intelligence,
+			reportedModel: result.reportedModel,
+			usage: result.usage,
+			apiCost: taskApiCost(result.reportedModel ?? result.model, result.usage),
+			status: 'succeeded' as const,
+			finishedAt: result.finishedAt
+		}
+	];
 }

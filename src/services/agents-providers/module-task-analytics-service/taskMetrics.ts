@@ -52,6 +52,8 @@ function summary(events: AnalyticsEvent[]) {
 		reviewed,
 		bounceRate: reviewed ? bounces / reviewed : null,
 		executionFailures: executions.filter((e) => e.status === 'failed').length,
+		prelaunchFailures: events.filter((e) => e.action === 'prelaunch-failed').length,
+		unverifiedExecutions: events.filter((e) => e.action === 'execution-unknown').length,
 		inputTokens: usage('inputTokens'),
 		outputTokens: usage('outputTokens'),
 		cacheReadTokens: usage('cacheReadTokens'),

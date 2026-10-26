@@ -4,14 +4,14 @@
 	"kind": "service",
 	"title": "dispatchTaskAttempt",
 	"responsibility": "Owns the dispatchTaskAttempt service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/agents-providers/module-task-worker-service/dispatchTaskAttempt.ts"],
 		"symbols": ["dispatchTaskAttempt"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "dispatchTaskAttempt.runner",
@@ -29,7 +29,8 @@
 		"outputs": [
 			{
 				"name": "dispatchTaskAttempt",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Record each real provider call and its usage; a trusted diagnostic proving a prelaunch failure records not-started rather than a provider execution."
 			}
 		],
 		"errors": []

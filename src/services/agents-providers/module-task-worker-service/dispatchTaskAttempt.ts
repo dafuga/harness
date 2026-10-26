@@ -31,15 +31,30 @@ export async function dispatchTaskAttempt(
 		});
 		return result;
 	} catch (error) {
-		const failure = error as { usage?: TaskUsage; reportedModel?: string | null };
+		const failure = taskFailure(error);
 		executions.push({
 			...base,
-			reportedModel: failure?.reportedModel ?? null,
-			usage: failure?.usage,
-			apiCost: analytics.quote(failure?.reportedModel ?? input.model, failure?.usage),
-			status: 'failed',
+			reportedModel: failure.reportedModel,
+			usage: failure.usage,
+			apiCost: analytics.quote(failure.reportedModel ?? input.model, failure.usage),
+			status: failure.status,
 			finishedAt: new Date().toISOString()
 		});
 		throw error;
 	}
+}
+
+function taskFailure(error: unknown) {
+	const failure = error as {
+		usage?: TaskUsage;
+		reportedModel?: string | null;
+		diagnostic?: { phase?: string };
+	};
+	const blocked =
+		failure?.diagnostic?.phase === 'prelaunch' && !failure.usage && !failure.reportedModel;
+	return {
+		usage: failure?.usage,
+		reportedModel: failure?.reportedModel ?? null,
+		status: blocked ? ('not-started' as const) : ('failed' as const)
+	};
 }
