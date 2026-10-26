@@ -10,7 +10,7 @@ import {
 	expectCatalogGuidance,
 	expectStaticCheckOrder,
 	expectAppTypeReference,
-	expectInitialPageViewports
+	expectAppTestingFoundation
 } from './support/project-template/guidance';
 
 test(
@@ -36,7 +36,7 @@ test('app projects include SvelteKit and specification files', () =>
 		expect(initialPageTest).toContain("from './support/browserTest'");
 		expect(initialPageTest).toContain("test('app page initial state'");
 		expect(initialPageTest).toContain("await page.goto('/')");
-		await expectInitialPageViewports(files);
+		await expectAppTestingFoundation(files);
 		expect(paths).toContain('eslint.config.js');
 		expect(paths).toContain('eslint.harness-rules.js');
 		expect(paths).toContain('harness.audit.json');
