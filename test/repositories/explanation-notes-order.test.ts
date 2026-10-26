@@ -169,3 +169,25 @@ test('restoration keeps a large note history bounded and still refuses missing e
 	expect(expected).toHaveLength(2);
 	expect(actual).toEqual(expected);
 }, 120_000);
+
+test('a large note retains every valid verification entry in order', async () => {
+	const { dir, commits } = repository();
+	const [commit] = commits;
+	const note = {
+		schemaVersion: 1,
+		kind: 'verification',
+		record: 'record-1',
+		status: 'passed',
+		profile: 'profile-1',
+		finishedAt: earlier,
+		source: { commit, tree: git(dir, ['rev-parse', `${commit}^{tree}`]), base: null },
+		evidence: { commit, path: 'records/one', manifest: 'a'.repeat(64) }
+	};
+	const file = join(root, 'large-verification-note.txt');
+	writeFileSync(file, `${JSON.stringify(note)}\n`.repeat(150_000));
+	git(dir, ['notes', '--ref=harness', 'add', '-F', file, commit]);
+	const found = await new HistoryNoteRepository(dir).verifications();
+	expect(found).toHaveLength(150_000);
+	expect(found[0]).toEqual(note);
+	expect(found.at(-1)).toEqual(note);
+}, 120_000);
