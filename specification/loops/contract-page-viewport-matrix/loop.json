@@ -2,7 +2,7 @@
 	"name": "contract-page-viewport-matrix",
 	"goal": "Reject page and layout states missing required desktop tablet or mobile screenshots",
 	"createdAt": "2026-10-26T20:50:31.342Z",
-	"updatedAt": "2026-10-26T20:50:32.575Z",
+	"updatedAt": "2026-10-26T20:54:34.162Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,27 +25,37 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:52:29.553Z",
+			"evidence": "The existing page and layout validation case fails at fbf95451e7 when a page state omits mobile, while the existing comparison cases still pass."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:52:30.142Z",
+			"evidence": "Group page rows by their actual state and input coordinates, require all three viewports per group, and retain the existing distinct-row and component checks."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:53:02.323Z",
+			"evidence": "Page rows are grouped by state, fixture, props, errors, call and input, then require desktop, tablet and mobile; component admission is unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:53:54.484Z",
+			"evidence": "The unchanged three existing cases pass at f0d901f117 after the page-missing-mobile failure at fbf95451e7; split rows and distinct prop coordinates are checked."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:54:34.162Z",
+			"evidence": "Isolated mutant 47384c4816 fails the unchanged page case (capture 54818f8f1860); restoring the fix at c455711c96 passes (capture c7af27b373a8)."
 		},
 		{
 			"id": "verify",

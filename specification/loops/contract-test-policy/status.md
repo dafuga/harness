@@ -243,6 +243,40 @@ omitted the existing Git LFS installation. That failed run was cancelled with
 owned-process cleanup. A third run includes both verified paths and remains
 pending; no aggregate pass is claimed.
 
+Page and layout admission also accepted states with only one viewport. The
+existing validator case now rejects a missing desktop, tablet or mobile capture
+for each distinct state and prop/input coordinate, while allowing one behavior
+to split its viewport captures across cases. Red `2c8e43953005` at `fbf95451e7`
+and green `6cfca8333a34` at `f0d901f117` use the same three existing cases.
+An isolated mutant failed (capture `54818f8f1860`) and its restored tree passed
+(capture `c7af27b373a8`). The existing comparison and generated-layout cases
+remain intact. Twenty-one focused cases, root typecheck, targeted lint, registry
+validation and audit pass. At `f0d901f117`, the validator owned 12,417 bytes,
+310 lines across its files, 104 complexity points and five dependencies; it
+emits no separate artifact. The layout/page admission workload took 0.6876 ms
+with 192,479,232 bytes whole-worker RSS. Full visual and aggregate proof remain
+pending.
+
+The `64b92166c3` laptop aggregate passed formatting, typecheck, lint and kernel
+checks, then at least six cases failed because the shared disposable fixture
+adds five executable units without standardized contracts and its synthetic
+runner omits the generated greeting case. The run was interrupted after diagnosis;
+the unchanged policy remains enabled. A strengthened existing baseline case at
+`c16e5786b3` records the specific failure on the laptop in capture
+`acf122893f13`, fetched into Git evidence. Its fixture migration remains open.
+
+The frozen 3,080-revision history remains untouched. A separate pinned Git
+status supplement checked 29 commit objects reachable from 25 current backup,
+snapshot, work or stash tips not in that index; none has a full record. A second
+pinned supplement checked 277 additional current source/archive commits: none
+has a full record, but their notes contain 142 focused proofs. The Harness reader
+validated 138 of them, including 473 original media captures; four retain gaps
+for malformed workload metadata. It preserved 320 reason notes and, for valid
+proofs, their original IDs, dates, outcomes and evidence pointers; the original
+notes for the four gaps remain intact. The supplements do not rebuild the Explorer
+history index, and their isolated repositories read Git objects through local
+alternates. Source refs can continue to change. No old tests were rerun.
+
 ## Execution identity
 
 The current task audit preserves 58 execution records, all requesting max effort
