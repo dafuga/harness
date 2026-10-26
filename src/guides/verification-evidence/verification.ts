@@ -12,6 +12,7 @@ const scenarioGuide: Guide = {
 	],
 	rules: [
 		'Scenario contracts live in specification/scenarios, one JSON file per scenario.',
+		'When standardized testing is enabled, every scenario check must reference its declared unit cases. References must be unique, active and covered by that scenario state.',
 		'A missing state can occur but is unproven: the scenario cannot pass until it is covered.',
 		'An inapplicable state cannot occur; lacking a fixture is not an applicability reason.',
 		'Every required state needs required evidence, and excluded states need none.',

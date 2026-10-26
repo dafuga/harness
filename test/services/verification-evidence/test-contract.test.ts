@@ -69,7 +69,11 @@ test('validate initialized and invalid registries against declared cases', async
 		'duplicate case'
 	);
 	assertExecutedCases(registry, service);
-	assertScenarioReferences(registry, service);
+	await measureWorkload(
+		'service.verification-evidence-test-contract',
+		'scenario-case-references',
+		() => assertScenarioReferences(registry, service)
+	);
 	await measureWorkload('validator.verification-evidence-test-case', 'matrix-row-admission', () =>
 		assertMatrixRows(unit, service, 'validate')
 	);
