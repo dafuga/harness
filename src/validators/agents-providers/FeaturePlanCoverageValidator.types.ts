@@ -1,3 +1,8 @@
+import type { FeaturePlan } from '../../repositories/agents-providers/ModuleTaskRepository.types';
+import type { ModuleData } from '../../services/git-source-history/ModuleDataService.types';
+
+export type Unit = ModuleData['registry']['units'][number];
+export type Change = FeaturePlan['changes'][number];
 export interface FeaturePlanCoverageValidatorResult {
 	valid: boolean;
 	errors: string[];

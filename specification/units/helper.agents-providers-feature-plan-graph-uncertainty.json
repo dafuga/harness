@@ -11,23 +11,30 @@
 		"symbols": ["featurePlanGraphUncertainty"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "featurePlanGraphUncertainty.textToFormat",
-				"type": "string"
+				"name": "input",
+				"type": "string | ModuleData"
+			},
+			{
+				"name": "references",
+				"type": "unknown[] | undefined",
+				"description": "Committed uncertain references for metadata overload."
 			}
 		],
 		"outputs": [
 			{
 				"name": "featurePlanGraphUncertainty",
-				"type": "string"
+				"type": "(string)=>string | (ModuleData,unknown[])=>string[]",
+				"description": "String overload preserves generated trim. Metadata overload returns sorted deduplicated node/reason/detail errors for page-reachable or unclassifiable uncertainty, using reverse graph traversal excluding scenario edges; proven unrelated test/script paths are omitted. Missing/duplicate/dangling graphs and unknown owners fail closed; known inactive pages are not active consumers."
 			}
 		],
 		"errors": [
 			{
-				"name": "TypeError",
-				"type": "thrown"
+				"name": "incomplete graph",
+				"type": "diagnostic",
+				"description": "Fail closed without source scans."
 			}
 		]
 	},

@@ -1,6 +1,11 @@
+import { featurePlanGraphUncertainty } from '../../helpers/agents-providers/featurePlanGraphUncertainty';
 import type { FeaturePlan } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { ModuleData } from '../../services/git-source-history/ModuleDataService.types';
-import type { FeaturePlanCoverageValidatorResult } from './FeaturePlanCoverageValidator.types';
+import type {
+	FeaturePlanCoverageValidatorResult,
+	Unit,
+	Change
+} from './FeaturePlanCoverageValidator.types';
 
 export class FeaturePlanCoverageValidator {
 	validate(
@@ -39,9 +44,6 @@ export class FeaturePlanCoverageValidator {
 }
 
 export type { FeaturePlanCoverageValidatorResult } from './FeaturePlanCoverageValidator.types';
-
-type Unit = ModuleData['registry']['units'][number];
-type Change = FeaturePlan['changes'][number];
 
 function planShape(input: FeaturePlan | Record<string, unknown>): boolean {
 	return (
@@ -88,8 +90,9 @@ function validateMetadata(
 	if (!Array.isArray(data.references) || !Array.isArray(data.sourceGraph?.uncertain))
 		errors.push('Committed graph reference metadata is missing.');
 	else
-		for (const reference of [...data.references, ...data.sourceGraph.uncertain])
-			errors.push(referenceDiagnostic(reference));
+		errors.push(
+			...featurePlanGraphUncertainty(data, [...data.references, ...data.sourceGraph.uncertain])
+		);
 	const graph = data.registry.graph;
 	if (!graph || !Array.isArray(graph.nodes) || !Array.isArray(graph.edges)) {
 		errors.push('Committed registry graph is missing.');
@@ -99,16 +102,6 @@ function validateMetadata(
 	for (const edge of graph.edges)
 		if (!nodes.has(edge.from) || !nodes.has(edge.to))
 			errors.push(`Unresolved committed graph edge: ${edge.from} -> ${edge.to}`);
-}
-
-function referenceDiagnostic(reference: unknown): string {
-	const fields =
-		reference && typeof reference === 'object' ? (reference as Record<string, unknown>) : {};
-	const details = ['node', 'reason', 'detail'].map(
-		(key) =>
-			`${key}=${typeof fields[key] === 'string' ? JSON.stringify(fields[key]) : '[missing or invalid]'}`
-	);
-	return `Unresolved committed graph reference: ${details.join('; ')}`;
 }
 
 function activeUnit(id: string, units: Map<string, Unit>, errors: string[]): Unit | undefined {

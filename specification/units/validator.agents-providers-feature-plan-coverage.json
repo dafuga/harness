@@ -36,7 +36,7 @@
 			{
 				"name": "validate",
 				"type": "{valid:boolean,affectedPages:string[],missingPages:string[],errors:string[]}",
-				"description": "Union direct changed pages, transitive consuming pages from relationships, and planned page ancestors; require a page design entry for each. Deduplicate and order deterministically. Requires sourceCommit equal metadata commit, an available registry, valid graph and no unresolved references; unregistered additions must first have committed module scaffolds. Reuse-only plans have no page impacts and ignore unrelated graph uncertainty after basic source validation. For actual changes unresolved references fail closed with deterministic node, reason and detail."
+				"description": "Union direct changed pages, consuming pages from committed relationships and planned page ancestors; require a design entry for each. Requires source-bound available metadata and registered units. Reuse-only plans have no page impacts. For actual changes, block graph uncertainties reachable from active pages or unclassifiable; exclude only graph-proven unrelated references and include actionable diagnostics."
 			}
 		],
 		"errors": [
