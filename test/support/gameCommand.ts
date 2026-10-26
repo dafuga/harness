@@ -132,7 +132,7 @@ export async function assertGameCheck(cwd: string, scope: Scope): Promise<void> 
 	const output = check.stdout + check.stderr;
 	expect(output).toContain("A snapshot doesn't exist");
 	expect(output).toContain('svelte-check found 0 errors');
-	await expectMissingScreenshotResults(cwd, output, 7);
+	await expectMissingScreenshotResults(cwd, output, 9);
 	for (const stage of ['build', 'audit'])
 		gameCommand(['bun', 'run', stage], cwd, {
 			...scope,

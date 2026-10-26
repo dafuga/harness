@@ -1,5 +1,7 @@
 import { expect } from '../../verificationExpect';
 import type { projectFiles } from '../../../src/templates/project';
+import { appTestFiles } from '../../../src/templates/projects-sessions/projectTests';
+import { measureWorkload } from '../measureWorkload';
 
 export function expectGeneratedGuidance(files: ReturnType<typeof projectFiles>): void {
 	expectRenameGuidance(files);
@@ -95,4 +97,26 @@ export function expectStaticCheckOrder(check: string): void {
 /** Each standalone app route gets SvelteKit virtual-module declarations without an API import. */
 export function expectAppTypeReference(files: ReturnType<typeof projectFiles>): void {
 	expect(fileContents(files, 'src/app.d.ts')).toContain('/// <reference types="@sveltejs/kit" />');
+}
+
+/** The initial page has the same three declared devices as generated pages and layouts. */
+export async function expectInitialPageViewports(files: ReturnType<typeof projectFiles>) {
+	const direct = await measureWorkload('template.project-tests', 'initial-page-viewport-plan', () =>
+		appTestFiles()
+	);
+	const source = fileContents(files, 'tests/e2e/app.spec.ts');
+	expect(source).toBe(fileContents(direct, 'tests/e2e/app.spec.ts'));
+	for (const row of [
+		"{ id: 'desktop', size: { width: 1440, height: 900 } }",
+		"{ id: 'tablet', size: { width: 920, height: 800 } }",
+		"{ id: 'mobile', size: { width: 390, height: 844 } }"
+	])
+		expect(source, 'Every initial-page viewport is explicitly declared').toContain(row);
+	expect(source).toContain('for (const viewport of viewports)');
+	expect(source).toContain("test.describe(viewport.id + ' viewport'");
+	expect(source).toContain('test.use({ viewport: viewport.size })');
+	expect(source).toContain("test('app page initial state'");
+	expect(source).toContain(
+		"matchScreenshot(page, 'initial-' + viewport.id + '.png', { fullPage: true })"
+	);
 }

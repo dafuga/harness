@@ -8,7 +8,8 @@ import {
 	expectGeneratedGuidance,
 	expectCatalogGuidance,
 	expectStaticCheckOrder,
-	expectAppTypeReference
+	expectAppTypeReference,
+	expectInitialPageViewports
 } from './support/project-template/guidance';
 
 test(
@@ -34,7 +35,7 @@ test('app projects include SvelteKit and specification files', () =>
 		expect(initialPageTest).toContain("from './support/browserTest'");
 		expect(initialPageTest).toContain("test('app page initial state'");
 		expect(initialPageTest).toContain("await page.goto('/')");
-		expect(initialPageTest).toContain("matchScreenshot(page, 'initial.png', { fullPage: true })");
+		await expectInitialPageViewports(files);
 		expect(paths).toContain('eslint.config.js');
 		expect(paths).toContain('eslint.harness-rules.js');
 		expect(paths).toContain('harness.audit.json');

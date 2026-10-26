@@ -55,7 +55,7 @@ test('CLI scaffolds and checks an app project with routes', async () => {
 	expect(check.stdout).toContain('Checking formatting...');
 	expect(check.exitCode).toBe(1);
 	expect(check.stdout + check.stderr).toContain("A snapshot doesn't exist");
-	await expectMissingScreenshotResults(project, check.stdout + check.stderr, 31);
+	await expectMissingScreenshotResults(project, check.stdout + check.stderr, 33);
 	await runCommand(['bun', 'run', 'build'], project);
 	const audit = await runCommand(['bun', 'run', 'audit'], project);
 	expect(audit.stdout).toContain('Harness audit passed');
