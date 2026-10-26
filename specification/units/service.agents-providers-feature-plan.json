@@ -3,7 +3,7 @@
 	"id": "service.agents-providers-feature-plan",
 	"kind": "service",
 	"title": "FeaturePlanService",
-	"responsibility": "Prepare and review feature plans before approved dependency-ordered task execution.",
+	"responsibility": "Orchestrate revisioned feature plans and require verification before approval.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,15 +11,58 @@
 		"symbols": ["FeaturePlanService", "FeaturePlanService.run"]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [
+		"origin": "declared",
+		"inputs": [
 			{
-				"name": "FeaturePlanService.run",
-				"type": "string"
+				"name": "constructor.dependencies",
+				"type": "{repository: Pick<FeaturePlanRepository,\"read\"|\"append\"|\"approve\">, validator: Pick<FeaturePlanValidator,\"validate\">, verifyReady?: (plan: FeaturePlan) => Promise<void>, now?: () => string}",
+				"description": "Explicit trusted collaborators. verifyReady checks committed source and all selected design artifacts; it must be present and failures fail closed."
+			},
+			{
+				"name": "draft.input",
+				"type": "Omit<FeaturePlan, \"revision\" | \"digest\" | \"approval\">",
+				"description": "A full proposed plan without revision, digest or approval; the service computes the next revision and a canonical SHA-256 digest."
+			},
+			{
+				"name": "select.input",
+				"type": "{feature:string,page:string,option:string,expectedDigest:string}",
+				"description": "Select a page option only against the latest unmodified draft digest, creating a new unapproved revision."
+			},
+			{
+				"name": "approve.input",
+				"type": "{feature:string,expectedDigest:string,reviewer:string}",
+				"description": "Approve only latest valid fully selected plan after trusted readiness verification."
 			}
 		],
-		"errors": []
+		"outputs": [
+			{
+				"name": "draft",
+				"type": "Promise<FeaturePlan>",
+				"description": "Schema- and graph-valid immutable unapproved revision committed to the plan repository."
+			},
+			{
+				"name": "select",
+				"type": "Promise<FeaturePlan>",
+				"description": "A new revision with the selected option and a fresh digest."
+			},
+			{
+				"name": "approve",
+				"type": "Promise<FeaturePlan>",
+				"description": "Approval bound to the exact latest validated digest after successful readiness verification."
+			},
+			{
+				"name": "run",
+				"type": "string",
+				"description": "Retained scaffold compatibility method."
+			}
+		],
+		"errors": [
+			{
+				"name": "invalid or stale plan",
+				"type": "Error",
+				"description": "Reject malformed or inconsistent plans, tampered digests, stale expected digest, unknown page or option, missing selection, readiness failure, and concurrent repository conflicts without approval or further mutation."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
