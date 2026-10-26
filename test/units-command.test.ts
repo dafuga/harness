@@ -2,6 +2,7 @@ import { Command } from 'commander';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { registerUnitsCommand } from '../src/cli/program/UnitsCommand';
 import type { ComponentManifest } from '../src/core/development-tooling/unitTypes';
+import { input, invalidCases, manifest, testing } from './units-command.test.fixtures';
 
 const mocks = vi.hoisted(() => ({
 	registryRead: vi.fn(),
@@ -34,46 +35,6 @@ vi.mock('../src/repositories/verification-evidence/UnitRegistryRepository', () =
 	}))
 }));
 
-const manifest: ComponentManifest = {
-	schemaVersion: 1,
-	id: 'command.units',
-	kind: 'command',
-	title: 'UnitsCommand',
-	responsibility: 'Owns the UnitsCommand command registration.',
-	responsibilityOrigin: 'derived',
-	status: 'active',
-	owns: {
-		source: ['src/cli/program/UnitsCommand.ts', 'src/cli/program/UnitsCommand.types.ts'],
-		symbols: ['registerUnitsCommand', 'Flags']
-	},
-	contract: {
-		origin: 'derived',
-		inputs: [{ name: 'registerUnitsCommand.program', type: 'Command' }],
-		outputs: [{ name: 'registerUnitsCommand', type: 'void' }],
-		errors: [{ name: 'ExpectedCliError', type: 'thrown' }]
-	},
-	dependencies: [
-		{ unit: 'function.errors', via: 'import', origin: 'derived' },
-		{ unit: 'workflow.inspect-units', via: 'import', origin: 'derived' },
-		{ unit: 'workflow.manage-units', via: 'import', origin: 'derived' }
-	],
-	runtime: {
-		kind: 'module',
-		entry: 'src/cli/program/UnitsCommand.ts',
-		targets: [{ kind: 'module', entry: 'src/cli/program/UnitsCommand.ts' }]
-	},
-	scenarios: [],
-	budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
-};
-
-const input = {
-	responsibility: 'Authors declared contracts for existing units.',
-	contract: {
-		inputs: [{ name: 'id', type: 'string', description: 'Stable unit identity.' }],
-		outputs: [{ name: 'manifest', type: 'ComponentManifest' }],
-		errors: [{ name: 'invalid', type: 'ExpectedCliError' }]
-	}
-};
 const inputPath = '/memory/contract.json';
 let persistedManifest = '';
 
@@ -120,7 +81,8 @@ test('registers the existing units commands and the public contract authoring op
 		'list',
 		'retire',
 		'schema',
-		'show'
+		'show',
+		'tests'
 	]);
 	const contract = units?.commands.find((command) => command.name() === 'contract');
 	expect(contract?.options.map((option) => option.long)).toContain('--input');
@@ -144,56 +106,17 @@ test('authors the declared contract while preserving the rest of the manifest', 
 	});
 	expect(persistedManifest).toBe(JSON.stringify(expected));
 	expect(mocks.writeFile).not.toHaveBeenCalled();
+	mocks.readFile.mockResolvedValue(JSON.stringify({ ...input, testing }));
+	await runContract(manifest.id);
+	const withTesting = { ...expected, testing };
+	expect(mocks.registryWrite).toHaveBeenLastCalledWith([withTesting]);
+	expect(JSON.parse(String(log.mock.calls.at(-1)?.[0]))).toEqual({
+		id: manifest.id,
+		manifest: withTesting
+	});
+	expect(persistedManifest).toBe(JSON.stringify(withTesting));
+	expect(mocks.writeFile).not.toHaveBeenCalled();
 });
-
-const invalidCases = [
-	{ name: 'malformed JSON', id: manifest.id, text: '{', manifests: [manifest] },
-	{
-		name: 'unknown top-level key',
-		id: manifest.id,
-		text: JSON.stringify({ ...input, unexpected: true }),
-		manifests: [manifest]
-	},
-	{
-		name: 'unknown contract key',
-		id: manifest.id,
-		text: JSON.stringify({ ...input, contract: { ...input.contract, unexpected: true } }),
-		manifests: [manifest]
-	},
-	{
-		name: 'unknown item key',
-		id: manifest.id,
-		text: JSON.stringify({
-			...input,
-			contract: {
-				...input.contract,
-				outputs: [{ name: 'manifest', type: 'ComponentManifest', extra: true }]
-			}
-		}),
-		manifests: [manifest]
-	},
-	{
-		name: 'missing typed field',
-		id: manifest.id,
-		text: JSON.stringify({
-			...input,
-			contract: { ...input.contract, outputs: [{ name: 'manifest' }] }
-		}),
-		manifests: [manifest]
-	},
-	{
-		name: 'unknown unit',
-		id: 'function.missing',
-		text: JSON.stringify(input),
-		manifests: [manifest]
-	},
-	{
-		name: 'retired unit',
-		id: manifest.id,
-		text: JSON.stringify(input),
-		manifests: [{ ...manifest, status: 'retired' }]
-	}
-];
 
 test.each(invalidCases)(
 	'$name fails without writing registry state',
