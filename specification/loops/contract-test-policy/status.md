@@ -1,6 +1,6 @@
 # Migration remains incomplete
 
-Status at 2026-10-26 19:10 UTC. Global `testing: 1` remains disabled. Existing
+Status at 2026-10-26 19:40 UTC. Global `testing: 1` remains disabled. Existing
 unmigrated entrypoints and substantive assertions remain. No production action or
 remote-main delivery is claimed.
 
@@ -126,8 +126,17 @@ repair and passes after preserving the bundle remote and restoring the verified
 canonical origin. No product or test source changed. Snapshot capture
 `a422c85db95d` passes independently because its temporary repository has a usable
 local identity; it is not a reproduction of the original checkout environment.
-The failed aggregate remains visible. A same-source continuation of Reports and
-the remaining workspace gates is running; it is not a single passing aggregate. All automated E2Es stay off the primary Mac.
+The failed aggregate remains visible. A same-source continuation passed Reports
+unit cases and the build, then found four Reports audit failures: two test-file
+line limits, audio-binding function complexity, and the merged entity-section
+line limit. Cleanup `bf160c8773` preserves all assertions and capture-property
+access order, extracts the binding predicate, and removes only redundant comments
+or blank lines. Both Reports typechecks, root compiler, both audits, registry and
+sixteen ownership/readability guards pass. Git capture `0c819b6c494f` passes the
+same 32 focused cases and retains fresh measured workloads for both changed
+units. Inventory remains 44 units/692 cases and 5,934 gaps. A new continuation
+runs Reports and remaining workspaces on harbor-mbp-2 with five admitted CPUs,
+a6-GiBguard and single-worker root units; this is not a single passing aggregate. All automated E2Es stay off the primary Mac.
 
 ## Execution identity
 
@@ -184,3 +193,5 @@ second persistent preview was started. Fresh current-main Tests, Examples,
 History and playable-audio browser proof remain pending, as do final builds,
 a complete same-source verification verdict, complete migration and final history catch-up.
 The report remains active and unpublished while required checks are open.
+
+The Jev startup advisory review was incomplete, and later edits have no new Jev approval. No clean-code verdict is claimed.
