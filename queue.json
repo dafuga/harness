@@ -7246,19 +7246,9 @@
 			},
 			"sourceCommit": "0ff03ffbcec57641920ec1a086d19ff58e818bbf",
 			"contractHash": "b301c76294cab07396cefcbc8108cd1bc4ece0ccdccabcddd0f0269200027912",
-			"status": "failed",
+			"status": "queued",
 			"reviews": [],
 			"createdAt": "2026-10-25T23:04:35.638Z",
-			"claim": {
-				"worker": "contract-first-authoring-luna",
-				"token": "3da34aa4-4fcc-465c-9d91-2a5603a8737f",
-				"startedAt": "2026-10-25T23:23:47.580Z",
-				"owner": {
-					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
-					"pid": 9383,
-					"startedAt": "Sun Oct 25 23:23:47 2026"
-				}
-			},
 			"claimHistory": [
 				{
 					"worker": "contract-first-authoring-luna",
@@ -7279,51 +7269,18 @@
 						"pid": 62312,
 						"startedAt": "Sun Oct 25 23:08:07 2026"
 					}
+				},
+				{
+					"worker": "contract-first-authoring-luna",
+					"token": "3da34aa4-4fcc-465c-9d91-2a5603a8737f",
+					"startedAt": "2026-10-25T23:23:47.580Z",
+					"owner": {
+						"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+						"pid": 9383,
+						"startedAt": "Sun Oct 25 23:23:47 2026"
+					}
 				}
 			],
-			"result": {
-				"provider": "codex",
-				"model": "gpt-6-luna",
-				"intelligence": "max",
-				"reportedModel": null,
-				"text": "",
-				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/3da34aa4-4fcc-465c-9d91-2a5603a8737f",
-				"changedFiles": [],
-				"error": "Codex task failed; inspect CLI authentication, permissions or model access.",
-				"fallback": false,
-				"finishedAt": "2026-10-25T23:41:29.334Z",
-				"attempt": "3da34aa4-4fcc-465c-9d91-2a5603a8737f",
-				"sourceCommit": "0ff03ffbcec57641920ec1a086d19ff58e818bbf",
-				"executions": [
-					{
-						"provider": "codex",
-						"model": "gpt-6-luna",
-						"intelligence": "max",
-						"reportedModel": null,
-						"usage": {
-							"inputTokens": null,
-							"outputTokens": null,
-							"cacheReadTokens": null,
-							"cacheWriteTokens": null,
-							"cacheWriteLongTokens": null,
-							"reportedCostUsd": null,
-							"reasoningTokens": null
-						},
-						"apiCost": {
-							"usd": null,
-							"minimumUsd": null,
-							"maximumUsd": null,
-							"basis": "unavailable",
-							"rateCard": "standard-global-2026-10-25",
-							"source": "https://developers.openai.com/api/docs/pricing",
-							"note": "CLI token usage is incomplete."
-						},
-						"status": "failed",
-						"startedAt": "2026-10-25T23:23:48.622Z",
-						"finishedAt": "2026-10-25T23:41:29.334Z"
-					}
-				]
-			},
 			"attempts": [
 				{
 					"provider": "codex",
@@ -7408,6 +7365,49 @@
 							"status": "failed",
 							"startedAt": "2026-10-25T23:08:09.511Z",
 							"finishedAt": "2026-10-25T23:08:58.077Z"
+						}
+					]
+				},
+				{
+					"provider": "codex",
+					"model": "gpt-6-luna",
+					"intelligence": "max",
+					"reportedModel": null,
+					"text": "",
+					"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/3da34aa4-4fcc-465c-9d91-2a5603a8737f",
+					"changedFiles": [],
+					"error": "Codex task failed; inspect CLI authentication, permissions or model access.",
+					"fallback": false,
+					"finishedAt": "2026-10-25T23:41:29.334Z",
+					"attempt": "3da34aa4-4fcc-465c-9d91-2a5603a8737f",
+					"sourceCommit": "0ff03ffbcec57641920ec1a086d19ff58e818bbf",
+					"executions": [
+						{
+							"provider": "codex",
+							"model": "gpt-6-luna",
+							"intelligence": "max",
+							"reportedModel": null,
+							"usage": {
+								"inputTokens": null,
+								"outputTokens": null,
+								"cacheReadTokens": null,
+								"cacheWriteTokens": null,
+								"cacheWriteLongTokens": null,
+								"reportedCostUsd": null,
+								"reasoningTokens": null
+							},
+							"apiCost": {
+								"usd": null,
+								"minimumUsd": null,
+								"maximumUsd": null,
+								"basis": "unavailable",
+								"rateCard": "standard-global-2026-10-25",
+								"source": "https://developers.openai.com/api/docs/pricing",
+								"note": "CLI token usage is incomplete."
+							},
+							"status": "failed",
+							"startedAt": "2026-10-25T23:23:48.622Z",
+							"finishedAt": "2026-10-25T23:41:29.334Z"
 						}
 					]
 				}
