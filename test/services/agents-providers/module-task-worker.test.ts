@@ -1,5 +1,11 @@
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
+import type { TaskRunInput } from './module-task-worker.test.types';
+import {
+	mockContexts,
+	reviewFixture,
+	seededWorkerFixture
+} from './module-task-worker.test.fixtures';
 import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
@@ -17,18 +23,23 @@ test('module filters and assignment claims select once, then preserve changes fo
 		});
 		const input = JSON.parse(await readFile(await f.input({ assignee: 'owner' }), 'utf8'));
 		await service.add(input);
-		const worker = new ModuleTaskWorkerService(f.root, {
-			run: async (input) => {
-				await writeFile(join(input.cwd, 'src/orders.ts'), 'export const orders=2;');
-				return {
-					provider: input.provider,
-					model: input.model,
-					intelligence: input.intelligence,
-					text: 'Implemented',
-					reportedModel: input.model
-				};
-			}
-		});
+		const contexts = mockContexts();
+		const worker = new ModuleTaskWorkerService(
+			f.root,
+			{
+				run: async (input) => {
+					await writeFile(join(input.cwd, 'src/orders.ts'), 'export const orders=2;');
+					return {
+						provider: input.provider,
+						model: input.model,
+						intelligence: input.intelligence,
+						text: 'Implemented',
+						reportedModel: input.model
+					};
+				}
+			},
+			contexts.contexts
+		);
 		expect((await worker.once('other')).status).toBe('idle');
 		expect((await worker.once('owner', ['service.other'])).status).toBe('idle');
 		const outcomes = await observedTaskOperation(
@@ -42,50 +53,42 @@ test('module filters and assignment claims select once, then preserve changes fo
 		await f.dispose();
 	}
 });
-async function reviewFixture() {
-	const f = await moduleTaskFixture();
-	const service = new ModuleTaskService(f.root);
-	await service.feature({
-		id: 'checkout',
-		goal: 'Reliable checkout',
-		tldr: 'Build validated orders.'
-	});
-	await service.add(
-		JSON.parse(await readFile(await f.input({ model: 'gpt-6-luna', intelligence: 'max' }), 'utf8'))
-	);
-	let count = 0;
-	const worker = new ModuleTaskWorkerService(f.root, {
-		run: async (input) => {
-			if (count++)
-				expect(await readFile(join(input.cwd, 'src/orders.ts'), 'utf8')).toContain('orders = 2');
-			await writeFile(
-				join(input.cwd, 'src/orders.ts'),
-				'export const orders = 2;\n' + (count > 1 ? '// Fixed review feedback\n' : '')
-			);
-			return {
-				provider: input.provider,
-				model: input.model,
-				intelligence: input.intelligence,
-				reportedModel: input.model,
-				text: 'Done',
-				usage: {
-					inputTokens: 100,
-					outputTokens: 20,
-					cacheReadTokens: 0,
-					cacheWriteTokens: 0,
-					cacheWriteLongTokens: 0,
-					reportedCostUsd: 0.002
-				}
-			};
-		}
-	});
-	return { f, service, worker };
-}
+test('worker passes the exact prepared scope through quota fallback', async () => {
+	const { f, service, worker, contexts, runInputs } = await reviewFixture();
+	try {
+		await worker.once('owner');
+		const task = (await service.show('orders-validation')).task;
+		const files = service.prepare(task, (await service.list()).commit!).files;
+		expect(files).toEqual(['src/orders.ts']);
+		expect(files).not.toContain('test/services/agents-providers/module-task-worker.test.ts');
+		expect([
+			files,
+			contexts.calls[0]?.task.sourceCommit === task.sourceCommit,
+			runInputs
+				.slice(0, 2)
+				.map(({ provider, model, intelligence, scope }) => [provider, model, intelligence, scope]),
+			contexts.state.cleanups
+		]).toEqual([
+			['src/orders.ts'],
+			true,
+			[
+				['claude', 'claude-haiku-5-5', 'medium', contexts.scopes[0]],
+				['codex', 'gpt-6-luna', 'max', contexts.scopes[0]]
+			],
+			1
+		]);
+	} finally {
+		await f.dispose();
+	}
+});
+
 test('incomplete review commits a repair base, requeues once, and keeps prior work and contract', async () => {
-	const { f, service, worker } = await reviewFixture();
+	const { f, service, worker, contexts, runInputs } = await reviewFixture();
 	try {
 		await worker.once('owner');
 		const first = (await service.show('orders-validation')).task;
+		const files = service.prepare(first, (await service.list()).commit!).files;
+		expect(contexts.calls[0]?.files).toEqual(files);
 		const review = {
 			attempt: first.claim!.token,
 			verdict: 'incomplete',
@@ -104,6 +107,12 @@ test('incomplete review commits a repair base, requeues once, and keeps prior wo
 			'orders = 2'
 		);
 		await worker.once('owner');
+		expect(contexts.calls[1]).toMatchObject({
+			task: { sourceCommit: queued.repairCommit },
+			files
+		});
+		expect(runInputs[2]?.scope).toBe(contexts.scopes[1]);
+		expect(contexts.state.cleanups).toBe(2);
 		const second = (await service.show(first.id)).task;
 		await service.review(first.id, {
 			attempt: second.claim!.token,
@@ -120,6 +129,88 @@ test('incomplete review commits a repair base, requeues once, and keeps prior wo
 			apiCost: { usd: 0.002, basis: 'cli-reported' }
 		});
 		expect(await f.git.run(['rev-parse', 'HEAD'])).toBe(f.source);
+	} finally {
+		await f.dispose();
+	}
+});
+
+test('context cleanup waits for runner rejection and cancellation settlement', async () => {
+	const outcomes: string[] = [];
+	for (const outcome of ['reject', 'cancel'] as const) {
+		const { f, contexts } = await seededWorkerFixture();
+		const controller = new AbortController();
+		let release = () => {};
+		let started = () => {};
+		const running = new Promise<void>((resolve) => (started = resolve));
+		try {
+			const worker = new ModuleTaskWorkerService(
+				f.root,
+				{
+					run: async () => {
+						if (outcome === 'reject') throw new Error('synthetic failure');
+						return new Promise<never>((_, reject) => {
+							started();
+							release = () => reject(Object.assign(new Error('cancelled'), { name: 'AbortError' }));
+						});
+					}
+				},
+				contexts.contexts
+			);
+			const pending = worker.once('owner', [], controller.signal);
+			if (outcome === 'cancel') {
+				await running;
+				controller.abort();
+				expect(contexts.state.cleanups).toBe(0);
+				release();
+			}
+			outcomes.push(`${outcome}:${(await pending).status}:${contexts.state.cleanups}`);
+		} finally {
+			await f.dispose();
+		}
+	}
+	expect(outcomes).toEqual(['reject:failed:1', 'cancel:failed:1']);
+});
+
+test('context rejection is safe and an aborted preclaim does not write the queue', async () => {
+	const { f, service, input } = await seededWorkerFixture();
+	const contexts = mockContexts(true);
+	let runs = 0;
+	try {
+		const worker = new ModuleTaskWorkerService(
+			f.root,
+			{
+				run: async () => {
+					runs++;
+					return {
+						provider: 'codex',
+						model: 'gpt-6-luna',
+						intelligence: 'max',
+						text: 'Done',
+						reportedModel: 'gpt-6-luna'
+					};
+				}
+			},
+			contexts.contexts
+		);
+		const commit = await f.git.run(['rev-parse', 'refs/harness/tasks']);
+		const aborted = new AbortController();
+		aborted.abort();
+		await worker.once('owner', [], aborted.signal).catch(() => undefined);
+		const preclaimUnchanged =
+			(await f.git.run(['rev-parse', 'refs/harness/tasks'])) === commit &&
+			(await service.show(input.id)).task.status === 'queued';
+		const result = await worker.once('owner');
+		const stored = (await service.show(input.id)).task;
+		expect([
+			preclaimUnchanged,
+			result.status,
+			stored.status,
+			runs,
+			contexts.calls.length,
+			contexts.state.cleanups
+		]).toEqual([true, 'failed', 'failed', 0, 1, 0]);
+		expect(String(JSON.stringify(result.result))).not.toContain('private sentinel');
+		expect(result.result?.usage).toBeUndefined();
 	} finally {
 		await f.dispose();
 	}
