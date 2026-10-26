@@ -42,11 +42,8 @@ export const manifest = (id: string, changes: Record<string, unknown> = {}) => (
 const makeService = (d: object) => new (ModuleTaskServerService as any)(root, d) as any;
 export const invoke = (
 	f: any,
-	worker: string,
-	modules: string[],
-	once: boolean,
-	signal: AbortSignal
-) => f.service.run(plan([task('task-one')]), worker, modules, once, signal);
+	execution: { worker: string; modules: string[]; once: boolean; signal: AbortSignal }
+) => f.service.run(plan([task('task-one')]), execution);
 
 export const makeFixture = (
 	options: { manifests?: unknown[]; errors?: string[]; metadataFailure?: Error } = {}

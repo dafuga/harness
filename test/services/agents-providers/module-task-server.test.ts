@@ -111,7 +111,12 @@ describe('ModuleTaskServerService.run', () => {
 				actual = outcome(status),
 				signal = new AbortController().signal;
 			f.collaborators.worker.once.mockResolvedValue(actual);
-			const result = await invoke(f, 'worker-one', ['service.alpha'], true, signal);
+			const result = await invoke(f, {
+				worker: 'worker-one',
+				modules: ['service.alpha'],
+				once: true,
+				signal
+			});
 			expect(result).toEqual({
 				submission: { created: ['task-one'], reused: [], commit: nextCommit },
 				results: [actual]
@@ -128,9 +133,9 @@ describe('ModuleTaskServerService.run', () => {
 	test('keeps idle distinct and rejects invalid or pre-aborted inputs before submission', async () => {
 		const idle = makeFixture(),
 			signal = new AbortController().signal;
-		await expect(invoke(idle, 'worker-one', [], true, signal)).resolves.toMatchObject({
-			results: [{ status: 'idle' }]
-		});
+		await expect(
+			invoke(idle, { worker: 'worker-one', modules: [], once: true, signal })
+		).resolves.toMatchObject({ results: [{ status: 'idle' }] });
 		const cases: Array<[string, string[], boolean]> = [
 			['Bad Worker', [], false],
 			['worker-one', ['bad module'], false],
@@ -141,7 +146,7 @@ describe('ModuleTaskServerService.run', () => {
 				controller = new AbortController();
 			if (aborted) controller.abort();
 			await expect(
-				invoke(f, worker, modules, true, aborted ? controller.signal : signal)
+				invoke(f, { worker, modules, once: true, signal: aborted ? controller.signal : signal })
 			).rejects.toThrow();
 			expect(f.collaborators.repository.update).not.toHaveBeenCalled();
 			expect(f.collaborators.worker.once).not.toHaveBeenCalled();
@@ -156,7 +161,12 @@ describe('ModuleTaskServerService.run', () => {
 			.mockResolvedValueOnce({ status: 'idle' })
 			.mockReturnValueOnce(active);
 		const controller = new AbortController(),
-			pending = invoke(f, 'worker-one', [], false, controller.signal);
+			pending = invoke(f, {
+				worker: 'worker-one',
+				modules: [],
+				once: false,
+				signal: controller.signal
+			});
 		let settled = false;
 		void pending.then(
 			() => (settled = true),
