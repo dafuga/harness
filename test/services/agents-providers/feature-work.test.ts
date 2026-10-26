@@ -90,10 +90,8 @@ const projected = (
 	belongsToPlan
 });
 
-async function verifySnapshots() {
-	const latest = plan(alpha, 3, ['ready', 'queued', 'running', 'review', 'failed']);
-	const betaPlan = plan(beta, 7, ['foreign']);
-	const data: ModuleTaskQueue = {
+function snapshotData(latest: FeaturePlan, betaPlan: FeaturePlan): ModuleTaskQueue {
+	return {
 		schemaVersion: 1,
 		features: [alpha, beta, legacy],
 		plans: [latest, plan(alpha, 1, ['old']), betaPlan, plan(alpha, 2, ['old'])],
@@ -108,6 +106,12 @@ async function verifySnapshots() {
 			task('legacy-task', 'queued', legacy)
 		]
 	};
+}
+
+async function verifySnapshots() {
+	const latest = plan(alpha, 3, ['ready', 'queued', 'running', 'review', 'failed']);
+	const betaPlan = plan(beta, 7, ['foreign']);
+	const data = snapshotData(latest, betaPlan);
 	const original = structuredClone(data);
 	const read = vi
 		.fn()
