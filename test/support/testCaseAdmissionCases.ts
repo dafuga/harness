@@ -31,6 +31,21 @@ export function observedDeclaredCases(
 	];
 }
 
+/** Static units use compiler, lint, build and audit checks instead of runtime cases. */
+export function assertStaticEntityCases(
+	validator: TestCaseValidator,
+	unit: ComponentManifest,
+	helper: ComponentManifest,
+	item: ContractCase
+) {
+	const method = { version: 1, shape: 'service', states: ['rest'], cases: [item] };
+	const example = authoredMatrix({ ...item, subject: 'rank' });
+	for (const kind of ['config', 'style', 'type', 'types']) {
+		expect(validator.validate({ ...unit, kind }, method).valid, `${kind} method`).toBe(false);
+		expect(validator.validate({ ...helper, kind }, example).valid, `${kind} example`).toBe(false);
+	}
+}
+
 /** Observe all authored-data contradictions before the owning case asserts admission. */
 export function observedAuthoredCases(
 	validator: TestCaseValidator,

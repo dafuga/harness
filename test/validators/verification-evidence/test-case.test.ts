@@ -7,7 +7,8 @@ import { measureWorkload } from '../../support/measureWorkload';
 import {
 	observedDeclaredCases,
 	observedAuthoredCases,
-	assertExampleAdmissionInputs
+	assertExampleAdmissionInputs,
+	assertStaticEntityCases
 } from '../../support/testCaseAdmissionCases';
 
 const validator = new TestCaseValidator();
@@ -35,6 +36,7 @@ test('validate each allowed shape and its missing or invalid states', async () =
 	assertHelperEntityKinds(helper);
 	const declared = observedDeclaredCases(validator, unit, helper, item);
 	assertExampleAdmissionInputs(validator, helper, item);
+	assertStaticEntityCases(validator, unit, helper, item);
 	expect(
 		[...authored, ...declared],
 		'helper case expectations must match their authored Example; method/state matrices must be finite'
@@ -76,7 +78,6 @@ function assertVisualEntityKinds(unit: ComponentManifest, item: ContractCase) {
 	for (const kind of ['page', 'view', 'layout', 'component', 'shell', 'partial', 'endpoint', 'api'])
 		expect(validator.validate({ ...unit, kind }, contract).valid, kind).toBe(false);
 }
-
 async function indexedOwners() {
 	const indexed = await indexFiles({
 		'src/utils/rank.ts': 'export function rank(value: number): number { return value; }',
@@ -111,7 +112,6 @@ function assertHelperEntityKinds(helper: ComponentManifest) {
 	for (const kind of ['page', 'view', 'layout', 'component', 'shell', 'partial', 'endpoint', 'api'])
 		expect(validator.validate({ ...helper, kind }, contract).valid, kind).toBe(false);
 }
-
 function assertMethodStateCases(unit: ComponentManifest, item: ContractCase) {
 	const owner = { ...unit, owns: { ...unit.owns, symbols: ['Runner.run', 'Runner.close'] } };
 	const cases = ['Runner.run', 'Runner.close'].flatMap((subject) =>
