@@ -144,7 +144,7 @@ function appPackage(name: string): Record<string, unknown> {
 			dev: 'vite dev --host --port 3322',
 			build: 'vite build',
 			check:
-				'bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build',
+				'bun run format:check && bun run typecheck && bun run lint && bun run test && bun run test:e2e && bun run build && bun run audit',
 			typecheck: 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json',
 			'format:check': 'prettier --check .',
 			format: 'prettier --write .',
