@@ -1,0 +1,37 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o1Ular
+
+stdout | test/repositories/explanation-notes-order.test.ts > restoration keeps a large note history bounded and still refuses missing evidence
+Note history RSS: restore 431505408; raw 320716800
+
+ ❯ test/repositories/explanation-notes-order.test.ts (6 tests | 1 failed) 5637ms
+   ✓ notes alone hold the latest recorded reason for an exact change, wherever each is noted  506ms
+   ✓ a step of a chain noted again is held by its latest reason, wherever each is noted  830ms
+   ✓ a later long reason in the notes still fails, however the notes list it  898ms
+   ✓ a date that cannot be read is never later than one that can; equal ones agree everywhere  707ms
+   ✓ restoration keeps a large note history bounded and still refuses missing evidence  2111ms
+   × a large note retains every valid verification entry in order 449ms
+     → Maximum call stack size exceeded
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/repositories/explanation-notes-order.test.ts > a large note retains every valid verification entry in order
+RangeError: Maximum call stack size exceeded
+ ❯ HistoryNoteRepository.verifications src/repositories/git-source-history/history-note-repository/HistoryNoteRepository.ts:112:12
+    111|    }
+    112|   }
+    113|   return result;
+       |        ^
+    114|  }
+    115| 
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ test/repositories/explanation-notes-order.test.ts:189:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  22:55:34
+   Duration  8.23s (transform 130ms, setup 84ms, collect 113ms, tests 5.64s, environment 0ms, prepare 23ms)
+
