@@ -23,7 +23,30 @@ function renderArray(items: unknown[], position: Position): string {
 		const reserved = index < items.length - 1 ? 1 : 0;
 		return `${tabs(inner)}${render(item, { indent: inner, reserved })}`;
 	});
-	return `[\n${lines.join(',\n')}\n${tabs(position.indent)}]`;
+	return compactArray(`[\n${lines.join(',\n')}\n${tabs(position.indent)}]`, position);
+}
+
+/** Format the rendered snapshot without observing the original values again. */
+function compactArray(rendered: string, position: Position): string {
+	try {
+		const inline = inlineContainers(JSON.parse(rendered));
+		return inline !== undefined &&
+			position.indent * tabWidth + position.reserved + inline.length <= printWidth
+			? inline
+			: rendered;
+	} catch {
+		return rendered;
+	}
+}
+
+function inlineContainers(value: unknown): string | undefined {
+	if (Array.isArray(value)) {
+		const items = value.map(inlineContainers);
+		return items.every((item) => item !== undefined) ? `[${items.join(', ')}]` : undefined;
+	}
+	if (value !== null && typeof value === 'object')
+		return Object.keys(value).length === 0 ? '{}' : undefined;
+	return JSON.stringify(value);
 }
 
 function renderObject(value: object, indent: number): string {
