@@ -2,23 +2,25 @@
 	"name": "contract-game-generated-types",
 	"goal": "Compile generated 2d and 3d game projects through source and bundled CLI entrypoints using their unchanged standard cases",
 	"createdAt": "2026-10-26T11:25:17.263Z",
-	"updatedAt": "2026-10-26T11:25:17.263Z",
+	"updatedAt": "2026-10-26T11:35:55.969Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T11:35:55.445Z",
+			"evidence": "The existing four dimension/entry cases fail normal game checks because generated inventory routes cannot resolve $app/state. Failed diagnostic capture a815fa4a120a retains full compiler output; actual game rendering still passes before compilation."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T11:35:55.969Z",
+			"evidence": "The existing app CLI case also generates an API whose SvelteKit import masks missing ambient declarations. Preserve the four game combinations; strengthen the existing app-plan case with a framework type-reference assertion and retain normal compiler execution."
 		},
 		{
 			"id": "red",

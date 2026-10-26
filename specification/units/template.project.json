@@ -34,7 +34,7 @@
 			{
 				"name": "projectFiles",
 				"type": "PlannedFile[]",
-				"description": "Relative paths and file contents for the selected project, including companion types and the normal check pipeline. Static formatting, compiler, lint and audit checks precede browser screenshot baseline admission."
+				"description": "Relative paths and contents for the selected project, including framework ambient type references and companion types. Static formatting, compiler, lint and audit checks precede browser screenshot admission; unreviewed baselines fail explicitly."
 			}
 		],
 		"errors": []

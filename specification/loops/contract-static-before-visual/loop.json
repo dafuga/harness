@@ -2,11 +2,9 @@
 	"name": "contract-static-before-visual",
 	"goal": "Keep generated app static audit failures visible before mandatory screenshot baseline admission",
 	"createdAt": "2026-10-26T11:07:17.667Z",
-	"updatedAt": "2026-10-26T11:29:00.106Z",
+	"updatedAt": "2026-10-26T11:35:58.912Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -55,7 +53,9 @@
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T11:35:58.912Z",
+			"evidence": "Isolated source c050739be13e restores only the old script order while retaining repaired guidance. Capture 72a4031a8b9e fails two existing cases, five pass. Repaired bebb9c6d2b passes the identical seven-case command in paired green dd6161784252."
 		},
 		{
 			"id": "verify",

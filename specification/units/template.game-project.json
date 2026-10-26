@@ -3,29 +3,32 @@
 	"id": "template.game-project",
 	"kind": "template",
 	"title": "gameProject",
-	"responsibility": "Owns the gameProject scaffold template.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Extend an app plan with the runtime, document and authoring files for a 2d or 3d game.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/templates/game-authoring/gameProject.ts"],
 		"symbols": ["gameFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "gameFiles.input",
-				"type": "ProjectTemplateInput"
+				"type": "ProjectTemplateInput",
+				"description": "Project input with optional game dimension; defaults to 2d and supports 3d."
 			},
 			{
 				"name": "gameFiles.app",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Valid app file plan containing package, formatter and Vite configuration. Those entries are updated in place before game files are appended."
 			}
 		],
 		"outputs": [
 			{
 				"name": "gameFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "App and game file plan with bundled engine source, game.json, a playable route and authoring guidance. Normal checks preserve static qualification and refuse unreviewed screenshot baselines."
 			}
 		],
 		"errors": []
