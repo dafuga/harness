@@ -1,8 +1,9 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { commandOutput, runCommand, runHarness } from './support/cli';
+import { freePort } from './support/workers';
 
 test('generated app audit rejects TypeScript, Svelte, and SQL rule violations', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-app-adapters-'));
@@ -10,6 +11,13 @@ test('generated app audit rejects TypeScript, Svelte, and SQL rule violations', 
 		await runHarness(['new', 'app', 'adapter-app'], root);
 		const project = join(root, 'adapter-app');
 		await writeAppViolations(project);
+		const config = join(project, 'playwright.config.ts');
+		await writeFile(
+			config,
+			(await readFile(config, 'utf8'))
+				.replaceAll('3322', String(await freePort()))
+				.replace('reuseExistingServer: true', 'reuseExistingServer: false')
+		);
 		await runCommand(['bun', 'install'], project);
 
 		const auditFailure = await runCommand(['bun', 'run', 'audit'], project, false);
@@ -23,7 +31,10 @@ test('generated app audit rejects TypeScript, Svelte, and SQL rule violations', 
 		await runCommand(['bun', 'run', 'format'], project);
 		const checkFailure = await runCommand(['bun', 'run', 'check'], project, false);
 		expect(checkFailure.exitCode).toBe(1);
-		expect(commandOutput(checkFailure)).toContain('svelte-script-lang');
+		const output = commandOutput(checkFailure);
+		expectRules(output, ['svelte-script-lang', 'svelte-component-name', 'sql-dangerous-migration']);
+		expect(output).not.toContain("A snapshot doesn't exist");
+		expect(output).not.toMatch(/Running \d+ tests using \d+ workers?/);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
