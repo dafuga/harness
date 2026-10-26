@@ -1,4 +1,5 @@
 import { afterEach, expect, test } from 'vitest';
+import './support/cli-measurement/workloadAssertions';
 import { execFile } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
