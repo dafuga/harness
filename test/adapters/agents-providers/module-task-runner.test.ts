@@ -2,6 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { observedTaskOperation } from '../../support/taskProfiles';
+import { assertTaskModelIdentity } from '../../support/taskModelIdentity';
 test('Claude and Codex launch exact models and intelligence without shell interpolation', () => {
 	const runner = new ModuleTaskRunnerAdapter();
 	expect(
@@ -88,6 +89,7 @@ test('a completed CLI run that reports another model is rejected', async () => {
 			signal: new AbortController().signal
 		})
 	).rejects.toThrow('different model');
+	await assertTaskModelIdentity();
 });
 test.each(['claude', 'codex'] as const)(
 	'public %s usage is retained without guessing absent counters',
