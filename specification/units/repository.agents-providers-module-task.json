@@ -3,7 +3,7 @@
 	"id": "repository.agents-providers-module-task",
 	"kind": "repository",
 	"title": "ModuleTaskRepository",
-	"responsibility": "Commit module task definitions and claims atomically in a dedicated Git ref while preserving source HEAD and the working index.",
+	"responsibility": "Persist feature context, isolated module tasks and versioned approval-bound plans in an atomic source-bound Git queue.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -86,6 +86,16 @@
 				"name": "taskOwner.git",
 				"type": "GitAdapter",
 				"description": "Git boundary used to locate the common Git directory for this clone."
+			},
+			{
+				"name": "ModuleTaskInput.dependsOn",
+				"type": "string[] | undefined",
+				"description": "Optional unique task IDs that must be accepted before the task is eligible."
+			},
+			{
+				"name": "ModuleTaskQueue.plans",
+				"type": "FeaturePlan[] | undefined",
+				"description": "Optional revisioned feature plans; legacy queues omit this property."
 			}
 		],
 		"outputs": [
@@ -142,7 +152,7 @@
 			{
 				"name": "queueSchema",
 				"type": "Zod schema producing ModuleTaskQueue",
-				"description": "Strict object {schemaVersion: 1, features: TaskFeature[], tasks: ModuleTask[]}; features are capped at 1000 and tasks at 10000. It validates shape and bounds, not unique IDs or cross-record feature relationships."
+				"description": "Strict version-1 queue retains features and tasks and accepts optional feature plans; legacy records remain readable."
 			},
 			{
 				"name": "TaskUsage",
@@ -171,7 +181,7 @@
 			},
 			{
 				"name": "ModuleTaskQueue",
-				"type": "{schemaVersion: 1; features: TaskFeature[]; tasks: ModuleTask[]}",
+				"type": "{schemaVersion:1; features:TaskFeature[]; tasks:ModuleTask[]; plans?:FeaturePlan[]}",
 				"description": "Parsed queue record; schema limits features to 1000 and tasks to 10000."
 			},
 			{
@@ -208,6 +218,11 @@
 				"name": "ModuleTask.result",
 				"type": "NonNullable<ModuleTask['result']>",
 				"description": "Strict stored result, not an exported StoredTaskResult alias. Fields: {\"provider\":{\"type\":\"'claude' | 'codex'\",\"required\":true,\"validator\":\"z.enum(['claude', 'codex'])\"},\"model\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.string().trim().min(1).max(16000)\"},\"intelligence\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.string().trim().min(1).max(16000)\"},\"reportedModel\":{\"type\":\"string | null\",\"required\":true,\"validator\":\"z.string().nullable()\",\"emptyStringAllowed\":true},\"text\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.string()\",\"emptyStringAllowed\":true},\"worktree\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.string()\",\"trimmed\":false,\"minimumLength\":null,\"maximumLength\":null,\"emptyStringAllowed\":true,\"nullAllowed\":false},\"changedFiles\":{\"type\":\"string[]\",\"required\":true,\"validator\":\"z.array(path)\"},\"error\":{\"type\":\"string\",\"required\":false,\"validator\":\"z.string()\",\"emptyStringAllowed\":true},\"fallback\":{\"type\":\"boolean\",\"required\":true,\"validator\":\"z.boolean()\"},\"finishedAt\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.iso.datetime()\"},\"attempt\":{\"type\":\"string\",\"required\":false,\"validator\":\"z.uuid()\"},\"sourceCommit\":{\"type\":\"string\",\"required\":false,\"validator\":\"commit\"},\"checkpointCommit\":{\"type\":\"string\",\"required\":false,\"validator\":\"commit\"},\"usage\":{\"type\":\"TaskUsage\",\"required\":false,\"validator\":\"taskUsageSchema\"},\"executions\":{\"type\":\"TaskExecution[]\",\"requiredOnParsedOutput\":true,\"validator\":\"z.array(taskExecutionSchema).default([])\",\"inputOptional\":true,\"default\":[]}} worktree is required plain string, so empty string denotes workspace unavailable for prelaunch failure. Use nonempty safe error to finalize failed; omit usage when no provider ran. executions defaults to []; model/intelligence trimmed nonempty max16000; source/checkpoint commits 40 lowercase hex. Public value validators are nested in storedTaskSchema/queueSchema from src/repositories/agents-providers/module-task-repository/taskSchemas.ts."
+			},
+			{
+				"name": "planSchema",
+				"type": "Zod schema producing FeaturePlan",
+				"description": "Strict plan, page option, module change, task, hash and optional approval schemas. Semantic graph and approval checks belong to the plan service."
 			}
 		],
 		"errors": [

@@ -36,6 +36,13 @@ export const taskInputSchema = z.strictObject({
 	title: text,
 	feature: id,
 	module: id,
+	dependsOn: z
+		.array(id)
+		.max(10000)
+		.refine((dependencies) => new Set(dependencies).size === dependencies.length, {
+			message: 'must not contain duplicate task dependencies'
+		})
+		.optional(),
 	moduleGoal: text.optional(),
 	verificationFiles: z
 		.array(
@@ -99,8 +106,47 @@ export const storedTaskSchema = taskInputSchema.omit({ module: true, feature: tr
 	result: result.optional(),
 	attempts: z.array(result).default([])
 });
+const planCommit = z.string().regex(/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/);
+const digest = z.string().regex(/^[a-f0-9]{64}$/);
+export const planOptionSchema = z.strictObject({
+	id,
+	commit: planCommit,
+	path: assignedFile,
+	sha256: digest,
+	preferred: z.boolean()
+});
+export const planPageSchema = z.strictObject({
+	module: id,
+	options: z.array(planOptionSchema).min(1).max(10),
+	selected: id.optional()
+});
+export const planChangeSchema = z.strictObject({
+	unit: id,
+	parent: id.optional(),
+	kind: z.enum(['add', 'modify', 'remove', 'reuse']),
+	wantedContract: wantedContractSchema.optional(),
+	assignedFiles: z.array(assignedFile).max(64)
+});
+export const planApprovalSchema = z.strictObject({
+	digest,
+	reviewer: text,
+	approvedAt: z.iso.datetime()
+});
+export const planSchema = z.strictObject({
+	feature: id,
+	sourceCommit: planCommit,
+	revision: z.number().int().positive(),
+	goal: text,
+	tldr: text,
+	pages: z.array(planPageSchema).max(10000),
+	changes: z.array(planChangeSchema).max(10000),
+	tasks: z.array(taskInputSchema).max(10000),
+	digest,
+	approval: planApprovalSchema.optional()
+});
 export const queueSchema = z.strictObject({
 	schemaVersion: z.literal(1),
 	features: z.array(featureSchema).max(1000),
-	tasks: z.array(storedTaskSchema).max(10000)
+	tasks: z.array(storedTaskSchema).max(10000),
+	plans: z.array(planSchema).max(10000).optional()
 });

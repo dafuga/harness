@@ -9,10 +9,20 @@ export type TaskExecution = z.infer<typeof taskExecutionSchema>;
 export type TaskApiCost = z.infer<typeof taskCostSchema>;
 import type {
 	featureSchema,
+	planSchema,
+	planOptionSchema,
+	planPageSchema,
+	planChangeSchema,
+	planApprovalSchema,
 	taskInputSchema,
 	queueSchema
 } from './module-task-repository/taskSchemas';
 export type TaskFeature = z.infer<typeof featureSchema>;
+export type FeaturePlan = z.infer<typeof planSchema>;
+export type FeaturePlanOption = z.infer<typeof planOptionSchema>;
+export type FeaturePlanPage = z.infer<typeof planPageSchema>;
+export type FeaturePlanChange = z.infer<typeof planChangeSchema>;
+export type FeaturePlanApproval = z.infer<typeof planApprovalSchema>;
 export type ModuleTaskInput = z.infer<typeof taskInputSchema>;
 export type ModuleTaskQueue = z.infer<typeof queueSchema>;
 export type ModuleTask = ModuleTaskQueue['tasks'][number];
