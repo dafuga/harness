@@ -14,7 +14,7 @@ import { UnitRegistryRepository } from '../../repositories/UnitRegistryRepositor
 import { requireModuleData } from '../git-source-history/module-data-service/moduleDataAdmission';
 import { ModuleTaskService } from './ModuleTaskService';
 import { ModuleTaskWorkerService } from './ModuleTaskWorkerService';
-import { queuedTask } from './module-task-service/queuedTask';
+import { queuedTask, taskGrantFiles, validateTaskGrant } from './module-task-service/queuedTask';
 
 const isRecord = (value: unknown): value is Record<string, any> =>
 	value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -61,22 +61,10 @@ const validateModule = (manifest: any, task: ModuleTaskInput): string[] => {
 
 const sameFeature = (left: TaskFeature, right: TaskFeature) =>
 	JSON.stringify(left) === JSON.stringify(right);
-const taskDefinitionKeys: Array<keyof ModuleTask> = [
-	'id',
-	'title',
-	'feature',
-	'module',
-	'moduleGoal',
-	'verificationFiles',
-	'instructions',
-	'wantedContract',
-	'model',
-	'provider',
-	'intelligence',
-	'assignee',
-	'sourceCommit',
-	'contractHash'
-];
+const taskDefinitionKeys = (
+	'id title feature module moduleGoal verificationFiles assignedFiles role instructions ' +
+	'wantedContract model provider intelligence assignee sourceCommit contractHash'
+).split(' ') as Array<keyof ModuleTask>;
 const sameTask = (left: ModuleTask, right: ModuleTask) =>
 	taskDefinitionKeys.every((key) => JSON.stringify(left[key]) === JSON.stringify(right[key]));
 
@@ -135,6 +123,8 @@ export class ModuleTaskServerService {
 	private readonly registry: Pick<UnitRegistryRepository, 'read'>;
 	private readonly requireMetadata: typeof requireModuleData;
 	private readonly worker: Pick<ModuleTaskWorkerService, 'once'>;
+	private readonly grantFiles: typeof taskGrantFiles;
+	private readonly validateGrant: typeof validateTaskGrant;
 
 	constructor(
 		root: string,
@@ -144,6 +134,8 @@ export class ModuleTaskServerService {
 			registry: Pick<UnitRegistryRepository, 'read'>;
 			requireMetadata: typeof requireModuleData;
 			worker: Pick<ModuleTaskWorkerService, 'once'>;
+			grantFiles: typeof taskGrantFiles;
+			validateGrant: typeof validateTaskGrant;
 		}> = {}
 	) {
 		this.root = root;
@@ -152,6 +144,8 @@ export class ModuleTaskServerService {
 		this.registry = dependencies.registry ?? new UnitRegistryRepository(root);
 		this.requireMetadata = dependencies.requireMetadata ?? requireModuleData;
 		this.worker = dependencies.worker ?? new ModuleTaskWorkerService(root);
+		this.grantFiles = dependencies.grantFiles ?? taskGrantFiles;
+		this.validateGrant = dependencies.validateGrant ?? validateTaskGrant;
 	}
 
 	async submit(
@@ -163,17 +157,21 @@ export class ModuleTaskServerService {
 		if (registry.errors.length)
 			throw new Error('Selected unit registry contains invalid manifests');
 		const units = new Map<string, any>();
+		const admissions: Array<{ task: ModuleTaskInput; unit: any; files: string[] }> = [];
 		for (const task of tasks) {
 			const manifest = registry.manifests.find((item: any) => item.id === task.module);
 			if (!manifest) throw new Error(`Module ${task.module} is not registered`);
 			validateModule(manifest, task);
 			units.set(task.module, manifest);
+			const files = await this.grantFiles(task, manifest, tree);
+			await this.validateGrant(this.root, files);
+			admissions.push({ task, unit: manifest, files });
 		}
 		for (const module of units.keys()) await this.requireMetadata(this.root, tree.revision, module);
 		const queue = await this.repository.read();
 		const service = new ModuleTaskService(this.root);
-		const records = tasks.map((task) =>
-			queuedTask(task, feature, units.get(task.module), tree.revision)
+		const records = admissions.map(({ task, unit, files }) =>
+			queuedTask(task, feature, unit, tree.revision, files)
 		);
 		for (const record of records) service.prepare(record, queue.commit ?? tree.revision);
 		const result = await this.repository.update(
