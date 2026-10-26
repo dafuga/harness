@@ -16,7 +16,7 @@ function candidate(base: Parameters<typeof claimedTask>[0]['tasks'][number], id:
 }
 
 function queueOf(tasks: Parameters<typeof claimedTask>[0]['tasks']) {
-	return { version: 1 as const, features: [tasks[0].feature], tasks };
+	return { schemaVersion: 1 as const, features: [tasks[0].feature], tasks };
 }
 
 function assertDependencies(base: Parameters<typeof claimedTask>[0]['tasks'][number]) {

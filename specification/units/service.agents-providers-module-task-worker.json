@@ -131,7 +131,7 @@
 			{
 				"name": "claimedTask",
 				"type": "ModuleTask | null",
-				"description": "Mutates the supplied queue clone. Computes busy module ids from all running tasks, then chooses the first queued task whose assignee is absent or equals worker, whose module is allowed or modules is empty, and whose module id is not busy. Returns null without mutation when none matches. Otherwise sets status running and claim {worker, token: random UUID, startedAt: ISO timestamp, owner}. It does not itself persist or validate worker/module identifiers; ModuleTaskWorkerService.once validates worker before calling it. When the optional preparation callback is supplied, invokes it before changing status to running. Worker always supplies that preflight callback."
+				"description": "Selects the first queued task eligible for the worker and module, with every named dependency present and accepted, no running task in the same module, and no overlapping exact frozen file grant with another running task. Blocked candidates remain queued while later independent candidates can run. Invokes optional preparation before changing status; on success records the running claim with worker, random token, time and owner."
 			},
 			{
 				"name": "finishTask",

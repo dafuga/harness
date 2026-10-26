@@ -27,13 +27,18 @@ export function claimedTask(
 	owner: NonNullable<ModuleTask['claim']>['owner'],
 	prepare: (task: ModuleTask) => void = () => {}
 ) {
-	const busy = new Set(queue.tasks.filter((t) => t.status === 'running').map((t) => t.module.id));
+	const running = queue.tasks.filter((t) => t.status === 'running');
+	const busy = new Set(running.map((t) => t.module.id));
+	const busyFiles = new Set(running.flatMap((t) => t.module.files));
+	const accepted = new Set(queue.tasks.filter((t) => t.status === 'accepted').map((t) => t.id));
 	const task = queue.tasks.find(
 		(t) =>
 			t.status === 'queued' &&
 			(!t.assignee || t.assignee === worker) &&
 			(!modules.length || modules.includes(t.module.id)) &&
-			!busy.has(t.module.id)
+			!busy.has(t.module.id) &&
+			(t.dependsOn ?? []).every((dependency) => accepted.has(dependency)) &&
+			!t.module.files.some((file) => busyFiles.has(file))
 	);
 	if (!task) return null;
 	prepare(task);

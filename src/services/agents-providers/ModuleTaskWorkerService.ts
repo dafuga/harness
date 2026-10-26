@@ -15,8 +15,7 @@ import type {
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import { ModuleTaskRepository } from '../../repositories/agents-providers/ModuleTaskRepository';
 import { ModuleTaskService } from './ModuleTaskService';
-import { claimedTask, finishTask } from './module-task-worker-service/taskClaim';
-
+import { claimedTask, finishTask, pendingTaskResult } from './module-task-worker-service/taskClaim';
 async function runTaskAttempts(
 	runner: TaskRunner,
 	task: ModuleTask,
@@ -44,7 +43,6 @@ async function runTaskAttempts(
 		};
 	}
 }
-
 async function executeScopedTask(
 	runner: TaskRunner,
 	task: ModuleTask,
@@ -76,7 +74,6 @@ async function executeScopedTask(
 		return current;
 	}
 }
-
 async function cleanupTaskContext(
 	context: Awaited<ReturnType<ModuleTaskContractContextService['create']>>,
 	result: Awaited<ReturnType<typeof taskWorkspace>>
@@ -90,7 +87,6 @@ async function cleanupTaskContext(
 	}
 	return result;
 }
-
 async function snapshotPreparedTask(
 	root: string,
 	task: ModuleTask,
@@ -109,7 +105,6 @@ async function snapshotPreparedTask(
 	}
 	return result;
 }
-
 async function runWithContractContext(
 	root: string,
 	runner: TaskRunner,
@@ -134,7 +129,6 @@ async function runWithContractContext(
 	const cleaned = await cleanupTaskContext(context, execution);
 	return snapshotPreparedTask(root, task, prepared, cleaned);
 }
-
 function workerResult(task: ModuleTask, result: Awaited<ReturnType<typeof taskWorkspace>>) {
 	return {
 		status: result.error ? ('failed' as const) : ('review' as const),
@@ -188,8 +182,13 @@ export class ModuleTaskWorkerService {
 			...preflight,
 			prompt: moduleTaskPrompt(task, commit, preflight.files, preflight.role)
 		};
-		let result = await taskWorkspace(this.root, task, prepared.selection);
+		let result: Awaited<ReturnType<typeof taskWorkspace>> = {
+			...pendingTaskResult(prepared.selection, ''),
+			attempt: task.claim!.token,
+			sourceCommit: task.repairCommit ?? task.sourceCommit
+		};
 		try {
+			result = await taskWorkspace(this.root, task, prepared.selection);
 			const addWorktree = ['worktree', 'add', '--detach', result.worktree, result.sourceCommit];
 			await new GitAdapter(this.root).run(addWorktree);
 			result = await runWithContractContext(
@@ -202,7 +201,11 @@ export class ModuleTaskWorkerService {
 				signal
 			);
 		} catch (error) {
-			result.error = error instanceof Error ? error.message : 'Task worker failed.';
+			result.error = !result.worktree
+				? 'Task workspace preparation failed.'
+				: error instanceof Error && error.message
+					? error.message
+					: 'Task worker failed.';
 		}
 		result.finishedAt = new Date().toISOString();
 		await this.repository.update(
