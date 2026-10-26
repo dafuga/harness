@@ -1,0 +1,55 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Rd29Qf
+
+ ❯ test/audit.test.ts (9 tests | 1 failed) 70ms
+   ✓ audit reports oversized files 15ms
+   ✓ audit reports oversized functions and ignores build folders 3ms
+   ✓ audit ignores symlinks without following missing build outputs 1ms
+   ✓ audit reports class, method, complexity, nesting, parameter, count, and naming rules 5ms
+   ✓ audit reports architecture rule violations 2ms
+   × audit reports Harness scaffold file and function naming violations 27ms
+     → expected [ { …(3) }, { …(3) } ] to deeply equal []
+   ✓ audit rejects files and folders outside the Harness structure 3ms
+   ✓ audit honors local ignored finding baselines 2ms
+   ✓ every SvelteKit route segment form is a valid folder name, and nothing else in brackets is 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/audit.test.ts > audit reports Harness scaffold file and function naming violations
+AssertionError: expected [ { …(3) }, { …(3) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "message": "Place this implementation in a declared responsibility category folder; use harness generate --group <category>.",
++     "path": "src/configs/testing/audioPlaywrightConfig.ts",
++     "rule": "module-category-folder",
++   },
++   {
++     "message": "Place this implementation in a declared responsibility category folder; use harness generate --group <category>.",
++     "path": "src/configs/testing/browserPlaywrightConfig.ts",
++     "rule": "module-category-folder",
++   },
++ ]
+
+ ❯ assertTestingFoundations test/support/moduleAuditAdmission.ts:80:19
+     78|   (finding) => emitted.includes(finding.path) && finding.rule === 'mod…
+     79|  );
+     80|  expect(findings).toEqual([]);
+       |                   ^
+     81| }
+     82| 
+ ❯ assertModuleAuditAdmission test/support/moduleAuditAdmission.ts:57:2
+ ❯ test/audit.test.ts:128:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  00:45:53
+   Duration  2.98s (transform 212ms, setup 91ms, collect 434ms, tests 70ms, environment 0ms, prepare 26ms)
+
