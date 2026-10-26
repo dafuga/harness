@@ -39,6 +39,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "repository.history-note",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.verification-store",
 			"via": "import",
 			"origin": "derived"

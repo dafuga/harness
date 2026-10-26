@@ -2,6 +2,7 @@ import type { Restored } from './EvidenceRestoreService.types';
 import { randomUUID } from 'node:crypto';
 import { mkdir, rename, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
+import { HistoryNoteRepository } from '../../repositories/git-source-history/history-note-repository/HistoryNoteRepository';
 import { VerificationStoreRepository } from '../../repositories/verification-evidence/VerificationStoreRepository';
 import { HistoryStatusService } from './history-status-service/HistoryStatusService';
 
@@ -13,17 +14,20 @@ import { HistoryStatusService } from './history-status-service/HistoryStatusServ
 export class EvidenceRestoreService {
 	private readonly store: VerificationStoreRepository;
 	private readonly history: HistoryStatusService;
+	private readonly notes: HistoryNoteRepository;
 
 	constructor(root: string) {
 		this.store = new VerificationStoreRepository(root);
 		this.history = new HistoryStatusService(root);
+		this.notes = new HistoryNoteRepository(root);
 	}
 
 	async restore(): Promise<Restored> {
-		const lines = await this.history.verifications();
+		const lines = await this.notes.verifications();
 		const result: Restored = { restored: [], skipped: [] };
 		if (lines.length === 0) return result;
-		const local = new Set(this.store.all().map((stored) => stored.record.id));
+		const local = new Set<string>();
+		for (const stored of this.store.records()) local.add(stored.record.id);
 		for (const line of lines.filter((item) => !local.has(item.record))) {
 			local.add(line.record);
 			const loaded = await this.history.attached.load(line.evidence);

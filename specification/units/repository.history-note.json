@@ -19,6 +19,7 @@
 			"HistoryNoteRepository.append",
 			"HistoryNoteRepository.merge",
 			"HistoryNoteRepository.all",
+			"HistoryNoteRepository.verifications",
 			"HistoryNoteRepository"
 		]
 	},
@@ -74,6 +75,10 @@
 			{
 				"name": "HistoryNoteRepository.all",
 				"type": "Promise<Map<string, ReadNote>>"
+			},
+			{
+				"name": "HistoryNoteRepository.verifications",
+				"type": "Promise<Array<Extract<HistoryNote, { kind: 'verification' }>>>"
 			}
 		],
 		"errors": [

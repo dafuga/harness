@@ -2,7 +2,11 @@ import { randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../../core/development-tooling/errors';
-import { notesRef, type HistoryNote } from '../../../core/git-source-history/historyTypes';
+import {
+	historyNoteSchema,
+	notesRef,
+	type HistoryNote
+} from '../../../core/git-source-history/historyTypes';
 import { commitIdentity } from '../../../utils/git-source-history/commitIdentity';
 import { mergeNoteLines, noteLines } from './noteLines';
 import {
@@ -95,6 +99,20 @@ export class HistoryNoteRepository {
 		return new Map(pairs.map(([, commit], index) => [commit, readNoteLines(texts[index], commit)]));
 	}
 
+	/** Reads only verification entries, bounding the Git blobs held at once. */
+	async verifications(): Promise<Array<Extract<HistoryNote, { kind: 'verification' }>>> {
+		const pairs = await this.listed();
+		const result: Array<Extract<HistoryNote, { kind: 'verification' }>> = [];
+		for (let offset = 0; offset < pairs.length; offset += 64) {
+			const batch = pairs.slice(offset, offset + 64);
+			const texts = await this.blobs(batch.map(([blob]) => blob));
+			for (let index = 0; index < batch.length; index++) {
+				result.push(...verificationLines(texts[index], batch[index][1]));
+			}
+		}
+		return result;
+	}
+
 	/** The note blob of every noted commit, as the notes ref lists them now. */
 	private async listed(): Promise<string[][]> {
 		const listed = (await this.git.attempt([...notes, 'list'])) ?? '';
@@ -130,4 +148,31 @@ export class HistoryNoteRepository {
 		}
 		return texts;
 	}
+}
+
+/** Other note kinds and malformed or foreign entries do not identify verification records. */
+function verificationLines(
+	text: string,
+	commit: string
+): Array<Extract<HistoryNote, { kind: 'verification' }>> {
+	const result: Array<Extract<HistoryNote, { kind: 'verification' }>> = [];
+	for (const line of text.split('\n')) {
+		let value: unknown;
+		try {
+			value = JSON.parse(line) as unknown;
+		} catch {
+			/* The general note reader reports malformed lines; they cannot identify a record. */
+			continue;
+		}
+		if (!value || typeof value !== 'object' || !('kind' in value) || value.kind !== 'verification')
+			continue;
+		const parsed = historyNoteSchema.safeParse(value);
+		if (
+			parsed.success &&
+			parsed.data.kind === 'verification' &&
+			parsed.data.source.commit === commit
+		)
+			result.push(parsed.data);
+	}
+	return result;
 }
