@@ -84,7 +84,6 @@ async function indexedOwners() {
 	});
 	return { unit: unitOf(indexed, 'service.runner'), helper: unitOf(indexed, 'function.rank') };
 }
-
 function assertHelperEntityKinds(helper: ComponentManifest) {
 	const example = {
 		subject: 'rank',
