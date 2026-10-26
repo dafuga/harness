@@ -40,11 +40,13 @@ export default [
 				Buffer: 'readonly',
 				clearTimeout: 'readonly',
 				fetch: 'readonly',
+				NodeJS: 'readonly',
 				performance: 'readonly',
 				process: 'readonly',
 				Request: 'readonly',
 				Response: 'readonly',
 				setTimeout: 'readonly',
+				structuredClone: 'readonly',
 				URL: 'readonly'
 			}
 		},
