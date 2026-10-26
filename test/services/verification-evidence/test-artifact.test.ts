@@ -42,6 +42,7 @@ test('capture initialized audio artifacts retains playable bytes and rejects inv
 		await assertRetainedClassAudio(directory);
 		assertByteSnapshot(service, artifact, directory);
 		assertProvenanceSnapshot(service, artifact, directory);
+		assertRevisionSnapshot(artifact, directory);
 		assertInvalidArtifacts(service, artifact);
 	} finally {
 		rmSync(directory, { recursive: true, force: true });
@@ -71,6 +72,28 @@ function assertInvalidArtifacts(
 	expect(() =>
 		new TestArtifactService({ HARNESS_VERIFY_REVISION: 'invalid' }).capture(artifact)
 	).toThrow();
+}
+
+function assertRevisionSnapshot(
+	artifact: Parameters<TestArtifactService['capture']>[0],
+	directory: string
+) {
+	let reads = 0;
+	const service = new TestArtifactService({
+		HARNESS_EVIDENCE_DIR: directory,
+		get HARNESS_VERIFY_REVISION() {
+			reads++;
+			return (reads === 1 ? 'a' : 'b').repeat(40);
+		}
+	});
+	service.capture(artifact);
+	const lines = readFileSync(join(directory, 'captures.ndjson'), 'utf8').trim().split('\n');
+	const retained = JSON.parse(lines.at(-1)!);
+	expect(
+		JSON.parse(retained.note).revision,
+		'retained revision must be the validated revision'
+	).toBe('a'.repeat(40));
+	expect(reads, 'capture must snapshot the tested revision once').toBe(1);
 }
 
 function assertProvenanceSnapshot(

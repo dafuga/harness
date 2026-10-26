@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-26T23:58:28.707Z","name":"artifact-revision-snapshot","goal":"Bind retained test audio to the validated tested revision.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-26T23:58:31.291Z","loop":"artifact-revision-snapshot","step":"spec","evidence":"capture validates one environment revision but rereads it when retaining audio, allowing a different valid revision into the note."}
+{"event":"step.completed","timestamp":"2026-10-26T23:58:31.880Z","loop":"artifact-revision-snapshot","step":"coverage","evidence":"The existing capture initialized case uses a fixed environment revision. Strengthen that case with a changing revision accessor and assert the retained note."}
