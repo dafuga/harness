@@ -25,6 +25,16 @@ test('{{PascalName}} renders real PCM without a microphone or speakers', async (
  expect(wav.readUInt32LE(24)).toBe(48000);
  expect(wav.readUInt32LE(40)).toBe(960);
  for (let i = 0; i < played.length; i++) expect(wav.readInt16LE(44 + i * 2)).toBe(played[i]);
+ const decoded = await page.evaluate(async bytes => {
+  const context = new OfflineAudioContext(1, 480, 48000);
+  const buffer = await context.decodeAudioData(Uint8Array.from(bytes).buffer);
+  return { channels: buffer.numberOfChannels, rate: buffer.sampleRate,
+   samples: Array.from(buffer.getChannelData(0)) };
+ }, [...wav]);
+ expect(decoded.channels).toBe(1);
+ expect(decoded.rate).toBe(48000);
+ expect(decoded.samples).toHaveLength(480);
+ for (let i = 0; i < played.length; i++) expect(decoded.samples[i]).toBeCloseTo(played[i] / 32768, 5);
  audio.clear();
  expect([...audio.next(480)].every(sample => sample === 0)).toBe(true);
 });
@@ -50,7 +60,7 @@ export const testingPlugins = [
 		dependencies: {},
 		devDependencies: { '@playwright/test': '^1.28.1' },
 		packageScripts: {
-			'test:browser': 'playwright test --config src/configs/testing/browserPlaywrightConfig.ts'
+			'test:browser': 'playwright test --config src/configs/playwright/browserPlaywrightConfig.ts'
 		},
 		resources: [
 			{
@@ -90,7 +100,7 @@ export const testingPlugins = [
 		dependencies: {},
 		devDependencies: { '@playwright/test': '^1.28.1' },
 		packageScripts: {
-			'test:audio': 'playwright test --config src/configs/testing/audioPlaywrightConfig.ts'
+			'test:audio': 'playwright test --config src/configs/headless-audio/audioPlaywrightConfig.ts'
 		},
 		resources: [
 			{

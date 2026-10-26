@@ -7,7 +7,7 @@ export const audioTestingFiles = [
 		path: file.path.replace('tests/e2e/support', 'tests/plugin-support')
 	})),
 	{
-		path: 'src/configs/testing/audioPlaywrightConfig.ts',
+		path: 'src/configs/headless-audio/audioPlaywrightConfig.ts',
 		contents: `import { defineConfig } from '@playwright/test';
 export default defineConfig({
  testDir: '../../../tests/audio',

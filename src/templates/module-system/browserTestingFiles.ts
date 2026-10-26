@@ -7,7 +7,7 @@ export const browserTestingFiles = [
 		path: file.path.replace('tests/e2e/support', 'tests/plugin-support')
 	})),
 	{
-		path: 'src/configs/testing/browserPlaywrightConfig.ts',
+		path: 'src/configs/playwright/browserPlaywrightConfig.ts',
 		contents: `import { defineConfig } from '@playwright/test';
 export default defineConfig({
  testDir: '../../../tests/browser',
