@@ -9,14 +9,17 @@
 	"owns": {
 		"source": [
 			"src/adapters/CommitTreeAdapter.ts",
-			"src/adapters/git-source-history/CommitTreeAdapter.ts"
+			"src/adapters/git-source-history/CommitTreeAdapter.ts",
+			"src/adapters/git-source-history/commit-tree-adapter/blobTexts.ts"
 		],
 		"symbols": [
 			"CommitTreeAdapter",
 			"CommitTreeAdapter",
 			"CommitTreeAdapter.open",
 			"CommitTreeAdapter.list",
-			"CommitTreeAdapter.read"
+			"CommitTreeAdapter.read",
+			"cachedBlobText",
+			"keepBlobText"
 		]
 	},
 	"contract": {
@@ -36,6 +39,18 @@
 				"name": "CommitTreeAdapter.read.path",
 				"type": "string",
 				"description": "Exact forward-slash path to find in the selected commit tree."
+			},
+			{
+				"name": "cachedBlobText.key",
+				"type": "string"
+			},
+			{
+				"name": "keepBlobText.key",
+				"type": "string"
+			},
+			{
+				"name": "keepBlobText.text",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -58,6 +73,14 @@
 				"name": "CommitTreeAdapter.read",
 				"type": "Promise<string>",
 				"description": "Finds an exact path match in list(), then batches its blob hash through cat-file --batch and decodes the reported blob bytes as UTF-8. Requests scheduled in the same immediate tick share one batch; duplicate hashes share one object read and resolve all waiting callers with the same text. Reads are bound to revision and do not access a mutable working tree."
+			},
+			{
+				"name": "cachedBlobText",
+				"type": "string | undefined"
+			},
+			{
+				"name": "keepBlobText",
+				"type": "void"
 			}
 		],
 		"errors": [
@@ -115,5 +138,124 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
+	},
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["empty", "populated"],
+		"cases": [
+			{
+				"id": "open.empty",
+				"state": "empty",
+				"subject": "CommitTreeAdapter.open",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.open empty resolves the exact commit and refuses absent revisions"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "empty",
+						"method": "open",
+						"preservesImmutableSource": true
+					}
+				},
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "open.populated",
+				"state": "populated",
+				"subject": "CommitTreeAdapter.open",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.open populated establishes the object format before caching"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "populated",
+						"method": "open",
+						"preservesImmutableSource": true
+					}
+				},
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "list.empty",
+				"state": "empty",
+				"subject": "CommitTreeAdapter.list",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.list empty returns no source entries"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "empty",
+						"method": "list",
+						"preservesImmutableSource": true
+					}
+				}
+			},
+			{
+				"id": "list.populated",
+				"state": "populated",
+				"subject": "CommitTreeAdapter.list",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.list populated retains blob identities and paths"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "populated",
+						"method": "list",
+						"preservesImmutableSource": true
+					}
+				}
+			},
+			{
+				"id": "read.empty",
+				"state": "empty",
+				"subject": "CommitTreeAdapter.read",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.read empty rejects missing paths"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "empty",
+						"method": "read",
+						"preservesImmutableSource": true
+					}
+				},
+				"errors": ["Error"]
+			},
+			{
+				"id": "read.populated",
+				"state": "populated",
+				"subject": "CommitTreeAdapter.read",
+				"fixture": "test/adapters/git-source-history/commit-tree.test.ts",
+				"test": {
+					"file": "test/adapters/git-source-history/commit-tree.test.ts",
+					"title": "CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tree": "populated",
+						"method": "read",
+						"preservesImmutableSource": true
+					}
+				},
+				"errors": ["Error"]
+			}
+		]
 	}
 }

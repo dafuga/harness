@@ -66,7 +66,7 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const projectKind = await detectProjectKind(root);
 	assertScaffoldEligible(input.kind, projectKind);
 
-	const support = ['e2e', 'resource'].includes(input.kind)
+	const support = ['component', 'view', 'layout', 'partial', 'e2e', 'resource'].includes(input.kind)
 		? browserTestFiles().filter((file) => !existsSync(join(root, file.path)))
 		: [];
 	const source = !['test', 'e2e', 'feature', 'migration'].includes(input.kind);

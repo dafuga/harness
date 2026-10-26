@@ -42,7 +42,7 @@
 			},
 			{
 				"name": "CatalogRepository.replace.snapshots",
-				"type": "CatalogSnapshot[]"
+				"type": "Iterable<CatalogSnapshot>"
 			},
 			{
 				"name": "CatalogRepository.entities.options",

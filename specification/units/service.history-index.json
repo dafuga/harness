@@ -9,7 +9,8 @@
 	"owns": {
 		"source": [
 			"src/cli/program/history-index-service/HistoryIndexService.ts",
-			"src/cli/program/history-index-service/HistoryIndexService.types.ts"
+			"src/cli/program/history-index-service/HistoryIndexService.types.ts",
+			"src/cli/program/history-index-service/historySnapshots.ts"
 		],
 		"symbols": [
 			"HistoryIndexService",
@@ -19,7 +20,11 @@
 			"LegacyReader",
 			"BuiltHistory",
 			"LegacyReader",
-			"Built"
+			"Built",
+			"CompactRevision",
+			"compactRevision",
+			"storedSnapshots",
+			"activityDetails"
 		]
 	},
 	"contract": {
@@ -40,12 +45,48 @@
 			{
 				"name": "HistoryIndexService.build.legacy",
 				"type": "LegacyReader"
+			},
+			{
+				"name": "compactRevision.result",
+				"type": "BuiltRevision"
+			},
+			{
+				"name": "compactRevision.events",
+				"type": "Map<string, BudgetEvent>"
+			},
+			{
+				"name": "storedSnapshots.out",
+				"type": "string"
+			},
+			{
+				"name": "storedSnapshots.built",
+				"type": "Built"
+			},
+			{
+				"name": "activityDetails.out",
+				"type": "string"
+			},
+			{
+				"name": "activityDetails.built",
+				"type": "Built"
 			}
 		],
 		"outputs": [
 			{
 				"name": "HistoryIndexService.build",
 				"type": "Promise<BuiltHistory>"
+			},
+			{
+				"name": "compactRevision",
+				"type": "CompactRevision"
+			},
+			{
+				"name": "storedSnapshots",
+				"type": "Generator<CatalogSnapshot>"
+			},
+			{
+				"name": "activityDetails",
+				"type": "ReadonlyMap<string, RecordedDetail>"
 			}
 		],
 		"errors": []
@@ -67,6 +108,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.budget-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.history-index-types",
 			"via": "import",
 			"origin": "derived"
@@ -83,11 +129,6 @@
 		},
 		{
 			"unit": "function.revision-changes",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.revision-registry",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -113,6 +154,11 @@
 		},
 		{
 			"unit": "service.catalog-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.catalog-write",
 			"via": "import",
 			"origin": "derived"
 		},

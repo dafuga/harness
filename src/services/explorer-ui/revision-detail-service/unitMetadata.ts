@@ -75,6 +75,21 @@ export async function unitMetadata(tree: HelperTree, units: Unit[]): Promise<voi
 	await configurationsAt(tree, units);
 	await modelsAt(tree, units);
 	await hydrateUnitDocumentation(tree, units);
+	await callableMetadata(tree, units, categories);
+}
+
+/** Populate callable contracts and config values required by registry admission. */
+export async function hydrateContractMetadata(tree: HelperTree, units: Unit[]): Promise<void> {
+	const categories = await categoriesAt(tree, units);
+	await configurationsAt(tree, units);
+	await callableMetadata(tree, units, categories);
+}
+
+async function callableMetadata(
+	tree: HelperTree,
+	units: Unit[],
+	categories: Awaited<ReturnType<ModuleCategoryService['at']>>
+) {
 	const paths = [
 		...new Set(
 			units

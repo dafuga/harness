@@ -1,0 +1,65 @@
+{
+	"name": "contract-method-state-counts",
+	"goal": "Reject duplicate method-state cases and retain existing supported case identities when other capabilities expand",
+	"createdAt": "2026-10-25T16:59:18.515Z",
+	"updatedAt": "2026-10-25T17:47:54.139Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-25T16:59:19.073Z",
+			"evidence": "A new lifecycle proposal exposes two cases for the same scanned/initialized slot. The validator accepts at-least-one rather than exactly-one; the count guard also lets an unrelated new state excuse another old-state case or rename. Those loopholes permit standalone bug tests despite declared counts."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-25T16:59:19.589Z",
+			"evidence": "Strengthen the existing validator method case and existing compare method case for duplicate slots, unknown methods, unused new states and preserved old identities. Keep one validator case and two TestContractService cases; no new test declarations."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-25T17:04:06.899Z",
+			"evidence": "Atcee40ae6d0 the unchanged one-case validator suite accepts a duplicate Runner.run/ready case, and the unchanged compare case accepts old-state inflation after adding an unused new state. Retained red checkpoint names the exactly-one-method/state assertion; three total owning tests remain fixed."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-25T17:21:55.103Z",
+			"evidence": "Every method/state permits exactly one case, orphan subjects are rejected, retained capabilities preserve their IDs and titles, and a new case must reference its actual added state, method, example, prop or error. Seven focused tests passed before the explicit in-memory admission characterization was added; source lint passes. Registry checking exposed missing committed-tree error references and a stale TestContractService manifest; those remain pending repair. The final characterized green proof remains pending resource headroom."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-25T17:47:54.139Z",
+			"evidence": "Retained paired red 50f72a8d5de579a634f39598a9c5887062edb385f68c9e6a81140814ea874dfc and green 36e22567250c546865b39cdac976e7711e55131c7b14a92aeeea8b4594a1aa5f prove the same three owning cases fail before and pass at dc952871e6. In-memory getter, own iterator and species-bearing arrays are included. No case-count increase. Registry metadata repairs are separately recorded; broader verification remains pending."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		},
+		{
+			"id": "registry-correction",
+			"title": "Verify corrected registry evidence: the earlier implement trace said registry passed prematurely; its three metadata errors were repaired in 539b277fd1 and all 1799 units now validate.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

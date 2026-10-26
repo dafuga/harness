@@ -71,7 +71,7 @@ Choose component colors from Styles → Colors, defined in `appStyleTokensConfig
 2. Run `bun run dev -- info <topic>` or `bun run dev -- info scaffolds --json` before creating unfamiliar code shapes.
 3. For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
 4. Prefer adding or updating generators over manually duplicating scaffold behavior.
-5. Add or update unit and temp-workspace E2E tests for generator, audit, and CLI behavior changes.
+5. Use the five standard test forms for generator, audit and CLI behavior; retain disposable integration fixtures inside the owning method/example cases.
 6. Keep generated and hand-edited files inside the configured Harness rule limits.
 7. Verify with `bun run check` before handing work back.
 8. Git answer caches: establish the object format first; hex shape is not immutability. Test refs named like the other width and unknown formats.
@@ -277,7 +277,7 @@ folders and titles from the selected source revision for every collection.
 
 Every public helper needs committed examples with a real invocation, argument values and expected output or error. Execute authored examples against the actual implementation. `harness units check` rejects missing examples; indexing must preserve them and the detail page must select only the current callable and revision.
 
-Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review implementation features and meaningful error or empty states. Equal outputs alone do not establish duplication. Keep exhaustive boundary cases in tests. Registry checks reject placeholder titles and repeated titles or calls; semantic overlap requires agent review.
+Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review implementation features and meaningful error or empty states. Equal outputs alone do not establish duplication. Document boundary and error inputs in Examples and run each through its corresponding standard case; do not retain hidden helper-only boundary suites. Registry checks reject placeholder titles and repeated titles or calls; semantic overlap requires agent review.
 
 ## Route identity and UI state
 
@@ -438,3 +438,37 @@ Every project requires committed metadata by default. Internal Git writers, incl
 Before bulk history validation, verify cache eviction across multiple revisions and check available disk space on the execution host. Derived caches must have a fixed disk budget and remain dispensable; never duplicate committed history into an unbounded cache. Include retention behavior in the cache's normal unit coverage.
 
 After each source commit run `harness validate --write`. Repair every missing metadata field before delivery. Missing screenshots and measurement observations remain explicit evidence gaps and do not block resource reads. Scope diagnostics with `--module <stable-id>` or `--type <kind-or-category>`; use `--json` for agent-readable repair actions. Source facts and missing-data reports live on `refs/harness/module-data`, bound to the exact commit/tree and notes/evidence inputs. Exchange them with `validate --sync origin` after evidence sync. Backfill old commits with `validate --history --commit <source-ref> --write`, preserving source SHAs and genuine evidence gaps. Use `harness api get used-apis <id>` or `get relations <id>`; readers use committed relationships rather than a separate source-search script.
+
+## Standard Test Forms
+
+Use exactly these five forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.
+
+1. Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile). Layouts use the page form, with a labelled Child content placeholder in the real child slot.
+2. Components: Playwright screenshot matches of the component at rest, plus each declared interaction, prop and error state.
+3. Helpers: one unit case per authored example, asserting its documented output or error.
+4. Classes: one case per method and declared initialization or lifecycle state, including each declared error.
+5. APIs: structural complete JSON response matches for each supported prop and error matrix row.
+
+- Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.
+- Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.
+- Projects without UI have no page or component cases; their modules use the helper, class and API forms.
+- Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.
+- Retain reviewed baselines through Harness evidence with source revision, media hash and review provenance. Never automatically accept a missing or changed image.
+- Matrices include boundaries, invalid inputs and prop combinations that change behavior. Static types and configuration use compiler, lint, build and audit checks.
+- Generated app pipelines keep compiler, lint and audit checks before browser screenshot gates. When adding a mandatory gate, strengthen the existing generator-order and real CLI static-violation cases.
+- Before accepting a test migration, run the compiler and structure audit for the root and every affected workspace. Check companion type files and Svelte source explicitly; an ignored-file lint warning is not Svelte verification.
+- Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.
+
+## Stable-Case Bug Policy
+
+- Do not write standalone bug regression tests. A reported bug strengthens the existing case of its form (its input, fixture, state or assertion) under the same registered title.
+- Keep each form's case count fixed. Add or remove a case only when the contract explicitly changes a capability: a declared state, prop, example, method, lifecycle state, error or matrix row.
+- A behavior with no existing case is a missing coverage category. Declare its capability in the contract first, then add one case of its form before the product repair.
+- Keep registered case titles and identities stable; verification records bind to them.
+- Artifact validation, hashing and storage must consume the same byte snapshot; strengthen the existing method case with accepted getter or aliased-buffer inputs before changing an artifact producer.
+
+- API comparisons keep every response field, including reserved JSON keys. Before changing a comparison or authored-data parser, strengthen its existing method case to prove field retention and preserve admitted getters, arrays and invalid values.
+
+- Freeze executable tests and authored Examples, states, methods and expected results together. Admit test-only edits to those contract fields, reject product metadata hidden among named tests, and keep original Git blob provenance separate from semantic expectation hashes.
+
+- Declare all states. New props or errors strengthen their existing row; add a row only when declaring a distinct state, example or method.

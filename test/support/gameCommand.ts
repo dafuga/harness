@@ -1,5 +1,10 @@
+import {
+	prepareBrowserBaselineReport,
+	expectMissingScreenshotResults
+} from './browserBaselineResults';
 import type { Scope, Observed, Reported } from './gameCommand.types';
 import { execFileSync } from 'node:child_process';
+import { expect } from 'vitest';
 import { resolve } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import {
@@ -11,25 +16,35 @@ import {
 	recordCapture
 } from '../../src/utils/reports-media/record-capture/recordCapture';
 const driver = `
-const {command,cwd}=JSON.parse(process.argv[1]);
+const {command,cwd,expectedExitCode}=JSON.parse(process.argv[1]);
 const started=performance.now();
 const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
 const elapsedMs=performance.now()-started;
-if(result.exitCode!==0)throw new Error(result.stderr.toString());
-console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString()}));`;
+if(result.exitCode!==expectedExitCode)throw new Error(result.stdout.toString()+result.stderr.toString());
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString(),stderr:result.stderr.toString(),exitCode:result.exitCode}));`;
 
 /** Run the real normal command; observe its child process rather than the test worker. */
 export function gameCommand(command: string[], cwd: string, scope: Scope): Observed {
 	const reported: Reported = JSON.parse(
-		execFileSync('bun', ['-e', driver, JSON.stringify({ command, cwd })], {
-			encoding: 'utf8',
-			env: { ...process.env, HARNESS_CLI_PATH: scope.cli ?? resolve('src/index.ts') }
-		})
+		execFileSync(
+			'bun',
+			[
+				'-e',
+				driver,
+				JSON.stringify({ command, cwd, expectedExitCode: scope.expectedExitCode ?? 0 })
+			],
+			{
+				encoding: 'utf8',
+				env: { ...process.env, HARNESS_CLI_PATH: scope.cli ?? resolve('src/index.ts') }
+			}
+		)
 	);
 	const output: Observed = {
 		elapsedMs: reported.elapsedMs,
 		peakRssBytes: bunMaxRssBytes(reported.maxRSS, reported.platform),
-		stdout: reported.stdout
+		stdout: reported.stdout,
+		stderr: reported.stderr,
+		exitCode: reported.exitCode
 	};
 	if (!(output.elapsedMs > 0) || !(output.peakRssBytes > 0))
 		throw new Error('Game command requires actual positive timing and child RSS observations.');
@@ -108,4 +123,20 @@ function recordCommand(scope: Scope, output: Observed) {
 		}),
 		JSON.stringify(benchmarkCaptureSchema.parse({ measurements }))
 	);
+}
+
+/** Missing baselines are the sole admitted failure; static, unit, build and audit gates still run. */
+export async function assertGameCheck(cwd: string, scope: Scope): Promise<void> {
+	await prepareBrowserBaselineReport(cwd);
+	const check = gameCommand(['bun', 'run', 'check'], cwd, { ...scope, expectedExitCode: 1 });
+	const output = check.stdout + check.stderr;
+	expect(output).toContain("A snapshot doesn't exist");
+	expect(output).toContain('svelte-check found 0 errors');
+	await expectMissingScreenshotResults(cwd, output, 9);
+	for (const stage of ['build', 'audit'])
+		gameCommand(['bun', 'run', stage], cwd, {
+			...scope,
+			workload: scope.workload + '-' + stage,
+			expectedExitCode: 0
+		});
 }

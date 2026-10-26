@@ -5,7 +5,12 @@ export type Scenario = VerificationRecord['scenarios'][number];
 
 export type Capture = Scenario['states'][number]['captures'][number];
 
-export type DiagnosticTest = { id: string; status: string; browserErrors?: BrowserDiagnostic[] };
+export type DiagnosticTest = {
+	id: string;
+	status: string;
+	browserErrors?: BrowserDiagnostic[];
+	cases?: VerificationRecord['tests'][number]['cases'];
+};
 
 export interface ResolvedMedia {
 	/** Path of the original bytes in the output, or null when they are not available. */

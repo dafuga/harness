@@ -10,7 +10,7 @@ export class CatalogIndexService {
 	async write(
 		directory: string,
 		index: HistoryIndex,
-		snapshots: CatalogSnapshot[]
+		snapshots: Iterable<CatalogSnapshot>
 	): Promise<string> {
 		const temporary = await mkdtemp(join(directory, '.catalog-'));
 		const path = join(temporary, 'catalog.sqlite');

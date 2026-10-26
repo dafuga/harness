@@ -1,0 +1,74 @@
+{
+	"name": "contract-static-before-visual",
+	"goal": "Keep generated app static audit failures visible before mandatory screenshot baseline admission",
+	"createdAt": "2026-10-26T11:07:17.667Z",
+	"updatedAt": "2026-10-26T11:35:58.912Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:08:02.443Z",
+			"evidence": "Mandatory screenshot comparison now stops a fresh generated app check at missing baselines before audit. The existing ecosystem app case expects svelte-script-lang and fails at d26e0fdbea; direct audit still reports it."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:08:02.956Z",
+			"evidence": "The app generator case checked only that audit appeared in the script, not its position. Strengthen that same case with static-gate ordering and retain all rules in the existing disposable app violation case. Counts and titles stay fixed."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:28:02.766Z",
+			"evidence": "At test-only 9be2073cee, laptop record d5c6e9480573 fails the actual svelte-script-lang audit assertion and generated policy controls; three failures, four passes. Recorded before product repair."
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:28:03.500Z",
+			"evidence": "Move static audit ahead of visual admission. Guard every new mandatory gate through the existing generator-order and real CLI static-violation cases; retain cases, checks and missing-baseline refusal."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:28:58.783Z",
+			"evidence": "Product-only bebb9c6d2b moves generated app audit before test/e2e, keeps every gate, and updates generated and repository agent guidance. Frozen tests and case counts remain unchanged."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:29:00.106Z",
+			"evidence": "Matched laptop green dd6161784252 passes all seven unchanged cases after red d5c6e9480573. Static violations precede browser setup; same command, inputs, expectations, environment and resource lease."
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:35:58.912Z",
+			"evidence": "Isolated source c050739be13e restores only the old script order while retaining repaired guidance. Capture 72a4031a8b9e fails two existing cases, five pass. Repaired bebb9c6d2b passes the identical seven-case command in paired green dd6161784252."
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

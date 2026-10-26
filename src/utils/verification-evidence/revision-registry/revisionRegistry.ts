@@ -6,7 +6,6 @@ import type {
 } from '../../../core/development-tooling/unitTypes';
 import type { BudgetBaseline } from '../budgetFindings';
 import { emittedLimits, frozenLimits } from './frozenLimits';
-import {} from '../budgetReviews';
 import { canonicalJson } from '../../development-tooling/canonicalJson';
 
 const byId = <Item extends { id: string }>(left: Item, right: Item) =>
@@ -79,6 +78,7 @@ function unitView(
 		scenarios: unit.scenarios,
 		owns: unit.owns,
 		contract: { inputs, outputs, errors },
+		...(unit.testing ? { testing: unit.testing } : {}),
 		...(unit.helperContracts ? { helpers: unit.helperContracts } : {}),
 		...(unit.catalog ? { catalog: unit.catalog } : {}),
 		...(unit.configControls ? { configControls: unit.configControls } : {}),
@@ -112,13 +112,18 @@ function scenarioView(scenario: ScenarioManifest): RevisionRegistry['scenarios']
 			...(units ? { units } : {})
 		})),
 		viewports: scenario.viewports,
-		tests: scenario.tests.map(({ id, kind, runner }) => ({ id, kind, runner })),
+		tests: scenario.tests.map(({ id, kind, runner, cases }) => ({
+			id,
+			kind,
+			runner,
+			...(cases ? { cases } : {})
+		})),
 		evidence: scenario.evidence.map(({ id, kind, states, viewports, required }) => ({
 			id,
 			kind,
 			states,
 			viewports,
-			required
+			...(required !== undefined ? { required } : {})
 		}))
 	};
 }

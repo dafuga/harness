@@ -229,6 +229,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.verification-evidence-case-result",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"

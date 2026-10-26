@@ -48,9 +48,10 @@ export class RevisionDetailService {
 			'--quiet',
 			`${commit}^{tree}`
 		]);
+		const tree = await CommitTreeAdapter.open(this.root, commit);
 		const stored = await revisionRegistryAt(this.root, commit, this.kept);
 		await this.sourceMeasures(commit, stored.registry);
-		const catalogued = { ...stored, ...(await readCatalogs(this.root, commit, stored.registry)) };
+		const catalogued = { ...stored, ...(await readCatalogs(tree, stored.registry)) };
 		this.kept.registries.set(commit, catalogued);
 		const reasons = await revisionReasonsAt(commit, sound, this.kept, this.history);
 		const detail: RevisionDetail = {
@@ -91,9 +92,8 @@ export class RevisionDetailService {
 
 	private async sourceMeasures(commit: string, registry: RevisionRegistry): Promise<void> {
 		const measured = await this.kept.source.measurements(commit);
-		for (const unit of registry.units) {
-			unit.sourceMeasurements = measured.filter((item) => item.unit === unit.id);
-		}
+		const byUnit = groupMeasurements(measured);
+		for (const unit of registry.units) unit.sourceMeasurements = [...(byUnit.get(unit.id) ?? [])];
 	}
 	/** Every capture is looked up in the record that produced it, which may be an earlier one. */
 	private async media(
@@ -129,6 +129,15 @@ export class RevisionDetailService {
 		return line ? this.history.attached.load(line.evidence) : undefined;
 	}
 }
+function groupMeasurements<T extends { unit: string }>(values: T[]): Map<string, T[]> {
+	const groups = new Map<string, T[]>();
+	for (const value of values) {
+		const group = groups.get(value.unit) ?? [];
+		group.push(value);
+		groups.set(value.unit, group);
+	}
+	return groups;
+}
 /** Why the bytes of a capture are not available, in the words of what is wrong with them. */
 function gapFor(source: AttachedRecord | undefined, path: string, origin: string): string {
 	if (!source) return `inherited record ${short(origin)} is not available`;
@@ -154,9 +163,7 @@ async function regressionProofs(
 	const repository = new RegressionProofRepository(root, history.pinned?.evidence);
 	return repository.history(commit, await history.all(), media);
 }
-
 export type { RevisionDetail, BuiltRevision } from './RevisionDetailService.types';
-
 function catalogFields(stored: Stored) {
 	return {
 		platforms: stored.platforms,
@@ -166,9 +173,10 @@ function catalogFields(stored: Stored) {
 		modules: stored.modules
 	};
 }
-
-async function readCatalogs(root: string, commit: string, registry: RevisionRegistry) {
-	const tree = await CommitTreeAdapter.open(root, commit);
+async function readCatalogs(
+	tree: Awaited<ReturnType<typeof CommitTreeAdapter.open>>,
+	registry: RevisionRegistry
+) {
 	await unitMetadata(tree, registry.units);
 	return {
 		platforms: await readPlatformCatalog(tree),

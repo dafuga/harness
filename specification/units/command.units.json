@@ -61,6 +61,11 @@
 			"unit": "workflow.manage-units",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "entry.program-test-inventory",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

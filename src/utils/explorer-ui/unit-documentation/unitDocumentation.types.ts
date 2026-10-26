@@ -5,6 +5,7 @@ export interface UsageExample {
 	call?: string;
 	input: unknown;
 	output?: unknown;
+	returns?: 'void';
 	error?: unknown;
 }
 

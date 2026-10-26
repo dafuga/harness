@@ -1,5 +1,6 @@
 import { measureWorkload } from './support/measureWorkload';
 import { check } from 'prettier';
+import { assertAppPieceContracts, assertClassMatrices } from './support/generatedContracts';
 import { formatConfigFiles } from '../src/templates/development-tooling/formatConfig';
 import { pieceExportPlans } from '../src/workflows/projects-sessions/generate-code/exportPlans';
 import { posix } from 'node:path';
@@ -46,19 +47,17 @@ test.each(['2d', '3d'] as const)(
 	}
 );
 
-test('view, layout, and api scaffolds use SvelteKit route files', () => {
-	expect(pieceFiles('view', 'BlogPost').map((file) => file.path)).toContain(
-		'src/routes/blog-post/+page.svelte'
-	);
-	expect(pieceFiles('layout', 'BlogPost').map((file) => file.path)).toContain(
-		'src/routes/blog-post/+layout.svelte'
-	);
-	expect(pieceFiles('api', 'BlogPost').map((file) => file.path)).toContain(
-		'src/routes/api/blog-post/+server.ts'
-	);
-});
+test('view, layout, and api scaffolds use SvelteKit route files', () =>
+	measureWorkload('template.app-pieces', 'layout-page-child-slot', () =>
+		measureWorkload(
+			'template.development-tooling-app-pieces-app-contract-tests',
+			'layout-page-screenshot-generation',
+			assertAppPieceContracts
+		)
+	));
 
 test('marks only SvelteKit scaffolds as app-only', () => {
+	expect(scaffoldKinds).not.toContain('test');
 	expect(isAppOnlyScaffold('view')).toBe(true);
 	expect(isAppOnlyScaffold('component')).toBe(true);
 	expect(isAppOnlyScaffold('partial')).toBe(true);
@@ -69,6 +68,7 @@ test('marks only SvelteKit scaffolds as app-only', () => {
 });
 
 test('Rails-ish scaffolds create their expected code shapes', async () => {
+	assertClassMatrices();
 	expect(pieceFiles('mailer', 'Welcome').map((file) => file.path)).toContain(
 		'src/mailers/WelcomeMailer.ts'
 	);
@@ -98,6 +98,7 @@ test('Rails-ish scaffolds create their expected code shapes', async () => {
 	const configSource = config.find((file) => file.path === 'src/configs/searchConfig.ts')!;
 	expect(configSource.contents).toContain('export const searchConfig = {} as const;');
 	expect(configSource.contents).not.toMatch(/\b(?:name|enabled):/);
+	expect(config.some((file) => file.path.endsWith('.test.ts'))).toBe(false);
 	expect(pieceFiles('middleware', 'Auth').map((file) => file.path)).toContain(
 		'src/middleware/AuthMiddleware.ts'
 	);

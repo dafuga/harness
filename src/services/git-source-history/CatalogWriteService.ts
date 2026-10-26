@@ -18,16 +18,23 @@ import { stableJson } from '../../utils/stableJson';
 /** Replaces only the derived query index, in one rollback-safe transaction. */
 export class CatalogWriteService {
 	constructor(private readonly adapter: SqliteAdapter) {}
-	replace(index: HistoryIndex, snapshots: CatalogSnapshot[]): void {
+	replace(index: HistoryIndex, snapshots: Iterable<CatalogSnapshot>): void {
 		this.adapter.transaction(() => {
 			for (const model of catalogModels)
 				this.adapter.execute(`DELETE FROM ${sqliteIdentifier(model.definition.table)}`);
-			const available = new Map(snapshots.map((snapshot) => [snapshot.commit, snapshot.registry]));
+			const revisions = new Map(index.revisions.map((revision) => [revision.commit, revision]));
+			const written = new Set<string>(),
+				versions = new Set<string>();
 			for (const branch of index.branches)
 				this.adapter.insert(CatalogBranch.definition.table, { id: branch.name, head: branch.head });
+			for (const snapshot of snapshots) {
+				const revision = revisions.get(snapshot.commit);
+				if (revision) this.revision(revision, snapshot.registry);
+				written.add(snapshot.commit);
+				this.entities([snapshot], versions);
+			}
 			for (const revision of index.revisions)
-				this.revision(revision, available.get(revision.commit));
-			this.entities(snapshots);
+				if (!written.has(revision.commit)) this.revision(revision);
 			const digest = createHash('sha256').update(stableJson(index)).digest('hex');
 			this.adapter.insert(CatalogMetadata.definition.table, {
 				id: 'catalog',
@@ -62,8 +69,7 @@ export class CatalogWriteService {
 				data: scenario
 			});
 	}
-	private entities(snapshots: CatalogSnapshot[]): void {
-		const versions = new Set<string>();
+	private entities(snapshots: Iterable<CatalogSnapshot>, versions: Set<string>): void {
 		for (const snapshot of snapshots)
 			for (const entity of snapshot.registry.units) {
 				// Budget metadata can change independently of the unit's source version.

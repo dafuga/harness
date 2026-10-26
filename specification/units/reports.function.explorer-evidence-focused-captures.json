@@ -3,7 +3,7 @@
 	"id": "reports.function.explorer-evidence-focused-captures",
 	"kind": "function",
 	"title": "Focused screenshot selection",
-	"responsibility": "Selects one unit's focused screenshots at the exact revision or a proven identical source tree, preserving original provenance without a full verdict.",
+	"responsibility": "Select revision-bound focused images and class audio, preserving original provenance, failure outcomes and source-tree identity without granting a full verification verdict.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -30,7 +30,7 @@
 			{
 				"name": "focusedCaptures.unit",
 				"type": "string",
-				"description": "Registered unit identifier; another unit cannot supply a missing screenshot."
+				"description": "Registered owner identifier for focused images or class-generated audio; another unit never fills a missing artifact."
 			},
 			{
 				"name": "focusedScenario.sides",
@@ -47,12 +47,12 @@
 			{
 				"name": "focusedCaptures",
 				"type": "ExplorerCapture[]",
-				"description": "Newest screenshot per state and viewport, bound to this unit, served build and original revision. Identical-tree reuse retains that original source and focused status; it grants no full verdict."
+				"description": "Newest image per state and viewport; class audio stays distinct per bound case, evidence slot and state. Require exact unit, revision and media hash binding. Preserve original tested revision, run outcome and provenance; audio needs no HTTP server or screenshot viewport. Identical-tree reuse grants no full verdict."
 			},
 			{
 				"name": "focusedScenario",
 				"type": "HarnessScenario[]",
-				"description": "Focused gallery declarations with its captured states and viewports; empty when neither side has a usable focused image."
+				"description": "Focused screenshot declarations for usable images and their original states and viewports. Audio-only evidence yields no visual scenario or invented viewport."
 			}
 		],
 		"errors": []

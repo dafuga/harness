@@ -16,7 +16,10 @@ export function recordFiles(record: VerificationRecord): RecordFile[] {
 		bytes: log.bytes
 	}));
 	const seen = new Set<string>();
-	return [...captures, ...logs].filter((file) => !seen.has(file.path) && seen.add(file.path));
+	const cases = record.tests.flatMap((test) => (test.cases ? [test.cases.artifact] : []));
+	return [...captures, ...logs, ...cases].filter(
+		(file) => !seen.has(file.path) && seen.add(file.path)
+	);
 }
 
 export { evidenceManifest } from '../../services/verification-evidence/evidence-attach-service/evidenceManifest';

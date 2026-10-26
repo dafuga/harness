@@ -30,6 +30,7 @@ export async function loadSide(
 		graph: graphOf(loaded, loaded.fresh.manifests),
 		index: loaded.index,
 		stored: loaded.stored,
+		errors: loaded.errors,
 		tree
 	};
 }

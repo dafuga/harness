@@ -26,12 +26,13 @@ export function recordView(
 		finishedAt: record.finishedAt,
 		gates: record.gates,
 		failures: record.failures,
-		tests: record.tests.map(({ id, kind, target, status, durationMs, browserErrors }) => ({
+		tests: record.tests.map(({ id, kind, target, status, durationMs, browserErrors, cases }) => ({
 			id,
 			kind,
 			target,
 			status,
 			durationMs,
+			...(cases ? { cases } : {}),
 			...(browserErrors ? { browserErrors } : {})
 		})),
 		...(record.builds ? { builds: record.builds } : {}),

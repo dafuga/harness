@@ -54,6 +54,91 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "api",
+		"states": ["request-matrix"],
+		"props": [
+			"Origin",
+			"Content-Type",
+			"Content-Length",
+			"reportId",
+			"title",
+			"note",
+			"source",
+			"audio"
+		],
+		"cases": [
+			{
+				"id": "request-matrix",
+				"state": "request-matrix",
+				"subject": "POST",
+				"input": [
+					{
+						"Origin": "https://other.example",
+						"Content-Type": "multipart/form-data"
+					},
+					{
+						"Origin": "http://127.0.0.1:5588",
+						"Content-Type": "application/json"
+					},
+					{
+						"Origin": "http://127.0.0.1:5588",
+						"Content-Type": "multipart/form-data",
+						"Content-Length": "51000001"
+					}
+				],
+				"test": {
+					"file": "packages/reports/test/routes/report-audio-upload-api.test.ts",
+					"title": "audio uploads reject cross-origin, invalid content type and oversized requests"
+				},
+				"expected": {
+					"kind": "json",
+					"value": [
+						{
+							"status": 403,
+							"body": {
+								"error": "Same-origin upload required"
+							}
+						},
+						{
+							"status": 415,
+							"body": {
+								"error": "Multipart form required"
+							}
+						},
+						{
+							"status": 413,
+							"body": {
+								"error": "Upload exceeds size limit"
+							}
+						}
+					]
+				},
+				"props": [
+					"Origin",
+					"Content-Type",
+					"Content-Length",
+					"reportId",
+					"title",
+					"note",
+					"source",
+					"audio"
+				],
+				"errors": [
+					"same-origin",
+					"multipart",
+					"oversized",
+					"missing-file",
+					"finalized",
+					"missing-report",
+					"invalid-audio",
+					"storage-failure",
+					"Error"
+				]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

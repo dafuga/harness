@@ -2,11 +2,14 @@ import type { Registry } from './VerificationGates.types';
 import type { LedgerRead } from '../../../../../repositories/verification-evidence/BudgetLedgerRepository';
 import type { VerificationStoreRepository } from '../../../../../repositories/verification-evidence/VerificationStoreRepository';
 import { previewBinding } from '../../../../../utils/development-tooling/previewBinding';
+import { TestContractService } from '../../../../../services/verification-evidence/TestContractService';
 
 /** An identity may be retired but never deleted: history and baselines hang off it. */
 export function registryGate(base: Registry, head: Registry): string[] {
 	const kept = new Set(head.stored.map((unit) => unit.id));
 	return [
+		...(head.errors ?? []),
+		...new TestContractService().compare(base.stored, head.stored),
 		...base.stored
 			.filter((unit) => !kept.has(unit.id))
 			.map(

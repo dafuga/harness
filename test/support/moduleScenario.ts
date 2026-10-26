@@ -3,6 +3,10 @@ import { expect } from 'vitest';
 import { join } from 'node:path';
 import { runCommand, runHarness } from './cli';
 import { sqliteRuntimePackage } from './sqliteRuntimePackage';
+import {
+	prepareBrowserBaselineReport,
+	expectMissingScreenshotResults
+} from './browserBaselineResults';
 
 /** Standard module scenario: add, generate, reinstall, compile and exercise emitted code. */
 export async function assertModuleProject(root: string): Promise<void> {
@@ -27,7 +31,13 @@ export async function assertModuleProject(root: string): Promise<void> {
 	expect(repeated.stdout).toContain('already installed');
 	await assertRustModuleProject(project);
 	await runCommand(['bun', 'install'], project);
+	await prepareBrowserBaselineReport(project);
 	await runCommand(['bun', 'run', 'format'], project);
-	const check = await runCommand(['bun', 'run', 'check'], project);
-	expect(check.stdout + check.stderr).toContain('Harness audit passed');
+	const check = await runCommand(['bun', 'run', 'check'], project, false);
+	const output = check.stdout + check.stderr;
+	expect(check.exitCode).toBe(1);
+	expect(output).toContain('svelte-check found 0 errors');
+	expect(output).toContain('Harness audit passed');
+	await expectMissingScreenshotResults(project, output, 3);
+	await runCommand(['bun', 'run', 'build'], project);
 }

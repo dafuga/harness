@@ -6,18 +6,19 @@ import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
 
 test('intentional errors retain diagnostics and cannot hide missing, duplicate or unrelated errors', async () => {
+	console.info(`E2E integration worker ${process.env.VITEST_POOL_ID}`);
 	const root = await mkdtemp(join(tmpdir(), 'harness-expected-errors-'));
 	try {
 		await runHarness(['new', 'app', 'intentional'], root);
 		const project = join(root, 'intentional');
 		await symlink(resolve('node_modules'), join(project, 'node_modules'), 'dir');
 		await runHarness(['generate', 'e2e', 'Expected'], project);
-		const path = join(project, 'tests/e2e/expected.spec.ts');
+		const path = join(project, 'tests/e2e/expected-page.spec.ts');
 		const imports = (await readFile(path, 'utf8')).split('\n')[0];
 		await writeFile(path, imports + '\n' + flows);
 		await writeFile(
 			join(project, 'playwright.config.ts'),
-			"export default { testDir: 'tests/e2e', workers: 1, reporter: 'json' };\n"
+			"export default { testDir: 'tests/e2e', testMatch: 'expected-page.spec.ts', workers: 1, reporter: 'json' };\n"
 		);
 		const result = await runCommand(
 			['bun', resolve('node_modules/@playwright/test/cli.js'), 'test'],
@@ -26,7 +27,9 @@ test('intentional errors retain diagnostics and cannot hide missing, duplicate o
 			{ HARNESS_EVIDENCE_DIR: join(root, 'evidence') }
 		);
 		expect(result.exitCode).toBe(1);
-		const results = JSON.parse(result.stdout).suites[0].specs.map((spec: Spec) => spec.tests[0]);
+		const report = JSON.parse(result.stdout);
+		console.info(`Effective Playwright workers: ${report.config.metadata.actualWorkers}`);
+		const results = report.suites[0].specs.map((spec: Spec) => spec.tests[0]);
 		expect(results.map((item: Execution) => item.status)).toEqual([
 			'expected',
 			'expected',
@@ -71,18 +74,19 @@ async function assertPersisted(results: Execution[], root: string) {
 	expect(kept.find((item) => item.test.includes('missing expected error'))).toMatchObject({
 		errors: [],
 		retry: 0,
-		file: 'expected.spec.ts'
+		file: 'expected-page.spec.ts'
 	});
 }
 
 test('API-only checks do not require a browser executable', async () => {
+	console.info(`E2E integration worker ${process.env.VITEST_POOL_ID}`);
 	const root = await mkdtemp(join(tmpdir(), 'harness-api-only-'));
 	try {
 		await runHarness(['new', 'app', 'api-only'], root);
 		const project = join(root, 'api-only');
 		await symlink(resolve('node_modules'), join(project, 'node_modules'), 'dir');
 		await runHarness(['generate', 'e2e', 'Api'], project);
-		const path = join(project, 'tests/e2e/api.spec.ts');
+		const path = join(project, 'tests/e2e/api-page.spec.ts');
 		const imports = (await readFile(path, 'utf8')).split('\n')[0];
 		await writeFile(
 			path,
@@ -91,7 +95,7 @@ test('API-only checks do not require a browser executable', async () => {
 		);
 		await writeFile(
 			join(project, 'playwright.config.ts'),
-			"export default { testDir: 'tests/e2e', reporter: 'json', use: { launchOptions: { executablePath: '/nonexistent/harness-browser' } } };\n"
+			"export default { testDir: 'tests/e2e', testMatch: 'api-page.spec.ts', reporter: 'json', use: { launchOptions: { executablePath: '/nonexistent/harness-browser' } } };\n"
 		);
 		const result = await runCommand(
 			['bun', resolve('node_modules/@playwright/test/cli.js'), 'test'],

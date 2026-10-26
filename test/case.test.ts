@@ -2,18 +2,15 @@ import { afterAll, expect, test } from 'vitest';
 import { evidenceRequested, recordCapture } from '../src/utils/record-capture/recordCapture';
 import { toCamelCase, toKebabCase, toPascalCase, toSnakeCase } from '../src/core/case';
 
-test('normalizes names across common code shapes', () => {
-	expect(toPascalCase('blog-post')).toBe('BlogPost');
-	expect(toCamelCase('Blog post')).toBe('blogPost');
-	expect(toKebabCase('BlogPost')).toBe('blog-post');
-	expect(toSnakeCase('BlogPost')).toBe('blog_post');
-});
+import manifest from '../specification/units/function.case.json';
+import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService';
+import type { ComponentManifest } from '../src/core/unitTypes';
 
-test('drops extra separators while preserving numbers', () => {
-	expect(toPascalCase('  api__v2 report  ')).toBe('ApiV2Report');
-	expect(toCamelCase('API v2 report')).toBe('apiV2Report');
-	expect(toKebabCase('API v2 report')).toBe('api-v2-report');
-	expect(toSnakeCase('API v2 report')).toBe('api_v2_report');
+new TestExpectationService().registerExamples(test, manifest as ComponentManifest, {
+	toCamelCase,
+	toKebabCase,
+	toPascalCase,
+	toSnakeCase
 });
 
 // Automatically retain a representative workload when the normal verification requests evidence.

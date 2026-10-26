@@ -1,6 +1,7 @@
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
+import { assertTaskModelIdentity } from '../../support/taskModelIdentity';
 import { observedTaskOperation } from '../../support/taskProfiles';
 import {
 	claudeCompletion,
@@ -73,6 +74,11 @@ test('a completed CLI run that reports another model is rejected', async () => {
 		stdout: claudeOtherModelCompletion()
 	}));
 	await expect(runner.run(makeTaskInput())).rejects.toThrow('different model');
+	await observedTaskOperation(
+		'adapter.agents-providers-module-task-runner',
+		'require-public-model-identity',
+		assertTaskModelIdentity
+	);
 });
 test.each(['claude', 'codex'] as const)(
 	'public %s usage is retained without guessing absent counters',

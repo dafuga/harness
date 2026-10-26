@@ -1,0 +1,60 @@
+{
+	"name": "contract-subject-counts",
+	"goal": "Keep each callable case identity stable when a sibling callable gains a declared capability",
+	"createdAt": "2026-10-25T14:12:32.286Z",
+	"updatedAt": "2026-10-25T14:17:09.081Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-25T14:12:32.950Z",
+			"evidence": "Unit-wide capability comparison permits renaming a second callable case when only the first callable gains an authored example."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-25T14:12:33.429Z",
+			"evidence": "The existing compare case covered only a single entity. Strengthened that same case with two callables: a legitimate new first example cannot authorize a second case identity change. Two tests remain."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-25T14:12:41.658Z",
+			"evidence": "The existing comparison case fails because a first-callable capability addition authorizes changing second-callable case identity; immutable Harness proof retains the exact failure and unchanged two-test suite."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-25T14:16:52.096Z",
+			"evidence": "Compare case IDs separately by callable subject and compare only that callable signatures and authored examples, with declared shared states and props. The same two-case suite now rejects sibling identity changes."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-25T14:17:09.081Z",
+			"evidence": "The frozen two-case suite passes at the repair commit after failing on the sibling-capability fixture. Harness retains the unchanged command, full test corpus, failed assertion and paired runtime profile."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -1564,12 +1564,6 @@
 	"files": [
 		{
 			"unit": "desktop.initializer.initialize-desktop",
-			"from": "packages/desktop/src/initializers/initializeDesktop.ts",
-			"to": "packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts",
-			"definition": "3cc3ecfe03737f3fdcb5daaec8070472370a26902b8f941f23f4eb2fd0e7f0fc"
-		},
-		{
-			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"definition": "3f641a8d687006a3b8a4a12bccd84abb9dc14ea1704e76cc53af5f77581e6cfa",
@@ -1640,13 +1634,13 @@
 			"unit": "service.regression-proof",
 			"from": "src/services/RegressionProofService.ts",
 			"to": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-			"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
+			"definition": "31b77a66cd2751b8b01b4ba45e3fdb0ecddff4899f747d8717ab3429bc3ddc15",
 			"relocationDefinition": "fe7669ca45e2a0ea78e302821cd1fb8a23eb10a79522d1afd2e7f95d093c865c",
 			"review": {
-				"commit": "b0fc91c011ea2c787af5280b660f6fa03a6cc77b",
+				"commit": "37096c026eafe524e73c927701f06207231c9f24",
 				"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
-				"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
-				"reason": "Pass exact selected-revision registry IDs into scoped actual screenshot admission, rejecting unknown bindings while preserving registered retired and unscoped attachments."
+				"definition": "31b77a66cd2751b8b01b4ba45e3fdb0ecddff4899f747d8717ab3429bc3ddc15",
+				"reason": "Review revision-bound class audio retention and sealed decoding in the owned proof pipeline; preserve original moves, earlier reviews and image behavior."
 			},
 			"previousReviews": [
 				{
@@ -1672,6 +1666,24 @@
 					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
 					"definition": "20d82a9911c8fbf0b9f59a2e7da692bd3654873a1bb3bca25ec2bd63e60fa1f4",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b0fc91c011ea2c787af5280b660f6fa03a6cc77b",
+					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+					"definition": "8e44c013f1f5f068dd40974d5a94f7f6a103ab7c2cb8e343fb9a18b9908af4ff",
+					"reason": "Pass exact selected-revision registry IDs into scoped actual screenshot admission, rejecting unknown bindings while preserving registered retired and unscoped attachments."
+				},
+				{
+					"commit": "7fdf168400f4f060f63817c29436d8dfcdb3913e",
+					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+					"definition": "691d2c0809e3f2571deb6718a0ebc71329cef179c48379d861b93a51dca58232",
+					"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+				},
+				{
+					"commit": "bfc281f4b374dec4b8bfbaf98dfe88a967109570",
+					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+					"definition": "31b77a66cd2751b8b01b4ba45e3fdb0ecddff4899f747d8717ab3429bc3ddc15",
+					"reason": "Seal authored expectation provenance alongside the unchanged test blob corpus; preserve all original source and review records."
 				}
 			]
 		},
@@ -1679,13 +1691,13 @@
 			"unit": "workflow.load-units",
 			"from": "src/workflows/loadUnits.ts",
 			"to": "src/workflows/development-tooling/load-units/loadUnits.ts",
-			"definition": "d501e458db3d1381ecab0a098e4a7a2eda9c57a0d88ecc9b4a06d60baeac049a",
+			"definition": "db0a270c6cf1d1edbe2e51ccf1ae7f9f4a33c3965d8f6beda4fbc8c32f07276e",
 			"relocationDefinition": "43ff49f5ab22f48436c28b0e10bec73f575dde651160657b10cd29c0b1389769",
 			"review": {
-				"commit": "ebe557d670738560a9022377e71f260b328ae685",
+				"commit": "403a7493fa5394ee7f733242aef46117ed4d4030",
 				"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
-				"definition": "d501e458db3d1381ecab0a098e4a7a2eda9c57a0d88ecc9b4a06d60baeac049a",
-				"reason": "Validate active config controls against committed syntax while preserving retired histories."
+				"definition": "db0a270c6cf1d1edbe2e51ccf1ae7f9f4a33c3965d8f6beda4fbc8c32f07276e",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 			},
 			"previousReviews": [
 				{
@@ -1705,6 +1717,18 @@
 					"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
 					"definition": "848fdef5a1df6e0f2565f7a1a992586701b49bed2e2c4d9ba14d73c13c9a0836",
 					"reason": "Reject config controls that are not values in their declared source."
+				},
+				{
+					"commit": "ebe557d670738560a9022377e71f260b328ae685",
+					"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
+					"definition": "d501e458db3d1381ecab0a098e4a7a2eda9c57a0d88ecc9b4a06d60baeac049a",
+					"reason": "Validate active config controls against committed syntax while preserving retired histories."
+				},
+				{
+					"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
+					"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
+					"definition": "e5963c6997dd60fb9a78bb07073c19dd211daa62d2d38a6197baab5f4a9eb350",
+					"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 				}
 			]
 		},
@@ -1733,13 +1757,13 @@
 			"unit": "function.derive-manifest",
 			"from": "src/services/unit-index-service/deriveManifest.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-			"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
+			"definition": "26b4695cbbb9495f21a27501347ddf0254dfc030e31856450b887ff2f2892f96",
 			"relocationDefinition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65",
 			"review": {
-				"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+				"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-				"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
-				"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof."
+				"definition": "26b4695cbbb9495f21a27501347ddf0254dfc030e31856450b887ff2f2892f96",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 			},
 			"previousReviews": [
 				{
@@ -1771,6 +1795,12 @@
 					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
 					"definition": "daea7400bead3e801fc5023cc628f0fc98e2b35ad5c0ba2ca5168b6810c140b5",
 					"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit."
+				},
+				{
+					"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+					"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
+					"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof."
 				}
 			]
 		},
@@ -2618,6 +2648,12 @@
 					"path": "src/cli/program/UnitsCommand.ts",
 					"definition": "6113964f0f5792544ce96043fbde22c6be0ef7183c00ec372440f10c2d79ed56",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
+					"path": "src/cli/program/UnitsCommand.ts",
+					"definition": "2f4f017d6d6654465e272877b03aaa6329c47c3024b322c1afb1d07d4f1a83e6",
+					"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 				}
 			]
 		},
@@ -2702,9 +2738,16 @@
 		},
 		{
 			"unit": "function.seal-record",
-			"from": "src/services/verification-service/sealRecord.ts",
-			"to": "src/workflows/verification-evidence/run-verify/verification-service/sealRecord.ts",
-			"definition": "dacd4f8cd57ab47584ad9d1dc85994664745669ebcad5330e16bf11dbed0cd40"
+			"from": "src/services/record-assembly-service/sealRecord.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord.ts",
+			"definition": "af89bde1180830bd49fa270c385edc2a512df775969dd10c5fe4871797a15d3c",
+			"relocationDefinition": "479c0146db46857a37e33e2a651c9682ca71b480f0c163ce55d57d46286ec96a",
+			"review": {
+				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord.ts",
+				"definition": "af89bde1180830bd49fa270c385edc2a512df775969dd10c5fe4871797a15d3c",
+				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+			}
 		},
 		{
 			"unit": "function.verify-plan",
@@ -2716,13 +2759,13 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
+			"definition": "2b843459cf709115f85547642f177bb4a7e2560b5ca27e760f11b62b8e4c4841",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+				"commit": "96a034905fd30aa4f0d95385266f39e831f8d152",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
-				"reason": "Validate required representative performance observations and retain unavailable source measurements and current failure reporting."
+				"definition": "2b843459cf709115f85547642f177bb4a7e2560b5ca27e760f11b62b8e4c4841",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 			},
 			"previousReviews": [
 				{
@@ -2736,6 +2779,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 					"definition": "621bfc86dd6c9e81c8e8cc09bd3b64d6efcfd9755e7822acdd0934863c485bf2",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
+					"reason": "Validate required representative performance observations and retain unavailable source measurements and current failure reporting."
 				}
 			]
 		},
@@ -2749,19 +2798,6 @@
 				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds.ts",
 				"definition": "6994520d35139d22dc9858598583a42b897f249b0159fc16181a44d0951d2960",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
-		},
-		{
-			"unit": "function.seal-record",
-			"from": "src/services/record-assembly-service/sealRecord.ts",
-			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord.ts",
-			"definition": "af89bde1180830bd49fa270c385edc2a512df775969dd10c5fe4871797a15d3c",
-			"relocationDefinition": "479c0146db46857a37e33e2a651c9682ca71b480f0c163ce55d57d46286ec96a",
-			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
-				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord.ts",
-				"definition": "af89bde1180830bd49fa270c385edc2a512df775969dd10c5fe4871797a15d3c",
 				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 			}
 		},
@@ -3548,14 +3584,22 @@
 			"unit": "service.attached-record",
 			"from": "src/services/attached-record-service/AttachedRecordService.ts",
 			"to": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
-			"definition": "260fbc51111da3bf82b8403add414ae027b472363a637401ca923b5974304cbe",
+			"definition": "027325147c73d42d1fe7017b0bd3d1ec80f962b0da79fa75a56571f96fc8695f",
 			"relocationDefinition": "b8757575d793690dcd6f3daf521c33ca6d67b2a6d3d63ee7c1f22a002400b992",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "d2b739feeade8bd818eda7f49262e0ffbd5decc9",
 				"path": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
-				"definition": "260fbc51111da3bf82b8403add414ae027b472363a637401ca923b5974304cbe",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "027325147c73d42d1fe7017b0bd3d1ec80f962b0da79fa75a56571f96fc8695f",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/services/verification-evidence/history-status-service/attached-record-service/AttachedRecordService.ts",
+					"definition": "260fbc51111da3bf82b8403add414ae027b472363a637401ca923b5974304cbe",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "function.lfs-pointer",
@@ -3584,9 +3628,9 @@
 		},
 		{
 			"unit": "desktop.function.proposal-units",
-			"from": "packages/desktop/src/services/project-run-service/proposalUnits.ts",
-			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/proposalUnits.ts",
-			"definition": "68e107f0ae5ea45994a3b5d4e9cd052d79424f3916b85ad0255a7b8f653fd033"
+			"from": "packages/desktop/src/services/project-task-service/proposalUnits.ts",
+			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/proposalUnits.ts",
+			"definition": "8a0be63c40828722028bf0dbc7296a20fa7d5fb562f72b01ec05e17a93dee9e8"
 		},
 		{
 			"unit": "workflow.run-hooks",
@@ -3727,21 +3771,15 @@
 		},
 		{
 			"unit": "service.check-run",
-			"from": "src/services/CheckRunService.ts",
-			"to": "src/workflows/run-verify/verification-service/CheckRunService.ts",
-			"definition": "3cc3ecfe03737f3fdcb5daaec8070472370a26902b8f941f23f4eb2fd0e7f0fc"
-		},
-		{
-			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "44e5129b4a7794f6aac2f13c0e044c841a795cd8af599cc9d11320c8ac6cefdf",
+			"definition": "fd6910bf3cb7e3cbc891d2571f8582ac18a6e6108d3c842ed17c272636850369",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
+				"commit": "f20abcc75b5f5b5ec7a9dc3489af5e9ba47e49b0",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "44e5129b4a7794f6aac2f13c0e044c841a795cd8af599cc9d11320c8ac6cefdf",
-				"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+				"definition": "fd6910bf3cb7e3cbc891d2571f8582ac18a6e6108d3c842ed17c272636850369",
+				"reason": "Inherit verification check CPU and memory without changing application getter reads."
 			},
 			"previousReviews": [
 				{
@@ -3755,6 +3793,18 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
 					"definition": "a9e91f3446297034bc4f2cc3cc62dff0526a4823a63902fb45973e6d3460ab7d",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "44e5129b4a7794f6aac2f13c0e044c841a795cd8af599cc9d11320c8ac6cefdf",
+					"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+				},
+				{
+					"commit": "96a034905fd30aa4f0d95385266f39e831f8d152",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "7d4f45259c62a8df15ba969556cede684b3f61de266a62d9b9b10d370f922e63",
+					"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 				}
 			]
 		},
@@ -3786,9 +3836,9 @@
 		},
 		{
 			"unit": "hub.function.auth-http",
-			"from": "packages/hub/src/services/request-session-service/authHttp.ts",
-			"to": "packages/hub/src/lib/verification-evidence/server/auth/request-session-service/authHttp.ts",
-			"definition": "ee2985c557a4f312f2631b054a681aa92cb06973d3a9dc0168918f2a401f7a85"
+			"from": "packages/hub/src/controllers/github-connection-controller/authHttp.ts",
+			"to": "packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/authHttp.ts",
+			"definition": "e98bbe7464b872b9f259bc9050b22eaa5f52b49d9e01024b7dbe3fe2cfe5cc6b"
 		},
 		{
 			"unit": "command.verify",
@@ -4103,7 +4153,14 @@
 			"unit": "service.source-impact",
 			"from": "src/services/source-impact-service/SourceImpactService.ts",
 			"to": "src/services/explorer-ui/revision-detail-service/source-impact-service/SourceImpactService.ts",
-			"definition": "e921b26b9d9c3af93a7c95177d4cf4de8bdc8ad31401a1e8472406cd7eaa8e4c"
+			"definition": "82a69e0b049567512fd6bec929b740c36c494fa1cbd4ce88634059c697afc574",
+			"relocationDefinition": "e921b26b9d9c3af93a7c95177d4cf4de8bdc8ad31401a1e8472406cd7eaa8e4c",
+			"review": {
+				"commit": "d2b739feeade8bd818eda7f49262e0ffbd5decc9",
+				"path": "src/services/explorer-ui/revision-detail-service/source-impact-service/SourceImpactService.ts",
+				"definition": "82a69e0b049567512fd6bec929b740c36c494fa1cbd4ce88634059c697afc574",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+			}
 		},
 		{
 			"unit": "function.side-impact",
@@ -4315,13 +4372,13 @@
 			"unit": "service.history-index",
 			"from": "src/services/history-index-service/HistoryIndexService.ts",
 			"to": "src/cli/program/history-index-service/HistoryIndexService.ts",
-			"definition": "f71140980e015f2666a15655362cce7789701aa5d775cf1dc9fdf322072eddb9",
+			"definition": "75071e50a10b53265f750ea934eaa70d6c3a9e504b1b89871eaad6ba52dac0a0",
 			"relocationDefinition": "97187fefdb5f0d466f569ec40cfaa64eb3979340465655336c7464d3674410cb",
 			"review": {
-				"commit": "58d3f7e0ed7a888438f53413e729ba15f5ae7656",
+				"commit": "d2b739feeade8bd818eda7f49262e0ffbd5decc9",
 				"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
-				"definition": "f71140980e015f2666a15655362cce7789701aa5d775cf1dc9fdf322072eddb9",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "75071e50a10b53265f750ea934eaa70d6c3a9e504b1b89871eaad6ba52dac0a0",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
 			},
 			"previousReviews": [
 				{
@@ -4340,6 +4397,12 @@
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
 					"definition": "0dc664d7a37b7bca22bc00d7a7f1d0fbd99b69f1594779343f1e709a38e22414",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "58d3f7e0ed7a888438f53413e729ba15f5ae7656",
+					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
+					"definition": "f71140980e015f2666a15655362cce7789701aa5d775cf1dc9fdf322072eddb9",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				}
 			]
@@ -4639,14 +4702,22 @@
 			"unit": "service.verification-gates",
 			"from": "src/services/VerificationGates.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
-			"definition": "a96d68e326480789b78bcf061c500d63dd13cdd592afa9cd9ba57c27b72834c3",
+			"definition": "184155a96d908738f2047b29f8055df210636f42a279274a25502a11b9780b28",
 			"relocationDefinition": "9782437852eb3589831812da79891f6a8a3727a289b5981275169ae5ae24a3d1",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
-				"definition": "a96d68e326480789b78bcf061c500d63dd13cdd592afa9cd9ba57c27b72834c3",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "184155a96d908738f2047b29f8055df210636f42a279274a25502a11b9780b28",
+				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates.ts",
+					"definition": "a96d68e326480789b78bcf061c500d63dd13cdd592afa9cd9ba57c27b72834c3",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.persist-reasons",
@@ -4811,12 +4882,6 @@
 				"definition": "fc956083b52bb70b6f65063933d2a7aadccef4073c727ef6487e1b7893acfdaa",
 				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 			}
-		},
-		{
-			"unit": "hub.function.auth-http",
-			"from": "packages/hub/src/controllers/github-connection-controller/authHttp.ts",
-			"to": "packages/hub/src/lib/verification-evidence/server/auth/github-connection-controller/authHttp.ts",
-			"definition": "e98bbe7464b872b9f259bc9050b22eaa5f52b49d9e01024b7dbe3fe2cfe5cc6b"
 		},
 		{
 			"unit": "reports.function.preview-node",
@@ -5068,19 +5133,6 @@
 		},
 		{
 			"unit": "desktop.adapter.capacitor-account",
-			"from": "packages/desktop/src/adapters/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-			"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
-			"relocationDefinition": "f54f1586b418a653ad39961751f61e977322b2dfa5d0ab7c8f660f3bb3cdd01a",
-			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
-				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts",
-				"definition": "70a7d0dab7d16078c4fea5135346fdd88a87b30923b8d0c9a46cdf779dd45ce5",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
-		},
-		{
-			"unit": "desktop.adapter.capacitor-account",
 			"from": "packages/desktop/src/adapters/capacitor-account-adapter/capacitorAccountCodec.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts",
 			"definition": "66cb4f1b1f00e91a021140ec2916703f6f4b2e01dd1b4cc30197a9bb5dfc842b"
@@ -5137,12 +5189,6 @@
 				"definition": "8c771efe4a0656c993f5384024042df58ac6123ba1223a421e4a36427d19c171",
 				"reason": "Retain main\u2019s verified change promotion after approved project tasks."
 			}
-		},
-		{
-			"unit": "desktop.function.proposal-units",
-			"from": "packages/desktop/src/services/project-task-service/proposalUnits.ts",
-			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/proposalUnits.ts",
-			"definition": "8a0be63c40828722028bf0dbc7296a20fa7d5fb562f72b01ec05e17a93dee9e8"
 		},
 		{
 			"unit": "desktop.service.change-run",

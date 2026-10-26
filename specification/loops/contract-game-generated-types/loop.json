@@ -1,0 +1,60 @@
+{
+	"name": "contract-game-generated-types",
+	"goal": "Compile generated 2d and 3d game projects through source and bundled CLI entrypoints using their unchanged standard cases",
+	"createdAt": "2026-10-26T11:25:17.263Z",
+	"updatedAt": "2026-10-26T11:56:32.944Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:35:55.445Z",
+			"evidence": "The existing four dimension/entry cases fail normal game checks because generated inventory routes cannot resolve $app/state. Failed diagnostic capture a815fa4a120a retains full compiler output; actual game rendering still passes before compilation."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:35:55.969Z",
+			"evidence": "The existing app CLI case also generates an API whose SvelteKit import masks missing ambient declarations. Preserve the four game combinations; strengthen the existing app-plan case with a framework type-reference assertion and retain normal compiler execution."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:46:15.167Z",
+			"evidence": "At test-only f37f77d370, laptop red e16f1da1a990 fails the existing standalone app type-reference case and four existing game combinations. Compiler output identifies unresolved $app/state before screenshot baseline admission."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:56:31.522Z",
+			"evidence": "Product-only a1dd559fbc emits src/app.d.ts with the framework ambient type reference for every generated app/game. Standalone routes resolve virtual modules without incidental API imports; frozen cases are unchanged."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-26T11:56:32.944Z",
+			"evidence": "Matched laptop green 3d6924ccbe4a passes the identical ten-case command after red e16f1da1a990. All four game combinations compile, reject missing baselines, build, audit and retain gameplay/invalid-document assertions."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

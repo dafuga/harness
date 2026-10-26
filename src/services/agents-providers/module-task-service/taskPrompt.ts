@@ -5,6 +5,7 @@ import type {
 	TaskSelection
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
+import { bugRepairPolicy } from '../../../utils/development-tooling/bugRepairPolicy';
 const testFile = /(^|\/)(test|tests)\/|\.(test|spec)\.[jt]sx?$/;
 export function preparedTaskFiles(task: ModuleTask): string[] {
 	const role = task.role ?? 'implementation';
@@ -40,6 +41,8 @@ export function moduleTaskPrompt(
 		role === 'verification'
 			? 'Verification capability: edit only explicitly assigned test or verification files; do not edit implementation source.'
 			: 'Implementation capability: edit only assigned module-owned source files; verification files are not implementation access.',
+		'Write only those files and Harness task-owned state or evidence. Do not update personal or agent memory.',
+		...bugRepairPolicy(),
 		`Task: ${task.title} (${task.id})`,
 		task.instructions,
 		role === 'verification'

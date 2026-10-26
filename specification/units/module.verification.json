@@ -63,7 +63,12 @@
 			"ProfileInput",
 			"TaskCompletionService",
 			"TaskAudit",
-			"TaskAuditInput"
+			"TaskAuditInput",
+			"TestArtifactService",
+			"TestArtifact",
+			"TestExpectationService",
+			"TestContractService",
+			"TestDiscoveryService"
 		]
 	},
 	"contract": {
@@ -145,6 +150,26 @@
 		},
 		{
 			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-artifact",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-discovery",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-expectation",
 			"via": "reexport",
 			"origin": "derived"
 		}

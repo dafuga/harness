@@ -36,7 +36,13 @@
 				"description": "True only when frame bytes exceed the limit; equal size is accepted. Text-length bounds avoid encoding when the answer is already certain."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A missing required runtime object fails property access."
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -56,6 +62,387 @@
 		]
 	},
 	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow a short text frame below the default byte limit",
+				"call": "frameTooLarge(\"ping\")",
+				"input": ["ping"],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow text exactly at the default byte limit",
+				"call": "frameTooLarge(\"x\".repeat(262144))",
+				"input": [
+					{
+						"$fixture": "repeat-string",
+						"character": "x",
+						"count": 262144
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject text one byte over the default byte limit",
+				"call": "frameTooLarge(\"x\".repeat(262145))",
+				"input": [
+					{
+						"$fixture": "repeat-string",
+						"character": "x",
+						"count": 262145
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow two-byte UTF-8 text exactly at the default byte limit",
+				"call": "frameTooLarge(\"é\".repeat(131072))",
+				"input": [
+					{
+						"$fixture": "repeat-string",
+						"character": "é",
+						"count": 131072
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject two-byte UTF-8 text one character over the default byte limit",
+				"call": "frameTooLarge(\"é\".repeat(131073))",
+				"input": [
+					{
+						"$fixture": "repeat-string",
+						"character": "é",
+						"count": 131073
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject three-byte UTF-8 text beyond the default byte limit",
+				"call": "frameTooLarge(\"€\".repeat(Math.ceil(262144 / 3) + 1))",
+				"input": [
+					{
+						"$fixture": "repeat-string",
+						"character": "€",
+						"count": 87383
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow a binary frame exactly at the default byte limit",
+				"call": "frameTooLarge(new ArrayBuffer(262144))",
+				"input": [
+					{
+						"$fixture": "ArrayBuffer",
+						"byteLength": 262144
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject a binary frame one byte over the default byte limit",
+				"call": "frameTooLarge(new ArrayBuffer(262145))",
+				"input": [
+					{
+						"$fixture": "ArrayBuffer",
+						"byteLength": 262145
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow text exactly at a custom byte limit",
+				"call": "frameTooLarge(\"abc\", 3)",
+				"input": ["abc", 3],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject text one byte over a custom byte limit",
+				"call": "frameTooLarge(\"abcd\", 3)",
+				"input": ["abcd", 3],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow an empty text frame",
+				"call": "frameTooLarge('')",
+				"input": [""],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Allow an empty frame at a zero byte limit",
+				"call": "frameTooLarge('', 0)",
+				"input": ["", 0],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject a nonempty frame at a zero byte limit",
+				"call": "frameTooLarge('a', 0)",
+				"input": ["a", 0],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Reject a null frame",
+				"call": "frameTooLarge(null)",
+				"input": [null],
+				"expected": {
+					"kind": "error",
+					"value": "Cannot read properties of null (reading 'byteLength')"
+				}
+			},
+			{
+				"subject": "frameTooLarge",
+				"name": "Apply numeric comparison to a null limit",
+				"call": "frameTooLarge('abc', null)",
+				"input": ["abc", null],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			}
+		],
+		"states": ["input", "boundary", "invalid"],
+		"props": ["limit", "message"],
+		"cases": [
+			{
+				"id": "frame-too-large.1",
+				"state": "input",
+				"subject": "frameTooLarge",
+				"example": "Allow a short text frame below the default byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Allow a short text frame below the default byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.2",
+				"state": "boundary",
+				"subject": "frameTooLarge",
+				"example": "Allow text exactly at the default byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Allow text exactly at the default byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.3",
+				"state": "boundary",
+				"subject": "frameTooLarge",
+				"example": "Reject text one byte over the default byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Reject text one byte over the default byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.4",
+				"state": "boundary",
+				"subject": "frameTooLarge",
+				"example": "Allow two-byte UTF-8 text exactly at the default byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Allow two-byte UTF-8 text exactly at the default byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.5",
+				"state": "boundary",
+				"subject": "frameTooLarge",
+				"example": "Reject two-byte UTF-8 text one character over the default byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Reject two-byte UTF-8 text one character over the default byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.6",
+				"state": "boundary",
+				"subject": "frameTooLarge",
+				"example": "Reject three-byte UTF-8 text beyond the default byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Reject three-byte UTF-8 text beyond the default byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.7",
+				"state": "boundary",
+				"subject": "frameTooLarge",
+				"example": "Allow a binary frame exactly at the default byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Allow a binary frame exactly at the default byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.8",
+				"state": "boundary",
+				"subject": "frameTooLarge",
+				"example": "Reject a binary frame one byte over the default byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Reject a binary frame one byte over the default byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.9",
+				"state": "boundary",
+				"subject": "frameTooLarge",
+				"example": "Allow text exactly at a custom byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Allow text exactly at a custom byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.10",
+				"state": "boundary",
+				"subject": "frameTooLarge",
+				"example": "Reject text one byte over a custom byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Reject text one byte over a custom byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.11",
+				"state": "input",
+				"subject": "frameTooLarge",
+				"example": "Allow an empty text frame",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Allow an empty text frame"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.12",
+				"state": "boundary",
+				"subject": "frameTooLarge",
+				"example": "Allow an empty frame at a zero byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Allow an empty frame at a zero byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.13",
+				"state": "boundary",
+				"subject": "frameTooLarge",
+				"example": "Reject a nonempty frame at a zero byte limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Reject a nonempty frame at a zero byte limit"
+				},
+				"props": ["message", "limit"]
+			},
+			{
+				"id": "frame-too-large.14",
+				"state": "invalid",
+				"subject": "frameTooLarge",
+				"example": "Reject a null frame",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Reject a null frame"
+				},
+				"props": ["message", "limit"],
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "frame-too-large.15",
+				"state": "invalid",
+				"subject": "frameTooLarge",
+				"example": "Apply numeric comparison to a null limit",
+				"fixture": "packages/relay/test/utils/frame-too-large.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/frame-too-large.test.ts",
+					"title": "frameTooLarge: Apply numeric comparison to a null limit"
+				},
+				"props": ["message", "limit"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

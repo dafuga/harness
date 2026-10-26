@@ -1,0 +1,74 @@
+{
+	"name": "contract-registered-results",
+	"goal": "Compare every registered class result with its authored expectation and reject unregistered example implementations",
+	"createdAt": "2026-10-25T22:45:51.082Z",
+	"updatedAt": "2026-10-25T23:02:54.095Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-10-25T22:45:51.787Z",
+			"evidence": "The new registerCases runner compares JSON only for API cases. Class callbacks can return wrong values without failing their authored expected result. registerExamples also ignores unsupported implementations, weakening exact registration admission."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-10-25T22:45:52.315Z",
+			"evidence": "The existing registerCases initialized case checks API value differences but only checks execution count for a void class callback. Strengthen that same method case with correct and wrong void, value and error outcomes. Extend the existing registerExamples method case with an extra implementation mapping; keep all four cases and their identities unchanged."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-25T22:54:35.765Z",
+			"evidence": "Retained record c299dff93ff1 at test-only checkpoint 1d0abe8ad4 fails the same four method cases with two product-caused assertion failures and two passes: unsupported mappings do not reject and wrong class output resolves. All consumer fixtures and authored results are frozen before product repair."
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "complete",
+			"completedAt": "2026-10-25T22:54:36.430Z",
+			"evidence": "Compare class callbacks through the existing authored Example result/error assertion, retaining complete API JSON matching. Reject additional implementation names before registering helper Examples. Keep all method/state cases and every integration assertion; class fixtures return their documented observations instead of placeholder descriptions."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "complete",
+			"completedAt": "2026-10-25T23:02:50.997Z",
+			"evidence": "Commit 91ed9154a1 compares registered class callbacks through the existing authored result/error checker and rejects unsupported Example implementations before registration. All 87 focused runner/consumer cases pass on harbor-mbp-2; compiler, lint, root audit and registry checks pass."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-25T23:02:52.691Z",
+			"evidence": "Matched immutable records on harbor-mbp-2: red b86a1f47a25b at 36ac722913 has two assertion failures and two passes; green 17ca6a3e52b4 at 91ed9154a1 passes the same four method cases. Command, environment, test corpus and authored expectation digests remain unchanged."
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "complete",
+			"completedAt": "2026-10-25T23:02:54.095Z",
+			"evidence": "The unchanged registerCases case invokes wrong void and value callbacks, missing and wrong error callbacks, plus successful counterparts; each mismatch must reject. The unchanged registerExamples case supplies an unsupported implementation. Broken and repaired source snapshots demonstrate failure then success with fixed case identities and counts."
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

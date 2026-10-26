@@ -3,7 +3,7 @@
 	"id": "function.resource-environment",
 	"kind": "function",
 	"title": "resourceEnvironment",
-	"responsibility": "Selects only lease and worker-budget variables for propagation alongside a separately filtered application environment.",
+	"responsibility": "Selects only resource lease, home, worker-budget and priority variables for propagation alongside a separately filtered application environment.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,7 +16,7 @@
 			{
 				"name": "resourceEnvironment.env",
 				"type": "Record<string, string | undefined>",
-				"description": "Resource and caller environment used to resolve paths or bounded worker settings; unrelated credentials are not newly propagated."
+				"description": "Environment record read for the recognized resource and native-worker keys; other entries, including credentials, are not forwarded. Omitting it reads the current process environment."
 			}
 		],
 		"outputs": [
@@ -26,7 +26,13 @@
 				"description": "Only recognized resource and native-worker environment fields, preserving their supplied values."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A null environment fails at the first property read; no fields are returned."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
@@ -40,6 +46,669 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward the resources home path",
+				"call": "resourceEnvironment({ HARNESS_RESOURCES_HOME: '/var/lib/harness/resources' })",
+				"input": [
+					{
+						"HARNESS_RESOURCES_HOME": "/var/lib/harness/resources"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCES_HOME": "/var/lib/harness/resources"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward the lease identifier",
+				"call": "resourceEnvironment({ HARNESS_RESOURCE_LEASE: 'lease-7f3a' })",
+				"input": [
+					{
+						"HARNESS_RESOURCE_LEASE": "lease-7f3a"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_LEASE": "lease-7f3a"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward the CPU reservation",
+				"call": "resourceEnvironment({ HARNESS_RESOURCE_CPUS: '2' })",
+				"input": [
+					{
+						"HARNESS_RESOURCE_CPUS": "2"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_CPUS": "2"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward the memory reservation in MiB",
+				"call": "resourceEnvironment({ HARNESS_RESOURCE_MEMORY_MIB: '4096' })",
+				"input": [
+					{
+						"HARNESS_RESOURCE_MEMORY_MIB": "4096"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_MEMORY_MIB": "4096"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward the scheduling priority",
+				"call": "resourceEnvironment({ HARNESS_RESOURCE_PRIORITY: 'agent-test' })",
+				"input": [
+					{
+						"HARNESS_RESOURCE_PRIORITY": "agent-test"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_PRIORITY": "agent-test"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward the Cargo build job limit",
+				"call": "resourceEnvironment({ CARGO_BUILD_JOBS: '4' })",
+				"input": [
+					{
+						"CARGO_BUILD_JOBS": "4"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"CARGO_BUILD_JOBS": "4"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward the Rayon thread limit",
+				"call": "resourceEnvironment({ RAYON_NUM_THREADS: '4' })",
+				"input": [
+					{
+						"RAYON_NUM_THREADS": "4"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"RAYON_NUM_THREADS": "4"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward the Go processor limit",
+				"call": "resourceEnvironment({ GOMAXPROCS: '4' })",
+				"input": [
+					{
+						"GOMAXPROCS": "4"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"GOMAXPROCS": "4"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward the OpenMP thread limit",
+				"call": "resourceEnvironment({ OMP_NUM_THREADS: '4' })",
+				"input": [
+					{
+						"OMP_NUM_THREADS": "4"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"OMP_NUM_THREADS": "4"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward only scheduling context separately from application and credential values",
+				"call": "resourceEnvironment({ HARNESS_RESOURCE_LEASE: 'lease', HARNESS_RESOURCE_CPUS: '2', OPENAI_API_KEY: 'synthetic-key', OTHER: 'value' })",
+				"input": [
+					{
+						"HARNESS_RESOURCE_LEASE": "lease",
+						"HARNESS_RESOURCE_CPUS": "2",
+						"OPENAI_API_KEY": "synthetic-key",
+						"OTHER": "value"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_LEASE": "lease",
+						"HARNESS_RESOURCE_CPUS": "2"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Drop a longer name that only begins with a recognized key",
+				"call": "resourceEnvironment({ HARNESS_RESOURCE_LEASE_OWNER: 'agent' })",
+				"input": [
+					{
+						"HARNESS_RESOURCE_LEASE_OWNER": "agent"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Drop a lower-case spelling of a recognized key",
+				"call": "resourceEnvironment({ harness_resource_lease: 'lease' })",
+				"input": [
+					{
+						"harness_resource_lease": "lease"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Keep an empty lease value",
+				"call": "resourceEnvironment({ HARNESS_RESOURCE_LEASE: '' })",
+				"input": [
+					{
+						"HARNESS_RESOURCE_LEASE": ""
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_LEASE": ""
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Return an empty record when no recognized key is present",
+				"call": "resourceEnvironment({ OTHER: 'value' })",
+				"input": [
+					{
+						"OTHER": "value"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Omit a recognized key whose value is explicitly undefined",
+				"call": "resourceEnvironment({ HARNESS_RESOURCE_CPUS: undefined, HARNESS_RESOURCE_LEASE: 'lease' })",
+				"input": [
+					{
+						"HARNESS_RESOURCE_CPUS": {
+							"$fixture": "undefined"
+						},
+						"HARNESS_RESOURCE_LEASE": "lease"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_LEASE": "lease"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Read a lease value supplied by a getter",
+				"call": "resourceEnvironment({ get HARNESS_RESOURCE_LEASE() { return 'lease'; } })",
+				"input": [
+					{
+						"HARNESS_RESOURCE_LEASE": {
+							"$fixture": "getter",
+							"value": "lease"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_LEASE": "lease"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Read a CPU reservation inherited through the prototype",
+				"call": "resourceEnvironment(Object.create({ HARNESS_RESOURCE_CPUS: '2' }))",
+				"input": [
+					{
+						"$fixture": "prototype",
+						"values": {
+							"HARNESS_RESOURCE_CPUS": "2"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_CPUS": "2"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Read a memory reservation from an environment without a prototype",
+				"call": "resourceEnvironment(Object.assign(Object.create(null), { HARNESS_RESOURCE_MEMORY_MIB: '4096' }))",
+				"input": [
+					{
+						"$fixture": "null-prototype",
+						"values": {
+							"HARNESS_RESOURCE_MEMORY_MIB": "4096"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_MEMORY_MIB": "4096"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward every recognized key together",
+				"call": "resourceEnvironment({ HARNESS_RESOURCES_HOME: '/var/lib/harness/resources', HARNESS_RESOURCE_LEASE: 'lease-7f3a', HARNESS_RESOURCE_CPUS: '2', HARNESS_RESOURCE_MEMORY_MIB: '4096', HARNESS_RESOURCE_PRIORITY: 'agent-test', CARGO_BUILD_JOBS: '2', RAYON_NUM_THREADS: '2', GOMAXPROCS: '2', OMP_NUM_THREADS: '2' })",
+				"input": [
+					{
+						"HARNESS_RESOURCES_HOME": "/var/lib/harness/resources",
+						"HARNESS_RESOURCE_LEASE": "lease-7f3a",
+						"HARNESS_RESOURCE_CPUS": "2",
+						"HARNESS_RESOURCE_MEMORY_MIB": "4096",
+						"HARNESS_RESOURCE_PRIORITY": "agent-test",
+						"CARGO_BUILD_JOBS": "2",
+						"RAYON_NUM_THREADS": "2",
+						"GOMAXPROCS": "2",
+						"OMP_NUM_THREADS": "2"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCES_HOME": "/var/lib/harness/resources",
+						"HARNESS_RESOURCE_LEASE": "lease-7f3a",
+						"HARNESS_RESOURCE_CPUS": "2",
+						"HARNESS_RESOURCE_MEMORY_MIB": "4096",
+						"HARNESS_RESOURCE_PRIORITY": "agent-test",
+						"CARGO_BUILD_JOBS": "2",
+						"RAYON_NUM_THREADS": "2",
+						"GOMAXPROCS": "2",
+						"OMP_NUM_THREADS": "2"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Omit an undefined native key while forwarding a partial budget",
+				"call": "resourceEnvironment({ HARNESS_RESOURCE_CPUS: '2', HARNESS_RESOURCE_MEMORY_MIB: '4096', GOMAXPROCS: undefined })",
+				"input": [
+					{
+						"HARNESS_RESOURCE_CPUS": "2",
+						"HARNESS_RESOURCE_MEMORY_MIB": "4096",
+						"GOMAXPROCS": {
+							"$fixture": "undefined"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_CPUS": "2",
+						"HARNESS_RESOURCE_MEMORY_MIB": "4096"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Forward the native thread limits with the CPU reservation",
+				"call": "resourceEnvironment({ HARNESS_RESOURCE_CPUS: '2', CARGO_BUILD_JOBS: '2', RAYON_NUM_THREADS: '2', GOMAXPROCS: '2', OMP_NUM_THREADS: '2' })",
+				"input": [
+					{
+						"HARNESS_RESOURCE_CPUS": "2",
+						"CARGO_BUILD_JOBS": "2",
+						"RAYON_NUM_THREADS": "2",
+						"GOMAXPROCS": "2",
+						"OMP_NUM_THREADS": "2"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"HARNESS_RESOURCE_CPUS": "2",
+						"CARGO_BUILD_JOBS": "2",
+						"RAYON_NUM_THREADS": "2",
+						"GOMAXPROCS": "2",
+						"OMP_NUM_THREADS": "2"
+					}
+				}
+			},
+			{
+				"subject": "resourceEnvironment",
+				"name": "Refuse a null environment as a TypeError",
+				"call": "resourceEnvironment(null)",
+				"input": [null],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "TypeError",
+						"message": "Cannot read properties of null (reading 'HARNESS_RESOURCES_HOME')"
+					}
+				}
+			}
+		],
+		"states": ["input", "combination", "boundary", "invalid"],
+		"props": ["env"],
+		"cases": [
+			{
+				"id": "resource-environment.resources-home",
+				"state": "input",
+				"subject": "resourceEnvironment",
+				"example": "Forward the resources home path",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward the resources home path"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.lease",
+				"state": "input",
+				"subject": "resourceEnvironment",
+				"example": "Forward the lease identifier",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward the lease identifier"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.cpus",
+				"state": "input",
+				"subject": "resourceEnvironment",
+				"example": "Forward the CPU reservation",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward the CPU reservation"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.memory-mib",
+				"state": "input",
+				"subject": "resourceEnvironment",
+				"example": "Forward the memory reservation in MiB",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward the memory reservation in MiB"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.priority",
+				"state": "input",
+				"subject": "resourceEnvironment",
+				"example": "Forward the scheduling priority",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward the scheduling priority"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.cargo-build-jobs",
+				"state": "input",
+				"subject": "resourceEnvironment",
+				"example": "Forward the Cargo build job limit",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward the Cargo build job limit"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.rayon-threads",
+				"state": "input",
+				"subject": "resourceEnvironment",
+				"example": "Forward the Rayon thread limit",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward the Rayon thread limit"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.gomaxprocs",
+				"state": "input",
+				"subject": "resourceEnvironment",
+				"example": "Forward the Go processor limit",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward the Go processor limit"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.omp-threads",
+				"state": "input",
+				"subject": "resourceEnvironment",
+				"example": "Forward the OpenMP thread limit",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward the OpenMP thread limit"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.scheduling-with-credential",
+				"state": "combination",
+				"subject": "resourceEnvironment",
+				"example": "Forward only scheduling context separately from application and credential values",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward only scheduling context separately from application and credential values"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.longer-name",
+				"state": "boundary",
+				"subject": "resourceEnvironment",
+				"example": "Drop a longer name that only begins with a recognized key",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Drop a longer name that only begins with a recognized key"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.lowercase-name",
+				"state": "boundary",
+				"subject": "resourceEnvironment",
+				"example": "Drop a lower-case spelling of a recognized key",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Drop a lower-case spelling of a recognized key"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.empty-lease",
+				"state": "boundary",
+				"subject": "resourceEnvironment",
+				"example": "Keep an empty lease value",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Keep an empty lease value"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.no-recognized-key",
+				"state": "boundary",
+				"subject": "resourceEnvironment",
+				"example": "Return an empty record when no recognized key is present",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Return an empty record when no recognized key is present"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.explicit-undefined",
+				"state": "boundary",
+				"subject": "resourceEnvironment",
+				"example": "Omit a recognized key whose value is explicitly undefined",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Omit a recognized key whose value is explicitly undefined"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.getter-lease",
+				"state": "boundary",
+				"subject": "resourceEnvironment",
+				"example": "Read a lease value supplied by a getter",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Read a lease value supplied by a getter"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.inherited-cpus",
+				"state": "boundary",
+				"subject": "resourceEnvironment",
+				"example": "Read a CPU reservation inherited through the prototype",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Read a CPU reservation inherited through the prototype"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.null-prototype-memory",
+				"state": "boundary",
+				"subject": "resourceEnvironment",
+				"example": "Read a memory reservation from an environment without a prototype",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Read a memory reservation from an environment without a prototype"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.all-recognized-keys",
+				"state": "combination",
+				"subject": "resourceEnvironment",
+				"example": "Forward every recognized key together",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward every recognized key together"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.partial-budget",
+				"state": "combination",
+				"subject": "resourceEnvironment",
+				"example": "Omit an undefined native key while forwarding a partial budget",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Omit an undefined native key while forwarding a partial budget"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.native-thread-limits",
+				"state": "combination",
+				"subject": "resourceEnvironment",
+				"example": "Forward the native thread limits with the CPU reservation",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Forward the native thread limits with the CPU reservation"
+				},
+				"props": ["env"]
+			},
+			{
+				"id": "resource-environment.null-environment",
+				"state": "invalid",
+				"subject": "resourceEnvironment",
+				"example": "Refuse a null environment as a TypeError",
+				"fixture": "specification/units/function.resource-environment.json",
+				"test": {
+					"file": "test/utils/resource-environment.test.ts",
+					"title": "resourceEnvironment: Refuse a null environment as a TypeError"
+				},
+				"props": ["env"],
+				"errors": ["TypeError"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

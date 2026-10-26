@@ -16,7 +16,7 @@ test('a clip recorded at the branch tip is heard on the overview, with its trans
 	expect(words(body)).toContain('Current audio');
 	expect(body).toContain('/harness/media/ccccccc-match-audio.wav');
 	expect(count(body, /<audio\b/g)).toBe(1);
-	expect(words(body)).toContain('Order filed.');
+	expect(words(body)).toContain('[Synthetic 440 Hz tone; no spoken words.]');
 	expect(words(body)).not.toMatch(/Audio comparison|Before · /);
 });
 

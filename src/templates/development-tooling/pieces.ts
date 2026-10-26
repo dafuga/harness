@@ -48,7 +48,6 @@ const pieceBuilders: Record<PieceKind, (name: string, context: PieceContext) => 
 	service: (name) => classFiles('services', name, 'Service'),
 	decorator: (name) => classFiles('decorators', name, 'Decorator'),
 	component: componentFiles,
-	test: testFiles,
 	feature: featureFiles,
 	migration: migrationFiles,
 	view: viewFiles,
@@ -88,21 +87,10 @@ export function pieceFiles(
 		pieceBuilders[kind](name, context).map((file) => ({
 			...file,
 			contents: file.path.endsWith('.svelte')
-				? atomicMarkup(file.contents, file.path, componentLevel(kind, context.level))
+				? atomicMarkup(file.contents, file.path, componentLevel(kind, context.level, file.path))
 				: file.contents
 		}))
 	);
-}
-
-function testFiles(name: string): PlannedFile[] {
-	const fileName = toKebabCase(name);
-
-	return [
-		{
-			path: `test/${fileName}.test.ts`,
-			contents: `import { expect, test } from 'vitest';\n\ntest('${fileName}', () => {\n\texpect(true).toBe(true);\n});\n`
-		}
-	];
 }
 
 function featureFiles(name: string): PlannedFile[] {
@@ -127,7 +115,8 @@ function migrationFiles(name: string): PlannedFile[] {
 
 export type { PieceContext } from './pieces.types';
 
-function componentLevel(kind: PieceKind, level: PieceContext['level']) {
+function componentLevel(kind: PieceKind, level: PieceContext['level'], path: string) {
+	if (path.endsWith('+page.svelte')) return 'page';
 	if (kind === 'layout') return 'layout';
 	if (['view', 'resource'].includes(kind)) return 'page';
 	return level ?? 'molecule';

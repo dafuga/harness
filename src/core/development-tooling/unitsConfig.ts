@@ -12,6 +12,8 @@ const text = z.string().min(1);
 
 export const unitsConfigSchema = z.strictObject({
 	schemaVersion: z.literal(1),
+	/** Revision-bound adoption: historical revisions without this keep their original policy. */
+	testing: z.literal(1).optional(),
 	workspaces: z.array(z.strictObject({ name: z.string(), root: text })).min(1),
 	tests: z.array(text),
 	global: z.array(text),
@@ -55,7 +57,7 @@ export const defaultGlobalFiles = [
 export const defaultUnitsConfig: UnitsConfig = {
 	schemaVersion: 1,
 	workspaces: [{ name: '', root: '.' }],
-	tests: ['test/', 'tests/'],
+	tests: ['test/', 'tests/', 'src/routes/**/__harness/**/*.svelte'],
 	global: [],
 	ignored: ['**/*.md', 'specification/features/', 'specification/loops/', '.gitignore'],
 	references: []

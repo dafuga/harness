@@ -1,10 +1,18 @@
 import { z } from 'zod';
 import { captureSchema, measurementSchema } from './verificationTypes';
+import { caseFileSchema } from './caseOutcomeSchema';
+import { unitIdPattern } from '../development-tooling/unitTypes';
 
 const commit = z.string().regex(/^[a-f0-9]{40}$/);
 const hash = z.string().regex(/^[a-f0-9]{64}$/);
 const text = z.string().min(1);
 export const regressionPhaseSchema = z.enum(['red', 'green', 'capture']);
+const authoredExpectationSchema = z.strictObject({
+	unit: z.string().regex(unitIdPattern),
+	path: caseFileSchema,
+	blob: commit,
+	sha256: hash
+});
 const focusedCaptureSchema = z.strictObject({
 	unit: text,
 	capture: captureSchema.extend({ path: z.string().regex(/^focused\/[\w.-]+$/) }),
@@ -23,6 +31,8 @@ export const regressionRecordSchema = z.strictObject({
 	tests: z.array(text).min(1),
 	/** Tests, fixtures, runner configuration and lockfiles frozen at the failing commit. */
 	inputs: z.array(z.strictObject({ path: text, hash: commit })).min(1),
+	/** Absent on historical records; source blobs and semantic digests have different roles. */
+	expectations: z.array(authoredExpectationSchema).optional(),
 	command: text,
 	assertion: text,
 	profile: text,
@@ -47,6 +57,7 @@ const pointSchema = z.strictObject({
 	command: text,
 	assertion: text,
 	output: z.string().max(2_000_000),
+	expectations: z.array(authoredExpectationSchema).optional(),
 	finishedAt: text,
 	measurements: z.array(measurementSchema).optional(),
 	captures: z

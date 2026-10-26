@@ -64,7 +64,10 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			return { ...result, usage };
 		} catch (error) {
 			const reportedModel =
-				events.find((e) => e.type === 'system' && e.subtype === 'init')?.model ?? null;
+				(input.provider === 'claude'
+					? events.find((e) => e.type === 'system' && e.subtype === 'init')
+					: [...events].reverse().find((e) => e.type === 'turn.completed')
+				)?.model ?? null;
 			throw Object.assign(error instanceof Error ? error : new Error('Task execution failed.'), {
 				usage,
 				reportedModel
@@ -107,8 +110,8 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 				process.stderr,
 				'Codex task failed; inspect CLI authentication, permissions or model access.'
 			);
-		if (result.model && result.model !== input.model)
-			throw new Error('Codex reported a different model than requested.');
+		if (!result.model) throw new Error('Codex did not report its model.');
+		if (result.model !== input.model) throw new Error('Codex ran a different model.');
 		return {
 			provider: input.provider,
 			model: input.model,

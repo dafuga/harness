@@ -1,0 +1,60 @@
+{
+	"name": "contract-check-resource-budget",
+	"goal": "Run checks within the admitted parent budget and use two GiB for standalone verification",
+	"createdAt": "2026-10-25T18:45:25.422Z",
+	"updatedAt": "2026-10-25T19:34:08.863Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-25T18:45:26.083Z",
+			"evidence": "CheckRunService.execute requests no memory amount, so the resource schema assigns 512 MiB even when its admitted caller reserved two GiB. Nested normal build/check scripts request 2048 MiB and exceed that smaller child lease. Verify needs a bounded inherited budget rather than the hidden 512 default."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-25T18:45:26.607Z",
+			"evidence": "The existing runner diagnostics cases assert statuses, retained errors and case results but never inspect the child resource budget. The canonical run/initialized case will retain those assertions and assert that its real disposable Node child receives the parent memory allocation, or the project standalone default. Preserve the method case after adoption; no standalone bug test."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-25T19:30:17.122Z",
+			"evidence": "At 415d314483 on harbor-mbp-2, retained red 4023d71c3201ebeed68f263989155f965acb1ec4411508f87f5ec35d8e264cd6 proves the existing run case receives 512 MiB instead of its real 2048 MiB parent reservation. Original diagnostics and settlement assertions, null input checks and the admitted two-read application getter all pass first; version case passes. Two cases only. No product repair yet."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-25T19:30:29.201Z",
+			"evidence": "Request CPU and memory from the supplied caller environment or real parent scheduling context, with standalone defaults of one CPU and 2048 MiB. resourceWork already merges scheduling context: retain that path and both existing caller-environment reads; do not add a normalization or environment spread. Tests and authored contract remain unchanged from 415d314483."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-25T19:34:08.863Z",
+			"evidence": "The paired records at 415d314483 and 3d16c9ff35 run the same two cases, command, authored unit contract, complete test corpus and Node22 environment on harbor-mbp-2 under one real 2 CPU/2048 MiB lease. Both method cases pass; child inherits both budgets, null inputs still reject, application getter retains two reads, and all original diagnostics/settlement assertions pass. Full verification remains pending."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

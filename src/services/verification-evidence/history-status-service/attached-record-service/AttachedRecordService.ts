@@ -33,11 +33,13 @@ export class AttachedRecordService {
 		this.lfs = new LfsAdapter(root);
 	}
 
-	/** Each stored directory is read and hashed once per process. */
+	/** Keep a bounded working set of intact directories; evicted bytes are rehashed on reuse. */
 	load(pointer: EvidencePointer): Promise<AttachedRecord> {
 		const key = `${pointer.commit}:${pointer.path}:${pointer.manifest}`;
 		const pending = this.loaded.get(key) ?? this.read(pointer);
+		this.loaded.delete(key);
 		this.loaded.set(key, pending);
+		if (this.loaded.size > 4) this.loaded.delete(this.loaded.keys().next().value!);
 		return pending;
 	}
 

@@ -3,28 +3,36 @@
 	"id": "command.loop",
 	"kind": "command",
 	"title": "loop",
-	"responsibility": "Owns the loop command registration.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Registers loop commands and their committed repair, evaluation and evidence workflows.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/cli/program/loop.ts"],
 		"symbols": ["registerLoopCommand"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerLoopCommand.program",
-				"type": "Command"
+				"type": "Command",
+				"description": "Commander program receiving the loop subcommands; invalid program objects reject registration."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerLoopCommand",
-				"type": "void"
+				"type": "void",
+				"description": "Registers commands on the supplied program and returns undefined."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "An absent program or an object without the Commander command method cannot register commands."
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -64,6 +72,264 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "registerLoopCommand",
+				"name": "Trace a loop in a generated project",
+				"call": "registerLoopCommand(program)",
+				"input": {
+					"fixture": "create"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "registerLoopCommand",
+				"name": "Emit loop instructions for app and lib projects",
+				"call": "registerLoopCommand(program)",
+				"input": {
+					"fixture": "guidance"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "registerLoopCommand",
+				"name": "Create templates and evaluate their commands",
+				"call": "registerLoopCommand(program)",
+				"input": {
+					"fixture": "evaluate"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "registerLoopCommand",
+				"name": "Record bug-fix proof with unchanged authored inputs",
+				"call": "registerLoopCommand(program)",
+				"input": {
+					"fixture": "repair",
+					"template": "bug-fix"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "registerLoopCommand",
+				"name": "Record fix proof with unchanged authored inputs",
+				"call": "registerLoopCommand(program)",
+				"input": {
+					"fixture": "repair",
+					"template": "fix"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "registerLoopCommand",
+				"name": "Record regression-prevention proof with unchanged authored inputs",
+				"call": "registerLoopCommand(program)",
+				"input": {
+					"fixture": "repair",
+					"template": "regression-prevention"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "registerLoopCommand",
+				"name": "Retain standalone evidence and history without inventing verdicts",
+				"call": "registerLoopCommand(program)",
+				"input": {
+					"fixture": "capture"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "registerLoopCommand",
+				"name": "Reject a null program",
+				"call": "registerLoopCommand(null)",
+				"input": {
+					"fixture": "null"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "TypeError",
+						"message": "Cannot read properties of null (reading 'command')"
+					}
+				}
+			},
+			{
+				"subject": "registerLoopCommand",
+				"name": "Reject an omitted program",
+				"call": "registerLoopCommand(undefined)",
+				"input": {
+					"fixture": "undefined"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "TypeError",
+						"message": "Cannot read properties of undefined (reading 'command')"
+					}
+				}
+			},
+			{
+				"subject": "registerLoopCommand",
+				"name": "Reject a program without command registration",
+				"call": "registerLoopCommand({})",
+				"input": {
+					"fixture": "object"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "TypeError",
+						"message": "program.command is not a function"
+					}
+				}
+			}
+		],
+		"states": ["registered", "invalid"],
+		"props": ["program"],
+		"cases": [
+			{
+				"id": "loop.create",
+				"state": "registered",
+				"subject": "registerLoopCommand",
+				"example": "Trace a loop in a generated project",
+				"fixture": "test/support/loop-repair/loopCommandExamples.ts",
+				"test": {
+					"file": "test/loop.e2e.test.ts",
+					"title": "registerLoopCommand: Trace a loop in a generated project"
+				},
+				"props": ["program"]
+			},
+			{
+				"id": "loop.guidance",
+				"state": "registered",
+				"subject": "registerLoopCommand",
+				"example": "Emit loop instructions for app and lib projects",
+				"fixture": "test/support/loop-repair/loopCommandExamples.ts",
+				"test": {
+					"file": "test/loop.e2e.test.ts",
+					"title": "registerLoopCommand: Emit loop instructions for app and lib projects"
+				},
+				"props": ["program"]
+			},
+			{
+				"id": "loop.evaluate",
+				"state": "registered",
+				"subject": "registerLoopCommand",
+				"example": "Create templates and evaluate their commands",
+				"fixture": "test/support/loop-repair/loopCommandExamples.ts",
+				"test": {
+					"file": "test/loop.e2e.test.ts",
+					"title": "registerLoopCommand: Create templates and evaluate their commands"
+				},
+				"props": ["program"]
+			},
+			{
+				"id": "loop.bug-fix",
+				"state": "registered",
+				"subject": "registerLoopCommand",
+				"example": "Record bug-fix proof with unchanged authored inputs",
+				"fixture": "test/support/loop-repair/loopCommandProofExamples.ts",
+				"test": {
+					"file": "test/loop.e2e.test.ts",
+					"title": "registerLoopCommand: Record bug-fix proof with unchanged authored inputs"
+				},
+				"props": ["program"]
+			},
+			{
+				"id": "loop.fix",
+				"state": "registered",
+				"subject": "registerLoopCommand",
+				"example": "Record fix proof with unchanged authored inputs",
+				"fixture": "test/support/loop-repair/loopCommandProofExamples.ts",
+				"test": {
+					"file": "test/loop.e2e.test.ts",
+					"title": "registerLoopCommand: Record fix proof with unchanged authored inputs"
+				},
+				"props": ["program"]
+			},
+			{
+				"id": "loop.regression-prevention",
+				"state": "registered",
+				"subject": "registerLoopCommand",
+				"example": "Record regression-prevention proof with unchanged authored inputs",
+				"fixture": "test/support/loop-repair/loopCommandProofExamples.ts",
+				"test": {
+					"file": "test/loop.e2e.test.ts",
+					"title": "registerLoopCommand: Record regression-prevention proof with unchanged authored inputs"
+				},
+				"props": ["program"]
+			},
+			{
+				"id": "loop.capture",
+				"state": "registered",
+				"subject": "registerLoopCommand",
+				"example": "Retain standalone evidence and history without inventing verdicts",
+				"fixture": "test/support/loop-repair/loopCommandProofExamples.ts",
+				"test": {
+					"file": "test/loop.e2e.test.ts",
+					"title": "registerLoopCommand: Retain standalone evidence and history without inventing verdicts"
+				},
+				"props": ["program"]
+			},
+			{
+				"id": "loop.null-program",
+				"state": "invalid",
+				"subject": "registerLoopCommand",
+				"example": "Reject a null program",
+				"fixture": "test/loop.e2e.test.ts",
+				"test": {
+					"file": "test/loop.e2e.test.ts",
+					"title": "registerLoopCommand: Reject a null program"
+				},
+				"props": ["program"],
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "loop.missing-program",
+				"state": "invalid",
+				"subject": "registerLoopCommand",
+				"example": "Reject an omitted program",
+				"fixture": "test/loop.e2e.test.ts",
+				"test": {
+					"file": "test/loop.e2e.test.ts",
+					"title": "registerLoopCommand: Reject an omitted program"
+				},
+				"props": ["program"],
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "loop.invalid-program",
+				"state": "invalid",
+				"subject": "registerLoopCommand",
+				"example": "Reject a program without command registration",
+				"fixture": "test/loop.e2e.test.ts",
+				"test": {
+					"file": "test/loop.e2e.test.ts",
+					"title": "registerLoopCommand: Reject a program without command registration"
+				},
+				"props": ["program"],
+				"errors": ["TypeError"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

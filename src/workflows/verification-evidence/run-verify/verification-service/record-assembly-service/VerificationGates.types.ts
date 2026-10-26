@@ -5,4 +5,5 @@ export interface Registry {
 	/** Manifests exactly as stored at the revision. */
 	stored: ComponentManifest[];
 	scenarios?: ScenarioManifest[];
+	errors?: string[];
 }

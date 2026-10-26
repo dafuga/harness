@@ -178,7 +178,13 @@
 			"PermissionsCommand",
 			"ModuleTaskContractContextService",
 			"ModuleTaskLaunchAdapter",
-			"ModuleTaskSandboxProcessAdapter"
+			"ModuleTaskSandboxProcessAdapter",
+			"TestContractService",
+			"TestCaseValidator",
+			"TestDiscoveryService",
+			"TestExpectationService",
+			"TestArtifactService",
+			"CaseResultAdapter"
 		]
 	},
 	"contract": {
@@ -900,6 +906,36 @@
 		},
 		{
 			"unit": "validator.performance-evidence",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.verification-evidence-case-result",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-artifact",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-discovery",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-expectation",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.verification-evidence-test-case",
 			"via": "reexport",
 			"origin": "derived"
 		}

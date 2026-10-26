@@ -3,8 +3,7 @@ import { expect, test } from 'vitest';
 import { RemoteFailure } from '../../src/models/Remote.types';
 import { RemoteInputValidator } from '../../src/validators/RemoteInputValidator';
 
-const validator = new RemoteInputValidator(),
-	client = { kind: 'ios', name: 'Fixture phone' },
+const client = { kind: 'ios', name: 'Fixture phone' },
 	projectId = 'local-' + 'a'.repeat(64),
 	commit = 'c'.repeat(40),
 	pairingId = 'b'.repeat(32);
@@ -17,7 +16,8 @@ function code(run: () => unknown): string {
 	return 'accepted';
 }
 
-test('attach names protocol 1, a client and a resume point or null', () => {
+test('attach initialized validates protocol, client and resume inputs', () => {
+	const validator = new RemoteInputValidator();
 	const fresh = { protocol: 1, client, resume: null },
 		resumed = { protocol: 1, client, resume: { epoch: 'ab12'.repeat(8), sequence: 7 } };
 	expect(validator.attach(fresh)).toEqual(fresh);
@@ -37,13 +37,15 @@ test('attach names protocol 1, a client and a resume point or null', () => {
 	];
 	for (const input of refused) expect(code(() => validator.attach(input))).toBe('invalid-message');
 });
-test('a device request names a registered local project, never a hosted one or a path', () => {
+test('projectId initialized accepts local projects and rejects hosted paths', () => {
+	const validator = new RemoteInputValidator();
 	expect(validator.projectId({ projectId })).toBe(projectId);
 	expect(code(() => validator.projectId({}))).toBe('project-required');
 	for (const bad of ['../etc', '/Users/x/repo', 'a6196e55-8746-4bc5-bfeb-5e2c8771e241', 5, null])
 		expect(code(() => validator.projectId({ projectId: bad }))).toBe('project-denied');
 });
-test('a change names the branch and the full commit it applies to', () => {
+test('revision initialized validates branch and full commit inputs', () => {
+	const validator = new RemoteInputValidator();
 	const revision = { branch: 'feat/a', commit };
 	expect(validator.revision({ revision })).toEqual(revision);
 	expect(code(() => validator.revision({}))).toBe('revision-required');
@@ -58,8 +60,9 @@ test('a change names the branch and the full commit it applies to', () => {
 	for (const bad of refused)
 		expect(code(() => validator.revision({ revision: bad }))).toBe('revision-required');
 });
-test('control inputs are exact', () =>
+test('approval initialized validates exact control inputs', () =>
 	measureWorkload('remote.validator.remote-input', 'approval-input-validation', () => {
+		const validator = new RemoteInputValidator();
 		const deviceId = 'd'.repeat(40),
 			approval = { pairingId, deviceId, projectIds: [projectId], agents: true };
 		expect(validator.approval(approval)).toEqual(approval);
@@ -74,8 +77,6 @@ test('control inputs are exact', () =>
 		expect(code(() => validator.approval({ ...approval, comments: false }))).toBe(
 			'invalid-message'
 		);
-		expect(validator.pairing({ pairingId })).toEqual({ pairingId });
-		expect(validator.device({ deviceId: 'd'.repeat(40) })).toEqual({ deviceId: 'd'.repeat(40) });
 		const refused: unknown[] = [
 			{ ...approval, projectIds: [] },
 			{ ...approval, projectIds: [projectId, projectId] },
@@ -89,6 +90,15 @@ test('control inputs are exact', () =>
 		];
 		for (const input of refused)
 			expect(code(() => validator.approval(input))).toBe('invalid-message');
-		expect(code(() => validator.pairing({ pairingId: 'B'.repeat(32) }))).toBe('invalid-message');
-		expect(code(() => validator.device({ deviceId: 'nope' }))).toBe('invalid-message');
 	}));
+test('pairing initialized validates pairing ids', () => {
+	const validator = new RemoteInputValidator();
+	expect(validator.pairing({ pairingId })).toEqual({ pairingId });
+	expect(code(() => validator.pairing({ pairingId: 'B'.repeat(32) }))).toBe('invalid-message');
+});
+test('device initialized validates device ids', () => {
+	const validator = new RemoteInputValidator();
+	const deviceId = 'd'.repeat(40);
+	expect(validator.device({ deviceId })).toEqual({ deviceId });
+	expect(code(() => validator.device({ deviceId: 'nope' }))).toBe('invalid-message');
+});

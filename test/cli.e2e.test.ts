@@ -1,3 +1,7 @@
+import {
+	prepareBrowserBaselineReport,
+	expectMissingScreenshotResults
+} from './support/browserBaselineResults';
 import { assertModuleProject } from './support/moduleScenario';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
@@ -7,37 +11,31 @@ import { expect, test } from 'vitest';
 import { runCommand, runHarness } from './support/cli';
 import { freePort } from './support/workers';
 import { sqliteRuntimePackage } from './support/sqliteRuntimePackage';
-
 test('CLI scaffolds and checks a lib project', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-lib-'));
 	await runHarness(['new', 'lib', 'demo-lib'], root);
 	const project = join(root, 'demo-lib');
 	await sqliteRuntimePackage(project);
-
 	await runHarness(['generate', 'model', 'Post', 'title:string', '--adapter', 'sqlite'], project);
 	await runHarness(['generate', 'model', 'Event', 'startsAt:date', '--adapter', 'd1'], project);
 	await runHarness(
 		['generate', 'model', 'Metric', 'value:number', '--adapter', 'postgres'],
 		project
 	);
-
 	for (const kind of packageKinds) {
 		await runHarness(['generate', kind, 'PublishPost'], project);
 	}
-
 	await runCommand(['bun', 'install'], project);
 	const check = await runCommand(['bun', 'run', 'check'], project);
 	expect(check.stdout).toContain('Checking formatting...');
 	expect(check.stdout).toContain('Harness audit passed');
 	await rm(root, { recursive: true, force: true });
 }, 180_000);
-
 test('CLI scaffolds and checks an app project with routes', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-app-'));
 	await runHarness(['new', 'app', 'demo-app'], root);
 	const project = join(root, 'demo-app');
 	await sqliteRuntimePackage(project);
-
 	await runHarness(['generate', 'model', 'Post', 'title:string'], project);
 	await runHarness(['generate', 'view', 'Dashboard'], project);
 	await runHarness(['generate', 'layout', 'Dashboard'], project);
@@ -48,45 +46,26 @@ test('CLI scaffolds and checks an app project with routes', async () => {
 	await runHarness(['generate', 'e2e', 'Dashboard'], project);
 	await runHarness(['generate', 'partial', 'PromoBanner'], project);
 	await runHarness(['generate', 'resource', 'Article'], project);
-
 	for (const kind of packageKinds) {
 		await runHarness(['g', kind, 'PublishPost'], project);
 	}
-
 	await runCommand(['bun', 'install'], project);
-	const check = await runCommand(['bun', 'run', 'check'], project);
+	await prepareBrowserBaselineReport(project);
+	const check = await runCommand(['bun', 'run', 'check'], project, false);
 	expect(check.stdout).toContain('Checking formatting...');
-	expect(check.stdout).toContain('Harness audit passed');
-
-	// A port of this run's own, and no other: two runs at once must not read each other's preview.
-	const origin = `http://127.0.0.1:${await freePort()}`;
-	const listen = ['--host', '127.0.0.1', '--port', new URL(origin).port, '--strictPort'];
-	const server = spawn('bun', ['x', 'vite', 'preview', ...listen], {
-		cwd: project,
-		stdio: 'pipe'
-	});
-	const serverExited = new Promise((resolve) => server.once('exit', resolve));
-	try {
-		await waitForUrl(`${origin}/dashboard`);
-		const page = await fetch(`${origin}/dashboard`).then((response) => response.text());
-		const api = await fetch(`${origin}/api/ping`).then((response) => response.json());
-
-		expect(page).toContain('Dashboard');
-		expect(page).toContain('data-harness-view="dashboard"');
-		expect(api).toEqual({ ok: true, resource: 'ping' });
-	} finally {
-		server.kill();
-		await serverExited;
-	}
-
+	expect(check.exitCode).toBe(1);
+	expect(check.stdout + check.stderr).toContain("A snapshot doesn't exist");
+	await expectMissingScreenshotResults(project, check.stdout + check.stderr, 33);
+	await runCommand(['bun', 'run', 'build'], project);
+	const audit = await runCommand(['bun', 'run', 'audit'], project);
+	expect(audit.stdout).toContain('Harness audit passed');
+	await assertAppRoutes(project);
 	await rm(root, { recursive: true, force: true });
 }, 180_000);
-
 test('CLI reports edge errors cleanly', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-errors-'));
 	await runHarness(['new', 'lib', 'demo-lib'], root);
 	const project = join(root, 'demo-lib');
-
 	const invalidAdapter = await runHarness(
 		['generate', 'model', 'Post', '--adapter', 'oracle'],
 		project,
@@ -95,16 +74,13 @@ test('CLI reports edge errors cleanly', async () => {
 	expect(invalidAdapter.exitCode).toBe(1);
 	expect(invalidAdapter.stderr).toContain('Unsupported adapter');
 	expect(invalidAdapter.stderr).not.toContain(' at ');
-
 	const unknownInfo = await runHarness(['info', 'nope'], project, false);
 	expect(unknownInfo.exitCode).toBe(1);
 	expect(unknownInfo.stderr).toContain('Unknown info topic');
 	expect(unknownInfo.stderr.match(/controller/g) ?? []).toHaveLength(1);
-
 	const invalidProfile = await runHarness(['audit', '.', '--profile', 'mobile'], project, false);
 	expect(invalidProfile.exitCode).toBe(1);
 	expect(invalidProfile.stderr).toContain('Unsupported audit profile');
-
 	const scaffoldInfo = await runHarness(['info', 'scaffold'], project);
 	expect(scaffoldInfo.stdout).toContain('# scaffolds');
 	const namingInfo = await runHarness(['info', 'naming', '--json'], project);
@@ -159,7 +135,6 @@ const packageKinds = [
 	'controller',
 	'service',
 	'decorator',
-	'test',
 	'feature',
 	'migration',
 	'adapter',
@@ -199,6 +174,28 @@ async function waitForUrl(url: string): Promise<void> {
 	throw new Error(`Timed out waiting for ${url}`);
 }
 
+async function assertAppRoutes(project: string): Promise<void> {
+	// A port of this run's own, and no other: two runs at once must not read each other's preview.
+	const origin = `http://127.0.0.1:${await freePort()}`;
+	const listen = ['--host', '127.0.0.1', '--port', new URL(origin).port, '--strictPort'];
+	const server = spawn('bun', ['x', 'vite', 'preview', ...listen], {
+		cwd: project,
+		stdio: 'pipe'
+	});
+	const serverExited = new Promise((resolve) => server.once('exit', resolve));
+	try {
+		await waitForUrl(`${origin}/dashboard`);
+		const page = await fetch(`${origin}/dashboard`).then((response) => response.text());
+		const api = await fetch(`${origin}/api/ping`).then((response) => response.json());
+
+		expect(page).toContain('Dashboard');
+		expect(page).toContain('data-harness-view="dashboard"');
+		expect(api).toEqual({ ok: true, resource: 'ping' });
+	} finally {
+		server.kill();
+		await serverExited;
+	}
+}
 test('CLI installs module foundations and generates their declared resources', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-modules-'));
 	try {

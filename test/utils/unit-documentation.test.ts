@@ -1,3 +1,5 @@
+import { assertTestingExamples } from '../support/documentationExamples';
+import { TestExpectationService } from '../../src/services/verification-evidence/TestExpectationService';
 import type { Helper, HelperCall } from './unit-documentation.test.types';
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { readdir, readFile } from 'node:fs/promises';
@@ -20,7 +22,8 @@ const uses = [
 		input: { enabled: false, limit: 0, empty: null },
 		output: ''
 	},
-	{ name: 'An expected error', input: [], error: false }
+	{ name: 'An expected error', input: [], error: false },
+	{ name: 'No return value', call: 'finish()', input: [], returns: 'void' }
 ];
 const markdown = (unitId = id, examples: unknown = uses) =>
 	'# Rank\n\n```harness-examples\n' +
@@ -47,7 +50,8 @@ test('committed documents preserve expected values and never invent observed res
 		[{ name: 'Empty call', call: '', input: 1, output: 1 }],
 		[{ name: 'Non-code call', call: { text: 'rank(1)' }, input: 1, output: 1 }],
 		[{ name: 'Absent', input: 1 }],
-		[{ name: 'Ambiguous', input: 1, output: 2, error: 3 }]
+		[{ name: 'Ambiguous', input: 1, output: 2, error: 3 }],
+		[{ name: 'Ambiguous void', input: null, output: null, returns: 'void' }]
 	]) {
 		expect(unitDocumentation(markdown(id, examples), id).gap).toBeTruthy();
 	}
@@ -82,6 +86,7 @@ test('revision documents come only from their own tree, and their bytes change t
 		)
 	).toMatchObject({ examples: [], gap: 'The document is not available at this commit.' });
 	expect(await readUnitDocumentation(first, { id })).toBeUndefined();
+	await assertTestingExamples();
 });
 
 test('every committed public helper example executes against its real implementation', async () => {
@@ -106,8 +111,9 @@ test('every committed public helper example executes against its real implementa
 					/(?:^|:\s*)(?:example|case|demo|usage)(?:\s*#?\d+)?$/i
 				);
 				expect(Array.isArray(example.input)).toBe(true);
-				expect(source[helper.name](...example.input), `${unit.id} ${example.name}`).toEqual(
-					example.output
+				await new TestExpectationService().example(
+					(input) => source[helper.name](...(input as unknown[])),
+					example
 				);
 				total += 1;
 			}
@@ -138,7 +144,7 @@ function recordHelperWorkload(unit: string, helper: Helper, call: HelperCall) {
 			metric: 'latency-warm-ms',
 			unitOfMeasure: 'ms',
 			value: helperSamples(inputs, call),
-			method: `Vitest median per call across five batches of 1000 passes over documented features after warmup, including result checksumming; excludes registry I/O and imports. Inputs: ${cases}`
+			method: `Vitest median per call across five batches of 1000 passes over documented features after warmup, including returned-value or expected-error checksumming; excludes registry I/O and imports. Inputs: ${cases}`
 		},
 		{
 			...common,
@@ -167,7 +173,13 @@ function helperSamples(inputs: unknown[][], call: HelperCall): number {
 	for (let round = 0; round < 6; round++) {
 		const start = performance.now();
 		for (let iteration = 0; iteration < 1000; iteration++)
-			for (const args of inputs) checksum += String(call(...args)).length + 1;
+			for (const args of inputs) {
+				try {
+					checksum += String(call(...args)).length + 1;
+				} catch (error) {
+					checksum += String(error).length + 1;
+				}
+			}
 		if (round > 0) samples.push((performance.now() - start) / (1000 * inputs.length));
 	}
 	expect(checksum).toBeGreaterThan(0);

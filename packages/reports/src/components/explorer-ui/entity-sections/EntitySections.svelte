@@ -31,6 +31,11 @@
 		pane: Snippet;
 	} = $props();
 	let summary = $derived(entityShown(host, entity));
+	let audio = $derived({
+		evidence: host.lens.evidence(entity.unit),
+		scope: host.scope,
+		mediaBase: host.mediaBase
+	});
 	let comparison = $derived(
 		entityMetricComparison(host, entity, summary.measure, host.route.helper)
 	);
@@ -73,8 +78,11 @@
 		<hx-div role="tabpanel" aria-label={`${entity.name} examples`} class="ex-stack">
 			{#if entity.category === 'services'}
 				<!-- Creation leads; recorded verification stays apart from authored uses. -->
-				<EntityExamples documentation={entity.unit.documentation} setupTitle="Create the service" />
-				<hx-p class="ex-soft">These examples are authored documentation, not test results.</hx-p>
+				<EntityExamples
+					documentation={entity.unit.documentation}
+					setupTitle="Create the service"
+					recorded={audio}
+				/>
 				<hx-details
 					><hx-summary>Verification details</hx-summary>{@render verificationPanel()}</hx-details
 				>
@@ -84,12 +92,7 @@
 		</hx-div>
 	{:else if entity.category === 'components' && host.route.tab === 'audio'}
 		<hx-div role="tabpanel" aria-label={`${entity.name} audio`}>
-			<EntityAudio
-				evidence={host.lens.evidence(entity.unit)}
-				scope={host.scope}
-				mediaBase={host.mediaBase}
-				empty
-			/>
+			<EntityAudio {...audio} empty />
 		</hx-div>
 	{:else if host.route.tab === 'states' || host.route.tab === 'tests'}
 		{#if visual}

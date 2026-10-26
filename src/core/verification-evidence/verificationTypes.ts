@@ -3,6 +3,7 @@ import { browserDiagnosticSchema } from '../development-tooling/browserDiagnosti
 import { comparisonSchema } from '../development-tooling/comparisonTypes';
 import { explanationSchema } from '../development-tooling/explanationTypes';
 import { runtimeKinds, unitIdPattern } from '../development-tooling/unitTypes';
+import { caseOutcomeSchema, evidenceArtifactSchema as artifactSchema } from './caseOutcomeSchema';
 
 const identifier = z.string().regex(unitIdPattern);
 const text = z.string().min(1);
@@ -86,12 +87,6 @@ export const budgetFindingSchema = z.strictObject({
 	differences: z.array(text).optional()
 });
 
-const artifactSchema = z.strictObject({
-	path: text,
-	sha256,
-	bytes: z.number().int().nonnegative()
-});
-
 /** The exact version of one unit that a record observed. */
 export const componentVersionSchema = z.strictObject({
 	unit: identifier,
@@ -172,6 +167,9 @@ export const verificationRecordSchema = z.strictObject({
 			status: outcome,
 			durationMs: z.number().nonnegative(),
 			browserErrors: z.array(browserDiagnosticSchema).optional(),
+			cases: z
+				.strictObject({ outcomes: z.array(caseOutcomeSchema), artifact: artifactSchema })
+				.optional(),
 			log: artifactSchema
 		})
 	),

@@ -126,6 +126,16 @@
 			"unit": "service.unit-index",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-discovery",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

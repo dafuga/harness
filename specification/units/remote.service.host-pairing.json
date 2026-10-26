@@ -3,8 +3,8 @@
 	"id": "remote.service.host-pairing",
 	"kind": "service",
 	"title": "HostPairingService",
-	"responsibility": "Owns the HostPairingService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Owns host pairing offers, validates sealed device requests and issues single-use approvals across expiry, denial and close states.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -42,63 +42,81 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HostPairingService.constructor.options",
-				"type": "HostPairingOptions"
+				"type": "HostPairingOptions",
+				"description": "Host identity and key pair, with an optional clock, offer lifetime and failed-attempt limit."
 			},
 			{
 				"name": "HostPairingService.receive.frame",
-				"type": "HostPairingFrame"
+				"type": "HostPairingFrame",
+				"description": "Pairing identity, ephemeral public key, authenticated sealed device request and PKCE challenge."
 			},
 			{
 				"name": "HostPairingService.approve.pairingId",
-				"type": "string"
+				"type": "string",
+				"description": "Identity of the live offer whose pending device request is being approved."
 			},
 			{
 				"name": "HostPairingService.approve.approval",
-				"type": "{ hostName: string; generation: number; grant: RemoteGrant; deviceId?: string }"
+				"type": "{ hostName: string; generation: number; grant: RemoteGrant; deviceId?: string }",
+				"description": "Host display name, credential generation and granted project/agent access, optionally pinned to the shown device."
 			},
 			{
 				"name": "HostPairingService.deny.pairingId",
-				"type": "string"
+				"type": "string",
+				"description": "Identity of the pending request to deny; other or spent offers remain unchanged."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HostPairingService.open",
-				"type": "HostPairingOffer"
+				"type": "HostPairingOffer",
+				"description": "Fresh public offer with a typed code and expiry; replaces any prior offer or request."
 			},
 			{
 				"name": "HostPairingService.offer",
-				"type": "HostPairingOffer | null"
+				"type": "HostPairingOffer | null",
+				"description": "Current unexpired offer, or null after expiry, exhaustion, approval, denial or close."
 			},
 			{
 				"name": "HostPairingService.requests",
-				"type": "RemotePairingRequest[]"
+				"type": "RemotePairingRequest[]",
+				"description": "A fresh public projection of the pending device request, or an empty array."
 			},
 			{
 				"name": "HostPairingService.receive",
-				"type": "Promise<RemotePairingRequest | null>"
+				"type": "Promise<RemotePairingRequest | null>",
+				"description": "Exact authenticated device request, or null for rejected, repeated, expired or spent requests."
 			},
 			{
 				"name": "HostPairingService.approve",
-				"type": "Promise<HostPairingApproved>"
+				"type": "Promise<HostPairingApproved>",
+				"description": "Device identity and key with the approval encrypted to that request’s approval key; consumes the offer once."
 			},
 			{
 				"name": "HostPairingService.deny",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when a pending request was removed, otherwise false."
 			},
 			{
 				"name": "HostPairingService.close",
-				"type": "void"
+				"type": "void",
+				"description": "No return value; clears any active offer and pending request."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Refuses approval without a pending request or for a device different from the shown phone."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Null request frames or approval objects cannot supply the required properties."
 			}
 		]
 	},
@@ -155,6 +173,816 @@
 		]
 	},
 	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": [
+			"initialized",
+			"offered",
+			"requested",
+			"exhausted",
+			"expired",
+			"approved",
+			"denied",
+			"closed"
+		],
+		"props": ["hostId", "keys", "now", "ttlMs", "attempts", "frame", "pairingId", "approval"],
+		"cases": [
+			{
+				"id": "open.initialized",
+				"state": "initialized",
+				"subject": "HostPairingService.open",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.open: initialized"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "ttlMs"]
+			},
+			{
+				"id": "open.offered",
+				"state": "offered",
+				"subject": "HostPairingService.open",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.open: offered"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "open.requested",
+				"state": "requested",
+				"subject": "HostPairingService.open",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.open: requested"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "open.exhausted",
+				"state": "exhausted",
+				"subject": "HostPairingService.open",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.open: exhausted"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "open.expired",
+				"state": "expired",
+				"subject": "HostPairingService.open",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.open: expired"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "open.approved",
+				"state": "approved",
+				"subject": "HostPairingService.open",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.open: approved"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "open.denied",
+				"state": "denied",
+				"subject": "HostPairingService.open",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.open: denied"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "open.closed",
+				"state": "closed",
+				"subject": "HostPairingService.open",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.open: closed"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "offer.initialized",
+				"state": "initialized",
+				"subject": "HostPairingService.offer",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.offer: initialized"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "offer.offered",
+				"state": "offered",
+				"subject": "HostPairingService.offer",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.offer: offered"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "offer.requested",
+				"state": "requested",
+				"subject": "HostPairingService.offer",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.offer: requested"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "offer.exhausted",
+				"state": "exhausted",
+				"subject": "HostPairingService.offer",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.offer: exhausted"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "offer.expired",
+				"state": "expired",
+				"subject": "HostPairingService.offer",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.offer: expired"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "offer.approved",
+				"state": "approved",
+				"subject": "HostPairingService.offer",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.offer: approved"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "offer.denied",
+				"state": "denied",
+				"subject": "HostPairingService.offer",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.offer: denied"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "offer.closed",
+				"state": "closed",
+				"subject": "HostPairingService.offer",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.offer: closed"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "requests.initialized",
+				"state": "initialized",
+				"subject": "HostPairingService.requests",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.requests: initialized"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "requests.offered",
+				"state": "offered",
+				"subject": "HostPairingService.requests",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.requests: offered"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "requests.requested",
+				"state": "requested",
+				"subject": "HostPairingService.requests",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.requests: requested"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "requests.exhausted",
+				"state": "exhausted",
+				"subject": "HostPairingService.requests",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.requests: exhausted"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "requests.expired",
+				"state": "expired",
+				"subject": "HostPairingService.requests",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.requests: expired"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "requests.approved",
+				"state": "approved",
+				"subject": "HostPairingService.requests",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.requests: approved"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "requests.denied",
+				"state": "denied",
+				"subject": "HostPairingService.requests",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.requests: denied"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "requests.closed",
+				"state": "closed",
+				"subject": "HostPairingService.requests",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.requests: closed"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "receive.initialized",
+				"state": "initialized",
+				"subject": "HostPairingService.receive",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.receive: initialized"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "frame"]
+			},
+			{
+				"id": "receive.offered",
+				"state": "offered",
+				"subject": "HostPairingService.receive",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.receive: offered"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "frame", "attempts"],
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "receive.requested",
+				"state": "requested",
+				"subject": "HostPairingService.receive",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.receive: requested"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "frame"]
+			},
+			{
+				"id": "receive.exhausted",
+				"state": "exhausted",
+				"subject": "HostPairingService.receive",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.receive: exhausted"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "frame"]
+			},
+			{
+				"id": "receive.expired",
+				"state": "expired",
+				"subject": "HostPairingService.receive",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.receive: expired"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "frame"]
+			},
+			{
+				"id": "receive.approved",
+				"state": "approved",
+				"subject": "HostPairingService.receive",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.receive: approved"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "frame"]
+			},
+			{
+				"id": "receive.denied",
+				"state": "denied",
+				"subject": "HostPairingService.receive",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.receive: denied"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "frame"]
+			},
+			{
+				"id": "receive.closed",
+				"state": "closed",
+				"subject": "HostPairingService.receive",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.receive: closed"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "frame"]
+			},
+			{
+				"id": "approve.initialized",
+				"state": "initialized",
+				"subject": "HostPairingService.approve",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.approve: initialized"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId", "approval"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "approve.offered",
+				"state": "offered",
+				"subject": "HostPairingService.approve",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.approve: offered"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId", "approval"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "approve.requested",
+				"state": "requested",
+				"subject": "HostPairingService.approve",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.approve: requested"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId", "approval"],
+				"errors": ["Error", "TypeError"]
+			},
+			{
+				"id": "approve.exhausted",
+				"state": "exhausted",
+				"subject": "HostPairingService.approve",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.approve: exhausted"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId", "approval"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "approve.expired",
+				"state": "expired",
+				"subject": "HostPairingService.approve",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.approve: expired"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId", "approval"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "approve.approved",
+				"state": "approved",
+				"subject": "HostPairingService.approve",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.approve: approved"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId", "approval"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "approve.denied",
+				"state": "denied",
+				"subject": "HostPairingService.approve",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.approve: denied"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId", "approval"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "approve.closed",
+				"state": "closed",
+				"subject": "HostPairingService.approve",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.approve: closed"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId", "approval"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "deny.initialized",
+				"state": "initialized",
+				"subject": "HostPairingService.deny",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.deny: initialized"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId"]
+			},
+			{
+				"id": "deny.offered",
+				"state": "offered",
+				"subject": "HostPairingService.deny",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.deny: offered"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId"]
+			},
+			{
+				"id": "deny.requested",
+				"state": "requested",
+				"subject": "HostPairingService.deny",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.deny: requested"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId"]
+			},
+			{
+				"id": "deny.exhausted",
+				"state": "exhausted",
+				"subject": "HostPairingService.deny",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.deny: exhausted"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId"]
+			},
+			{
+				"id": "deny.expired",
+				"state": "expired",
+				"subject": "HostPairingService.deny",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.deny: expired"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId"]
+			},
+			{
+				"id": "deny.approved",
+				"state": "approved",
+				"subject": "HostPairingService.deny",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.deny: approved"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId"]
+			},
+			{
+				"id": "deny.denied",
+				"state": "denied",
+				"subject": "HostPairingService.deny",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.deny: denied"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId"]
+			},
+			{
+				"id": "deny.closed",
+				"state": "closed",
+				"subject": "HostPairingService.deny",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.deny: closed"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now", "pairingId"]
+			},
+			{
+				"id": "close.initialized",
+				"state": "initialized",
+				"subject": "HostPairingService.close",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.close: initialized"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "close.offered",
+				"state": "offered",
+				"subject": "HostPairingService.close",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.close: offered"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "close.requested",
+				"state": "requested",
+				"subject": "HostPairingService.close",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.close: requested"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "close.exhausted",
+				"state": "exhausted",
+				"subject": "HostPairingService.close",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.close: exhausted"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "close.expired",
+				"state": "expired",
+				"subject": "HostPairingService.close",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.close: expired"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "close.approved",
+				"state": "approved",
+				"subject": "HostPairingService.close",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.close: approved"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "close.denied",
+				"state": "denied",
+				"subject": "HostPairingService.close",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.close: denied"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			},
+			{
+				"id": "close.closed",
+				"state": "closed",
+				"subject": "HostPairingService.close",
+				"fixture": "packages/remote/test/support/hostPairingCases.ts",
+				"test": {
+					"file": "packages/remote/test/services/host-pairing.test.ts",
+					"title": "HostPairingService.close: closed"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"props": ["hostId", "keys", "now"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

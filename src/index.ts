@@ -25,11 +25,7 @@ export { ProviderSwitchService } from './services/agents-providers/ProviderSwitc
 export { ProviderSwitchRepository } from './repositories/agents-providers/ProviderSwitchRepository';
 export { ProviderCatalogAdapter } from './adapters/agents-providers/ProviderCatalogAdapter';
 export { CodexPickerMcpService } from './services/agents-providers/CodexPickerMcpService';
-export type {
-	PickerSnapshot,
-	SessionControl,
-	SwitchRequest
-} from './core/development-tooling/pickerTypes';
+export type { PickerSnapshot, SessionControl, SwitchRequest } from './core/pickerTypes';
 export { pickerPaths } from './cli/program/codex-picker-command/pickerPaths';
 export { pickerMcpTools } from './utils/development-tooling/pickerMcpTools';
 export { PickerPreviewService } from './cli/program/codex-picker-command/PickerPreviewService';
@@ -173,11 +169,16 @@ export { moduleScenarioReviews } from './utils/git-source-history/moduleScenario
 export { ModuleTaskServerService } from './services/agents-providers/ModuleTaskServerService';
 export { ModuleTaskSandboxAdapter } from './adapters/agents-providers/ModuleTaskSandboxAdapter';
 
+export { TestContractService } from './services/verification-evidence/TestContractService';
+export { TestCaseValidator } from './validators/verification-evidence/TestCaseValidator';
+export { TestDiscoveryService } from './services/verification-evidence/TestDiscoveryService';
+export { TestExpectationService } from './services/verification-evidence/TestExpectationService';
+export { TestArtifactService } from './services/verification-evidence/TestArtifactService';
+export { CaseResultAdapter } from './adapters/verification-evidence/CaseResultAdapter';
 export { ModuleCatalogService } from './services/module-system/ModuleCatalogService';
 export { ModuleCommand } from './commands/module-system/ModuleCommand';
 export { ModuleInstallService } from './services/module-system/ModuleInstallService';
 export { ModuleResourceService } from './services/module-system/ModuleResourceService';
-
 export type {
 	ModuleDefinition,
 	ModuleResource,

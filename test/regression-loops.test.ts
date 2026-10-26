@@ -21,6 +21,22 @@ test('regression profiles ignore volatile macOS launcher identity while retainin
 	).toBe(first);
 	expect(environmentProfile({ ...source, PATH: '/another/runtime' })).not.toBe(first);
 	expect(environmentProfile({ ...source, FEATURE_FLAG: 'disabled' })).not.toBe(first);
+	const managed = {
+		...source,
+		HARNESS_RESOURCE_LEASE: 'lease-one',
+		HARNESS_RESOURCE_CPUS: '1',
+		HARNESS_RESOURCE_MEMORY_MIB: '768'
+	};
+	expect(
+		environmentProfile({ ...managed, HARNESS_RESOURCE_LEASE: 'lease-two' }),
+		'resource lease identity is not workload configuration'
+	).toBe(environmentProfile(managed));
+	expect(environmentProfile({ ...managed, HARNESS_RESOURCE_CPUS: '2' })).not.toBe(
+		environmentProfile(managed)
+	);
+	expect(environmentProfile({ ...managed, HARNESS_RESOURCE_MEMORY_MIB: '1024' })).not.toBe(
+		environmentProfile(managed)
+	);
 });
 
 const orders = {
@@ -37,6 +53,32 @@ const orders = {
 		'verify'
 	]
 };
+
+const standardFormGuidance = [
+	'Use exactly these five contract-driven test forms',
+	'Pages: Playwright screenshot matches of each declared page state at every required viewport',
+	'Layouts use the page form, with a labelled Child content placeholder in the real child slot.',
+	'Components: Playwright screenshot matches of the component at rest, plus each declared interaction, prop and error state.',
+	'Helpers: one unit case per authored example, asserting its documented output or error.',
+	'Classes: one case per method and declared initialization or lifecycle state, including each declared error.',
+	'APIs: structural complete JSON response matches for each supported prop and error matrix row.',
+	'API comparisons keep every response field, including reserved JSON keys. Before changing a comparison or authored-data parser, strengthen its existing method case to prove field retention and preserve admitted getters, arrays and invalid values.',
+	'Freeze executable tests and authored Examples, states, methods and expected results together. Admit test-only edits to those contract fields, reject product metadata hidden among named tests, and keep original Git blob provenance separate from semantic expectation hashes.',
+	'Interaction, accessibility and console assertions stay inside the case that exercises them; they are never separate tests.',
+	'Other functions and classes map each distinct behavior onto the matching form. Do not add a sixth shape.',
+	'Unsupported or missing test coverage is an explicit validation failure',
+	'Do not auto-accept screenshot baselines. Review each changed image before its baseline is updated.',
+	'Static types and configuration use compiler, lint, build and audit checks.',
+	'Artifact validation, hashing and storage must consume the same byte snapshot; strengthen the existing method case with accepted getter or aliased-buffer inputs before changing an artifact producer.'
+];
+
+const stableCaseGuidance = [
+	'Declare all states. New props or errors strengthen their existing row; add a row only when declaring a distinct state, example or method.',
+	'Do not write standalone bug regression tests.',
+	"Keep each form's case count fixed.",
+	'Add or remove a case only when the contract explicitly changes a capability',
+	'Keep registered case titles and identities stable; verification records bind to them.'
+];
 
 test.each(Object.entries(orders))(
 	'%s exposes ordered proof and project checks',
@@ -114,6 +156,16 @@ test.each(['app', 'lib'] as const)(
 			expect(text).toContain('earliest responsible generator, skill or review checkpoint');
 			expect(text).toContain('one selected callable per detail page');
 			expect(text).toContain('src/configs/<category>/');
+			for (const term of [...standardFormGuidance, ...stableCaseGuidance])
+				expect(text).toContain(term);
+			expect(text).toContain('## Stable-Case Bug Policy');
+			expect(text).toContain('Do not write standalone bug regression tests');
+			expect(text).toContain("Keep each form's case count fixed");
+			expect(text).toContain('explicitly changes a capability');
+			expect(text).toContain('reproduce with its strengthened standardized case failing');
+			expect(text).toContain('a strengthened standardized case, in normal project verification');
+			expect(text).not.toContain('reproduce with a failing test before implementation');
+			expect(text).not.toContain('include the guard in normal project verification');
 		}
 	}
 );

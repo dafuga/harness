@@ -13,7 +13,9 @@
 			"src/workflows/record-regression/RegressionProofService.ts",
 			"src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
 			"src/workflows/verification-evidence/record-regression/RegressionProofService.types.ts",
-			"src/workflows/verification-evidence/record-regression/focusedScreens.ts"
+			"src/workflows/verification-evidence/record-regression/focusedAudio.ts",
+			"src/workflows/verification-evidence/record-regression/focusedScreens.ts",
+			"src/workflows/verification-evidence/record-regression/focusedScreens.types.ts"
 		],
 		"symbols": [
 			"focusedScreens",
@@ -25,7 +27,9 @@
 			"RegressionRun",
 			"RegressionRun",
 			"Observation",
-			"focusedScreens"
+			"focusedAudioUnit",
+			"focusedScreens",
+			"FocusedContext"
 		]
 	},
 	"contract": {

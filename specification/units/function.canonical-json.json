@@ -26,7 +26,18 @@
 				"description": "Compact JSON text with recursively sorted object keys and unchanged array order for JSON-serializable input."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An enumerable getter that throws stops serialization, and its original error propagates unchanged."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "BigInt values have no JSON form, so JSON.stringify throws a TypeError."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
@@ -40,6 +51,583 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "canonicalJson",
+				"name": "Sort object keys at every depth and keep array order",
+				"call": "canonicalJson({ b: [{ y: 1, x: 2 }, 3], a: { d: null, c: 'text' } })",
+				"input": [
+					{
+						"b": [
+							{
+								"y": 1,
+								"x": 2
+							},
+							3
+						],
+						"a": {
+							"d": null,
+							"c": "text"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\"a\":{\"c\":\"text\",\"d\":null},\"b\":[{\"x\":2,\"y\":1},3]}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Give equal objects in any key order one canonical text",
+				"call": "canonicalJson({ a: { c: 'text', d: null }, b: [{ x: 2, y: 1 }, 3] })",
+				"input": [
+					{
+						"a": {
+							"c": "text",
+							"d": null
+						},
+						"b": [
+							{
+								"x": 2,
+								"y": 1
+							},
+							3
+						]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\"a\":{\"c\":\"text\",\"d\":null},\"b\":[{\"x\":2,\"y\":1},3]}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Keep ascending array item order",
+				"call": "canonicalJson({ b: [1, 2] })",
+				"input": [
+					{
+						"b": [1, 2]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\"b\":[1,2]}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Keep descending array item order",
+				"call": "canonicalJson({ b: [2, 1] })",
+				"input": [
+					{
+						"b": [2, 1]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\"b\":[2,1]}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Serialize an empty object",
+				"call": "canonicalJson({})",
+				"input": [{}],
+				"expected": {
+					"kind": "value",
+					"value": "{}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Serialize an empty array",
+				"call": "canonicalJson([])",
+				"input": [[]],
+				"expected": {
+					"kind": "value",
+					"value": "[]"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Serialize null",
+				"call": "canonicalJson(null)",
+				"input": [null],
+				"expected": {
+					"kind": "value",
+					"value": "null"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Serialize a string primitive",
+				"call": "canonicalJson('plain')",
+				"input": ["plain"],
+				"expected": {
+					"kind": "value",
+					"value": "\"plain\""
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Omit undefined object properties",
+				"call": "canonicalJson({ a: 1, b: undefined })",
+				"input": [
+					{
+						"a": 1,
+						"b": {
+							"$fixture": "undefined"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\"a\":1}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Return an empty object when every property is undefined",
+				"call": "canonicalJson({ a: undefined })",
+				"input": [
+					{
+						"a": {
+							"$fixture": "undefined"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Write undefined array items as null in their position",
+				"call": "canonicalJson([1, undefined, 3])",
+				"input": [
+					[
+						1,
+						{
+							"$fixture": "undefined"
+						},
+						3
+					]
+				],
+				"expected": {
+					"kind": "value",
+					"value": "[1,null,3]"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Read enumerable getters through their current value",
+				"call": "canonicalJson({ a: 1, get b() { return 2; } })",
+				"input": [
+					{
+						"a": 1,
+						"b": {
+							"$fixture": "getter",
+							"value": 2
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\"a\":1,\"b\":2}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Skip non-enumerable own properties",
+				"call": "canonicalJson(Object.defineProperty({ a: 1 }, 'b', { value: 2 }))",
+				"input": [
+					{
+						"a": 1,
+						"b": {
+							"$fixture": "hidden",
+							"value": 2
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\"a\":1}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Read a prototype-free object through its sorted own keys",
+				"call": "canonicalJson(Object.assign(Object.create(null), { b: 2, a: 1 }))",
+				"input": [
+					{
+						"$fixture": "null-prototype",
+						"fields": {
+							"b": 2,
+							"a": 1
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\"a\":1,\"b\":2}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Ignore own symbol-keyed properties",
+				"call": "canonicalJson({ [Symbol('id')]: 1, a: 2 })",
+				"input": [
+					{
+						"$fixture": "symbol-keyed",
+						"symbol": "id",
+						"value": 1,
+						"fields": {
+							"a": 2
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\"a\":2}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Read a Map through its own keys, not its entries",
+				"call": "canonicalJson(new Map([['a', 1]]))",
+				"input": [
+					{
+						"$fixture": "map",
+						"entries": [["a", 1]]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Serialize an Array subclass by its items",
+				"call": "canonicalJson(new (class extends Array {})(2, 1))",
+				"input": [
+					{
+						"$fixture": "array-subclass",
+						"items": [2, 1]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "[2,1]"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Read a Date through its own keys instead of toJSON",
+				"call": "canonicalJson({ at: new Date(0) })",
+				"input": [
+					{
+						"at": {
+							"$fixture": "date",
+							"value": "1970-01-01T00:00:00.000Z"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "{\"at\":{}}"
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Propagate an error thrown by an enumerable getter",
+				"call": "canonicalJson({ get a() { throw new Error('projection unavailable'); } })",
+				"input": [
+					{
+						"a": {
+							"$fixture": "throwing-getter",
+							"message": "projection unavailable"
+						}
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "projection unavailable"
+					}
+				}
+			},
+			{
+				"subject": "canonicalJson",
+				"name": "Reject a BigInt value because JSON cannot carry it",
+				"call": "canonicalJson(BigInt('1'))",
+				"input": [
+					{
+						"$fixture": "bigint",
+						"value": "1"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "TypeError",
+						"message": "Do not know how to serialize a BigInt"
+					}
+				}
+			}
+		],
+		"states": ["input", "boundary", "admission", "invalid"],
+		"props": ["value"],
+		"cases": [
+			{
+				"id": "canonical-json.sorted-nested-keys",
+				"state": "input",
+				"subject": "canonicalJson",
+				"example": "Sort object keys at every depth and keep array order",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Sort object keys at every depth and keep array order"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.equal-objects",
+				"state": "input",
+				"subject": "canonicalJson",
+				"example": "Give equal objects in any key order one canonical text",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Give equal objects in any key order one canonical text"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.ascending-array",
+				"state": "input",
+				"subject": "canonicalJson",
+				"example": "Keep ascending array item order",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Keep ascending array item order"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.descending-array",
+				"state": "input",
+				"subject": "canonicalJson",
+				"example": "Keep descending array item order",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Keep descending array item order"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.empty-object",
+				"state": "boundary",
+				"subject": "canonicalJson",
+				"example": "Serialize an empty object",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Serialize an empty object"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.empty-array",
+				"state": "boundary",
+				"subject": "canonicalJson",
+				"example": "Serialize an empty array",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Serialize an empty array"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.null",
+				"state": "boundary",
+				"subject": "canonicalJson",
+				"example": "Serialize null",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Serialize null"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.string-primitive",
+				"state": "boundary",
+				"subject": "canonicalJson",
+				"example": "Serialize a string primitive",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Serialize a string primitive"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.undefined-property",
+				"state": "invalid",
+				"subject": "canonicalJson",
+				"example": "Omit undefined object properties",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Omit undefined object properties"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.all-undefined-properties",
+				"state": "invalid",
+				"subject": "canonicalJson",
+				"example": "Return an empty object when every property is undefined",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Return an empty object when every property is undefined"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.undefined-array-item",
+				"state": "invalid",
+				"subject": "canonicalJson",
+				"example": "Write undefined array items as null in their position",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Write undefined array items as null in their position"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.enumerable-getter",
+				"state": "admission",
+				"subject": "canonicalJson",
+				"example": "Read enumerable getters through their current value",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Read enumerable getters through their current value"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.non-enumerable-property",
+				"state": "admission",
+				"subject": "canonicalJson",
+				"example": "Skip non-enumerable own properties",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Skip non-enumerable own properties"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.null-prototype",
+				"state": "admission",
+				"subject": "canonicalJson",
+				"example": "Read a prototype-free object through its sorted own keys",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Read a prototype-free object through its sorted own keys"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.symbol-key",
+				"state": "admission",
+				"subject": "canonicalJson",
+				"example": "Ignore own symbol-keyed properties",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Ignore own symbol-keyed properties"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.map-own-keys",
+				"state": "admission",
+				"subject": "canonicalJson",
+				"example": "Read a Map through its own keys, not its entries",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Read a Map through its own keys, not its entries"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.array-subclass",
+				"state": "admission",
+				"subject": "canonicalJson",
+				"example": "Serialize an Array subclass by its items",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Serialize an Array subclass by its items"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.date-to-json",
+				"state": "admission",
+				"subject": "canonicalJson",
+				"example": "Read a Date through its own keys instead of toJSON",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Read a Date through its own keys instead of toJSON"
+				},
+				"props": ["value"]
+			},
+			{
+				"id": "canonical-json.throwing-getter",
+				"state": "invalid",
+				"subject": "canonicalJson",
+				"example": "Propagate an error thrown by an enumerable getter",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Propagate an error thrown by an enumerable getter"
+				},
+				"props": ["value"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "canonical-json.bigint",
+				"state": "invalid",
+				"subject": "canonicalJson",
+				"example": "Reject a BigInt value because JSON cannot carry it",
+				"fixture": "specification/units/function.canonical-json.json",
+				"test": {
+					"file": "test/utils/canonical-json.test.ts",
+					"title": "canonicalJson: Reject a BigInt value because JSON cannot carry it"
+				},
+				"props": ["value"],
+				"errors": ["TypeError"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

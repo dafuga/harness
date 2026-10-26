@@ -1,0 +1,74 @@
+{
+	"name": "contract-case-admission",
+	"goal": "Reject undeclared or contradictory case matrices without permitting count inflation",
+	"createdAt": "2026-10-25T23:14:08.385Z",
+	"updatedAt": "2026-10-26T00:00:02.273Z",
+	"template": "regression-prevention",
+	"templateLineage": ["regression-prevention"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
+			"status": "complete",
+			"completedAt": "2026-10-25T23:14:09.282Z",
+			"evidence": "Initial policy tests modeled a function as a class, never omitted all states and never contradicted a helper comment. Validation accepts those invalid contracts. Comparison also lets a newly named prop excuse arbitrary additional cases for an existing state."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
+			"status": "complete",
+			"completedAt": "2026-10-25T23:14:09.895Z",
+			"evidence": "Strengthen the same TestCaseValidator.validate case with real class ownership, absent and duplicate states, invalid method/result shapes and contradictory helper expectations. Strengthen the same TestContractService.compare case against prop-based case inflation. Extend existing generated-guidance assertions; preserve all one validator, two contract-service and eight guidance cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-25T23:54:01.698Z",
+			"evidence": "Retained red b69182a67e52 at a3a7f141e6 has four product failures and seven passes in the same 11 cases. All ten invalid declarations and both prop/error count-inflation paths are evaluated before assertions; compiler, lint and the original getter/iterator/species compatibility control pass."
+		},
+		{
+			"id": "propose",
+			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
+			"status": "complete",
+			"completedAt": "2026-10-25T23:54:02.791Z",
+			"evidence": "Require explicit unique states and real method/state subjects; restrict class results to value, error or void. Compare any duplicated helper input, call and result with its authored Example, verify callable ownership and avoid reading unused authored fields. Remove the prop/error exception for adding existing-state cases; emit matching generated and agent guidance."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
+			"status": "complete",
+			"completedAt": "2026-10-25T23:59:59.051Z",
+			"evidence": "Committed f4b5cdd55676. Validator rejects undeclared/duplicate states, nonmethod class subjects and contradictory authored helper fields; class outcomes are value/error/void. Comparison refuses prop/error-only count inflation. Private checks stay with their owning unit and all 11 cases remain unchanged."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-26T00:00:00.627Z",
+			"evidence": "Matched immutable green 83d9616dad2a at f4b5cdd55676 passes the same 11 cases as red 7589506d9f40 at a3a7f141e6. Same command, resource lease and frozen tests, fixtures and authored expectations; red had four product failures and seven passes."
+		},
+		{
+			"id": "guard",
+			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
+			"status": "complete",
+			"completedAt": "2026-10-26T00:00:02.273Z",
+			"evidence": "Reexecuted original product in clean committed snapshot a3a7f141e6: the unchanged guard fails four product assertions (7589506d9f40). Repair snapshot f4b5cdd55676 passes all 11 (83d9616dad2a). Root compiler, focused lint, registry and audit pass; ownership/readability plus cases total 27 passes. Full aggregate, visual and history acceptance remain pending."
+		},
+		{
+			"id": "verify",
+			"title": "Repeat until the guard and relevant project checks pass; verify affected UI flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending while proof fails.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

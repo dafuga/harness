@@ -1,0 +1,60 @@
+{
+	"name": "contract-example-display",
+	"goal": "Keep documented expectations for every selected helper case visible at its tested revision without borrowing sibling examples",
+	"createdAt": "2026-10-25T17:30:19.856Z",
+	"updatedAt": "2026-10-25T17:46:40.733Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-25T17:30:20.464Z",
+			"evidence": "Explorer helperDocumentation returns helper.examples before standardized testing.examples, and revision hydration ignores contract examples when a Markdown path exists. Selected helpers therefore hide supported expected results and error examples."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-25T17:30:20.996Z",
+			"evidence": "Strengthen the existing revision documentation case and helper selection case with legacy Markdown, canonical authored results, sibling isolation and expected errors. Keep their declarations unchanged; no standalone regression suite."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-25T17:40:26.319Z",
+			"evidence": "At 1973fe8bc0 the same three documentation cases and six catalog cases execute. The existing revision case loses finish: Finish and the existing helper-selection case loses Null count. Retained proof 0ddb9828ffe20f78cad61a15336ed139cee85816d3a684c100861f858bcc2877 contains both product-caused assertion diffs; no added test declarations."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-25T17:40:27.446Z",
+			"evidence": "Hydration retains exact revision Markdown and appends its authored canonical Examples. Selected helpers combine only their own helper-contract and canonical expected results/errors. The viewer model carries the same testing contract. Observed execution results never replace authored comments."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-25T17:46:40.733Z",
+			"evidence": "The unchanged nine documentation and helper catalog cases pass at e8bacf5c6a after both product-caused failures. Browser, current-tree typechecks and broader verification remain pending."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

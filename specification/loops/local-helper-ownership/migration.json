@@ -4769,9 +4769,9 @@
 		{
 			"unit": "function.derive-manifest",
 			"name": "deriveManifest",
-			"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
-			"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit.",
-			"definition": "d10d760ab19c3631fceef91b103cd06c02f1fee7ac06ce32918b0c90287dd022",
+			"commit": "7ed8d6bc231ee5fe26620c656df49928f0d96497",
+			"reason": "Preserve declared test contracts while deriving source ownership and runtime metadata.",
+			"definition": "9cb7f65e859065b55c94921538f35d193ae2e960b5fc999dd5fd9c73e67356e2",
 			"previousReviews": [
 				{
 					"unit": "function.derive-manifest",
@@ -4786,6 +4786,13 @@
 					"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
 					"reason": "Index native atom composition and real runtime dependencies while preserving owner-local source.",
 					"definition": "3c6ad72e19d9861a00cb263693f3514f7bb1e05866d993c51bcdea909c3fc225"
+				},
+				{
+					"unit": "function.derive-manifest",
+					"name": "deriveManifest",
+					"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
+					"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit.",
+					"definition": "d10d760ab19c3631fceef91b103cd06c02f1fee7ac06ce32918b0c90287dd022"
 				}
 			]
 		},
@@ -4832,37 +4839,46 @@
 		{
 			"unit": "function.unit-metadata",
 			"name": "unitMetadata",
-			"definition": "f1740bbc747b88643dcb9502f456d03c6473da06e3fc8e9eb6b83ef7ee67656c",
-			"reason": "Read actual public model declarations and statically declared SQLite schemas from the selected revision without executing source or accessing live rows.",
-			"commit": "485cf3f13a4967ff758ef923e31148f5f89bc118",
-			"previousDefinitions": [
+			"commit": "403a7493fa5394ee7f733242aef46117ed4d4030",
+			"reason": "Preserve declared test contracts while deriving source ownership and runtime metadata.",
+			"definition": "23f270d4eb626f41e53f731af54dcc19ee76fe119cf383b3c0fd7ddde1ab0fbe",
+			"previousReviews": [
 				{
 					"unit": "function.unit-metadata",
 					"name": "unitMetadata",
-					"definition": "b633dc1809d64266de3f23f4c330fdcc4528ff9f1725dea57eff416025dfeb65",
-					"reason": "Preserve committed callable examples when enriching source signatures and consumers.",
-					"commit": "132d82b5342d010c3431ef40d94a80d02622776d"
-				},
-				{
-					"unit": "function.unit-metadata",
-					"name": "unitMetadata",
-					"definition": "f550da3c5fa65567ed1ceeb81488e17bf3a7939065053b8a27e79396ac7a2ddd",
-					"reason": "Preserve committed examples while deriving revision categories and concrete shared service proofs.",
-					"commit": "16ab6fdf66c235918411bf42bb02e39653653a05"
-				},
-				{
-					"unit": "function.unit-metadata",
-					"name": "unitMetadata",
-					"definition": "4ff008eef84c519795231a6e506ceb4bb6182aa5152c1bea1f09258a08f323f0",
-					"reason": "Read committed config initializers alongside helper metadata without executing modules or borrowing values across revisions.",
-					"commit": "6847bb6128e3fe7bc85aead4517951cbd48d5b13"
-				},
-				{
-					"unit": "function.unit-metadata",
-					"name": "unitMetadata",
-					"definition": "dbe9716788a00936bb887f41d48bc337b60f1b0f97273807f06842cbd3a84770",
-					"reason": "Derive each helper category from its own revision-bound source folder, preserving examples and domain-specific helper categories independently of the owning module.",
-					"commit": "bf32a1455bd7e76ddb1bf5afb9bf81d7c1b919d2"
+					"definition": "f1740bbc747b88643dcb9502f456d03c6473da06e3fc8e9eb6b83ef7ee67656c",
+					"reason": "Read actual public model declarations and statically declared SQLite schemas from the selected revision without executing source or accessing live rows.",
+					"commit": "485cf3f13a4967ff758ef923e31148f5f89bc118",
+					"previousDefinitions": [
+						{
+							"unit": "function.unit-metadata",
+							"name": "unitMetadata",
+							"definition": "b633dc1809d64266de3f23f4c330fdcc4528ff9f1725dea57eff416025dfeb65",
+							"reason": "Preserve committed callable examples when enriching source signatures and consumers.",
+							"commit": "132d82b5342d010c3431ef40d94a80d02622776d"
+						},
+						{
+							"unit": "function.unit-metadata",
+							"name": "unitMetadata",
+							"definition": "f550da3c5fa65567ed1ceeb81488e17bf3a7939065053b8a27e79396ac7a2ddd",
+							"reason": "Preserve committed examples while deriving revision categories and concrete shared service proofs.",
+							"commit": "16ab6fdf66c235918411bf42bb02e39653653a05"
+						},
+						{
+							"unit": "function.unit-metadata",
+							"name": "unitMetadata",
+							"definition": "4ff008eef84c519795231a6e506ceb4bb6182aa5152c1bea1f09258a08f323f0",
+							"reason": "Read committed config initializers alongside helper metadata without executing modules or borrowing values across revisions.",
+							"commit": "6847bb6128e3fe7bc85aead4517951cbd48d5b13"
+						},
+						{
+							"unit": "function.unit-metadata",
+							"name": "unitMetadata",
+							"definition": "dbe9716788a00936bb887f41d48bc337b60f1b0f97273807f06842cbd3a84770",
+							"reason": "Derive each helper category from its own revision-bound source folder, preserving examples and domain-specific helper categories independently of the owning module.",
+							"commit": "bf32a1455bd7e76ddb1bf5afb9bf81d7c1b919d2"
+						}
+					]
 				}
 			]
 		},
@@ -4953,7 +4969,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5475,6 +5491,29 @@
 					"reason": "Use the committed module registry for admitted hosted reads while preserving the original helper move and runtime behavior for legacy projects."
 				}
 			]
+		},
+		{
+			"unit": "function.unit-documentation",
+			"name": "hydrateUnitDocumentation",
+			"commit": "7fdf168400f4f060f63817c29436d8dfcdb3913e",
+			"reason": "Preserve declared test contracts while deriving source ownership and runtime metadata.",
+			"definition": "8ffeb1d2657c0fd6daa224bb543758cc00b4248db9267fa4e33d181c4dc02817",
+			"previousReviews": [
+				{
+					"unit": "function.unit-documentation",
+					"name": "hydrateUnitDocumentation",
+					"commit": "130f5c52d498653db1e9f943648b7ae402833751",
+					"reason": "Preserve declared test contracts while deriving source ownership and runtime metadata.",
+					"definition": "4fae902a3e068821f4786e261db6166ff1b97ea13432a5cb915feffc944b7127"
+				}
+			]
+		},
+		{
+			"unit": "function.regression-files",
+			"name": "regressionTestCommit",
+			"commit": "bfc281f4b374dec4b8bfbaf98dfe88a967109570",
+			"reason": "Admit authored contract edits while rejecting disguised product changes; preserve owner-local source and the original move definition.",
+			"definition": "f96e34ebc9d513585f5976e25fdd9eb3d31751f3b9afc245c9612c180dad389f"
 		}
 	]
 }

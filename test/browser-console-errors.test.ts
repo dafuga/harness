@@ -58,10 +58,11 @@ for (const kind of ['console', 'pageerror'] as const) {
 
 test('new apps and browser scaffolds use the automatic browser error fixture', () => {
 	const files = projectFiles({ kind: 'app', name: 'console-proof' });
-	expect(files.some((file) => file.path === 'tests/e2e/support/browserTest.ts')).toBe(true);
-	expect(files.find((file) => file.path === 'tests/e2e/support/browserTest.ts')?.contents).toBe(
-		readFileSync('test/support/browserTest.ts', 'utf8')
-	);
+	for (const name of ['browserTest.ts', 'browserTest.types.ts', 'browserScreenshot.ts']) {
+		expect(files.find((file) => file.path === `tests/e2e/support/${name}`)?.contents).toBe(
+			readFileSync(`test/support/${name}`, 'utf8')
+		);
+	}
 	for (const kind of ['e2e', 'resource'] as const) {
 		const spec = pieceFiles(kind, 'Dashboard').find((file) => file.path.endsWith('.spec.ts'));
 		expect(spec?.contents).toContain("from './support/browserTest'");

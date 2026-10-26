@@ -1,0 +1,67 @@
+{
+	"schemaVersion": 1,
+	"id": "entry.program-test-inventory",
+	"kind": "entry",
+	"title": "testInventory",
+	"responsibility": "Owns the testInventory entry point.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/cli/program/testInventory.ts"],
+		"symbols": ["inventoryTests"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "inventoryTests.root",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "inventoryTests",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.working-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-discovery",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-units",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/program/testInventory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/program/testInventory.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

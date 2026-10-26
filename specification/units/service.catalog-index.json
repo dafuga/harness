@@ -23,7 +23,7 @@
 			},
 			{
 				"name": "CatalogIndexService.write.snapshots",
-				"type": "CatalogSnapshot[]"
+				"type": "Iterable<CatalogSnapshot>"
 			}
 		],
 		"outputs": [

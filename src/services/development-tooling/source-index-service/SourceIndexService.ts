@@ -95,6 +95,7 @@ export class SourceIndexService {
 		const readable = language !== 'other' || textExtensions.has(extname(entry.path).toLowerCase());
 		const parsed = readable ? parseText(await tree.read(entry.path), language, entry.path) : empty;
 		this.parsed.set(key, parsed);
+		if (this.parsed.size > 16_384) this.parsed.delete(this.parsed.keys().next().value!);
 		return parsed;
 	}
 }

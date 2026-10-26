@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "function.verification-evidence-case-outcome-schema",
+	"kind": "function",
+	"title": "caseOutcomeSchema",
+	"responsibility": "Defines strict revision-bound test-case identities, runner outcomes and immutable evidence file descriptors.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/verification-evidence/caseOutcomeSchema.ts"],
+		"symbols": ["caseFileSchema", "caseOutcomeSchema", "evidenceArtifactSchema"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "caseFileSchema",
+				"type": "unknown",
+				"description": "Accepts only nonempty repository-relative test file paths without traversal segments."
+			},
+			{
+				"name": "caseOutcomeSchema",
+				"type": "unknown",
+				"description": "Defines the exact test title, file, source revision, retry and passed, failed or skipped outcome recorded by a runner."
+			},
+			{
+				"name": "evidenceArtifactSchema",
+				"type": "unknown",
+				"description": "Defines the original evidence file path, SHA-256 digest and nonnegative byte count retained with a verification record."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/verification-evidence/caseOutcomeSchema.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/verification-evidence/caseOutcomeSchema.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

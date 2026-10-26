@@ -64,6 +64,1331 @@
 		]
 	},
 	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "publicRoute",
+				"name": "Return the health route for GET /v1/health",
+				"call": "publicRoute('GET', '/v1/health')",
+				"input": ["GET", "/v1/health"],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"kind": "health",
+						"path": "/v1/health"
+					}
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Return the connect route for GET on a host",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect')",
+				"input": ["GET", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect"],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"kind": "connect",
+						"path": "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect",
+						"hostId": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+					}
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Return pairing information for GET on a pairing",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2')",
+				"input": [
+					"GET",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"kind": "pairing",
+						"path": "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+						"hostId": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+						"pairingId": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+						"action": "info"
+					}
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Return the pairing request call for POST on a pairing",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/request')",
+				"input": [
+					"POST",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/request"
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"kind": "pairing",
+						"path": "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/request",
+						"hostId": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+						"pairingId": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+						"action": "request"
+					}
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Return the pairing poll call for POST on a pairing",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/poll')",
+				"input": [
+					"POST",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/poll"
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"kind": "pairing",
+						"path": "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/poll",
+						"hostId": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+						"pairingId": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+						"action": "poll"
+					}
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Return the pairing exchange call for POST on a pairing",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/exchange')",
+				"input": [
+					"POST",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/exchange"
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"kind": "pairing",
+						"path": "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/exchange",
+						"hostId": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+						"pairingId": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+						"action": "exchange"
+					}
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on the health route",
+				"call": "publicRoute('POST', '/v1/health')",
+				"input": ["POST", "/v1/health"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse HEAD on the health route",
+				"call": "publicRoute('HEAD', '/v1/health')",
+				"input": ["HEAD", "/v1/health"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on the connect route",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect')",
+				"input": ["POST", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on pairing information",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2')",
+				"input": [
+					"POST",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse DELETE on pairing information",
+				"call": "publicRoute('DELETE', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2')",
+				"input": [
+					"DELETE",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on the pairing request call",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/request')",
+				"input": [
+					"GET",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/request"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on the pairing poll call",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/poll')",
+				"input": [
+					"GET",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/poll"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse PUT on the pairing exchange call",
+				"call": "publicRoute('PUT', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/exchange')",
+				"input": [
+					"PUT",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/exchange"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse OPTIONS on the pairing exchange call",
+				"call": "publicRoute('OPTIONS', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/exchange')",
+				"input": [
+					"OPTIONS",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/exchange"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse a lowercase method on the health route",
+				"call": "publicRoute('get', '/v1/health')",
+				"input": ["get", "/v1/health"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on the health route with a trailing slash",
+				"call": "publicRoute('GET', '/v1/health/')",
+				"input": ["GET", "/v1/health/"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on the health route with a trailing slash",
+				"call": "publicRoute('POST', '/v1/health/')",
+				"input": ["POST", "/v1/health/"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on the connect route with a trailing slash",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect/')",
+				"input": ["GET", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect/"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on the connect route with a trailing slash",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect/')",
+				"input": ["POST", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect/"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on pairing information with a trailing slash",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/')",
+				"input": [
+					"GET",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on pairing information with a trailing slash",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/')",
+				"input": [
+					"POST",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on a host id one character short",
+				"call": "publicRoute('GET', '/v1/hosts/1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect')",
+				"input": ["GET", "/v1/hosts/1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on a host id one character long",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a10/connect')",
+				"input": ["GET", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a10/connect"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on an uppercase host id",
+				"call": "publicRoute('GET', '/v1/hosts/A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1/connect')",
+				"input": ["GET", "/v1/hosts/A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1/connect"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on a pairing id one character short",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2')",
+				"input": [
+					"GET",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on a pairing id one character long",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b20')",
+				"input": [
+					"GET",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b20"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on an uppercase pairing id",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/B2B2B2B2B2B2B2B2B2B2B2B2B2B2B2B2')",
+				"input": [
+					"GET",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/B2B2B2B2B2B2B2B2B2B2B2B2B2B2B2B2"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on the management register path",
+				"call": "publicRoute('GET', '/manage/register')",
+				"input": ["GET", "/manage/register"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on the management register path",
+				"call": "publicRoute('POST', '/manage/register')",
+				"input": ["POST", "/manage/register"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on the management summary path",
+				"call": "publicRoute('GET', '/manage/summary')",
+				"input": ["GET", "/manage/summary"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on the management summary path",
+				"call": "publicRoute('POST', '/manage/summary')",
+				"input": ["POST", "/manage/summary"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on a host-scoped management register path",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/manage/register')",
+				"input": ["GET", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/manage/register"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on a host-scoped management register path",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/manage/register')",
+				"input": ["POST", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/manage/register"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on the root path",
+				"call": "publicRoute('GET', '/')",
+				"input": ["GET", "/"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on the root path",
+				"call": "publicRoute('POST', '/')",
+				"input": ["POST", "/"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on the bare API prefix",
+				"call": "publicRoute('GET', '/v1')",
+				"input": ["GET", "/v1"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on the bare API prefix",
+				"call": "publicRoute('POST', '/v1')",
+				"input": ["POST", "/v1"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on a host path without an action",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1')",
+				"input": ["GET", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on a host path without an action",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1')",
+				"input": ["POST", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on a host path with a trailing slash",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/')",
+				"input": ["GET", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on a host path with a trailing slash",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/')",
+				"input": ["POST", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on connect with an extra segment",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect/extra')",
+				"input": ["GET", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect/extra"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on connect with an extra segment",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect/extra')",
+				"input": ["POST", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect/extra"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on the pairings path without a pairing id",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings')",
+				"input": ["GET", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on the pairings path without a pairing id",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings')",
+				"input": ["POST", "/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on an unknown pairing action",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/approve')",
+				"input": [
+					"GET",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/approve"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on an unknown pairing action",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/approve')",
+				"input": [
+					"POST",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/approve"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on a pairing request with an extra segment",
+				"call": "publicRoute('GET', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/request/again')",
+				"input": [
+					"GET",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/request/again"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on a pairing request with an extra segment",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/request/again')",
+				"input": [
+					"POST",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/request/again"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on a route under another API version",
+				"call": "publicRoute('GET', '/v2/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect')",
+				"input": ["GET", "/v2/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on a route under another API version",
+				"call": "publicRoute('POST', '/v2/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect')",
+				"input": ["POST", "/v2/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on a route with a doubled leading slash",
+				"call": "publicRoute('GET', '//v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect')",
+				"input": ["GET", "//v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on a route with a doubled leading slash",
+				"call": "publicRoute('POST', '//v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect')",
+				"input": ["POST", "//v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/connect"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse GET on a host id that is not hexadecimal",
+				"call": "publicRoute('GET', '/v1/hosts/gggggggggggggggggggggggggggggggggggggggg/connect')",
+				"input": ["GET", "/v1/hosts/gggggggggggggggggggggggggggggggggggggggg/connect"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse POST on a pairing request with an encoded traversal id",
+				"call": "publicRoute('POST', '/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/..%2f..%2fmanage/request')",
+				"input": [
+					"POST",
+					"/v1/hosts/a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pairings/..%2f..%2fmanage/request"
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse a null method",
+				"call": "publicRoute(null, '/v1/health')",
+				"input": [null, "/v1/health"],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "publicRoute",
+				"name": "Refuse a null pathname",
+				"call": "publicRoute('GET', null)",
+				"input": ["GET", null],
+				"expected": {
+					"kind": "void"
+				}
+			}
+		],
+		"states": ["input", "combination", "boundary", "invalid"],
+		"props": ["method", "pathname"],
+		"cases": [
+			{
+				"id": "public-route.input.health",
+				"state": "input",
+				"subject": "publicRoute",
+				"example": "Return the health route for GET /v1/health",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Return the health route for GET /v1/health"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.input.connect",
+				"state": "input",
+				"subject": "publicRoute",
+				"example": "Return the connect route for GET on a host",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Return the connect route for GET on a host"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.input.pairing-info",
+				"state": "input",
+				"subject": "publicRoute",
+				"example": "Return pairing information for GET on a pairing",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Return pairing information for GET on a pairing"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.input.pairing-request",
+				"state": "input",
+				"subject": "publicRoute",
+				"example": "Return the pairing request call for POST on a pairing",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Return the pairing request call for POST on a pairing"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.input.pairing-poll",
+				"state": "input",
+				"subject": "publicRoute",
+				"example": "Return the pairing poll call for POST on a pairing",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Return the pairing poll call for POST on a pairing"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.input.pairing-exchange",
+				"state": "input",
+				"subject": "publicRoute",
+				"example": "Return the pairing exchange call for POST on a pairing",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Return the pairing exchange call for POST on a pairing"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.combination.health-post",
+				"state": "combination",
+				"subject": "publicRoute",
+				"example": "Refuse POST on the health route",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on the health route"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.combination.health-head",
+				"state": "combination",
+				"subject": "publicRoute",
+				"example": "Refuse HEAD on the health route",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse HEAD on the health route"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.combination.connect-post",
+				"state": "combination",
+				"subject": "publicRoute",
+				"example": "Refuse POST on the connect route",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on the connect route"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.combination.pairing-post",
+				"state": "combination",
+				"subject": "publicRoute",
+				"example": "Refuse POST on pairing information",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on pairing information"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.combination.pairing-delete",
+				"state": "combination",
+				"subject": "publicRoute",
+				"example": "Refuse DELETE on pairing information",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse DELETE on pairing information"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.combination.request-get",
+				"state": "combination",
+				"subject": "publicRoute",
+				"example": "Refuse GET on the pairing request call",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on the pairing request call"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.combination.poll-get",
+				"state": "combination",
+				"subject": "publicRoute",
+				"example": "Refuse GET on the pairing poll call",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on the pairing poll call"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.combination.exchange-put",
+				"state": "combination",
+				"subject": "publicRoute",
+				"example": "Refuse PUT on the pairing exchange call",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse PUT on the pairing exchange call"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.combination.exchange-options",
+				"state": "combination",
+				"subject": "publicRoute",
+				"example": "Refuse OPTIONS on the pairing exchange call",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse OPTIONS on the pairing exchange call"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.health-lowercase-method",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse a lowercase method on the health route",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse a lowercase method on the health route"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.health-slash-get",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse GET on the health route with a trailing slash",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on the health route with a trailing slash"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.health-slash-post",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse POST on the health route with a trailing slash",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on the health route with a trailing slash"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.connect-slash-get",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse GET on the connect route with a trailing slash",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on the connect route with a trailing slash"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.connect-slash-post",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse POST on the connect route with a trailing slash",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on the connect route with a trailing slash"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.pairing-slash-get",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse GET on pairing information with a trailing slash",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on pairing information with a trailing slash"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.pairing-slash-post",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse POST on pairing information with a trailing slash",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on pairing information with a trailing slash"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.host-id-short",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse GET on a host id one character short",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on a host id one character short"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.host-id-long",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse GET on a host id one character long",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on a host id one character long"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.host-id-uppercase",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse GET on an uppercase host id",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on an uppercase host id"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.pairing-id-short",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse GET on a pairing id one character short",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on a pairing id one character short"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.pairing-id-long",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse GET on a pairing id one character long",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on a pairing id one character long"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.boundary.pairing-id-uppercase",
+				"state": "boundary",
+				"subject": "publicRoute",
+				"example": "Refuse GET on an uppercase pairing id",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on an uppercase pairing id"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.manage-register-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on the management register path",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on the management register path"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.manage-register-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on the management register path",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on the management register path"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.manage-summary-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on the management summary path",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on the management summary path"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.manage-summary-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on the management summary path",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on the management summary path"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.host-manage-register-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on a host-scoped management register path",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on a host-scoped management register path"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.host-manage-register-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on a host-scoped management register path",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on a host-scoped management register path"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.root-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on the root path",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on the root path"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.root-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on the root path",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on the root path"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.prefix-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on the bare API prefix",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on the bare API prefix"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.prefix-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on the bare API prefix",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on the bare API prefix"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.host-bare-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on a host path without an action",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on a host path without an action"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.host-bare-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on a host path without an action",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on a host path without an action"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.host-slash-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on a host path with a trailing slash",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on a host path with a trailing slash"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.host-slash-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on a host path with a trailing slash",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on a host path with a trailing slash"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.connect-extra-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on connect with an extra segment",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on connect with an extra segment"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.connect-extra-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on connect with an extra segment",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on connect with an extra segment"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.pairings-bare-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on the pairings path without a pairing id",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on the pairings path without a pairing id"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.pairings-bare-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on the pairings path without a pairing id",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on the pairings path without a pairing id"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.unknown-action-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on an unknown pairing action",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on an unknown pairing action"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.unknown-action-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on an unknown pairing action",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on an unknown pairing action"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.request-extra-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on a pairing request with an extra segment",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on a pairing request with an extra segment"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.request-extra-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on a pairing request with an extra segment",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on a pairing request with an extra segment"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.version-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on a route under another API version",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on a route under another API version"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.version-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on a route under another API version",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on a route under another API version"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.double-slash-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on a route with a doubled leading slash",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on a route with a doubled leading slash"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.double-slash-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on a route with a doubled leading slash",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on a route with a doubled leading slash"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.host-non-hex-get",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse GET on a host id that is not hexadecimal",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse GET on a host id that is not hexadecimal"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.invalid.pairing-traversal-post",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse POST on a pairing request with an encoded traversal id",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse POST on a pairing request with an encoded traversal id"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.null-method",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse a null method",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse a null method"
+				},
+				"props": ["method", "pathname"]
+			},
+			{
+				"id": "public-route.null-path",
+				"state": "invalid",
+				"subject": "publicRoute",
+				"example": "Refuse a null pathname",
+				"fixture": "packages/relay/test/utils/public-route.test.ts",
+				"test": {
+					"file": "packages/relay/test/utils/public-route.test.ts",
+					"title": "publicRoute: Refuse a null pathname"
+				},
+				"props": ["method", "pathname"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

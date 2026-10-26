@@ -10,6 +10,7 @@ import { UnitRegistryRepository } from '../../repositories/verification-evidence
 import type { DeclaredContractInput, Flags } from './UnitsCommand.types';
 import { listUnits, renderUnit, showUnit, unitSchema, unitsGraph } from './inspectUnits';
 import { checkUnits, indexUnits, renderCheck, renderIndex, retireUnit } from './manageUnits';
+import { inventoryTests } from './testInventory';
 
 export function registerUnitsCommand(program: Command): void {
 	const units = program
@@ -46,6 +47,13 @@ export function registerUnitsCommand(program: Command): void {
 		});
 	registerContract(units);
 	registerInspection(units);
+	units
+		.command('tests')
+		.option('--json')
+		.description(
+			'Inventory test declarations and standardized case coverage without running tests.'
+		)
+		.action(async () => console.log(JSON.stringify(await inventoryTests(), null, 2)));
 }
 
 function registerContract(units: Command): void {

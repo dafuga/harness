@@ -1,0 +1,229 @@
+{
+	"commit": "854e0bb589b9bd710e9778a265e12be727c79c5c",
+	"sourceMatchesFix": true,
+	"observations": [
+		{
+			"unit": "function.bug-repair-policy",
+			"metric": "source-bytes",
+			"value": 4771,
+			"unitOfMeasure": "bytes"
+		},
+		{
+			"unit": "function.bug-repair-policy",
+			"metric": "source-lines",
+			"value": 32,
+			"unitOfMeasure": "lines"
+		},
+		{
+			"unit": "function.bug-repair-policy",
+			"metric": "complexity",
+			"value": 1,
+			"unitOfMeasure": "points"
+		},
+		{
+			"unit": "function.bug-repair-policy",
+			"metric": "dependencies",
+			"value": 0,
+			"unitOfMeasure": "count"
+		},
+		{
+			"unit": "function.bug-repair-policy",
+			"metric": "artifact-bytes",
+			"value": null,
+			"unitOfMeasure": "bytes",
+			"unavailable": "A module unit emits no separate artifact."
+		},
+		{
+			"unit": "guide.scaffolds",
+			"metric": "source-bytes",
+			"value": 7689,
+			"unitOfMeasure": "bytes"
+		},
+		{
+			"unit": "guide.scaffolds",
+			"metric": "source-lines",
+			"value": 187,
+			"unitOfMeasure": "lines"
+		},
+		{
+			"unit": "guide.scaffolds",
+			"metric": "complexity",
+			"value": 13,
+			"unitOfMeasure": "points"
+		},
+		{
+			"unit": "guide.scaffolds",
+			"metric": "dependencies",
+			"value": 3,
+			"unitOfMeasure": "count"
+		},
+		{
+			"unit": "guide.scaffolds",
+			"metric": "artifact-bytes",
+			"value": null,
+			"unitOfMeasure": "bytes",
+			"unavailable": "A module unit emits no separate artifact."
+		},
+		{
+			"unit": "template.app-pieces",
+			"metric": "source-bytes",
+			"value": 9422,
+			"unitOfMeasure": "bytes"
+		},
+		{
+			"unit": "template.app-pieces",
+			"metric": "source-lines",
+			"value": 169,
+			"unitOfMeasure": "lines"
+		},
+		{
+			"unit": "template.app-pieces",
+			"metric": "complexity",
+			"value": 11,
+			"unitOfMeasure": "points"
+		},
+		{
+			"unit": "template.app-pieces",
+			"metric": "dependencies",
+			"value": 3,
+			"unitOfMeasure": "count"
+		},
+		{
+			"unit": "template.app-pieces",
+			"metric": "artifact-bytes",
+			"value": null,
+			"unitOfMeasure": "bytes",
+			"unavailable": "A module unit emits no separate artifact."
+		},
+		{
+			"unit": "template.development-tooling-app-pieces-app-contract-tests",
+			"metric": "source-bytes",
+			"value": 6235,
+			"unitOfMeasure": "bytes"
+		},
+		{
+			"unit": "template.development-tooling-app-pieces-app-contract-tests",
+			"metric": "source-lines",
+			"value": 55,
+			"unitOfMeasure": "lines"
+		},
+		{
+			"unit": "template.development-tooling-app-pieces-app-contract-tests",
+			"metric": "complexity",
+			"value": 12,
+			"unitOfMeasure": "points"
+		},
+		{
+			"unit": "template.development-tooling-app-pieces-app-contract-tests",
+			"metric": "dependencies",
+			"value": 0,
+			"unitOfMeasure": "count"
+		},
+		{
+			"unit": "template.development-tooling-app-pieces-app-contract-tests",
+			"metric": "artifact-bytes",
+			"value": null,
+			"unitOfMeasure": "bytes",
+			"unavailable": "A module unit emits no separate artifact."
+		},
+		{
+			"unit": "template.project-guidance",
+			"metric": "source-bytes",
+			"value": 17549,
+			"unitOfMeasure": "bytes"
+		},
+		{
+			"unit": "template.project-guidance",
+			"metric": "source-lines",
+			"value": 142,
+			"unitOfMeasure": "lines"
+		},
+		{
+			"unit": "template.project-guidance",
+			"metric": "complexity",
+			"value": 9,
+			"unitOfMeasure": "points"
+		},
+		{
+			"unit": "template.project-guidance",
+			"metric": "dependencies",
+			"value": 3,
+			"unitOfMeasure": "count"
+		},
+		{
+			"unit": "template.project-guidance",
+			"metric": "artifact-bytes",
+			"value": null,
+			"unitOfMeasure": "bytes",
+			"unavailable": "A module unit emits no separate artifact."
+		},
+		{
+			"unit": "template.scaffold-types",
+			"metric": "source-bytes",
+			"value": 7724,
+			"unitOfMeasure": "bytes"
+		},
+		{
+			"unit": "template.scaffold-types",
+			"metric": "source-lines",
+			"value": 223,
+			"unitOfMeasure": "lines"
+		},
+		{
+			"unit": "template.scaffold-types",
+			"metric": "complexity",
+			"value": 2,
+			"unitOfMeasure": "points"
+		},
+		{
+			"unit": "template.scaffold-types",
+			"metric": "dependencies",
+			"value": 2,
+			"unitOfMeasure": "count"
+		},
+		{
+			"unit": "template.scaffold-types",
+			"metric": "artifact-bytes",
+			"value": null,
+			"unitOfMeasure": "bytes",
+			"unavailable": "A module unit emits no separate artifact."
+		},
+		{
+			"unit": "validator.verification-evidence-test-case",
+			"metric": "source-bytes",
+			"value": 4651,
+			"unitOfMeasure": "bytes"
+		},
+		{
+			"unit": "validator.verification-evidence-test-case",
+			"metric": "source-lines",
+			"value": 105,
+			"unitOfMeasure": "lines"
+		},
+		{
+			"unit": "validator.verification-evidence-test-case",
+			"metric": "complexity",
+			"value": 35,
+			"unitOfMeasure": "points"
+		},
+		{
+			"unit": "validator.verification-evidence-test-case",
+			"metric": "dependencies",
+			"value": 4,
+			"unitOfMeasure": "count"
+		},
+		{
+			"unit": "validator.verification-evidence-test-case",
+			"metric": "artifact-bytes",
+			"value": null,
+			"unitOfMeasure": "bytes",
+			"unavailable": "A module unit emits no separate artifact."
+		}
+	],
+	"bundle": {
+		"file": "dist/index.js",
+		"bytes": 14795166,
+		"sha256": "7caa04caae2dff007d3c7676afc9a151358a315036d55146f3dbe131e84cb157",
+		"attribution": "Whole CLI bundle including shared dependencies; no per-unit bundle attribution."
+	}
+}

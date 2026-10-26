@@ -1,0 +1,60 @@
+{
+	"name": "contract-artifact-byte-snapshot",
+	"goal": "Validate, hash and store the same generated audio bytes even when the input uses an own getter",
+	"createdAt": "2026-10-25T18:44:20.275Z",
+	"updatedAt": "2026-10-25T19:04:08.575Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-25T18:44:20.943Z",
+			"evidence": "capture reads input.bytes separately for WAV validation, hashing and persistence. A getter can supply a different valid waveform on later reads, so returned media identity and saved audio can describe different data than validation examined."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-25T18:44:21.455Z",
+			"evidence": "The existing one capture/initialized case supplies a plain Buffer and misses repeat reads of accepted getter properties. Strengthen that same case with an own bytes getter returning two distinct valid WAV buffers. Assert one read, original authored hash and identical stored bytes; retain the existing plain-buffer and invalid-property checks. No additional test declarations."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-25T18:51:55.360Z",
+			"evidence": "Remote Node22.23.4 at 4366400430: record 7174482b4af45084b241ee99ced5ae69114fd6e81c5753a212c0440f97efb914. Existing audio case returns a hash of the second getter buffer, differing from stored original bytes. The same existing guidance cases also reject missing emitted snapshot rule. Nine unchanged cases, no setup error."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-25T18:52:12.933Z",
+			"evidence": "Copy accepted bytes once after property checks; use that immutable snapshot for WAV validation, digest and capture persistence. Shared generated project/app-agent policy and repository guidance require the same invariant and existing-case getter/alias characterization. Tests remain unchanged from 4366400430."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-25T19:04:08.575Z",
+			"evidence": "At fix 8dbd4d77c1 all nine existing cases pass unchanged against the paired red at 4366400430. Validation, digest and saved WAV use one copied byte snapshot; getter is read once. Same command, test corpus and primary Node25 environment retained through Harness evidence. Broad verification and actual Examples playback remain pending."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

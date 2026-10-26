@@ -9,7 +9,7 @@ import {
 } from '../../core/verification-evidence/regressionTypes';
 import { canonicalJson } from '../development-tooling/canonicalJson';
 import { checkedMedia, type MediaPlacer } from '../development-tooling/mediaPlace';
-import { mediaFacts } from '../verification-evidence/mediaFacts';
+import { assertCaptureMedia } from './regression-history/assertCaptureMedia';
 import type { ReadNote } from './note-lines/noteCommit';
 export const regressionHash = (bytes: string | Buffer) =>
 	createHash('sha256').update(bytes).digest('hex');
@@ -89,9 +89,13 @@ function sameRun(red: RegressionRecord, green: RegressionRecord): boolean {
 function sameInputs(red: RegressionRecord, green: RegressionRecord): boolean {
 	return (
 		canonicalJson(red.inputs) === canonicalJson(green.inputs) &&
+		canonicalJson(expectationValues(red)) === canonicalJson(expectationValues(green)) &&
 		canonicalJson(red.units) === canonicalJson(green.units) &&
 		canonicalJson(red.tests) === canonicalJson(green.tests)
 	);
+}
+function expectationValues(record: RegressionRecord) {
+	return record.expectations?.map(({ unit, path, sha256 }) => ({ unit, path, sha256 }));
 }
 async function regressionPoint(loaded: Loaded, media?: MediaPlacer): Promise<RegressionPoint> {
 	const { record, output } = loaded;
@@ -110,6 +114,7 @@ async function regressionPoint(loaded: Loaded, media?: MediaPlacer): Promise<Reg
 	);
 	return {
 		commit: record.source.commit,
+		...(record.expectations ? { expectations: record.expectations } : {}),
 		sourceTree: record.source.tree,
 		id: record.id,
 		status: record.status,
@@ -187,24 +192,13 @@ async function regressionCaptures(
 	read: (path: string) => Promise<Buffer | undefined>
 ) {
 	const files = new Map<string, Buffer>();
-	for (const { capture } of record.captures ?? []) {
+	for (const { capture, unit } of record.captures ?? []) {
 		const bytes = files.get(capture.path) ?? (await read(capture.path));
 		if (!bytes) return fail(`Focused capture ${capture.path} is missing.`);
 		if (bytes.length !== capture.bytes || regressionHash(bytes) !== capture.sha256)
 			return fail(`Focused capture ${capture.path} has different bytes.`);
-		const facts = mediaFacts(bytes, capture.mediaType);
-		if ('error' in facts || facts.kind !== 'image')
-			return fail(`Focused capture ${capture.path} cannot be decoded.`);
-		assertCaptureRevision(capture, record.source.commit);
+		assertCaptureMedia(capture, bytes, record.source.commit, unit);
 		files.set(capture.path, bytes);
 	}
 	return files;
-}
-
-function assertCaptureRevision(
-	capture: NonNullable<RegressionRecord['captures']>[number]['capture'],
-	commit: string
-): void {
-	if (capture.provenance === 'actual-capture' && capture.server?.revision !== commit)
-		fail(`Focused capture ${capture.path} has a different served revision.`);
 }

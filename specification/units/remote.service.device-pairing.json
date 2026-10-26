@@ -154,6 +154,417 @@
 		]
 	},
 	"scenarios": ["remote-desktop-boundaries"],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized", "requested", "approved", "denied", "exchanged"],
+		"cases": [
+			{
+				"id": "scanned-initialized",
+				"state": "initialized",
+				"subject": "DevicePairingService.scanned",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "scanned initialized accepts a current offer and sends the exact request"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"origin": "https://relay.example",
+						"platform": "test",
+						"deviceName": "Fixture phone",
+						"credentialValid": true
+					}
+				},
+				"props": ["text", "device", "reading", "reading.environments", "reading.now"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "request-initialized",
+				"state": "initialized",
+				"subject": "DevicePairingService.request",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "request initialized preserves encrypted wire and validation boundaries"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "requested",
+						"wireRequests": 1,
+						"keysRetained": true
+					}
+				},
+				"props": [
+					"input",
+					"keys",
+					"origin",
+					"hostId",
+					"pairingId",
+					"code",
+					"deviceName",
+					"platform"
+				],
+				"errors": ["Error"]
+			},
+			{
+				"id": "poll-initialized",
+				"state": "initialized",
+				"subject": "DevicePairingService.poll",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "poll initialized rejects an absent pending pairing"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "TypeError"
+					}
+				},
+				"props": ["pending"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "exchange-initialized",
+				"state": "initialized",
+				"subject": "DevicePairingService.exchange",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "exchange initialized rejects an absent pending pairing"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "TypeError"
+					}
+				},
+				"props": ["pending"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "scanned-requested",
+				"state": "requested",
+				"subject": "DevicePairingService.scanned",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "scanned requested keeps an earlier code from replacing the current offer"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "requested",
+						"spentOffer": null
+					}
+				},
+				"props": ["text", "reading"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "request-requested",
+				"state": "requested",
+				"subject": "DevicePairingService.request",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "request requested keeps the host refusal boundary"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"requests": 1,
+						"secondRelayRequest": null
+					}
+				},
+				"props": ["input"]
+			},
+			{
+				"id": "poll-requested",
+				"state": "requested",
+				"subject": "DevicePairingService.poll",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "poll requested reports requested"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "requested"
+					}
+				},
+				"props": ["pending"]
+			},
+			{
+				"id": "exchange-requested",
+				"state": "requested",
+				"subject": "DevicePairingService.exchange",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "exchange requested refuses before approval"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "Error"
+					}
+				},
+				"props": ["pending"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "scanned-approved",
+				"state": "approved",
+				"subject": "DevicePairingService.scanned",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "scanned approved can start a separate current offer"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "requested",
+						"pendingRequests": 1
+					}
+				},
+				"props": ["text", "device", "reading"]
+			},
+			{
+				"id": "request-approved",
+				"state": "approved",
+				"subject": "DevicePairingService.request",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "request approved can start a separate current offer"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "requested",
+						"pendingRequests": 1
+					}
+				},
+				"props": ["input"]
+			},
+			{
+				"id": "poll-approved",
+				"state": "approved",
+				"subject": "DevicePairingService.poll",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "poll approved reports approved"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "approved"
+					}
+				},
+				"props": ["pending"]
+			},
+			{
+				"id": "exchange-approved",
+				"state": "approved",
+				"subject": "DevicePairingService.exchange",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "exchange approved returns credentials once"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"origin": "https://relay.example",
+						"hostName": "Fixture Mac",
+						"generation": 1,
+						"grant": {
+							"projects": [
+								{
+									"id": "local-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+									"name": "Harness"
+								}
+							],
+							"agents": true
+						},
+						"credentialValid": true
+					}
+				},
+				"props": ["pending", "approval.deviceId", "approval.sealed"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "scanned-denied",
+				"state": "denied",
+				"subject": "DevicePairingService.scanned",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "scanned denied can start a separate current offer"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "requested",
+						"pendingRequests": 1
+					}
+				},
+				"props": ["text", "device", "reading"]
+			},
+			{
+				"id": "request-denied",
+				"state": "denied",
+				"subject": "DevicePairingService.request",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "request denied can start a separate current offer"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "requested",
+						"pendingRequests": 1
+					}
+				},
+				"props": ["input"]
+			},
+			{
+				"id": "poll-denied",
+				"state": "denied",
+				"subject": "DevicePairingService.poll",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "poll denied reports denied"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "denied"
+					}
+				},
+				"props": ["pending"]
+			},
+			{
+				"id": "exchange-denied",
+				"state": "denied",
+				"subject": "DevicePairingService.exchange",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "exchange denied refuses credentials"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "Error"
+					}
+				},
+				"props": ["pending"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "scanned-exchanged",
+				"state": "exchanged",
+				"subject": "DevicePairingService.scanned",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "scanned exchanged can start a separate current offer"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "requested",
+						"pendingRequests": 1
+					}
+				},
+				"props": ["text", "device", "reading"]
+			},
+			{
+				"id": "request-exchanged",
+				"state": "exchanged",
+				"subject": "DevicePairingService.request",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "request exchanged can start a separate current offer"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "requested",
+						"pendingRequests": 1
+					}
+				},
+				"props": ["input"]
+			},
+			{
+				"id": "poll-exchanged",
+				"state": "exchanged",
+				"subject": "DevicePairingService.poll",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "poll exchanged refuses the consumed pairing"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "Error"
+					}
+				},
+				"props": ["pending"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "exchange-exchanged",
+				"state": "exchanged",
+				"subject": "DevicePairingService.exchange",
+				"fixture": "packages/remote/test/support/memoryRelay.ts",
+				"call": "Run the method/state fixture and return its observed result projection after all wire, validation and lifecycle assertions.",
+				"test": {
+					"file": "packages/remote/test/services/device-pairing.test.ts",
+					"title": "exchange exchanged refuses a second credential"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "Error"
+					}
+				},
+				"props": ["pending"],
+				"errors": ["Error"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -25,7 +25,7 @@ export class CatalogRepository {
 			throw new Error('Unsupported SQLite catalog schema version');
 		if (initialize) this.indexes();
 	}
-	replace(index: HistoryIndex, snapshots: CatalogSnapshot[]): void {
+	replace(index: HistoryIndex, snapshots: Iterable<CatalogSnapshot>): void {
 		new CatalogWriteService(this.adapter).replace(index, snapshots);
 	}
 	private indexes(): void {

@@ -10,7 +10,8 @@
 		"source": [
 			"src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.types.ts"
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.types.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/caseGate.ts"
 		],
 		"symbols": [
 			"RecordAssemblyService",
@@ -20,7 +21,8 @@
 			"RecordAssemblyService.constructor",
 			"RecordAssemblyService.assemble",
 			"AssemblyContext",
-			"AssemblyInput"
+			"AssemblyInput",
+			"caseGate"
 		]
 	},
 	"contract": {
@@ -33,12 +35,28 @@
 			{
 				"name": "RecordAssemblyService.assemble.input",
 				"type": "AssemblyInput"
+			},
+			{
+				"name": "caseGate.head",
+				"type": "RevisionSide"
+			},
+			{
+				"name": "caseGate.revision",
+				"type": "string"
+			},
+			{
+				"name": "caseGate.outcomes",
+				"type": "CheckOutcome[]"
 			}
 		],
 		"outputs": [
 			{
 				"name": "RecordAssemblyService.assemble",
 				"type": "Promise<VerificationRecord>"
+			},
+			{
+				"name": "caseGate",
+				"type": "string[]"
 			}
 		],
 		"errors": []
@@ -95,6 +113,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.check-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.explanation",
 			"via": "import",
 			"origin": "derived"
@@ -106,6 +129,11 @@
 		},
 		{
 			"unit": "service.snapshot-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract",
 			"via": "import",
 			"origin": "derived"
 		},

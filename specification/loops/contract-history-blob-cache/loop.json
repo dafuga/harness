@@ -1,0 +1,60 @@
+{
+	"name": "contract-history-blob-cache",
+	"goal": "History reconstruction shares bounded immutable blob reads across source revisions with verified Git object formats",
+	"createdAt": "2026-10-25T16:36:10.753Z",
+	"updatedAt": "2026-10-25T16:39:48.796Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-25T16:36:11.344Z",
+			"evidence": "The ten-revision all-source history sample takes68.46 seconds and about2.98GB peak RSS. CommitTreeAdapter caches text only per instance, re-reading unchanged source blobs in later trees. Reuse must be bounded and keyed only after establishing Git object format."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-25T16:36:11.811Z",
+			"evidence": "The adapter has no own method/state suite; the platform catalog integration only proves selected-revision values. Initial entity-contract migration adds the complete three-public-method by empty/populated matrix, six stable cases. Strengthen read/populated for repeated blob reads and original-tree isolation; open/populated rejects unknown formats."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-25T16:37:47.669Z",
+			"evidence": "Atdc692ee914 the same six owning method/state cases fail: read/populated reads one unchanged immutable blob twice across trees; open/populated accepts an unknown object format. Both retained red checkpoints contain the named immutable-blob assertion. No product edits preceded the retained failure."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-25T16:38:39.344Z",
+			"evidence": "CommitTreeAdapter establishes sha1/sha256 before cache use and shares only immutable blob text through an LRU with a64MiB retained-byte bound. Branch and path resolution still read each exact tree. The unchanged six adapter cases and eleven platform-catalog cases pass, including SHA-1/SHA-256, source changes and missing paths; focused lint passes."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-25T16:39:48.796Z",
+			"evidence": "The unchanged six adapter cases fail atdc692ee914 and pass at8c1e3d3a7e with identical command and environment; paired immutable checkpoints retained. Full history timing, hash validation and aggregate checks remain pending."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -11,6 +11,7 @@ import type { SourceFileSnapshot } from '../../../utils/explorer-ui/unitMetadata
 /** Retains committed implementations and associated tests as deduplicated private media, never reading the working tree. */
 export class SourceArchiveService {
 	private readonly written = new Map<string, Promise<void>>();
+	private readonly retained = new Map<string, Promise<Omit<SourceFileSnapshot, 'path'>>>();
 	constructor(
 		private readonly root: string,
 		private readonly out: string
@@ -19,8 +20,9 @@ export class SourceArchiveService {
 	async archive(commit: string, units: Unit[], side?: StoredSide): Promise<void> {
 		const tree = await CommitTreeAdapter.open(this.root, commit);
 		const entries = await tree.list();
+		const blobs = new Map(entries.map((entry) => [entry.path, entry.hash]));
 		const owned = new Map(
-			units.map((unit) => [unit, unit.status === 'active' ? pathsFor(unit, entries) : []])
+			units.map((unit) => [unit, unit.status === 'active' ? pathsFor(unit, entries, blobs) : []])
 		);
 		const imports = testImporters(side);
 		const tests = new Map(
@@ -37,7 +39,7 @@ export class SourceArchiveService {
 		for (let start = 0; start < paths.length; start += 64) {
 			await Promise.all(
 				paths.slice(start, start + 64).map(async (path) => {
-					files.set(path, await this.file(tree, path));
+					files.set(path, await this.file(tree, path, blobs.get(path)));
 				})
 			);
 		}
@@ -47,26 +49,42 @@ export class SourceArchiveService {
 		}
 	}
 
-	private async file(tree: CommitTreeAdapter, path: string): Promise<SourceFileSnapshot> {
+	private async file(
+		tree: CommitTreeAdapter,
+		path: string,
+		hash?: string
+	): Promise<SourceFileSnapshot> {
+		const pending = (hash ? this.retained.get(hash) : undefined) ?? this.content(tree, path);
+		if (hash) this.retained.set(hash, pending);
+		const snapshot = await pending;
+		if (hash && !snapshot.media) this.retained.delete(hash);
+		return { path, ...snapshot };
+	}
+
+	private async content(
+		tree: CommitTreeAdapter,
+		path: string
+	): Promise<Omit<SourceFileSnapshot, 'path'>> {
 		try {
 			const text = await tree.read(path);
 			if (text.includes('\0') || text.includes('\uFFFD'))
-				return { path, media: null, gap: 'This source cannot be represented as readable text.' };
+				return { media: null, gap: 'This source cannot be represented as readable text.' };
 			const media = `media/${createHash('sha256').update(text).digest('hex')}.txt`;
 			const pending = this.written.get(media) ?? writeFile(join(this.out, media), text, 'utf8');
 			this.written.set(media, pending);
 			await pending;
-			return { path, media };
+			return { media };
 		} catch {
-			return { path, media: null, gap: 'Source contents are unavailable at this revision.' };
+			return { media: null, gap: 'Source contents are unavailable at this revision.' };
 		}
 	}
 }
 
-function pathsFor(unit: Unit, entries: TreeEntry[]): string[] {
+function pathsFor(unit: Unit, entries: TreeEntry[], blobs: Map<string, string>): string[] {
 	return [
 		...new Set(
 			unit.owns.source.flatMap((owned) => {
+				if (blobs.has(owned)) return [owned];
 				const prefix = owned.replace(/\/$/, '') + '/';
 				const found = entries.filter(({ path }) => path === owned || path.startsWith(prefix));
 				return found.length ? found.map(({ path }) => path) : [owned];
