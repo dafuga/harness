@@ -2,7 +2,7 @@
 	"name": "approved-server-dispatch",
 	"goal": "Dispatch only verified approved plan tasks with bounded workers",
 	"createdAt": "2026-10-26T23:34:25.738Z",
-	"updatedAt": "2026-10-26T23:35:05.903Z",
+	"updatedAt": "2026-10-26T23:38:34.163Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -19,12 +19,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:38:33.565Z",
+			"evidence": "Implemented verified, bounded dispatch batches in commit ec9e4fedec."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:38:34.163Z",
+			"evidence": "Recorded red a7204f46 and green eb33d48a using the same focused server regression."
 		},
 		{
 			"id": "verify",

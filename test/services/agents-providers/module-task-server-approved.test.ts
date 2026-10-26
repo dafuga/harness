@@ -20,11 +20,14 @@ test('approved dispatch verifies the plan and limits parallel workers to its exa
 	});
 	f.collaborators.worker.onceApproved = onceApproved;
 	expect(typeof f.service.runApproved).toBe('function');
-	const run = f.service.runApproved(request, {
+	const execution = {
 		worker: 'worker-one',
 		parallelism: 2,
 		signal: controller.signal
-	});
+	};
+	const run = f.service.runApproved(request, execution);
+	execution.worker = 'mutated-worker';
+	execution.parallelism = 8;
 	await vi.waitFor(() => expect(onceApproved).toHaveBeenCalledTimes(2));
 	expect(peak).toBe(2);
 	expect(f.collaborators.plans.approved).toHaveBeenCalledTimes(2);
@@ -71,4 +74,33 @@ test('approved dispatch rejects unsafe requests before launching any worker', as
 		).rejects.toThrow();
 		expect(onceApproved).not.toHaveBeenCalled();
 	}
+});
+
+test('a failed approved worker is reported only after its concurrent sibling settles', async () => {
+	const approved = approvedPlan(),
+		f = makeFixture({ approved });
+	let release!: () => void;
+	const gate = new Promise<void>((resolve) => (release = resolve));
+	const onceApproved = vi
+		.fn()
+		.mockRejectedValueOnce(new Error('synthetic worker failure'))
+		.mockImplementationOnce(async () => {
+			await gate;
+			return { status: 'idle' };
+		});
+	f.collaborators.worker.onceApproved = onceApproved;
+	let settled = false;
+	const run = f.service.runApproved(
+		{ feature: feature.id, expectedDigest: approved.digest },
+		{ worker: 'worker-one', parallelism: 2, signal: new AbortController().signal }
+	);
+	void run.then(
+		() => (settled = true),
+		() => (settled = true)
+	);
+	await vi.waitFor(() => expect(onceApproved).toHaveBeenCalledTimes(2));
+	await new Promise((resolve) => setTimeout(resolve, 0));
+	expect(settled).toBe(false);
+	release();
+	await expect(run).rejects.toThrow('synthetic worker failure');
 });

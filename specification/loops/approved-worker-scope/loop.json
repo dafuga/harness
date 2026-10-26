@@ -2,9 +2,11 @@
 	"name": "approved-worker-scope",
 	"goal": "Server-managed workers claim only the unchanged, approved feature plan tasks and never consume unrelated queue entries.",
 	"createdAt": "2026-10-26T23:27:33.519Z",
-	"updatedAt": "2026-10-26T23:28:19.530Z",
+	"updatedAt": "2026-10-26T23:38:32.978Z",
 	"template": "feature",
-	"templateLineage": ["feature"],
+	"templateLineage": [
+		"feature"
+	],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -17,12 +19,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:38:32.381Z",
+			"evidence": "Implemented atomic approval-bound claims in commit 47db76d506."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:38:32.978Z",
+			"evidence": "Recorded red c2840ee3 and green 91db2878 using the same focused worker regression."
 		},
 		{
 			"id": "verify",
