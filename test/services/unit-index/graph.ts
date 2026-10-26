@@ -1,11 +1,13 @@
 import { expect } from 'vitest';
 import sourceGraph from '../../../specification/units/service.source-graph.json';
 import { HandlerRuntimeAdapter } from '../../../src/adapters/HandlerRuntimeAdapter';
+import type { SourceIndex } from '../../../src/services/source-index-service/SourceIndexService';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { defaultUnitsConfig } from '../../../src/core/unitsConfig';
 import { SourceGraphService } from '../../../src/services/SourceGraphService';
 import { ImpactService } from '../../../src/services/impact-service/ImpactService';
 import { impactKernel } from '../../../src/utils/impact-kernel/impactKernel';
+import { TestCaseValidator } from '../../../src/validators/verification-evidence/TestCaseValidator';
 import { indexFiles, retire, unitOf } from '../../support/memoryTree';
 import { measureWorkload } from '../../support/measureWorkload';
 
@@ -63,6 +65,7 @@ async function assertRegisteredCaseImpact(builder: SourceGraphService): Promise<
 	expect(graph.edges, 'registered cases connect their test files to the subject').toContainEqual(
 		edge
 	);
+	assertAdmittedCaseArrays(builder, indexed.index, unit, edge);
 	expect(builder.build(indexed.index, [retire(registered)]).edges).not.toContainEqual(edge);
 	const head = {
 		revision: 'head',
@@ -88,6 +91,41 @@ async function assertRegisteredCaseImpact(builder: SourceGraphService): Promise<
 		'test/rank.consumer.test.ts',
 		'test/rank.example.test.ts'
 	]);
+}
+
+function assertAdmittedCaseArrays(
+	builder: SourceGraphService,
+	index: SourceIndex,
+	unit: ComponentManifest,
+	edge: { from: string; to: string; via: string }
+): void {
+	for (const mode of ['iterator', 'species', 'getter'] as const) {
+		const registered = registeredRank(unit);
+		const cases = registered.testing!.cases;
+		let reads = 0;
+		if (mode === 'iterator')
+			Object.defineProperty(cases, Symbol.iterator, { value: function* () {} });
+		if (mode === 'species')
+			Object.defineProperty(cases, 'constructor', {
+				value: {
+					[Symbol.species]: () => {
+						throw new Error('species invoked');
+					}
+				}
+			});
+		if (mode === 'getter')
+			Object.defineProperty(cases[0].test, 'file', {
+				enumerable: true,
+				get: () => {
+					reads += 1;
+					return 'test/rank.example.test.ts';
+				}
+			});
+		expect(new TestCaseValidator().validate(registered, registered.testing).valid, mode).toBe(true);
+		reads = 0;
+		expect(builder.build(index, [registered]).edges, mode).toContainEqual(edge);
+		if (mode === 'getter') expect(reads).toBe(1);
+	}
 }
 
 function registeredRank(unit: ComponentManifest): ComponentManifest {
