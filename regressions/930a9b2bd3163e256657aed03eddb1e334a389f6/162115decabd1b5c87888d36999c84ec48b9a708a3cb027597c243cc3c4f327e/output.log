@@ -1,0 +1,50 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TxCfUE
+
+ ❯ test/verification-observations.test.ts (20 tests | 1 failed | 13 skipped) 17ms
+   × CLI workload ["plugin","list","--json"] remains readable by committed measurement history 6ms
+     → expected 'plugin-list---json' to be 'plugin-list' // Object.is equality
+   ✓ CLI workload ["plugin","list"] remains readable by committed measurement history 3ms
+   ✓ CLI workload ["plugin","info","playwright","--json"] remains readable by committed measurement history 2ms
+   ✓ CLI workload ["plugin","add","headless-audio"] remains readable by committed measurement history 1ms
+   ✓ CLI workload ["plugin","generate","playwright","test","Example"] remains readable by committed measurement history 1ms
+   ✓ CLI workload ["plugin","test","headless-audio","--workers=1"] remains readable by committed measurement history 1ms
+   ✓ CLI workload ["info","modules"] remains readable by committed measurement history 1ms
+   ↓ the catalog-previews command records every actual test, not just a passing process
+   ↓ the desktop-project-runs command records every actual test, not just a passing process
+   ↓ the desktop-project-runs backend boundaries command records every actual test, not just a passing process
+   ↓ the modular-h-branding-contract surfaces command records every actual test, not just a passing process
+   ↓ the hosted-catalog listing command records every actual test, not just a passing process
+   ↓ the remote-desktop-boundaries frame limits command records every actual test, not just a passing process
+   ↓ the remote-desktop-boundaries socket lifecycle command records every actual test, not just a passing process
+   ↓ the agent-references prompts command records every actual test, not just a passing process
+   ↓ the agent-references project boundary command records every actual test, not just a passing process
+   ↓ the shells-shared-app routing command records every actual test, not just a passing process
+   ↓ the design-option-storage rules command records every actual test, not just a passing process
+   ↓ the Git evidence scenario executes metadata and binary test files and records every required state
+   ↓ an extra test target is rejected before any runner starts or evidence is recorded
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/verification-observations.test.ts > CLI workload ["plugin","list","--json"] remains readable by committed measurement history
+AssertionError: expected 'plugin-list---json' to be 'plugin-list' // Object.is equality
+
+Expected: "plugin-list"
+Received: "plugin-list---json"
+
+ ❯ test/support/cli-measurement/workloadAssertions.ts:41:25
+     39|   expect(measurements.length).toBeGreaterThan(0);
+     40|   for (const row of measurements) {
+     41|    expect(row.workload).toBe(workload);
+       |                         ^
+     42|    expect(() =>
+     43|     measurementSchema.parse({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed | 13 skipped (20)
+   Start at  10:29:07
+   Duration  2.45s (transform 66ms, setup 82ms, collect 19ms, tests 17ms, environment 0ms, prepare 26ms)
+
