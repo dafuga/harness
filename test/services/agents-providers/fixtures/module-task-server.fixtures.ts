@@ -1,5 +1,6 @@
 import { expect, vi } from 'vitest';
 import { ModuleTaskServerService } from '../../../../src/services/agents-providers/ModuleTaskServerService';
+import { componentManifestSchema } from '../../../../src/core/unitTypes';
 
 export const root = '/disposable/repository';
 export const sourceCommit = 'a'.repeat(40);
@@ -11,6 +12,7 @@ export const contract = {
 	outputs: [{ name: 'x', type: 'string' }],
 	errors: []
 };
+const manifestContract = { origin: 'declared', inputs: [], outputs: contract.outputs, errors: [] };
 
 export const task = (
 	id: string,
@@ -31,15 +33,26 @@ export const task = (
 export const plan = (tasks: unknown[], f = feature) => ({ feature: f, tasks });
 export const manifest = (id: string, changes: Record<string, unknown> = {}) => {
 	const source = `src/${id.split('.').at(-1)}`;
-	return {
+	return componentManifestSchema.parse({
+		schemaVersion: 1,
 		id,
+		kind: 'service',
+		title: id,
 		status: 'active',
 		responsibilityOrigin: 'declared',
 		responsibility: 'work',
-		owns: { source: [`${source}.ts`, `${source}.alternate.ts`] },
-		contract: { origin: 'declared', ...contract },
+		owns: { source: [`${source}.ts`, `${source}.alternate.ts`], symbols: [] },
+		contract: manifestContract,
+		dependencies: [],
+		runtime: {
+			kind: 'module',
+			entry: `${source}.ts`,
+			targets: [{ kind: 'module', entry: `${source}.ts` }]
+		},
+		scenarios: [],
+		budgets: { size: 'frozen', complexity: 'frozen', performance: [] },
 		...changes
-	};
+	});
 };
 
 const makeService = (d: object) => new (ModuleTaskServerService as any)(root, d) as any;
