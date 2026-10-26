@@ -1,0 +1,74 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-kkYPYq
+
+ ❯ test/services/verification-evidence/test-discovery.test.ts (2 tests | 1 failed | 1 skipped) 11ms
+   × scan initialized source finds imported cases, aliases and computed registration 10ms
+     → parameter data is not a runner modifier: expected [ [ 'data-only', true, true ], …(2) ] to deeply equal [ [ 'data-only', true, false ], …(6) ]
+   ↓ discover initialized and unreadable sources retain explicit discovery gaps
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-discovery.test.ts > scan initialized source finds imported cases, aliases and computed registration
+AssertionError: parameter data is not a runner modifier: expected [ [ 'data-only', true, true ], …(2) ] to deeply equal [ [ 'data-only', true, false ], …(6) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    [[22m
+[2m      "data-only",[22m
+[2m      true,[22m
+[32m-     false,[39m
+[32m-   ],[39m
+[32m-   [[39m
+[32m-     "data-describe",[39m
+[2m      true,[22m
+[32m-     false,[39m
+[2m    ],[22m
+[2m    [[22m
+[32m-     "data-use",[39m
+[32m-     true,[39m
+[32m-     false,[39m
+[32m-   ],[39m
+[32m-   [[39m
+[2m      "data-fails",[22m
+[31m+     true,[39m
+[2m      true,[22m
+[32m-     false,[39m
+[2m    ],[22m
+[2m    [[22m
+[2m      "explicit-skip",[22m
+[2m      true,[22m
+[2m      true,[22m
+[32m-   ],[39m
+[32m-   [[39m
+[32m-     "bracket-only",[39m
+[32m-     false,[39m
+[32m-     true,[39m
+[32m-   ],[39m
+[32m-   [[39m
+[32m-     "unknown-modifier",[39m
+[32m-     true,[39m
+[32m-     false,[39m
+[2m    ],[22m
+[2m  ][22m
+
+ ❯ assertParameterizedCases test/services/verification-evidence/test-discovery.test.ts:54:4
+     52|   found.map(({ title, dynamic, disabled }) => [title, dynamic, disable…
+     53|   'parameter data is not a runner modifier'
+     54|  ).toEqual([
+       |    ^
+     55|   ['data-only', true, false],
+     56|   ['data-describe', true, false],
+ ❯ test/services/verification-evidence/test-discovery.test.ts:35:9
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-discovery.test.ts:32:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 skipped (2)
+   Start at  23:05:13
+   Duration  2.87s (transform 85ms, setup 92ms, collect 179ms, tests 11ms, environment 0ms, prepare 20ms)
+
