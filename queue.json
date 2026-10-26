@@ -7246,7 +7246,7 @@
 			},
 			"sourceCommit": "0ff03ffbcec57641920ec1a086d19ff58e818bbf",
 			"contractHash": "b301c76294cab07396cefcbc8108cd1bc4ece0ccdccabcddd0f0269200027912",
-			"status": "running",
+			"status": "failed",
 			"reviews": [],
 			"createdAt": "2026-10-25T23:04:35.638Z",
 			"claim": {
@@ -7301,6 +7301,40 @@
 					}
 				}
 			],
+			"result": {
+				"provider": "codex",
+				"model": "gpt-6-luna",
+				"intelligence": "max",
+				"reportedModel": null,
+				"text": "",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/6806755b-4fa9-4ee8-80f5-ad45c57de8b9",
+				"changedFiles": [],
+				"error": "Resource queue wait timed out",
+				"fallback": false,
+				"finishedAt": "2026-10-26T00:38:30.787Z",
+				"attempt": "6806755b-4fa9-4ee8-80f5-ad45c57de8b9",
+				"sourceCommit": "0ff03ffbcec57641920ec1a086d19ff58e818bbf",
+				"executions": [
+					{
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"intelligence": "max",
+						"reportedModel": null,
+						"apiCost": {
+							"usd": null,
+							"minimumUsd": null,
+							"maximumUsd": null,
+							"basis": "unavailable",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://developers.openai.com/api/docs/pricing",
+							"note": "CLI token usage is incomplete."
+						},
+						"status": "failed",
+						"startedAt": "2026-10-26T00:08:30.449Z",
+						"finishedAt": "2026-10-26T00:38:30.787Z"
+					}
+				]
+			},
 			"attempts": [
 				{
 					"provider": "codex",
