@@ -22,7 +22,7 @@
 			{
 				"name": "libTestFiles",
 				"type": "PlannedFile[]",
-				"description": "A registered initial library example, its single unit case, and a registry that rejects unsupported tests. The case reads the authored expected result."
+				"description": "A registered initial library example and strict registry. Its Vitest runner records observed outcomes and verification links installed dependencies; the case reads its authored expected result."
 			}
 		],
 		"errors": []
@@ -40,6 +40,11 @@
 		},
 		{
 			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
 			"via": "import",
 			"origin": "derived"
 		},
