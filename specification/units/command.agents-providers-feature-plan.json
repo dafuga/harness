@@ -27,6 +27,16 @@
 				"name": "plan commands",
 				"type": "draft --input <file> | show <feature> | select <feature> --page <id> --option <id> --digest <sha> | approve <feature> --digest <sha> --reviewer <name>",
 				"description": "All commands support --json. Human output includes design choices, selection, module tree and wanted contracts."
+			},
+			{
+				"name": "constructor.dependencies.server",
+				"type": "optional Pick<ModuleTaskServerService,\"submitApproved\">",
+				"description": "Defaults to the real server; trusted tests can inject a collaborator."
+			},
+			{
+				"name": "start",
+				"type": "<feature> --digest <sha> [--json]",
+				"description": "Retry exact approved task submission without reapproving."
 			}
 		],
 		"outputs": [
@@ -39,6 +49,16 @@
 				"name": "run",
 				"type": "string",
 				"description": "Retained command scaffold compatibility method."
+			},
+			{
+				"name": "approve",
+				"type": "FeaturePlan",
+				"description": "After approval, submit exactly the approved task records before reporting success. Tasks are queued; provider execution remains separately gated."
+			},
+			{
+				"name": "start",
+				"type": "{created:string[],reused:string[],commit:string|undefined}",
+				"description": "Idempotently submit an already approved plan and report created/reused tasks."
 			}
 		],
 		"errors": [
@@ -46,6 +66,11 @@
 				"name": "invalid command or plan",
 				"type": "Error",
 				"description": "Missing plan, malformed JSON, invalid selection, stale digest and readiness failures propagate without claiming success."
+			},
+			{
+				"name": "submission failure",
+				"type": "Error",
+				"description": "Propagates without success output; an already committed approval remains available for start retry."
 			}
 		]
 	},

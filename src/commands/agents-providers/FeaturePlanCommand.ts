@@ -3,6 +3,7 @@ import type { Command } from 'commander';
 import { FeaturePlanRepository } from '../../repositories/agents-providers/FeaturePlanRepository';
 import type { FeaturePlan } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import { FeaturePlanService } from '../../services/agents-providers/FeaturePlanService';
+import { ModuleTaskServerService } from '../../services/agents-providers/ModuleTaskServerService';
 import { FeaturePlanValidator } from '../../validators/agents-providers/FeaturePlanValidator';
 import { FeaturePlanReadinessAdapter } from '../../adapters/agents-providers/FeaturePlanReadinessAdapter';
 
@@ -80,6 +81,7 @@ export class FeaturePlanCommand {
 		private readonly dependencies: {
 			service: Pick<FeaturePlanService, 'draft' | 'select' | 'approve'>;
 			repository: Pick<FeaturePlanRepository, 'read'>;
+			server?: Pick<ModuleTaskServerService, 'submitApproved'>;
 			output?: (text: string) => void;
 			readInput?: (file: string) => Promise<unknown>;
 		} = defaultDependencies()
@@ -116,6 +118,7 @@ export class FeaturePlanCommand {
 			});
 		this.registerSelection(plan);
 		this.registerApproval(plan);
+		this.registerStart(plan);
 	}
 
 	private registerApproval(plan: Command) {
@@ -131,9 +134,30 @@ export class FeaturePlanCommand {
 						expectedDigest: options.digest,
 						reviewer: options.reviewer
 					});
+					await this.submitApproved(feature, options.digest);
 					this.print(approved, options.json);
 				}
 			);
+	}
+
+	private registerStart(plan: Command) {
+		plan
+			.command('start <feature>')
+			.requiredOption('--digest <sha>')
+			.option('--json')
+			.action(async (feature: string, options: { digest: string; json?: boolean }) => {
+				const result = await this.submitApproved(feature, options.digest);
+				(this.dependencies.output ?? console.log)(
+					options.json
+						? JSON.stringify(result, null, 2)
+						: `Submitted ${feature}: ${result.created.length} created, ${result.reused.length} reused.`
+				);
+			});
+	}
+
+	private submitApproved(feature: string, expectedDigest: string) {
+		const server = this.dependencies.server ?? new ModuleTaskServerService(process.cwd());
+		return server.submitApproved({ feature, expectedDigest });
 	}
 
 	private registerSelection(plan: Command) {
