@@ -1,11 +1,13 @@
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { existsSync, readFileSync } from 'node:fs';
+import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { afterEach, expect, test } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
 import { SnapshotAdapter } from '../src/adapters/snapshot-adapter/SnapshotAdapter';
 import { verifyConfigSchema } from '../src/core/verifyTypes';
+import unit from '../specification/units/adapter.snapshot.json';
+import { measureWorkload } from './support/measureWorkload';
 
 /**
  * What the Hub browser tests left in the clean snapshot of 8f7e422: their dev server emulates
@@ -62,17 +64,43 @@ async function hubSnapshot(extraTracked: string[] = []): Promise<SnapshotAdapter
 	return snapshot;
 }
 
-test('the local Cloudflare state of the Hub dev server is a declared output', async () => {
-	const snapshot = await hubSnapshot();
-	for (const path of runtimeState) await put(snapshot.directory, path);
-	expect(await snapshot.drift()).toEqual({ mutated: [], added: [] });
-	expect(snapshot.misdeclared()).toEqual([]);
+function expected(index: number): unknown {
+	const value = unit.testing.cases[index].expected;
+	return 'value' in value ? value.value : undefined;
+}
+
+test('create initialized exports the committed source and cleans up failed creation', async () => {
+	const snapshot = await hubSnapshot(['packages/desktop/ios/App/tracked.ts']);
+	expect({
+		repository: existsSync(join(snapshot.directory, '.git')),
+		tracked: await readFile(join(snapshot.directory, 'packages/desktop/ios/App/tracked.ts'), 'utf8')
+	}).toEqual(expected(0));
+	const parent = await mkdtemp(join(tmpdir(), 'harness-snapshot-failure-'));
+	try {
+		vi.stubEnv('TMPDIR', parent);
+		await expect(SnapshotAdapter.create(snapshot.directory, 'missing', [])).rejects.toThrow();
+		expect(await readdir(parent)).toEqual([]);
+	} finally {
+		vi.unstubAllEnvs();
+		await rm(parent, { recursive: true, force: true });
+	}
 });
 
-test('exactly that state is declared, and tracked state is rejected by the exported snapshot', async () => {
+test('link initialized shares an existing path only once', async () => {
+	const snapshot = await hubSnapshot();
+	const source = await mkdtemp(join(tmpdir(), 'harness-snapshot-link-'));
+	made.push(() => rm(source, { recursive: true, force: true }));
+	await put(source, 'shared.txt', 'shared');
+	expect(await snapshot.link(source, 'shared.txt')).toEqual(expected(1));
+	expect(await readFile(join(snapshot.directory, 'shared.txt'), 'utf8')).toBe('shared');
+	expect(await snapshot.link(source, 'shared.txt')).toBe(false);
+	expect(await snapshot.link(source, 'missing.txt')).toBe(false);
+});
+
+test('misdeclared initialized rejects outputs covering tracked source', async () => {
 	const about = declared().filter((output) => output.includes('wrangler'));
 	expect(about).toEqual(['packages/hub/.wrangler/state/']);
-	expect((await hubSnapshot()).misdeclared()).toEqual([]);
+	expect((await hubSnapshot()).misdeclared()).toEqual(expected(2));
 	const file = runtimeState[0];
 	const invalid = await hubSnapshot([file]);
 	expect(invalid.misdeclared()).toEqual([{ output: about[0], file }]);
@@ -80,17 +108,33 @@ test('exactly that state is declared, and tracked state is rejected by the expor
 	expect((await invalid.drift()).mutated).toEqual([file]);
 });
 
-test('any other file a check leaves still fails: beside the state, ignored, or elsewhere', async () => {
-	const snapshot = await hubSnapshot();
-	for (const path of undeclared) await put(snapshot.directory, path);
-	expect(await snapshot.drift()).toEqual({ mutated: [], added: [...undeclared].sort() });
+test('drift initialized detects changed source and undeclared additions', async () => {
+	await measureWorkload(unit.id, 'snapshot-drift-boundaries', async () => {
+		const snapshot = await hubSnapshot();
+		for (const path of runtimeState) await put(snapshot.directory, path);
+		expect(await snapshot.drift()).toEqual(expected(3));
+		for (const path of undeclared) await put(snapshot.directory, path);
+		expect(await snapshot.drift()).toEqual({ mutated: [], added: [...undeclared].sort() });
+		const changed = await hubSnapshot();
+		await put(changed.directory, 'packages/hub/src/app.ts', 'changed by a check');
+		await rm(join(changed.directory, 'packages/hub/wrangler.jsonc'));
+		const drift = await changed.drift();
+		expect(drift.mutated).toEqual(['packages/hub/src/app.ts', 'packages/hub/wrangler.jsonc']);
+		expect(drift.added).toEqual([]);
+	});
 });
 
-test('changed or removed Hub source still fails, whatever else is declared', async () => {
+test('artifact initialized measures files inside the snapshot', async () => {
 	const snapshot = await hubSnapshot();
-	await put(snapshot.directory, 'packages/hub/src/app.ts', 'changed by a check');
-	await rm(join(snapshot.directory, 'packages/hub/wrangler.jsonc'));
-	const drift = await snapshot.drift();
-	expect(drift.mutated).toEqual(['packages/hub/src/app.ts', 'packages/hub/wrangler.jsonc']);
-	expect(drift.added).toEqual([]);
+	await put(snapshot.directory, 'artifact.bin', 'data');
+	expect(await snapshot.artifact('artifact.bin')).toEqual(expected(4));
+	expect(await snapshot.artifact('../outside')).toBeUndefined();
+});
+
+test('remove initialized clears the exported snapshot and inventory', async () => {
+	const snapshot = await hubSnapshot();
+	await expect(snapshot.remove()).resolves.toBeUndefined();
+	expect(existsSync(snapshot.directory)).toBe(false);
+	expect(existsSync(`${snapshot.directory}.tracked.json`)).toBe(false);
+	await expect(snapshot.remove()).resolves.toBeUndefined();
 });

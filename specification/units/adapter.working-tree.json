@@ -81,6 +81,44 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "list.initialized",
+				"state": "initialized",
+				"subject": "WorkingTreeAdapter.list",
+				"test": {
+					"file": "test/adapters/git-source-history/working-tree.test.ts",
+					"title": "list initialized preserves tracked snapshot source and excludes generated files"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"paths": [".gitignore", "packages/desktop/ios/App/tracked.ts"],
+						"nested": ["ios/App/tracked.ts"]
+					}
+				},
+				"errors": ["Error"]
+			},
+			{
+				"id": "read.initialized",
+				"state": "initialized",
+				"subject": "WorkingTreeAdapter.read",
+				"test": {
+					"file": "test/adapters/git-source-history/working-tree.test.ts",
+					"title": "read initialized returns source and propagates missing-file errors"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "hello"
+				},
+				"errors": ["Error"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

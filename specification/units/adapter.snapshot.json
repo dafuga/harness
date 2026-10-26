@@ -137,6 +137,103 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "create.initialized",
+				"state": "initialized",
+				"subject": "SnapshotAdapter.create",
+				"test": {
+					"file": "test/self-verify-runtime-state.test.ts",
+					"title": "create initialized exports the committed source and cleans up failed creation"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"repository": false,
+						"tracked": "packages/desktop/ios/App/tracked.ts"
+					}
+				},
+				"errors": ["Error"]
+			},
+			{
+				"id": "link.initialized",
+				"state": "initialized",
+				"subject": "SnapshotAdapter.link",
+				"test": {
+					"file": "test/self-verify-runtime-state.test.ts",
+					"title": "link initialized shares an existing path only once"
+				},
+				"expected": {
+					"kind": "value",
+					"value": true
+				},
+				"errors": ["Error"]
+			},
+			{
+				"id": "misdeclared.initialized",
+				"state": "initialized",
+				"subject": "SnapshotAdapter.misdeclared",
+				"test": {
+					"file": "test/self-verify-runtime-state.test.ts",
+					"title": "misdeclared initialized rejects outputs covering tracked source"
+				},
+				"expected": {
+					"kind": "value",
+					"value": []
+				}
+			},
+			{
+				"id": "drift.initialized",
+				"state": "initialized",
+				"subject": "SnapshotAdapter.drift",
+				"test": {
+					"file": "test/self-verify-runtime-state.test.ts",
+					"title": "drift initialized detects changed source and undeclared additions"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"mutated": [],
+						"added": []
+					}
+				},
+				"errors": ["Error"]
+			},
+			{
+				"id": "artifact.initialized",
+				"state": "initialized",
+				"subject": "SnapshotAdapter.artifact",
+				"test": {
+					"file": "test/self-verify-runtime-state.test.ts",
+					"title": "artifact initialized measures files inside the snapshot"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"bytes": 4,
+						"sha256": "3a6eb0790f39ac87c94f3856b2dd2c5d110e6811602261a9a923d3bb23adc8b7"
+					}
+				}
+			},
+			{
+				"id": "remove.initialized",
+				"state": "initialized",
+				"subject": "SnapshotAdapter.remove",
+				"test": {
+					"file": "test/self-verify-runtime-state.test.ts",
+					"title": "remove initialized clears the exported snapshot and inventory"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"errors": ["Error"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
