@@ -117,7 +117,7 @@ export async function moduleNavigation(
 		'Styles',
 		'Dependencies',
 		'Users & Permissions',
-		'Modules'
+		'Plugins'
 	]);
 	const [row, primary] = await Promise.all([box(modules), box(bar.locator('.hx-categories'))]);
 	expect(row.y, 'module categories sit below the primary row').toBeGreaterThanOrEqual(
@@ -141,7 +141,7 @@ async function codeDestinations(page: Page, row: Locator, scoped: string): Promi
 	for (const [name, path] of [
 		['APIs', 'apis'],
 		['Users & Permissions', 'permissions'],
-		['Modules', 'modules'],
+		['Plugins', 'plugins'],
 		['Configs', 'configs'],
 		['Styles', 'styles'],
 		['Dependencies', 'dependencies'],

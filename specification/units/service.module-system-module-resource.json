@@ -41,7 +41,7 @@
 			{
 				"name": "ModuleResourceService.generate",
 				"type": "Promise<string[]>",
-				"description": "Relative paths actually created or updated by this operation."
+				"description": "Relative resource and metadata paths created or updated; testing foundation preparation runs through a separate installation before resource persistence."
 			}
 		],
 		"errors": [
@@ -75,6 +75,11 @@
 		},
 		{
 			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-install",
 			"via": "import",
 			"origin": "derived"
 		},

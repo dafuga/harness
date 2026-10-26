@@ -14,7 +14,7 @@ export const standardCodeModules: ModuleDefinition[] = [
 	['styles', 'Styles', 'Style', 'style'],
 	['dependencies', 'Dependencies', 'Dependency', 'dependency'],
 	['permissions', 'Users & Permissions', 'User profile', 'profile'],
-	['module-library', 'Modules', 'Module', 'module']
+	['module-library', 'Plugins', 'Plugin', 'module']
 ].map(
 	([catalog, title, singular, kind], order): ModuleDefinition => ({
 		schemaVersion: 1,
@@ -22,6 +22,7 @@ export const standardCodeModules: ModuleDefinition[] = [
 		version: '1.0.0',
 		title,
 		includedByDefault: true,
+		visibility: 'internal',
 		order,
 		description: `${title} used by this project's code.`,
 		instructions: [

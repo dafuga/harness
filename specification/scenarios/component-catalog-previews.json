@@ -1607,8 +1607,26 @@
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
 		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
+			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
 			"id": "reports-component-module-system-explorer-modules-screen",
 			"title": "ExplorerModulesScreen",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-playwright",
+			"title": "ExplorerModulesScreen \u00b7 playwright",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
+			"title": "ExplorerModulesScreen \u00b7 headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
@@ -2957,7 +2975,10 @@
 				"reports-component-image-zoom",
 				"reports-component-modal",
 				"reports-component-module-system-explorer-module-resources-screen",
+				"reports-component-module-system-explorer-module-resources-screen-playwright",
 				"reports-component-module-system-explorer-modules-screen",
+				"reports-component-module-system-explorer-modules-screen-playwright",
+				"reports-component-module-system-explorer-modules-screen-headless-audio",
 				"reports-component-networking-security-explorer-permissions-screen",
 				"reports-component-project-activity",
 				"reports-component-provider-picker",

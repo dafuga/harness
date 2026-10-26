@@ -4953,7 +4953,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5013,9 +5013,9 @@
 		{
 			"unit": "reports.function.harness-shell",
 			"name": "harnessShell",
-			"commit": "f3ea5453e0082ea790518a9b38068fb0ab8d78f2",
-			"reason": "Move API and module discovery under Code while retaining profile destinations and four primary sections.",
-			"definition": "31aa5655b2774d3d8a05d49d9525d4dbff57065a7daf01289d1269fe1fbcecd6",
+			"commit": "45a7309720bd4586a73783a13bde42279f91c4c6",
+			"reason": "Delegate testing-resource parent selection without changing installed module navigation.",
+			"definition": "6a3b745009154193684a5b80b441adda1f4d2c790cf244253c2a482b0dfd246f",
 			"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
 			"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte",
 			"previousDefinitions": [
@@ -5070,6 +5070,24 @@
 					"commit": "8eb2f5ff2e",
 					"reason": "Derive Code navigation from included and installed module declarations while retaining scoped catalog routes.",
 					"definition": "31aa5655b2774d3d8a05d49d9525d4dbff57065a7daf01289d1269fe1fbcecd6",
+					"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
+					"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
+				},
+				{
+					"unit": "reports.function.harness-shell",
+					"name": "harnessShell",
+					"commit": "f3ea5453e0082ea790518a9b38068fb0ab8d78f2",
+					"reason": "Move API and module discovery under Code while retaining profile destinations and four primary sections.",
+					"definition": "31aa5655b2774d3d8a05d49d9525d4dbff57065a7daf01289d1269fe1fbcecd6",
+					"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
+					"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
+				},
+				{
+					"unit": "reports.function.harness-shell",
+					"name": "harnessShell",
+					"commit": "afae1c6426908a2645b542aa3401753f769a02a7",
+					"reason": "Keep testing resource pages under Code and Plugins when they have no direct tab.",
+					"definition": "9a6b7950ec66fa30ca71479c2b7c5e794e8ed0c4d95a7a595396736cae09fd48",
 					"to": "packages/reports/src/components/explorer-ui/harness-navbar/harnessShell.ts",
 					"ownerSource": "packages/reports/src/components/explorer-ui/harness-navbar/HarnessNavbar.svelte"
 				}

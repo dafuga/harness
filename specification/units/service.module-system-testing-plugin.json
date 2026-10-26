@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"id": "service.module-system-testing-plugin",
+	"kind": "service",
+	"title": "TestingPluginService",
+	"responsibility": "Run installed testing plugin scripts headlessly with resource admission and owned-process cleanup.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/commands/module-system/module-command/TestingPluginService.ts"],
+		"symbols": ["TestingPluginService", "TestingPluginService.run"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TestingPluginService.run.root",
+				"type": "string",
+				"description": "Absolute project directory whose declared test script will run."
+			},
+			{
+				"name": "TestingPluginService.run.id",
+				"type": "string",
+				"description": "Installed testing plugin identity; capability and internal modules are rejected."
+			},
+			{
+				"name": "TestingPluginService.run.args",
+				"type": "string[]",
+				"description": "Additional runner arguments; headed, debug, UI and alternate config switches are rejected."
+			},
+			{
+				"name": "TestingPluginService.run.signal",
+				"type": "AbortSignal",
+				"description": "Optional cancellation signal for queued admission and the owned runner process tree."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TestingPluginService.run",
+				"type": "Promise<number>",
+				"description": "Zero for a passing runner; a nonzero runner status or cleanup failure otherwise."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Invalid catalog, missing testing installation, headed options, unsafe setup conflicts or process admission prevent execution."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.run-isolated",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-install",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/module-system/module-command/TestingPluginService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/module-system/module-command/TestingPluginService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

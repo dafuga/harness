@@ -1,3 +1,4 @@
+import { builtinModules } from '../../../../../../src/templates/module-system/builtinModules';
 import { permissionProfiles } from '../../../../../../test/support/permissionProfiles';
 import { standardCodeModules } from '../../../../../../src/templates/module-system/standardCodeModules';
 import { rustWasmModule } from '../../../../../../src/templates/module-system/rustWasmModule';
@@ -59,6 +60,14 @@ export const moduleData = {
 		}
 	]
 };
+const testing = builtinModules
+	.filter((definition) => definition.testing)
+	.map((definition) => ({
+		definition,
+		source: 'builtin' as const,
+		installed: Boolean(definition.includedByDefault),
+		instances: []
+	}));
 const completeModuleData = {
 	gaps: moduleData.gaps,
 	modules: [
@@ -74,7 +83,8 @@ const completeModuleData = {
 			installed: false,
 			instances: []
 		})),
-		...moduleData.modules
+		...moduleData.modules,
+		...testing
 	]
 };
 export function modulePreview(host: ExplorerScreenProps, entity?: string): ExplorerScreenProps {

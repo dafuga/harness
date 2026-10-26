@@ -1,3 +1,4 @@
+import { ModuleInstallService } from './ModuleInstallService';
 import { moduleGroupConfig } from '../../configs/development-tooling/moduleGroupsConfig';
 import { moduleGroupPlan } from './modulePlan';
 import { ModuleCatalogService } from './ModuleCatalogService';
@@ -36,6 +37,7 @@ export class ModuleResourceService {
 			)
 		)
 			throw new Error(`Resource ${name} already exists.`);
+		if (entry.definition.testing) await new ModuleInstallService().add(root, module);
 		if (!state.modules.some((item) => item.definition.id === module))
 			state.modules.push({ definition: entry.definition, source: entry.source });
 		const plan = await resourcePlan(root, resource, { ...request, name });
