@@ -6,6 +6,7 @@ import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { readFile } from 'node:fs/promises';
 import { taskSelection } from '../../../src/services/agents-providers/module-task-service/taskPrompt';
 import { observedTaskOperation } from '../../support/taskProfiles';
+import { ZodError } from 'zod';
 test('admission rejects missing contracts, unknown modules and mutable task identities', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -152,3 +153,66 @@ test.each([
 		}
 	}
 );
+
+test('assignment schemas preserve exact grants and reject unsafe inputs without queue mutation', async () => {
+	const f = await moduleTaskFixture();
+	try {
+		const service = new ModuleTaskService(f.root);
+		await service.feature({
+			id: 'checkout',
+			goal: 'Reliable checkout',
+			tldr: 'Build validated orders.'
+		});
+		const input = JSON.parse(await readFile(await f.input(), 'utf8'));
+		const exactPath = 'src/routes/projects/[branch]/+page.svelte';
+		const files = [
+			exactPath,
+			...Array.from({ length: 63 }, (_, i) => 'src/exact/file-' + i + '.ts')
+		];
+		const add = (fields: Record<string, unknown>) => service.add({ ...input, ...fields });
+		const show = async (id: string) =>
+			(await service.show(id)).task as unknown as Record<string, unknown>;
+		await add({ id: 'implementation-grant', assignedFiles: files, role: 'implementation' });
+		await add({ id: 'verification-grant', assignedFiles: [exactPath], role: 'verification' });
+		await add({ id: 'legacy-grant' });
+		const implementation = await show('implementation-grant');
+		const verification = await show('verification-grant');
+		expect(implementation.assignedFiles).toEqual(files);
+		expect(implementation.role).toBe('implementation');
+		expect(verification.role).toBe('verification');
+		await service.repository.update((queue) => {
+			const legacy = queue.tasks[2] as unknown as Record<string, unknown>;
+			delete legacy.role;
+			delete legacy.assignedFiles;
+		});
+		const legacy = await show('legacy-grant');
+		expect(legacy.role).toBe('implementation');
+		expect(legacy.assignedFiles).toBeUndefined();
+		const before = await service.repository.read();
+		const paths = (
+			'|../source.ts|/tmp/source.ts|C:\\source.ts|src\\source.ts|./source.ts|src/./source.ts|' +
+			'src/../source.ts|src/bad\nname.ts|src/bad\u0000name.ts|.git/config|src/.GiT/config|' +
+			'src/*.ts|src/file?.ts|src/|'
+		).split('|');
+		const invalidInputs: Record<string, unknown>[] = [
+			...paths.map((path) => ({ assignedFiles: [path] })),
+			{ assignedFiles: Array.from({ length: 65 }, (_, i) => 'src/file-' + i + '.ts') },
+			{ assignedFiles: ['src/one.ts', 'src/one.ts'] },
+			{ role: 'worker' },
+			{ unexpectedField: true },
+			{ verificationFiles: ['src/unassigned.ts'] }
+		];
+		for (const fields of invalidInputs) {
+			let failure: unknown;
+			try {
+				await add(fields);
+			} catch (error) {
+				failure = error;
+			}
+			expect(failure).toBeInstanceOf(ZodError);
+			expect(await service.repository.read()).toEqual(before);
+		}
+	} finally {
+		await f.dispose();
+	}
+});
