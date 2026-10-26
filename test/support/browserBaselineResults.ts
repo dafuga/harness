@@ -15,6 +15,9 @@ export async function prepareBrowserBaselineReport(project: string): Promise<voi
 	const path = join(project, 'playwright.config.ts');
 	const original = await readFile(path, 'utf8');
 	const marker = "testDir: 'tests/e2e',";
+	const workers = Number(process.env.PLAYWRIGHT_WORKERS ?? 5);
+	if (!Number.isInteger(workers) || workers < 1)
+		throw new Error('Generated fixture browser workers must be a positive integer.');
 	expect(original).toContain(marker);
 	const next = original
 		.replaceAll('3322', String(await freePort()))
@@ -22,6 +25,7 @@ export async function prepareBrowserBaselineReport(project: string): Promise<voi
 		.replace(
 			marker,
 			marker +
+				`\nworkers: ${workers},` +
 				"\nreporter: [['list'], ['json', { outputFile: '.cache/harness/browser-results.json' }]],"
 		);
 	await writeFile(path, await format(next, { ...(await resolveConfig(path)), filepath: path }));
