@@ -7,8 +7,19 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/agents-providers/FeaturePlanService.ts"],
-		"symbols": ["FeaturePlanService", "FeaturePlanService.run"]
+		"source": [
+			"src/services/agents-providers/FeaturePlanService.ts",
+			"src/services/agents-providers/FeaturePlanService.types.ts"
+		],
+		"symbols": [
+			"FeaturePlanService",
+			"FeaturePlanService.constructor",
+			"FeaturePlanService.run",
+			"FeaturePlanService.draft",
+			"FeaturePlanService.select",
+			"FeaturePlanService.approve",
+			"FeaturePlanService.approved"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -79,7 +90,23 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "repository.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/agents-providers/FeaturePlanService.ts",
