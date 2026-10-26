@@ -2,7 +2,7 @@
 	"name": "contract-duplicate-matrix-rows",
 	"goal": "Reject duplicate state and input matrix rows without blocking distinct boundaries or viewports",
 	"createdAt": "2026-10-26T20:21:40.948Z",
-	"updatedAt": "2026-10-26T20:21:42.529Z",
+	"updatedAt": "2026-10-26T20:28:00.312Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:25:29.043Z",
+			"evidence": "The existing validate and compare cases both accept the same new API matrix row twice and fail their strengthened assertions."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:27:58.796Z",
+			"evidence": "Validate distinct state, input, fixture and viewport coordinates, and reject duplicate new cases during comparison."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:28:00.312Z",
+			"evidence": "The same validate and compare cases pass at f43d0d427e, including distinct boundaries, viewport overlap and admitted cyclic input graphs."
 		},
 		{
 			"id": "verify",
