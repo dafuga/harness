@@ -36,7 +36,7 @@
 			{
 				"name": "ModuleTaskWorktreeAdapter.checkpoint",
 				"type": "Promise<string>",
-				"description": "A child commit containing the selected worktree paths, or the source commit when no paths were selected."
+				"description": "A child commit containing the selected worktree paths, or the source commit when no paths were selected. The case compares committed contents and parent instead of the changing commit ID."
 			}
 		],
 		"errors": [
@@ -84,7 +84,15 @@
 					"title": "submission checkpoint preserves source HEAD and both staged and unstaged work"
 				},
 				"expected": {
-					"kind": "void"
+					"kind": "value",
+					"value": {
+						"committedOrders": "export const orders = 3;",
+						"newFile": "review context",
+						"stagedOrders": "export const orders = 2;",
+						"parentIsSource": true,
+						"taskHeadIsSource": true,
+						"sourceHeadUnchanged": true
+					}
 				},
 				"errors": ["Error"]
 			}

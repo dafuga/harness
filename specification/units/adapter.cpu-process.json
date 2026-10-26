@@ -26,7 +26,7 @@
 			{
 				"name": "CpuProcessAdapter.sample",
 				"type": "Promise<CpuReading>",
-				"description": "A monotonic timestamp, aggregate CPU counters and sanitized process identities from the current host."
+				"description": "A monotonic timestamp, aggregate CPU counters and sanitized process identities from the current host. Its case checks a stable projection because host counters vary."
 			}
 		],
 		"errors": [
@@ -74,7 +74,12 @@
 					"title": "native CPU sampler reads real monotonic counters without arguments"
 				},
 				"expected": {
-					"kind": "void"
+					"kind": "value",
+					"value": {
+						"hasCores": true,
+						"currentRole": "harness",
+						"sanitizedFields": true
+					}
 				},
 				"errors": ["Error"]
 			}

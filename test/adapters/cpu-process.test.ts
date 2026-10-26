@@ -4,6 +4,7 @@ import * as os from 'node:os';
 import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
 import { CpuProcessAdapter } from '../../src/adapters/cpu-process-adapter/CpuProcessAdapter';
+import manifest from '../../specification/units/adapter.cpu-process.json';
 import { measureWorkload } from '../support/measureWorkload';
 
 const processFixture = vi.hoisted(() => ({ mode: 'native' }));
@@ -35,13 +36,13 @@ test('native CPU sampler reads real monotonic counters without arguments', async
 		const sample = await measureWorkload('adapter.cpu-process', 'native-process-sample', () =>
 			adapter.sample()
 		);
-		expect(sample.cpu.cores).toBeGreaterThan(0);
-		expect(sample.processes.find((p) => p.pid === process.pid)?.role).toBe('harness');
-		expect(
-			sample.processes.every((p) =>
+		expect({
+			hasCores: sample.cpu.cores > 0,
+			currentRole: sample.processes.find((p) => p.pid === process.pid)?.role,
+			sanitizedFields: sample.processes.every((p) =>
 				Object.keys(p).every((key) => ['pid', 'parentPid', 'cpuMs', 'role', 'label'].includes(key))
 			)
-		).toBe(true);
+		}).toEqual(manifest.testing.cases[0].expected.value);
 	} else await expect(adapter.sample()).rejects.toThrow('Unsupported CPU process platform.');
 	await samplerFailures(adapter);
 });

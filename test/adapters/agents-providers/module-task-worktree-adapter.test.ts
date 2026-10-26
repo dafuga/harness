@@ -6,6 +6,7 @@ import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { observedTaskOperation } from '../../support/taskProfiles';
+import manifest from '../../../specification/units/adapter.agents-providers-module-task-worktree.json';
 test('submission checkpoint preserves source HEAD and both staged and unstaged work', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -42,11 +43,14 @@ test('submission checkpoint preserves source HEAD and both staged and unstaged w
 					paths: ['src/orders.ts', 'new.txt']
 				})
 		);
-		expect(await git.run(['show', checkpoint + ':src/orders.ts'])).toContain('orders = 3');
-		expect(await git.run(['show', checkpoint + ':new.txt'])).toBe('review context');
-		expect(await git.run(['show', ':src/orders.ts'])).toContain('orders = 2');
-		expect(await git.run(['rev-parse', 'HEAD'])).toBe(f.source);
-		expect(await f.git.run(['rev-parse', 'HEAD'])).toBe(f.source);
+		expect({
+			committedOrders: await git.run(['show', checkpoint + ':src/orders.ts']),
+			newFile: await git.run(['show', checkpoint + ':new.txt']),
+			stagedOrders: await git.run(['show', ':src/orders.ts']),
+			parentIsSource: (await git.run(['rev-parse', checkpoint + '^'])) === f.source,
+			taskHeadIsSource: (await git.run(['rev-parse', 'HEAD'])) === f.source,
+			sourceHeadUnchanged: (await f.git.run(['rev-parse', 'HEAD'])) === f.source
+		}).toEqual(manifest.testing.cases[0].expected.value);
 	} finally {
 		await f.dispose();
 	}
