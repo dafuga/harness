@@ -58,15 +58,12 @@ function registration(
 	aliases: Map<string, 'test' | 'group'>,
 	source: ts.SourceFile
 ) {
-	const expression = call.expression.getText(source);
+	const runner = runnerExpression(call.expression, source);
+	const expression = runner.text;
 	const root = expression.split(/[.(]/)[0];
 	const imported = aliases.get(root);
 	if (!imported) return undefined;
-	if (
-		ts.isPropertyAccessExpression(call.expression) &&
-		['each', 'for'].includes(call.expression.name.text)
-	)
-		return undefined;
+	if (isFactory(call.expression, expression)) return undefined;
 	const kind = imported === 'group' || /\.describe\b/.test(expression) ? 'group' : 'test';
 	if (/\.(?:extend|use|beforeAll|afterAll|beforeEach|afterEach)\b/.test(expression))
 		return undefined;
@@ -75,7 +72,38 @@ function registration(
 	return {
 		kind,
 		title: ts.isStringLiteralLike(title) ? title.text : title.getText(source),
-		dynamic: !ts.isStringLiteralLike(title) || /\.each\b|\.for\b/.test(expression),
+		dynamic: runner.computed || isDynamic(title, expression),
 		disabled: /\.(?:skip|only|todo|fixme|fails|fail)\b/.test(expression)
 	};
+}
+
+function isFactory(node: ts.Expression, expression: string): boolean {
+	return (
+		(ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) &&
+		/\.(?:each|for)$/.test(expression)
+	);
+}
+
+function isDynamic(title: ts.Expression, expression: string): boolean {
+	return !ts.isStringLiteralLike(title) || /\.each\b|\.for\b/.test(expression);
+}
+
+/** Follow the runner chain without interpreting call arguments as modifiers. */
+function runnerExpression(
+	node: ts.Expression,
+	source: ts.SourceFile
+): { text: string; computed: boolean } {
+	if (ts.isCallExpression(node)) return runnerExpression(node.expression, source);
+	if (ts.isTaggedTemplateExpression(node)) return runnerExpression(node.tag, source);
+	if (ts.isPropertyAccessExpression(node)) {
+		const parent = runnerExpression(node.expression, source);
+		return { ...parent, text: `${parent.text}.${node.name.text}` };
+	}
+	if (ts.isElementAccessExpression(node)) {
+		const parent = runnerExpression(node.expression, source);
+		const literal = ts.isStringLiteralLike(node.argumentExpression);
+		const name = literal ? node.argumentExpression.text : '<computed>';
+		return { text: `${parent.text}.${name}`, computed: parent.computed || !literal };
+	}
+	return { text: node.getText(source), computed: false };
 }
