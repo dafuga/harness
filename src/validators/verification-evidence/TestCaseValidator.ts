@@ -77,7 +77,11 @@ function sameMatrixCase(
 	right: ContractCase,
 	shape: TestContract['shape']
 ): boolean {
-	return sameBehaviorCase(left, right) && matchingViewports(left.viewports, right.viewports, shape);
+	return (
+		sameBehaviorHeaders(left, right) &&
+		matchingViewports(left.viewports, right.viewports, shape) &&
+		sameData(left.input, right.input)
+	);
 }
 
 /** A page behavior may split its required device captures across registered cases. */
@@ -97,19 +101,18 @@ function pageViewportErrors(unit: string, contract: TestContract): string[] {
 }
 
 function sameBehaviorCase(left: ContractCase, right: ContractCase): boolean {
-	if (
-		left.state !== right.state ||
-		left.subject !== right.subject ||
-		left.example !== right.example
-	)
-		return false;
-	if (left.fixture !== right.fixture || left.call !== right.call) return false;
-	if (Object.hasOwn(left, 'input') !== Object.hasOwn(right, 'input')) return false;
 	return (
-		sameNames(left.props, right.props) &&
-		sameNames(left.errors, right.errors) &&
+		left.state === right.state &&
+		sameBehaviorHeaders(left, right) &&
 		sameData(left.input, right.input)
 	);
+}
+
+function sameBehaviorHeaders(left: ContractCase, right: ContractCase): boolean {
+	if (left.subject !== right.subject || left.example !== right.example) return false;
+	if (left.fixture !== right.fixture || left.call !== right.call) return false;
+	if (Object.hasOwn(left, 'input') !== Object.hasOwn(right, 'input')) return false;
+	return sameNames(left.props, right.props) && sameNames(left.errors, right.errors);
 }
 
 function matchingViewports(
