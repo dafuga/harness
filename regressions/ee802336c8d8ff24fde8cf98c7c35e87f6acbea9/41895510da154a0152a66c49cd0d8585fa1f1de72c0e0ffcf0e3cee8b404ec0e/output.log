@@ -1,0 +1,44 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-fpAmF4
+
+stderr | test/services/agents-providers/module-task-analytics-service.test.ts > committed task history emits stable IDs and excludes raw prompt text
+Warning: Harness module task analytics could not be recorded.
+
+stderr | test/services/agents-providers/module-task-analytics-service.test.ts > prelaunch failures never become model executions or invented costs
+Warning: Harness module task analytics could not be recorded.
+
+ ❯ test/services/agents-providers/module-task-analytics-service.test.ts (3 tests | 1 failed) 786ms
+   ✓ committed task history emits stable IDs and excludes raw prompt text  510ms
+   × prelaunch failures never become model executions or invented costs 263ms
+     → expected [ 'executed' ] to deeply equal [ 'prelaunch-failed' ]
+   ✓ missing Codex cache-write counts produce a priced range rather than a guessed bill 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/agents-providers/module-task-analytics-service.test.ts > prelaunch failures never become model executions or invented costs
+AssertionError: expected [ 'executed' ] to deeply equal [ 'prelaunch-failed' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   "prelaunch-failed",[39m
+[31m+   "executed",[39m
+[2m  ][22m
+
+ ❯ test/services/agents-providers/module-task-analytics-service.test.ts:101:48
+     99|    }));
+    100|    await analytics.sync(f.root);
+    101|    expect(events.map((event) => event.action)).toEqual(['prelaunch-fai…
+       |                                                ^
+    102|    expect(analytics.metrics(events)).toMatchObject({
+    103|     executions: 0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  00:42:04
+   Duration  4.08s (transform 573ms, setup 98ms, collect 964ms, tests 786ms, environment 0ms, prepare 21ms)
+
