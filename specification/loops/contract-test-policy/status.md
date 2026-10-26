@@ -438,9 +438,18 @@ green capture took 0.0512 ms and observed 197,165,056 bytes whole-worker RSS,
 not unit-attributed or peak memory. The timed block builds the already prepared
 graph; its generic capture method text overstates included fixture setup. The
 refreshed inventory is 1,117 suite files, 4,606 declarations, 45 standardized
-units, 693 registered cases and 5,938 gaps. The laptop impact E2Es were queued
-with a one-CPU, 2-GiB reservation while another run occupied the machine; their
-result remains pending here.
+units, 693 registered cases and 5,938 gaps. Laptop capture `6082547cdac7`
+passed five impact cases and one graph case, but failed the other graph case
+because its disposable library lacked three required contracts. That failed
+record remains attached. Its identified temporary fixture was removed.
+
+Fixture migration `c32704bec3` preserves the unresolved runtime import and URL
+assertions. It declares and runs one helper Example and two class method cases,
+using a Vitest-only alias for the missing runtime dependency. Laptop capture
+`96eeb9ce967d` passes both existing graph cases and all five impact cases at that
+revision. One Vitest worker was observed, with a one-CPU, 2-GiB reservation.
+The earlier failed capture is not a red-green product repair: the fixture itself
+changed between captures. Both records were fetched into Harness Git evidence.
 
 The installed Codex app-server reports the requested model in `thread/start`
 even for an intentionally nonexistent model. That field therefore does not
