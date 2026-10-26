@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-k6s3gm
+
+ ✓ test/services/agents-providers/module-task-worker.test.ts (7 tests | 6 skipped) 807ms
+   ✓ approved claims reject stale or unrelated work before running a provider  792ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 6 skipped (7)
+   Start at  00:33:39
+   Duration  4.58s (transform 680ms, setup 111ms, collect 1.11s, tests 807ms, environment 0ms, prepare 29ms)
+
