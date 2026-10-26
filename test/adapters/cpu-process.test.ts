@@ -1,9 +1,28 @@
 import { mkdtemp, rm } from 'node:fs/promises';
+import type * as childProcess from 'node:child_process';
 import * as os from 'node:os';
 import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
 import { CpuProcessAdapter } from '../../src/adapters/cpu-process-adapter/CpuProcessAdapter';
 import { measureWorkload } from '../support/measureWorkload';
+
+const processFixture = vi.hoisted(() => ({ mode: 'native' }));
+
+vi.mock('node:child_process', async (load) => {
+	const actual = await load<typeof childProcess>();
+	const { promisify } = await import('node:util');
+	const execute = promisify(actual.execFile);
+	const execFile = actual.execFile.bind(undefined);
+	Object.defineProperty(execFile, promisify.custom, {
+		value: (file: string, args: string[], options: childProcess.ExecFileOptions) => {
+			if (processFixture.mode === 'success') return Promise.resolve({ stdout: '', stderr: '' });
+			if (processFixture.mode === 'failure')
+				return Promise.reject(Object.assign(new Error('ps unavailable'), { code: 'ENOENT' }));
+			return execute(file, args, options);
+		}
+	});
+	return { ...actual, execFile };
+});
 
 vi.mock('node:os', async (load) => {
 	const actual = await load<typeof os>();
@@ -35,15 +54,18 @@ async function samplerFailures(adapter: CpuProcessAdapter): Promise<void> {
 		await expect(adapter.sample()).rejects.toThrow('Unsupported CPU process platform.');
 		vi.mocked(os.platform).mockReturnValue('linux');
 		vi.mocked(os.cpus).mockReturnValue([]);
+		if (!['darwin', 'linux'].includes(process.platform)) processFixture.mode = 'success';
 		await expect(adapter.sample()).rejects.toThrow('CPU counters unavailable.');
 		vi.mocked(os.cpus).mockReset();
-		process.env.PATH = emptyPath;
+		if (['darwin', 'linux'].includes(process.platform)) process.env.PATH = emptyPath;
+		else processFixture.mode = 'failure';
 		await expect(adapter.sample()).rejects.toMatchObject({ code: 'ENOENT' });
 	} finally {
 		if (originalPath === undefined) delete process.env.PATH;
 		else process.env.PATH = originalPath;
 		vi.mocked(os.platform).mockReset();
 		vi.mocked(os.cpus).mockReset();
+		processFixture.mode = 'native';
 		await rm(emptyPath, { recursive: true, force: true });
 	}
 }
