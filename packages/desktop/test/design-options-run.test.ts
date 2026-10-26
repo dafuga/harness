@@ -26,7 +26,6 @@ async function versions(f: Made) {
 	const plan = await (await createPlanning(f.root)).readPlan({ unitId: f.request.entityId });
 	return plan.versions as unknown as Array<{ options?: Array<{ images: { sha256: string }[] }> }>;
 }
-
 test('a page Plan generates three separately directed options and commits them once', async () => {
 	await assertReferenceFormats();
 	await assertPageReferences();
@@ -102,7 +101,7 @@ function referenceFixture(kind: 'wanted' | 'current' | 'missing') {
 	const version = referenceVersion(reference);
 	const captured: Array<Buffer | null> = [];
 	const generator = {
-		generateImage: vi.fn(async (input: { reference: string | null }) => {
+		generateImage: vi.fn(async (input: { reference: string | null; prompt: string }) => {
 			captured.push(input.reference ? await readFile(input.reference) : null);
 			return {
 				bytes: PNG.sync.write(new PNG({ width: captured.length + 1, height: 2 })),
@@ -141,12 +140,20 @@ function referenceFixture(kind: 'wanted' | 'current' | 'missing') {
 	} as unknown as RunContext;
 	return { context, generator, planning, currentImage, emit, captured, reference, version };
 }
-
 async function assertPageReferences() {
 	for (const kind of ['wanted', 'current', 'missing'] as const) {
 		const f = referenceFixture(kind);
-		const result = await planDesign(f.context, 'Review this page');
-		expect(f.generator.generateImage).toHaveBeenCalledTimes(3);
+		const count = kind === 'current' ? 1 : 3;
+		f.context.request.designOptions = count;
+		const request = kind === 'missing' ? 'Design the whole page' : 'Change only the right panel';
+		const result = await planDesign(f.context, request);
+		expect(f.generator.generateImage).toHaveBeenCalledTimes(count);
+		for (const [input] of f.generator.generateImage.mock.calls) {
+			expect(input.prompt).toContain(request);
+			expect(input.prompt).not.toMatch(/normalized rectangle whole image|Top icon navbar:/i);
+			if (kind === 'missing') expect(input.prompt).toMatch(/no reference image (?:is )?available/i);
+			else expect(input.prompt).toMatch(/preserve[\s\S]*outside[\s\S]*requested/i);
+		}
 		if (kind === 'missing') {
 			expect(f.captured).toEqual([null, null, null]);
 			expect(
@@ -154,7 +161,7 @@ async function assertPageReferences() {
 			).toMatch(
 				/no (?:visual |image )?reference|reference (?:unavailable|missing)|without (?:a |an )?(?:image )?reference/i
 			);
-		} else expect(f.captured).toEqual([f.reference, f.reference, f.reference]);
+		} else expect(f.captured).toEqual(Array(count).fill(f.reference));
 		if (kind === 'wanted') {
 			expect(f.planning.image).toHaveBeenCalledExactlyOnceWith({
 				entityId: 'page.orders',
@@ -171,7 +178,6 @@ async function assertPageReferences() {
 		expect(f.planning.addDesign).toHaveBeenCalledTimes(1);
 	}
 }
-
 function referenceVersion(reference: Buffer) {
 	return {
 		version: 'v002',
