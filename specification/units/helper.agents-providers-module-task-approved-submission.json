@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "helper.agents-providers-module-task-approved-submission",
+	"kind": "helper",
+	"title": "moduleTaskApprovedSubmission",
+	"responsibility": "Verify the latest approved feature plan within task queue updates.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/helpers/agents-providers/moduleTaskApprovedSubmission.ts"],
+		"symbols": ["moduleTaskApprovedSubmission"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "moduleTaskApprovedSubmission.textToFormat",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "moduleTaskApprovedSubmission",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/helpers/agents-providers/moduleTaskApprovedSubmission.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/helpers/agents-providers/moduleTaskApprovedSubmission.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

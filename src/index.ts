@@ -204,3 +204,4 @@ export { FeaturePlanValidator } from './validators/agents-providers/FeaturePlanV
 export { FeaturePlanReadinessAdapter } from './adapters/agents-providers/FeaturePlanReadinessAdapter';
 export { FeaturePlanCommand } from './commands/agents-providers/FeaturePlanCommand';
 export { ModuleTaskCodexProfileAdapter } from './adapters/agents-providers/ModuleTaskCodexProfileAdapter';
+export { moduleTaskApprovedSubmission } from './helpers/agents-providers/moduleTaskApprovedSubmission';
