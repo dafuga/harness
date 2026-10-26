@@ -148,6 +148,7 @@ async function missingBlob(
 		present: `present ${root}`,
 		missing: `missing ${root}`,
 		retry: `retry ${root}`,
+		retryPeer: `retry peer ${root}`,
 		malformed: `malformed ${root}`
 	};
 	for (const [name, value] of Object.entries(values))
@@ -166,8 +167,14 @@ async function missingBlob(
 	expect(missing.status, 'a missing committed blob must be reported').toBe('rejected');
 	if (missing.status === 'rejected') expect(String(missing.reason)).toContain('missing');
 	failNext();
-	await expect(tree.read('retry.txt')).rejects.toThrow('synthetic Git failure');
+	const failed = await Promise.allSettled([tree.read('retry.txt'), tree.read('retryPeer.txt')]);
+	for (const result of failed)
+		expect(result).toMatchObject({
+			status: 'rejected',
+			reason: expect.objectContaining({ message: 'synthetic Git failure' })
+		});
 	await expect(tree.read('retry.txt')).resolves.toBe(values.retry);
+	await expect(tree.read('retryPeer.txt')).resolves.toBe(values.retryPeer);
 	malformNext();
 	await expect(tree.read('malformed.txt')).rejects.toThrow('Invalid Git batch response');
 	await expect(tree.read('malformed.txt')).resolves.toBe(values.malformed);
