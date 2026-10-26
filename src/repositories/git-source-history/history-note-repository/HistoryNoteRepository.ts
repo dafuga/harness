@@ -101,16 +101,7 @@ export class HistoryNoteRepository {
 
 	/** Reads only verification entries, bounding the Git blobs held at once. */
 	async verifications(): Promise<Array<Extract<HistoryNote, { kind: 'verification' }>>> {
-		const pairs = await this.listed();
-		const result: Array<Extract<HistoryNote, { kind: 'verification' }>> = [];
-		for (let offset = 0; offset < pairs.length; offset += 64) {
-			const batch = pairs.slice(offset, offset + 64);
-			const texts = await this.blobs(batch.map(([blob]) => blob));
-			for (let index = 0; index < batch.length; index++) {
-				result.push(...verificationLines(texts[index], batch[index][1]));
-			}
-		}
-		return result;
+		return collectVerifications(await this.listed(), (ids) => this.blobs(ids));
 	}
 
 	/** The note blob of every noted commit, as the notes ref lists them now. */
@@ -148,6 +139,21 @@ export class HistoryNoteRepository {
 		}
 		return texts;
 	}
+}
+
+async function collectVerifications(
+	pairs: string[][],
+	read: (ids: string[]) => Promise<string[]>
+): Promise<Array<Extract<HistoryNote, { kind: 'verification' }>>> {
+	const result: Array<Extract<HistoryNote, { kind: 'verification' }>> = [];
+	for (let offset = 0; offset < pairs.length; offset += 64) {
+		const batch = pairs.slice(offset, offset + 64);
+		const texts = await read(batch.map(([blob]) => blob));
+		for (let index = 0; index < batch.length; index++) {
+			for (const entry of verificationLines(texts[index], batch[index][1])) result.push(entry);
+		}
+	}
+	return result;
 }
 
 /** Other note kinds and malformed or foreign entries do not identify verification records. */
