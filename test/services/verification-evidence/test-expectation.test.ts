@@ -7,6 +7,7 @@ import {
 import { expect, test } from 'vitest';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { TestExpectationService } from '../../../src/services/verification-evidence/TestExpectationService';
+import { indexFiles } from '../../support/memoryTree';
 
 const service = new TestExpectationService();
 test('json checks complete responses, type-preserving scalar normalization and errors', () => {
@@ -155,8 +156,14 @@ test('registerCases binds complete method matrices and API results to canonical 
 	expect(() => service.registerCases(register, unit, 'test/other.test.ts', {})).toThrow(
 		'No declared cases'
 	);
+	const indexed = await indexFiles({
+		'src/routes/api/runner/+server.ts':
+			'export function GET() { return Response.json({ ok: true, count: 0 }); }'
+	});
+	const endpoint = indexed.result.manifests.find((item) => item.kind === 'endpoint');
+	if (!endpoint) throw new Error('The runner endpoint was not indexed');
 	const api = {
-		...unit,
+		...endpoint,
 		testing: {
 			...unit.testing!,
 			shape: 'api' as const,
