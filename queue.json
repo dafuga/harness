@@ -7967,6 +7967,60 @@
 			"createdAt": "2026-10-26T01:25:51.968Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-first.queue-contract-definition",
+			"title": "Define complete public queue contracts",
+			"moduleGoal": "Publish precise schema, queue and CAS contracts so server orchestration can be built without reading repository implementation.",
+			"instructions": "Read only this repository unit own source files, including its owned types/schema/private sync and owner files. This is an explicitly assigned contract-authoring task. Do not read other implementation or tests, credentials, run providers, mutate source/registry, commit/push/install/deploy. Produce /tmp/harness-queue-contract-proposal.json as input for forthcoming units contract CLI with responsibility and contract {inputs,outputs,errors}; all important exported types/schema and read/update mutation/CAS/failure semantics must be precise, not unknown. Describe shapes using concise structural types or authoritative named references with descriptions. If semantics depend on foreign code, mark exact missing dependency contract, do not infer. Preserve source and all other work. This is Codex app bootstrap, not native dispatch proof.",
+			"wantedContract": {
+				"responsibility": "Author a complete truthful public contract for the committed module-task repository, exported schemas and record types, using its own assigned implementation only.",
+				"inputs": [
+					{
+						"name": "owned module",
+						"type": "repository.agents-providers-module-task source and committed CLI contract"
+					}
+				],
+				"outputs": [
+					{
+						"name": "contract proposal",
+						"type": "CLI units contract input JSON with precise shapes and CAS/error semantics; no unresolved unknown output"
+					}
+				],
+				"errors": [
+					{
+						"name": "undeclared dependency behavior",
+						"type": "explicit missing-contract diagnostic instead of foreign source inspection"
+					}
+				]
+			},
+			"model": "gpt-6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "codex-app-queue-contracts",
+			"feature": {
+				"id": "contract-first-execution",
+				"goal": "Harness users and agents develop from committed contracts; server-managed workers can read app-wide contracts and modify only their assigned files, with complete metadata validation and tracked executions.",
+				"tldr": "Extend the API-backed CLI and mandatory revision metadata with contract authoring, contract-first Codex guidance, enforced worker scopes, and automatic server task creation and dispatch. Preserve local and hosted permissions, existing history and exact model/usage/cost/bounce records."
+			},
+			"module": {
+				"id": "repository.agents-providers-module-task",
+				"goal": "Publish precise schema, queue and CAS contracts so server orchestration can be built without reading repository implementation.",
+				"files": [
+					"src/repositories/agents-providers/ModuleTaskRepository.ts",
+					"src/repositories/agents-providers/ModuleTaskRepository.types.ts",
+					"src/repositories/agents-providers/module-task-repository/syncTaskQueue.ts",
+					"src/repositories/agents-providers/module-task-repository/taskOwner.ts",
+					"src/repositories/agents-providers/module-task-repository/taskSchemas.ts"
+				]
+			},
+			"sourceCommit": "dfdb9b4b410f73358772d41852d6288679e055c7",
+			"contractHash": "2f5cbce21dfefcda80376849ac4eb98dc9487c2a5a2ab42eb9c85659d860a826",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-26T01:30:54.214Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
