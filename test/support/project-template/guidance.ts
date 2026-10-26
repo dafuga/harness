@@ -2,6 +2,47 @@ import { expect } from '../../verificationExpect';
 import type { projectFiles } from '../../../src/templates/project';
 import { appTestFiles } from '../../../src/templates/projects-sessions/projectTests';
 import { measureWorkload } from '../measureWorkload';
+import type { ComponentManifest } from '../../../src/core/unitTypes';
+import type { UnitDocumentation } from '../../../src/utils/unit-documentation/unitDocumentation';
+import { TestCaseValidator } from '../../../src/validators/verification-evidence/TestCaseValidator';
+import { hydrateUnitDocumentation } from '../../../src/services/revision-detail-service/unitDocumentation';
+import { usageExamples } from '../../../packages/reports/src/components/usage-examples/usageExamples';
+import { loadUnits } from '../../../src/workflows/development-tooling/load-units/loadUnits';
+import { registryErrors } from '../../../src/cli/program/manageUnits';
+import { memoryTree } from '../memoryTree';
+
+/** One generated library case and its rendered comment use the same registered Example. */
+export async function expectGeneratedLibraryExample(files: ReturnType<typeof projectFiles>) {
+	expect(files.map((file) => file.path)).toContain('specification/units/entry.index.json');
+	const unit = JSON.parse(
+		fileContents(files, 'specification/units/entry.index.json')
+	) as ComponentManifest;
+	expect(new TestCaseValidator().validate(unit, unit.testing).errors).toEqual([]);
+	expect(unit.testing?.cases).toHaveLength(1);
+	const documented = {
+		id: unit.id,
+		testing: unit.testing,
+		documentation: undefined as UnitDocumentation | undefined
+	};
+	await hydrateUnitDocumentation(
+		{
+			read: async () => {
+				throw new Error('No separate document');
+			}
+		},
+		[documented]
+	);
+	expect(usageExamples(documented.documentation!.examples)).toEqual([
+		'helloHarness()\n// => "hello from Harness"'
+	]);
+	const exampleTest = fileContents(files, 'test/index.test.ts');
+	expect(exampleTest).toContain("test('helloHarness: returns a greeting'");
+	expect(exampleTest).toContain('unit.testing.examples[0].expected.value');
+	expect(exampleTest).not.toContain('hello from Harness');
+	const tree = memoryTree(Object.fromEntries(files.map(({ path, contents }) => [path, contents])));
+	const registry = await loadUnits('/generated-library', tree);
+	expect(registryErrors(registry), 'The generated library registry must be canonical').toEqual([]);
+}
 
 export function expectGeneratedGuidance(files: ReturnType<typeof projectFiles>): void {
 	expectRenameGuidance(files);
