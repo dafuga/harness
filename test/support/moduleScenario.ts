@@ -9,6 +9,7 @@ import { sqliteRuntimePackage } from './sqliteRuntimePackage';
 export async function assertModuleProject(root: string): Promise<void> {
 	await runHarness(['new', 'app', 'module-app'], root);
 	const project = join(root, 'module-app');
+	await runHarness(['info', 'modules'], project);
 	await sqliteRuntimePackage(project);
 	await runHarness(['module', 'add', 'email'], project);
 	await runHarness(['module', 'add', 'offline'], project);
