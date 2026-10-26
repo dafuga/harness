@@ -3,20 +3,21 @@
 	"id": "template.project-tests",
 	"kind": "template",
 	"title": "projectTests",
-	"responsibility": "Owns the projectTests scaffold template.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Plan the initial app page screenshot matrix and its shared browser fixtures.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/templates/projects-sessions/projectTests.ts"],
 		"symbols": ["appTestFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "appTestFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Shared console and screenshot fixtures plus the initial page state at desktop 1440x900, tablet 920x800 and mobile 390x844. Each case navigates to / and matches the full page against its own reviewed baseline; missing or changed baselines fail."
 			}
 		],
 		"errors": []

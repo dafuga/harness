@@ -1,0 +1,56 @@
+{
+	"name": "contract-initial-page-viewports",
+	"goal": "Generate the initial page screenshot state at desktop, tablet and mobile without losing its existing behavior",
+	"createdAt": "2026-10-26T12:21:27.810Z",
+	"updatedAt": "2026-10-26T12:21:28.896Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-26T12:21:28.350Z",
+			"evidence": "New app and game plans emit only one initial-page screenshot despite the declared three-viewport page contract. Declare desktop 1440x900, tablet 920x800 and mobile 390x844 for this existing state before adding the two missing viewport cases."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-26T12:21:28.896Z",
+			"evidence": "The existing app-plan case checks screenshot presence but not viewport coverage. Strengthen that case and exact child-matrix counts; preserve its title, all parent cases, console monitoring, missing-baseline refusal and full-page matching."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
