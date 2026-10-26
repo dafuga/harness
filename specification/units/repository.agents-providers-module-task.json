@@ -96,6 +96,11 @@
 				"name": "ModuleTaskQueue.plans",
 				"type": "FeaturePlan[] | undefined",
 				"description": "Optional revisioned feature plans; legacy queues omit this property."
+			},
+			{
+				"name": "FeaturePlanOption.version",
+				"type": "string",
+				"description": "Nonempty planning version used with unit, option, file, revision and hash to read the exact design image."
 			}
 		],
 		"outputs": [

@@ -110,6 +110,7 @@ const planCommit = z.string().regex(/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/);
 const digest = z.string().regex(/^[a-f0-9]{64}$/);
 export const planOptionSchema = z.strictObject({
 	id,
+	version: text,
 	commit: planCommit,
 	path: assignedFile,
 	sha256: digest,
