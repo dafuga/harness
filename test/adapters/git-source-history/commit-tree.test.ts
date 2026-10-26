@@ -104,7 +104,7 @@ test('CommitTreeAdapter.read populated reuses immutable blobs across revisions w
 				);
 				expect(await first.read('sample.txt')).toBe(value);
 				await expect(first.read('missing')).rejects.toThrow('does not exist');
-				if (format === 'sha1')
+				if (format === 'sha1') {
 					await measureWorkload('adapter.commit-tree', 'oversized-committed-blob', () =>
 						oversizedBlob(
 							root,
@@ -112,6 +112,13 @@ test('CommitTreeAdapter.read populated reuses immutable blobs across revisions w
 							() => bytes.mock.calls.filter(([args]) => args[0] === 'cat-file').length
 						)
 					);
+					await missingBlob(
+						root,
+						git,
+						() => void bytes.mockRejectedValueOnce(new Error('synthetic Git failure')),
+						() => void bytes.mockResolvedValueOnce(Buffer.from('malformed response\n'))
+					);
+				}
 			},
 			format
 		);
@@ -128,4 +135,40 @@ async function oversizedBlob(root: string, git: GitAdapter, reads: () => number)
 	expect((await tree.read('large.txt')).length).toBe(size);
 	expect((await tree.read('large.txt')).length).toBe(size);
 	expect(reads() - before, 'oversized blobs must not remain in the per-tree cache').toBe(2);
+}
+
+/** Missing Git objects and broken batch reads remain errors, with valid peers and retries intact. */
+async function missingBlob(
+	root: string,
+	git: GitAdapter,
+	failNext: () => void,
+	malformNext: () => void
+): Promise<void> {
+	const values = {
+		present: `present ${root}`,
+		missing: `missing ${root}`,
+		retry: `retry ${root}`,
+		malformed: `malformed ${root}`
+	};
+	for (const [name, value] of Object.entries(values))
+		await writeFile(join(root, `${name}.txt`), value);
+	await git.run(['add', '.']);
+	await git.run(['commit', '-m', 'feat: add object fixtures']);
+	const tree = await CommitTreeAdapter.open(root, 'HEAD');
+	await tree.list();
+	const hash = await git.run(['rev-parse', 'HEAD:missing.txt']);
+	await rm(join(root, '.git', 'objects', hash.slice(0, 2), hash.slice(2)));
+	const [present, missing] = await Promise.allSettled([
+		tree.read('present.txt'),
+		tree.read('missing.txt')
+	]);
+	expect(present).toEqual({ status: 'fulfilled', value: values.present });
+	expect(missing.status, 'a missing committed blob must be reported').toBe('rejected');
+	if (missing.status === 'rejected') expect(String(missing.reason)).toContain('missing');
+	failNext();
+	await expect(tree.read('retry.txt')).rejects.toThrow('synthetic Git failure');
+	await expect(tree.read('retry.txt')).resolves.toBe(values.retry);
+	malformNext();
+	await expect(tree.read('malformed.txt')).rejects.toThrow('Invalid Git batch response');
+	await expect(tree.read('malformed.txt')).resolves.toBe(values.malformed);
 }
