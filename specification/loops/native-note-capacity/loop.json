@@ -2,7 +2,7 @@
 	"name": "native-note-capacity",
 	"goal": "Preserve every valid verification entry in large Git notes across runtimes",
 	"createdAt": "2026-10-26T21:53:52.719Z",
-	"updatedAt": "2026-10-26T21:53:53.844Z",
+	"updatedAt": "2026-10-26T21:56:07.402Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:54:56.726Z",
+			"evidence": "Committed test fac9153d failed with the actual Node stack overflow; record 3bcc37e0 preserves the command and assertion."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:56:06.148Z",
+			"evidence": "Commit f7e31e8c appends verification entries individually and moves batch orchestration outside the class limit."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:56:07.402Z",
+			"evidence": "The unchanged 150000-entry test passed at f7e31e8c; record 60f069f3 pairs with red 7be4d5c6."
 		},
 		{
 			"id": "verify",
