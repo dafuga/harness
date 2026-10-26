@@ -3,8 +3,8 @@
 	"id": "adapter.cpu-process",
 	"kind": "adapter",
 	"title": "CpuProcessAdapter",
-	"responsibility": "Owns the CpuProcessAdapter integration boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Reads native CPU counters and sanitized process identities for usage sampling.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -20,18 +20,20 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "CpuProcessAdapter.sample",
-				"type": "Promise<CpuReading>"
+				"type": "Promise<CpuReading>",
+				"description": "A monotonic timestamp, aggregate CPU counters and sanitized process identities from the current host."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The platform is unsupported, CPU counters are unavailable, or the process listing fails."
 			}
 		]
 	},
@@ -58,6 +60,24 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "sample.initialized",
+				"state": "initialized",
+				"subject": "CpuProcessAdapter.sample",
+				"test": {
+					"file": "test/adapters/cpu-process.test.ts",
+					"title": "native CPU sampler reads real monotonic counters without arguments"
+				},
+				"expected": { "kind": "void" },
+				"errors": ["Error"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
