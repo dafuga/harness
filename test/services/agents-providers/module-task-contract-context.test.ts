@@ -60,7 +60,7 @@ function commit(root: string, message: string): void {
 }
 
 async function seed(root: string, revision: string): Promise<void> {
-	const foreign = contract(`foreign-contract-${revision}`);
+	const foreign = `foreign-contract-${revision}`;
 	await Promise.all([
 		write(root, 'src/worker.ts', `WORKER_SOURCE_${revision}`),
 		write(root, 'src/foreign.ts', `FOREIGN_SOURCE_${revision}`),

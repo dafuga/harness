@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { expect, test } from 'vitest';
 import { ModuleTaskService } from '../src/services/agents-providers/ModuleTaskService';
+import type { Prepared, ProjectWork } from './module-task-scope.test.types';
 
 const feature = {
 	id: 'contract-first-execution',
@@ -20,81 +21,84 @@ const wantedContract = {
 	errors: [{ name: 'unsafe grant', type: 'admission rejection' }]
 };
 
-type Prepared = ReturnType<ModuleTaskService['prepare']> & {
-	files: string[];
-	role: 'implementation' | 'verification';
-};
-
 async function writeFileUnder(root: string, path: string, text = 'fixture'): Promise<void> {
 	const file = join(root, path);
 	await mkdir(dirname(file), { recursive: true });
 	await writeFile(file, text);
 }
 
-async function withProject(
-	work: (service: ModuleTaskService) => Promise<void>,
-	includeUnsafeOwnership = false
-): Promise<void> {
+async function writeFixtureTree(root: string, outside: string): Promise<void> {
+	await mkdir(root);
+	await mkdir(outside);
+	for (const path of [...sourceFiles, ...verificationFiles, 'src/unowned.ts']) {
+		await writeFileUnder(root, path);
+	}
+	await writeFileUnder(outside, 'worker.ts');
+	await symlink('worker.ts', join(root, 'src/link.ts'));
+	await symlink(outside, join(root, 'escape'));
+}
+
+function fixtureManifest(includeUnsafeOwnership: boolean) {
+	const unsafeFiles = ['src/missing.ts', 'src/link.ts', 'escape/worker.ts'];
+	return {
+		schemaVersion: 1,
+		id: moduleId,
+		kind: 'service',
+		title: 'Scope admission fixture',
+		responsibility: 'Own the fixture source files used by scope admission.',
+		responsibilityOrigin: 'declared',
+		status: 'active',
+		owns: {
+			source: [...sourceFiles, ...(includeUnsafeOwnership ? unsafeFiles : [])],
+			symbols: ['scopeFixture']
+		},
+		contract: {
+			origin: 'declared',
+			inputs: [],
+			outputs: [{ name: 'scopeFixture', type: 'string' }],
+			errors: []
+		},
+		dependencies: [],
+		runtime: {
+			kind: 'module',
+			entry: sourceFiles[0],
+			targets: [{ kind: 'module', entry: sourceFiles[0] }]
+		},
+		scenarios: ['module-tasks'],
+		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
+	};
+}
+
+function commitFixture(root: string): void {
+	execFileSync('git', ['init'], { cwd: root, stdio: 'ignore' });
+	execFileSync('git', ['add', '-A'], { cwd: root, stdio: 'ignore' });
+	execFileSync(
+		'git',
+		[
+			'-c',
+			'user.name=Harness Fixture',
+			'-c',
+			'user.email=harness-fixture@example.invalid',
+			'commit',
+			'-m',
+			'fixture'
+		],
+		{ cwd: root, stdio: 'ignore' }
+	);
+}
+
+async function withProject(work: ProjectWork, includeUnsafeOwnership = false): Promise<void> {
 	const temporary = await mkdtemp(join(tmpdir(), 'harness-task-scope-'));
 	const root = join(temporary, 'project');
 	const outside = join(temporary, 'outside');
 	try {
-		await mkdir(root);
-		await mkdir(outside);
-		for (const path of [...sourceFiles, ...verificationFiles, 'src/unowned.ts']) {
-			await writeFileUnder(root, path);
-		}
-		await writeFileUnder(outside, 'worker.ts');
-		await symlink('worker.ts', join(root, 'src/link.ts'));
-		await symlink(outside, join(root, 'escape'));
-		const unsafeFiles = ['src/missing.ts', 'src/link.ts', 'escape/worker.ts'];
-		const manifest = {
-			schemaVersion: 1,
-			id: moduleId,
-			kind: 'service',
-			title: 'Scope admission fixture',
-			responsibility: 'Own the fixture source files used by scope admission.',
-			responsibilityOrigin: 'declared',
-			status: 'active',
-			owns: {
-				source: [...sourceFiles, ...(includeUnsafeOwnership ? unsafeFiles : [])],
-				symbols: ['scopeFixture']
-			},
-			contract: {
-				origin: 'declared',
-				inputs: [],
-				outputs: [{ name: 'scopeFixture', type: 'string' }],
-				errors: []
-			},
-			dependencies: [],
-			runtime: {
-				kind: 'module',
-				entry: sourceFiles[0],
-				targets: [{ kind: 'module', entry: sourceFiles[0] }]
-			},
-			scenarios: ['module-tasks'],
-			budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
-		};
+		await writeFixtureTree(root, outside);
 		await writeFileUnder(
 			root,
 			`specification/units/${moduleId}.json`,
-			JSON.stringify(manifest, null, 2)
+			JSON.stringify(fixtureManifest(includeUnsafeOwnership), null, 2)
 		);
-		execFileSync('git', ['init'], { cwd: root, stdio: 'ignore' });
-		execFileSync('git', ['add', '-A'], { cwd: root, stdio: 'ignore' });
-		execFileSync(
-			'git',
-			[
-				'-c',
-				'user.name=Harness Fixture',
-				'-c',
-				'user.email=harness-fixture@example.invalid',
-				'commit',
-				'-m',
-				'fixture'
-			],
-			{ cwd: root, stdio: 'ignore' }
-		);
+		commitFixture(root);
 		const service = new ModuleTaskService(root);
 		await service.feature(feature);
 		await work(service);
