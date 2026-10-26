@@ -1,6 +1,6 @@
 # Migration remains incomplete
 
-Status at 2026-10-26 10:43 UTC. Global `testing: 1` remains disabled. Existing
+Status at 2026-10-26 13:55 UTC. Global `testing: 1` remains disabled. Existing
 unmigrated entrypoints and substantive assertions remain. No production action or
 remote-main delivery is claimed.
 
@@ -10,7 +10,7 @@ The qualified migration ledger remains 44 units and 692 cases:
 - 24 function/helper units: 559 authored Example cases.
 - 3 API units: 4 request-matrix cases with complete JSON comparisons.
 
-The fresh inventory at `573201f83b` records 1,117 suite files, 4,604 declarations
+The fresh inventory at `95283a748b` records 1,117 suite files, 4,604 declarations
 and 5,934 admission gaps. These gaps are remaining work, not passing proof.
 
 ## Layouts and generated projects
@@ -27,11 +27,25 @@ source passed. Altered API JSON fields likewise failed three existing cases and
 passed after restoration. These captures describe the generator fixture at
 `98ab91902b`, not current-main delivery. No baseline was auto-accepted.
 
-The existing four CLI integration cases passed at `d26e0fdbea` on harbor-mbp-2.
-Runner output confirmed 31 generated browser cases using five workers. The new
-app correctly refused missing baselines, then passed its build, audit and route
-checks. This does not qualify all 31 screenshots. Baseline review provenance in
-Harness evidence and full visual-suite migration remain open.
+The earlier four CLI integration cases passed at `d26e0fdbea`. Complete child
+JSON outcome checks at `8fa362f687` subsequently accounted for all 31 app cases
+using four workers and all seven cases in each Game combination using two. Every
+browser failure was a missing baseline, with no skipped or flaky child cases.
+Fourteen parent cases passed; the newly imported module case lacked an active
+Rust toolchain. Selecting installed `RUSTUP_TOOLCHAIN=1.99.0` passed its Rust,
+HTTP and WASM work before exposing that fixture's stale successful-check
+expectation. The existing fixture now validates the complete baseline refusal
+and runs the real build afterward. No module assertions were removed.
+
+The initial page generator also lacked tablet and mobile cases. Contract commit
+`6209caa6f7` declares its three viewport rows before test checkpoint `1d476db7da`.
+Source-only repair `5f12d367a1` preserves the initial state title and full-page
+matching. Matched red `83c6170b06d5` fails the existing generator case; unchanged
+green `19f3ae39f660` passes all five. The new capability adds two generated device
+cases: app matrices now expect 33 and Game matrices nine. Parent case counts
+remain fixed. Earlier rejected record invocations created no passing evidence.
+Baseline review provenance in Harness evidence and full visual-suite migration
+remain open; missing-baseline refusals are not visual acceptance.
 
 ## Stable-case repairs and evidence
 
@@ -54,6 +68,17 @@ and passes; full verification is not inferred from focused records.
   preserves original failures and rejects forged metadata. Audio has no invented
   screenshot viewport or HTTP build identity. Image admission still exercises
   accepted getters, iterators and species through the public entry.
+
+- Static-before-visual admission: test-only `9be2073cee` to product-only
+  `bebb9c6d2b`, seven existing cases. Red `d5c6e9480573`, green `dd6161784252`.
+  The isolated original-order mutant `c050739be1` fails two unchanged cases in
+  guard `72a4031a8b9e`; repaired source passes. Static audit cannot be hidden
+  behind an unreviewed screenshot. The prevention retrospective is retained.
+- Generated Game ambient types: test-only `f37f77d370` to product-only
+  `a1dd559fbc`, ten existing cases. Red `e16f1da1a990`, green `3d6924ccbe4a`.
+  Standalone app routes resolve framework virtual modules without accidental API
+  imports; all four dimension/entry combinations retain compiler, build, audit,
+  gameplay and invalid-document assertions.
 
 Real class WAV retention and native playback at `37096c026e` remain preserved;
 see the audio-retention playback note. The new audio matrix uses synthetic
@@ -78,10 +103,14 @@ fresh workload timing and whole-process RSS observations in Git record
 `7f97083dd0c8`. This is focused proof, not a full verification verdict.
 
 The aggregate at `d26e0fdbea` passed formatting, root compiler, lint, Rust checks,
-kernel build and 1,465 root unit cases; 25 live-provider cases were skipped. E2Es
-are running on harbor-mbp-2 under a five-CPU/6-GiB resource lease. Root Vitest
-remains single-worker. This older aggregate does not qualify the later merge,
-and has no full verdict yet. All automated E2Es stay off the primary Mac.
+kernel build and 1,465 root unit cases; 25 live-provider cases were skipped. The run was interrupted after five genuine E2E failures: four Game compiler
+failures and one adapter case whose audit was masked by screenshot admission.
+Both causes now have matched focused repairs; the failed aggregate remains
+visible and does not qualify the later merge. A fresh `95283a748b` run on
+harbor-mbp-2 reserves seven CPUs and 6 GiB after a live headroom check. Its
+fifteen-parent-case generated-project capture runs first; only success starts
+`bun run check`. Root Vitest remains single-worker, browser concurrency is
+reported by the runner, and this run has no result yet. All automated E2Es stay off the primary Mac.
 
 ## Execution identity
 
@@ -117,8 +146,10 @@ files. Two original malformed workload-proof gaps remain visible. No historical
 tests were rerun or passing outcomes manufactured.
 
 This is not complete source-history coverage: unselected backup/snapshot/work
-and stash refs, plus newer commits, require reconciliation. Full media decoding
-and raw-record readback remain open. The reconstruction exceeded the 10-GB RAM
+and stash refs, plus newer commits, require reconciliation. All 19,527 PNG images were decoded and rendered through ImageIO; all three WAV
+files were decoded through AVAudioFile. Their hashes match the frozen manifest,
+with zero decode failures. This proves usable bytes, not human review of every
+image. Full raw-record readback remains open. The reconstruction exceeded the 10-GB RAM
 target (maximum RSS 19,729,809,408 bytes); its result is retained without claiming
 memory compliance.
 

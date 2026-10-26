@@ -1,0 +1,24 @@
+{
+	"source": "5f12d367a1",
+	"testCheckpoint": "1d476db7daf0f74ce7f2dbb42618d9218bb4d564",
+	"red": "83c6170b06d547b0944dd1e5fa1ec20ceef6719f59ed41ab680a540abb9d9d7d",
+	"green": "19f3ae39f6602e3c2450fa1fed7fd0c4adf16d88a77a190810d3ec8dc8f478bc",
+	"parentCases": 5,
+	"declaredCapabilityChange": {
+		"state": "app page initial state",
+		"viewports": {
+			"desktop": [1440, 900],
+			"tablet": [920, 800],
+			"mobile": [390, 844]
+		},
+		"addedGeneratedDeviceCases": 2
+	},
+	"browserQualification": "pending",
+	"inventory": {
+		"files": 1117,
+		"declarations": 4604,
+		"standardizedUnits": 44,
+		"standardizedCases": 692
+	},
+	"admissionGaps": 5934
+}
