@@ -1,0 +1,46 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Q5tQcx
+
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 86ms
+ ✓ test/services/verification-evidence/test-expectation.test.ts (4 tests) 47ms
+ ✓ test/services/verification-evidence/test-contract.test.ts (2 tests) 32ms
+ ✓ test/validators/verification-evidence/test-case.test.ts (1 test) 24ms
+
+ Test Files  4 passed (4)
+      Tests  9 passed (9)
+   Start at  00:18:57
+   Duration  5.24s (transform 451ms, setup 265ms, collect 1.33s, tests 188ms, environment 0ms, prepare 128ms)
+
+{
+  "topic": "scenario",
+  "summary": "A scenario contract lists the states, viewports, checks and evidence that prove units.",
+  "steps": [
+    "Name the units the scenario proves and every state they can be in.",
+    "Mark a state required, missing or inapplicable, with a reason for the last two.",
+    "List viewports for visual states and the checks that produce the evidence.",
+    "Declare each evidence requirement: kind, states, viewports and, for audio, provenance.",
+    "Run harness scenarios show to see the exact captures a passing run must contain."
+  ],
+  "rules": [
+    "Scenario contracts live in specification/scenarios, one JSON file per scenario.",
+    "When standardized testing is enabled, every scenario check must reference its declared unit cases. References must be unique, active and covered by that scenario state.",
+    "A missing state can occur but is unproven: the scenario cannot pass until it is covered.",
+    "An inapplicable state cannot occur; lacking a fixture is not an applicability reason.",
+    "Every required state needs required evidence, and excluded states need none.",
+    "Screenshots are PNG: viewport size, full-page at viewport width, or element captures matching explicit clip bounds and viewport scale. Audio is WAV, must be playable, and carries a transcript and its fixture or actual-capture provenance.",
+    "A capture of running software carries a build stamp naming the verified commit.",
+    "The shared browser fixture keeps error diagnostics with each recorded check, including expected errors and missing expected errors. Component Evidence and Tests show these with their test, retry and original revision.",
+    "Declare compiled output in harness.verify.json builds and name it in the evidence: the stamp must then carry the identity of exactly the files setup compiled in the snapshot. An old bundle relabelled with the current revision is rejected.",
+    "harness verify identity <directory> prints that identity; a server reports the identity of the files it was started from, read once at start.",
+    "Checks capture only when TAKE_SCREENSHOT is 1; harness verify always sets it."
+  ],
+  "antiPatterns": [
+    "Do not relabel an unproven state as inapplicable.",
+    "Do not make evidence optional to get a scenario to pass."
+  ],
+  "exampleCommands": [
+    "harness scenarios list",
+    "harness scenarios show checkout-page",
+    "harness scenarios check"
+  ]
+}
