@@ -186,6 +186,33 @@ The later full check at `f0774446e5` passed formatting, then waited for CPU at
 typecheck. It was cancelled after its source became stale; it has no aggregate
 verdict. The latest committed source still requires the full laptop check.
 
+The full laptop check at `3977bad828` passed formatting and root typecheck,
+then failed lint because the existing generated-library case exceeded the
+55-line function limit. `0a4e761014` moved its assertions to the existing test
+support module without removing assertions or adding cases. The integrated tree
+still needs a complete laptop run.
+
+Duplicate page, component and API matrix coordinates previously passed both
+registration and contract comparison. The existing validator and comparison
+cases now reject duplicated behavior coordinates and overlapping visual viewport
+coverage, including equivalent reordered input objects and cyclic inputs, while
+preserving distinct boundaries and avoiding execution of custom iterators,
+species or getters. The unchanged two-case corpus failed on `368ed2f8bf`
+(capture `e4b8e9993027`) and passed on `f43d0d427e` (capture `9dceffb4368c`).
+The focused workloads recorded 1.0687 ms and 192,151,552 bytes whole-worker RSS
+for the validator and 0.4231 ms and 192,430,080 bytes whole-worker RSS for the
+contract service. At that source revision, the service owned 10,768 bytes,
+279 lines, 89 complexity points and five dependencies; the validator owned
+11,337 bytes, 282 lines, 95 complexity points and five dependencies. Neither
+has a separate emitted artifact. Merge `9b60065089` retains both red and green
+commits. Its eight focused suites pass 31 cases; root typecheck, targeted lint,
+registry validation (1,827 units, 166 uncertain references, no errors) and audit
+(no findings) pass. Broader prop/error matrix capability declarations remain open.
+
+A fresh inventory at `9b60065089` remains 1,117 suite files, 4,606 declarations,
+44 standardized units, 692 cases and 5,940 admission gaps. Registry success does
+not mean the repository-wide test-form gate is enabled or migration is complete.
+
 ## Execution identity
 
 The current task audit preserves 58 execution records, all requesting max effort
