@@ -204,6 +204,12 @@ for (const [screen, width, height] of screens) {
 		await page.reload();
 		await expect(modules).toHaveAttribute('aria-selected', 'true');
 		await captureShell(page, home, { state: 'module-discovery', viewport: screen });
+		await page.goto(at(`${earlier}/module-resources/playwright.test`));
+		await expect(bar.getByRole('tab', { name: 'Plugins', exact: true })).toHaveAttribute(
+			'aria-selected',
+			'true'
+		);
+		await captureShell(page, home, { state: 'testing-plugin-resource', viewport: screen });
 		await expect.poll(() => fits(page)).toBe(true);
 	});
 }

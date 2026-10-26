@@ -1,3 +1,4 @@
+import { builtinModules } from '../../../../../../src/templates/module-system/builtinModules';
 import { permissionProfiles } from '../../../../../../test/support/permissionProfiles';
 import { standardCodeModules } from '../../../../../../src/templates/module-system/standardCodeModules';
 import { rustWasmModule } from '../../../../../../src/templates/module-system/rustWasmModule';
@@ -59,23 +60,14 @@ export const moduleData = {
 		}
 	]
 };
-const testing = ['playwright', 'headless-audio'].map((id) => ({
-	definition: {
-		...definition(id, id === 'playwright' ? 'Playwright' : 'Headless audio', 'test', 'Tests'),
-		description:
-			id === 'playwright'
-				? 'Headless browser tests, included by default.'
-				: 'Test audio playback and interruption without a microphone or speakers.',
-		includedByDefault: id === 'playwright',
-		testing: {
-			headless: true as const,
-			script: id === 'playwright' ? 'test:browser' : 'test:audio'
-		}
-	},
-	source: 'builtin' as const,
-	installed: id === 'playwright',
-	instances: []
-}));
+const testing = builtinModules
+	.filter((definition) => definition.testing)
+	.map((definition) => ({
+		definition,
+		source: 'builtin' as const,
+		installed: Boolean(definition.includedByDefault),
+		instances: []
+	}));
 const completeModuleData = {
 	gaps: moduleData.gaps,
 	modules: [

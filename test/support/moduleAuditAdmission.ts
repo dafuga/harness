@@ -54,6 +54,7 @@ export async function assertModuleAuditAdmission(root: string): Promise<void> {
 	const installed = await sourceFindings(root);
 	expect(installed).not.toContain('src/extensions/example.ts');
 	expect(installed).toContain('src/unrelated/example.ts');
+	await assertTestingFoundations(root);
 }
 
 async function sourceFindings(root: string): Promise<string[]> {
@@ -66,4 +67,15 @@ async function sourceFindings(root: string): Promise<string[]> {
 	)
 		.filter((finding) => finding.rule === 'harness-source-structure')
 		.map((finding) => finding.path);
+}
+
+/** Every emitted testing foundation must pass the same category admission as generated app code. */
+async function assertTestingFoundations(root: string): Promise<void> {
+	const emitted: string[] = [];
+	for (const id of ['playwright', 'headless-audio'])
+		emitted.push(...(await new ModuleInstallService().add(root, id)));
+	const findings = (await auditPath(root)).filter(
+		(finding) => emitted.includes(finding.path) && finding.rule === 'module-category-folder'
+	);
+	expect(findings).toEqual([]);
 }

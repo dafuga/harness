@@ -125,7 +125,7 @@ test('audit reports Harness scaffold file and function naming violations', async
 		[]
 	);
 	expect(findings.filter((finding) => finding.rule === 'harness-source-structure')).toEqual([]);
-	await assertModuleAuditAdmission(root);
+	await assertModuleAuditAdmission(root); // Includes every installed testing foundation.
 	expect(
 		findings.some(
 			(finding) =>

@@ -1,3 +1,6 @@
+import { modulePreview } from './modules';
+import { previewVariants } from './catalogVariants';
+import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import { explorerCases } from './explorer';
 import { legacyAddresses, legacyCases } from './legacy';
 import { reportCases } from './reports';
@@ -14,7 +17,7 @@ import { desktopRoute } from './routeDesktop.svelte';
 import { hubRoute } from './routeHub';
 import type { PreviewCases } from './shared';
 import { nativeAtomFixture } from './nativeAtomProps';
-export function previewFixture(id: string) {
+export function previewFixture(id: string, variant = '') {
 	const desktop = createDesktopData(id);
 	// The shell opens at Pages, where its store starts and where the web workspace opens too.
 	if (id === 'desktop.component.workspace-shell') desktop.workspace.category = 'pages';
@@ -52,11 +55,12 @@ export function previewFixture(id: string) {
 		cases[id] ??
 		nativeAtomFixture(id);
 	if (!props) throw new Error(`No representative fixture for ${id}`);
+	const rendered = variantProps(id, props, variant);
 	// A shell that reads its place from the browser is opened where its host serves it.
 	const address = { ...legacyAddresses, ...hub.addresses }[id];
 	if (address) history.replaceState(history.state, '', address);
 	return {
-		props,
+		props: rendered,
 		remote,
 		hub: hub.context,
 		cleanup: () => {
@@ -73,4 +77,20 @@ function desktopCases(desktop: ReturnType<typeof createDesktopData>) {
 			([id, props]) => [id, props(desktop)]
 		)
 	);
+}
+
+function variantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (!previewVariants(id).includes(variant))
+		throw new Error(`Unknown preview variant ${id}:${variant}`);
+	if (!variant) return props;
+	const shown = modulePreview(props as unknown as ExplorerScreenProps, variant);
+	if (id.endsWith('explorer-module-resources-screen')) {
+		const route = {
+			...shown.route,
+			screen: 'module-resources' as const,
+			entity: variant + '.test'
+		};
+		return { ...shown, route, scope: { ...shown.scope, location: route } };
+	}
+	return shown;
 }

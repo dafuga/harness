@@ -1,3 +1,4 @@
+import type { PreviewCaptureTarget } from './previewPage.types';
 import { expect, type Page } from '@playwright/test';
 import { join } from 'node:path';
 import { mkdirSync } from 'node:fs';
@@ -16,7 +17,7 @@ const pageUnitIds = new Set(
 		.filter((unit) => unit.owns.source.some((path) => path.endsWith('/+page.svelte')))
 		.map((unit) => unit.id)
 );
-export async function openPreview(page: Page, home: string, id: string) {
+export async function openPreview(page: Page, home: string, id: string, variant = '') {
 	await page.route('**/*', (route) => servePreview(route, home));
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
@@ -30,7 +31,9 @@ export async function openPreview(page: Page, home: string, id: string) {
 			get: (target, name) => (name === 'now' ? () => now : Reflect.get(target, name))
 		});
 	}, Date.parse('2026-10-20T10:00:05Z'));
-	await page.goto(`${previewOrigin}/?unit=${encodeURIComponent(id)}`);
+	await page.goto(
+		`${previewOrigin}/?unit=${encodeURIComponent(id)}${variant ? `&variant=${encodeURIComponent(variant)}` : ''}`
+	);
 }
 export async function readyPreview(page: Page, id: string) {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
@@ -97,7 +100,13 @@ async function readyRoute(page: Page, id: string) {
 	if (id === 'hub.page.root')
 		await expect(page.getByRole('region', { name: 'Owned by you', exact: true })).toBeVisible();
 }
-export async function capturePreview(page: Page, home: string, id: string, viewport: string) {
+export async function capturePreview(
+	page: Page,
+	home: string,
+	id: string,
+	target: PreviewCaptureTarget
+) {
+	const { viewport, variant = '' } = target;
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS) return;
 	const clip = await previewCaptureBounds(page, id);
 	const bytes = await page.screenshot({
@@ -106,7 +115,7 @@ export async function capturePreview(page: Page, home: string, id: string, viewp
 		animations: 'disabled',
 		caret: 'hide'
 	});
-	const state = previewState(id);
+	const state = previewState(id, variant);
 	if (process.env.COMPONENT_PREVIEW_SHOTS) {
 		mkdirSync(process.env.COMPONENT_PREVIEW_SHOTS, { recursive: true });
 		await import('node:fs/promises').then((fs) =>

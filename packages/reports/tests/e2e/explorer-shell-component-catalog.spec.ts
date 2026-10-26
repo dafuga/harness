@@ -5,6 +5,7 @@ import { buildShellFixture, removeShellFixture, captureShell } from './support/s
 import { pictured } from './support/sharedSelect';
 import {
 	catalogUnits,
+	catalogCases,
 	catalogViewports,
 	catalogScenario,
 	previewState
@@ -27,8 +28,8 @@ function assertCatalogRegistry() {
 	const expected = catalogUnits.map((unit) => unit.id);
 	expect([...catalogScenario.units].sort()).toEqual(expected);
 	expect(catalogScenario.states, 'Catalog preview states follow canonical unit order').toEqual(
-		catalogUnits.map((unit) =>
-			expect.objectContaining({ id: previewState(unit.id), units: [unit.id] })
+		catalogCases.map(({ unit, variant }) =>
+			expect.objectContaining({ id: previewState(unit.id, variant), units: [unit.id] })
 		)
 	);
 }
@@ -86,19 +87,19 @@ for (const viewport of catalogViewports) {
 	}
 }
 for (const viewport of catalogViewports) {
-	for (const unit of catalogUnits) {
-		test(`${unit.id} at ${viewport.id}`, async ({ page }) => {
+	for (const { unit, variant } of catalogCases) {
+		test(`${unit.id}${variant ? `:${variant}` : ''} at ${viewport.id}`, async ({ page }) => {
 			await page.setViewportSize(viewport);
-			await openPreview(page, home, unit.id);
+			await openPreview(page, home, unit.id, variant);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
-			await capturePreview(page, home, unit.id, viewport.id);
-			await assertComponentCapture(page, unit.id, viewport.id);
-			if (unit.id === 'reports.component.module-system-explorer-modules-screen') {
+			await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
+			await assertComponentCapture(page, unit.id, viewport.id, variant);
+			if (unit.id === 'reports.component.module-system-explorer-modules-screen' && !variant) {
 				await expect(component.locator('article')).toHaveCount(6);
 				await expect(component.getByText('Testing', { exact: true })).toHaveCount(2);
 			}
-			await assertModulePreview(component, unit.id);
+			await assertModulePreview(component, unit.id, variant);
 			if (unit.id === 'reports.component.networking-security-explorer-permissions-screen')
 				await assertPermissionTable(component, page);
 			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
@@ -211,7 +212,7 @@ for (const viewport of catalogViewports) {
 			await expect
 				.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
 				.toBeLessThanOrEqual(viewport.width);
-			if (viewport.id === 'desktop') await profilePreview(page, unit.id);
+			if (viewport.id === 'desktop') await profilePreview(page, unit.id, variant);
 		});
 	}
 }
