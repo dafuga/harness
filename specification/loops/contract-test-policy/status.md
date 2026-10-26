@@ -279,6 +279,10 @@ alternates. Source refs can continue to change. The current supplement has
 SHA-256 `66c4ecf604eeaebac569297c521b3f400c817759f30abdd4992818dae87170d6`;
 the extra-ref status supplement has SHA-256
 `bfac964e8ac4744b0d3c47f1ed2487dcdc69cb20298f6a8391e53a3a7f461dcb`.
+Raw metadata for the four invalid proofs was separately retained: record, log,
+source and media hashes match their pinned Git manifests, but the malformed
+proofs remain invalid. That supplement has SHA-256
+`8e4857e7f70a7efaf3f5886d0df8620031deb6ba9350510ebdecaf5f305cb7df`.
 No old tests were rerun. The frozen history occupies about 69 GiB and only about
 36 GiB remains free on the primary volume, so it was not overwritten.
 
