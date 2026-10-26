@@ -156,7 +156,7 @@ function recordUsage(units: string[], args: string[], duration: number, usage: s
 	if (!resident) throw new Error('The CLI workload did not report peak RSS.');
 	const memory = Number(resident[1]) * (process.platform === 'darwin' ? 1 : 1024);
 	const phase = args.includes('--phase') ? args[args.indexOf('--phase') + 1] : '';
-	const scope = args.slice(0, args[0] === 'plugin' ? 3 : 2);
+	const scope = args.slice(0, args[0] === 'plugin' && args[1] !== 'list' ? 3 : 2);
 	const workload = [...scope, phase].filter(Boolean).join('-');
 	const measurements = units.flatMap((unit) => {
 		const context = { unit, workload, target: 'process', samples: 1 };
