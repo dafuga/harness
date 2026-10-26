@@ -38,14 +38,11 @@ export class TestCaseValidator {
 	private coverage(unit: ComponentManifest, contract: TestContract): string[] {
 		const errors = [
 			...declaredStateErrors(unit.id, contract),
+			...entityShapeErrors(unit, contract.shape),
 			...(contract.states ?? [])
 				.filter((state) => !contract.cases.some((item) => item.state === state))
 				.map((state) => `${unit.id}: missing state ${state}`)
 		];
-		if (unit.kind === 'layout' && contract.shape !== 'page')
-			errors.push(
-				`${unit.id}: layouts require the page screenshot form with a child-slot placeholder`
-			);
 		if (contract.shape === 'component' && !contract.cases.some((item) => item.state === 'rest'))
 			errors.push(`${unit.id}: component requires its rest state`);
 		if (contract.shape === 'helper') errors.push(...exampleCaseErrors(unit, contract));
@@ -56,6 +53,29 @@ export class TestCaseValidator {
 		errors.push(...declaredInputErrors(unit, contract));
 		return errors;
 	}
+}
+
+const entityShapes = new Map<string, TestContract['shape']>([
+	['page', 'page'],
+	['view', 'page'],
+	['layout', 'page'],
+	['component', 'component'],
+	['shell', 'component'],
+	['partial', 'component'],
+	['endpoint', 'api'],
+	['api', 'api']
+]);
+
+/** Visual entities and HTTP endpoints must use the form that tests their behavior. */
+function entityShapeErrors(unit: ComponentManifest, shape: TestContract['shape']): string[] {
+	const required = entityShapes.get(unit.kind);
+	if (required === shape) return [];
+	if (unit.kind === 'layout')
+		return [`${unit.id}: layouts require the page screenshot form with a child-slot placeholder`];
+	if (required) return [`${unit.id}: ${unit.kind} requires the ${required} test form`];
+	return ['page', 'component', 'api'].includes(shape)
+		? [`${unit.id}: ${unit.kind} cannot use the ${shape} test form`]
+		: [];
 }
 
 /** One behavioral coordinate has one case, irrespective of case ID or expected output. */
