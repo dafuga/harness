@@ -78,6 +78,22 @@ export class FeaturePlanService {
 		return structuredClone(result.plan);
 	}
 
+	async approved(input: { feature: string; expectedDigest: string }): Promise<FeaturePlan> {
+		const { feature, expectedDigest } = input;
+		const dependencies = this.required();
+		if (!dependencies.verifyReady) throw new Error('Trusted readiness verification is required.');
+		const latest = await this.expected(feature, expectedDigest);
+		if (!latest.approval || latest.approval.digest !== expectedDigest)
+			throw new Error('Feature plan requires approval of the exact expected digest.');
+		this.validate(latest, true);
+		const verifiedContent = canonical(latest);
+		await dependencies.verifyReady(structuredClone(latest));
+		const current = await this.expected(feature, expectedDigest);
+		if (canonical(current) !== verifiedContent)
+			throw new Error('Approved feature plan changed during readiness verification.');
+		return structuredClone(current);
+	}
+
 	private required(): Dependencies {
 		if (!this.dependencies) throw new Error('Feature plan dependencies are required.');
 		return this.dependencies;

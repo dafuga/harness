@@ -32,6 +32,11 @@
 				"name": "approve.input",
 				"type": "{feature:string,expectedDigest:string,reviewer:string}",
 				"description": "Approve only latest valid fully selected plan after trusted readiness verification."
+			},
+			{
+				"name": "approved.input",
+				"type": "{feature:string,expectedDigest:string}",
+				"description": "Select the latest exact approved plan for dispatch revalidation."
 			}
 		],
 		"outputs": [
@@ -54,6 +59,11 @@
 				"name": "run",
 				"type": "string",
 				"description": "Retained scaffold compatibility method."
+			},
+			{
+				"name": "approved",
+				"type": "Promise<FeaturePlan>",
+				"description": "Checks the latest canonical digest and approval, validates full selection, reruns trusted readiness, then rereads the latest plan and rejects any content or approval race; returns a defensive copy."
 			}
 		],
 		"errors": [
@@ -61,6 +71,11 @@
 				"name": "invalid or stale plan",
 				"type": "Error",
 				"description": "Reject malformed or inconsistent plans, tampered digests, stale expected digest, unknown page or option, missing selection, readiness failure, and concurrent repository conflicts without approval or further mutation."
+			},
+			{
+				"name": "approval invalid or stale",
+				"type": "Error",
+				"description": "Rejects missing, unapproved, tampered, stale, unready or concurrently changed plans without mutation."
 			}
 		]
 	},
