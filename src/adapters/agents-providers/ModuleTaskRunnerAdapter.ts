@@ -91,7 +91,7 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 				'Codex task failed; inspect CLI authentication, permissions or model access.'
 			);
 		if (result.model && result.model !== input.model)
-			throw taskFailure(input.provider, [], undefined, 'Wrong model.', 'model-access');
+			throw new Error('Codex reported a different model than requested.');
 		return {
 			provider: input.provider,
 			model: input.model,
@@ -138,16 +138,17 @@ function taskFailure(
 	fallbackCategory?: ProviderFailureCategory
 ): Error {
 	const category = providerFailureCategory(events, stderr) ?? fallbackCategory;
-	if (!category)
-		return provider === 'claude'
-			? Object.assign(new Error(fallback), { quotaRejected: false })
-			: new Error(fallback);
+	if (!category) return Object.assign(new Error(fallback), { quotaRejected: false });
 	const nextAction = (
 		{
-			authentication: 'Sign in to the selected provider on this host, then retry.',
-			'model-access': "Confirm the exact model ID and this host's model access, then retry.",
-			permission: "Review the task's granted permissions, then retry.",
-			'invalid-response': 'Check the installed CLI version and structured output mode, then retry.'
+			authentication:
+				provider === 'codex'
+					? 'Run codex login on this host, then retry.'
+					: 'Sign in to Claude on this host, then retry.',
+			'model-access': 'Request model access for the exact model ID on this host, then retry.',
+			permission: 'Grant workspace read permission for this task, then retry.',
+			'invalid-response':
+				'Invalid response: check the installed CLI version and structured output mode, then retry.'
 		} satisfies Record<ProviderFailureCategory, string>
 	)[category];
 	return Object.assign(new Error(`${category} failure. ${nextAction}`), {
@@ -170,7 +171,7 @@ function providerFailureCategory(
 	const has = (terms: string) => terms.split('|').some((term) => text.includes(term));
 	if (
 		has(
-			'unknown model|model not found|model unavailable|model not available|unsupported model|model not enabled|model access denied|no access to model|not authorized to use model'
+			'unknown model|model not found|model unavailable|model not available|unsupported model|model not enabled|model access denied|request model access|no access to model|not authorized to use model'
 		)
 	)
 		return 'model-access';
@@ -206,7 +207,7 @@ function completedClaudeTask(
 		reported !== input.model ||
 		Object.keys(result.modelUsage ?? {}).some((model) => model !== input.model)
 	)
-		throw taskFailure(input.provider, [], undefined, 'Wrong model.', 'model-access');
+		throw new Error('Claude reported a different model than requested.');
 	return {
 		provider: input.provider,
 		model: input.model,
