@@ -3,8 +3,8 @@
 	"id": "desktop.model.project-context-types",
 	"kind": "model",
 	"title": "ProjectContext",
-	"responsibility": "Owns the ProjectContext data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Defines project context identity.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -25,9 +25,14 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "ProjectContext",
+				"type": "{projectId?:string}"
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [

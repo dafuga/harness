@@ -58,6 +58,10 @@
 				"name": "scenarioOrigin",
 				"type": "string",
 				"description": "Inherited origin, tested revision for a passed scenario, or failed-attempt revision plus distinct other capture revisions when present."
+			},
+			{
+				"name": "CaptureStanding",
+				"type": "\"fresh\"|\"inherited\"|\"rejected\"|\"unvalidated\""
 			}
 		],
 		"errors": []

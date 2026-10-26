@@ -3,7 +3,7 @@
 	"id": "reports.model.explorer-evidence-types",
 	"kind": "model",
 	"title": "ExplorerEvidence",
-	"responsibility": "Describes the proof an entity is shown with: the coverage of each scenario state by state, the captures of each side, and the behaviour recorded on both sides.",
+	"responsibility": "Defines revision-scoped Explorer evidence and captures.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -29,9 +29,20 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "ExplorerEvidence",
+				"type": "{mode,scenarios,after,before,initial,incomparable}",
+				"description": "Each side has commit, nullable detail/record, captures, coverage and nullable gap."
+			},
+			{
+				"name": "ExplorerCapture",
+				"type": "{scenario,state,capture:HarnessCapture,standing:CaptureStanding,usable:boolean,current:boolean,inheritedFrom:string|null,focused?:{loop,status,record,viewport?:{width,height}}}",
+				"description": "usable means a passed stored capture valid for the side; current additionally means pixels from that exact commit. Focused captures are not full verification. Array order has no declared selection meaning."
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [

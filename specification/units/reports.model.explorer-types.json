@@ -3,7 +3,7 @@
 	"id": "reports.model.explorer-types",
 	"kind": "model",
 	"title": "Explorer",
-	"responsibility": "Describes what the explorer shows of a history: the scope of an address, a verdict, an entity with its relations, and the history of an entity.",
+	"responsibility": "Defines Explorer scope models.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -26,9 +26,14 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "ExplorerScope",
+				"type": "{location:ExplorerLocation,mode:\"current\"|\"commit\",branch:string|null,tip:string|null,commit:string,atTip:boolean,parent:string|null,summary:HarnessRevisionSummary}"
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [

@@ -3,7 +3,7 @@
 	"id": "reports.model.harness-types",
 	"kind": "model",
 	"title": "Harness",
-	"responsibility": "Describes history indexes and revision details, including opaque whole-tree identity for entity projections without cache filenames.",
+	"responsibility": "Defines persisted Harness revisions, records, scenarios and captures.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -30,9 +30,24 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "HarnessCapture",
+				"type": "{evidence:string,kind:string,state:string,viewport?:string,status:\"passed\"|\"failed\",path:string,sha256:string,bytes?:number,note?:string,mediaType:string,capturedAt:string,provenance?:string,server?:{buildId:string,revision:string},transcript?:string,durationSeconds?:number,media:string|null,gap?:string}",
+				"description": "Path/media alone do not attest bytes; resolve with validated evidence artifact bindings."
+			},
+			{
+				"name": "HarnessRecord",
+				"type": "{id:string,status,valid,problems,source:{commit:string,base:string|null},scenarios}",
+				"description": "Scenario rows carry id/status/testedRevision/inherited/origin and state captures."
+			},
+			{
+				"name": "HarnessScenario",
+				"type": "{id:string,title:string,kind,units,states,viewports,tests,evidence?}"
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [

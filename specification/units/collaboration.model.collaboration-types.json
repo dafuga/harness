@@ -3,8 +3,8 @@
 	"id": "collaboration.model.collaboration-types",
 	"kind": "model",
 	"title": "Collaboration",
-	"responsibility": "Owns the Collaboration data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Defines collaboration and cache identity models.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -46,9 +46,14 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "CacheIdentity",
+				"type": "{projectId:string,principalId:string,repositoryId:string,requestedRef:string,sourceCommit:string,sourceTree:string,notesRef:string|null,notesRevision:string|null,evidenceRef:string|null,evidenceRevision:string|null,historyIndexRevision:string|null,artifactHash:string|null,profile:string|null,collaborationRevision?:string|null}"
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [
