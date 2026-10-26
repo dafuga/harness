@@ -12,6 +12,7 @@ import {
 import { ExplanationRepository } from '../../src/repositories/ExplanationRepository';
 import { HistoryNoteRepository } from '../../src/repositories/history-note-repository/HistoryNoteRepository';
 import { ExplanationService } from '../../src/services/ExplanationService';
+import { HistoryStatusService } from '../../src/services/history-status-service/HistoryStatusService';
 import { noteHistoryFixture, noteHistoryMemory } from '../support/noteHistoryFixture';
 
 const root = mkdtempSync(join(tmpdir(), 'harness-notes-order-'));
@@ -163,4 +164,8 @@ test('restoration keeps a large note history bounded and still refuses missing e
 	});
 	console.log(`Note history RSS: restore ${restored.rss}; raw ${raw.rss}`);
 	expect(restored.rss).toBeLessThan(raw.rss + 300 * 1024 * 1024);
+	const expected = await new HistoryStatusService(dir).verifications();
+	const actual = await new HistoryNoteRepository(dir).verifications();
+	expect(expected).toHaveLength(2);
+	expect(actual).toEqual(expected);
 }, 120_000);
