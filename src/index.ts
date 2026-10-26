@@ -213,3 +213,4 @@ export { featurePlanGraphUncertainty } from './helpers/agents-providers/featureP
 export { moduleTaskBrokerFiles } from './helpers/agents-providers/moduleTaskBrokerFiles';
 export { moduleTaskBrokerContracts } from './helpers/agents-providers/moduleTaskBrokerContracts';
 export { FeatureWorkService } from './services/agents-providers/FeatureWorkService';
+export { FeaturePlanPreparationService } from './services/agents-providers/FeaturePlanPreparationService';
