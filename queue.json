@@ -7804,6 +7804,65 @@
 			"createdAt": "2026-10-26T00:52:33.316Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-first.runner-diagnostics-coverage",
+			"title": "Specify safe actionable runner failures in the standard adapter matrix",
+			"moduleGoal": "Make native launch failures diagnosable without revealing provider logs or credentials.",
+			"verificationFiles": ["test/adapters/agents-providers/module-task-runner.test.ts"],
+			"instructions": "Verification-only Codex app bootstrap assignment. Read and edit only the assigned adapter test file; do not inspect production implementations or other test suites. Dependency behavior comes from CLI contracts. Extend the existing run-method matrix for safe actionable authentication, model access and permission failures from structured Codex error/turn.failed events and bounded stderr; malformed stdout returns a safe invalid-response diagnostic; failures preserve requested model/intelligence and never turn authentication into quota exhaustion. Preserve existing success, quota and unknown-failure assertions. Error data containing synthetic secrets or URLs must not leak into public messages. Resource/admission and spawn rejections remain distinguishable from provider failures, using the existing interface without adding new production fields. Do not implement product changes. Do not commit/push/deploy/install/access credentials/delegate/run provider CLIs or E2Es. Do not run broad checks; primary will execute the unchanged focused tests and record red before repair. Preserve other work. Return changed paths, exact focused command, expected failure and any missing contract data; no source/test snippets.",
+			"wantedContract": {
+				"responsibility": "Specify safe failure diagnostics in the existing runner method tests while preserving model selection, usage handling and quota-only fallback semantics.",
+				"inputs": [
+					{
+						"name": "native outcomes",
+						"type": "controlled structured error/turn.failed events, malformed output and bounded stderr"
+					},
+					{
+						"name": "selection",
+						"type": "requested provider, exact model and intelligence"
+					}
+				],
+				"outputs": [
+					{
+						"name": "diagnostic assertions",
+						"type": "standard runner run-method cases",
+						"description": "Known failures are actionable, unknown failures stay safe, malformed responses do not leak data, and prelaunch failure is not called a model completion."
+					}
+				],
+				"errors": [
+					{
+						"name": "missing public interface detail",
+						"type": "explicit contract gap, not source inspection"
+					}
+				]
+			},
+			"model": "gpt-6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "codex-app-runner-verification",
+			"feature": {
+				"id": "contract-first-execution",
+				"goal": "Harness users and agents develop from committed contracts; server-managed workers can read app-wide contracts and modify only their assigned files, with complete metadata validation and tracked executions.",
+				"tldr": "Extend the API-backed CLI and mandatory revision metadata with contract authoring, contract-first Codex guidance, enforced worker scopes, and automatic server task creation and dispatch. Preserve local and hosted permissions, existing history and exact model/usage/cost/bounce records."
+			},
+			"module": {
+				"id": "adapter.agents-providers-module-task-runner",
+				"goal": "Make native launch failures diagnosable without revealing provider logs or credentials.",
+				"files": [
+					"src/adapters/agents-providers/ModuleTaskRunnerAdapter.ts",
+					"src/adapters/agents-providers/ModuleTaskRunnerAdapter.types.ts",
+					"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts",
+					"test/adapters/agents-providers/module-task-runner.test.ts"
+				]
+			},
+			"sourceCommit": "999a930e6219b2dce00e5e0e81fd45bdeab8229a",
+			"contractHash": "b308d3c24596c527a4f04bef32629dfb3454f9e9305a6ccd621fdf83ad7f92bb",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-26T01:14:07.516Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
