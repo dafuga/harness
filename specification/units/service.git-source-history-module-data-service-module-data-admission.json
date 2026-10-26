@@ -3,63 +3,89 @@
 	"id": "service.git-source-history-module-data-service-module-data-admission",
 	"kind": "service",
 	"title": "moduleDataAdmission",
-	"responsibility": "Owns the moduleDataAdmission service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Requires committed module-data metadata for a selected revision, reads the best repository-provided metadata envelope, and rejects absent or module-scoped inadmissible reports without repairing data.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/git-source-history/module-data-service/moduleDataAdmission.ts"],
 		"symbols": ["moduleDataRequired", "committedModuleData", "requireModuleData"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "moduleDataRequired.root",
-				"type": "string"
+				"type": "string",
+				"description": "Repository root used to construct GitAdapter."
 			},
 			{
 				"name": "moduleDataRequired.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Selected revision used to query the optional harness.validation.json declaration."
 			},
 			{
 				"name": "committedModuleData.root",
-				"type": "string"
+				"type": "string",
+				"description": "Repository root used to construct ModuleDataRepository."
 			},
 			{
 				"name": "committedModuleData.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Selected revision passed to ModuleDataRepository.identity."
 			},
 			{
 				"name": "requireModuleData.root",
-				"type": "string"
+				"type": "string",
+				"description": "Repository root used to read committed module data."
 			},
 			{
 				"name": "requireModuleData.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Selected revision whose committed module data is required."
 			},
 			{
 				"name": "requireModuleData.module",
-				"type": "string"
+				"type": "string | undefined",
+				"description": "Optional unit id forwarded to the scoped failure formatter. Omission passes undefined; this function does not normalize or validate the id."
 			}
 		],
 		"outputs": [
 			{
 				"name": "moduleDataRequired",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Returns true when the selected commit has no harness.validation.json declaration, or when its parsed schemaVersion equals 1. The declaration is optional, but committed module data is still required. No execution path returns false."
 			},
 			{
 				"name": "committedModuleData",
-				"type": "unknown"
+				"type": "Promise<{ data: ModuleData; commit: string } | undefined>",
+				"description": "Builds repository identity for the requested commit, then returns ModuleDataRepository.read(identity) when present; otherwise returns ModuleDataRepository.source(identity). The repository dependency contract defines the envelope shape but not whether source is exact-revision data or an ancestor/source fallback, nor its freshness rules."
 			},
 			{
 				"name": "requireModuleData",
-				"type": "unknown"
+				"type": "Promise<ModuleData>",
+				"description": "Returns only the data member of the first repository envelope accepted by the scoped formatter; it does not return the envelope commit. If the formatter reports no failure, evidence-only gaps do not block this read. The ModuleData field schema is not declared by the dependency contract."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Unsupported module validation protocol",
+				"type": "Error",
+				"description": "If harness.validation.json exists and its parsed schemaVersion is not 1, moduleDataRequired throws this error. It performs no other declaration-schema validation. Malformed JSON propagates the JSON parser SyntaxError; JSON null causes a property-access TypeError. A GitAdapter.attempt error also propagates."
+			},
+			{
+				"name": "Missing or stale committed module data",
+				"type": "Error",
+				"description": "If both repository read and source return undefined, requireModuleData throws an error naming the requested commit and instructing the caller to run harness validate --commit <commit> --write. The reader does not run validation, repair, or a writer."
+			},
+			{
+				"name": "Scoped module-data rejection",
+				"type": "Error",
+				"description": "If formatModuleDataFailure returns a non-null message for the supplied data and optional module, requireModuleData throws that message as an Error. The helper contract describes a scoped repair message for missing committed module metadata and says evidence-only gaps allow reads; exact issue classification, module matching, and invalid-data criteria are not declared."
+			},
+			{
+				"name": "Repository or identity failure",
+				"type": "Error",
+				"description": "ModuleDataRepository.identity, read, and source declare Error failures, which are not caught here. Their exact commit-selection, stale-data, source-fallback, and parsing rules are not declared by the dependency contract."
 			}
 		]
 	},

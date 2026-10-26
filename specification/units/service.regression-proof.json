@@ -3,7 +3,7 @@
 	"id": "service.regression-proof",
 	"kind": "service",
 	"title": "Run a committed regression",
-	"responsibility": "Run committed regressions in isolated snapshots. Retain decoded screenshots for their declared units before cleanup and bind actual captures to the exact served revision.",
+	"responsibility": "Defines the environment identity attached to regression proof and enforces exact identity equality with a supplied red record before running the regression command.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -32,23 +32,53 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "Request",
-				"type": "Regression inputs",
-				"description": "A committed revision, frozen test command and expected failure"
+				"name": "RegressionProofService.constructor.root",
+				"type": "string",
+				"description": "Repository root used to construct the selected commit snapshot and store proof."
+			},
+			{
+				"name": "RegressionProofService.run.input",
+				"type": "RegressionRun",
+				"description": "Committed regression request. If red is supplied, the service reads red.profile and requires exact equality with the current environment profile."
+			},
+			{
+				"name": "RegressionRun.red",
+				"type": "RegressionRecord | undefined",
+				"description": "Optional prior red result used for the same-environment gate. The source accesses its profile field; the dependency contract for RegressionRecord does not publish that field's schema."
+			},
+			{
+				"name": "RegressionRun.red.profile",
+				"type": "string",
+				"description": "Prior profile string consumed by the exact equality check when a red record is present. This field is evidenced by assigned service source, but the foreign RegressionRecord contract does not declare it."
+			},
+			{
+				"name": "environmentProfile.source",
+				"type": "Record<string, string | undefined>",
+				"description": "Optional environment mapping to profile; when omitted or undefined, the source is process.env. Profile construction hashes selected values and does not return or log the mapping."
 			}
 		],
 		"outputs": [
 			{
-				"name": "Result",
-				"type": "Regression result",
-				"description": "The observed exit status, assertion and hashed output"
+				"name": "environmentProfile",
+				"type": "string",
+				"description": "Public profile string composed from four values joined by slash separators: operating-system platform from process.platform; architecture from process.arch; runtime version from process.versions.bun, falling back to process.version only when nullish; and an opaque regressionHash of canonical JSON for the filtered environment mapping. The mapping excludes keys named PWD, OLDPWD, _, SHLVL, XPC_SERVICE_NAME, HARNESS_AGENT_ID, HARNESS_VERIFY_REVISION, HARNESS_VERIFY_TREE, HARNESS_EVIDENCE_DIR, and SCREENSHOT_LABEL; remaining entries are sorted before canonical serialization, and undefined object properties are omitted by canonicalJson. The profile exposes no raw environment key/value entries. The fingerprint encoding is not specified, so the dependency contracts do not guarantee its delimiter or parsing format. This is separate from machineProfile, whose id is used for benchmark measurement attribution rather than the regression environment gate."
+			},
+			{
+				"name": "RegressionProofService.run.result",
+				"type": "Promise<RegressionRecord>",
+				"description": "A successfully sealed result stores the current environmentProfile in its profile field. The record's exact schema is not declared by the dependency contract."
+			},
+			{
+				"name": "RegressionRecord.profile",
+				"type": "string",
+				"description": "Stored environment identity copied from environmentProfile when the run reaches record sealing."
 			}
 		],
 		"errors": [
 			{
-				"name": "Invalid proof",
-				"type": "Explicit rejection or gap",
-				"description": "Rejects timeouts, missing commands, snapshot drift and unfinished processes."
+				"name": "Regression environment mismatch",
+				"type": "ExpectedCliError",
+				"description": "When a red record is supplied and its profile string differs from the current environmentProfile, run fails with the message 'Use the same regression environment and runtime.' This check occurs after snapshot setup but before runIsolated is called. It compares the whole profile string and reports no differing constituent."
 			}
 		]
 	},

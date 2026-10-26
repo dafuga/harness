@@ -3,27 +3,38 @@
 	"id": "entry.program",
 	"kind": "entry",
 	"title": "program",
-	"responsibility": "Owns the program entry point.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Build and execute the Harness CLI from ambient arguments and finalize analytics and heartbeat reporting.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/cli/program.ts"],
 		"symbols": ["buildProgram", "runProgram"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
-				"name": "buildProgram",
-				"type": "Command"
-			},
-			{
 				"name": "runProgram",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "No explicit arguments or defaults. Reads process arguments, environment and working directory. Sets matching Commander exit code or exit 1 for expected CLI errors, logs and swallows those errors."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "unexpected build or parse error",
+				"type": "rejection after finalization with exit code 1"
+			},
+			{
+				"name": "analytics or heartbeat failure",
+				"type": "Promise rejection"
+			},
+			{
+				"name": "pipedOutput failure",
+				"type": "Promise rejection before finalizers",
+				"description": "Loop analytics failures are caught and logged."
+			}
+		]
 	},
 	"dependencies": [
 		{

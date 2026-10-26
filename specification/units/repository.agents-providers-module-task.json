@@ -44,91 +44,176 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"description": "Repository working-tree root used to construct the Git adapter."
 			},
 			{
 				"name": "ModuleTaskRepository.update.change",
-				"type": "(data: ModuleTaskQueue) => T"
+				"type": "(queue: ModuleTaskQueue) => T",
+				"description": "Synchronous callback applied to a JSON-cloned queue. It may be invoked again, up to 16 times, after a concurrent compare-and-swap loss; it should be replay-safe and avoid external side effects."
 			},
 			{
 				"name": "ModuleTaskRepository.update.source",
-				"type": "string"
+				"type": "string",
+				"description": "Optional source commit added as a parent of the queue commit. When no prior queue exists and source is omitted, current HEAD is used as the parent."
 			},
 			{
 				"name": "ModuleTaskRepository.sync.remote",
-				"type": "string"
+				"type": "string",
+				"description": "Configured Git remote name matching the repository's accepted remote-name pattern."
 			},
 			{
 				"name": "syncTaskQueue.git",
-				"type": "GitAdapter"
+				"type": "GitAdapter",
+				"description": "Git boundary used for fetch, ancestry checks, task-ref updates, push and temporary-ref cleanup."
 			},
 			{
 				"name": "syncTaskQueue.ref",
-				"type": "string"
+				"type": "string",
+				"description": "Queue ref to exchange, normally refs/harness/tasks."
 			},
 			{
 				"name": "syncTaskQueue.remote",
-				"type": "string"
+				"type": "string",
+				"description": "Configured Git remote name."
 			},
 			{
 				"name": "taskOwner.git",
-				"type": "GitAdapter"
+				"type": "GitAdapter",
+				"description": "Git boundary used to locate the common Git directory for this clone."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskRepository.read",
-				"type": "unknown"
+				"type": "Promise<{commit: string | undefined; data: ModuleTaskQueue}>",
+				"description": "Reads refs/harness/tasks and parses queue.json with queueSchema. If the ref is absent, returns commit undefined and an empty version-1 queue."
 			},
 			{
 				"name": "ModuleTaskRepository.update",
-				"type": "unknown"
+				"type": "Promise<{value: T; commit: string | undefined}>",
+				"description": "Applies change to a cloned, schema-validated queue and commits only when its stable JSON changes. It compare-and-swaps refs/harness/tasks against the commit read; concurrent changes trigger a fresh read and callback retry, up to 16 attempts. A successful change writes a Git plumbing commit without changing source HEAD or the index. The queue commit has the previous queue commit as parent and includes source when supplied; the initial commit otherwise parents current HEAD. A no-op returns the existing queue commit."
 			},
 			{
 				"name": "ModuleTaskRepository.sync",
-				"type": "unknown"
+				"type": "Promise<{remote: string; commit: string | undefined}>",
+				"description": "Synchronizes refs/harness/tasks with one configured remote. Fast-forwards the local task ref when the remote is ahead, keeps local history when local is ahead, pushes the resulting local ref, and rejects divergent histories without merging them. Uses and removes a temporary fetch ref; it does not merge source branches."
 			},
 			{
 				"name": "ModuleTaskRepository.owner",
-				"type": "unknown"
+				"type": "Promise<{workspace: string; pid: number; startedAt: string}>",
+				"description": "Returns the persisted clone identity, current process ID and process start time. The identity is stored in the common Git directory at harness/task-owner-id with mode 0600."
 			},
 			{
 				"name": "syncTaskQueue",
-				"type": "unknown"
+				"type": "(git: GitAdapter, ref: string, remote: string) => Promise<{remote: string; commit: string | undefined}>",
+				"description": "Implements the repository sync behavior described for ModuleTaskRepository.sync. The temporary incoming ref is removed in a finally block."
 			},
 			{
 				"name": "taskOwner",
-				"type": "unknown"
+				"type": "(git: GitAdapter) => Promise<{workspace: string; pid: number; startedAt: string}>",
+				"description": "Creates or reuses a UUID clone identity in the Git common directory, validates it, and combines it with the current process ID and ProcessIdentityAdapter.find(pid).startedAt."
 			},
 			{
 				"name": "featureSchema",
-				"type": "unknown"
+				"type": "Zod schema producing TaskFeature",
+				"description": "Strict object with id, goal and tldr. The id is a lowercase unit-style identifier up to 150 characters; goal and tldr are trimmed non-empty strings up to 16000 characters."
 			},
 			{
 				"name": "wantedContractSchema",
-				"type": "unknown"
+				"type": "Zod schema producing WantedContract",
+				"description": "Strict object with responsibility text, inputs, outputs and errors. Each contract item has required trimmed non-empty name and type, optional description and optional examples containing JSON values; outputs must contain at least one item."
 			},
 			{
 				"name": "taskInputSchema",
-				"type": "unknown"
+				"type": "Zod schema producing ModuleTaskInput",
+				"description": "Strict object with id, title, feature id, module id, instructions and wantedContract. moduleGoal and verificationFiles are optional; verificationFiles are limited to 64 safe relative paths that name a test or verification fixture. model is a trimmed non-empty string up to 150 characters and defaults to auto. provider is optional claude or codex; intelligence is optional low, medium, high, xhigh, max or ultra; assignee is an optional unit-style id. Text fields are trimmed non-empty strings up to 16000 characters."
 			},
 			{
 				"name": "storedTaskSchema",
-				"type": "unknown"
+				"type": "Zod schema producing ModuleTask",
+				"description": "Strict stored task object based on ModuleTaskInput without its feature and module input fields. It replaces feature with TaskFeature and module with {id, goal, files}, then requires a 40-character lowercase sourceCommit, 64-character lowercase contractHash, status queued/running/review/failed/accepted and ISO createdAt. repairCommit is optional; reviews, claimHistory and attempts default to empty arrays; claim and result are optional. Result execution/usage and review item shapes depend on the unresolved task-usage dependency contract."
 			},
 			{
 				"name": "queueSchema",
-				"type": "unknown"
+				"type": "Zod schema producing ModuleTaskQueue",
+				"description": "Strict object {schemaVersion: 1, features: TaskFeature[], tasks: ModuleTask[]}; features are capped at 1000 and tasks at 10000. It validates shape and bounds, not unique IDs or cross-record feature relationships."
+			},
+			{
+				"name": "TaskUsage",
+				"type": "z.infer<typeof taskUsageSchema>",
+				"description": "Authoritative alias imported from repository.agents-providers-module-task-repository-task-usage. Its field shape is absent from that dependency's committed contract; do not infer it."
+			},
+			{
+				"name": "TaskExecution",
+				"type": "z.infer<typeof taskExecutionSchema>",
+				"description": "Authoritative alias imported from repository.agents-providers-module-task-repository-task-usage. Its field shape is absent from that dependency's committed contract; do not infer it."
+			},
+			{
+				"name": "TaskApiCost",
+				"type": "z.infer<typeof taskCostSchema>",
+				"description": "Authoritative alias imported from repository.agents-providers-module-task-repository-task-usage. Its field shape is absent from that dependency's committed contract; do not infer it."
+			},
+			{
+				"name": "TaskFeature",
+				"type": "{id: string; goal: string; tldr: string}",
+				"description": "Parsed feature record; id follows the unit-style identifier rule and goal/tldr are trimmed, non-empty text up to 16000 characters."
+			},
+			{
+				"name": "ModuleTaskInput",
+				"type": "{id: string; title: string; feature: string; module: string; moduleGoal?: string; verificationFiles?: string[]; instructions: string; wantedContract: WantedContract; model: string; provider?: 'claude' | 'codex'; intelligence?: 'low' | 'medium' | 'high' | 'xhigh' | 'max' | 'ultra'; assignee?: string}",
+				"description": "Parsed task definition. Model defaults to auto. Verification paths are safe relative test or verification paths, capped at 64. Top-level schema is strict."
+			},
+			{
+				"name": "ModuleTaskQueue",
+				"type": "{schemaVersion: 1; features: TaskFeature[]; tasks: ModuleTask[]}",
+				"description": "Parsed queue record; schema limits features to 1000 and tasks to 10000."
+			},
+			{
+				"name": "ModuleTask",
+				"type": "Omit<ModuleTaskInput, 'module' | 'feature'> & {feature: TaskFeature; module: {id: string; goal: string; files: string[]}; sourceCommit: string; contractHash: string; status: 'queued' | 'running' | 'review' | 'failed' | 'accepted'; repairCommit?: string; reviews: TaskReview[]; createdAt: string; claim?: TaskClaim; claimHistory: TaskClaim[]; result?: StoredTaskResult; attempts: StoredTaskResult[]}",
+				"description": "Parsed stored record. files must be non-empty safe relative paths. TaskClaim has worker id, UUID token, ISO startedAt, and owner {workspace UUID, positive pid, startedAt text}. Reviews and result usage/execution fields are inferred from the unresolved task-usage dependency schema. Array defaults are applied by the schema."
+			},
+			{
+				"name": "TaskSelection",
+				"type": "{provider: 'claude' | 'codex'; model: string; intelligence: string}",
+				"description": "Exact selected provider, model and intelligence carried by runner calls."
+			},
+			{
+				"name": "TaskRunInput",
+				"type": "TaskSelection & {cwd: string; prompt: string; signal: AbortSignal}",
+				"description": "Input to a TaskRunner implementation."
+			},
+			{
+				"name": "TaskRunResult",
+				"type": "TaskSelection & {text: string; reportedModel: string | null; usage?: TaskUsage}",
+				"description": "TaskRunner result before persistence-specific task fields are added."
+			},
+			{
+				"name": "TaskRunner",
+				"type": "{run(input: TaskRunInput): Promise<TaskRunResult>}",
+				"description": "Provider execution interface."
 			}
 		],
 		"errors": [
 			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown when feature, task, stored task or queue data fails its Zod schema."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Propagated when the queue commit's queue.json is not valid JSON."
+			},
+			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Propagates Git adapter, filesystem and callback errors; also reports a repeatedly changing task queue after 16 failed compare-and-swap attempts, divergent remote task histories, invalid remote names, malformed owner identities, or inability to establish a process start time."
 			}
 		]
 	},

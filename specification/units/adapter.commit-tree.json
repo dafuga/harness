@@ -3,7 +3,7 @@
 	"id": "adapter.commit-tree",
 	"kind": "adapter",
 	"title": "CommitTreeAdapter",
-	"responsibility": "Reads the files of one exact commit from the Git object database.",
+	"responsibility": "Reads paths and text from one selected Git commit and exposes that commit revision as the source-tree identity.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -20,43 +20,66 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CommitTreeAdapter.open.root",
-				"type": "string"
+				"type": "string",
+				"description": "Repository root passed to GitAdapter. It is not exposed as a public CommitTreeAdapter field."
 			},
 			{
 				"name": "CommitTreeAdapter.open.reference",
-				"type": "string"
+				"type": "string",
+				"description": "Revision expression resolved by GitAdapter.attempt using rev-parse --verify --quiet with the reference suffixed by ^{commit}."
 			},
 			{
 				"name": "CommitTreeAdapter.read.path",
-				"type": "string"
+				"type": "string",
+				"description": "Exact forward-slash path to find in the selected commit tree."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CommitTreeAdapter.open",
-				"type": "Promise<CommitTreeAdapter>"
+				"type": "Promise<CommitTreeAdapter>",
+				"description": "On success returns an adapter whose readonly revision is the string returned by GitAdapter.attempt for the commit-resolving expression. The caller's root and reference are not retained as public fields."
+			},
+			{
+				"name": "CommitTreeAdapter.revision",
+				"type": "string",
+				"description": "Public readonly source identity for the selected commit. It is the successful GitAdapter.attempt result and is passed to ls-tree; exact hash syntax and output normalization are not specified by the GitAdapter contract."
 			},
 			{
 				"name": "CommitTreeAdapter.list",
-				"type": "Promise<TreeEntry[]>"
+				"type": "Promise<TreeEntry[]>",
+				"description": "Lazily runs recursive, NUL-delimited ls-tree for revision once per adapter instance and caches that Promise. Returned records contain exactly path:string and hash:string. Only output records matching a blob entry with a lowercase hexadecimal object id are included; their order follows Git output. The declared SourceTree and TreeEntry field contracts are empty, so their wider interface shapes are not described."
 			},
 			{
 				"name": "CommitTreeAdapter.read",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Finds an exact path match in list(), then batches its blob hash through cat-file --batch and decodes the reported blob bytes as UTF-8. Requests scheduled in the same immediate tick share one batch; duplicate hashes share one object read and resolve all waiting callers with the same text. Reads are bound to revision and do not access a mutable working tree."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Reference does not identify a commit",
+				"type": "ExpectedCliError",
+				"description": "open throws when GitAdapter.attempt returns no value. The message quotes the reference and reads: \"<reference> does not name a commit in this repository.\""
 			},
 			{
-				"name": "ExpectedCliError",
-				"type": "thrown"
+				"name": "Git command failure",
+				"type": "Error",
+				"description": "The adapter.git contract declares Error failures for GitAdapter.attempt, run, and bytes. open propagates attempt failures; list propagates run failures and caches the rejected list Promise for that instance; read propagates list failures."
+			},
+			{
+				"name": "Path absent from selected commit",
+				"type": "Error",
+				"description": "read throws the path followed by ' does not exist at ' and the selected revision when list() has no exact path match."
+			},
+			{
+				"name": "Batch object read failure",
+				"type": "Error from GitAdapter.bytes; not converted into a read rejection",
+				"description": "flush awaits bytes but is launched without awaiting or catching it, and read creates only a resolve callback. If bytes rejects, the flush rejection is unhandled and the affected read promises remain unsettled rather than rejecting. No retry, rollback, or recovery is declared."
 			}
 		]
 	},

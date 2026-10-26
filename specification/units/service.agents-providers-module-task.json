@@ -3,7 +3,7 @@
 	"id": "service.agents-providers-module-task",
 	"kind": "service",
 	"title": "ModuleTaskService",
-	"responsibility": "Admit immutable module tasks with wanted contracts, shared feature context and module goals, and recover confirmed abandoned claims.",
+	"responsibility": "Admit immutable, module-scoped task definitions against the committed HEAD registry; persist shared feature context and wanted-contract hashes; format contract-checked worker prompts; and requeue only failed tasks or confirmed abandoned claims. This service exposes no task-cancellation operation.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -32,143 +32,211 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskService.constructor.root",
-				"type": "unknown"
+				"type": "string",
+				"description": "Repository working-tree root. Defaults to process.cwd(). Constructs the public readonly repository property with the same root."
 			},
 			{
 				"name": "ModuleTaskService.feature.input",
-				"type": "TaskFeature"
+				"type": "TaskFeature",
+				"description": "Strict parsed feature record {id, goal, tldr}, using the committed featureSchema contract: id is a lowercase unit-style identifier; goal and tldr are trimmed non-empty text up to 16000 characters."
 			},
 			{
 				"name": "ModuleTaskService.add.input",
-				"type": "unknown"
+				"type": "unknown parsed as ModuleTaskInput",
+				"description": "Strict taskInputSchema input per the committed repository task contract: id, title, feature id, module id, instructions and wantedContract; optional moduleGoal, verificationFiles, provider, intelligence and assignee; model defaults to auto. wantedContract is a strict object with responsibility, inputs, outputs and errors; each item requires trimmed non-empty name/type, optional description and optional examples containing JSON values, and outputs has at least one item. Text values are trimmed non-empty strings up to 16000 characters; model is up to 150 characters; provider is claude or codex; intelligence is low, medium, high, xhigh, max or ultra; assignee is an optional unit-style id; verificationFiles are at most 64 safe relative test or verification paths."
+			},
+			{
+				"name": "ModuleTaskService.list",
+				"type": "no arguments",
+				"description": "Reads the task repository snapshot."
+			},
+			{
+				"name": "ModuleTaskService.schema",
+				"type": "no arguments",
+				"description": "Returns the JSON Schema generated from the same taskInputSchema used by add."
 			},
 			{
 				"name": "ModuleTaskService.show.id",
-				"type": "string"
+				"type": "string",
+				"description": "Exact task id to find in the repository snapshot."
 			},
 			{
 				"name": "ModuleTaskService.prompt.id",
-				"type": "string"
+				"type": "string",
+				"description": "Exact task id whose committed task data will be formatted into a worker prompt."
 			},
 			{
 				"name": "ModuleTaskService.prepare.task",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"description": "Stored task passed directly to prompt construction and model/provider selection."
 			},
 			{
 				"name": "ModuleTaskService.prepare.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Task-queue commit string inserted into the formatted worker prompt."
 			},
 			{
 				"name": "ModuleTaskService.retry.id",
-				"type": "string"
+				"type": "string",
+				"description": "Exact stored task id to requeue if it is failed or its same-clone running claim is confirmed abandoned."
 			},
 			{
 				"name": "ModuleTaskService.review.id",
-				"type": "string"
+				"type": "string",
+				"description": "Exact stored task id passed through to the reviewModuleTask dependency."
 			},
 			{
 				"name": "ModuleTaskService.review.input",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Passed through unchanged to reviewModuleTask; its dependency contract does not specify this input shape."
 			},
 			{
 				"name": "queuedTask.input",
-				"type": "ModuleTaskInput"
+				"type": "ModuleTaskInput",
+				"description": "Validated task definition used to create a stored queued task."
 			},
 			{
 				"name": "queuedTask.feature",
-				"type": "TaskFeature"
+				"type": "TaskFeature",
+				"description": "Previously committed shared feature context attached to the task."
 			},
 			{
 				"name": "queuedTask.unit",
-				"type": "ComponentManifest"
+				"type": "ComponentManifest",
+				"description": "Active committed registry manifest for the assigned module. The helper reads id, responsibility, responsibilityOrigin and owns.source; the exact field shapes are not fully declared by the unit-types contract."
 			},
 			{
 				"name": "queuedTask.sourceCommit",
-				"type": "string"
+				"type": "string",
+				"description": "Committed source revision associated with the task."
 			},
 			{
 				"name": "retryableTask.task",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"description": "Stored task whose status and claim owner determine retry eligibility."
 			},
 			{
 				"name": "retryableTask.workspace",
-				"type": "string"
+				"type": "string",
+				"description": "Current clone workspace identity compared with the task claim owner."
 			},
 			{
 				"name": "moduleTaskPrompt.task",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"description": "Stored task from which the prompt content and wanted-contract integrity hash are read."
 			},
 			{
 				"name": "moduleTaskPrompt.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Task-queue commit string included in the prompt."
 			},
 			{
 				"name": "taskSelection.task",
-				"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>"
+				"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>",
+				"description": "The requested model selection fields; auto selection forbids an explicit provider or intelligence level."
 			}
 		],
 		"outputs": [
 			{
+				"name": "ModuleTaskService.repository",
+				"type": "ModuleTaskRepository",
+				"description": "Public readonly repository instance constructed from root."
+			},
+			{
 				"name": "ModuleTaskService.feature",
-				"type": "unknown"
+				"type": "Promise<{value: TaskFeature; commit: string | undefined}>",
+				"description": "Parses input with featureSchema, then upserts by feature id through ModuleTaskRepository.update. A new feature is appended. An identical feature is an unchanged no-op. Reusing an id with different stableJson content throws; feature context is immutable and requires a new id. The update call omits source, so queue-parent, CAS retry and no-op commit semantics are those of the repository contract. ModuleTaskRepository may replay the update callback up to 16 times after a CAS loss; the callback contains no external side effects."
 			},
 			{
 				"name": "ModuleTaskService.add",
-				"type": "unknown"
+				"type": "Promise<{task: ModuleTask; commit: string | undefined}>",
+				"description": "Parses taskInputSchema and validates taskSelection, opens committed HEAD, reads that revision's unit registry, and requires a matching active module with at least one owned source path. A module whose responsibilityOrigin is derived requires moduleGoal. In one repository update it rejects duplicate task ids, requires the referenced feature to exist, constructs and appends a queued ModuleTask, and passes the committed tree revision as the queue update source. The stored module goal is moduleGoal when supplied or the manifest responsibility otherwise. Its files are owns.source followed by verificationFiles with duplicates removed in first-seen order. It stores sourceCommit from the opened tree revision, SHA-256 of stableJson(wantedContract) as contractHash, status queued, a generated ISO createdAt, and empty attempts, reviews and claimHistory arrays. The repository update may replay its callback after a CAS loss; only its committed value is returned. Duplicate-id rejection makes repeating a successful add non-idempotent. Repository updates schema-validate a cloned queue, compare-and-swap the task ref, may replay the callback up to 16 times, and preserve source HEAD and the index; a no-op returns the existing ref commit."
 			},
 			{
 				"name": "ModuleTaskService.list",
-				"type": "unknown"
+				"type": "Promise<{features: TaskFeature[]; tasks: ModuleTask[]; commit: string | undefined}>",
+				"description": "Projects the repository read snapshot into features, tasks and its task-ref commit. An absent queue has the repository contract's empty version-1 data and an undefined commit. Read-only; does not mutate task data."
 			},
 			{
 				"name": "ModuleTaskService.schema",
-				"type": "unknown"
+				"type": "JSON Schema object returned by z.toJSONSchema(taskInputSchema)",
+				"description": "Machine-readable schema for the exact taskInputSchema consumed by add. Read-only; does not mutate task data."
 			},
 			{
 				"name": "ModuleTaskService.show",
-				"type": "unknown"
+				"type": "Promise<{task: ModuleTask; commit: string | undefined}>",
+				"description": "Returns the exact matching task and commit from list. Does not mutate the queue. Read-only; does not mutate task data."
 			},
 			{
 				"name": "ModuleTaskService.prompt",
-				"type": "unknown"
+				"type": "Promise<string>",
+				"description": "Returns prepare(task, commit).prompt for the task found by show. The formatter rejects a wantedContract whose SHA-256 over stableJson differs from stored contractHash. It includes shared feature goal/TLDR, module goal and allowed files, task title/id/instructions, source and repair revisions, latest review feedback when present, task queue commit and the serialized wanted contract. Read-only; does not mutate task data. It also computes taskSelection as part of prepare, so model/provider/intelligence validation can reject the call even though only the prompt string is returned."
 			},
 			{
 				"name": "ModuleTaskService.prepare",
-				"type": "unknown"
+				"type": "{prompt: string; selection: TaskSelection}",
+				"description": "Formats the worker prompt and computes provider/model/intelligence using taskSelection. Auto selects claude-haiku-5-5 with provider claude and medium intelligence. For explicit models, claude-* infers claude and gpt-* infers codex; another model needs an explicit provider. Intelligence defaults to medium. Claude with ultra is rejected. Synchronous prompt preparation only; it does not persist or mutate task data."
 			},
 			{
 				"name": "ModuleTaskService.retry",
-				"type": "unknown"
+				"type": "Promise<{value: ModuleTask; commit: string | undefined}>",
+				"description": "Gets the current repository owner, then requeues only a failed task or a running task whose claim belongs to this workspace and whose claimed process is confirmed gone or has a different known start time. Other states, another workspace, a still-matching live process, or a live process with no known start time are rejected. Before requeue it appends an existing result to attempts and an existing claim to claimHistory, deletes result and claim, and sets status queued. It omits source from repository.update. A repeated call after the task has become queued is rejected, so the operation is not API-idempotent. No cancellation is performed or exposed. The repository update follows its CAS retry semantics and preserves source HEAD and the index."
 			},
 			{
 				"name": "ModuleTaskService.review",
-				"type": "unknown"
+				"type": "ReturnType<typeof reviewModuleTask>",
+				"description": "Returns the delegated reviewModuleTask result unchanged. That dependency's committed contract currently declares its output as unknown, so the concrete return and review mutation semantics remain an explicit dependency-contract gap. Review result shape, idempotency, cancellation, and state transition remain unknown pending that dependency contract."
 			},
 			{
 				"name": "queuedTask",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"description": "Creates the stored queued task described for ModuleTaskService.add. The wantedContract digest is SHA-256 over the exact stableJson output; stableJson preserves object entry order, so this contract does not claim key-order-independent canonicalization."
 			},
 			{
 				"name": "retryableTask",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Returns true for any failed task. Otherwise returns true only for a running task whose claim owner workspace matches the supplied workspace and whose ProcessIdentityAdapter facts say the claimed pid does not exist, or that it exists with a nonempty startedAt unequal to the claim owner's startedAt. All other states and observations return false."
 			},
 			{
 				"name": "moduleTaskPrompt",
-				"type": "string"
+				"type": "string",
+				"description": "Rejects a stored task when SHA-256 of stableJson(wantedContract) differs from contractHash; otherwise returns the newline-joined prompt content described for ModuleTaskService.prompt. The serialized latest review feedback is accessed through reviews.at(-1).feedback when a review exists; the TaskReview field contract is unresolved."
 			},
 			{
 				"name": "taskSelection",
-				"type": "TaskSelection"
+				"type": "TaskSelection",
+				"description": "For model auto, rejects provider or intelligence overrides and returns claude-haiku-5-5 / claude / medium. Otherwise uses the explicit provider or infers claude from a claude-* model and codex from a gpt-* model; it rejects an unrecognized model without explicit provider and rejects claude plus ultra. The selected intelligence defaults to medium."
+			},
+			{
+				"name": "ModuleTask",
+				"type": "Omit<ModuleTaskInput, 'module' | 'feature'> & {feature: TaskFeature; module: {id: string; goal: string; files: string[]}; sourceCommit: string; contractHash: string; status: 'queued' | 'running' | 'review' | 'failed' | 'accepted'; repairCommit?: string; reviews: TaskReview[]; createdAt: string; claim?: TaskClaim; claimHistory: TaskClaim[]; result?: StoredTaskResult; attempts: StoredTaskResult[]}",
+				"description": "Committed repository task contract: stored sourceCommit is a 40-character lowercase commit id, contractHash is a 64-character lowercase digest, createdAt is ISO text, and module.files are non-empty safe relative paths. Array defaults are empty. TaskClaim contains worker id, UUID token, ISO startedAt and owner {workspace UUID, positive pid, startedAt text}. TaskReview and StoredTaskResult fields, including usage/execution/cost, are not fully declared by the task-usage dependency and remain explicit gaps."
 			}
 		],
 		"errors": [
 			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "featureSchema or taskInputSchema rejects malformed input. The underlying ModuleTaskRepository schemas may also reject persisted queue data."
+			},
+			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Propagates service policy failures (conflicting immutable feature id; inactive/unregistered or source-less module; derived placeholder responsibility without moduleGoal; duplicate task id; missing feature/task; non-retryable task), taskSelection validation failures, wanted-contract hash mismatch, repository callback/Git/filesystem failures and CAS exhaustion after 16 update attempts. ModuleTaskRepository.owner may fail on malformed persisted owner identity or inability to establish process start time. Review dependency errors also propagate. This service does not call repository sync."
+			},
+			{
+				"name": "SyntaxError",
+				"type": "thrown",
+				"description": "Propagated by the repository contract when a task-ref queue.json is invalid JSON."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "May propagate from committed source tree or registry reads; exact validation conditions are owned by the CommitTreeAdapter and UnitRegistryRepository contracts."
 			}
 		]
 	},

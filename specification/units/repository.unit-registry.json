@@ -3,8 +3,8 @@
 	"id": "repository.unit-registry",
 	"kind": "repository",
 	"title": "UnitRegistryRepository",
-	"responsibility": "Owns the UnitRegistryRepository persistence boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Owns the unit registry persistence boundary: reads and validates unit manifests and configuration from a supplied source tree, and writes or removes canonical unit-manifest files under the repository root.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -26,59 +26,96 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "UnitRegistryRepository.constructor.root",
-				"type": "string"
+				"type": "string",
+				"description": "Filesystem root used by write and remove for manifest paths."
 			},
 			{
 				"name": "UnitRegistryRepository.config.tree",
-				"type": "SourceTree"
+				"type": "SourceTree",
+				"description": "Selected source tree used to list and read harness.units.json."
 			},
 			{
 				"name": "UnitRegistryRepository.read.tree",
-				"type": "SourceTree"
+				"type": "SourceTree",
+				"description": "Selected source tree used to list and read files under specification/units."
 			},
 			{
 				"name": "UnitRegistryRepository.write.manifests",
-				"type": "ComponentManifest[]"
+				"type": "ComponentManifest[]",
+				"description": "Manifest objects serialized and persisted by their id; write does not call the manifest validator."
 			},
 			{
 				"name": "UnitRegistryRepository.remove.id",
-				"type": "string"
+				"type": "string",
+				"description": "Identifier interpolated into the manifest path for removal."
 			},
 			{
 				"name": "UnitRegistryRepository.path.id",
-				"type": "string"
+				"type": "string",
+				"description": "Identifier interpolated into the relative manifest path."
 			}
 		],
 		"outputs": [
 			{
+				"name": "RegistryRead",
+				"type": "{ manifests: ComponentManifest[]; errors: string[]; unformatted: string[] }",
+				"description": "manifests contains validated manifest values in the order their files appear in the supplied tree listing; errors accumulates validator messages for invalid files; unformatted contains ids of valid manifests whose original file text differs from stableJson(manifest). The exact ComponentManifest field schema and validator message format are not specified by the dependency contracts."
+			},
+			{
 				"name": "UnitRegistryRepository.config",
-				"type": "Promise<UnitsConfig>"
+				"type": "Promise<UnitsConfig>",
+				"description": "Lists the supplied tree. If harness.units.json is absent, returns defaultUnitsConfig. If present, parses its text as JSON and returns unitsConfigSchema-validated data; malformed JSON becomes undefined and follows the schema-failure path. Invalid configuration throws ExpectedCliError with schema errors joined by newlines. Exact UnitsConfig fields are not specified by the dependency contract."
 			},
 			{
 				"name": "UnitRegistryRepository.read",
-				"type": "Promise<RegistryRead>"
+				"type": "Promise<RegistryRead>",
+				"description": "Uses only the supplied SourceTree. Selects listed paths beginning specification/units/ and ending .json, reads them in listing order through readTreeTexts, parses each text, validates it, accumulates errors, omits invalid values from manifests, and records valid ids whose original text is not exactly their stableJson serialization."
 			},
 			{
 				"name": "UnitRegistryRepository.write",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "For each manifest in input order, computes specification/units/{id}.json and stableJson(manifest). It skips a file only when its current UTF-8 text exactly equals that serialization; otherwise it creates parent directories recursively, writes the serialization, and returns the relative paths written in input order. This is a read-before-write equality check, not an atomic compare-and-swap; there is no batch transaction or rollback. The current-file helper treats any readFile error as absence."
 			},
 			{
 				"name": "UnitRegistryRepository.remove",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Attempts to remove specification/units/{id}.json under the constructor root with rm(..., { force: true }); it returns no value and performs no explicit identifier validation."
 			},
 			{
 				"name": "UnitRegistryRepository.path",
-				"type": "string"
+				"type": "string",
+				"description": "Returns specification/units/{id}.json by direct interpolation; it performs no identifier validation."
 			}
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
-				"type": "thrown"
+				"name": "Invalid units configuration",
+				"type": "ExpectedCliError",
+				"description": "config throws via fail when the parsed configuration fails unitsConfigSchema; the error message is schemaErrors joined with newline characters."
+			},
+			{
+				"name": "Manifest validation failures",
+				"type": "RegistryRead.errors: string[]",
+				"description": "read records validator errors in the returned RegistryRead instead of treating them as a repository-level thrown validation error. Invalid JSON is converted to undefined before validation. The dependency contract does not define exact error messages."
+			},
+			{
+				"name": "SourceTree listing or direct read failure",
+				"type": "unknown",
+				"description": "config and read allow tree.list failures to reject; config also allows its direct tree.read failure to reject. The SourceTree contract declares no rejection type or message."
+			},
+			{
+				"name": "Manifest file read failure",
+				"type": "Error",
+				"description": "The read-tree-texts dependency contract says a failed requested file read rejects the entire read request and no file is silently omitted; the specific error subclass and message are not declared."
+			},
+			{
+				"name": "Filesystem mutation failure",
+				"type": "unknown",
+				"description": "write and remove do not catch mkdir, writeFile, or rm failures. The underlying filesystem error type and atomicity are not declared. Errors from the helper current's readFile are swallowed and treated as an absent file."
 			}
 		]
 	},

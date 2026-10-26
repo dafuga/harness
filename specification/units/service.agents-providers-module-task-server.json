@@ -3,7 +3,7 @@
 	"id": "service.agents-providers-module-task-server",
 	"kind": "service",
 	"title": "ModuleTaskServerService",
-	"responsibility": "Create and dispatch module tasks from committed desired contracts through the existing queue, with duplicate-safe lifecycle, bounded concurrency, cancellation and truthful execution status.",
+	"responsibility": "Validates module-task plans and committed-module admission prerequisites before updating the task queue, then dispatches matching assignments through the existing worker without accepting submissions.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,43 +16,76 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskServerService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"description": "Repository root used by the task repository, commit-tree reader, registry and worker."
 			},
 			{
 				"name": "ModuleTaskServerService.constructor.dependencies",
-				"type": "Partial<{ repository: ModuleTaskRepository; openTree: typeof CommitTreeAdapter.open; registry: Pick<UnitRegistryRepository, 'read'>; requireMetadata: typeof requireModuleData; worker: Pick<ModuleTaskWorkerService, 'once'>; }>"
+				"type": "Partial<{ repository: ModuleTaskRepository; openTree: typeof CommitTreeAdapter.open; registry: Pick<UnitRegistryRepository, 'read'>; requireMetadata: typeof requireModuleData; worker: Pick<ModuleTaskWorkerService, 'once'>; }>",
+				"description": "Optional in-process collaborators for queue persistence, exact-commit reads, unit registry admission, metadata checks and worker dispatch."
 			},
 			{
 				"name": "ModuleTaskServerService.submit.input",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "A non-null, non-array object with a feature parsed by featureSchema and a tasks array whose items are parsed by taskInputSchema. Duplicate task IDs and task-feature ID mismatches are rejected. Extra root keys and an empty tasks array are not rejected here. Nested unknown-key behavior is delegated to schemas whose dependency contract does not publish strictness."
 			},
 			{
 				"name": "ModuleTaskServerService.run.input",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The same plan passed to submit; run submits it before worker dispatch."
 			},
 			{
 				"name": "ModuleTaskServerService.run.execution",
-				"type": "{ worker: string; modules: string[]; once: boolean; signal: AbortSignal }"
+				"type": "{ worker: string; modules: string[]; once: boolean; signal: AbortSignal }",
+				"description": "Worker and module IDs must match the unit-ID pattern, module IDs must be unique, once must be boolean, and signal must be AbortSignal-shaped. A signal already aborted at validation rejects before submit."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskServerService.submit",
-				"type": "Promise<ReturnType<typeof mergePlan> & { commit: string | undefined }>"
+				"type": "Promise<{ created: string[]; reused: string[]; commit: string | undefined }>",
+				"description": "Returns created and reused task ID arrays from the queue merge and the repository update commit, which may be undefined. Equivalent queued definitions are reused; conflicting feature or task definitions reject. It does not return feature or task objects. The service prepares all records and calls repository.update once with the selected tree revision after plan, module and metadata checks; the repository dependency contract does not specify compare-and-swap semantics. It schema-validates a task using the current module contract with its origin removed, but does not compare that contract to the submitted wantedContract."
 			},
 			{
 				"name": "ModuleTaskServerService.run",
-				"type": "unknown"
+				"type": "Promise<{ submission: { created: string[]; reused: string[]; commit: string | undefined }; results: unknown[] }>",
+				"description": "When once is true, resolves with the submit result nested under submission and a results array containing the one result from exactly one awaited worker.once call. When once is false, calls worker.once repeatedly and retains at most 100 results internally, but never resolves with them: cancellation rejects with AbortError after the active call settles. The service awaits worker.once directly, so cancellation does not interrupt a worker call that does not settle. Watch mode treats result.status === 'idle' as a reason to poll again after 50 ms; the worker.once dependency contract declares its result as unknown. Once mode does not loop to drain matching work, and the service does not recheck cancellation after submit or after a successful once call."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Invalid plan",
+				"type": "Error | ZodError",
+				"description": "A non-object plan or missing tasks array throws Error. featureSchema and taskInputSchema parse failures propagate as ZodError; duplicate task IDs and feature ID mismatches throw Error."
+			},
+			{
+				"name": "Module admission failure",
+				"type": "unknown",
+				"description": "Service-generated admission and task-preparation failures are Error; feature/task schema failures are ZodError; commit-tree open may throw Error or ExpectedCliError; required-metadata failures are Error. The UnitRegistryRepository dependency contract leaves source-tree listing/read failures unknown, and this service propagates them. Invalid registry manifests, an unregistered or inactive module, unsafe or empty owned source scope, a missing module goal for derived responsibility, an invalid task-shaped contract, or task preparation failure throw before repository.update."
+			},
+			{
+				"name": "Conflicting queued definition or repository failure",
+				"type": "Error",
+				"description": "Conflicting feature or task definitions throw before mergePlan mutates the queue draft; repository read/update failures propagate."
+			},
+			{
+				"name": "Invalid run execution",
+				"type": "Error",
+				"description": "Invalid worker ID, module filter, duplicate module ID, once value or signal shape throws before submit."
+			},
+			{
+				"name": "Run cancellation",
+				"type": "AbortError",
+				"description": "An already-aborted signal rejects before submit. Watch mode rejects with an AbortError named 'AbortError' and message 'Module task run aborted' after an active worker call settles and cancellation ends the loop. In once mode the signal is passed to worker.once; cancellation normalization is delegated to that worker call."
+			},
+			{
+				"name": "Worker failure",
+				"type": "Error",
+				"description": "Once-mode worker rejection propagates. In watch mode a worker rejection propagates unchanged unless the signal is aborted, in which case it is converted to the run AbortError."
 			}
 		]
 	},
