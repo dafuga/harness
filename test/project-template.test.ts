@@ -3,6 +3,7 @@ import { test } from 'vitest';
 import { expect } from './verificationExpect';
 import { projectFiles } from '../src/templates/project';
 import { measureWorkload } from './support/measureWorkload';
+import { assertFoundationLint } from './support/project-template/foundations';
 import { assertAtomCompiler } from './support/project-template/atoms';
 import {
 	expectGeneratedGuidance,
@@ -115,6 +116,7 @@ test.each(['app', 'lib'] as const)(
 	'generated %s code and configuration obey their formatter settings',
 	async (kind) => {
 		const files = projectFiles({ kind, name: 'format-proof' });
+		await assertFoundationLint(files, kind);
 		const options = JSON.parse(fileContents(files, '.prettierrc')) as Options;
 		for (const file of files.filter((file) => /\.(js|ts|json)$/.test(file.path))) {
 			expect(file.contents, file.path).toBe(

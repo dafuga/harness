@@ -196,14 +196,20 @@ for (const [screen, width, height] of screens) {
 		await combo(bar, 'Commit').selectOption(sha(3));
 		await pictured(page, `modules-navigation-${screen}`);
 		await bar.getByRole('link', { name: 'Code', exact: true }).click();
-		const modules = bar.getByRole('tab', { name: 'Modules', exact: true });
-		await expect(modules, 'Modules is contributed under Code').toBeVisible();
+		const modules = bar.getByRole('tab', { name: 'Plugins', exact: true });
+		await expect(modules, 'Plugins is contributed under Code').toBeVisible();
 		await modules.click();
-		await expect(page).toHaveURL(at(`${earlier}/modules`));
+		await expect(page).toHaveURL(at(`${earlier}/plugins`));
 		await expect(modules).toHaveAttribute('aria-selected', 'true');
 		await page.reload();
 		await expect(modules).toHaveAttribute('aria-selected', 'true');
 		await captureShell(page, home, { state: 'module-discovery', viewport: screen });
+		await page.goto(at(`${earlier}/module-resources/playwright.test`));
+		await expect(bar.getByRole('tab', { name: 'Plugins', exact: true })).toHaveAttribute(
+			'aria-selected',
+			'true'
+		);
+		await captureShell(page, home, { state: 'testing-plugin-resource', viewport: screen });
 		await expect.poll(() => fits(page)).toBe(true);
 	});
 }

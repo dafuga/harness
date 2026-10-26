@@ -3,7 +3,7 @@
 	"id": "command.module-system-module",
 	"kind": "command",
 	"title": "ModuleCommand",
-	"responsibility": "Expose module discovery, instructions, installation and resource generation through the CLI.",
+	"responsibility": "Expose module and external plugin discovery, instructions, installation, generation and headless test execution.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"catalog": {
@@ -26,7 +26,7 @@
 			{
 				"name": "ModuleCommand.register",
 				"type": "void",
-				"description": "Registers module list, info, add and generate subcommands on the supplied program."
+				"description": "Registers compatible module commands and external plugin list, info, add, generate and test commands; test execution preserves the child exit status."
 			}
 		],
 		"errors": [
@@ -50,6 +50,11 @@
 		},
 		{
 			"unit": "service.module-system-module-resource",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-testing-plugin",
 			"via": "import",
 			"origin": "derived"
 		}

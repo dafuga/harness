@@ -4,8 +4,13 @@ import { join } from 'node:path';
 import { catalogScenario, previewState } from './catalogUnits';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
-export async function assertComponentCapture(page: Page, id: string, viewport: string) {
-	assertCaptureSlot(id, viewport);
+export async function assertComponentCapture(
+	page: Page,
+	id: string,
+	viewport: string,
+	variant = ''
+) {
+	assertCaptureSlot(id, viewport, variant);
 	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
 	if (!directory) return;
@@ -30,7 +35,7 @@ export async function assertComponentCapture(page: Page, id: string, viewport: s
 		Math.max(...boxes.map((box) => box.right)) - Math.min(...boxes.map((box) => box.left));
 	const height =
 		Math.max(...boxes.map((box) => box.bottom)) - Math.min(...boxes.map((box) => box.top));
-	const png = readFileSync(join(directory, `${previewState(id)}-${viewport}.png`));
+	const png = readFileSync(join(directory, `${previewState(id, variant)}-${viewport}.png`));
 	expect(png.subarray(1, 4).toString()).toBe('PNG');
 	const captured = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
 	for (const [dimension, actual] of Object.entries({ width, height })) {
@@ -58,7 +63,7 @@ async function assertAgentsPreview(page: Page) {
 }
 
 /** The recorded slot selects the manifest's element rules as well as its required state. */
-function assertCaptureSlot(id: string, viewport: string) {
+function assertCaptureSlot(id: string, viewport: string, variant = '') {
 	const directory = process.env.HARNESS_EVIDENCE_DIR;
 	if (!directory || process.env.TAKE_SCREENSHOT !== '1') return;
 	const lines = readFileSync(join(directory, 'captures.ndjson'), 'utf8')
@@ -67,7 +72,9 @@ function assertCaptureSlot(id: string, viewport: string) {
 		.map((text) => JSON.parse(text));
 	const capture = lines.findLast(
 		(line) =>
-			line.kind === 'screenshot' && line.state === previewState(id) && line.viewport === viewport
+			line.kind === 'screenshot' &&
+			line.state === previewState(id, variant) &&
+			line.viewport === viewport
 	);
 	expect(
 		catalogScenario.evidence,
@@ -103,7 +110,7 @@ export async function assertTranslationControls(component: Locator) {
 }
 
 /** Module previews must show the actual library and generated-resource content. */
-export async function assertModulePreview(component: Locator, id: string) {
+export async function assertModulePreview(component: Locator, id: string, variant = '') {
 	if (id === 'reports.component.networking-security-explorer-permissions-screen') {
 		for (const text of [
 			'Member',
@@ -116,21 +123,46 @@ export async function assertModulePreview(component: Locator, id: string) {
 	}
 
 	if (id === 'reports.component.module-system-explorer-modules-screen') {
+		if (variant) {
+			await expect(
+				component.getByRole('heading', {
+					level: 1,
+					name: variant === 'playwright' ? 'Playwright' : 'Headless audio',
+					exact: true
+				})
+			).toBeVisible();
+			await expect(component).toContainText(`harness plugin test ${variant}`);
+			await expect(component.getByText('Testing', { exact: true })).toBeVisible();
+			return;
+		}
 		await expect(
 			component.getByRole('link', { name: 'Rust WebAssembly', exact: true })
 		).toBeVisible();
 		await expect(component.getByRole('link', { name: 'Rust Backend', exact: true })).toBeVisible();
 		await expect(
-			component.getByRole('heading', { level: 1, name: 'Modules', exact: true })
+			component.getByRole('heading', { level: 1, name: 'Plugins', exact: true })
 		).toBeVisible();
 		await expect(component.getByRole('link', { name: 'Email', exact: true })).toBeVisible();
 		await expect(component.getByText('Installed', { exact: true })).toBeVisible();
-		await expect(component).toContainText('harness module add offline');
+		await expect(component.getByRole('link', { name: 'Layouts', exact: true })).toHaveCount(0);
+		await expect(component.getByRole('link', { name: 'Playwright', exact: true })).toBeVisible();
+		await expect(
+			component.getByRole('link', { name: 'Headless audio', exact: true })
+		).toBeVisible();
+		await expect(component).toContainText('harness plugin add offline');
 	}
 	if (id === 'reports.component.module-system-explorer-module-resources-screen') {
+		if (variant) {
+			await expect(
+				component.getByRole('heading', { level: 1, name: 'Browser tests', exact: true })
+			).toBeVisible();
+			await expect(component).toContainText('harness plugin generate playwright test');
+			await expect(component).toContainText('Nothing generated yet.');
+			return;
+		}
 		await expect(component.getByRole('heading', { name: 'Emails', exact: true })).toBeVisible();
 		await expect(component.getByRole('heading', { name: 'Welcome', exact: true })).toBeVisible();
-		await expect(component).toContainText('harness module generate email email');
+		await expect(component).toContainText('harness plugin generate email email');
 	}
 }
 

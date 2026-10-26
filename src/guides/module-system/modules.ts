@@ -11,8 +11,10 @@ export const modulesGuide: Guide = {
 		'Generate a resource declared by the installed module, implement its application adapters and verify it.'
 	],
 	rules: [
-		'Every Code destination is module-declared; twelve standard capabilities are includedByDefault and optional modules require installation.',
-		'Only Pages, Code, Translations and Platforms are top-level destinations; APIs, Users & Permissions and Modules are contributed under Code.',
+		'Every Code destination is module-declared internally. The Plugins catalog lists external capabilities and testing plugins; standard Code capabilities do not appear there.',
+		'Headless Playwright is available by default. Generate its first test to prepare its dedicated config and dependency, then install dependencies and Chromium. Headless audio is optional and must be added first.',
+		'Use harness plugin list, info, add, generate and test. The existing module commands retain internal capabilities and compatibility.',
+		'Only Pages, Code, Translations and Platforms are top-level destinations; APIs, Users & Permissions and Plugins are contributed under Code.',
 		'User profiles live in specification/permissions/<id>.json. Their explicit grants name endpoint IDs and HTTP methods, page IDs, and data resources/actions/fields/scopes. This catalog documents declarations; application handlers enforce authorization.',
 		'Use harness permissions list, harness permissions show <id> and harness api permissions <endpoint-id>; --root selects project source and --commit or --branch pins its revision.',
 		'Module definitions are declarative data; discovery never imports project code.',
@@ -28,7 +30,12 @@ export const modulesGuide: Guide = {
 		'Do not treat navigator.onLine as proof that the backend can be reached.'
 	],
 	exampleCommands: [
-		'harness module list --json',
+		'harness plugin list --json',
+		'harness plugin generate playwright test Smoke',
+		'harness plugin test playwright',
+		'harness plugin add headless-audio',
+		'harness plugin generate headless-audio test Playback',
+		'harness plugin test headless-audio',
 		'harness module info offline',
 		'harness module generate permissions profile Member',
 		'harness permissions show member --json',

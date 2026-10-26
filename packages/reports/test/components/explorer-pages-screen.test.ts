@@ -41,9 +41,7 @@ test('every dedicated visual catalog capture can appear in its registered catalo
 		const id = state.units[0];
 		const manifest = JSON.parse(readFileSync('../../specification/units/' + id + '.json', 'utf8'));
 		const actual = unit(id, manifest.kind, { preview: manifest.preview }) as HarnessUnit;
-		const captured = withFocused(revision(commits.tip, []), id);
-		const captures = captured.regressions![0].green!.captures!;
-		for (const entry of captures) entry.capture.state = state.id;
+		const captured = catalogStates(catalog.states, id);
 		if (id === 'reports.component.harness-harness-console') prependLoadingCaptures(captured);
 		captured.registry = { ...captured.registry, units: [actual], scenarios: [catalog] };
 		const evidence = explorerEvidence(scope('current'), { head: captured, parent: null }, actual);
@@ -66,7 +64,7 @@ test('every dedicated visual catalog capture can appear in its registered catalo
 			expect(
 				evidence.after.captures.filter((entry) => entry.state.startsWith('loading-'))
 			).toHaveLength(6);
-		const choice = actual.preview ?? { scenario: catalog.id, state: state.id, viewport: 'desktop' };
+		const choice = { scenario: catalog.id, state: state.id, viewport: 'desktop' };
 		for (const viewport of ['desktop', 'tablet', 'mobile'])
 			if (!catalogShot(evidence, { ...choice, viewport })?.file)
 				unavailable.push(id + ':' + viewport);
@@ -103,4 +101,21 @@ function prependLoadingCaptures(detail: HarnessRevision): void {
 			}))
 		)
 	);
+}
+
+/** A component can own a default catalog preview and independently selectable detail states. */
+function catalogStates(states: { id: string; units: string[] }[], id: string): HarnessRevision {
+	const captured = withFocused(revision(commits.tip, []), id);
+	const captures = captured.regressions![0].green!.captures!;
+	const originals = structuredClone(captures);
+	captures.splice(
+		0,
+		captures.length,
+		...states
+			.filter((state) => state.units.includes(id))
+			.flatMap((state) =>
+				originals.map((entry) => ({ ...entry, capture: { ...entry.capture, state: state.id } }))
+			)
+	);
+	return captured;
 }

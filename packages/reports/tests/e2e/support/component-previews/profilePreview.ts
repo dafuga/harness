@@ -5,8 +5,8 @@ import { recordCapture } from '../../../../../../src/utils/record-capture/record
 import { readyPreview } from './previewPage';
 import { previewState } from './catalogUnits';
 /** Profiles a real remount and settled render, including fixture and browser-protocol overhead. */
-export async function profilePreview(page: Page, unit: string) {
-	const workload = 'representative-browser-mount';
+export async function profilePreview(page: Page, unit: string, variant = '') {
+	const workload = 'representative-browser-mount' + (variant ? `-${variant}` : '');
 	const elapsed: number[] = [];
 	for (let round = 0; round < 6; round++) {
 		const started = performance.now();
@@ -47,8 +47,8 @@ export async function profilePreview(page: Page, unit: string) {
 		{
 			evidence: 'profiles',
 			kind: 'benchmark',
-			state: previewState(unit),
-			file: `${previewState(unit)}-profile.json`,
+			state: previewState(unit, variant),
+			file: `${previewState(unit, variant)}-profile.json`,
 			mediaType: 'application/json'
 		},
 		JSON.stringify({ measurements })

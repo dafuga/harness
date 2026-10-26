@@ -12,7 +12,7 @@
 	const id = untrack(() => requested);
 	const unit = previewUnits.find((unit) => unit.id === id);
 	if (!unit) throw new Error(`Unknown preview component ${id}`);
-	const fixture = previewFixture(id);
+	const fixture = previewFixture(id, new URLSearchParams(location.search).get('variant') ?? '');
 	const Component = previewComponent(unit.source);
 	// A layout frames a page, so it is given the marked child slot below and never a real page.
 	const layout = unit.kind === 'layout';
