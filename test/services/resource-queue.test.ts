@@ -6,7 +6,7 @@ import { afterEach, expect, test } from 'vitest';
 import { resourceRequestSchema } from '../../src/core/execution-runtimes/resourceTypes';
 import { ResourceQueueService } from '../../src/services/execution-runtimes/ResourceQueueService';
 import { saveResourceConfig } from '../../src/utils/execution-runtimes/resourceConfig';
-import { config, snapshot } from '../support/resourceFixture';
+import { config, observeResources, snapshot } from '../support/resourceFixture';
 const cleanup: Array<() => void> = [];
 afterEach(() => {
 	cleanup.splice(0).forEach((f) => f());
@@ -33,6 +33,7 @@ function fixture() {
 	};
 }
 test('queued cancellation releases reservations without ever starting the callback', async () => {
+	const observe = observeResources(['service.resource-monitor'], 'Queued admission and cleanup');
 	const { service } = fixture(),
 		abort = new AbortController();
 	let started = false;
@@ -55,9 +56,29 @@ test('queued cancellation releases reservations without ever starting the callba
 	await rejected;
 	expect(started).toBe(false);
 	expect(service.queue.all()).toHaveLength(1);
-	release();
-	await running;
+	try {
+		const timedOut = service.run(
+			resourceRequestSchema.parse({ cpus: 6 }),
+			async () => {
+				started = true;
+			},
+			{ waitTimeoutMs: 300 }
+		);
+		await expect(timedOut).rejects.toThrow(
+			'Resource queue wait timed out; last reason: Waiting for CPU and memory reservations'
+		);
+		await expect(timedOut).rejects.toThrow('CPU available 10/10 cores');
+		await expect(timedOut).rejects.toThrow('memory available 16384/16384 MiB');
+		await expect(timedOut).rejects.toThrow('request 6 cores/512 MiB');
+		await expect(timedOut).rejects.toThrow('running reservations 6 cores/512 MiB');
+		expect(started).toBe(false);
+		expect(service.queue.all()).toHaveLength(1);
+	} finally {
+		release();
+		await running;
+	}
 	expect(service.queue.all()).toEqual([]);
+	observe();
 });
 test('pressure is observed during a running task; that task finishes and subsequent work waits', async () => {
 	const state = fixture();
@@ -79,6 +100,18 @@ test('pressure is observed during a running task; that task finishes and subsequ
 		abort.abort();
 		await rejected;
 		expect(nextStarted).toBe(false);
+		const timedOut = state.service.run(
+			resourceRequestSchema.parse({ priority: 'agent-test' }),
+			async () => {
+				nextStarted = true;
+			},
+			{ waitTimeoutMs: 300 }
+		);
+		await expect(timedOut).rejects.toThrow(
+			'Resource queue wait timed out; last reason: Memory pressure is critical'
+		);
+		expect(nextStarted).toBe(false);
+		expect(state.service.queue.all()).toHaveLength(1);
 	});
 	expect(state.service.queue.all()).toEqual([]);
 	state.pressure(false);
