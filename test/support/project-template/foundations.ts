@@ -1,6 +1,7 @@
 import { ESLint } from 'eslint';
 import { format } from 'prettier';
-import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import type { PlannedFile } from '../../../src/core/development-tooling/files';
@@ -13,16 +14,48 @@ import { runCommand } from '../cli';
 export async function assertAuthoredLibraryResult(project: string): Promise<void> {
 	const path = join(project, 'specification/units/entry.index.json');
 	const original = await readFile(path, 'utf8');
+	const evidence = await mkdtemp(join(tmpdir(), 'harness-library-case-result-'));
+	const revision = 'a'.repeat(40);
+	const env = {
+		HARNESS_VERIFY_CASE_ROOT: await realpath(project),
+		HARNESS_EVIDENCE_DIR: evidence,
+		HARNESS_VERIFY_REVISION: revision
+	};
 	try {
 		const manifest = JSON.parse(original);
 		manifest.testing.examples[0].expected.value = 'changed authored greeting';
 		await writeFile(path, JSON.stringify(manifest, null, '\t') + '\n');
-		const changed = await runCommand(['bun', 'run', 'test:unit'], project, false);
+		const changed = await runCommand(['bun', 'run', 'test:unit'], project, false, env);
 		expect(changed.exitCode).toBe(1);
 		expect(changed.stdout + changed.stderr).toContain('changed authored greeting');
+		await expectLibraryOutcome(evidence, revision, 'failed');
+		await rm(join(evidence, 'case-results.ndjson'));
+		await writeFile(path, original);
+		const restored = await runCommand(['bun', 'run', 'test:unit'], project, false, env);
+		expect(restored.exitCode).toBe(0);
+		await expectLibraryOutcome(evidence, revision, 'passed');
 	} finally {
 		await writeFile(path, original);
+		await rm(evidence, { recursive: true, force: true });
 	}
+}
+
+async function expectLibraryOutcome(directory: string, revision: string, status: string) {
+	const file = join(directory, 'case-results.ndjson');
+	expect(existsSync(file), 'Generated library runner must record its executed example').toBe(true);
+	const lines = (await readFile(file, 'utf8'))
+		.trim()
+		.split('\n')
+		.map((line) => JSON.parse(line));
+	expect(lines).toEqual([
+		{
+			file: 'test/index.test.ts',
+			title: 'helloHarness: returns a greeting',
+			revision,
+			retry: 0,
+			status
+		}
+	]);
 }
 
 /** Validate real emitted foundations with generated lint rules in a minimal typed source project. */
