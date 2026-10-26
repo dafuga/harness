@@ -7,7 +7,8 @@ import { assertAtomCompiler } from './support/project-template/atoms';
 import {
 	expectGeneratedGuidance,
 	expectCatalogGuidance,
-	expectStaticCheckOrder
+	expectStaticCheckOrder,
+	expectAppTypeReference
 } from './support/project-template/guidance';
 
 test(
@@ -63,6 +64,7 @@ test('app projects include SvelteKit and specification files', () =>
 		expect(packageJson.scripts.check).toContain('format:check');
 		expect(packageJson.scripts.check).toContain('audit');
 		expectStaticCheckOrder(packageJson.scripts.check);
+		expectAppTypeReference(files);
 		expect(packageJson.scripts['format:check']).toContain('prettier --check');
 		expect(packageJson.scripts.lint).toContain('eslint');
 		expect(packageJson.scripts.typecheck).toContain('svelte-check');

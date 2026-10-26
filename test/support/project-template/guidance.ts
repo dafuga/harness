@@ -91,3 +91,8 @@ export function expectStaticCheckOrder(check: string): void {
 		'bun run audit'
 	]);
 }
+
+/** Each standalone app route gets SvelteKit virtual-module declarations without an API import. */
+export function expectAppTypeReference(files: ReturnType<typeof projectFiles>): void {
+	expect(fileContents(files, 'src/app.d.ts')).toContain('/// <reference types="@sveltejs/kit" />');
+}

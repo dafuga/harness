@@ -6,7 +6,12 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { GameDocumentRepository } from '../packages/game/src/repositories/game-authoring/GameDocumentRepository';
 import type { GameDocument } from '../packages/game/src/models/game-authoring/Game.types';
 import { playableGame, gameCli } from './support/playableGame';
-import { gameCommand, createGameWithCli, generateGamePieces } from './support/gameCommand';
+import {
+	gameCommand,
+	createGameWithCli,
+	generateGamePieces,
+	assertGameCheck
+} from './support/gameCommand';
 const cli = resolve('src/index.ts');
 
 test.each([
@@ -30,7 +35,7 @@ test.each([
 			const saved = await repository.read();
 			saved.document.views[0].title = 'Authored courtyard';
 			await repository.save(saved.document, saved.revision);
-			gameCommand(['bun', 'run', 'check'], cwd, {
+			assertGameCheck(cwd, {
 				cli,
 				workload: `game-check-${dimension}-${entry}`,
 				units: ['template.game-project', 'template.project']
