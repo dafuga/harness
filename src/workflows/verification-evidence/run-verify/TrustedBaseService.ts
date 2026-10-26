@@ -1,8 +1,6 @@
+import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
-import {
-	VerificationStoreRepository,
-	type StoredRecord
-} from '../../../repositories/verification-evidence/VerificationStoreRepository';
+import { VerificationStoreRepository } from '../../../repositories/verification-evidence/VerificationStoreRepository';
 import { VerificationCheckService } from '../../../services/verification-evidence/VerificationCheckService';
 
 /**
@@ -23,13 +21,16 @@ export class TrustedBaseService {
 
 	/** The nearest proven revision together with the record that proves it. */
 	async nearestRecord(from: string | null): Promise<{ commit: string; record: string } | null> {
-		const passing = this.latestPassing();
+		const store = new VerificationStoreRepository(this.root);
+		const passing = this.latestPassing(store);
 		if (!from || passing.size === 0) return null;
 		const ancestry = await new GitAdapter(this.root).run(['rev-list', from]);
 		const checker = new VerificationCheckService(this.root);
 		for (const commit of ancestry.split('\n')) {
-			const stored = passing.get(commit);
-			if (stored && (await checker.check(commit, stored)).status === 'passed') {
+			const entry = passing.get(commit);
+			const stored = entry ? store.read(entry.path) : undefined;
+			if (!stored || stored.record.id !== entry?.id || stored.record.status !== 'passed') continue;
+			if ((await checker.check(commit, stored)).status === 'passed') {
 				return { commit, record: stored.record.id };
 			}
 		}
@@ -37,14 +38,22 @@ export class TrustedBaseService {
 	}
 
 	/** The most recent record of each commit, kept only when that record passed. */
-	private latestPassing(): Map<string, StoredRecord> {
-		const latest = new Map<string, StoredRecord>();
-		for (const stored of new VerificationStoreRepository(this.root).all()) {
-			const known = latest.get(stored.record.source.commit);
-			if (!known || known.record.startedAt < stored.record.startedAt) {
-				latest.set(stored.record.source.commit, stored);
+	private latestPassing(store: VerificationStoreRepository) {
+		const latest = new Map<
+			string,
+			{ id: string; startedAt: string; status: string; path: string }
+		>();
+		for (const { record, directory } of store.records()) {
+			const known = latest.get(record.source.commit);
+			if (!known || known.startedAt < record.startedAt) {
+				latest.set(record.source.commit, {
+					id: record.id,
+					startedAt: record.startedAt,
+					status: record.status,
+					path: resolve(directory, 'record.json')
+				});
 			}
 		}
-		return new Map([...latest].filter(([, stored]) => stored.record.status === 'passed'));
+		return new Map([...latest].filter(([, entry]) => entry.status === 'passed'));
 	}
 }

@@ -43,16 +43,22 @@ export class VerificationStoreRepository {
 	}
 
 	all(): StoredRecord[] {
-		if (!existsSync(this.store)) return [];
-		return readdirSync(this.store).flatMap((commit) =>
-			readdirSync(join(this.store, commit)).flatMap((run) => {
-				const stored = this.read(join(this.store, commit, run, 'record.json'));
-				return stored ? [stored] : [];
-			})
-		);
+		return [...this.records()];
 	}
 
-	private read(path: string): StoredRecord | undefined {
+	/** Visits valid records in store order without retaining the entire history. */
+	*records(): IterableIterator<StoredRecord> {
+		if (!existsSync(this.store)) return;
+		for (const commit of readdirSync(this.store)) {
+			for (const run of readdirSync(join(this.store, commit))) {
+				const stored = this.read(join(this.store, commit, run, 'record.json'));
+				if (stored) yield stored;
+			}
+		}
+	}
+
+	/** Reads one record file; a missing, malformed or schema-invalid file is not a record. */
+	read(path: string): StoredRecord | undefined {
 		try {
 			const parsed = this.validator.validate(JSON.parse(readFileSync(path, 'utf8')));
 			return parsed.value ? { record: parsed.value, directory: dirname(path) } : undefined;
