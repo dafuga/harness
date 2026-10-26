@@ -3,8 +3,8 @@
 	"id": "desktop.validator.ipc-request",
 	"kind": "validator",
 	"title": "IpcRequestValidator",
-	"responsibility": "Owns the IpcRequestValidator input validation.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Validate desktop bridge requests before dispatch.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -14,27 +14,31 @@
 		"symbols": ["IpcRequestValidator", "IpcRequestValidator", "IpcRequestValidator.parse"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "IpcRequestValidator.parse.channel",
-				"type": "string"
+				"type": "string",
+				"description": "A known typed desktop bridge channel."
 			},
 			{
 				"name": "IpcRequestValidator.parse.input",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Untrusted request payload."
 			}
 		],
 		"outputs": [
 			{
 				"name": "IpcRequestValidator.parse",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Channel-specific validated payload. project:work requires a nonblank string projectId, retains its exact spelling and strips other fields."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "unknown channel or invalid request",
+				"type": "Error",
+				"description": "Reject before dispatch."
 			}
 		]
 	},

@@ -3,7 +3,7 @@
 	"id": "reports.service.console-agent",
 	"kind": "service",
 	"title": "Local chat sessions",
-	"responsibility": "Keeps bounded owner conversations, validates bridge operations and prevents a retried request from starting duplicate work.",
+	"responsibility": "Keeps bounded owner conversations, validates bridge operations and prevents a retried request from starting duplicate work; permits authenticated, selected-project work snapshots.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -27,7 +27,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ConsoleAgentService.call.method",
@@ -65,7 +65,8 @@
 			},
 			{
 				"name": "ConsoleAgentService.call",
-				"type": "Promise<unknown>"
+				"type": "Promise<unknown>",
+				"description": "Dispatches allowed bridge methods, including projectWork, through the existing owner session and project-scoped request validation."
 			},
 			{
 				"name": "consoleAgent",

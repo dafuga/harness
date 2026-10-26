@@ -22,6 +22,7 @@ const arbiter = new RepositoryArbiterService();
 const outbox = new CommentOutboxService(join(reportSite().root, 'work/console-comments.json'));
 const allowed = [
 	'agentActivity',
+	'projectWork',
 	'snapshot',
 	'entity',
 	'history',

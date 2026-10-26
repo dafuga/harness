@@ -36,6 +36,7 @@ export const channels = {
 	approve: 'design:approve',
 	providers: 'providers:list',
 	agentActivity: 'project:agents',
+	projectWork: 'project:work',
 	startRun: 'run:start',
 	cancelRun: 'run:cancel'
 } as const;
