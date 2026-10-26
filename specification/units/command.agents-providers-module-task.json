@@ -41,7 +41,7 @@
 			{
 				"name": "register",
 				"type": "void",
-				"description": "Registers serve along with existingcommands. Delegates server.run(plan,{worker,modules,once,signal}); serializes actual one-shot result. SIGINT/SIGTERM abort owned signal, awaits server settlement then removes only own listeners. Also registers FeaturePlanCommand under task plan for draft, show, select and approve."
+				"description": "Registers serve along with existingcommands. Delegates server.run(plan,{worker,modules,once,signal}); serializes actual one-shot result. SIGINT/SIGTERM abort owned signal, awaits server settlement then removes only own listeners. Also registers FeaturePlanCommand under task plan for draft, show, select, approve and start."
 			}
 		],
 		"errors": [
