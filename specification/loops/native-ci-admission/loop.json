@@ -2,7 +2,7 @@
 	"name": "native-ci-admission",
 	"goal": "Expose admission timeouts so native CI can identify and resolve its blocking condition",
 	"createdAt": "2026-10-26T20:06:50.702Z",
-	"updatedAt": "2026-10-26T20:06:58.973Z",
+	"updatedAt": "2026-10-26T20:08:51.013Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:08:51.013Z",
+			"evidence": "Committed 37cfeb9c; the unchanged standard resource queue test failed twice because timeout messages omitted the reservation and pressure reasons. Harness red record 2dfad99b retained the run."
 		},
 		{
 			"id": "implement",

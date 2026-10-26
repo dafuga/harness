@@ -1,40 +1,14 @@
-import { mkdtempSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { afterEach, expect, test } from 'vitest';
 import { resourceRequestSchema } from '../../src/core/execution-runtimes/resourceTypes';
-import { ResourceQueueService } from '../../src/services/execution-runtimes/ResourceQueueService';
-import { saveResourceConfig } from '../../src/utils/execution-runtimes/resourceConfig';
-import { config, observeResources, snapshot } from '../support/resourceFixture';
+import { observeResources, resourceQueueFixture, snapshot } from '../support/resourceFixture';
 const cleanup: Array<() => void> = [];
 afterEach(() => {
 	cleanup.splice(0).forEach((f) => f());
 });
-function fixture() {
-	const home = mkdtempSync(join(tmpdir(), 'resource-service-'));
-	saveResourceConfig(config, home);
-	let pressure = false;
-	const service = new ResourceQueueService({
-		home,
-		env: {},
-		monitor: { sample: async () => snapshot({ memoryPressure: pressure ? 'critical' : 'normal' }) }
-	});
-	cleanup.push(() => {
-		service.close();
-		rmSync(home, { recursive: true, force: true });
-	});
-	return {
-		home,
-		service,
-		pressure: (value: boolean) => {
-			pressure = value;
-		}
-	};
-}
 test('queued cancellation releases reservations without ever starting the callback', async () => {
 	const observe = observeResources(['service.resource-monitor'], 'Queued admission and cleanup');
-	const { service } = fixture(),
+	const { service } = resourceQueueFixture(cleanup),
 		abort = new AbortController();
 	let started = false;
 	let release!: () => void;
@@ -81,7 +55,7 @@ test('queued cancellation releases reservations without ever starting the callba
 	observe();
 });
 test('pressure is observed during a running task; that task finishes and subsequent work waits', async () => {
-	const state = fixture();
+	const state = resourceQueueFixture(cleanup);
 	let nextStarted = false;
 	await state.service.run(resourceRequestSchema.parse({}), async () => {
 		state.pressure(true);
@@ -122,7 +96,7 @@ test('pressure is observed during a running task; that task finishes and subsequ
 	expect(nextStarted).toBe(true);
 });
 test('forged inherited reservations and impossible requests do not execute work', async () => {
-	const { service } = fixture();
+	const { service } = resourceQueueFixture(cleanup);
 	let started = false;
 	await expect(
 		service.run(
@@ -142,7 +116,7 @@ test('forged inherited reservations and impossible requests do not execute work'
 	expect(service.queue.all()).toEqual([]);
 });
 test('a validated nested task uses its ancestor budget rather than deadlocking', async () => {
-	const { service } = fixture();
+	const { service } = resourceQueueFixture(cleanup);
 	await service.run(resourceRequestSchema.parse({}), async (context) => {
 		expect(context.env.CARGO_BUILD_JOBS).toBe('1');
 		expect(context.env.GOMAXPROCS).toBe('1');
@@ -161,7 +135,7 @@ test('a validated nested task uses its ancestor budget rather than deadlocking',
 });
 
 test('parallel nested tasks share a bounded parent budget instead of each borrowing the full reservation', async () => {
-	const { service } = fixture();
+	const { service } = resourceQueueFixture(cleanup);
 	let firstStarted = false,
 		secondStarted = false,
 		release!: () => void;
@@ -195,7 +169,7 @@ test('parallel nested tasks share a bounded parent budget instead of each borrow
 });
 
 test('a future cached sample is replaced rather than pinning admission after a clock jump', async () => {
-	const { service } = fixture();
+	const { service } = resourceQueueFixture(cleanup);
 	service.queue.saveSnapshot(snapshot({ sampledAt: Date.now() + 60000 }));
 	expect((await service.snapshot()).sampledAt).toBeLessThanOrEqual(Date.now());
 	await service.run(resourceRequestSchema.parse({}), async () => {});
@@ -203,7 +177,7 @@ test('a future cached sample is replaced rather than pinning admission after a c
 });
 
 test('a queued sibling cannot block the descendant needed to release its ancestor reservation', async () => {
-	const { service } = fixture(),
+	const { service } = resourceQueueFixture(cleanup),
 		order: string[] = [];
 	let sibling: Promise<void> | undefined;
 	await service.run(resourceRequestSchema.parse({}), async (root) => {
