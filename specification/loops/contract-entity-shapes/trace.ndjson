@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-26T22:37:04.342Z","name":"contract-entity-shapes","goal":"Reject test shapes that do not match declared page, component, API or callable entities.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-26T22:37:38.252Z","loop":"contract-entity-shapes","step":"spec","evidence":"Validator admits a service class with component or API test contracts, so those entities can claim the wrong test form."}
+{"event":"step.completed","timestamp":"2026-10-26T22:37:38.861Z","loop":"contract-entity-shapes","step":"coverage","evidence":"The existing validate case deliberately accepts component and API cases for service.runner; strengthen the same case across real entity kinds."}

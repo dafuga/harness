@@ -27,30 +27,12 @@ test('validate each allowed shape and its missing or invalid states', async () =
 	expect(validator.validate(unit, { ...contract, states: ['missing'] }).errors.join(' ')).toContain(
 		'missing state'
 	);
-	expect(validator.validate(unit, { ...contract, shape: 'component' }).errors.join(' ')).toContain(
-		'screenshot matching'
-	);
-	expect(
-		validator.validate(unit, {
-			...contract,
-			shape: 'component',
-			cases: [
-				{ ...item, expected: { kind: 'screenshot', file: 'rank.png' }, viewports: ['desktop'] }
-			]
-		}).valid
-	).toBe(true);
-	expect(validator.validate(unit, { ...contract, shape: 'api' }).valid).toBe(false);
-	expect(
-		validator.validate(unit, {
-			...contract,
-			shape: 'api',
-			cases: [{ ...item, expected: { kind: 'json', value: { rank: 1 } } }]
-		}).valid
-	).toBe(true);
+	assertVisualEntityKinds(unit, item);
 	expect(validator.validate(unit, { ...contract, shape: 'helper' }).errors.join(' ')).toContain(
 		'authored Examples'
 	);
 	const authored = observedAuthoredCases(validator, helper, { ...item, subject: 'rank' });
+	assertHelperEntityKinds(helper);
 	const declared = observedDeclaredCases(validator, unit, helper, item);
 	assertExampleAdmissionInputs(validator, helper, item);
 	expect(
@@ -67,12 +49,68 @@ test('validate each allowed shape and its missing or invalid states', async () =
 	).toBe(false);
 });
 
+function assertVisualEntityKinds(unit: ComponentManifest, item: ContractCase) {
+	const contract = { version: 1, shape: 'service', states: ['rest'], cases: [item] };
+	expect(validator.validate(unit, { ...contract, shape: 'component' }).errors.join(' ')).toContain(
+		'screenshot matching'
+	);
+	const component = {
+		...contract,
+		shape: 'component',
+		cases: [{ ...item, expected: { kind: 'screenshot', file: 'rank.png' }, viewports: ['desktop'] }]
+	};
+	for (const kind of ['component', 'shell', 'partial'])
+		expect(validator.validate({ ...unit, kind }, component).valid, kind).toBe(true);
+	for (const kind of ['service', 'page', 'layout', 'endpoint', 'function'])
+		expect(validator.validate({ ...unit, kind }, component).valid, kind).toBe(false);
+	expect(validator.validate(unit, { ...contract, shape: 'api' }).valid).toBe(false);
+	const api = {
+		...contract,
+		shape: 'api',
+		cases: [{ ...item, expected: { kind: 'json', value: { rank: 1 } } }]
+	};
+	for (const kind of ['endpoint', 'api'])
+		expect(validator.validate({ ...unit, kind }, api).valid, kind).toBe(true);
+	for (const kind of ['service', 'page', 'layout', 'component', 'function'])
+		expect(validator.validate({ ...unit, kind }, api).valid, kind).toBe(false);
+	for (const kind of ['page', 'view', 'layout', 'component', 'shell', 'partial', 'endpoint', 'api'])
+		expect(validator.validate({ ...unit, kind }, contract).valid, kind).toBe(false);
+}
+
 async function indexedOwners() {
 	const indexed = await indexFiles({
 		'src/utils/rank.ts': 'export function rank(value: number): number { return value; }',
 		'src/services/runner.ts': 'export class Runner { run(value: number): number { return value; } }'
 	});
 	return { unit: unitOf(indexed, 'service.runner'), helper: unitOf(indexed, 'function.rank') };
+}
+
+function assertHelperEntityKinds(helper: ComponentManifest) {
+	const example = {
+		subject: 'rank',
+		name: 'one',
+		call: 'rank(1)',
+		input: [1],
+		expected: { kind: 'value', value: 1 }
+	};
+	const contract = {
+		version: 1,
+		shape: 'helper',
+		states: ['rest'],
+		examples: [example],
+		cases: [
+			{
+				id: 'example.one',
+				state: 'rest',
+				subject: 'rank',
+				example: 'one',
+				test: { file: 'test/rank.test.ts', title: 'rank: one' }
+			}
+		]
+	};
+	expect(validator.validate(helper, contract).valid).toBe(true);
+	for (const kind of ['page', 'view', 'layout', 'component', 'shell', 'partial', 'endpoint', 'api'])
+		expect(validator.validate({ ...helper, kind }, contract).valid, kind).toBe(false);
 }
 
 function assertMethodStateCases(unit: ComponentManifest, item: ContractCase) {
@@ -135,7 +173,7 @@ function assertPageViewportCoverage(
 	const base = page.cases[0];
 	const error = { ...base, id: 'error', state: 'error', test: { ...base.test, title: 'error' } };
 	const matrix = { ...page, states: ['rest', 'error'], cases: [base, error] };
-	for (const kind of ['page', 'layout'] as const) {
+	for (const kind of ['page', 'view', 'layout'] as const) {
 		const owner = { ...unit, kind };
 		expect(validator.validate(owner, matrix).errors).toEqual([]);
 		for (const state of matrix.states) {
@@ -169,6 +207,8 @@ function assertPageViewportCoverage(
 		}));
 		expect(validator.validate(owner, { ...page, cases: split }).errors).toEqual([]);
 	}
+	for (const kind of ['component', 'service', 'endpoint', 'function'])
+		expect(validator.validate({ ...unit, kind }, page).valid, kind).toBe(false);
 }
 
 async function assertMeasuredLayoutPageCases(unit: ComponentManifest, item: ContractCase) {
