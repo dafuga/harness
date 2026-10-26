@@ -4,6 +4,8 @@ import { UnitRegistryRepository } from '../../../repositories/UnitRegistryReposi
 import { ScenarioRepository } from '../../../repositories/ScenarioRepository';
 import { BudgetLedgerRepository } from '../../../repositories/BudgetLedgerRepository';
 import { BudgetService } from '../../budget-service/BudgetService';
+import { ModuleCatalogService } from '../../../services/module-system/ModuleCatalogService';
+import { PermissionCatalogService } from '../../../services/networking-security/PermissionCatalogService';
 import { revisionRegistry } from '../../../utils/revisionRegistry';
 import { unitMetadata } from './unitMetadata';
 import { readPlatformCatalog } from './platformCatalog';
@@ -41,6 +43,8 @@ export async function revisionRegistryAt(
 		registry,
 		ledger,
 		platforms: await readPlatformCatalog(tree),
+		permissions: await PermissionCatalogService.at(tree),
+		modules: await ModuleCatalogService.at(tree),
 		projectDependencies: await projectDependencies(tree),
 		translations: await translationCatalog(tree, registry.units)
 	};
