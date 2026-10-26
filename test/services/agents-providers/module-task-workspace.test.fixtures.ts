@@ -1,7 +1,7 @@
 import { execFile } from 'node:child_process';
 import { mkdtemp, readFile, realpath, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { isAbsolute, join, relative, sep } from 'node:path';
+import { basename, isAbsolute, join, relative, sep } from 'node:path';
 import { promisify } from 'node:util';
 import { expect } from '../../verificationExpect';
 import { taskWorkspace } from '../../../src/services/agents-providers/module-task-worker-service/taskWorkspace';
@@ -76,7 +76,11 @@ export async function assertWorkspacePlacement(
 		for (const { checkout, worktree, attempt } of outcomes) {
 			expect(isAbsolute(worktree)).toBe(true);
 			expect(relative(checkout, worktree).startsWith(`..${sep}`)).toBe(true);
-			expect(worktree).toBe(join(temp, '.cache/harness/task-worktrees', attempt));
+			const nested = relative(join(temp, '.cache/harness/task-worktrees'), worktree);
+			expect(nested).not.toBe('');
+			expect(isAbsolute(nested)).toBe(false);
+			expect(nested.split(sep)).not.toContain('..');
+			expect(basename(worktree)).toBe(attempt);
 		}
 	} finally {
 		await rm(temp, { recursive: true, force: true });

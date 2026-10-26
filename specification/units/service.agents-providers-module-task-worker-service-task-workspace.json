@@ -48,7 +48,7 @@
 			{
 				"name": "taskWorkspace",
 				"type": "Promise<NonNullable<ModuleTask['result']> & { attempt: string; sourceCommit: string }>",
-				"description": "Async. Resolves GitAdapter.run(['rev-parse', '--git-common-dir']) and computes the native worktree path with path.resolve(root, commonDirectoryOutput, '..', '.cache/harness/task-worktrees', task.claim.token). It calls pendingTaskResult(selection, worktree), spreads that result into a new object, then sets attempt to the claim UUID token and sourceCommit to task.repairCommit ?? task.sourceCommit. It does not create or remove the worktree, persist the result, or return a cleanup callback."
+				"description": "Resolves the canonical common Git directory and places the unique claim-token worktree in a deterministic sibling .cache/harness/task-worktrees/<repository hash>/<claim> outside the project root. Validates the claim, path isolation and existing cache ancestors without creating the worktree. Returns a pending result with attempt and repairCommit-or-sourceCommit."
 			},
 			{
 				"name": "snapshotTaskWork",
@@ -86,6 +86,11 @@
 				"name": "worker once error boundary",
 				"type": "recorded failed result",
 				"description": "The worker guards taskWorkspace and snapshotTaskWork after claim. Workspace preparation failures produce a safe nonempty failed result with empty worktree, no provider usage or execution, and finalize the claim; snapshot failures also become failed results."
+			},
+			{
+				"name": "Unsafe workspace or cache path",
+				"type": "Error rejection",
+				"description": "Reject invalid claim tokens, project/cache overlap, symlink or non-directory cache ancestors and noncanonical paths before creating or modifying a worktree."
 			}
 		]
 	},
