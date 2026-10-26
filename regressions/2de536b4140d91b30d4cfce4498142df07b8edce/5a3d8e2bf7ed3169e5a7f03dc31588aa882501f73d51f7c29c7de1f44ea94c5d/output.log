@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hvDCBx
+
+ ✓ test/services/unit-index.test.ts (14 tests) 3232ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  3046ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 82ms
+ ✓ test/services/verification-evidence/test-artifact.test.ts (1 test) 31ms
+
+ Test Files  3 passed (3)
+      Tests  17 passed (17)
+   Start at  00:59:22
+   Duration  6.65s (transform 316ms, setup 165ms, collect 608ms, tests 3.35s, environment 0ms, prepare 68ms)
+
+Units registry is valid: 1827 units, 166 uncertain references.
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'tsc --noEmit "$@"' --
+Harness audit passed. Files and functions are staying small.
