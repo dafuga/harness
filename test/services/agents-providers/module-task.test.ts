@@ -1,4 +1,5 @@
 import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
+import { taskInputSchema } from '../../../src/repositories/agents-providers/ModuleTaskRepository';
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
@@ -154,6 +155,17 @@ test.each([
 	}
 );
 
+function expectSchemaGrants(input: Record<string, unknown>): void {
+	const exactPath = 'src/routes/projects/[branch]/+page.svelte';
+	const files = [exactPath, ...Array.from({ length: 63 }, (_, i) => 'src/exact/file-' + i + '.ts')];
+	const grant = (id: string, assignedFiles: string[], role: string) =>
+		taskInputSchema.parse({ ...input, id, assignedFiles, role });
+	const implementation = grant('implementation-grant', files, 'implementation');
+	const verification = grant('verification-grant', [exactPath], 'verification');
+	expect(implementation.assignedFiles).toEqual(files);
+	expect(implementation.role).toBe('implementation');
+	expect(verification.role).toBe('verification');
+}
 test('assignment schemas preserve exact grants and reject unsafe inputs without queue mutation', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -164,24 +176,13 @@ test('assignment schemas preserve exact grants and reject unsafe inputs without 
 			tldr: 'Build validated orders.'
 		});
 		const input = JSON.parse(await readFile(await f.input(), 'utf8'));
-		const exactPath = 'src/routes/projects/[branch]/+page.svelte';
-		const files = [
-			exactPath,
-			...Array.from({ length: 63 }, (_, i) => 'src/exact/file-' + i + '.ts')
-		];
 		const add = (fields: Record<string, unknown>) => service.add({ ...input, ...fields });
 		const show = async (id: string) =>
 			(await service.show(id)).task as unknown as Record<string, unknown>;
-		await add({ id: 'implementation-grant', assignedFiles: files, role: 'implementation' });
-		await add({ id: 'verification-grant', assignedFiles: [exactPath], role: 'verification' });
+		expectSchemaGrants(input);
 		await add({ id: 'legacy-grant' });
-		const implementation = await show('implementation-grant');
-		const verification = await show('verification-grant');
-		expect(implementation.assignedFiles).toEqual(files);
-		expect(implementation.role).toBe('implementation');
-		expect(verification.role).toBe('verification');
 		await service.repository.update((queue) => {
-			const legacy = queue.tasks[2] as unknown as Record<string, unknown>;
+			const legacy = queue.tasks[0] as unknown as Record<string, unknown>;
 			delete legacy.role;
 			delete legacy.assignedFiles;
 		});

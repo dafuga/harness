@@ -5,7 +5,25 @@ import type {
 	TaskSelection
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
-export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
+const testFile = /(^|\/)(test|tests)\/|\.(test|spec)\.[jt]sx?$/;
+export function preparedTaskFiles(task: ModuleTask): string[] {
+	const role = task.role ?? 'implementation';
+	const verification = new Set(task.verificationFiles ?? []);
+	const assigned = task.assignedFiles ?? task.module.files;
+	return assigned.filter(
+		(file) =>
+			task.module.files.includes(file) &&
+			(role === 'verification'
+				? verification.has(file) && testFile.test(file)
+				: !verification.has(file) && !testFile.test(file))
+	);
+}
+export function moduleTaskPrompt(
+	task: ModuleTask,
+	commit: string,
+	files = preparedTaskFiles(task),
+	role = task.role ?? 'implementation'
+): string {
 	if (
 		createHash('sha256').update(stableJson(task.wantedContract)).digest('hex') !== task.contractHash
 	)
@@ -13,13 +31,20 @@ export function moduleTaskPrompt(task: ModuleTask, commit: string): string {
 	return [
 		`Overall goal: ${task.feature.goal}`,
 		`Feature TLDR: ${task.feature.tldr}`,
-		'Work on this feature through its module contracts. Follow AGENTS.md and the Harness workflow. Do not delegate, commit, push, deploy or access credentials. Preserve unrelated work. CLI completion is not verification.',
+		'Work on this feature through its module contracts. Follow AGENTS.md and the Harness workflow. Do not commit, push, deploy or access credentials. Do not delegate, self-escalate or widen your file grant. Do not accept or approve your own work. Preserve unrelated work. CLI completion is not verification.',
+		'You may read committed app-wide unit contracts for discovery; source access is limited to the exact assigned files.',
 		`Module: ${task.module.id}`,
 		`Overall module goal: ${task.module.goal}`,
-		`Allowed task files: ${task.module.files.join(', ')}`,
+		`Task role: ${role}`,
+		`Allowed task files: ${files.join(', ')}`,
+		role === 'verification'
+			? 'Verification capability: edit only explicitly assigned test or verification files; do not edit implementation source.'
+			: 'Implementation capability: edit only assigned module-owned source files; verification files are not implementation access.',
 		`Task: ${task.title} (${task.id})`,
 		task.instructions,
-		'Implement only the wanted contract below. A previous attempt may have left edits; inspect current files before changing them. Report verification performed and remaining gaps.',
+		role === 'verification'
+			? 'Verify only the wanted contract below. A previous attempt may have left edits; inspect assigned files before changing them. Report verification performed and remaining gaps.'
+			: 'Implement only the wanted contract below. A previous attempt may have left edits; inspect assigned files before changing them. Report verification performed and remaining gaps.',
 		`Original source revision: ${task.sourceCommit}`,
 		`Current repair source revision: ${task.repairCommit ?? task.sourceCommit}`,
 		...(task.reviews.length ? [`Latest review feedback: ${task.reviews.at(-1)!.feedback}`] : []),

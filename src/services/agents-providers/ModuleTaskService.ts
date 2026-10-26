@@ -10,11 +10,15 @@ import type {
 	TaskFeature
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import { stableJson } from '../../utils/development-tooling/stableJson';
-import { moduleTaskPrompt, taskSelection } from './module-task-service/taskPrompt';
+import {
+	moduleTaskPrompt,
+	preparedTaskFiles,
+	taskSelection
+} from './module-task-service/taskPrompt';
 import { z } from 'zod';
 import { retryableTask } from './module-task-service/retryableTask';
 import { reviewModuleTask } from './module-task-service/reviewModuleTask';
-import { queuedTask } from './module-task-service/queuedTask';
+import { queuedTask, taskGrantFiles, validateTaskGrant } from './module-task-service/queuedTask';
 /** Admit immutable feature context and wanted contracts before work is eligible for pickup. */
 export class ModuleTaskService {
 	readonly repository: ModuleTaskRepository;
@@ -43,13 +47,15 @@ export class ModuleTaskService {
 			);
 		if (unit.responsibilityOrigin === 'derived' && !parsed.moduleGoal)
 			throw new Error('This module has only a generated placeholder goal; supply moduleGoal.');
+		const files = await taskGrantFiles(parsed, unit, tree);
+		await validateTaskGrant(this.root, files);
 		const recorded = await this.repository.update((queue) => {
 			if (queue.tasks.some((t) => t.id === parsed.id))
 				throw new Error('Task id already exists; wanted contracts are immutable.');
 			const feature = queue.features.find((f) => f.id === parsed.feature);
 			if (!feature)
 				throw new Error('Commit the shared feature goal and TLDR with task feature first.');
-			const task = queuedTask(parsed, feature, unit, tree.revision);
+			const task = queuedTask(parsed, feature, unit, tree.revision, files);
 			queue.tasks.push(task);
 			return task;
 		}, tree.revision);
@@ -77,7 +83,14 @@ export class ModuleTaskService {
 		return this.prepare(task, commit!).prompt;
 	}
 	prepare(task: ModuleTask, commit: string) {
-		return { prompt: moduleTaskPrompt(task, commit), selection: taskSelection(task) };
+		const role = task.role ?? 'implementation';
+		const files = preparedTaskFiles(task);
+		return {
+			prompt: moduleTaskPrompt(task, commit, files, role),
+			selection: taskSelection(task),
+			files,
+			role
+		};
 	}
 	async retry(id: string) {
 		const owner = await this.repository.owner();
