@@ -15,25 +15,47 @@
 			"ModuleTaskSandboxAdapter",
 			"ModuleTaskSandboxAdapter.constructor",
 			"ModuleTaskSandboxAdapter.connect",
+			"ModuleTaskSandboxAdapter.prepare",
 			"ModuleTaskSandboxAdapterConfig",
-			"ModuleTaskSandboxAdapterConfig"
+			"ModuleTaskSandboxInput",
+			"SandboxProcess",
+			"ModuleTaskSandboxAdapterConfig",
+			"ModuleTaskSandboxInput",
+			"SandboxProcess"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ModuleTaskSandboxAdapter.constructor.config",
-				"type": "ModuleTaskSandboxAdapterConfig"
+				"name": "constructor.config",
+				"type": "{name?:string}",
+				"description": "Optional connect label; does not disable isolation."
+			},
+			{
+				"name": "prepare.input",
+				"type": "ModuleTaskSandboxInput",
+				"description": "{cwd:string,files:string[],snapshot:string,scratch:string,readPaths:string[],protectedPaths:string[],argv:string[],binDirectory?:string}. All context paths absolute; files one to 64 canonical relative tracked regular files with no symlink/hard-link targets; argv exact nonempty arguments. readPaths are trusted provider/runtime and sealed CLI paths outside project and scratch. binDirectory when present is a canonical directory included exactly in readonly readPaths."
 			}
 		],
 		"outputs": [
 			{
-				"name": "ModuleTaskSandboxAdapter.connect",
+				"name": "connect",
 				"type": "string"
+			},
+			{
+				"name": "prepare",
+				"type": "Promise<SandboxProcess>",
+				"description": "{command:string,args:string[],cwd:string,env:Record<string,string|undefined>,cleanup():Promise<void>}. Outer process cwd is a private trusted policy directory, never the task source. Inside OS isolation, provider argv executes from canonical input.cwd with scratch TMPDIR and optional sealed CLI prefix in PATH. Native macOS filesystem policy permits only exact assigned files and scratch writes; app-wide snapshot, sealed CLI and trusted runtime paths are readonly. Home, common Git, project foreign source, private/localhost network and SDK default write exceptions denied. Caller must retain context and await process exit before cleanup; cleanup removes only owned temporary policy directory."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Unsupported isolation or unsafe scope",
+				"type": "Error before process launch",
+				"description": "Fail closed for unsupported platforms, unsafe/case-alias/noncanonical assignments, directories/symlinks/hardlinks, untrusted CLI bin, overlapping read/runtime/scratch/project grants or unavailable sandbox runtime. No unrestricted provider fallback."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {

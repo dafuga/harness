@@ -3,7 +3,7 @@
 	"id": "function.revision-registry",
 	"kind": "function",
 	"title": "Stored revision registry",
-	"responsibility": "Projects a revision’s declared units and scenarios with their graph, version identities and reviewed limits.",
+	"responsibility": "Projects a revision’s declared units and scenarios into a compact, revision-bound registry with exact declared dependency and scenario coverage edges, scenario test catalog metadata, version identities and reviewed limits. It does not scan source or return source bytes.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -38,19 +38,19 @@
 			{
 				"name": "revisionRegistry.blobs",
 				"type": "Map<string, string>",
-				"description": "Optional owned-file path to blob-hash map, default empty; absent files contribute an explicit absent marker to unit versions."
+				"description": "Optional owned-file path to blob-hash map, default empty; absent files contribute an explicit absent marker to unit version digests."
 			},
 			{
 				"name": "revisionRegistry.baselines",
 				"type": "Map<string, BudgetBaseline>",
-				"description": "Optional reviewed budget baseline map by unit, default empty."
+				"description": "Optional reviewed budget baseline map by unit, default empty; selected emitted/frozen limits are included when present."
 			}
 		],
 		"outputs": [
 			{
 				"name": "revisionRegistry",
 				"type": "RevisionRegistry",
-				"description": "Registry view containing units, scenarios and declared dependency/coverage edges, with per-unit version hashes, catalog visibility and applicable reviewed limits. Available is false with a gap when there are no units."
+				"description": "Returns {available:boolean; gap?:string; units:Array<unit view>; scenarios:Array<scenario view>; graph:{nodes:Array<{id:string;kind:\"unit\"|\"scenario\"}>;edges:Array<{from:string;to:string;via:string}>}}. Units are sorted by id and include id/kind/status/title/responsibility, optional composition, group, helper, catalog/config/preview/documentation/limit fields, declared dependencies reduced to {unit,via}, scenario ids, owns, contract inputs/outputs/errors, runtime {kind,targets:{kind,entry}[]}, budgets and a 16-character version digest. Scenarios are sorted by id and include id/title/kind/units, reduced states, viewports, tests reduced strictly to {id,kind,runner}, and reduced evidence. scenario.tests carries no file paths. Although units may have optional testFiles and serviceConsumers fields through UnitMetadata aliases, this function does not populate them; no per-unit test paths or runtime consumer lists are available from this output. graph edges are declared unit dependencies plus scenario coverage edges. available is false with a gap when there are no units. The function uses committed manifest/scenario data and supplied blob hashes only; it does not scan source or include source bytes."
 			}
 		],
 		"errors": []

@@ -29,7 +29,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleDataService.constructor.root",
@@ -63,7 +63,8 @@
 		"outputs": [
 			{
 				"name": "ModuleDataService.validate",
-				"type": "Promise<ValidationReport>"
+				"type": "Promise<ValidationReport>",
+				"description": "Returns ValidationReport {commit: string; valid: boolean; complete: boolean; evidenceGaps: number; committed: boolean; cached: boolean; modules: ModuleValidation[]; issues: string[]; metadataCommit?: string; digest: string}. Each ModuleValidation is {id: string; kind: string; category: string|null; issues: ModuleIssue[]}; each ModuleIssue is {kind?: \"metadata\"|\"evidence\"; field: string; message: string; repair: string}. This is the declared TypeScript DTO shape."
 			},
 			{
 				"name": "ModuleDataService.history",
@@ -71,7 +72,8 @@
 			},
 			{
 				"name": "ModuleDataService.require",
-				"type": "Promise<ModuleData>"
+				"type": "Promise<ModuleData>",
+				"description": "Returns the accepted ModuleData DTO for the requested committed revision; the result is the data member, not the repository envelope commit. ModuleData has schemaVersion: 1; producer, commit, tree and digest strings; inputs {notes: string|null, evidence: string|null}; optional reviews: ModuleReview[]; declarations: ComponentManifest[]; versions: Record<string, ComponentVersion>; sourceGraph: SourceGraph; sourceIssues: string[]; references: SourceGraph[\"uncertain\"]; registry: RevisionRegistry; relationships: Record<string, ModuleRelationships>; modules: ModuleValidation[]; and issues: string[]. ModuleRelationships contains pages, layouts, components, functions, configs, services, types, apis, models, usedBy and support string arrays. No raw source-bytes collection, direct tests collection, direct dependencies collection, or sourceCommit-named field is declared. Imported ComponentManifest, ComponentVersion, SourceGraph, RevisionRegistry and ModuleReview structures remain governed by their separate contracts; their exact field shapes are gaps where those contracts omit fields."
 			},
 			{
 				"name": "ModuleDataService.sync",
