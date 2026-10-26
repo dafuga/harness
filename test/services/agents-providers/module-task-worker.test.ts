@@ -1,4 +1,5 @@
 import { test } from 'vitest';
+import { assertDependencyClaims } from './module-task-worker.claim.test.fixtures';
 import { expect } from '../../verificationExpect';
 import type { TaskRunInput } from './module-task-worker.test.types';
 import {
@@ -13,12 +14,11 @@ import {
 } from './module-task-worker.test.fixtures';
 import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
 import { observedTaskOperation } from '../../support/taskProfiles';
-
 isolateAnalyticsSync();
-
 test('module filters and assignment claims select once, then preserve changes for review', async () => {
 	const { f, service, input, worker } = await exclusiveWorkerFixture();
 	try {
+		assertDependencyClaims((await service.show(input.id)).task);
 		expect((await worker.once('other')).status).toBe('idle');
 		expect((await worker.once('owner', ['service.other'])).status).toBe('idle');
 		const outcomes = await observedTaskOperation(
