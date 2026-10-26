@@ -132,7 +132,7 @@
 			{
 				"name": "taskInputSchema",
 				"type": "Zod schema producing ModuleTaskInput",
-				"description": "Strict object with id, title, feature id, module id, instructions and wantedContract. moduleGoal and verificationFiles are optional; verificationFiles are limited to 64 safe relative paths that name a test or verification fixture. model is a trimmed non-empty string up to 150 characters and defaults to auto. provider is optional claude or codex; intelligence is optional low, medium, high, xhigh, max or ultra; assignee is an optional unit-style id. Text fields are trimmed non-empty strings up to 16000 characters."
+				"description": "Strict object with id, title, feature id, module id, instructions and wantedContract. moduleGoal and verificationFiles are optional; verificationFiles are limited to 64 safe relative paths that name a test or verification fixture. model is a trimmed non-empty string up to 150 characters and defaults to auto. provider is optional claude or codex; intelligence is optional low, medium, high, xhigh, max or ultra; assignee is an optional unit-style id. Text fields are trimmed non-empty strings up to 16000 characters. role defaults to implementation and accepts implementation or verification; assignedFiles accepts one to64 distinct exact canonical relative file names. Rejects glob/wildcards, absolute, drive, backslash, traversal, controls, .git path components, directories and duplicate names; literal Svelte bracket segments are valid. Physical ownership/existence checks belong to ModuleTaskService rather than this lexical schema."
 			},
 			{
 				"name": "storedTaskSchema",
@@ -166,8 +166,8 @@
 			},
 			{
 				"name": "ModuleTaskInput",
-				"type": "{id: string; title: string; feature: string; module: string; moduleGoal?: string; verificationFiles?: string[]; instructions: string; wantedContract: WantedContract; model: string; provider?: 'claude' | 'codex'; intelligence?: 'low' | 'medium' | 'high' | 'xhigh' | 'max' | 'ultra'; assignee?: string}",
-				"description": "Parsed task definition. Model defaults to auto. Verification paths are safe relative test or verification paths, capped at 64. Top-level schema is strict."
+				"type": "{id: string; title: string; feature: string; module: string; moduleGoal?: string; verificationFiles?: string[]; assignedFiles?: string[]; role: 'implementation' | 'verification'; instructions: string; wantedContract: WantedContract; model: string; provider?: 'claude' | 'codex'; intelligence?: 'low' | 'medium' | 'high' | 'xhigh' | 'max' | 'ultra'; assignee?: string}",
+				"description": "Parsed task definition. Model defaults to auto. Verification paths are safe relative test or verification paths, capped at 64. Top-level schema is strict. Role defaults to implementation; assignedFiles is an optional nonempty exact canonical list, capped at64, not an ownership bypass."
 			},
 			{
 				"name": "ModuleTaskQueue",
@@ -186,8 +186,8 @@
 			},
 			{
 				"name": "TaskRunInput",
-				"type": "TaskSelection & {cwd: string; prompt: string; signal: AbortSignal}",
-				"description": "Input to a TaskRunner implementation."
+				"type": "TaskSelection & {cwd:string;prompt:string;signal:AbortSignal;scope?:TaskRunScope}",
+				"description": "Trusted transient process input. Native runners require scope before launch; optional only for interface compatibility. Scope is not serialized into task queue results or provider output."
 			},
 			{
 				"name": "TaskRunResult",
@@ -198,6 +198,11 @@
 				"name": "TaskRunner",
 				"type": "{run(input: TaskRunInput): Promise<TaskRunResult>}",
 				"description": "Provider execution interface."
+			},
+			{
+				"name": "TaskRunScope",
+				"type": "{files:string[];snapshot:string;scratch:string;readPaths:string[];protectedPaths:string[];binDirectory?:string}",
+				"description": "Trusted transient exact-file capability constructed by Harness context owner. files relative to TaskRunInput.cwd; all other paths absolute. Snapshot and runtime paths readonly, scratch writable and separate from source. binDirectory optional trusted sealed CLI prefix included exactly in readPaths. Caller owns context cleanup after all child processes exit."
 			}
 		],
 		"errors": [

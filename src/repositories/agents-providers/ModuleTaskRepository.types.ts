@@ -18,6 +18,7 @@ export type ModuleTaskQueue = z.infer<typeof queueSchema>;
 export type ModuleTask = ModuleTaskQueue['tasks'][number];
 export type TaskSelection = { provider: 'claude' | 'codex'; model: string; intelligence: string };
 export interface TaskRunScope {
+	binDirectory?: string;
 	files: string[];
 	snapshot: string;
 	scratch: string;
