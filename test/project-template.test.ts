@@ -7,6 +7,9 @@ import type { UnitDocumentation } from '../src/utils/unit-documentation/unitDocu
 import { TestCaseValidator } from '../src/validators/verification-evidence/TestCaseValidator';
 import { hydrateUnitDocumentation } from '../src/services/revision-detail-service/unitDocumentation';
 import { usageExamples } from '../packages/reports/src/components/usage-examples/usageExamples';
+import { loadUnits } from '../src/workflows/development-tooling/load-units/loadUnits';
+import { registryErrors } from '../src/cli/program/manageUnits';
+import { memoryTree } from './support/memoryTree';
 import { measureWorkload } from './support/measureWorkload';
 import { assertFoundationLint } from './support/project-template/foundations';
 import { assertAtomCompiler } from './support/project-template/atoms';
@@ -124,6 +127,9 @@ test('library projects include Bun TypeScript test structure', async () => {
 	expect(exampleTest).toContain("test('helloHarness: returns a greeting'");
 	expect(exampleTest).toContain('unit.testing.examples[0].expected.value');
 	expect(exampleTest).not.toContain('hello from Harness');
+	const tree = memoryTree(Object.fromEntries(files.map(({ path, contents }) => [path, contents])));
+	const registry = await loadUnits('/generated-library', tree);
+	expect(registryErrors(registry), 'The generated library registry must be canonical').toEqual([]);
 	expect(paths).toContain('tsconfig.json');
 	expect(paths).toContain('.codex/skills/harness/SKILL.md');
 	expect(fileContents(files, 'AGENTS.md')).toContain('Treat Harness as the operating contract');
