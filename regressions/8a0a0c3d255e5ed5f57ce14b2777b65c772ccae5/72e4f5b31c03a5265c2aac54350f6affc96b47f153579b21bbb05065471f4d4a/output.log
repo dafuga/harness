@@ -1,0 +1,18 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-FuRFtS
+
+stdout | test/repositories/explanation-notes-order.test.ts > restoration keeps a large note history bounded and still refuses missing evidence
+Note history RSS: restore 431030272; raw 319995904
+
+ ✓ test/repositories/explanation-notes-order.test.ts (5 tests) 4739ms
+   ✓ notes alone hold the latest recorded reason for an exact change, wherever each is noted  476ms
+   ✓ a step of a chain noted again is held by its latest reason, wherever each is noted  829ms
+   ✓ a later long reason in the notes still fails, however the notes list it  863ms
+   ✓ a date that cannot be read is never later than one that can; equal ones agree everywhere  685ms
+   ✓ restoration keeps a large note history bounded and still refuses missing evidence  1778ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  22:50:07
+   Duration  7.15s (transform 114ms, setup 80ms, collect 93ms, tests 4.74s, environment 0ms, prepare 20ms)
+
