@@ -59,7 +59,9 @@ function queueFixture() {
 		schemaVersion: 1;
 		features: never[];
 		tasks: never[];
-		plans?: (ReturnType<typeof plan> & { approval?: { reviewer: string; approvedAt: string } })[];
+		plans?: (ReturnType<typeof plan> & {
+			approval?: { reviewer: string; approvedAt: string; digest: string };
+		})[];
 	} = { schemaVersion: 1, features: [], tasks: [] };
 	let commit: string | undefined;
 	const drafts: (typeof data)[] = [];
@@ -121,7 +123,14 @@ test('FeaturePlanRepository.append persists immutable sequential revisions and r
 		plan(4),
 		plan(0),
 		{ ...plan(3), digest: 'bad' },
-		{ ...plan(3), approval: { reviewer: approval.reviewer, approvedAt: approval.approvedAt } }
+		{
+			...plan(3),
+			approval: {
+				reviewer: approval.reviewer,
+				approvedAt: approval.approvedAt,
+				digest: plan(3).digest
+			}
+		}
 	]) {
 		await expect(repository.append(invalid)).rejects.toThrow();
 		expect(await queue.read()).toEqual(before);
@@ -156,7 +165,11 @@ test('FeaturePlanRepository.approve binds latest exact digest and is idempotent 
 	}
 	const approved = {
 		...plan(2),
-		approval: { reviewer: approval.reviewer, approvedAt: approval.approvedAt, digest: latest.digest }
+		approval: {
+			reviewer: approval.reviewer,
+			approvedAt: approval.approvedAt,
+			digest: latest.digest
+		}
 	};
 	expect(await repository.approve(latest)).toEqual({ commit: 'queue-3', plan: approved });
 	expect(await repository.approve(latest)).toEqual({ commit: 'queue-3', plan: approved });
