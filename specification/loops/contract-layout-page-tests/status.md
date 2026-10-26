@@ -19,6 +19,9 @@ explicit placeholder label. The proposed repair is prepared in the ignored
 Focused formatting admission on `harbor-mbp-2` timed out with exhausted CPU
 reserve. Its primary-Mac counterpart timed out with memory pressure. Neither
 command reached the formatter. No failed test or red/green record was fabricated.
+The failing-test command for checkpoint `14f914dbbc` also timed out before
+admission on the primary Mac. It launched no test worker and produced no red
+record. The product repair remains unapplied; the loop's red step stays pending.
 Normal unit checks, generated-project browser qualification, fresh screenshots,
 baseline review and the broader migration's verification remain pending.
 
