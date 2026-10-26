@@ -1,0 +1,98 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vBeDST
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (577ms)
+
+  1 passed (3.7s)
+stdout | test/game-cli.e2e.test.ts > CLI creates 2d games through source and supports app and game generators
+Generated browser baseline gate: Running 7 tests using 2 workers; every failure is a missing baseline.
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (586ms)
+
+  1 passed (3.3s)
+stdout | test/game-cli.e2e.test.ts > CLI creates 3d games through source and supports app and game generators
+Generated browser baseline gate: Running 7 tests using 2 workers; every failure is a missing baseline.
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (610ms)
+
+  1 passed (3.2s)
+stdout | test/game-cli.e2e.test.ts > CLI creates 2d games through bundled and supports app and game generators
+Generated browser baseline gate: Running 7 tests using 2 workers; every failure is a missing baseline.
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (588ms)
+
+  1 passed (3.2s)
+stdout | test/game-cli.e2e.test.ts > CLI creates 3d games through bundled and supports app and game generators
+Generated browser baseline gate: Running 7 tests using 2 workers; every failure is a missing baseline.
+
+ ✓ test/game-cli.e2e.test.ts (5 tests) 185946ms
+   ✓ CLI creates 2d games through source and supports app and game generators  56483ms
+   ✓ CLI creates 3d games through source and supports app and game generators  41186ms
+   ✓ CLI creates 2d games through bundled and supports app and game generators  34626ms
+   ✓ CLI creates 3d games through bundled and supports app and game generators  34692ms
+   ✓ game-only generators reject apps before creating broken imports  18957ms
+stdout | test/cli.e2e.test.ts > CLI scaffolds and checks an app project with routes
+Generated browser baseline gate: Running 31 tests using 4 workers; every failure is a missing baseline.
+
+ ❯ test/cli.e2e.test.ts (5 tests | 1 failed) 190855ms
+   ✓ CLI scaffolds and checks a lib project  44934ms
+   ✓ CLI scaffolds and checks an app project with routes  70750ms
+   ✓ CLI reports edge errors cleanly  11289ms
+   ✓ CLI supports force overwrites and generated lint failures  46060ms
+   × CLI installs module foundations and generates their declared resources 17820ms
+     → cargo test --manifest-path src/services/rust-wasm/metrics/Cargo.toml --target-dir .cache/rust-wasm/metrics failed with 1
+
+error: rustup could not choose a version of cargo to run, because one wasn't specified explicitly, and no default is configured.
+help: run 'rustup default stable' to download the latest stable release of Rust and set it as your default toolchain.
+
+ ✓ test/project-template.test.ts (5 tests) 476ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cli.e2e.test.ts > CLI installs module foundations and generates their declared resources
+Error: cargo test --manifest-path src/services/rust-wasm/metrics/Cargo.toml --target-dir .cache/rust-wasm/metrics failed with 1
+
+error: rustup could not choose a version of cargo to run, because one wasn't specified explicitly, and no default is configured.
+help: run 'rustup default stable' to download the latest stable release of Rust and set it as your default toolchain.
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ test/support/rustModuleScenario.ts:19:4
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+ ❯ assertRustModuleProject test/support/rustModuleScenario.ts:15:2
+ ❯ assertModuleProject test/support/moduleScenario.ts:28:2
+ ❯ test/cli.e2e.test.ts:202:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 14 passed (15)
+   Start at  12:10:35
+   Duration  382.16s (transform 264ms, setup 255ms, collect 878ms, tests 377.28s, environment 0ms, prepare 106ms)
+
