@@ -31,7 +31,7 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 		if (selection.provider === 'claude') return claudeTaskCommand(selection);
 		// prettier-ignore
 		return [
-			'codex', 'exec', '--json', '--ephemeral', '--sandbox', 'workspace-write', '--skip-git-repo-check',
+			'codex', 'exec', '--json', '--ephemeral', '--sandbox', 'danger-full-access', '--skip-git-repo-check',
 			'-m', selection.model, '-c', `model_reasoning_effort=${JSON.stringify(selection.intelligence)}`,
 			'-c', 'model_provider="openai"', '-c', 'approval_policy="never"', '-'
 		];
