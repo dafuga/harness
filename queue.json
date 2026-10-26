@@ -6697,7 +6697,7 @@
 			},
 			"sourceCommit": "6591099341ac0f3d0f5de2f1a439d854162f2719",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T20:59:36.610Z",
 			"claim": {
@@ -6722,6 +6722,63 @@
 					}
 				}
 			],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "The `function.resource-request` migration is drafted, but it has not been run. Compiler, vitest, lint, format and audit are all unverified. The only checks so far were reads of the source and a JSON syntax parse, so this needs your verification run before anything is trusted.\n\n**Changed files** (no spec or product edits, no commits, no memory writes)\n- `test/utils/resource-request.test.ts`: the four direct `test(...)` calls are replaced by one `registerExamples` registration against the proposed manifest.\n- `test/support/resourceRequestExamples.ts`: `invokeResourceRequest` creates a disposable config home with synthetic telemetry and queue, runs the callable, and removes the home in `finally`.\n- `test/support/resourceRequestExamples.types.ts`: fixture input and rejection-projection types.\n- `test/fixtures/contract-migration/resource-request-examples.json`: a full proposed copy of the spec with a helper-shape `testing` block: 9 examples, 9 cases, states `automatic/inherited/explicit/boundary/invalid`, props `flags/service/env`.\n\n**Original assertions mapped to cases**\n\n| Original assertion | Case |\n| --- | --- |\n| Idle auto sizing: cpus 9, 4864 MiB | idle-headroom |\n| Root reservation, nested child ignored: cpus 3, 1792 MiB | root-reservations |\n| Inherited lease: cpus 2, 1024 MiB | inherited-budget |\n| `cpus: 'bad'` rejects | malformed-flag |\n| Single core: cpus ≈ 0.9 | single-core |\n| Unavailable telemetry: cpus 1 | unavailable-telemetry |\n\nThree cases are new: explicit-flags, explicit-cpu and zero-cpu. They cover prop combinations and a boundary the original did not test. The original `toMatchObject`, `toBeCloseTo` and `toBe` checks now compare the full output, which is stricter. `rejects.toThrow()` became `expect(error).toBeInstanceOf(Error)`. The rejection examples return `{ name, issuePaths }` projected from the real thrown error, not a manufactured error.\n\n**Decisions for you to accept or reject**\n1. The proposed spec adds a `ZodError` entry to `contract.errors`. Coverage is only enforced for errors the contract declares.\n2. The proposed spec corrects the `resourceRequest.env` description. It said env \"resolves paths\" and \"propagates\" credentials. The code reads only `HARNESS_RESOURCE_LEASE`, `HARNESS_RESOURCE_CPUS` and `HARNESS_RESOURCE_MEMORY_MIB`.\n3. The three new cases go beyond the original assertions. If you want the original count, drop them before copying the proposal.\n4. The original file had no benchmark. `observeResources` runs inside each example, so measurement is recorded without an `afterAll` hook.\n\n**Verification performed**\n- Read the original test, the relay `read-json-body` migration, `TestExpectationService`, the testing schemas and `TestCaseValidator`.\n- Read zod 4.6.5 source from the local bun cache: `ZodError` name, `issues`, and per-key issues.\n- Parsed the proposed JSON with `python3 -I` (syntax only), then cross-checked 9 examples ↔ 9 cases ↔ titles, plus state, prop and error coverage. All passed.\n- Checked TS line lengths. The only lines over 100 columns are two relay-style imports that prettier cannot break.\n- `git status` shows only the four intended files. `specification/` and `src/` are untouched.\n\n**Not run, per the task**\n- vitest, root and workspace `tsc`, eslint, prettier, `harness units check`, `harness audit`, `bun run check`.\n- The fixture was not admitted through `componentManifestSchema` or `TestCaseValidator`.\n\n**Risks to check first on your run**\n- Expected values were derived by hand from the source formulas, not observed. The single-core `memoryMiB` of `716.8` depends on float rounding, which I checked by hand. The `[[\"cpus\"], [\"memoryMiB\"]]` issue paths depend on NaN propagating into memory.\n- Priority and label defaults, and custom label passthrough, are not exercised. They do not change sizing.\n- Until the proposal is copied into the spec, the spec has no `testing` block, so any check that compares registered examples with the spec will differ.\n\n**Harness activity**\n- Registered `35d5eba7-8c2c-4b89-ad20-71e540988170` with the global `harness` CLI (0.1.4), because the worktree has no `node_modules` and `bun run dev` cannot start. Finished as completed with the outcome \"draft handed back; verification not run\".\n- Original test blob: `d1eb30763c981b9f8a83018e0cada66dab0a6aa7`. New test file blob: `2a3a6c5b2f22efd0ed46bd46d5fbcf41581eab9c`. Keep these separate from semantic expectation hashes.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/d86faeef-cbc0-4d3a-9004-6047cf2990b5",
+				"changedFiles": [
+					"test/utils/resource-request.test.ts",
+					"test/fixtures/contract-migration/resource-request-examples.json",
+					"test/support/resourceRequestExamples.ts",
+					"test/support/resourceRequestExamples.types.ts"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-26T01:33:18.516Z",
+				"attempt": "d86faeef-cbc0-4d3a-9004-6047cf2990b5",
+				"sourceCommit": "6591099341ac0f3d0f5de2f1a439d854162f2719",
+				"checkpointCommit": "c860b9f742cec073f3f8b7179ff6d81453607861",
+				"usage": {
+					"inputTokens": 3562727,
+					"outputTokens": 171564,
+					"cacheReadTokens": 3301257,
+					"cacheWriteTokens": 261426,
+					"cacheWriteLongTokens": 261426,
+					"reportedCostUsd": 0.65084953,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 3562727,
+							"outputTokens": 171564,
+							"cacheReadTokens": 3301257,
+							"cacheWriteTokens": 261426,
+							"cacheWriteLongTokens": 261426,
+							"reportedCostUsd": 0.65084953,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.65084953,
+							"minimumUsd": 0.65084953,
+							"maximumUsd": 0.65084953,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-26T01:22:22.794Z",
+						"finishedAt": "2026-10-26T01:33:18.389Z"
+					}
+				]
+			},
 			"attempts": [
 				{
 					"provider": "claude",
