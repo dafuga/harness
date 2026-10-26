@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
 import { CommitTreeAdapter } from '../../../src/adapters/git-source-history/CommitTreeAdapter';
 import { GitAdapter } from '../../../src/adapters/git-source-history/GitAdapter';
+import { measureWorkload } from '../../support/measureWorkload';
 
 // Complete public-method matrix: a committed empty tree and a populated immutable tree.
 async function fixture(
@@ -104,10 +105,12 @@ test('CommitTreeAdapter.read populated reuses immutable blobs across revisions w
 				expect(await first.read('sample.txt')).toBe(value);
 				await expect(first.read('missing')).rejects.toThrow('does not exist');
 				if (format === 'sha1')
-					await oversizedBlob(
-						root,
-						git,
-						() => bytes.mock.calls.filter(([args]) => args[0] === 'cat-file').length
+					await measureWorkload('adapter.commit-tree', 'oversized-committed-blob', () =>
+						oversizedBlob(
+							root,
+							git,
+							() => bytes.mock.calls.filter(([args]) => args[0] === 'cat-file').length
+						)
 					);
 			},
 			format
