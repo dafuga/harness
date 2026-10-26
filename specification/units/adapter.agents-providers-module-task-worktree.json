@@ -19,27 +19,31 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ModuleTaskWorktreeAdapter.constructor.root",
-				"type": "string"
+				"type": "string",
+				"description": "A checkout whose common Git directory identifies the task repository."
 			},
 			{
 				"name": "ModuleTaskWorktreeAdapter.checkpoint.input",
-				"type": "TaskCheckpointInput"
+				"type": "TaskCheckpointInput",
+				"description": "Task checkout, expected source commit and exact paths to capture in a private index."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskWorktreeAdapter.checkpoint",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "A child commit containing the selected worktree paths, or the source commit when no paths were selected."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The checkout is from another repository, HEAD differs from source, or a Git operation fails."
 			}
 		]
 	},
@@ -66,6 +70,26 @@
 		]
 	},
 	"scenarios": ["module-tasks"],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "checkpoint.initialized",
+				"state": "initialized",
+				"subject": "ModuleTaskWorktreeAdapter.checkpoint",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-worktree-adapter.test.ts",
+					"title": "submission checkpoint preserves source HEAD and both staged and unstaged work"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"errors": ["Error"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

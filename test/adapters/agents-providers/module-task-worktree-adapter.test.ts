@@ -16,11 +16,27 @@ test('submission checkpoint preserves source HEAD and both staged and unstaged w
 		await git.run(['add', 'src/orders.ts']);
 		await writeFile(join(cwd, 'src/orders.ts'), 'export const orders = 3;');
 		await writeFile(join(cwd, 'new.txt'), 'review context');
+		const adapter = new ModuleTaskWorktreeAdapter(f.root);
+		expect(await adapter.checkpoint({ cwd, source: f.source, paths: [] })).toBe(f.source);
+		await expect(adapter.checkpoint({ cwd, source: '0'.repeat(40), paths: [] })).rejects.toThrow(
+			'Task worktree source or repository changed.'
+		);
+		await expect(
+			adapter.checkpoint({ cwd, source: f.source, paths: ['absent.txt'] })
+		).rejects.toThrow();
+		const foreign = await moduleTaskFixture();
+		try {
+			await expect(
+				adapter.checkpoint({ cwd: foreign.root, source: foreign.source, paths: [] })
+			).rejects.toThrow('Task worktree source or repository changed.');
+		} finally {
+			await foreign.dispose();
+		}
 		const checkpoint = await observedTaskOperation(
 			'adapter.agents-providers-module-task-worktree',
 			'snapshot-submission-with-private-index',
 			() =>
-				new ModuleTaskWorktreeAdapter(f.root).checkpoint({
+				adapter.checkpoint({
 					cwd,
 					source: f.source,
 					paths: ['src/orders.ts', 'new.txt']
