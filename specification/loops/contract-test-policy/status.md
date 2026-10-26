@@ -529,3 +529,12 @@ Mutation `8f65f38702` failed the existing config-method assertion in capture
 capture `4aae1614ba19`. The case count did not change. The current validator
 source measurement is 13,342 bytes, 333 lines, complexity 108 and five
 dependencies; it emits no separate artifact. Full verification remains pending.
+
+A fresh provider check confirms Claude is signed in, but this branch's `task list`
+still rejects the shared task queue's newer `role` and `assignedFiles` fields.
+The newer runner also requires a trusted sandbox qualification before launch.
+No new worker was launched and no model was substituted. The snapshot registry
+failure is caused by the non-Git file walker excluding `ios` directories; the
+tracked files themselves are present in the Git archive. A snapshot-aware tracked
+file inventory is still needed so registry checks can use the exact committed
+source without borrowing the working tree.
