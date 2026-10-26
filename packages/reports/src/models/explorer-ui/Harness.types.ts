@@ -110,6 +110,9 @@ export interface HarnessCapture {
 	status: 'passed' | 'failed';
 	path: string;
 	sha256: string;
+	bytes?: number;
+	/** Sealed class artifact binding: unit, case, tested revision and media hash. */
+	note?: string;
 	mediaType: string;
 	capturedAt: string;
 	provenance?: string;

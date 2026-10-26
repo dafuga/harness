@@ -26,7 +26,9 @@ export function auditHarnessStructure(structure: AuditStructure): AuditFinding[]
 
 function auditFolderNames(dirs: string[]): AuditFinding[] {
 	return dirs.flatMap((dir) => {
-		const invalid = pathSegments(dir).find((segment) => !isAllowedFolderName(segment));
+		const invalid = pathSegments(dir).find(
+			(segment) => !isAllowedFolderName(segment, dir.startsWith('src/routes/'))
+		);
 		if (!invalid) return [];
 		return [
 			{
@@ -163,8 +165,9 @@ function auditDirectSourceFile(file: string, name: string): AuditFinding[] {
 const routeParameter =
 	/^(?:\[(?:\.\.\.)?[A-Za-z0-9_-]+(?:=[A-Za-z0-9_]+)?\]|\[\[[A-Za-z0-9_-]+(?:=[A-Za-z0-9_]+)?\]\])$/;
 
-function isAllowedFolderName(segment: string): boolean {
+function isAllowedFolderName(segment: string, route: boolean): boolean {
 	return (
+		(route && segment === '__harness') ||
 		segment === '.codex' ||
 		segment === '.agents' ||
 		segment === '.github' ||
