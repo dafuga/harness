@@ -34,10 +34,11 @@ test('module library includes external and default headless testing plugin defin
 		expect(catalog.modules.find((entry) => entry.definition.id === 'headless-audio')).toMatchObject(
 			{ installed: false, definition: { testing: { headless: true, script: 'test:audio' } } }
 		);
-		for (const entry of catalog.modules) {
-			expect(entry.installed).toBe(Boolean(entry.definition.includedByDefault));
-			expect(entry.definition.instructions.length).toBeGreaterThan(0);
-			expect(entry.definition.resources.length).toBeGreaterThan(0);
+		for (const { definition, installed } of catalog.modules) {
+			expect(installed).toBe(Boolean(definition.includedByDefault));
+			expect(definition.instructions.length).toBeGreaterThan(0);
+			expect(definition.resources.length).toBeGreaterThan(0);
+			if (definition.testing) expect(definition.devDependencies).toHaveProperty('@types/node');
 		}
 	});
 });
@@ -185,9 +186,8 @@ test('included and project modules use declared catalogs and real scaffold gener
 	await measureWorkload('service.module-system-module-package', 'declare-pinned-package', () =>
 		generate.generate(root, 'dependencies', 'dependency', 'lit@3.3.1')
 	);
-	expect(JSON.parse(await readFile(join(root, 'package.json'), 'utf8')).dependencies.lit).toBe(
-		'3.3.1'
-	);
+	const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
+	expect(manifest.dependencies.lit).toBe('3.3.1');
 	await expect(generate.generate(root, 'dependencies', 'dependency', 'lit@3.3.2')).rejects.toThrow(
 		/existing|already|Resolve/
 	);
