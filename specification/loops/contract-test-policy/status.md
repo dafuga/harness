@@ -358,3 +358,58 @@ a complete same-source verification verdict, complete migration and final histor
 The report remains active and unpublished while required checks are open.
 
 The Jev startup advisory review was incomplete, and later edits have no new Jev approval. No clean-code verdict is claimed.
+
+## Continuation: generated case evidence
+
+On task source `d43eb33f1f`, a generated library now installs a Vitest result
+reporter and links its installed dependencies into verification snapshots. The
+shared and generated reporters resolve existing snapshot and test paths before
+checking containment. The existing reporter method cases now cover symlinked
+roots and outside files; the generated-library case checks both failed and
+passed outcomes. The reporter case count remains four and the CLI case count
+remains five.
+
+The generated-result red record `b18b960b2a2f` and green record `0bb7aa42cd7a`
+use the same test, command and normalized laptop environment. The isolated
+missing-reporter mutant failed capture `4a76215f103b`; restored source passed
+`62cc0ffb9531`. The case-path red record `135d6520aa09` and green record
+`5cb2810eb1a7` use the same reporter cases and environment. Its isolated mutant
+failed `7dcbbe99d553`; restored source passed `055435367d49`. These focused
+records do not establish a full verification verdict.
+
+At `d43eb33f1f`, 13 focused unit cases, root typecheck, targeted lint, registry
+validation and audit passed. `build:cli` produced the 14.89 MB whole CLI bundle.
+A library generated from that bundle passed its normal check and recorded its
+actual example in a clean Harness snapshot. Its first verification remained
+failed for missing reasons and budget baselines; it is not a full pass. The
+focused library CLI case passed on `harbor-mbp-2` in capture `865c2e1e1007`:
+one selected case passed and four were unselected. The project config caps
+Vitest at one worker; that runner did not announce its effective worker count.
+Task-owned failing-run temporary projects were removed after their creation
+times were matched to the retained records; the older unrelated fixture remained.
+
+The exact source observations at `d43eb33f1f` are: CaseResultAdapter 3,311
+bytes, 99 lines, complexity 31, three dependencies; projectTests 6,147 bytes,
+104 lines, complexity 7, five dependencies. Neither module emits a separate
+artifact. Focused workload observations remain in captures `5f9f0cd292ff` and
+`bd3edb903cd8`, with their original process-memory scopes.
+
+The existing baseline-preparation suite still fails both cases at `d43eb33f1f`
+in capture `4a2f77bf2541`. Its first disposable verification reports missing
+contracts for function.clock, function.slugify, page.titles, service.clock and
+service.title; its synthetic runner also omits the greeting case outcome. This
+fixture and its dependent history cases still need migration, including real
+reviewed page baselines. Strict admission was not disabled.
+
+After Keychain login, a tools-disabled diagnostic requested and reported
+`claude-haiku-5-5` with max effort. A separate tools-disabled `gpt-6-luna/max`
+diagnostic was rejected for model access; `gpt-5.6-luna/max` completed a turn
+but did not report its execution model. These probes do not qualify either
+worker's tool isolation. Both explicit worker assignments remain blocked; no
+fallback was used.
+
+The current inventory remains 1,117 suite files, 4,606 declarations, 44
+standardized units and 692 registered cases, with 5,940 admission gaps. Full
+migration, aggregate verification, current-main Explorer evidence, complete
+history reconstruction within the memory target, and final delivery remain
+open. No production deployment was attempted.
