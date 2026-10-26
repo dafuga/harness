@@ -6,7 +6,7 @@ class ProjectWorkStore {
 	private failure = $state<string | null>(null);
 	private pending = $state(false);
 	private project = $state<string | null>(null);
-	private bridge = $state.raw<Workspace['bridge']>(null);
+	private bridge = $state.raw<Workspace['bridge'] | null>(null);
 	private readable = $state(false);
 	private generation = 0;
 	private stopListening: (() => void) | null = null;

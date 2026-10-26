@@ -3,12 +3,13 @@
 	"id": "desktop.component.agents-providers-project-work",
 	"kind": "component",
 	"title": "ProjectWork",
-	"responsibility": "Owns the ProjectWork Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Present selected-project feature plans and actual task progress.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"desktop.component.agents-providers-project-work-feature",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section"
@@ -19,26 +20,43 @@
 		"symbols": ["ProjectWork"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ProjectWork.label",
-				"type": "string"
+				"name": "ProjectWork.snapshot",
+				"type": "FeatureWorkSnapshot | null",
+				"description": "One committed project-scoped queue snapshot."
+			},
+			{
+				"name": "ProjectWork.loading",
+				"type": "boolean"
 			},
 			{
 				"name": "ProjectWork.error",
-				"type": "string"
+				"type": "string | null",
+				"description": "Unavailable or stale-read explanation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectWork",
-				"type": "markup"
+				"type": "markup",
+				"description": "Honest loading, unavailable, empty and stale states plus real feature trees; no fabricated statuses. Design previews and approval controls are explicitly unavailable until connected."
 			}
 		],
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.agents-providers-project-work-feature",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.style.agents-providers-project-work",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-h2",
 			"via": "import",
@@ -51,6 +69,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-feature-work",
 			"via": "import",
 			"origin": "derived"
 		}

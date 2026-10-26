@@ -17,17 +17,20 @@
 		--floating-chat-top: var(--hx-layout-bar-clearance-phone);
 	}
 }
-/* Chat and Agents sit under the title, outside what scrolls; the hidden chat keeps its draft. */
+/* Chat and Work sit under the title, outside what scrolls; the hidden chat keeps its draft. */
 .chat-views {
 	display: flex;
-	gap: var(--hx-space-5);
-	padding: var(--hx-space-8) var(--hx-space-14);
+	gap: var(--hx-space-3);
+	padding: var(--hx-space-5) var(--hx-space-14) 0;
 	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 }
+/* The open tab is underlined where it meets the panel, as in the selected design. */
 .chat-views button {
-	padding: var(--hx-space-3) var(--hx-space-12);
-	border: var(--hx-border-thin) solid transparent;
-	border-radius: var(--hx-radius-round);
+	margin-bottom: calc(-1 * var(--hx-border-thin));
+	padding: var(--hx-space-5) var(--hx-space-12);
+	border: 0;
+	border-bottom: calc(2 * var(--hx-border-thin)) solid transparent;
+	border-radius: var(--hx-radius-small) var(--hx-radius-small) 0 0;
 	background: none;
 	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-compact);
@@ -35,12 +38,44 @@
 .chat-views button:hover {
 	color: var(--hx-color-text);
 }
-.chat-views button[aria-pressed='true'] {
-	border-color: color-mix(in srgb, var(--hx-color-primary) 45%, transparent);
+.chat-views button[aria-selected='true'] {
+	border-bottom-color: var(--hx-color-primary);
+	background: var(--hx-color-hover);
 	color: var(--hx-color-primary);
+}
+.chat-views button:focus-visible {
+	outline: calc(2 * var(--hx-border-thin)) solid var(--hx-color-primary);
+	outline-offset: calc(-2 * var(--hx-border-thin));
+}
+@media (max-width: 560px) {
+	.chat-views button {
+		padding-block: var(--hx-space-8);
+	}
 }
 .chat-pane:not([hidden]) {
 	display: contents;
+}
+.work-pane:not([hidden]) {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-12);
+}
+.chat-work {
+	padding: var(--hx-space-8) var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	font-size: var(--hx-type-size-compact);
+}
+.chat-work summary {
+	cursor: pointer;
+	color: var(--hx-color-text-muted);
+}
+.chat-work[open] summary {
+	margin-bottom: var(--hx-space-8);
+}
+.chat-work summary:focus-visible {
+	outline: calc(2 * var(--hx-border-thin)) solid var(--hx-color-primary);
+	outline-offset: var(--hx-space-2);
 }
 .chat-thread {
 	display: flex;

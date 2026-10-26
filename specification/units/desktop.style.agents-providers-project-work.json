@@ -3,17 +3,28 @@
 	"id": "desktop.style.agents-providers-project-work",
 	"kind": "style",
 	"title": "projectWork",
-	"responsibility": "Owns the projectWork stylesheet.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Style the project Work tree within its root element.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/lib/styles/agents-providers/projectWork.css"],
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ProjectWork markup",
+				"type": "component DOM"
+			}
+		],
+		"outputs": [
+			{
+				"name": "projectWork.css",
+				"type": "scoped CSS",
+				"description": "Defines compact hierarchy, accessible status markers and responsive wrapping only inside the project-work root."
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [],

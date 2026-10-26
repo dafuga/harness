@@ -1,16 +1,44 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	let { label = 'ProjectWork', error }: { label?: string; error?: string } = $props();
+	import type { FeatureWorkSnapshot } from '../../../../../src/services/agents-providers/FeatureWorkService.types';
+	import ProjectWorkFeature from './ProjectWorkFeature.svelte';
+	import '../../lib/styles/agents-providers/projectWork.css';
+	let {
+		snapshot,
+		loading,
+		error
+	}: { snapshot: FeatureWorkSnapshot | null; loading: boolean; error: string | null } = $props();
+	const short = (commit: string) => commit.slice(0, 7);
 </script>
 
-<hx-section
-	data-harness-component="project-work"
-	aria-label={label}
-	aria-describedby={error ? 'project-work-error' : undefined}
->
-	<hx-h2>{label}</hx-h2>
+<hx-section data-harness-component="project-work" aria-label="Project work" aria-busy={loading}>
+	<hx-h2>Work</hx-h2>
+	<p class="meta" role="status">
+		{#if loading}{snapshot ? 'Refreshing committed work…' : 'Loading committed work…'}{/if}
+	</p>
 	{#if error}
-		<hx-p id="project-work-error" role="alert">{error}</hx-p>
+		<hx-p class="alert" role="alert"
+			>{snapshot ? 'Showing the last read; it may be stale.' : 'Work could not be read.'}
+			{error}</hx-p
+		>
+	{/if}
+	{#if !snapshot}
+		{#if !loading && !error}<hx-p>Feature work is unavailable for this project.</hx-p>{/if}
+	{:else}
+		<p class="meta" title={snapshot.queueCommit}>
+			{snapshot.queueCommit
+				? `Queue commit ${short(snapshot.queueCommit)}`
+				: 'The queue has no commit yet.'}
+		</p>
+		{#if !snapshot.features.length}
+			<hx-p>No features are committed to this queue.</hx-p>
+		{:else}
+			<ul>
+				{#each snapshot.features as f, i (f.id)}
+					<ProjectWorkFeature feature={f} initiallyOpen={i === 0} />
+				{/each}
+			</ul>
+		{/if}
 	{/if}
 </hx-section>

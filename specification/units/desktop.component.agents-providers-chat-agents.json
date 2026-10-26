@@ -3,7 +3,7 @@
 	"id": "desktop.component.agents-providers-chat-agents",
 	"kind": "component",
 	"title": "Agents panel",
-	"responsibility": "Shows declared agent sessions, their current tasks and live module assignments within project chat.",
+	"responsibility": "Show declared agent sessions and live module assignments within project chat.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -34,14 +34,14 @@
 			{
 				"name": "ChatAgents.workspace",
 				"type": "Workspace",
-				"description": "The selected project, revision, catalog and bridge used to read live registrations and resolve module links."
+				"description": "Selected project, revision, catalog and activity bridge."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ChatAgents",
 				"type": "markup",
-				"description": "Main session tasks and statuses plus modules grouped by current declared owners. Missing tracking remains unknown; stale readings lose current ownership claims."
+				"description": "Accessible compact tree of registered agent sessions, their reported tasks and current module assignments, with text labels and colored status markers. Missing or stale tracking remains explicit."
 			}
 		],
 		"errors": []
@@ -64,6 +64,11 @@
 		},
 		{
 			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.style.agents-providers-chat-agents",
 			"via": "import",
 			"origin": "derived"
 		},

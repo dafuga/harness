@@ -3,17 +3,28 @@
 	"id": "desktop.style.agents-providers-chat-agents",
 	"kind": "style",
 	"title": "chatAgents",
-	"responsibility": "Owns the chatAgents stylesheet.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Style the project agent activity tree within its root element.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/lib/styles/agents-providers/chatAgents.css"],
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ChatAgents markup",
+				"type": "component DOM"
+			}
+		],
+		"outputs": [
+			{
+				"name": "chatAgents.css",
+				"type": "scoped CSS",
+				"description": "Defines compact registered-agent tree and status markers only inside the agents root."
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [],

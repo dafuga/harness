@@ -9,14 +9,41 @@
 	import Composer from '../shared-primitives/Composer.svelte';
 	import ReferenceText from '../explorer-ui/reference-text/ReferenceText.svelte';
 	import ChatAgents from './ChatAgents.svelte';
+	import ProjectWork from './ProjectWork.svelte';
+	import { createProjectWorkStore } from '../../lib/stores/agents-providers/projectWork.svelte';
 	let { workspace, open = $bindable(false) }: { workspace: Workspace; open?: boolean } = $props();
 	// Rebuilt only for another project; the workspace itself is one object throughout.
 	// svelte-ignore state_referenced_locally
 	const agent = createProjectAgentStore(workspace);
+	// svelte-ignore state_referenced_locally
+	const work = createProjectWorkStore(workspace);
 	const kind = $derived(workspace.category.slice(0, -1));
 	const label = $derived(agent.allowed ? 'Work with agent' : 'Open project chat');
-	let view = $state<'chat' | 'agents'>('chat');
+	type View = 'chat' | 'work' | 'agents';
+	let view = $state<View>('chat');
+	/** Svelte keeps these identifiers stable between server rendering and hydration. */
+	const id = $props.id();
+	/** The tabs are one tab stop; arrows, Home and End move between them. */
+	function step(event: KeyboardEvent) {
+		const keys: Record<string, View> = {
+			ArrowLeft: view === 'chat' ? 'agents' : view === 'work' ? 'chat' : 'work',
+			ArrowRight: view === 'chat' ? 'work' : view === 'work' ? 'agents' : 'chat',
+			Home: 'chat',
+			End: 'agents'
+		};
+		const next = keys[event.key];
+		if (!next) return;
+		event.preventDefault();
+		view = next;
+		const tabs = (event.currentTarget as HTMLElement).closest('[role="tablist"]');
+		tabs?.querySelector<HTMLElement>(`[data-view="${next}"]`)?.focus();
+	}
 	onMount(() => agent.listen());
+	$effect(() => {
+		if (open && workspace.projectId && workspace.bridge?.projectWork)
+			return untrack(() => work.listen());
+		if (open) untrack(() => void work.refresh());
+	});
 	$effect(() => {
 		if (open && agent.allowed) untrack(() => agent.loadProviders());
 	});
@@ -39,9 +66,17 @@
 		/>
 	</hx-li>{/snippet}
 
-{#snippet tab(name: 'chat' | 'agents', text: string)}
-	<hx-button type="button" aria-pressed={view === name} onclick={() => (view = name)}
-		>{text}</hx-button
+{#snippet tab(name: View, text: string)}
+	<hx-button
+		type="button"
+		role="tab"
+		id="{id}-{name}-tab"
+		aria-selected={view === name}
+		aria-controls="{id}-{name}"
+		tabindex={view === name ? 0 : -1}
+		data-view={name}
+		onclick={() => (view = name)}
+		onkeydown={step}>{text}</hx-button
 	>
 {/snippet}
 
@@ -55,11 +90,29 @@
 		notice={agent.notice}
 		follow={view === 'chat'}
 	>
-		{#snippet navigation()}<hx-div class="chat-views">
-				{@render tab('chat', 'Chat')}{@render tab('agents', 'Agents')}
+		{#snippet navigation()}<hx-div
+				class="chat-views"
+				role="tablist"
+				aria-label="Project chat views"
+			>
+				{@render tab('chat', 'Chat')}{@render tab('work', 'Work')}{@render tab('agents', 'Agents')}
 			</hx-div>{/snippet}
-		<hx-div class="chat-pane" hidden={view !== 'chat'}>
+		<hx-div
+			class="chat-pane"
+			role="tabpanel"
+			id="{id}-chat"
+			aria-labelledby="{id}-chat-tab"
+			hidden={view !== 'chat'}
+		>
 			<hx-div class="chat-thread">
+				{#if work.snapshot?.features.length}
+					{#key workspace.projectId}
+						<hx-details class="chat-work">
+							<hx-summary>Feature work</hx-summary>
+							<ProjectWork snapshot={work.snapshot} loading={work.loading} error={work.error} />
+						</hx-details>
+					{/key}
+				{/if}
 				{#if quiet}<hx-p class="chat-note">No messages yet.</hx-p>{:else}<hx-ol class="chat-log">
 						{#each agent.messages as message (message.id)}
 							{@render line(message.author, message.text)}
@@ -97,7 +150,24 @@
 				/>
 			</hx-div>
 		</hx-div>
-		{#if open && view === 'agents'}{#key workspace.projectId}<ChatAgents {workspace} />{/key}{/if}
+		<hx-div
+			class="work-pane"
+			role="tabpanel"
+			id="{id}-work"
+			aria-labelledby="{id}-work-tab"
+			hidden={view !== 'work'}
+		>
+			<ProjectWork snapshot={work.snapshot} loading={work.loading} error={work.error} />
+		</hx-div>
+		<hx-div
+			class="work-pane"
+			role="tabpanel"
+			id="{id}-agents"
+			aria-labelledby="{id}-agents-tab"
+			hidden={view !== 'agents'}
+		>
+			{#if open && view === 'agents'}{#key workspace.projectId}<ChatAgents {workspace} />{/key}{/if}
+		</hx-div>
 	</FloatingChat>
 </hx-div>
 

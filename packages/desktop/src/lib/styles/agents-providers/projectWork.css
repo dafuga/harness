@@ -1,1 +1,112 @@
-/* Project Work tree styles. */
+[data-harness-component='project-work'] ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+[data-harness-component='project-work'] .tree {
+	margin-left: 0.3rem;
+	padding-left: 0.75rem;
+	border-left: 1px solid var(--hx-color-border, color-mix(in srgb, currentColor 25%, transparent));
+}
+[data-harness-component='project-work'] summary,
+[data-harness-component='project-work'] .row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.25rem 0.5rem;
+	padding: 0.3rem 0;
+}
+[data-harness-component='project-work'] summary {
+	cursor: pointer;
+	list-style: none;
+	border-radius: 0.25rem;
+}
+[data-harness-component='project-work'] summary::-webkit-details-marker {
+	display: none;
+}
+[data-harness-component='project-work'] summary::before {
+	content: '';
+	flex: none;
+	width: 0.35rem;
+	height: 0.35rem;
+	margin: 0 0.15rem;
+	border: solid;
+	border-width: 0 2px 2px 0;
+	transform: rotate(-45deg);
+}
+[data-harness-component='project-work'] details[open] > summary::before {
+	transform: rotate(45deg);
+}
+[data-harness-component='project-work'] summary:focus-visible {
+	outline: 2px solid var(--hx-color-focus, currentColor);
+	outline-offset: 2px;
+}
+[data-harness-component='project-work'] .grow {
+	flex: 1 1 8rem;
+	min-width: 0;
+}
+[data-harness-component='project-work'] .full {
+	flex-basis: 100%;
+	box-sizing: border-box;
+	padding-left: 1.15rem;
+}
+[data-harness-component='project-work'] .end {
+	text-align: end;
+}
+[data-harness-component='project-work'] p {
+	margin: 0.2rem 0;
+}
+[data-harness-component='project-work'] p,
+[data-harness-component='project-work'] code,
+[data-harness-component='project-work'] .grow,
+[data-harness-component='project-work'] .full {
+	overflow-wrap: anywhere;
+}
+[data-harness-component='project-work'] .meta,
+[data-harness-component='project-work'] small,
+[data-harness-component='project-work'] .planned {
+	color: var(--hx-color-text-muted, color-mix(in srgb, currentColor 70%, transparent));
+	font-size: 0.8125rem;
+}
+[data-harness-component='project-work'] .label::first-letter {
+	text-transform: uppercase;
+}
+[data-harness-component='project-work'] .dot {
+	flex: none;
+	box-sizing: border-box;
+	width: 0.55rem;
+	height: 0.55rem;
+	border-radius: 50%;
+	background: var(--tone);
+}
+[data-harness-component='project-work'] .planned {
+	padding-left: 1.15rem;
+}
+[data-harness-component='project-work'] .planned .dot {
+	border: 1px dashed currentColor;
+}
+[data-harness-component='project-work'] .status {
+	margin-left: auto;
+	color: var(--tone);
+}
+[data-harness-component='project-work'] .tag {
+	padding: 0 0.4rem;
+	border: 1px solid;
+	border-radius: 999px;
+	font-size: 0.75rem;
+	color: var(--tone);
+}
+[data-harness-component='project-work'] .gray {
+	--tone: var(--hx-color-text-muted, #8b98ab);
+}
+[data-harness-component='project-work'] .amber {
+	--tone: var(--hx-color-warning, #f2b544);
+}
+[data-harness-component='project-work'] .green {
+	--tone: var(--hx-color-success, #3fcf73);
+}
+[data-harness-component='project-work'] .red,
+[data-harness-component='project-work'] .alert {
+	--tone: var(--hx-color-danger, #f2555a);
+	color: var(--tone);
+}

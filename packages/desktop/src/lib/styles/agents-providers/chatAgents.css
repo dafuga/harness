@@ -1,1 +1,148 @@
-/* Project agent activity styles. */
+.agents {
+	/* Green and red follow the theme where it names them. */
+	--agents-done: var(--hx-color-success, #3fb950);
+	--agents-blocked: var(--hx-color-danger, #f85149);
+	--agents-dot: var(--hx-space-8);
+	--agents-indent: calc(var(--agents-dot) + var(--hx-space-8));
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-12);
+	padding-bottom: var(--hx-space-14);
+	font-size: var(--hx-type-size-sm);
+	line-height: var(--hx-style-leading-snug);
+}
+.agents p,
+.agents h3,
+.agents ul {
+	margin: 0;
+}
+.agents .agents-head,
+.agents .agents-read {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-3) var(--hx-space-10);
+	align-items: baseline;
+	justify-content: space-between;
+}
+.agents .agents-head {
+	align-items: center;
+}
+.agents .agents-head button {
+	flex: none;
+	padding: var(--hx-space-5) var(--hx-space-10);
+}
+.agents .agents-read {
+	justify-content: flex-start;
+}
+.agents strong {
+	font-weight: var(--hx-style-weight-semibold);
+}
+.agents .agents-read strong {
+	color: var(--hx-color-primary);
+}
+/* Section names are quiet; the modules and sessions under them are what is read. */
+.agents h3 {
+	padding-bottom: var(--hx-space-5);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-compact);
+	font-weight: var(--hx-style-weight-semibold);
+}
+/* Each item hangs off its list's guide line, as in the plan tree; agents hang off their module. */
+.agents .agents-tree,
+.agents .pa-list {
+	--agents-guide: var(--hx-space-10);
+	--agents-tick: calc(var(--hx-space-5) + 0.65em);
+	display: grid;
+	margin: 0;
+	padding: 0 0 0 var(--agents-guide);
+	list-style: none;
+}
+.agents .agents-branch {
+	--agents-guide: calc(var(--agents-indent) - var(--agents-dot) / 2);
+	--agents-tick: calc(var(--hx-space-2) + 0.65em);
+	margin: var(--hx-space-2) 0 0 calc(var(--agents-dot) / 2);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-compact);
+}
+.agents .agents-tree > li,
+.agents .pa-list > li {
+	position: relative;
+	padding: var(--hx-space-5) 0;
+	border: 0;
+}
+.agents .agents-branch > li {
+	padding: var(--hx-space-2) 0;
+}
+.agents .agents-tree > li::before,
+.agents .agents-tree > li:not(:last-child)::after,
+.agents .pa-list > li::before,
+.agents .pa-list > li:not(:last-child)::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: calc(-1 * var(--agents-guide));
+	border-left: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.agents .agents-tree > li::before,
+.agents .pa-list > li::before {
+	width: calc(var(--agents-guide) - var(--hx-space-3));
+	height: var(--agents-tick);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.agents .agents-tree > li:not(:last-child)::after,
+.agents .pa-list > li:not(:last-child)::after {
+	bottom: 0;
+}
+/* The dot repeats the status word at the end of the row; the word is what is read out. */
+.agents .agents-row {
+	--agents-tone: var(--hx-color-text-muted);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-2) var(--hx-space-8);
+	align-items: baseline;
+}
+.agents .agents-row.active {
+	--agents-tone: var(--hx-color-primary);
+}
+.agents .agents-row.done {
+	--agents-tone: var(--agents-done);
+}
+.agents .agents-row.blocked {
+	--agents-tone: var(--agents-blocked);
+}
+.agents .agents-dot {
+	flex: none;
+	width: var(--agents-dot);
+	height: var(--agents-dot);
+	border-radius: var(--hx-radius-round);
+	background: var(--agents-tone);
+}
+.agents .agents-name {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+.agents .agents-state {
+	flex: none;
+	margin-left: auto;
+	color: var(--agents-tone);
+	font-size: var(--hx-type-size-compact);
+}
+.agents .agents-task,
+.agents .agents-meta {
+	padding: var(--hx-space-2) 0 0 var(--agents-indent);
+}
+.agents .agents-task,
+.agents .agents-unit,
+.agents code {
+	overflow-wrap: anywhere;
+}
+.agents .agents-quiet,
+.agents time {
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-compact);
+}
+.agents .error {
+	padding: var(--hx-space-8) var(--hx-space-12);
+	border-radius: var(--hx-radius-small);
+	font-size: var(--hx-type-size-compact);
+}

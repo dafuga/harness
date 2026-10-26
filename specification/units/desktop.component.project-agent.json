@@ -3,22 +3,25 @@
 	"id": "desktop.component.project-agent",
 	"kind": "component",
 	"title": "Project chat",
-	"responsibility": "Keeps project chat available on every screen and links discussed or changed units to their commit history.",
+	"responsibility": "Keep project chat, feature work and agent activity available across the selected workspace.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
 		"uses": [
 			"desktop.component.agents-providers-chat-agents",
+			"desktop.component.agents-providers-project-work",
 			"desktop.component.composer",
 			"desktop.component.reference-text",
 			"reports.component.floating-chat",
 			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-details",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-ol",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-summary"
 		]
 	},
 	"owns": {
@@ -35,19 +38,19 @@
 			{
 				"name": "ProjectAgent.workspace",
 				"type": "Workspace",
-				"description": "The selected project, revision, permissions, bridge and navigation. Conversation state stays with this project as its screens change."
+				"description": "Selected project, revision, permissions, bridge and navigation."
 			},
 			{
 				"name": "ProjectAgent.open",
 				"type": "boolean | undefined",
-				"description": "Optional bindable open state, false by default, used by hosts to control the floating panel."
+				"description": "Optional bindable open state, false by default."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectAgent",
 				"type": "markup",
-				"description": "A persistent round chat bubble and conversation panel. Read users browse; Comment users leave comments; Write users can choose a model and ask, plan or change at a writable branch tip. Registered unit references open their history."
+				"description": "Persistent Chat, Work and Agents tabs. Chat and Work share the same real selected-project feature snapshot; Work shows honest loading, unavailable and stale states. Polling runs only while the panel is open and cleans up. Existing conversation and access rules remain in force."
 			}
 		],
 		"errors": []
@@ -55,6 +58,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.component.agents-providers-chat-agents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.agents-providers-project-work",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -70,6 +78,11 @@
 		},
 		{
 			"unit": "desktop.function.compose-modes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.agents-providers-project-work",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -90,6 +103,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-details",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -115,6 +133,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-summary",
 			"via": "import",
 			"origin": "derived"
 		}
