@@ -125,7 +125,7 @@ async function generated(context: RunContext, ask: Ask, detail: string) {
 async function generatedBytes(context: RunContext, draft: DesignDraft, directory: string) {
 	const reference = await referenceImage(context, draft, directory);
 	const proposal = draft.prompt;
-	draft.prompt = designPrompt(context, proposal);
+	draft.prompt = designPrompt(context, proposal, Boolean(reference));
 	const ask = { prompt: draft.prompt, reference, directory };
 	const result = await generated(context, ask, 'Generating the design with GPT Image');
 	draft.notes = imageNotes(context, result.revisedPrompt, proposal);
@@ -141,10 +141,10 @@ async function generatedOptions(
 ) {
 	const reference = await referenceImage(context, draft, directory);
 	const proposal = draft.prompt;
-	draft.prompt = designPrompt(context, proposal);
+	draft.prompt = designPrompt(context, proposal, Boolean(reference));
 	draft.options = [];
 	for (const [at, direction] of designDirections(count).entries()) {
-		const prompt = `${draft.prompt}\nDesign option ${at + 1} of ${count}: ${direction}`;
+		const prompt = `${draft.prompt}\nDesign option ${at + 1} of ${count}: ${direction}\nApply this direction only within the requested edit area.`;
 		const detail = `Generating design option ${at + 1} of ${count} with GPT Image`;
 		const result = await generated(context, { prompt, reference, directory }, detail);
 		if (context.signal.aborted) throw new RunCancelled();
