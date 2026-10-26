@@ -1,7 +1,13 @@
+import type { TaskRunInput } from '../../repositories/agents-providers/ModuleTaskRepository.types';
+
 export interface TaskProcessResult {
 	code: number;
 	stdout: string;
 	stderr?: string;
+}
+
+export interface TaskProcessInput extends TaskRunInput {
+	env?: Record<string, string | undefined>;
 }
 
 export type TaskFailureCategory =

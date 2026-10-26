@@ -15,8 +15,13 @@
 			"ModuleTaskLaunchAdapter",
 			"ModuleTaskLaunchAdapter.constructor",
 			"ModuleTaskLaunchAdapter.connect",
+			"ModuleTaskLaunchAdapter.run",
 			"ModuleTaskLaunchAdapterConfig",
-			"ModuleTaskLaunchAdapterConfig"
+			"ModuleTaskLaunchAdapterConfig",
+			"ModuleTaskLaunchProvider",
+			"ModuleTaskLaunchExecute",
+			"ModuleTaskLaunchSandbox",
+			"ModuleTaskLaunchInput"
 		]
 	},
 	"contract": {
@@ -63,7 +68,23 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-sandbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/adapters/agents-providers/ModuleTaskLaunchAdapter.ts",

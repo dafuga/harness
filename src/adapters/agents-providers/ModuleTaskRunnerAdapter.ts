@@ -10,25 +10,42 @@ import type {
 	TaskProcessResult,
 	TaskPublicEvent
 } from './ModuleTaskRunnerAdapter.types';
-import { taskProcess } from './module-task-runner-adapter/taskProcess';
+import { ModuleTaskLaunchAdapter } from './ModuleTaskLaunchAdapter';
+import { ModuleTaskSandboxAdapter } from './ModuleTaskSandboxAdapter';
+import {
+	claudeTaskCommand,
+	parseTaskEvents,
+	taskProcess
+} from './module-task-runner-adapter/taskProcess';
 import { taskUsage } from './module-task-runner-adapter/taskUsage';
 /** Run the installed CLIs with saved login, exact model/effort and public output only. */
 export class ModuleTaskRunnerAdapter implements TaskRunner {
-	constructor(private readonly execute = taskProcess) {}
+	constructor(
+		private readonly execute = taskProcess,
+		private readonly sandbox: Pick<
+			ModuleTaskSandboxAdapter,
+			'prepare'
+		> = new ModuleTaskSandboxAdapter()
+	) {}
 	command(selection: TaskSelection): string[] {
 		if (selection.provider === 'claude') return claudeTaskCommand(selection);
 		// prettier-ignore
 		return [
-			'codex', 'exec', '--json', '--ephemeral', '--sandbox', 'workspace-write',
+			'codex', 'exec', '--json', '--ephemeral', '--sandbox', 'workspace-write', '--skip-git-repo-check',
 			'-m', selection.model, '-c', `model_reasoning_effort=${JSON.stringify(selection.intelligence)}`,
 			'-c', 'model_provider="openai"', '-c', 'approval_policy="never"', '-'
 		];
 	}
 	async run(input: TaskRunInput): Promise<TaskRunResult> {
-		const process = await this.execute(this.command(input), input);
+		const process = await new ModuleTaskLaunchAdapter().run(
+			this.command(input),
+			input,
+			this.execute,
+			this.sandbox
+		);
 		let events: TaskPublicEvent[];
 		try {
-			events = parseEvents(process.stdout);
+			events = parseTaskEvents(process.stdout);
 		} catch {
 			throw taskFailure(
 				input.provider,
@@ -101,34 +118,11 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 		};
 	}
 }
-function claudeTaskCommand(selection: TaskSelection): string[] {
-	// prettier-ignore
-	return [
-		'claude', '-p', '--verbose',
-		'--output-format', 'stream-json', '--model', selection.model,
-		'--effort', selection.intelligence, '--permission-mode', 'acceptEdits',
-		'--tools', 'Read,Edit,Write,Glob,Grep,Bash', '--allowedTools', 'Read,Edit,Write,Glob,Grep,Bash',
-		'--no-session-persistence'
-	];
-}
 function rejectedQuotaEvent(event: TaskPublicEvent): boolean {
 	if (event.type === 'rate_limit_event' && event.rate_limit_info?.status === 'rejected')
 		return true;
 	if (event.type === 'assistant' && event.error === 'rate_limit') return true;
 	return typeof event.error === 'object' && event.error?.type === 'rate_limit_error';
-}
-function parseEvents(stdout: string): TaskPublicEvent[] {
-	const events = stdout
-		.trim()
-		.split('\n')
-		.filter(Boolean)
-		.map((line) => JSON.parse(line) as TaskPublicEvent);
-	if (
-		!events.length ||
-		events.some((event) => !event || typeof event.type !== 'string' || !event.type)
-	)
-		throw new Error('Invalid structured response.');
-	return events;
 }
 function taskFailure(
 	provider: 'claude' | 'codex',

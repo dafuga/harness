@@ -1,17 +1,42 @@
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
-import type { TaskRunInput } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
+import type { TaskSelection } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import type {
 	TaskFailureDiagnostic,
 	TaskPrelaunchFailureCategory,
-	TaskProcessResult
+	TaskProcessInput,
+	TaskProcessResult,
+	TaskPublicEvent
 } from '../ModuleTaskRunnerAdapter.types';
 import { resourceWork } from '../../../utils/execution-runtimes/resourceWork';
 import type { ResourceContext } from '../../../core/execution-runtimes/resourceTypes';
 const MAX_STDERR_CHARS = 24_000;
 /** Keep subscription auth on this host; never forward inherited provider keys or raw event logs. */
+export function claudeTaskCommand(selection: TaskSelection): string[] {
+	// prettier-ignore
+	return [
+		'claude', '-p', '--verbose',
+		'--output-format', 'stream-json', '--model', selection.model,
+		'--effort', selection.intelligence, '--permission-mode', 'acceptEdits',
+		'--tools', 'Read,Edit,Write,Glob,Grep,Bash', '--allowedTools', 'Read,Edit,Write,Glob,Grep,Bash',
+		'--no-session-persistence'
+	];
+}
+export function parseTaskEvents(stdout: string): TaskPublicEvent[] {
+	const events = stdout
+		.trim()
+		.split('\n')
+		.filter(Boolean)
+		.map((line) => JSON.parse(line) as TaskPublicEvent);
+	if (
+		!events.length ||
+		events.some((event) => !event || typeof event.type !== 'string' || !event.type)
+	)
+		throw new Error('Invalid structured response.');
+	return events;
+}
 export async function taskProcess(
 	command: string[],
-	input: TaskRunInput
+	input: TaskProcessInput
 ): Promise<TaskProcessResult> {
 	let admitted = false;
 	try {
@@ -31,7 +56,7 @@ export async function taskProcess(
 }
 function runTaskProcess(
 	command: string[],
-	input: TaskRunInput,
+	input: TaskProcessInput,
 	resources: ResourceContext
 ): Promise<TaskProcessResult> {
 	input.signal.throwIfAborted();
@@ -39,7 +64,7 @@ function runTaskProcess(
 	try {
 		child = spawn(command[0], command.slice(1), {
 			cwd: input.cwd,
-			env: taskEnvironment(resources),
+			env: taskEnvironment(resources, input.env ?? process.env),
 			stdio: 'pipe',
 			detached: process.platform !== 'win32'
 		});
@@ -51,12 +76,13 @@ function runTaskProcess(
 }
 function collectTaskProcess(
 	child: ChildProcessWithoutNullStreams,
-	input: TaskRunInput
+	input: TaskProcessInput
 ): Promise<TaskProcessResult> {
 	return new Promise((resolve, reject) => {
 		let stdout = '',
 			stderr = '',
-			overflow = false;
+			overflow = false,
+			spawnFailed = false;
 		const kill = () => {
 			try {
 				if (child.pid)
@@ -79,12 +105,15 @@ function collectTaskProcess(
 			stderr = `${stderr}${chunk.toString()}`.slice(-MAX_STDERR_CHARS);
 		});
 		child.stdin.on('error', () => {});
-		child.once('error', () => reject(prelaunchFailure('spawn')));
+		child.once('error', () => {
+			spawnFailed = true;
+		});
 		child.once('exit', kill);
 		child.once('close', (code) => {
 			clearTimeout(timer);
 			input.signal.removeEventListener('abort', abort);
 			if (input.signal.aborted) reject(input.signal.reason);
+			else if (spawnFailed) reject(prelaunchFailure('spawn'));
 			else if (overflow) reject(new Error('Task CLI output exceeded its bound.'));
 			else resolve({ code: code ?? 1, stdout, stderr });
 		});
@@ -106,7 +135,10 @@ function prelaunchFailure(category: TaskPrelaunchFailureCategory): Error {
 			: 'Task CLI could not be started.';
 	return Object.assign(new Error(message), { quotaRejected: false, diagnostic });
 }
-function taskEnvironment(resources: ResourceContext): Record<string, string | undefined> {
+function taskEnvironment(
+	resources: ResourceContext,
+	base: Record<string, string | undefined>
+): Record<string, string | undefined> {
 	const env: Record<string, string | undefined> = {};
 	for (const key of [
 		'PATH',
@@ -120,7 +152,7 @@ function taskEnvironment(resources: ResourceContext): Record<string, string | un
 		'TZ',
 		'SYSTEMROOT'
 	])
-		env[key] = process.env[key];
+		env[key] = base[key];
 	for (const key of [
 		'HARNESS_RESOURCE_LEASE',
 		'HARNESS_RESOURCES_HOME',

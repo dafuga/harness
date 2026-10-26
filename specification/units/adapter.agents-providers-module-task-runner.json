@@ -3,7 +3,7 @@
 	"id": "adapter.agents-providers-module-task-runner",
 	"kind": "adapter",
 	"title": "ModuleTaskRunnerAdapter",
-	"responsibility": "Execute exact-model Claude Code or Codex CLI module tasks, exposing public results and structured quota rejection without transporting provider keys.",
+	"responsibility": "Execute exact-model Claude or Codex tasks only through native isolation, fail closed before launch when scope/isolation is unavailable, and preserve safe provider diagnostics and observed usage.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -18,62 +18,93 @@
 			"ModuleTaskRunnerAdapter.command",
 			"ModuleTaskRunnerAdapter.run",
 			"TaskProcessResult",
+			"TaskProcessInput",
 			"TaskFailureCategory",
 			"ProviderFailureCategory",
 			"TaskFailureDiagnostic",
 			"TaskPrelaunchFailureCategory",
 			"TaskPublicEvent",
+			"claudeTaskCommand",
+			"parseTaskEvents",
 			"taskProcess"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ModuleTaskRunnerAdapter.constructor.execute",
-				"type": "unknown"
+				"name": "constructor.execute",
+				"type": "optional (argv:string[],input:TaskProcessInput)=>Promise<TaskProcessResult>",
+				"description": "Existing process collaborator; tests may inject without bypassing sandbox.prepare."
 			},
 			{
-				"name": "ModuleTaskRunnerAdapter.command.selection",
-				"type": "TaskSelection"
+				"name": "constructor.sandbox",
+				"type": "optional Pick<ModuleTaskSandboxAdapter,\"prepare\">",
+				"description": "Defaults real native adapter; tests inject explicit identity/fake sandbox preserving logical provider argv."
 			},
 			{
-				"name": "ModuleTaskRunnerAdapter.run.input",
-				"type": "TaskRunInput"
-			},
-			{
-				"name": "taskProcess.command",
-				"type": "string[]"
+				"name": "run.input",
+				"type": "TaskRunInput",
+				"description": "Trusted scope required for native execution. Missing scope must not call sandbox or process. Sandbox wraps exact provider argv; resource guard stays outside sandbox and uses safe outer cwd."
 			},
 			{
 				"name": "taskProcess.input",
-				"type": "TaskRunInput"
+				"type": "TaskProcessInput = TaskRunInput & {env?:Record<string,string|undefined>}",
+				"description": "Uses supplied trusted wrapper cwd/env. Resource admission and inherited lease fields stay outside the sandbox. Resolves/rejects only after owned process close."
 			}
 		],
 		"outputs": [
 			{
-				"name": "ModuleTaskRunnerAdapter.command",
-				"type": "string[]"
-			},
-			{
-				"name": "ModuleTaskRunnerAdapter.run",
-				"type": "Promise<TaskRunResult>"
-			},
-			{
-				"name": "taskProcess",
-				"type": "Promise<TaskProcessResult>"
+				"name": "run",
+				"type": "Promise<TaskRunResult>",
+				"description": "Existing selected/reported model, usage, safe diagnostics retained. Sandbox cleanup only after execute resolves/rejects and owned processes exit. Execution cwd/env supplied by sandbox; original caller scope immutable."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Prelaunch security rejection",
+				"type": "safe TaskFailureDiagnostic; no quota fallback",
+				"examples": [
+					{
+						"input": {
+							"scope": null
+						},
+						"expected": "reject before sandbox.prepare and execute; no usage/no fallback"
+					},
+					{
+						"input": {
+							"sandboxPrepare": "unsupported"
+						},
+						"expected": "no execute; safe bounded prelaunch error; no provider usage"
+					},
+					{
+						"input": {
+							"execute": "AbortError"
+						},
+						"expected": "await process rejection and cleanup once; preserve cancellation semantics"
+					}
+				]
+			},
+			{
+				"name": "Existing provider boundaries",
+				"type": "unchanged safe model/auth/permission/invalid response/unknown/quota rejection",
+				"description": "No quota flag for authentication, unavailable model, isolation or unknown failures. Exact explicit model/intelligence preserved."
 			}
 		]
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.agents-providers-module-task-launch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-sandbox",
 			"via": "import",
 			"origin": "derived"
 		},
