@@ -53,7 +53,7 @@ const validateModule = (manifest: any, task: ModuleTaskInput): string[] => {
 		throw new Error(`Module ${task.module} has no safe owned source scope`);
 	if (manifest.responsibilityOrigin === 'derived' && !task.moduleGoal)
 		throw new Error(`Task ${task.id} requires a module goal`);
-	const moduleContract = { ...manifest.contract };
+	const moduleContract = { ...manifest.contract, responsibility: manifest.responsibility };
 	delete moduleContract.origin;
 	taskInputSchema.parse({ ...task, wantedContract: moduleContract });
 	return sources;

@@ -48,7 +48,7 @@
 			{
 				"name": "ModuleTaskServerService.submit",
 				"type": "Promise<{ created: string[]; reused: string[]; commit: string | undefined }>",
-				"description": "Returns created and reused task ID arrays from the queue merge and the repository update commit, which may be undefined. Equivalent queued definitions are reused; conflicting feature or task definitions reject. It does not return feature or task objects. The service prepares all records and calls repository.update once with the selected tree revision after plan, module and metadata checks; the repository dependency contract does not specify compare-and-swap semantics. It schema-validates a task using the current module contract with its origin removed, but does not compare that contract to the submitted wantedContract."
+				"description": "Returns created and reused task ID arrays from the queue merge and the repository update commit, which may be undefined. Equivalent queued definitions are reused; conflicting feature or task definitions reject. It does not return feature or task objects. The service prepares all records and calls repository.update once with the selected tree revision after plan, module and metadata checks; the repository dependency contract does not specify compare-and-swap semantics. It schema-validates a task using the current module contract with root responsibility included and origin removed, but does not compare that contract to the submitted wantedContract."
 			},
 			{
 				"name": "ModuleTaskServerService.run",
