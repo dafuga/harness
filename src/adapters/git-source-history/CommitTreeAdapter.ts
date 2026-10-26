@@ -7,7 +7,10 @@ import { cachedBlobText, keepBlobText } from './commit-tree-adapter/blobTexts';
 /** Reads the files of one exact commit straight from the object database. */
 export class CommitTreeAdapter implements SourceTree {
 	private listed: Promise<TreeEntry[]> | undefined;
-	private readonly waiting = new Map<string, Array<(text: string) => void>>();
+	private readonly waiting = new Map<
+		string,
+		Array<{ resolve: (text: string) => void; reject: (error: unknown) => void }>
+	>();
 	private readonly texts = new Map<string, Promise<string>>();
 	private flushing = false;
 
@@ -46,8 +49,8 @@ export class CommitTreeAdapter implements SourceTree {
 		if (known) return known;
 		const cached = cachedBlobText(`${this.format}/${entry.hash}`);
 		if (cached !== undefined) return cached;
-		const pending = new Promise<string>((resolve) => {
-			this.waiting.set(entry.hash, [...(this.waiting.get(entry.hash) ?? []), resolve]);
+		const pending = new Promise<string>((resolve, reject) => {
+			this.waiting.set(entry.hash, [...(this.waiting.get(entry.hash) ?? []), { resolve, reject }]);
 			if (this.flushing) return;
 			this.flushing = true;
 			setImmediate(() => void this.flush());
@@ -61,15 +64,23 @@ export class CommitTreeAdapter implements SourceTree {
 		this.waiting.clear();
 		this.flushing = false;
 		const input = [...requested.keys()].join('\n') + '\n';
-		const output = await this.git.bytes(['cat-file', '--batch'], { input });
-		let offset = 0;
-		for (const [hash, resolvers] of requested) {
-			const end = output.indexOf(10, offset);
-			const size = Number(output.subarray(offset, end).toString('utf8').split(' ')[2]);
-			const text = output.subarray(end + 1, end + 1 + size).toString('utf8');
-			offset = end + size + 2;
-			keepBlobText(`${this.format}/${hash}`, text);
-			for (const resolve of resolvers) resolve(text);
+		try {
+			const output = await this.git.bytes(['cat-file', '--batch'], { input });
+			let offset = 0;
+			for (const [hash, resolvers] of requested) {
+				const end = output.indexOf(10, offset);
+				const size = Number(output.subarray(offset, end).toString('utf8').split(' ')[2]);
+				const text = output.subarray(end + 1, end + 1 + size).toString('utf8');
+				offset = end + size + 2;
+				keepBlobText(`${this.format}/${hash}`, text);
+				for (const { resolve } of resolvers) resolve(text);
+				requested.delete(hash);
+			}
+		} catch (error) {
+			for (const [hash, resolvers] of requested) {
+				this.texts.delete(hash);
+				for (const { reject } of resolvers) reject(error);
+			}
 		}
 	}
 }

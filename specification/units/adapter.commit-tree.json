@@ -57,7 +57,7 @@
 			{
 				"name": "CommitTreeAdapter.open",
 				"type": "Promise<CommitTreeAdapter>",
-				"description": "On success returns an adapter whose readonly revision is the string returned by GitAdapter.attempt for the commit-resolving expression. The caller's root and reference are not retained as public fields."
+				"description": "Resolves the selected commit, checks the Git object format is sha1 or sha256, and returns an adapter with that revision."
 			},
 			{
 				"name": "CommitTreeAdapter.revision",
@@ -72,7 +72,7 @@
 			{
 				"name": "CommitTreeAdapter.read",
 				"type": "Promise<string>",
-				"description": "Finds an exact path match in list(), then batches its blob hash through cat-file --batch and decodes the reported blob bytes as UTF-8. Requests scheduled in the same immediate tick share one batch; duplicate hashes share one object read and resolve all waiting callers with the same text. Reads are bound to revision and do not access a mutable working tree."
+				"description": "Finds an exact selected-tree path, reuses instance and format-qualified blob caches, and batches uncached blob reads. Successful text is cached. Batch failures reject unresolved callers and permit retry."
 			},
 			{
 				"name": "cachedBlobText",
@@ -92,7 +92,7 @@
 			{
 				"name": "Git command failure",
 				"type": "Error",
-				"description": "The adapter.git contract declares Error failures for GitAdapter.attempt, run, and bytes. open propagates attempt failures; list propagates run failures and caches the rejected list Promise for that instance; read propagates list failures."
+				"description": "open propagates revision and object-format command failures; list caches its rejected Git command promise and read propagates that rejection."
 			},
 			{
 				"name": "Path absent from selected commit",
@@ -101,8 +101,13 @@
 			},
 			{
 				"name": "Batch object read failure",
-				"type": "Error from GitAdapter.bytes; not converted into a read rejection",
-				"description": "flush awaits bytes but is launched without awaiting or catching it, and read creates only a resolve callback. If bytes rejects, the flush rejection is unhandled and the affected read promises remain unsettled rather than rejecting. No retry, rollback, or recovery is declared."
+				"type": "unknown",
+				"description": "Rejects all unresolved batch reads with the original failure, clears their per-instance cached promises and permits a later retry."
+			},
+			{
+				"name": "Unsupported Git object format",
+				"type": "unknown",
+				"description": "open rejects any Git object format other than sha1 or sha256."
 			}
 		]
 	},
@@ -156,7 +161,7 @@
 						"preservesImmutableSource": true
 					}
 				},
-				"errors": ["ExpectedCliError"]
+				"errors": ["Reference does not identify a commit", "Git command failure"]
 			},
 			{
 				"id": "open.populated",
@@ -175,7 +180,7 @@
 						"preservesImmutableSource": true
 					}
 				},
-				"errors": ["ExpectedCliError"]
+				"errors": ["Unsupported Git object format", "Git command failure"]
 			},
 			{
 				"id": "list.empty",
@@ -211,7 +216,8 @@
 						"method": "list",
 						"preservesImmutableSource": true
 					}
-				}
+				},
+				"errors": ["Git command failure"]
 			},
 			{
 				"id": "read.empty",
@@ -230,7 +236,7 @@
 						"preservesImmutableSource": true
 					}
 				},
-				"errors": ["Error"]
+				"errors": ["Path absent from selected commit"]
 			},
 			{
 				"id": "read.populated",
@@ -249,7 +255,7 @@
 						"preservesImmutableSource": true
 					}
 				},
-				"errors": ["Error"]
+				"errors": ["Path absent from selected commit", "Batch object read failure"]
 			}
 		]
 	},
