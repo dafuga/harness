@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "helper.agents-providers-module-task-broker-files",
+	"kind": "helper",
+	"title": "moduleTaskBrokerFiles",
+	"responsibility": "Read and edit only exact assigned agent task files.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/helpers/agents-providers/moduleTaskBrokerFiles.ts"],
+		"symbols": ["moduleTaskBrokerFiles"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "moduleTaskBrokerFiles.textToFormat",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "moduleTaskBrokerFiles",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/helpers/agents-providers/moduleTaskBrokerFiles.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/helpers/agents-providers/moduleTaskBrokerFiles.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

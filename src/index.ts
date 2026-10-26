@@ -210,3 +210,5 @@ export { FeaturePlanCoverageValidator } from './validators/agents-providers/Feat
 export { moduleTaskExecution } from './helpers/agents-providers/moduleTaskExecution';
 export { ModuleTaskToolBrokerAdapter } from './adapters/agents-providers/ModuleTaskToolBrokerAdapter';
 export { featurePlanGraphUncertainty } from './helpers/agents-providers/featurePlanGraphUncertainty';
+export { moduleTaskBrokerFiles } from './helpers/agents-providers/moduleTaskBrokerFiles';
+export { moduleTaskBrokerContracts } from './helpers/agents-providers/moduleTaskBrokerContracts';
