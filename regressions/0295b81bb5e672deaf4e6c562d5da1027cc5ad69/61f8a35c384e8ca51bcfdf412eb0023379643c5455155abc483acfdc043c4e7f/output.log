@@ -1,0 +1,42 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-eCpUOf
+
+ ❯ test/services/agents-providers/module-task-analytics-service.test.ts (4 tests | 1 failed | 3 skipped) 279ms
+   ↓ committed task history emits stable IDs and excludes raw prompt text
+   ↓ prelaunch failures never become model executions or invented costs
+   ↓ missing Codex cache-write counts produce a priced range rather than a guessed bill
+   × quota fallback distinguishes a blocked second launch and corrects its prior event 273ms
+     → expected { project: 'fixture', …(9) } to match object { …(2) }
+(17 matching properties omitted from actual)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/agents-providers/module-task-analytics-service.test.ts > quota fallback distinguishes a blocked second launch and corrects its prior event
+AssertionError: expected { project: 'fixture', …(9) } to match object { …(2) }
+(17 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "action": "prelaunch-failed",[39m
+[31m+   "action": "executed",[39m
+[2m    "id": "8853754e6c17dd3394ae8bd6880788569e2dcdd7ef9eb2967bee767eb16deaa8",[22m
+[2m  }[22m
+
+ ❯ test/services/agents-providers/module-task-analytics-service.test.ts:177:50
+    175|   expect(corrected[1]).toMatchObject({ id: events[1].id, action: 'prel…
+    176|   historical.result!.error = 'Resource queue wait timed out';
+    177|   expect(taskEvents([historical], 'fixture')[1]).toMatchObject({
+       |                                                  ^
+    178|    id: events[1].id,
+    179|    action: 'prelaunch-failed'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  00:57:10
+   Duration  3.75s (transform 694ms, setup 113ms, collect 1.14s, tests 279ms, environment 0ms, prepare 25ms)
+
