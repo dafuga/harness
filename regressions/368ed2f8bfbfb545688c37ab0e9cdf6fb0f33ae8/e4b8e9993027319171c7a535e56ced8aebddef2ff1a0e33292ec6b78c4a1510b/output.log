@@ -1,0 +1,61 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-L9Jh8I
+
+ ❯ test/services/verification-evidence/test-contract.test.ts (2 tests | 2 failed) 21ms
+   × validate initialized and invalid registries against declared cases 12ms
+     → expected '' to contain 'duplicate matrix row'
+   × compare initialized contracts preserves identities unless capabilities change 3ms
+     → expected '' to contain 'duplicate matrix row'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-contract.test.ts > validate initialized and invalid registries against declared cases
+AssertionError: expected '' to contain 'duplicate matrix row'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- duplicate matrix row[39m
+
+ ❯ assertShapeRows test/support/testContractCases.ts:148:34
+    146|    : service.validate({ units: [after], scenarios: [], files: new Set(…
+    147|  };
+    148|  expect(check(second).join(' ')).toContain('duplicate matrix row');
+       |                                  ^
+    149|  if (shape !== 'api')
+    150|   expect(check({ ...second, viewports: ['desktop', 'mobile'] }).join('…
+ ❯ assertMatrixRows test/support/testContractCases.ts:101:3
+ ❯ test/services/verification-evidence/test-contract.test.ts:74:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-contract.test.ts:73:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/services/verification-evidence/test-contract.test.ts > compare initialized contracts preserves identities unless capabilities change
+AssertionError: expected '' to contain 'duplicate matrix row'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- duplicate matrix row[39m
+
+ ❯ assertShapeRows test/support/testContractCases.ts:148:34
+    146|    : service.validate({ units: [after], scenarios: [], files: new Set(…
+    147|  };
+    148|  expect(check(second).join(' ')).toContain('duplicate matrix row');
+       |                                  ^
+    149|  if (shape !== 'api')
+    150|   expect(check({ ...second, viewports: ['desktop', 'mobile'] }).join('…
+ ❯ assertMatrixRows test/support/testContractCases.ts:101:3
+ ❯ test/services/verification-evidence/test-contract.test.ts:127:9
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-contract.test.ts:124:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  21:26:59
+   Duration  2.76s (transform 156ms, setup 98ms, collect 341ms, tests 21ms, environment 0ms, prepare 22ms)
+
