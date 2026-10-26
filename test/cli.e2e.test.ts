@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { stripVTControlCharacters } from 'node:util';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -53,30 +54,27 @@ test('CLI scaffolds and checks an app project with routes', async () => {
 	}
 
 	await runCommand(['bun', 'install'], project);
-	const check = await runCommand(['bun', 'run', 'check'], project);
+	const browserConfig = join(project, 'playwright.config.ts');
+	await writeFile(
+		browserConfig,
+		(await readFile(browserConfig, 'utf8'))
+			.replaceAll('3322', String(await freePort()))
+			.replace('reuseExistingServer: true', 'reuseExistingServer: false')
+	);
+	const check = await runCommand(['bun', 'run', 'check'], project, false);
 	expect(check.stdout).toContain('Checking formatting...');
-	expect(check.stdout).toContain('Harness audit passed');
+	expect(check.exitCode).toBe(1);
+	expect(check.stdout + check.stderr).toContain("A snapshot doesn't exist");
+	const workers = stripVTControlCharacters(check.stdout).match(
+		/Running \d+ tests using \d+ workers?/
+	);
+	expect(workers, 'The generated screenshot suites reached their browser workers').not.toBeNull();
+	console.info(`Generated app: ${workers![0]}`);
+	await runCommand(['bun', 'run', 'build'], project);
+	const audit = await runCommand(['bun', 'run', 'audit'], project);
+	expect(audit.stdout).toContain('Harness audit passed');
 
-	// A port of this run's own, and no other: two runs at once must not read each other's preview.
-	const origin = `http://127.0.0.1:${await freePort()}`;
-	const listen = ['--host', '127.0.0.1', '--port', new URL(origin).port, '--strictPort'];
-	const server = spawn('bun', ['x', 'vite', 'preview', ...listen], {
-		cwd: project,
-		stdio: 'pipe'
-	});
-	const serverExited = new Promise((resolve) => server.once('exit', resolve));
-	try {
-		await waitForUrl(`${origin}/dashboard`);
-		const page = await fetch(`${origin}/dashboard`).then((response) => response.text());
-		const api = await fetch(`${origin}/api/ping`).then((response) => response.json());
-
-		expect(page).toContain('Dashboard');
-		expect(page).toContain('data-harness-view="dashboard"');
-		expect(api).toEqual({ ok: true, resource: 'ping' });
-	} finally {
-		server.kill();
-		await serverExited;
-	}
+	await assertAppRoutes(project);
 
 	await rm(root, { recursive: true, force: true });
 }, 180_000);
@@ -195,4 +193,27 @@ async function waitForUrl(url: string): Promise<void> {
 	}
 
 	throw new Error(`Timed out waiting for ${url}`);
+}
+
+async function assertAppRoutes(project: string): Promise<void> {
+	// A port of this run's own, and no other: two runs at once must not read each other's preview.
+	const origin = `http://127.0.0.1:${await freePort()}`;
+	const listen = ['--host', '127.0.0.1', '--port', new URL(origin).port, '--strictPort'];
+	const server = spawn('bun', ['x', 'vite', 'preview', ...listen], {
+		cwd: project,
+		stdio: 'pipe'
+	});
+	const serverExited = new Promise((resolve) => server.once('exit', resolve));
+	try {
+		await waitForUrl(`${origin}/dashboard`);
+		const page = await fetch(`${origin}/dashboard`).then((response) => response.text());
+		const api = await fetch(`${origin}/api/ping`).then((response) => response.json());
+
+		expect(page).toContain('Dashboard');
+		expect(page).toContain('data-harness-view="dashboard"');
+		expect(api).toEqual({ ok: true, resource: 'ping' });
+	} finally {
+		server.kill();
+		await serverExited;
+	}
 }
