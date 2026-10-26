@@ -4,7 +4,7 @@
 	"kind": "service",
 	"title": "SourceGraphService",
 	"responsibility": "Owns the SourceGraphService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -24,7 +24,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "fileNode.path",
@@ -66,10 +66,17 @@
 			},
 			{
 				"name": "SourceGraphService.build",
-				"type": "SourceGraph"
+				"type": "SourceGraph",
+				"description": "Builds file:<path>, unit:<id> and scenario:<id> nodes. Edges point from consumer to dependency: file imports, unit owns file, declared cross-runtime dependencies, scenario covers unit or proves test. File node kind copies index classification and unit is set only for an exact active owner; duplicate owners choose the last. Each uncertain reference preserves origin node/reason/detail, but drops via, typeOnly and target candidates. No missing-target validation is performed."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Incomplete ownership or unresolved target",
+				"type": "represented in graph/uncertain, not thrown",
+				"description": "Missing owner or candidate target cannot be inferred absent; consumers must not treat empty or unrelated-looking fields as proof of completeness."
+			}
+		]
 	},
 	"dependencies": [
 		{

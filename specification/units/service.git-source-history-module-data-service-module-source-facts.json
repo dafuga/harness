@@ -4,14 +4,14 @@
 	"kind": "service",
 	"title": "moduleSourceFacts",
 	"responsibility": "Owns the moduleSourceFacts service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/git-source-history/module-data-service/moduleSourceFacts.ts"],
 		"symbols": ["moduleSourceFacts"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "moduleSourceFacts.root",
@@ -29,7 +29,8 @@
 		"outputs": [
 			{
 				"name": "moduleSourceFacts",
-				"type": "unknown"
+				"type": "Promise<{declarations,reviews,registry,versions,sourceGraph,references,relationships,sourceIssues}>",
+				"description": "Builds facts against identity.commit, indexes exact source once and records sourceGraph.uncertain identically as references. On indexing failure returns unavailable registry with gap, empty graph/references and a source issue; empty uncertainty then does not prove completeness."
 			}
 		],
 		"errors": []
