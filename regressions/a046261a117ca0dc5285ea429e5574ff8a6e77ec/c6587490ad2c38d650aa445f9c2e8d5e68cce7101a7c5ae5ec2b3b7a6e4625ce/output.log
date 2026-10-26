@@ -1,0 +1,59 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run sync:shared && vitest run "$@"' -- test/design-options-run.test.ts -t "a page Plan generates three separately directed options and commits them once"
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9rIW90/packages/desktop
+
+ ❯ test/design-options-run.test.ts (5 tests | 1 failed | 4 skipped) 16ms
+   × a page Plan generates three separately directed options and commits them once 13ms
+     → expected 'Generate a realistic product design, …' not to match /normalized rectangle whole image|Top…/i
+   ↓ a Plan that asks for two options generates two
+   ↓ a failed option leaves no version and no design commit
+   ↓ a Plan cancelled during an option leaves no version and no design commit
+   ↓ a headless Plan keeps notes and generates no image, whatever count it is given
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/design-options-run.test.ts > a page Plan generates three separately directed options and commits them once
+AssertionError: expected 'Generate a realistic product design, …' not to match /normalized rectangle whole image|Top…/i
+
+- Expected: 
+/normalized rectangle whole image|Top icon navbar:/i
+
++ Received: 
+"Generate a realistic product design, matching the existing dark navy/gold Harness form factor. Top icon navbar: Pages, Shells, Components, Helpers, Configs, Services, Models. Branch/commit controls at the right. No Reports, no global Plan/App toggle. Model, CLI provider and Plan/Change controls belong inside the comment composer. Verification is only a check or X with tooltip. Source files only in Details → Source.
+Entity: Orders. State: default. Viewport: desktop.
+If a reference image is attached, revise it according to this feedback. Focus on normalized rectangle whole image; preserve the other design decisions.
+Change only the right panel
+Design option 1 of 3: Follow the proposal most directly, as its plainest reading."
+
+ ❯ assertPageReferences test/design-options-run.test.ts:153:29
+    151|   for (const [input] of f.generator.generateImage.mock.calls) {
+    152|    expect(input.prompt).toContain(request);
+    153|    expect(input.prompt).not.toMatch(/normalized rectangle whole image|…
+       |                             ^
+    154|    if (kind === 'missing') expect(input.prompt).toMatch(/no reference …
+    155|    else expect(input.prompt).toMatch(/preserve[\s\S]*outside[\s\S]*req…
+ ❯ test/design-options-run.test.ts:31:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  23:37:59
+   Duration  2.12s (transform 1.13s, setup 131ms, collect 1.84s, tests 16ms, environment 0ms, prepare 25ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1
