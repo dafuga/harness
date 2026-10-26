@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
+import type * as FileSystem from 'node:fs/promises';
 import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -8,6 +9,20 @@ import { SnapshotAdapter } from '../src/adapters/snapshot-adapter/SnapshotAdapte
 import { verifyConfigSchema } from '../src/core/verifyTypes';
 import unit from '../specification/units/adapter.snapshot.json';
 import { measureWorkload } from './support/measureWorkload';
+
+const allocation = vi.hoisted(() => ({ next: '' }));
+vi.mock('node:fs/promises', async (load) => {
+	const actual = await load<typeof FileSystem>();
+	return {
+		...actual,
+		mkdtemp: (...args: unknown[]) => {
+			if (!allocation.next) return Reflect.apply(actual.mkdtemp, undefined, args);
+			const directory = allocation.next;
+			allocation.next = '';
+			return Promise.resolve(directory);
+		}
+	};
+});
 
 /**
  * What the Hub browser tests left in the clean snapshot of 8f7e422: their dev server emulates
@@ -84,7 +99,26 @@ test('create initialized exports the committed source and cleans up failed creat
 		vi.unstubAllEnvs();
 		await rm(parent, { recursive: true, force: true });
 	}
+	await assertUnownedInventory(snapshot);
 });
+
+async function assertUnownedInventory(snapshot: SnapshotAdapter): Promise<void> {
+	const parent = await mkdtemp(join(tmpdir(), 'harness-inventory-owner-'));
+	const directory = join(parent, 'harness-snapshot-fixed');
+	const inventory = `${directory}.tracked.json`;
+	await mkdir(directory);
+	await writeFile(inventory, 'pre-existing');
+	allocation.next = directory;
+	try {
+		await expect(SnapshotAdapter.create(snapshot.directory, 'missing', [])).rejects.toThrow();
+		expect(allocation.next).toBe('');
+		expect(existsSync(inventory), 'pre-existing inventory').toBe(true);
+		expect(await readFile(inventory, 'utf8')).toBe('pre-existing');
+	} finally {
+		allocation.next = '';
+		await rm(parent, { recursive: true, force: true });
+	}
+}
 
 test('link initialized shares an existing path only once', async () => {
 	const snapshot = await hubSnapshot();

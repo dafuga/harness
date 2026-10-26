@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-26T23:08:10.974Z","name":"snapshot-inventory-ownership","goal":"Preserve any pre-existing inventory path when snapshot creation fails.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-26T23:08:11.675Z","loop":"snapshot-inventory-ownership","step":"spec","evidence":"Snapshot creation removes its sibling inventory path on any failure, even if that path existed before it."}
+{"event":"step.completed","timestamp":"2026-10-26T23:08:12.274Z","loop":"snapshot-inventory-ownership","step":"coverage","evidence":"The existing create method case checks failed-directory cleanup but does not preserve an independently existing sibling file."}
