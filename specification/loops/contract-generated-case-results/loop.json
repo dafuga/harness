@@ -2,7 +2,7 @@
 	"name": "contract-generated-case-results",
 	"goal": "Generated project example results are recorded by the normal runner without changing expected values",
 	"createdAt": "2026-10-26T21:11:42.938Z",
-	"updatedAt": "2026-10-26T21:11:44.250Z",
+	"updatedAt": "2026-10-26T21:22:50.525Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:22:49.822Z",
+			"evidence": "Harness record 0b8c69718746 on harbor-mbp-2 failed the unchanged generated greeting case because its runner emitted no result."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:22:50.525Z",
+			"evidence": "Generate a Vitest reporter that records actual case status, retry, title and tested revision; retain authored results and the existing case."
 		},
 		{
 			"id": "implement",
