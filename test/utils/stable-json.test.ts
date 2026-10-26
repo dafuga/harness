@@ -68,17 +68,58 @@ async function assertPrettierStyle(): Promise<void> {
 	const values = [
 		{ a: [], b: {}, c: ['x', 'y'], d: [{ k: 1, v: ['a'] }], e: long, f: { g: { h: 'i' } } },
 		{ text: 'quotes " and \\ slashes / plus\nnewlines', flag: true, none: null, count: 12.5 },
+		{ emptyObjects: [{}], emptyArrays: [[]], pairs: [['a', 1]], mixed: [{}, [], null] },
+		{ nested: [[['a', 'b']], [[1], [2, 3]]], objects: [[{ retained: 1 }]] },
+		...[80, 90, 100, 110].map((size) => ({ nested: [['x'.repeat(size), 1]] })),
 		...[90, 91, 92, 93, 94, 95, 96, 97, 98].map((size) => ({ key: ['a'.repeat(size - 10), 'b'] })),
 		{ nested: { deep: { list: ['a'.repeat(40), 'b'.repeat(40)] } }, last: ['z'] }
 	];
 	for (const value of values)
-		expect(stableJson(value)).toBe(await format(JSON.stringify(value, null, '\t'), options));
+		expect(stableJson(value), 'generated JSON must match project Prettier style').toBe(
+			await format(JSON.stringify(value, null, '\t'), options)
+		);
+}
+
+function assertArrayAdmission(): void {
+	const reads = { field: 0, species: 0, iterator: 0 };
+	const item = Object.create({ inherited: 'ignored' });
+	Object.defineProperty(item, 'field', {
+		enumerable: true,
+		get() {
+			return ++reads.field;
+		}
+	});
+	const values = [item],
+		prototype = Object.getPrototypeOf(item);
+	Object.defineProperty(values, 'constructor', {
+		value: {
+			get [Symbol.species]() {
+				reads.species++;
+				return Array;
+			}
+		}
+	});
+	Object.defineProperty(values, Symbol.iterator, {
+		get() {
+			reads.iterator++;
+			throw new Error('unused input iterator');
+		}
+	});
+	expect(stableJson(values)).toBe('[\n\t{\n\t\t"field": 2\n\t}\n]\n');
+	expect(reads).toEqual({ field: 2, species: 2, iterator: 0 });
+	expect(Object.getPrototypeOf(item)).toBe(prototype);
 }
 
 async function invokeStableJson(...input: never[]): Promise<string> {
 	const [argument] = input as unknown as [unknown];
 	if (fixtureMarker(argument).$fixture === 'prettier-workload') {
-		await assertPrettierStyle();
+		try {
+			assertArrayAdmission();
+			await assertPrettierStyle();
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 		return stableJson(reconstruct(fixtureMarker(argument).value));
 	}
 	return stableJson(reconstruct(argument));
