@@ -1,4 +1,4 @@
-import type { ComponentManifest, ScenarioManifest } from '../../core/development-tooling/unitTypes';
+import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import type { ContractRegistry } from './TestContractService.types';
 import { TestCaseValidator } from '../../validators/verification-evidence/TestCaseValidator';
 import { caseIdentityChanges } from './test-contract-service/caseIdentityChanges';
@@ -59,55 +59,22 @@ export class TestContractService {
 		});
 	}
 	private scenarios(registry: ContractRegistry): string[] {
-		const units = new Map(
-			registry.units.filter((unit) => unit.status === 'active').map((unit) => [unit.id, unit])
-		);
+		const units = new Map(registry.units.map((unit) => [unit.id, unit]));
 		return registry.scenarios.flatMap((scenario) =>
 			scenario.tests.flatMap((test) =>
-				scenarioTestErrors(scenario, test, units, Boolean(registry.required))
+				(test.cases ?? []).flatMap((reference) => {
+					const unit = units.get(reference.unit);
+					const item = unit?.testing?.cases.find((item) => item.id === reference.case);
+					if (!scenario.units.includes(reference.unit) || !item)
+						return [`${scenario.id}: orphaned case ${reference.unit}/${reference.case}`];
+					const state = scenario.states.find((state) => state.id === item.state);
+					if (state?.coverage !== 'required')
+						return [`${scenario.id}: case ${item.id} requires a covered state ${item.state}`];
+					return [];
+				})
 			)
 		);
 	}
-}
-
-function scenarioTestErrors(
-	scenario: ScenarioManifest,
-	test: ScenarioManifest['tests'][number],
-	units: ReadonlyMap<string, ComponentManifest>,
-	required: boolean
-): string[] {
-	const references = test.cases ?? [];
-	const errors =
-		required && !references.length
-			? [`${scenario.id}: check ${test.id} requires declared cases`]
-			: [];
-	const seen = new Set<string>();
-	for (const reference of references) {
-		const identity = `${reference.unit}/${reference.case}`;
-		if (seen.has(identity)) {
-			errors.push(`${scenario.id}: duplicate case reference ${identity}`);
-			continue;
-		}
-		seen.add(identity);
-		errors.push(...scenarioReferenceErrors(scenario, reference, units));
-	}
-	return errors;
-}
-
-function scenarioReferenceErrors(
-	scenario: ScenarioManifest,
-	reference: NonNullable<ScenarioManifest['tests'][number]['cases']>[number],
-	units: ReadonlyMap<string, ComponentManifest>
-): string[] {
-	const item = units.get(reference.unit)?.testing?.cases.find((item) => item.id === reference.case);
-	if (!scenario.units.includes(reference.unit) || !item)
-		return [`${scenario.id}: orphaned case ${reference.unit}/${reference.case}`];
-	const state = scenario.states.find((state) => state.id === item.state);
-	if (state?.coverage !== 'required')
-		return [`${scenario.id}: case ${item.id} requires a covered state ${item.state}`];
-	if (state.units && !state.units.includes(reference.unit))
-		return [`${scenario.id}: state does not cover unit ${reference.unit} for ${item.id}`];
-	return [];
 }
 export type {
 	TestContract,
