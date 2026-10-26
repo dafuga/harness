@@ -29,7 +29,8 @@
 		"inputs": [
 			{
 				"name": "constructor.config",
-				"type": "{name?:string}"
+				"type": "{name?:string,qualification?:()=>Promise<void>}",
+				"description": "Trusted in-process qualification collaborator; omission fails closed. Never populated from task data, CLI options or environment."
 			},
 			{
 				"name": "run.argv",
@@ -62,7 +63,7 @@
 			{
 				"name": "run",
 				"type": "Promise<TaskProcessResult>",
-				"description": "Requires scope, derives readonly provider/runtime paths separately without mutating input. Resolves provider executable from PATH; permits only canonical executable or known official CLI package runtime, needed Node/Bun executable, and existing per-provider local auth/config files (file metadata only, never read/copy credentials). No broad home/project/Git runtime grants or inherited API keys. Calls sandbox.prepare with exact logical argv then execute([wrapper.command,...wrapper.args],{...input,cwd:wrapper.cwd,env:wrapper.env}); awaits execution then cleanup exactly once on success, failure or cancellation. Resource admission remains in execute outside sandbox. Discovers provider-specific read-only configuration and passes exact Codex rules directory listing plus individual rules files to sandbox.prepare."
+				"description": "Before provider config discovery or sandbox preparation, require the trusted qualification callback to succeed; the production default rejects. Qualified synthetic or trusted-host execution retains exact argv, scope validation, runtime/config discovery and cleanup semantics. No unqualified provider is launched."
 			}
 		],
 		"errors": [
@@ -70,6 +71,11 @@
 				"name": "Missing scope, runtime unavailable or sandbox preparation rejection",
 				"type": "safe fixed Error with quotaRejected:false and diagnostic {category:\"permission\",phase:\"prelaunch\",nextAction:string}; no execute or provider usage",
 				"description": "Never expose arbitrary preparation error text; never launch an unrestricted fallback. Existing execution failures pass through after cleanup."
+			},
+			{
+				"name": "Unqualified worker isolation",
+				"type": "safe prelaunch Error with quotaRejected:false",
+				"description": "Default or failed qualification prevents provider config discovery, sandbox preparation and execution. Qualification of real provider tool surfaces remains outstanding."
 			}
 		]
 	},

@@ -56,13 +56,18 @@
 				"name": "command.selection",
 				"type": "TaskSelection",
 				"description": "Exact provider/model/intelligence; returned argv is for the guarded run path, not direct unwrapped execution."
+			},
+			{
+				"name": "constructor.qualification",
+				"type": "optional () => Promise<void>",
+				"description": "Third, trusted in-process host/test collaborator forwarded to launch qualification. Omission blocks all provider execution; never read from task data, CLI or environment."
 			}
 		],
 		"outputs": [
 			{
 				"name": "run",
 				"type": "Promise<TaskRunResult>",
-				"description": "Existing selected/reported model, usage, safe diagnostics retained. Sandbox cleanup only after execute resolves/rejects and owned processes exit. Execution cwd/env supplied by sandbox; original caller scope immutable."
+				"description": "Existing selected/reported model, usage, safe diagnostics retained. Sandbox cleanup only after execute resolves/rejects and owned processes exit. Execution cwd/env supplied by sandbox; original caller scope immutable. Production execution is blocked before launch until isolation is independently qualified."
 			},
 			{
 				"name": "command",

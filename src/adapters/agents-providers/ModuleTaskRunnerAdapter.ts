@@ -25,7 +25,8 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 		private readonly sandbox: Pick<
 			ModuleTaskSandboxAdapter,
 			'prepare'
-		> = new ModuleTaskSandboxAdapter()
+		> = new ModuleTaskSandboxAdapter(),
+		private readonly qualification?: () => Promise<void>
 	) {}
 	command(selection: TaskSelection): string[] {
 		if (selection.provider === 'claude') return claudeTaskCommand(selection);
@@ -37,7 +38,7 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 		];
 	}
 	async run(input: TaskRunInput): Promise<TaskRunResult> {
-		const process = await new ModuleTaskLaunchAdapter().run(
+		const process = await new ModuleTaskLaunchAdapter({ qualification: this.qualification }).run(
 			this.command(input),
 			input,
 			this.execute,

@@ -4,6 +4,8 @@ import type { ModuleTaskSandboxAdapter } from './ModuleTaskSandboxAdapter';
 
 export interface ModuleTaskLaunchAdapterConfig {
 	name?: string;
+	/** Trusted in-process host qualification; absence blocks provider access. */
+	qualification?: () => Promise<void>;
 }
 
 export type ModuleTaskLaunchProvider = 'claude' | 'codex';

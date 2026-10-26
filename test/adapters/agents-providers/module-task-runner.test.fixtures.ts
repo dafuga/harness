@@ -47,13 +47,16 @@ export const makeIdentitySandbox = (
 	})
 });
 export const identitySandbox = makeIdentitySandbox();
+const SyntheticRunner = ModuleTaskRunnerAdapter as unknown as new (
+	execute: RunnerExecuteFixture,
+	sandbox: RunnerSandboxFixture,
+	qualification?: () => Promise<void>
+) => InstanceType<RunnerConstructorFixture>;
 export const runnerFor = (
 	execute: RunnerExecuteFixture,
-	sandbox: RunnerSandboxFixture = identitySandbox
-) => {
-	const Runner = ModuleTaskRunnerAdapter as unknown as RunnerConstructorFixture;
-	return new Runner(execute, sandbox);
-};
+	sandbox: RunnerSandboxFixture = identitySandbox,
+	qualification: () => Promise<void> = async () => undefined
+) => new SyntheticRunner(execute, sandbox, qualification);
 export const invokeRunner = (
 	execute: RunnerExecuteFixture,
 	input: RunnerInputFixture = makeTaskInput(),
@@ -118,16 +121,19 @@ export const fallbackEvent = (kind: string) =>
 			result: kind === 'authentication' ? 'Authentication required' : 'Quota exhausted'
 		})
 	].join('\n');
-export const makeMissingScopeProbe = () => {
+export const makeMissingScopeProbe = (unqualified?: 'claude' | 'codex') => {
 	const prepare = vi.fn(identitySandbox.prepare);
 	const execute = vi.fn(async () => ({ code: 0, stdout: '' }));
-	const input = makeTaskInput();
-	input.scope = undefined;
+	const input = makeTaskInput(unqualified);
+	if (!unqualified) input.scope = undefined;
 	return {
 		input,
 		prepare,
 		execute,
-		run: runnerFor(execute, { ...identitySandbox, prepare }).run(input)
+		run: (unqualified
+			? new SyntheticRunner(execute, { prepare })
+			: runnerFor(execute, { prepare })
+		).run(input)
 	};
 };
 export const makePrepareRejectionProbe = () => {
@@ -161,17 +167,11 @@ export const makeWrapperProbe = () => {
 	});
 	const executeSpy = vi.fn(execute);
 	const input = makeCodexInput();
-	const before = {
-		...input,
-		scope: {
-			...input.scope!,
-			files: [...input.scope!.files],
-			readPaths: [...input.scope!.readPaths],
-			protectedPaths: [...input.scope!.protectedPaths]
-		}
-	};
-	const run = runnerFor(executeSpy, { prepare }).run(input);
+	const before = { ...input, scope: structuredClone(input.scope) };
+	const qualification = vi.fn(async () => undefined);
+	const run = runnerFor(executeSpy, { prepare }, qualification).run(input);
 	return {
+		qualification,
 		cleanup,
 		wrapper,
 		providerArgv: () => providerArgv,
@@ -184,7 +184,6 @@ export const makeWrapperProbe = () => {
 };
 export const makeCleanupProbe = (outcome: 'resolve' | 'reject' | 'cancel') => {
 	const cleanup = vi.fn(async () => undefined);
-	const sandbox = makeIdentitySandbox();
 	const prepare = vi.fn(async (request: Parameters<RunnerSandboxFixture['prepare']>[0]) => ({
 		command: request.argv[0]!,
 		args: request.argv.slice(1),
@@ -192,9 +191,8 @@ export const makeCleanupProbe = (outcome: 'resolve' | 'reject' | 'cancel') => {
 		env: { PATH: '/trusted/bin' },
 		cleanup
 	}));
-	sandbox.prepare = prepare;
 	const controller = new AbortController();
-	const execute: RunnerExecuteFixture = async (_argv, _processInput) => {
+	const execute: RunnerExecuteFixture = async () => {
 		if (outcome === 'cancel') {
 			controller.abort();
 			throw Object.assign(new Error('cancelled'), { name: 'AbortError' });
@@ -207,7 +205,7 @@ export const makeCleanupProbe = (outcome: 'resolve' | 'reject' | 'cancel') => {
 		cleanup,
 		execute: executeSpy,
 		controller,
-		run: runnerFor(executeSpy, sandbox).run(
+		run: runnerFor(executeSpy, { prepare }).run(
 			makeTaskInput('claude', 'claude-haiku-5-5', 'medium', controller.signal)
 		)
 	};

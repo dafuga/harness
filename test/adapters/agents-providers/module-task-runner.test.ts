@@ -159,6 +159,14 @@ test('missing trusted scope fails before sandbox or process launch', async () =>
 	expect(failure).not.toHaveProperty('usage');
 	expect(prepare).not.toHaveBeenCalled();
 	expect(execute).not.toHaveBeenCalled();
+	for (const provider of ['claude', 'codex'] as const) {
+		const unqualified = makeMissingScopeProbe(provider);
+		const rejection = await unqualified.run.catch((error: unknown) => error);
+		expect(rejection).toMatchObject({ quotaRejected: false });
+		expect(rejection).not.toHaveProperty('usage');
+		expect(unqualified.prepare).not.toHaveBeenCalled();
+		expect(unqualified.execute).not.toHaveBeenCalled();
+	}
 });
 
 test('sandbox preparation rejection is safe and never launches provider work', async () => {
@@ -175,6 +183,7 @@ test('sandbox preparation rejection is safe and never launches provider work', a
 test('provider execution forwards exact sandbox argv, cwd and environment', async () => {
 	const probe = makeWrapperProbe();
 	await probe.run;
+	expect(probe.qualification).toHaveBeenCalledTimes(1);
 	expect(probe.providerArgv()).toEqual(new ModuleTaskRunnerAdapter().command(probe.input));
 	expect(probe.execute.mock.calls[0]?.[0]).toEqual([probe.wrapper.command, ...probe.wrapper.args]);
 	expect(probe.execute.mock.calls[0]?.[1]).toMatchObject({

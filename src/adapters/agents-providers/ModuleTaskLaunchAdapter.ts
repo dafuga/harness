@@ -32,6 +32,12 @@ export class ModuleTaskLaunchAdapter {
 		execute: ModuleTaskLaunchExecute,
 		sandbox: ModuleTaskLaunchSandbox
 	): Promise<TaskProcessResult> {
+		try {
+			if (!this.config.qualification) throw prelaunchFailure();
+			await this.config.qualification();
+		} catch {
+			throw prelaunchFailure();
+		}
 		return runProvider(argv, input, execute, sandbox);
 	}
 }
