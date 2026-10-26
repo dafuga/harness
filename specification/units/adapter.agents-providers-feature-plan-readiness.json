@@ -3,7 +3,7 @@
 	"id": "adapter.agents-providers-feature-plan-readiness",
 	"kind": "adapter",
 	"title": "FeaturePlanReadinessAdapter",
-	"responsibility": "Verify committed source and selected design images before approving a feature plan.",
+	"responsibility": "Verify committed source and every design option before feature approval.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -20,20 +20,42 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "FeaturePlanReadinessAdapter.constructor.config",
-				"type": "FeaturePlanReadinessAdapterConfig"
+				"name": "constructor.root",
+				"type": "string"
+			},
+			{
+				"name": "constructor.dependencies",
+				"type": "optional {git?:Pick<GitAdapter,\"run\">, planning?:Pick<PlanningApi,\"readImage\">, requireMetadata?:(root:string,commit:string)=>Promise<unknown>, validator?:Pick<FeaturePlanValidator,\"validate\">}",
+				"description": "Injected test collaborators; omitted uses real GitAdapter, createPlanning, requireModuleData and FeaturePlanValidator."
+			},
+			{
+				"name": "verify.plan",
+				"type": "FeaturePlan",
+				"description": "Fully selected, schema/graph-valid plan."
 			}
 		],
 		"outputs": [
 			{
-				"name": "FeaturePlanReadinessAdapter.connect",
-				"type": "string"
+				"name": "verify",
+				"type": "Promise<void>",
+				"description": "Requires sourceCommit equal current Git HEAD, metadata admission for that commit, and successful PlanningApi.readImage for each page option with exact unitId, version, file, revision, sha256 and option. Real readImage verifies PNG and ownership. No mutations. HEAD is checked again after reads; the default collaborators are real Git, planning, committed module metadata and validator services."
+			},
+			{
+				"name": "connect",
+				"type": "string",
+				"description": "Retained adapter scaffold compatibility method."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "not ready",
+				"type": "Error",
+				"description": "Reject invalid or missing selections, stale HEAD, missing metadata and any missing, altered, mismatched or invalid image; no approval and no mutation."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
