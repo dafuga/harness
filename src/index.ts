@@ -197,3 +197,5 @@ export { PermissionsCommand } from './commands/networking-security/PermissionsCo
 export { ModuleTaskContractContextService } from './services/agents-providers/ModuleTaskContractContextService';
 export { ModuleTaskLaunchAdapter } from './adapters/agents-providers/ModuleTaskLaunchAdapter';
 export { ModuleTaskSandboxProcessAdapter } from './adapters/agents-providers/ModuleTaskSandboxProcessAdapter';
+export { FeaturePlanRepository } from './repositories/agents-providers/FeaturePlanRepository';
+export { FeaturePlanService } from './services/agents-providers/FeaturePlanService';
