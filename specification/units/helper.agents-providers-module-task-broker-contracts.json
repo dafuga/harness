@@ -11,23 +11,66 @@
 		"symbols": ["moduleTaskBrokerContracts"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "moduleTaskBrokerContracts.textToFormat",
-				"type": "string"
+				"name": "invokeBrokerCli.scope",
+				"type": "ModuleTaskToolBrokerScope",
+				"description": "Trusted sealed executable and committed contract snapshot in an isolated scope."
+			},
+			{
+				"name": "invokeBrokerCli.argv",
+				"type": "string[]",
+				"description": "Only validated units show or units list JSON arguments are supported."
+			},
+			{
+				"name": "projectBrokerContract",
+				"type": "unknown",
+				"description": "Decoded CLI unit response and expected exact unit ID."
+			},
+			{
+				"name": "projectBrokerList",
+				"type": "unknown",
+				"description": "Decoded sealed CLI index envelope {sourceCommit, units} or legacy array and optional expected kind."
 			}
 		],
 		"outputs": [
 			{
+				"name": "invokeBrokerCli",
+				"type": "Promise<unknown>",
+				"description": "Runs the sealed read-only CLI in its native sandbox with a ten-second and one-MiB combined-output limit."
+			},
+			{
+				"name": "projectBrokerContract",
+				"type": "ContractProjection",
+				"description": "Selected identity, responsibility, complete authored contract fields and examples, dependency references and consumers without unrelated source or test paths."
+			},
+			{
+				"name": "projectBrokerList",
+				"type": "ContractSummary[]",
+				"description": "Validated IDs, kinds and responsibilities."
+			},
+			{
+				"name": "brokerUnitId",
+				"type": "string",
+				"description": "Returns a valid unit identifier or rejects."
+			},
+			{
+				"name": "brokerKind",
+				"type": "string",
+				"description": "Returns a valid unit kind or rejects."
+			},
+			{
 				"name": "moduleTaskBrokerContracts",
-				"type": "string"
+				"type": "string",
+				"description": "Returns trimmed input text."
 			}
 		],
 		"errors": [
 			{
-				"name": "TypeError",
-				"type": "thrown"
+				"name": "invalid request or sandboxed CLI failure",
+				"type": "Error",
+				"description": "Rejects unsupported commands, malformed responses, unexpected identity, timeout and excessive output."
 			}
 		]
 	},

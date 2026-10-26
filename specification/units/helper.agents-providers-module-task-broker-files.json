@@ -3,7 +3,7 @@
 	"id": "helper.agents-providers-module-task-broker-files",
 	"kind": "helper",
 	"title": "moduleTaskBrokerFiles",
-	"responsibility": "Read and edit only exact assigned agent task files.",
+	"responsibility": "Read and update exact assigned regular files for a trusted task host.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,23 +11,46 @@
 		"symbols": ["moduleTaskBrokerFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "moduleTaskBrokerFiles.textToFormat",
-				"type": "string"
+				"name": "scope",
+				"type": "ModuleTaskToolBrokerScope",
+				"description": "Trusted canonical exclusive workspace and exact file grants."
+			},
+			{
+				"name": "readBrokerFile.path",
+				"type": "string",
+				"description": "Canonical relative assigned path."
+			},
+			{
+				"name": "writeBrokerFile.input",
+				"type": "BrokerFileWrite",
+				"description": "Assigned path, expected current SHA-256 and bounded UTF-8 replacement."
 			}
 		],
 		"outputs": [
 			{
+				"name": "readBrokerFile",
+				"type": "Promise<{text: string, sha256: string}>",
+				"description": "Reads at most 1 MiB from the assigned regular file."
+			},
+			{
+				"name": "writeBrokerFile",
+				"type": "Promise<{sha256: string}>",
+				"description": "Serializes broker writes and updates the assigned file only if its current content digest matches."
+			},
+			{
 				"name": "moduleTaskBrokerFiles",
-				"type": "string"
+				"type": "string",
+				"description": "Returns trimmed input text."
 			}
 		],
 		"errors": [
 			{
-				"name": "TypeError",
-				"type": "thrown"
+				"name": "invalid grant, path, file, text or digest",
+				"type": "Error",
+				"description": "Reject symlink or hardlink paths and stale content. Host must provide exclusive workspace ownership; writes are not crash atomic."
 			}
 		]
 	},

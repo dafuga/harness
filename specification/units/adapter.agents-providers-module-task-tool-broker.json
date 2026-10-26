@@ -3,7 +3,7 @@
 	"id": "adapter.agents-providers-module-task-tool-broker",
 	"kind": "adapter",
 	"title": "ModuleTaskToolBrokerAdapter",
-	"responsibility": "Broker contract reads and exact assigned-file edits for isolated agent tools.",
+	"responsibility": "Broker contract discovery and exact assigned-file operations for a trusted task host.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -20,20 +20,68 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ModuleTaskToolBrokerAdapter.constructor.config",
-				"type": "ModuleTaskToolBrokerAdapterConfig"
+				"name": "ModuleTaskToolBrokerAdapter.scope",
+				"type": "ModuleTaskToolBrokerScope",
+				"description": "Trusted host-provided canonical task root, exact file grants, committed contract snapshot, sealed CLI directory and isolated scratch."
+			},
+			{
+				"name": "readContract.unitId",
+				"type": "string",
+				"description": "Committed unit identifier, never a source path or command."
+			},
+			{
+				"name": "listContracts.kind",
+				"type": "string | undefined",
+				"description": "Optional validated unit kind."
+			},
+			{
+				"name": "readAssigned.path",
+				"type": "string",
+				"description": "Exact canonical relative path in the task grant."
+			},
+			{
+				"name": "writeAssigned",
+				"type": "{path: string, expectedSha256: string, text: string}",
+				"description": "Exact granted path, current content digest and bounded UTF-8 replacement."
 			}
 		],
 		"outputs": [
 			{
-				"name": "ModuleTaskToolBrokerAdapter.connect",
-				"type": "string"
+				"name": "connect",
+				"type": "string",
+				"description": "Configured broker name."
+			},
+			{
+				"name": "readContract",
+				"type": "Promise<ContractProjection>",
+				"description": "Identity, responsibility, contract fields, declared dependency references and consumers without source/test paths."
+			},
+			{
+				"name": "listContracts",
+				"type": "Promise<ContractSummary[]>",
+				"description": "Unit identities, kinds and responsibilities from the pinned committed snapshot."
+			},
+			{
+				"name": "readAssigned",
+				"type": "Promise<{text: string, sha256: string}>",
+				"description": "Exact assigned regular-file UTF-8 content and its digest."
+			},
+			{
+				"name": "writeAssigned",
+				"type": "Promise<{sha256: string}>",
+				"description": "Digest of the replacement after optimistic concurrency and file checks."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "untrusted scope, invalid input, stale hash, unsafe path or CLI failure",
+				"type": "Error",
+				"description": "Reject access or modification; no arbitrary command or unassigned file access is supported. Race resistance requires a trusted exclusively owned workspace."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
