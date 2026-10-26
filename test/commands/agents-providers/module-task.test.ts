@@ -7,7 +7,6 @@ import { expect } from '../../verificationExpect';
 import { buildProgram } from '../../../src/cli/program';
 import { ModuleTaskCommand } from '../../../src/commands/agents-providers/ModuleTaskCommand';
 import { measureWorkload } from '../../support/measureWorkload';
-
 const fullPlan = {
 	schemaVersion: 1,
 	feature: { id: 'contract-first-execution', goal: 'Run scoped work', tldr: 'Complete plan.' },
@@ -55,8 +54,17 @@ test('module task commands retain the existing evidence-based task check', () =>
 		expect(task.commands.find((c) => c.name() === 'add')!.options.map((o) => o.long)).toEqual(
 			expect.arrayContaining(['--input', '--model', '--intelligence', '--assignee'])
 		);
+		let help = '';
+		task.exitOverride().configureOutput({
+			writeOut: (text) => {
+				help += text;
+			},
+			writeErr: () => {}
+		});
+		expect(() => task.parse(['plan', '--help'], { from: 'user' })).toThrow();
+		expect(help).toContain('task plan');
+		for (const command of ['draft', 'show', 'select', 'approve']) expect(help).toContain(command);
 	}));
-
 test('serve delegates the full plan and repeated module filter exactly once', async () => {
 	const service = { add: vi.fn() };
 	const server = {
@@ -84,7 +92,6 @@ test('serve delegates the full plan and repeated module filter exactly once', as
 	]);
 	expect(service.add).not.toHaveBeenCalled();
 });
-
 test('invalid plan JSON fails before server delegation', async () => {
 	const service = { add: vi.fn() };
 	const server = { run: vi.fn(async () => ({ status: 'idle' })) };
@@ -94,7 +101,6 @@ test('invalid plan JSON fails before server delegation', async () => {
 	expect(server.run).not.toHaveBeenCalled();
 	expect(service.add).not.toHaveBeenCalled();
 });
-
 test('serve propagates server rejection without manual fallback', async () => {
 	const failure = new Error('server rejected plan');
 	const service = { add: vi.fn() };
@@ -107,7 +113,6 @@ test('serve propagates server rejection without manual fallback', async () => {
 	expect(server.run).toHaveBeenCalledTimes(1);
 	expect(service.add).not.toHaveBeenCalled();
 });
-
 const restoreSignalListeners = (
 	event: 'SIGINT' | 'SIGTERM',
 	baseline: Function[],
