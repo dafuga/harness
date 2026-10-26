@@ -2,7 +2,7 @@
 	"name": "scenario-case-admission",
 	"goal": "Reject scenario tests without their declared standard cases when the test policy is required.",
 	"createdAt": "2026-10-26T23:15:46.046Z",
-	"updatedAt": "2026-10-26T23:16:04.473Z",
+	"updatedAt": "2026-10-26T23:18:04.935Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:18:01.928Z",
+			"evidence": "Red 05ab08f3e8e3 at 6e176d0b9a shows a required scenario without case references was admitted."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:18:03.176Z",
+			"evidence": "Commit 16be09ac2d requires unique, active and state-scoped case references when the policy is enabled."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:18:04.935Z",
+			"evidence": "Green 8ae6a8d28a7d passes the same unchanged registered case and environment."
 		},
 		{
 			"id": "verify",

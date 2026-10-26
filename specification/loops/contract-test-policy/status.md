@@ -570,3 +570,35 @@ The baseline-preparation fixture changes remain uncommitted. Real reviewed page
 baselines and general evidence-backed baseline retrieval remain open, as do the
 suite migration, worker qualification, memory-safe full history reconstruction,
 other-laptop aggregate check, current-main Explorer/audio inspection and delivery.
+
+## Continuation: scenario case admission
+
+An existing expectation-service case still used a function manifest as an API.
+Commit `28252945cc` indexes an actual endpoint for the same registered case and
+preserves its complete JSON and type-change assertions. Capture `ef43b6df9fa3`
+passes nine focused contract, expectation, validator and readability cases.
+
+The test-contract service also admitted a scenario check with no case reference,
+leaving its execution gate with no selected cases. The existing validate method
+case now covers missing, duplicate, inactive, orphaned and state-excluded
+references, without changing its title or count. Test-only `6e176d0b9a` failed
+in matched red `05ab08f3e8e3`; source-only `16be09ac2d` passed unchanged in green
+`8ae6a8d28a7d`. Explicit references are required when standardized testing is
+enabled; legacy unreferenced scenarios remain readable while it is disabled.
+The scenario guide and workload measurement followed in `5d26f4e0a0`.
+
+Mutant `7f4f65fa49` failed capture `7133c57d7185`; restored `83659e87f2` had the
+same tree as `5d26f4e0a0` and passed capture `d082ae0f0585`. Focused capture
+`d4e0a65c4cd8` passed nine cases and the scenario info command. At that commit,
+TestContractService has 12,331 source bytes, 332 lines, complexity 102 and five
+dependencies; its scenario-reference workload took 0.864 ms and observed
+192,577,536 bytes whole-worker RSS. The static guide has 13,821 bytes, 208 lines,
+complexity zero and one dependency. Neither emits a separate module artifact.
+Full verification remains pending.
+
+The newer worker implementation's synthetic Mac sandbox and launch cases passed
+five cases with one non-Mac case skipped at its separate worktree. They establish
+neither a real model's execution identity nor trusted provider qualification;
+worker launch remains blocked and no model was substituted. The partial baseline
+fixture has been formatted and split to meet function limits but remains
+uncommitted and still lacks real reviewed screenshot cases.
