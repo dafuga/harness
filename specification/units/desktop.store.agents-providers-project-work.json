@@ -3,30 +3,49 @@
 	"id": "desktop.store.agents-providers-project-work",
 	"kind": "store",
 	"title": "projectWork",
-	"responsibility": "Owns the projectWork store unit.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Refresh the selected project feature work snapshot without crossing project selections.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/lib/stores/agents-providers/projectWork.svelte.ts"],
 		"symbols": ["createProjectWorkStore"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "createProjectWorkStore.initialValue",
-				"type": "unknown"
+				"name": "createProjectWorkStore.workspace",
+				"type": "Workspace",
+				"description": "Reactive selected project and optional projectWork bridge. Snapshot visibility is bound to exact project, bridge and reader capability."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createProjectWorkStore",
-				"type": "unknown"
+				"type": "ProjectWorkStore",
+				"description": "Reactive snapshot, error and loading getters; refresh() reads the current scoped bridge and ignores stale replies; listen() refreshes visible pages on a five-second interval and returns idempotent cleanup. A same-project same-bridge transient failure retains the prior snapshot with an error; switching project or bridge hides it immediately."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "unavailable or failed work read",
+				"type": "visible error",
+				"description": "Never fabricates a snapshot; prior data is retained only for the same live project and bridge."
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-feature-work",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/lib/stores/agents-providers/projectWork.svelte.ts",
