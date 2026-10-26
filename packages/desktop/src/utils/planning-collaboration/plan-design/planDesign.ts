@@ -55,19 +55,46 @@ function imageNotes(context: RunContext, revised: string | null, proposal: strin
 	return notes;
 }
 
-async function referenceImage(context: RunContext, draft: DesignDraft, directory: string) {
-	if (!draft.revises) return null;
-	const reference = join(directory, 'reference.png');
-	await writeFile(
-		reference,
-		await context.planning.image({
-			entityId: draft.entityId,
-			version: draft.revises.version,
-			sha256: draft.revises.imageSha256,
-			revision: context.revision.commit,
-			option: draft.revises.option
-		})
+function wantedReference(context: RunContext, draft: DesignDraft) {
+	const version = context.entity.versions.find(
+		(item) => item.version === context.entity.latestVersion
 	);
+	const image =
+		version?.images.find(
+			(item) => item.state === draft.state && item.viewport === draft.viewport
+		) ?? version?.images[0];
+	return version && image
+		? {
+				version: version.version,
+				imageSha256: image.sha256,
+				option: image.option
+			}
+		: undefined;
+}
+
+async function referenceImage(context: RunContext, draft: DesignDraft, directory: string) {
+	const selected = draft.revises ?? wantedReference(context, draft);
+	const bytes = selected
+		? await context.planning.image({
+				entityId: draft.entityId,
+				version: selected.version,
+				sha256: selected.imageSha256,
+				revision: context.revision.commit,
+				option: selected.option
+			})
+		: await context.currentImage?.();
+	if (context.signal.aborted) throw new RunCancelled();
+	if (!bytes?.byteLength) {
+		context.emit({
+			runId: context.id,
+			kind: 'status',
+			phase: 'generating',
+			detail: 'No wanted or current image reference is available; generating without a reference.'
+		});
+		return null;
+	}
+	const reference = join(directory, 'reference.png');
+	await writeFile(reference, bytes);
 	return reference;
 }
 
@@ -123,8 +150,8 @@ async function generatedOptions(
 export async function planDesign(context: RunContext, prompt: string) {
 	const draft = draftFor(context, prompt),
 		directory = await mkdtemp(join(tmpdir(), 'harness-design-'));
-	const count = draft.notes === undefined ? designCount(context.request) : 0;
 	try {
+		const count = draft.notes === undefined ? designCount(context.request) : 0;
 		if (count === 1) draft.bytes = await generatedBytes(context, draft, directory);
 		if (count > 1) await generatedOptions(context, draft, directory, count);
 		if (context.signal.aborted) throw new RunCancelled();

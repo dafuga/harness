@@ -14,6 +14,8 @@ export interface RunContext {
 	runner: AgentRunner;
 	generator: ImageGenerator;
 	imageModel: string;
+	/** Trusted screenshot bytes for the current page at the pinned revision. */
+	currentImage?: () => Promise<Uint8Array | null>;
 	signal: AbortSignal;
 	emit: (event: RunEvent) => void;
 	failureRecorded?: boolean;

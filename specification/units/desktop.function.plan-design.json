@@ -33,7 +33,7 @@
 			{
 				"name": "planDesign",
 				"type": "Promise<string>",
-				"description": "For pages/layouts/components, generates 1–10 options (three by default) sequentially and saves a design version. A reference is used only when the selected thread names a version and image hash: planning.image reads exact revision/hash/option bytes, writes reference.png in an owned temporary directory, and passes that local path to every generateImage call. No thread reference silently passes null; latest wanted designs and recorded current screenshots are not selected automatically. Saved options have no preferred flag. Returns Saved <version> for review."
+				"description": "For pages/layouts/components, generates 1–10 options (three by default) sequentially and saves a design version. Prefers an anchored thread image, otherwise the latest wanted design image matching state/viewport when possible; reads exact version/hash/revision/option bytes through planning.image. If no wanted image exists, uses optional trusted currentImage bytes. Writes the reference to an owned temporary file and passes it to every generator call; when unavailable emits an explicit status and uses no reference. Saved options themselves have no preferred flag; feature plans carry preference. Returns Saved <version> for review."
 			}
 		],
 		"errors": [
@@ -45,7 +45,7 @@
 			{
 				"name": "reference, generator or persistence failure",
 				"type": "propagated Error",
-				"description": "Reference/image generation failures occur before design save. Message persistence may fail after design save; no rollback. Invalid designOptions is checked after temp-directory creation but before cleanup block and can leave that directory."
+				"description": "Reference/image generation failures occur before design save. Invalid design option counts and cancellation clean owned temporary paths. Message persistence can fail after a design is saved; no rollback."
 			}
 		]
 	},
