@@ -679,3 +679,27 @@ The shared preview at port 5690 currently shows "Missing committed module data"
 for both main `395e517bd7` and the older prepared task-branch `6e1db0b364`.
 The original main tab was restored. Neither view proves the current task head,
 and Tests, Examples, History and playable-audio browser inspection remain open.
+
+## Continuation: authored adapter results
+
+`6ae0feac2b` registers the two existing DesktopIntegrityAdapter cases for the
+experimental copy and original-app refusal. The temporary copy is now removed
+in `finally`, and the same case also checks a missing plist. Its retained capture
+`9c20cf286828` passed both cases and the readability guard. The copy-digest
+workload took 3.90 ms and observed 94,552,064 bytes whole-worker RSS; the adapter
+has 1,627 source bytes, 36 lines, complexity six and four dependencies, with no
+separately emitted artifact.
+
+`ab9d56da2c`, `e0d2f17c7a` and `ba7c3f22cb` bind catalog, integrity, CPU and
+checkpoint assertions to authored results. Dynamic CPU counters and Git commit
+IDs are explicitly described as stable test projections. The existing case
+titles and counts did not change. A fresh inventory reports 1,118 suite files,
+4,610 declarations, 51 standardized units, 706 registered cases and 6,094 gaps,
+including 172 unreferenced scenario checks.
+
+Committed capture `5b1b36eead46` at `ba7c3f22cb` passed 26 focused cases,
+registry validation for 1,827 units with 166 uncertain references, root
+typecheck and audit. Nine unit-specific reasons for `75c22c877a..ba7c3f22cb`
+are retained in Git notes. This is focused proof, not the required aggregate
+or other-laptop E2E verdict. The uncommitted baseline fixture still needs real
+reviewed screenshot cases and a durable baseline workflow.
