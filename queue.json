@@ -6371,7 +6371,7 @@
 			},
 			"sourceCommit": "6591099341ac0f3d0f5de2f1a439d854162f2719",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "running",
+			"status": "review",
 			"reviews": [],
 			"createdAt": "2026-10-25T20:59:30.146Z",
 			"claim": {
@@ -6396,6 +6396,61 @@
 					}
 				}
 			],
+			"result": {
+				"provider": "claude",
+				"model": "claude-haiku-5-5",
+				"intelligence": "max",
+				"reportedModel": "claude-haiku-5-5",
+				"text": "Activity registration is blocked, and I did not install anything to get around it. Two files are changed and uncommitted: the test now registers eight helper examples, and a proposed full manifest sits in the fixture path.\n\n**Blocked:** Harness activity registration and heartbeat did not run. `bun run dev -- info activity` fails at load with `Cannot find module '@electron/asar'`. The package is declared in `package.json` but not installed in this worktree or the main checkout, and installing is out of scope. No activity id exists yet.\n\n## Changed (uncommitted)\n\n- **`test/utils/comparison-differences.test.ts:10`**: the three `test()` bodies become one `registerExamples(test, manifest as ComponentManifest, { comparisonDifferences })` call. The callable is still imported through `src/services/budget-service/comparisonDifferences`, the alias the original used.\n- **`test/fixtures/contract-migration/comparison-differences-examples.json`** (new): a full proposed copy of `specification/units/function.comparison-differences.json`. Everything except `testing` and `contract.errors` matches HEAD, checked by parse-comparing.\n\nThe `testing` block uses the `helper` shape, with 3 states, 8 props, and 8 examples. Each example has one case, with a stable ID such as `incomplete.missing-metadata` and the title `comparisonDifferences: <name>`. Each case carries its fixture path. I created no support files, because every fixture is plain JSON and missing fields are simply omitted keys.\n\n## Original assertions\n\n| Original test | Now |\n|---|---|\n| identical definitions → comparable, `[]` | `comparable.identical` |\n| bare metadata → incomplete, 5 gap messages in order (unit difference hidden) | `incomplete.missing-metadata` |\n| invalid sampling → incomplete, one message | `incomplete.invalid-context` |\n| six differences, checked by first word | `incompatible.ordered-differences`: full six messages; the first-word check follows from them |\n| custom metric, same units → comparable | `comparable.custom-metric` (now also asserts `differences: []`) |\n\nI added three rows that the contract's input text declares but the original never asserted: the known-metric unit rule, a null comparison context, and a 63-character digest. Drop them if you want a strictly migrated matrix.\n\n## Decisions for you\n\n- **Proposed `contract.errors`**: `incomplete metadata` and `incompatible definitions`. The spec has `errors: []`, and the error matrix needs declared names. Both are verdict outcomes that are returned, not thrown. Remove them and the cases' `errors` fields if you disagree.\n- **Fixture path**: when the spec is applied, re-point each case's `fixture` and the test import away from the staging path.\n- **Request digest**: the realistic baseline is the literal digest `5d7a12e7…e003ff`, the sha256 of canonical `{\"operation\":\"rank\"}`. I computed it with `shasum`, not product code. The message prefix `5d7a12e7a338` depends on it, so the test run should confirm it.\n\n## Verification (read-only)\n\n- The JSON parses, and the non-proposed fields match HEAD.\n- My self-check passed: IDs are unique and well-formed, each example maps to exactly one case with the canonical title, and every state, prop, and proposed error is covered. The digests are 12 valid 64-hex values and one deliberate 63-character value.\n- Expected messages were derived by hand from the templates in `comparisonDifferences.ts`.\n- The 481-line JSON is outside the 220-line rule, since no audit adapter scans `.json`.\n\n**Not run, per your instruction:** tests, typecheck, lint, format, build, audit, `units check`, and the registration itself. **Unverified:** the `manifest as ComponentManifest` cast, passing vitest's `test` as the registrar (same pattern as `test/case.test.ts`), Prettier formatting, the runtime count of 8, and each expected message string.\n\n**Not applicable:** pointer callables and `lfsAttributes` (this unit exports one callable), serialization and extension assertions (none existed), `helperContracts` (none, and no pure-helper claim), getter, prototype, and iterator fixtures (none existed, and JSON cannot carry them), and a benchmark (none existed; I added no `afterAll` hook).\n\n## Remaining gaps\n\n- A null or undefined `measured` or `baseline` throws a TypeError from property access. The contract doesn't declare that, so no row covers it. Decide whether to declare it as an error or document it as unsupported.\n- Not isolated: each sampling field alone, the `boundary` enum's invalid values, uppercase digests, zero sampling counts, the throughput and memory unit rules, and empty-string units.\n- The utils forwarding entries and the implementation module are not imported by the suite, as in the original.\n- No measured workload. The unit has no benchmark and `budgets.performance` is empty, so measurement evidence stays open for your decision.\n\n## Links and provenance\n\n- Unit `function.comparison-differences` (kind `function`, category `functions`). At base commit `6591099341ac0f3d0f5de2f1a439d854162f2719` the page is `/commit/6591099341ac0f3d0f5de2f1a439d854162f2719/functions/function.comparison-differences`, with history at `…/history`. I read the contract from the spec and did not open the rendered page.\n- Dependency: `function.comparison-types`, read only. Consumers from source imports: `function.budget-findings` and `module.verification`.\n- Original blobs: test `67370d2f37c1811c2e1d4be8ca11febff201fa5a`, spec `9a7960e2bd882b14d7df0b658fd85d7f28944033`.\n- Nothing committed.",
+				"worktree": "/Users/danielfugere/projects/harness/.cache/harness/task-worktrees/85566465-860d-4edd-ab0b-3f41f9dc411c",
+				"changedFiles": [
+					"test/utils/comparison-differences.test.ts",
+					"test/fixtures/contract-migration/comparison-differences-examples.json"
+				],
+				"fallback": false,
+				"finishedAt": "2026-10-26T01:32:37.563Z",
+				"attempt": "85566465-860d-4edd-ab0b-3f41f9dc411c",
+				"sourceCommit": "6591099341ac0f3d0f5de2f1a439d854162f2719",
+				"checkpointCommit": "55ebaf09ae549d8db669b5936c6dd0ee7ad1954b",
+				"usage": {
+					"inputTokens": 5929653,
+					"outputTokens": 149502,
+					"cacheReadTokens": 5699273,
+					"cacheWriteTokens": 230300,
+					"cacheWriteLongTokens": 230300,
+					"reportedCostUsd": 0.7301096499999999,
+					"reasoningTokens": null
+				},
+				"executions": [
+					{
+						"provider": "claude",
+						"model": "claude-haiku-5-5",
+						"intelligence": "max",
+						"reportedModel": "claude-haiku-5-5",
+						"usage": {
+							"inputTokens": 5929653,
+							"outputTokens": 149502,
+							"cacheReadTokens": 5699273,
+							"cacheWriteTokens": 230300,
+							"cacheWriteLongTokens": 230300,
+							"reportedCostUsd": 0.7301096499999999,
+							"reasoningTokens": null
+						},
+						"apiCost": {
+							"usd": 0.7301096499999999,
+							"minimumUsd": 0.7301096499999999,
+							"maximumUsd": 0.7301096499999999,
+							"basis": "cli-reported",
+							"rateCard": "standard-global-2026-10-25",
+							"source": "https://platform.claude.com/docs/en/about-claude/pricing",
+							"note": "CLI-reported API-equivalent token cost; actual subscription charge is unknown."
+						},
+						"status": "succeeded",
+						"startedAt": "2026-10-26T01:22:22.840Z",
+						"finishedAt": "2026-10-26T01:32:37.293Z"
+					}
+				]
+			},
 			"attempts": [
 				{
 					"provider": "claude",
