@@ -8,10 +8,8 @@ import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { TestContractService } from '../../../src/services/verification-evidence/TestContractService';
 import { indexFiles, unitOf } from '../../support/memoryTree';
 import { measureWorkload } from '../../support/measureWorkload';
-import {
-	assertCaseAdmissionInputs,
-	assertPropCaseInflation
-} from '../../support/testCaseAdmissionCases';
+import { assertCaseAdmissionInputs } from '../../support/testCaseAdmissionCases';
+import { assertDeclaredInputCapabilities } from '../../support/testCapabilityCases';
 
 const service = new TestContractService();
 async function fixture() {
@@ -78,7 +76,11 @@ test('validate initialized and invalid registries against declared cases', async
 test('compare initialized contracts preserves identities unless capabilities change', async () => {
 	const unit = await fixture();
 	assertCaseAdmissionInputs(unit, service);
-	assertPropCaseInflation(unit, service);
+	await measureWorkload(
+		'service.verification-evidence-test-contract',
+		'declared-input-capabilities',
+		() => assertDeclaredInputCapabilities(unit, service)
+	);
 	const changed = {
 		...unit,
 		testing: {

@@ -7,6 +7,8 @@ import { resolveLoopTemplate } from '../src/workflows/loopTemplates';
 import { projectFiles } from '../src/templates/project';
 import { findGuide } from '../src/guides/guide';
 import { environmentProfile } from '../src/workflows/verification-evidence/record-regression/RegressionProofService';
+import { bugRepairPolicy } from '../src/utils/development-tooling/bugRepairPolicy';
+import { measureWorkload } from './support/measureWorkload';
 
 test('regression profiles ignore volatile macOS launcher identity while retaining workload settings', () => {
 	const source = {
@@ -73,7 +75,7 @@ const standardFormGuidance = [
 ];
 
 const stableCaseGuidance = [
-	'Declare all states. New props or errors strengthen their existing row; add a row only when declaring a distinct state, example or method.',
+	'Declare all states, props and errors; add a case only when a declared capability or matrix row changes.',
 	'Do not write standalone bug regression tests.',
 	"Keep each form's case count fixed.",
 	'Add or remove a case only when the contract explicitly changes a capability',
@@ -158,6 +160,7 @@ test.each(['app', 'lib'] as const)(
 			expect(text).toContain('src/configs/<category>/');
 			for (const term of [...standardFormGuidance, ...stableCaseGuidance])
 				expect(text).toContain(term);
+			expect(text).not.toContain('New props or errors strengthen their existing row');
 			expect(text).toContain('## Stable-Case Bug Policy');
 			expect(text).toContain('Do not write standalone bug regression tests');
 			expect(text).toContain("Keep each form's case count fixed");
@@ -170,8 +173,18 @@ test.each(['app', 'lib'] as const)(
 	}
 );
 
-test('loop guide explains red-green evidence, prevention guards, and agent retries', () => {
+test('loop guide explains red-green evidence, prevention guards, and agent retries', async () => {
+	const rules = await measureWorkload('function.bug-repair-policy', 'guidance-generation', () =>
+		bugRepairPolicy()
+	);
+	expect(rules).toContain(
+		'Declare all states, props and errors; add a case only when a declared capability or matrix row changes.'
+	);
 	const guide = JSON.stringify(findGuide('loop'));
+	expect(guide).toContain(
+		'Declare all states, props and errors; add a case only when a declared capability or matrix row changes.'
+	);
+	expect(guide).not.toContain('New props or errors strengthen their existing row');
 	for (const term of [
 		'bug-fix',
 		'regression-prevention',

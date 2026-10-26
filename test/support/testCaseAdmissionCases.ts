@@ -31,25 +31,6 @@ export function observedDeclaredCases(
 	];
 }
 
-/** A prop or error name cannot create arbitrary additional rows of an existing state. */
-export function assertPropCaseInflation(unit: ContractUnit, service: TestContractService) {
-	const item = unit.testing.cases[0];
-	const added = { ...item, id: 'extra-row' };
-	const prop = {
-		...unit,
-		testing: { ...unit.testing, props: ['extra'], cases: [item, { ...added, props: ['extra'] }] }
-	};
-	const error = {
-		...unit,
-		contract: { ...unit.contract, errors: [{ name: 'Unavailable', type: 'response' }] },
-		testing: { ...unit.testing, cases: [item, { ...added, errors: ['Unavailable'] }] }
-	};
-	const observed = [prop, error].map((after) =>
-		service.compare([unit], [after]).join(' ').includes('case identities/count changed')
-	);
-	expect(observed, 'new inputs cannot inflate an existing row').toEqual([true, true]);
-}
-
 /** Observe all authored-data contradictions before the owning case asserts admission. */
 export function observedAuthoredCases(
 	validator: TestCaseValidator,
