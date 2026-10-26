@@ -73,7 +73,9 @@
 					"file": "test/adapters/cpu-process.test.ts",
 					"title": "native CPU sampler reads real monotonic counters without arguments"
 				},
-				"expected": { "kind": "void" },
+				"expected": {
+					"kind": "void"
+				},
 				"errors": ["Error"]
 			}
 		]
