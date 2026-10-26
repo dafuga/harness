@@ -1,0 +1,21 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-OeFiYa
+
+stderr | test/services/agents-providers/module-task-analytics-service.test.ts > committed task history emits stable IDs and excludes raw prompt text
+Warning: Harness module task analytics could not be recorded.
+
+stderr | test/services/agents-providers/module-task-analytics-service.test.ts > prelaunch failures never become model executions or invented costs
+Warning: Harness module task analytics could not be recorded.
+
+stderr | test/services/agents-providers/module-task-analytics-service.test.ts > prelaunch failures never become model executions or invented costs
+Warning: Harness module task analytics could not be recorded.
+
+ ✓ test/services/agents-providers/module-task-analytics-service.test.ts (3 tests) 1063ms
+   ✓ committed task history emits stable IDs and excludes raw prompt text  537ms
+   ✓ prelaunch failures never become model executions or invented costs  513ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  00:44:19
+   Duration  4.36s (transform 583ms, setup 102ms, collect 978ms, tests 1.06s, environment 0ms, prepare 24ms)
+
