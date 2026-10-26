@@ -1,0 +1,32 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Ydc7pf
+
+stdout | test/services/trusted-base.test.ts > a large history keeps ancestry checks bounded and still rejects damaged lineage
+History RSS: trusted 1436958720; one full read 898105344
+
+ ❯ test/services/trusted-base.test.ts (3 tests | 1 failed) 3257ms
+   ✓ TrustedBaseService finds the nearest revision a passing record proves 159ms
+   ✓ a later failure, a forged outcome and a record for another tree are not trusted 157ms
+   × a large history keeps ancestry checks bounded and still rejects damaged lineage 2811ms
+     → expected 1436958720 to be less than 1347158016
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/trusted-base.test.ts > a large history keeps ancestry checks bounded and still rejects damaged lineage
+AssertionError: expected 1436958720 to be less than 1347158016
+ ❯ test/services/trusted-base.test.ts:117:24
+    115|   expect(verified.found).toEqual({ commit: four, record: child.id });
+    116|   console.log(`History RSS: trusted ${verified.rss}; one full read ${b…
+    117|   expect(verified.rss).toBeLessThan(baseline.rss * 1.5);
+       |                        ^
+    118|  } finally {
+    119|   await Promise.all(extra.map((directory) => rm(directory, { recursive…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  22:35:35
+   Duration  6.54s (transform 271ms, setup 92ms, collect 528ms, tests 3.26s, environment 0ms, prepare 24ms)
+
