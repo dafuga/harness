@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-h6TieL
+
+stdout | test/services/trusted-base.test.ts > a large history keeps ancestry checks bounded and still rejects damaged lineage
+History RSS: trusted 571375616; one full read 758202368
+
+ ✓ test/services/trusted-base.test.ts (3 tests) 3001ms
+   ✓ a large history keeps ancestry checks bounded and still rejects damaged lineage  2589ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  22:40:14
+   Duration  6.04s (transform 253ms, setup 87ms, collect 489ms, tests 3.00s, environment 0ms, prepare 23ms)
+
