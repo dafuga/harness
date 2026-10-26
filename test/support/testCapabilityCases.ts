@@ -17,7 +17,9 @@ function fixture(unit: ContractUnit, shape: 'api' | 'page' | 'component') {
 		...unit.testing.cases[0],
 		state,
 		expected,
-		...(shape === 'api' ? {} : { viewports: ['desktop'] })
+		...(shape === 'api'
+			? {}
+			: { viewports: shape === 'page' ? ['desktop', 'tablet', 'mobile'] : ['desktop'] })
 	};
 	const before = { ...unit, testing: { ...unit.testing, shape, states: [state], cases: [item] } };
 	const row = {

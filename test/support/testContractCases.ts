@@ -109,15 +109,13 @@ function assertShapeRows(
 	shape: 'api' | 'page' | 'component'
 ) {
 	const state = shape === 'component' ? 'rest' : 'ready';
-	const expected =
-		shape === 'api'
-			? { kind: 'json' as const, value: { result: 'error' } }
-			: { kind: 'screenshot' as const, file: 'error.png' };
+	const expected = matrixExpected(shape);
+	const viewports = shape === 'page' ? ['desktop', 'tablet', 'mobile'] : ['desktop'];
 	const original = {
 		...unit.testing.cases[0],
 		state,
 		expected,
-		...(shape === 'api' ? {} : { viewports: ['desktop'] })
+		...(shape === 'api' ? {} : { viewports })
 	};
 	const before = {
 		...unit,
@@ -127,6 +125,7 @@ function assertShapeRows(
 		...original,
 		id: 'error.one',
 		state: 'error',
+		...(shape === 'page' ? { viewports: ['desktop', 'tablet'] } : {}),
 		input: { limit: 0, mode: 'invalid' },
 		test: { ...original.test, title: 'error one' }
 	};
@@ -155,4 +154,10 @@ function assertShapeRows(
 			? { ...second, input: { ...second.input, limit: 1 } }
 			: { ...second, viewports: ['mobile'] };
 	expect(check(distinct), `${shape} accepts a distinct boundary or viewport`).toEqual([]);
+}
+
+function matrixExpected(shape: 'api' | 'page' | 'component') {
+	return shape === 'api'
+		? { kind: 'json' as const, value: { result: 'error' } }
+		: { kind: 'screenshot' as const, file: 'error.png' };
 }

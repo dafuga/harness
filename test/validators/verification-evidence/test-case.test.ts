@@ -116,7 +116,7 @@ function assertLayoutPageCases(unit: ComponentManifest, item: ContractCase) {
 			{
 				...item,
 				fixture: 'src/routes/blog-post/__harness/+page.svelte',
-				expected: { kind: 'screenshot', file: 'layout.png' },
+				expected: { kind: 'screenshot' as const, file: 'layout.png' },
 				viewports: ['desktop', 'tablet', 'mobile']
 			}
 		]
@@ -125,6 +125,50 @@ function assertLayoutPageCases(unit: ComponentManifest, item: ContractCase) {
 		(shape) => validator.validate(layout, { ...page, shape }).valid
 	);
 	expect(observed, 'Layouts use the existing page form').toEqual([true, false, false]);
+	assertPageViewportCoverage(unit, page);
+}
+
+function assertPageViewportCoverage(
+	unit: ComponentManifest,
+	page: { version: number; shape: string; states: string[]; cases: ContractCase[] }
+) {
+	const base = page.cases[0];
+	const error = { ...base, id: 'error', state: 'error', test: { ...base.test, title: 'error' } };
+	const matrix = { ...page, states: ['rest', 'error'], cases: [base, error] };
+	for (const kind of ['page', 'layout'] as const) {
+		const owner = { ...unit, kind };
+		expect(validator.validate(owner, matrix).errors).toEqual([]);
+		for (const state of matrix.states) {
+			const cases = matrix.cases.map((item) =>
+				item.state === state ? { ...item, viewports: ['desktop', 'tablet'] } : item
+			);
+			expect(
+				validator.validate(owner, { ...matrix, cases }).errors.join(' '),
+				`${kind} ${state} requires mobile`
+			).toContain('missing viewport mobile');
+		}
+		const alternate = {
+			...base,
+			id: 'alternate',
+			input: { disabled: true },
+			props: ['disabled'],
+			viewports: ['desktop'],
+			test: { ...base.test, title: 'alternate' }
+		};
+		expect(
+			validator
+				.validate(owner, { ...page, props: ['disabled'], cases: [base, alternate] })
+				.errors.join(' '),
+			`${kind} each distinct prop row requires every viewport`
+		).toContain('missing viewport tablet');
+		const split = ['desktop', 'tablet', 'mobile'].map((viewport) => ({
+			...base,
+			id: `rest.${viewport}`,
+			viewports: [viewport],
+			test: { ...base.test, title: viewport }
+		}));
+		expect(validator.validate(owner, { ...page, cases: split }).errors).toEqual([]);
+	}
 }
 
 async function assertMeasuredLayoutPageCases(unit: ComponentManifest, item: ContractCase) {
