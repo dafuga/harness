@@ -51,9 +51,7 @@
 				"subject": "isRecord",
 				"name": "Accept an empty object",
 				"call": "isRecord({})",
-				"input": [
-					{}
-				],
+				"input": [{}],
 				"expected": {
 					"kind": "value",
 					"value": true
@@ -145,9 +143,7 @@
 				"subject": "isRecord",
 				"name": "Refuse an empty array",
 				"call": "isRecord([])",
-				"input": [
-					[]
-				],
+				"input": [[]],
 				"expected": {
 					"kind": "value",
 					"value": false
@@ -157,11 +153,7 @@
 				"subject": "isRecord",
 				"name": "Refuse an array holding an object",
 				"call": "isRecord([{}])",
-				"input": [
-					[
-						{}
-					]
-				],
+				"input": [[{}]],
 				"expected": {
 					"kind": "value",
 					"value": false

@@ -98,9 +98,7 @@
 				"subject": "stableJson",
 				"name": "Render an empty array",
 				"call": "stableJson([])",
-				"input": [
-					[]
-				],
+				"input": [[]],
 				"expected": {
 					"kind": "value",
 					"value": "[]\n"
@@ -110,9 +108,7 @@
 				"subject": "stableJson",
 				"name": "Render an empty object",
 				"call": "stableJson({})",
-				"input": [
-					{}
-				],
+				"input": [{}],
 				"expected": {
 					"kind": "value",
 					"value": "{}\n"

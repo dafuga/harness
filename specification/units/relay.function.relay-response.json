@@ -316,10 +316,7 @@
 				"subject": "relayResponse",
 				"name": "Reject a null response status",
 				"call": "await projectResponse(relayResponse(null, {}))",
-				"input": [
-					null,
-					{}
-				],
+				"input": [null, {}],
 				"expected": {
 					"kind": "error",
 					"value": "init[\"status\"] must be in the range of 200 to 599, inclusive."
@@ -329,11 +326,7 @@
 				"subject": "relayResponse",
 				"name": "Retain default headers for null extra headers",
 				"call": "await projectResponse(relayResponse(200, {}, null))",
-				"input": [
-					200,
-					{},
-					null
-				],
+				"input": [200, {}, null],
 				"expected": {
 					"kind": "value",
 					"value": {
