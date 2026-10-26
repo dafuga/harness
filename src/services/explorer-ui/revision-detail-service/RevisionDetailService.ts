@@ -199,7 +199,6 @@ async function readCatalogs(tree: SourceTree, registry: RevisionRegistry) {
 		translations: await translationCatalog(tree, registry.units)
 	};
 }
-
 function cacheRegistry(registries: Map<string, Stored>, key: string, stored: Stored): void {
 	registries.set(key, stored);
 	if (registries.size > 4) registries.delete(registries.keys().next().value!);

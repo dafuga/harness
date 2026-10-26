@@ -57,11 +57,7 @@ export { ProviderSwitchService } from './services/agents-providers/ProviderSwitc
 export { ProviderSwitchRepository } from './repositories/agents-providers/ProviderSwitchRepository';
 export { ProviderCatalogAdapter } from './adapters/agents-providers/ProviderCatalogAdapter';
 export { CodexPickerMcpService } from './services/agents-providers/CodexPickerMcpService';
-export type {
-	PickerSnapshot,
-	SessionControl,
-	SwitchRequest
-} from './core/development-tooling/pickerTypes';
+export type { PickerSnapshot, SessionControl, SwitchRequest } from './core/pickerTypes';
 export { pickerPaths } from './cli/program/codex-picker-command/pickerPaths';
 export { pickerMcpTools } from './utils/development-tooling/pickerMcpTools';
 export { PickerPreviewService } from './cli/program/codex-picker-command/PickerPreviewService';
