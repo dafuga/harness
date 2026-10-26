@@ -65,8 +65,7 @@ async function put(root: string, path: string, content = path): Promise<void> {
 	await mkdir(dirname(join(root, path)), { recursive: true });
 	await writeFile(join(root, path), content);
 }
-/** A clean export of a commit that holds Hub source, guarded by this repository's own outputs. */
-async function hubSnapshot(extraTracked: string[] = []): Promise<SnapshotAdapter> {
+async function hubRoot(extraTracked: string[] = []): Promise<string> {
 	const root = await mkdtemp(join(tmpdir(), 'harness-hub-state-'));
 	made.push(() => rm(root, { recursive: true, force: true }));
 	for (const path of [...tracked, ...extraTracked]) await put(root, path);
@@ -74,6 +73,11 @@ async function hubSnapshot(extraTracked: string[] = []): Promise<SnapshotAdapter
 	git('init', '-q', '-b', 'main');
 	git('add', '.');
 	git(...identity, '-c', 'commit.gpgsign=false', 'commit', '-q', '-m', 'hub');
+	return root;
+}
+/** A clean export of a commit that holds Hub source, guarded by this repository's own outputs. */
+async function hubSnapshot(extraTracked: string[] = []): Promise<SnapshotAdapter> {
+	const root = await hubRoot(extraTracked);
 	const snapshot = await SnapshotAdapter.create(root, 'HEAD', declared());
 	made.push(() => snapshot.remove());
 	return snapshot;
@@ -99,10 +103,11 @@ test('create initialized exports the committed source and cleans up failed creat
 		vi.unstubAllEnvs();
 		await rm(parent, { recursive: true, force: true });
 	}
-	await assertUnownedInventory(snapshot);
+	await assertUnownedInventory(snapshot.directory, 'missing');
+	await assertUnownedInventory(await hubRoot(), 'HEAD');
 });
 
-async function assertUnownedInventory(snapshot: SnapshotAdapter): Promise<void> {
+async function assertUnownedInventory(source: string, commit: string): Promise<void> {
 	const parent = await mkdtemp(join(tmpdir(), 'harness-inventory-owner-'));
 	const directory = join(parent, 'harness-snapshot-fixed');
 	const inventory = `${directory}.tracked.json`;
@@ -110,7 +115,7 @@ async function assertUnownedInventory(snapshot: SnapshotAdapter): Promise<void> 
 	await writeFile(inventory, 'pre-existing');
 	allocation.next = directory;
 	try {
-		await expect(SnapshotAdapter.create(snapshot.directory, 'missing', [])).rejects.toThrow();
+		await expect(SnapshotAdapter.create(source, commit, [])).rejects.toThrow();
 		expect(allocation.next).toBe('');
 		expect(existsSync(inventory), 'pre-existing inventory').toBe(true);
 		expect(await readFile(inventory, 'utf8')).toBe('pre-existing');
