@@ -2,7 +2,7 @@ import type { SnapshotDrift } from './SnapshotAdapter.types';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
-import { mkdtemp, readFile, readlink, rm, symlink, writeFile } from 'node:fs/promises';
+import { mkdtemp, open, readFile, readlink, rm, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import type { TreeEntry } from '../../../core/development-tooling/sourceTypes';
@@ -38,11 +38,11 @@ export class SnapshotAdapter {
 			const hashes = await Promise.all(entries.map((entry) => snapshot.hash(entry.path)));
 			snapshot.exported.push(...entries.filter((entry, index) => hashes[index] === entry.hash));
 			const bytes = inventoryBytes(directory, tree.revision, snapshot.exported);
-			await writeFile(inventoryPath(directory), bytes, { flag: 'wx', mode: 0o600 });
+			await writeInventory(directory, bytes);
 			snapshot.inventoryHash = digest(bytes);
 			return snapshot;
 		} catch (error) {
-			await removeSnapshot(directory);
+			await rm(directory, { recursive: true, force: true });
 			throw error;
 		}
 	}
@@ -138,6 +138,18 @@ function inventoryBytes(directory: string, revision: string, entries: TreeEntry[
 			files: entries.map((entry) => entry.path)
 		})
 	);
+}
+async function writeInventory(directory: string, bytes: Buffer): Promise<void> {
+	const path = inventoryPath(directory);
+	const file = await open(path, 'wx', 0o600);
+	try {
+		await file.writeFile(bytes);
+		await file.close();
+	} catch (error) {
+		await file.close().catch(() => undefined);
+		await rm(path, { force: true });
+		throw error;
+	}
 }
 async function removeSnapshot(directory: string): Promise<void> {
 	await Promise.all([
