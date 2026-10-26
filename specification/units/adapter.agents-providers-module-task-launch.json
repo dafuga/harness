@@ -81,6 +81,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.agents-providers-module-task-provider-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.agents-providers-module-task-runner",
 			"via": "import",
 			"origin": "derived"

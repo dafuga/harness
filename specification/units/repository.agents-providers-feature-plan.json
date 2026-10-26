@@ -13,10 +13,22 @@
 		],
 		"symbols": [
 			"FeaturePlanRepository",
+			"FeaturePlanRepository.constructor",
 			"FeaturePlanRepository.find",
 			"FeaturePlanRepository.save",
+			"FeaturePlanRepository.read",
+			"FeaturePlanRepository.append",
+			"FeaturePlanRepository.approve",
+			"FeaturePlanApprovalInput",
+			"FeaturePlanReadResult",
+			"FeaturePlanWriteResult",
+			"FeaturePlanQueueRepository",
 			"RepositoryRecord",
-			"RepositoryRecord"
+			"RepositoryRecord",
+			"FeaturePlanQueueRepository",
+			"FeaturePlanApprovalInput",
+			"FeaturePlanReadResult",
+			"FeaturePlanWriteResult"
 		]
 	},
 	"contract": {
@@ -91,7 +103,13 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/repositories/agents-providers/FeaturePlanRepository.ts",

@@ -17,7 +17,8 @@ import type {
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import { ModuleTaskService } from '../../services/agents-providers/ModuleTaskService';
 import { pendingTaskResult } from '../../services/agents-providers/module-task-worker-service/taskClaim';
-import type { ModuleTaskDependencyBaseAdapter } from '../../adapters/agents-providers/ModuleTaskDependencyBaseAdapter';
+import type { ClaimedTaskExecution, ExecutionResult } from './moduleTaskExecution.types';
+export type { ClaimedTaskExecution } from './moduleTaskExecution.types';
 async function runTaskAttempts(
 	runner: TaskRunner,
 	task: ModuleTask,
@@ -130,18 +131,6 @@ async function runWithContractContext(
 	const execution = await executeScopedTask(runner, task, prepared, result, signal, context.scope);
 	const cleaned = await cleanupTaskContext(context, execution);
 	return snapshotPreparedTask(root, task, prepared, cleaned);
-}
-type ExecutionResult = Awaited<ReturnType<typeof taskWorkspace>>;
-export interface ClaimedTaskExecution {
-	root: string;
-	task: ModuleTask;
-	commit: string;
-	checkpoints: string[];
-	signal: AbortSignal;
-	preflight: ReturnType<ModuleTaskService['prepare']>;
-	runner: TaskRunner;
-	contexts: Pick<ModuleTaskContractContextService, 'create'>;
-	dependencyBase: Pick<ModuleTaskDependencyBaseAdapter, 'resolve'>;
 }
 export async function executeClaimedTask(input: ClaimedTaskExecution): Promise<ExecutionResult> {
 	const { root, task, signal, preflight } = input;

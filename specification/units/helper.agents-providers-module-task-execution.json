@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/helpers/agents-providers/moduleTaskExecution.ts"],
-		"symbols": ["moduleTaskExecution"]
+		"source": [
+			"src/helpers/agents-providers/moduleTaskExecution.ts",
+			"src/helpers/agents-providers/moduleTaskExecution.types.ts"
+		],
+		"symbols": [
+			"ClaimedTaskExecution",
+			"executeClaimedTask",
+			"moduleTaskExecution",
+			"ExecutionResult",
+			"ClaimedTaskExecution"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -38,7 +47,53 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-dependency-base",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-runner",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-contract-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker-service-dispatch-task-attempt",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker-service-task-workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/helpers/agents-providers/moduleTaskExecution.ts",

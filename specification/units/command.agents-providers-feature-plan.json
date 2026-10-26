@@ -8,7 +8,12 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/commands/agents-providers/FeaturePlanCommand.ts"],
-		"symbols": ["FeaturePlanCommand", "FeaturePlanCommand.run"]
+		"symbols": [
+			"FeaturePlanCommand",
+			"FeaturePlanCommand.constructor",
+			"FeaturePlanCommand.run",
+			"FeaturePlanCommand.register"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -74,7 +79,38 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-feature-plan-readiness",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-server",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/commands/agents-providers/FeaturePlanCommand.ts",

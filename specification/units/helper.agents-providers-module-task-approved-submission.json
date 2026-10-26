@@ -7,8 +7,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/helpers/agents-providers/moduleTaskApprovedSubmission.ts"],
-		"symbols": ["moduleTaskApprovedSubmission"]
+		"source": [
+			"src/helpers/agents-providers/moduleTaskApprovedSubmission.ts",
+			"src/helpers/agents-providers/moduleTaskApprovedSubmission.types.ts"
+		],
+		"symbols": [
+			"SubmissionDependencies",
+			"moduleTaskApprovedSubmission",
+			"mergePlan",
+			"prepareSubmission",
+			"SubmissionDependencies"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -67,7 +76,33 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.unit-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-admission",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/helpers/agents-providers/moduleTaskApprovedSubmission.ts",

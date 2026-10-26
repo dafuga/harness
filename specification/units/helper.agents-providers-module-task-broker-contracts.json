@@ -8,7 +8,14 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/helpers/agents-providers/moduleTaskBrokerContracts.ts"],
-		"symbols": ["moduleTaskBrokerContracts"]
+		"symbols": [
+			"moduleTaskBrokerContracts",
+			"brokerUnitId",
+			"brokerKind",
+			"projectBrokerContract",
+			"projectBrokerList",
+			"invokeBrokerCli"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -74,7 +81,18 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-sandbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-tool-broker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/helpers/agents-providers/moduleTaskBrokerContracts.ts",

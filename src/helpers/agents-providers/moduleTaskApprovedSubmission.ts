@@ -1,8 +1,6 @@
-import type { CommitTreeAdapter } from '../../adapters/CommitTreeAdapter';
 import {
 	featureSchema,
-	taskInputSchema,
-	type ModuleTaskRepository
+	taskInputSchema
 } from '../../repositories/agents-providers/ModuleTaskRepository';
 import type {
 	ModuleTask,
@@ -10,24 +8,10 @@ import type {
 	ModuleTaskQueue,
 	TaskFeature
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
-import type { UnitRegistryRepository } from '../../repositories/UnitRegistryRepository';
-import type { requireModuleData } from '../../services/git-source-history/module-data-service/moduleDataAdmission';
 import { ModuleTaskService } from '../../services/agents-providers/ModuleTaskService';
-import {
-	queuedTask,
-	taskGrantFiles,
-	validateTaskGrant
-} from '../../services/agents-providers/module-task-service/queuedTask';
-
-export type SubmissionDependencies = {
-	root: string;
-	repository: Pick<ModuleTaskRepository, 'read'>;
-	openTree: typeof CommitTreeAdapter.open;
-	registry: Pick<UnitRegistryRepository, 'read'>;
-	requireMetadata: typeof requireModuleData;
-	grantFiles: typeof taskGrantFiles;
-	validateGrant: typeof validateTaskGrant;
-};
+import { queuedTask } from '../../services/agents-providers/module-task-service/queuedTask';
+import type { SubmissionDependencies } from './moduleTaskApprovedSubmission.types';
+export type { SubmissionDependencies } from './moduleTaskApprovedSubmission.types';
 
 /** @pure */
 export function moduleTaskApprovedSubmission(textToFormat: string): string {

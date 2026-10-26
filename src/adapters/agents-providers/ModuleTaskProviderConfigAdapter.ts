@@ -15,14 +15,7 @@ export class ModuleTaskProviderConfigAdapter {
 
 	async paths(provider: 'codex' | 'claude'): Promise<ModuleTaskProviderConfigPaths> {
 		const home = this.config.home ?? homedir();
-		const configuredRoot =
-			provider === 'codex'
-				? (this.config.codexHome ??
-					(this.config.home === undefined ? process.env.CODEX_HOME : undefined) ??
-					join(home, '.codex'))
-				: (this.config.claudeConfigDir ??
-					(this.config.home === undefined ? process.env.CLAUDE_CONFIG_DIR : undefined) ??
-					join(home, '.claude'));
+		const configuredRoot = this.configurationRoot(provider, home);
 		const result: ModuleTaskProviderConfigPaths = { readPaths: [], exactReadDirectories: [] };
 		const root = await this.canonicalPath(configuredRoot, true);
 		if (root) {
@@ -38,6 +31,16 @@ export class ModuleTaskProviderConfigAdapter {
 			if (canonicalHome) await this.addFile(join(canonicalHome, '.claude.json'), result);
 		}
 		return result;
+	}
+
+	private configurationRoot(provider: 'codex' | 'claude', home: string): string {
+		return provider === 'codex'
+			? (this.config.codexHome ??
+					(this.config.home === undefined ? process.env.CODEX_HOME : undefined) ??
+					join(home, '.codex'))
+			: (this.config.claudeConfigDir ??
+					(this.config.home === undefined ? process.env.CLAUDE_CONFIG_DIR : undefined) ??
+					join(home, '.claude'));
 	}
 
 	private async canonicalPath(path: string, directory: boolean): Promise<string | undefined> {

@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/helpers/agents-providers/moduleTaskBrokerFiles.ts"],
-		"symbols": ["moduleTaskBrokerFiles"]
+		"symbols": ["moduleTaskBrokerFiles", "readBrokerFile", "writeBrokerFile"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -54,7 +54,13 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-tool-broker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/helpers/agents-providers/moduleTaskBrokerFiles.ts",

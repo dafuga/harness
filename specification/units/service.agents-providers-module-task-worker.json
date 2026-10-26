@@ -196,12 +196,22 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.agents-providers-module-task-dependency-base",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.agents-providers-module-task-runner",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.agents-providers-module-task-execution",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -222,16 +232,6 @@
 		},
 		{
 			"unit": "service.agents-providers-module-task-contract-context",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.agents-providers-module-task-worker-service-dispatch-task-attempt",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.agents-providers-module-task-worker-service-task-workspace",
 			"via": "import",
 			"origin": "derived"
 		}

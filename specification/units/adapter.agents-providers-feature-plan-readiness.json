@@ -15,8 +15,11 @@
 			"FeaturePlanReadinessAdapter",
 			"FeaturePlanReadinessAdapter.constructor",
 			"FeaturePlanReadinessAdapter.connect",
+			"FeaturePlanReadinessAdapter.verify",
 			"FeaturePlanReadinessAdapterConfig",
-			"FeaturePlanReadinessAdapterConfig"
+			"FeaturePlanReadinessDependencies",
+			"FeaturePlanReadinessAdapterConfig",
+			"FeaturePlanReadinessDependencies"
 		]
 	},
 	"contract": {
@@ -67,7 +70,43 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-admission",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-feature-plan-coverage",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/adapters/agents-providers/FeaturePlanReadinessAdapter.ts",

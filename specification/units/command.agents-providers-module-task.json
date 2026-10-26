@@ -57,6 +57,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "command.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.agents-providers-module-task",
 			"via": "import",
 			"origin": "derived"

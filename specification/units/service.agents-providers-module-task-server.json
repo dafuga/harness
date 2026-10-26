@@ -12,6 +12,7 @@
 			"ModuleTaskServerService",
 			"ModuleTaskServerService.constructor",
 			"ModuleTaskServerService.submit",
+			"ModuleTaskServerService.submitApproved",
 			"ModuleTaskServerService.run"
 		]
 	},
@@ -111,7 +112,22 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.agents-providers-feature-plan-readiness",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.agents-providers-module-task-approved-submission",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-feature-plan",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -122,6 +138,11 @@
 		},
 		{
 			"unit": "repository.unit-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-feature-plan",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -137,6 +158,11 @@
 		},
 		{
 			"unit": "service.git-source-history-module-data-service-module-data-admission",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-feature-plan",
 			"via": "import",
 			"origin": "derived"
 		}

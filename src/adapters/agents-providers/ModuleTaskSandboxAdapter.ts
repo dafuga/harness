@@ -80,7 +80,7 @@ async function canonicalFiles(cwd: string, files: string[]): Promise<string[]> {
 	);
 }
 
-async function canonicalScope(input: ModuleTaskSandboxInput): Promise<ModuleTaskSandboxInput> {
+function validateScopeInput(input: ModuleTaskSandboxInput): void {
 	if (
 		![
 			input.cwd,
@@ -96,6 +96,10 @@ async function canonicalScope(input: ModuleTaskSandboxInput): Promise<ModuleTask
 	if (!input.argv.length || input.argv.some((value) => !value || value.includes('\0'))) {
 		throw new Error('Invalid sandbox process arguments.');
 	}
+}
+
+async function canonicalScope(input: ModuleTaskSandboxInput): Promise<ModuleTaskSandboxInput> {
+	validateScopeInput(input);
 	const cwd = await realpath(input.cwd);
 	const files = await canonicalFiles(cwd, input.files);
 	const snapshot = await realpath(input.snapshot);

@@ -64,11 +64,7 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 					: this.codex(events, process, input);
 			return { ...result, usage };
 		} catch (error) {
-			const reportedModel =
-				(input.provider === 'claude'
-					? events.find((e) => e.type === 'system' && e.subtype === 'init')
-					: [...events].reverse().find((e) => e.type === 'turn.completed')
-				)?.model ?? null;
+			const reportedModel = failureModel(input.provider, events);
 			throw Object.assign(error instanceof Error ? error : new Error('Task execution failed.'), {
 				usage,
 				reportedModel
@@ -121,6 +117,13 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 			text: codexText(events)
 		};
 	}
+}
+function failureModel(provider: string, events: TaskPublicEvent[]): string | null {
+	const event =
+		provider === 'claude'
+			? events.find((item) => item.type === 'system' && item.subtype === 'init')
+			: [...events].reverse().find((item) => item.type === 'turn.completed');
+	return event?.model ?? null;
 }
 function rejectedQuotaEvent(event: TaskPublicEvent): boolean {
 	if (event.type === 'rate_limit_event' && event.rate_limit_info?.status === 'rejected')

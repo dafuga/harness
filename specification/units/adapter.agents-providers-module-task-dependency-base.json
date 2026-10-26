@@ -15,8 +15,13 @@
 			"ModuleTaskDependencyBaseAdapter",
 			"ModuleTaskDependencyBaseAdapter.constructor",
 			"ModuleTaskDependencyBaseAdapter.connect",
+			"ModuleTaskDependencyBaseAdapter.resolve",
 			"ModuleTaskDependencyBaseAdapterConfig",
-			"ModuleTaskDependencyBaseAdapterConfig"
+			"ModuleTaskDependencyBaseDependencies",
+			"ModuleTaskDependencyBaseInput",
+			"ModuleTaskDependencyBaseAdapterConfig",
+			"ModuleTaskDependencyBaseDependencies",
+			"ModuleTaskDependencyBaseInput"
 		]
 	},
 	"contract": {
@@ -56,7 +61,13 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/adapters/agents-providers/ModuleTaskDependencyBaseAdapter.ts",

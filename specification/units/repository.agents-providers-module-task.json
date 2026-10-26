@@ -27,6 +27,11 @@
 			"TaskExecution",
 			"TaskApiCost",
 			"TaskFeature",
+			"FeaturePlan",
+			"FeaturePlanOption",
+			"FeaturePlanPage",
+			"FeaturePlanChange",
+			"FeaturePlanApproval",
 			"ModuleTaskInput",
 			"ModuleTaskQueue",
 			"ModuleTask",
@@ -41,6 +46,11 @@
 			"wantedContractSchema",
 			"taskInputSchema",
 			"storedTaskSchema",
+			"planOptionSchema",
+			"planPageSchema",
+			"planChangeSchema",
+			"planApprovalSchema",
+			"planSchema",
 			"queueSchema"
 		]
 	},

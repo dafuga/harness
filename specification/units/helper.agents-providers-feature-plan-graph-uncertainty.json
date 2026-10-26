@@ -8,7 +8,11 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/helpers/agents-providers/featurePlanGraphUncertainty.ts"],
-		"symbols": ["featurePlanGraphUncertainty"]
+		"symbols": [
+			"featurePlanGraphUncertainty",
+			"featurePlanGraphUncertainty",
+			"featurePlanGraphUncertainty"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -38,7 +42,13 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/helpers/agents-providers/featurePlanGraphUncertainty.ts",

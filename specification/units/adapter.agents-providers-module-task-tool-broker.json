@@ -15,8 +15,15 @@
 			"ModuleTaskToolBrokerAdapter",
 			"ModuleTaskToolBrokerAdapter.constructor",
 			"ModuleTaskToolBrokerAdapter.connect",
+			"ModuleTaskToolBrokerAdapter.readContract",
+			"ModuleTaskToolBrokerAdapter.listContracts",
+			"ModuleTaskToolBrokerAdapter.readAssigned",
+			"ModuleTaskToolBrokerAdapter.writeAssigned",
 			"ModuleTaskToolBrokerAdapterConfig",
-			"ModuleTaskToolBrokerAdapterConfig"
+			"ModuleTaskToolBrokerScope",
+			"ModuleTaskToolBrokerScope",
+			"ModuleTaskToolBrokerAdapterConfig",
+			"BrokerFileWrite"
 		]
 	},
 	"contract": {
@@ -83,7 +90,18 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "helper.agents-providers-module-task-broker-contracts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.agents-providers-module-task-broker-files",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/adapters/agents-providers/ModuleTaskToolBrokerAdapter.ts",

@@ -17,6 +17,8 @@
 			"ModuleTaskSandboxProcessAdapter.connect",
 			"ModuleTaskSandboxProcessAdapter.command",
 			"ModuleTaskSandboxProcessAdapter.validateScratch",
+			"ModuleTaskSandboxProcessAdapter.arguments",
+			"ModuleTaskSandboxProcessAdapter.environment",
 			"ModuleTaskSandboxProcessAdapterConfig",
 			"ModuleTaskSandboxProcessAdapterConfig"
 		]
@@ -98,7 +100,13 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-sandbox",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/adapters/agents-providers/ModuleTaskSandboxProcessAdapter.ts",
