@@ -205,3 +205,4 @@ export { FeaturePlanReadinessAdapter } from './adapters/agents-providers/Feature
 export { FeaturePlanCommand } from './commands/agents-providers/FeaturePlanCommand';
 export { ModuleTaskCodexProfileAdapter } from './adapters/agents-providers/ModuleTaskCodexProfileAdapter';
 export { moduleTaskApprovedSubmission } from './helpers/agents-providers/moduleTaskApprovedSubmission';
+export { ModuleTaskDependencyBaseAdapter } from './adapters/agents-providers/ModuleTaskDependencyBaseAdapter';
