@@ -1,0 +1,40 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-fwU8n8
+
+ ❯ test/project-template.test.ts (5 tests | 1 failed) 1638ms
+   ✓ generated element atoms preserve native compilation and emitted runtime source 175ms
+   ✓ app projects include SvelteKit and specification files 5ms
+   × library projects include Bun TypeScript test structure 18ms
+     → The generated library registry must be canonical: expected [ Array(1) ] to deeply equal []
+   ✓ generated app code and configuration obey their formatter settings  919ms
+   ✓ generated lib code and configuration obey their formatter settings  511ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-template.test.ts > library projects include Bun TypeScript test structure
+AssertionError: The generated library registry must be canonical: expected [ Array(1) ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "Registry is stale; run harness units index --write (1: rewrite entry.index)",[39m
+[31m+ ][39m
+
+ ❯ test/project-template.test.ts:132:87
+    130|  const tree = memoryTree(Object.fromEntries(files.map(({ path, content…
+    131|  const registry = await loadUnits('/generated-library', tree);
+    132|  expect(registryErrors(registry), 'The generated library registry must…
+       |                                                                                       ^
+    133|  expect(paths).toContain('tsconfig.json');
+    134|  expect(paths).toContain('.codex/skills/harness/SKILL.md');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  21:13:19
+   Duration  4.59s (transform 321ms, setup 98ms, collect 651ms, tests 1.64s, environment 0ms, prepare 22ms)
+
