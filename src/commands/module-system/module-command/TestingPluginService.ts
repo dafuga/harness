@@ -13,7 +13,7 @@ export class TestingPluginService {
 		const entry = catalog.modules.find((item) => item.definition.id === id);
 		if (!entry?.definition.testing || !entry.installed)
 			throw new Error('Install a testing plugin before running it.');
-		if (args.some((arg) => /^(?:--headed|--debug|--ui|--config|-c)(?:=|$)/.test(arg)))
+		if (args.some((arg) => /^(?:--(?:headed|debug|ui|config)(?:=|$)|-c)/.test(arg)))
 			throw new Error('Testing plugins require their headless configuration.');
 		await new ModuleInstallService().add(root, id);
 		return resourceWork(
