@@ -1,17 +1,19 @@
 import { test } from 'vitest';
 import { assertDependencyWorker } from './module-task-dependency-worker.test.fixtures';
-import { assertDependencyClaims } from './module-task-worker.claim.test.fixtures';
+import {
+	assertApprovedWorkerScope,
+	assertDependencyClaims,
+	assertWorkspaceFailure
+} from './module-task-worker.claim.test.fixtures';
 import { expect } from '../../verificationExpect';
 import { assertWorkspacePlacement } from './module-task-workspace.test.fixtures';
 import {
 	assertAcceptedExecutions,
-	assertWorkspaceNotRun,
 	exclusiveWorkerFixture,
 	isolateAnalyticsSync,
 	mockContexts,
 	reviewFixture,
-	seededWorkerFixture,
-	workspaceFailureFixture
+	seededWorkerFixture
 } from './module-task-worker.test.fixtures';
 import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
 import { observedTaskOperation } from '../../support/taskProfiles';
@@ -193,27 +195,11 @@ test('context rejection is safe and an aborted preclaim does not write the queue
 	}
 });
 
-test('workspace preparation failure finalizes without a worktree or runner context', async () => {
-	const { f, service, input, contexts, taskWorkspaceSpy, snapshotSpy, runs, worker } =
-		await workspaceFailureFixture();
-	try {
-		const outcome = await worker.once('owner').catch(() => undefined);
-		const task = (await service.show(input.id)).task;
-		expect([outcome?.status, task.status]).toEqual(['failed', 'failed']);
-		expect(task.result).toMatchObject({
-			provider: 'codex',
-			model: 'gpt-6-luna',
-			intelligence: 'max',
-			worktree: '',
-			changedFiles: [],
-			error: expect.any(String),
-			executions: []
-		});
-		expect(task.result?.error).not.toBe('');
-		expect(task.result?.usage).toBeUndefined();
-		expect(taskWorkspaceSpy).toHaveBeenCalledOnce();
-		assertWorkspaceNotRun(contexts, [snapshotSpy.mock.calls.length, runs.calls]);
-	} finally {
-		await f.dispose();
-	}
-});
+test(
+	'workspace preparation failure finalizes without a worktree or runner context',
+	assertWorkspaceFailure
+);
+test(
+	'approved claims reject stale or unrelated work before running a provider',
+	assertApprovedWorkerScope
+);

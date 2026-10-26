@@ -1,0 +1,41 @@
+{
+	"name": "approved-worker-scope",
+	"goal": "Server-managed workers claim only the unchanged, approved feature plan tasks and never consume unrelated queue entries.",
+	"createdAt": "2026-10-26T23:27:33.519Z",
+	"updatedAt": "2026-10-26T23:28:19.530Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-26T23:28:19.530Z",
+			"evidence": "Automatic dispatch must preserve verified approval under the queue CAS, compare immutable task definitions, skip unrelated queued work, honor file and dependency exclusions, and use synthetic providers for proof."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
