@@ -9,3 +9,10 @@ export interface FeaturePlanCoverageValidatorResult {
 	affectedPages: string[];
 	missingPages: string[];
 }
+
+export type FeaturePlanImpactInput = Pick<FeaturePlan, 'sourceCommit' | 'changes'>;
+export interface FeaturePlanImpactResult {
+	valid: boolean;
+	affectedPages: string[];
+	errors: string[];
+}

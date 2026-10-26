@@ -14,8 +14,15 @@
 		"symbols": [
 			"FeaturePlanCoverageValidator",
 			"FeaturePlanCoverageValidator.validate",
+			"FeaturePlanCoverageValidator.discover",
 			"FeaturePlanCoverageValidatorResult",
-			"FeaturePlanCoverageValidatorResult"
+			"FeaturePlanImpactInput",
+			"FeaturePlanImpactResult",
+			"Unit",
+			"Change",
+			"FeaturePlanCoverageValidatorResult",
+			"FeaturePlanImpactInput",
+			"FeaturePlanImpactResult"
 		]
 	},
 	"contract": {
@@ -30,6 +37,16 @@
 				"name": "validate.data",
 				"type": "ModuleData",
 				"description": "Committed revision-bound registry, relationships and unresolved graph references."
+			},
+			{
+				"name": "discover.input",
+				"type": "Pick<FeaturePlan, sourceCommit | changes>",
+				"description": "Committed source revision and module change tree; page designs are not required."
+			},
+			{
+				"name": "discover.data",
+				"type": "ModuleData",
+				"description": "Matching committed registry, relationships and graph."
 			}
 		],
 		"outputs": [
@@ -37,6 +54,15 @@
 				"name": "validate",
 				"type": "{valid:boolean,affectedPages:string[],missingPages:string[],errors:string[]}",
 				"description": "Union direct changed pages, consuming pages from committed relationships and planned page ancestors; require a design entry for each. Requires source-bound available metadata and registered units. Reuse-only plans have no page impacts. For actual changes, block graph uncertainties reachable from active pages or unclassifiable; exclude only graph-proven unrelated references and include actionable diagnostics."
+			},
+			{
+				"name": "discover",
+				"type": "FeaturePlanImpactResult",
+				"description": "Sorted unique affected pages and independent metadata, relationship, graph and hierarchy blockers. Partial impact is never valid when blockers exist."
+			},
+			{
+				"name": "FeaturePlanImpactResult",
+				"type": "{valid:boolean,affectedPages:string[],errors:string[]}"
 			}
 		],
 		"errors": [
@@ -47,7 +73,23 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "helper.agents-providers-feature-plan-graph-uncertainty",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/validators/agents-providers/FeaturePlanCoverageValidator.ts",

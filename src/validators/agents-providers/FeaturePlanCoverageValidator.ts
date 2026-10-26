@@ -3,6 +3,8 @@ import type { FeaturePlan } from '../../repositories/agents-providers/ModuleTask
 import type { ModuleData } from '../../services/git-source-history/ModuleDataService.types';
 import type {
 	FeaturePlanCoverageValidatorResult,
+	FeaturePlanImpactInput,
+	FeaturePlanImpactResult,
 	Unit,
 	Change
 } from './FeaturePlanCoverageValidator.types';
@@ -12,13 +14,27 @@ export class FeaturePlanCoverageValidator {
 		input: FeaturePlan | Record<string, unknown>,
 		data?: ModuleData
 	): FeaturePlanCoverageValidatorResult {
+		if (!planShape(input))
+			return result(new Set(), [], ['Feature plan changes and pages are required.']);
+		const discovery = this.discover(input, data);
+		return result(
+			new Set(discovery.affectedPages),
+			(input as FeaturePlan).pages.map((page) => page.module),
+			discovery.errors
+		);
+	}
+
+	discover(
+		input: FeaturePlanImpactInput | Record<string, unknown>,
+		data?: ModuleData
+	): FeaturePlanImpactResult {
 		const errors: string[] = [];
 		const affected = new Set<string>();
-		if (!planShape(input))
-			return result(affected, [], ['Feature plan changes and pages are required.']);
+		if (!impactShape(input))
+			return impactResult(affected, ['Feature plan sourceCommit and changes are required.']);
 		if (!data || !data.registry || !Array.isArray(data.registry.units) || !data.relationships)
-			return result(affected, [], ['Committed registry and relationship metadata are required.']);
-		const plan = input as FeaturePlan;
+			return impactResult(affected, ['Committed registry and relationship metadata are required.']);
+		const plan = input as FeaturePlanImpactInput;
 		validateMetadata(
 			plan,
 			data,
@@ -35,17 +51,25 @@ export class FeaturePlanCoverageValidator {
 			collectPages(change.unit, data, units, affected, errors);
 			collectAncestors(change.unit, changes, units, affected, errors);
 		}
-		return result(
-			affected,
-			plan.pages.map((page) => page.module),
-			errors
-		);
+		return impactResult(affected, errors);
 	}
 }
 
-export type { FeaturePlanCoverageValidatorResult } from './FeaturePlanCoverageValidator.types';
+export type {
+	FeaturePlanCoverageValidatorResult,
+	FeaturePlanImpactInput,
+	FeaturePlanImpactResult
+} from './FeaturePlanCoverageValidator.types';
 
 function planShape(input: FeaturePlan | Record<string, unknown>): boolean {
+	return (
+		impactShape(input) &&
+		Array.isArray(input.pages) &&
+		input.pages.every((page) => page && typeof page.module === 'string' && page.module.length > 0)
+	);
+}
+
+function impactShape(input: FeaturePlanImpactInput | Record<string, unknown>): boolean {
 	return (
 		!!input &&
 		typeof input.sourceCommit === 'string' &&
@@ -57,10 +81,13 @@ function planShape(input: FeaturePlan | Record<string, unknown>): boolean {
 				typeof change.unit === 'string' &&
 				change.unit.length > 0 &&
 				['add', 'modify', 'remove', 'reuse'].includes(change.kind)
-		) &&
-		Array.isArray(input.pages) &&
-		input.pages.every((page) => page && typeof page.module === 'string' && page.module.length > 0)
+		)
 	);
+}
+
+function impactResult(affected: Set<string>, errors: string[]): FeaturePlanImpactResult {
+	const issues = [...new Set(errors)].sort();
+	return { valid: issues.length === 0, affectedPages: [...affected].sort(), errors: issues };
 }
 
 function result(
@@ -78,7 +105,7 @@ function result(
 }
 
 function validateMetadata(
-	plan: FeaturePlan,
+	plan: FeaturePlanImpactInput,
 	data: ModuleData,
 	errors: string[],
 	hasChanges: boolean
