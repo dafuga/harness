@@ -538,3 +538,35 @@ failure is caused by the non-Git file walker excluding `ios` directories; the
 tracked files themselves are present in the Git archive. A snapshot-aware tracked
 file inventory is still needed so registry checks can use the exact committed
 source without borrowing the working tree.
+
+## Continuation: snapshot source and ownership
+
+The archive registry blocker above is repaired. Test checkpoint `873a6aaad2`
+registered two WorkingTreeAdapter method cases and migrated four unregistered
+SnapshotAdapter tests to six declared method cases, retaining their assertions.
+The list case exposed missing tracked iOS files and wrongly included generated
+files. Matched red `2df714dc56de` and green `aee4f473e993` surround source repair
+`503d9abf60`. Capture `1cfa6a604815` passed ten cases, `units check` for 1,827
+units, root typecheck and audit inside the archive. Mutant `1597b24e07` failed
+capture `6f4baf57eb25`; the identical restored tree passed `b5b92b04d92a`.
+
+A subsequent review found that failing snapshot creation could delete a sibling
+inventory it did not own. The existing create case now checks both early failure
+and a late exclusive-create collision without adding a test title. Test-only
+`a9b0601e83` and repair `4e0d5663ef` retain matched red `c28c2602573b` and green
+`e510d3b693ad`. Mutant `ec2ac6d584` failed both preservation assertions in capture
+`415016da1c13`; restored tree `7d4b535ad7` exactly matches `f6e3291376` and
+passed capture `4074e662ed69`. Focused capture `86e1fda2f5c7` passed ten cases
+at `f6e3291376`. These records are focused proof, not a full check verdict.
+
+At `f6e3291376`, SnapshotAdapter has 7,025 bytes, 182 lines, complexity 31 and
+11 dependencies; WorkingTreeAdapter has 4,245 bytes, 115 lines, complexity 39
+and six dependencies. Neither has a separate emitted artifact. Their measured
+normal workloads took 152.30 ms and 135.65 ms respectively, with 96,321,536 and
+91,586,560 bytes whole-worker RSS. These memory observations include the runner
+and fixtures and are not isolated unit memory.
+
+The baseline-preparation fixture changes remain uncommitted. Real reviewed page
+baselines and general evidence-backed baseline retrieval remain open, as do the
+suite migration, worker qualification, memory-safe full history reconstruction,
+other-laptop aggregate check, current-main Explorer/audio inspection and delivery.

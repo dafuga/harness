@@ -2,7 +2,7 @@
 	"name": "snapshot-tracked-source",
 	"goal": "Keep exactly committed source visible to registry checks inside isolated verification snapshots.",
 	"createdAt": "2026-10-26T22:56:58.788Z",
-	"updatedAt": "2026-10-26T22:57:00.211Z",
+	"updatedAt": "2026-10-26T23:05:24.359Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:01:57.713Z",
+			"evidence": "Red 48b881ef6a5d on 873a6aaad2 omitted committed iOS source and included generated source."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:05:22.456Z",
+			"evidence": "Commit 503d9abf60 records exported paths beside the snapshot, validates them and includes inventory drift and cleanup."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:05:24.359Z",
+			"evidence": "Matched red 2df714dc56de and green aee4f473e993 use the same test and environment."
 		},
 		{
 			"id": "verify",

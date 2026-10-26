@@ -2,7 +2,7 @@
 	"name": "snapshot-inventory-ownership",
 	"goal": "Preserve any pre-existing inventory path when snapshot creation fails.",
 	"createdAt": "2026-10-26T23:08:10.974Z",
-	"updatedAt": "2026-10-26T23:08:12.274Z",
+	"updatedAt": "2026-10-26T23:11:32.302Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:09:38.228Z",
+			"evidence": "At a9b0601e83 the existing create case fails because cleanup deletes its pre-existing sibling inventory."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:10:08.664Z",
+			"evidence": "Commit 4e0d5663ef creates inventories exclusively and cleans only files owned by this snapshot."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:11:32.302Z",
+			"evidence": "Matched red c28c2602573b and green e510d3b693ad keep the same create case and environment."
 		},
 		{
 			"id": "verify",
