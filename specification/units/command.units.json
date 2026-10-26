@@ -8,7 +8,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/cli/program/UnitsCommand.ts", "src/cli/program/UnitsCommand.types.ts"],
-		"symbols": ["registerUnitsCommand", "Flags"]
+		"symbols": ["registerUnitsCommand", "DeclaredContractInput", "Flags"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -33,7 +33,22 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.working-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.unit-registry",
 			"via": "import",
 			"origin": "derived"
 		},

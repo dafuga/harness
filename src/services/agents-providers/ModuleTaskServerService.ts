@@ -2,12 +2,14 @@ import { CommitTreeAdapter } from '../../adapters/CommitTreeAdapter';
 import {
 	featureSchema,
 	taskInputSchema,
-	type ModuleTask,
-	type ModuleTaskInput,
-	type ModuleTaskQueue,
-	type TaskFeature,
 	ModuleTaskRepository
 } from '../../repositories/agents-providers/ModuleTaskRepository';
+import type {
+	ModuleTask,
+	ModuleTaskInput,
+	ModuleTaskQueue,
+	TaskFeature
+} from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import { UnitRegistryRepository } from '../../repositories/UnitRegistryRepository';
 import { requireModuleData } from '../git-source-history/module-data-service/moduleDataAdmission';
 import { ModuleTaskService } from './ModuleTaskService';
