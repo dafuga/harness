@@ -1,0 +1,219 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-7bh4u9
+
+(node:66822) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ test/cli.e2e.test.ts (5 tests | 1 failed | 4 skipped) 131438ms
+   ↓ CLI scaffolds and checks a lib project
+   ↓ CLI scaffolds and checks an app project with routes
+   ↓ CLI reports edge errors cleanly
+   ↓ CLI supports force overwrites and generated lint failures
+   × CLI installs module foundations and generates their declared resources 131433ms
+     → bun run check failed with 1
+Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-rrwySd/module-app
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90m/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-rrwySd/module-app[39m
+
+ [32m✓[39m test/smoke.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 1[2mms[22m[39m
+ [32m✓[39m test/mailers/email/welcome.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m test/services/rust-wasm/metrics.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m test/services/email/email.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m test/services/billing/invoice.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m test/repositories/offline/notes.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m test/services/offline/offline-stream.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m test/services/offline/offline-lifecycle.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 36[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m      Tests [22m [1m[32m11 passed[39m[22m[90m (11)[39m
+[2m   Start at [22m 02:16:09
+[2m   Duration [22m 708ms[2m (transform 533ms, setup 0ms, collect 940ms, tests 69ms, environment 1ms, prepare 716ms)[22m
+
+vite v6.4.5 building SSR bundle for production...
+transforming...
+✓ 149 modules transformed.
+rendering chunks...
+vite v6.4.5 building for production...
+transforming...
+✓ 157 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                        0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                      3.00 kB │ gzip:  0.57 kB
+.svelte-kit/output/client/_app/immutable/entry/start.CSja1aAI.js   0.08 kB │ gzip:  0.09 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.sXN23qCI.js       0.38 kB │ gzip:  0.28 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.Zxy3aCu4.js       0.41 kB │ gzip:  0.29 kB
+.svelte-kit/output/client/_app/immutable/chunks/BLAZQlXp.js        0.48 kB │ gzip:  0.34 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.Brz4ou_p.js       0.68 kB │ gzip:  0.44 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js        1.37 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/D1jCtArG.js        1.58 kB │ gzip:  0.85 kB
+.svelte-kit/output/client/_app/immutable/chunks/pdFNtGHt.js        2.59 kB │ gzip:  1.16 kB
+.svelte-kit/output/client/_app/immutable/chunks/UoVah86D.js        8.54 kB │ gzip:  3.59 kB
+.svelte-kit/output/client/_app/immutable/entry/app.CXxehbk5.js     9.11 kB │ gzip:  4.12 kB
+.svelte-kit/output/client/_app/immutable/chunks/L7QnJg77.js       33.66 kB │ gzip: 13.05 kB
+.svelte-kit/output/client/_app/immutable/chunks/pwMDNkRM.js       37.93 kB │ gzip: 14.33 kB
+✓ built in 375ms
+.svelte-kit/output/server/.vite/manifest.json                                 3.22 kB
+.svelte-kit/output/server/env.js                                              0.23 kB
+.svelte-kit/output/server/internal.js                                         0.35 kB
+.svelte-kit/output/server/chunks/server.js                                    0.62 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                  0.63 kB
+.svelte-kit/output/server/chunks/constants.js                                 0.63 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                       0.70 kB
+.svelte-kit/output/server/chunks/utils2.js                                    1.09 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                   2.65 kB
+.svelte-kit/output/server/chunks/context.js                                   2.78 kB
+.svelte-kit/output/server/chunks/internal.js                                  3.18 kB
+.svelte-kit/output/server/entries/endpoints/api/offline/sync/_server.ts.js    3.95 kB
+.svelte-kit/output/server/chunks/exports.js                                   5.54 kB
+.svelte-kit/output/server/chunks/dev.js                                       7.95 kB
+.svelte-kit/output/server/chunks/utils.js                                    37.56 kB
+.svelte-kit/output/server/remote-entry.js                                    38.12 kB
+.svelte-kit/output/server/index.js                                          140.02 kB
+.svelte-kit/output/server/chunks/root.js                                    144.40 kB
+✓ built in 2.06s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-auto
+  Could not detect a supported production environment. See https://svelte.dev/docs/kit/adapters to learn how to configure your app to run on the platform of your choosing
+  ✔ done
+tests/plugin-support/ [harness-e2e-structure]
+  Browser E2E tests should live in tests/e2e.
+
+tests/browser/ [harness-e2e-structure]
+  Browser E2E tests should live in tests/e2e.
+
+tests/audio/ [harness-e2e-structure]
+  Browser E2E tests should live in tests/e2e.
+
+$ bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+$ svelte-kit sync && eslint .
+$ bun run test:unit
+$ vitest run
+$ vite build
+$ bun scripts/harness-audit.ts
+error: script "audit" exited with code 1
+error: script "check" exited with code 1
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cli.e2e.test.ts > CLI installs module foundations and generates their declared resources
+Error: bun run check failed with 1
+Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-rrwySd/module-app
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90m/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-rrwySd/module-app[39m
+
+ [32m✓[39m test/smoke.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 1[2mms[22m[39m
+ [32m✓[39m test/mailers/email/welcome.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m test/services/rust-wasm/metrics.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m test/services/email/email.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m test/services/billing/invoice.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m test/repositories/offline/notes.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m test/services/offline/offline-stream.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m test/services/offline/offline-lifecycle.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 36[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m      Tests [22m [1m[32m11 passed[39m[22m[90m (11)[39m
+[2m   Start at [22m 02:16:09
+[2m   Duration [22m 708ms[2m (transform 533ms, setup 0ms, collect 940ms, tests 69ms, environment 1ms, prepare 716ms)[22m
+
+vite v6.4.5 building SSR bundle for production...
+transforming...
+✓ 149 modules transformed.
+rendering chunks...
+vite v6.4.5 building for production...
+transforming...
+✓ 157 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                        0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                      3.00 kB │ gzip:  0.57 kB
+.svelte-kit/output/client/_app/immutable/entry/start.CSja1aAI.js   0.08 kB │ gzip:  0.09 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.sXN23qCI.js       0.38 kB │ gzip:  0.28 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.Zxy3aCu4.js       0.41 kB │ gzip:  0.29 kB
+.svelte-kit/output/client/_app/immutable/chunks/BLAZQlXp.js        0.48 kB │ gzip:  0.34 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.Brz4ou_p.js       0.68 kB │ gzip:  0.44 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js        1.37 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/D1jCtArG.js        1.58 kB │ gzip:  0.85 kB
+.svelte-kit/output/client/_app/immutable/chunks/pdFNtGHt.js        2.59 kB │ gzip:  1.16 kB
+.svelte-kit/output/client/_app/immutable/chunks/UoVah86D.js        8.54 kB │ gzip:  3.59 kB
+.svelte-kit/output/client/_app/immutable/entry/app.CXxehbk5.js     9.11 kB │ gzip:  4.12 kB
+.svelte-kit/output/client/_app/immutable/chunks/L7QnJg77.js       33.66 kB │ gzip: 13.05 kB
+.svelte-kit/output/client/_app/immutable/chunks/pwMDNkRM.js       37.93 kB │ gzip: 14.33 kB
+✓ built in 375ms
+.svelte-kit/output/server/.vite/manifest.json                                 3.22 kB
+.svelte-kit/output/server/env.js                                              0.23 kB
+.svelte-kit/output/server/internal.js                                         0.35 kB
+.svelte-kit/output/server/chunks/server.js                                    0.62 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                  0.63 kB
+.svelte-kit/output/server/chunks/constants.js                                 0.63 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                       0.70 kB
+.svelte-kit/output/server/chunks/utils2.js                                    1.09 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                   2.65 kB
+.svelte-kit/output/server/chunks/context.js                                   2.78 kB
+.svelte-kit/output/server/chunks/internal.js                                  3.18 kB
+.svelte-kit/output/server/entries/endpoints/api/offline/sync/_server.ts.js    3.95 kB
+.svelte-kit/output/server/chunks/exports.js                                   5.54 kB
+.svelte-kit/output/server/chunks/dev.js                                       7.95 kB
+.svelte-kit/output/server/chunks/utils.js                                    37.56 kB
+.svelte-kit/output/server/remote-entry.js                                    38.12 kB
+.svelte-kit/output/server/index.js                                          140.02 kB
+.svelte-kit/output/server/chunks/root.js                                    144.40 kB
+✓ built in 2.06s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-auto
+  Could not detect a supported production environment. See https://svelte.dev/docs/kit/adapters to learn how to configure your app to run on the platform of your choosing
+  ✔ done
+tests/plugin-support/ [harness-e2e-structure]
+  Browser E2E tests should live in tests/e2e.
+
+tests/browser/ [harness-e2e-structure]
+  Browser E2E tests should live in tests/e2e.
+
+tests/audio/ [harness-e2e-structure]
+  Browser E2E tests should live in tests/e2e.
+
+$ bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+$ svelte-kit sync && eslint .
+$ bun run test:unit
+$ vitest run
+$ vite build
+$ bun scripts/harness-audit.ts
+error: script "audit" exited with code 1
+error: script "check" exited with code 1
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ assertModuleProject test/support/moduleScenario.ts:58:16
+ ❯ test/cli.e2e.test.ts:205:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  02:13:59
+   Duration  136.42s (transform 171ms, setup 198ms, collect 235ms, tests 131.44s, environment 0ms, prepare 54ms)
+
