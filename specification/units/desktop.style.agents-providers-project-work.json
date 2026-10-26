@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.style.agents-providers-project-work",
+	"kind": "style",
+	"title": "projectWork",
+	"responsibility": "Owns the projectWork stylesheet.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/lib/styles/agents-providers/projectWork.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/styles/agents-providers/projectWork.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/styles/agents-providers/projectWork.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

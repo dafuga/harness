@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.style.agents-providers-chat-agents",
+	"kind": "style",
+	"title": "chatAgents",
+	"responsibility": "Owns the chatAgents stylesheet.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/lib/styles/agents-providers/chatAgents.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/styles/agents-providers/chatAgents.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/styles/agents-providers/chatAgents.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
