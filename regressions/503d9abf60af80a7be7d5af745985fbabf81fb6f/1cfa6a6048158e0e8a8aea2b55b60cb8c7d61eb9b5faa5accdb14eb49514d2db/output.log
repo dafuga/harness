@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-P0uZvU
+
+ ✓ test/self-verify-runtime-state.test.ts (6 tests) 569ms
+ ✓ test/adapters/git-source-history/working-tree.test.ts (2 tests) 114ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 89ms
+
+ Test Files  3 passed (3)
+      Tests  10 passed (10)
+   Start at  00:06:38
+   Duration  3.69s (transform 113ms, setup 183ms, collect 73ms, tests 773ms, environment 0ms, prepare 74ms)
+
+Units registry is valid: 1827 units, 166 uncertain references.
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'tsc --noEmit "$@"' --
+Harness audit passed. Files and functions are staying small.
