@@ -1,3 +1,5 @@
+import { FeatureWorkService } from '../../../../../../src/services/agents-providers/FeatureWorkService';
+import { ModuleTaskRepository } from '../../../../../../src/repositories/agents-providers/ModuleTaskRepository';
 import { AgentActivityService } from '../../../../../../src/services/agent-activity-service/AgentActivityService';
 import { ProjectWorkRepository } from '../../../../../../src/repositories/ProjectWorkRepository';
 import { GameLevelService } from './GameLevelService';
@@ -86,6 +88,18 @@ async function agentActivity(session: ProjectSessionService) {
 	const agents = await new AgentActivityService(root, checkouts).roster();
 	return { sampledAt: new Date().toISOString(), agents };
 }
+async function projectWork(context: BridgeContext, input: { projectId: string }) {
+	if (!input?.projectId) throw new Error('A selected project ID is required to read feature work.');
+	const { session } = context;
+	session.assertProject(input.projectId);
+	if (context.alive && !context.alive()) throw new Error('This session has ended.');
+	const { root } = session.requireProject();
+	const snapshot = await new FeatureWorkService(new ModuleTaskRepository(root)).read();
+	session.assertProject(input.projectId);
+	if (context.alive && !context.alive()) throw new Error('This session has ended.');
+	if (session.requireProject().root !== root) throw new Error('The selected project has changed.');
+	return snapshot;
+}
 export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
 	const { session, providers, runs, choose } = context;
 	const operations = new ProjectOperationsService(session);
@@ -116,6 +130,7 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		approve: (input) =>
 			exclusive(session, async () => (await writable(context)).planning.approve(input)),
 		agentActivity: () => agentActivity(session),
+		projectWork: (input) => projectWork(context, input),
 		providers: () => providers.list(),
 		startRun: (input) => runs.start(input),
 		cancelRun: async (input) => runs.cancel(input.runId)
