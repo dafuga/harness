@@ -1,0 +1,56 @@
+{
+	"name": "design-scope-preservation",
+	"goal": "Keep all unrequested page regions faithful to the reference while generating options for the requested visual change.",
+	"createdAt": "2026-10-26T22:35:36.774Z",
+	"updatedAt": "2026-10-26T22:36:36.758Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-26T22:36:36.150Z",
+			"evidence": "A page request such as change the right panel may attach a current or wanted full-page image; all other page content and styling must remain faithful to that reference, while explicitly requested whole-page changes remain possible."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-26T22:36:36.758Z",
+			"evidence": "The existing three-option page Plan case checks reference bytes and option count but never checks that generator prompts confine design directions to the requested panel or preserve other areas. Extend its synthetic wanted/current/missing reference matrix and existing scenario without real image calls."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -3,7 +3,7 @@
 	"id": "desktop.function.design-prompt",
 	"kind": "function",
 	"title": "Describe the requested design",
-	"responsibility": "Builds a product-design prompt with Harness styling and the selected thread’s visual context.",
+	"responsibility": "Build reference-aware product-design prompts that keep edits within the requested area.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -25,13 +25,18 @@
 				"name": "designPrompt.prompt",
 				"type": "string",
 				"description": "The proposal or feedback to append unchanged after the design instructions."
+			},
+			{
+				"name": "designPrompt.referenceAttached",
+				"type": "boolean",
+				"description": "Whether the actual generator call carries a reference image."
 			}
 		],
 		"outputs": [
 			{
 				"name": "designPrompt",
 				"type": "string",
-				"description": "A prompt describing the navy-and-gold Harness interface, control placement, entity, state and viewport. When a reference image is attached by the caller, it asks for revisions focused on the thread’s region while preserving other design decisions. The helper generates text only."
+				"description": "Instructs the image generator to change only the selected thread region or the area described by the user, preserving all unrequested areas of an attached reference, including framing, content and styling. Explicit whole-page requests remain possible. If no reference is attached, it states that limitation and does not claim to preserve unseen pixels. User proposal text is included unchanged. These are instructions, not a pixel-level enforcement guarantee."
 			}
 		],
 		"errors": []
