@@ -1,0 +1,46 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-EDnri2
+
+ ❯ test/project-template.test.ts (5 tests | 1 failed) 287ms
+   ✓ generated element atoms preserve native compilation and emitted runtime source 173ms
+   × app projects include SvelteKit and specification files 7ms
+     → Every initial-page viewport is explicitly declared: expected 'import { test } from \'./support/brow…' to contain '{ id: \'desktop\', size: { width: 144…'
+   ✓ library projects include Bun TypeScript test structure 1ms
+   ✓ generated app code and configuration obey their formatter settings 96ms
+   ✓ generated lib code and configuration obey their formatter settings 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-template.test.ts > app projects include SvelteKit and specification files
+AssertionError: Every initial-page viewport is explicitly declared: expected 'import { test } from \'./support/brow…' to contain '{ id: \'desktop\', size: { width: 144…'
+
+- Expected
++ Received
+
+- { id: 'desktop', size: { width: 1440, height: 900 } }
++ import { test } from './support/browserTest';
++
++ test('app page initial state', async ({ page, matchScreenshot }) => {
++ 	await page.goto('/');
++ 	await matchScreenshot(page, 'initial.png', { fullPage: true });
++ });
++
+
+ ❯ expectInitialPageViewports test/support/project-template/guidance.ts:114:72
+    112|   "{ id: 'mobile', size: { width: 390, height: 844 } }"
+    113|  ])
+    114|   expect(source, 'Every initial-page viewport is explicitly declared')…
+       |                                                                        ^
+    115|  expect(source).toContain('for (const viewport of viewports)');
+    116|  expect(source).toContain("test.describe(viewport.id + ' viewport'");
+ ❯ test/project-template.test.ts:38:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  13:51:40
+   Duration  3.52s (transform 146ms, setup 105ms, collect 335ms, tests 287ms, environment 0ms, prepare 29ms)
+
