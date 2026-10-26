@@ -31,8 +31,9 @@ export function libTestFiles(): PlannedFile[] {
 }
 
 function libraryEntry() {
+	const { budgets, ...entry } = unit('entry.index', 'src/index.ts', ['helloHarness']);
 	return {
-		...unit('entry.index', 'src/index.ts', ['helloHarness']),
+		...entry,
 		responsibility: 'Exports the initial library greeting.',
 		responsibilityOrigin: 'declared',
 		contract: {
@@ -44,7 +45,6 @@ function libraryEntry() {
 		testing: {
 			version: 1,
 			shape: 'helper',
-			states: ['default'],
 			examples: [
 				{
 					subject: 'helloHarness',
@@ -54,6 +54,7 @@ function libraryEntry() {
 					expected: { kind: 'value', value: 'hello from Harness' }
 				}
 			],
+			states: ['default'],
 			cases: [
 				{
 					id: 'greeting.default',
@@ -63,7 +64,8 @@ function libraryEntry() {
 					test: { file: 'test/index.test.ts', title: 'helloHarness: returns a greeting' }
 				}
 			]
-		}
+		},
+		budgets
 	};
 }
 
