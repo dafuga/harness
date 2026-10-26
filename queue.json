@@ -8129,6 +8129,57 @@
 			"createdAt": "2026-10-26T01:32:59.318Z",
 			"claimHistory": [],
 			"attempts": []
+		},
+		{
+			"id": "contract-first.worker-contract-definition",
+			"title": "Define complete public worker contracts",
+			"moduleGoal": "Publish precise public worker return shapes, mutation and error contracts for safe server integration without foreign code discovery.",
+			"instructions": "Read only this worker service owned source paths from units show. Do not inspect other source/tests. Produce /tmp/harness-worker-contract-proposal.json as units contract CLI input: responsibility and precise contract inputs/outputs/errors, including constructor defaults, feature/add/list or once return shapes, failure/cancellation/idempotency semantics and assignment validation. Do not edit source/registry, commit/push/install/deploy/run providers/other tasks. Use committed repository contract (once root publishes) for schema types. If behavior belongs elsewhere, name dependency contract gap. This is contract-authoring ownership in Codex app bootstrap, not native dispatch proof.",
+			"wantedContract": {
+				"responsibility": "Author precise truthful public worker contracts from its own assigned source only.",
+				"inputs": [
+					{
+						"name": "owned module",
+						"type": "service.agents-providers-module-task-worker implementation and CLI contract"
+					}
+				],
+				"outputs": [
+					{
+						"name": "contract proposal",
+						"type": "CLI units contract input JSON with precise shapes and CAS/error semantics; no unresolved unknown output"
+					}
+				],
+				"errors": [
+					{
+						"name": "undeclared dependency behavior",
+						"type": "explicit missing-contract diagnostic instead of foreign source inspection"
+					}
+				]
+			},
+			"model": "gpt-6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "codex-app-worker-contracts",
+			"feature": {
+				"id": "contract-first-execution",
+				"goal": "Harness users and agents develop from committed contracts; server-managed workers can read app-wide contracts and modify only their assigned files, with complete metadata validation and tracked executions.",
+				"tldr": "Extend the API-backed CLI and mandatory revision metadata with contract authoring, contract-first Codex guidance, enforced worker scopes, and automatic server task creation and dispatch. Preserve local and hosted permissions, existing history and exact model/usage/cost/bounce records."
+			},
+			"module": {
+				"id": "service.agents-providers-module-task-worker",
+				"goal": "Publish precise public worker return shapes, mutation and error contracts for safe server integration without foreign code discovery.",
+				"files": [
+					"src/services/agents-providers/ModuleTaskWorkerService.ts",
+					"src/services/agents-providers/module-task-worker-service/taskClaim.ts"
+				]
+			},
+			"sourceCommit": "dfdb9b4b410f73358772d41852d6288679e055c7",
+			"contractHash": "83c8fcae6c94a29ee35a6e8a1c3832a1bd84b739fdd77a5b1118e1ead1fc789f",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-26T01:33:00.073Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
