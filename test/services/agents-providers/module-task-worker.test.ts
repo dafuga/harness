@@ -1,7 +1,7 @@
 import { test } from 'vitest';
 import { assertDependencyClaims } from './module-task-worker.claim.test.fixtures';
 import { expect } from '../../verificationExpect';
-import type { TaskRunInput } from './module-task-worker.test.types';
+import { assertWorkspacePlacement } from './module-task-workspace.test.fixtures';
 import {
 	assertAcceptedExecutions,
 	assertWorkspaceNotRun,
@@ -18,6 +18,7 @@ isolateAnalyticsSync();
 test('module filters and assignment claims select once, then preserve changes for review', async () => {
 	const { f, service, input, worker } = await exclusiveWorkerFixture();
 	try {
+		await assertWorkspacePlacement(f.root, (await service.show(input.id)).task);
 		assertDependencyClaims((await service.show(input.id)).task);
 		expect((await worker.once('other')).status).toBe('idle');
 		expect((await worker.once('owner', ['service.other'])).status).toBe('idle');
