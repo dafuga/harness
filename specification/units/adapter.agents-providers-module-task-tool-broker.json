@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-module-task-tool-broker",
+	"kind": "adapter",
+	"title": "ModuleTaskToolBrokerAdapter",
+	"responsibility": "Broker contract reads and exact assigned-file edits for isolated agent tools.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/ModuleTaskToolBrokerAdapter.ts",
+			"src/adapters/agents-providers/ModuleTaskToolBrokerAdapter.types.ts"
+		],
+		"symbols": [
+			"ModuleTaskToolBrokerAdapter",
+			"ModuleTaskToolBrokerAdapter.constructor",
+			"ModuleTaskToolBrokerAdapter.connect",
+			"ModuleTaskToolBrokerAdapterConfig",
+			"ModuleTaskToolBrokerAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleTaskToolBrokerAdapter.constructor.config",
+				"type": "ModuleTaskToolBrokerAdapterConfig"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleTaskToolBrokerAdapter.connect",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/ModuleTaskToolBrokerAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/ModuleTaskToolBrokerAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

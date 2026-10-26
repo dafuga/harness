@@ -208,3 +208,4 @@ export { moduleTaskApprovedSubmission } from './helpers/agents-providers/moduleT
 export { ModuleTaskDependencyBaseAdapter } from './adapters/agents-providers/ModuleTaskDependencyBaseAdapter';
 export { FeaturePlanCoverageValidator } from './validators/agents-providers/FeaturePlanCoverageValidator';
 export { moduleTaskExecution } from './helpers/agents-providers/moduleTaskExecution';
+export { ModuleTaskToolBrokerAdapter } from './adapters/agents-providers/ModuleTaskToolBrokerAdapter';
