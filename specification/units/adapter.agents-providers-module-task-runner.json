@@ -51,6 +51,11 @@
 				"name": "taskProcess.input",
 				"type": "TaskProcessInput = TaskRunInput & {env?:Record<string,string|undefined>}",
 				"description": "Uses supplied trusted wrapper cwd/env. Resource admission and inherited lease fields stay outside the sandbox. Resolves/rejects only after owned process close."
+			},
+			{
+				"name": "command.selection",
+				"type": "TaskSelection",
+				"description": "Exact provider/model/intelligence; returned argv is for the guarded run path, not direct unwrapped execution."
 			}
 		],
 		"outputs": [
@@ -58,6 +63,11 @@
 				"name": "run",
 				"type": "Promise<TaskRunResult>",
 				"description": "Existing selected/reported model, usage, safe diagnostics retained. Sandbox cleanup only after execute resolves/rejects and owned processes exit. Execution cwd/env supplied by sandbox; original caller scope immutable."
+			},
+			{
+				"name": "command",
+				"type": "string[]",
+				"description": "Preserves exact requested model/intelligence and never-approval policy. Codex uses --sandbox danger-full-access only within the already-applied Harness OS boundary, avoiding nested Seatbelt; run still rejects missing scope or unavailable isolation before process launch. Claude argv unchanged."
 			}
 		],
 		"errors": [

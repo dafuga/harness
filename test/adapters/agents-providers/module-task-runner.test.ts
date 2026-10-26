@@ -22,13 +22,21 @@ test('Claude and Codex launch exact models and intelligence without shell interp
 	expect(
 		runner.command({ provider: 'claude', model: 'claude-haiku-5-5', intelligence: 'high' })
 	).toEqual(expect.arrayContaining(['--model', 'claude-haiku-5-5', '--effort', 'high']));
-	expect(runner.command({ provider: 'codex', model: 'gpt-6-luna', intelligence: 'max' })).toEqual(
+	const codex = runner.command({ provider: 'codex', model: 'gpt-6-luna', intelligence: 'max' });
+	expect(codex).toEqual(
 		expect.arrayContaining([
 			'-m',
 			'gpt-6-luna',
 			'model_reasoning_effort="max"',
-			'model_provider="openai"'
+			'model_provider="openai"',
+			'--sandbox',
+			'danger-full-access',
+			'-c',
+			'approval_policy="never"'
 		])
+	);
+	expect(codex).not.toEqual(
+		expect.arrayContaining(['--dangerously-bypass-approvals-and-sandbox', '--approve-for-me'])
 	);
 });
 test('successful public Claude CLI events retain requested model and summary', async () => {
