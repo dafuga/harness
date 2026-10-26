@@ -60,7 +60,7 @@ export const testingPlugins = [
 		],
 		setup: browserTestingFiles,
 		dependencies: {},
-		devDependencies: { '@playwright/test': '^1.28.1', '@types/node': '^22.15.3' },
+		devDependencies: { '@playwright/test': '1.63.0', '@types/node': '^22.15.3' },
 		packageScripts: {
 			'test:browser': 'playwright test --config src/configs/playwright/browserPlaywrightConfig.ts'
 		},
@@ -100,7 +100,7 @@ export const testingPlugins = [
 		],
 		setup: audioTestingFiles,
 		dependencies: {},
-		devDependencies: { '@playwright/test': '^1.28.1', '@types/node': '^22.15.3' },
+		devDependencies: { '@playwright/test': '1.63.0', '@types/node': '^22.15.3' },
 		packageScripts: {
 			'test:audio': 'playwright test --config src/configs/headless-audio/audioPlaywrightConfig.ts'
 		},

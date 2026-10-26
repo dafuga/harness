@@ -20,7 +20,7 @@
 			{
 				"name": "testingPlugins",
 				"type": "unknown",
-				"description": "Declare default headless Playwright and optional audio testing plugin definitions and generated browser tests."
+				"description": "Declare Playwright and headless-audio plugin definitions and browser tests; both request the same pinned Playwright dependency as a newly generated app, while preserving their distinct scripts and resources."
 			}
 		],
 		"errors": []
