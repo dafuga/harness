@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-feature-plan-readiness",
+	"kind": "adapter",
+	"title": "FeaturePlanReadinessAdapter",
+	"responsibility": "Verify committed source and selected design images before approving a feature plan.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/FeaturePlanReadinessAdapter.ts",
+			"src/adapters/agents-providers/FeaturePlanReadinessAdapter.types.ts"
+		],
+		"symbols": [
+			"FeaturePlanReadinessAdapter",
+			"FeaturePlanReadinessAdapter.constructor",
+			"FeaturePlanReadinessAdapter.connect",
+			"FeaturePlanReadinessAdapterConfig",
+			"FeaturePlanReadinessAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "FeaturePlanReadinessAdapter.constructor.config",
+				"type": "FeaturePlanReadinessAdapterConfig"
+			}
+		],
+		"outputs": [
+			{
+				"name": "FeaturePlanReadinessAdapter.connect",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/FeaturePlanReadinessAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/FeaturePlanReadinessAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
