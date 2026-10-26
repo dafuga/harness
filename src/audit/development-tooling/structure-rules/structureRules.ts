@@ -1,5 +1,6 @@
 import { moduleCategoryFindings } from './moduleCategoryFindings';
 import { planningArtifactPaths } from './planningArtifactPaths';
+import { featureSpecFindings } from '../../../helpers/development-tooling/featureSpecStructure';
 import type { AuditStructure } from '../adapters/types';
 import {
 	allowedDirectSrcFiles,
@@ -27,7 +28,7 @@ export function auditHarnessStructure(structure: AuditStructure): AuditFinding[]
 			structure.files.filter((path) => !artifacts.has(path)),
 			moduleFolders
 		),
-		...auditSpecFiles(structure.files)
+		...featureSpecFindings(structure.files)
 	];
 }
 
@@ -124,30 +125,6 @@ function auditSourceFiles(files: string[], moduleFolders: Set<string>): AuditFin
 				path: file,
 				rule: 'harness-source-structure',
 				message: `Source file uses unknown folder "${segments[1]}".`
-			}
-		];
-	});
-}
-
-function auditSpecFiles(files: string[]): AuditFinding[] {
-	const present = new Set(files);
-	return files.flatMap((file) => {
-		if (!file.startsWith('specification/features/')) return [];
-		const image =
-			/^specification\/features\/planned\/([a-z0-9]+(?:-[a-z0-9]+)*)\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:png|jpg|jpeg|webp)$/.exec(file);
-		if (image && present.has(`specification/features/planned/${image[1]}.md`)) return [];
-		if (
-			/^specification\/features\/(?:(?:implemented|planned)\/)?[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(
-				file
-			)
-		) {
-			return [];
-		}
-		return [
-			{
-				path: file,
-				rule: 'harness-spec-structure',
-				message: 'Feature specs should live in specification/features/ with kebab-case names.'
 			}
 		];
 	});

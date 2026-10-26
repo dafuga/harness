@@ -8,11 +8,16 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/helpers/development-tooling/featureSpecStructure.ts"],
-		"symbols": ["featureSpecStructure"]
+		"symbols": ["featureSpecStructure", "featureSpecFindings"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
+			{
+				"name": "featureSpecFindings.files",
+				"type": "string[]",
+				"description": "Enumerated repository-relative file paths."
+			},
 			{
 				"name": "featureSpecStructure.textToFormat",
 				"type": "string"
@@ -20,14 +25,21 @@
 		],
 		"outputs": [
 			{
+				"name": "featureSpecFindings",
+				"type": "AuditFinding[]",
+				"description": "Reports malformed feature spec paths and rejects orphan or malformed design artifacts; accepts only PNG/JPEG/WebP artifacts under the matching planned feature directory."
+			},
+			{
 				"name": "featureSpecStructure",
-				"type": "string"
+				"type": "string",
+				"description": "Returns trimmed text for scaffold compatibility."
 			}
 		],
 		"errors": [
 			{
-				"name": "TypeError",
-				"type": "thrown"
+				"name": "non-string text",
+				"type": "TypeError",
+				"description": "The scaffold compatibility helper rejects non-text input."
 			}
 		]
 	},
