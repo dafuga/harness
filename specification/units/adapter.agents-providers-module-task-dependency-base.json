@@ -20,20 +20,41 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ModuleTaskDependencyBaseAdapter.constructor.config",
-				"type": "ModuleTaskDependencyBaseAdapterConfig"
+				"name": "constructor.root",
+				"type": "string"
+			},
+			{
+				"name": "constructor.dependencies",
+				"type": "optional {validateMetadata?:(root:string,commit:string)=>Promise<void>}"
+			},
+			{
+				"name": "resolve.input",
+				"type": "{sourceCommit:string,checkpoints:string[]}",
+				"description": "Only accepted checkpoint revisions supplied by the trusted worker, each descending from source."
 			}
 		],
 		"outputs": [
 			{
-				"name": "ModuleTaskDependencyBaseAdapter.connect",
-				"type": "string"
+				"name": "resolve",
+				"type": "Promise<string>",
+				"description": "Returns source for zero, checkpoint for one, or a deterministic immutable merge commit containing all compatible checkpoints. Uses a private Git index, validates/adopts committed metadata, and protects generated commits with a Harness-owned ref; never mutates user branches, worktree or index. Uses a private Git index and deterministic commit identity/date, validates commit ancestry and metadata, and protects each generated merge under refs/harness/task-bases/<commit>."
+			},
+			{
+				"name": "connect",
+				"type": "string",
+				"description": "Retained scaffold compatibility method."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "invalid, unrelated, conflicting or inadmissible checkpoint",
+				"type": "Error",
+				"description": "Reject without mutating user state or creating a successful protected ref; clean owned temp index."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
