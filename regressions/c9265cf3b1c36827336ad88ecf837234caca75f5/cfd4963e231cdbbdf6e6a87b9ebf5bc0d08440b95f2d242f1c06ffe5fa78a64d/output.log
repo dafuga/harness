@@ -1,0 +1,34 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UgqX6B
+
+stdout | test/repositories/explanation-notes-order.test.ts > restoration keeps a large note history bounded and still refuses missing evidence
+Note history RSS: restore 691912704; raw 319307776
+
+ ❯ test/repositories/explanation-notes-order.test.ts (5 tests | 1 failed) 5598ms
+   ✓ notes alone hold the latest recorded reason for an exact change, wherever each is noted  527ms
+   ✓ a step of a chain noted again is held by its latest reason, wherever each is noted  904ms
+   ✓ a later long reason in the notes still fails, however the notes list it  1028ms
+   ✓ a date that cannot be read is never later than one that can; equal ones agree everywhere  806ms
+   × restoration keeps a large note history bounded and still refuses missing evidence 2186ms
+     → expected 691912704 to be less than 633880576
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/repositories/explanation-notes-order.test.ts > restoration keeps a large note history bounded and still refuses missing evidence
+AssertionError: expected 691912704 to be less than 633880576
+ ❯ test/repositories/explanation-notes-order.test.ts:165:23
+    163|  });
+    164|  console.log(`Note history RSS: restore ${restored.rss}; raw ${raw.rss…
+    165|  expect(restored.rss).toBeLessThan(raw.rss + 300 * 1024 * 1024);
+       |                       ^
+    166| }, 120_000);
+    167| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  22:47:05
+   Duration  8.63s (transform 141ms, setup 93ms, collect 89ms, tests 5.60s, environment 0ms, prepare 28ms)
+
