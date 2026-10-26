@@ -67,6 +67,10 @@ function appConfigFiles(name: string): PlannedFile[] {
 function appSourceFiles(name: string): PlannedFile[] {
 	return [
 		{
+			path: 'src/app.d.ts',
+			contents: '/// <reference types="@sveltejs/kit" />\n'
+		},
+		{
 			path: 'src/app.html',
 			contents:
 				'<!doctype html>\n<html lang="en">\n\t<head>\n\t\t<meta charset="utf-8" />\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1" />\n\t\t%sveltekit.head%\n\t</head>\n\t<body data-sveltekit-preload-data="hover">\n\t\t<div>%sveltekit.body%</div>\n\t</body>\n</html>\n'
