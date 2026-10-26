@@ -98,6 +98,15 @@ checks. The earlier mismatched implementation grant produced no edits and remain
 an unaccepted preserved result. Synthetic runner tests do not prove live Luna
 provider access.
 
+A later verification-only comparability assignment at `30f330503a` did not start
+its model: the control CLI could not create its committed contract context.
+`harness validate --write` retained metadata commit `3a389b406605` with explicit
+Unrecognized key: testing gaps. The control checkout lacks the new testing
+schema. The failed assignment changed no files and contains zero execution
+records; it is not an additional Haiku execution. No compatibility check was
+waived. Its prepared draft fixtures are committed, but the original three
+comparability tests remain active and its migration is still unqualified.
+
 ## History and outstanding acceptance
 
 The isolated Git reconstruction at `ae98ef2ef1` finished with `--limit 100000`:
