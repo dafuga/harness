@@ -1,0 +1,58 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tO7xQS
+
+ ❯ test/adapters/verification-evidence/case-result.test.ts (4 tests | 2 failed) 9ms
+   × CaseResultAdapter.onFinished configured retains nested results, retries and failures 6ms
+     → Case outcomes must retain the identity of a symlinked snapshot root: expected false to be true // Object.is equality
+   ✓ CaseResultAdapter.onFinished disabled writes no evidence 1ms
+   × CaseResultAdapter.onTestEnd configured retains browser status and suite identity 1ms
+     → Browser case outcomes must retain a symlinked snapshot root: expected false to be true // Object.is equality
+   ✓ CaseResultAdapter.onTestEnd disabled writes no evidence 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/verification-evidence/case-result.test.ts > CaseResultAdapter.onFinished configured retains nested results, retries and failures
+AssertionError: Case outcomes must retain the identity of a symlinked snapshot root: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ assertAliasedFinished test/adapters/verification-evidence/case-result.test.ts:82:4
+     80|   existsSync(join(aliasDirectory, 'case-results.ndjson')),
+     81|   'Case outcomes must retain the identity of a symlinked snapshot root'
+     82|  ).toBe(true);
+       |    ^
+     83|  expect(read(aliasDirectory)).toEqual(expectedFinished);
+     84|  const outside = mkdtempSync(join(tmpdir(), 'harness-case-outside-'));
+ ❯ test/adapters/verification-evidence/case-result.test.ts:125:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/adapters/verification-evidence/case-result.test.ts > CaseResultAdapter.onTestEnd configured retains browser status and suite identity
+AssertionError: Browser case outcomes must retain a symlinked snapshot root: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/adapters/verification-evidence/case-result.test.ts:184:5
+    182|    existsSync(join(aliasDirectory, 'case-results.ndjson')),
+    183|    'Browser case outcomes must retain a symlinked snapshot root'
+    184|   ).toBe(true);
+       |     ^
+    185|   expect(read(aliasDirectory)).toEqual([read(config.directory)[0]]);
+    186|   expect(() => adapter.onTestEnd(sample, { status: 'passed', retry: -1…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  22:30:00
+   Duration  2.10s (transform 46ms, setup 72ms, collect 8ms, tests 9ms, environment 0ms, prepare 23ms)
+
