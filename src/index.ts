@@ -209,3 +209,4 @@ export { ModuleTaskDependencyBaseAdapter } from './adapters/agents-providers/Mod
 export { FeaturePlanCoverageValidator } from './validators/agents-providers/FeaturePlanCoverageValidator';
 export { moduleTaskExecution } from './helpers/agents-providers/moduleTaskExecution';
 export { ModuleTaskToolBrokerAdapter } from './adapters/agents-providers/ModuleTaskToolBrokerAdapter';
+export { featurePlanGraphUncertainty } from './helpers/agents-providers/featurePlanGraphUncertainty';
