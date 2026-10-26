@@ -2,6 +2,21 @@ import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { observedTaskOperation } from '../../support/taskProfiles';
+import {
+	claudeCompletion,
+	claudeOtherModelCompletion,
+	failedUsageEvent,
+	fallbackEvent,
+	invokeRunner,
+	makeCodexInput,
+	makeCleanupProbe,
+	makeMissingScopeProbe,
+	makePrepareRejectionProbe,
+	makeTaskInput,
+	usageEvents,
+	makeWrapperProbe,
+	runnerFor
+} from './module-task-runner.test.fixtures';
 test('Claude and Codex launch exact models and intelligence without shell interpolation', () => {
 	const runner = new ModuleTaskRunnerAdapter();
 	expect(
@@ -17,23 +32,14 @@ test('Claude and Codex launch exact models and intelligence without shell interp
 	);
 });
 test('successful public Claude CLI events retain requested model and summary', async () => {
-	const runner = new ModuleTaskRunnerAdapter(async () => ({
+	const runner = runnerFor(async () => ({
 		code: 0,
-		stdout:
-			'{"type":"system","subtype":"init","model":"claude-haiku-5-5"}\n{"type":"result","is_error":false,"result":"Implemented"}'
+		stdout: claudeCompletion('claude-haiku-5-5', 'Implemented')
 	}));
 	const result = await observedTaskOperation(
 		'adapter.agents-providers-module-task-runner',
 		'parse-synthetic-cli-completion-only',
-		() =>
-			runner.run({
-				provider: 'claude',
-				model: 'claude-haiku-5-5',
-				intelligence: 'medium',
-				cwd: '.',
-				prompt: 'Goal',
-				signal: new AbortController().signal
-			})
+		() => runner.run(makeTaskInput())
 	);
 	expect(result).toMatchObject({
 		model: 'claude-haiku-5-5',
@@ -44,92 +50,31 @@ test('successful public Claude CLI events retain requested model and summary', a
 test.each(['quota', 'authentication', 'text-only-quota'])(
 	'fallback eligibility uses structured quota signals (%s)',
 	async (kind) => {
-		const events = [
-			{
-				type: 'result',
-				is_error: true,
-				result: kind === 'authentication' ? 'Authentication required' : 'Quota exhausted'
-			}
-		];
-		if (kind === 'quota')
-			events.unshift({
-				type: 'rate_limit_event',
-				rate_limit_info: { status: 'rejected' }
-			} as never);
-		const runner = new ModuleTaskRunnerAdapter(async () => ({
+		const runner = runnerFor(async () => ({
 			code: 1,
-			stdout: events.map((e) => JSON.stringify(e)).join('\n')
+			stdout: fallbackEvent(kind)
 		}));
-		await expect(
-			runner.run({
-				provider: 'claude',
-				model: 'claude-haiku-5-5',
-				intelligence: 'medium',
-				cwd: '.',
-				prompt: 'Goal',
-				signal: new AbortController().signal
-			})
-		).rejects.toMatchObject({ quotaRejected: kind === 'quota' });
+		await expect(runner.run(makeTaskInput())).rejects.toMatchObject({
+			quotaRejected: kind === 'quota'
+		});
 	}
 );
 test('a completed CLI run that reports another model is rejected', async () => {
-	const runner = new ModuleTaskRunnerAdapter(async () => ({
+	const runner = runnerFor(async () => ({
 		code: 0,
-		stdout:
-			'{"type":"system","subtype":"init","model":"claude-sonnet-5-5"}\n{"type":"result","is_error":false,"result":"Done"}'
+		stdout: claudeOtherModelCompletion()
 	}));
-	await expect(
-		runner.run({
-			provider: 'claude',
-			model: 'claude-haiku-5-5',
-			intelligence: 'medium',
-			cwd: '.',
-			prompt: 'Goal',
-			signal: new AbortController().signal
-		})
-	).rejects.toThrow('different model');
+	await expect(runner.run(makeTaskInput())).rejects.toThrow('different model');
 });
 test.each(['claude', 'codex'] as const)(
 	'public %s usage is retained without guessing absent counters',
 	async (provider) => {
 		const model = provider === 'claude' ? 'claude-haiku-5-5' : 'gpt-6-luna';
-		const events =
-			provider === 'claude'
-				? [
-						{ type: 'system', subtype: 'init', model },
-						{
-							type: 'result',
-							is_error: false,
-							result: 'Done',
-							total_cost_usd: 0.02,
-							usage: {
-								input_tokens: 5,
-								output_tokens: 4,
-								cache_read_input_tokens: 10,
-								cache_creation_input_tokens: 20,
-								cache_creation: { ephemeral_5m_input_tokens: 20, ephemeral_1h_input_tokens: 0 }
-							}
-						}
-					]
-				: [
-						{
-							type: 'turn.completed',
-							model,
-							usage: { input_tokens: 35, output_tokens: 4, cached_input_tokens: 10 }
-						}
-					];
-		const runner = new ModuleTaskRunnerAdapter(async () => ({
+		const runner = runnerFor(async () => ({
 			code: 0,
-			stdout: events.map((e) => JSON.stringify(e)).join('\n')
+			stdout: usageEvents(provider, model)
 		}));
-		const result = await runner.run({
-			provider,
-			model,
-			intelligence: 'medium',
-			cwd: '.',
-			prompt: 'Goal',
-			signal: new AbortController().signal
-		});
+		const result = await runner.run(makeTaskInput(provider, model));
 		expect(result).toMatchObject({
 			usage: {
 				inputTokens: 35,
@@ -142,41 +87,16 @@ test.each(['claude', 'codex'] as const)(
 	}
 );
 test('failed turns preserve available usage for cost attribution', async () => {
-	const runner = new ModuleTaskRunnerAdapter(async () => ({
+	const runner = runnerFor(async () => ({
 		code: 1,
-		stdout: JSON.stringify({
-			type: 'result',
-			is_error: true,
-			usage: {
-				input_tokens: 7,
-				output_tokens: 2,
-				cache_read_input_tokens: 0,
-				cache_creation_input_tokens: 0
-			},
-			total_cost_usd: 0.01
-		})
+		stdout: failedUsageEvent()
 	}));
-	await expect(
-		runner.run({
-			provider: 'claude',
-			model: 'claude-haiku-5-5',
-			intelligence: 'medium',
-			cwd: '.',
-			prompt: 'Goal',
-			signal: new AbortController().signal
-		})
-	).rejects.toMatchObject({ usage: { inputTokens: 7, outputTokens: 2, reportedCostUsd: 0.01 } });
-});
-const codexInput = () => ({
-	provider: 'codex' as const,
-	model: 'gpt-6-luna',
-	intelligence: 'max' as const,
-	cwd: '.',
-	prompt: 'Goal',
-	signal: new AbortController().signal
+	await expect(runner.run(makeTaskInput())).rejects.toMatchObject({
+		usage: { inputTokens: 7, outputTokens: 2, reportedCostUsd: 0.01 }
+	});
 });
 const runCodexFailure = (stdout: string, stderr: string) =>
-	new ModuleTaskRunnerAdapter(async () => ({ code: 1, stdout, stderr })).run(codexInput());
+	invokeRunner(async () => ({ code: 1, stdout, stderr }), makeCodexInput());
 const privateDiagnostic = 'sk-test-provider-secret https://provider.invalid';
 const codexError = (message: string) => JSON.stringify({ type: 'error', message });
 const failedTurn = (message: string) => JSON.stringify({ type: 'turn.failed', error: { message } });
@@ -212,8 +132,55 @@ test.each([
 
 test('Codex execute rejection remains distinct from a provider failure', async () => {
 	const spawnError = new Error('Codex process could not be spawned');
-	const runner = new ModuleTaskRunnerAdapter(async () => {
+	const runner = runnerFor(async () => {
 		throw spawnError;
 	});
-	await expect(runner.run(codexInput())).rejects.toThrow(spawnError.message);
+	await expect(runner.run(makeCodexInput())).rejects.toThrow(spawnError.message);
 });
+
+test('missing trusted scope fails before sandbox or process launch', async () => {
+	const { run, prepare, execute } = makeMissingScopeProbe();
+	const failure = await run.catch((error: unknown) => error);
+	expect(failure).toMatchObject({ quotaRejected: false });
+	expect(failure).not.toHaveProperty('usage');
+	expect(prepare).not.toHaveBeenCalled();
+	expect(execute).not.toHaveBeenCalled();
+});
+
+test('sandbox preparation rejection is safe and never launches provider work', async () => {
+	const { run, prepare, execute } = makePrepareRejectionProbe();
+	const failure = await run.catch((error: unknown) => error);
+	expect(failure).toMatchObject({ quotaRejected: false });
+	expect(failure).not.toHaveProperty('usage');
+	expect((failure as Error).message.length).toBeLessThan(256);
+	expect((failure as Error).message).not.toMatch(/\.ssh|sk-test-provider-secret/i);
+	expect(prepare).toHaveBeenCalledTimes(1);
+	expect(execute).not.toHaveBeenCalled();
+});
+
+test('provider execution forwards exact sandbox argv, cwd and environment', async () => {
+	const probe = makeWrapperProbe();
+	await probe.run;
+	expect(probe.providerArgv()).toEqual(new ModuleTaskRunnerAdapter().command(probe.input));
+	expect(probe.execute.mock.calls[0]?.[0]).toEqual([probe.wrapper.command, ...probe.wrapper.args]);
+	expect(probe.execute.mock.calls[0]?.[1]).toMatchObject({
+		cwd: probe.wrapper.cwd,
+		env: probe.wrapper.env
+	});
+	expect(probe.execute.mock.calls[0]?.[1]?.env).toEqual(probe.wrapper.env);
+	expect(probe.input).toEqual(probe.before);
+	expect(probe.cleanup).toHaveBeenCalledTimes(1);
+});
+
+test.each(['resolve', 'reject', 'cancel'] as const)(
+	'cleans the wrapped process once after execute %s',
+	async (outcome) => {
+		const probe = makeCleanupProbe(outcome);
+		if (outcome === 'resolve') await expect(probe.run).resolves.toMatchObject({ text: 'Done' });
+		else if (outcome === 'cancel')
+			await expect(probe.run).rejects.toMatchObject({ name: 'AbortError' });
+		else await expect(probe.run).rejects.toThrow('synthetic process failure');
+		expect(probe.execute.mock.calls[0]?.[1]?.signal).toBe(probe.controller.signal);
+		expect(probe.cleanup).toHaveBeenCalledTimes(1);
+	}
+);
