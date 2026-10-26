@@ -6,6 +6,8 @@ import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/
 import type { AnalyticsEvent } from '../../../src/core/reports-media/analyticsTypes';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { observedTaskOperation } from '../../support/taskProfiles';
+import { mockContexts } from './module-task-worker.test.fixtures';
+import { taskEvents } from '../../../src/services/agents-providers/module-task-analytics-service/taskEvents';
 import { readFile } from 'node:fs/promises';
 
 afterEach(() => vi.unstubAllEnvs());
@@ -21,15 +23,19 @@ test('committed task history emits stable IDs and excludes raw prompt text', asy
 			tldr: 'Build validated orders.'
 		});
 		await service.add(JSON.parse(await readFile(await f.input(), 'utf8')));
-		await new ModuleTaskWorkerService(f.root, {
-			run: async (input) => ({
-				provider: input.provider,
-				model: input.model,
-				intelligence: input.intelligence,
-				reportedModel: null,
-				text: 'Done'
-			})
-		}).once('owner');
+		await new ModuleTaskWorkerService(
+			f.root,
+			{
+				run: async (input) => ({
+					provider: input.provider,
+					model: input.model,
+					intelligence: input.intelligence,
+					reportedModel: null,
+					text: 'Done'
+				})
+			},
+			mockContexts().contexts
+		).once('owner');
 		const seen = new Map<string, AnalyticsEvent>();
 		const analytics = new ModuleTaskAnalyticsService(() => ({
 			recordImported: (event) => {
@@ -59,6 +65,56 @@ test('committed task history emits stable IDs and excludes raw prompt text', asy
 		expect(seen.size).toBe(0);
 	} finally {
 		await f.dispose();
+	}
+});
+
+test('prelaunch failures never become model executions or invented costs', async () => {
+	vi.stubEnv('HARNESS_ANALYTICS_DISABLED', '0');
+	for (const mode of ['context', 'launch'] as const) {
+		const f = await moduleTaskFixture();
+		try {
+			const service = new ModuleTaskService(f.root);
+			await service.feature({
+				id: 'checkout',
+				goal: 'Reliable checkout',
+				tldr: 'Build validated orders.'
+			});
+			await service.add(JSON.parse(await readFile(await f.input(), 'utf8')));
+			const worker = new ModuleTaskWorkerService(
+				f.root,
+				{
+					run: async () => {
+						throw Object.assign(new Error('Fixture launch blocked'), {
+							diagnostic: { phase: 'prelaunch' }
+						});
+					}
+				},
+				mockContexts(mode === 'context').contexts
+			);
+			expect((await worker.once('owner')).status).toBe('failed');
+			const events: AnalyticsEvent[] = [];
+			const analytics = new ModuleTaskAnalyticsService(() => ({
+				recordImported: (event) => events.push(event),
+				close: () => {}
+			}));
+			await analytics.sync(f.root);
+			expect(events.map((event) => event.action)).toEqual(['prelaunch-failed']);
+			expect(analytics.metrics(events)).toMatchObject({
+				executions: 0,
+				prelaunchFailures: 1,
+				unverifiedExecutions: 0,
+				apiCostUsd: null,
+				bounceRate: null
+			});
+			const legacy = (await service.show('orders-validation')).task;
+			delete legacy.result!.attempt;
+			legacy.result!.executions = [];
+			expect(taskEvents([legacy], 'fixture').map((event) => event.action)).toEqual([
+				'execution-unknown'
+			]);
+		} finally {
+			await f.dispose();
+		}
 	}
 });
 test('missing Codex cache-write counts produce a priced range rather than a guessed bill', () => {

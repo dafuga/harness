@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-26T23:41:13.933Z","name":"prelaunch-accounting","goal":"Never report a model execution that did not start","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-26T23:41:27.617Z","loop":"prelaunch-accounting","step":"spec","evidence":"A context or CLI resource/spawn failure before provider execution must not be counted as a model execution or assigned token usage."}
+{"event":"step.completed","timestamp":"2026-10-26T23:41:28.202Z","loop":"prelaunch-accounting","step":"coverage","evidence":"Existing accounting test assumed a real context would start in the fixture and did not assert zero provider calls for context or prelaunch failures; cover both with isolated synthetic contexts."}
