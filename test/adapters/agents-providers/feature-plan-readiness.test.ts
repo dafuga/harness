@@ -48,7 +48,20 @@ function readinessFixture() {
 	const dependencies = {
 		git: { run: vi.fn().mockResolvedValue(plan.sourceCommit) },
 		planning: { readImage: vi.fn().mockResolvedValue({}) },
-		requireMetadata: vi.fn().mockResolvedValue({}),
+		requireMetadata: vi.fn().mockResolvedValue({
+			commit: plan.sourceCommit,
+			registry: { available: true, units: [] },
+			relationships: {},
+			references: []
+		}),
+		coverage: {
+			validate: vi.fn().mockReturnValue({
+				valid: true,
+				affectedPages: [],
+				missingPages: [],
+				errors: []
+			})
+		},
 		validator: {
 			validate: vi.fn((input, options) => new FeaturePlanValidator().validate(input, options))
 		}
@@ -72,6 +85,16 @@ async function assertValidReadiness() {
 	expect(dependencies.requireMetadata).toHaveBeenCalledExactlyOnceWith(
 		'/synthetic',
 		plan.sourceCommit
+	);
+	expect(dependencies.coverage.validate).toHaveBeenCalledExactlyOnceWith(
+		plan,
+		await dependencies.requireMetadata.mock.results[0].value
+	);
+	expect(dependencies.coverage.validate.mock.invocationCallOrder[0]).toBeGreaterThan(
+		dependencies.requireMetadata.mock.invocationCallOrder[0]
+	);
+	expect(dependencies.coverage.validate.mock.invocationCallOrder[0]).toBeLessThan(
+		dependencies.planning.readImage.mock.invocationCallOrder[0]
 	);
 	expect(dependencies.planning.readImage.mock.calls).toEqual(
 		plan.pages.flatMap((page) =>
@@ -146,7 +169,35 @@ async function assertArtifactFailures() {
 	}
 }
 
+async function assertCoverageFailures() {
+	for (const errors of [
+		['Missing affected page design: page.checkout', 'Missing affected page design: page.account'],
+		['Unresolved graph reference: src/dynamic.ts'],
+		['Invalid committed module metadata: registry unavailable']
+	]) {
+		const { plan, dependencies, adapter } = readinessFixture();
+		dependencies.coverage.validate.mockReturnValue({
+			valid: false,
+			affectedPages: [],
+			missingPages: [],
+			errors
+		});
+		const failure = await adapter.verify(plan).then(
+			() => null,
+			(error: unknown) => error
+		);
+		expect(failure).toBeInstanceOf(Error);
+		for (const detail of errors) expect((failure as Error).message).toContain(detail);
+		expect(dependencies.coverage.validate).toHaveBeenCalledExactlyOnceWith(
+			plan,
+			await dependencies.requireMetadata.mock.results[0].value
+		);
+		expect(dependencies.planning.readImage).not.toHaveBeenCalled();
+	}
+}
+
 test('FeaturePlanReadinessAdapter.verify requires committed source and every selected design binding', async () => {
+	await assertCoverageFailures();
 	await assertValidReadiness();
 	await assertInvalidSelections();
 	await assertSourceAndMetadataGates();
