@@ -1,0 +1,42 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-Vprf2g
+
+ ✓ test/regression-loops.test.ts (8 tests) 92ms
+ ❯ test/services/verification-evidence/test-contract.test.ts (2 tests | 1 failed) 31ms
+   ✓ validate initialized and invalid registries against declared cases 14ms
+   × compare initialized contracts preserves identities unless capabilities change 8ms
+     → api: declared prop can add its row: expected [ Array(1) ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-contract.test.ts > compare initialized contracts preserves identities unless capabilities change
+AssertionError: api: declared prop can add its row: expected [ Array(1) ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "function.rank/function.rank: case identities/count changed without a matching declared capability change; strengthen existing cases for bugs",[39m
+[31m+ ][39m
+
+ ❯ assertShape test/support/testCapabilityCases.ts:47:87
+     45|   testing: { ...before.testing, cases: [item, { ...row, errors: ['Unav…
+     46|  };
+     47|  expect(service.compare([before], [prop]), `${shape}: declared prop ca…
+       |                                                                                       ^
+     48|  expect(service.compare([before], [error]), `${shape}: declared error …
+     49|   []
+ ❯ assertDeclaredInputCapabilities test/support/testCapabilityCases.ts:7:61
+ ❯ test/services/verification-evidence/test-contract.test.ts:82:9
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-contract.test.ts:79:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 9 passed (10)
+   Start at  21:36:35
+   Duration  4.57s (transform 536ms, setup 184ms, collect 1.16s, tests 122ms, environment 0ms, prepare 74ms)
+
