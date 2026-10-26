@@ -1,6 +1,7 @@
 import { expect } from '../../verificationExpect';
 import type { projectFiles } from '../../../src/templates/project';
 import { appTestFiles } from '../../../src/templates/projects-sessions/projectTests';
+import { testingPlugins } from '../../../src/templates/module-system/testingPlugins';
 import { measureWorkload } from '../measureWorkload';
 
 export function expectGeneratedGuidance(files: ReturnType<typeof projectFiles>): void {
@@ -99,8 +100,8 @@ export function expectAppTypeReference(files: ReturnType<typeof projectFiles>): 
 	expect(fileContents(files, 'src/app.d.ts')).toContain('/// <reference types="@sveltejs/kit" />');
 }
 
-/** The initial page has the same three declared devices as generated pages and layouts. */
-export async function expectInitialPageViewports(files: ReturnType<typeof projectFiles>) {
+/** Initial page viewports and built-in plugin dependencies agree with the generated app. */
+export async function expectAppTestingFoundation(files: ReturnType<typeof projectFiles>) {
 	const direct = await measureWorkload('template.project-tests', 'initial-page-viewport-plan', () =>
 		appTestFiles()
 	);
@@ -119,4 +120,9 @@ export async function expectInitialPageViewports(files: ReturnType<typeof projec
 	expect(source).toContain(
 		"matchScreenshot(page, 'initial-' + viewport.id + '.png', { fullPage: true })"
 	);
+	const appPackage = JSON.parse(fileContents(files, 'package.json'));
+	expect(testingPlugins.map((plugin) => plugin.devDependencies['@playwright/test'])).toEqual([
+		appPackage.devDependencies['@playwright/test'],
+		appPackage.devDependencies['@playwright/test']
+	]);
 }
