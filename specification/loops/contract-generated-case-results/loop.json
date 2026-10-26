@@ -2,7 +2,7 @@
 	"name": "contract-generated-case-results",
 	"goal": "Generated project example results are recorded by the normal runner without changing expected values",
 	"createdAt": "2026-10-26T21:11:42.938Z",
-	"updatedAt": "2026-10-26T21:22:50.525Z",
+	"updatedAt": "2026-10-26T21:40:35.495Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -41,17 +41,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:33:49.305Z",
+			"evidence": "Generated library test configuration records actual Vitest outcomes and links installed dependencies into verification snapshots."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:33:50.898Z",
+			"evidence": "Harness record 0bb7aa42cd7a on harbor-mbp-2 passed the unchanged generated-library case at ceadbf469e, paired with normalized red b18b960b2a2f."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:40:35.495Z",
+			"evidence": "Isolated reporter removal 2b5fa20257 failed capture 4a76215f103b; restored 310054a647 passed capture 62cc0ffb9531 on harbor-mbp-2."
 		},
 		{
 			"id": "verify",
