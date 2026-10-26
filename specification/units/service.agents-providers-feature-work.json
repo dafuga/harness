@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-feature-work",
+	"kind": "service",
+	"title": "FeatureWorkService",
+	"responsibility": "Read committed feature plans and task progress from one project queue revision.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/FeatureWorkService.ts"],
+		"symbols": ["FeatureWorkService", "FeatureWorkService.run"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "FeatureWorkService.run",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/FeatureWorkService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/FeatureWorkService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
