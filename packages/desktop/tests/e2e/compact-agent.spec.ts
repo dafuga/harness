@@ -142,7 +142,10 @@ for (const width of [1440, 920, 390]) {
 		).toBeVisible();
 		await expect(panel.getByText('Stale', { exact: true })).toBeVisible();
 		const modules = panel.getByRole('region', { name: 'Modules being worked on', exact: true });
-		await expect(modules.getByText('2 agents', { exact: true })).toBeVisible();
+		const owners = modules.getByRole('list', { name: 'Agents on component.card', exact: true });
+		await expect(owners.getByRole('listitem')).toHaveCount(2);
+		await expect(owners.getByText('Components', { exact: true })).toBeVisible();
+		await expect(owners.getByText('Pages', { exact: true })).toBeVisible();
 		await expect(modules.getByRole('link', { name: 'Card', exact: true })).toBeVisible();
 		await expect(modules.getByText('Old assignment', { exact: true })).toHaveCount(0);
 		await evidence(page, width, 'agents');
