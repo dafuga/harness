@@ -1,0 +1,31 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IRVVNd
+
+stdout | test/repositories/explanation-notes-order.test.ts > restoration keeps a large note history bounded and still refuses missing evidence
+Note history RSS: restore 428572672; raw 321126400
+
+ ✓ test/repositories/explanation-notes-order.test.ts (6 tests) 5031ms
+   ✓ notes alone hold the latest recorded reason for an exact change, wherever each is noted  448ms
+   ✓ a step of a chain noted again is held by its latest reason, wherever each is noted  722ms
+   ✓ a later long reason in the notes still fails, however the notes list it  785ms
+   ✓ a date that cannot be read is never later than one that can; equal ones agree everywhere  613ms
+   ✓ restoration keeps a large note history bounded and still refuses missing evidence  1938ms
+   ✓ a large note retains every valid verification entry in order  412ms
+stdout | test/services/trusted-base.test.ts > a large history keeps ancestry checks bounded and still rejects damaged lineage
+History RSS: trusted 581730304; one full read 794214400
+
+ ✓ test/services/trusted-base.test.ts (3 tests) 2928ms
+   ✓ a large history keeps ancestry checks bounded and still rejects damaged lineage  2614ms
+ ✓ test/services/resource-queue.test.ts (7 tests) 3275ms
+   ✓ queued cancellation releases reservations without ever starting the callback  618ms
+   ✓ pressure is observed during a running task; that task finishes and subsequent work waits  1691ms
+   ✓ parallel nested tasks share a bounded parent budget instead of each borrowing the full reservation  394ms
+   ✓ a queued sibling cannot block the descendant needed to release its ancestor reservation  394ms
+ ✓ test/services/unit-index.test.ts (18 tests) 3097ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2930ms
+
+ Test Files  4 passed (4)
+      Tests  34 passed (34)
+   Start at  23:06:05
+   Duration  18.39s (transform 328ms, setup 169ms, collect 780ms, tests 14.33s, environment 0ms, prepare 91ms)
+
