@@ -31,7 +31,12 @@ export async function assertTaskModelIdentity(): Promise<void> {
 }
 
 async function observedIdentity(selection: TaskSelection, model: string | undefined) {
-	const usage = { input_tokens: 7, output_tokens: 2 };
+	const usage = {
+		input_tokens: 7,
+		output_tokens: 2,
+		cache_read_input_tokens: 0,
+		cache_creation_input_tokens: 0
+	};
 	const events =
 		selection.provider === 'claude'
 			? [
