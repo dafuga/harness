@@ -3,7 +3,7 @@
 	"id": "command.agents-providers-feature-plan",
 	"kind": "command",
 	"title": "FeaturePlanCommand",
-	"responsibility": "Expose reviewable and approval-bound feature plans through the Harness CLI.",
+	"responsibility": "Register a CLI for inspecting, selecting and approving feature plans.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,15 +11,43 @@
 		"symbols": ["FeaturePlanCommand", "FeaturePlanCommand.run"]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [
+		"origin": "declared",
+		"inputs": [
 			{
-				"name": "FeaturePlanCommand.run",
-				"type": "string"
+				"name": "constructor.dependencies",
+				"type": "optional {service,repository,output?,readInput?}",
+				"description": "Tests inject structural collaborators; defaults are real feature plan repository, validator and readiness adapter."
+			},
+			{
+				"name": "register.task",
+				"type": "Command",
+				"description": "The parent task command."
+			},
+			{
+				"name": "plan commands",
+				"type": "draft --input <file> | show <feature> | select <feature> --page <id> --option <id> --digest <sha> | approve <feature> --digest <sha> --reviewer <name>",
+				"description": "All commands support --json. Human output includes design choices, selection, module tree and wanted contracts."
 			}
 		],
-		"errors": []
+		"outputs": [
+			{
+				"name": "register",
+				"type": "void",
+				"description": "Registers the plan draft, show, select and approve child commands. Human output shows options, selection, preferred option, parent module tree and wanted contracts; --json emits structured plans."
+			},
+			{
+				"name": "run",
+				"type": "string",
+				"description": "Retained command scaffold compatibility method."
+			}
+		],
+		"errors": [
+			{
+				"name": "invalid command or plan",
+				"type": "Error",
+				"description": "Missing plan, malformed JSON, invalid selection, stale digest and readiness failures propagate without claiming success."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {

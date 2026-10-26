@@ -1,5 +1,167 @@
+import { readFile } from 'node:fs/promises';
+import type { Command } from 'commander';
+import { FeaturePlanRepository } from '../../repositories/agents-providers/FeaturePlanRepository';
+import type { FeaturePlan } from '../../repositories/agents-providers/ModuleTaskRepository.types';
+import { FeaturePlanService } from '../../services/agents-providers/FeaturePlanService';
+import { FeaturePlanValidator } from '../../validators/agents-providers/FeaturePlanValidator';
+import { FeaturePlanReadinessAdapter } from '../../adapters/agents-providers/FeaturePlanReadinessAdapter';
+
+function defaultDependencies() {
+	const root = process.cwd();
+	const repository = new FeaturePlanRepository(root);
+	const readiness = new FeaturePlanReadinessAdapter(root);
+	const service = new FeaturePlanService({
+		repository,
+		validator: new FeaturePlanValidator(),
+		verifyReady: (plan) => readiness.verify(plan)
+	});
+	return { repository, service };
+}
+
+function moduleLines(plan: FeaturePlan) {
+	const lines: string[] = [];
+	const visited = new Set<string>();
+	function append(unit: FeaturePlan['changes'][number], depth: number) {
+		if (visited.has(unit.unit)) return;
+		visited.add(unit.unit);
+		const indent = '  '.repeat(depth);
+		lines.push(
+			`${indent}${unit.unit} (${unit.kind})${unit.parent ? ` parent: ${unit.parent}` : ''}`
+		);
+		if (unit.wantedContract)
+			lines.push(`${indent}  Wanted contract: ${JSON.stringify(unit.wantedContract)}`);
+		for (const child of plan.changes.filter((item) => item.parent === unit.unit))
+			append(child, depth + 1);
+	}
+	for (const unit of plan.changes.filter((item) => !item.parent)) append(unit, 0);
+	for (const unit of plan.changes) append(unit, 0);
+	return lines;
+}
+
+function renderPlan(plan: FeaturePlan) {
+	const lines = [
+		`${plan.feature} revision ${plan.revision}`,
+		plan.goal,
+		plan.tldr,
+		`Source: ${plan.sourceCommit}`,
+		`Digest: ${plan.digest}`,
+		'Design options:'
+	];
+	for (const page of plan.pages) {
+		lines.push(`  ${page.module}`);
+		for (const option of page.options) {
+			const flags = [
+				option.preferred ? 'preferred' : '',
+				page.selected === option.id ? 'selected' : ''
+			].filter(Boolean);
+			lines.push(
+				`    ${option.id}${flags.length ? ` (${flags.join(', ')})` : ''} ${option.version} ${option.path}`
+			);
+		}
+	}
+	lines.push('Modules and wanted contracts:', ...moduleLines(plan), 'Tasks:');
+	for (const task of plan.tasks) {
+		lines.push(
+			`  ${task.id}: ${task.title} [${task.module}] depends on: ${(task.dependsOn ?? []).join(', ') || 'none'}`
+		);
+		if (task.wantedContract)
+			lines.push(`    Wanted contract: ${JSON.stringify(task.wantedContract)}`);
+	}
+	lines.push(
+		plan.approval
+			? `Approved by ${plan.approval.reviewer} at ${plan.approval.approvedAt} (${plan.approval.digest})`
+			: 'Not approved'
+	);
+	return lines.join('\n');
+}
+
 export class FeaturePlanCommand {
+	constructor(
+		private readonly dependencies: {
+			service: Pick<FeaturePlanService, 'draft' | 'select' | 'approve'>;
+			repository: Pick<FeaturePlanRepository, 'read'>;
+			output?: (text: string) => void;
+			readInput?: (file: string) => Promise<unknown>;
+		} = defaultDependencies()
+	) {}
+
 	run(): string {
 		return 'feature-plan';
+	}
+
+	register(task: Command): void {
+		const plan = task.command('plan').description('Review and approve feature plans');
+		plan
+			.command('draft')
+			.requiredOption('--input <file>')
+			.option('--json')
+			.action(async (options: { input: string; json?: boolean }) => {
+				const read =
+					this.dependencies.readInput ??
+					(async (file: string) => JSON.parse(await readFile(file, 'utf8')));
+				const input = await read(options.input);
+				const draft = await this.dependencies.service.draft(
+					input as Parameters<FeaturePlanService['draft']>[0]
+				);
+				this.print(draft, options.json);
+			});
+		plan
+			.command('show <feature>')
+			.option('--json')
+			.action(async (feature: string, options: { json?: boolean }) => {
+				const { plans } = await this.dependencies.repository.read(feature);
+				const latest = plans.at(-1);
+				if (!latest) throw new Error(`No feature plan found for ${feature}.`);
+				this.print(latest, options.json);
+			});
+		this.registerSelection(plan);
+		this.registerApproval(plan);
+	}
+
+	private registerApproval(plan: Command) {
+		plan
+			.command('approve <feature>')
+			.requiredOption('--digest <sha>')
+			.requiredOption('--reviewer <name>')
+			.option('--json')
+			.action(
+				async (feature: string, options: { digest: string; reviewer: string; json?: boolean }) => {
+					const approved = await this.dependencies.service.approve({
+						feature,
+						expectedDigest: options.digest,
+						reviewer: options.reviewer
+					});
+					this.print(approved, options.json);
+				}
+			);
+	}
+
+	private registerSelection(plan: Command) {
+		plan
+			.command('select <feature>')
+			.requiredOption('--page <id>')
+			.requiredOption('--option <id>')
+			.requiredOption('--digest <sha>')
+			.option('--json')
+			.action(
+				async (
+					feature: string,
+					options: { page: string; option: string; digest: string; json?: boolean }
+				) => {
+					const selected = await this.dependencies.service.select({
+						feature,
+						page: options.page,
+						option: options.option,
+						expectedDigest: options.digest
+					});
+					this.print(selected, options.json);
+				}
+			);
+	}
+
+	private print(plan: FeaturePlan, json = false) {
+		(this.dependencies.output ?? console.log)(
+			json ? JSON.stringify(plan, null, 2) : renderPlan(plan)
+		);
 	}
 }
