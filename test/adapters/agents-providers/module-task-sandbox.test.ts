@@ -4,9 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { ModuleTaskSandboxAdapter } from '../../../src/adapters/agents-providers/ModuleTaskSandboxAdapter';
-
-type Fixture = Awaited<ReturnType<typeof makeFixture>>;
-type SandboxProcess = Awaited<ReturnType<ModuleTaskSandboxAdapter['prepare']>>;
+import type { Fixture, SandboxProcess } from './module-task-sandbox.test.types';
 
 const childScript = `
 const fs = require('node:fs');
@@ -41,7 +39,7 @@ result.fileToDirectoryEscape = attempt(() => {
 process.stdout.write(JSON.stringify(result));
 `;
 
-async function makeFixture() {
+async function makeFixture(): Promise<Fixture> {
 	const root = await mkdtemp(join(tmpdir(), 'harness-task-sandbox-'));
 	const cwd = join(root, 'project');
 	const scratch = join(root, 'scratch');

@@ -1,1 +1,26 @@
-export {};
+import type { ModuleTaskSandboxAdapter } from '../../../src/adapters/agents-providers/ModuleTaskSandboxAdapter';
+
+export type Fixture = {
+	root: string;
+	cwd: string;
+	scratch: string;
+	snapshot: string;
+	paths: {
+		assigned: string;
+		sibling: string;
+		source: string;
+		test: string;
+		git: string;
+		commonGit: string;
+		app: string;
+		outside: string;
+		link: string;
+		hardlink: string;
+		directory: string;
+		created: string;
+		renamed: string;
+		escape: string;
+	};
+};
+
+export type SandboxProcess = Awaited<ReturnType<ModuleTaskSandboxAdapter['prepare']>>;
