@@ -1,0 +1,49 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-JSoufu
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (592ms)
+
+  1 passed (3.9s)
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (577ms)
+
+  1 passed (3.2s)
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (612ms)
+
+  1 passed (3.2s)
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (575ms)
+
+  1 passed (3.2s)
+ ✓ test/game-cli.e2e.test.ts (5 tests) 182451ms
+   ✓ CLI creates 2d games through source and supports app and game generators  53278ms
+   ✓ CLI creates 3d games through source and supports app and game generators  41285ms
+   ✓ CLI creates 2d games through bundled and supports app and game generators  34355ms
+   ✓ CLI creates 3d games through bundled and supports app and game generators  34706ms
+   ✓ game-only generators reject apps before creating broken imports  18824ms
+ ✓ test/project-template.test.ts (5 tests) 535ms
+   ✓ generated element atoms preserve native compilation and emitted runtime source  321ms
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  11:48:23
+   Duration  187.58s (transform 261ms, setup 203ms, collect 696ms, tests 182.99s, environment 0ms, prepare 73ms)
+
