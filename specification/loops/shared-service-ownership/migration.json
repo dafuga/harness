@@ -3057,7 +3057,14 @@
 			"unit": "service.trusted-base",
 			"from": "src/services/TrustedBaseService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/TrustedBaseService.ts",
-			"definition": "3c9a45f9e9bfa8e96815bc7b3b3d345b36de174df513e57643a1f2fe5231f73d"
+			"definition": "45ed3c809ac9fd9d5ae0ac0c5dd94f90aa0ce524d375a58a422858be34d63a7a",
+			"relocationDefinition": "3c9a45f9e9bfa8e96815bc7b3b3d345b36de174df513e57643a1f2fe5231f73d",
+			"review": {
+				"commit": "802badfc20f8129b78eabe725acecbab58a2932b",
+				"path": "src/workflows/verification-evidence/run-verify/TrustedBaseService.ts",
+				"definition": "45ed3c809ac9fd9d5ae0ac0c5dd94f90aa0ce524d375a58a422858be34d63a7a",
+				"reason": "Scan record metadata incrementally while preserving trusted ancestry and evidence checks."
+			}
 		},
 		{
 			"unit": "relay.adapter.host-sockets",
