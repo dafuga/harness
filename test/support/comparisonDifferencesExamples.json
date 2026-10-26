@@ -33,12 +33,12 @@
 			{
 				"name": "comparisonDifferences.measured",
 				"type": "MeasuredDefinition",
-				"description": "Current measurement’s unit, method description and comparison context; missing or invalid metadata is reported as incomplete."
+				"description": "Current measurement\u2019s unit, method description and comparison context; missing or invalid metadata is reported as incomplete."
 			},
 			{
 				"name": "comparisonDifferences.baseline",
 				"type": "MeasuredDefinition",
-				"description": "Reviewed baseline’s unit, method description and comparison context."
+				"description": "Reviewed baseline\u2019s unit, method description and comparison context."
 			}
 		],
 		"outputs": [
@@ -107,7 +107,11 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "warmup": 3, "rounds": 5, "iterations": 30 }
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
 						}
 					},
 					{
@@ -117,20 +121,33 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "warmup": 3, "rounds": 5, "iterations": 30 }
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
 						}
 					}
 				],
 				"expected": {
 					"kind": "value",
-					"value": { "status": "comparable", "differences": [] }
+					"value": {
+						"status": "comparable",
+						"differences": []
+					}
 				}
 			},
 			{
 				"subject": "comparisonDifferences",
 				"name": "Missing metadata is incomplete before any difference is considered",
 				"call": "comparisonDifferences(\"latency-floor-ms\", measured, baseline)",
-				"input": ["latency-floor-ms", { "unitOfMeasure": "seconds" }, {}],
+				"input": [
+					"latency-floor-ms",
+					{
+						"unitOfMeasure": "seconds"
+					},
+					{}
+				],
 				"expected": {
 					"kind": "value",
 					"value": {
@@ -158,7 +175,9 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "rounds": 5 }
+							"sampling": {
+								"rounds": 5
+							}
 						}
 					},
 					{
@@ -168,7 +187,11 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "warmup": 3, "rounds": 5, "iterations": 30 }
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
 						}
 					}
 				],
@@ -193,7 +216,11 @@
 							"request": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
 							"boundary": "fixture",
 							"protocol": "other/1",
-							"sampling": { "warmup": 0, "rounds": 1, "iterations": 1 }
+							"sampling": {
+								"warmup": 0,
+								"rounds": 1,
+								"iterations": 1
+							}
 						}
 					},
 					{
@@ -203,7 +230,11 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "warmup": 3, "rounds": 5, "iterations": 30 }
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
 						}
 					}
 				],
@@ -235,7 +266,11 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "warmup": 3, "rounds": 5, "iterations": 30 }
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
 						}
 					},
 					{
@@ -245,13 +280,20 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "warmup": 3, "rounds": 5, "iterations": 30 }
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
 						}
 					}
 				],
 				"expected": {
 					"kind": "value",
-					"value": { "status": "comparable", "differences": [] }
+					"value": {
+						"status": "comparable",
+						"differences": []
+					}
 				}
 			},
 			{
@@ -267,7 +309,11 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "warmup": 3, "rounds": 5, "iterations": 30 }
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
 						}
 					},
 					{
@@ -277,7 +323,11 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "warmup": 3, "rounds": 5, "iterations": 30 }
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
 						}
 					}
 				],
@@ -295,7 +345,11 @@
 				"call": "comparisonDifferences(\"latency-floor-ms\", measured, baseline)",
 				"input": [
 					"latency-floor-ms",
-					{ "unitOfMeasure": "ms", "method": "Fastest call.", "comparison": null },
+					{
+						"unitOfMeasure": "ms",
+						"method": "Fastest call.",
+						"comparison": null
+					},
 					{
 						"unitOfMeasure": "ms",
 						"method": "Fastest call.",
@@ -303,7 +357,11 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "warmup": 3, "rounds": 5, "iterations": 30 }
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
 						}
 					}
 				],
@@ -328,7 +386,11 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003f",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "warmup": 3, "rounds": 5, "iterations": 30 }
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
 						}
 					},
 					{
@@ -338,7 +400,11 @@
 							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
 							"boundary": "public-invocation",
 							"protocol": "harness-rounds/1",
-							"sampling": { "warmup": 3, "rounds": 5, "iterations": 30 }
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
 						}
 					}
 				],
@@ -357,7 +423,7 @@
 				"state": "comparable",
 				"subject": "comparisonDifferences",
 				"example": "Identical definitions are comparable",
-				"fixture": "test/fixtures/contract-migration/comparison-differences-examples.json",
+				"fixture": "test/support/comparisonDifferencesExamples.json",
 				"test": {
 					"file": "test/utils/comparison-differences.test.ts",
 					"title": "comparisonDifferences: Identical definitions are comparable"
@@ -378,7 +444,7 @@
 				"state": "incomplete",
 				"subject": "comparisonDifferences",
 				"example": "Missing metadata is incomplete before any difference is considered",
-				"fixture": "test/fixtures/contract-migration/comparison-differences-examples.json",
+				"fixture": "test/support/comparisonDifferencesExamples.json",
 				"test": {
 					"file": "test/utils/comparison-differences.test.ts",
 					"title": "comparisonDifferences: Missing metadata is incomplete before any difference is considered"
@@ -391,7 +457,7 @@
 				"state": "incomplete",
 				"subject": "comparisonDifferences",
 				"example": "An invalid comparison context is incomplete",
-				"fixture": "test/fixtures/contract-migration/comparison-differences-examples.json",
+				"fixture": "test/support/comparisonDifferencesExamples.json",
 				"test": {
 					"file": "test/utils/comparison-differences.test.ts",
 					"title": "comparisonDifferences: An invalid comparison context is incomplete"
@@ -404,7 +470,7 @@
 				"state": "incompatible",
 				"subject": "comparisonDifferences",
 				"example": "Every difference is named, in a fixed order",
-				"fixture": "test/fixtures/contract-migration/comparison-differences-examples.json",
+				"fixture": "test/support/comparisonDifferencesExamples.json",
 				"test": {
 					"file": "test/utils/comparison-differences.test.ts",
 					"title": "comparisonDifferences: Every difference is named, in a fixed order"
@@ -425,7 +491,7 @@
 				"state": "comparable",
 				"subject": "comparisonDifferences",
 				"example": "A custom metric with matching units is comparable",
-				"fixture": "test/fixtures/contract-migration/comparison-differences-examples.json",
+				"fixture": "test/support/comparisonDifferencesExamples.json",
 				"test": {
 					"file": "test/utils/comparison-differences.test.ts",
 					"title": "comparisonDifferences: A custom metric with matching units is comparable"
@@ -437,7 +503,7 @@
 				"state": "incompatible",
 				"subject": "comparisonDifferences",
 				"example": "A known metric rejects a unit other than its expected unit",
-				"fixture": "test/fixtures/contract-migration/comparison-differences-examples.json",
+				"fixture": "test/support/comparisonDifferencesExamples.json",
 				"test": {
 					"file": "test/utils/comparison-differences.test.ts",
 					"title": "comparisonDifferences: A known metric rejects a unit other than its expected unit"
@@ -450,7 +516,7 @@
 				"state": "incomplete",
 				"subject": "comparisonDifferences",
 				"example": "A null comparison context counts as missing",
-				"fixture": "test/fixtures/contract-migration/comparison-differences-examples.json",
+				"fixture": "test/support/comparisonDifferencesExamples.json",
 				"test": {
 					"file": "test/utils/comparison-differences.test.ts",
 					"title": "comparisonDifferences: A null comparison context counts as missing"
@@ -463,7 +529,7 @@
 				"state": "incomplete",
 				"subject": "comparisonDifferences",
 				"example": "A truncated request digest is an invalid comparison context",
-				"fixture": "test/fixtures/contract-migration/comparison-differences-examples.json",
+				"fixture": "test/support/comparisonDifferencesExamples.json",
 				"test": {
 					"file": "test/utils/comparison-differences.test.ts",
 					"title": "comparisonDifferences: A truncated request digest is an invalid comparison context"
