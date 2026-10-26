@@ -103,7 +103,26 @@ test('CommitTreeAdapter.read populated reuses immutable blobs across revisions w
 				);
 				expect(await first.read('sample.txt')).toBe(value);
 				await expect(first.read('missing')).rejects.toThrow('does not exist');
+				if (format === 'sha1')
+					await oversizedBlob(
+						root,
+						git,
+						() => bytes.mock.calls.filter(([args]) => args[0] === 'cat-file').length
+					);
 			},
 			format
 		);
-});
+}, 60_000);
+
+/** Oversized committed blobs must not escape the shared 64 MiB retained-text bound. */
+async function oversizedBlob(root: string, git: GitAdapter, reads: () => number): Promise<void> {
+	const size = 64 * 1024 * 1024 + 1;
+	await writeFile(join(root, 'large.txt'), Buffer.alloc(size, 97));
+	await git.run(['add', 'large.txt']);
+	await git.run(['commit', '-m', 'feat: add oversized fixture']);
+	const tree = await CommitTreeAdapter.open(root, 'HEAD');
+	const before = reads();
+	expect((await tree.read('large.txt')).length).toBe(size);
+	expect((await tree.read('large.txt')).length).toBe(size);
+	expect(reads() - before, 'oversized blobs must not remain in the per-tree cache').toBe(2);
+}
