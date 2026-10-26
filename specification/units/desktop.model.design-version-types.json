@@ -3,8 +3,8 @@
 	"id": "desktop.model.design-version-types",
 	"kind": "model",
 	"title": "DesignVersion",
-	"responsibility": "Owns the DesignVersion data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Owns desktop design version and option models.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -14,9 +14,29 @@
 		"symbols": ["DesignImage", "DesignOptionInfo", "DesignRevision", "DesignVersion"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "DesignImage",
+				"type": "{state:string,viewport:string,sha256:string,bytes:number,option?:string}",
+				"description": "bytes is a size, not image bytes; no path or URL is declared."
+			},
+			{
+				"name": "DesignOptionInfo",
+				"type": "{id:string,direction:string,prompt:string|null,revisedPrompt:string|null,generator:string,imageHashes:string[]}",
+				"description": "Option ids o1 through o10; no preferred field is declared."
+			},
+			{
+				"name": "DesignRevision",
+				"type": "{version:string,imageSha256:string,option?:string,region:Region|null,threadId:string|null}"
+			},
+			{
+				"name": "DesignVersion",
+				"type": "{version:string,createdAt:string,commit:string|null,generator:string,prompt:string,notes?:string,baseRevision:string,images:DesignImage[],approval:ApprovalInfo|null,options?:DesignOptionInfo[],revises?:DesignRevision|null}",
+				"description": "Optioned versions expose alternatives but no preferred or selected field."
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [

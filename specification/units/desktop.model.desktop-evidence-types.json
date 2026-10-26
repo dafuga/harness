@@ -3,8 +3,8 @@
 	"id": "desktop.model.desktop-evidence-types",
 	"kind": "model",
 	"title": "DesktopEvidence",
-	"responsibility": "Owns the DesktopEvidence data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Owns recorded desktop evidence and artifact query models.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -19,9 +19,29 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "EntityEvidenceQuery",
+				"type": "EntityQuery & {branch:string,mode:\"current\"|\"commit\"}",
+				"description": "current uses the branch tip; commit compares the selected commit with its first parent."
+			},
+			{
+				"name": "EvidenceArtifactQuery",
+				"type": "EntityEvidenceQuery & {side:\"before\"|\"after\",recordId:string,scenarioId:string,state:string,evidenceId:string,viewport:string|null,sha256:string,notesRevision:string|null,evidenceRevision:string|null}",
+				"description": "Identifies recorded capture bytes by bindings; no path or address is supplied."
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntityEvidenceResult",
+				"type": "{scope:ExplorerScope,identity:CacheIdentity,evidence:ExplorerEvidence,behavior:ExplorerBehavior}"
+			},
+			{
+				"name": "EvidenceArtifactResult",
+				"type": "{bytes:Uint8Array,mediaType:string,sha256:string}"
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [

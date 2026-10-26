@@ -3,8 +3,8 @@
 	"id": "desktop.model.desktop-types",
 	"kind": "model",
 	"title": "Desktop",
-	"responsibility": "Owns the Desktop data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Owns desktop catalog and entity models.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -51,9 +51,40 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "EntityDetail",
+				"type": "CatalogEntity & {documentation?:UnitDocumentation,historyCoverage?:{complete:boolean,nextPage:number|null,loadedPages:number},contract:EntityContract,relationships:Relationship[],versions:DesignVersion[],threads:ThreadInfo[],history:HistoryEvent[],sources:string[],size:Measure,performance:Measure}"
+			},
+			{
+				"name": "CatalogEntity.thumbnail",
+				"type": "DesignThumbnail | ({source:\"recorded\"} & Partial<NonNullable<ComponentManifest[\"preview\"]>>) | null",
+				"description": "Design thumbnails bind version/hash/state/viewport; recorded thumbnails reference recorded evidence."
+			}
+		],
 		"outputs": [
+			{
+				"name": "Relationship",
+				"type": "{id:string,title:string,category:Category|null,direction:\"uses\"|\"used-by\",hasPlan:boolean,verification:Verification}"
+			},
+			{
+				"name": "ApprovalInfo",
+				"type": "{id:string,version:string,imageHashes:string[],contractHash:string,approvedAt:string,current:boolean,option?:string}"
+			},
+			{
+				"name": "Revision",
+				"type": "{branch:string,commit:string,tip:string,atTip:boolean}"
+			},
+			{
+				"name": "Region",
+				"type": "{x:number,y:number,width:number,height:number}",
+				"description": "Coordinates are image-dimension fractions."
+			},
+			{
+				"name": "Measure",
+				"type": "{available:boolean,text:string}"
+			},
 			{
 				"name": "categories",
 				"type": "unknown"

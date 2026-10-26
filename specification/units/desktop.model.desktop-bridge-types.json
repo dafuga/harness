@@ -3,8 +3,8 @@
 	"id": "desktop.model.desktop-bridge-types",
 	"kind": "model",
 	"title": "DesktopBridge",
-	"responsibility": "Owns the DesktopBridge data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Owns desktop bridge request and channel models.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -47,9 +47,37 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "RunRequest",
+				"type": "ProjectContext & {environment?:DeploymentEnvironment,mode:\"plan\"|\"change\",provider:\"codex\"|\"claude\",model:string,effort:string|null,entityId:string,threadId:string,text:string,approval:Omit<ApprovalDraft,\"entityId\">|null,designOptions?:number}",
+				"description": "designOptions is plan-only, 1–10/default 3; no explicit reference selector is declared."
+			},
+			{
+				"name": "ApprovalDraft",
+				"type": "ProjectContext & {entityId:string,version:string,imageHashes:string[],contractHash:string,option?:string}",
+				"description": "Option is required for an optioned version."
+			},
+			{
+				"name": "ImageQuery",
+				"type": "EntityQuery & {version:string,sha256:string}",
+				"description": "EntityQuery binds entityId and commit; ImageQuery has no option field."
+			}
+		],
 		"outputs": [
+			{
+				"name": "entity",
+				"type": "(input:EntityQuery)=>Promise<EntityDetail>"
+			},
+			{
+				"name": "image",
+				"type": "(input:ImageQuery)=>Promise<Uint8Array>"
+			},
+			{
+				"name": "approve",
+				"type": "(input:ApprovalDraft)=>Promise<ApprovalInfo>"
+			},
 			{
 				"name": "channels",
 				"type": "unknown"
