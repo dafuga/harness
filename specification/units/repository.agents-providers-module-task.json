@@ -228,6 +228,11 @@
 				"name": "planSchema",
 				"type": "Zod schema producing FeaturePlan",
 				"description": "Strict plan, page option, module change, task, hash and optional approval schemas. Semantic graph and approval checks belong to the plan service."
+			},
+			{
+				"name": "FeaturePlan",
+				"type": "{feature:string,sourceCommit:string,revision:number,goal:string,tldr:string,pages:FeaturePlanPage[],changes:FeaturePlanChange[],tasks:ModuleTaskInput[],digest:string,approval?:FeaturePlanApproval}",
+				"description": "Strict planSchema output and exported type from ModuleTaskRepository.types. Page: {module,options:[{id,version,commit,path,sha256,preferred}],selected?}. Change: {unit,parent?,kind:add|modify|remove|reuse,wantedContract?,assignedFiles}. Approval: {digest,reviewer,approvedAt}. Option and source commits are lowercase 40 or 64 hex; SHA-256 values are lowercase 64 hex; paths are exact safe relative files. Task fields follow taskInputSchema. All objects are strict; arrays retain order. Semantic graph, selection and approval integrity are validated separately."
 			}
 		],
 		"errors": [
