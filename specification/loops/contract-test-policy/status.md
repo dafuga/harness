@@ -240,8 +240,8 @@ The first laptop aggregate at `ba39c194c1` failed before tests because its
 non-interactive PATH omitted an existing rustup installation. A second run found
 the pinned toolchain but nested Git fixtures failed because the same PATH also
 omitted the existing Git LFS installation. That failed run was cancelled with
-owned-process cleanup. A third run includes both verified paths and remains
-pending; no aggregate pass is claimed.
+owned-process cleanup. A third run included both verified paths but was cancelled
+while queued after the source advanced; no aggregate pass is claimed.
 
 Page and layout admission also accepted states with only one viewport. The
 existing validator case now rejects a missing desktop, tablet or mobile capture
@@ -275,16 +275,22 @@ for malformed workload metadata. It preserved 320 reason notes and, for valid
 proofs, their original IDs, dates, outcomes and evidence pointers; the original
 notes for the four gaps remain intact. The supplements do not rebuild the Explorer
 history index, and their isolated repositories read Git objects through local
-alternates. Source refs can continue to change. No old tests were rerun.
+alternates. Source refs can continue to change. The current supplement has
+SHA-256 `66c4ecf604eeaebac569297c521b3f400c817759f30abdd4992818dae87170d6`;
+the extra-ref status supplement has SHA-256
+`bfac964e8ac4744b0d3c47f1ed2487dcdc69cb20298f6a8391e53a3a7f461dcb`.
+No old tests were rerun. The frozen history occupies about 69 GiB and only about
+36 GiB remains free on the primary volume, so it was not overwritten.
 
 ## Execution identity
 
-The current task audit preserves 58 execution records, all requesting max effort
-and none recording fallback. Exact reported claude-haiku-5-5 identity occurs in
-22 successful and six failed executions. One failed Haiku attempt has no
-reported model. Twenty-five successful and one failed gpt-5.6-luna executions,
-plus three failed gpt-6-luna executions, have no reported model. Luna identity
-remains unverified; earlier outcomes have not been rewritten as verified.
+The current task audit preserves 64 attempts and 63 execution records, all
+requesting max effort and none recording fallback. Exact reported
+claude-haiku-5-5 identity occurs in 22 successful and six failed executions;
+four failed Haiku executions have no reported model. Twenty-five successful and
+one failed gpt-5.6-luna executions, plus five failed gpt-6-luna executions, have
+no reported model. One attempt has no execution record. Luna identity remains
+unverified; earlier outcomes have not been rewritten as verified.
 
 The latest correctly scoped Haiku verification task was accepted after primary
 review, added collision/rejection controls, unchanged red-green proof and type
@@ -307,8 +313,12 @@ metadata `ac8a4161e1ee`. Two new verification-only module tasks requested
 with an invalid structured response; the latter failed with a workspace-read
 permission error. Neither reported a model or made edits, and neither assignment
 is accepted. Their exact results remain in the Harness queue. A direct host status
-check reported Claude logged out; Codex reported a ChatGPT login. Neither status
-establishes that the corresponding sandboxed task can use its requested model.
+check initially reported Claude logged out; Codex reported a ChatGPT login.
+Daniel subsequently unlocked Keychain and Claude reports a signed-in session.
+Fresh Haiku and Luna retries both stopped before launch because the control CLI's
+trusted provider qualification is unavailable. Neither reported a model or made
+edits. The production default fails closed; no model or security guard was
+substituted. Host login alone does not prove sandboxed model access.
 
 ## History and outstanding acceptance
 
