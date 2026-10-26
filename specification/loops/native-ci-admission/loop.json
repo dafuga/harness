@@ -2,7 +2,7 @@
 	"name": "native-ci-admission",
 	"goal": "Expose admission timeouts so native CI can identify and resolve its blocking condition",
 	"createdAt": "2026-10-26T20:06:50.702Z",
-	"updatedAt": "2026-10-26T20:15:15.555Z",
+	"updatedAt": "2026-10-26T20:15:53.881Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:15:53.881Z",
+			"evidence": "At d8bdf3b4, unchanged queue scenarios passed with paired red record b473674d and green record b09fb9c3 in the same environment."
 		},
 		{
 			"id": "verify",
