@@ -1,3 +1,4 @@
+import type { UnitVersions } from '../../../utils/development-tooling/revisionChanges';
 import type { HistoryIndex } from '../../../core/git-source-history/historyIndexTypes';
 import type { LegacyEntry } from '../../../core/git-source-history/historyIndexTypes';
 import type { HistoryMediaService } from './history-media-service/HistoryMediaService';
@@ -23,5 +24,5 @@ export type CompactRevision = Omit<BuiltRevision, 'detail' | 'side'> & {
 	detail: Pick<
 		BuiltRevision['detail'],
 		'commit' | 'records' | 'sourceImpact' | 'explanations' | 'regressions'
-	> & { registry: import('../../../utils/development-tooling/revisionChanges').UnitVersions };
+	> & { registry: UnitVersions };
 };
