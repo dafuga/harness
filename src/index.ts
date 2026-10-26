@@ -214,3 +214,4 @@ export { moduleTaskBrokerFiles } from './helpers/agents-providers/moduleTaskBrok
 export { moduleTaskBrokerContracts } from './helpers/agents-providers/moduleTaskBrokerContracts';
 export { FeatureWorkService } from './services/agents-providers/FeatureWorkService';
 export { FeaturePlanPreparationService } from './services/agents-providers/FeaturePlanPreparationService';
+export { featureSpecStructure } from './helpers/development-tooling/featureSpecStructure';
