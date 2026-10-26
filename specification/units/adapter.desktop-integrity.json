@@ -3,8 +3,8 @@
 	"id": "adapter.desktop-integrity",
 	"kind": "adapter",
 	"title": "DesktopIntegrityAdapter",
-	"responsibility": "Owns the DesktopIntegrityAdapter integration boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Refreshes and verifies the ASAR integrity digest of an experimental desktop app copy.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -18,23 +18,26 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DesktopIntegrityAdapter.update.app",
-				"type": "string"
+				"type": "string",
+				"description": "Path to the explicitly named experimental app copy whose digest is updated."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DesktopIntegrityAdapter.update",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Completes after updating and verifying the enabled ASAR integrity digest."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The path is not the experimental copy, its files or enabled integrity are missing, or verification fails."
 			}
 		]
 	},
@@ -50,6 +53,43 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["experimental-copy", "original"],
+		"cases": [
+			{
+				"id": "update.experimental-copy",
+				"state": "experimental-copy",
+				"subject": "DesktopIntegrityAdapter.update",
+				"test": {
+					"file": "test/adapters/desktop-integrity.test.ts",
+					"title": "copy packaging refreshes the embedded digest and keeps validation enabled"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"errors": ["Error"]
+			},
+			{
+				"id": "update.original",
+				"state": "original",
+				"subject": "DesktopIntegrityAdapter.update",
+				"test": {
+					"file": "test/adapters/desktop-integrity.test.ts",
+					"title": "integrity updates refuse the installed original app"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Integrity changes require the experimental copy"
+					}
+				},
+				"errors": ["Error"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
