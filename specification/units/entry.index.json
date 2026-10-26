@@ -159,6 +159,12 @@
 			"moduleScenarioReviews",
 			"ModuleTaskServerService",
 			"ModuleTaskSandboxAdapter",
+			"TestContractService",
+			"TestCaseValidator",
+			"TestDiscoveryService",
+			"TestExpectationService",
+			"TestArtifactService",
+			"CaseResultAdapter",
 			"ModuleCatalogService",
 			"ModuleCommand",
 			"ModuleInstallService",
@@ -179,12 +185,8 @@
 			"ModuleTaskContractContextService",
 			"ModuleTaskLaunchAdapter",
 			"ModuleTaskSandboxProcessAdapter",
-			"TestContractService",
-			"TestCaseValidator",
-			"TestDiscoveryService",
-			"TestExpectationService",
-			"TestArtifactService",
-			"CaseResultAdapter"
+			"FeaturePlanRepository",
+			"FeaturePlanService"
 		]
 	},
 	"contract": {
@@ -271,6 +273,11 @@
 		},
 		{
 			"unit": "adapter.sqlite",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.verification-evidence-case-result",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -630,6 +637,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.agents-providers-feature-plan",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.agents-providers-module-task",
 			"via": "reexport",
 			"origin": "derived"
@@ -681,6 +693,11 @@
 		},
 		{
 			"unit": "serializer.gateway-content",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-feature-plan",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -860,6 +877,26 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.verification-evidence-test-artifact",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-contract",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-discovery",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-test-expectation",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "template.module-system-rust-backend-module",
 			"via": "reexport",
 			"origin": "derived"
@@ -906,31 +943,6 @@
 		},
 		{
 			"unit": "validator.performance-evidence",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "adapter.verification-evidence-case-result",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.verification-evidence-test-artifact",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.verification-evidence-test-contract",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.verification-evidence-test-discovery",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.verification-evidence-test-expectation",
 			"via": "reexport",
 			"origin": "derived"
 		},
