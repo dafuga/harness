@@ -40,7 +40,6 @@ test('a page Plan generates three separately directed options and commits them o
 	const hashes = saved.options?.flatMap((option) => option.images.map((image) => image.sha256));
 	expect(new Set(hashes).size).toBe(3);
 }, 60000);
-
 test('a Plan that asks for two options generates two', async () => {
 	const f = await fixture();
 	distinct(f);
@@ -48,7 +47,6 @@ test('a Plan that asks for two options generates two', async () => {
 	expect(f.generator.generateImage).toHaveBeenCalledTimes(2);
 	expect((await versions(f))[0].options).toHaveLength(2);
 }, 60000);
-
 test('a failed option leaves no version and no design commit', async () => {
 	const f = await fixture();
 	distinct(f, (call) => {
@@ -146,10 +144,12 @@ async function assertPageReferences() {
 		const count = kind === 'current' ? 1 : 3;
 		f.context.request.designOptions = count;
 		const request = kind === 'missing' ? 'Design the whole page' : 'Change only the right panel';
-		const result = await planDesign(f.context, request);
+		f.context.request.text = request;
+		const result = await planDesign(f.context, 'Use a compact composition');
 		expect(f.generator.generateImage).toHaveBeenCalledTimes(count);
 		for (const [input] of f.generator.generateImage.mock.calls) {
 			expect(input.prompt).toContain(request);
+			expect(input.prompt).toContain('Use a compact composition');
 			expect(input.prompt).not.toMatch(/normalized rectangle whole image|Top icon navbar:/i);
 			if (kind === 'missing') expect(input.prompt).toMatch(/no reference image (?:is )?available/i);
 			else expect(input.prompt).toMatch(/preserve[\s\S]*outside[\s\S]*requested/i);
