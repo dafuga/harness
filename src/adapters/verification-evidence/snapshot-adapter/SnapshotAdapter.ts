@@ -2,7 +2,7 @@ import type { SnapshotDrift } from './SnapshotAdapter.types';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
-import { mkdtemp, readFile, readlink, rm, symlink, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, readlink, rm, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import type { TreeEntry } from '../../../core/development-tooling/sourceTypes';
@@ -18,7 +18,6 @@ import { GitAdapter } from '../../git-source-history/GitAdapter';
 export class SnapshotAdapter {
 	private readonly links = new Map<string, string>();
 	private readonly exported: TreeEntry[] = [];
-	private inventoryHash = '';
 
 	private constructor(
 		readonly directory: string,
@@ -29,22 +28,13 @@ export class SnapshotAdapter {
 	/** `outputs` are the declared patterns under which setup and checks may create files. */
 	static async create(root: string, commit: string, outputs: string[]): Promise<SnapshotAdapter> {
 		const directory = await mkdtemp(join(tmpdir(), 'harness-snapshot-'));
-		try {
-			const archive = await new GitAdapter(root).bytes(['archive', '--format=tar', commit]);
-			await extract(archive, directory);
-			const tree = await CommitTreeAdapter.open(root, commit);
-			const entries = await tree.list();
-			const snapshot = new SnapshotAdapter(directory, entries, outputs);
-			const hashes = await Promise.all(entries.map((entry) => snapshot.hash(entry.path)));
-			snapshot.exported.push(...entries.filter((entry, index) => hashes[index] === entry.hash));
-			const bytes = inventoryBytes(directory, tree.revision, snapshot.exported);
-			await writeFile(inventoryPath(directory), bytes, { flag: 'wx', mode: 0o600 });
-			snapshot.inventoryHash = digest(bytes);
-			return snapshot;
-		} catch (error) {
-			await removeSnapshot(directory);
-			throw error;
-		}
+		const archive = await new GitAdapter(root).bytes(['archive', '--format=tar', commit]);
+		await extract(archive, directory);
+		const entries = await (await CommitTreeAdapter.open(root, commit)).list();
+		const snapshot = new SnapshotAdapter(directory, entries, outputs);
+		const hashes = await Promise.all(entries.map((entry) => snapshot.hash(entry.path)));
+		snapshot.exported.push(...entries.filter((entry, index) => hashes[index] === entry.hash));
+		return snapshot;
 	}
 
 	/** Shares a path from the checkout, such as installed dependencies, when it exists there. */
@@ -77,16 +67,7 @@ export class SnapshotAdapter {
 			outputs: this.outputs,
 			links: new Set(this.links.keys())
 		});
-		const inventory = await readFile(inventoryPath(this.directory)).catch(() => undefined);
-		const inventoryChanged = !inventory || digest(inventory) !== this.inventoryHash;
-		return {
-			mutated: [
-				...changed.map((entry) => entry.path),
-				...(await this.relinked()),
-				...(inventoryChanged ? ['<snapshot-inventory>'] : [])
-			],
-			added
-		};
+		return { mutated: [...changed.map((entry) => entry.path), ...(await this.relinked())], added };
 	}
 
 	/** Shared links that no longer point where they were made to point. */
@@ -114,7 +95,7 @@ export class SnapshotAdapter {
 	}
 
 	remove(): Promise<void> {
-		return removeSnapshot(this.directory);
+		return rm(this.directory, { recursive: true, force: true });
 	}
 
 	private async hash(path: string): Promise<string | undefined> {
@@ -125,25 +106,6 @@ export class SnapshotAdapter {
 			return undefined;
 		}
 	}
-}
-
-const inventoryPath = (directory: string) => `${directory}.tracked.json`;
-const digest = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
-function inventoryBytes(directory: string, revision: string, entries: TreeEntry[]): Buffer {
-	return Buffer.from(
-		JSON.stringify({
-			version: 1,
-			root: directory,
-			revision,
-			files: entries.map((entry) => entry.path)
-		})
-	);
-}
-async function removeSnapshot(directory: string): Promise<void> {
-	await Promise.all([
-		rm(directory, { recursive: true, force: true }),
-		rm(inventoryPath(directory), { force: true })
-	]);
 }
 
 function extract(archive: Buffer, directory: string): Promise<void> {
