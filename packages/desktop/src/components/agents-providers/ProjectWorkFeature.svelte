@@ -16,6 +16,9 @@
 		feature: f,
 		initiallyOpen
 	}: { feature: FeatureWorkSnapshot['features'][number]; initiallyOpen: boolean } = $props();
+	// Initialize once; subsequent queue refreshes must preserve the user's choice.
+	// svelte-ignore state_referenced_locally
+	let expanded = $state(initiallyOpen);
 
 	const STATUS: Record<string, { label: string; tone: string }> = {
 		queued: { label: 'To do', tone: 'gray' },
@@ -75,7 +78,7 @@
 </script>
 
 <li>
-	<details open={initiallyOpen}>
+	<details bind:open={expanded}>
 		<summary>
 			<strong class="grow">{f.goal || f.id}</strong>
 			<small class="full">{f.id} · {progress(f)}</small>
