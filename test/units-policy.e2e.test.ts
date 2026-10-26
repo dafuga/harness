@@ -1,109 +1,136 @@
 import type { ComponentManifest } from '../src/core/development-tooling/unitTypes';
 import { runCommand } from './support/cli';
 import type { Shown, Labelled } from './units-policy.e2e.test.types';
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import {
-	slugifySource,
-	unitProject,
-	configureTestAuthor,
-	validationInvoker,
-	commitModuleData
-} from './support/unitProject';
+import * as unitFixtures from './support/unitProject';
+
+const { slugifySource, unitProject, configureTestAuthor, validationInvoker, commitModuleData } =
+	unitFixtures;
 
 test('CLI exposes execution targets and component versions, and refuses relaxed tolerance', async () => {
-	const project = await unitProject('lib');
-	await project.write('src/utils/slugify.ts', slugifySource);
-	await project.harness(['units', 'index', '--write']);
-	await commitModuleData(project);
-	const shown = await project.harnessJson<Shown>(['units', 'show', 'function.slugify']);
-	expect(shown.manifest.runtime).toEqual({
-		kind: 'module',
-		entry: 'src/utils/slugify.ts',
-		targets: [{ kind: 'module', entry: 'src/utils/slugify.ts' }]
-	});
+	const p = await unitProject('lib'),
+		src = 'src/utils/slugify.ts';
+	await p.write(src, slugifySource);
+	await p.harness(['units', 'index', '--write']);
+	await commitModuleData(p);
+	const shown = await p.harnessJson<Shown>(['units', 'show', 'function.slugify']);
+	const target = { kind: 'module', entry: src };
+	expect(shown.manifest.runtime).toEqual({ ...target, targets: [target] });
 	expect(shown.version.unit).toBe('function.slugify');
 	for (const key of ['manifest', 'source', 'contract', 'runtime'] as const) {
 		expect(shown.version[key]).toMatch(/^[0-9a-f]{64}$/);
 	}
-
 	const path = 'specification/units/function.slugify.json';
 	const examples = [0, false, null, 'A title', { label: 'An item' }];
-	await project.write(
-		path,
-		JSON.stringify({
-			...shown.manifest,
-			contract: {
-				...shown.manifest.contract,
-				origin: 'declared',
-				inputs: shown.manifest.contract.inputs.map((field) => ({
-					...field,
-					type: 'unknown',
-					examples
-				}))
-			}
-		})
-	);
-	await project.harness(['units', 'index', '--write']);
-	await project.harness(['units', 'check']);
-	await commitModuleData(project);
-	const documented = await project.harnessJson<Shown>(['units', 'show', 'function.slugify']);
+	const contract = {
+		...shown.manifest.contract,
+		origin: 'declared',
+		inputs: shown.manifest.contract.inputs.map((field) => ({ ...field, type: 'unknown', examples }))
+	};
+	await p.write(path, JSON.stringify({ ...shown.manifest, contract }));
+	await p.harness(['units', 'index', '--write']);
+	await p.harness(['units', 'check']);
+	await commitModuleData(p);
+	const documented = await p.harnessJson<Shown>(['units', 'show', 'function.slugify']);
 	expect(documented.manifest.contract.inputs[0].examples).toEqual(examples);
 	expect(documented.version.contract).not.toBe(shown.version.contract);
-
 	const budget = { workload: 'slugify-1k', metric: 'latency-warm-ms', tolerance: 0.25 };
-	const relaxed = {
-		...shown.manifest,
-		budgets: { ...shown.manifest.budgets, performance: [budget] }
-	};
-	await project.write(path, JSON.stringify(relaxed));
-	const check = await project.harness(['units', 'check'], false);
+	const budgets = { ...shown.manifest.budgets, performance: [budget] };
+	await p.write(path, JSON.stringify({ ...shown.manifest, budgets }));
+	const check = await p.harness(['units', 'check'], false);
 	expect(check.exitCode).toBe(1);
 	expect(check.stderr).toContain('function.slugify: budgets.performance.0.tolerance');
-	await rm(join(project.root, '..'), { recursive: true, force: true });
+	await rm(join(p.root, '..'), { recursive: true, force: true });
 }, 60_000);
 
 test('CLI records lineage when retired source is recreated under a new identity', async () => {
-	const project = await unitProject('lib');
-	await project.write('src/utils/slugify.ts', slugifySource);
-	await project.harness(['units', 'index', '--write']);
-	await rm(join(project.root, 'src/utils/slugify.ts'));
-	await project.harness(['units', 'retire', 'function.slugify', '--reason', 'Removed']);
-	await mkdir(join(project.root, 'src/core'), { recursive: true });
-	await project.write('src/core/slug.ts', slugifySource);
-	const index = await project.harnessJson<{ added: string[] }>(['units', 'index', '--write']);
+	const p = await unitProject('lib');
+	await p.write('src/utils/slugify.ts', slugifySource);
+	await p.harness(['units', 'index', '--write']);
+	await rm(join(p.root, 'src/utils/slugify.ts'));
+	await p.harness(['units', 'retire', 'function.slugify', '--reason', 'Removed']);
+	await mkdir(join(p.root, 'src/core'), { recursive: true });
+	await p.write('src/core/slug.ts', slugifySource);
+	const index = await p.harnessJson<{ added: string[] }>(['units', 'index', '--write']);
 	expect(index.added).toEqual(['function.slug']);
-	await commitModuleData(project);
-	const shown = await project.harnessJson<Shown>(['units', 'show', 'function.slug']);
+	await commitModuleData(p);
+	const shown = await p.harnessJson<Shown>(['units', 'show', 'function.slug']);
 	expect(shown.manifest.lineage).toEqual({ predecessors: ['function.slugify'] });
-	await project.harness(['units', 'check']);
-	await rm(join(project.root, '..'), { recursive: true, force: true });
+	await p.harness(['units', 'check']);
+	await rm(join(p.root, '..'), { recursive: true, force: true });
 }, 60_000);
 
 test('CLI labels a supplied responsibility as declared and a generated one as derived', async () => {
 	const project = await unitProject('lib');
 	await project.harness(['generate', 'unit', 'PriceQuote']);
-	await project.harness([
-		'generate',
-		'unit',
-		'Billing',
-		'--kind',
-		'service',
-		'--responsibility',
-		'Charges an invoice exactly once.'
-	]);
+	const billing = ['generate', 'unit', 'Billing', '--kind', 'service', '--responsibility'];
+	await project.harness([...billing, 'Charges an invoice exactly once.']);
 	const derived = await project.json<Labelled>('specification/units/function.price-quote.json');
 	const declared = await project.json<Labelled>('specification/units/service.billing.json');
-	expect([derived.responsibility, derived.responsibilityOrigin]).toEqual([
-		'Owns the priceQuote shared function.',
-		'derived'
-	]);
-	expect([declared.responsibility, declared.responsibilityOrigin]).toEqual([
-		'Charges an invoice exactly once.',
-		'declared'
-	]);
+	expect(derived.responsibility).toBe('Owns the priceQuote shared function.');
+	expect(derived.responsibilityOrigin).toBe('derived');
+	expect(declared.responsibility).toBe('Charges an invoice exactly once.');
+	expect(declared.responsibilityOrigin).toBe('declared');
 	await rm(join(project.root, '..'), { recursive: true, force: true });
+}, 60_000);
+
+test('CLI authors declared contracts only for valid active units without changing other metadata', async () => {
+	const project = await unitProject('lib');
+	try {
+		const id = 'function.slugify',
+			input = 'contract.json',
+			file = join(project.root, `specification/units/${id}.json`);
+		await project.write('src/utils/slugify.ts', slugifySource);
+		await project.harness(['units', 'index', '--write']);
+		const before = await project.json<ComponentManifest>(`specification/units/${id}.json`);
+		const value = {
+			responsibility: 'Turns labels into URL slugs.',
+			contract: {
+				inputs: [{ name: 'label', type: 'string' }],
+				outputs: [{ name: 'slug', type: 'string' }],
+				errors: []
+			}
+		};
+		await project.write(input, JSON.stringify(value));
+		const command = (unit: string) => ['units', 'contract', unit, '--input', input];
+		const receipt = await project.harnessJson<{ id: string; manifest: ComponentManifest }>([
+			...command(id),
+			'--json'
+		]);
+		const authored = await project.json<ComponentManifest>(`specification/units/${id}.json`);
+		expect(receipt).toEqual({ id, manifest: authored });
+		expect(authored).toEqual({
+			...before,
+			responsibility: value.responsibility,
+			responsibilityOrigin: 'declared',
+			contract: { ...value.contract, origin: 'declared' }
+		});
+		const bytes = await readFile(file, 'utf8');
+		const run = (unit: string) => project.harness(command(unit), false);
+		const reject = async (unit: string, body: string, original = bytes) => {
+			await project.write(input, body);
+			const result = await run(unit);
+			expect(result.exitCode).toBe(1);
+			expect(result.stderr).not.toBe('');
+			expect(await readFile(file, 'utf8')).toBe(original);
+		};
+		const invalid = [
+			'{',
+			'{"responsibility":"x","extra":true,"contract":{"inputs":[],"outputs":[],"errors":[]}}',
+			'{"responsibility":"x","contract":{"inputs":[],"outputs":[],"errors":[],"extra":true}}',
+			'{"responsibility":"x","contract":{"inputs":[{"name":"x","type":"string","extra":true}],"outputs":[],"errors":[]}}',
+			'{"responsibility":"x","contract":{"inputs":[{"name":"x"}],"outputs":[],"errors":[]}}'
+		];
+		for (const body of invalid) await reject(id, body);
+		await reject('function.unknown', JSON.stringify(value));
+		await rm(join(project.root, 'src/utils/slugify.ts'));
+		await project.harness(['units', 'retire', id, '--reason', 'No longer supported']);
+		await reject(id, JSON.stringify(value), await readFile(file, 'utf8'));
+	} finally {
+		await rm(join(project.root, '..'), { recursive: true, force: true });
+	}
 }, 60_000);
 
 test('public configs require real source controls and retain their reviewed declarations', async () => {
@@ -115,21 +142,15 @@ test('public configs require real source controls and retain their reviewed decl
 		const manifest = await project.json(path);
 		expect(manifest.catalog).toEqual({ visibility: 'internal' });
 		const source = 'src/configs/downloadsConfig.ts';
-		await project.write(
-			source,
-			'export const downloadsConfig = { maxBytes: 1000, formatVersion: 1 };\n'
-		);
+		await project.write(source, 'export const downloadsConfig={maxBytes:1000,formatVersion:1};\n');
 		const publicConfig = { ...manifest, catalog: { visibility: 'public' } };
 		await project.write(path, JSON.stringify(publicConfig));
 		const missing = await project.harness(['units', 'check'], false);
 		expect(missing.exitCode).toBe(1);
 		expect(missing.stderr).toContain('requires reviewed configControls');
-		const control = {
-			source,
-			name: 'downloadsConfig.maxBytes',
-			audience: 'operator',
-			purpose: 'Bound download storage for the device running the app.'
-		};
+		const name = 'downloadsConfig.maxBytes';
+		const purpose = 'Bound download storage for the device running the app.';
+		const control = { source, name, audience: 'operator', purpose };
 		await project.write(path, JSON.stringify({ ...publicConfig, configControls: [control] }));
 		await project.harness(['units', 'index', '--write']);
 		await project.harness(['units', 'check']);
@@ -162,17 +183,12 @@ test('source-bound reviews repair historical default runtime targets without cha
 	try {
 		await git(['init', '-b', 'main']);
 		await configureTestAuthor(project.root);
-		await project.write(
-			'src/services/TitleService.ts',
-			'export class TitleService { run(): string { return "Title"; } }'
-		);
+		const source = 'export class TitleService { run(): string { return "Title"; } }';
+		await project.write('src/services/TitleService.ts', source);
 		await project.harness(['units', 'index', '--write']);
 		const path = 'specification/units/service.title.json';
 		const manifest = await project.json<ComponentManifest>(path);
-		const wanted = {
-			...manifest.runtime,
-			targets: [{ kind: manifest.runtime.kind, entry: manifest.runtime.entry }]
-		};
+		const wanted = { ...manifest.runtime, targets: manifest.runtime.targets };
 		manifest.runtime.targets = [{ kind: 'module', entry: 'src/services/old/TitleService.ts' }];
 		manifest.responsibility = 'Serve the title from this module implementation.';
 		manifest.responsibilityOrigin = 'derived';
@@ -186,18 +202,12 @@ test('source-bound reviews repair historical default runtime targets without cha
 		expect(before.valid).toBe(false);
 		expect(JSON.stringify(before.modules)).toContain('runtime.targets must include');
 		const review = join(project.root, '..', 'runtime-review.json');
-		await writeFile(
-			review,
-			JSON.stringify({
-				unit: 'service.title',
-				reason: 'Bind the default target to the owned implementation at this source commit.',
-				metadata: { runtime: wanted, responsibility: manifest.responsibility, preview: null }
-			})
-		);
-		const accepted = await project.harness(
-			['validate', '--write', '--review', review, '--module', 'service.title', '--json'],
-			false
-		);
+		const reason = 'Bind the default target to the owned implementation at this source commit.';
+		const metadata = { runtime: wanted, responsibility: manifest.responsibility, preview: null };
+		const reviewData = { unit: 'service.title', reason, metadata };
+		await writeFile(review, JSON.stringify(reviewData));
+		const args = ['validate', '--write', '--review', review, '--module', 'service.title', '--json'];
+		const accepted = await project.harness(args, false);
 		expect(accepted.exitCode, 'Obsolete preview declarations must be withdrawable').toBe(0);
 		const repaired = JSON.parse(accepted.stdout);
 		expect(repaired.valid, JSON.stringify(repaired)).toBe(true);

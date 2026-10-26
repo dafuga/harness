@@ -2,7 +2,7 @@
 	"name": "native-runner-diagnostics",
 	"goal": "Preserve safe actionable provider diagnostics and distinguish invalid output without treating authentication, model access, or permission failures as quota exhaustion; retain exact model, usage, and unknown-failure behavior.",
 	"createdAt": "2026-10-26T01:26:01.380Z",
-	"updatedAt": "2026-10-26T01:26:01.380Z",
+	"updatedAt": "2026-10-26T01:34:16.405Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -13,12 +13,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T01:34:15.561Z",
+			"evidence": "At test-only dfdb9b4b41, frozen module-task-runner unit matrix reproduced five failures and ten passes. Auth/model/permission output is flattened; malformed stdout escapes as SyntaxError. Desired behavior is safe actionable diagnostics with quotaRejected false and unchanged success/usage/exact model behavior. Primary raw test log: /tmp/harness-runner-diagnostics-red-compact.log. Canonical remote snapshot queued; red step remains pending."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T01:34:16.405Z",
+			"evidence": "Existing runner method tests covered success, exact selection, quota and generic failures but omitted structured auth/model/permission errors and malformed stdout. Strengthened the existing run-method matrix with synthetic private details and safe diagnostic assertions; no separate test suite. Assigned verification file is formatted at220 lines; product remains unchanged at red checkpoint."
 		},
 		{
 			"id": "red",
