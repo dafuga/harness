@@ -30,6 +30,14 @@ Check `harness task schema` and `harness task show <id> --json`. Every worker
 prompt starts with the identical overall goal and shared feature TLDR before
 module-specific context, so the reusable prefix can be cached.
 
+Before delegating a change to error handling, the verification role must publish
+synthetic inputs and expected safe outcomes as wanted-contract examples through
+the CLI. Include existing success, model-identity, unknown-error and quota
+boundaries when they apply. The implementation worker reads these contract
+examples rather than the verification suite. Preserve Harness-owned validation
+errors separately from raw provider failures, then run the existing owning
+method matrix before broader checks.
+
 Workers may read contracts across the app. An implementation worker may inspect
 and modify only its exact Harness-assigned source files; a verification worker
 may access only its assigned verification files. The committed task's file grant
