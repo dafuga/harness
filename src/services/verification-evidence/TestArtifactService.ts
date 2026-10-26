@@ -15,8 +15,9 @@ export class TestArtifactService {
 	constructor(private readonly env: Environment = process.env) {}
 	capture(input: TestArtifact) {
 		const artifact = snapshotArtifact(input);
+		const revision = this.env.HARNESS_VERIFY_REVISION;
 		const facts = this.audio(artifact);
-		this.registered(artifact);
+		this.registered(artifact, revision);
 		const sha256 = createHash('sha256').update(facts.bytes).digest('hex');
 		const line = captureLineSchema.parse({
 			evidence: artifact.evidence,
@@ -30,7 +31,7 @@ export class TestArtifactService {
 			note: JSON.stringify({
 				unit: artifact.unit,
 				case: artifact.case,
-				revision: this.env.HARNESS_VERIFY_REVISION ?? null,
+				revision: revision ?? null,
 				sha256
 			})
 		});
@@ -39,15 +40,13 @@ export class TestArtifactService {
 		if (!line.file.endsWith('.wav')) throw new Error('Audio artifacts require a WAV filename');
 		line.file = line.file.slice(0, -4) + '-' + sha256 + '.wav';
 		recordCapture(line, facts.bytes, {
-			...this.env,
 			HARNESS_EVIDENCE_DIR: directory,
 			TAKE_SCREENSHOT: '1'
 		});
 		return { file: line.file, sha256, durationSeconds: facts.durationSeconds };
 	}
-	private registered(input: TestArtifact): void {
+	private registered(input: TestArtifact, revision: string | undefined): void {
 		const root = this.env.HARNESS_VERIFY_CASE_ROOT ?? process.cwd();
-		const revision = this.env.HARNESS_VERIFY_REVISION;
 		if (revision !== undefined && !/^[0-9a-f]{40}$/.test(revision))
 			throw new Error('Audio artifacts require a valid tested revision');
 		let unit;
