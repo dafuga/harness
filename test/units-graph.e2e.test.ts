@@ -3,6 +3,7 @@ import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { slugifySource, titleServiceSource, unitProject } from './support/unitProject';
+import { prepareGraphContracts, runGraphContracts } from './support/graphContractFixture';
 
 const loaderSource = [
 	'export class LoaderService {',
@@ -23,6 +24,7 @@ const decoySource = [
 	'export const pattern = /[\'"]\\/\\/ not a comment/;',
 	"export const worker = new URL('../services/TitleService.ts', import.meta.url);",
 	'export const value = missing;',
+	'export function readDecoy(): string { return value; }',
 	''
 ].join('\n');
 
@@ -79,22 +81,32 @@ test('source graph resolves imports, re-exports, dynamic imports and Svelte scri
 
 test('unresolved references are uncertain and text inside strings or comments is not a reference', async () => {
 	const project = await unitProject('lib');
-	await project.write('src/services/TitleService.ts', 'export class TitleService {}\n');
-	await project.write('src/services/LoaderService.ts', 'export class LoaderService {}\n');
-	await project.write('src/utils/decoy.ts', decoySource);
-	await project.harness(['units', 'index', '--write']);
-	const graph = await project.harnessJson<Graph>(['units', 'graph']);
-	const from = graph.edges.filter((item) => item.from === 'file:src/utils/decoy.ts');
-
-	expect(from).toEqual([
-		{ from: 'file:src/utils/decoy.ts', to: 'file:src/services/TitleService.ts', via: 'url' }
-	]);
-	expect(graph.uncertain).toContainEqual({
-		node: 'file:src/utils/decoy.ts',
-		reason: 'unresolved-import',
-		detail: './missing'
-	});
-	const check = await project.harness(['units', 'check']);
-	expect(check.stdout).toContain('1 uncertain reference');
-	await rm(join(project.root, '..'), { recursive: true, force: true });
+	try {
+		await project.write(
+			'src/services/TitleService.ts',
+			'export class TitleService { label() { return "title"; } }\n'
+		);
+		await project.write(
+			'src/services/LoaderService.ts',
+			'export class LoaderService { label() { return "loader"; } }\n'
+		);
+		await project.write('src/utils/decoy.ts', decoySource);
+		await project.harness(['units', 'index', '--write']);
+		await prepareGraphContracts(project);
+		const graph = await project.harnessJson<Graph>(['units', 'graph']);
+		const from = graph.edges.filter((item) => item.from === 'file:src/utils/decoy.ts');
+		expect(from).toEqual([
+			{ from: 'file:src/utils/decoy.ts', to: 'file:src/services/TitleService.ts', via: 'url' }
+		]);
+		expect(graph.uncertain).toContainEqual({
+			node: 'file:src/utils/decoy.ts',
+			reason: 'unresolved-import',
+			detail: './missing'
+		});
+		const check = await project.harness(['units', 'check']);
+		expect(check.stdout).toContain('1 uncertain reference');
+		await runGraphContracts(project);
+	} finally {
+		await rm(join(project.root, '..'), { recursive: true, force: true });
+	}
 }, 60_000);

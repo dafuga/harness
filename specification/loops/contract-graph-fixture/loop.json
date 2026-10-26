@@ -1,0 +1,43 @@
+{
+	"name": "contract-graph-fixture",
+	"goal": "Make the existing source graph fixture satisfy declared test contracts",
+	"createdAt": "2026-10-26T22:10:17.380Z",
+	"updatedAt": "2026-10-26T22:11:03.472Z",
+	"template": "refactor",
+	"templateLineage": ["feature", "refactor"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Name the responsibility boundary and unchanged behavior.",
+			"status": "complete",
+			"completedAt": "2026-10-26T22:10:19.941Z",
+			"evidence": "The graph fixture must preserve runtime unresolved-import and URL assertions while declaring and executing the fixture helper and class cases required by strict admission."
+		},
+		{
+			"id": "implement",
+			"title": "Extract or reorganize one responsibility at a time.",
+			"status": "complete",
+			"completedAt": "2026-10-26T22:11:03.472Z",
+			"evidence": "The existing graph fixture declares its helper and two class method cases and supplies a Vitest-only alias for the deliberately unresolved import."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
