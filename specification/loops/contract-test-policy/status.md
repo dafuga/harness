@@ -1,6 +1,6 @@
 # Migration remains incomplete
 
-Status at 2026-10-26 13:55 UTC. Global `testing: 1` remains disabled. Existing
+Status at 2026-10-26 14:02 UTC. Global `testing: 1` remains disabled. Existing
 unmigrated entrypoints and substantive assertions remain. No production action or
 remote-main delivery is claimed.
 
@@ -43,7 +43,11 @@ Source-only repair `5f12d367a1` preserves the initial state title and full-page
 matching. Matched red `83c6170b06d5` fails the existing generator case; unchanged
 green `19f3ae39f660` passes all five. The new capability adds two generated device
 cases: app matrices now expect 33 and Game matrices nine. Parent case counts
-remain fixed. Earlier rejected record invocations created no passing evidence.
+remain fixed. Capture `e604bf3eda14` at `95283a748b` passes all fifteen existing
+parent cases on harbor-mbp-2. The app runs 33 child cases using six workers;
+Games run nine each using two, and the module fixture runs three using one.
+Every reported child failure is an unreviewed-baseline refusal, with no child
+skips or flakiness. Earlier rejected record invocations created no passing evidence.
 Baseline review provenance in Harness evidence and full visual-suite migration
 remain open; missing-baseline refusals are not visual acceptance.
 
@@ -106,11 +110,11 @@ The aggregate at `d26e0fdbea` passed formatting, root compiler, lint, Rust check
 kernel build and 1,465 root unit cases; 25 live-provider cases were skipped. The run was interrupted after five genuine E2E failures: four Game compiler
 failures and one adapter case whose audit was masked by screenshot admission.
 Both causes now have matched focused repairs; the failed aggregate remains
-visible and does not qualify the later merge. A fresh `95283a748b` run on
-harbor-mbp-2 reserves seven CPUs and 6 GiB after a live headroom check. Its
-fifteen-parent-case generated-project capture runs first; only success starts
-`bun run check`. Root Vitest remains single-worker, browser concurrency is
-reported by the runner, and this run has no result yet. All automated E2Es stay off the primary Mac.
+visible and does not qualify the later merge. The fresh `95283a748b` run on harbor-mbp-2 reserved seven CPUs and 6 GiB after a
+live headroom check. Its fifteen-case focused capture passed, then the aggregate
+stopped at formatting in two CLI-updated loop files. Those files were corrected,
+and the complete format check passed before the next aggregate. Root Vitest
+remains single-worker; no later full verification verdict exists. All automated E2Es stay off the primary Mac.
 
 ## Execution identity
 
