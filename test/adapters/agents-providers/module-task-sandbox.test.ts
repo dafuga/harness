@@ -11,6 +11,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const [snapshot, assigned, scratch, sibling, source, testFile, git, commonGit, app, outside, link, created, renamed, escape, scratchHardlink, targetCwd] = process.argv.slice(-16);
 const attempt = operation => { try { operation(); return true; } catch { return false; } };
+let scratchHardlinkCreated = false;
 const result = {
   snapshotRead: attempt(() => fs.readFileSync(snapshot, 'utf8')), assignedWrite: attempt(() => fs.writeFileSync(assigned, 'assigned')),
   scratchWrite: attempt(() => fs.writeFileSync(path.join(scratch, 'child.txt'), 'scratch')), siblingWrite: attempt(() => fs.writeFileSync(sibling, 'sibling')),
@@ -20,9 +21,10 @@ const result = {
   foreignCreate: attempt(() => fs.writeFileSync(created, 'created')), foreignDelete: attempt(() => fs.unlinkSync(testFile)),
   foreignRename: attempt(() => fs.renameSync(source, renamed)), symlinkEscape: attempt(() => fs.writeFileSync(link, 'escaped')),
   snapshotWrite: attempt(() => fs.writeFileSync(snapshot, 'tampered')), outsideWrite: attempt(() => fs.writeFileSync(outside, 'overwritten')),
-  scratchHardlinkWrite: attempt(() => fs.writeFileSync(scratchHardlink, 'hardlink-modified')), sandboxedCwdMatches: process.cwd() === targetCwd,
+  scratchHardlinkWrite: attempt(() => { fs.linkSync(outside, scratchHardlink); scratchHardlinkCreated = true; fs.writeFileSync(scratchHardlink, 'hardlink-modified'); }), sandboxedCwdMatches: process.cwd() === targetCwd,
   bunfigPreloadRan: globalThis.__harnessTaskBunfig === true, bunfigWriteBlocked: globalThis.__harnessTaskBunfigWriteBlocked === true
 };
+result.scratchHardlinkCreated = scratchHardlinkCreated;
 for (const key of Object.keys(process.env)) delete process.env[key];
 result.unsetEnvironmentWrite = attempt(() => fs.writeFileSync(created, 'after-unset'));
 result.fileToDirectoryEscape = attempt(() => {
@@ -34,6 +36,7 @@ process.stdout.write(JSON.stringify(result));
 `;
 const flagSet = (value: boolean, names: string): Record<string, boolean> =>
 	Object.fromEntries(names.split(' ').map((name) => [name, value] as const));
+const unsafeGrantError = /unsafe|invalid|scope|file|grant|path/i;
 
 async function makeFixture(): Promise<Fixture> {
 	const root = await fs.mkdtemp(join(tmpdir(), 'harness-task-sandbox-'));
@@ -141,14 +144,12 @@ function runChild(config: SandboxProcess) {
 		});
 	});
 }
-
 const nativeTest = test.skipIf(process.platform !== 'darwin');
 nativeTest('enforces exact reads and writes in a real child', async () => {
 	const fixture = await makeFixture();
 	let config: SandboxProcess | undefined;
 	try {
 		await fs.symlink(fixture.paths.outside, fixture.paths.link);
-		await fs.link(fixture.paths.outside, fixture.paths.scratchHardlink);
 		config = await prepare(fixture, ['src/[branch].ts', 'bunfig.toml', 'bunfig-preload.js']);
 		const hostCwd = await fs.realpath(config.cwd);
 		expect(hostCwd).not.toBe(await fs.realpath(fixture.cwd));
@@ -157,6 +158,10 @@ nativeTest('enforces exact reads and writes in a real child', async () => {
 		const child = await runChild(config);
 		expect(child.code, child.stderr).toBe(0);
 		const checks = JSON.parse(child.stdout) as Record<string, boolean>;
+		const outsideAfter = await fs.readFile(fixture.paths.outside, 'utf8');
+		expect(`${checks.scratchHardlinkCreated}:${checks.scratchHardlinkWrite}:${outsideAfter}`).toBe(
+			'false:false:outside-original'
+		);
 		expect(checks).toMatchObject({
 			...flagSet(
 				true,
@@ -164,13 +169,11 @@ nativeTest('enforces exact reads and writes in a real child', async () => {
 			),
 			...flagSet(
 				false,
-				'siblingWrite foreignSourceRead foreignTestRead gitRead commonGitRead appSourceRead foreignModify foreignCreate foreignDelete foreignRename symlinkEscape snapshotWrite outsideWrite scratchHardlinkWrite unsetEnvironmentWrite fileToDirectoryEscape'
+				'siblingWrite foreignSourceRead foreignTestRead gitRead commonGitRead appSourceRead foreignModify foreignCreate foreignDelete foreignRename symlinkEscape snapshotWrite outsideWrite scratchHardlinkWrite scratchHardlinkCreated unsetEnvironmentWrite fileToDirectoryEscape'
 			)
 		});
 		expect(await fs.readFile(join(fixture.scratch, 'child.txt'), 'utf8')).toBe('scratch');
 		expect(await fs.readFile(fixture.snapshot, 'utf8')).toBe('{"contract":"read-only"}');
-		expect(await fs.readFile(fixture.paths.outside, 'utf8')).toBe('outside-original');
-		expect(await fs.readFile(fixture.paths.scratchHardlink, 'utf8')).toBe('outside-original');
 		expect(await fs.readFile(fixture.paths.source, 'utf8')).toBe('foreign-source');
 		expect(await fs.readFile(fixture.paths.test, 'utf8')).toBe('foreign-test');
 		expect(await fs.readFile(fixture.paths.link, 'utf8')).toBe('outside-original');
@@ -192,10 +195,13 @@ nativeTest('rejects unsafe grant paths before returning a process', async () => 
 			['src/hardlink.ts'],
 			['src/directory.ts']
 		]) {
-			await expect(prepare(fixture, files)).rejects.toThrow(
-				/unsafe|invalid|scope|file|grant|path/i
-			);
+			await expect(prepare(fixture, files)).rejects.toThrow(unsafeGrantError);
 		}
+		await fs.link(fixture.paths.outside, fixture.paths.scratchHardlink);
+		const foreign = await fs.stat(fixture.paths.outside);
+		const scratchAlias = await fs.stat(fixture.paths.scratchHardlink);
+		expect([scratchAlias.dev, scratchAlias.ino]).toEqual([foreign.dev, foreign.ino]);
+		await expect(prepare(fixture)).rejects.toThrow(unsafeGrantError);
 	} finally {
 		await fs.rm(fixture.root, { recursive: true, force: true });
 	}

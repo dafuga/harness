@@ -17,8 +17,6 @@
 			"ModuleTaskSandboxAdapter.connect",
 			"ModuleTaskSandboxAdapter.prepare",
 			"ModuleTaskSandboxAdapterConfig",
-			"ModuleTaskSandboxInput",
-			"SandboxProcess",
 			"ModuleTaskSandboxAdapterConfig",
 			"ModuleTaskSandboxInput",
 			"SandboxProcess"
@@ -35,7 +33,7 @@
 			{
 				"name": "prepare.input",
 				"type": "ModuleTaskSandboxInput",
-				"description": "{cwd:string,files:string[],snapshot:string,scratch:string,readPaths:string[],protectedPaths:string[],argv:string[],binDirectory?:string}. All context paths absolute; files one to 64 canonical relative tracked regular files with no symlink/hard-link targets; argv exact nonempty arguments. readPaths are trusted provider/runtime and sealed CLI paths outside project and scratch. binDirectory when present is a canonical directory included exactly in readonly readPaths."
+				"description": "{cwd:string,files:string[],snapshot:string,scratch:string,readPaths:string[],protectedPaths:string[],argv:string[],binDirectory?:string}. All context paths absolute; files one to 64 canonical relative tracked regular files with no symlink/hard-link targets; argv exact nonempty arguments. readPaths are trusted provider/runtime and sealed CLI paths outside project and scratch. binDirectory when present is a canonical directory included exactly in readonly readPaths. Scratch must contain only safely owned regular files/directories, with no preexisting symlink/hardlink/special-file aliases; native policy denies creation of hardlinks at runtime."
 			}
 		],
 		"outputs": [
@@ -53,7 +51,7 @@
 			{
 				"name": "Unsupported isolation or unsafe scope",
 				"type": "Error before process launch",
-				"description": "Fail closed for unsupported platforms, unsafe/case-alias/noncanonical assignments, directories/symlinks/hardlinks, untrusted CLI bin, overlapping read/runtime/scratch/project grants or unavailable sandbox runtime. No unrestricted provider fallback."
+				"description": "Fail closed for unsupported platforms, unsafe/case-alias/noncanonical assignments, directories/symlinks/hardlinks, untrusted CLI bin, overlapping read/runtime/scratch/project grants or unavailable sandbox runtime. No unrestricted provider fallback. Unsafe scratch aliases are rejected before launch."
 			}
 		]
 	},

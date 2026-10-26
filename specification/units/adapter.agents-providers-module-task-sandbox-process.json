@@ -37,6 +37,10 @@
 			{
 				"name": "command.argv",
 				"type": "string[] exact provider command arguments"
+			},
+			{
+				"name": "validateScratch.path",
+				"type": "absolute canonical trusted scratch directory"
 			}
 		],
 		"outputs": [
@@ -48,12 +52,22 @@
 				"name": "command",
 				"type": "string[]",
 				"description": "Node/Bun interpreter argv for a per-process trusted driver. Initializes sandbox-runtime in that process, preserves its filesystem/network policy, inserts (deny file-link) into its pinned macOS profile, then launches provider with inherited stdio. Refuses an unexpected native wrapper format. Closes native proxy state only after child exit; no nested sandbox_apply."
+			},
+			{
+				"name": "validateScratch",
+				"type": "Promise<void>",
+				"description": "Before native launch, inspect only scratch file metadata with bounded traversal. Reject symbolic links, hardlinked files, special files or excessive entries. No file contents read; safe regular files and directories retained for retries. A preexisting alias into writable scratch must never widen file permissions."
 			}
 		],
 		"errors": [
 			{
 				"name": "Unknown wrapper shape or sandbox initialization failure",
 				"type": "safe prelaunch nonzero process result; no unrestricted fallback"
+			},
+			{
+				"name": "Unsafe scratch contents",
+				"type": "Error before native process return",
+				"description": "Fail closed on any preexisting symbolic/hard link or unsafe special file; no cleanup of caller contents."
 			}
 		]
 	},
