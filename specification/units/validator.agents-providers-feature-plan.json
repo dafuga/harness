@@ -3,7 +3,7 @@
 	"id": "validator.agents-providers-feature-plan",
 	"kind": "validator",
 	"title": "FeaturePlanValidator",
-	"responsibility": "Validate feature plan modules, page options, task dependencies and approval readiness.",
+	"responsibility": "Validate feature-plan schema, page option selection, module tree and task dependency graph before approval.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,20 +19,33 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "FeaturePlanValidator.validate.input",
-				"type": "Record<string, unknown>"
+				"name": "validate.plan",
+				"type": "unknown",
+				"description": "Candidate FeaturePlan parsed by the published strict planSchema."
+			},
+			{
+				"name": "validate.options",
+				"type": "{requireSelection?:boolean}",
+				"description": "Drafts may omit selections; approval requires one selected existing option per page."
 			}
 		],
 		"outputs": [
 			{
-				"name": "FeaturePlanValidator.validate",
-				"type": "FeaturePlanValidatorResult"
+				"name": "validate",
+				"type": "{valid:boolean,errors:string[]}",
+				"description": "Valid plans have unique page, option, change and task IDs; exactly one preferred option per page; selected options belong to the page; parent and prerequisite references exist without cycles; tasks belong to the feature, identify a planned module and include its wanted contract. Distinct independent branches are accepted. Every non-reuse change, including removal, requires a wanted contract; implementation tasks match the change contract and use a subset of its files; verification tasks may use their separately granted verification files."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "invalid plan",
+				"type": "returned errors",
+				"description": "Malformed schemas, duplicate IDs, missing or cyclic parent/dependency references, cross-feature tasks, absent wanted contracts and missing approval selections are rejected without mutation."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
