@@ -1,0 +1,33 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-w1on2y
+
+ ❯ test/cli.e2e.test.ts (5 tests | 1 failed | 4 skipped) 600015ms
+   ↓ CLI scaffolds and checks a lib project
+   ↓ CLI scaffolds and checks an app project with routes
+   ↓ CLI reports edge errors cleanly
+   ↓ CLI supports force overwrites and generated lint failures
+   × CLI installs module foundations and generates their declared resources 600010ms
+     → Test timed out in 600000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cli.e2e.test.ts > CLI installs module foundations and generates their declared resources
+Error: Test timed out in 600000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/cli.e2e.test.ts:202:1
+    200| }
+    201| 
+    202| test('CLI installs module foundations and generates their declared res…
+       | ^
+    203|  const root = await mkdtemp(join(tmpdir(), 'harness-cli-modules-'));
+    204|  try {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  00:56:49
+   Duration  609.32s (transform 586ms, setup 813ms, collect 600ms, tests 600.02s, environment 0ms, prepare 336ms)
+

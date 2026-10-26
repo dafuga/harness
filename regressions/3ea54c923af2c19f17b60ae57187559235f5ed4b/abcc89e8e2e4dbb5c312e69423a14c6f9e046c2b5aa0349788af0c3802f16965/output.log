@@ -1,0 +1,111 @@
+
+Running 3 tests using 1 worker
+
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.module-system-explorer-modules-screen at desktop (5.7s)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.module-system-explorer-modules-screen at tablet (5.9s)
+  ✘  3 tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.module-system-explorer-modules-screen at mobile (5.6s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.module-system-explorer-modules-screen at desktop 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').locator('article')
+    Expected: 6
+    Received: 18
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').locator('article') with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').locator('article')
+        14 × locator resolved to 18 elements
+           - unexpected value "18"
+
+
+       96 | 			await assertComponentCapture(page, unit.id, viewport.id);
+       97 | 			if (unit.id === 'reports.component.module-system-explorer-modules-screen') {
+    >  98 | 				await expect(component.locator('article')).toHaveCount(6);
+          | 				                                           ^
+       99 | 				await expect(component.getByText('Testing', { exact: true })).toHaveCount(2);
+      100 | 			}
+      101 | 			await assertModulePreview(component, unit.id);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-G6EY7z/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:98:48
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-214d5-r-modules-screen-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-214d5-r-modules-screen-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-214d5-r-modules-screen-at-desktop/error-context.md
+
+  2) tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.module-system-explorer-modules-screen at tablet 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').locator('article')
+    Expected: 6
+    Received: 18
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').locator('article') with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').locator('article')
+        14 × locator resolved to 18 elements
+           - unexpected value "18"
+
+
+       96 | 			await assertComponentCapture(page, unit.id, viewport.id);
+       97 | 			if (unit.id === 'reports.component.module-system-explorer-modules-screen') {
+    >  98 | 				await expect(component.locator('article')).toHaveCount(6);
+          | 				                                           ^
+       99 | 				await expect(component.getByText('Testing', { exact: true })).toHaveCount(2);
+      100 | 			}
+      101 | 			await assertModulePreview(component, unit.id);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-G6EY7z/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:98:48
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-b1f40-er-modules-screen-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-b1f40-er-modules-screen-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-b1f40-er-modules-screen-at-tablet/error-context.md
+
+  3) tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.module-system-explorer-modules-screen at mobile 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').locator('article')
+    Expected: 6
+    Received: 18
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').locator('article') with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.module-system-explorer-modules-screen"]').locator('article')
+        14 × locator resolved to 18 elements
+           - unexpected value "18"
+
+
+       96 | 			await assertComponentCapture(page, unit.id, viewport.id);
+       97 | 			if (unit.id === 'reports.component.module-system-explorer-modules-screen') {
+    >  98 | 				await expect(component.locator('article')).toHaveCount(6);
+          | 				                                           ^
+       99 | 				await expect(component.getByText('Testing', { exact: true })).toHaveCount(2);
+      100 | 			}
+      101 | 			await assertModulePreview(component, unit.id);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-G6EY7z/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:98:48
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-2aead-er-modules-screen-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-2aead-er-modules-screen-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-2aead-er-modules-screen-at-mobile/error-context.md
+
+  3 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.module-system-explorer-modules-screen at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.module-system-explorer-modules-screen at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.module-system-explorer-modules-screen at mobile 
