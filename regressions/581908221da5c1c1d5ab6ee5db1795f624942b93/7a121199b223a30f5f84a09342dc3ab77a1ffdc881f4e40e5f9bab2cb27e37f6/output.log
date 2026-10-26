@@ -1,0 +1,31 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tUT6Sh
+
+ ❯ test/project-template.test.ts (5 tests | 1 failed) 1505ms
+   ✓ generated element atoms preserve native compilation and emitted runtime source 156ms
+   ✓ app projects include SvelteKit and specification files 5ms
+   × library projects include Bun TypeScript test structure 3ms
+     → expected [ '.gitignore', '.prettierrc', …(12) ] to include 'specification/units/entry.index.json'
+   ✓ generated app code and configuration obey their formatter settings  854ms
+   ✓ generated lib code and configuration obey their formatter settings  482ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-template.test.ts > library projects include Bun TypeScript test structure
+AssertionError: expected [ '.gitignore', '.prettierrc', …(12) ] to include 'specification/units/entry.index.json'
+ ❯ test/project-template.test.ts:101:16
+     99|  expect(paths).toContain('scripts/harness-audit.ts');
+    100|  expect(paths).toContain('test/index.test.ts');
+    101|  expect(paths).toContain('specification/units/entry.index.json');
+       |                ^
+    102|  const unit = JSON.parse(
+    103|   fileContents(files, 'specification/units/entry.index.json')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  21:08:23
+   Duration  4.26s (transform 173ms, setup 101ms, collect 418ms, tests 1.51s, environment 0ms, prepare 26ms)
+
