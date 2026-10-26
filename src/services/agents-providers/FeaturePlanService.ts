@@ -1,18 +1,8 @@
 import { createHash } from 'node:crypto';
-import type { FeaturePlanRepository } from '../../repositories/agents-providers/FeaturePlanRepository';
 import type { FeaturePlan } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import { planSchema } from '../../repositories/agents-providers/module-task-repository/taskSchemas';
-import type { FeaturePlanValidator } from '../../validators/agents-providers/FeaturePlanValidator';
 
-type Dependencies = {
-	repository: Pick<FeaturePlanRepository, 'read' | 'append' | 'approve'>;
-	validator: Pick<FeaturePlanValidator, 'validate'>;
-	verifyReady?: (plan: FeaturePlan) => Promise<void>;
-	now?: () => string;
-};
-type Draft = Omit<FeaturePlan, 'revision' | 'digest' | 'approval'>;
-type Selection = { feature: string; page: string; option: string; expectedDigest: string };
-type Approval = { feature: string; expectedDigest: string; reviewer: string };
+import type { Dependencies, Draft, Selection, Approval } from './FeaturePlanService.types';
 
 function canonical(value: unknown): string {
 	if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
