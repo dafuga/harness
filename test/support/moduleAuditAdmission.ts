@@ -3,6 +3,7 @@ import { expect } from 'vitest';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { auditPath } from '../../src/audit/audit';
+import { ModuleResourceService } from '../../src/services/module-system/ModuleResourceService';
 import { ModuleInstallService } from '../../src/services/module-system/ModuleInstallService';
 /** Standard structure boundary: defaults, available declarations, installed shapes and unknown siblings. */
 export async function assertModuleAuditAdmission(root: string): Promise<void> {
@@ -72,10 +73,16 @@ async function sourceFindings(root: string): Promise<string[]> {
 /** Every emitted testing foundation must pass the same category admission as generated app code. */
 async function assertTestingFoundations(root: string): Promise<void> {
 	const emitted: string[] = [];
-	for (const id of ['playwright', 'headless-audio'])
+	for (const id of ['playwright', 'headless-audio']) {
 		emitted.push(...(await new ModuleInstallService().add(root, id)));
+		emitted.push(...(await new ModuleResourceService().generate(root, id, 'test', 'Probe')));
+	}
 	const findings = (await auditPath(root)).filter(
-		(finding) => emitted.includes(finding.path) && finding.rule === 'module-category-folder'
+		(finding) =>
+			['module-category-folder', 'harness-e2e-structure'].includes(finding.rule) &&
+			emitted.some(
+				(path) => path === finding.path || path.startsWith(finding.path.replace(/\/$/, '') + '/')
+			)
 	);
 	expect(findings).toEqual([]);
 }

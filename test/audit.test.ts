@@ -91,7 +91,7 @@ test('audit reports architecture rule violations', async () => {
 	await rm(root, { recursive: true, force: true });
 });
 
-test('audit reports Harness scaffold file and function naming violations', async () => {
+test('audit reports scaffold naming and generated foundation structure violations', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-audit-'));
 	await mkdir(join(root, 'src/services'), { recursive: true });
 	await mkdir(join(root, 'src/utils'), { recursive: true });
