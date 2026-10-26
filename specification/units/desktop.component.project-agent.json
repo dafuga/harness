@@ -36,6 +36,11 @@
 				"name": "ProjectAgent.workspace",
 				"type": "Workspace",
 				"description": "The selected project, revision, permissions, bridge and navigation. Conversation state stays with this project as its screens change."
+			},
+			{
+				"name": "ProjectAgent.open",
+				"type": "boolean | undefined",
+				"description": "Optional bindable open state, false by default, used by hosts to control the floating panel."
 			}
 		],
 		"outputs": [
