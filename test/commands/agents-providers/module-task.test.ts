@@ -150,7 +150,7 @@ const pendingServer = () => {
 const interrupt = (event: 'SIGINT' | 'SIGTERM', baseline: Function[]) => {
 	const handler = process.listeners(event).find((listener) => !baseline.includes(listener));
 	expect(handler).toBeDefined();
-	handler?.();
+	(handler as (() => void) | undefined)?.();
 };
 test.each(['SIGINT', 'SIGTERM'] as const)(
 	'serve %s abort awaits server settlement and restores only owned listeners',

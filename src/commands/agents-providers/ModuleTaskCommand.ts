@@ -4,13 +4,14 @@ import type { Command } from 'commander';
 import { ModuleTaskService } from '../../services/agents-providers/ModuleTaskService';
 import { ModuleTaskServerService } from '../../services/agents-providers/ModuleTaskServerService';
 import { ModuleTaskWorkerService } from '../../services/agents-providers/ModuleTaskWorkerService';
-import type { ServeFlags, WorkerFlags } from './ModuleTaskCommand.types';
-type TaskServer = Pick<ModuleTaskServerService, 'run'>;
+import type { ServeFlags, TaskServer, WorkerFlags } from './ModuleTaskCommand.types';
 /** Task admission, discovery and foreground worker wiring; task check keeps its completion gate. */
 export class ModuleTaskCommand {
 	constructor(
 		private readonly service = new ModuleTaskService(),
-		private readonly server: Pick<ModuleTaskServerService, 'run'> = new ModuleTaskServerService()
+		private readonly server: Pick<ModuleTaskServerService, 'run'> = new ModuleTaskServerService(
+			process.cwd()
+		)
 	) {}
 	register(task: Command): void {
 		this.authoring(task);

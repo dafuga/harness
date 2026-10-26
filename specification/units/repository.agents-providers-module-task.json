@@ -147,17 +147,17 @@
 			{
 				"name": "TaskUsage",
 				"type": "z.infer<typeof taskUsageSchema>",
-				"description": "Authoritative alias imported from repository.agents-providers-module-task-repository-task-usage. Its field shape is absent from that dependency's committed contract; do not infer it."
+				"description": "Inferred type alias exported from src/repositories/agents-providers/ModuleTaskRepository.types.ts; underlying strict schema value is exported from module-task-repository/taskUsage.ts and documented by that owning unit."
 			},
 			{
 				"name": "TaskExecution",
 				"type": "z.infer<typeof taskExecutionSchema>",
-				"description": "Authoritative alias imported from repository.agents-providers-module-task-repository-task-usage. Its field shape is absent from that dependency's committed contract; do not infer it."
+				"description": "Inferred type alias exported from src/repositories/agents-providers/ModuleTaskRepository.types.ts; underlying strict schema value is exported from module-task-repository/taskUsage.ts and documented by that owning unit."
 			},
 			{
 				"name": "TaskApiCost",
 				"type": "z.infer<typeof taskCostSchema>",
-				"description": "Authoritative alias imported from repository.agents-providers-module-task-repository-task-usage. Its field shape is absent from that dependency's committed contract; do not infer it."
+				"description": "Inferred type alias exported from src/repositories/agents-providers/ModuleTaskRepository.types.ts; underlying strict schema value is exported from module-task-repository/taskUsage.ts and documented by that owning unit."
 			},
 			{
 				"name": "TaskFeature",
@@ -177,7 +177,7 @@
 			{
 				"name": "ModuleTask",
 				"type": "Omit<ModuleTaskInput, 'module' | 'feature'> & {feature: TaskFeature; module: {id: string; goal: string; files: string[]}; sourceCommit: string; contractHash: string; status: 'queued' | 'running' | 'review' | 'failed' | 'accepted'; repairCommit?: string; reviews: TaskReview[]; createdAt: string; claim?: TaskClaim; claimHistory: TaskClaim[]; result?: StoredTaskResult; attempts: StoredTaskResult[]}",
-				"description": "Parsed stored record. files must be non-empty safe relative paths. TaskClaim has worker id, UUID token, ISO startedAt, and owner {workspace UUID, positive pid, startedAt text}. Reviews and result usage/execution fields are inferred from the unresolved task-usage dependency schema. Array defaults are applied by the schema."
+				"description": "Parsed stored record. files must be non-empty safe relative paths. TaskClaim has worker id, UUID token, ISO startedAt, and owner {workspace UUID, positive pid, startedAt text}. Reviews and result usage/execution fields are inferred from the unresolved task-usage dependency schema. Array defaults are applied by the schema. result is the strict schema described by ModuleTask.result below."
 			},
 			{
 				"name": "TaskSelection",
@@ -203,6 +203,11 @@
 				"name": "TaskRunScope",
 				"type": "{files:string[];snapshot:string;scratch:string;readPaths:string[];protectedPaths:string[];binDirectory?:string}",
 				"description": "Trusted transient exact-file capability constructed by Harness context owner. files relative to TaskRunInput.cwd; all other paths absolute. Snapshot and runtime paths readonly, scratch writable and separate from source. binDirectory optional trusted sealed CLI prefix included exactly in readPaths. Caller owns context cleanup after all child processes exit."
+			},
+			{
+				"name": "ModuleTask.result",
+				"type": "NonNullable<ModuleTask['result']>",
+				"description": "Strict stored result, not an exported StoredTaskResult alias. Fields: {\"provider\":{\"type\":\"'claude' | 'codex'\",\"required\":true,\"validator\":\"z.enum(['claude', 'codex'])\"},\"model\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.string().trim().min(1).max(16000)\"},\"intelligence\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.string().trim().min(1).max(16000)\"},\"reportedModel\":{\"type\":\"string | null\",\"required\":true,\"validator\":\"z.string().nullable()\",\"emptyStringAllowed\":true},\"text\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.string()\",\"emptyStringAllowed\":true},\"worktree\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.string()\",\"trimmed\":false,\"minimumLength\":null,\"maximumLength\":null,\"emptyStringAllowed\":true,\"nullAllowed\":false},\"changedFiles\":{\"type\":\"string[]\",\"required\":true,\"validator\":\"z.array(path)\"},\"error\":{\"type\":\"string\",\"required\":false,\"validator\":\"z.string()\",\"emptyStringAllowed\":true},\"fallback\":{\"type\":\"boolean\",\"required\":true,\"validator\":\"z.boolean()\"},\"finishedAt\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.iso.datetime()\"},\"attempt\":{\"type\":\"string\",\"required\":false,\"validator\":\"z.uuid()\"},\"sourceCommit\":{\"type\":\"string\",\"required\":false,\"validator\":\"commit\"},\"checkpointCommit\":{\"type\":\"string\",\"required\":false,\"validator\":\"commit\"},\"usage\":{\"type\":\"TaskUsage\",\"required\":false,\"validator\":\"taskUsageSchema\"},\"executions\":{\"type\":\"TaskExecution[]\",\"requiredOnParsedOutput\":true,\"validator\":\"z.array(taskExecutionSchema).default([])\",\"inputOptional\":true,\"default\":[]}} worktree is required plain string, so empty string denotes workspace unavailable for prelaunch failure. Use nonempty safe error to finalize failed; omit usage when no provider ran. executions defaults to []; model/intelligence trimmed nonempty max16000; source/checkpoint commits 40 lowercase hex. Public value validators are nested in storedTaskSchema/queueSchema from src/repositories/agents-providers/module-task-repository/taskSchemas.ts."
 			}
 		],
 		"errors": [

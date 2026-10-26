@@ -1,3 +1,5 @@
+import type { ModuleTaskServerService } from '../../services/agents-providers/ModuleTaskServerService';
+
 export interface WorkerFlags {
 	worker: string;
 	modules?: string;
@@ -12,3 +14,4 @@ export interface ServeFlags {
 	once?: boolean;
 	json?: boolean;
 }
+export type TaskServer = Pick<ModuleTaskServerService, 'run'>;

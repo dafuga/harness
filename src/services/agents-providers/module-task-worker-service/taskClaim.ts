@@ -24,7 +24,8 @@ export function claimedTask(
 	queue: ModuleTaskQueue,
 	worker: string,
 	modules: string[],
-	owner: NonNullable<ModuleTask['claim']>['owner']
+	owner: NonNullable<ModuleTask['claim']>['owner'],
+	prepare: (task: ModuleTask) => void = () => {}
 ) {
 	const busy = new Set(queue.tasks.filter((t) => t.status === 'running').map((t) => t.module.id));
 	const task = queue.tasks.find(
@@ -35,6 +36,7 @@ export function claimedTask(
 			!busy.has(t.module.id)
 	);
 	if (!task) return null;
+	prepare(task);
 	task.status = 'running';
 	task.claim = { worker, token: randomUUID(), startedAt: new Date().toISOString(), owner };
 	return task;

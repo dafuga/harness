@@ -2,6 +2,8 @@ import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import type { TaskRunInput } from './module-task-worker.test.types';
 import {
+	assertAcceptedExecutions,
+	isolateAnalyticsSync,
 	mockContexts,
 	reviewFixture,
 	seededWorkerFixture
@@ -12,6 +14,9 @@ import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { observedTaskOperation } from '../../support/taskProfiles';
+
+isolateAnalyticsSync();
+
 test('module filters and assignment claims select once, then preserve changes for review', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -123,11 +128,7 @@ test('incomplete review commits a repair base, requeues once, and keeps prior wo
 		expect(accepted.status).toBe('accepted');
 		expect(accepted.reviews).toHaveLength(2);
 		expect(accepted.attempts).toHaveLength(1);
-		expect(accepted.result?.executions?.[0]).toMatchObject({
-			model: 'gpt-6-luna',
-			intelligence: 'max',
-			apiCost: { usd: 0.002, basis: 'cli-reported' }
-		});
+		assertAcceptedExecutions(accepted, runInputs);
 		expect(await f.git.run(['rev-parse', 'HEAD'])).toBe(f.source);
 	} finally {
 		await f.dispose();
@@ -200,6 +201,7 @@ test('context rejection is safe and an aborted preclaim does not write the queue
 			(await f.git.run(['rev-parse', 'refs/harness/tasks'])) === commit &&
 			(await service.show(input.id)).task.status === 'queued';
 		const result = await worker.once('owner');
+		if (result.status === 'idle') throw new Error('Expected context-failure result, received idle');
 		const stored = (await service.show(input.id)).task;
 		expect([
 			preclaimUnchanged,

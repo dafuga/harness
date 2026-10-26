@@ -92,9 +92,9 @@ test('changed checkpoint is readable with committed metadata and preserves user 
 	const { f, source, cwd, git } = await metadataFixture();
 	try {
 		const rootIndex = await f.git.run(['write-tree']);
-		const worktreeIndex = await git.run(['write-tree']);
 		await writeFile(join(cwd, 'src/orders.ts'), 'export const orders = 2;');
 		await git.run(['add', 'src/orders.ts']);
+		const worktreeIndex = await git.run(['write-tree']);
 		await writeFile(join(cwd, 'src/orders.ts'), 'export const orders = 3;');
 		await writeFile(join(cwd, 'new.txt'), 'review context');
 		const checkpoint = await new ModuleTaskWorktreeAdapter(f.root).checkpoint({
@@ -116,7 +116,7 @@ test('changed checkpoint is readable with committed metadata and preserves user 
 		expect(await f.git.run(['write-tree'])).toBe(rootIndex);
 		expect(await git.run(['write-tree'])).toBe(worktreeIndex);
 		expect(await git.run(['show', checkpoint + ':src/orders.ts'])).toContain('orders = 3');
-		expect(await git.run(['show', ':src/orders.ts'])).toContain('orders = 1');
+		expect(await git.run(['show', ':src/orders.ts'])).toContain('orders = 2');
 		expect(await git.run(['show', '-s', '--format=%an <%ae>', checkpoint])).toBe(
 			'Checkpoint Test <checkpoint@example.test>'
 		);

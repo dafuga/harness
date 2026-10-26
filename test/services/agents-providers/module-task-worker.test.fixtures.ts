@@ -1,5 +1,7 @@
 /** Private collaborators for the owning worker method matrix. */
+import { afterEach, beforeEach, vi } from 'vitest';
 import { expect } from '../../verificationExpect';
+import { ModuleTaskAnalyticsService } from '../../../src/services/agents-providers/ModuleTaskAnalyticsService';
 import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
@@ -117,4 +119,29 @@ export async function seededWorkerFixture() {
 	const input = JSON.parse(await readFile(await f.input({}), 'utf8'));
 	await service.add(input);
 	return { f, service, input, contexts: mockContexts() };
+}
+
+export function isolateAnalyticsSync() {
+	beforeEach(() => vi.spyOn(ModuleTaskAnalyticsService.prototype, 'sync').mockResolvedValue(0));
+	afterEach(() => vi.restoreAllMocks());
+}
+
+export function assertAcceptedExecutions(task: ModuleTask, runInputs: TaskRunInput[]) {
+	expect(runInputs[2]).toMatchObject({
+		provider: 'claude',
+		model: 'claude-haiku-5-5',
+		intelligence: 'medium'
+	});
+	expect(task.attempts[0]?.executions?.[1]).toMatchObject({
+		provider: 'codex',
+		model: 'gpt-6-luna',
+		intelligence: 'max',
+		apiCost: { usd: 0.002, basis: 'cli-reported' }
+	});
+	expect(task.result?.executions?.[0]).toMatchObject({
+		provider: 'claude',
+		model: 'claude-haiku-5-5',
+		intelligence: 'medium',
+		apiCost: { usd: 0.002, basis: 'cli-reported' }
+	});
 }

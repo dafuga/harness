@@ -3,8 +3,8 @@
 	"id": "repository.agents-providers-module-task-repository-task-usage",
 	"kind": "repository",
 	"title": "taskUsage",
-	"responsibility": "Owns the taskUsage persistence boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Validate committed task usage, API-equivalent cost provenance, observed model executions and review records with strict schemas; preserve unknown values as null.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/repositories/agents-providers/module-task-repository/taskUsage.ts"],
@@ -17,31 +17,68 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "taskUsageSchema.parse.value",
+				"type": "unknown",
+				"description": "Parsed strictly against the documented schema; safeParse is the standard nonthrowing Zod alternative."
+			},
+			{
+				"name": "taskCostSchema.parse.value",
+				"type": "unknown",
+				"description": "Parsed strictly against the documented schema; safeParse is the standard nonthrowing Zod alternative."
+			},
+			{
+				"name": "taskExecutionSchema.parse.value",
+				"type": "unknown",
+				"description": "Parsed strictly against the documented schema; safeParse is the standard nonthrowing Zod alternative."
+			},
+			{
+				"name": "reviewInputSchema.parse.value",
+				"type": "unknown",
+				"description": "Parsed strictly against the documented schema; safeParse is the standard nonthrowing Zod alternative."
+			},
+			{
+				"name": "taskReviewSchema.parse.value",
+				"type": "unknown",
+				"description": "Parsed strictly against the documented schema; safeParse is the standard nonthrowing Zod alternative."
+			}
+		],
 		"outputs": [
 			{
 				"name": "taskUsageSchema",
-				"type": "unknown"
+				"type": "Zod schema for {inputTokens: number | null; outputTokens: number | null; cacheReadTokens: number | null; cacheWriteTokens: number | null; cacheWriteLongTokens?: number | null; reportedCostUsd: number | null; reasoningTokens?: number | null}",
+				"description": "Strict object; unknown keys are rejected; no defaults. Public schema value exported from src/repositories/agents-providers/module-task-repository/taskUsage.ts. {} Field validation: {\"inputTokens\":{\"type\":\"number | null\",\"required\":true,\"constraints\":[\"finite\",\"nonnegative\"]},\"outputTokens\":{\"type\":\"number | null\",\"required\":true,\"constraints\":[\"finite\",\"nonnegative\"]},\"cacheReadTokens\":{\"type\":\"number | null\",\"required\":true,\"constraints\":[\"finite\",\"nonnegative\"]},\"cacheWriteTokens\":{\"type\":\"number | null\",\"required\":true,\"constraints\":[\"finite\",\"nonnegative\"]},\"cacheWriteLongTokens\":{\"type\":\"number | null\",\"required\":false,\"constraints\":[\"finite\",\"nonnegative\"]},\"reportedCostUsd\":{\"type\":\"number | null\",\"required\":true,\"constraints\":[\"finite\",\"nonnegative\"]},\"reasoningTokens\":{\"type\":\"number | null\",\"required\":false,\"constraints\":[\"finite\",\"nonnegative\"]}}"
 			},
 			{
 				"name": "taskCostSchema",
-				"type": "unknown"
+				"type": "Zod schema for {usd: number | null; minimumUsd: number | null; maximumUsd: number | null; basis: 'cli-reported' | 'standard-api-estimate' | 'unavailable'; rateCard: string; source: string | null; note: string}",
+				"description": "Strict object; unknown keys are rejected; no defaults. Public schema value exported from src/repositories/agents-providers/module-task-repository/taskUsage.ts. {} Field validation: {\"usd\":{\"type\":\"number | null\",\"required\":true,\"constraints\":[\"finite\",\"nonnegative\"]},\"minimumUsd\":{\"type\":\"number | null\",\"required\":true,\"constraints\":[\"finite\",\"nonnegative\"]},\"maximumUsd\":{\"type\":\"number | null\",\"required\":true,\"constraints\":[\"finite\",\"nonnegative\"]},\"basis\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"cli-reported\",\"standard-api-estimate\",\"unavailable\"]},\"rateCard\":{\"type\":\"string\",\"required\":true,\"constraints\":[],\"emptyAllowed\":true},\"source\":{\"type\":\"string | null\",\"required\":true},\"note\":{\"type\":\"string\",\"required\":true,\"constraints\":[],\"emptyAllowed\":true}}"
 			},
 			{
 				"name": "taskExecutionSchema",
-				"type": "unknown"
+				"type": "Zod schema for {provider: 'claude' | 'codex'; model: string; intelligence: string; reportedModel: string | null; usage?: TaskUsage; apiCost: TaskApiCost; status: 'succeeded' | 'failed'; startedAt: string; finishedAt: string}",
+				"description": "Strict object; unknown keys are rejected; no defaults. Public schema value exported from src/repositories/agents-providers/module-task-repository/taskUsage.ts. {\"quotaAndBounce\": \"No quota-specific or fallback/bounce field is defined in TaskExecution.\"} Field validation: {\"provider\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"claude\",\"codex\"]},\"model\":{\"type\":\"string\",\"required\":true,\"constraints\":[],\"emptyAllowed\":true},\"intelligence\":{\"type\":\"string\",\"required\":true,\"constraints\":[],\"emptyAllowed\":true},\"reportedModel\":{\"type\":\"string | null\",\"required\":true},\"usage\":{\"type\":\"TaskUsage\",\"required\":false,\"schema\":\"taskUsageSchema\"},\"apiCost\":{\"type\":\"TaskApiCost\",\"required\":true,\"schema\":\"taskCostSchema\"},\"status\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"succeeded\",\"failed\"]},\"startedAt\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.iso.datetime()\"},\"finishedAt\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.iso.datetime()\"}}"
 			},
 			{
 				"name": "reviewInputSchema",
-				"type": "unknown"
+				"type": "Zod schema for {attempt: string; verdict: 'accepted' | 'incomplete'; reviewer?: string; feedback?: string}",
+				"description": "Strict object with a cross-field refinement; unknown keys are rejected. Public schema value exported from src/repositories/agents-providers/module-task-repository/taskUsage.ts. {\"refinement\": \"If verdict is incomplete, trimmed feedback must have length greater than zero. Accepted verdicts may have empty feedback.\"} Field validation: {\"attempt\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.uuid()\"},\"verdict\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"accepted\",\"incomplete\"]},\"reviewer\":{\"type\":\"string\",\"required\":false,\"constraints\":[\"trim\",\"minLength 1\",\"maxLength 150\"],\"default\":\"unattributed\"},\"feedback\":{\"type\":\"string\",\"required\":false,\"constraints\":[\"trim\",\"maxLength 16000\"],\"default\":\"\"}}"
 			},
 			{
 				"name": "taskReviewSchema",
-				"type": "unknown"
+				"type": "Zod schema for {attempt: string; verdict: 'accepted' | 'incomplete'; reviewer: string; feedback: string; at: string; provider: 'claude' | 'codex'; model: string; intelligence: string; reportedModel: string | null}",
+				"description": "Strict object; unknown keys are rejected; all fields required; no defaults or string trimming/bounds. Public schema value exported from src/repositories/agents-providers/module-task-repository/taskUsage.ts. {\"quotaAndBounce\": \"No quota-specific or fallback/bounce field is defined in TaskReview; attempt identity and selected/reported model identity are retained.\"} Field validation: {\"attempt\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.uuid()\"},\"verdict\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"accepted\",\"incomplete\"]},\"reviewer\":{\"type\":\"string\",\"required\":true,\"emptyAllowed\":true},\"feedback\":{\"type\":\"string\",\"required\":true,\"emptyAllowed\":true},\"at\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.iso.datetime()\"},\"provider\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"claude\",\"codex\"]},\"model\":{\"type\":\"string\",\"required\":true,\"emptyAllowed\":true},\"intelligence\":{\"type\":\"string\",\"required\":true,\"emptyAllowed\":true},\"reportedModel\":{\"type\":\"string | null\",\"required\":true}}"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "schema validation rejection",
+				"description": "Unknown keys, malformed values, invalid UUID/date fields, negative/nonfinite usage/cost and incomplete reviews without feedback are rejected."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {

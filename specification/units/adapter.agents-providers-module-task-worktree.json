@@ -59,6 +59,11 @@
 			"unit": "function.commit-identity",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
