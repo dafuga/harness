@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mIvVQM
+
+stderr | test/cli.e2e.test.ts
+[harness resources] queue-state {"inherited":{"lease":"0b5cc9f0-9481-40d6-b410-b364dd73afb3","cpus":"1","memoryMiB":"3072"},"snapshot":{"status":"available","sampledAt":1793006468103,"logicalCores":10,"usableCores":10,"cpuUsedPercent":72.62021589793916,"cpuAvailableCores":2.7379784102060842,"memoryTotalBytes":68719476736,"memoryAvailableBytes":31201263616,"memoryPressure":"normal"},"jobs":[{"id":"77abe082-1a91-405f-adf3-672e0fda8b89","state":"running","cpus":5,"memoryMiB":6144,"ownerPid":23505,"workerPid":23509,"notice":null},{"id":"703dec13-2510-4c94-8424-a362e3993c42","parentId":"77abe082-1a91-405f-adf3-672e0fda8b89","state":"running","cpus":5,"memoryMiB":6144,"ownerPid":23512,"workerPid":23517,"notice":null},{"id":"eb7c9332-e5ed-44f8-b1d3-8a453c3bb757","parentId":"703dec13-2510-4c94-8424-a362e3993c42","state":"running","cpus":5,"memoryMiB":6144,"ownerPid":25438,"workerPid":25448,"notice":null},{"id":"0b5cc9f0-9481-40d6-b410-b364dd73afb3","state":"running","cpus":1,"memoryMiB":3072,"ownerPid":10748,"workerPid":46346,"notice":null},{"id":"2af9e887-29b7-4e75-8caa-2b00929381ba","state":"queued","cpus":1,"memoryMiB":3072,"ownerPid":10749,"notice":"Waiting for CPU and memory reservations"},{"id":"61373c8a-6bd2-4bec-b5fe-1602774a98c1","state":"queued","cpus":1,"memoryMiB":2048,"ownerPid":61914,"notice":"Waiting for CPU and memory reservations"}],"total":6}
+
+(node:47722) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/cli.e2e.test.ts (5 tests | 4 skipped) 102068ms
+   ✓ CLI installs module foundations and generates their declared resources  102065ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 4 skipped (5)
+   Start at  09:19:22
+   Duration  106.10s (transform 112ms, setup 130ms, collect 210ms, tests 102.07s, environment 0ms, prepare 38ms)
+
