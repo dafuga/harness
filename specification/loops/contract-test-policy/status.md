@@ -516,3 +516,16 @@ helper and class cases now pass admission, but both parent cases still fail on
 `page.titles`, which needs real Playwright screenshot cases and reviewed
 baselines. Full migration, provider qualification, complete history, the full
 other-laptop check and delivered Explorer/audio proof remain open.
+
+## Continuation: static units
+
+The same validator case now rejects runtime contracts on config, style, type and
+types units, whose checks belong to the compiler, lint, build and audit. Test-only
+`d6ff3d7404` failed in red `a2212f8c435b`; unchanged green `07477aca4cb5` passed
+at `49e6477bcb`. Seven focused cases passed in capture `7c7f4e4112fc`, while
+registry validation, root typecheck and audit passed in a clean Git worktree.
+Mutation `8f65f38702` failed the existing config-method assertion in capture
+`3d8e79221f2b`; restored tree `bf82b78bd1` matched `49e6477bcb` and passed in
+capture `4aae1614ba19`. The case count did not change. The current validator
+source measurement is 13,342 bytes, 333 lines, complexity 108 and five
+dependencies; it emits no separate artifact. Full verification remains pending.

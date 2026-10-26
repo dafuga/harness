@@ -2,7 +2,7 @@
 	"name": "contract-static-forms",
 	"goal": "Reject runtime test contracts for static configuration, style and type units.",
 	"createdAt": "2026-10-26T22:51:11.287Z",
-	"updatedAt": "2026-10-26T22:51:12.422Z",
+	"updatedAt": "2026-10-26T22:52:56.238Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T22:51:55.540Z",
+			"evidence": "Test-only commit d6ff3d7404 rejects a config method case; the previous validator accepted it."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T22:52:22.103Z",
+			"evidence": "Commit 49e6477bcb rejects runtime cases on static units before accepting a test form."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T22:52:56.238Z",
+			"evidence": "Matched red a2212f8c435b and green 07477aca4cb5 keep the case, command and runtime unchanged."
 		},
 		{
 			"id": "verify",

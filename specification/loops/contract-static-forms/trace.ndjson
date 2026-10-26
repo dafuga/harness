@@ -1,3 +1,6 @@
 {"event":"loop.created","timestamp":"2026-10-26T22:51:11.287Z","name":"contract-static-forms","goal":"Reject runtime test contracts for static configuration, style and type units.","template":"bug-fix","templateLineage":["bug-fix"]}
 {"event":"step.completed","timestamp":"2026-10-26T22:51:11.868Z","loop":"contract-static-forms","step":"spec","evidence":"Static config, style and type units can currently claim helper or class runtime cases."}
 {"event":"step.completed","timestamp":"2026-10-26T22:51:12.422Z","loop":"contract-static-forms","step":"coverage","evidence":"The existing validator case checks entity forms but lacks static kinds with otherwise valid helper and method cases."}
+{"event":"step.completed","timestamp":"2026-10-26T22:51:55.540Z","loop":"contract-static-forms","step":"red","evidence":"Test-only commit d6ff3d7404 rejects a config method case; the previous validator accepted it."}
+{"event":"step.completed","timestamp":"2026-10-26T22:52:22.103Z","loop":"contract-static-forms","step":"implement","evidence":"Commit 49e6477bcb rejects runtime cases on static units before accepting a test form."}
+{"event":"step.completed","timestamp":"2026-10-26T22:52:56.238Z","loop":"contract-static-forms","step":"green","evidence":"Matched red a2212f8c435b and green 07477aca4cb5 keep the case, command and runtime unchanged."}
