@@ -13,7 +13,9 @@
 		],
 		"symbols": [
 			"ModuleTaskContractContextService",
-			"ModuleTaskContractContextService.run",
+			"ModuleTaskContractContextService.constructor",
+			"ModuleTaskContractContextService.create",
+			"ModuleTaskContractSnapshot",
 			"ModuleTaskContractContext"
 		]
 	},
@@ -63,6 +65,16 @@
 	"dependencies": [
 		{
 			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-admission",
 			"via": "import",
 			"origin": "derived"
 		}
