@@ -124,10 +124,7 @@ export function harnessShell(input: HarnessNavbarInput): HarnessShellView {
 			? { branch: scope.branch, commit: null, category: 'pages' }
 			: null;
 	const modules = scope ? codeItems(input) : [];
-	if (scope?.location.screen === 'module-resources' && !modules.some((item) => item.active)) {
-		const plugins = modules.find((item) => item.id === 'module-library');
-		if (plugins) plugins.active = true;
-	}
+	activatePluginParent(scope, modules);
 	const primary = modules.find((item) => item.primary) ?? modules[0];
 	const categories = labels.map(([id, label]) => {
 		const item = categoryItem(input, id, label);
@@ -174,4 +171,11 @@ function codeItems(input: HarnessNavbarInput): HarnessShellCategory[] {
 			})
 		)
 		.filter((item, index, items) => items.findIndex((other) => other.id === item.id) === index);
+}
+
+/** The freshly constructed tab objects retain Plugins for resources without a direct tab. */
+function activatePluginParent(scope: HarnessNavbarInput['scope'], modules: HarnessShellCategory[]) {
+	if (scope?.location.screen !== 'module-resources' || modules.some((item) => item.active)) return;
+	const plugins = modules.find((item) => item.id === 'module-library');
+	if (plugins) plugins.active = true;
 }
