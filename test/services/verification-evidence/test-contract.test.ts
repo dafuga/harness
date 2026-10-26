@@ -7,6 +7,7 @@ import { expect, test } from 'vitest';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { TestContractService } from '../../../src/services/verification-evidence/TestContractService';
 import { indexFiles, unitOf } from '../../support/memoryTree';
+import { measureWorkload } from '../../support/measureWorkload';
 import {
 	assertCaseAdmissionInputs,
 	assertPropCaseInflation
@@ -69,7 +70,9 @@ test('validate initialized and invalid registries against declared cases', async
 		'duplicate case'
 	);
 	assertExecutedCases(registry, service);
-	assertMatrixRows(unit, service, 'validate');
+	await measureWorkload('validator.verification-evidence-test-case', 'matrix-row-admission', () =>
+		assertMatrixRows(unit, service, 'validate')
+	);
 });
 
 test('compare initialized contracts preserves identities unless capabilities change', async () => {
@@ -118,7 +121,11 @@ test('compare initialized contracts preserves identities unless capabilities cha
 		)
 	).toEqual([]);
 	assertExpandedCapabilities(unit, changed, service);
-	assertMatrixRows(unit, service, 'compare');
+	await measureWorkload(
+		'service.verification-evidence-test-contract',
+		'matrix-row-comparison',
+		() => assertMatrixRows(unit, service, 'compare')
+	);
 	expect(service.compare([], [unit])).toEqual([]);
 	assertSiblingCaseIdentity(unit);
 });
