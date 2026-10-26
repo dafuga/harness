@@ -1,6 +1,8 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import ProjectAgent from '../../src/components/ProjectAgent.svelte';
+import ProjectWork from '../../src/components/agents-providers/ProjectWork.svelte';
+import type { FeatureWorkSnapshot } from '../../../../src/services/agents-providers/FeatureWorkService.types';
 import type { Workspace } from '../../src/lib/stores/workspace.svelte';
 
 const drawn = (change: object = {}, open = false) => {
@@ -71,4 +73,137 @@ test('an open project panel offers Chat and Work with honest unavailable feature
 	expect(copy).not.toMatch(
 		/\b\d+\s+(?:tasks?|features?)\b|\b\d+%|\b(?:all tasks complete|no tasks remaining)\b/i
 	);
+});
+
+const workText = (
+	snapshot: FeatureWorkSnapshot | null,
+	loading = false,
+	error: string | null = null
+) =>
+	render(ProjectWork, { props: { snapshot, loading, error } as never })
+		.body.replace(/<[^>]*>/g, ' ')
+		.replace(/\s+/g, ' ')
+		.trim();
+
+const wantedContract = {
+	responsibility: 'Calculate the exact basket total',
+	inputs: [{ name: 'basket', type: 'Basket' }],
+	outputs: [{ name: 'total', type: 'Money' }],
+	errors: []
+};
+
+function workPage() {
+	return {
+		module: 'page.checkout',
+		selected: 'o2',
+		options: [
+			{
+				id: 'o2',
+				version: 'v002',
+				commit: 'b'.repeat(40),
+				path: 'design/checkout.png',
+				sha256: 'd'.repeat(64),
+				preferred: true
+			}
+		]
+	};
+}
+
+function planTasks(tasks: FeatureWorkSnapshot['features'][number]['tasks']) {
+	return tasks.map(({ id, title, module, dependsOn }) => ({
+		id,
+		title,
+		module,
+		dependsOn,
+		feature: 'checkout',
+		instructions: 'Implement checkout',
+		wantedContract,
+		model: 'auto',
+		role: 'implementation' as const
+	}));
+}
+
+function workSnapshot(): FeatureWorkSnapshot {
+	const statuses = ['queued', 'running', 'review', 'accepted', 'failed'] as const;
+	const tasks = statuses.map((status) => ({
+		id: `checkout.${status}`,
+		title: `Checkout ${status} task`,
+		module: `service.${status}`,
+		status,
+		dependsOn: status === 'queued' ? ['checkout.failed'] : [],
+		blockedBy: status === 'queued' ? ['checkout.failed'] : [],
+		belongsToPlan: true
+	}));
+
+	return {
+		queueCommit: 'a'.repeat(40),
+		features: [
+			{
+				id: 'checkout',
+				goal: 'Make checkout reliable',
+				tldr: 'Review checkout work',
+				tasks,
+				plan: {
+					feature: 'checkout',
+					sourceCommit: 'b'.repeat(40),
+					revision: 2,
+					goal: 'Make checkout reliable',
+					tldr: 'Review checkout work',
+					digest: 'c'.repeat(64),
+					pages: [workPage()],
+					changes: [
+						{
+							unit: 'page.checkout',
+							kind: 'modify',
+							assignedFiles: ['src/checkout.ts'],
+							wantedContract
+						},
+						{
+							unit: 'service.queued',
+							parent: 'page.checkout',
+							kind: 'add',
+							assignedFiles: ['src/total.ts'],
+							wantedContract
+						}
+					],
+					tasks: planTasks(tasks)
+				}
+			}
+		]
+	};
+}
+
+test('feature Work distinguishes loading, unavailable and an empty committed queue', () => {
+	expect(workText(null, true)).toMatch(/loading/i);
+	expect(workText(null, false, 'Feature work is unavailable')).toMatch(
+		/feature work is unavailable/i
+	);
+	const empty = workText({ queueCommit: null, features: [] });
+	expect(empty).toMatch(/no (?:committed )?(?:feature|work|task)|nothing .*?(?:queued|planned)/i);
+	for (const body of [
+		workText(null, true),
+		workText(null, false, 'Feature work is unavailable'),
+		empty
+	])
+		expect(body).not.toMatch(/Checkout .*? task|\b\d+%|all tasks complete/i);
+});
+
+test('feature Work renders committed plan hierarchy, explicit statuses and dependency blockers', () => {
+	const snapshot = workSnapshot();
+	const body = workText(snapshot);
+	expect(body).toContain('Make checkout reliable');
+	expect(body).toContain('page.checkout');
+	expect(body).toContain('service.queued');
+	for (const task of snapshot.features[0].tasks) {
+		expect(body).toContain(task.title);
+	}
+	for (const status of [/queued|to do/i, /running|in progress/i, /review/i, /accepted/i, /failed/i])
+		expect(body).toMatch(status);
+	expect(body).toMatch(/blocked|waiting/i);
+	expect(body).toContain('checkout.failed');
+	expect(body).toContain('Calculate the exact basket total');
+	expect(body).toContain('o2');
+	expect(body).toMatch(/preferred/i);
+	expect(body).toMatch(/selected/i);
+	expect(body).not.toMatch(/foreign-feature|all tasks complete|100%/i);
 });
