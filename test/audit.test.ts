@@ -188,19 +188,30 @@ test('audit honors local ignored finding baselines', async () => {
 
 test('every SvelteKit route segment form is a valid folder name, and nothing else in brackets is', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-audit-'));
-	const valid = ['[id]', '[...path]', '[[lang]]', '[id=integer]', '[...rest=slug]', '(group)'];
-	const invalid = ['[..path]', '[Bad Name]', '[[lang]', '[id=]', '[...]'];
-	for (const segment of [...valid, ...invalid]) {
-		await mkdir(join(root, 'src/routes/pages', segment), { recursive: true });
-		await writeFile(
-			join(root, 'src/routes/pages', segment, '+server.ts'),
-			'export const GET = () => new Response();\n'
-		);
+	const valid = [
+		'[id]',
+		'[...path]',
+		'[[lang]]',
+		'[id=integer]',
+		'[...rest=slug]',
+		'(group)',
+		'__harness'
+	];
+	const invalid = ['[..path]', '[Bad Name]', '[[lang]', '[id=]', '[...]', '__other'];
+	const outside = ['src/components/__harness', 'test/__harness', '__harness'];
+	const paths = [...valid, ...invalid].map((segment) => `src/routes/pages/${segment}`);
+	for (const path of [...paths, ...outside]) {
+		await mkdir(join(root, path), { recursive: true });
+		await writeFile(join(root, path, '+server.ts'), 'export const GET = () => new Response();\n');
 	}
-	const findings = await auditPath(root);
+	const findings = await measureWorkload('audit.structure-rules', 'framework-preview-folders', () =>
+		auditPath(root)
+	);
 	await rm(root, { recursive: true, force: true });
 	const flagged = findings
 		.filter((finding) => finding.rule === 'folder-name-pattern')
 		.map((finding) => finding.path.replace(/\/$/, '').split('/').pop());
-	expect(flagged.sort()).toEqual([...invalid].sort());
+	expect(flagged.sort(), 'Reserved preview folders belong only under routes').toEqual(
+		[...invalid, '__harness', '__harness', '__harness'].sort()
+	);
 });

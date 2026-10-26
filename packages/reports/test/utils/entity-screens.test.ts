@@ -13,6 +13,7 @@ import { withInherited } from '../entityPreviewData';
 import { scope } from '../entityPlaces';
 import { commits, ids, scenarios, units } from '../entityUnits';
 import { withFocused } from '../entityStates';
+import { expectClassAudioMatrix } from '../focusedAudioExamples';
 import { withoutViewportSuffix } from '../../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
 const page = units.find((unit) => unit.id === ids.page)!;
 const head = revision(commits.middle, [record(commits.middle)]);
@@ -37,6 +38,7 @@ test('source-identical squash previews retain origin and reject a changed source
 	expect(
 		catalogShot(evidence(page, { ...squashed, side: `sides/${'f'.repeat(40)}.json` }))
 	).toBeNull();
+	expectClassAudioMatrix(head, tip, sourceTree);
 });
 test('device states share a picker while original metadata and missing-device gaps remain intact', () => {
 	expect(withoutViewportSuffix('choose-mobile', 'desktop')).toBe('choose-mobile');
@@ -93,7 +95,6 @@ test('the first state and viewport are shown until a person picks; an unknown pi
 	expect(screenPick(options, { state: 'empty', viewport: 'tablet' })?.viewport).toBe('desktop');
 	expect(screenPick([], {})).toBeNull();
 });
-
 test('the branch tip shows exactly one screenshot, the one of the picked state and viewport', () => {
 	const pick = screenPick(options, { viewport: 'mobile' })!;
 	const shown = entityScreens(evidence(page, tip), pick);
