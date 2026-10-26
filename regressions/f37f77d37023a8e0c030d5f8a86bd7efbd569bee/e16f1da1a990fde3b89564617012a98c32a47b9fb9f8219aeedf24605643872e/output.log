@@ -1,0 +1,128 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ExTGBM
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (618ms)
+
+  1 passed (4.0s)
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (579ms)
+
+  1 passed (3.2s)
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (615ms)
+
+  1 passed (3.2s)
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (574ms)
+
+  1 passed (3.2s)
+ ❯ test/game-cli.e2e.test.ts (5 tests | 4 failed) 112759ms
+   × CLI creates 2d games through source and supports app and game generators 24107ms
+     → expected 'Checking formatting...\nAll matched f…' to contain 'A snapshot doesn\'t exist'
+   × CLI creates 3d games through source and supports app and game generators 20785ms
+     → expected 'Checking formatting...\nAll matched f…' to contain 'A snapshot doesn\'t exist'
+   × CLI creates 2d games through bundled and supports app and game generators 29361ms
+     → expected 'Checking formatting...\nAll matched f…' to contain 'A snapshot doesn\'t exist'
+   × CLI creates 3d games through bundled and supports app and game generators 19741ms
+     → expected 'Checking formatting...\nAll matched f…' to contain 'A snapshot doesn\'t exist'
+   ✓ game-only generators reject apps before creating broken imports  18762ms
+ ❯ test/project-template.test.ts (5 tests | 1 failed) 478ms
+   ✓ generated element atoms preserve native compilation and emitted runtime source 279ms
+   × app projects include SvelteKit and specification files 12ms
+     → expected '' to contain '/// <reference types="@sveltejs/kit" …'
+   ✓ library projects include Bun TypeScript test structure 3ms
+   ✓ generated app code and configuration obey their formatter settings 164ms
+   ✓ generated lib code and configuration obey their formatter settings 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 2d games through source and supports app and game generators
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 3d games through source and supports app and game generators
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 2d games through bundled and supports app and game generators
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 3d games through bundled and supports app and game generators
+AssertionError: expected 'Checking formatting...\nAll matched f…' to contain 'A snapshot doesn\'t exist'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- A snapshot doesn't exist[39m
+[31m+ Checking formatting...[39m
+[31m+ All matched files use Prettier code style![39m
+[31m+ Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-RHq8jV/adventure[39m
+[31m+ Getting Svelte diagnostics...[39m
+[31m+[39m
+[31m+ /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-RHq8jV/adventure/src/routes/game/+page.svelte:10:6[39m
+[31m+ Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates[39m
+[31m+ https://svelte.dev/e/non_reactive_update (svelte)[39m
+[31m+  import type {GameView,GameRun} from '$lib/game/models/Game.types';[39m
+[31m+  let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);[39m
+[31m+  assertDocument(document);[39m
+[31m+[39m
+[31m+ /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-RHq8jV/adventure/src/routes/inventory/+page.svelte:4:23[39m
+[31m+ Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)[39m
+[31m+ <script lang="ts">[39m
+[31m+ 	import { page } from '$app/state';[39m
+[31m+[39m
+[31m+ ====================================[39m
+[31m+ svelte-check found 1 error and 1 warning in 2 files[39m
+[31m+ $ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build[39m
+[31m+ $ prettier --check .[39m
+[31m+ $ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json[39m
+[31m+ error: script "typecheck" exited with code 1[39m
+[31m+ error: script "check" exited with code 1[39m
+[31m+[39m
+
+ ❯ assertGameCheck test/support/gameCommand.ts:128:17
+    126|  const check = gameCommand(['bun', 'run', 'check'], cwd, { ...scope, e…
+    127|  const output = check.stdout + check.stderr;
+    128|  expect(output).toContain("A snapshot doesn't exist");
+       |                 ^
+    129|  expect(output).toContain('svelte-check found 0 errors');
+    130|  for (const stage of ['build', 'audit'])
+ ❯ test/game-cli.e2e.test.ts:38:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/project-template.test.ts > app projects include SvelteKit and specification files
+AssertionError: expected '' to contain '/// <reference types="@sveltejs/kit" …'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- /// <reference types="@sveltejs/kit" />[39m
+
+ ❯ expectAppTypeReference test/support/project-template/guidance.ts:97:46
+     95| /** Each standalone app route gets SvelteKit virtual-module declaratio…
+     96| export function expectAppTypeReference(files: ReturnType<typeof projec…
+     97|  expect(fileContents(files, 'src/app.d.ts')).toContain('/// <reference…
+       |                                              ^
+     98| }
+     99| 
+ ❯ test/project-template.test.ts:67:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 5 passed (10)
+   Start at  11:41:38
+   Duration  117.87s (transform 236ms, setup 196ms, collect 631ms, tests 113.24s, environment 0ms, prepare 73ms)
+
