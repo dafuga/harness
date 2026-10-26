@@ -1,0 +1,55 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1S6ssz
+
+ ❯ test/budget-baseline-preparation.test.ts (2 tests | 2 failed) 12074ms
+   × a prepared baseline whose second verification fails is refused, its failed record kept 6045ms
+     → expected [ { exitCode: 1, stderr: '', …(2) } ] to have a length of 2 but got 1
+   × a valid prepared baseline is returned once its second verification passed 6028ms
+     → expected [ { exitCode: 1, stderr: '', …(2) } ] to have a length of 2 but got 1
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/budget-baseline-preparation.test.ts > a prepared baseline whose second verification fails is refused, its failed record kept
+AssertionError: expected [ { exitCode: 1, stderr: '', …(2) } ] to have a length of 2 but got 1
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ test/budget-baseline-preparation.test.ts:32:25
+     30|  const { seen, result } = await prepare(true);
+     31|  try {
+     32|   expect(seen.outcomes).toHaveLength(2);
+       |                         ^
+     33|   const second = seen.outcomes[1];
+     34|   expect(second.exitCode).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/budget-baseline-preparation.test.ts > a valid prepared baseline is returned once its second verification passed
+AssertionError: expected [ { exitCode: 1, stderr: '', …(2) } ] to have a length of 2 but got 1
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ test/budget-baseline-preparation.test.ts:53:25
+     51|  const { seen, result } = await prepare(false);
+     52|  try {
+     53|   expect(seen.outcomes).toHaveLength(2);
+       |                         ^
+     54|   expect(seen.outcomes[1].exitCode).toBe(0);
+     55|   expect(seen.outcomes[1].record.failures).toEqual([]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  23:18:29
+   Duration  14.39s (transform 78ms, setup 91ms, collect 21ms, tests 12.07s, environment 0ms, prepare 29ms)
+
