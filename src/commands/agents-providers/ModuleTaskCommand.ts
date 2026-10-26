@@ -4,6 +4,7 @@ import type { Command } from 'commander';
 import { ModuleTaskService } from '../../services/agents-providers/ModuleTaskService';
 import { ModuleTaskServerService } from '../../services/agents-providers/ModuleTaskServerService';
 import { ModuleTaskWorkerService } from '../../services/agents-providers/ModuleTaskWorkerService';
+import { FeaturePlanCommand } from './FeaturePlanCommand';
 import type { ServeFlags, TaskServer, WorkerFlags } from './ModuleTaskCommand.types';
 /** Task admission, discovery and foreground worker wiring; task check keeps its completion gate. */
 export class ModuleTaskCommand {
@@ -19,6 +20,7 @@ export class ModuleTaskCommand {
 		this.operations(task);
 		serverCommands(task, this.server);
 		this.reviews(task);
+		new FeaturePlanCommand().register(task);
 	}
 	private authoring(task: Command): void {
 		task
