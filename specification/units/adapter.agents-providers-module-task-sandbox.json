@@ -34,6 +34,11 @@
 				"name": "prepare.input",
 				"type": "ModuleTaskSandboxInput",
 				"description": "{cwd:string,files:string[],snapshot:string,scratch:string,readPaths:string[],protectedPaths:string[],argv:string[],binDirectory?:string}. All context paths absolute; files one to 64 canonical relative tracked regular files with no symlink/hard-link targets; argv exact nonempty arguments. readPaths are trusted provider/runtime and sealed CLI paths outside project and scratch. binDirectory when present is a canonical directory included exactly in readonly readPaths. Scratch must contain only safely owned regular files/directories, with no preexisting symlink/hardlink/special-file aliases; native policy denies creation of hardlinks at runtime."
+			},
+			{
+				"name": "prepare.input.exactReadDirectories",
+				"type": "string[] | undefined",
+				"description": "Trusted canonical directories granted exact directory listing only; individual contents need separate readPaths. Directories remain read-only and cannot overlap the task source or scratch."
 			}
 		],
 		"outputs": [
@@ -44,7 +49,7 @@
 			{
 				"name": "prepare",
 				"type": "Promise<SandboxProcess>",
-				"description": "{command:string,args:string[],cwd:string,env:Record<string,string|undefined>,cleanup():Promise<void>}. Outer process cwd is a private trusted policy directory, never the task source. Inside OS isolation, provider argv executes from canonical input.cwd with scratch TMPDIR and optional sealed CLI prefix in PATH. Native macOS filesystem policy permits only exact assigned files and scratch writes; app-wide snapshot, sealed CLI and trusted runtime paths are readonly. Home, common Git, project foreign source, private/localhost network and SDK default write exceptions denied. Caller must retain context and await process exit before cleanup; cleanup removes only owned temporary policy directory."
+				"description": "{command:string,args:string[],cwd:string,env:Record<string,string|undefined>,cleanup():Promise<void>}. Outer process cwd is a private trusted policy directory, never the task source. Inside OS isolation, provider argv executes from canonical input.cwd with scratch TMPDIR and optional sealed CLI prefix in PATH. Native macOS filesystem policy permits only exact assigned files and scratch writes; app-wide snapshot, sealed CLI and trusted runtime paths are readonly. Home, common Git, project foreign source, private/localhost network and SDK default write exceptions denied. Caller must retain context and await process exit before cleanup; cleanup removes only owned temporary policy directory. Exact directory grants allow listing only and do not grant recursive child reads."
 			}
 		],
 		"errors": [

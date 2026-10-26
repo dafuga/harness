@@ -1,5 +1,6 @@
 import { lstat, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
+import type { ModuleTaskSandboxInput } from './ModuleTaskSandboxAdapter.types';
 import type { ModuleTaskSandboxProcessAdapterConfig } from './ModuleTaskSandboxProcessAdapter.types';
 
 export class ModuleTaskSandboxProcessAdapter {
@@ -30,6 +31,35 @@ export class ModuleTaskSandboxProcessAdapter {
 				for (const entry of await readdir(current)) pending.push(join(current, entry));
 			}
 		}
+	}
+
+	arguments(scope: ModuleTaskSandboxInput): string[] {
+		return ['/usr/bin/env'].concat(
+			['TMPDIR', 'TMP', 'TEMP'].map((key) => `${key}=${scope.scratch}`),
+			['/bin/sh', '-c', 'cd -P -- "$1" || exit; shift; exec "$@"', 'harness-task', scope.cwd],
+			scope.argv
+		);
+	}
+
+	environment(
+		scope: ModuleTaskSandboxInput,
+		directory: string
+	): Record<string, string | undefined> {
+		const names = 'HOME USER PATH LANG LC_ALL TERM SHELL CODEX_HOME CLAUDE_CONFIG_DIR'.split(' ');
+		return {
+			...Object.fromEntries(
+				names
+					.filter((name) => process.env[name] !== undefined)
+					.map((name) => [name, process.env[name]])
+			),
+			PATH: scope.binDirectory
+				? `${scope.binDirectory}:${process.env.PATH ?? '/usr/bin:/bin'}`
+				: process.env.PATH,
+			TMPDIR: directory,
+			TMP: directory,
+			TEMP: directory,
+			HARNESS_TASK_CONTRACT_SNAPSHOT: scope.snapshot
+		};
 	}
 }
 

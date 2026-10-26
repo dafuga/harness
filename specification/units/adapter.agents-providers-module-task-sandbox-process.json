@@ -43,6 +43,21 @@
 			{
 				"name": "validateScratch.path",
 				"type": "absolute canonical trusted scratch directory"
+			},
+			{
+				"name": "arguments.scope",
+				"type": "ModuleTaskSandboxInput",
+				"description": "Validated scope whose scratch and cwd form the isolated provider command."
+			},
+			{
+				"name": "environment.scope",
+				"type": "ModuleTaskSandboxInput",
+				"description": "Validated scope with sealed CLI directory and contract snapshot."
+			},
+			{
+				"name": "environment.directory",
+				"type": "string",
+				"description": "Trusted outer process directory for temporary runtime state."
 			}
 		],
 		"outputs": [
@@ -59,6 +74,16 @@
 				"name": "validateScratch",
 				"type": "Promise<void>",
 				"description": "Before native launch, inspect only scratch file metadata with bounded traversal. Reject symbolic links, hardlinked files, special files or excessive entries. No file contents read; safe regular files and directories retained for retries. A preexisting alias into writable scratch must never widen file permissions."
+			},
+			{
+				"name": "arguments",
+				"type": "string[]",
+				"description": "Builds the isolated provider argv with scratch temp variables and task cwd."
+			},
+			{
+				"name": "environment",
+				"type": "Record<string,string | undefined>",
+				"description": "Selects trusted runtime environment values and sealed contract snapshot; excludes provider API keys."
 			}
 		],
 		"errors": [

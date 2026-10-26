@@ -21,7 +21,8 @@ export class ModuleTaskSandboxAdapter {
 			throw new Error('Harness task sandbox is unavailable on this platform; refusing to launch.');
 		}
 		const scope = await canonicalScope(input);
-		await new ModuleTaskSandboxProcessAdapter().validateScratch(input.scratch);
+		const processAdapter = new ModuleTaskSandboxProcessAdapter();
+		await processAdapter.validateScratch(input.scratch);
 		const cli = createRequire(import.meta.url).resolve('@anthropic-ai/sandbox-runtime');
 		const runtime = await realpath(cli);
 		const directory = await mkdtemp('/tmp/harness-task-policy-');
@@ -30,11 +31,9 @@ export class ModuleTaskSandboxAdapter {
 			await writeFile(settings, JSON.stringify(sandboxSettings(scope)), { mode: 0o600 });
 			return {
 				command: process.execPath,
-				args: new ModuleTaskSandboxProcessAdapter()
-					.command(runtime, settings, sandboxArguments(scope))
-					.slice(1),
+				args: processAdapter.command(runtime, settings, processAdapter.arguments(scope)).slice(1),
 				cwd: directory,
-				env: sandboxEnvironment(scope, directory),
+				env: processAdapter.environment(scope, directory),
 				cleanup: () => rm(directory, { recursive: true, force: true })
 			};
 		} catch (error) {
@@ -83,9 +82,14 @@ async function canonicalFiles(cwd: string, files: string[]): Promise<string[]> {
 
 async function canonicalScope(input: ModuleTaskSandboxInput): Promise<ModuleTaskSandboxInput> {
 	if (
-		![input.cwd, input.snapshot, input.scratch, ...input.readPaths, ...input.protectedPaths].every(
-			isAbsolute
-		)
+		![
+			input.cwd,
+			input.snapshot,
+			input.scratch,
+			...input.readPaths,
+			...input.protectedPaths,
+			...(input.exactReadDirectories ?? [])
+		].every(isAbsolute)
 	) {
 		throw new Error('Unsafe sandbox context: absolute paths required.');
 	}
@@ -97,21 +101,40 @@ async function canonicalScope(input: ModuleTaskSandboxInput): Promise<ModuleTask
 	const snapshot = await realpath(input.snapshot);
 	const scratch = await realpath(input.scratch);
 	const readPaths = await Promise.all(input.readPaths.map((path) => realpath(path)));
+	const exactReadDirectories = await Promise.all(
+		(input.exactReadDirectories ?? []).map((path) => realpath(path))
+	);
 	const protectedPaths = await Promise.all(input.protectedPaths.map((path) => realpath(path)));
 	if (!(await lstat(snapshot)).isFile() || !(await lstat(scratch)).isDirectory()) {
 		throw new Error('Invalid sandbox snapshot or scratch directory.');
 	}
 	if (
-		beneath(scratch, cwd) ||
-		[cwd, snapshot, ...files, ...readPaths, ...protectedPaths].some((path) =>
-			beneath(path, scratch)
-		) ||
-		readPaths.some(
-			(path) => beneath(path, cwd) || [cwd, ...protectedPaths].some((root) => beneath(root, path))
+		(await Promise.all(exactReadDirectories.map((path) => lstat(path)))).some(
+			(stat) => !stat.isDirectory()
 		)
 	)
+		throw new Error('Invalid exact read directory.');
+	if (
+		beneath(scratch, cwd) ||
+		[cwd, snapshot, ...files, ...readPaths, ...exactReadDirectories, ...protectedPaths].some(
+			(path) => beneath(path, scratch)
+		) ||
+		[...readPaths, ...exactReadDirectories].some(
+			(path) => beneath(path, cwd) || [cwd, ...protectedPaths].some((root) => beneath(root, path))
+		) ||
+		exactReadDirectories.some((path) => beneath(scratch, path))
+	)
 		throw new Error('Unsafe overlapping sandbox runtime or scratch grant.');
-	const scope = { ...input, cwd, files, snapshot, scratch, readPaths, protectedPaths };
+	const scope = {
+		...input,
+		cwd,
+		files,
+		snapshot,
+		scratch,
+		readPaths,
+		exactReadDirectories,
+		protectedPaths
+	};
 	scope.binDirectory = await canonicalBin(input, readPaths);
 	return scope;
 }
@@ -160,11 +183,16 @@ function sandboxSettings(scope: ModuleTaskSandboxInput) {
 					...aliases
 				])
 			].map(literal),
-			allowRead: [...[scope.snapshot, scope.scratch, ...scope.readPaths].map(literal), ...reads],
+			allowRead: [
+				...[scope.snapshot, scope.scratch, ...scope.readPaths].map(literal),
+				...reads,
+				...(scope.exactReadDirectories ?? []).map(exactFilePattern)
+			],
 			allowWrite: [...patterns, literal(scope.scratch)],
 			denyWrite: [
 				scope.snapshot,
 				...scope.readPaths,
+				...(scope.exactReadDirectories ?? []),
 				join(homedir(), '.claude/debug'),
 				join(homedir(), '.npm/_logs'),
 				'/tmp/claude',
@@ -183,34 +211,4 @@ function exactFilePattern(path: string): string {
 		.map((char, at) => (at === index || '[*?'.includes(char) ? `[${char}]` : char))
 		.join('');
 }
-
-function sandboxArguments(scope: ModuleTaskSandboxInput): string[] {
-	return ['/usr/bin/env'].concat(
-		['TMPDIR', 'TMP', 'TEMP'].map((key) => `${key}=${scope.scratch}`),
-		['/bin/sh', '-c', 'cd -P -- "$1" || exit; shift; exec "$@"', 'harness-task', scope.cwd],
-		scope.argv
-	);
-}
-
-function sandboxEnvironment(
-	scope: ModuleTaskSandboxInput,
-	directory: string
-): Record<string, string | undefined> {
-	const names = 'HOME USER PATH LANG LC_ALL TERM SHELL CODEX_HOME CLAUDE_CONFIG_DIR'.split(' ');
-	return {
-		...Object.fromEntries(
-			names
-				.filter((name) => process.env[name] !== undefined)
-				.map((name) => [name, process.env[name]])
-		),
-		PATH: scope.binDirectory
-			? `${scope.binDirectory}:${process.env.PATH ?? '/usr/bin:/bin'}`
-			: process.env.PATH,
-		TMPDIR: directory,
-		TMP: directory,
-		TEMP: directory,
-		HARNESS_TASK_CONTRACT_SNAPSHOT: scope.snapshot
-	};
-}
-
 export type { ModuleTaskSandboxAdapterConfig } from './ModuleTaskSandboxAdapter.types';

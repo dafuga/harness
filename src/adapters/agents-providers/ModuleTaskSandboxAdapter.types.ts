@@ -9,6 +9,7 @@ export interface ModuleTaskSandboxInput {
 	snapshot: string;
 	scratch: string;
 	readPaths: string[];
+	exactReadDirectories?: string[];
 	protectedPaths: string[];
 	argv: string[];
 }
