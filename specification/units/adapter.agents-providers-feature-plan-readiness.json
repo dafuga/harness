@@ -35,13 +35,18 @@
 				"name": "verify.plan",
 				"type": "FeaturePlan",
 				"description": "Fully selected, schema/graph-valid plan."
+			},
+			{
+				"name": "constructor.dependencies.coverage",
+				"type": "optional Pick<FeaturePlanCoverageValidator,\"validate\">",
+				"description": "Defaults to real affected-page coverage validator."
 			}
 		],
 		"outputs": [
 			{
 				"name": "verify",
 				"type": "Promise<void>",
-				"description": "Requires sourceCommit equal current Git HEAD, metadata admission for that commit, and successful PlanningApi.readImage for each page option with exact unitId, version, file, revision, sha256 and option. Real readImage verifies PNG and ownership. No mutations. HEAD is checked again after reads; the default collaborators are real Git, planning, committed module metadata and validator services."
+				"description": "Requires sourceCommit equal current Git HEAD, metadata admission for that commit, and successful PlanningApi.readImage for each page option with exact unitId, version, file, revision, sha256 and option. Real readImage verifies PNG and ownership. No mutations. HEAD is checked again after reads; the default collaborators are real Git, planning, committed module metadata and validator services. The committed ModuleData is passed to the coverage validator before reading any image; missing pages or unresolved graph references block approval."
 			},
 			{
 				"name": "connect",
@@ -54,6 +59,11 @@
 				"name": "not ready",
 				"type": "Error",
 				"description": "Reject invalid or missing selections, stale HEAD, missing metadata and any missing, altered, mismatched or invalid image; no approval and no mutation."
+			},
+			{
+				"name": "Incomplete affected-page coverage",
+				"type": "Error",
+				"description": "Reports validator missing page/metadata/uncertainty details before image reads or approval."
 			}
 		]
 	},
