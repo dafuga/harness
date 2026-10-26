@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-26T23:31:03.057Z","name":"history-missing-blob","goal":"Report missing or invalid committed Git blobs without substituting empty source.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-26T23:31:03.677Z","loop":"history-missing-blob","step":"spec","evidence":"Git cat-file reports a missing object in a successful batch response, which the current parser accepts as an empty source file."}
+{"event":"step.completed","timestamp":"2026-10-26T23:31:04.269Z","loop":"history-missing-blob","step":"coverage","evidence":"The existing populated read case checks missing paths but never removes a committed Git blob after listing its tree; strengthen that case and preserve its title."}
