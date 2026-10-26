@@ -23,6 +23,10 @@ export type Fixture = {
 		created: string;
 		renamed: string;
 		escape: string;
+		rulesDirectory: string;
+		rulesFile: string;
+		siblingMdc: string;
+		foreignRule: string;
 	};
 };
 
