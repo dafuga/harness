@@ -140,7 +140,17 @@ test('a clip is played from checked bytes: one at the tip, and at a commit its a
 	await expect
 		.poll(() => clip.evaluate((node: HTMLAudioElement) => Math.round(node.duration)))
 		.toBe(1);
-	await expect(shown.getByText('Order filed.')).toBeVisible();
+	await expect(shown.getByText('[One second of silence; no spoken words.]')).toBeVisible();
+	const silent = await clip.evaluate(async (audio: HTMLAudioElement) => {
+		const context = new AudioContext();
+		try {
+			const decoded = await context.decodeAudioData(await (await fetch(audio.src)).arrayBuffer());
+			return [...decoded.getChannelData(0)].every((sample) => sample === 0);
+		} finally {
+			await context.close();
+		}
+	});
+	expect(silent).toBe(true);
 	await clip.evaluate((audio: HTMLAudioElement) => audio.play());
 	await expect
 		.poll(() => clip.evaluate((audio: HTMLAudioElement) => audio.currentTime))

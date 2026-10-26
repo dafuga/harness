@@ -11,7 +11,7 @@ test('a clip of the branch tip is one clip, with what it says, read by its bindi
 	const { body, calls } = await shown(ids.search);
 	expect(body).toContain('Current audio');
 	expect(body).toContain('aria-label="Current · ccccccc"');
-	expect(body).toContain('Order filed.');
+	expect(body).toContain('[One second of silence; no spoken words.]');
 	expect(body).not.toMatch(/Before ·|After ·/);
 	const read = calls.filter((call) => call.op === 'artifact');
 	expect(read).toMatchObject([{ side: 'after', evidenceId: 'audio', viewport: null }]);
