@@ -85,6 +85,7 @@ async function assertFixtureExamples(unit: ComponentManifest) {
 	const fixture = {
 		...unit,
 		helperContracts: [],
+		owns: { source: [], symbols: ['runFixture'] },
 		testing: {
 			version: 1 as const,
 			shape: 'helper' as const,
