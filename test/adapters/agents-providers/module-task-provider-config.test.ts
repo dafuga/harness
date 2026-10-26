@@ -4,10 +4,11 @@ import { dirname, join } from 'node:path';
 import { expect, test } from 'vitest';
 import { ModuleTaskProviderConfigAdapter } from '../../../src/adapters/agents-providers/ModuleTaskProviderConfigAdapter';
 
-type Provider = 'codex' | 'claude';
-type ProviderConfigOptions = { home: string; codexHome?: string; claudeConfigDir?: string };
-type ProviderPaths = { readPaths: string[]; exactReadDirectories: string[] };
-type ProviderConfigApi = { paths(provider: Provider): Promise<ProviderPaths> };
+import type {
+	ProviderConfigOptions,
+	ProviderConfigApi
+} from './module-task-provider-config.test.types';
+
 const ProviderConfig = ModuleTaskProviderConfigAdapter as unknown as new (
 	options: ProviderConfigOptions
 ) => ProviderConfigApi;

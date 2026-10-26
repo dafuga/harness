@@ -25,6 +25,16 @@ async function assertJsonCommands() {
 	});
 	await f.run(['show', 'checkout', '--json']);
 	expect(f.repository.read).toHaveBeenCalledWith('checkout');
+	await assertJsonSelectionAndApproval(f);
+	expect(f.output.mock.calls.map(([text]) => JSON.parse(text))).toEqual([
+		f.plan,
+		f.plan,
+		f.plan,
+		f.plan
+	]);
+}
+
+async function assertJsonSelectionAndApproval(f: ReturnType<typeof commandFixture>) {
 	await f.run([
 		'select',
 		'checkout',
@@ -56,12 +66,6 @@ async function assertJsonCommands() {
 		expectedDigest: f.plan.digest,
 		reviewer: 'Human Reviewer'
 	});
-	expect(f.output.mock.calls.map(([text]) => JSON.parse(text))).toEqual([
-		f.plan,
-		f.plan,
-		f.plan,
-		f.plan
-	]);
 }
 
 async function assertHumanDisplay() {

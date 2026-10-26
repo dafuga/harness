@@ -1,5 +1,5 @@
 import { assertPersistedDependencies } from './module-task-dependency.test.fixtures';
-import { ModuleTaskWorkerService } from '../../../src/services/agents-providers/ModuleTaskWorkerService';
+import { quotedWorker } from './module-task.test.fixtures';
 import { taskInputSchema } from '../../../src/repositories/agents-providers/ModuleTaskRepository';
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
@@ -9,7 +9,7 @@ import { readFile } from 'node:fs/promises';
 import { taskSelection } from '../../../src/services/agents-providers/module-task-service/taskPrompt';
 import { observedTaskOperation } from '../../support/taskProfiles';
 import { ZodError } from 'zod';
-import { isolateAnalyticsSync, mockContexts } from './module-task-worker.test.fixtures';
+import { isolateAnalyticsSync } from './module-task-worker.test.fixtures';
 isolateAnalyticsSync();
 test('admission rejects missing contracts, unknown modules and mutable task identities', async () => {
 	const f = await moduleTaskFixture();
@@ -127,27 +127,7 @@ test.each([
 					)
 				)
 			);
-			const worker = new ModuleTaskWorkerService(
-				f.root,
-				{
-					run: async (input) => ({
-						provider: input.provider,
-						model: input.model,
-						intelligence: input.intelligence,
-						text: 'Done',
-						reportedModel: input.model,
-						usage: {
-							inputTokens: Number(inputTokens),
-							outputTokens: 20,
-							cacheReadTokens: 0,
-							cacheWriteTokens: 0,
-							cacheWriteLongTokens: 0,
-							reportedCostUsd: null
-						}
-					})
-				},
-				mockContexts().contexts
-			);
+			const worker = quotedWorker(f.root, inputTokens);
 			await worker.once('owner');
 			const quote = (await service.show('orders-validation')).task.result?.executions?.[0].apiCost;
 			if (minimum === null)

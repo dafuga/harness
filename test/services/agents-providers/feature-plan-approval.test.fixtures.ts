@@ -65,6 +65,25 @@ function approvedFixture(plan: FeaturePlan) {
 	return state;
 }
 
+function mutateRejectedApproval(
+	state: ReturnType<typeof fixture>,
+	kind: string,
+	request: { feature: string; expectedDigest: string }
+) {
+	const stored = state.plans[0];
+	if (kind === 'missing') state.plans.splice(0);
+	if (kind === 'unapproved') delete stored.approval;
+	if (kind === 'stale') request.expectedDigest = 'f'.repeat(64);
+	if (kind === 'wrong-approval') stored.approval!.digest = 'f'.repeat(64);
+	if (kind === 'tampered') stored.goal = 'Unapproved mutation';
+	if (kind === 'unselected') {
+		delete stored.pages[0].selected;
+		stored.digest = digest(stored);
+		stored.approval!.digest = stored.digest;
+		request.expectedDigest = stored.digest;
+	}
+}
+
 async function assertRejectedApprovals(plan: FeaturePlan) {
 	for (const kind of [
 		'missing',
@@ -77,19 +96,8 @@ async function assertRejectedApprovals(plan: FeaturePlan) {
 		'no-verifier'
 	] as const) {
 		const state = approvedFixture(plan);
-		const stored = state.plans[0];
 		const request = { feature: plan.feature, expectedDigest: plan.digest };
-		if (kind === 'missing') state.plans.splice(0);
-		if (kind === 'unapproved') delete stored.approval;
-		if (kind === 'stale') request.expectedDigest = 'f'.repeat(64);
-		if (kind === 'wrong-approval') stored.approval!.digest = 'f'.repeat(64);
-		if (kind === 'tampered') stored.goal = 'Unapproved mutation';
-		if (kind === 'unselected') {
-			delete stored.pages[0].selected;
-			stored.digest = digest(stored);
-			stored.approval!.digest = stored.digest;
-			request.expectedDigest = stored.digest;
-		}
+		mutateRejectedApproval(state, kind, request);
 		const failure = new Error('Readiness rejected');
 		if (kind === 'unready') state.verifyReady.mockRejectedValue(failure);
 		const before = structuredClone(state.plans);

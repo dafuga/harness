@@ -69,6 +69,12 @@ export async function makeFixture(): Promise<Fixture> {
 		siblingMdc: join(root, 'codex-rules/sibling.mdc'),
 		foreignRule: join(root, 'codex-rules/foreign.rules')
 	};
+	await populateFixture({ root, cwd, scratch, snapshot, paths });
+	return { root, cwd, scratch, snapshot, paths };
+}
+
+async function populateFixture(fixture: Fixture) {
+	const { root, cwd, scratch, snapshot, paths } = fixture;
 	await Promise.all(
 		[
 			join(cwd, 'src'),
@@ -99,7 +105,6 @@ export async function makeFixture(): Promise<Fixture> {
 		fs.writeFile(paths.foreignRule, 'foreign policy'),
 		fs.mkdir(paths.directory)
 	]);
-	return { root, cwd, scratch, snapshot, paths };
 }
 
 export async function prepare(

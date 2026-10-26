@@ -132,12 +132,23 @@ function scopedGraph() {
 	return { ...metadata, sourceGraph: { nodes, edges, uncertain: [] } };
 }
 
+function referenceNode(kind: string) {
+	if (['script', 'forward-only', 'inactive-consumer'].includes(kind))
+		return 'file:src/script.unrelated.ts';
+	return (
+		new Map([
+			['transitive', 'file:src/component.other.ts'],
+			['page', 'file:src/routes/page.alpha/+page.svelte'],
+			['missing-node', 'file:src/missing.ts'],
+			['unowned', 'file:src/orphan.ts']
+		]).get(kind) ?? 'file:test/unrelated.test.ts'
+	);
+}
+
 function scopedReference(kind: string) {
 	const metadata = scopedGraph();
 	const benign = ['test', 'script', 'forward-only', 'inactive-consumer'].includes(kind);
-	let node = 'file:test/unrelated.test.ts';
-	if (['script', 'forward-only', 'inactive-consumer'].includes(kind))
-		node = 'file:src/script.unrelated.ts';
+	const node = referenceNode(kind);
 	if (kind === 'forward-only')
 		metadata.sourceGraph.edges.push({ from: node, to: 'unit:page.alpha', via: 'import' });
 	if (kind === 'inactive-consumer') {
@@ -149,15 +160,11 @@ function scopedReference(kind: string) {
 		});
 		metadata.sourceGraph.edges.push({ from: 'unit:page.inactive', to: node, via: 'import' });
 	}
-	if (kind === 'transitive') node = 'file:src/component.other.ts';
-	if (kind === 'page') node = 'file:src/routes/page.alpha/+page.svelte';
-	if (kind === 'missing-node') node = 'file:src/missing.ts';
 	if (kind === 'dangling')
 		metadata.sourceGraph.edges.push({ from: 'file:src/missing.ts', to: node, via: 'import' });
 	if (kind === 'ambiguous')
 		metadata.sourceGraph.nodes.push({ id: node, kind: 'source', unit: 'page.alpha' });
 	if (kind === 'unowned') {
-		node = 'file:src/orphan.ts';
 		metadata.sourceGraph.nodes.push({ id: node, kind: 'source' });
 	}
 	if (kind === 'absent-graph') metadata.sourceGraph.nodes = [];

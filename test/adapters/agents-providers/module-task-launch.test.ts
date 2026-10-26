@@ -5,23 +5,7 @@ import { expect, test, vi } from 'vitest';
 import { ModuleTaskProviderConfigAdapter } from '../../../src/adapters/agents-providers/ModuleTaskProviderConfigAdapter';
 import { ModuleTaskLaunchAdapter } from '../../../src/adapters/agents-providers/ModuleTaskLaunchAdapter';
 
-type SandboxRequest = {
-	cwd: string;
-	argv: string[];
-	files: string[];
-	snapshot: string;
-	scratch: string;
-	readPaths: string[];
-	protectedPaths: string[];
-	exactReadDirectories?: string[];
-};
-type SandboxProcess = {
-	command: string;
-	args: string[];
-	cwd: string;
-	env: NodeJS.ProcessEnv;
-	cleanup(): Promise<void>;
-};
+import type { SandboxRequest, SandboxProcess } from './module-task-launch.test.types';
 
 test('Codex launch passes only synthetic rules grants with the assigned scope', async () => {
 	const root = await fs.mkdtemp(join(tmpdir(), 'harness-provider-launch-'));

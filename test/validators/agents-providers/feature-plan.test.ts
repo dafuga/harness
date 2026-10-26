@@ -118,18 +118,19 @@ function invalidGraphs() {
 		['cross-feature task', { ...plan, tasks: [{ ...task, feature: 'different-feature' }] }],
 		['unplanned task module', { ...plan, tasks: [{ ...task, module: 'page.missing' }] }],
 		['absent change contract', { ...plan, changes: [{ ...change, wantedContract: undefined }] }],
-		[
-			'absent removal contract',
-			{
-				...plan,
-				changes: [
-					...plan.changes,
-					{ ...change, unit: 'page.retired', kind: 'remove', wantedContract: undefined }
-				]
-			}
-		],
+		['absent removal contract', missingRemovalContract(plan)],
 		['absent task contract', { ...plan, tasks: [{ ...task, wantedContract: undefined }] }]
 	] as const;
+}
+
+function missingRemovalContract(plan: ReturnType<typeof samplePlan>) {
+	return {
+		...plan,
+		changes: [
+			...plan.changes,
+			{ ...plan.changes[0], unit: 'page.retired', kind: 'remove', wantedContract: undefined }
+		]
+	};
 }
 
 function malformedPlans() {
