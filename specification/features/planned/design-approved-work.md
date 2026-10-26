@@ -14,7 +14,7 @@ The three generated images are proposals for the persistent project chat and Wor
 - [Option B — feature list and tree](design-approved-work/option-b.png)
 - [Option C — activity timeline and tree](design-approved-work/option-c.png)
 
-Selection: pending user choice. The chosen image is design direction; the implementer must use existing shared controls and accessible status labels.
+Selection: Option A, chosen by the user. The chosen image is design direction; the implementer must use existing shared controls and accessible status labels.
 
 ## Planned module tree
 
