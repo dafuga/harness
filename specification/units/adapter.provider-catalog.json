@@ -68,7 +68,25 @@
 					"title": "discovers each provider independently, omits hidden models and leaves missing catalogs empty"
 				},
 				"expected": {
-					"kind": "void"
+					"kind": "value",
+					"value": [
+						{
+							"provider": "openai",
+							"model": "native-model",
+							"label": "Native model",
+							"efforts": ["high"],
+							"defaultEffort": "high",
+							"source": "local-catalog"
+						},
+						{
+							"provider": "harness-claude",
+							"model": "claude-opus-5-5",
+							"label": "Native model",
+							"efforts": ["high"],
+							"defaultEffort": "high",
+							"source": "local-catalog"
+						}
+					]
 				}
 			}
 		]

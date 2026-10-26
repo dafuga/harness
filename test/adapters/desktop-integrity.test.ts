@@ -21,9 +21,11 @@ test('copy packaging refreshes the embedded digest and keeps validation enabled'
 			'<?xml version="1.0"?><plist version="1.0"><dict><key>ElectronAsarIntegrity</key><dict><key>Resources/app.asar</key><dict><key>algorithm</key><string>SHA256</string><key>hash</key><string>new-header</string></dict></dict></dict></plist>'
 		);
 		const adapter = new DesktopIntegrityAdapter();
-		await measureWorkload('adapter.desktop-integrity', 'refresh-copy-integrity', () =>
-			adapter.update(app)
-		);
+		await expect(
+			measureWorkload('adapter.desktop-integrity', 'refresh-copy-integrity', () =>
+				adapter.update(app)
+			)
+		).resolves.toBeUndefined();
 		const patched = await readFile(binary);
 		expect([...patched.subarray(sentinel.length, sentinel.length + 2)]).toEqual([1, 1]);
 		expect(patched.subarray(sentinel.length + 2).toString('hex')).toBe(
@@ -37,7 +39,10 @@ test('copy packaging refreshes the embedded digest and keeps validation enabled'
 });
 
 test('integrity updates refuse the installed original app', async () => {
-	await expect(new DesktopIntegrityAdapter().update('/Applications/ChatGPT.app')).rejects.toThrow(
-		'Integrity changes require the experimental copy'
-	);
+	await expect(
+		new DesktopIntegrityAdapter().update('/Applications/ChatGPT.app')
+	).rejects.toMatchObject({
+		name: 'Error',
+		message: 'Integrity changes require the experimental copy'
+	});
 });

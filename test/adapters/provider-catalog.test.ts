@@ -3,6 +3,7 @@ import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ProviderCatalogAdapter } from '../../src/adapters/ProviderCatalogAdapter';
+import manifest from '../../specification/units/adapter.provider-catalog.json';
 import { measureWorkload } from '../support/measureWorkload';
 
 const model = {
@@ -40,17 +41,9 @@ test('discovers each provider independently, omits hidden models and leaves miss
 			openai,
 			JSON.stringify({ models: [model, { ...model, slug: 'hidden', visibility: 'hide' }] })
 		);
-		const native = {
-			provider: 'openai',
-			model: 'native-model',
-			label: 'Native model',
-			efforts: ['high'],
-			defaultEffort: 'high',
-			source: 'local-catalog'
-		};
+		const [native, other] = manifest.testing.cases[0].expected.value;
 		expect(await adapter.list()).toEqual([native]);
 		await writeFile(claude, JSON.stringify({ models: [{ ...model, slug: 'claude-opus-5-5' }] }));
-		const other = { ...native, provider: 'harness-claude', model: 'claude-opus-5-5' };
 		expect(
 			await measureWorkload('adapter.provider-catalog', 'two-catalogs', () => adapter.list())
 		).toEqual([native, other]);
