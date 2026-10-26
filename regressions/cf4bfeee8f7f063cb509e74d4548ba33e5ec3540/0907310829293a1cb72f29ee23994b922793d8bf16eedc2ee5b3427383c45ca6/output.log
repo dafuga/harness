@@ -1,0 +1,46 @@
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-yqZE3h/packages/desktop
+
+ ❯ test/components/runtime-audio.test.ts (3 tests | 1 failed) 216ms
+   × a clip of the branch tip is one clip, with what it says, read by its binding 58ms
+     → expected '<div class="runtime-card"><h3>Current…' to contain '[One second of silence; no spoken wor…'
+   ✓ at a commit a side that recorded no clip says so 52ms
+   ✓ a declared clip that no side recorded is said to be absent; an undeclared one is not shown 101ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/runtime-audio.test.ts > a clip of the branch tip is one clip, with what it says, read by its binding
+AssertionError: expected '<div class="runtime-card"><h3>Current…' to contain '[One second of silence; no spoken wor…'
+
+Expected: "[One second of silence; no spoken words.]"
+Received: "<div class="runtime-card"><h3>Current audio</h3> <div class="runtime-panes"><div class="runtime-pane" role="group" aria-label="Current · ccccccc"><p class="muted">Reading the clip…</p><p class="runtime-transcript">[Synthetic 440 Hz tone; no spoken words.]</p> <p class="runtime-standing">Fresh capture · passed</p></div></div></div>"
+
+ ❯ test/components/runtime-audio.test.ts:14:15
+     12|  expect(body).toContain('Current audio');
+     13|  expect(body).toContain('aria-label="Current · ccccccc"');
+     14|  expect(body).toContain('[One second of silence; no spoken words.]');
+       |               ^
+     15|  expect(body).not.toMatch(/Before ·|After ·/);
+     16|  const read = calls.filter((call) => call.op === 'artifact');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  21:02:45
+   Duration  903ms (transform 347ms, setup 121ms, collect 420ms, tests 216ms, environment 0ms, prepare 29ms)
+
