@@ -175,7 +175,8 @@
 			"rustBackendModule",
 			"moduleResourceLocation",
 			"PermissionCatalogService",
-			"PermissionsCommand"
+			"PermissionsCommand",
+			"ModuleTaskContractContextService"
 		]
 	},
 	"contract": {
@@ -672,6 +673,11 @@
 		},
 		{
 			"unit": "service.agents-providers-module-task-analytics",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-contract-context",
 			"via": "reexport",
 			"origin": "derived"
 		},

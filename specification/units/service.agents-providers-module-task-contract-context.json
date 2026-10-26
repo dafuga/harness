@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-module-task-contract-context",
+	"kind": "service",
+	"title": "ModuleTaskContractContextService",
+	"responsibility": "Owns the ModuleTaskContractContextService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/ModuleTaskContractContextService.ts",
+			"src/services/agents-providers/ModuleTaskContractContextService.types.ts"
+		],
+		"symbols": [
+			"ModuleTaskContractContextService",
+			"ModuleTaskContractContextService.run",
+			"ModuleTaskContractContext"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "ModuleTaskContractContextService.run",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/ModuleTaskContractContextService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/ModuleTaskContractContextService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

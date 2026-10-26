@@ -193,3 +193,4 @@ export { rustBackendModule } from './templates/module-system/rustBackendModule';
 export { moduleResourceLocation } from './helpers/module-system/moduleResourceLocation';
 export { PermissionCatalogService } from './services/networking-security/PermissionCatalogService';
 export { PermissionsCommand } from './commands/networking-security/PermissionsCommand';
+export { ModuleTaskContractContextService } from './services/agents-providers/ModuleTaskContractContextService';
