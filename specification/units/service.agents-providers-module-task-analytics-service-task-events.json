@@ -26,7 +26,7 @@
 			{
 				"name": "taskEvents",
 				"type": "AnalyticsEvent[]",
-				"description": "Project committed records into stable events. The declared prelaunch note and known older prelaunch errors become prelaunch-failed; ambiguous older failures become execution-unknown. Neither counts as a provider execution. Reuse previous event IDs so re-sync corrects imported rows."
+				"description": "Project committed records into stable events. The declared prelaunch note and known older prelaunch errors become prelaunch-failed; ambiguous older failures become execution-unknown. Neither counts as a provider execution. Reuse previous event IDs so re-sync corrects imported rows. The exact legacy resource queue wait timeout is a prelaunch failure only for a failed last attempt without usage or a reported model."
 			}
 		],
 		"errors": []

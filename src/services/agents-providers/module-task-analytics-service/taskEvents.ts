@@ -111,7 +111,8 @@ function executionAction(
 	const oldPrelaunch = [
 		'Provider launch was blocked before execution.',
 		'Task could not start because resource admission failed.',
-		'Task CLI could not be started.'
+		'Task CLI could not be started.',
+		'Resource queue wait timed out'
 	].includes(result.error ?? '');
 	const noProviderEvidence = !execution.usage && !execution.reportedModel;
 	const failed = execution.status === 'failed';

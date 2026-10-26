@@ -2,7 +2,7 @@
 	"name": "historical-resource-timeout",
 	"goal": "Do not report historical resource admission timeouts as model calls",
 	"createdAt": "2026-10-26T23:56:46.235Z",
-	"updatedAt": "2026-10-26T23:57:00.715Z",
+	"updatedAt": "2026-10-26T23:57:23.924Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:57:23.924Z",
+			"evidence": "Recorded failing historical timeout regression 61f8a35c at 0295b81bb5."
 		},
 		{
 			"id": "implement",
