@@ -113,7 +113,9 @@ function prepare(fixture: Fixture, files = ['src/[branch].ts']): Promise<Sandbox
 	});
 }
 
-function runChild(config: SandboxProcess): Promise<{ code: number; stdout: string }> {
+function runChild(
+	config: SandboxProcess
+): Promise<{ code: number; stdout: string; stderr: string }> {
 	return new Promise((resolve, reject) => {
 		const child = spawn(config.command, config.args, {
 			cwd: config.cwd,
@@ -121,15 +123,17 @@ function runChild(config: SandboxProcess): Promise<{ code: number; stdout: strin
 			stdio: ['ignore', 'pipe', 'pipe']
 		});
 		let stdout = '';
+		let stderr = '';
 		const timeout = setTimeout(() => child.kill('SIGKILL'), 20_000);
 		child.stdout.on('data', (chunk) => (stdout += chunk.toString()));
+		child.stderr.on('data', (chunk) => (stderr += chunk.toString()));
 		child.once('error', (error) => {
 			clearTimeout(timeout);
 			reject(error);
 		});
 		child.once('close', (code) => {
 			clearTimeout(timeout);
-			resolve({ code: code ?? -1, stdout });
+			resolve({ code: code ?? -1, stdout, stderr });
 		});
 	});
 }
@@ -144,7 +148,7 @@ test.skipIf(process.platform !== 'darwin')(
 			config = await prepare(fixture);
 			expect(config.cwd).toBe(fixture.cwd);
 			const child = await runChild(config);
-			expect(child.code).toBe(0);
+			expect(child.code, child.stderr).toBe(0);
 			const checks = JSON.parse(child.stdout) as Record<string, boolean>;
 			expect(checks).toMatchObject({
 				snapshotRead: true,
