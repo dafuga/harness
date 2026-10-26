@@ -1,6 +1,173 @@
-import { expect, test } from 'vitest';
-import { ModuleTaskServerService } from '../../../src/services/agents-providers/ModuleTaskServerService';
+import { describe, expect, test, vi } from 'vitest';
+import {
+	contract,
+	feature,
+	invoke,
+	makeFixture,
+	manifest,
+	nextCommit,
+	outcome,
+	plan,
+	rejectBeforeUpdate,
+	root,
+	sourceCommit,
+	task
+} from './fixtures/module-task-server.fixtures';
 
-test('ModuleTaskServerService runs', () => {
-	expect(new ModuleTaskServerService().run()).toBe('module-task-server');
+describe('ModuleTaskServerService.submit', () => {
+	test('validates all entries, then admits the full scope in one selected-source update', async () => {
+		const f = makeFixture(),
+			one = Object.assign(task('task-one'), {
+				verificationFiles: ['test/task-one.test.ts', 'src/alpha.ts'],
+				assignee: 'worker-one',
+				model: 'gpt-6-luna',
+				provider: 'codex',
+				intelligence: 'max'
+			});
+		const result = await f.service.submit(plan([one, task('task-two', 'service.beta')]));
+		expect(result).toEqual({ created: ['task-one', 'task-two'], reused: [], commit: nextCommit });
+		expect(f.collaborators.openTree).toHaveBeenCalledWith(root, 'HEAD');
+		expect(f.collaborators.registry.read).toHaveBeenCalledWith(f.tree);
+		expect(f.collaborators.requireMetadata.mock.calls).toEqual([
+			[root, sourceCommit, 'service.alpha'],
+			[root, sourceCommit, 'service.beta']
+		]);
+		expect(f.collaborators.repository.update).toHaveBeenCalledTimes(1);
+		expect(f.collaborators.repository.update.mock.calls[0][1]).toBe(sourceCommit);
+		const saved = f.queue();
+		expect(saved.features).toEqual([feature]);
+		expect(saved.tasks).toMatchObject([
+			{
+				id: 'task-one',
+				assignee: 'worker-one',
+				model: 'gpt-6-luna',
+				provider: 'codex',
+				intelligence: 'max',
+				module: { files: ['src/alpha.ts', 'test/task-one.test.ts'] }
+			},
+			{ id: 'task-two', module: { files: ['src/beta.ts', 'test/task-two.test.ts'] } }
+		]);
+	});
+
+	test('reuses equivalent definitions and rejects conflicting task or feature ids without mutation', async () => {
+		const f = makeFixture(),
+			desired = plan([task('task-one')]);
+		await f.service.submit(desired);
+		expect(await f.service.submit(desired)).toMatchObject({
+			created: [],
+			reused: ['task-one'],
+			commit: nextCommit
+		});
+		const before = f.queue();
+		for (const conflict of [
+			plan([task('task-one', 'service.alpha', { title: 'Conflict' })]),
+			plan([task('task-two')], { ...feature, goal: 'Conflict' })
+		])
+			await expect(f.service.submit(conflict)).rejects.toThrow();
+		expect(f.queue()).toEqual(before);
+		expect(f.commit()).toBe(nextCommit);
+	});
+
+	test('rejects malformed plans, modules, metadata, goals, contracts, model settings and scopes before update', async () => {
+		const alpha = manifest('service.alpha');
+		const cases: Array<[unknown, Parameters<typeof makeFixture>[0]]> = [
+			[plan([task('task-one'), task('task-one')]), {}],
+			[plan([task('task-one', 'service.alpha', { feature: 'other-feature' })]), {}],
+			[
+				plan([task('valid-first'), task('missing-second', 'service.missing')]),
+				{ manifests: [alpha] }
+			],
+			[plan([task('task-one')]), { manifests: [{ ...alpha, status: 'retired' }] }],
+			[plan([task('task-one')]), { errors: ['invalid manifest'] }],
+			[plan([task('task-one')]), { manifests: [{ ...alpha, owns: { source: [] } }] }],
+			[
+				plan([task('task-one')]),
+				{ manifests: [{ ...alpha, contract: { ...alpha.contract, outputs: [] } }] }
+			],
+			[
+				plan([task('task-one', 'service.alpha', { moduleGoal: undefined })]),
+				{ manifests: [{ ...alpha, responsibilityOrigin: 'derived' }] }
+			],
+			[
+				plan([task('task-one', 'service.alpha', { wantedContract: { ...contract, outputs: [] } })]),
+				{}
+			],
+			[plan([task('task-one', 'service.alpha', { model: 'auto', provider: 'codex' })]), {}],
+			[
+				plan([task('task-one', 'service.alpha', { verificationFiles: ['../outside.test.ts'] })]),
+				{}
+			],
+			[plan([task('task-one')]), { metadataFailure: new Error('incomplete metadata') }]
+		];
+		for (const [value, options] of cases) await rejectBeforeUpdate(value, options);
+	});
+});
+
+describe('ModuleTaskServerService.run', () => {
+	test.each(['review', 'failed'] as const)(
+		'returns the actual %s outcome unchanged',
+		async (status) => {
+			const f = makeFixture(),
+				actual = outcome(status),
+				signal = new AbortController().signal;
+			f.collaborators.worker.once.mockResolvedValue(actual);
+			const result = await invoke(f, 'worker-one', ['service.alpha'], true, signal);
+			expect(result).toEqual({
+				submission: { created: ['task-one'], reused: [], commit: nextCommit },
+				results: [actual]
+			});
+			expect(f.collaborators.worker.once.mock.calls[0]).toEqual([
+				'worker-one',
+				['service.alpha'],
+				signal
+			]);
+			expect(f.queue().tasks[0].status).toBe('queued');
+		}
+	);
+
+	test('keeps idle distinct and rejects invalid or pre-aborted inputs before submission', async () => {
+		const idle = makeFixture(),
+			signal = new AbortController().signal;
+		await expect(invoke(idle, 'worker-one', [], true, signal)).resolves.toMatchObject({
+			results: [{ status: 'idle' }]
+		});
+		const cases: Array<[string, string[], boolean]> = [
+			['Bad Worker', [], false],
+			['worker-one', ['bad module'], false],
+			['worker-one', [], true]
+		];
+		for (const [worker, modules, aborted] of cases) {
+			const f = makeFixture(),
+				controller = new AbortController();
+			if (aborted) controller.abort();
+			await expect(
+				invoke(f, worker, modules, true, aborted ? controller.signal : signal)
+			).rejects.toThrow();
+			expect(f.collaborators.repository.update).not.toHaveBeenCalled();
+			expect(f.collaborators.worker.once).not.toHaveBeenCalled();
+		}
+	});
+
+	test('watch polls and awaits the active worker before propagating cancellation', async () => {
+		const f = makeFixture();
+		let finish!: (value: unknown) => void;
+		const active = new Promise<unknown>((resolve) => (finish = resolve));
+		f.collaborators.worker.once
+			.mockResolvedValueOnce({ status: 'idle' })
+			.mockReturnValueOnce(active);
+		const controller = new AbortController(),
+			pending = invoke(f, 'worker-one', [], false, controller.signal);
+		let settled = false;
+		void pending.then(
+			() => (settled = true),
+			() => (settled = true)
+		);
+		await vi.waitFor(() => expect(f.collaborators.worker.once).toHaveBeenCalledTimes(2));
+		controller.abort();
+		await new Promise((resolve) => setTimeout(resolve, 0));
+		expect(settled).toBe(false);
+		finish({ status: 'idle' });
+		await expect(pending).rejects.toHaveProperty('name', 'AbortError');
+		expect(f.collaborators.worker.once).toHaveBeenCalledTimes(2);
+	});
 });
