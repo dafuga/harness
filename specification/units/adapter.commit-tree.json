@@ -134,11 +134,6 @@
 		]
 	},
 	"scenarios": [],
-	"budgets": {
-		"size": "frozen",
-		"complexity": "frozen",
-		"performance": []
-	},
 	"testing": {
 		"version": 1,
 		"shape": "service",
@@ -257,5 +252,10 @@
 				"errors": ["Error"]
 			}
 		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
 	}
 }
