@@ -1,0 +1,43 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-MY6giz
+
+ ❯ test/adapters/git-source-history/commit-tree.test.ts (6 tests | 1 failed) 765ms
+   ✓ CommitTreeAdapter.open empty resolves the exact commit and refuses absent revisions 62ms
+   ✓ CommitTreeAdapter.open populated establishes the object format before caching 65ms
+   ✓ CommitTreeAdapter.list empty returns no source entries 53ms
+   ✓ CommitTreeAdapter.list populated retains blob identities and paths 64ms
+   ✓ CommitTreeAdapter.read empty rejects missing paths 54ms
+   × CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths 464ms
+     → oversized blobs must not remain in the per-tree cache: expected 1 to be 2 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/git-source-history/commit-tree.test.ts > CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths
+AssertionError: oversized blobs must not remain in the per-tree cache: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ oversizedBlob test/adapters/git-source-history/commit-tree.test.ts:130:84
+    128|  expect((await tree.read('large.txt')).length).toBe(size);
+    129|  expect((await tree.read('large.txt')).length).toBe(size);
+    130|  expect(reads() - before, 'oversized blobs must not remain in the per-…
+       |                                                                                    ^
+    131| }
+    132| 
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:108:6
+ ❯ fixture test/adapters/git-source-history/commit-tree.test.ts:27:3
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:84:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  00:34:03
+   Duration  3.38s (transform 86ms, setup 107ms, collect 24ms, tests 765ms, environment 0ms, prepare 26ms)
+
