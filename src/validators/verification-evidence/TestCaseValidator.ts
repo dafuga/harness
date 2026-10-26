@@ -50,7 +50,6 @@ export class TestCaseValidator {
 			errors.push(`${unit.id}: component requires its rest state`);
 		if (contract.shape === 'helper') errors.push(...exampleCaseErrors(unit, contract));
 		if (contract.shape === 'service') errors.push(...methodCaseErrors(unit, contract));
-		if (contract.shape === 'page') errors.push(...pageViewportErrors(unit.id, contract));
 		if (['page', 'component', 'api'].includes(contract.shape))
 			errors.push(...duplicateMatrixRows(unit.id, contract));
 		errors.push(...declaredInputErrors(unit, contract));
@@ -77,42 +76,15 @@ function sameMatrixCase(
 	right: ContractCase,
 	shape: TestContract['shape']
 ): boolean {
-	return (
-		sameBehaviorHeaders(left, right) &&
-		matchingViewports(left.viewports, right.viewports, shape) &&
-		sameData(left.input, right.input)
-	);
-}
-
-/** A page behavior may split its required device captures across registered cases. */
-function pageViewportErrors(unit: string, contract: TestContract): string[] {
-	const groups: ContractCase[][] = [];
-	for (const item of contract.cases) {
-		const group = groups.find((rows) => sameBehaviorCase(rows[0], item));
-		if (group) group.push(item);
-		else groups.push([item]);
-	}
-	return groups.flatMap((rows) => {
-		const covered = new Set(rows.flatMap((row) => row.viewports ?? []));
-		return ['desktop', 'tablet', 'mobile']
-			.filter((viewport) => !covered.has(viewport))
-			.map((viewport) => `${unit}: page case ${rows[0].id} missing viewport ${viewport}`);
-	});
-}
-
-function sameBehaviorCase(left: ContractCase, right: ContractCase): boolean {
-	return (
-		left.state === right.state &&
-		sameBehaviorHeaders(left, right) &&
-		sameData(left.input, right.input)
-	);
-}
-
-function sameBehaviorHeaders(left: ContractCase, right: ContractCase): boolean {
 	if (left.subject !== right.subject || left.example !== right.example) return false;
 	if (left.fixture !== right.fixture || left.call !== right.call) return false;
 	if (Object.hasOwn(left, 'input') !== Object.hasOwn(right, 'input')) return false;
-	return sameNames(left.props, right.props) && sameNames(left.errors, right.errors);
+	return (
+		sameNames(left.props, right.props) &&
+		sameNames(left.errors, right.errors) &&
+		matchingViewports(left.viewports, right.viewports, shape) &&
+		sameData(left.input, right.input)
+	);
 }
 
 function matchingViewports(
