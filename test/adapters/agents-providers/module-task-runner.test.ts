@@ -167,7 +167,6 @@ test('failed turns preserve available usage for cost attribution', async () => {
 		})
 	).rejects.toMatchObject({ usage: { inputTokens: 7, outputTokens: 2, reportedCostUsd: 0.01 } });
 });
-
 const codexInput = () => ({
 	provider: 'codex' as const,
 	model: 'gpt-6-luna',

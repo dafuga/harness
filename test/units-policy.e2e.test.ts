@@ -132,7 +132,6 @@ test('CLI authors declared contracts only for valid active units without changin
 		await rm(join(project.root, '..'), { recursive: true, force: true });
 	}
 }, 60_000);
-
 test('public configs require real source controls and retain their reviewed declarations', async () => {
 	const project = await unitProject('lib');
 	try {
