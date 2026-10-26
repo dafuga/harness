@@ -33,7 +33,7 @@
 			{
 				"name": "planDesign",
 				"type": "Promise<string>",
-				"description": "For pages/layouts/components, generates 1–10 options (three by default) sequentially and saves a design version. Prefers an anchored thread image, otherwise the latest wanted design image matching state/viewport when possible; reads exact version/hash/revision/option bytes through planning.image. If no wanted image exists, uses optional trusted currentImage bytes. Writes the reference to an owned temporary file and passes it to every generator call; when unavailable emits an explicit status and uses no reference. Saved options themselves have no preferred flag; feature plans carry preference. Returns Saved <version> for review."
+				"description": "For pages/layouts/components, generates 1–10 options (three by default) sequentially and saves a design version. Prefers an anchored thread image, otherwise the latest wanted design image matching state/viewport when possible; reads exact version/hash/revision/option bytes through planning.image. If no wanted image exists, uses optional trusted currentImage bytes. Writes the reference to an owned temporary file and passes it to every generator call; when unavailable emits an explicit status and uses no reference. Saved options themselves have no preferred flag; feature plans carry preference. Returns Saved <version> for review. Temporary reference files preserve original bytes and use PNG, JPEG or WebP extensions matching their signatures; unsupported formats are refused before generation."
 			}
 		],
 		"errors": [

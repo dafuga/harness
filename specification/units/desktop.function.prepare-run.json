@@ -49,8 +49,8 @@
 			},
 			{
 				"name": "prepareRun.preparation",
-				"type": "{session:ProjectSessionService,providers:ProviderDiscoveryService,generator:ImageGenerator,emit:(event:RunEvent)=>void}",
-				"description": "No current screenshot evidence collaborator is currently supplied."
+				"type": "{session: ProjectSessionService, providers: ProviderDiscoveryService, generator: ImageGenerator, evidence?: RecordedEvidenceService, emit: (event: RunEvent) => void}",
+				"description": "Optional trusted evidence collaborator defaults to the session-bound recorded evidence service."
 			},
 			{
 				"name": "prepareRun.request",
@@ -97,7 +97,7 @@
 			{
 				"name": "prepareRun",
 				"type": "Promise<RunContext>",
-				"description": "A promise for the prepared run context with a new identity. Checks thread membership and Change approval, selects image support if needed, checks cancellation, then appends the user request. It does not launch the runner. It does not currently provide RunContext.currentImage; recorded screenshot fallback requires host evidence integration."
+				"description": "Prepares a run, validates the request and appends the user message. Visual Plans receive a lazy currentImage callback that reads the after-side capture at the original pinned commit, validates project and artifact identity, and returns null when no eligible capture exists. It does not launch a runner. Planned-only pages return null without a recorded-evidence request because they have no registered implementation."
 			},
 			{
 				"name": "messageFor",
@@ -120,6 +120,11 @@
 				"name": "RunCancelled",
 				"type": "thrown",
 				"description": "Rejects if cancellation is observed after preparing the context and before appending the request."
+			},
+			{
+				"name": "stale, foreign or corrupt current image evidence",
+				"type": "Error",
+				"description": "The lazy callback refuses invalid identity, capture, media or hash; cancellation propagates."
 			}
 		]
 	},
@@ -145,6 +150,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.run-context-types",
 			"via": "import",
 			"origin": "derived"
@@ -156,6 +166,11 @@
 		},
 		{
 			"unit": "desktop.service.provider-discovery",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.recorded-evidence",
 			"via": "import",
 			"origin": "derived"
 		}

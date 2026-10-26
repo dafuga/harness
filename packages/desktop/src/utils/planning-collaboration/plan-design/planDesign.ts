@@ -72,6 +72,17 @@ function wantedReference(context: RunContext, draft: DesignDraft) {
 		: undefined;
 }
 
+function referenceExtension(bytes: Uint8Array): 'png' | 'jpg' | 'webp' {
+	const startsWith = (signature: number[], offset = 0) =>
+		bytes.length >= offset + signature.length &&
+		signature.every((byte, index) => bytes[offset + index] === byte);
+	if (startsWith([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])) return 'png';
+	if (startsWith([0xff, 0xd8, 0xff])) return 'jpg';
+	if (startsWith([0x52, 0x49, 0x46, 0x46]) && startsWith([0x57, 0x45, 0x42, 0x50], 8))
+		return 'webp';
+	throw new Error('Unsupported reference image format: expected PNG, JPEG or WebP');
+}
+
 async function referenceImage(context: RunContext, draft: DesignDraft, directory: string) {
 	const selected = draft.revises ?? wantedReference(context, draft);
 	const bytes = selected
@@ -93,7 +104,7 @@ async function referenceImage(context: RunContext, draft: DesignDraft, directory
 		});
 		return null;
 	}
-	const reference = join(directory, 'reference.png');
+	const reference = join(directory, `reference.${referenceExtension(bytes)}`);
 	await writeFile(reference, bytes);
 	return reference;
 }
