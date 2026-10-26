@@ -1,0 +1,40 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-WfE6xN
+
+ ❯ test/cli.e2e.test.ts (5 tests | 1 failed | 4 skipped) 26235ms
+   × CLI scaffolds and checks a lib project 26233ms
+     → Generated library runner must record its executed example: expected false to be true // Object.is equality
+   ↓ CLI scaffolds and checks an app project with routes
+   ↓ CLI reports edge errors cleanly
+   ↓ CLI supports force overwrites and generated lint failures
+   ↓ CLI installs module foundations and generates their declared resources
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cli.e2e.test.ts > CLI scaffolds and checks a lib project
+AssertionError: Generated library runner must record its executed example: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ expectLibraryOutcome test/support/project-template/foundations.ts:57:88
+     55| async function expectLibraryOutcome(directory: string, revision: strin…
+     56|  const file = join(directory, 'case-results.ndjson');
+     57|  expect(existsSync(file), 'Generated library runner must record its ex…
+       |                                                                                        ^
+     58|  const lines = (await readFile(file, 'utf8'))
+     59|   .trim()
+ ❯ assertAuthoredLibraryResult test/support/project-template/foundations.ts:38:9
+ ❯ test/cli.e2e.test.ts:31:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  21:36:14
+   Duration  30.57s (transform 212ms, setup 161ms, collect 474ms, tests 26.24s, environment 0ms, prepare 55ms)
+
