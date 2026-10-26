@@ -1,0 +1,44 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-gvqqA2
+
+ ❯ test/project-template.test.ts (5 tests | 1 failed | 4 skipped) 28ms
+   ↓ generated element atoms preserve native compilation and emitted runtime source
+   × app projects include SvelteKit and specification files 24ms
+     → expected [ '^1.28.1', '^1.28.1' ] to deeply equal [ '1.63.0', '1.63.0' ]
+   ↓ library projects include Bun TypeScript test structure
+   ↓ generated app code and testing foundations obey their formatter and lint settings
+   ↓ generated lib code and testing foundations obey their formatter and lint settings
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-template.test.ts > app projects include SvelteKit and specification files
+AssertionError: expected [ '^1.28.1', '^1.28.1' ] to deeply equal [ '1.63.0', '1.63.0' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   "1.63.0",[39m
+[32m-   "1.63.0",[39m
+[31m+   "^1.28.1",[39m
+[31m+   "^1.28.1",[39m
+[2m  ][22m
+
+ ❯ expectAppTestingFoundation test/support/project-template/guidance.ts:124:85
+    122|  );
+    123|  const appPackage = JSON.parse(fileContents(files, 'package.json'));
+    124|  expect(testingPlugins.map((plugin) => plugin.devDependencies['@playwr…
+       |                                                                                     ^
+    125|   appPackage.devDependencies['@playwright/test'],
+    126|   appPackage.devDependencies['@playwright/test']
+ ❯ test/project-template.test.ts:39:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  00:11:16
+   Duration  3.04s (transform 198ms, setup 126ms, collect 483ms, tests 28ms, environment 0ms, prepare 26ms)
+
