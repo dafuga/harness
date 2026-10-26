@@ -61,6 +61,11 @@
 				"name": "CatalogEntity.thumbnail",
 				"type": "DesignThumbnail | ({source:\"recorded\"} & Partial<NonNullable<ComponentManifest[\"preview\"]>>) | null",
 				"description": "Design thumbnails bind version/hash/state/viewport; recorded thumbnails reference recorded evidence."
+			},
+			{
+				"name": "CatalogEntity.planned",
+				"type": "boolean",
+				"description": "True for a draft identity in the planning index with no implementation and no registry entry; distinct from hasPlan, which denotes an unimplemented proposal."
 			}
 		],
 		"outputs": [
