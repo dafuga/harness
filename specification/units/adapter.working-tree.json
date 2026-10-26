@@ -3,8 +3,8 @@
 	"id": "adapter.working-tree",
 	"kind": "adapter",
 	"title": "WorkingTreeAdapter",
-	"responsibility": "Owns the WorkingTreeAdapter integration boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Lists and reads source from a Git worktree or an isolated verification snapshot.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -20,28 +20,38 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "WorkingTreeAdapter.constructor.root",
-				"type": "string"
+				"type": "string",
+				"description": "Directory whose source files are listed and read."
 			},
 			{
 				"name": "WorkingTreeAdapter.read.path",
-				"type": "string"
+				"type": "string",
+				"description": "Path joined to the selected root for reading."
 			}
 		],
 		"outputs": [
 			{
 				"name": "WorkingTreeAdapter.list",
-				"type": "Promise<TreeEntry[]>"
+				"type": "Promise<TreeEntry[]>",
+				"description": "Source paths and Git-compatible blob hashes visible in the selected root."
 			},
 			{
 				"name": "WorkingTreeAdapter.read",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "UTF-8 contents of the requested source file."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An inaccessible root, missing file or invalid snapshot inventory stops the operation."
+			}
+		]
 	},
 	"dependencies": [
 		{

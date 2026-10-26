@@ -3,7 +3,7 @@
 	"id": "adapter.snapshot",
 	"kind": "adapter",
 	"title": "SnapshotAdapter",
-	"responsibility": "Exports one exact commit into a clean directory outside every repository and detects files a check changed.",
+	"responsibility": "Exports committed source into an isolated snapshot and reports changes before cleanup.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -26,60 +26,78 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SnapshotAdapter.create.root",
-				"type": "string"
+				"type": "string",
+				"description": "Git repository containing the requested commit."
 			},
 			{
 				"name": "SnapshotAdapter.create.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Commit or Git reference to export."
 			},
 			{
 				"name": "SnapshotAdapter.create.outputs",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Paths where generated output may appear without drift."
 			},
 			{
 				"name": "SnapshotAdapter.link.root",
-				"type": "string"
+				"type": "string",
+				"description": "Checkout providing an explicitly shared path."
 			},
 			{
 				"name": "SnapshotAdapter.link.path",
-				"type": "string"
+				"type": "string",
+				"description": "Path joined to the checkout and snapshot for sharing."
 			},
 			{
 				"name": "SnapshotAdapter.artifact.path",
-				"type": "string"
+				"type": "string",
+				"description": "Path resolved within the snapshot to measure."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SnapshotAdapter.create",
-				"type": "Promise<SnapshotAdapter>"
+				"type": "Promise<SnapshotAdapter>",
+				"description": "An isolated snapshot of the resolved committed tree."
 			},
 			{
 				"name": "SnapshotAdapter.link",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Whether an existing path was shared into the snapshot."
 			},
 			{
 				"name": "SnapshotAdapter.misdeclared",
-				"type": "Array<{ output: string; file: string }>"
+				"type": "Array<{ output: string; file: string }>",
+				"description": "Output declarations that cover committed source files."
 			},
 			{
 				"name": "SnapshotAdapter.drift",
-				"type": "Promise<SnapshotDrift>"
+				"type": "Promise<SnapshotDrift>",
+				"description": "Committed or shared paths changed and undeclared paths added."
 			},
 			{
 				"name": "SnapshotAdapter.artifact",
-				"type": "Promise<{ bytes: number; sha256: string } | undefined>"
+				"type": "Promise<{ bytes: number; sha256: string } | undefined>",
+				"description": "Artifact byte count and SHA-256, or undefined when unavailable."
 			},
 			{
 				"name": "SnapshotAdapter.remove",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Completion after the snapshot and its inventory are removed."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An invalid commit or failed Git and filesystem operation stops snapshot creation or use."
+			}
+		]
 	},
 	"dependencies": [
 		{

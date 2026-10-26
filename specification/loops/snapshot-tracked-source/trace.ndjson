@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-26T22:56:58.788Z","name":"snapshot-tracked-source","goal":"Keep exactly committed source visible to registry checks inside isolated verification snapshots.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-26T22:56:59.557Z","loop":"snapshot-tracked-source","step":"spec","evidence":"A clean archive contains tracked iOS source, but units check omits it because the non-Git walker skips ios directories."}
+{"event":"step.completed","timestamp":"2026-10-26T22:57:00.211Z","loop":"snapshot-tracked-source","step":"coverage","evidence":"WorkingTreeAdapter and SnapshotAdapter lack registered method cases for archive tracked-file visibility and generated-file exclusion."}
