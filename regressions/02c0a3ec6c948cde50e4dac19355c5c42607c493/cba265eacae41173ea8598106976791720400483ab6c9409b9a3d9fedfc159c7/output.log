@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zKvXPZ
+
+ ✓ test/services/resource-queue.test.ts (7 tests) 2880ms
+   ✓ queued cancellation releases reservations without ever starting the callback  569ms
+   ✓ pressure is observed during a running task; that task finishes and subsequent work waits  1619ms
+   ✓ parallel nested tasks share a bounded parent budget instead of each borrowing the full reservation  309ms
+   ✓ a queued sibling cannot block the descendant needed to release its ancestor reservation  310ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  22:11:21
+   Duration  5.72s (transform 121ms, setup 110ms, collect 77ms, tests 2.88s, environment 0ms, prepare 32ms)
+
