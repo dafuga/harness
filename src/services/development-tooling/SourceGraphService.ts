@@ -61,6 +61,7 @@ function unitEdges(unit: ComponentManifest, index: SourceIndex): GraphEdge[] {
 	const declared = unit.dependencies.filter((dependency) => crossRuntime.has(dependency.via));
 	return [
 		...owned.map((path) => ({ from: unitNode(unit.id), to: fileNode(path), via: 'owns' })),
+		...caseEdges(unit, index),
 		...declared.flatMap((dependency) => [
 			{ from: unitNode(unit.id), to: unitNode(dependency.unit), via: dependency.via },
 			...owned.map((path) => ({
@@ -70,6 +71,18 @@ function unitEdges(unit: ComponentManifest, index: SourceIndex): GraphEdge[] {
 			}))
 		])
 	];
+}
+
+/** Registered tests cover their subject even when they exercise it through a boundary. */
+function caseEdges(unit: ComponentManifest, index: SourceIndex): GraphEdge[] {
+	const cases = unit.testing?.cases;
+	const edges: GraphEdge[] = [];
+	for (let position = 0; cases && position < cases.length; position++) {
+		const path = cases[position].test.file;
+		if (index.files.get(path)?.classification === 'test')
+			edges.push({ from: fileNode(path), to: unitNode(unit.id), via: 'covers' });
+	}
+	return edges;
 }
 
 function scenarioEdges(scenario: ScenarioManifest, index: SourceIndex): GraphEdge[] {
