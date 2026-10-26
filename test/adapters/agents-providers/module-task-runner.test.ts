@@ -89,7 +89,11 @@ test('a completed CLI run that reports another model is rejected', async () => {
 			signal: new AbortController().signal
 		})
 	).rejects.toThrow('different model');
-	await assertTaskModelIdentity();
+	await observedTaskOperation(
+		'adapter.agents-providers-module-task-runner',
+		'require-public-model-identity',
+		assertTaskModelIdentity
+	);
 });
 test.each(['claude', 'codex'] as const)(
 	'public %s usage is retained without guessing absent counters',
