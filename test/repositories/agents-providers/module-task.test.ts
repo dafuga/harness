@@ -69,6 +69,7 @@ function planFixture() {
 				options: [
 					{
 						id: 'compact',
+						version: 'v1',
 						commit: sourceCommit,
 						path: 'design/checkout.png',
 						sha256: digest,
@@ -134,6 +135,13 @@ test('malformed image hashes, source commits, revisions and unsafe paths are rej
 		const page = { ...plan.pages[0], options: [{ ...plan.pages[0].options[0], sha256 }] };
 		expect(planSchema.safeParse({ ...plan, pages: [page] }).success).toBe(false);
 	}
+	const optionWithoutVersion = { ...plan.pages[0].options[0], version: '' };
+	expect(
+		planSchema.safeParse({
+			...plan,
+			pages: [{ ...plan.pages[0], options: [optionWithoutVersion] }]
+		}).success
+	).toBe(false);
 	for (const patch of [
 		{ sourceCommit: 'main' },
 		{ revision: 0 },
