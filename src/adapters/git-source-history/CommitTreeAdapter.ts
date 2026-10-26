@@ -7,10 +7,7 @@ import { cachedBlobText, keepBlobText } from './commit-tree-adapter/blobTexts';
 /** Reads the files of one exact commit straight from the object database. */
 export class CommitTreeAdapter implements SourceTree {
 	private listed: Promise<TreeEntry[]> | undefined;
-	private readonly waiting = new Map<
-		string,
-		Array<{ resolve: (text: string) => void; reject: (error: unknown) => void }>
-	>();
+	private readonly waiting = new Map<string, Array<(text: string) => void>>();
 	private readonly texts = new Map<string, Promise<string>>();
 	private flushing = false;
 
@@ -49,8 +46,8 @@ export class CommitTreeAdapter implements SourceTree {
 		if (known) return known;
 		const cached = cachedBlobText(`${this.format}/${entry.hash}`);
 		if (cached !== undefined) return cached;
-		const pending = new Promise<string>((resolve, reject) => {
-			this.waiting.set(entry.hash, [...(this.waiting.get(entry.hash) ?? []), { resolve, reject }]);
+		const pending = new Promise<string>((resolve) => {
+			this.waiting.set(entry.hash, [...(this.waiting.get(entry.hash) ?? []), resolve]);
 			if (this.flushing) return;
 			this.flushing = true;
 			setImmediate(() => void this.flush());
@@ -63,44 +60,17 @@ export class CommitTreeAdapter implements SourceTree {
 		const requested = new Map(this.waiting);
 		this.waiting.clear();
 		this.flushing = false;
-		try {
-			const input = [...requested.keys()].join('\n') + '\n';
-			const output = await this.git.bytes(['cat-file', '--batch'], { input });
-			let offset = 0;
-			for (const [hash, resolvers] of requested) {
-				const result = batchText(output, offset, hash);
-				offset = result.next;
-				this.texts.delete(hash);
-				if (result.text === undefined) {
-					for (const { reject } of resolvers) reject(new Error(`Git object ${hash} is missing`));
-				} else {
-					keepBlobText(`${this.format}/${hash}`, result.text);
-					for (const { resolve } of resolvers) resolve(result.text);
-				}
-			}
-		} catch (error) {
-			for (const [hash, resolvers] of requested) {
-				this.texts.delete(hash);
-				for (const { reject } of resolvers) reject(error);
-			}
+		const input = [...requested.keys()].join('\n') + '\n';
+		const output = await this.git.bytes(['cat-file', '--batch'], { input });
+		let offset = 0;
+		for (const [hash, resolvers] of requested) {
+			const end = output.indexOf(10, offset);
+			const size = Number(output.subarray(offset, end).toString('utf8').split(' ')[2]);
+			const text = output.subarray(end + 1, end + 1 + size).toString('utf8');
+			offset = end + size + 2;
+			keepBlobText(`${this.format}/${hash}`, text);
+			this.texts.delete(hash);
+			for (const resolve of resolvers) resolve(text);
 		}
 	}
-}
-
-/** Parse one framed Git response without confusing missing or corrupt data with empty text. */
-function batchText(output: Buffer, offset: number, hash: string): { next: number; text?: string } {
-	const end = output.indexOf(10, offset);
-	if (end < 0) throw new Error(`Invalid Git batch response for ${hash}`);
-	const header = output.subarray(offset, end).toString('utf8');
-	if (header === `${hash} missing`) return { next: end + 1 };
-	const match = /^([a-f0-9]+) blob (\d+)$/.exec(header);
-	if (match?.[1] !== hash) throw new Error(`Invalid Git batch response for ${hash}`);
-	const size = Number(match[2]);
-	if (
-		!Number.isSafeInteger(size) ||
-		end + size + 1 >= output.length ||
-		output[end + size + 1] !== 10
-	)
-		throw new Error(`Invalid Git batch response for ${hash}`);
-	return { next: end + size + 2, text: output.subarray(end + 1, end + size + 1).toString('utf8') };
 }
