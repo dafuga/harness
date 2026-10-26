@@ -26,7 +26,7 @@
 			{
 				"name": "taskEvents",
 				"type": "AnalyticsEvent[]",
-				"description": "Project committed records into stable events. Explicit not-started outcomes and known prelaunch failures use prelaunch-failed; ambiguous failed legacy records use execution-unknown; neither is a provider execution. Reuse previous execution event IDs so re-sync corrects previously imported rows."
+				"description": "Project committed records into stable events. The declared prelaunch note and known older prelaunch errors become prelaunch-failed; ambiguous older failures become execution-unknown. Neither counts as a provider execution. Reuse previous event IDs so re-sync corrects imported rows."
 			}
 		],
 		"errors": []
@@ -39,6 +39,11 @@
 		},
 		{
 			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task-repository-task-usage",
 			"via": "import",
 			"origin": "derived"
 		},

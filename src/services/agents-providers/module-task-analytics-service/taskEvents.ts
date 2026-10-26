@@ -2,6 +2,7 @@ import type { ModuleTask } from '../../../repositories/agents-providers/ModuleTa
 import type { AnalyticsEvent } from '../../../core/reports-media/analyticsTypes';
 import { fingerprint } from '../../../workflows/reports-media/analyticsRecord';
 import { taskApiCost } from './taskPricing';
+import { taskPrelaunchNote } from '../../../repositories/agents-providers/module-task-repository/taskUsage';
 export function taskEvents(tasks: ModuleTask[], project: string): AnalyticsEvent[] {
 	return tasks.flatMap((task) => [
 		...[...task.attempts, ...(task.result ? [task.result] : [])].flatMap((result, index) =>
@@ -103,7 +104,7 @@ function executionAction(
 	result: NonNullable<ModuleTask['result']>,
 	execution: Pick<
 		NonNullable<ModuleTask['result']>['executions'][number],
-		'status' | 'usage' | 'reportedModel'
+		'status' | 'usage' | 'reportedModel' | 'apiCost'
 	>,
 	slot: number
 ) {
@@ -112,13 +113,18 @@ function executionAction(
 		'Task could not start because resource admission failed.',
 		'Task CLI could not be started.'
 	].includes(result.error ?? '');
-	const provenOldFailure =
-		oldPrelaunch &&
-		slot === result.executions.length - 1 &&
-		execution.status === 'failed' &&
-		!execution.usage &&
-		!execution.reportedModel;
-	return execution.status === 'not-started' || provenOldFailure ? 'prelaunch-failed' : 'executed';
+	const noProviderEvidence = !execution.usage && !execution.reportedModel;
+	const failed = execution.status === 'failed';
+	const provenOldFailure = [
+		oldPrelaunch,
+		slot === result.executions.length - 1,
+		failed,
+		noProviderEvidence
+	].every(Boolean);
+	const marked = [failed, execution.apiCost.note === taskPrelaunchNote, noProviderEvidence].every(
+		Boolean
+	);
+	return marked || provenOldFailure ? 'prelaunch-failed' : 'executed';
 }
 
 function executionsOf(result: NonNullable<ModuleTask['result']>) {

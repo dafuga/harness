@@ -5,6 +5,7 @@ import type {
 	TaskUsage
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { ModuleTaskAnalyticsService } from '../ModuleTaskAnalyticsService';
+import { taskPrelaunchNote } from '../../../repositories/agents-providers/module-task-repository/taskUsage';
 /** Keep every provider call, including failed or quota-rejected calls before fallback. */
 export async function dispatchTaskAttempt(
 	runner: TaskRunner,
@@ -32,12 +33,13 @@ export async function dispatchTaskAttempt(
 		return result;
 	} catch (error) {
 		const failure = taskFailure(error);
+		const apiCost = analytics.quote(failure.reportedModel ?? input.model, failure.usage);
 		executions.push({
 			...base,
 			reportedModel: failure.reportedModel,
 			usage: failure.usage,
-			apiCost: analytics.quote(failure.reportedModel ?? input.model, failure.usage),
-			status: failure.status,
+			apiCost: failure.blocked ? { ...apiCost, note: taskPrelaunchNote } : apiCost,
+			status: 'failed',
 			finishedAt: new Date().toISOString()
 		});
 		throw error;
@@ -55,6 +57,6 @@ function taskFailure(error: unknown) {
 	return {
 		usage: failure?.usage,
 		reportedModel: failure?.reportedModel ?? null,
-		status: blocked ? ('not-started' as const) : ('failed' as const)
+		blocked
 	};
 }

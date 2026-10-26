@@ -1,4 +1,6 @@
 import { z } from 'zod';
+/** Stored in the existing cost note so older queue readers remain compatible. */
+export const taskPrelaunchNote = 'Provider did not start; no usage or cost was incurred.';
 const count = z.number().finite().nonnegative().nullable();
 export const taskUsageSchema = z.strictObject({
 	inputTokens: count,
@@ -25,7 +27,7 @@ export const taskExecutionSchema = z.strictObject({
 	reportedModel: z.string().nullable(),
 	usage: taskUsageSchema.optional(),
 	apiCost: taskCostSchema,
-	status: z.enum(['succeeded', 'failed', 'not-started']),
+	status: z.enum(['succeeded', 'failed']),
 	startedAt: z.iso.datetime(),
 	finishedAt: z.iso.datetime()
 });

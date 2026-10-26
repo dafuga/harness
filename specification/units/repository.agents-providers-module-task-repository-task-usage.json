@@ -9,6 +9,7 @@
 	"owns": {
 		"source": ["src/repositories/agents-providers/module-task-repository/taskUsage.ts"],
 		"symbols": [
+			"taskPrelaunchNote",
 			"taskUsageSchema",
 			"taskCostSchema",
 			"taskExecutionSchema",
@@ -58,8 +59,8 @@
 			},
 			{
 				"name": "taskExecutionSchema",
-				"type": "Zod schema for {provider: 'claude' | 'codex'; model: string; intelligence: string; reportedModel: string | null; usage?: TaskUsage; apiCost: TaskApiCost; status: 'succeeded' | 'failed' | 'not-started'; startedAt: string; finishedAt: string}",
-				"description": "Strict object; unknown keys are rejected; no defaults. Public schema value exported from src/repositories/agents-providers/module-task-repository/taskUsage.ts. {\"quotaAndBounce\": \"No quota-specific or fallback/bounce field is defined in TaskExecution.\"} Field validation: {\"provider\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"claude\",\"codex\"]},\"model\":{\"type\":\"string\",\"required\":true,\"constraints\":[],\"emptyAllowed\":true},\"intelligence\":{\"type\":\"string\",\"required\":true,\"constraints\":[],\"emptyAllowed\":true},\"reportedModel\":{\"type\":\"string | null\",\"required\":true},\"usage\":{\"type\":\"TaskUsage\",\"required\":false,\"schema\":\"taskUsageSchema\"},\"apiCost\":{\"type\":\"TaskApiCost\",\"required\":true,\"schema\":\"taskCostSchema\"},\"status\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"succeeded\",\"failed\",\"not-started\"]},\"startedAt\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.iso.datetime()\"},\"finishedAt\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.iso.datetime()\"}} not-started records a verified prelaunch failure; it is not a provider execution."
+				"type": "Zod schema for {provider: 'claude' | 'codex'; model: string; intelligence: string; reportedModel: string | null; usage?: TaskUsage; apiCost: TaskApiCost; status: 'succeeded' | 'failed'; startedAt: string; finishedAt: string}",
+				"description": "Strict object; unknown keys are rejected; no defaults. Public schema value exported from src/repositories/agents-providers/module-task-repository/taskUsage.ts. {\"quotaAndBounce\": \"No quota-specific or fallback/bounce field is defined in TaskExecution.\"} Field validation: {\"provider\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"claude\",\"codex\"]},\"model\":{\"type\":\"string\",\"required\":true,\"constraints\":[],\"emptyAllowed\":true},\"intelligence\":{\"type\":\"string\",\"required\":true,\"constraints\":[],\"emptyAllowed\":true},\"reportedModel\":{\"type\":\"string | null\",\"required\":true},\"usage\":{\"type\":\"TaskUsage\",\"required\":false,\"schema\":\"taskUsageSchema\"},\"apiCost\":{\"type\":\"TaskApiCost\",\"required\":true,\"schema\":\"taskCostSchema\"},\"status\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"succeeded\",\"failed\"]},\"startedAt\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.iso.datetime()\"},\"finishedAt\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.iso.datetime()\"}} A failed dispatch with the declared prelaunch note is known not to have started a provider."
 			},
 			{
 				"name": "reviewInputSchema",
@@ -70,6 +71,11 @@
 				"name": "taskReviewSchema",
 				"type": "Zod schema for {attempt: string; verdict: 'accepted' | 'incomplete'; reviewer: string; feedback: string; at: string; provider: 'claude' | 'codex'; model: string; intelligence: string; reportedModel: string | null}",
 				"description": "Strict object; unknown keys are rejected; all fields required; no defaults or string trimming/bounds. Public schema value exported from src/repositories/agents-providers/module-task-repository/taskUsage.ts. {\"quotaAndBounce\": \"No quota-specific or fallback/bounce field is defined in TaskReview; attempt identity and selected/reported model identity are retained.\"} Field validation: {\"attempt\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.uuid()\"},\"verdict\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"accepted\",\"incomplete\"]},\"reviewer\":{\"type\":\"string\",\"required\":true,\"emptyAllowed\":true},\"feedback\":{\"type\":\"string\",\"required\":true,\"emptyAllowed\":true},\"at\":{\"type\":\"string\",\"required\":true,\"validator\":\"z.iso.datetime()\"},\"provider\":{\"type\":\"string enum\",\"required\":true,\"values\":[\"claude\",\"codex\"]},\"model\":{\"type\":\"string\",\"required\":true,\"emptyAllowed\":true},\"intelligence\":{\"type\":\"string\",\"required\":true,\"emptyAllowed\":true},\"reportedModel\":{\"type\":\"string | null\",\"required\":true}}"
+			},
+			{
+				"name": "taskPrelaunchNote",
+				"type": "string",
+				"description": "Stable backward-compatible note marking a verified failure before provider execution."
 			}
 		],
 		"errors": [

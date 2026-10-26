@@ -2,7 +2,7 @@
 	"name": "prelaunch-queue-compatibility",
 	"goal": "Keep shared task queues readable by older Harness clients",
 	"createdAt": "2026-10-26T23:50:38.774Z",
-	"updatedAt": "2026-10-26T23:51:41.642Z",
+	"updatedAt": "2026-10-26T23:52:13.451Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:52:13.451Z",
+			"evidence": "Recorded failing prior-schema regression bf6c491a at 6b74585329."
 		},
 		{
 			"id": "implement",

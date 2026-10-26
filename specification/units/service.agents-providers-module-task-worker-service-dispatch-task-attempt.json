@@ -30,7 +30,7 @@
 			{
 				"name": "dispatchTaskAttempt",
 				"type": "unknown",
-				"description": "Record each real provider call and its usage; a trusted diagnostic proving a prelaunch failure records not-started rather than a provider execution."
+				"description": "Keep the existing failed status while marking verified prelaunch failures with the stable prelaunch cost note; do not invent provider usage."
 			}
 		],
 		"errors": []
@@ -38,6 +38,11 @@
 	"dependencies": [
 		{
 			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task-repository-task-usage",
 			"via": "import",
 			"origin": "derived"
 		},
