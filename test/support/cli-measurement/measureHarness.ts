@@ -1,4 +1,5 @@
 import type { Input, Runner } from './measureHarness.types';
+import { pluginMeasuredUnits } from './pluginMeasuredUnits';
 import { apiMeasuredUnits, apiWorkloadArgs } from './apiMeasuredUnits';
 import { existsSync } from 'node:fs';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
@@ -47,6 +48,7 @@ function measuredUnits(args: string[]): string[] {
 			'entry.program',
 			'entry.index'
 		];
+	if (args[0] === 'plugin') return pluginMeasuredUnits(args);
 	const workload = measuredWorkloads[args.slice(0, 2).join(':')];
 	if (workload) return workload;
 	if (args[0] === 'new') return ['template.project-guidance'];
@@ -90,6 +92,7 @@ const benchmarkRunUnits = [
 ];
 
 const measuredWorkloads: Record<string, string[]> = {
+	'info:modules': ['guide.module-system-modules', 'guide.guide', 'entry.program', 'entry.index'],
 	'info:resources': ['guide.resources', 'guide.guide', 'entry.program', 'entry.index'],
 	'resources:status': [
 		'command.resources',
@@ -157,7 +160,8 @@ function recordUsage(units: string[], args: string[], duration: number, usage: s
 	if (!resident) throw new Error('The CLI workload did not report peak RSS.');
 	const memory = Number(resident[1]) * (process.platform === 'darwin' ? 1 : 1024);
 	const phase = args.includes('--phase') ? args[args.indexOf('--phase') + 1] : '';
-	const workload = [args[0], args[1], phase].filter(Boolean).join('-');
+	const scope = args.slice(0, args[0] === 'plugin' && args[1] !== 'list' ? 3 : 2);
+	const workload = [...scope, phase].filter(Boolean).join('-');
 	const measurements = units.flatMap((unit) => {
 		const context = { unit, workload, target: 'process', samples: 1 };
 		return [

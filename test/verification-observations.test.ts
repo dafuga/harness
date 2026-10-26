@@ -1,12 +1,12 @@
 import { verificationObservationCases } from './support/verificationObservationCases';
 import { afterEach, expect, test } from 'vitest';
+import './support/cli-measurement/workloadAssertions';
 import { execFile } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { captureIndex, type CaptureLine } from '../src/core/verifyTypes';
 import { scenarioManifestSchema } from '../src/core/unitTypes';
-
 const root = resolve(import.meta.dirname, '..');
 const directories: string[] = [];
 afterEach(() => {

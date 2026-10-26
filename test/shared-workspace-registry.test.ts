@@ -1,3 +1,7 @@
+import {
+	previewVariants,
+	previewState
+} from '../packages/reports/tests/e2e/support/component-previews/catalogVariants';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { beforeAll, expect, test } from 'vitest';
@@ -186,15 +190,21 @@ test('every active visual module has its own required capture state', () => {
 	expect(
 		catalog?.states.map((state) => state.units?.[0]),
 		'Catalog preview states follow canonical unit order'
-	).toEqual(catalog?.units.slice().sort((left, right) => left.localeCompare(right)));
+	).toEqual(
+		catalog?.units
+			.slice()
+			.sort((left, right) => left.localeCompare(right))
+			.flatMap((id) => previewVariants(id).map(() => id))
+	);
 	for (const id of visual) {
 		const states = catalog!.states.filter((state) => state.units?.includes(id));
-		expect(states, id).toHaveLength(1);
-		expect(states[0], id).toMatchObject({
-			id: id.replaceAll('.', '-'),
-			coverage: 'required',
-			units: [id]
-		});
+		expect(states, id).toHaveLength(previewVariants(id).length);
+		for (const [position, variant] of previewVariants(id).entries())
+			expect(states[position], id).toMatchObject({
+				id: previewState(id, variant),
+				coverage: 'required',
+				units: [id]
+			});
 	}
 });
 

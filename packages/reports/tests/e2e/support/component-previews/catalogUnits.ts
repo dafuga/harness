@@ -1,3 +1,5 @@
+import { previewVariants } from './catalogVariants';
+export { previewState } from './catalogVariants';
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { catalogVisual, type PreviewManifest } from './visualUnits';
@@ -7,7 +9,9 @@ export const catalogUnits = readdirSync(directory)
 	.map((name) => JSON.parse(readFileSync(directory + name, 'utf8')) as PreviewManifest)
 	.filter(catalogVisual)
 	.sort((a, b) => a.id.localeCompare(b.id));
-export const previewState = (id: string) => id.replaceAll('.', '-');
+export const catalogCases = catalogUnits.flatMap((unit) =>
+	previewVariants(unit.id).map((variant) => ({ unit, variant }))
+);
 export const catalogViewports = [
 	{ id: 'desktop', width: 920, height: 700 },
 	{ id: 'tablet', width: 768, height: 900 },

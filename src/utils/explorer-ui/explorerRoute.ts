@@ -17,7 +17,10 @@ export {
 
 export const explorerSections = ['details', 'history'] as const;
 
-const categoryAlias = new Map([['shells', 'layouts']]);
+const categoryAlias = new Map([
+	['shells', 'layouts'],
+	['plugins', 'modules']
+]);
 const canonicalCategory = (name: string) => categoryAlias.get(name) ?? name;
 const hash = /^[0-9a-f]{40}$/;
 const screens = new Set([
@@ -180,5 +183,6 @@ export type { ExplorerScreen, ExplorerSection, ExplorerLocation } from './explor
 
 function moduleScreenPath(location: ExplorerLocation): string {
 	const module = ['modules', 'module-resources', 'permissions'].includes(location.screen ?? '');
-	return `/${location.screen}${module && location.entity ? `/${encodeURIComponent(location.entity)}` : ''}`;
+	const screen = location.screen === 'modules' ? 'plugins' : location.screen;
+	return `/${screen}${module && location.entity ? `/${encodeURIComponent(location.entity)}` : ''}`;
 }

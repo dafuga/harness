@@ -85,7 +85,7 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 			html
 		)?.[1] ?? '';
 	expect(text(moduleMenu)).toBe(
-		'APIs Layouts Components Models Services Helpers Types Configs Styles Dependencies Users &amp; Permissions Modules'
+		'APIs Layouts Components Models Services Helpers Types Configs Styles Dependencies Users &amp; Permissions Plugins'
 	);
 	expect(moduleMenu.match(/role="tab"/g)).toHaveLength(12);
 	expect(html).not.toMatch(/popover|popovertarget|aria-expanded/);
@@ -104,10 +104,15 @@ test('one bar holds the brand, repository, entity categories and the Styles scre
 test('Code screens select their module tab and retain the selected revision', () => {
 	for (const [screen, title] of [
 		['styles', 'Styles'],
-		['modules', 'Modules'],
-		['permissions', 'Users &amp; Permissions']
+		['modules', 'Plugins'],
+		['permissions', 'Users &amp; Permissions'],
+		['module-resources', 'Plugins']
 	] as const) {
-		const html = body({ ...styles, screen });
+		const html = body({
+			...styles,
+			screen,
+			...(screen === 'module-resources' ? { entity: 'playwright.test' } : {})
+		});
 		expect(
 			links(html)
 				.filter((item) => item.current)
@@ -121,7 +126,9 @@ test('Code screens select their module tab and retain the selected revision', ()
 			attributes.includes('aria-selected="true"')
 		);
 		expect(selected.map(([, , content]) => text(content))).toEqual([title]);
-		expect(selected[0]?.[1]).toContain(`href="${scoped}/commit/${sha(4)}/${screen}"`);
+		expect(selected[0]?.[1]).toContain(
+			`href="${scoped}/commit/${sha(4)}/${screen === 'modules' || screen === 'module-resources' ? 'plugins' : screen}"`
+		);
 	}
 });
 

@@ -15,6 +15,6 @@ test('module code catalog lists generated resources and their owning module', as
 	);
 	expect(html).toContain('Emails');
 	expect(html).toContain('Welcome');
-	expect(html).toContain('harness module generate email email');
+	expect(html).toContain('harness plugin generate email email');
 	expect(html).toContain('src/mailers/email/WelcomeMailer.ts');
 });

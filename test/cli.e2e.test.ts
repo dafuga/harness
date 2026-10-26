@@ -204,7 +204,7 @@ test('CLI installs module foundations and generates their declared resources', a
 			(await runHarness(['module', 'list', '--json'], join(root, 'module-app'))).stdout
 		);
 		expect(catalog.modules.filter((entry: { installed: boolean }) => entry.installed)).toHaveLength(
-			16
+			18
 		);
 	} finally {
 		await rm(root, { recursive: true, force: true });
