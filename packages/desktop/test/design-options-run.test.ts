@@ -5,6 +5,10 @@ import { PNG } from 'pngjs';
 import { createPlanning } from '../../planning/src/lib/planning/index';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { fixture, git, settled } from './run-fixture';
+import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { planDesign } from '../src/utils/planDesign';
+import type { RunContext } from '../src/models/RunContext.types';
 const counted = (f: Made, designOptions: number) => ({ ...f.request, designOptions }) as RunRequest;
 /** Each generation answers an image of its own; `step` may act on the nth one first. */
 function distinct(f: Made, step: (call: number) => void = () => {}) {
@@ -24,6 +28,7 @@ async function versions(f: Made) {
 }
 
 test('a page Plan generates three separately directed options and commits them once', async () => {
+	await assertPageReferences();
 	const f = await fixture();
 	distinct(f);
 	const head = git(f.root, 'rev-parse', 'HEAD');
@@ -90,3 +95,99 @@ test('a headless Plan keeps notes and generates no image, whatever count it is g
 		[[], true]
 	]);
 }, 60000);
+
+function referenceFixture(kind: 'wanted' | 'current' | 'missing') {
+	const reference = PNG.sync.write(new PNG({ width: 4, height: 3 }));
+	const version = referenceVersion(reference);
+	const captured: Array<Buffer | null> = [];
+	const generator = {
+		generateImage: vi.fn(async (input: { reference: string | null }) => {
+			captured.push(input.reference ? await readFile(input.reference) : null);
+			return {
+				bytes: PNG.sync.write(new PNG({ width: captured.length + 1, height: 2 })),
+				revisedPrompt: null
+			};
+		})
+	};
+	const planning = {
+		image: vi.fn().mockResolvedValue(reference),
+		addDesign: vi.fn().mockResolvedValue({ ...version, version: 'v003' }),
+		appendMessage: vi.fn().mockResolvedValue({ id: 'synthetic-message' })
+	};
+	const currentImage = vi.fn().mockResolvedValue(kind === 'current' ? reference : null);
+	const emit = vi.fn();
+	const context = {
+		id: 'synthetic-run',
+		root: '/synthetic-project',
+		session: { atBranch: vi.fn().mockResolvedValue(undefined) },
+		runner: {},
+		request: { entityId: 'page.orders', threadId: 'unanchored', provider: 'codex', mode: 'plan' },
+		revision: { branch: 'main', commit: 'a'.repeat(40), tip: 'a'.repeat(40), atTip: true },
+		entity: {
+			id: 'page.orders',
+			title: 'Orders',
+			category: 'pages',
+			threads: [],
+			latestVersion: kind === 'wanted' ? version.version : null,
+			versions: kind === 'wanted' ? [{ ...version, version: 'v001' }, version] : []
+		},
+		planning,
+		generator,
+		currentImage,
+		imageModel: 'synthetic-image',
+		signal: new AbortController().signal,
+		emit
+	} as unknown as RunContext;
+	return { context, generator, planning, currentImage, emit, captured, reference, version };
+}
+
+async function assertPageReferences() {
+	for (const kind of ['wanted', 'current', 'missing'] as const) {
+		const f = referenceFixture(kind);
+		const result = await planDesign(f.context, 'Review this page');
+		expect(f.generator.generateImage).toHaveBeenCalledTimes(3);
+		if (kind === 'missing') {
+			expect(f.captured).toEqual([null, null, null]);
+			expect(
+				JSON.stringify([result, f.emit.mock.calls, f.planning.appendMessage.mock.calls])
+			).toMatch(
+				/no (?:visual |image )?reference|reference (?:unavailable|missing)|without (?:a |an )?(?:image )?reference/i
+			);
+		} else expect(f.captured).toEqual([f.reference, f.reference, f.reference]);
+		if (kind === 'wanted') {
+			expect(f.planning.image).toHaveBeenCalledExactlyOnceWith({
+				entityId: 'page.orders',
+				version: 'v002',
+				sha256: f.version.images[0].sha256,
+				revision: 'a'.repeat(40),
+				option: 'o2'
+			});
+			expect(f.currentImage).not.toHaveBeenCalled();
+		} else {
+			expect(f.planning.image).not.toHaveBeenCalled();
+			expect(f.currentImage).toHaveBeenCalledTimes(1);
+		}
+		expect(f.planning.addDesign).toHaveBeenCalledTimes(1);
+	}
+}
+
+function referenceVersion(reference: Buffer) {
+	return {
+		version: 'v002',
+		createdAt: '2026-10-26T00:00:00.000Z',
+		commit: 'a'.repeat(40),
+		generator: 'synthetic',
+		prompt: 'Earlier design',
+		baseRevision: 'a'.repeat(40),
+		approval: null,
+		images: [
+			{
+				state: 'default',
+				viewport: 'desktop',
+				sha256: createHash('sha256').update(reference).digest('hex'),
+				bytes: reference.length,
+				option: 'o2'
+			}
+		]
+	};
+}
