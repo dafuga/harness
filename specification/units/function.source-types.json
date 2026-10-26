@@ -3,7 +3,7 @@
 	"id": "function.source-types",
 	"kind": "function",
 	"title": "Source index types",
-	"responsibility": "Defines source-file facts, exported symbols, resolved references, tree access and dependency graph types.",
+	"responsibility": "Defines source graph, file facts and uncertainty data types.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -25,7 +25,41 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "SourceGraph",
+				"type": "{nodes:GraphNode[],edges:GraphEdge[],uncertain:UncertainNode[]}"
+			},
+			{
+				"name": "UncertainNode",
+				"type": "{node:string,reason:\"non-literal-import\"|\"unresolved-import\"|\"unclassified-change\"|\"uncovered-change\"|\"global-change\",detail:string}",
+				"description": "Identifies origin/reason/detail only; it has no structured target candidates or owner."
+			},
+			{
+				"name": "GraphNode",
+				"type": "{id:string,kind:\"source\"|\"test\"|\"global\"|\"registry\"|\"other\"|\"unit\"|\"scenario\",unit?:string}",
+				"description": "Optional unit may identify owner; missing ownership is not proof of irrelevance."
+			},
+			{
+				"name": "GraphEdge",
+				"type": "{from:string,to:string,via:string}",
+				"description": "Direction and runtime classification require the graph producer contract."
+			},
+			{
+				"name": "ResolvedReference",
+				"type": "{via:ReferenceVia,typeOnly:boolean,path?:string,external?:string,uncertain?:{reason:UncertainReason,detail:string}}",
+				"description": "path is repository-relative tracked source; external names an external package or runtime module."
+			},
+			{
+				"name": "SourceTree",
+				"type": "{revision:string,list():Promise<TreeEntry[]>,read(path:string):Promise<string>}",
+				"description": "May represent a working tree or exact commit; type alone does not prove committed provenance."
+			},
+			{
+				"name": "TreeEntry",
+				"type": "{path:string,hash:string}"
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [
