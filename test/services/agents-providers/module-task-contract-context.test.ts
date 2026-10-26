@@ -1,11 +1,12 @@
 import { execFileSync, spawnSync } from 'node:child_process';
-import { chmod, mkdir, mkdtemp, rm, stat, writeFile } from 'node:fs/promises';
+import { chmod, mkdir, mkdtemp, realpath, rm, stat, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { delimiter, dirname, isAbsolute, join, sep } from 'node:path';
 import { expect, test } from 'vitest';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
 import { ModuleTaskContractContextService } from '../../../src/services/agents-providers/ModuleTaskContractContextService';
+import { ModuleDataService } from '../../../src/services/git-source-history/ModuleDataService';
 
 const feature = {
 	id: 'contract-first-execution',
@@ -49,16 +50,20 @@ function manifest(id: string, path: string, label: string, dependencies: object[
 		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
 	};
 }
-
 function git(root: string, ...args: string[]): string {
 	return execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
 }
-
 function commit(root: string, message: string): void {
 	git(root, 'add', '-A');
 	git(root, 'commit', '-m', message);
 }
-
+async function validateMetadata(root: string, revision: string): Promise<void> {
+	const service = new ModuleDataService(root);
+	const report = await service.validate({ commit: revision, write: true });
+	if (!report.valid || !report.committed) console.error(JSON.stringify(report));
+	expect(report).toMatchObject({ valid: true, committed: true });
+	await service.require(revision, 'service.worker');
+}
 async function seed(root: string, revision: string): Promise<void> {
 	const foreign = `foreign-contract-${revision}`;
 	await Promise.all([
@@ -78,9 +83,8 @@ async function seed(root: string, revision: string): Promise<void> {
 		)
 	]);
 }
-
 async function makeFixture() {
-	const temporary = await mkdtemp(join(tmpdir(), 'harness-contract-context-'));
+	const temporary = await realpath(await mkdtemp(join(tmpdir(), 'harness-contract-context-')));
 	const root = join(temporary, 'repo'),
 		worktree = join(temporary, 'worker');
 	const blockedGit = join(temporary, 'blocked');
@@ -94,6 +98,7 @@ async function makeFixture() {
 		await seed(root, 'v1');
 		commit(root, 'source v1');
 		const sourceCommit = git(root, 'rev-parse', 'HEAD');
+		await validateMetadata(root, sourceCommit);
 		const queue = new ModuleTaskService(root);
 		await queue.feature(feature);
 		const { task } = await queue.add({
@@ -117,7 +122,6 @@ async function makeFixture() {
 		throw error;
 	}
 }
-
 async function withFixture(work: (f: Awaited<ReturnType<typeof makeFixture>>) => Promise<void>) {
 	const f = await makeFixture();
 	try {
@@ -126,14 +130,12 @@ async function withFixture(work: (f: Awaited<ReturnType<typeof makeFixture>>) =>
 		await rm(f.temporary, { recursive: true, force: true });
 	}
 }
-
 function createContext(root: string, task: unknown, worktree: string, files: string[]) {
 	const service = Reflect.construct(ModuleTaskContractContextService, [root]);
 	const create = Reflect.get(service, 'create');
 	expect(create).toBeTypeOf('function');
 	return Reflect.apply(create, service, [task, worktree, files]);
 }
-
 function runCli(bin: string, f: Awaited<ReturnType<typeof makeFixture>>, args: string[]) {
 	const path = [bin, f.blockedGit, dirname(process.execPath), '/usr/bin', '/bin'].join(delimiter);
 	return spawnSync(join(bin, 'harness'), args, {
@@ -142,7 +144,6 @@ function runCli(bin: string, f: Awaited<ReturnType<typeof makeFixture>>, args: s
 		env: { HOME: f.temporary, PATH: path }
 	});
 }
-
 const overlaps = (a: string, b: string) =>
 	a === b || a.startsWith(b + sep) || b.startsWith(a + sep);
 

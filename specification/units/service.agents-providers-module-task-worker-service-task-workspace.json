@@ -3,52 +3,91 @@
 	"id": "service.agents-providers-module-task-worker-service-task-workspace",
 	"kind": "service",
 	"title": "taskWorkspace",
-	"responsibility": "Owns the taskWorkspace service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Provide the selected task worktree path and initial result fields, then record changed paths and a checkpoint commit through the worker's existing ownership guard and worktree adapter.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/agents-providers/module-task-worker-service/taskWorkspace.ts"],
 		"symbols": ["taskWorkspace", "snapshotTaskWork"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "taskWorkspace.root",
-				"type": "string"
+				"type": "string",
+				"description": "Repository working-tree root passed to GitAdapter."
 			},
 			{
 				"name": "taskWorkspace.task",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"description": "Stored task. task.claim is optional in the imported type, but this helper requires a claim with a UUID token at runtime; it reads claim.token, repairCommit and sourceCommit."
 			},
 			{
 				"name": "taskWorkspace.selection",
-				"type": "TaskSelection"
+				"type": "TaskSelection",
+				"description": "Exact provider, model and intelligence selected for the run."
 			},
 			{
 				"name": "snapshotTaskWork.root",
-				"type": "string"
+				"type": "string",
+				"description": "Repository working-tree root passed to ModuleTaskWorktreeAdapter."
 			},
 			{
 				"name": "snapshotTaskWork.task",
-				"type": "ModuleTask"
+				"type": "ModuleTask",
+				"description": "Stored task; task.sourceCommit and task.module.files are passed to the delegated ownership guard."
 			},
 			{
 				"name": "snapshotTaskWork.result",
-				"type": "NonNullable<ModuleTask['result']>"
+				"type": "NonNullable<ModuleTask['result']>",
+				"description": "Existing task result. The helper reads result.sourceCommit and result.worktree, then mutates result.changedFiles and result.checkpointCommit; the imported result field schema is not fully published."
 			}
 		],
 		"outputs": [
 			{
 				"name": "taskWorkspace",
-				"type": "unknown"
+				"type": "Promise<NonNullable<ModuleTask['result']> & { attempt: string; sourceCommit: string }>",
+				"description": "Async. Resolves GitAdapter.run(['rev-parse', '--git-common-dir']) and computes the native worktree path with path.resolve(root, commonDirectoryOutput, '..', '.cache/harness/task-worktrees', task.claim.token). It calls pendingTaskResult(selection, worktree), spreads that result into a new object, then sets attempt to the claim UUID token and sourceCommit to task.repairCommit ?? task.sourceCommit. It does not create or remove the worktree, persist the result, or return a cleanup callback."
 			},
 			{
 				"name": "snapshotTaskWork",
-				"type": "unknown"
+				"type": "Promise<void>",
+				"description": "Async and mutating. Selects source = result.sourceCommit ?? task.sourceCommit. It assigns result.changedFiles from taskWrites(new GitAdapter(result.worktree), {...task, sourceCommit: source}), then assigns result.checkpointCommit from ModuleTaskWorktreeAdapter.checkpoint({cwd: result.worktree, source, paths: result.changedFiles}). It has no explicit return value and performs no result persistence or worktree cleanup."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "taskWorkspace missing claim",
+				"type": "TypeError rejection",
+				"description": "ModuleTask.claim is optional in the stored task contract, but the helper dereferences task.claim.token without a runtime guard. The public caller contract must require a claimed task."
+			},
+			{
+				"name": "Git common-directory lookup",
+				"type": "Error rejection",
+				"description": "GitAdapter.run may throw Error when rev-parse --git-common-dir fails. The exact output formatting of the returned common-directory string is not specified by its public contract."
+			},
+			{
+				"name": "pendingTaskResult construction",
+				"type": "not declared by dependency contract",
+				"description": "The public pendingTaskResult contract declares no errors. If its implementation throws, taskWorkspace propagates that rejection, but the dependency error shape is unspecified."
+			},
+			{
+				"name": "taskWrites ownership check",
+				"type": "Error rejection",
+				"description": "taskWrites rejects when worktree HEAD does not match its selected sourceCommit or when tracked changes or non-ignored untracked paths fall outside the exact task.module.files grant. GitAdapter failures also propagate. It leaves the worktree in place and does not stage or commit."
+			},
+			{
+				"name": "checkpoint creation",
+				"type": "Error rejection",
+				"description": "ModuleTaskWorktreeAdapter.checkpoint is declared to return Promise<string> and throw Error; exact checkpoint failure cases are not published."
+			},
+			{
+				"name": "worker once error boundary",
+				"type": "thrown or recorded",
+				"description": "The public ModuleTaskWorkerService.once contract says taskWorkspace/preparation failures after claim reject once before its guarded worktree/run/snapshot block and can leave the task running. A snapshotTaskWork rejection inside that guarded block is converted to result.error and normally finalized as failed."
+			}
+		]
 	},
 	"dependencies": [
 		{

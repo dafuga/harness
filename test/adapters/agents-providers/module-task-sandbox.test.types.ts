@@ -14,6 +14,9 @@ export type Fixture = {
 		commonGit: string;
 		app: string;
 		outside: string;
+		bunfig: string;
+		preload: string;
+		scratchHardlink: string;
 		link: string;
 		hardlink: string;
 		directory: string;
