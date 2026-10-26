@@ -9,11 +9,22 @@ const loaded: Snapshot = {
 		{ id: 'checkout', goal: 'Review checkout', tldr: 'Build checkout', plan: null, tasks: [] }
 	]
 };
-const setup = () => {
+const setup = (proxied = false) => {
 	const read = vi
 		.fn<(query: { projectId: string }) => Promise<Snapshot>>()
 		.mockResolvedValue(empty);
-	const workspace: Workspace = { projectId: 'project-a', bridge: { projectWork: read } };
+	const target = { projectWork: read };
+	const bridge = proxied
+		? new Proxy(target, {
+				get(object, key) {
+					const value = Reflect.get(object, key);
+					return typeof value === 'function'
+						? (...args: unknown[]) => Reflect.apply(value, object, args)
+						: value;
+				}
+			})
+		: target;
+	const workspace: Workspace = { projectId: 'project-a', bridge };
 	return { read, workspace, store: create(workspace) };
 };
 function deferred() {
@@ -39,15 +50,21 @@ test('initial value is readable', () => {
 });
 
 test('setting value exposes the new value', async () => {
-	const { store, read } = setup();
-	await store.refresh();
-	expect(read).toHaveBeenLastCalledWith({ projectId: 'project-a' });
-	expect(store.snapshot).toEqual(empty);
-	read.mockResolvedValueOnce(loaded);
-	await store.refresh();
-	expect(store.snapshot).toEqual(loaded);
-	expect(store.loading).toBe(false);
-	expect(store.error).toBeNull();
+	for (const proxied of [false, true]) {
+		const { store, read, workspace } = setup(proxied);
+		const bridge = workspace.bridge;
+		if (proxied) expect(bridge!.projectWork).not.toBe(bridge!.projectWork);
+		await store.refresh();
+		expect(read).toHaveBeenLastCalledWith({ projectId: 'project-a' });
+		expect(store.snapshot, `loaded empty snapshot, proxied=${proxied}`).toEqual(empty);
+		read.mockResolvedValueOnce(loaded);
+		await store.refresh();
+		expect(workspace.bridge).toBe(bridge);
+		expect(store.snapshot, `loaded feature snapshot, proxied=${proxied}`).toEqual(loaded);
+		expect(store.snapshot, 'repeated reads retain current-scope data').toEqual(loaded);
+		expect(store.loading).toBe(false);
+		expect(store.error).toBeNull();
+	}
 });
 
 test.each(['project', 'bridge', 'method'])(
@@ -118,6 +135,14 @@ test('selection changes hide old data before another refresh starts', async () =
 		);
 		expect(read).toHaveBeenCalledTimes(1);
 	}
+	const revoked = setup();
+	revoked.read.mockResolvedValueOnce(loaded);
+	await revoked.store.refresh();
+	delete revoked.workspace.bridge!.projectWork;
+	expect(revoked.store.snapshot).toBeNull();
+	await revoked.store.refresh();
+	expect(revoked.store.snapshot).toBeNull();
+	expect(revoked.store.error).toMatch(/unavailable/i);
 	const { store, workspace, read } = setup();
 	read.mockResolvedValueOnce(loaded);
 	await store.refresh();
