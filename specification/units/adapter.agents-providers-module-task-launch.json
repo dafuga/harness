@@ -3,8 +3,8 @@
 	"id": "adapter.agents-providers-module-task-launch",
 	"kind": "adapter",
 	"title": "ModuleTaskLaunchAdapter",
-	"responsibility": "Owns the ModuleTaskLaunchAdapter integration boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Prepare and clean an isolated provider launch while preserving exact model arguments, narrow local runtime reads and safe prelaunch diagnostics.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -20,20 +20,48 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ModuleTaskLaunchAdapter.constructor.config",
-				"type": "ModuleTaskLaunchAdapterConfig"
+				"name": "constructor.config",
+				"type": "{name?:string}"
+			},
+			{
+				"name": "run.argv",
+				"type": "string[] logical provider command, exact arguments"
+			},
+			{
+				"name": "run.input",
+				"type": "TaskRunInput; trusted scope required"
+			},
+			{
+				"name": "run.execute",
+				"type": "(argv:string[],input:TaskProcessInput)=>Promise<TaskProcessResult>",
+				"description": "TaskProcessInput extends TaskRunInput with env?:Record<string,string|undefined>. Process collaborator must await all owned child exit before resolving/rejecting."
+			},
+			{
+				"name": "run.sandbox",
+				"type": "Pick<ModuleTaskSandboxAdapter,\"prepare\">"
 			}
 		],
 		"outputs": [
 			{
-				"name": "ModuleTaskLaunchAdapter.connect",
+				"name": "connect",
 				"type": "string"
+			},
+			{
+				"name": "run",
+				"type": "Promise<TaskProcessResult>",
+				"description": "Requires scope, derives readonly provider/runtime paths separately without mutating input. Resolves provider executable from PATH; permits only canonical executable or known official CLI package runtime, needed Node/Bun executable, and existing per-provider local auth/config files (file metadata only, never read/copy credentials). No broad home/project/Git runtime grants or inherited API keys. Calls sandbox.prepare with exact logical argv then execute([wrapper.command,...wrapper.args],{...input,cwd:wrapper.cwd,env:wrapper.env}); awaits execution then cleanup exactly once on success, failure or cancellation. Resource admission remains in execute outside sandbox."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Missing scope, runtime unavailable or sandbox preparation rejection",
+				"type": "safe fixed Error with quotaRejected:false and diagnostic {category:\"permission\",phase:\"prelaunch\",nextAction:string}; no execute or provider usage",
+				"description": "Never expose arbitrary preparation error text; never launch an unrestricted fallback. Existing execution failures pass through after cleanup."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
