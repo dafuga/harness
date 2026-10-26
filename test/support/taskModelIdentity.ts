@@ -1,11 +1,15 @@
 import { expect } from 'vitest';
-import { ModuleTaskRunnerAdapter } from '../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
+import {
+	identitySandbox,
+	makeTaskInput,
+	runnerFor
+} from '../adapters/agents-providers/module-task-runner.test.fixtures';
 import type {
 	TaskRunResult,
 	TaskSelection
 } from '../../src/repositories/agents-providers/ModuleTaskRepository.types';
 
-/** The existing run-method case covers absent, conflicting and exact provider identities. */
+/** The shared run-method case covers scoped inputs with absent, conflicting and exact identities. */
 export async function assertTaskModelIdentity(): Promise<void> {
 	const outcomes = [];
 	const expected = [];
@@ -44,17 +48,17 @@ async function observedIdentity(selection: TaskSelection, model: string | undefi
 					{ type: 'result', is_error: false, result: 'Done', usage }
 				]
 			: [{ type: 'turn.completed', model, usage }];
-	const runner = new ModuleTaskRunnerAdapter(async () => ({
-		code: 0,
-		stdout: events.map((event) => JSON.stringify(event)).join('\n')
-	}));
+	const runner = runnerFor(
+		async () => ({
+			code: 0,
+			stdout: events.map((event) => JSON.stringify(event)).join('\n')
+		}),
+		identitySandbox
+	);
 	try {
-		const result = await runner.run({
-			...selection,
-			cwd: '.',
-			prompt: 'Synthetic CLI completion fixture',
-			signal: new AbortController().signal
-		});
+		const result = await runner.run(
+			makeTaskInput(selection.provider, selection.model, selection.intelligence)
+		);
 		return {
 			status: 'accepted',
 			reportedModel: result.reportedModel,
