@@ -3,7 +3,7 @@
 	"id": "helper.agents-providers-module-task-approved-submission",
 	"kind": "helper",
 	"title": "moduleTaskApprovedSubmission",
-	"responsibility": "Verify the latest approved feature plan within task queue updates.",
+	"responsibility": "Prepare safe module tasks and merge them into a queue draft.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,8 +11,32 @@
 		"symbols": ["moduleTaskApprovedSubmission"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
+			{
+				"name": "prepareSubmission.input",
+				"type": "unknown"
+			},
+			{
+				"name": "prepareSubmission.dependencies",
+				"type": "{root,repository,openTree,registry,requireMetadata,grantFiles,validateGrant}"
+			},
+			{
+				"name": "prepareSubmission.expectedSource",
+				"type": "string | undefined"
+			},
+			{
+				"name": "mergePlan.queue",
+				"type": "ModuleTaskQueue"
+			},
+			{
+				"name": "mergePlan.feature",
+				"type": "TaskFeature"
+			},
+			{
+				"name": "mergePlan.tasks",
+				"type": "ModuleTask[]"
+			},
 			{
 				"name": "moduleTaskApprovedSubmission.textToFormat",
 				"type": "string"
@@ -20,14 +44,26 @@
 		],
 		"outputs": [
 			{
+				"name": "prepareSubmission",
+				"type": "Promise<{feature:TaskFeature,records:ModuleTask[],sourceCommit:string}>",
+				"description": "Validate, admit, and prepare all tasks without queue mutation."
+			},
+			{
+				"name": "mergePlan",
+				"type": "{created:string[],reused:string[]}",
+				"description": "Merge exact task definitions idempotently into the supplied queue draft; reject conflicts before mutation."
+			},
+			{
 				"name": "moduleTaskApprovedSubmission",
-				"type": "string"
+				"type": "string",
+				"description": "Retained generated trim helper."
 			}
 		],
 		"errors": [
 			{
-				"name": "TypeError",
-				"type": "thrown"
+				"name": "invalid or conflicting submission",
+				"type": "Error",
+				"description": "No partial queue mutation on rejected input or conflict."
 			}
 		]
 	},

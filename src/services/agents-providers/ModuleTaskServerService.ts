@@ -1,30 +1,21 @@
-import { CommitTreeAdapter } from '../../adapters/CommitTreeAdapter';
 import {
-	featureSchema,
-	taskInputSchema,
-	ModuleTaskRepository
-} from '../../repositories/agents-providers/ModuleTaskRepository';
-import type {
-	ModuleTask,
-	ModuleTaskInput,
-	ModuleTaskQueue,
-	TaskFeature
-} from '../../repositories/agents-providers/ModuleTaskRepository.types';
+	mergePlan,
+	prepareSubmission
+} from '../../helpers/agents-providers/moduleTaskApprovedSubmission';
+import { isDeepStrictEqual } from 'node:util';
+import { CommitTreeAdapter } from '../../adapters/CommitTreeAdapter';
+import { FeaturePlanReadinessAdapter } from '../../adapters/agents-providers/FeaturePlanReadinessAdapter';
+import { FeaturePlanRepository } from '../../repositories/agents-providers/FeaturePlanRepository';
+import { ModuleTaskRepository } from '../../repositories/agents-providers/ModuleTaskRepository';
+import type { FeaturePlan } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import { UnitRegistryRepository } from '../../repositories/UnitRegistryRepository';
+import { FeaturePlanValidator } from '../../validators/agents-providers/FeaturePlanValidator';
 import { requireModuleData } from '../git-source-history/module-data-service/moduleDataAdmission';
-import { ModuleTaskService } from './ModuleTaskService';
+import { FeaturePlanService } from './FeaturePlanService';
 import { ModuleTaskWorkerService } from './ModuleTaskWorkerService';
-import { queuedTask, taskGrantFiles, validateTaskGrant } from './module-task-service/queuedTask';
+import { taskGrantFiles, validateTaskGrant } from './module-task-service/queuedTask';
 
-const isRecord = (value: unknown): value is Record<string, any> =>
-	value !== null && typeof value === 'object' && !Array.isArray(value);
 const unitId = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
-const safePath = (value: unknown): value is string =>
-	typeof value === 'string' &&
-	value.length > 0 &&
-	!value.startsWith('/') &&
-	!value.includes('\\') &&
-	!value.split('/').includes('..');
 const isAbortSignal = (value: unknown): value is AbortSignal =>
 	!!value &&
 	typeof (value as AbortSignal).aborted === 'boolean' &&
@@ -32,64 +23,6 @@ const isAbortSignal = (value: unknown): value is AbortSignal =>
 	typeof (value as AbortSignal).removeEventListener === 'function';
 const abortError = () =>
 	Object.assign(new Error('Module task run aborted'), { name: 'AbortError' });
-
-const parsePlan = (value: unknown): { feature: TaskFeature; tasks: ModuleTaskInput[] } => {
-	if (!isRecord(value) || !Array.isArray(value.tasks)) throw new Error('Invalid module task plan');
-	const feature = featureSchema.parse(value.feature);
-	const tasks = value.tasks.map((item) => taskInputSchema.parse(item));
-	const ids = new Set<string>();
-	for (const task of tasks) {
-		if (ids.has(task.id)) throw new Error(`Duplicate task id: ${task.id}`);
-		if (task.feature !== feature.id) throw new Error(`Task ${task.id} names another feature`);
-		ids.add(task.id);
-	}
-	return { feature, tasks };
-};
-
-const validateModule = (manifest: any, task: ModuleTaskInput): string[] => {
-	if (manifest.status !== 'active') throw new Error(`Module ${task.module} is not active`);
-	const sources = manifest.owns?.source;
-	if (!Array.isArray(sources) || !sources.length || !sources.every(safePath))
-		throw new Error(`Module ${task.module} has no safe owned source scope`);
-	if (manifest.responsibilityOrigin === 'derived' && !task.moduleGoal)
-		throw new Error(`Task ${task.id} requires a module goal`);
-	const moduleContract = { ...manifest.contract, responsibility: manifest.responsibility };
-	delete moduleContract.origin;
-	taskInputSchema.parse({ ...task, wantedContract: moduleContract });
-	return sources;
-};
-
-const sameFeature = (left: TaskFeature, right: TaskFeature) =>
-	JSON.stringify(left) === JSON.stringify(right);
-const taskDefinitionKeys = (
-	'id title feature module moduleGoal verificationFiles assignedFiles role instructions ' +
-	'wantedContract model provider intelligence assignee sourceCommit contractHash'
-).split(' ') as Array<keyof ModuleTask>;
-const sameTask = (left: ModuleTask, right: ModuleTask) =>
-	taskDefinitionKeys.every((key) => JSON.stringify(left[key]) === JSON.stringify(right[key]));
-
-const mergePlan = (
-	queue: ModuleTaskQueue,
-	feature: TaskFeature,
-	tasks: ModuleTask[]
-): { created: string[]; reused: string[] } => {
-	const features = queue.features.filter((item) => item.id === feature.id);
-	if (features.length > 1 || (features[0] && !sameFeature(features[0], feature)))
-		throw new Error(`Conflicting feature: ${feature.id}`);
-	const created: string[] = [],
-		reused: string[] = [],
-		additions: ModuleTask[] = [];
-	for (const task of tasks) {
-		const matches = queue.tasks.filter((item) => item.id === task.id);
-		if (matches.length > 1 || (matches[0] && !sameTask(matches[0], task)))
-			throw new Error(`Conflicting task: ${task.id}`);
-		(matches.length ? reused : created).push(task.id);
-		if (!matches.length) additions.push(task);
-	}
-	if (!features.length) queue.features.push(feature);
-	queue.tasks.push(...additions);
-	return { created, reused };
-};
 
 const validateRun = (worker: unknown, modules: unknown, once: unknown, signal: unknown) => {
 	if (typeof worker !== 'string' || !unitId.test(worker)) throw new Error('Invalid worker id');
@@ -117,7 +50,6 @@ const waitForPoll = (signal: AbortSignal) =>
 	});
 
 export class ModuleTaskServerService {
-	private readonly root: string;
 	private readonly repository: ModuleTaskRepository;
 	private readonly openTree: typeof CommitTreeAdapter.open;
 	private readonly registry: Pick<UnitRegistryRepository, 'read'>;
@@ -125,9 +57,10 @@ export class ModuleTaskServerService {
 	private readonly worker: Pick<ModuleTaskWorkerService, 'once'>;
 	private readonly grantFiles: typeof taskGrantFiles;
 	private readonly validateGrant: typeof validateTaskGrant;
+	private readonly plans: Pick<FeaturePlanService, 'approved'>;
 
 	constructor(
-		root: string,
+		private readonly root: string,
 		dependencies: Partial<{
 			repository: ModuleTaskRepository;
 			openTree: typeof CommitTreeAdapter.open;
@@ -136,9 +69,9 @@ export class ModuleTaskServerService {
 			worker: Pick<ModuleTaskWorkerService, 'once'>;
 			grantFiles: typeof taskGrantFiles;
 			validateGrant: typeof validateTaskGrant;
+			plans: Pick<FeaturePlanService, 'approved'>;
 		}> = {}
 	) {
-		this.root = root;
 		this.repository = dependencies.repository ?? new ModuleTaskRepository(root);
 		this.openTree = dependencies.openTree ?? CommitTreeAdapter.open;
 		this.registry = dependencies.registry ?? new UnitRegistryRepository(root);
@@ -146,38 +79,59 @@ export class ModuleTaskServerService {
 		this.worker = dependencies.worker ?? new ModuleTaskWorkerService(root);
 		this.grantFiles = dependencies.grantFiles ?? taskGrantFiles;
 		this.validateGrant = dependencies.validateGrant ?? validateTaskGrant;
+		this.plans =
+			dependencies.plans ??
+			new FeaturePlanService({
+				repository: new FeaturePlanRepository(root, this.repository),
+				validator: new FeaturePlanValidator(),
+				verifyReady: (plan) => new FeaturePlanReadinessAdapter(root).verify(plan)
+			});
 	}
 
 	async submit(
 		input: unknown
 	): Promise<ReturnType<typeof mergePlan> & { commit: string | undefined }> {
-		const { feature, tasks } = parsePlan(input);
-		const tree = await this.openTree(this.root, 'HEAD');
-		const registry = await this.registry.read(tree);
-		if (registry.errors.length)
-			throw new Error('Selected unit registry contains invalid manifests');
-		const units = new Map<string, any>();
-		const admissions: Array<{ task: ModuleTaskInput; unit: any; files: string[] }> = [];
-		for (const task of tasks) {
-			const manifest = registry.manifests.find((item: any) => item.id === task.module);
-			if (!manifest) throw new Error(`Module ${task.module} is not registered`);
-			validateModule(manifest, task);
-			units.set(task.module, manifest);
-			const files = await this.grantFiles(task, manifest, tree);
-			await this.validateGrant(this.root, files);
-			admissions.push({ task, unit: manifest, files });
-		}
-		for (const module of units.keys()) await this.requireMetadata(this.root, tree.revision, module);
-		const queue = await this.repository.read();
-		const service = new ModuleTaskService(this.root);
-		const records = admissions.map(({ task, unit, files }) =>
-			queuedTask(task, feature, unit, tree.revision, files)
+		return this.submitPlan(input);
+	}
+
+	async submitApproved(input: { feature: string; expectedDigest: string }) {
+		const { feature, expectedDigest } = input;
+		const approved = structuredClone(await this.plans.approved({ feature, expectedDigest }));
+		if (
+			approved.feature !== feature ||
+			approved.digest !== expectedDigest ||
+			approved.approval?.digest !== expectedDigest
+		)
+			throw new Error('Approved plan does not match the requested feature and digest.');
+		return this.submitPlan(
+			{
+				feature: { id: approved.feature, goal: approved.goal, tldr: approved.tldr },
+				tasks: approved.tasks
+			},
+			approved
 		);
-		for (const record of records) service.prepare(record, queue.commit ?? tree.revision);
-		const result = await this.repository.update(
-			(draft) => mergePlan(draft, feature, records),
-			tree.revision
+	}
+
+	private async submitPlan(input: unknown, approved?: FeaturePlan) {
+		const { feature, records, sourceCommit } = await prepareSubmission(
+			input,
+			{
+				root: this.root,
+				repository: this.repository,
+				openTree: this.openTree,
+				registry: this.registry,
+				requireMetadata: this.requireMetadata,
+				grantFiles: this.grantFiles,
+				validateGrant: this.validateGrant
+			},
+			approved?.sourceCommit
 		);
+		const result = await this.repository.update((draft) => {
+			const latest = draft.plans?.filter((plan) => plan.feature === feature.id).at(-1);
+			if (approved && !isDeepStrictEqual(latest, approved))
+				throw new Error('Approved plan changed before task submission.');
+			return mergePlan(draft, feature, records);
+		}, sourceCommit);
 		return { ...result.value, commit: result.commit };
 	}
 

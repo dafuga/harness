@@ -42,6 +42,16 @@
 				"name": "ModuleTaskServerService.run.execution",
 				"type": "{ worker: string; modules: string[]; once: boolean; signal: AbortSignal }",
 				"description": "Worker and module IDs must match the unit-ID pattern, module IDs must be unique, once must be boolean, and signal must be AbortSignal-shaped. A signal already aborted at validation rejects before submit."
+			},
+			{
+				"name": "ModuleTaskServerService.submitApproved.input",
+				"type": "{feature:string,expectedDigest:string}",
+				"description": "Select the exact latest approved plan; trusted guard rechecks source, metadata, images and graph."
+			},
+			{
+				"name": "ModuleTaskServerService.constructor.dependencies.plans",
+				"type": "optional Pick<FeaturePlanService,\"approved\">",
+				"description": "Defaults to the real feature plan guard; test collaborators may be injected."
 			}
 		],
 		"outputs": [
@@ -54,6 +64,11 @@
 				"name": "ModuleTaskServerService.run",
 				"type": "Promise<{ submission: { created: string[]; reused: string[]; commit: string | undefined }; results: unknown[] }>",
 				"description": "When once is true, resolves with the submit result nested under submission and a results array containing the one result from exactly one awaited worker.once call. When once is false, calls worker.once repeatedly and retains at most 100 results internally, but never resolves with them: cancellation rejects with AbortError after the active call settles. The service awaits worker.once directly, so cancellation does not interrupt a worker call that does not settle. Watch mode treats result.status === 'idle' as a reason to poll again after 50 ms; the worker.once dependency contract declares its result as unknown. Once mode does not loop to drain matching work, and the service does not recheck cancellation after submit or after a successful once call."
+			},
+			{
+				"name": "ModuleTaskServerService.submitApproved",
+				"type": "Promise<{created:string[],reused:string[],commit:string|undefined}>",
+				"description": "Admits only tasks from the verified approved plan and checks the identical complete plan within the queue compare-and-swap before merging. Preserves dependency IDs and returns idempotent reused tasks."
 			}
 		],
 		"errors": [
@@ -86,6 +101,11 @@
 				"name": "Worker failure",
 				"type": "Error",
 				"description": "Once-mode worker rejection propagates. In watch mode a worker rejection propagates unchanged unless the signal is aborted, in which case it is converted to the run AbortError."
+			},
+			{
+				"name": "stale or changed approved plan",
+				"type": "Error",
+				"description": "Reject before queue mutation when the verified approval or current queued plan differs, disappears, is invalid or changes during admission."
 			}
 		]
 	},
