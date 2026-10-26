@@ -3,8 +3,8 @@
 	"id": "desktop.store.project-agent",
 	"kind": "store",
 	"title": "projectAgent",
-	"responsibility": "Owns the projectAgent store unit.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Maintain the selected project conversation and dispatch its requests.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -21,17 +21,19 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createProjectAgentStore.workspace",
-				"type": "Workspace"
+				"type": "Workspace",
+				"description": "Selected project, revision, capabilities and bridge used for the conversation."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createProjectAgentStore",
-				"type": "unknown"
+				"type": "ProjectAgentState",
+				"description": "Reactive runId, status, error, asked, said, saved, providers, messages, starting, pendingEvents and settle; getters active, allowed, approved, modes and notice; listen, loadProviders, send, event, comment and cancel. Panel open and navigation state are owned by the view, not this store."
 			}
 		],
 		"errors": []

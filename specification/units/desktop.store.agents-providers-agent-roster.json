@@ -3,7 +3,7 @@
 	"id": "desktop.store.agents-providers-agent-roster",
 	"kind": "store",
 	"title": "Live agent roster",
-	"responsibility": "Refreshes the selected project agent roster and derives freshness-aware sessions and module assignments.",
+	"responsibility": "Refresh the selected project agent roster and derive freshness-aware sessions and module assignments.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,17 +19,23 @@
 			{
 				"name": "createAgentRosterStore.workspace",
 				"type": "Workspace",
-				"description": "Selected project identity and optional read-only agent activity bridge. Responses from earlier project selections are discarded."
+				"description": "Selected project identity and optional bridge.agentActivity({projectId}): Promise<Sample>. Sample is Pick<LiveActivity, 'sampledAt' | 'agents'> and agents.roster contains agent entries with unit IDs. Responses from earlier project selections are discarded."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createAgentRosterStore",
 				"type": "AgentRosterState",
-				"description": "Reactive reading, errors, current working count, sessions, module owners and visible-page polling with cleanup."
+				"description": "loading and error; getters sample: Sample | null, working: number | null, sessions: {agent: AgentEntry, label: string}[], modules: {id: string, owners: AgentEntry[]}[]; refresh(): Promise<void> and listen(): cleanup. A prior project's sample is hidden."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "activity unavailable",
+				"type": "display error",
+				"description": "Missing bridge reports unavailable. A refresh failure retains any prior scoped sample with an explicit stale-reading message."
+			}
+		]
 	},
 	"dependencies": [
 		{
