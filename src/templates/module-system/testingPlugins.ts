@@ -1,6 +1,9 @@
 import { audioTestingFiles } from './audioTestingFiles';
 import { browserTestingFiles } from './browserTestingFiles';
 
+/** The generated app and built-in testing plugins share one Playwright version. */
+export const testingPlaywrightVersion = '1.63.0';
+
 const audioTest = `import { test, expect } from '../plugin-support/browserTest';
 import { HeadlessAudioService } from '../../../src/services/headless-audio/HeadlessAudioService';
 test('{{PascalName}} renders real PCM without a microphone or speakers', async ({ page }) => {
@@ -60,7 +63,7 @@ export const testingPlugins = [
 		],
 		setup: browserTestingFiles,
 		dependencies: {},
-		devDependencies: { '@playwright/test': '1.63.0', '@types/node': '^22.15.3' },
+		devDependencies: { '@playwright/test': testingPlaywrightVersion, '@types/node': '^22.15.3' },
 		packageScripts: {
 			'test:browser': 'playwright test --config src/configs/playwright/browserPlaywrightConfig.ts'
 		},
@@ -100,7 +103,7 @@ export const testingPlugins = [
 		],
 		setup: audioTestingFiles,
 		dependencies: {},
-		devDependencies: { '@playwright/test': '1.63.0', '@types/node': '^22.15.3' },
+		devDependencies: { '@playwright/test': testingPlaywrightVersion, '@types/node': '^22.15.3' },
 		packageScripts: {
 			'test:audio': 'playwright test --config src/configs/headless-audio/audioPlaywrightConfig.ts'
 		},

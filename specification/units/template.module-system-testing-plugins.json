@@ -11,7 +11,7 @@
 	},
 	"owns": {
 		"source": ["src/templates/module-system/testingPlugins.ts"],
-		"symbols": ["testingPlugins"]
+		"symbols": ["testingPlaywrightVersion", "testingPlugins"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -21,6 +21,11 @@
 				"name": "testingPlugins",
 				"type": "unknown",
 				"description": "Declare Playwright and headless-audio plugin definitions and browser tests; both request the same pinned Playwright dependency as a newly generated app, while preserving their distinct scripts and resources."
+			},
+			{
+				"name": "testingPlaywrightVersion",
+				"type": "string",
+				"description": "One pinned Playwright version consumed by both built-in testing plugins and the generated app package."
 			}
 		],
 		"errors": []

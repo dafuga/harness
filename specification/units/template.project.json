@@ -34,7 +34,7 @@
 			{
 				"name": "projectFiles",
 				"type": "PlannedFile[]",
-				"description": "Relative paths and contents for the selected project, including framework ambient type references and companion types. Static formatting, compiler, lint and audit checks precede browser screenshot admission; unreviewed baselines fail explicitly."
+				"description": "Relative paths and contents for the selected project, including framework ambient type references and companion types. Static formatting, compiler, lint and audit checks precede browser screenshot admission; unreviewed baselines fail explicitly. The generated app uses the built-in testing plugins shared Playwright pin."
 			}
 		],
 		"errors": []
@@ -82,6 +82,11 @@
 		},
 		{
 			"unit": "template.lint-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.module-system-testing-plugins",
 			"via": "import",
 			"origin": "derived"
 		},

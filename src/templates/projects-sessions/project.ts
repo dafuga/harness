@@ -1,6 +1,7 @@
 import { separateTypeDeclarations } from '../development-tooling/separateTypeDeclarations';
 import type { ProjectTemplateInput } from './project.types';
 import { appTestFiles } from './projectTests';
+import { testingPlaywrightVersion } from '../module-system/testingPlugins';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { auditConfigFiles } from '../development-tooling/auditConfig';
 import { auditRunnerFiles } from '../development-tooling/auditRunner';
@@ -159,7 +160,7 @@ function appPackage(name: string): Record<string, unknown> {
 			'test:e2e': 'playwright test'
 		},
 		devDependencies: {
-			'@playwright/test': '1.63.0',
+			'@playwright/test': testingPlaywrightVersion,
 			'@eslint/js': '^9.25.1',
 			'@sveltejs/adapter-auto': '^4.0.0',
 			'@sveltejs/kit': '^2.16.1',
