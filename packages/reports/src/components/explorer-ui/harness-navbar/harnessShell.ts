@@ -164,7 +164,7 @@ function codeItems(input: HarnessNavbarInput): HarnessShellCategory[] {
 				const to = moduleResourceLocation(place, entry.definition.id, resource);
 				return {
 					id,
-					label: resource.title,
+					label: resource.catalog === 'module-library' ? 'Plugins' : resource.title,
 					icon: categoryGlyph(id),
 					active: categoryActive(place, id),
 					href: input.href(to),
