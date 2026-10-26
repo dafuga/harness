@@ -1,0 +1,35 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tjpFXD
+
+ ❯ test/validators/verification-evidence/test-case.test.ts (1 test | 1 failed) 17ms
+   × validate each allowed shape and its missing or invalid states 13ms
+     → service: expected true to be false // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/validators/verification-evidence/test-case.test.ts > validate each allowed shape and its missing or invalid states
+AssertionError: service: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ assertVisualEntityKinds test/validators/verification-evidence/test-case.test.ts:65:72
+     63|   expect(validator.validate({ ...unit, kind }, component).valid, kind)…
+     64|  for (const kind of ['service', 'page', 'layout', 'endpoint', 'functio…
+     65|   expect(validator.validate({ ...unit, kind }, component).valid, kind)…
+       |                                                                        ^
+     66|  expect(validator.validate(unit, { ...contract, shape: 'api' }).valid)…
+     67|  const api = {
+ ❯ test/validators/verification-evidence/test-case.test.ts:30:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  23:38:46
+   Duration  3.05s (transform 179ms, setup 111ms, collect 366ms, tests 17ms, environment 0ms, prepare 30ms)
+
