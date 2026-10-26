@@ -54,12 +54,20 @@ async function samplerFailures(adapter: CpuProcessAdapter): Promise<void> {
 		await expect(adapter.sample()).rejects.toThrow('Unsupported CPU process platform.');
 		vi.mocked(os.platform).mockReturnValue('linux');
 		vi.mocked(os.cpus).mockReturnValue([]);
-		if (!['darwin', 'linux'].includes(process.platform)) processFixture.mode = 'success';
+		processFixture.mode = 'success';
 		await expect(adapter.sample()).rejects.toThrow('CPU counters unavailable.');
+		if (['darwin', 'linux'].includes(process.platform)) {
+			processFixture.mode = 'native';
+			await expect(adapter.sample()).rejects.toThrow('CPU counters unavailable.');
+		}
 		vi.mocked(os.cpus).mockReset();
-		if (['darwin', 'linux'].includes(process.platform)) process.env.PATH = emptyPath;
-		else processFixture.mode = 'failure';
+		processFixture.mode = 'failure';
 		await expect(adapter.sample()).rejects.toMatchObject({ code: 'ENOENT' });
+		if (['darwin', 'linux'].includes(process.platform)) {
+			processFixture.mode = 'native';
+			process.env.PATH = emptyPath;
+			await expect(adapter.sample()).rejects.toMatchObject({ code: 'ENOENT' });
+		}
 	} finally {
 		if (originalPath === undefined) delete process.env.PATH;
 		else process.env.PATH = originalPath;
