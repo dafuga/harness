@@ -51,9 +51,21 @@ test.each([
 	}
 );
 
+test('a planned-only page has no current image and never reads evidence or artifacts', async () => {
+	const { evidence, prepare } = await currentFixture(true);
+	evidence.evidence.mockRejectedValue(new Error('This entity is not registered at this commit.'));
+	const context = await prepare();
+	expect(context.entity.planned).toBe(true);
+	expect(context.currentImage).toBeTypeOf('function');
+	await expect(context.currentImage!()).resolves.toBeNull();
+	expect(evidence.evidence).not.toHaveBeenCalled();
+	expect(evidence.artifact).not.toHaveBeenCalled();
+});
+
 test('current image callback is lazy and pins exact project revision and artifact bindings', async () => {
 	const { f, query, response, evidence, prepare } = await currentFixture();
 	const context = await prepare();
+	expect(context.entity.planned).toBe(false);
 	expect(git(f.root, 'rev-parse', 'HEAD')).not.toBe(query.commit);
 	expect(response.scope.atTip).toBe(false);
 	expect(query.mode).toBe('commit');
@@ -120,6 +132,7 @@ test('no eligible recorded screenshot returns null without reading an artifact',
 	});
 	const context = await prepare();
 	expect(context.currentImage).toBeTypeOf('function');
+	expect(context.entity.planned).toBe(false);
 	expect(git(f.root, 'rev-parse', 'HEAD')).not.toBe(query.commit);
 	await expect(context.currentImage!()).resolves.toBeNull();
 	expect(evidence.evidence).toHaveBeenCalledExactlyOnceWith(query);

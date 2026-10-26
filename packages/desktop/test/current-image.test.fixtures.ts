@@ -28,8 +28,14 @@ export function capture(evidence = 'screen-a') {
 		}
 	};
 }
-export async function currentFixture() {
+export async function currentFixture(planned = false) {
 	const f = await fixture();
+	const { catalog } = f.session.requireProject();
+	const entity = catalog.entity.bind(catalog);
+	vi.spyOn(catalog, 'entity').mockImplementation(async (...args) => ({
+		...(await entity(...args)),
+		planned
+	}));
 	const query = {
 		projectId: f.session.projectId!,
 		entityId: f.request.entityId,
