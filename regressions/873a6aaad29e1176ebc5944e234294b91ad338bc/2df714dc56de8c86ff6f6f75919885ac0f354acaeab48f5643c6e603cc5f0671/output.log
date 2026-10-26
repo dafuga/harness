@@ -1,0 +1,40 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zW9ghy
+
+ ❯ test/adapters/git-source-history/working-tree.test.ts (2 tests | 1 failed) 104ms
+   × list initialized preserves tracked snapshot source and excludes generated files 100ms
+     → expected [ '.gitignore', 'src/generated.ts' ] to deeply equal [ '.gitignore', …(1) ]
+   ✓ read initialized returns source and propagates missing-file errors 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/git-source-history/working-tree.test.ts > list initialized preserves tracked snapshot source and excludes generated files
+AssertionError: expected [ '.gitignore', 'src/generated.ts' ] to deeply equal [ '.gitignore', …(1) ]
+
+- Expected
++ Received
+
+  [
+    ".gitignore",
+-   "packages/desktop/ios/App/tracked.ts",
++   "src/generated.ts",
+  ]
+
+ ❯ test/adapters/git-source-history/working-tree.test.ts:52:18
+     50|     (entry) => entry.path
+     51|    );
+     52|    expect(paths).toEqual(expected.paths);
+       |                  ^
+     53|    expect(paths).not.toContain(generated);
+     54|    const nested = (
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+ ❯ test/adapters/git-source-history/working-tree.test.ts:35:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  00:04:34
+   Duration  2.92s (transform 110ms, setup 119ms, collect 44ms, tests 104ms, environment 0ms, prepare 29ms)
+
