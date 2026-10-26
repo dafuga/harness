@@ -1,6 +1,11 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { mkdirSync } from 'node:fs';
-import { agentActivityFixture, readyForAgentCapture } from './ui-agent-activity-fixture';
+import {
+	agentActivityFixture,
+	readyForAgentCapture,
+	workRefreshFixture,
+	verifyWorkRefresh
+} from './ui-agent-activity-fixture';
 import { projectFixture, alpha } from './ui-project-fixture';
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import scenario from '../../../../specification/scenarios/agent-creation.json' with { type: 'json' };
@@ -121,6 +126,7 @@ for (const width of [1440, 920, 390]) {
 	test(`project chat shows sessions and module owners at ${width}px`, async ({ page }) => {
 		await page.setViewportSize({ width, height: 900 });
 		await agentActivityFixture(page);
+		await workRefreshFixture(page);
 		await page.goto(`/projects/${alpha}/harness/branch/feat%2Falpha/components`);
 		await page.getByRole('button', { name: 'Work with agent', exact: true }).click();
 		const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
@@ -145,6 +151,7 @@ for (const width of [1440, 920, 390]) {
 			name: String(width),
 			note: 'Compiled renderer with synthetic declared sessions; no live model requests.'
 		});
+		await verifyWorkRefresh(page, panel);
 		await modules.getByRole('link', { name: 'Card', exact: true }).click();
 		await expect(page).toHaveURL(/components\/component.card/);
 		await panel.getByRole('button', { name: 'Chat', exact: true }).click();
