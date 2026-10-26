@@ -14,6 +14,8 @@ describe('moduleTaskApprovedSubmission', () => {
 
 	test('rejects non-text input', () => {
 		// throws 'moduleTaskApprovedSubmission expects text'
-		expect(() => moduleTaskApprovedSubmission(42 as never)).toThrow('moduleTaskApprovedSubmission expects text');
+		expect(() => moduleTaskApprovedSubmission(42 as never)).toThrow(
+			'moduleTaskApprovedSubmission expects text'
+		);
 	});
 });

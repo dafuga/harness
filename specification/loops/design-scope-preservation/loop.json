@@ -2,11 +2,9 @@
 	"name": "design-scope-preservation",
 	"goal": "Keep all unrequested page regions faithful to the reference while generating options for the requested visual change.",
 	"createdAt": "2026-10-26T22:35:36.774Z",
-	"updatedAt": "2026-10-26T22:36:36.758Z",
+	"updatedAt": "2026-10-26T22:44:55.000Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T22:44:46.575Z",
+			"evidence": "Red proof 3fd0ba253282d55fdf8b6e96a7061c2ca30bb400103e43c234dfaa386d223f50 at a42f54abf1: the image prompt omits the original right-panel request."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T22:44:53.424Z",
+			"evidence": "b0f7feb536 passes actual reference availability, the original user request and scoped option directions to the generator."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T22:44:55.000Z",
+			"evidence": "Green proof 09cf38f4dbebe0569f19794d9f631d0c031ec5a55fca25a858bb5ce945747d02 at b0f7feb536 passes the unchanged synthetic generator case."
 		},
 		{
 			"id": "verify",

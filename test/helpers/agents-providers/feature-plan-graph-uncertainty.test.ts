@@ -14,6 +14,8 @@ describe('featurePlanGraphUncertainty', () => {
 
 	test('rejects non-text input', () => {
 		// throws 'featurePlanGraphUncertainty expects text'
-		expect(() => featurePlanGraphUncertainty(42 as never)).toThrow('featurePlanGraphUncertainty expects text');
+		expect(() => featurePlanGraphUncertainty(42 as never)).toThrow(
+			'featurePlanGraphUncertainty expects text'
+		);
 	});
 });
