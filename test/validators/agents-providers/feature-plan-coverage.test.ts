@@ -23,21 +23,42 @@ test('FeaturePlanCoverageValidator.validate from default initialization covers s
 	const missingMetadata = validate(plan());
 	expect(missingMetadata.valid).toBe(false);
 	expect(missingMetadata.errors.length).toBeGreaterThan(0);
+	const metadata = data();
+	metadata.commit = 'f'.repeat(40);
+	expect(validate(plan([change('page.direct')], ['page.direct']), metadata).valid).toBe(false);
+	const cycle = plan(
+		[
+			change('page.direct', 'modify', 'component.shared'),
+			change('component.shared', 'modify', 'page.direct')
+		],
+		['page.direct']
+	);
+	const blocked = validate(cycle, data());
+	expect(blocked.valid).toBe(false);
+	expect(blocked.affectedPages).toEqual(['page.direct']);
+	expect(blocked.errors.join(' ')).toMatch(/cyclic/i);
 });
 
 function validate(input: unknown, metadata?: unknown) {
 	const validator = new FeaturePlanCoverageValidator();
-	return (
-		validator.validate as unknown as (
-			plan: unknown,
-			data: unknown
-		) => {
-			valid: boolean;
-			affectedPages: string[];
-			missingPages: string[];
-			errors: string[];
-		}
-	)(input, metadata);
+	const result = validator.validate(input as never, metadata as never);
+	const candidate = input as ReturnType<typeof plan> | null | undefined;
+	const impact = candidate && { sourceCommit: candidate.sourceCommit, changes: candidate.changes };
+	const discovery = validator.discover(impact as never, metadata as never);
+	if (!candidate?.sourceCommit || !Array.isArray(candidate.changes)) {
+		expect(discovery).toEqual({ valid: false, affectedPages: [], errors: expect.any(Array) });
+		expect(discovery.errors.length).toBeGreaterThan(0);
+		return result;
+	}
+	const blockers = result.errors.filter(
+		(error) => !result.missingPages.some((page) => error === `Missing page design: ${page}`)
+	);
+	expect(discovery).toEqual({
+		valid: blockers.length === 0,
+		affectedPages: result.affectedPages,
+		errors: blockers
+	});
+	return result;
 }
 
 test('covers direct pages and every consuming page with a deterministic deduplicated union', () => {

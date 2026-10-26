@@ -192,6 +192,12 @@ export function assertScopedUncertainty() {
 		const input = plan([change('component.shared')], ['page.alpha']);
 		const before = structuredClone({ input, metadata });
 		const result = validator.validate(input as never, metadata as never);
+		const impact = { sourceCommit: input.sourceCommit, changes: input.changes };
+		expect(validator.discover(impact as never, metadata as never), kind).toEqual({
+			valid: benign,
+			affectedPages: ['page.alpha'],
+			errors: result.errors
+		});
 		expect(result.valid, kind).toBe(benign);
 		expect(result.affectedPages, kind).toEqual(['page.alpha']);
 		expect(result.missingPages, kind).toEqual([]);
