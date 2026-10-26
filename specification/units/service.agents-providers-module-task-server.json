@@ -8,20 +8,86 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/agents-providers/ModuleTaskServerService.ts"],
-		"symbols": ["ModuleTaskServerService", "ModuleTaskServerService.run"]
+		"symbols": [
+			"ModuleTaskServerService",
+			"ModuleTaskServerService.constructor",
+			"ModuleTaskServerService.submit",
+			"ModuleTaskServerService.run"
+		]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
-		"outputs": [
+		"inputs": [
 			{
-				"name": "ModuleTaskServerService.run",
+				"name": "ModuleTaskServerService.constructor.root",
 				"type": "string"
+			},
+			{
+				"name": "ModuleTaskServerService.constructor.dependencies",
+				"type": "Partial<{ repository: ModuleTaskRepository; openTree: typeof CommitTreeAdapter.open; registry: Pick<UnitRegistryRepository, 'read'>; requireMetadata: typeof requireModuleData; worker: Pick<ModuleTaskWorkerService, 'once'>; }>"
+			},
+			{
+				"name": "ModuleTaskServerService.submit.input",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskServerService.run.input",
+				"type": "unknown"
+			},
+			{
+				"name": "ModuleTaskServerService.run.execution",
+				"type": "{ worker: string; modules: string[]; once: boolean; signal: AbortSignal }"
 			}
 		],
-		"errors": []
+		"outputs": [
+			{
+				"name": "ModuleTaskServerService.submit",
+				"type": "Promise<ReturnType<typeof mergePlan> & { commit: string | undefined }>"
+			},
+			{
+				"name": "ModuleTaskServerService.run",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.unit-registry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-worker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-admission",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/agents-providers/ModuleTaskServerService.ts",
