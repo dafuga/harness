@@ -1,0 +1,40 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uUWRNp
+
+ ❯ test/self-verify-runtime-state.test.ts (6 tests | 1 failed) 526ms
+   × create initialized exports the committed source and cleans up failed creation 85ms
+     → pre-existing inventory: expected false to be true // Object.is equality
+   ✓ link initialized shares an existing path only once 62ms
+   ✓ misdeclared initialized rejects outputs covering tracked source 125ms
+   ✓ drift initialized detects changed source and undeclared additions 130ms
+   ✓ artifact initialized measures files inside the snapshot 61ms
+   ✓ remove initialized clears the exported snapshot and inventory 60ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/self-verify-runtime-state.test.ts > create initialized exports the committed source and cleans up failed creation
+AssertionError: pre-existing inventory: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ assertUnownedInventory test/self-verify-runtime-state.test.ts:115:59
+    113|   await expect(SnapshotAdapter.create(snapshot.directory, 'missing', […
+    114|   expect(allocation.next).toBe('');
+    115|   expect(existsSync(inventory), 'pre-existing inventory').toBe(true);
+       |                                                           ^
+    116|   expect(await readFile(inventory, 'utf8')).toBe('pre-existing');
+    117|  } finally {
+ ❯ test/self-verify-runtime-state.test.ts:102:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  00:09:26
+   Duration  3.19s (transform 101ms, setup 108ms, collect 49ms, tests 526ms, environment 0ms, prepare 25ms)
+
