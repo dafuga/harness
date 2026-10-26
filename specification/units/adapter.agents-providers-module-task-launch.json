@@ -47,6 +47,11 @@
 			{
 				"name": "run.sandbox",
 				"type": "Pick<ModuleTaskSandboxAdapter,\"prepare\">"
+			},
+			{
+				"name": "providerConfig",
+				"type": "ModuleTaskProviderConfigAdapter",
+				"description": "Trusted metadata-only provider config path discovery; individual rule files and exact directory are read-only."
 			}
 		],
 		"outputs": [
@@ -57,7 +62,7 @@
 			{
 				"name": "run",
 				"type": "Promise<TaskProcessResult>",
-				"description": "Requires scope, derives readonly provider/runtime paths separately without mutating input. Resolves provider executable from PATH; permits only canonical executable or known official CLI package runtime, needed Node/Bun executable, and existing per-provider local auth/config files (file metadata only, never read/copy credentials). No broad home/project/Git runtime grants or inherited API keys. Calls sandbox.prepare with exact logical argv then execute([wrapper.command,...wrapper.args],{...input,cwd:wrapper.cwd,env:wrapper.env}); awaits execution then cleanup exactly once on success, failure or cancellation. Resource admission remains in execute outside sandbox."
+				"description": "Requires scope, derives readonly provider/runtime paths separately without mutating input. Resolves provider executable from PATH; permits only canonical executable or known official CLI package runtime, needed Node/Bun executable, and existing per-provider local auth/config files (file metadata only, never read/copy credentials). No broad home/project/Git runtime grants or inherited API keys. Calls sandbox.prepare with exact logical argv then execute([wrapper.command,...wrapper.args],{...input,cwd:wrapper.cwd,env:wrapper.env}); awaits execution then cleanup exactly once on success, failure or cancellation. Resource admission remains in execute outside sandbox. Discovers provider-specific read-only configuration and passes exact Codex rules directory listing plus individual rules files to sandbox.prepare."
 			}
 		],
 		"errors": [

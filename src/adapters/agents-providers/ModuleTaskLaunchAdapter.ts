@@ -1,7 +1,7 @@
 import { constants } from 'node:fs';
 import { access, realpath, stat } from 'node:fs/promises';
-import { homedir } from 'node:os';
-import { basename, delimiter, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { basename, delimiter, extname, isAbsolute, join, sep } from 'node:path';
+import { ModuleTaskProviderConfigAdapter } from './ModuleTaskProviderConfigAdapter';
 import type { TaskProcessResult } from './ModuleTaskRunnerAdapter.types';
 import type {
 	ModuleTaskLaunchAdapterConfig,
@@ -50,12 +50,14 @@ async function runProvider(
 		if (contextPaths.some((path) => !isAbsolute(path)))
 			throw new Error('Context paths must be absolute.');
 		const readPaths = await providerReadPaths(input.provider, argv[0], scope.binDirectory);
+		const providerConfig = await new ModuleTaskProviderConfigAdapter().paths(input.provider);
 		process = await sandbox.prepare({
 			cwd: input.cwd,
 			files: [...scope.files],
 			snapshot: scope.snapshot,
 			scratch: scope.scratch,
-			readPaths: [...new Set([...scope.readPaths, ...readPaths])],
+			readPaths: [...new Set([...scope.readPaths, ...readPaths, ...providerConfig.readPaths])],
+			exactReadDirectories: providerConfig.exactReadDirectories,
 			protectedPaths: [...scope.protectedPaths],
 			argv: [...argv],
 			...(scope.binDirectory ? { binDirectory: scope.binDirectory } : {})
@@ -97,7 +99,6 @@ async function providerReadPaths(
 		paths.push(...runtimes.filter((path): path is string => path !== undefined));
 		if (!runtimes.some(Boolean)) throw new Error('Provider runtime is unavailable.');
 	}
-	paths.push(...(await authConfigPaths(provider)));
 	return [...new Set(paths)];
 }
 
@@ -142,38 +143,6 @@ async function officialPackageRoot(
 	return info.isDirectory() ? canonical : undefined;
 }
 
-async function authConfigPaths(provider: ModuleTaskLaunchProvider): Promise<string[]> {
-	const home = await realpath(homedir()).catch(() => undefined);
-	if (!home) return [];
-	const rootEnv = provider === 'claude' ? process.env.CLAUDE_CONFIG_DIR : process.env.CODEX_HOME;
-	const defaultRoot = provider === 'claude' ? join(home, '.claude') : join(home, '.codex');
-	const root = rootEnv && isAbsolute(rootEnv) ? resolve(rootEnv) : defaultRoot;
-	const names =
-		provider === 'claude' ? ['.credentials.json', 'settings.json'] : ['auth.json', 'config.toml'];
-	const paths = (
-		await Promise.all(names.map((name) => existingConfig(join(root, name), root, name)))
-	).filter((file): file is string => Boolean(file));
-	if (provider !== 'claude') return paths;
-	const state = await existingConfig(join(home, '.claude.json'), home, '.claude.json');
-	return state ? [...paths, state] : paths;
-}
-
-async function existingConfig(
-	file: string,
-	root: string,
-	name: string
-): Promise<string | undefined> {
-	try {
-		const [canonical, canonicalRoot] = await Promise.all([realpath(file), realpath(root)]);
-		const info = await stat(canonical);
-		return info.isFile() && basename(canonical) === name && within(canonical, canonicalRoot)
-			? canonical
-			: undefined;
-	} catch {
-		return undefined;
-	}
-}
-
 function prelaunchFailure(): Error {
 	return Object.assign(new Error(PRELAUNCH_MESSAGE), {
 		quotaRejected: false,
@@ -183,14 +152,6 @@ function prelaunchFailure(): Error {
 			nextAction: 'Verify the provider CLI and trusted runtime, then retry.'
 		}
 	});
-}
-
-function within(path: string, root: string): boolean {
-	const relativePath = relative(root, path);
-	return (
-		relativePath === '' ||
-		(relativePath !== '..' && !relativePath.startsWith(`..${sep}`) && !isAbsolute(relativePath))
-	);
 }
 
 export type { ModuleTaskLaunchAdapterConfig } from './ModuleTaskLaunchAdapter.types';
