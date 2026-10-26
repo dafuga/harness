@@ -1,0 +1,22 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ULzDnR/packages/reports
+
+ ✓ test/utils/harness-shell.test.ts (9 tests) 8ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  09:46:20
+   Duration  340ms (transform 126ms, setup 81ms, collect 117ms, tests 8ms, environment 0ms, prepare 29ms)
+
