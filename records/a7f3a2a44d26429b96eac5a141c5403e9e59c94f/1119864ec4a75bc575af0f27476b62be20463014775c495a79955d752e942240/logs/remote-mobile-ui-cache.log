@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+  ✓  1 tests/e2e/ui-remote-cache.spec.ts:24:1 › a phone opened while its computer is away shows saved copies, dated and read-only (466ms)
+  ✓  2 tests/e2e/ui-remote-cache.spec.ts:51:1 › what was never read is not invented, and no change is offered from a saved copy (420ms)
+
+  2 passed (1.5s)
+(node:38941) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE/packages/desktop
+
+ ✓ test/test-preview-refusal.test.ts (2 tests) 958ms
+   ✓ a server that already answers on the preview port is refused, and no test is run on it  486ms
+   ✓ a port override that is no port is refused by its name before anything starts  472ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  00:44:46
+   Duration  1.22s (transform 20ms, setup 0ms, collect 17ms, tests 958ms, environment 0ms, prepare 48ms)
+

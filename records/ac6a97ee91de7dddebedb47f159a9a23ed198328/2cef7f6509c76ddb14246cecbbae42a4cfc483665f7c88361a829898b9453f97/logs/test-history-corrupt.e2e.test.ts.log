@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-55pSB0
+
+ ✓ test/history-corrupt.e2e.test.ts (3 tests) 20658ms
+   ✓ a malformed note line is reported and the valid lines beside it still count  2483ms
+   ✓ missing evidence, a changed manifest and tampered media are never trusted  6420ms
+   ✓ inherited evidence is validated through to the record that produced it  7960ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  15:00:08
+   Duration  20.93s (transform 39ms, setup 12ms, collect 38ms, tests 20.66s, environment 0ms, prepare 42ms)
+

@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rBWHPX/packages/desktop
+
+ ✓ test/remote-host-reenable-races.test.ts (2 tests) 2287ms
+   ✓ turning off while a host that was on registers again leaves it off  1051ms
+   ✓ quitting while a host that was on registers again starts nothing and stores nothing  1236ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  21:23:13
+   Duration  2.94s (transform 336ms, setup 0ms, collect 522ms, tests 2.29s, environment 0ms, prepare 25ms)
+

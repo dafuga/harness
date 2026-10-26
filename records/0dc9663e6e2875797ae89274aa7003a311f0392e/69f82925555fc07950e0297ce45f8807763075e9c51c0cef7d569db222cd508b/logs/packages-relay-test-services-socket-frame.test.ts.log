@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ljai0H/packages/relay
+
+ ✓ test/services/socket-frame.test.ts (7 tests) 4514ms
+   ✓ a device frame that is not JSON, not a packet or not for a device to send closes with 4400  2643ms
+   ✓ a device that floods the relay is closed with 4429  1059ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  00:43:28
+   Duration  4.98s (transform 81ms, setup 0ms, collect 273ms, tests 4.51s, environment 0ms, prepare 35ms)
+

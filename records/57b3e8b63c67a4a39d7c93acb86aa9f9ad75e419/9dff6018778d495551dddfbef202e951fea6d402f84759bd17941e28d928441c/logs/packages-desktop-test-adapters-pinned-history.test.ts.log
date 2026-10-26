@@ -1,0 +1,19 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-ElRlB1/packages/desktop[39m
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ [32m✓[39m test/adapters/pinned-history.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 5290[2mms[22m[39m
+   [33m[2m✓[22m[39m a commit without a note is built from Git alone, and nothing is written for it [33m 2116[2mms[22m[39m
+   [33m[2m✓[22m[39m a note is read at the revision it is pinned to, never at where the ref is now [33m 1520[2mms[22m[39m
+   [33m[2m✓[22m[39m one commit is built once for the revisions it is pinned to [33m 1653[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 20:33:19
+[2m   Duration [22m 6.18s[2m (transform 409ms, setup 0ms, collect 673ms, tests 5.29s, environment 0ms, prepare 45ms)[22m
+

@@ -1,0 +1,139 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [11.10s]
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-X543sP/packages/reports
+
+ ✓ test/utils/entity-screens.test.ts (12 tests) 9ms
+ ❯ test/utils/explorer-category.test.ts (13 tests | 8 failed) 92ms
+   × compatibility details routes are nonvisual: pages 6ms
+     → compatibility routes are nonvisual: expected 'pages' to be 'services' // Object.is equality
+   × compatibility details routes are nonvisual: shells 0ms
+     → compatibility routes are nonvisual: expected 'pages' to be 'services' // Object.is equality
+   × compatibility details routes are nonvisual: components 0ms
+     → compatibility routes are nonvisual: expected 'pages' to be 'services' // Object.is equality
+   × compatibility details routes are nonvisual: functions 0ms
+     → compatibility routes are nonvisual: expected 'pages' to be 'services' // Object.is equality
+   × compatibility details routes are nonvisual: configs 0ms
+     → compatibility routes are nonvisual: expected 'pages' to be 'services' // Object.is equality
+   × compatibility details routes are nonvisual: services 0ms
+     → compatibility routes are nonvisual: expected 'pages' to be 'services' // Object.is equality
+   × compatibility details routes are nonvisual: models 0ms
+     → compatibility routes are nonvisual: expected 'pages' to be 'services' // Object.is equality
+   ✓ a unit of a product kind is listed under the category of that kind 0ms
+   ✓ a page is what renders an address, whatever kind it was registered as 0ms
+   ✓ what is not one of the five product kinds has no category and says what it is 1ms
+   ✓ a unit inside a category says its role in a word a reader knows 0ms
+   × the policy holds for Harness's own registry 80ms
+     → expected [ 'desktop.page.harness-path', …(37) ] to deeply equal [ 'desktop.page.harness-path', …(30) ]
+   ✓ only explicitly pure functions with distinct runtime consumers are helpers 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-category.test.ts > compatibility details routes are nonvisual: pages
+ FAIL  test/utils/explorer-category.test.ts > compatibility details routes are nonvisual: shells
+ FAIL  test/utils/explorer-category.test.ts > compatibility details routes are nonvisual: components
+ FAIL  test/utils/explorer-category.test.ts > compatibility details routes are nonvisual: functions
+ FAIL  test/utils/explorer-category.test.ts > compatibility details routes are nonvisual: configs
+ FAIL  test/utils/explorer-category.test.ts > compatibility details routes are nonvisual: services
+ FAIL  test/utils/explorer-category.test.ts > compatibility details routes are nonvisual: models
+AssertionError: compatibility routes are nonvisual: expected 'pages' to be 'services' // Object.is equality
+
+Expected: [32m"[7mservic[27mes"[39m
+Received: [31m"[7mpag[27mes"[39m
+
+ ❯ test/utils/explorer-category.test.ts:15:72
+     13|  const path = `packages/reports/src/routes/harness/branch/[branch]/[..…
+     14|  const alias = owning(`page.${category}.details`, 'page', [path]);
+     15|  expect(explorerCategory(alias), 'compatibility routes are nonvisual')…
+       |                                                                        ^
+     16|  expect(explorerRole(alias)).toBe('Route alias');
+     17|  expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/utils/explorer-category.test.ts > the policy holds for Harness's own registry
+AssertionError: expected [ 'desktop.page.harness-path', …(37) ] to deeply equal [ 'desktop.page.harness-path', …(30) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -8,26 +8,33 @@[39m
+[2m    "hub.page.projects-project-id-harness-path",[22m
+[2m    "hub.page.projects-project-id-members",[22m
+[2m    "hub.page.root",[22m
+[2m    "reports.page.harness-branch-branch-at-components",[22m
+[2m    "reports.page.harness-branch-branch-at-components-entity",[22m
+[31m+   "reports.page.harness-branch-branch-at-components-entity-details",[39m
+[2m    "reports.page.harness-branch-branch-at-components-entity-history",[22m
+[2m    "reports.page.harness-branch-branch-at-configs",[22m
+[2m    "reports.page.harness-branch-branch-at-configs-entity",[22m
+[31m+   "reports.page.harness-branch-branch-at-configs-entity-details",[39m
+[2m    "reports.page.harness-branch-branch-at-configs-entity-history",[22m
+[2m    "reports.page.harness-branch-branch-at-functions",[22m
+[2m    "reports.page.harness-branch-branch-at-functions-entity",[22m
+[31m+   "reports.page.harness-branch-branch-at-functions-entity-details",[39m
+[2m    "reports.page.harness-branch-branch-at-functions-entity-history",[22m
+[2m    "reports.page.harness-branch-branch-at-models",[22m
+[2m    "reports.page.harness-branch-branch-at-models-entity",[22m
+[31m+   "reports.page.harness-branch-branch-at-models-entity-details",[39m
+[2m    "reports.page.harness-branch-branch-at-models-entity-history",[22m
+[2m    "reports.page.harness-branch-branch-at-pages",[22m
+[2m    "reports.page.harness-branch-branch-at-pages-entity",[22m
+[31m+   "reports.page.harness-branch-branch-at-pages-entity-details",[39m
+[2m    "reports.page.harness-branch-branch-at-pages-entity-history",[22m
+[2m    "reports.page.harness-branch-branch-at-services",[22m
+[2m    "reports.page.harness-branch-branch-at-services-entity",[22m
+[31m+   "reports.page.harness-branch-branch-at-services-entity-details",[39m
+[2m    "reports.page.harness-branch-branch-at-services-entity-history",[22m
+[2m    "reports.page.harness-branch-branch-at-shells",[22m
+[2m    "reports.page.harness-branch-branch-at-shells-entity",[22m
+[31m+   "reports.page.harness-branch-branch-at-shells-entity-details",[39m
+[2m    "reports.page.harness-branch-branch-at-shells-entity-history",[22m
+[2m    "reports.page.harness-view",[22m
+[2m  ][22m
+
+ ❯ test/utils/explorer-category.test.ts:110:4
+    108|    .map((item) => item.id)
+    109|    .sort()
+    110|  ).toEqual(rendering.map((item) => item.id).sort());
+       |    ^
+    111|  expect(listed('pages').map((item) => item.id)).toContain('reports.pag…
+    112|  expect(listed('pages').map((item) => item.id)).not.toContain('reports…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  8 failed | 17 passed (25)
+   Start at  20:35:03
+   Duration  731ms (transform 108ms, setup 0ms, collect 158ms, tests 102ms, environment 0ms, prepare 72ms)
+

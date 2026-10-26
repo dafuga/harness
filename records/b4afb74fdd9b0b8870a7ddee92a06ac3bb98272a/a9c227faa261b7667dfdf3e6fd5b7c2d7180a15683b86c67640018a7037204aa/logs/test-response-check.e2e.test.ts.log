@@ -1,0 +1,31 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/response-check.e2e.test.ts [2m([22m[2m21 tests[22m[2m)[22m[33m 10226[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI reports all standard and custom judgments without raw input [33m 416[2mms[22m[39m
+   [33m[2m✓[22m[39m gate rejects violates while advisory completes [33m 832[2mms[22m[39m
+   [33m[2m✓[22m[39m gate rejects uncertain while advisory completes [33m 818[2mms[22m[39m
+   [33m[2m✓[22m[39m dry run is offline and describes coverage [33m 408[2mms[22m[39m
+   [33m[2m✓[22m[39m provider authentication failure is incomplete and sanitized [33m 405[2mms[22m[39m
+   [33m[2m✓[22m[39m guide documents strict gating [33m 384[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI returns incomplete for missing request [33m 409[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI returns incomplete for invalid threshold [33m 402[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI returns incomplete for invalid model [33m 403[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI returns incomplete for missing credential [33m 415[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI rejects malformed criteria [33m 417[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI rejects malformed criteria [33m 402[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI rejects malformed criteria [33m 411[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI rejects empty or oversized request without an API call [33m 408[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI rejects empty or oversized request without an API call [33m 402[2mms[22m[39m
+   [33m[2m✓[22m[39m CLI rejects empty or oversized request without an API call [33m 409[2mms[22m[39m
+   [33m[2m✓[22m[39m combined serialized size is bounded and invalid UTF-8 is rejected [33m 830[2mms[22m[39m
+   [33m[2m✓[22m[39m empty answer has a deterministic failure in gate mode without an API call [33m 408[2mms[22m[39m
+   [33m[2m✓[22m[39m existing command-based loops reject uncertain response checks [33m 829[2mms[22m[39m
+   [33m[2m✓[22m[39m provider malformed response is incomplete and sanitized [33m 406[2mms[22m[39m
+   [33m[2m✓[22m[39m provider wrong-model response is incomplete and sanitized [33m 410[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m21 passed[39m[22m[90m (21)[39m
+[2m   Start at [22m 16:10:55
+[2m   Duration [22m 10.55s[2m (transform 62ms, setup 24ms, collect 40ms, tests 10.23s, environment 0ms, prepare 83ms)[22m
+

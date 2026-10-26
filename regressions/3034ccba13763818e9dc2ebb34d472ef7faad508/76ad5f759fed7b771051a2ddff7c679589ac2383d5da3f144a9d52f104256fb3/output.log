@@ -1,0 +1,45 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-LyJLFr
+
+ ❯ test/shared-workspace-registry.test.ts (6 tests | 1 failed) 13462ms
+   ✓ cataloged application configs keep their implementation and entries under configs 1ms
+   ✓ the source index resolves what the Web workspace imports of the shared workspace 1ms
+   ✓ the registry names the Web workspace beside the Electron and iOS one as a consumer of the shell  7262ms
+   ✓ a change of the shared shell reaches the Web workspace and its page, and the Electron and iOS one 40ms
+   ✓ declaring those imports changes them alone: no other reference or uncertainty moves  501ms
+   × every active visual module has its own required capture state 8ms
+     → expected [ …(252) ] to deeply equal [ …(253) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/shared-workspace-registry.test.ts > every active visual module has its own required capture state
+AssertionError: expected [ …(252) ] to deeply equal [ …(253) ]
+
+- Expected
++ Received
+
+@@ -249,7 +249,6 @@
+    "reports.page.harness-branch-branch-at-styles",
+    "reports.page.harness-branch-branch-at-translations",
+    "reports.page.harness-branch-branch-at-types",
+    "reports.page.harness-branch-branch-at-types-entity",
+    "reports.page.harness-branch-branch-at-types-entity-history",
+-   "reports.page.harness-view",
+  ]
+
+ ❯ test/shared-workspace-registry.test.ts:172:40
+    170|   .map((unit) => unit.id)
+    171|   .sort();
+    172|  expect(catalog?.units.slice().sort()).toEqual(visual);
+       |                                        ^
+    173|  for (const id of visual) {
+    174|   const states = catalog!.states.filter((state) => state.units?.includ…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  16:57:34
+   Duration  17.02s (transform 338ms, setup 103ms, collect 639ms, tests 13.46s, environment 0ms, prepare 36ms)
+

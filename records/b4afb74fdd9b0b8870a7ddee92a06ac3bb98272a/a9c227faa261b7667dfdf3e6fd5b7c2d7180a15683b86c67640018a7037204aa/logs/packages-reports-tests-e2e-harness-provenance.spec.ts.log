@@ -1,0 +1,23 @@
+[WebServer] 57707 |     "use strict";
+[WebServer] 57708 |     init_rtti();
+[WebServer] 57709 |     init_serializers();
+[WebServer] 57710 |     PlaywrightError = class extends Error {
+[WebServer] 57711 |       constructor() {
+[WebServer] 57712 |         super(...arguments);
+[WebServer]                 ^
+[WebServer] error: launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell
+[WebServer] ╔════════════════════════════════════════════════════════════╗
+[WebServer] ║ Looks like Playwright was just installed or updated.       ║
+[WebServer] ║ Please run the following command to download new browsers: ║
+[WebServer] ║                                                            ║
+[WebServer] ║     npx playwright install                                 ║
+[WebServer] ║                                                            ║
+[WebServer] ║ <3 Playwright Team                                         ║
+[WebServer] ╚════════════════════════════════════════════════════════════╝
+[WebServer]   log: [],
+[WebServer] 
+[WebServer]       at /tmp/harness-snapshot-iUpwmz/node_modules/playwright-core/lib/coreBundle.js:57712:9
+[WebServer] 
+[WebServer] Bun v1.2.18 (Linux x64)
+Error: Process from config.webServer was not able to start. Exit code: 1
+

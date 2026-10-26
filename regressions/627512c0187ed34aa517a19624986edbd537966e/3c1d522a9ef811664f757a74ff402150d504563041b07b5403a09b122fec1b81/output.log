@@ -1,0 +1,88 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9Q5i2M
+
+stderr | test/utils/stable-json.test.ts > stableJson: Match the project Prettier style across escaped text and width boundaries
+AssertionError: generated JSON must match project Prettier style: expected '{\n\t"emptyObjects": [\n\t\t{}\n\t],\…' to be '{\n\t"emptyObjects": [{}],\n\t"emptyA…' // Object.is equality
+    at assertPrettierStyle (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9Q5i2M/test/utils/stable-json.test.ts:78:81)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at invokeStableJson (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9Q5i2M/test/utils/stable-json.test.ts:118:4)
+    at TestExpectationService.example (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9Q5i2M/src/services/verification-evidence/TestExpectationService.ts:82:13)
+    at PerformanceProfileService.observeAsync (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9Q5i2M/src/services/verification-evidence/PerformanceProfileService.ts:69:18)
+    at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9Q5i2M/src/services/verification-evidence/TestExpectationService.ts:60:6
+    at file:///Users/danielfugere/.codex/worktrees/contract-test-policy/harness/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20 {
+  actual: '{\n' +
+    '\t"emptyObjects": [\n' +
+    '\t\t{}\n' +
+    '\t],\n' +
+    '\t"emptyArrays": [\n' +
+    '\t\t[]\n' +
+    '\t],\n' +
+    '\t"pairs": [\n' +
+    '\t\t["a", 1]\n' +
+    '\t],\n' +
+    '\t"mixed": [\n' +
+    '\t\t{},\n' +
+    '\t\t[],\n' +
+    '\t\tnull\n' +
+    '\t]\n' +
+    '}\n',
+  expected: '{\n' +
+    '\t"emptyObjects": [{}],\n' +
+    '\t"emptyArrays": [[]],\n' +
+    '\t"pairs": [["a", 1]],\n' +
+    '\t"mixed": [{}, [], null]\n' +
+    '}\n',
+  showDiff: true,
+  operator: 'strictEqual'
+}
+
+ ❯ test/utils/stable-json.test.ts (12 tests | 1 failed) 23ms
+   × stableJson: Match the project Prettier style across escaped text and width boundaries 20ms
+     → Example unexpectedly failed
+
+true !== false
+
+   ✓ stableJson: Preserve object order and a trailing newline 0ms
+   ✓ stableJson: Render an empty array 0ms
+   ✓ stableJson: Render an empty object 0ms
+   ✓ stableJson: Render a null primitive 0ms
+   ✓ stableJson: Render a string primitive 0ms
+   ✓ stableJson: Render top-level undefined as null 0ms
+   ✓ stableJson: Omit undefined object fields and write array items as null 0ms
+   ✓ stableJson: Read an enumerable getter through its current value 0ms
+   ✓ stableJson: Read own keys while preserving a prototype and iterator 0ms
+   ✓ stableJson: Propagate an enumerable getter error 0ms
+   ✓ stableJson: Reject a BigInt input because JSON cannot carry it 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/stable-json.test.ts > stableJson: Match the project Prettier style across escaped text and width boundaries
+AssertionError: Example unexpectedly failed
+
+true !== false
+
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:98:4
+     96|    deepStrictEqual(Object.hasOwn(observation, 'error'), false, 'Exampl…
+     97|    deepStrictEqual(
+     98|     observation.output,
+       |    ^
+     99|     example.output,
+    100|     'Example output differs from its comment'
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ src/services/verification-evidence/TestExpectationService.ts:60:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  00:02:45
+   Duration  2.65s (transform 84ms, setup 101ms, collect 44ms, tests 23ms, environment 0ms, prepare 22ms)
+

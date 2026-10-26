@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-XCd8Pd
+
+ ✓ test/api-registry.e2e.test.ts (4 tests) 1683ms
+   ✓ API CLI lists every registered local unit, including backend entries outside the catalog  437ms
+   ✓ API CLI lists every registered hosted unit, including backend entries outside the catalog  415ms
+   ✓ API CLI reads local backend contracts without relying on a visual catalog entry  423ms
+   ✓ API CLI reads hosted backend contracts without relying on a visual catalog entry  406ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  19:14:44
+   Duration  4.23s (transform 56ms, setup 68ms, collect 32ms, tests 1.68s, environment 0ms, prepare 34ms)
+

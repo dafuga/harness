@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "planning.function.plan-git",
+	"symbol": "planGit",
+	"cases": [
+		{
+			"name": "planGit of a sha1 repository",
+			"input": {
+				"format": "sha1"
+			},
+			"output": {
+				"objectFormat": "sha1"
+			}
+		},
+		{
+			"name": "planGit of a sha256 repository",
+			"input": {
+				"format": "sha256"
+			},
+			"output": {
+				"objectFormat": "sha256"
+			}
+		}
+	]
+}

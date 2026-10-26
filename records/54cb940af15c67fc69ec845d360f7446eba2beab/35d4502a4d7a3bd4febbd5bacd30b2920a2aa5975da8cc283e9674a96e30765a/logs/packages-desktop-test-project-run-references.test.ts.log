@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pL90hZ/packages/desktop
+
+ ✓ test/project-run-references.test.ts (3 tests) 5507ms
+   ✓ a pages request is asked with a registered function it names, and its checked notes are said  3309ms
+   ✓ an answer in plain words is said before the run is refused as no proposal  1061ms
+   ✓ a broken or fenced JSON answer is never said  1137ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  00:00:25
+   Duration  5.86s (transform 125ms, setup 0ms, collect 202ms, tests 5.51s, environment 0ms, prepare 23ms)
+

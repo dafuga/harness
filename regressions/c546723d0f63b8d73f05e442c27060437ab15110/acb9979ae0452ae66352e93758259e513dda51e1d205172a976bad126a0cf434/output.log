@@ -1,0 +1,26 @@
+
+
+Running 16 tests using 1 worker
+
+(node:16359) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview-groups.spec.ts:83:2 › private dependencies reuse module cards at desktop width (1.1s)
+  ✓   2 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at desktop (3.2s)
+  ✓   3 test/entity-preview-groups.spec.ts:83:2 › private dependencies reuse module cards at tablet width (804ms)
+  ✓   4 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at tablet (3.0s)
+  ✓   5 test/entity-preview-groups.spec.ts:83:2 › private dependencies reuse module cards at mobile width (840ms)
+  ✓   6 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at mobile (2.8s)
+  ✓   7 test/entity-preview-groups.spec.ts:133:2 › source lists category implementation files only at desktop (1.5s)
+  ✓   8 test/entity-preview-groups.spec.ts:133:2 › source lists category implementation files only at tablet (1.6s)
+  ✓   9 test/entity-preview-groups.spec.ts:133:2 › source lists category implementation files only at mobile (1.4s)
+  ✓  10 test/entity-preview-words.spec.ts:29:2 › a long word in a narrow column of a collection stays whole (fitting) (230ms)
+  ✓  11 test/entity-preview-words.spec.ts:29:2 › a long word in a narrow column of a collection stays whole (scrolling) (246ms)
+  ✓  12 test/entity-preview-words.spec.ts:49:1 › a long word in a row of a history stays whole too (137ms)
+  ✓  13 test/entity-preview-words.spec.ts:65:1 › the details of a declared contract say what each item is, and fit a phone (551ms)
+  ✓  14 test/entity-preview-words.spec.ts:181:2 › contract has its own typed example view at desktop width (7.2s)
+  ✓  15 test/entity-preview-words.spec.ts:181:2 › contract has its own typed example view at tablet width (7.1s)
+  ✓  16 test/entity-preview-words.spec.ts:181:2 › contract has its own typed example view at mobile width (7.4s)
+
+  16 passed (42.4s)
+
+

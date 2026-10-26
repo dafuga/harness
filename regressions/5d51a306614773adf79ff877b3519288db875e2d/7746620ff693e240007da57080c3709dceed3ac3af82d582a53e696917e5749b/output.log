@@ -1,0 +1,43 @@
+
+Running 3 tests using 3 workers
+
+(node:47815) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:47817) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:47816) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.networking-security-explorer-permissions-screen at mobile (372ms)
+  ✓  1 tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.networking-security-explorer-permissions-screen at tablet (397ms)
+  ✓  3 tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.networking-security-explorer-permissions-screen at desktop (704ms)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.networking-security-explorer-permissions-screen at mobile 
+
+    Error: Data identifiers remain unbroken
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: 3
+
+      105 | 					}),
+      106 | 					'Data identifiers remain unbroken'
+    > 107 | 				).toBe(1);
+          | 				  ^
+      108 | 				expect(
+      109 | 					await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+      110 | 					'Permission tables stay inside the document'
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9omGsz/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:107:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-62241-ermissions-screen-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-62241-ermissions-screen-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-62241-ermissions-screen-at-mobile/error-context.md
+
+  1 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.networking-security-explorer-permissions-screen at mobile 
+  2 passed (10.5s)

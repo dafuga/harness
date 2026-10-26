@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2
+
+ ✓ test/packaged-reports.e2e.test.ts (3 tests) 10222ms
+   ✓ packed installation serves and finalizes media without a source checkout  4930ms
+   ✓ the server a test starts is stopped when the test is done with it, passed or failed  2297ms
+   ✓ the fixture and the environment of the run are gone with it  1077ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  11:34:51
+   Duration  10.48s (transform 28ms, setup 13ms, collect 24ms, tests 10.22s, environment 0ms, prepare 33ms)
+

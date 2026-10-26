@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RKAYsZ
+
+ ✓ test/measure-dependencies.e2e.test.ts (2 tests) 16357ms
+   ✓ a count of dependencies says what it could not read, and a complete count stays plain  354ms
+   ✓ the baseline and the gate treat a count of dependencies by what was read  9019ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  06:24:41
+   Duration  16.91s (transform 58ms, setup 20ms, collect 54ms, tests 16.36s, environment 0ms, prepare 70ms)
+

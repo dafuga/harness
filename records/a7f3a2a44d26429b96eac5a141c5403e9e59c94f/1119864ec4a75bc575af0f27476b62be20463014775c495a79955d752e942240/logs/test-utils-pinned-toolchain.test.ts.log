@@ -1,0 +1,11 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE
+
+ ✓ test/utils/pinned-toolchain.test.ts (8 tests) 740ms
+   ✓ on this machine cargo and the rustc it finds are those of the pin, whatever PATH has first  311ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  02:41:57
+   Duration  1.16s (transform 35ms, setup 16ms, collect 108ms, tests 740ms, environment 0ms, prepare 51ms)
+

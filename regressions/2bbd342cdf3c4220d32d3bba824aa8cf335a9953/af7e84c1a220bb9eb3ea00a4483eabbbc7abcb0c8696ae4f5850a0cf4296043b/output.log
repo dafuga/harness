@@ -1,0 +1,96 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [143.00ms]
+
+Running 3 tests using 1 worker
+
+(node:81316) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at desktop (1.3s)
+(node:81761) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at tablet (1.3s)
+(node:82164) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at mobile (1.3s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at desktop 
+
+    Error: The loaded preview document does not belong to reports.page.harness-branch-branch-at-pages
+
+       at support/component-previews/previewNavigation.ts:21
+
+      19 | 		navigation.document.timeOrigin !== navigation.timeOrigin
+      20 | 	)
+    > 21 | 		throw new Error(`The loaded preview document does not belong to ${unit}`);
+         | 		      ^
+      22 | 	if (!navigation || !(navigation.duration > 0))
+      23 | 		throw new Error('Missing preview navigation timing');
+      24 | 	const session = await page.context().newCDPSession(page);
+        at previewNavigation (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mLLdbB/packages/reports/tests/e2e/support/component-previews/previewNavigation.ts:21:9)
+        at capturePreview (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mLLdbB/packages/reports/tests/e2e/support/component-previews/previewPage.ts:118:27)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mLLdbB/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:37:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/catalog/explorer-shell-component-c-128c8--branch-at-pages-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/catalog/explorer-shell-component-c-128c8--branch-at-pages-at-desktop/error-context.md
+
+    Error Context: test-results/catalog/explorer-shell-component-c-128c8--branch-at-pages-at-desktop/error-context.md
+
+  2) tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at tablet 
+
+    Error: The loaded preview document does not belong to reports.page.harness-branch-branch-at-pages
+
+       at support/component-previews/previewNavigation.ts:21
+
+      19 | 		navigation.document.timeOrigin !== navigation.timeOrigin
+      20 | 	)
+    > 21 | 		throw new Error(`The loaded preview document does not belong to ${unit}`);
+         | 		      ^
+      22 | 	if (!navigation || !(navigation.duration > 0))
+      23 | 		throw new Error('Missing preview navigation timing');
+      24 | 	const session = await page.context().newCDPSession(page);
+        at previewNavigation (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mLLdbB/packages/reports/tests/e2e/support/component-previews/previewNavigation.ts:21:9)
+        at capturePreview (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mLLdbB/packages/reports/tests/e2e/support/component-previews/previewPage.ts:118:27)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mLLdbB/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:37:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/catalog/explorer-shell-component-c-1860f-h-branch-at-pages-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/catalog/explorer-shell-component-c-1860f-h-branch-at-pages-at-tablet/error-context.md
+
+    Error Context: test-results/catalog/explorer-shell-component-c-1860f-h-branch-at-pages-at-tablet/error-context.md
+
+  3) tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at mobile 
+
+    Error: The loaded preview document does not belong to reports.page.harness-branch-branch-at-pages
+
+       at support/component-previews/previewNavigation.ts:21
+
+      19 | 		navigation.document.timeOrigin !== navigation.timeOrigin
+      20 | 	)
+    > 21 | 		throw new Error(`The loaded preview document does not belong to ${unit}`);
+         | 		      ^
+      22 | 	if (!navigation || !(navigation.duration > 0))
+      23 | 		throw new Error('Missing preview navigation timing');
+      24 | 	const session = await page.context().newCDPSession(page);
+        at previewNavigation (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mLLdbB/packages/reports/tests/e2e/support/component-previews/previewNavigation.ts:21:9)
+        at capturePreview (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mLLdbB/packages/reports/tests/e2e/support/component-previews/previewPage.ts:118:27)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mLLdbB/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:37:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/catalog/explorer-shell-component-c-119f4-h-branch-at-pages-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/catalog/explorer-shell-component-c-119f4-h-branch-at-pages-at-mobile/error-context.md
+
+    Error Context: test-results/catalog/explorer-shell-component-c-119f4-h-branch-at-pages-at-mobile/error-context.md
+
+  3 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at mobile 

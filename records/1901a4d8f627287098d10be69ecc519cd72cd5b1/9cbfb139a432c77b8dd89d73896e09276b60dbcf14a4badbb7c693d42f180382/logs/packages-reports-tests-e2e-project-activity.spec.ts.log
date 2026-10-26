@@ -1,0 +1,10 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 tests/e2e/project-activity.spec.ts:27:1 › the analytics page is gone: its addresses lead into the explorer (766ms)
+  ✓  2 tests/e2e/project-activity.spec.ts:37:1 › the activity names the hosting repository and who is working in it on what (283ms)
+  ✓  3 tests/e2e/project-activity.spec.ts:66:1 › loop types, recent work and changed files are those of the repository (122ms)
+  ✓  4 tests/e2e/project-activity.spec.ts:101:1 › a history keeps the activity recorded with it, without live agents or uncommitted work (480ms)
+  ✓  5 tests/e2e/project-activity.spec.ts:122:1 › activity is served to the owner only and for this repository only, whatever the address asks (297ms)
+
+  5 passed (3.1m)

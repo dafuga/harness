@@ -1,0 +1,25 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QxpBHp
+
+ ✓ test/loop.e2e.test.ts (7 tests | 6 skipped) 2081ms
+   ✓ feature completion rejects an unsupported free-text verification claim  2080ms
+ ✓ test/verify-measures.e2e.test.ts (3 tests | 2 skipped) 7138ms
+   ✓ task verification rejects missing profiling even without performance budgets  1855ms
+
+ Test Files  2 passed (2)
+      Tests  2 passed | 8 skipped (10)
+   Start at  17:27:25
+   Duration  12.40s (transform 278ms, setup 11ms, collect 675ms, tests 9.22s, environment 0ms, prepare 53ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QxpBHp/packages/desktop
+
+ ✓ test/run-integration.test.ts (9 tests | 7 skipped) 6441ms
+   ✓ approval alone never runs and Change records untracked and previously dirty source deltas  4658ms
+   ✓ Plan rejects an incomplete proposal before generating or saving designs  1782ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed | 7 skipped (9)
+   Start at  17:27:38
+   Duration  7.80s (transform 593ms, setup 0ms, collect 1.20s, tests 6.44s, environment 0ms, prepare 28ms)
+

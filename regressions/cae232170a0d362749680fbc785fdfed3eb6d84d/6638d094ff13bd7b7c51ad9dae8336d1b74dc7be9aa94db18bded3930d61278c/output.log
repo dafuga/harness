@@ -1,0 +1,14 @@
+
+Running 3 tests using 3 workers
+
+(node:48661) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:48659) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:48660) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.networking-security-explorer-permissions-screen at tablet (404ms)
+  ✓  3 tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.networking-security-explorer-permissions-screen at mobile (536ms)
+  ✓  1 tests/e2e/explorer-shell-component-catalog.spec.ts:90:3 › reports.component.networking-security-explorer-permissions-screen at desktop (684ms)
+
+  3 passed (10.5s)

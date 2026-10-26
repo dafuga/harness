@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zWcthd
+
+ ✓ test/kernel.e2e.test.ts (3 tests) 5100ms
+   ✓ kernel parity compares the reference with the built Wasm and native runtimes  419ms
+   ✓ kernel bench measures identical workloads fairly and records unavailable values honestly  4514ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  11:21:32
+   Duration  5.35s (transform 29ms, setup 10ms, collect 52ms, tests 5.10s, environment 0ms, prepare 36ms)
+

@@ -1,0 +1,52 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-WwzQbn
+
+ ❯ test/project-template.test.ts (5 tests | 2 failed) 1911ms
+   ✓ generated element atoms preserve native compilation and emitted runtime source 189ms
+   ✓ app projects include SvelteKit and specification files 4ms
+   ✓ library projects include Bun TypeScript test structure 1ms
+   × generated app code and testing foundations obey their formatter and lint settings 1210ms
+     → Generated testing foundations satisfy their project lint rules: expected [ { …(3) }, { …(3) } ] to deeply equal []
+   × generated lib code and testing foundations obey their formatter and lint settings 503ms
+     → Generated testing foundations satisfy their project lint rules: expected [ { …(3) }, { …(3) } ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-template.test.ts > generated app code and testing foundations obey their formatter and lint settings
+ FAIL  test/project-template.test.ts > generated lib code and testing foundations obey their formatter and lint settings
+AssertionError: Generated testing foundations satisfy their project lint rules: expected [ { …(3) }, { …(3) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "file": "src/configs/playwright/browserPlaywrightConfig.ts",
++     "message": "'process' is not defined.",
++     "rule": "no-undef",
++   },
++   {
++     "file": "src/configs/headless-audio/audioPlaywrightConfig.ts",
++     "message": "'process' is not defined.",
++     "rule": "no-undef",
++   },
++ ]
+
+ ❯ assertFoundationLint test/support/project-template/foundations.ts:42:5
+     40|    ),
+     41|    'Generated testing foundations satisfy their project lint rules'
+     42|   ).toEqual([]);
+       |     ^
+     43|  } finally {
+     44|   await rm(root, { recursive: true, force: true });
+ ❯ test/project-template.test.ts:112:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 3 passed (5)
+   Start at  01:59:17
+   Duration  4.95s (transform 158ms, setup 91ms, collect 444ms, tests 1.91s, environment 0ms, prepare 24ms)
+

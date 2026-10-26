@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PkpOjJ/packages/desktop
+
+ ✓ test/design-options-creation.test.ts (4 tests) 16602ms
+   ✓ a new visual plan is made as three separately directed options in one version  4999ms
+   ✓ a new visual plan asked for two options from a headless catalog makes two  4901ms
+   ✓ a new headless plan makes no image whatever count it is given  3768ms
+   ✓ a failed option of a new plan saves no version and names the draft it made  2933ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  21:56:23
+   Duration  16.98s (transform 145ms, setup 0ms, collect 236ms, tests 16.60s, environment 0ms, prepare 27ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-styoxR/report.json

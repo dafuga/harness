@@ -1,0 +1,38 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [20.08s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-obVVzX
+
+ ✓ test/game-cli.e2e.test.ts (3 tests) 43212ms
+   ✓ CLI creates 2d games and supports app and game generators  23373ms
+   ✓ CLI creates 3d games and supports app and game generators  19114ms
+   ✓ game-only generators reject apps before creating broken imports  722ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  15:34:07
+   Duration  46.65s (transform 39ms, setup 11ms, collect 24ms, tests 43.21s, environment 0ms, prepare 57ms)
+

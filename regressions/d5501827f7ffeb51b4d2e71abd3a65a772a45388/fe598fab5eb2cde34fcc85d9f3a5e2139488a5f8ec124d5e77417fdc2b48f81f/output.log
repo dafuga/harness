@@ -1,0 +1,485 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [6.81s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-x0maE1
+
+ ❯ test/utils/explorer-route.test.ts (61 tests | 1 failed) 6ms
+   ✓ has exactly seven categories, pages then shells first 1ms
+   ✓ current branch /pages 0ms
+   ✓ current branch /pages/reports.page.titles 0ms
+   ✓ current branch /pages/reports.page.titles/details 0ms
+   ✓ current branch /components 0ms
+   ✓ current branch /components/reports.component.harness-harness-console 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/details 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/history 0ms
+   ✓ current branch /functions 0ms
+   ✓ current branch /functions/function.slugify 0ms
+   ✓ current branch /functions/function.slugify/details 0ms
+   ✓ current branch /functions/function.slugify/history 0ms
+   ✓ current branch /configs 0ms
+   ✓ current branch /configs/config.site 0ms
+   ✓ current branch /configs/config.site/details 0ms
+   ✓ current branch /configs/config.site/history 0ms
+   ✓ current branch /services 0ms
+   ✓ current branch /services/service.clock 0ms
+   ✓ current branch /services/service.clock/details 0ms
+   ✓ current branch /services/service.clock/history 0ms
+   ✓ selected commit /pages 0ms
+   ✓ selected commit /pages/reports.page.titles 0ms
+   ✓ selected commit /pages/reports.page.titles/details 0ms
+   ✓ selected commit /components 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/details 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/history 0ms
+   ✓ selected commit /functions 0ms
+   ✓ selected commit /functions/function.slugify 0ms
+   ✓ selected commit /functions/function.slugify/details 0ms
+   ✓ selected commit /functions/function.slugify/history 0ms
+   ✓ selected commit /configs 0ms
+   ✓ selected commit /configs/config.site 0ms
+   ✓ selected commit /configs/config.site/details 0ms
+   ✓ selected commit /configs/config.site/history 0ms
+   ✓ selected commit /services 0ms
+   ✓ selected commit /services/service.clock 0ms
+   ✓ selected commit /services/service.clock/details 0ms
+   ✓ selected commit /services/service.clock/history 0ms
+   ✓ there are nineteen designed shapes in each scope, and a Page has a history too 0ms
+   ✓ a branch is one path segment, whatever it contains 0ms
+   ✓ a branch or a commit alone opens Pages in the same scope 0ms
+   ✓ a commit that no branch reaches has no branch invented for it 0ms
+   ✓ the tab of a section is kept in the query and only where it exists 0ms
+   × a callable has a distinct revision-bound address across tabs and history 2ms
+     → helper identity is part of its detail address: expected null to be 'toKebabCase' // Object.is equality
+   ✓ an entity id is one encoded segment 0ms
+   ✓ names no explorer address:  0ms
+   ✓ names no explorer address: / 0ms
+   ✓ names no explorer address: /pages 0ms
+   ✓ names no explorer address: /branch 0ms
+   ✓ names no explorer address: /branch/main/reports 0ms
+   ✓ names no explorer address: /branch/main/analytics 0ms
+   ✓ names no explorer address: /branch/main/activity 0ms
+   ✓ names no explorer address: /branch/main/commit/abc/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/pages 0ms
+   ✓ names no explorer address: /branch/main/pages/x/source 0ms
+   ✓ names no explorer address: /branch/main/pages/x/details/extra 0ms
+   ✓ names no explorer address: /branch/feature/kept/pages 0ms
+   ✓ names no explorer address: /branch/%E0%A4%A/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map 0ms
+   ✓ a trailing slash names the same address 0ms
+ ❯ test/regression-loops.test.ts (7 tests | 2 failed) 33ms
+   ✓ bug-fix exposes ordered proof and project checks 12ms
+   ✓ fix exposes ordered proof and project checks 6ms
+   ✓ regression-prevention exposes ordered proof and project checks 6ms
+   ✓ project templates can extend regression prevention and override its guard 2ms
+   × generated app guidance selects loops and explains retries 5ms
+     → expected '# AGENTS.md\n\nThis is a Harness Svel…' to contain 'parameter names describe their domain…'
+   × generated lib guidance selects loops and explains retries 2ms
+     → expected '# AGENTS.md\n\nThis is a Harness Bun …' to contain 'parameter names describe their domain…'
+   ✓ loop guide explains red-green evidence, prevention guards, and agent retries 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/regression-loops.test.ts > generated app guidance selects loops and explains retries
+AssertionError: expected '# AGENTS.md\n\nThis is a Harness Svel…' to contain 'parameter names describe their domain…'
+
+- Expected
++ Received
+
+- parameter names describe their domain role
++ # AGENTS.md
++
++ This is a Harness SvelteKit app. Treat Harness as the operating contract for every code change in this project.
++
++ ## Required Harness Workflow
++
++ - Read this file and the `.codex/skills/harness/SKILL.md` skill before changing code.
++ - Use Harness generators for supported code shapes instead of hand-rolling new structure.
++ - Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.
++ - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
++ - Add or update a feature spec before implementation.
++ - Keep files small, focused, and aligned with `harness.audit.json` limits.
++ - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`.
++
++ ## Clean Code Review
++
++ - Use `harness info clean-code` for optional Jev reviews.
++ - Preview with `harness audit . --clean-code --dry-run`; reviews remain disabled until enabled.
++ - Configure a project-owned credential and assess advisory results before enabling the gate.
++ - Keep uncertain judgments visible and never call incomplete reviews clean.
++
++ ## Bug and Regression Loops
++
++ - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
++ - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
++ - If no existing test covers the behavior, explain the missing coverage category and extend reusable standardized coverage before product repair.
++ - Run the strengthened test against the broken implementation and record the failing command, assertion and observed result before repair. A fixture or environment error is not defect proof; never manufacture a failure.
++ - Before changing product code, commit the failing test separately. Run harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure> on that commit. Then make a separate fix commit and run loop record --phase green: the tests, fixtures, command and environment must be unchanged. Preserve both commits when landing; do not squash away the failing-test commit. Focused regression results do not replace full verification.
++ - Repair the product while keeping the strengthened test unchanged. Repeat repair and the same unchanged test until it passes; retain failing and passing evidence at their tested revisions, then run normal verification.
++ - During read-only planning, report the coverage diagnosis and propose the standardized test change; do not edit tests or product source. Write only within an approved implementation request.
++ - Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.
++ - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
++ - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
++ - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
++ - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
++ - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.
++ - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.
++
++ ## Code Rules
++
++ - Files stay at or below 220 lines.
++ - Functions stay at or below 55 lines.
++ - Classes stay at or below 120 lines.
++ - Methods stay at or below 35 lines.
++ - Nesting stays at or below 4 levels.
++ - Functions and methods take at most 4 parameters.
++ - Cyclomatic complexity stays at or below 10.
++ - Each file defines at most 1 class.
++ - Generated scaffold file names should keep the casing and suffixes prescribed by Harness.
++ - Function exports should use camelCase and generated function files should export the expected name.
++ - Classes should not use catch-all Manager names.
++ - Command modules delegate to workflows instead of importing templates or file-generation helpers.
++ - Core, template, workflow, and command imports move in one direction.
++ - Harness audit applies ecosystem adapters for app and library code surfaces.
++ - Unsupported file types must appear in audit coverage instead of being skipped silently.
++
++ Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.
++
+
+ ❯ test/regression-loops.test.ts:97:17
+     95|    expect(text).toContain('separate fix commit');
+     96|    expect(text).toContain('loop record');
+     97|    expect(text).toContain('parameter names describe their domain role'…
+       |                 ^
+     98|    expect(text).toContain('earliest responsible generator, skill or re…
+     99|    expect(text).toContain('one selected callable per detail page');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/regression-loops.test.ts > generated lib guidance selects loops and explains retries
+AssertionError: expected '# AGENTS.md\n\nThis is a Harness Bun …' to contain 'parameter names describe their domain…'
+
+- Expected
++ Received
+
+- parameter names describe their domain role
++ # AGENTS.md
++
++ This is a Harness Bun TypeScript library. Treat Harness as the operating contract for every code change in this project.
++
++ ## Required Harness Workflow
++
++ - Read this file and the `.codex/skills/harness/SKILL.md` skill before changing code.
++ - Use Harness generators for supported code shapes instead of hand-rolling new structure.
++ - Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.
++ - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
++ - Add or update a feature spec before implementation.
++ - Keep files small, focused, and aligned with `harness.audit.json` limits.
++ - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`.
++
++ ## Clean Code Review
++
++ - Use `harness info clean-code` for optional Jev reviews.
++ - Preview with `harness audit . --clean-code --dry-run`; reviews remain disabled until enabled.
++ - Configure a project-owned credential and assess advisory results before enabling the gate.
++ - Keep uncertain judgments visible and never call incomplete reviews clean.
++
++ ## Bug and Regression Loops
++
++ - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
++ - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
++ - If no existing test covers the behavior, explain the missing coverage category and extend reusable standardized coverage before product repair.
++ - Run the strengthened test against the broken implementation and record the failing command, assertion and observed result before repair. A fixture or environment error is not defect proof; never manufacture a failure.
++ - Before changing product code, commit the failing test separately. Run harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure> on that commit. Then make a separate fix commit and run loop record --phase green: the tests, fixtures, command and environment must be unchanged. Preserve both commits when landing; do not squash away the failing-test commit. Focused regression results do not replace full verification.
++ - Repair the product while keeping the strengthened test unchanged. Repeat repair and the same unchanged test until it passes; retain failing and passing evidence at their tested revisions, then run normal verification.
++ - During read-only planning, report the coverage diagnosis and propose the standardized test change; do not edit tests or product source. Write only within an approved implementation request.
++ - Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.
++ - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
++ - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
++ - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
++ - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
++ - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.
++ - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.
++
++ ## Code Rules
++
++ - Files stay at or below 220 lines.
++ - Functions stay at or below 55 lines.
++ - Classes stay at or below 120 lines.
++ - Methods stay at or below 35 lines.
++ - Nesting stays at or below 4 levels.
++ - Functions and methods take at most 4 parameters.
++ - Cyclomatic complexity stays at or below 10.
++ - Each file defines at most 1 class.
++ - Generated scaffold file names should keep the casing and suffixes prescribed by Harness.
++ - Function exports should use camelCase and generated function files should export the expected name.
++ - Classes should not use catch-all Manager names.
++ - Command modules delegate to workflows instead of importing templates or file-generation helpers.
++ - Core, template, workflow, and command imports move in one direction.
++ - Harness audit applies ecosystem adapters for app and library code surfaces.
++ - Unsupported file types must appear in audit coverage instead of being skipped silently.
++
++ Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.
++
+
+ ❯ test/regression-loops.test.ts:97:17
+     95|    expect(text).toContain('separate fix commit');
+     96|    expect(text).toContain('loop record');
+     97|    expect(text).toContain('parameter names describe their domain role'…
+       |                 ^
+     98|    expect(text).toContain('earliest responsible generator, skill or re…
+     99|    expect(text).toContain('one selected callable per detail page');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > a callable has a distinct revision-bound address across tabs and history
+AssertionError: helper identity is part of its detail address: expected null to be 'toKebabCase' // Object.is equality
+
+- Expected: 
+"toKebabCase"
+
++ Received: 
+null
+
+ ❯ test/utils/explorer-route.test.ts:176:91
+    174|   const path = explorerRoutePath(location);
+    175|   const url = new URL(path, 'http://localhost');
+    176|   expect(url.searchParams.get('helper'), 'helper identity is part of i…
+       |                                                                                           ^
+    177|    'toKebabCase'
+    178|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 65 passed (68)
+   Start at  13:50:27
+   Duration  2.64s (transform 70ms, setup 9ms, collect 81ms, tests 39ms, environment 0ms, prepare 47ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-x0maE1/packages/reports
+
+ ❯ test/components/entity-contract.test.ts (4 tests | 1 failed) 15ms
+   ✓ a dedicated contract lists types and example previews with full details behind info buttons 10ms
+   ✓ legacy contract tables retain types and example controls for opaque fields 1ms
+   ✓ callable contracts preserve actual parameters and associate their returns 1ms
+   × a selected callable page excludes sibling APIs and rejects missing symbols 3ms
+     → detail header identifies the selected function: expected '<!--[--><!--[--><div class="ex-conten…' to match /<h1[^>]*>.*?first.*?<\/h1>/h1>
+ ❯ test/components/explorer-function-card.test.ts (9 tests | 1 failed) 12ms
+   × function catalog cards stay concise and retain revision links without detail panels 8ms
+     → expected '<!--[--><div class="ex-content" data-…' to contain 'helper=filterOrders'
+   ✓ function calls preserve declared sample values: false 1ms
+   ✓ function calls preserve declared sample values: 0 0ms
+   ✓ function calls preserve declared sample values: null 0ms
+   ✓ function calls preserve declared sample values: "" 0ms
+   ✓ function calls preserve declared sample values: %j 0ms
+   ✓ function calls preserve declared sample values: {"label":"<script>example</script>"} 0ms
+   ✓ function calls preserve declared sample values: "🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪" 0ms
+   ✓ documented parameters belong to the displayed revision; missing values stay variables 1ms
+ ❯ test/utils/entity-lens.test.ts (5 tests | 1 failed) 4ms
+   ✓ there are exactly seven collections and pages come first 1ms
+   ✓ a link keeps the branch and the selected commit it is shown under 0ms
+   ✓ a link from the branch tip stays at the branch tip 0ms
+   ✓ only a link that names a commit leaves the revision, and a collection keeps no entity 0ms
+   × callable identity follows its own tabs and commits, never another entity 2ms
+     → expected { branch: 'feature/orders', …(4) } to have property "helper" with value 'filterOrders'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-contract.test.ts > a selected callable page excludes sibling APIs and rejects missing symbols
+AssertionError: detail header identifies the selected function: expected '<!--[--><!--[--><div class="ex-conten…' to match /<h1[^>]*>.*?first.*?<\/h1>/h1>
+
+- Expected: 
+/<h1[^>]*>.*?first.*?<\/h1>/s
+
++ Received: 
+"<!--[--><!--[--><div class=\"ex-content\" data-mode=\"current\"><!--[-1--><!--[0--><nav class=\"ex-crumbs\" aria-label=\"Breadcrumb\"><ol><li><a href=\"/harness/branch/feature%2Forders/functions\"><!---->Helpers<!----></a><!----></li> <!--[-1--><li aria-current=\"page\">Filter orders</li><!--]--></ol></nav> <header class=\"ex-head\"><span class=\"ex-tile\"><svg class=\"hx-icon svelte-1b1a29i\" viewBox=\"0 0 24 24\" width=\"30\" height=\"30\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M3.5 20c2 0 2.7-1 3.1-3L9 6.6C9.4 4.7 10.3 4 12 4M5.5 10.5h7M14.5 13l5 6M19.5 13l-5 6\"></path></svg><!----></span> <div class=\"ex-head-main\"><div class=\"ex-head-title\"><h1>Filter orders</h1> <span class=\"ex-pill\">Function</span> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--$s1--><span class=\"hx-verdict svelte-1lwyhm3 failed\"><button type=\"button\" aria-label=\"Evidence missing\" aria-describedby=\"s1\" aria-expanded=\"false\" class=\"svelte-1lwyhm3\"><svg class=\"hx-icon svelte-1b1a29i solid\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM15.5 7.1l1.4 1.4L13.4 12l3.5 3.5-1.4 1.4L12 13.4l-3.5 3.5-1.4-1.4L10.6 12 7.1 8.5l1.4-1.4L12 10.6z\"></path></svg><!----></button> <span class=\"hx-tip svelte-1lwyhm3\" role=\"tooltip\" id=\"s1\" tabindex=\"-1\" hidden=\"\" style=\"visibility:hidden\"><strong class=\"svelte-1lwyhm3\">Evidence missing</strong><!--[--><span>No verification record is attached to this commit.</span><!--]--></span></span><!----></div> <p class=\"ex-lead\">Returns the orders whose name matches a search.</p></div> <div class=\"ex-head-actions\"><!--[-1--><!--]--></div></header> <!--[-1--><!--]--><!----> <div class=\"hx-tabs\" role=\"tablist\" aria-label=\"Filter orders sections\"><!--[--><!--[0--><a role=\"tab\" href=\"/harness/branch/feature%2Forders/functions/app.function.filter-orders\" aria-selected=\"false\">Overview</a><!--]--><!--[0--><a role=\"tab\" href=\"/harness/branch/feature%2Forders/functions/app.function.filter-orders?tab=contract\" aria-selected=\"true\">Contract</a><!--]--><!--[0--><a role=\"tab\" href=\"/harness/branch/feature%2Forders/functions/app.function.filter-orders?tab=used-in\" aria-selected=\"false\">Used In</a><!--]--><!--[0--><a role=\"tab\" href=\"/harness/branch/feature%2Forders/functions/app.function.filter-orders?tab=uses\" aria-selected=\"false\">Uses</a><!--]--><!--[0--><a role=\"tab\" href=\"/harness/branch/feature%2Forders/functions/app.function.filter-orders?tab=examples\" aria-selected=\"false\">Examples</a><!--]--><!--[0--><a role=\"tab\" href=\"/harness/branch/feature%2Forders/functions/app.function.filter-orders/history\" aria-selected=\"false\">History</a><!--]--><!--[0--><a role=\"tab\" href=\"/harness/branch/feature%2Forders/functions/app.function.filter-orders?tab=source\" aria-selected=\"false\">Source</a><!--]--><!--]--></div><!----><!----> <!--[4--><div role=\"tabpanel\" aria-label=\"Filter orders contract\"><section class=\"ex-card ex-contract svelte-rrf560\" data-harness-component=\"entity-contract\" aria-label=\"Contract\"><h2><svg class=\"hx-icon svelte-1b1a29i\" viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM14 3v5h5M9 13h6M9 17h6\"></path></svg><!----> Contract</h2> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--[--><section class=\"callable svelte-rrf560\" aria-label=\"first contract\"><h3 class=\"svelte-rrf560\"><code>first(): string</code></h3> <!--[--><div class=\"group svelte-fbltee\" data-harness-component=\"contract-table\"><!--[1--><p class=\"label svelte-fbltee\">Parameters</p><!--]--> <!--[-1--><div class=\"frame svelte-fbltee\"><table aria-label=\"Parameters\" class=\"svelte-fbltee\"><thead class=\"svelte-fbltee\"><tr><!--[0--><th scope=\"col\" class=\"leading svelte-fbltee\">Name</th><!--]--><th scope=\"col\" class=\"leading svelte-fbltee\">Type</th><th scope=\"col\" class=\"svelte-fbltee\">Example</th><th scope=\"col\" class=\"act svelte-fbltee\" aria-label=\"Actions\"></th></tr></thead><tbody class=\"svelte-fbltee\"><!--[0--><tr class=\"svelte-fbltee\"><td colspan=\"4\" class=\"ex-note svelte-fbltee\">No parameters.</td></tr><!--]--><!--[--><!--]--></tbody></table></div><!--]--></div><div class=\"group svelte-fbltee\" data-harness-component=\"contract-table\"><!--[1--><p class=\"label svelte-fbltee\">Returns</p><!--]--> <!--[-1--><div class=\"frame svelte-fbltee\"><table aria-label=\"Returns\" class=\"svelte-fbltee\"><thead class=\"svelte-fbltee\"><tr><!--[-1--><!--]--><th scope=\"col\" class=\"leading svelte-fbltee\">Type</th><th scope=\"col\" class=\"svelte-fbltee\">Example</th><th scope=\"col\" class=\"act svelte-fbltee\" aria-label=\"Actions\"></th></tr></thead><tbody class=\"svelte-fbltee\"><!--[-1--><!--]--><!--[--><tr class=\"svelte-fbltee\"><!--[-1--><!--]--><td class=\"svelte-fbltee\"><code class=\"type svelte-fbltee\">string</code></td><td class=\"example svelte-fbltee\"><!--[-1--><!--]--> <!--[0--><code>\"hello\"</code><!--]--></td><td class=\"act svelte-fbltee\"><button type=\"button\" class=\"info svelte-fbltee\" aria-label=\"View example for return value\" aria-haspopup=\"dialog\"><svg class=\"hx-icon svelte-1b1a29i\" viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1\"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class=\"group svelte-fbltee\" data-harness-component=\"contract-table\"><!--[1--><p class=\"label svelte-fbltee\">Throws</p><!--]--> <!--[-1--><div class=\"frame svelte-fbltee\"><table aria-label=\"Throws\" class=\"svelte-fbltee\"><thead class=\"svelte-fbltee\"><tr><!--[-1--><!--]--><th scope=\"col\" class=\"leading svelte-fbltee\">Type</th><th scope=\"col\" class=\"svelte-fbltee\">Example</th><th scope=\"col\" class=\"act svelte-fbltee\" aria-label=\"Actions\"></th></tr></thead><tbody class=\"svelte-fbltee\"><!--[0--><tr class=\"svelte-fbltee\"><td colspan=\"3\" class=\"ex-note svelte-fbltee\">No errors declared.</td></tr><!--]--><!--[--><!--]--></tbody></table></div><!--]--></div><!--]--></section><section class=\"callable svelte-rrf560\" aria-label=\"second contract\"><h3 class=\"svelte-rrf560\"><code>second(): number</code></h3> <!--[--><div class=\"group svelte-fbltee\" data-harness-component=\"contract-table\"><!--[1--><p class=\"label svelte-fbltee\">Parameters</p><!--]--> <!--[-1--><div class=\"frame svelte-fbltee\"><table aria-label=\"Parameters\" class=\"svelte-fbltee\"><thead class=\"svelte-fbltee\"><tr><!--[0--><th scope=\"col\" class=\"leading svelte-fbltee\">Name</th><!--]--><th scope=\"col\" class=\"leading svelte-fbltee\">Type</th><th scope=\"col\" class=\"svelte-fbltee\">Example</th><th scope=\"col\" class=\"act svelte-fbltee\" aria-label=\"Actions\"></th></tr></thead><tbody class=\"svelte-fbltee\"><!--[0--><tr class=\"svelte-fbltee\"><td colspan=\"4\" class=\"ex-note svelte-fbltee\">No parameters.</td></tr><!--]--><!--[--><!--]--></tbody></table></div><!--]--></div><div class=\"group svelte-fbltee\" data-harness-component=\"contract-table\"><!--[1--><p class=\"label svelte-fbltee\">Returns</p><!--]--> <!--[-1--><div class=\"frame svelte-fbltee\"><table aria-label=\"Returns\" class=\"svelte-fbltee\"><thead class=\"svelte-fbltee\"><tr><!--[-1--><!--]--><th scope=\"col\" class=\"leading svelte-fbltee\">Type</th><th scope=\"col\" class=\"svelte-fbltee\">Example</th><th scope=\"col\" class=\"act svelte-fbltee\" aria-label=\"Actions\"></th></tr></thead><tbody class=\"svelte-fbltee\"><!--[-1--><!--]--><!--[--><tr class=\"svelte-fbltee\"><!--[-1--><!--]--><td class=\"svelte-fbltee\"><code class=\"type svelte-fbltee\">number</code></td><td class=\"example svelte-fbltee\"><!--[-1--><!--]--> <!--[0--><code>42</code><!--]--></td><td class=\"act svelte-fbltee\"><button type=\"button\" class=\"info svelte-fbltee\" aria-label=\"View example for return value\" aria-haspopup=\"dialog\"><svg class=\"hx-icon svelte-1b1a29i\" viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1\"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class=\"group svelte-fbltee\" data-harness-component=\"contract-table\"><!--[1--><p class=\"label svelte-fbltee\">Throws</p><!--]--> <!--[-1--><div class=\"frame svelte-fbltee\"><table aria-label=\"Throws\" class=\"svelte-fbltee\"><thead class=\"svelte-fbltee\"><tr><!--[-1--><!--]--><th scope=\"col\" class=\"leading svelte-fbltee\">Type</th><th scope=\"col\" class=\"svelte-fbltee\">Example</th><th scope=\"col\" class=\"act svelte-fbltee\" aria-label=\"Actions\"></th></tr></thead><tbody class=\"svelte-fbltee\"><!--[-1--><!--]--><!--[--><tr class=\"svelte-fbltee\"><!--[-1--><!--]--><td class=\"svelte-fbltee\"><code class=\"type svelte-fbltee\">TypeError</code></td><td class=\"example svelte-fbltee\"><!--[0--><i>Example not recorded</i><!--]--> <!--[-1--><!--]--></td><td class=\"act svelte-fbltee\"><button type=\"button\" class=\"info svelte-fbltee\" aria-label=\"View example for Failure\" aria-haspopup=\"dialog\"><svg class=\"hx-icon svelte-1b1a29i\" viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1\"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><!--]--></section><!--]--></section> <!--[-1--><!--]--><!----><!----></div><!--]--><!----><!--]--><!----><!--]--></div><!--]--><!--]-->"
+
+ ❯ test/components/entity-contract.test.ts:131:67
+    129|     { head }
+    130|    );
+    131|    expect(body, 'detail header identifies the selected function').toMa…
+       |                                                                   ^
+    132|     new RegExp(`<h1[^>]*>.*?${helper}.*?</h1>`, 's')
+    133|    );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > function catalog cards stay concise and retain revision links without detail panels
+AssertionError: expected '<!--[--><div class="ex-content" data-…' to contain 'helper=filterOrders'
+
+Expected: "helper=filterOrders"
+Received: "<!--[--><div class="ex-content" data-mode="current"><!--[-1--><section class="ex-index" aria-labelledby="ex-index-title"><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M3.5 20c2 0 2.7-1 3.1-3L9 6.6C9.4 4.7 10.3 4 12 4M5.5 10.5h7M14.5 13l5 6M19.5 13l-5 6"></path></svg><!----></li> <li aria-current="page">Helpers</li></ol></nav> <h1 id="ex-index-title">Helpers</h1> <p class="ex-lead">Pure, reusable functions. Same inputs, same result; no side effects.</p> <!--[-1--><!--]--> <div class="ex-controls" role="search" aria-label="Find helpers"><label class="ex-search"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M10.5 17a6.5 6.5 0 1 0 0-13a6.5 6.5 0 0 0 0 13zM15.5 15.5L21 21"></path></svg><!----> <input type="search" placeholder="Search helpers…" aria-label="Search helpers" value=""/></label> <div class="catalog-filter-dialog svelte-n4yaym"><button type="button" class="filter-trigger svelte-n4yaym" aria-label="Filters" aria-haspopup="dialog" aria-expanded="false" title="Filters"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" focusable="false"><path d="M4 7h10M18 7h2M4 17h2M10 17h10M16 5v4M8 15v4"></path></svg><!----></button> <!--[-1--><!--]--><!----></div><!----></div><!----> <p class="ex-hidden" role="status">1 of 1 helpers shown</p> <!--[-1--><!--[0--><div class="ex-catalog-grid svelte-14is8zx"><!--[--><!--[-1--><article class="ex-function-tile svelte-f754ar" aria-label="filterOrders"><a href="/harness/branch/feature%2Forders/functions/app.function.filter-orders" class="ex-function-call" title="Example usage; arguments without recorded sample values remain named variables."><code class="svelte-f754ar">filterOrders(orders, "SERVICE")</code><!----></a><!----></article><!--]--><!--]--></div><!--]--><!----><!--]--> <!--[-1--><!--]--></section><!----><!--]--></div><!--]-->"
+
+ ❯ test/components/explorer-function-card.test.ts:23:16
+     21|   const commit = mode === 'current' ? '' : `/commit/${commits.middle}`;
+     22|   expect(body).toContain(`/branch/feature%2Forders${commit}/functions/…
+     23|   expect(body).toContain('helper=filterOrders');
+       |                ^
+     24|   expect(body).not.toContain('tab=tests');
+     25|   expect(words(body)).not.toMatch(/src\/|\.ts\b/);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/utils/entity-lens.test.ts > callable identity follows its own tabs and commits, never another entity
+AssertionError: expected { branch: 'feature/orders', …(4) } to have property "helper" with value 'filterOrders'
+
+- Expected: 
+"filterOrders"
+
++ Received: 
+undefined
+
+ ❯ test/utils/entity-lens.test.ts:55:68
+     53| test('callable identity follows its own tabs and commits, never anothe…
+     54|  const from = { ...place({ category: 'functions', entity: ids.filter }…
+     55|  expect(entityLens(from, { entity: ids.filter, tab: 'contract' })).toH…
+       |                                                                    ^
+     56|   'helper',
+     57|   'filterOrders'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  3 failed | 15 passed (18)
+   Start at  13:50:30
+   Duration  1.37s (transform 609ms, setup 0ms, collect 891ms, tests 31ms, environment 0ms, prepare 68ms)
+
+
+Running 3 tests using 1 worker
+
+(node:78810) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at desktop width (1.2s)
+(node:84722) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at tablet width (995ms)
+(node:92145) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at mobile width (981ms)
+
+
+  1) test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at desktop width 
+
+    Error: catalog links identify the selected callable
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 0
+
+      Object {
+        "commit": null,
+    -   "helper": "toKebabCase",
+      }
+
+       at entityPreviewPage.ts:184
+
+      182 | 			.filter({ hasText: `${name}(` })
+      183 | 			.click();
+    > 184 | 		expect(await where(page), 'catalog links identify the selected callable').toMatchObject({
+          | 		                                                                          ^
+      185 | 			helper: name,
+      186 | 			commit
+      187 | 		});
+        at reviewCallableContract (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-x0maE1/packages/reports/test/entityPreviewPage.ts:184:77)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-x0maE1/packages/reports/test/entity-preview-words.spec.ts:199:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-4c394-ample-view-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-4c394-ample-view-at-desktop-width/error-context.md
+
+  2) test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at tablet width 
+
+    Error: catalog links identify the selected callable
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 0
+
+      Object {
+        "commit": null,
+    -   "helper": "toKebabCase",
+      }
+
+       at entityPreviewPage.ts:184
+
+      182 | 			.filter({ hasText: `${name}(` })
+      183 | 			.click();
+    > 184 | 		expect(await where(page), 'catalog links identify the selected callable').toMatchObject({
+          | 		                                                                          ^
+      185 | 			helper: name,
+      186 | 			commit
+      187 | 		});
+        at reviewCallableContract (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-x0maE1/packages/reports/test/entityPreviewPage.ts:184:77)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-x0maE1/packages/reports/test/entity-preview-words.spec.ts:199:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-22fbd-xample-view-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-22fbd-xample-view-at-tablet-width/error-context.md
+
+  3) test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at mobile width 
+
+    Error: catalog links identify the selected callable
+
+    expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 0
+
+      Object {
+        "commit": null,
+    -   "helper": "toKebabCase",
+      }
+
+       at entityPreviewPage.ts:184
+
+      182 | 			.filter({ hasText: `${name}(` })
+      183 | 			.click();
+    > 184 | 		expect(await where(page), 'catalog links identify the selected callable').toMatchObject({
+          | 		                                                                          ^
+      185 | 			helper: name,
+      186 | 			commit
+      187 | 		});
+        at reviewCallableContract (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-x0maE1/packages/reports/test/entityPreviewPage.ts:184:77)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-x0maE1/packages/reports/test/entity-preview-words.spec.ts:199:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-contr-70f40-xample-view-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-contr-70f40-xample-view-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at desktop width 
+    test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at tablet width 
+    test/entity-preview-words.spec.ts:166:2 › contract has its own typed example view at mobile width 

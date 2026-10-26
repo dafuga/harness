@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"kind": "legacy-report",
+	"id": "64f49686-0ff2-4528-96e5-dd10740b26c5",
+	"project": "harness",
+	"title": "Harness analytics and integrated reports",
+	"mode": "feature",
+	"environment": "local",
+	"status": "running",
+	"state": "active",
+	"startedAt": "2026-10-06T22:21:03.678Z",
+	"updatedAt": "2026-10-06T22:38:57.591Z",
+	"revision": null,
+	"summary": "",
+	"checks": [
+		{
+			"id": "cli-analytics",
+			"title": "Analytics CLI and metrics",
+			"status": "passed"
+		},
+		{
+			"id": "package",
+			"title": "Packed installation, media, transcripts and exports",
+			"status": "passed"
+		},
+		{
+			"id": "dashboard",
+			"title": "Responsive analytics dashboard",
+			"status": "blocked"
+		},
+		{
+			"id": "full-check",
+			"title": "Complete Harness and reporting checks",
+			"status": "passed"
+		}
+	],
+	"media": []
+}

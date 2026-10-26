@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xN09bG
+
+ ✓ test/loop.e2e.test.ts (7 tests) 125230ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  5269ms
+   ✓ generated app and lib instructions mention harness loops  1785ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  3846ms
+   ✓ bug-fix CLI records proof and leaves verification pending across failed and passing checks  33809ms
+   ✓ fix CLI records proof and leaves verification pending across failed and passing checks  35912ms
+   ✓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks  35457ms
+   ✓ standalone evidence capture preserves images and measurements without inventing a regression or full verdict  9147ms
+ ✓ test/commands/task.test.ts (2 tests) 6600ms
+   ✓ feature completion rejects an unsupported free-text verification claim  6489ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  15:14:19
+   Duration  135.32s (transform 347ms, setup 128ms, collect 688ms, tests 131.83s, environment 0ms, prepare 69ms)
+

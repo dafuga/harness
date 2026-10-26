@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sw1dBe
+
+ ✓ test/workspace-test-config.test.ts (2 tests) 1354ms
+   ✓ a workspace without a config of its own runs its tests with the root config and its own setup  679ms
+   ✓ the root runs its own tests and still leaves the workspaces to theirs  675ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  16:14:09
+   Duration  1.55s (transform 17ms, setup 5ms, collect 6ms, tests 1.35s, environment 0ms, prepare 21ms)
+

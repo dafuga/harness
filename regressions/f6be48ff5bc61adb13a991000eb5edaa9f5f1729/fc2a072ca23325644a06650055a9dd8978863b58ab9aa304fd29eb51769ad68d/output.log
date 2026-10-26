@@ -1,0 +1,122 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [11.10s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-P4fVHR/packages/reports
+
+ ❯ test/entity-usage.test.ts (6 tests | 2 failed) 29ms
+   ✓ the sections of an entity are named Used In and Uses, and none is a relationship 15ms
+   × Used In lists what uses the entity, the pages that show it too, each once and with what it is 5ms
+     → expected [] to have a length of 1 but got +0
+   × Uses keeps what the entity depends on apart by kind and leaves out a kind it uses nothing of 3ms
+     → expected 'Uses 3 Components 1 Order card Shows …' to match /Uses 3 .*Components 1 .*Order card.*F…/
+   ✓ the overview and both dedicated usage sections show no source paths 2ms
+   ✓ a former relationships address opens the overview without embedded usage sections 1ms
+   ✓ an entity nothing uses, one that uses nothing and one that was removed each say so 1ms
+ ❯ test/components/entity-relations.test.ts (3 tests | 2 failed) 28ms
+   × what an entity uses is one section of kinds of their own, and what uses it is another 17ms
+     → Relationships reuse catalog cards: expected '<!--[--><!--[--><div class="ex-conten…' to contain 'ex-function-tile'
+   × each related entity is a link to it in the same branch and commit 7ms
+     → expected '<!--[--><!--[--><div class="ex-conten…' to contain 'href="/harness/branch/feature%2Forder…'
+   ✓ a page leads to its components and a component to the components inside it 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/entity-usage.test.ts > Used In lists what uses the entity, the pages that show it too, each once and with what it is
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/entity-usage.test.ts:62:84
+     60|  expect(used).toMatch(/Order list/);
+     61|  for (const name of ['Orders page', 'Order list'])
+     62|   expect([...body.matchAll(new RegExp(`<article[^>]*aria-label="${name…
+       |                                                                                    ^
+     63|    1
+     64|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/entity-usage.test.ts > Uses keeps what the entity depends on apart by kind and leaves out a kind it uses nothing of
+AssertionError: expected 'Uses 3 Components 1 Order card Shows …' to match /Uses 3 .*Components 1 .*Order card.*F…/
+
+- Expected: 
+/Uses 3 .*Components 1 .*Order card.*Functions 1 .*filterOrders.*Services 1 .*Order store/
+
++ Received: 
+"Uses 3 Components 1 Order card Shows one order. Functions 1 Filter orders Changed Returns the orders whose name matches a search. Services 1 Order store Reads the orders of one account."
+
+ ❯ test/entity-usage.test.ts:74:15
+     72|  expect(sections(body)).toEqual(['Uses']);
+     73|  expect(body).toContain('aria-label="Order list uses"');
+     74|  expect(uses).toMatch(
+       |               ^
+     75|   /Uses 3 .*Components 1 .*Order card.*Functions 1 .*filterOrders.*Ser…
+     76|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/components/entity-relations.test.ts > what an entity uses is one section of kinds of their own, and what uses it is another
+AssertionError: Relationships reuse catalog cards: expected '<!--[--><!--[--><div class="ex-conten…' to contain 'ex-function-tile'
+
+Expected: "ex-function-tile"
+Received: "<!--[--><!--[--><div class="ex-content" data-mode="current"><!--[-1--><!--[1--><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><!--[-1--><a href="/harness/branch/feature%2Forders/components"><!---->Components<!----></a><!--]--></li> <!--[-1--><li aria-current="page">Order list</li><!--]--></ol></nav> <header class="ex-head"><span class="ex-tile"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9"></path></svg><!----></span> <div class="ex-head-main"><div class="ex-head-title"><h1>Order list</h1> <span class="ex-pill">Component</span> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--$s1--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Full coverage passed" aria-describedby="s1" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s1" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Full coverage passed</strong><!--[--><!--]--></span></span><!----></div> <p class="ex-lead">Arranges orders into a searchable list.</p></div> <div class="ex-head-actions"><!--[-1--><!--]--></div></header> <!--[0--><section class="ex-card ex-evidence" aria-labelledby="ex-screens-title"><header class="ex-evidence-head"><div><h2 id="ex-screens-title"><!--[0-->Current screenshot<!--]--></h2> <p class="ex-soft"><!--[0-->One screenshot of this entity at the current branch tip.<!--]--></p></div> <!--[-1--><!--[0--><a class="hx-action plain" href="/harness/branch/feature%2Forders/commit/cccccccccccccccccccccccccccccccccccccccc/components/app.component.order-list"><!--[-1--><!--]--> <!---->View commit changes<!----> <!--[0--><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4 12h16M14 6l6 6-6 6"></path></svg><!--]--><!----></a><!--]--><!--]--></header> <!--[-1--><!--]--> <!--[0--><div class="ex-facts" role="group" aria-label="What is shown"><label>Scenario <span class="report-select svelte-124sfg disabled"><select aria-label="Scenario" disabled="" class="svelte-124sfg"><!--[--><option value="orders-page" selected="">Orders page over synthetic orders</option><!--]--><!----><!></select> <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" class="svelte-124sfg"><path d="m4 6 4 4 4-4"></path></svg> <!--[-1--><!--]--></span><!----></label> <label>State <span class="report-select svelte-124sfg"><select aria-label="State" class="svelte-124sfg"><!--[--><option value="default" selected="">default</option><option value="empty">empty</option><!--]--><!----><!></select> <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" class="svelte-124sfg"><path d="m4 6 4 4 4-4"></path></svg> <!--[-1--><!--]--></span><!----></label> <div class="ex-segments" role="group" aria-label="Viewport"><!--[--><button type="button" aria-pressed="true" title="1440 × 900">Desktop</button><button type="button" aria-pressed="false" title="390 × 844">Mobile</button><!--]--></div> <span class="ex-soft">1440 × 900</span></div><!--]--> <div class="ex-panes"><!--[--><figure class="ex-pane" aria-label="Current snapshot · ccccccc"><figcaption><strong>Current snapshot · ccccccc</strong> <span class="ex-pill">Branch tip</span> <!--[0--><button type="button" class="ex-text-button"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"></path></svg><!----> Open full size</button><!--]--></figcaption> <!--[-1--><button type="button" class="ex-shot"><img src="/harness/media/ccccccc-default-desktop.png" alt="orders-page · default at desktop"/></button> <p class="ex-standing">Fresh capture · passed</p><!--]--></figure><!--]--></div> <!--[-1--><!--]--></section> <!--[-1--><!--]--><!----><!--]--><!----> <div class="hx-tabs" role="tablist" aria-label="Order list sections"><!--[--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list" aria-selected="false">Overview</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list?tab=contract" aria-selected="false">Contract</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list?tab=used-in" aria-selected="false">Used In</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list?tab=uses" aria-selected="true">Uses</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list?tab=states" aria-selected="false">States</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list/history" aria-selected="false">History</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/components/app.component.order-list?tab=source" aria-selected="false">Source</a><!--]--><!--]--></div><!----><!----> <!--[0--><div role="tabpanel" aria-label="Order list uses"><div class="ex-relations"><!--[-1--><!--]--> <!--[0--><section class="ex-card" aria-label="Uses"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3l9 4.5-9 4.5-9-4.5L12 3zM3 12l9 4.5 9-4.5M3 16.5L12 21l9-4.5"></path></svg><!----> Uses <span class="ex-count">3</span></h2> <!--[-1--><!--]--> <!--[--><h3><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9"></path></svg><!----> Components <span class="ex-count">1</span></h3> <ul class="ex-related"><!--[--><li><span><a href="/harness/branch/feature%2Forders/components/app.component.order-card"><!---->Order card<!----></a><!----> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--[0--><span class="ex-soft ex-block">Shows one order.</span><!--]--></span></li><!--]--></ul><h3><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M3.5 20c2 0 2.7-1 3.1-3L9 6.6C9.4 4.7 10.3 4 12 4M5.5 10.5h7M14.5 13l5 6M19.5 13l-5 6"></path></svg><!----> Functions <span class="ex-count">1</span></h3> <ul class="ex-related"><!--[--><li><span><a href="/harness/branch/feature%2Forders/functions/app.function.filter-orders"><!---->Filter orders<!----></a><!----> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--[0--><span class="ex-soft ex-block">Returns the orders whose name matches a search.</span><!--]--></span></li><!--]--></ul><h3><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 4l8 4.5-8 4.5-8-4.5L12 4zM4 13.5L12 18l8-4.5"></path></svg><!----> Services <span class="ex-count">1</span></h3> <ul class="ex-related"><!--[--><li><span><a href="/harness/branch/feature%2Forders/services/app.service.order-store"><!---->Order store<!----></a><!----> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--[0--><span class="ex-soft ex-block">Reads the orders of one account.</span><!--]--></span></li><!--]--></ul><!--]--> <!--[-1--><!--]--></section><!--]--></div><!----></div><!--]--><!----><!--]--><!----><!--]--></div><!--]--><!--]-->"
+
+ ❯ test/components/entity-relations.test.ts:20:53
+     18|   expect(words(uses + used)).not.toMatch(/sub-?components|\brelated\b/…
+     19|   expect(words(uses + used)).not.toMatch(/src\/|\.ts\b/);
+     20|   expect(uses, 'Relationships reuse catalog cards').toContain('ex-func…
+       |                                                     ^
+     21|   expect(uses).toContain('ex-page-card');
+     22|   expect(uses).toContain('aria-label="Services"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/components/entity-relations.test.ts > each related entity is a link to it in the same branch and commit
+AssertionError: expected '<!--[--><!--[--><div class="ex-conten…' to contain 'href="/harness/branch/feature%2Forder…'
+
+Expected: "href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/helpers/filterOrders/in/app.function.filter-orders/contract""
+Received: "<!--[--><!--[--><div class="ex-content" data-mode="commit"><!--[-1--><!--[1--><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><!--[-1--><a href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components"><!---->Components<!----></a><!--]--></li> <!--[-1--><li aria-current="page">Order list</li><!--]--></ol></nav> <header class="ex-head"><span class="ex-tile"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9"></path></svg><!----></span> <div class="ex-head-main"><div class="ex-head-title"><h1>Order list</h1> <span class="ex-pill">Component</span> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--$s1--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Full coverage passed" aria-describedby="s1" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s1" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Full coverage passed</strong><!--[--><!--]--></span></span><!----></div> <p class="ex-lead">Arranges orders into a searchable list.</p></div> <div class="ex-head-actions"><!--[-1--><!--]--></div></header> <!--[0--><section class="ex-card ex-evidence" aria-labelledby="ex-screens-title"><header class="ex-evidence-head"><div><h2 id="ex-screens-title"><!--[-1-->Commit comparison<!--]--></h2> <p class="ex-soft"><!--[-1-->The same scenario, state and viewport before and after the selected commit.<!--]--></p></div> <!--[0--><!--[0--><a class="hx-action gold" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components/app.component.order-list?tab=states"><!--[-1--><!--]--> <!---->View full comparison<!----> <!--[0--><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4 12h16M14 6l6 6-6 6"></path></svg><!--]--><!----></a><!--]--><!--]--></header> <!--[-1--><!--]--> <!--[0--><div class="ex-facts" role="group" aria-label="What is shown"><label>Scenario <span class="report-select svelte-124sfg disabled"><select aria-label="Scenario" disabled="" class="svelte-124sfg"><!--[--><option value="orders-page" selected="">Orders page over synthetic orders</option><!--]--><!----><!></select> <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" class="svelte-124sfg"><path d="m4 6 4 4 4-4"></path></svg> <!--[-1--><!--]--></span><!----></label> <label>State <span class="report-select svelte-124sfg"><select aria-label="State" class="svelte-124sfg"><!--[--><option value="default" selected="">default</option><option value="empty">empty</option><!--]--><!----><!></select> <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" class="svelte-124sfg"><path d="m4 6 4 4 4-4"></path></svg> <!--[-1--><!--]--></span><!----></label> <div class="ex-segments" role="group" aria-label="Viewport"><!--[--><button type="button" aria-pressed="true" title="1440 × 900">Desktop</button><button type="button" aria-pressed="false" title="390 × 844">Mobile</button><!--]--></div> <span class="ex-soft">1440 × 900</span></div><!--]--> <div class="ex-panes paired"><!--[--><figure class="ex-pane" aria-label="Before · aaaaaaa"><figcaption><strong>Before · aaaaaaa</strong> <span class="ex-pill">Parent commit</span> <!--[0--><button type="button" class="ex-text-button"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"></path></svg><!----> Open full size</button><!--]--></figcaption> <!--[-1--><button type="button" class="ex-shot"><img src="/harness/media/aaaaaaa-default-desktop.png" alt="orders-page · default at desktop"/></button> <p class="ex-standing">Fresh capture · passed</p><!--]--></figure><figure class="ex-pane" aria-label="After · bbbbbbb"><figcaption><strong>After · bbbbbbb</strong> <span class="ex-pill">Selected commit</span> <!--[0--><button type="button" class="ex-text-button"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"></path></svg><!----> Open full size</button><!--]--></figcaption> <!--[-1--><button type="button" class="ex-shot"><img src="/harness/media/bbbbbbb-default-desktop.png" alt="orders-page · default at desktop"/></button> <p class="ex-standing">Fresh capture · passed</p><!--]--></figure><!--]--></div> <!--[0--><div class="ex-change"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 8h13M13 4l4 4-4 4M20 16H7M11 12l-4 4 4 4"></path></svg><!----> <strong>Behavior change</strong> <span>This commit records no reason for a change of this entity.</span> <!--[-1--><!--]--><!----></div><!--]--></section> <!--[-1--><!--]--><!----><!--]--><!----> <div class="hx-tabs" role="tablist" aria-label="Order list sections"><!--[--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components/app.component.order-list" aria-selected="false">Overview</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components/app.component.order-list?tab=contract" aria-selected="false">Contract</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components/app.component.order-list?tab=used-in" aria-selected="false">Used In</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components/app.component.order-list?tab=uses" aria-selected="true">Uses</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components/app.component.order-list?tab=states" aria-selected="false">States</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components/app.component.order-list/history" aria-selected="false">History</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components/app.component.order-list?tab=source" aria-selected="false">Source</a><!--]--><!--]--></div><!----><!----> <!--[0--><div role="tabpanel" aria-label="Order list uses"><div class="ex-relations"><!--[-1--><!--]--> <!--[0--><section class="ex-card" aria-label="Uses"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 3l9 4.5-9 4.5-9-4.5L12 3zM3 12l9 4.5 9-4.5M3 16.5L12 21l9-4.5"></path></svg><!----> Uses <span class="ex-count">3</span></h2> <!--[-1--><!--]--> <!--[--><h3><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9"></path></svg><!----> Components <span class="ex-count">1</span></h3> <ul class="ex-related"><!--[--><li><span><a href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/components/app.component.order-card"><!---->Order card<!----></a><!----> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--[0--><span class="ex-soft ex-block">Shows one order.</span><!--]--></span></li><!--]--></ul><h3><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M3.5 20c2 0 2.7-1 3.1-3L9 6.6C9.4 4.7 10.3 4 12 4M5.5 10.5h7M14.5 13l5 6M19.5 13l-5 6"></path></svg><!----> Functions <span class="ex-count">1</span></h3> <ul class="ex-related"><!--[--><li><span><a href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions/app.function.filter-orders"><!---->Filter orders<!----></a><!----> <!--[-1--><!--]--> <!--[0--><span class="ex-pill gold">Changed</span><!--]--> <!--[0--><span class="ex-soft ex-block">Returns the orders whose name matches a search.</span><!--]--></span></li><!--]--></ul><h3><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 4l8 4.5-8 4.5-8-4.5L12 4zM4 13.5L12 18l8-4.5"></path></svg><!----> Services <span class="ex-count">1</span></h3> <ul class="ex-related"><!--[--><li><span><a href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/services/app.service.order-store"><!---->Order store<!----></a><!----> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--[0--><span class="ex-soft ex-block">Reads the orders of one account.</span><!--]--></span></li><!--]--></ul><!--]--> <!--[-1--><!--]--></section><!--]--></div><!----></div><!--]--><!----><!--]--><!----><!--]--></div><!--]--><!--]-->"
+
+ ❯ test/components/entity-relations.test.ts:38:15
+     36|  const base = `/harness/branch/feature%2Forders/commit/${commits.middl…
+     37|  expect(uses).toContain(`href="${base}/components/${ids.card}"`);
+     38|  expect(uses).toContain(`href="${base}/helpers/filterOrders/in/${ids.f…
+       |               ^
+     39|  expect(uses).toContain(`href="${base}/services/${ids.store}"`);
+     40|  expect(used).toContain(`href="${base}/pages/${ids.page}"`);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 5 passed (9)
+   Start at  11:46:52
+   Duration  2.06s (transform 919ms, setup 0ms, collect 1.44s, tests 56ms, environment 0ms, prepare 87ms)
+

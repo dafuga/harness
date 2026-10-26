@@ -1,0 +1,45 @@
+
+Running 6 tests using 1 worker
+
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.explorer-ui-explorer-translations-screen at desktop (5.6s)
+Testing stopped early after 1 maximum allowed failures.
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.explorer-ui-explorer-translations-screen at desktop 
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator: locator('[data-preview-unit="reports.component.explorer-ui-explorer-translations-screen"]').getByRole('combobox', { name: 'Language' })
+    Expected: "fr"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveValue" locator('[data-preview-unit="reports.component.explorer-ui-explorer-translations-screen"]').getByRole('combobox', { name: 'Language' }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-ui-explorer-translations-screen"]').getByRole('combobox', { name: 'Language' })
+
+
+       at support/component-previews/previewCaptureAssertions.ts:67
+
+      65 | /** The translation matrix exercises the shared selector and its three-column projection. */
+      66 | export async function assertTranslationControls(component: Locator) {
+    > 67 | 	await expect(component.getByRole('combobox', { name: 'Language' })).toHaveValue('fr');
+         | 	                                                                    ^
+      68 | 	await expect(component.getByRole('columnheader')).toHaveText(['English', 'French', 'Used In']);
+      69 | 	await expect(component.locator('tbody code, tbody small')).toHaveCount(0);
+      70 | 	await expect(component.getByRole('columnheader', { name: 'English', exact: true })).toBeVisible();
+        at assertTranslationControls (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BiDcuA/packages/reports/tests/e2e/support/component-previews/previewCaptureAssertions.ts:67:70)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BiDcuA/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:93:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-155da-nslations-screen-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-155da-nslations-screen-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-155da-nslations-screen-at-desktop/error-context.md
+
+  1 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:84:3 › reports.component.explorer-ui-explorer-translations-screen at desktop 
+  5 did not run
+  1 error was not a part of any test, see above for details

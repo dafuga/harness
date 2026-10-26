@@ -1,0 +1,36 @@
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/native-desktop.spec.ts:180:1 › native isolated window uses real Git LFS planning and rejects historical writes/navigation (7.4s)
+
+
+  1) tests/e2e/native-desktop.spec.ts:180:1 › native isolated window uses real Git LFS planning and rejects historical writes/navigation 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'No design image yet' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'No design image yet' }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'No design image yet' })
+
+
+      77 | 	await page.getByRole('button', { name: 'Create plan', exact: true }).click();
+      78 | 	await capture(page, 'draft');
+    > 79 | 	await expect(page.getByRole('heading', { name: 'No design image yet' })).toBeVisible();
+         | 	                                                                         ^
+      80 | 	const tip = git(root, 'rev-parse', 'HEAD');
+      81 | 	await expect(page.getByLabel('Commit', { exact: true })).toHaveValue(tip);
+      82 | 	await expect(page.getByText(`Tip · ${tip.slice(0, 7)}`, { exact: true })).toBeVisible();
+        at createThroughUi (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RKAYsZ/packages/desktop/tests/e2e/native-desktop.spec.ts:79:75)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RKAYsZ/packages/desktop/tests/e2e/native-desktop.spec.ts:202:18
+
+    Error Context: test-results/native-desktop-native-isol-26683-istorical-writes-navigation/error-context.md
+
+  1 failed
+    tests/e2e/native-desktop.spec.ts:180:1 › native isolated window uses real Git LFS planning and rejects historical writes/navigation 
+(node:44162) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

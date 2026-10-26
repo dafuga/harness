@@ -1,0 +1,38 @@
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run --exclude "test/**/*.e2e.test.ts" --exclude "test/packaged-reports.e2e.test.ts" "$@"' -- test/services/verification-evidence/test-contract.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-T31BGX
+
+ ❯ test/services/verification-evidence/test-contract.test.ts (2 tests | 1 failed) 16ms
+   × validate initialized and invalid registries against declared cases 11ms
+     → expected '' to contain 'missing executed case'
+   ✓ compare initialized contracts preserves identities unless capabilities change 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-contract.test.ts > validate initialized and invalid registries against declared cases
+AssertionError: expected '' to contain 'missing executed case'
+
+- Expected
++ Received
+
+- missing executed case
+
+ ❯ assertExecutedCases test/services/verification-evidence/test-contract.test.ts:189:28
+    187|   });
+    188|  expect(run([outcome])).toEqual([]);
+    189|  expect(run([]).join(' ')).toContain('missing executed case');
+       |                            ^
+    190|  expect(run([outcome, outcome]).join(' ')).toContain('duplicate execut…
+    191|  expect(run([{ ...outcome, title: 'unregistered bug' }]).join(' ')).to…
+ ❯ test/services/verification-evidence/test-contract.test.ts:62:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  16:01:21
+   Duration  2.78s (transform 127ms, setup 82ms, collect 306ms, tests 16ms, environment 0ms, prepare 26ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1

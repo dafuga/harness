@@ -1,0 +1,37 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [11.83s]
+Pinned measurement-only driver b419ff221e5dfb25c93992cb4b5d772565f80ea2 over unchanged selected source 3b920395ee031723fe5935f7b6e3c71c4f9d804d
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mlbaWG
+
+ ✓ .cache/harness/helper-workloads/helper-workload.test.ts (10 tests) 72ms
+ ✓ test/case.test.ts (2 tests) 7ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  02:49:55
+   Duration  2.98s (transform 67ms, setup 9ms, collect 254ms, tests 79ms, environment 0ms, prepare 55ms)
+

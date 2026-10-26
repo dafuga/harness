@@ -1,0 +1,28 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-l5SRlv
+
+ ❯ test/services/verification-evidence/test-artifact.test.ts (1 test | 1 failed) 12ms
+   × capture initialized audio artifacts retains playable bytes and rejects invalid properties 11ms
+     → artifacts must belong to their registered case/state/slot: expected [Function] to throw an error
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-artifact.test.ts > capture initialized audio artifacts retains playable bytes and rejects invalid properties
+AssertionError: artifacts must belong to their registered case/state/slot: expected [Function] to throw an error
+ ❯ assertInvalidArtifacts test/services/verification-evidence/test-artifact.test.ts:66:5
+     64|    () => service.capture(changed),
+     65|    'artifacts must belong to their registered case/state/slot'
+     66|   ).toThrow();
+       |     ^
+     67|  expect(() =>
+     68|   new TestArtifactService({ HARNESS_VERIFY_REVISION: 'invalid' }).capt…
+ ❯ test/services/verification-evidence/test-artifact.test.ts:41:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  18:10:32
+   Duration  2.58s (transform 69ms, setup 85ms, collect 15ms, tests 12ms, environment 0ms, prepare 27ms)
+

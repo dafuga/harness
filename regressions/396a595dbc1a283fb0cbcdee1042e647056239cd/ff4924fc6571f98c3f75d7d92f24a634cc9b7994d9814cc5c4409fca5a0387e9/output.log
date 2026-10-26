@@ -1,0 +1,1042 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-24LiiY
+
+ ✓ test/units-policy.e2e.test.ts (5 tests) 38074ms
+   ✓ CLI exposes execution targets and component versions, and refuses relaxed tolerance  7715ms
+   ✓ CLI records lineage when retired source is recreated under a new identity  6737ms
+   ✓ CLI labels a supplied responsibility as declared and a generated one as derived  3354ms
+   ✓ public configs require real source controls and retain their reviewed declarations  13290ms
+   ✓ source-bound reviews repair historical default runtime targets without changing source commits  6977ms
+ ❯ test/module-data.e2e.test.ts (3 tests | 1 failed) 18199ms
+   × validate persists revision-bound module gaps, filters them and invalidates cached searches 8343ms
+     → A changed review must invalidate committed module admission: expected { …(2) } to be undefined
+   ✓ validate commits source-derived page API usage and explicit visual data gaps  4727ms
+   ✓ historical helper layout does not masquerade as missing module metadata  5126ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/module-data.e2e.test.ts > validate persists revision-bound module gaps, filters them and invalidates cached searches
+AssertionError: A changed review must invalidate committed module admission: expected { …(2) } to be undefined
+
+[32m- Expected:[39m 
+undefined
+
+[31m+ Received:[39m 
+{
+  "commit": "fa6dc5b02a148eeed91a01552efa0d676f041f55",
+  "data": {
+    "commit": "7eff984bd37427e1211625272024376119061a02",
+    "declarations": [
+      {
+        "budgets": {
+          "complexity": "frozen",
+          "performance": [],
+          "size": "frozen",
+        },
+        "contract": {
+          "errors": [],
+          "inputs": [],
+          "origin": "derived",
+          "outputs": [
+            {
+              "name": "helloHarness",
+              "type": "string",
+            },
+          ],
+        },
+        "dependencies": [],
+        "id": "entry.index",
+        "kind": "entry",
+        "owns": {
+          "source": [
+            "src/index.ts",
+          ],
+          "symbols": [
+            "helloHarness",
+          ],
+        },
+        "responsibility": "Owns the index entry point.",
+        "responsibilityOrigin": "derived",
+        "runtime": {
+          "entry": "src/index.ts",
+          "kind": "module",
+          "targets": [
+            {
+              "entry": "src/index.ts",
+              "kind": "module",
+            },
+          ],
+        },
+        "scenarios": [],
+        "schemaVersion": 1,
+        "status": "active",
+        "title": "index",
+      },
+      {
+        "budgets": {
+          "complexity": "frozen",
+          "performance": [],
+          "size": "frozen",
+        },
+        "contract": {
+          "errors": [
+            {
+              "name": "RangeError",
+              "type": "thrown",
+            },
+          ],
+          "inputs": [
+            {
+              "name": "slugify.input",
+              "type": "string",
+            },
+            {
+              "name": "slugify.separator",
+              "type": "unknown",
+            },
+          ],
+          "origin": "derived",
+          "outputs": [
+            {
+              "name": "slugify",
+              "type": "string",
+            },
+          ],
+        },
+        "dependencies": [],
+        "id": "function.slugify",
+        "kind": "function",
+        "owns": {
+          "source": [
+            "src/utils/slugify.ts",
+          ],
+          "symbols": [
+            "slugify",
+          ],
+        },
+        "responsibility": "Owns the slugify shared function.",
+        "responsibilityOrigin": "derived",
+        "runtime": {
+          "entry": "src/utils/slugify.ts",
+          "kind": "module",
+          "targets": [
+            {
+              "entry": "src/utils/slugify.ts",
+              "kind": "module",
+            },
+          ],
+        },
+        "scenarios": [],
+        "schemaVersion": 1,
+        "status": "active",
+        "title": "slugify",
+      },
+      {
+        "budgets": {
+          "complexity": "frozen",
+          "performance": [],
+          "size": "frozen",
+        },
+        "contract": {
+          "errors": [],
+          "inputs": [],
+          "origin": "derived",
+          "outputs": [],
+        },
+        "dependencies": [],
+        "id": "script.harness-audit",
+        "kind": "script",
+        "owns": {
+          "source": [
+            "scripts/harness-audit.ts",
+          ],
+          "symbols": [],
+        },
+        "responsibility": "Owns the harness-audit build or maintenance script.",
+        "responsibilityOrigin": "derived",
+        "runtime": {
+          "entry": "scripts/harness-audit.ts",
+          "kind": "module",
+          "targets": [
+            {
+              "entry": "scripts/harness-audit.ts",
+              "kind": "module",
+            },
+          ],
+        },
+        "scenarios": [],
+        "schemaVersion": 1,
+        "status": "active",
+        "title": "harness-audit",
+      },
+      {
+        "budgets": {
+          "complexity": "frozen",
+          "performance": [],
+          "size": "frozen",
+        },
+        "contract": {
+          "errors": [],
+          "inputs": [
+            {
+              "name": "TitleService.run.title",
+              "type": "string",
+            },
+          ],
+          "origin": "derived",
+          "outputs": [
+            {
+              "name": "TitleService.run",
+              "type": "string",
+            },
+          ],
+        },
+        "dependencies": [
+          {
+            "origin": "derived",
+            "unit": "function.slugify",
+            "via": "import",
+          },
+        ],
+        "id": "service.title",
+        "kind": "service",
+        "owns": {
+          "source": [
+            "src/services/TitleService.ts",
+          ],
+          "symbols": [
+            "TitleService",
+            "TitleService.run",
+          ],
+        },
+        "responsibility": "Serve normalized titles through the declared title service.",
+        "responsibilityOrigin": "declared",
+        "runtime": {
+          "entry": "src/services/TitleService.ts",
+          "kind": "module",
+          "targets": [
+            {
+              "entry": "src/services/TitleService.ts",
+              "kind": "module",
+            },
+          ],
+        },
+        "scenarios": [],
+        "schemaVersion": 1,
+        "status": "active",
+        "title": "TitleService",
+      },
+    ],
+    "digest": "11f8cd9ee3e5f1efbdb18234dd5110e8380c6fe3ec1d81eee3cc178135197306",
+    "inputs": {
+      "evidence": null,
+      "notes": null,
+    },
+    "issues": [],
+    "modules": [
+      {
+        "category": null,
+        "id": "entry.index",
+        "issues": [],
+        "kind": "entry",
+      },
+      {
+        "category": null,
+        "id": "function.slugify",
+        "issues": [],
+        "kind": "function",
+      },
+      {
+        "category": null,
+        "id": "script.harness-audit",
+        "issues": [],
+        "kind": "script",
+      },
+      {
+        "category": "services",
+        "id": "service.title",
+        "issues": [],
+        "kind": "service",
+      },
+    ],
+    "producer": "harness-module-data-v1.2026-10-25.5",
+    "references": [],
+    "registry": {
+      "available": true,
+      "graph": {
+        "edges": [
+          {
+            "from": "unit:service.title",
+            "to": "unit:function.slugify",
+            "via": "import",
+          },
+        ],
+        "nodes": [
+          {
+            "id": "unit:entry.index",
+            "kind": "unit",
+          },
+          {
+            "id": "unit:function.slugify",
+            "kind": "unit",
+          },
+          {
+            "id": "unit:script.harness-audit",
+            "kind": "unit",
+          },
+          {
+            "id": "unit:service.title",
+            "kind": "unit",
+          },
+        ],
+      },
+      "scenarios": [],
+      "units": [
+        {
+          "budgets": {
+            "complexity": "frozen",
+            "performance": [],
+            "size": "frozen",
+          },
+          "contract": {
+            "errors": [],
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "helloHarness",
+                "type": "string",
+              },
+            ],
+          },
+          "dependencies": [],
+          "helpers": [],
+          "id": "entry.index",
+          "kind": "entry",
+          "owns": {
+            "source": [
+              "src/index.ts",
+            ],
+            "symbols": [
+              "helloHarness",
+            ],
+          },
+          "responsibility": "Owns the index entry point.",
+          "runtime": {
+            "kind": "module",
+            "targets": [
+              {
+                "entry": "src/index.ts",
+                "kind": "module",
+              },
+            ],
+          },
+          "scenarios": [],
+          "serviceClasses": [],
+          "serviceConsumers": [],
+          "serviceExports": [],
+          "sourceMeasurements": [
+            {
+              "artifacts": [],
+              "method": "Sum of the byte sizes of the owned source files.",
+              "metric": "source-bytes",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "entry.index",
+              "unitOfMeasure": "bytes",
+              "value": 73,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Sum of the line counts of the owned source files.",
+              "metric": "source-lines",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "entry.index",
+              "unitOfMeasure": "lines",
+              "value": 3,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Decision points in owned source, plus one per function or method.",
+              "metric": "complexity",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "entry.index",
+              "unitOfMeasure": "points",
+              "value": 1,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Unit dependencies plus distinct external modules referenced.",
+              "metric": "dependencies",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "entry.index",
+              "unitOfMeasure": "count",
+              "value": 0,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Not applicable.",
+              "metric": "artifact-bytes",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unavailable": "A module unit emits no separate artifact.",
+              "unit": "entry.index",
+              "unitOfMeasure": "bytes",
+              "value": null,
+              "workload": null,
+            },
+          ],
+          "status": "active",
+          "title": "index",
+          "version": "1a4f23fda0d36408",
+        },
+        {
+          "budgets": {
+            "complexity": "frozen",
+            "performance": [],
+            "size": "frozen",
+          },
+          "contract": {
+            "errors": [
+              {
+                "name": "RangeError",
+                "type": "thrown",
+              },
+            ],
+            "inputs": [
+              {
+                "name": "slugify.input",
+                "type": "string",
+              },
+              {
+                "name": "slugify.separator",
+                "type": "unknown",
+              },
+            ],
+            "outputs": [
+              {
+                "name": "slugify",
+                "type": "string",
+              },
+            ],
+          },
+          "dependencies": [],
+          "helpers": [
+            {
+              "consumers": [
+                [Object],
+              ],
+              "inputs": [
+                [Object],
+                [Object],
+              ],
+              "kind": "function",
+              "name": "slugify",
+              "output": "string",
+              "pure": false,
+              "source": "src/utils/slugify.ts",
+            },
+          ],
+          "id": "function.slugify",
+          "kind": "function",
+          "owns": {
+            "source": [
+              "src/utils/slugify.ts",
+            ],
+            "symbols": [
+              "slugify",
+            ],
+          },
+          "responsibility": "Owns the slugify shared function.",
+          "runtime": {
+            "kind": "module",
+            "targets": [
+              {
+                "entry": "src/utils/slugify.ts",
+                "kind": "module",
+              },
+            ],
+          },
+          "scenarios": [],
+          "serviceClasses": [],
+          "serviceConsumers": [],
+          "serviceExports": [],
+          "sourceMeasurements": [
+            {
+              "artifacts": [],
+              "method": "Sum of the byte sizes of the owned source files.",
+              "metric": "source-bytes",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "function.slugify",
+              "unitOfMeasure": "bytes",
+              "value": 193,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Sum of the line counts of the owned source files.",
+              "metric": "source-lines",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "function.slugify",
+              "unitOfMeasure": "lines",
+              "value": 4,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Decision points in owned source, plus one per function or method.",
+              "metric": "complexity",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "function.slugify",
+              "unitOfMeasure": "points",
+              "value": 2,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Unit dependencies plus distinct external modules referenced.",
+              "metric": "dependencies",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "function.slugify",
+              "unitOfMeasure": "count",
+              "value": 0,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Not applicable.",
+              "metric": "artifact-bytes",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unavailable": "A module unit emits no separate artifact.",
+              "unit": "function.slugify",
+              "unitOfMeasure": "bytes",
+              "value": null,
+              "workload": null,
+            },
+          ],
+          "status": "active",
+          "title": "slugify",
+          "version": "35bd7e0751375ec1",
+        },
+        {
+          "budgets": {
+            "complexity": "frozen",
+            "performance": [],
+            "size": "frozen",
+          },
+          "contract": {
+            "errors": [],
+            "inputs": [],
+            "outputs": [],
+          },
+          "dependencies": [],
+          "helpers": [],
+          "id": "script.harness-audit",
+          "kind": "script",
+          "owns": {
+            "source": [
+              "scripts/harness-audit.ts",
+            ],
+            "symbols": [],
+          },
+          "responsibility": "Owns the harness-audit build or maintenance script.",
+          "runtime": {
+            "kind": "module",
+            "targets": [
+              {
+                "entry": "scripts/harness-audit.ts",
+                "kind": "module",
+              },
+            ],
+          },
+          "scenarios": [],
+          "serviceClasses": [],
+          "serviceConsumers": [],
+          "serviceExports": [],
+          "sourceMeasurements": [
+            {
+              "artifacts": [],
+              "method": "Sum of the byte sizes of the owned source files.",
+              "metric": "source-bytes",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "script.harness-audit",
+              "unitOfMeasure": "bytes",
+              "value": 305,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Sum of the line counts of the owned source files.",
+              "metric": "source-lines",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "script.harness-audit",
+              "unitOfMeasure": "lines",
+              "value": 11,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Decision points in owned source, plus one per function or method.",
+              "metric": "complexity",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "script.harness-audit",
+              "unitOfMeasure": "points",
+              "value": 1,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Unit dependencies plus distinct external modules referenced.",
+              "metric": "dependencies",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "script.harness-audit",
+              "unitOfMeasure": "count",
+              "value": 0,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Not applicable.",
+              "metric": "artifact-bytes",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unavailable": "A module unit emits no separate artifact.",
+              "unit": "script.harness-audit",
+              "unitOfMeasure": "bytes",
+              "value": null,
+              "workload": null,
+            },
+          ],
+          "status": "active",
+          "title": "harness-audit",
+          "version": "e09a583ba553b0a5",
+        },
+        {
+          "budgets": {
+            "complexity": "frozen",
+            "performance": [],
+            "size": "frozen",
+          },
+          "contract": {
+            "errors": [],
+            "inputs": [
+              {
+                "name": "TitleService.run.title",
+                "type": "string",
+              },
+            ],
+            "outputs": [
+              {
+                "name": "TitleService.run",
+                "type": "string",
+              },
+            ],
+          },
+          "dependencies": [
+            {
+              "unit": "function.slugify",
+              "via": "import",
+            },
+          ],
+          "helpers": [],
+          "id": "service.title",
+          "kind": "service",
+          "owns": {
+            "source": [
+              "src/services/TitleService.ts",
+            ],
+            "symbols": [
+              "TitleService",
+              "TitleService.run",
+            ],
+          },
+          "responsibility": "Serve normalized titles through the declared title service.",
+          "runtime": {
+            "kind": "module",
+            "targets": [
+              {
+                "entry": "src/services/TitleService.ts",
+                "kind": "module",
+              },
+            ],
+          },
+          "scenarios": [],
+          "serviceClasses": [
+            {
+              "constructedBy": [],
+              "consumers": [],
+              "methods": [
+                "run",
+              ],
+              "name": "TitleService",
+              "source": "src/services/TitleService.ts",
+            },
+          ],
+          "serviceConsumers": [],
+          "serviceExports": [
+            {
+              "name": "TitleService",
+              "source": "src/services/TitleService.ts",
+            },
+          ],
+          "sourceMeasurements": [
+            {
+              "artifacts": [],
+              "method": "Sum of the byte sizes of the owned source files.",
+              "metric": "source-bytes",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "service.title",
+              "unitOfMeasure": "bytes",
+              "value": 133,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Sum of the line counts of the owned source files.",
+              "metric": "source-lines",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "service.title",
+              "unitOfMeasure": "lines",
+              "value": 7,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Decision points in owned source, plus one per function or method.",
+              "metric": "complexity",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "service.title",
+              "unitOfMeasure": "points",
+              "value": 1,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Unit dependencies plus distinct external modules referenced.",
+              "metric": "dependencies",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unit": "service.title",
+              "unitOfMeasure": "count",
+              "value": 1,
+              "workload": null,
+            },
+            {
+              "artifacts": [],
+              "method": "Not applicable.",
+              "metric": "artifact-bytes",
+              "profile": null,
+              "testedRevision": "7eff984bd37427e1211625272024376119061a02",
+              "unavailable": "A module unit emits no separate artifact.",
+              "unit": "service.title",
+              "unitOfMeasure": "bytes",
+              "value": null,
+              "workload": null,
+            },
+          ],
+          "status": "active",
+          "title": "TitleService",
+          "version": "1d7e305261e8a1bd",
+        },
+      ],
+    },
+    "relationships": {
+      "entry.index": {
+        "apis": [],
+        "components": [],
+        "configs": [],
+        "functions": [],
+        "layouts": [],
+        "models": [],
+        "pages": [],
+        "services": [],
+        "support": [],
+        "types": [],
+        "usedBy": [],
+      },
+      "function.slugify": {
+        "apis": [],
+        "components": [],
+        "configs": [],
+        "functions": [],
+        "layouts": [],
+        "models": [],
+        "pages": [],
+        "services": [],
+        "support": [],
+        "types": [],
+        "usedBy": [
+          "service.title",
+        ],
+      },
+      "script.harness-audit": {
+        "apis": [],
+        "components": [],
+        "configs": [],
+        "functions": [],
+        "layouts": [],
+        "models": [],
+        "pages": [],
+        "services": [],
+        "support": [],
+        "types": [],
+        "usedBy": [],
+      },
+      "service.title": {
+        "apis": [],
+        "components": [],
+        "configs": [],
+        "functions": [],
+        "layouts": [],
+        "models": [],
+        "pages": [],
+        "services": [],
+        "support": [
+          "function.slugify",
+        ],
+        "types": [],
+        "usedBy": [],
+      },
+    },
+    "reviews": [
+      {
+        "commit": "7eff984bd37427e1211625272024376119061a02",
+        "digest": "c2fee431282de07182cda81828fcd80f2393dfa81dda75d2dd8ea15b3a114a70",
+        "files": {
+          "src/services/TitleService.ts": "dae089e0d5aeaacde17c27c48d2368ddc6929240",
+        },
+        "metadata": {
+          "responsibility": "Serve normalized titles through the declared title service.",
+        },
+        "reason": "Review the responsibility against this revision source.",
+        "schemaVersion": 1,
+        "tree": "4b6201ead636598addb164d75b29c39b629aeef2",
+        "unit": "service.title",
+      },
+    ],
+    "schemaVersion": 1,
+    "sourceGraph": {
+      "edges": [
+        {
+          "from": "file:eslint.config.js",
+          "to": "file:eslint.harness-rules.js",
+          "via": "import",
+        },
+        {
+          "from": "file:eslint.harness-rules.js",
+          "to": "file:harness.audit.json",
+          "via": "url",
+        },
+        {
+          "from": "file:src/services/TitleService.ts",
+          "to": "file:src/utils/slugify.ts",
+          "via": "import",
+        },
+        {
+          "from": "file:test/index.test.ts",
+          "to": "file:src/index.ts",
+          "via": "import",
+        },
+        {
+          "from": "unit:entry.index",
+          "to": "file:src/index.ts",
+          "via": "owns",
+        },
+        {
+          "from": "unit:function.slugify",
+          "to": "file:src/utils/slugify.ts",
+          "via": "owns",
+        },
+        {
+          "from": "unit:script.harness-audit",
+          "to": "file:scripts/harness-audit.ts",
+          "via": "owns",
+        },
+        {
+          "from": "unit:service.title",
+          "to": "file:src/services/TitleService.ts",
+          "via": "owns",
+        },
+      ],
+      "nodes": [
+        {
+          "id": "file:.prettierignore",
+          "kind": "other",
+        },
+        {
+          "id": "file:.prettierrc",
+          "kind": "global",
+        },
+        {
+          "id": "file:eslint.config.js",
+          "kind": "global",
+        },
+        {
+          "id": "file:eslint.harness-rules.js",
+          "kind": "global",
+        },
+        {
+          "id": "file:harness.audit.json",
+          "kind": "global",
+        },
+        {
+          "id": "file:package.json",
+          "kind": "global",
+        },
+        {
+          "id": "file:scripts/harness-audit.ts",
+          "kind": "source",
+          "unit": "script.harness-audit",
+        },
+        {
+          "id": "file:specification/units/entry.index.json",
+          "kind": "registry",
+        },
+        {
+          "id": "file:specification/units/function.slugify.json",
+          "kind": "registry",
+        },
+        {
+          "id": "file:specification/units/script.harness-audit.json",
+          "kind": "registry",
+        },
+        {
+          "id": "file:specification/units/service.title.json",
+          "kind": "registry",
+        },
+        {
+          "id": "file:src/index.ts",
+          "kind": "source",
+          "unit": "entry.index",
+        },
+        {
+          "id": "file:src/services/TitleService.ts",
+          "kind": "source",
+          "unit": "service.title",
+        },
+        {
+          "id": "file:src/utils/slugify.ts",
+          "kind": "source",
+          "unit": "function.slugify",
+        },
+        {
+          "id": "file:test/index.test.ts",
+          "kind": "test",
+        },
+        {
+          "id": "file:tsconfig.json",
+          "kind": "global",
+        },
+        {
+          "id": "unit:entry.index",
+          "kind": "unit",
+        },
+        {
+          "id": "unit:function.slugify",
+          "kind": "unit",
+        },
+        {
+          "id": "unit:script.harness-audit",
+          "kind": "unit",
+        },
+        {
+          "id": "unit:service.title",
+          "kind": "unit",
+        },
+      ],
+      "uncertain": [],
+    },
+    "sourceIssues": [],
+    "tree": "4b6201ead636598addb164d75b29c39b629aeef2",
+    "versions": {
+      "entry.index": {
+        "contract": "7dda486cd139b50e51a76b8eb515290e052f5a90c0142370166bb1bda0b2861e",
+        "files": [
+          {
+            "hash": "f7e231a8fed7aecfda4a61c5465d65f8efbcbfe3",
+            "path": "src/index.ts",
+          },
+        ],
+        "manifest": "d01e3398d916962d3178ae29abb8cee41ddb79e39481a8ee5481b615bc30109a",
+        "runtime": "468f0c71d780c33993456f77f9379f0580c6d82970cdfbf6ea659c856697291f",
+        "source": "e613dae1a19e8fc3a05ec005e5f64b63b4e398a4b6efddb0d0c88ef2af40a597",
+        "unit": "entry.index",
+      },
+      "function.slugify": {
+        "contract": "a20f25175c38861951955b9e81ae543b19ca5a3b4cd86351ee1661f1f63e7564",
+        "files": [
+          {
+            "hash": "bbd46f0b5a4d508f2834c48b5eec04e7823b07fb",
+            "path": "src/utils/slugify.ts",
+          },
+        ],
+        "manifest": "cb24cde6be76c455e8d9f1c5997553e7014eff9e710e7971ea3bdd9a12cf5ba0",
+        "runtime": "07304def06b54418262f4817af835b0306e548bb7efbddf43214f0f9bb91a989",
+        "source": "70009bfb7ae7be7ec28691d287dea3d5006eaf8f670868ed0047b707c377b39a",
+        "unit": "function.slugify",
+      },
+      "script.harness-audit": {
+        "contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
+        "files": [
+          {
+            "hash": "148f22a284b551be4637eccd9d00923a93bf5897",
+            "path": "scripts/harness-audit.ts",
+          },
+        ],
+        "manifest": "46cd8986676c39854e83482b7494e97cd5476accf2806f4f38bf4fc9fcf24ba0",
+        "runtime": "acd242340ae59ca18b1cbab3668080fd4e19f8981d4072f1d28823868264a252",
+        "source": "df511b947ebf54fb3735e44281b8de03397d10b5bf9ddfa399bd3549661bef3a",
+        "unit": "script.harness-audit",
+      },
+      "service.title": {
+        "contract": "65077fe5d7503672854a9b504e55a1c7f09660abc6b0246b1357a1eb13015774",
+        "files": [
+          {
+            "hash": "dae089e0d5aeaacde17c27c48d2368ddc6929240",
+            "path": "src/services/TitleService.ts",
+          },
+        ],
+        "manifest": "34d1585764eb7d12081a3dba78856efefe3ffe222cbe0872d4673fabddd5efc2",
+        "runtime": "8decf9f1602370a9b23fa1077977f3f0023aa7742b1fb406caad682ca92afaca",
+        "source": "6903f09a525cf2b58553bfb99bf84993503f7785b93f21fd145bd65a46b2ce75",
+        "unit": "service.title",
+      },
+    },
+  },
+}
+
+ ❯ rejectStaleReview test/module-data.e2e.test.ts:200:4
+    198|   await repository.read(identity),
+    199|   'A changed review must invalidate committed module admission'
+    200|  ).toBeUndefined();
+       |    ^
+    201|  expect(
+    202|   await new ModuleDataCache(repository).read(identity),
+ ❯ test/module-data.e2e.test.ts:47:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 7 passed (8)
+   Start at  12:39:38
+   Duration  59.53s (transform 145ms, setup 168ms, collect 101ms, tests 56.27s, environment 0ms, prepare 61ms)
+

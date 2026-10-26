@@ -1,0 +1,37 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-L4nSKG
+
+ ✓ test/services/unit-index.test.ts (12 tests) 3551ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  3388ms
+ ❯ test/readable-unit-contracts.test.ts (2 tests | 1 failed) 70ms
+   ✓ every active function and component explains its contract without requiring source code 66ms
+   × SQLite catalog functions and persisted models publish declared human-readable contracts 3ms
+     → expected 'Owns the ProviderSwitch data model.' to match /\bwraps\b/i
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/readable-unit-contracts.test.ts > SQLite catalog functions and persisted models publish declared human-readable contracts
+AssertionError: expected 'Owns the ProviderSwitch data model.' to match /\bwraps\b/i
+
+- Expected: 
+/\bwraps\b/i
+
++ Received: 
+"Owns the ProviderSwitch data model."
+
+ ❯ test/readable-unit-contracts.test.ts:51:32
+     49|    gaps.push(`${id}: responsibility is not declared`);
+     50|   if (id === 'model.provider-switch') {
+     51|    expect(unit.responsibility).toMatch(/\bwraps\b/i);
+       |                                ^
+     52|    expect(unit.responsibility).toMatch(/\bswitches\b/);
+     53|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 13 passed (14)
+   Start at  12:21:09
+   Duration  6.90s (transform 172ms, setup 132ms, collect 308ms, tests 3.62s, environment 0ms, prepare 58ms)
+

@@ -1,0 +1,145 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [8.97s]
+$ playwright test "tests/e2e/ui-references.spec.ts" --grep "project agent|round project chat" --timeout "10000"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 4 tests using 1 worker
+
+  ✘  1 tests/e2e/ui-references.spec.ts:83:1 › the project agent shows the unit its run is working on as a link (6.8s)
+  ✘  2 tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on pages (434ms)
+  ✘  3 tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on functions/app.function.format-time (5.4s)
+  ✘  4 tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on functions/app.function.format-time/history (5.4s)
+
+
+  1) tests/e2e/ui-references.spec.ts:83:1 › the project agent shows the unit its run is working on as a link 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected: "http://127.0.0.1:5796/projects/local-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/harness/branch/feat%2Falpha/functions/app.function.format-time/history"
+    Received: "http://127.0.0.1:5796/projects/local-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/harness/branch/feat%2Falpha/functions/app.function.format-time"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        - locator resolved to <html lang="en" data-environment="electron">…</html>
+        - unexpected value "http://127.0.0.1:5796/projects/local-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/harness/branch/feat%2Falpha/pages"
+        13 × locator resolved to <html lang="en" data-environment="electron">…</html>
+           - unexpected value "http://127.0.0.1:5796/projects/local-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/harness/branch/feat%2Falpha/functions/app.function.format-time"
+
+
+      104 | 	await expect(agent.getByRole('link', { name: 'Order frame', exact: true })).toBeVisible();
+      105 | 	await agent.getByRole('status').getByRole('link', { name: 'Format time', exact: true }).click();
+    > 106 | 	await expect(page).toHaveURL(alphaAt('functions/app.function.format-time/history'));
+          | 	                   ^
+      107 | 	await expect(page.getByRole('button', { name: 'Work with agent', exact: true })).toBeVisible();
+      108 | });
+      109 |
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pIc9u6/packages/desktop/tests/e2e/ui-references.spec.ts:106:21
+
+    Error Context: test-results/ui-references-the-project--19ed3-run-is-working-on-as-a-link/error-context.md
+
+  2) tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on pages ─────
+
+    Error: round chat bubble
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 2
+    Received:    144.015625
+
+      134 | 		await expect(launcher).toBeVisible();
+      135 | 		const box = (await launcher.boundingBox())!;
+    > 136 | 		expect(Math.abs(box.width - box.height), 'round chat bubble').toBeLessThanOrEqual(2);
+          | 		                                                              ^
+      137 | 		await launcher.click();
+      138 | 		const panel = page.getByRole('complementary', { name: 'Project agent', exact: true });
+      139 | 		await expect(panel).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pIc9u6/packages/desktop/tests/e2e/ui-references.spec.ts:136:65
+
+    Error Context: test-results/ui-references-the-round-pr-b36be--remains-reachable-on-pages/error-context.md
+
+  3) tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on functions/app.function.format-time 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Work with agent', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Work with agent', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Work with agent', exact: true })
+
+
+      132 | 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+      133 | 		await remember(page, info, 'persistent-chat-' + shown.replaceAll('/', '-'));
+    > 134 | 		await expect(launcher).toBeVisible();
+          | 		                       ^
+      135 | 		const box = (await launcher.boundingBox())!;
+      136 | 		expect(Math.abs(box.width - box.height), 'round chat bubble').toBeLessThanOrEqual(2);
+      137 | 		await launcher.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pIc9u6/packages/desktop/tests/e2e/ui-references.spec.ts:134:26
+
+    Error Context: test-results/ui-references-the-round-pr-64580-ns-app-function-format-time/error-context.md
+
+  4) tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on functions/app.function.format-time/history 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Work with agent', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Work with agent', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Work with agent', exact: true })
+
+
+      132 | 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+      133 | 		await remember(page, info, 'persistent-chat-' + shown.replaceAll('/', '-'));
+    > 134 | 		await expect(launcher).toBeVisible();
+          | 		                       ^
+      135 | 		const box = (await launcher.boundingBox())!;
+      136 | 		expect(Math.abs(box.width - box.height), 'round chat bubble').toBeLessThanOrEqual(2);
+      137 | 		await launcher.click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pIc9u6/packages/desktop/tests/e2e/ui-references.spec.ts:134:26
+
+    Error Context: test-results/ui-references-the-round-pr-a5d09-unction-format-time-history/error-context.md
+
+  4 failed
+    tests/e2e/ui-references.spec.ts:83:1 › the project agent shows the unit its run is working on as a link 
+    tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on pages ──────
+    tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on functions/app.function.format-time 
+    tests/e2e/ui-references.spec.ts:128:2 › the round project chat remains reachable on functions/app.function.format-time/history 
+error: script "test:e2e" exited with code 1

@@ -1,0 +1,303 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vWEAOb
+
+ ❯ test/utils/explorer-ui/config-values.test.ts (15 tests | 5 failed) 21ms
+   ✓ reads config initializer expressions without running them: export const enabled = false; export const retryCount = 0; export const fallback = null; export const label = ""; 5ms
+   ✓ reads config initializer expressions without running them: export const options = {pageSize: 25, nested: {sort: "newest"}} as const; 1ms
+   ✓ reads config initializer expressions without running them: const limit = 10; export default defineConfig({limit, build: {enabled: true}}); 1ms
+   ✓ reads config initializer expressions without running them: export const endpoint = process.env.ORIGIN ?? "local"; 0ms
+   ✓ reads config initializer expressions without running them: export const options = {...defaults, limit: 25}; 0ms
+   ✓ reads config initializer expressions without running them: export function readConfig() { throw Error("never execute"); } export { options } from "./other"; 1ms
+   ✓ reads config initializer expressions without running them: const a = b; const b = a; export const loop = a; 0ms
+   ✓ reads config initializer expressions without running them: export const settings = {self: settings, "a.b": false, "1": 0}; 0ms
+   ✓ revision metadata carries nested config values from its own source 4ms
+   ✓ JSON config keys keep their actual scalar values 0ms
+   × reads inspectable collection structure without execution: export const schema = z.strictObject({id: z.string(), groups: z.array(z.string())}).superRefine(check); 4ms
+     → expected { name: 'schema', …(2) } to match object { name: 'schema', structure: { …(3) } }
+(2 matching properties omitted from actual)
+   × reads inspectable collection structure without execution: export const values = [{name: "First", flags: [true, false]}, "Second"]; 1ms
+     → expected { name: 'values', …(2) } to match object { name: 'values', structure: { …(3) } }
+(2 matching properties omitted from actual)
+   × reads inspectable collection structure without execution: export const empty = []; 0ms
+     → expected { name: 'empty', value: '[]', …(1) } to match object { name: 'empty', structure: { …(3) } }
+(2 matching properties omitted from actual)
+   × reads inspectable collection structure without execution: export const schema = z.object({settings: z.strictObject({enabled: z.boolean()})}); 0ms
+     → expected { name: 'schema', …(2) } to match object { name: 'schema', structure: { …(3) } }
+(2 matching properties omitted from actual)
+   × unresolved collection sizes stay unknown and source code is never executed 1ms
+     → expected [ { name: 'values', …(2) }, …(2) ] to match object [ { name: 'values', …(1) }, …(2) ]
+(4 matching properties omitted from actual)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-ui/config-values.test.ts > reads inspectable collection structure without execution: export const schema = z.strictObject({id: z.string(), groups: z.array(z.string())}).superRefine(check);
+ FAIL  test/utils/explorer-ui/config-values.test.ts > reads inspectable collection structure without execution: export const schema = z.object({settings: z.strictObject({enabled: z.boolean()})});
+AssertionError: expected { name: 'schema', …(2) } to match object { name: 'schema', structure: { …(3) } }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "name": "schema",
+-   "structure": {
+-     "count": 2,
+-     "entries": [
+-       {
+-         "name": "id",
+-         "node": {
+-           "kind": "expression",
+-           "source": "z.string()",
+-         },
+-       },
+-       {
+-         "name": "groups",
+-         "node": {
+-           "kind": "array",
+-           "source": "z.array(z.string())",
+-         },
+-       },
+-     ],
+-     "kind": "object",
+-   },
+  }
+
+ ❯ test/utils/explorer-ui/config-values.test.ts:137:19
+    135|   await measureWorkload('function.unit-metadata', 'config-collection-s…
+    136|    const result = configValues(source, 'settings.ts').find((item) => i…
+    137|    expect(result).toMatchObject({ name, structure });
+       |                   ^
+    138|   });
+    139|  }
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/utils/explorer-ui/config-values.test.ts:135:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/utils/explorer-ui/config-values.test.ts > reads inspectable collection structure without execution: export const values = [{name: "First", flags: [true, false]}, "Second"];
+AssertionError: expected { name: 'values', …(2) } to match object { name: 'values', structure: { …(3) } }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "name": "values",
+-   "structure": {
+-     "count": 2,
+-     "entries": [
+-       {
+-         "name": "0",
+-         "node": {
+-           "count": 2,
+-           "entries": [
+-             {
+-               "name": "name",
+-               "node": {
+-                 "kind": "expression",
+-                 "source": "\"First\"",
+-               },
+-             },
+-             {
+-               "name": "flags",
+-               "node": {
+-                 "count": 2,
+-                 "kind": "array",
+-               },
+-             },
+-           ],
+-           "kind": "object",
+-         },
+-       },
+-       {
+-         "name": "1",
+-         "node": {
+-           "kind": "expression",
+-           "source": "\"Second\"",
+-         },
+-       },
+-     ],
+-     "kind": "array",
+-   },
+  }
+
+ ❯ test/utils/explorer-ui/config-values.test.ts:137:19
+    135|   await measureWorkload('function.unit-metadata', 'config-collection-s…
+    136|    const result = configValues(source, 'settings.ts').find((item) => i…
+    137|    expect(result).toMatchObject({ name, structure });
+       |                   ^
+    138|   });
+    139|  }
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/utils/explorer-ui/config-values.test.ts:135:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/utils/explorer-ui/config-values.test.ts > reads inspectable collection structure without execution: export const empty = [];
+AssertionError: expected { name: 'empty', value: '[]', …(1) } to match object { name: 'empty', structure: { …(3) } }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "name": "empty",
+-   "structure": {
+-     "count": 0,
+-     "entries": [],
+-     "kind": "array",
+-   },
+  }
+
+ ❯ test/utils/explorer-ui/config-values.test.ts:137:19
+    135|   await measureWorkload('function.unit-metadata', 'config-collection-s…
+    136|    const result = configValues(source, 'settings.ts').find((item) => i…
+    137|    expect(result).toMatchObject({ name, structure });
+       |                   ^
+    138|   });
+    139|  }
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/utils/explorer-ui/config-values.test.ts:135:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  test/utils/explorer-ui/config-values.test.ts > unresolved collection sizes stay unknown and source code is never executed
+AssertionError: expected [ { name: 'values', …(2) }, …(2) ] to match object [ { name: 'values', …(1) }, …(2) ]
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -1,17 +1,11 @@
+  [
+    {
+      "name": "values",
+-     "structure": {
+-       "kind": "array",
+-     },
+    },
+    {
+      "name": "schema",
+-     "structure": {
+-       "kind": "object",
+-     },
+    },
+    {
+      "name": "unsafe",
+      "value": "(() => { throw Error(\"must not run\") })()",
+    },
+
+ ❯ test/utils/explorer-ui/config-values.test.ts:147:18
+    145|    'export const values = [first(), ...rest]; export const schema = z.…
+    146|   const values = configValues(source, 'settings.ts');
+    147|   expect(values).toMatchObject([
+       |                  ^
+    148|    { name: 'values', structure: { kind: 'array' } },
+    149|    { name: 'schema', structure: { kind: 'object' } },
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/utils/explorer-ui/config-values.test.ts:143:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 10 passed (15)
+   Start at  11:49:31
+   Duration  2.57s (transform 133ms, setup 51ms, collect 386ms, tests 21ms, environment 0ms, prepare 36ms)
+
+
+Running 3 tests using 1 worker
+
+(node:99021) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at desktop (971ms)
+(node:99057) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at tablet (833ms)
+(node:99285) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at mobile (881ms)
+
+
+  1) test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at desktop 
+
+    Error: value controls have icons without View value text
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "View value"
+    Received string:        "View value"
+
+      26 | 			await inspect.innerText(),
+      27 | 			'value controls have icons without View value text'
+    > 28 | 		).not.toContain('View value');
+         | 		      ^
+      29 | 		await expect(row.locator('.ex-value-preview')).toHaveCount(0);
+      30 | 		if (name === 'schema') await expect(row).toContainText('5 attributes');
+      31 | 		await inspect.press('Enter');
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vWEAOb/packages/reports/test/entity-preview-groups.spec.ts:28:9)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vWEAOb/packages/reports/test/entity-preview-groups.spec.ts:99:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vWEAOb/packages/reports/test/entity-preview-groups.spec.ts:140:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/error-context.md
+
+  2) test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at tablet 
+
+    Error: value controls have icons without View value text
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "View value"
+    Received string:        "View value"
+
+      26 | 			await inspect.innerText(),
+      27 | 			'value controls have icons without View value text'
+    > 28 | 		).not.toContain('View value');
+         | 		      ^
+      29 | 		await expect(row.locator('.ex-value-preview')).toHaveCount(0);
+      30 | 		if (name === 'schema') await expect(row).toContainText('5 attributes');
+      31 | 		await inspect.press('Enter');
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vWEAOb/packages/reports/test/entity-preview-groups.spec.ts:28:9)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vWEAOb/packages/reports/test/entity-preview-groups.spec.ts:99:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vWEAOb/packages/reports/test/entity-preview-groups.spec.ts:140:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/error-context.md
+
+  3) test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at mobile 
+
+    Error: value controls have icons without View value text
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "View value"
+    Received string:        "View value"
+
+      26 | 			await inspect.innerText(),
+      27 | 			'value controls have icons without View value text'
+    > 28 | 		).not.toContain('View value');
+         | 		      ^
+      29 | 		await expect(row.locator('.ex-value-preview')).toHaveCount(0);
+      30 | 		if (name === 'schema') await expect(row).toContainText('5 attributes');
+      31 | 		await inspect.press('Enter');
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vWEAOb/packages/reports/test/entity-preview-groups.spec.ts:28:9)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vWEAOb/packages/reports/test/entity-preview-groups.spec.ts:99:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vWEAOb/packages/reports/test/entity-preview-groups.spec.ts:140:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/error-context.md
+
+  3 failed
+    test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at desktop 
+    test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at tablet 
+    test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at mobile 

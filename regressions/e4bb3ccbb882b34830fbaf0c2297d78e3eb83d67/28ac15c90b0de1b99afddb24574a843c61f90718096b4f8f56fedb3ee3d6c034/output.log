@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-5i8Hem
+
+ ✓ test/shared-workspace-registry.test.ts (6 tests) 18579ms
+   ✓ the registry names the Web workspace beside the Electron and iOS one as a consumer of the shell  10293ms
+   ✓ declaring those imports changes them alone: no other reference or uncertainty moves  557ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  18:04:19
+   Duration  22.33s (transform 314ms, setup 112ms, collect 644ms, tests 18.58s, environment 0ms, prepare 32ms)
+

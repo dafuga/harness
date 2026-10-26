@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5
+
+ ✓ test/impact-uncertainty.e2e.test.ts (4 tests) 5201ms
+   ✓ an uncertain alias widens selection to its dependents whenever anything changes  1187ms
+   ✓ unclassified and uncovered changes select every test and say why  1253ms
+   ✓ a declared process contract carries impact across the runtime boundary  1181ms
+   ✓ module, Wasm and native process runtimes report identical impact  1578ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  19:48:12
+   Duration  5.40s (transform 23ms, setup 6ms, collect 15ms, tests 5.20s, environment 0ms, prepare 21ms)
+

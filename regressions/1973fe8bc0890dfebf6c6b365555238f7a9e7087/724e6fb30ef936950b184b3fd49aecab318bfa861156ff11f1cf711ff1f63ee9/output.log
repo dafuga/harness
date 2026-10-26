@@ -1,0 +1,105 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1j17dC
+
+ ❯ test/utils/unit-documentation.test.ts (3 tests | 1 failed) 606ms
+   ✓ committed documents preserve expected values and never invent observed results 3ms
+   × revision documents come only from their own tree, and their bytes change the unit version 11ms
+     → expected { path: 'src/utils/finish.md', …(2) } to deeply equal { path: 'src/utils/finish.md', …(2) }
+   ✓ every committed public helper example executes against its real implementation  584ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/unit-documentation.test.ts > revision documents come only from their own tree, and their bytes change the unit version
+AssertionError: expected { path: 'src/utils/finish.md', …(2) } to deeply equal { path: 'src/utils/finish.md', …(2) }
+
+- Expected
++ Received
+
+@@ -3,16 +3,10 @@
+      {
+        "input": [],
+        "name": "Legacy",
+        "output": "authored",
+      },
+-     {
+-       "call": "finish()",
+-       "input": [],
+-       "name": "finish: Finish",
+-       "returns": "void",
+-     },
+    ],
+    "path": "src/utils/finish.md",
+    "text": "# Finish
+
+  ```harness-examples
+
+ ❯ assertTestingExamples test/support/documentationExamples.ts:44:42
+     42|  const registry = revisionRegistry([unit], [], new Map());
+     43|  await hydrateUnitDocumentation(tree, registry.units);
+     44|  expect(registry.units[0].documentation).toEqual({
+       |                                          ^
+     45|   path,
+     46|   text: markdown,
+ ❯ test/utils/unit-documentation.test.ts:89:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  17:46:23
+   Duration  3.67s (transform 189ms, setup 98ms, collect 382ms, tests 606ms, environment 0ms, prepare 26ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1j17dC/packages/reports
+
+ ❯ test/module-groups.test.ts (6 tests | 1 failed) 50ms
+   ✓ catalog categories survive across kinds and combine with other filters 12ms
+   × a helper row uses its callable folder instead of its owning module category 6ms
+     → expected [ { name: 'Single item', …(2) } ] to deeply equal [ { name: 'Single item', …(2) }, …(1) ]
+   ✓ Strings relocation preserves public entry 'humanize' 3ms
+   ✓ Strings relocation preserves public entry 'shortCommit' 7ms
+   ✓ Strings relocation preserves public entry 'plural' 13ms
+   ✓ Strings relocation preserves public entry 'formatDuration' 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/module-groups.test.ts > a helper row uses its callable folder instead of its owning module category
+AssertionError: expected [ { name: 'Single item', …(2) } ] to deeply equal [ { name: 'Single item', …(2) }, …(1) ]
+
+- Expected
++ Received
+
+@@ -5,15 +5,6 @@
+        "item",
+      ],
+      "name": "Single item",
+      "output": "1 item",
+    },
+-   {
+-     "call": "plural(null, 'item')",
+-     "error": "invalid count",
+-     "input": [
+-       null,
+-       "item",
+-     ],
+-     "name": "Null count",
+-   },
+  ]
+
+ ❯ test/module-groups.test.ts:110:77
+    108|   }
+    109|  };
+    110|  expect(helperEntity(withExamples, 'plural')?.unit.documentation?.exam…
+       |                                                                             ^
+    111|   legacy,
+    112|   { name: 'Null count', call: canonical.call, input: canonical.input, …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  17:46:28
+   Duration  510ms (transform 205ms, setup 91ms, collect 199ms, tests 50ms, environment 0ms, prepare 57ms)
+

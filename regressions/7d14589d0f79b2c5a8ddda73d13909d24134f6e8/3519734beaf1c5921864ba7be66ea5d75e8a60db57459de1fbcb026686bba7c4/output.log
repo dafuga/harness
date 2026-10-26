@@ -1,0 +1,159 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [8.50s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Zk2vSg
+
+ ❯ test/services/unit-index.test.ts (11 tests | 1 failed) 198ms
+   × recorded source moves retain definitions, owner-local placement and registered identity 187ms
+     → owner-local helper placement: 31 gaps; readRecords: owner-local source is missing; exactRef: owner-local source is missing; offlineView: owner-local source is missing; rememberCreatedThread: owner-local source is missing; desktopIpc: owner-local source is missing; regionField: owner-local source is missing; planningConvert: owner source is missing; rendererPolicy: owner-local source is missing; rendererAssets: owner-local source is missing; trustedSender: owner-local source is missing; frozenLimits: owner-local source is missing; emittedLimits: owner-local source is missing: expected [ …(31) ] to deeply equal []
+   ✓ public route filenames retain their registered ownership 1ms
+   ✓ declared preview and documentation survive source re-indexing 4ms
+   ✓ declared execution targets survive re-indexing and follow a moved default entry 2ms
+   ✓ recreating retired source elsewhere records lineage to the retired identity 0ms
+   ✓ a unit that takes a retired name records lineage even when its symbols differ 0ms
+   ✓ lineage cannot be dropped by editing the manifest 1ms
+   ✓ unrelated new units carry no lineage 0ms
+   ✓ a declared responsibility survives re-indexing while a derived one follows the unit 0ms
+   ✓ an alternative implementation is a related unit linked by a declared contract dependency 1ms
+   ✓ several owned files produce identical metadata after one indexing pass 0ms
+ ❯ test/project-detection.test.ts (6 tests | 3 failed) 9ms
+   ✓ detects explicit Harness project kinds 2ms
+   ✓ detects app and lib projects from local files 2ms
+   ✓ appends missing exports idempotently 1ms
+   × function.project keeps its callable API at its owner-layer runtime entry 3ms
+     → expected 'src/core/project.ts' to be 'src/workflows/generate-code/project.ts' // Object.is equality
+   × function.exports keeps its callable API at its owner-layer runtime entry 0ms
+     → expected 'src/core/exports.ts' to be 'src/workflows/generate-code/exports.ts' // Object.is equality
+   × function.validation keeps its callable API at its owner-layer runtime entry 0ms
+     → expected 'src/core/validation.ts' to be 'src/workflows/create-project/validati…' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-detection.test.ts > function.project keeps its callable API at its owner-layer runtime entry
+AssertionError: expected 'src/core/project.ts' to be 'src/workflows/generate-code/project.ts' // Object.is equality
+
+Expected: "src/workflows/generate-code/project.ts"
+Received: "src/core/project.ts"
+
+ ❯ test/project-detection.test.ts:60:30
+     58|  test(`${module.unit} keeps its callable API at its owner-layer runtim…
+     59|   const unit = JSON.parse(readFileSync(`specification/units/${module.u…
+     60|   expect(unit.runtime.entry).toBe(module.entry);
+       |                              ^
+     61|   expect(
+     62|    unit.runtime.targets.every((target: { entry: string }) => target.en…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/project-detection.test.ts > function.exports keeps its callable API at its owner-layer runtime entry
+AssertionError: expected 'src/core/exports.ts' to be 'src/workflows/generate-code/exports.ts' // Object.is equality
+
+Expected: "src/workflows/generate-code/exports.ts"
+Received: "src/core/exports.ts"
+
+ ❯ test/project-detection.test.ts:60:30
+     58|  test(`${module.unit} keeps its callable API at its owner-layer runtim…
+     59|   const unit = JSON.parse(readFileSync(`specification/units/${module.u…
+     60|   expect(unit.runtime.entry).toBe(module.entry);
+       |                              ^
+     61|   expect(
+     62|    unit.runtime.targets.every((target: { entry: string }) => target.en…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/project-detection.test.ts > function.validation keeps its callable API at its owner-layer runtime entry
+AssertionError: expected 'src/core/validation.ts' to be 'src/workflows/create-project/validati…' // Object.is equality
+
+Expected: "src/workflows/create-project/validation.ts"
+Received: "src/core/validation.ts"
+
+ ❯ test/project-detection.test.ts:60:30
+     58|  test(`${module.unit} keeps its callable API at its owner-layer runtim…
+     59|   const unit = JSON.parse(readFileSync(`specification/units/${module.u…
+     60|   expect(unit.runtime.entry).toBe(module.entry);
+       |                              ^
+     61|   expect(
+     62|    unit.runtime.targets.every((target: { entry: string }) => target.en…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/services/unit-index.test.ts > recorded source moves retain definitions, owner-local placement and registered identity
+AssertionError: owner-local helper placement: 31 gaps; readRecords: owner-local source is missing; exactRef: owner-local source is missing; offlineView: owner-local source is missing; rememberCreatedThread: owner-local source is missing; desktopIpc: owner-local source is missing; regionField: owner-local source is missing; planningConvert: owner source is missing; rendererPolicy: owner-local source is missing; rendererAssets: owner-local source is missing; trustedSender: owner-local source is missing; frozenLimits: owner-local source is missing; emittedLimits: owner-local source is missing: expected [ …(31) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "readRecords: owner-local source is missing",
++   "exactRef: owner-local source is missing",
++   "offlineView: owner-local source is missing",
++   "rememberCreatedThread: owner-local source is missing",
++   "desktopIpc: owner-local source is missing",
++   "regionField: owner-local source is missing",
++   "planningConvert: owner source is missing",
++   "rendererPolicy: owner-local source is missing",
++   "rendererAssets: owner-local source is missing",
++   "trustedSender: owner-local source is missing",
++   "frozenLimits: owner-local source is missing",
++   "emittedLimits: owner-local source is missing",
++   "noteCommit: owner-local source is missing",
++   "stillPrivate: owner-local source is missing",
++   "statementEnd: owner-local source is missing",
++   "hubDesigns: owner source is missing",
++   "hubOptions: owner source is missing",
++   "hubImageOption: owner-local source is missing",
++   "hubOptionInfos: owner-local source is missing",
++   "hubRevision: owner-local source is missing",
++   "hubPlanRecord: owner-local source is missing",
++   "planCommit: owner source is missing",
++   "requireLfsFilters: owner source is missing",
++   "containing: owner-local source is missing",
++   "validateIdentity: owner-local source is missing",
++   "checkOptions: owner-local source is missing",
++   "heldBy: owner-local source is missing",
++   "version: owner-local source is missing",
++   "harnessReport: owner-local source is missing",
++   "closePreviewSessions: owner-local source is missing",
++   "previewHealth: owner-local source is missing",
++ ]
+
+ ❯ test/services/unit-index.test.ts:39:4
+     37|   gaps,
+     38|   `owner-local helper placement: ${gaps.length} gaps; ${gaps.slice(0, …
+     39|  ).toEqual([]);
+       |    ^
+     40| });
+     41| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 13 passed (17)
+   Start at  21:15:50
+   Duration  3.02s (transform 81ms, setup 9ms, collect 273ms, tests 207ms, environment 0ms, prepare 46ms)
+

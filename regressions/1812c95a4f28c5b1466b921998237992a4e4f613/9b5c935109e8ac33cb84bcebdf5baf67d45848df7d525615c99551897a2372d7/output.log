@@ -1,0 +1,17 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-rEgbZp/packages/reports
+
+ ✓ test/components/entity-relations.test.ts (6 tests) 81ms
+ ✓ test/components/explorer-function-card.test.ts (10 tests) 21ms
+
+ Test Files  2 passed (2)
+      Tests  16 passed (16)
+   Start at  11:59:53
+   Duration  2.56s (transform 1.21s, setup 0ms, collect 2.04s, tests 102ms, environment 0ms, prepare 92ms)
+

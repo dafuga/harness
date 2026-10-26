@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xCGYgj
+
+ ✓ test/history-branches.e2e.test.ts (2 tests) 7249ms
+   ✓ a fresh clone holds every branch of its remote with all their commits, under the same names  968ms
+   ✓ a local branch behind its remote stays where it is, and the remote tip is listed beside it  969ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  07:44:34
+   Duration  7.48s (transform 32ms, setup 10ms, collect 31ms, tests 7.25s, environment 0ms, prepare 37ms)
+

@@ -1,0 +1,148 @@
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 24 tests using 1 worker
+
+  ✓   1 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 1800 pixels the search, closed, focused or open, leaves the revision fields whole (2.0s)
+  ✓   2 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 1800 pixels a result opens in place, and with a modifier in another tab (408ms)
+  ✓   3 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 1440 pixels the search, closed, focused or open, leaves the revision fields whole (809ms)
+  ✓   4 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 1440 pixels a result opens in place, and with a modifier in another tab (404ms)
+  ✓   5 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 1379 pixels the search, closed, focused or open, leaves the revision fields whole (817ms)
+  ✓   6 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 1379 pixels a result opens in place, and with a modifier in another tab (400ms)
+  ✓   7 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 1300 pixels the search, closed, focused or open, leaves the revision fields whole (775ms)
+  ✓   8 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 1300 pixels a result opens in place, and with a modifier in another tab (399ms)
+  ✓   9 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 1251 pixels the search, closed, focused or open, leaves the revision fields whole (789ms)
+  ✓  10 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 1251 pixels a result opens in place, and with a modifier in another tab (404ms)
+  ✓  11 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 920 pixels the search, closed, focused or open, leaves the revision fields whole (745ms)
+  ✓  12 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 920 pixels a result opens in place, and with a modifier in another tab (398ms)
+  ✘  13 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 768 pixels the search, closed, focused or open, leaves the revision fields whole (388ms)
+  ✓  14 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 768 pixels a result opens in place, and with a modifier in another tab (457ms)
+  ✓  15 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 760 pixels the search, closed, focused or open, leaves the revision fields whole (775ms)
+  ✓  16 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 760 pixels a result opens in place, and with a modifier in another tab (429ms)
+  ✘  17 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 561 pixels the search, closed, focused or open, leaves the revision fields whole (362ms)
+  ✓  18 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 561 pixels a result opens in place, and with a modifier in another tab (455ms)
+  ✘  19 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 560 pixels the search, closed, focused or open, leaves the revision fields whole (377ms)
+  ✓  20 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 560 pixels a result opens in place, and with a modifier in another tab (435ms)
+  ✘  21 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 390 pixels the search, closed, focused or open, leaves the revision fields whole (378ms)
+  ✓  22 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 390 pixels a result opens in place, and with a modifier in another tab (455ms)
+  ✘  23 [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 320 pixels the search, closed, focused or open, leaves the revision fields whole (359ms)
+  ✓  24 [chromium] › tests/e2e/ui-search-fit.spec.ts:123:2 › at 320 pixels a result opens in place, and with a modifier in another tab (472ms)
+
+
+  1) [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 768 pixels the search, closed, focused or open, leaves the revision fields whole 
+
+    Error: All category links must remain clear of search
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      76 | 	const search = await box(trigger(page));
+      77 | 	for (const link of await navigation.getByRole('link').all())
+    > 78 | 		expect(meet(await box(link), search, 0), 'All category links must remain clear of search').toBe(
+         | 		                                                                                           ^
+      79 | 			false
+      80 | 		);
+      81 | 	const fields = await Promise.all(revision(page).map(box));
+        at fits (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CWEfwm/packages/desktop/tests/e2e/ui-search-fit.spec.ts:78:94)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CWEfwm/packages/desktop/tests/e2e/ui-search-fit.spec.ts:105:3
+
+    Error Context: test-results/ui-search-fit-at-768-pixel-19d5a-s-the-revision-fields-whole-chromium/error-context.md
+
+  2) [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 561 pixels the search, closed, focused or open, leaves the revision fields whole 
+
+    Error: All category links and labels must fit visibly inside the nav
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 4
+
+    - Array []
+    + Array [
+    +   "Services",
+    +   "Models",
+    + ]
+
+      73 | 			.map((link) => link.textContent?.trim());
+      74 | 	});
+    > 75 | 	expect(clipped, 'All category links and labels must fit visibly inside the nav').toEqual([]);
+         | 	                                                                                 ^
+      76 | 	const search = await box(trigger(page));
+      77 | 	for (const link of await navigation.getByRole('link').all())
+      78 | 		expect(meet(await box(link), search, 0), 'All category links must remain clear of search').toBe(
+        at fits (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CWEfwm/packages/desktop/tests/e2e/ui-search-fit.spec.ts:75:83)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CWEfwm/packages/desktop/tests/e2e/ui-search-fit.spec.ts:105:3
+
+    Error Context: test-results/ui-search-fit-at-561-pixel-46b21-s-the-revision-fields-whole-chromium/error-context.md
+
+  3) [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 560 pixels the search, closed, focused or open, leaves the revision fields whole 
+
+    Error: All category links must remain clear of search
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      76 | 	const search = await box(trigger(page));
+      77 | 	for (const link of await navigation.getByRole('link').all())
+    > 78 | 		expect(meet(await box(link), search, 0), 'All category links must remain clear of search').toBe(
+         | 		                                                                                           ^
+      79 | 			false
+      80 | 		);
+      81 | 	const fields = await Promise.all(revision(page).map(box));
+        at fits (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CWEfwm/packages/desktop/tests/e2e/ui-search-fit.spec.ts:78:94)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CWEfwm/packages/desktop/tests/e2e/ui-search-fit.spec.ts:105:3
+
+    Error Context: test-results/ui-search-fit-at-560-pixel-fe932-s-the-revision-fields-whole-chromium/error-context.md
+
+  4) [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 390 pixels the search, closed, focused or open, leaves the revision fields whole 
+
+    Error: All category links must remain clear of search
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      76 | 	const search = await box(trigger(page));
+      77 | 	for (const link of await navigation.getByRole('link').all())
+    > 78 | 		expect(meet(await box(link), search, 0), 'All category links must remain clear of search').toBe(
+         | 		                                                                                           ^
+      79 | 			false
+      80 | 		);
+      81 | 	const fields = await Promise.all(revision(page).map(box));
+        at fits (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CWEfwm/packages/desktop/tests/e2e/ui-search-fit.spec.ts:78:94)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CWEfwm/packages/desktop/tests/e2e/ui-search-fit.spec.ts:105:3
+
+    Error Context: test-results/ui-search-fit-at-390-pixel-81084-s-the-revision-fields-whole-chromium/error-context.md
+
+  5) [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 320 pixels the search, closed, focused or open, leaves the revision fields whole 
+
+    Error: All category links must remain clear of search
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      76 | 	const search = await box(trigger(page));
+      77 | 	for (const link of await navigation.getByRole('link').all())
+    > 78 | 		expect(meet(await box(link), search, 0), 'All category links must remain clear of search').toBe(
+         | 		                                                                                           ^
+      79 | 			false
+      80 | 		);
+      81 | 	const fields = await Promise.all(revision(page).map(box));
+        at fits (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CWEfwm/packages/desktop/tests/e2e/ui-search-fit.spec.ts:78:94)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CWEfwm/packages/desktop/tests/e2e/ui-search-fit.spec.ts:105:3
+
+    Error Context: test-results/ui-search-fit-at-320-pixel-49f93-s-the-revision-fields-whole-chromium/error-context.md
+
+  5 failed
+    [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 768 pixels the search, closed, focused or open, leaves the revision fields whole 
+    [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 561 pixels the search, closed, focused or open, leaves the revision fields whole 
+    [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 560 pixels the search, closed, focused or open, leaves the revision fields whole 
+    [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 390 pixels the search, closed, focused or open, leaves the revision fields whole 
+    [chromium] › tests/e2e/ui-search-fit.spec.ts:100:2 › at 320 pixels the search, closed, focused or open, leaves the revision fields whole 
+  19 passed (18.2s)

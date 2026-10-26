@@ -1,0 +1,13 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW[39m
+
+ [32m✓[39m test/packaged-reports.e2e.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 8277[2mms[22m[39m
+   [33m[2m✓[22m[39m packed installation serves and finalizes media without a source checkout [33m 3368[2mms[22m[39m
+   [33m[2m✓[22m[39m the server a test starts is stopped when the test is done with it, passed or failed [33m 1800[2mms[22m[39m
+   [33m[2m✓[22m[39m the fixture and the environment of the run are gone with it [33m 971[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 20:32:57
+[2m   Duration [22m 8.61s[2m (transform 49ms, setup 14ms, collect 41ms, tests 8.28s, environment 0ms, prepare 46ms)[22m
+

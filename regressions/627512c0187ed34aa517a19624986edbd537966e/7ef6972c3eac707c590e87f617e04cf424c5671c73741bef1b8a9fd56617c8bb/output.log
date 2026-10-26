@@ -1,0 +1,88 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f8uzAU
+
+stderr | test/utils/stable-json.test.ts > stableJson: Match the project Prettier style across escaped text and width boundaries
+AssertionError: generated JSON must match project Prettier style: expected '{\n\t"emptyObjects": [\n\t\t{}\n\t],\…' to be '{\n\t"emptyObjects": [{}],\n\t"emptyA…' // Object.is equality
+    at assertPrettierStyle [90m(/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f8uzAU/[39mtest/utils/stable-json.test.ts:78:81[90m)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+    at invokeStableJson [90m(/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f8uzAU/[39mtest/utils/stable-json.test.ts:118:4[90m)[39m
+    at TestExpectationService.example [90m(/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f8uzAU/[39msrc/services/verification-evidence/TestExpectationService.ts:82:13[90m)[39m
+    at PerformanceProfileService.observeAsync [90m(/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f8uzAU/[39msrc/services/verification-evidence/PerformanceProfileService.ts:69:18[90m)[39m
+    at [90m/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f8uzAU/[39msrc/services/verification-evidence/TestExpectationService.ts:60:6
+    at file:///Users/danielfugere/projects/harness-contract-test-policy-20261025/node_modules/[4m@vitest/runner[24m/dist/chunk-hooks.js:752:20 {
+  actual: [32m'{\n'[39m +
+    [32m'\t"emptyObjects": [\n'[39m +
+    [32m'\t\t{}\n'[39m +
+    [32m'\t],\n'[39m +
+    [32m'\t"emptyArrays": [\n'[39m +
+    [32m'\t\t[]\n'[39m +
+    [32m'\t],\n'[39m +
+    [32m'\t"pairs": [\n'[39m +
+    [32m'\t\t["a", 1]\n'[39m +
+    [32m'\t],\n'[39m +
+    [32m'\t"mixed": [\n'[39m +
+    [32m'\t\t{},\n'[39m +
+    [32m'\t\t[],\n'[39m +
+    [32m'\t\tnull\n'[39m +
+    [32m'\t]\n'[39m +
+    [32m'}\n'[39m,
+  expected: [32m'{\n'[39m +
+    [32m'\t"emptyObjects": [{}],\n'[39m +
+    [32m'\t"emptyArrays": [[]],\n'[39m +
+    [32m'\t"pairs": [["a", 1]],\n'[39m +
+    [32m'\t"mixed": [{}, [], null]\n'[39m +
+    [32m'}\n'[39m,
+  showDiff: [33mtrue[39m,
+  operator: [32m'strictEqual'[39m
+}
+
+ ❯ test/utils/stable-json.test.ts (12 tests | 1 failed) 47ms
+   × stableJson: Match the project Prettier style across escaped text and width boundaries 40ms
+     → Example unexpectedly failed
+
+true !== false
+
+   ✓ stableJson: Preserve object order and a trailing newline 0ms
+   ✓ stableJson: Render an empty array 0ms
+   ✓ stableJson: Render an empty object 0ms
+   ✓ stableJson: Render a null primitive 0ms
+   ✓ stableJson: Render a string primitive 0ms
+   ✓ stableJson: Render top-level undefined as null 0ms
+   ✓ stableJson: Omit undefined object fields and write array items as null 0ms
+   ✓ stableJson: Read an enumerable getter through its current value 0ms
+   ✓ stableJson: Read own keys while preserving a prototype and iterator 0ms
+   ✓ stableJson: Propagate an enumerable getter error 0ms
+   ✓ stableJson: Reject a BigInt input because JSON cannot carry it 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/stable-json.test.ts > stableJson: Match the project Prettier style across escaped text and width boundaries
+AssertionError: Example unexpectedly failed
+
+true !== false
+
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:98:4
+     96|    deepStrictEqual(Object.hasOwn(observation, 'error'), false, 'Exampl…
+     97|    deepStrictEqual(
+     98|     observation.output,
+       |    ^
+     99|     example.output,
+    100|     'Example output differs from its comment'
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ src/services/verification-evidence/TestExpectationService.ts:60:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  00:05:02
+   Duration  5.24s (transform 174ms, setup 215ms, collect 88ms, tests 47ms, environment 0ms, prepare 43ms)
+

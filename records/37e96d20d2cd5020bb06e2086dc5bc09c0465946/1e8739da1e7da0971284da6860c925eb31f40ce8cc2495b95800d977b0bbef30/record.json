@@ -1,0 +1,5275 @@
+{
+	"id": "1e8739da1e7da0971284da6860c925eb31f40ce8cc2495b95800d977b0bbef30",
+	"schemaVersion": 1,
+	"repository": "/Users/danielfugere/projects/harness-agentic-selfhosting",
+	"source": {
+		"commit": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+		"tree": "e57736c88ee995fa3a6132ac1ab5e95d1f645858",
+		"base": "2ba610ba2d0a7d43adcfbbb3523f4b143c1127cf",
+		"baseRecord": "4c5dc5f5b6082e33d15b184828dbfad0600f77d6ebf200a0c7f2f40755bee6f3"
+	},
+	"profile": {
+		"id": "1db6ce9451b5e530",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M5 Max",
+		"cores": 18,
+		"memoryBytes": 38654705664,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.3"
+		},
+		{
+			"id": "node",
+			"version": "v25.9.0"
+		},
+		{
+			"id": "git",
+			"version": "git version 2.37.3"
+		},
+		{
+			"id": "git-lfs",
+			"version": "git-lfs/3.8.0 (GitHub; darwin arm64; go 1.27.0)"
+		},
+		{
+			"id": "cargo",
+			"version": "cargo 1.99.0 (5f94df478 2026-08-27)"
+		},
+		{
+			"id": "rustc",
+			"version": "rustc 1.99.0 (b940084d7 2026-09-28)"
+		},
+		{
+			"id": "playwright",
+			"version": "Version 1.63.0"
+		},
+		{
+			"id": "chromium",
+			"version": "chromium 153.0.8010.12 revision 1243"
+		},
+		{
+			"id": "wrangler",
+			"version": "4.149.0"
+		}
+	],
+	"startedAt": "2026-10-11T09:23:26.763Z",
+	"finishedAt": "2026-10-11T09:44:44.895Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "adapter.module-runtime",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "17969b0a4545f4dbba6d62410eedd9beaa070a8034398eecfd76f3b9d9628b19",
+			"source": "af247f2909ae76f3ff633e1d8b3064029f6fed08e30e43a5a0ad9e3a42691989",
+			"contract": "49a44550297459c5e60e330ce48ee5e6a267906d8c841a4b1dbe39c93ce781d2",
+			"runtime": "98cd28b2df52560e66f118fea5e3245248dd67bca13d4fceb5b3f021b8ec44cf",
+			"files": [
+				{
+					"path": "src/adapters/ModuleRuntimeAdapter.ts",
+					"hash": "efb081fd16b4d7032f205e21001651ff3f201231"
+				}
+			]
+		},
+		{
+			"unit": "command.budget",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "56be8762fc64378c485dd9c1f55bda6194c8f7f20cd9ddf10e23963f2b20cbb8",
+			"source": "3275d751c17e32363c1b05394e57159f201bfd12da3feb47c27402562f8a613f",
+			"contract": "3383374cd1024a7a31afb2c8d7b3a2b9853f7bc295e845bc60c9b2347c97dbd1",
+			"runtime": "3b4b15e32505385c59292de6c85c6e38fe20e72ca8a64c5ec2d6da5ceff14de2",
+			"files": [
+				{
+					"path": "src/commands/BudgetCommand.ts",
+					"hash": "d06e2c3535694ccc3a436d10832c1908216f531c"
+				}
+			]
+		},
+		{
+			"unit": "command.history",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "388ab67b6414cd8682f457bdce16afd746d117597d86b06181cb95ea4a541d74",
+			"source": "2d5620077c058e784f09e7b8f836ea17198a12a94dab85c9c32b9f3fdfca7ce6",
+			"contract": "6c86f17953130282958f5d2e6368b93807967c819a5b2c1d1b906341448e0e10",
+			"runtime": "321fe22a119feef45b0a9527dc8edffa4c5b7749f1cbc4e7044d785f89ebeed9",
+			"files": [
+				{
+					"path": "src/commands/HistoryCommand.ts",
+					"hash": "96d73daac592a991c1b5968549029791fe698a87"
+				}
+			]
+		},
+		{
+			"unit": "command.hooks",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "774c532bd2cffb8091f83c6dbf9a0a23ec2769f5fead74147d88dc0c13b590c7",
+			"source": "478b5d0a5495bc5f16237959a7818b1d3224877e7f8cfe536546a076ff80b36e",
+			"contract": "0fcec4cd044160b1e84f8cf298a33d42e9d8da74b5a67130947dd32910bbff05",
+			"runtime": "dd3db76d1285927b49b4795cdfeded0813b340e7fa70a9c3d73e1e3dc42bcacc",
+			"files": [
+				{
+					"path": "src/commands/HooksCommand.ts",
+					"hash": "4edeeadfcc7025664dbc7f2d829fa727c8ecd293"
+				}
+			]
+		},
+		{
+			"unit": "command.impact",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "057bec7accde8d72988fa8612109b1f4d93c54c78698addba3466ebb06ba50ed",
+			"source": "67ae214117e96b6d2417ca031e3f42fd719890efa54539f475b1fbb3f174453b",
+			"contract": "0f86e4060766cedceae21ea9486f88c999ce7b3b38bcadde1a857b671bbc8bfa",
+			"runtime": "6be1b585371a4c80f78bb396735d852f2cf1704625b2e0b369c1e5caba590dff",
+			"files": [
+				{
+					"path": "src/commands/ImpactCommand.ts",
+					"hash": "0750a81d72e5736fdad380ef762ce17f045353d0"
+				}
+			]
+		},
+		{
+			"unit": "command.kernel",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "fa9d31b6d8a59f388636d50fcc53bbac43fa6448c89fa7a059ea9cbe1ad2eff0",
+			"source": "7710fe62379910c58117b994c18b145fe9480264fdb7cbad65f0840bac0841a1",
+			"contract": "5992151b05d03d4c55433cf25807269e850a81b498ddfa8b12e83c23d259e1c7",
+			"runtime": "999ca4321583b5cbf464494727d217d683e1c687202f388e6fcbd21773a20144",
+			"files": [
+				{
+					"path": "src/commands/KernelCommand.ts",
+					"hash": "620aff1c8940383b8ec73a3a793d24aff50989ef"
+				}
+			]
+		},
+		{
+			"unit": "command.report",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "6fda55ee6089b84633fb8df0b17f043f702b8ad551b3aec62142aac21891d330",
+			"source": "75bc771fbebf67d769594f633a688f7a8050701ae308591a89e6eacee4e081d3",
+			"contract": "61cfbd27f37028ba65396e5a2f09d698458123c0aeefbb19323da01a6ecd74e7",
+			"runtime": "1d0b040e465207027ba6e1ddf0db4989554a26be79683f620e253806f2b345a6",
+			"files": [
+				{
+					"path": "src/commands/ReportCommand.ts",
+					"hash": "7539dff2b1edc20d2ff85f3926ef231a77d497a9"
+				}
+			]
+		},
+		{
+			"unit": "command.verify",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c8768aebfed0f1d5d00d6eaf144cabfcbabbace4aabc2933972873031bc21c17",
+			"source": "9ee4ab1b994a8da77506f4e306be6b96d0f7c0a6118c89c6a117b4d1b7ce463c",
+			"contract": "18881774a500cf578f1ae8bf7da54c2e021c919e7f0d5754a60d723a2f6d0ea1",
+			"runtime": "b5bde9506e9ad2d3bc312f4e81164e29667c9d1448a10bcb151b04bca38efe10",
+			"files": [
+				{
+					"path": "src/commands/VerifyCommand.ts",
+					"hash": "6bfa0d45133c57d9b793693f25b683b20b80bfc4"
+				}
+			]
+		},
+		{
+			"unit": "entry.index",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "02e5d35227afb72502937307fb196b66a5996157f9210faf3363b00690b0f388",
+			"source": "7926141a87b54a6f208effd14e8b5cb59364be3bc39bf0acb2e272117ce626d6",
+			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
+			"runtime": "468f0c71d780c33993456f77f9379f0580c6d82970cdfbf6ea659c856697291f",
+			"files": [
+				{
+					"path": "src/index.ts",
+					"hash": "84d889b8538f05d4469731e24c0e951a373b8b25"
+				}
+			]
+		},
+		{
+			"unit": "entry.program",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "5999480b8c97713367626ed8f9f716bf3d8c7e896de5c946f91e86b166201429",
+			"source": "60d567d94d34a4c6d53000a469336f28cf06c7d2d828232a7b0fcda0764c3aaf",
+			"contract": "592278285960072d0ec70bcccf7969c939b23d26d24b4283d635c679c9da5cb0",
+			"runtime": "42ab19a5f2ad318b1336c1a806eb88216d5fb51371c0733c4ca39b2e3a110407",
+			"files": [
+				{
+					"path": "src/cli/program.ts",
+					"hash": "3b04956d485e4ab7642ab441aa10e142d121e550"
+				}
+			]
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"change": "unchanged",
+			"target": "process",
+			"manifest": "ec088d3d10ebc11c659400caae3141bfa3eeb59b9431829b02b6281f3967767e",
+			"source": "9c2f0f64853ae6b2ceda2552497d9769f4573f2ffa52340e011a13a7f764c177",
+			"contract": "e95d9b3003381f31025512325ca278a2acbbfea98610c4948fbf19f995baea6c",
+			"runtime": "6dace6a964d2f8b18a49f71acc592bb549c89d9364e15314a87da085b71dd257",
+			"files": [
+				{
+					"path": "crates/impact-kernel/Cargo.toml",
+					"hash": "ba8a1ca32a737366900ba00ba4853e0b8954f0dd"
+				},
+				{
+					"path": "crates/impact-kernel/src/abi.rs",
+					"hash": "de99b72bb316754ec7291c1088453608a587b8d2"
+				},
+				{
+					"path": "crates/impact-kernel/src/impact.rs",
+					"hash": "611bd919b5aee800c7a1e66b03ec4964674a185c"
+				},
+				{
+					"path": "crates/impact-kernel/src/lib.rs",
+					"hash": "30515655bcce8f5e0c5a435b1c4c67ced0178461"
+				},
+				{
+					"path": "crates/impact-kernel/src/main.rs",
+					"hash": "0342f4d1033d6f0e3bb6056096680ae23c9ce14e"
+				},
+				{
+					"path": "crates/impact-kernel/src/request.rs",
+					"hash": "b268a3791be581caa62040b7d76d591f41dc56eb"
+				},
+				{
+					"path": "crates/impact-kernel/tests/vectors.json",
+					"hash": "eb835cd17c7460aaa45e533c536d96aa7384399a"
+				},
+				{
+					"path": "crates/impact-kernel/tests/vectors.rs",
+					"hash": "efe45f81749c86ae5b3d547b7ff689a97fbcf43e"
+				}
+			]
+		},
+		{
+			"unit": "module.index",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "54fe7a8c80faca885b59b7f7f74d56b46079af7178b81aa05503ed16cc47710e",
+			"source": "29393500e7faf7f4f1c8d48d12699d3b9c23ff74ff45e87b93751afc7f5fffcf",
+			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
+			"runtime": "0aab508eaaf904488f00407f929006c1320137bc7219c776d234fafa92bb5bec",
+			"files": [
+				{
+					"path": "src/lib/index.ts",
+					"hash": "4a8a6981633d3a21a7009010356ab5b8a32e0471"
+				}
+			]
+		},
+		{
+			"unit": "module.runtime",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "288df2531e35ca5fc0f2439cb2e5f95912276541a03372ef8162050833d96df0",
+			"source": "18cf056f2bfe61bdb7a8c6546b2a66eb285c3bc840e19361adcc79a1f2783aad",
+			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
+			"runtime": "2fd5d49b0a491c6e0630536c6cdda56791474e75e22256224311da48abdbe537",
+			"files": [
+				{
+					"path": "src/lib/runtime.ts",
+					"hash": "90d23c9eca0f5280121cbd4df8adfd2a43228973"
+				}
+			]
+		},
+		{
+			"unit": "reports.adapter.report-pages-retention",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "e8bf1c9753ba9be62520277bb3822288548a19e49f85cce8a12ef4eee08500c2",
+			"source": "7eef2778bebbba75269ba1a20f494cc2b6d8373c009b289c133ffaa28b847fcf",
+			"contract": "94ee662b2cff66f68572f75fea4c13a15c4a3e582e9da78a1525fa7663345217",
+			"runtime": "afb5109ac971723051639fba5f2f839a56ac77cfc21fbe3db9661a985519ee18",
+			"files": [
+				{
+					"path": "packages/reports/src/adapters/ReportPagesRetentionAdapter.ts",
+					"hash": "607ec50c263ab9af89722b7f323f6bda07a20e21"
+				}
+			]
+		},
+		{
+			"unit": "reports.command.report",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "83a045f27aae46952cd97c384da780d9df3e1489529212b649d8c824aac7ea2c",
+			"source": "1517643805df9ab2cfd480bd69ec1a7ab1be357b80e44fa4bbc48d1f399ef99b",
+			"contract": "ae0fc94ec0e35541e3c4ff7c44f4014913e907aa833803426e4276433ece57bb",
+			"runtime": "15599f485e0f8c1c2a20f8638b989ce2dc15d611a7b4c32b9e2d8fa60cb6b061",
+			"files": [
+				{
+					"path": "packages/reports/src/commands/ReportCommand.ts",
+					"hash": "34e31b13de1960fc947c6e7ed7f47396a586ec63"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.analytics-filters",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "30d85b8ad9e284117c7a43172da4d63115c329b9d6fb72ba70e29a998189d836",
+			"source": "b6c46dc72733a1260051831e56afaf7fd5e944c168b5b7eef2dbcb552b81829a",
+			"contract": "d04878423fb352e1011bd4fa38b983831eaf2e28ed926921d5eff5c77e12bc1a",
+			"runtime": "c4e3ff0db5f3aa7d4a19491984bc3e9f5e7e1ee5184ef8cb11e9f173de3ff1a7",
+			"files": [
+				{
+					"path": "packages/reports/src/components/AnalyticsFilters.svelte",
+					"hash": "c38e7906faf74bd8bd00f2423fdc8002b9c2fa2c"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.analytics-history",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "f262f94bac994380868cff35c81e8f9e810253e954b7a885c9b6d10fda36d1a1",
+			"source": "80a18bcb04c6c188bbb52d1baf7928d757eeffd7f158f2016ea03c2d427876ac",
+			"contract": "4303e4293449540e94c851bb5735bfb19ce98949d363f5cf4a6571b0f15ce6bc",
+			"runtime": "ee02181d335e774358a0e0d3a6d0e6f00713e18a1e4276c969034b4a9cddc2df",
+			"files": [
+				{
+					"path": "packages/reports/src/components/AnalyticsHistory.svelte",
+					"hash": "d2459f69746795749cd1b0f55d1a6e076043d92f"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.analytics-models",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "134c63a628ff2e799c2477ddb2161ccbef25baf9a5ef21259f9eb12d333cb659",
+			"source": "220760ed7dead326c83e9b1677e6ada07a1a5dd1418dc7bc00338e218e0470be",
+			"contract": "8202597847cd275a79c56683d9e120761b6ba44cf7dbcbe7f764369b577956b4",
+			"runtime": "742d88f63bbddd01ce0d1ffd3d82892a0cea30773c4a10108313a11982234451",
+			"files": [
+				{
+					"path": "packages/reports/src/components/AnalyticsModels.svelte",
+					"hash": "83cea0ade2d3e1eef1e5cbf5490bd1b4f9b4ce24"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.analytics-tasks",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "2ac9aea7ee50f9a3cf7027c77c7154d316a7b0f36b2152385942304f10fc5c90",
+			"source": "f60ad33925a3b0a2944dbb5fdbfeb0b52464b2e5869103abdb11e4f643f75171",
+			"contract": "3de46486b68e709905036479fd171239be159f54ebcc16c8b8e70e7af01ed113",
+			"runtime": "591b5b0457c5a919b511207b82efacc0179d234986ed27de88aca120f3930b53",
+			"files": [
+				{
+					"path": "packages/reports/src/components/AnalyticsTasks.svelte",
+					"hash": "4e9c627e28b2be577806bb68d444fcc7cae06ca1"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.evidence-grid",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "fc74ac343f42c0baf3ce7a705da3a54d311d39407ff43b6e61533b5f78102454",
+			"source": "9f0e82705d01c06517ff37a02ce0a8e0f413f9f2cc4a08bd3fd33da91b85a5b7",
+			"contract": "18cd833eb88ac1f2a7e9a9047ddf3589ff5db0a31808ca2ef1fc438f620eed62",
+			"runtime": "33efbde9f4f02bf5084791c584c311c3544f0c1036acd267c4cb2c2832972303",
+			"files": [
+				{
+					"path": "packages/reports/src/components/EvidenceGrid.svelte",
+					"hash": "14ecb0f307426aab1a4626ec148e4ed1cbaf08e9"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.gameplay-replay",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "84d432d2287584d8eb3ecaed47a23faf2658e059bf60b9a4f852880479c247c5",
+			"source": "7eff5a247f176ff04f8c589a45c707467519a3ede8eaf244a0959dbbb5d7f096",
+			"contract": "0d624a9e2c98c79450cbda3d4b4c9acc877b164f732565b4c580347545003424",
+			"runtime": "1ce666a3fd44a628cc68122735c4d7ad942408b7b1f13403fcc754e9f9412279",
+			"files": [
+				{
+					"path": "packages/reports/src/components/GameplayReplay.svelte",
+					"hash": "f216f5f4781d9cfe28900f49b1e77f055321f9f7"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-harness-compare",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "ecbae3ede0151b6d172250d09029beaf51a4256480cff0fdf6229f14092baed9",
+			"source": "55f552dd874ee4f9e91453021fe5e9ce728751461c34950d9855fa3ed7f66313",
+			"contract": "041298e59886a21ce33cac4bfb0d09d8fb637c3d4964acbcd35f773250646293",
+			"runtime": "8d5300dfae5929884cdff66b05ca0041f92388f8bcc1560cac1b80236d96a0fa",
+			"files": [
+				{
+					"path": "packages/reports/src/components/harness/HarnessCompare.svelte",
+					"hash": "7f0b97638efea3ee7fce8e07dd7a24b2728971c5"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-harness-compare-media",
+			"change": "modified",
+			"target": "module",
+			"manifest": "8867adcb4bf60726c2144fd51d87d4103f09e80e039c018f00a2fa0bdd18dadd",
+			"source": "cead055c28fa7ba16814d418c470a17391f3380a49ff2d3e0f1ffb954298b16b",
+			"contract": "7ab0f06c911827b0be024e78d25417bb75cb556ed4586aa0ba805bfae1531873",
+			"runtime": "c8179be72d3ccce432ddd71a6485bcf39b114d96cc1dd0cdfb1a5001af85106d",
+			"files": [
+				{
+					"path": "packages/reports/src/components/harness/HarnessCompareMedia.svelte",
+					"hash": "e749a956f20e8b3f91843a3988cb11e11b028621"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-harness-console",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "890884151f579fca9a8c102ff8e3f824ad80c978b6c8f8a9d66e2ba67ad943da",
+			"source": "be7fdc9614bf82040b826fb64cb029b31df7730fa67a1221d426743ee38063e4",
+			"contract": "4a6c9692d7d32505f9a36d8972b257e421637c11114f650011f1255250bb2bdd",
+			"runtime": "91ae8d4b346a923c37cf2749e06fa521736fe6d9368ade90b174f89e099a0cc0",
+			"files": [
+				{
+					"path": "packages/reports/src/components/harness/HarnessConsole.svelte",
+					"hash": "009c489a5a55c4186705c9b5438e7c7a1ec1bcc6"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-harness-growth",
+			"change": "modified",
+			"target": "module",
+			"manifest": "b7a65392ab7f083cd33f127bbda7987de13b51a78d7a74852c47f7df83599953",
+			"source": "4d735582913b3e14aa36bb627c37273548094214c45d92f75484d42f23d6adc7",
+			"contract": "9a568cd54354319ff66c5e123220ba39241123b629d14a1c9e496b2a64e72b07",
+			"runtime": "6f587ebc713fccb7cd482ffffe0c257a8633c7d9f4324db4f60bf155fb1b17c9",
+			"files": [
+				{
+					"path": "packages/reports/src/components/harness/HarnessGrowth.svelte",
+					"hash": "b0c8b79cb44b3866e0edd5e190667e305faca850"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-harness-history",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b7a4d3c0d5f57b9160c032acfde925b77c2906512724e6c8515a303409d344fb",
+			"source": "676ce3a01370a18dc4ef6f3d18234c4fe93e35f524f44979c20f1f1782d955e7",
+			"contract": "b891dea22b835d4206d38431bc2021d3b1be584084f6f1827fd821866a295b80",
+			"runtime": "142d23cc6716bada8443259f52544b6b275f84c8aaa0d16026fad635d91bcb49",
+			"files": [
+				{
+					"path": "packages/reports/src/components/harness/HarnessHistory.svelte",
+					"hash": "4cc9d776de638bd6bd31e08865850c6a0571c7e9"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-harness-legacy",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "d2c8ecace59ba891842ef2e6e65555d045b9804b2009bee1c24f6cdea5ad9465",
+			"source": "10d0f1e53654f662bb19d96dce14f7460d41bfea6a82258535c8527760a3127f",
+			"contract": "5ee4cb534ed9a93854d0cf83bcb2af5de9ea5f1b215bb3b9588aceeac1877b5b",
+			"runtime": "234db9e85b84082917f1de044c3c260cbc6d7f71a285243437de079644b293fe",
+			"files": [
+				{
+					"path": "packages/reports/src/components/harness/HarnessLegacy.svelte",
+					"hash": "f7190e63dad22a33c6394894f95a61d56eacc5c2"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-harness-selectors",
+			"change": "modified",
+			"target": "module",
+			"manifest": "362322e8c48af5cddbd50815d7384e5638964d001c6f39301928febce917a805",
+			"source": "62454155109ef7f3c11f99c178739b90d8e07c85253888b817261a281b70450b",
+			"contract": "9e6b705e5e531557b1f65174fd161848b11c059e46a00895f30b903447dc730f",
+			"runtime": "dedb1045e4a5c92213a533e6f88be31cd78519a0d5eb9bb1a7a6607c68bbcbe4",
+			"files": [
+				{
+					"path": "packages/reports/src/components/harness/HarnessSelectors.svelte",
+					"hash": "e2fb95035837b4c45a29491568f74bb4add48bed"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.harness-harness-shell",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a307a22b6982ec78354c074d7a350fa87efff78f9df59d35977f9521b7496301",
+			"source": "2b0f8642d56ce6645d95aac829f11610bdec724a3a127aea15de53e8743ab31b",
+			"contract": "0e62c6b7d10db61358f43f6a9e32e9bf79c37edafbfa3b90e9239c43840e46cf",
+			"runtime": "398c1d4325e1523ae2646c59d12380d5a8a334177e26d5e4511a7b61df6b1d9e",
+			"files": [
+				{
+					"path": "packages/reports/src/components/harness/HarnessShell.svelte",
+					"hash": "8dfb0f47a78d61eda5c075a500106bfef29c9f0c"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.hub-view",
+			"change": "modified",
+			"target": "module",
+			"manifest": "d5ec0709c9c2c8932b81c0ba0c7f60c7832be6a7bc28881b87fa19319ee7f519",
+			"source": "386244b7f48a90b06da89b3718a185781e634a8500201a1b7549b1ab633220d1",
+			"contract": "e2a41a8c14569c71c879f590d4ec6aad2daa29000812e8a052f40d9bb74e8730",
+			"runtime": "7f2085295823ffe070fadae71b6624478ed14d97662e72fefba869ee2780a7bf",
+			"files": [
+				{
+					"path": "packages/reports/src/components/HubView.svelte",
+					"hash": "4361ae0b906854da1459d78682b6e970d54baecc"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.provider-picker",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "8c2dee0ed69ce7f9007ff15506fa42791a3e9e136c63d259729d533e588cad9b",
+			"source": "c8a29d112c34f39e5c4316bde3bb0f66b5bb9d15679c842e3250d34fc953be7f",
+			"contract": "26dd32f81d967737c2eda1e92e019df660a86e78cf4a7b146efebca366b8b889",
+			"runtime": "8f6989e3b46e6b0b70052efba0e02f97936a6b2605ced8a6243f8ea07859acc7",
+			"files": [
+				{
+					"path": "packages/reports/src/components/ProviderPicker.svelte",
+					"hash": "c8ea111bd50d265daffc4949fafef5dbc027a432"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.replay-controls",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "1a17413f65258c37da2a518fd5f565f36578df352fa59550a8cf3a3b19456a92",
+			"source": "9d868bd7ce61a8f7f7c9f7bc0dca76852327099e08346d1dc73f7795e4f9db20",
+			"contract": "9f8f7309aba487999f3efde737275831bcb66e67fade32cab039549d80905acd",
+			"runtime": "ef153f8113b9e6a11e5186a0c5c44d24c6c5b0a236da61eaaabec8a415e8301d",
+			"files": [
+				{
+					"path": "packages/reports/src/components/ReplayControls.svelte",
+					"hash": "aa527ff152e76b04a4e8a586c7b6fbd7ab67487c"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.report-view",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "199b28aef0410c4d600280e9478aaad0133b205c971147192396a1e7269614ca",
+			"source": "84fd30bb82476e4d023445d69b8c1cb6b2240d8fb25ec0c5713ed97ec31a360a",
+			"contract": "5a1d8bd66bf23562f24d7b87668eb89c98c62e3d34c297f40506a2b3fee4ac89",
+			"runtime": "6b6d30d7249a45676ae7b42d5c3d18736affdcd1c45bc8355c9f3eb95e8ec5ad",
+			"files": [
+				{
+					"path": "packages/reports/src/components/ReportView.svelte",
+					"hash": "e1129951b7ef44e5ad85c4c6a052b991c3dca1d0"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.select",
+			"change": "modified",
+			"target": "module",
+			"manifest": "1986f025b84a41aab9cf68626fdc5a23daaf09dedf814eb4d2de22dbcf277274",
+			"source": "34dc5822ddef9c4f0c537dc5c0071263221dd2284b89bef9146e25b0ed31c3cb",
+			"contract": "4c52702a9a4886c205c3eee6efc1655de0bf125348b396b01b072bb70b1b3dcd",
+			"runtime": "16193bb84d0a827a3eec9cd323857066e0ffea330de4fe1a12bbe0b293d1a1f2",
+			"files": [
+				{
+					"path": "packages/reports/src/components/Select.svelte",
+					"hash": "8343df65d9695973ab24f775059d6ca7a569f9cc"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.upload-audio",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "7b80211f2ba4f82ef29ce83e4c0b39480e33e8292bdbdc2712ae3d0df1d33487",
+			"source": "95bdc52a0a68db8b61e9b74ea3ecca97b36d3d160469320b4758a3846c23cb97",
+			"contract": "1d8a37194f727d5b577781811b3468d30b1ec033c89fc11e144bdc4fb638a558",
+			"runtime": "60d32174de00c9cda986bcc3ee119208dc533d2e0b0f0986cf47568a29cbdf3f",
+			"files": [
+				{
+					"path": "packages/reports/src/components/UploadAudio.svelte",
+					"hash": "c29a8b623aac0b90796f4934e98c73a486652310"
+				}
+			]
+		},
+		{
+			"unit": "reports.component.upload-comparison",
+			"change": "modified",
+			"target": "module",
+			"manifest": "67ed32b724d51c1e07ef59880a8e940c3fe95f82bde2278fbc839cc4235b2dfd",
+			"source": "106cdf00a2e4600372c3e63c46071c89e8101e5a0e6873d82afe183a4ac0afd2",
+			"contract": "2ff0dbf28e380e45e2e7aee11277e0961d0553f787d4ca5348ce9512f49d773e",
+			"runtime": "c7622e3ae962998261c0960cbbb585eea9c739c43c788a691282fce34710b988",
+			"files": [
+				{
+					"path": "packages/reports/src/components/UploadComparison.svelte",
+					"hash": "7a3493f30353d0d5c62d64dd4204575f2c40c55c"
+				}
+			]
+		},
+		{
+			"unit": "reports.config.picker-playwright",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "437e8281ec714e7956742dede2d306b51648008eec7b22899d6cf28915943fd2",
+			"source": "1b680d3c78c91214cacc1e017e94a6df52f62af4a2997690f4f119bcff242f0a",
+			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
+			"runtime": "79c8df96eeed82d530ed58a3c6845cb0bd8934d8b4656586fa239c6c50d70276",
+			"files": [
+				{
+					"path": "packages/reports/src/config/pickerPlaywrightConfig.ts",
+					"hash": "c24a7276254727cb4f4f26b0389feb66225d1412"
+				}
+			]
+		},
+		{
+			"unit": "reports.endpoint.harness-data-path",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "52b82508aeab466d6be3e2bf33b379663c1d4985a8834541845befdbdb6fdb81",
+			"source": "1ed2281818d0097083eb74edd3f7ba22d2782b52c7f950646451eb732752bdf5",
+			"contract": "9fb4cc15aa7dbf2feeb68098700b059de8cc1b483c2c51d8a5e86ef3812cbee9",
+			"runtime": "d81ff481b03345db3ced5f77fafe6f140c8009597641b72c0b291e76c37b7470",
+			"files": [
+				{
+					"path": "packages/reports/src/routes/harness/data/[...path]/+server.ts",
+					"hash": "5ab575658cefd3b7fca41d82a13e2cb0e842d513"
+				}
+			]
+		},
+		{
+			"unit": "reports.endpoint.harness-export-commit",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c80079a162e50f175c62d21b65c67b0a7b34c9f0dd0be9c4983bbeb6de8a8650",
+			"source": "885e43a4bf6b332e25ff107d24dcaed574b77977c29eb73a20294d0faffc7f90",
+			"contract": "c505523084a45ae29a35e309da1a23b05b197835b4bb513fed3fd0ef08220905",
+			"runtime": "865aa744487bf0d7119470e34742e0560d9663e7a849e5fed2d02d31e8fa40bd",
+			"files": [
+				{
+					"path": "packages/reports/src/routes/harness/export/[commit]/+server.ts",
+					"hash": "611c6f2b767d2b21130979d7341e9f77b262f2cc"
+				}
+			]
+		},
+		{
+			"unit": "reports.endpoint.harness-media-file",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "e07793b09685bcc55402fd0161cf1f5ec7489613b856796c627c3418f21ba092",
+			"source": "61cfcbd55bc0e5024e1f9d64262a8364575b6b047bb725addb98622f357d40e9",
+			"contract": "9fb4cc15aa7dbf2feeb68098700b059de8cc1b483c2c51d8a5e86ef3812cbee9",
+			"runtime": "c9b1989c9cc28da4bf341ea4a9186f22fd1b66e407cede33a59f0f7538b82ce9",
+			"files": [
+				{
+					"path": "packages/reports/src/routes/harness/media/[file]/+server.ts",
+					"hash": "6aaa4c7ee762b2676197698b19dbb0006ea21817"
+				}
+			]
+		},
+		{
+			"unit": "reports.entry.hooks-server",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cf26f8e750ffd4fd0a725eda281ade9cadd965357394c7d517047f62dbf1d272",
+			"source": "9605930aaecd2ac997852b392863b730236ce99241acc01e30c9502cb2860f3b",
+			"contract": "73b3c3465472343c5f2c2916b223f01bd1e9315b32a5adfd3fde6c8fd6157c3c",
+			"runtime": "ce5f3f3b18596746dd5477f3a0aa0774da8e20657bab15228464ee94cd5256ed",
+			"files": [
+				{
+					"path": "packages/reports/src/hooks.server.ts",
+					"hash": "5eed0025a5d77bd9ef9d25d45c8562b6bc8114ae"
+				}
+			]
+		},
+		{
+			"unit": "reports.entry.index",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "844963cda2240e9c0ef4220a34fcedd4062e346468b03469e84ab3a1e42b428f",
+			"source": "0143616ca6fae3189dae947ef0debd867c5f9afbbfeed7a8dc721950669ac382",
+			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
+			"runtime": "e7cde20471b69be682e003bceddfc375435519dbc06999932a10ba3b4d0ce266",
+			"files": [
+				{
+					"path": "packages/reports/src/cli/index.ts",
+					"hash": "21dd08616054f2531577b69b1e245d51436c4e29"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.console-server",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "9337d9898c4288b14b040dd85d3ae649df7f867ee9dc3193dbfe890848c41e61",
+			"source": "9e6b89253dc19b9ad4c26a6a53ad610dd151411f53ca351bd53c279f764e7bb3",
+			"contract": "c975fe7ebabf6013c9867e457043b22a31f6a1a9266a501ea402a1e02dd4f5d7",
+			"runtime": "74657e6dee58933fc041f59ed4fe251d551d91fba369799eaffcbb10e5407496",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/consoleServer.ts",
+					"hash": "2e1305bedc1e0173dd5d47f7394bc09c1604f121"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.provider-picker-entry",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "8cc622aa80022ec8432b03f8763c33f4e91ece7626fd7d57cca293ed43a538af",
+			"source": "e06869ee09e1eb4d95a180ccd36b9342695f4eda3b172861d5ec0838756523c9",
+			"contract": "0746edb4106bc33f9422953c2d2f707089ce85123dc42c266883bedd70a0ac4d",
+			"runtime": "85b755afd2dae0c05bfbacbe7e15f0e42ec5e28bab9d88438f20f677fb474700",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/providerPickerEntry.ts",
+					"hash": "3aa7fcf3cc8d71b6c82fb9313bbe1b502797e064"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.report-pages",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a241b3d431b38bbbf120ddcc61d8ea3f87d2c36f3ba1903fb2f76d34d84be6e1",
+			"source": "3ce8c1200e5909d1995501a31aa6e56a04af3eebdd5d558dbb47e2986c3f96c2",
+			"contract": "b3f42d82f0f716eb5de3c1bfded898f0c932c2a6b7a965ee4cd4fb519dda1165",
+			"runtime": "5f1abbb298bea259af30960915490941e25af8b78b6995cd4f6c997b5cf16868",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/reportPages.ts",
+					"hash": "996aa5c21d4d7c4b856b9951f736cfaf1a1c8301"
+				}
+			]
+		},
+		{
+			"unit": "reports.function.report-runtime-root",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "29fcb65383b3e5c2633dbe2a1e1791d1fd06aaf51130ba8151cdf3bee4f6a0f0",
+			"source": "19b35b7251270af675596d17ff6f552704d8a60c8abb5d74702c0aa0d68193f7",
+			"contract": "08708695524ac4a39e348b03165e481328d621145d1620a37afe23a8a5f56399",
+			"runtime": "96a40a21424d73f50455485f9a0855c4f70dd3f03912149fe9675a8f89ab2405",
+			"files": [
+				{
+					"path": "packages/reports/src/utils/reportRuntimeRoot.ts",
+					"hash": "ba14eb9d37957418fce7d7c8c6764565b7f03a7a"
+				}
+			]
+		},
+		{
+			"unit": "reports.module.console",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "652dfcaf851ba1d1097efadcd048a061f1609fb8ee90a724bd2587fbf9906889",
+			"source": "b2f62bcaa947fc42b76b7fd5d34a2ec297e4ec9ad3c1b3d1e74634dc5fd2de90",
+			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
+			"runtime": "c9211aa805c5555aee16217dba47b3e3b836d338dc6ba761608428c0b6be35b9",
+			"files": [
+				{
+					"path": "packages/reports/src/lib/console.ts",
+					"hash": "eccabe8a2de18ef5a1ac18ec2f22a0a223be782f"
+				}
+			]
+		},
+		{
+			"unit": "reports.module.portable",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "f0e2cc9d8ce044de909d05e92cfa9f48633d8e4da6527ca3b041227fa5f0d5ac",
+			"source": "4b6f63275b23641c990810de8e0d370560a8f60237275d483fb74f27172fa44e",
+			"contract": "fc007bf6ed85fb98cf316476917b0c470108c476cbf043c868ab1828baf668d6",
+			"runtime": "21d62b380c05624794580be2316e44df8b7ad060ff600dee07fcf7ea833b0036",
+			"files": [
+				{
+					"path": "packages/reports/src/lib/portable.ts",
+					"hash": "67a22a42710ac7b7886d810a4ea71bbe6e5762e0"
+				}
+			]
+		},
+		{
+			"unit": "reports.page.harness-analytics",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "aea19726f1c82c3e5a1f1b26196fa4709ecd770628e1f2c5957ba956127ed0be",
+			"source": "39aaf25417e95f03c2249b88b686f090e3c47583094192ccd771e0a9d43521e3",
+			"contract": "b6d233c28bdac745354fe394f28a3c1a49cb1cad7457c2648a02290f5eea4766",
+			"runtime": "1b5c31271734568fdc34ebae4cac7f99d4ca4fd1aa4eea3deb5ee529a6f40c4c",
+			"files": [
+				{
+					"path": "packages/reports/src/routes/harness/analytics/+page.server.ts",
+					"hash": "c1e3e1ba015ee6f5feeb0c6c2eaf4e70d480a084"
+				},
+				{
+					"path": "packages/reports/src/routes/harness/analytics/+page.svelte",
+					"hash": "21220c0d38b89ee9df8bfa7a9ad3348216e2b450"
+				}
+			]
+		},
+		{
+			"unit": "reports.page.harness-reports",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "ccb785b745d9689fd848c5151aae5e264d11d4a34c711118d365ce3fb56d0a3b",
+			"source": "54344e07b766a9fa32810b7eb046e6771d1266631732f7afc3117e3908826281",
+			"contract": "fdc67a68311b6d48063d4927e25303b63703f03e4a53ed6dbbaf6627836fb7fa",
+			"runtime": "545b58fd662110e682f9590d7ca6a1cbeba07405801b5eb5200b23a680687136",
+			"files": [
+				{
+					"path": "packages/reports/src/routes/harness/reports/+page.server.ts",
+					"hash": "0d389843f779edbd92d69d576b2c163324460bd2"
+				},
+				{
+					"path": "packages/reports/src/routes/harness/reports/+page.svelte",
+					"hash": "ed0d5f5618b7bfaad9ad2a47a1aa3ba17a51fd81"
+				}
+			]
+		},
+		{
+			"unit": "reports.page.harness-reports-id",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "0a7fba662077415e301ecdfdcd2a7992d8096438c2fade2397b0a63df33b1240",
+			"source": "f47da950333bf146e35c72d8f26d433fcdf7eb9cbd937acf7f163399dec4827d",
+			"contract": "8a3855e8e4de0df6edf91b41c011de5f3d7beb5b4adadcc93f6e0bc0621ff0f8",
+			"runtime": "57981a485735050f75222bb8041c1f59a157e078454d2384f413bd89180c487b",
+			"files": [
+				{
+					"path": "packages/reports/src/routes/harness/reports/[id]/+page.server.ts",
+					"hash": "b40e373d99a641eb9da035b4000c2ec1baa43323"
+				},
+				{
+					"path": "packages/reports/src/routes/harness/reports/[id]/+page.svelte",
+					"hash": "cbeefc8eb3b6138b2ab1b6d60f56e1aa57323025"
+				}
+			]
+		},
+		{
+			"unit": "reports.page.harness-view",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "5d8dcb82201c683de963803a2fe720df1aeb04b321acd322a475cc2129f81edc",
+			"source": "cea56a30836ffdb8d36c484e3efbbf92b3bf0cec3619f66c73e032e17a7be697",
+			"contract": "83b01cf5f3a2ccea8b384940dbecf7bf673b0cbd9bc6e4a3593a9a490a3b1bb5",
+			"runtime": "711c21c880c4a1ee49b9aa7ff6e59efb5923710ae17f90429cabbd9dfcc2962e",
+			"files": [
+				{
+					"path": "packages/reports/src/routes/harness/[...view]/+page.server.ts",
+					"hash": "5a5e2d7c5b7de0928f18631d575926666609cde2"
+				},
+				{
+					"path": "packages/reports/src/routes/harness/[...view]/+page.svelte",
+					"hash": "4dd7f413604e31874861d23232b159ee2e02eb70"
+				}
+			]
+		},
+		{
+			"unit": "reports.service.harness-analytics",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "2203d29e2664d1f6b02db64b754b6279f744314212dd114afce45b0bb3bf9aa3",
+			"source": "ca8b9fb141583972270d8a2373d6c92d230d85030a1152a4a8113424741bd59b",
+			"contract": "9639b44e68e8fe1a14ac40351a34d41c80374a070637824164a2e327f3264f67",
+			"runtime": "59ff06f660ee20b1d42768cf0c729d53beffdcd89cfa22b12fdb9ef4bb4ee0ac",
+			"files": [
+				{
+					"path": "packages/reports/src/services/HarnessAnalyticsService.ts",
+					"hash": "0dfadfb2164e5720448750850c63e31b8922b38d"
+				}
+			]
+		},
+		{
+			"unit": "reports.service.report-command",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "cb25d68d4a221c88ea7144db20a338d07cdedf76146659c6590b47b41f1e4eac",
+			"source": "37c68305f93005c453c3798e7146f5efe365f11b297a59f3006344cf18d61c11",
+			"contract": "ddcf8b64b9bde0c97c1fdb7092788e1c4373c6b1d39cba1d43bd5c539f695cf1",
+			"runtime": "d6d4c40d3fdb5c6e3f9e2fb21672d63f902e9582e4cb8728e184d203272086a0",
+			"files": [
+				{
+					"path": "packages/reports/src/services/ReportCommandService.ts",
+					"hash": "e7220d0d103db9a679639a396c7a481ae963d99b"
+				}
+			]
+		},
+		{
+			"unit": "reports.service.report-export",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "78dff4ba43f894be7671ca56c8b073e2ba6464435367e9a892680b3afd8ee23b",
+			"source": "17a94bdd65833ea7fde963391b6bd5ebb908a74c4bf4fe3c381bb18a0deb8a46",
+			"contract": "97e0e3e70222f9298ab8747762aa7faad8033d342664947584f0546c6433e207",
+			"runtime": "360c4753cebb9c483c9c1439d77b015692a7c3cd674042c0463748d42d87ad56",
+			"files": [
+				{
+					"path": "packages/reports/src/services/ReportExportService.ts",
+					"hash": "770efaecf62752697464dfabcfbf4925510f7cbf"
+				}
+			]
+		},
+		{
+			"unit": "reports.service.report-publish",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "41481a5acfe381564bd5525924f4cb76be173bec0606c326d0049d5cefa5255b",
+			"source": "18e1af154955609954f73ae2c9e8b5ee78fcabb85153e11dcb15fe4e28602ae7",
+			"contract": "5b54057eaa2736f343b87a02f05d68169e563524cd1c2bb1601595bfbcde5e38",
+			"runtime": "306f36730337a005ccc279e919ffd38ec0437fa58325417c8b19787e7f915b92",
+			"files": [
+				{
+					"path": "packages/reports/src/services/ReportPublishService.ts",
+					"hash": "1d8f0ba3959753e146141c0c59cc927d5af258a7"
+				}
+			]
+		},
+		{
+			"unit": "reports.service.report-retention",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c14664b7917f9064312964316879722b109cad40988ab8157cca45f2006f48e6",
+			"source": "d63394346c1de57bd5f72ac6db076c3fb89a6b4661148d92aaf1d49e36bfe9ce",
+			"contract": "ef45e9c5cdec9e6c9f275caab1002922dea5a13e76a120b925e663fd953a0d22",
+			"runtime": "4e83186898997698e7a10a969fc55794a2e13b41bf39cf3bfa2df6723823d43f",
+			"files": [
+				{
+					"path": "packages/reports/src/services/ReportRetentionService.ts",
+					"hash": "245581ca18e98ed20f1b6521aa2a56df351ca255"
+				}
+			]
+		},
+		{
+			"unit": "reports.service.report-server",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "be1d1e619025e593833741c258cbe4dadab22cf2c2410f17e7b5f1a25ad33fe2",
+			"source": "c3b9b3a039f9d5ae3b6f1c286e3f7488343306ca94b16ebcf2202e3f7d16f83c",
+			"contract": "12f841443a5e63eecbd36ec8eccaf7e515af80cf1b6753c05473df37f6607f22",
+			"runtime": "47a011f1c1d614ba3d7c0c886a16dea49a78f8e8ee054dac2e7d7a8d5a9f1c6c",
+			"files": [
+				{
+					"path": "packages/reports/src/services/ReportServerService.ts",
+					"hash": "13c3ca02495d954a84353657d0162e49e3eaef26"
+				}
+			]
+		},
+		{
+			"unit": "reports.service.screenshot-retention",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "76d2ebb65d299ab2e78edfbbf2f78ec50cab26c1fd8c2bfbf200087501edfafb",
+			"source": "a9d9fb7f315f3e05f9adb2bca52f80b797ba14b496c9c881b643c816aa511406",
+			"contract": "46bf2c5f3cf3f29802b5cd3066486b6b4b72b42cdcf605285bd5671ac33fdb57",
+			"runtime": "1f1b9ad6f1eb45ee27f3ccd1e266937782b9d917928f898bb78a2c5374f35915",
+			"files": [
+				{
+					"path": "packages/reports/src/services/ScreenshotRetentionService.ts",
+					"hash": "c08c9009be84dedd57704d758bc6d80f78f8e0ee"
+				}
+			]
+		},
+		{
+			"unit": "script.prepare-desktop-experiment",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "6b45ef2d362a8fb5d474a5aa28e2ada7a6cb7d47560dcbf473217f72db4fe6a7",
+			"source": "657a2da62f9ee386dc11ca2909d6ebab7e89f804fb72fa3435b228e9d08aeb92",
+			"contract": "f87b9e83917e11de55ecb68ae8f74f41c3bf00ce6e5ede6403e5dd8a185a418d",
+			"runtime": "efe351fe65b89628ea46472b33d3cd40a7163e92459d94caddc868736755b892",
+			"files": [
+				{
+					"path": "scripts/prepare-desktop-experiment.ts",
+					"hash": "785bd8db4555718fb4de35fb5126ab6b2a0d1d8d"
+				}
+			]
+		},
+		{
+			"unit": "service.history-index",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "8c5d1720d06a67b0a20d756de864a480b2d150677e4830677367e10fb79fb637",
+			"source": "59413b05345314e475cd3d8a7617a596dae4277cd0c5422204b490751751fbaa",
+			"contract": "08ca3036d49b97c7e15176a907dd3c5dedbfab4969333c314907555869f7044d",
+			"runtime": "25a813305b06dfc76aa54819524f64d6b3b8fd049efab9ef9384c90630185fe1",
+			"files": [
+				{
+					"path": "src/services/HistoryIndexService.ts",
+					"hash": "c796e07553fe015a9c5406f3f7b4db821cc3db01"
+				}
+			]
+		},
+		{
+			"unit": "service.hook-run",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "8137f253daf2fb11574074534b9097fb1f7c266f1d9d074d1268c9217a8d1f5e",
+			"source": "fd6d0c297794d92ba7e2c9c106fe4658dbd9278c0df29677c529f5481ac4cd15",
+			"contract": "86e996768708c969cbbbe94d1e2237d163c3f67d31ddce453ff1f4b46d52be1f",
+			"runtime": "0f17b8c8f687ae4b95790c98468d66eb1689191f0bddde5c6d0119ca60d64abc",
+			"files": [
+				{
+					"path": "src/services/HookRunService.ts",
+					"hash": "4fc7942c27d774f0226c697f99ffdbeeb6b7216d"
+				}
+			]
+		},
+		{
+			"unit": "service.kernel-benchmark",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "66be1734f8ba62c58ede0cde6b067d82740234ba80f6136f18d71fbd1e1df972",
+			"source": "fc23afe235c7805fcbab1b355e0464dc5e97ee27b1610f3c827e5d345c7a2fe4",
+			"contract": "4fa815eea4a84395f162a7d909781dcd80f40564a0b76041bbdffed3cc82ca59",
+			"runtime": "098e9497c44e6fcfac64196edd44dd02588d6f44af1d093a9219032e712769d2",
+			"files": [
+				{
+					"path": "src/services/KernelBenchmarkService.ts",
+					"hash": "4460410e5e16a31efcb94a19c4d1a8a23e361e9d"
+				}
+			]
+		},
+		{
+			"unit": "service.revision-detail",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "d90f954bbd091ff6517bd2ac878d3472de357d0d9b3814f3a7bddd7bf671bc19",
+			"source": "21759f33f32a4a5fd5e246ad16ebf847f57713e55ff0ed71d4971ca9f7933c7b",
+			"contract": "d048e7d091747493f957481d911be04de5bbd36fb347af577c56373ebda3fadc",
+			"runtime": "1e90a8803e1aa77c6bcb7dd6aa9bb491a405ffce2c9a6ede1317b37ca0e4dfa6",
+			"files": [
+				{
+					"path": "src/services/RevisionDetailService.ts",
+					"hash": "56e10a88b784269cf37b64ffa01d17dd553ceca7"
+				}
+			]
+		},
+		{
+			"unit": "service.source-impact",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "66ce0090b80d6fd08fd490ff3ccbd902b09a18e9759543498d7de2ba67fd194e",
+			"source": "50955e9406e9cf6c92b4373aef402d18757d16886ea44277b63bace4479a37f2",
+			"contract": "edd8ca7474ac81e825a464dd75836c7da660f42a168ac71d0abcd464bb23adc3",
+			"runtime": "6404d6addfa0d550f91a3f5cc8d90181b3d18aa38d1b9fb188b13cd8d57936fc",
+			"files": [
+				{
+					"path": "src/services/SourceImpactService.ts",
+					"hash": "4e274c4b1237e9a80ef0c2d7e00959f653156e14"
+				}
+			]
+		},
+		{
+			"unit": "service.unit-benchmark",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c8b57b39320a34b5aac492c2302dbd7db3291eb8fad00cd07f7e7f9b2893ed1e",
+			"source": "00fce42c2cbb44c8f03b4edae54de4a82a0c98f645bc8f2be94fe3665811ba94",
+			"contract": "04ff6da02584d42568be04e772b4578e1d2c95975d55464513da8d0584a9790d",
+			"runtime": "f96bafbf79a2a9873872eb528f3634eb9f1977c7b44ecf5823de8547f94c25f8",
+			"files": [
+				{
+					"path": "src/services/UnitBenchmarkService.ts",
+					"hash": "31426975c5a3760d8ea13a0952ad8a4e845a11d5"
+				}
+			]
+		},
+		{
+			"unit": "service.unit-runtime",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "b0f5dda8b0f4f9995f4758687ef0113fd0280570af9e21ac0745dd8d4b02f1be",
+			"source": "ccc9dd29fd79467680e11539b060a25ca842d311c516ab2534480c6488904e37",
+			"contract": "3f6bf38e9968d44991c70096b019e957f1b196c39db98e0f9ee1986639efc5ee",
+			"runtime": "e2ee0015b8d93c9bafc9cd88d1991bd6c7f4f9d8d8cd2b8eaf2f12eaf423b69f",
+			"files": [
+				{
+					"path": "src/services/UnitRuntimeService.ts",
+					"hash": "76f98ce24f449b7888c05bed6377b5a598131575"
+				}
+			]
+		},
+		{
+			"unit": "workflow.build-history",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "1ce5d194d4d6ba3b4e747ca986251788a663d6f779e713efd4ff4b24fc4508d6",
+			"source": "061884058bda4e5991c161d9a97ccbcc7c0ff5357408eaa8e6bd5c72cc26dbdc",
+			"contract": "a95dc2db96acc03a14bdb782d64673625e4d9c1dc481810ce0c1515f6b095c5c",
+			"runtime": "cd2754c6fbccf850fb7ba0d08b95be207ba7ee1d38e7f78c646b3c6d8f9e3b2b",
+			"files": [
+				{
+					"path": "src/workflows/buildHistory.ts",
+					"hash": "01e1c2ed13674560d9c9b78a9995a5f72d54019c"
+				}
+			]
+		},
+		{
+			"unit": "workflow.run-budget",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "ffa917de82da761da8b83c22b0c680d19811cd2c1f0c6f10eb75ade12bdf12e5",
+			"source": "0d50c1cb2e6cd60ff7147d97d6e12937a4a381b496114317d4cc4d39166353b8",
+			"contract": "2d6862540c712f95bc2f654a762bad4eb96b015c12a2c9125a2a675d88c59344",
+			"runtime": "757b2f6e157ef8871ec5868946737e3c8a3ad5ff25294bdf2c741b1e7cacb388",
+			"files": [
+				{
+					"path": "src/workflows/runBudget.ts",
+					"hash": "33643f3c99fd313574fcd5c91468b262dfd6be54"
+				}
+			]
+		},
+		{
+			"unit": "workflow.run-hooks",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "85d127805db2fa209d8ff1baf484186e33ed0ba64c3a0721a5cd75116c39a672",
+			"source": "a28492e7e45dede6b341ac17a65d5429be8f5576263b75b8c98f8c87f1ef75b5",
+			"contract": "bff1b1ea60892d45914f1d0d3544ab5b993bf930022b509fede6c09d0c729b9e",
+			"runtime": "8d8df3fe2e80ce6c252302bf607b3ebc03259bd59c344e6f3000d56d93142d5f",
+			"files": [
+				{
+					"path": "src/workflows/runHooks.ts",
+					"hash": "cd69dff59dbc96534e8790c15927418aa158284e"
+				}
+			]
+		},
+		{
+			"unit": "workflow.run-impact",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "a43eacb11ffec5804d4575cf76b06c2445600ecef1bd03742f05da9be61eb116",
+			"source": "55d60f3a845eaf2bf74b66d71be233a076c22cd23c04c960741a06292425e3be",
+			"contract": "e5b20a33192c03a9007f61d8bfd0192c3f173e90b48c4de55ac4a22394ae7c81",
+			"runtime": "dfa5558e11bf0efbb655ce24984f0727a4670eabed367cb54f6710af5af408cc",
+			"files": [
+				{
+					"path": "src/workflows/runImpact.ts",
+					"hash": "417f13cfb70fb3faeec73c73576fde6dbf67335d"
+				}
+			]
+		},
+		{
+			"unit": "workflow.run-kernel",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "e6d34e2cc36a3a3975aaddff698a6de2645ef70b887daa105333e316a9e7ec55",
+			"source": "5569f2cc945529ce7e94043fdd9a69164e61e5c81f54dcd044d74f8df3f4fc55",
+			"contract": "5fa34c6cf565dc9b73e3aa25ac797f898450e4d3de2e3657e729ec9af9620b02",
+			"runtime": "c9fc726289f96294ceda10702b8124f7187a49f29c77fbfc38b1b0ea145f6d3d",
+			"files": [
+				{
+					"path": "src/workflows/runKernel.ts",
+					"hash": "d1fbb09323f03cd7e5c64cb3611e30d125b73f0e"
+				}
+			]
+		},
+		{
+			"unit": "workflow.run-kernel-bench",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "c0bc127d2760c0621023134bbe751c5de6863d8823ae80a3e3981070a95557cc",
+			"source": "e041dfa137db8f44d6623ae36c87e7cea71e09eac1770d9f391ceeaf41e52f83",
+			"contract": "60879d2f737ff69f4ced24d5f888872cd801bbc41731aeca2d9260ea7f2bd689",
+			"runtime": "7b169afecbc43835a54c9ad5884e1c187444b41a4873c6be0957b7dfa9685668",
+			"files": [
+				{
+					"path": "src/workflows/runKernelBench.ts",
+					"hash": "f7bd31ca09d6fa501b15a6cda8b13a14802abc89"
+				}
+			]
+		},
+		{
+			"unit": "workflow.run-kernel-boundary",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "ab704334950a425260971ea99cb1afa9986ebaa96f4c76a0497d6859aab83229",
+			"source": "dde278f0e1fc083b294c00e40b3aa7603b11121eca8c2a814630ef01687e09a0",
+			"contract": "3759869fe0aac7416f78b11b4a466fb20e089933e69fd831b45ca90d4717d0a0",
+			"runtime": "9303aa4f46e9a4dce4c3fe5eb74ed48b22caf5a095e10c523798264702447ab7",
+			"files": [
+				{
+					"path": "src/workflows/runKernelBoundary.ts",
+					"hash": "a0b56d54b6c48e5888447be0f3033c2498ada5c9"
+				}
+			]
+		},
+		{
+			"unit": "workflow.run-report",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "268c368527a73c47308dbb0a125040da32c362be1b0da173ca6813f0aee1d35c",
+			"source": "a2e2ff38c1bf132d6d5015a1d820b7c533e56a7625876829281231cf9dddb554",
+			"contract": "3d1a85b4b79de87dcea90e391fbf0ec82898330b225ab92487d36502f9d15cdc",
+			"runtime": "e5f1602acda7bd7cb8eaa42614daff4ad3ec1081e51b2dfa2e40b386ee2183c0",
+			"files": [
+				{
+					"path": "src/workflows/runReport.ts",
+					"hash": "ae07352e4f647d2f78ab357fe9c8c5e0582f9349"
+				}
+			]
+		},
+		{
+			"unit": "workflow.run-verify",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "2e4bee50616736ec9266ed1accdc8cd2aea4e53b470a4f7f9e9f167998dbc7e7",
+			"source": "efb78f5dc5fb9fe486c95c944f0bb1ccc416deadb8909373131fcdcc8fee7576",
+			"contract": "6121c7ff95ea94178c6f807e9cf8144a9b57a2ba75cf23c7c96ac8ad68d61446",
+			"runtime": "06daf082ff8be8ab53fb00112b91eb90f4fe086c575ae89546e731435723bc95",
+			"files": [
+				{
+					"path": "src/workflows/runVerify.ts",
+					"hash": "8526cae873a0bb582c75ec4e79d0f6144b6a4292"
+				}
+			]
+		},
+		{
+			"unit": "workflow.sign-budget",
+			"change": "unchanged",
+			"target": "module",
+			"manifest": "be4df45521f910610d94e45b97c083178c17734498e8cca4758cef1552bd2044",
+			"source": "4522f6560ec322c2d3ac455fc1c1f9b6942e34bef49fa832c71c636eca921036",
+			"contract": "bd92ef0387cf4642f48416ab11b310a5eeb7dc43576194e4266ba9aaa16c448e",
+			"runtime": "bfde2c8d5966c35d250261d8eb7012d0284120e4af18fd1da386fcf2c842310b",
+			"files": [
+				{
+					"path": "src/workflows/signBudget.ts",
+					"hash": "15bd008c825cb75801b7449ade0ca400ecdca523"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "reports.component.harness-harness-compare-media",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 4093,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-compare-media",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 111,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-compare-media",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 27,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-compare-media",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 4,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-compare-media",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-compare-media",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-compare-media",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-growth",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 5073,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-growth",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 142,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-growth",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 22,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-growth",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 6,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-growth",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-growth",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-growth",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-selectors",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 1573,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-selectors",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 58,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-selectors",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 5,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-selectors",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 3,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-selectors",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-selectors",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.harness-harness-selectors",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.hub-view",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 4680,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.hub-view",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 130,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.hub-view",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 16,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.hub-view",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 7,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.hub-view",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.hub-view",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.hub-view",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.select",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 1425,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.select",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 75,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.select",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.select",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.select",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.select",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.select",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.upload-comparison",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 2959,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.upload-comparison",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 77,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.upload-comparison",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 6,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.upload-comparison",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 3,
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.upload-comparison",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.upload-comparison",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "reports.component.upload-comparison",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 3904,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 84,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 21,
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 14,
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-floor-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.37495899999998983,
+			"method": "Fastest of 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "module",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.5141874999999914,
+			"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "module",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 1944.8158502492122,
+			"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the module runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "module",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-floor-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.8022080000000642,
+			"method": "Fastest of 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.202021000000002,
+			"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 831.9322208181042,
+			"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the wasm runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-floor-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.8073330000001988,
+			"method": "Fastest of 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 1.1089584999999715,
+			"method": "Median of the round medians over 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "service.unit-runtime",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 901.7469995496006,
+			"method": "Calls per second at the median over 5 rounds of 50 end-to-end calls through the process runtime, including request validation, serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 250,
+			"comparison": {
+				"request": "2dc29d0463b1f573ae4e76471bb33500f8bee75a5fe11f7ea729aa88a4470b24",
+				"boundary": "public-invocation",
+				"protocol": "harness-rounds/1",
+				"sampling": {
+					"warmup": 3,
+					"rounds": 5,
+					"iterations": 50
+				}
+			},
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 402048,
+			"method": "Byte size recorded by the kernel build.",
+			"workload": null,
+			"target": "process",
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14964,
+			"method": "Byte size recorded by the kernel build.",
+			"workload": null,
+			"target": "process",
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-cold-ms",
+			"unitOfMeasure": "ms",
+			"value": 6.466332999999992,
+			"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+			"workload": "graph-100",
+			"target": "process",
+			"samples": 3,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.10235399999987749,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-100",
+			"target": "process",
+			"samples": 30,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 9230.536337242138,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-100",
+			"target": "process",
+			"samples": 30,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 1998848,
+			"method": "Peak resident set size of one native process run, from /usr/bin/time.",
+			"workload": "graph-100",
+			"target": "process",
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-cold-ms",
+			"unitOfMeasure": "ms",
+			"value": 7.037000000000006,
+			"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 3,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.8649169999998776,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 30,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 1142.6650010165515,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "process",
+			"samples": 30,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 2949120,
+			"method": "Peak resident set size of one native process run, from /usr/bin/time.",
+			"workload": "graph-1k",
+			"target": "process",
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 143132,
+			"method": "Byte size recorded by the kernel build.",
+			"workload": null,
+			"target": "wasm",
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 14964,
+			"method": "Byte size recorded by the kernel build.",
+			"workload": null,
+			"target": "wasm",
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-cold-ms",
+			"unitOfMeasure": "ms",
+			"value": 8.499583000000001,
+			"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+			"workload": "graph-100",
+			"target": "wasm",
+			"samples": 3,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.2126664999999548,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-100",
+			"target": "wasm",
+			"samples": 30,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 4492.308494012117,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-100",
+			"target": "wasm",
+			"samples": 30,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 1179648,
+			"method": "Linear memory size of the instantiated module after the warm loop.",
+			"workload": "graph-100",
+			"target": "wasm",
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-cold-ms",
+			"unitOfMeasure": "ms",
+			"value": 9.446041999999977,
+			"method": "Median of 3 fresh-process samples: create the runtime, serialize the request, invoke once and parse the response. CLI startup is excluded because every runtime pays it.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 3,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 0.922436999999718,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 30,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "throughput-ops",
+			"unitOfMeasure": "ops/s",
+			"value": 1015.8013658666968,
+			"method": "Median of 30 calls on an initialized runtime, including request serialization and response parsing.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"samples": 30,
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.impact-kernel",
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 1769472,
+			"method": "Linear memory size of the instantiated module after the warm loop.",
+			"workload": "graph-1k",
+			"target": "wasm",
+			"profile": "1db6ce9451b5e530",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": false,
+		"changed": [
+			{
+				"path": "packages/reports/src/components/HubView.svelte",
+				"status": "modified",
+				"classification": "source"
+			},
+			{
+				"path": "packages/reports/src/components/Select.svelte",
+				"status": "modified",
+				"classification": "source"
+			},
+			{
+				"path": "packages/reports/src/components/UploadComparison.svelte",
+				"status": "modified",
+				"classification": "source"
+			},
+			{
+				"path": "packages/reports/src/components/harness/HarnessCompareMedia.svelte",
+				"status": "modified",
+				"classification": "source"
+			},
+			{
+				"path": "packages/reports/src/components/harness/HarnessGrowth.svelte",
+				"status": "modified",
+				"classification": "source"
+			},
+			{
+				"path": "packages/reports/src/components/harness/HarnessSelectors.svelte",
+				"status": "modified",
+				"classification": "source"
+			},
+			{
+				"path": "packages/reports/test/components/select.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "packages/reports/test/utils/select-reuse.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "packages/reports/tests/e2e/provider-picker.spec.ts",
+				"status": "modified",
+				"classification": "test"
+			},
+			{
+				"path": "packages/reports/tests/e2e/shared-select-console.spec.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "packages/reports/tests/e2e/shared-select-reports.spec.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "packages/reports/tests/e2e/support/sharedSelect.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "specification/budgets/ledger.ndjson",
+				"status": "modified",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/features/planned/agentic-self-hosting.md",
+				"status": "modified",
+				"classification": "ignored"
+			},
+			{
+				"path": "specification/loops/shared-select/loop.json",
+				"status": "added",
+				"classification": "ignored"
+			},
+			{
+				"path": "specification/loops/shared-select/trace.ndjson",
+				"status": "added",
+				"classification": "ignored"
+			},
+			{
+				"path": "specification/units/reports.component.harness-harness-compare-media.json",
+				"status": "modified",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/reports.component.harness-harness-growth.json",
+				"status": "modified",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/reports.component.harness-harness-selectors.json",
+				"status": "modified",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/reports.component.hub-view.json",
+				"status": "modified",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/reports.component.select.json",
+				"status": "modified",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/reports.component.upload-comparison.json",
+				"status": "modified",
+				"classification": "registry"
+			}
+		],
+		"units": {
+			"direct": [
+				"reports.component.harness-harness-compare-media",
+				"reports.component.harness-harness-growth",
+				"reports.component.harness-harness-selectors",
+				"reports.component.hub-view",
+				"reports.component.select",
+				"reports.component.upload-comparison"
+			],
+			"indirect": [
+				"adapter.module-runtime",
+				"command.budget",
+				"command.history",
+				"command.hooks",
+				"command.impact",
+				"command.kernel",
+				"command.report",
+				"command.verify",
+				"entry.index",
+				"entry.program",
+				"module.index",
+				"module.runtime",
+				"reports.adapter.report-pages-retention",
+				"reports.command.report",
+				"reports.component.analytics-filters",
+				"reports.component.analytics-history",
+				"reports.component.analytics-models",
+				"reports.component.analytics-tasks",
+				"reports.component.evidence-grid",
+				"reports.component.gameplay-replay",
+				"reports.component.harness-harness-compare",
+				"reports.component.harness-harness-console",
+				"reports.component.harness-harness-history",
+				"reports.component.harness-harness-legacy",
+				"reports.component.harness-harness-shell",
+				"reports.component.provider-picker",
+				"reports.component.replay-controls",
+				"reports.component.report-view",
+				"reports.component.upload-audio",
+				"reports.config.picker-playwright",
+				"reports.endpoint.harness-data-path",
+				"reports.endpoint.harness-export-commit",
+				"reports.endpoint.harness-media-file",
+				"reports.entry.hooks-server",
+				"reports.entry.index",
+				"reports.function.console-server",
+				"reports.function.provider-picker-entry",
+				"reports.function.report-pages",
+				"reports.function.report-runtime-root",
+				"reports.module.console",
+				"reports.module.portable",
+				"reports.page.harness-analytics",
+				"reports.page.harness-reports",
+				"reports.page.harness-reports-id",
+				"reports.page.harness-view",
+				"reports.service.harness-analytics",
+				"reports.service.report-command",
+				"reports.service.report-export",
+				"reports.service.report-publish",
+				"reports.service.report-retention",
+				"reports.service.report-server",
+				"reports.service.screenshot-retention",
+				"script.prepare-desktop-experiment",
+				"service.history-index",
+				"service.hook-run",
+				"service.kernel-benchmark",
+				"service.revision-detail",
+				"service.source-impact",
+				"service.unit-benchmark",
+				"service.unit-runtime",
+				"workflow.build-history",
+				"workflow.run-budget",
+				"workflow.run-hooks",
+				"workflow.run-impact",
+				"workflow.run-kernel",
+				"workflow.run-kernel-bench",
+				"workflow.run-kernel-boundary",
+				"workflow.run-report",
+				"workflow.run-verify",
+				"workflow.sign-budget"
+			],
+			"added": [],
+			"removed": []
+		},
+		"uncertain": [
+			{
+				"node": "file:packages/reports/src/config/pickerPlaywrightConfig.ts",
+				"reason": "unresolved-import",
+				"detail": "../../../.."
+			},
+			{
+				"node": "file:packages/reports/src/utils/reportRuntimeRoot.ts",
+				"reason": "unresolved-import",
+				"detail": "../.."
+			},
+			{
+				"node": "file:packages/reports/test/utils/harness-keys.test.ts",
+				"reason": "unresolved-import",
+				"detail": "../../src/components/harness"
+			},
+			{
+				"node": "file:scripts/prepare-desktop-experiment.ts",
+				"reason": "unresolved-import",
+				"detail": "../.cache/codex-picker-evidence/desktop-copy"
+			},
+			{
+				"node": "file:src/adapters/ModuleRuntimeAdapter.ts",
+				"reason": "non-literal-import",
+				"detail": "import(pathToFileURL(file).href)"
+			},
+			{
+				"node": "file:src/workflows/runReport.ts",
+				"reason": "unresolved-import",
+				"detail": "../../packages/reports/"
+			},
+			{
+				"node": "file:src/workflows/runReport.ts",
+				"reason": "unresolved-import",
+				"detail": "./index.js"
+			},
+			{
+				"node": "file:src/workflows/runReport.ts",
+				"reason": "unresolved-import",
+				"detail": "./reports/cli.js"
+			},
+			{
+				"node": "file:test/cli-output.e2e.test.ts",
+				"reason": "unresolved-import",
+				"detail": ".."
+			},
+			{
+				"node": "file:test/support/browserRun.ts",
+				"reason": "unresolved-import",
+				"detail": "../../packages/reports"
+			},
+			{
+				"node": "file:test/support/consoleHost.ts",
+				"reason": "unresolved-import",
+				"detail": "../../node_modules"
+			},
+			{
+				"node": "file:test/support/hostBucket.ts",
+				"reason": "unresolved-import",
+				"detail": "../../node_modules/.bin/wrangler"
+			},
+			{
+				"node": "file:test/support/hostScale.ts",
+				"reason": "unresolved-import",
+				"detail": "../../node_modules/.bin/wrangler"
+			},
+			{
+				"node": "file:test/support/workers.ts",
+				"reason": "unresolved-import",
+				"detail": "../../node_modules/.bin/wrangler"
+			},
+			{
+				"node": "file:test/utils/edge-entry.test.ts",
+				"reason": "unresolved-import",
+				"detail": "../.."
+			}
+		]
+	},
+	"tests": [
+		{
+			"id": "packages/reports/test/adapters/report-pages-retention.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/adapters/report-pages-retention.test.ts",
+			"status": "passed",
+			"durationMs": 1187,
+			"log": {
+				"path": "logs/packages-reports-test-adapters-report-pages-retention.test.ts.log",
+				"bytes": 356,
+				"sha256": "7192e79ab676709788d3b861e3fcfd2da4e6227453a78d25c0a5fa9b5d0b3ef3"
+			}
+		},
+		{
+			"id": "packages/reports/test/components/select.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/components/select.test.ts",
+			"status": "passed",
+			"durationMs": 1112,
+			"log": {
+				"path": "logs/packages-reports-test-components-select.test.ts.log",
+				"bytes": 344,
+				"sha256": "4621de374566ca3db512b93ebd1854e3a0561f25ad3ac2036ae753c925990c97"
+			}
+		},
+		{
+			"id": "packages/reports/test/gameplay-replay.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/gameplay-replay.test.ts",
+			"status": "passed",
+			"durationMs": 1294,
+			"log": {
+				"path": "logs/packages-reports-test-gameplay-replay.test.ts.log",
+				"bytes": 344,
+				"sha256": "0b935d931ab341fd4bb7dc62c2786d94d0802f5c7d40c9912bd775bc98b06293"
+			}
+		},
+		{
+			"id": "packages/reports/test/replay-cloud-storage.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/replay-cloud-storage.test.ts",
+			"status": "passed",
+			"durationMs": 1494,
+			"log": {
+				"path": "logs/packages-reports-test-replay-cloud-storage.test.ts.log",
+				"bytes": 350,
+				"sha256": "c441e5bb12e749391c978f0fe05fa1688d17e54e20a9352dfb20b1d0b9ecb2e2"
+			}
+		},
+		{
+			"id": "packages/reports/test/report-audio.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/report-audio.test.ts",
+			"status": "passed",
+			"durationMs": 1350,
+			"log": {
+				"path": "logs/packages-reports-test-report-audio.test.ts.log",
+				"bytes": 341,
+				"sha256": "552e03b6122eaf99221bbb4315dd4d071922090d8c841648f6e407d952f40de4"
+			}
+		},
+		{
+			"id": "packages/reports/test/report-cloud-retention.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/report-cloud-retention.test.ts",
+			"status": "passed",
+			"durationMs": 1095,
+			"log": {
+				"path": "logs/packages-reports-test-report-cloud-retention.test.ts.log",
+				"bytes": 350,
+				"sha256": "dacdf2e0e19701b3f8a8484edcc3791d6865f2dfb349be66ac4045d632f4a23c"
+			}
+		},
+		{
+			"id": "packages/reports/test/report-export.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/report-export.test.ts",
+			"status": "passed",
+			"durationMs": 1262,
+			"log": {
+				"path": "logs/packages-reports-test-report-export.test.ts.log",
+				"bytes": 343,
+				"sha256": "52d102d2d26eeb34bc35dac0c96fe44be454bcbedd9db35ced0a8c2c4a7ce664"
+			}
+		},
+		{
+			"id": "packages/reports/test/report-storage-backfill.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/report-storage-backfill.test.ts",
+			"status": "passed",
+			"durationMs": 1003,
+			"log": {
+				"path": "logs/packages-reports-test-report-storage-backfill.test.ts.log",
+				"bytes": 351,
+				"sha256": "3f7604ba5570a7798d8ab4fe6ebc268efd866a7d4b091f061b4ddccf49c65ad7"
+			}
+		},
+		{
+			"id": "packages/reports/test/services/harness-analytics.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/services/harness-analytics.test.ts",
+			"status": "passed",
+			"durationMs": 1568,
+			"log": {
+				"path": "logs/packages-reports-test-services-harness-analytics.test.ts.log",
+				"bytes": 528,
+				"sha256": "acf74b76075f80173460779ed2db49f51c3ab7fa30155d6b5344ddb6b148a60c"
+			}
+		},
+		{
+			"id": "packages/reports/test/services/report-publish.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/services/report-publish.test.ts",
+			"status": "passed",
+			"durationMs": 1010,
+			"log": {
+				"path": "logs/packages-reports-test-services-report-publish.test.ts.log",
+				"bytes": 350,
+				"sha256": "d53de61a78a7bec9190648091603927d3b7233951f94049549653f061d474826"
+			}
+		},
+		{
+			"id": "packages/reports/test/services/screenshot-retention.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/services/screenshot-retention.test.ts",
+			"status": "passed",
+			"durationMs": 1278,
+			"log": {
+				"path": "logs/packages-reports-test-services-screenshot-retention.test.ts.log",
+				"bytes": 359,
+				"sha256": "dae586613f5787a1ffb93804355b9ec019caa113ffc4cad7bae29782f5a0f25e"
+			}
+		},
+		{
+			"id": "packages/reports/test/utils/harness-keys.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/utils/harness-keys.test.ts",
+			"status": "passed",
+			"durationMs": 939,
+			"log": {
+				"path": "logs/packages-reports-test-utils-harness-keys.test.ts.log",
+				"bytes": 342,
+				"sha256": "25efd3dc270a62afaa4154c936ef0bfd32ca37ad1198f3a62b8fb84f76d06a59"
+			}
+		},
+		{
+			"id": "packages/reports/test/utils/report-pages.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/utils/report-pages.test.ts",
+			"status": "passed",
+			"durationMs": 980,
+			"log": {
+				"path": "logs/packages-reports-test-utils-report-pages.test.ts.log",
+				"bytes": 343,
+				"sha256": "25282d0896a8fc3ecd30817bea65423f799148bc1849fe7b4b0f3b88087c7f0f"
+			}
+		},
+		{
+			"id": "packages/reports/test/utils/select-reuse.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "packages/reports/test/utils/select-reuse.test.ts",
+			"status": "passed",
+			"durationMs": 940,
+			"log": {
+				"path": "logs/packages-reports-test-utils-select-reuse.test.ts.log",
+				"bytes": 344,
+				"sha256": "a07d24cede8197cd246ad9b9efd4e67704c00cd2eed124e3b9381785c0f12cbb"
+			}
+		},
+		{
+			"id": "packages/reports/tests/e2e/audio-comparison-portable.spec.ts",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "packages/reports/tests/e2e/audio-comparison-portable.spec.ts",
+			"status": "passed",
+			"durationMs": 87988,
+			"log": {
+				"path": "logs/packages-reports-tests-e2e-audio-comparison-portable.spec.ts.log",
+				"bytes": 2239,
+				"sha256": "048385381ce8ba283821e89f8b3f9a7245b66d458260ad129e55b59b73ecb713"
+			}
+		},
+		{
+			"id": "packages/reports/tests/e2e/audio-portable.spec.ts",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "packages/reports/tests/e2e/audio-portable.spec.ts",
+			"status": "passed",
+			"durationMs": 77113,
+			"log": {
+				"path": "logs/packages-reports-tests-e2e-audio-portable.spec.ts.log",
+				"bytes": 2390,
+				"sha256": "e8036ea0d75e653cb80d094973fc09d1418ce08f0611f9a7643865c334c0374e"
+			}
+		},
+		{
+			"id": "packages/reports/tests/e2e/cloudflare-screenshot-upload.spec.ts",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "packages/reports/tests/e2e/cloudflare-screenshot-upload.spec.ts",
+			"status": "passed",
+			"durationMs": 82168,
+			"log": {
+				"path": "logs/packages-reports-tests-e2e-cloudflare-screenshot-upload.spec.ts.log",
+				"bytes": 2654,
+				"sha256": "ed54b7359f9bdcc6d69d7760e5b2308bc4115afe6df50f8d86579c648e067ccc"
+			}
+		},
+		{
+			"id": "packages/reports/tests/e2e/harness-site-scope.spec.ts",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "packages/reports/tests/e2e/harness-site-scope.spec.ts",
+			"status": "passed",
+			"durationMs": 81722,
+			"log": {
+				"path": "logs/packages-reports-tests-e2e-harness-site-scope.spec.ts.log",
+				"bytes": 2688,
+				"sha256": "7e606b3efc485ac7adbe4e713e0ce41a016faaa1746800e673730a6e99cad3f0"
+			}
+		},
+		{
+			"id": "packages/reports/tests/e2e/portable.spec.ts",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "packages/reports/tests/e2e/portable.spec.ts",
+			"status": "passed",
+			"durationMs": 76469,
+			"log": {
+				"path": "logs/packages-reports-tests-e2e-portable.spec.ts.log",
+				"bytes": 2215,
+				"sha256": "1e2fe593117875549ae9edbc4130fdd5926d4fd897c1070148f6a87ea5843afd"
+			}
+		},
+		{
+			"id": "packages/reports/tests/e2e/provider-picker.spec.ts",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "packages/reports/tests/e2e/provider-picker.spec.ts",
+			"status": "passed",
+			"durationMs": 3114,
+			"log": {
+				"path": "logs/packages-reports-tests-e2e-provider-picker.spec.ts.log",
+				"bytes": 2470,
+				"sha256": "15588ae620c1cfd207dd9e6eb462141b689656c790bcfdbbb81dcb0797eabb8b"
+			}
+		},
+		{
+			"id": "packages/reports/tests/e2e/shared-select-console.spec.ts",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "packages/reports/tests/e2e/shared-select-console.spec.ts",
+			"status": "passed",
+			"durationMs": 82661,
+			"log": {
+				"path": "logs/packages-reports-tests-e2e-shared-select-console.spec.ts.log",
+				"bytes": 3464,
+				"sha256": "503f4e53c7dce3987cf8653636922a7560f547daf637fd9c4fb07d5c69ab5b79"
+			}
+		},
+		{
+			"id": "packages/reports/tests/e2e/shared-select-reports.spec.ts",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "packages/reports/tests/e2e/shared-select-reports.spec.ts",
+			"status": "passed",
+			"durationMs": 81705,
+			"log": {
+				"path": "logs/packages-reports-tests-e2e-shared-select-reports.spec.ts.log",
+				"bytes": 3470,
+				"sha256": "f8bac1f7eaad7db8d9b49458bac8db52d2f7277e15da7595ae1f7d632477e8ec"
+			}
+		},
+		{
+			"id": "test/adapters/handler-runtime.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/adapters/handler-runtime.test.ts",
+			"status": "passed",
+			"durationMs": 650,
+			"log": {
+				"path": "logs/test-adapters-handler-runtime.test.ts.log",
+				"bytes": 334,
+				"sha256": "07e5e858bffb3b1c62191ac350a3555e3b4ab668318904b197cfe8a2b6c78296"
+			}
+		},
+		{
+			"id": "test/adapters/runtime-adapters.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/adapters/runtime-adapters.test.ts",
+			"status": "passed",
+			"durationMs": 2170,
+			"log": {
+				"path": "logs/test-adapters-runtime-adapters.test.ts.log",
+				"bytes": 620,
+				"sha256": "d507bf5f3c8faaac3c55404f8972f19d4b65c38fb5517c3417b91cd253f65803"
+			}
+		},
+		{
+			"id": "test/adapters/runtime-deadline.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/adapters/runtime-deadline.test.ts",
+			"status": "passed",
+			"durationMs": 869,
+			"log": {
+				"path": "logs/test-adapters-runtime-deadline.test.ts.log",
+				"bytes": 337,
+				"sha256": "d6363362892e22adcd5070314fcb41bb9011244c90b1d65fc13eb3310b2dba04"
+			}
+		},
+		{
+			"id": "test/cli-output.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/cli-output.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 1252,
+			"log": {
+				"path": "logs/test-cli-output.e2e.test.ts.log",
+				"bytes": 398,
+				"sha256": "2562ff3707d2ffa150ab3fe7291ef272222af8e3dbadc37a66fd336afd00791a"
+			}
+		},
+		{
+			"id": "test/cli.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/cli.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 30744,
+			"log": {
+				"path": "logs/test-cli.e2e.test.ts.log",
+				"bytes": 566,
+				"sha256": "bf933635ae203d3c7c79b05ec0bdace5de8a0ce6f5a876bb80d89e88c607ae6d"
+			}
+		},
+		{
+			"id": "test/commands/response-check.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/commands/response-check.test.ts",
+			"status": "passed",
+			"durationMs": 1281,
+			"log": {
+				"path": "logs/test-commands-response-check.test.ts.log",
+				"bytes": 332,
+				"sha256": "2d901d373a14cb9564f4d895cdc2f348d36b1d7f1a079e9efa8c083d87a9853a"
+			}
+		},
+		{
+			"id": "test/console-host-routes.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/console-host-routes.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 18014,
+			"log": {
+				"path": "logs/test-console-host-routes.e2e.test.ts.log",
+				"bytes": 340,
+				"sha256": "bd92a44894f7c0cb2b82b2418fa1423d2c1518cca6cecea61aa2cb537c5650f9"
+			}
+		},
+		{
+			"id": "test/console-install.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/console-install.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 18280,
+			"log": {
+				"path": "logs/test-console-install.e2e.test.ts.log",
+				"bytes": 699,
+				"sha256": "a9397eaff58521ab05b310274bb8e3c229ca36691294f85595798fb541588973"
+			}
+		},
+		{
+			"id": "test/console-scale.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/console-scale.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 776,
+			"log": {
+				"path": "logs/test-console-scale.e2e.test.ts.log",
+				"bytes": 336,
+				"sha256": "cbffdd47871a65b55a7563b4339b470c81f1639cf791f589f1ccecce667564f2"
+			}
+		},
+		{
+			"id": "test/console-storage.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/console-storage.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 20596,
+			"log": {
+				"path": "logs/test-console-storage.e2e.test.ts.log",
+				"bytes": 444,
+				"sha256": "3484abbb59a1362fc7d3b4bdadf711af5f5e07b328686fc75b7286745f93e50b"
+			}
+		},
+		{
+			"id": "test/history-fresh-viewer.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/history-fresh-viewer.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 9204,
+			"log": {
+				"path": "logs/test-history-fresh-viewer.e2e.test.ts.log",
+				"bytes": 337,
+				"sha256": "33f7fc6cb64cea0a97ed6f99092688cb5d10da2e3050b48faecf0c52326e891b"
+			}
+		},
+		{
+			"id": "test/packaged-edge.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/packaged-edge.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 2643,
+			"log": {
+				"path": "logs/test-packaged-edge.e2e.test.ts.log",
+				"bytes": 422,
+				"sha256": "3a8b3d627ceceae45ce5221a3f3c046eee44a3de49f88446ba129cab96da72be"
+			}
+		},
+		{
+			"id": "test/packaged-reports.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/packaged-reports.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 7413,
+			"log": {
+				"path": "logs/test-packaged-reports.e2e.test.ts.log",
+				"bytes": 594,
+				"sha256": "458f238eb9b8f7620bbf2430388eec9f678e838e0db4072a260657b48f88cf96"
+			}
+		},
+		{
+			"id": "test/reports-concurrent-runs.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/reports-concurrent-runs.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 99981,
+			"log": {
+				"path": "logs/test-reports-concurrent-runs.e2e.test.ts.log",
+				"bytes": 457,
+				"sha256": "1e37592816bae0efc53a6e3ff7f323bd4282e14bf06d235014f885b5bbae8e20"
+			}
+		},
+		{
+			"id": "test/reports-frozen-build.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/reports-frozen-build.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 1158,
+			"log": {
+				"path": "logs/test-reports-frozen-build.e2e.test.ts.log",
+				"bytes": 336,
+				"sha256": "88c3d02c831877a0a013407354ec35119f3a568c7b42dae49ea55bd097afd2d1"
+			}
+		},
+		{
+			"id": "test/reports-run-failures.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/reports-run-failures.test.ts",
+			"status": "passed",
+			"durationMs": 609,
+			"log": {
+				"path": "logs/test-reports-run-failures.test.ts.log",
+				"bytes": 328,
+				"sha256": "49c81684169aa3a6e9a137e6738e44cf9d153201d34051ea4aef44632ad7dd7c"
+			}
+		},
+		{
+			"id": "test/reports-run-pages.e2e.test.ts",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/reports-run-pages.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 176309,
+			"log": {
+				"path": "logs/test-reports-run-pages.e2e.test.ts.log",
+				"bytes": 445,
+				"sha256": "a1b3ebba0f04798da6059b1f11fb55b921ea383adf7ddb3eeb25ba2ac5b6145a"
+			}
+		},
+		{
+			"id": "test/services/kernel-portability.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/services/kernel-portability.test.ts",
+			"status": "passed",
+			"durationMs": 1583,
+			"log": {
+				"path": "logs/test-services-kernel-portability.test.ts.log",
+				"bytes": 413,
+				"sha256": "29e899391a074d1a9513ba3287a56533c15404240a9b3c2015304076bd9c264e"
+			}
+		},
+		{
+			"id": "test/services/unit-runtime.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/services/unit-runtime.test.ts",
+			"status": "passed",
+			"durationMs": 977,
+			"log": {
+				"path": "logs/test-services-unit-runtime.test.ts.log",
+				"bytes": 334,
+				"sha256": "9410f01bf7d97ecf7b57a47bbceb8164ba2db9667f166dc554d3b26329bee674"
+			}
+		},
+		{
+			"id": "test/utils/edge-entry.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/utils/edge-entry.test.ts",
+			"status": "passed",
+			"durationMs": 753,
+			"log": {
+				"path": "logs/test-utils-edge-entry.test.ts.log",
+				"bytes": 324,
+				"sha256": "f4d417829fa7b61ce0ef94b708c6a2e4706ad3ca4707d4cf345201d056d45432"
+			}
+		},
+		{
+			"id": "kernel-build:cargo",
+			"kind": "unit",
+			"runner": "command",
+			"target": "bun run check:kernel",
+			"status": "passed",
+			"durationMs": 7437,
+			"log": {
+				"path": "logs/kernel-build-cargo.log",
+				"bytes": 1853,
+				"sha256": "dc405910d98d95e41b1a6395450b7a78625d9a126a56a39943fded830f21261a"
+			}
+		},
+		{
+			"id": "invocation-boundary:boundary",
+			"kind": "integration",
+			"runner": "command",
+			"target": "bun run src/index.ts kernel bench --boundary",
+			"status": "passed",
+			"durationMs": 1186,
+			"log": {
+				"path": "logs/invocation-boundary-boundary.log",
+				"bytes": 6412,
+				"sha256": "129e77758c0f6adc2d05b39da7d66df3488b613c284e14f98d0f6c41e17d275e"
+			}
+		},
+		{
+			"id": "kernel-build:kernel-cli",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/kernel.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 7305,
+			"log": {
+				"path": "logs/kernel-build-kernel-cli.log",
+				"bytes": 519,
+				"sha256": "80d93325f9b94d7fb8c23d4fe066de1e037f85afa7284564a6351aae6a7a3c2f"
+			}
+		},
+		{
+			"id": "package-api:packed-consumer",
+			"kind": "e2e",
+			"runner": "vitest",
+			"target": "test/packaged-api.e2e.test.ts",
+			"status": "passed",
+			"durationMs": 5567,
+			"log": {
+				"path": "logs/package-api-packed-consumer.log",
+				"bytes": 426,
+				"sha256": "e6d92dd9f440ab5075bac57ef2b50d63ce1b014e4ad6749a8c559463f8c1d5bf"
+			}
+		},
+		{
+			"id": "kernel-build:parity",
+			"kind": "integration",
+			"runner": "vitest",
+			"target": "test/services/kernel-parity.test.ts",
+			"status": "passed",
+			"durationMs": 930,
+			"log": {
+				"path": "logs/kernel-build-parity.log",
+				"bytes": 335,
+				"sha256": "69c9fe47b6981cc47b22d310cca9fb67b5ee65f2d8300dca6528251f518b379e"
+			}
+		},
+		{
+			"id": "harness-console:evidence",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "tests/e2e/harness-evidence.spec.ts",
+			"status": "passed",
+			"durationMs": 115705,
+			"log": {
+				"path": "logs/harness-console-evidence.log",
+				"bytes": 2735,
+				"sha256": "e07d5cf6d03c1eae4a3b84ff50c89bd7d2f0049ec216c04839c6abf51b83b61c"
+			}
+		},
+		{
+			"id": "harness-reports:evidence",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "tests/e2e/harness-reports-evidence.spec.ts",
+			"status": "passed",
+			"durationMs": 127383,
+			"log": {
+				"path": "logs/harness-reports-evidence.log",
+				"bytes": 2807,
+				"sha256": "1561b12b2874bb9f49d308ac9706b2a303379b91b6c0ebba4e924daf1bc37ca4"
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "harness-console",
+			"status": "passed",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"states": [
+				{
+					"id": "map",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "map",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/map-desktop.png",
+							"sha256": "0181714f046372a99919df588e9402747eb84663af07835d2537e38f094c190a",
+							"bytes": 62302,
+							"capturedAt": "2026-10-11T09:42:35.508Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "map",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/map-tablet.png",
+							"sha256": "219df060fc48842c6e27435fa7df4686eb55dd31d71df644815b19d54cd28240",
+							"bytes": 50385,
+							"capturedAt": "2026-10-11T09:42:35.543Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "map",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/map-mobile.png",
+							"sha256": "f88e3ef7938737d544942d59d1d9e74c4fccea4b48d5b89a7287a33f07241e55",
+							"bytes": 47435,
+							"capturedAt": "2026-10-11T09:42:35.563Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "compare",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "compare",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/compare-desktop.png",
+							"sha256": "5719b14d797596e1bd0742692187833a545c973774e07a3ecd7996d3ec72b2e1",
+							"bytes": 118723,
+							"capturedAt": "2026-10-11T09:42:35.511Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "compare",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/compare-tablet.png",
+							"sha256": "ca0e2c2b3db17d56d4eb9bd13f62135fe46c5d76f1214770b0ae06313ba0d048",
+							"bytes": 96729,
+							"capturedAt": "2026-10-11T09:42:35.544Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "compare",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/compare-mobile.png",
+							"sha256": "bfd5e252e18bbe48fc764b4db4085783b8022c65be022c4b450031790e601f39",
+							"bytes": 56517,
+							"capturedAt": "2026-10-11T09:42:35.564Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "aligned",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "aligned",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/aligned-desktop.png",
+							"sha256": "eb684f746275a2eebc38672cb0d964fccf7ace5e518139d8fcc7b8c44f25a692",
+							"bytes": 69568,
+							"capturedAt": "2026-10-11T09:42:35.513Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "aligned",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/aligned-tablet.png",
+							"sha256": "823a5b831c0ee821ee568619eb6a28470dac1f9b87eae3c577b01b71d23b009a",
+							"bytes": 54482,
+							"capturedAt": "2026-10-11T09:42:35.545Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "aligned",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/aligned-mobile.png",
+							"sha256": "22df52d85b308e9db49f6659c84b990e49e36a9ba8ae10e54ec3b1ef029b5152",
+							"bytes": 49932,
+							"capturedAt": "2026-10-11T09:42:35.564Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "removed",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "removed",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/removed-desktop.png",
+							"sha256": "fe6d61d07e34653a4ca9f58da9ac44cdf7599fb50121070102527c4d5e021044",
+							"bytes": 98452,
+							"capturedAt": "2026-10-11T09:42:35.515Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "removed",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/removed-tablet.png",
+							"sha256": "937cc0ca1e53a175855ac9146898bd1be0a0959d12c23285dabc574bb112acf9",
+							"bytes": 73847,
+							"capturedAt": "2026-10-11T09:42:35.546Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "removed",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/removed-mobile.png",
+							"sha256": "0cab9baac1737bcca62954ce0a2285b6dcbc461a3107c56fb085b880b6baa981",
+							"bytes": 45614,
+							"capturedAt": "2026-10-11T09:42:35.565Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "history",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "history",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/history-desktop.png",
+							"sha256": "96888dde7be15ad82d667a9035a04a047995a8bb58e5357bc90e5a5b540a169d",
+							"bytes": 153963,
+							"capturedAt": "2026-10-11T09:42:35.517Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "history",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/history-tablet.png",
+							"sha256": "15d0989a369fed4b091551765ff335fcf454480f19493bbf6184f54eb23cdfb4",
+							"bytes": 121737,
+							"capturedAt": "2026-10-11T09:42:35.547Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "history",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/history-mobile.png",
+							"sha256": "b9a372f15581b3c43a268a99fe0855334cba31909fcd18ee67af61af20ae9288",
+							"bytes": 63514,
+							"capturedAt": "2026-10-11T09:42:35.565Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "media",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "media",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/media-desktop.png",
+							"sha256": "7e6a35531812a6ce27f0ac97e48b4620e945e52df5155ccf5a10be0f9d97e370",
+							"bytes": 161993,
+							"capturedAt": "2026-10-11T09:42:35.520Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "media",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/media-tablet.png",
+							"sha256": "0f2b3ead1461f110e5bebfa7618db4786fa4c248c4de1f58cc62720f7ca27203",
+							"bytes": 42903,
+							"capturedAt": "2026-10-11T09:42:35.548Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "media",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/media-mobile.png",
+							"sha256": "e01bc64e89fa04b3571cd1abaf039c449cacfeee23f339100c912ded2718cf94",
+							"bytes": 31925,
+							"capturedAt": "2026-10-11T09:42:35.566Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "tone",
+							"kind": "audio",
+							"state": "media",
+							"mediaType": "audio/wav",
+							"provenance": "actual-capture",
+							"transcript": "Synthetic test tone. No speech.",
+							"note": "The bytes the console served to its player; the clip itself is a generated tone.",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/media.wav",
+							"sha256": "36b59f8c7fd996896f4f2c7856de67eda8c922bc38c544e1bc1d18b12e4f5268",
+							"bytes": 4044,
+							"capturedAt": "2026-10-11T09:42:35.575Z",
+							"durationSeconds": 0.25,
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "rejected",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "rejected",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/rejected-desktop.png",
+							"sha256": "def52e626b445d94c691690c520087f17ba7d4f6d3c8c2167443d4e2bfe8f871",
+							"bytes": 45080,
+							"capturedAt": "2026-10-11T09:42:35.522Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "rejected",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/rejected-tablet.png",
+							"sha256": "528272e9a1a36882d22b742e6254ce1e1a946dbbaa85021622d75fb3ee55e41d",
+							"bytes": 42386,
+							"capturedAt": "2026-10-11T09:42:35.548Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "rejected",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/rejected-mobile.png",
+							"sha256": "18b99884996dade7174f42930af7eaaa059e2cfde6ea3848d0c62d92a5bb0dbc",
+							"bytes": 66759,
+							"capturedAt": "2026-10-11T09:42:35.567Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "gap",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "gap",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/gap-desktop.png",
+							"sha256": "305c71ab42349db92ed7eb09a700492e90be881d9bbbf018e1ae88a68d77e520",
+							"bytes": 102683,
+							"capturedAt": "2026-10-11T09:42:35.523Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "gap",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/gap-tablet.png",
+							"sha256": "31dd0c4700686270e49385267a8ac0e7f7c46310b10fdff9c353680b2fda1233",
+							"bytes": 100233,
+							"capturedAt": "2026-10-11T09:42:35.550Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "gap",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/gap-mobile.png",
+							"sha256": "0b12a8d593888a6edd2b99e4bd0d67ff3df4275c4b2d5cfb76fd4c84256de83c",
+							"bytes": 58718,
+							"capturedAt": "2026-10-11T09:42:35.567Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "growth",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "growth",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/growth-desktop.png",
+							"sha256": "cbfabd2354463ff0a47a17408fcef6d56f5dd53a086e1233de20426755734e40",
+							"bytes": 86879,
+							"capturedAt": "2026-10-11T09:42:35.526Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "growth",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/growth-tablet.png",
+							"sha256": "faf215db9bf73888f115804de58dcbcfc41cf1862f4d0a79a8c8a2eb9ec943b4",
+							"bytes": 73357,
+							"capturedAt": "2026-10-11T09:42:35.550Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "growth",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/growth-mobile.png",
+							"sha256": "b1361e88110dc7e507871ccd025368f30645ecd2e0b3b1095625b285e3fd4eaf",
+							"bytes": 49045,
+							"capturedAt": "2026-10-11T09:42:35.568Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "unavailable",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "unavailable",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/unavailable-desktop.png",
+							"sha256": "a0daaf4df1c663dd0e2d1db4c411d8a638024f5d1c00f762ed96dbb679741868",
+							"bytes": 89735,
+							"capturedAt": "2026-10-11T09:42:35.528Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "unavailable",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/unavailable-tablet.png",
+							"sha256": "b720fbd6b8bf8195da5420374306734d5d40ae1a70baefabddb03ce032dab900",
+							"bytes": 83936,
+							"capturedAt": "2026-10-11T09:42:35.552Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "unavailable",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/unavailable-mobile.png",
+							"sha256": "84233a3821c3abe4bbe6f188c55d0b95a2b434bedf4286b3115a1249b92f1a8e",
+							"bytes": 72265,
+							"capturedAt": "2026-10-11T09:42:35.569Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "partial",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "partial",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/partial-desktop.png",
+							"sha256": "734792d01accf323be8d091d846219bee1020b62d340c05f34c4c2cfe183617a",
+							"bytes": 83481,
+							"capturedAt": "2026-10-11T09:42:35.530Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "partial",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/partial-tablet.png",
+							"sha256": "ffe24577c0b4a2e6d30df4bb3c9af5cb193e8c063496d753ee1ca50d0474d2d4",
+							"bytes": 73745,
+							"capturedAt": "2026-10-11T09:42:35.553Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "partial",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/partial-mobile.png",
+							"sha256": "f21835f97c9ab4cde45324a25a0ff9b4a8b24f45f4628b495c4d5ba56b568507",
+							"bytes": 66284,
+							"capturedAt": "2026-10-11T09:42:35.569Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "unavailable-growth",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "unavailable-growth",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/unavailable-growth-desktop.png",
+							"sha256": "8e8b8d412b9f0a9e89f7315b08be8d2fd616d67acbbc45dc479d7170a6878dd4",
+							"bytes": 134737,
+							"capturedAt": "2026-10-11T09:42:35.533Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "unavailable-growth",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/unavailable-growth-tablet.png",
+							"sha256": "505c539c7bfc059df7ecfffb53a06c39f363a7336017e48b63c838fec5e9b264",
+							"bytes": 126617,
+							"capturedAt": "2026-10-11T09:42:35.555Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "unavailable-growth",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/unavailable-growth-mobile.png",
+							"sha256": "b74cafcefbeba0061a508df09b892e7df85f9b72ced386a122088e818fcdd946",
+							"bytes": 52393,
+							"capturedAt": "2026-10-11T09:42:35.570Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "hundreds",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "hundreds",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/hundreds-desktop.png",
+							"sha256": "5971e5d1953e19c912c7f5cad192e4ea3986ab48677b85f3dc0b2725819aaad9",
+							"bytes": 130692,
+							"capturedAt": "2026-10-11T09:42:35.534Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "hundreds",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/hundreds-tablet.png",
+							"sha256": "2536bc6f2b9a277e151002f7cfaca8b957a6a7812976d633fd48d0d3642095f1",
+							"bytes": 105731,
+							"capturedAt": "2026-10-11T09:42:35.557Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "hundreds",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/hundreds-mobile.png",
+							"sha256": "6e556078af4d74e342dd0526228e421f288312e60148d7570c7cf589416c722b",
+							"bytes": 57552,
+							"capturedAt": "2026-10-11T09:42:35.571Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "failures",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "failures",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/failures-desktop.png",
+							"sha256": "71656dc57766ba8f05c255606db3d396c4a743324ecaa3db264859f61ec510c7",
+							"bytes": 124497,
+							"capturedAt": "2026-10-11T09:42:35.536Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "failures",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/failures-tablet.png",
+							"sha256": "6d6700091b9c0756823982a7c36c74f4bf7f8e7210fab39be638d4ce196d8d3a",
+							"bytes": 105044,
+							"capturedAt": "2026-10-11T09:42:35.558Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "failures",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/failures-mobile.png",
+							"sha256": "a14e937206ccb69e7369e354cafbd138399b6ec3d0cb75cde2b130d22be3f657",
+							"bytes": 70409,
+							"capturedAt": "2026-10-11T09:42:35.572Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "emitted",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "emitted",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/emitted-desktop.png",
+							"sha256": "8c8f45cbc520a6b4f08a1735a95aaa2b988baf78641add714fe75f09324a184f",
+							"bytes": 76398,
+							"capturedAt": "2026-10-11T09:42:35.539Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "emitted",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/emitted-tablet.png",
+							"sha256": "ee06954d46b18fa3385ebe96e3ba97d780d37b60d6cff47769d048f2615b0e20",
+							"bytes": 66968,
+							"capturedAt": "2026-10-11T09:42:35.560Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "emitted",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/emitted-mobile.png",
+							"sha256": "0082894b3f7416d8756bf6fe5439fac95b8850fee84efbcbee173c1178af9ee1",
+							"bytes": 62864,
+							"capturedAt": "2026-10-11T09:42:35.573Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "emitted-gone",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "emitted-gone",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/emitted-gone-desktop.png",
+							"sha256": "9e03a331077c22ff966338948ae82e94645d619b79584df8066a3aeb348522b1",
+							"bytes": 85539,
+							"capturedAt": "2026-10-11T09:42:35.541Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "emitted-gone",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/emitted-gone-tablet.png",
+							"sha256": "5a13af63005a770e649553623550f22040f5aa1d4b88143447c9fa782fb5b42a",
+							"bytes": 75805,
+							"capturedAt": "2026-10-11T09:42:35.561Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "emitted-gone",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/emitted-gone-mobile.png",
+							"sha256": "41886663e82a9068878de5136ee97e508720e86e9da55beb55e27d148d203340",
+							"bytes": 68685,
+							"capturedAt": "2026-10-11T09:42:35.574Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "emitted-growth",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "emitted-growth",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/emitted-growth-desktop.png",
+							"sha256": "a0901ef14563cc561e32ae759adadf57807cbe233cfa244d7a47baa96a29028f",
+							"bytes": 134685,
+							"capturedAt": "2026-10-11T09:42:35.542Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "emitted-growth",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/emitted-growth-tablet.png",
+							"sha256": "682a3fc643d8be681eb1c6a097b717ad1c1b8c53d39613d210a475d0940cd825",
+							"bytes": 110126,
+							"capturedAt": "2026-10-11T09:42:35.562Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "emitted-growth",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/emitted-growth-mobile.png",
+							"sha256": "1a877a4b76d480235aabd21a56b8196b2491a4d017bff651af9e9d747ebeee7c",
+							"bytes": 59679,
+							"capturedAt": "2026-10-11T09:42:35.575Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "unreviewed",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "unreviewed",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/unreviewed-desktop.png",
+							"sha256": "0de87f84375b8706daa718631246509686b28e225b56fd3e09619cc39ba9fd88",
+							"bytes": 96021,
+							"capturedAt": "2026-10-11T09:42:35.538Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "unreviewed",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/unreviewed-tablet.png",
+							"sha256": "5e6526b1c87e7e0f0323aa8c7f1d9611fd2dd55b594be6372e2e46aa7c8639d5",
+							"bytes": 87747,
+							"capturedAt": "2026-10-11T09:42:35.559Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "unreviewed",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-console/evidence/unreviewed-mobile.png",
+							"sha256": "0a61c310cf2cfc766fdf3abade250a4400bd0c636c12f30aae9cac47b5a48b4f",
+							"bytes": 77665,
+							"capturedAt": "2026-10-11T09:42:35.573Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "harness-reports",
+			"status": "passed",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"states": [
+				{
+					"id": "hub",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "hub",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/hub-desktop.png",
+							"sha256": "755db2390aae0120fcf3aa391f34010438522bc3636361b417aba21e9aae0a57",
+							"bytes": 207362,
+							"capturedAt": "2026-10-11T09:44:42.991Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "hub",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/hub-tablet.png",
+							"sha256": "f4be174d31fe7c3c17c137a92da9829e66d5b040c60a105cf094e192257cd9f0",
+							"bytes": 135477,
+							"capturedAt": "2026-10-11T09:44:43.005Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "hub",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/hub-mobile.png",
+							"sha256": "32c8c0130e1c103343cf60450eeb08baa913f2905b9710c8718f2308cb1a3832",
+							"bytes": 98550,
+							"capturedAt": "2026-10-11T09:44:43.014Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "report",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "report",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/report-desktop.png",
+							"sha256": "00e850951fff74eeefbcc5332c06899db8c84b5eafe615ccdf2fb82c7c3edf3b",
+							"bytes": 92034,
+							"capturedAt": "2026-10-11T09:44:42.992Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "report",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/report-tablet.png",
+							"sha256": "783e7ee193adfd1a01df640e6a32bfdc28aeade6313a3cd271e0ceaf1d65be10",
+							"bytes": 71175,
+							"capturedAt": "2026-10-11T09:44:43.007Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "report",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/report-mobile.png",
+							"sha256": "cf7c2343bda1b3702856bfd4093feeafac8afd8157e7c351583aa0d255f7edab",
+							"bytes": 55946,
+							"capturedAt": "2026-10-11T09:44:43.015Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "gallery",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "gallery",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/gallery-desktop.png",
+							"sha256": "cc31e16543b118807c9c99b7f164754501bfe32ffedda5a8f48e8a7f7b2c221e",
+							"bytes": 94577,
+							"capturedAt": "2026-10-11T09:44:42.994Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "gallery",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/gallery-tablet.png",
+							"sha256": "5cca0d83373f469cce32498dec397a6f0b435779a91de677bb570954df94c01b",
+							"bytes": 60139,
+							"capturedAt": "2026-10-11T09:44:43.008Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "gallery",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/gallery-mobile.png",
+							"sha256": "b7c65792362a98e3813e3f19bd2e6c649c1ec987d2d50a2189578d3762180aa4",
+							"bytes": 50935,
+							"capturedAt": "2026-10-11T09:44:43.015Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "viewer",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "viewer",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/viewer-desktop.png",
+							"sha256": "4d09d356d10e8a2db153990151d51382420ae232dcc76d8b6e51d19fdb4a664f",
+							"bytes": 62150,
+							"capturedAt": "2026-10-11T09:44:42.996Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "viewer",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/viewer-tablet.png",
+							"sha256": "ecb699cb2c90f58cf079ed08cf324d5b1730662e83facaf9a4dd579c4b78bc04",
+							"bytes": 53340,
+							"capturedAt": "2026-10-11T09:44:43.009Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "viewer",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/viewer-mobile.png",
+							"sha256": "f8d98c9ca98385e207467f0eefd93ce6ce30c953839c77a7c4fc63f47c52c60e",
+							"bytes": 51095,
+							"capturedAt": "2026-10-11T09:44:43.016Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "comparison",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "comparison",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/comparison-desktop.png",
+							"sha256": "7bd5e6175572c3f178e730482245903f5c9c890369227ef68bf571b900368bf9",
+							"bytes": 56817,
+							"capturedAt": "2026-10-11T09:44:42.997Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "comparison",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/comparison-tablet.png",
+							"sha256": "4ebcb4ec6fced45797979aebfbb3e2971b74b87be669483f3398cb49c28af09d",
+							"bytes": 48991,
+							"capturedAt": "2026-10-11T09:44:43.009Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "comparison",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/comparison-mobile.png",
+							"sha256": "08cfb9cb6042bcbb40e93ba84374aa5acaaf7e139014e512b6078bb82df9afea",
+							"bytes": 45129,
+							"capturedAt": "2026-10-11T09:44:43.016Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "audio",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "audio",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/audio-desktop.png",
+							"sha256": "a0d0bdfe0e20c3de709be5df33d5c761026774a7aa49906809de940d54f68635",
+							"bytes": 83816,
+							"capturedAt": "2026-10-11T09:44:42.999Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "audio",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/audio-tablet.png",
+							"sha256": "55486e353ac0ed65ae106159732a1960b032e94ba429c08eba7b46c1f9505b00",
+							"bytes": 75283,
+							"capturedAt": "2026-10-11T09:44:43.010Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "audio",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/audio-mobile.png",
+							"sha256": "d22628a1480e4bdfb70d1d670b6b8cc68e5e349f21410d6093ad197865bb9f6e",
+							"bytes": 59271,
+							"capturedAt": "2026-10-11T09:44:43.017Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "tone",
+							"kind": "audio",
+							"state": "audio",
+							"mediaType": "audio/wav",
+							"provenance": "actual-capture",
+							"transcript": "Low synthetic tone",
+							"note": "The bytes the console served to its player; the clip itself is a generated tone.",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/audio.wav",
+							"sha256": "eea48c1aa88227bca1c5262d8ba3b5b60a2a447668398a934ac0c3df9f46b5af",
+							"bytes": 192044,
+							"capturedAt": "2026-10-11T09:44:43.018Z",
+							"durationSeconds": 6,
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "analytics",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "analytics",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/analytics-desktop.png",
+							"sha256": "5ccf273f2684741f3a82878fac202d4e4b968b86f89c1bfee968e886e9768410",
+							"bytes": 153390,
+							"capturedAt": "2026-10-11T09:44:43.001Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "analytics",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/analytics-tablet.png",
+							"sha256": "390a47e673ff2f66b8257ec995e128f3f7a4f31dcb4df23fbd45de9af8788ba7",
+							"bytes": 88002,
+							"capturedAt": "2026-10-11T09:44:43.012Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "analytics",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/analytics-mobile.png",
+							"sha256": "a785d8750b7eed2447f3ddc652e277ebb08900a9e38de81b04732dde974cd29a",
+							"bytes": 55981,
+							"capturedAt": "2026-10-11T09:44:43.018Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				},
+				{
+					"id": "exported",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "exported",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/exported-desktop.png",
+							"sha256": "332e94435614ca488015b95799abcd2f6e51c3979eb060acee516e07dc842583",
+							"bytes": 84613,
+							"capturedAt": "2026-10-11T09:44:43.003Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "exported",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/exported-tablet.png",
+							"sha256": "b6851635a6c3ca7a58b1c8efd09d7237020ef97b99a1300d463492c491ea2cf7",
+							"bytes": 73881,
+							"capturedAt": "2026-10-11T09:44:43.013Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "exported",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/harness-reports/evidence/exported-mobile.png",
+							"sha256": "b4972486a5f9640a68c40b03ce3c4ea1f5f36b0f1a1aefdc1d21b2865dd15f7c",
+							"bytes": 52455,
+							"capturedAt": "2026-10-11T09:44:43.018Z",
+							"server": {
+								"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+								"revision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "invocation-boundary",
+			"status": "passed",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"states": [
+				{
+					"id": "module",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "boundary",
+							"kind": "benchmark",
+							"state": "module",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/invocation-boundary/boundary/boundary-module.json",
+							"sha256": "97c3bde3fcfd7ba1b27ba9eff97fac963aa31c890b394112cfe4b5bd1adcd6ff",
+							"bytes": 1678,
+							"capturedAt": "2026-10-11T09:40:25.897Z"
+						}
+					]
+				},
+				{
+					"id": "wasm",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "boundary",
+							"kind": "benchmark",
+							"state": "wasm",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/invocation-boundary/boundary/boundary-wasm.json",
+							"sha256": "b70738aaa37efc80cdd482ea89bd4bf79cc4a25c39d997068a66c393a705d60b",
+							"bytes": 1661,
+							"capturedAt": "2026-10-11T09:40:25.897Z"
+						}
+					]
+				},
+				{
+					"id": "process",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "boundary",
+							"kind": "benchmark",
+							"state": "process",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/invocation-boundary/boundary/boundary-process.json",
+							"sha256": "adbd5490d144a89a6c000d5a927cb834f133965081532d9ae9251f5b4bbacf75",
+							"bytes": 1683,
+							"capturedAt": "2026-10-11T09:40:25.897Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "kernel-build",
+			"status": "passed",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"states": [
+				{
+					"id": "native",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "benchmark",
+							"kind": "benchmark",
+							"state": "native",
+							"mediaType": "application/json",
+							"note": "kernel bench --quick on this machine; not a controlled comparison.",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/kernel-build/kernel-cli/benchmark-native.json",
+							"sha256": "108aba3a40a5dbd0bf1da7dc9a77e942c58e560a4094a7e74ed41ee371e5a92a",
+							"bytes": 3363,
+							"capturedAt": "2026-10-11T09:40:33.219Z"
+						},
+						{
+							"evidence": "parity",
+							"kind": "assertions",
+							"state": "native",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/kernel-build/parity/parity-native.json",
+							"sha256": "c767de4baf5c9e348801d72a5c4c3d0ff36e821b01fdf5559cd668a01060a086",
+							"bytes": 201,
+							"capturedAt": "2026-10-11T09:40:39.773Z"
+						}
+					]
+				},
+				{
+					"id": "wasm",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "benchmark",
+							"kind": "benchmark",
+							"state": "wasm",
+							"mediaType": "application/json",
+							"note": "kernel bench --quick on this machine; not a controlled comparison.",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/kernel-build/kernel-cli/benchmark-wasm.json",
+							"sha256": "2896b86cf2c398c81f0d90e279a9fbf7de20ebde3325ef2a081f725a9ab07dd9",
+							"bytes": 3322,
+							"capturedAt": "2026-10-11T09:40:33.219Z"
+						},
+						{
+							"evidence": "parity",
+							"kind": "assertions",
+							"state": "wasm",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/kernel-build/parity/parity-wasm.json",
+							"sha256": "f6e8174b19f30e85152b4b67263e0ef645d8c213f1500bdc2086d9e69be34e54",
+							"bytes": 199,
+							"capturedAt": "2026-10-11T09:40:39.773Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "package-api",
+			"status": "passed",
+			"testedRevision": "37e96d20d2cd5020bb06e2086dc5bc09c0465946",
+			"states": [
+				{
+					"id": "packed",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "consumer-output",
+							"kind": "output",
+							"state": "packed",
+							"mediaType": "application/json",
+							"note": "Printed by the consumer project under each runtime after it installed the packed tarball.",
+							"status": "passed",
+							"path": "evidence/37e96d20d2cd5020bb06e2086dc5bc09c0465946/package-api/packed-consumer/consumer-output.json",
+							"sha256": "29f4dbbcad7707482ae42dd3a6bca2371fd5e2100b20f85c7c41f5b355757eb6",
+							"bytes": 6687,
+							"capturedAt": "2026-10-11T09:40:38.815Z"
+						}
+					]
+				}
+			]
+		}
+	],
+	"builds": [
+		{
+			"id": "reports",
+			"directory": "packages/reports/build",
+			"buildId": "dd0917598db1b86e8f21e007d3add3f224d0ab5382031ed9b6eea59169b0ecb1",
+			"files": 223
+		}
+	],
+	"budgets": {
+		"status": "failed",
+		"findings": [
+			{
+				"unit": "reports.component.harness-harness-compare-media",
+				"metric": "source-bytes",
+				"baseline": 4093,
+				"measured": 4093,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.harness-harness-compare-media",
+				"metric": "complexity",
+				"baseline": 27,
+				"measured": 27,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.harness-harness-compare-media",
+				"metric": "dependencies",
+				"baseline": 4,
+				"measured": 4,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.harness-harness-growth",
+				"metric": "source-bytes",
+				"baseline": 5073,
+				"measured": 5073,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.harness-harness-growth",
+				"metric": "complexity",
+				"baseline": 22,
+				"measured": 22,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.harness-harness-growth",
+				"metric": "dependencies",
+				"baseline": 6,
+				"measured": 6,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.harness-harness-selectors",
+				"metric": "source-bytes",
+				"baseline": 1573,
+				"measured": 1573,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.harness-harness-selectors",
+				"metric": "complexity",
+				"baseline": 5,
+				"measured": 5,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.harness-harness-selectors",
+				"metric": "dependencies",
+				"baseline": 3,
+				"measured": 3,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.hub-view",
+				"metric": "source-bytes",
+				"baseline": 4680,
+				"measured": 4680,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.hub-view",
+				"metric": "complexity",
+				"baseline": 16,
+				"measured": 16,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.hub-view",
+				"metric": "dependencies",
+				"baseline": 7,
+				"measured": 7,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.select",
+				"metric": "source-bytes",
+				"baseline": 1425,
+				"measured": 1425,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.select",
+				"metric": "complexity",
+				"baseline": 0,
+				"measured": 0,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.select",
+				"metric": "dependencies",
+				"baseline": 1,
+				"measured": 1,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.upload-comparison",
+				"metric": "source-bytes",
+				"baseline": 2959,
+				"measured": 2959,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.upload-comparison",
+				"metric": "complexity",
+				"baseline": 6,
+				"measured": 6,
+				"status": "passed"
+			},
+			{
+				"unit": "reports.component.upload-comparison",
+				"metric": "dependencies",
+				"baseline": 3,
+				"measured": 3,
+				"status": "passed"
+			},
+			{
+				"unit": "service.unit-runtime",
+				"metric": "latency-floor-ms",
+				"baseline": 0.3456250000000125,
+				"measured": 0.37495899999998983,
+				"detail": "graph-1k on the module target",
+				"status": "exceeded"
+			},
+			{
+				"unit": "service.unit-runtime",
+				"metric": "latency-floor-ms",
+				"baseline": 0.7442500000000223,
+				"measured": 0.8022080000000642,
+				"detail": "graph-1k on the wasm target",
+				"status": "exceeded"
+			},
+			{
+				"unit": "service.unit-runtime",
+				"metric": "latency-floor-ms",
+				"baseline": 0.7939169999999649,
+				"measured": 0.8073330000001988,
+				"detail": "graph-1k on the process target",
+				"status": "passed"
+			}
+		]
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [
+			{
+				"unit": "reports.component.harness-harness-compare-media",
+				"symbol": "<module>",
+				"file": "packages/reports/src/components/harness/HarnessCompareMedia.svelte",
+				"change": "modified",
+				"from": "c0039d7bc35cd9db",
+				"to": "fdf0c1666e62a866",
+				"behavior": "The scenario, state, viewport and record choices of a comparison are the shared select, bound to the same choices as before.",
+				"simplification": {
+					"attempt": "Nothing simpler was found: the fields were bound both ways already. The file went from 4079 to 4093 bytes, which is the import less the shorter label, and from 3 dependencies to 4; complexity stayed 27.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "Up to five fields gain a wrapper and a caret each; what is compared is computed as before. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-11T08:38:31.904Z"
+			},
+			{
+				"unit": "reports.component.harness-harness-compare-media",
+				"symbol": "<template>",
+				"file": "packages/reports/src/components/harness/HarnessCompareMedia.svelte",
+				"change": "modified",
+				"from": "b56f6ee7f14976a7",
+				"to": "963bb03bd32117d5",
+				"behavior": "The scenario, state, viewport and record choices of a comparison are the shared select, bound to the same choices as before.",
+				"simplification": {
+					"attempt": "Nothing simpler was found: the fields were bound both ways already. The file went from 4079 to 4093 bytes, which is the import less the shorter label, and from 3 dependencies to 4; complexity stayed 27.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "Up to five fields gain a wrapper and a caret each; what is compared is computed as before. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-11T08:38:31.904Z"
+			},
+			{
+				"unit": "reports.component.harness-harness-growth",
+				"symbol": "<module>",
+				"file": "packages/reports/src/components/harness/HarnessGrowth.svelte",
+				"change": "modified",
+				"from": "1fa4eabbf9b3ed94",
+				"to": "a35b3689ba46b510",
+				"behavior": "The component whose growth is shown is chosen in the shared select, which shows the component of the page and calls the same navigation through a function binding.",
+				"simplification": {
+					"attempt": "The field with its change handler became one binding to the function the console already passes: 5087 to 5073 bytes, complexity 22 as before. The import is one more dependency, 5 to 6.",
+					"outcome": "improved"
+				},
+				"performance": {
+					"attempt": "The list has one option for each unit, 549 in this repository, and the shared select adds nothing for an option. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-11T08:38:34.823Z"
+			},
+			{
+				"unit": "reports.component.harness-harness-growth",
+				"symbol": "<template>",
+				"file": "packages/reports/src/components/harness/HarnessGrowth.svelte",
+				"change": "modified",
+				"from": "a331b39bad06d6b2",
+				"to": "367ab6530b348b27",
+				"behavior": "The component whose growth is shown is chosen in the shared select, which shows the component of the page and calls the same navigation through a function binding.",
+				"simplification": {
+					"attempt": "The field with its change handler became one binding to the function the console already passes: 5087 to 5073 bytes, complexity 22 as before. The import is one more dependency, 5 to 6.",
+					"outcome": "improved"
+				},
+				"performance": {
+					"attempt": "The list has one option for each unit, 549 in this repository, and the shared select adds nothing for an option. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-11T08:38:34.823Z"
+			},
+			{
+				"unit": "reports.component.harness-harness-selectors",
+				"symbol": "<module>",
+				"file": "packages/reports/src/components/harness/HarnessSelectors.svelte",
+				"change": "modified",
+				"from": "56f8e1a732cca023",
+				"to": "38b0586821a9693d",
+				"behavior": "The branch, commit and base commit of the console are the shared select. Each still shows what the page is at and calls the same navigation when another is chosen, through a function binding instead of a value and a change handler.",
+				"simplification": {
+					"attempt": "Three fields with a change handler each became three bindings to the functions the console already passes: 1699 to 1573 bytes, complexity 5 as before. The import is one more dependency, 2 to 3.",
+					"outcome": "improved"
+				},
+				"performance": {
+					"attempt": "One navigation for each choice, as before; three more elements for each field. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-11T08:38:28.974Z"
+			},
+			{
+				"unit": "reports.component.harness-harness-selectors",
+				"symbol": "<template>",
+				"file": "packages/reports/src/components/harness/HarnessSelectors.svelte",
+				"change": "modified",
+				"from": "84daa76ada40cdad",
+				"to": "d8c10e1bbb8ef105",
+				"behavior": "The branch, commit and base commit of the console are the shared select. Each still shows what the page is at and calls the same navigation when another is chosen, through a function binding instead of a value and a change handler.",
+				"simplification": {
+					"attempt": "Three fields with a change handler each became three bindings to the functions the console already passes: 1699 to 1573 bytes, complexity 5 as before. The import is one more dependency, 2 to 3.",
+					"outcome": "improved"
+				},
+				"performance": {
+					"attempt": "One navigation for each choice, as before; three more elements for each field. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-11T08:38:28.974Z"
+			},
+			{
+				"unit": "reports.component.hub-view",
+				"symbol": "<module>",
+				"file": "packages/reports/src/components/HubView.svelte",
+				"change": "modified",
+				"from": "84e382b7960be332",
+				"to": "acea0dee7cc93bbf",
+				"behavior": "The status and mode filters of the report hub are the shared select instead of two fields written here: the same values, labels and options, with its caret, its size and its disabled look.",
+				"simplification": {
+					"attempt": "Nothing simpler was found: the two fields keep their options and their bindings. The file went from 4651 to 4680 bytes, which is the import, and from 6 dependencies to 7; complexity stayed 16.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "Each filter gains a wrapper and a caret, three elements, and the filtering is unchanged. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-11T08:38:23.195Z"
+			},
+			{
+				"unit": "reports.component.hub-view",
+				"symbol": "<template>",
+				"file": "packages/reports/src/components/HubView.svelte",
+				"change": "modified",
+				"from": "3d3de8d7b57b31b9",
+				"to": "cefb1c02c8a51d11",
+				"behavior": "The status and mode filters of the report hub are the shared select instead of two fields written here: the same values, labels and options, with its caret, its size and its disabled look.",
+				"simplification": {
+					"attempt": "Nothing simpler was found: the two fields keep their options and their bindings. The file went from 4651 to 4680 bytes, which is the import, and from 6 dependencies to 7; complexity stayed 16.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "Each filter gains a wrapper and a caret, three elements, and the filtering is unchanged. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-11T08:38:23.195Z"
+			},
+			{
+				"unit": "reports.component.select",
+				"symbol": "<module>",
+				"file": "packages/reports/src/components/Select.svelte",
+				"change": "modified",
+				"from": "7ff97a93cdf0389d",
+				"to": "70408e361f29dd11",
+				"behavior": "The shared select takes an id and a required state and gives them to its native field, beside the label, name, value and disabled state it had. It is wrapped in a span, so a label may hold it. Its field and caret rules are written under its own class, so a rule a surface has for its fields or its icons no longer outranks them: in the replay the field kept 12 pixels beside a caret that needs 30, and the caret was drawn filled.",
+				"simplification": {
+					"attempt": "A typed spread of the remaining native attributes was written and measured at 1462 bytes with a second module, against 1425 with two named properties, and dropped. A property for a change handler was not added: a function binding already gives one, as the replay uses. The file grew from 1213 to 1425 bytes: the two properties, the class before four rules, and one comment that says why the class is there.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No listener, effect or element was added: one native field, one wrapper and one caret as before. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-improved"
+				},
+				"recordedAt": "2026-10-11T08:38:20.281Z"
+			},
+			{
+				"unit": "reports.component.select",
+				"symbol": "<style>",
+				"file": "packages/reports/src/components/Select.svelte",
+				"change": "modified",
+				"from": "a9a26dd066d97cb1",
+				"to": "dacf96ceef9baf14",
+				"behavior": "The shared select takes an id and a required state and gives them to its native field, beside the label, name, value and disabled state it had. It is wrapped in a span, so a label may hold it. Its field and caret rules are written under its own class, so a rule a surface has for its fields or its icons no longer outranks them: in the replay the field kept 12 pixels beside a caret that needs 30, and the caret was drawn filled.",
+				"simplification": {
+					"attempt": "A typed spread of the remaining native attributes was written and measured at 1462 bytes with a second module, against 1425 with two named properties, and dropped. A property for a change handler was not added: a function binding already gives one, as the replay uses. The file grew from 1213 to 1425 bytes: the two properties, the class before four rules, and one comment that says why the class is there.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No listener, effect or element was added: one native field, one wrapper and one caret as before. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-improved"
+				},
+				"recordedAt": "2026-10-11T08:38:20.281Z"
+			},
+			{
+				"unit": "reports.component.select",
+				"symbol": "<template>",
+				"file": "packages/reports/src/components/Select.svelte",
+				"change": "modified",
+				"from": "2e73fe090df60666",
+				"to": "bd07b5c8ab555f5a",
+				"behavior": "The shared select takes an id and a required state and gives them to its native field, beside the label, name, value and disabled state it had. It is wrapped in a span, so a label may hold it. Its field and caret rules are written under its own class, so a rule a surface has for its fields or its icons no longer outranks them: in the replay the field kept 12 pixels beside a caret that needs 30, and the caret was drawn filled.",
+				"simplification": {
+					"attempt": "A typed spread of the remaining native attributes was written and measured at 1462 bytes with a second module, against 1425 with two named properties, and dropped. A property for a change handler was not added: a function binding already gives one, as the replay uses. The file grew from 1213 to 1425 bytes: the two properties, the class before four rules, and one comment that says why the class is there.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No listener, effect or element was added: one native field, one wrapper and one caret as before. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-improved"
+				},
+				"recordedAt": "2026-10-11T08:38:20.281Z"
+			},
+			{
+				"unit": "reports.component.upload-comparison",
+				"symbol": "<module>",
+				"file": "packages/reports/src/components/UploadComparison.svelte",
+				"change": "modified",
+				"from": "7976d3a0919c2200",
+				"to": "bac408acb500ab7f",
+				"behavior": "The viewport of an uploaded comparison is the shared select. It keeps its form name, so the upload carries the choice; it is disabled and dimmed while a pair is on its way; and it returns to Not specified when the form is cleared.",
+				"simplification": {
+					"attempt": "Nothing simpler was found: the component asks for a label beside the visible one. The file went from 2903 to 2959 bytes and from 2 dependencies to 3; complexity stayed 6.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "One field gains a wrapper and a caret; the upload is unchanged. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-11T08:38:26.089Z"
+			},
+			{
+				"unit": "reports.component.upload-comparison",
+				"symbol": "<template>",
+				"file": "packages/reports/src/components/UploadComparison.svelte",
+				"change": "modified",
+				"from": "659475096bd0861a",
+				"to": "4b37308c708358d4",
+				"behavior": "The viewport of an uploaded comparison is the shared select. It keeps its form name, so the upload carries the choice; it is disabled and dimmed while a pair is on its way; and it returns to Not specified when the form is cleared.",
+				"simplification": {
+					"attempt": "Nothing simpler was found: the component asks for a label beside the visible one. The file went from 2903 to 2959 bytes and from 2 dependencies to 3; complexity stayed 6.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "One field gains a wrapper and a caret; the upload is unchanged. The console bundle of the whole change was measured: 315.40 kB after and 314.97 kB before, its stylesheet 37.93 kB after and 37.78 kB before. The time to render is unavailable: nothing here measures a component.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-11T08:38:26.089Z"
+			}
+		],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "passed",
+		"reasons": "passed",
+		"budgets": "failed"
+	},
+	"failures": [
+		"service.unit-runtime: latency-floor-ms on graph-1k is 0.37495899999998983 ms against a baseline of 0.3456250000000125 ms; the limit is 0.36290625 ms",
+		"service.unit-runtime: latency-floor-ms on graph-1k is 0.8022080000000642 ms against a baseline of 0.7442500000000223 ms; the limit is 0.7814625 ms"
+	]
+}

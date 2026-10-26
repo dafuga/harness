@@ -1,0 +1,45 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-Nei0Kl
+
+ ✓ test/guides.test.ts (7 tests) 8ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  14:43:06
+   Duration  2.88s (transform 113ms, setup 97ms, collect 123ms, tests 8ms, environment 0ms, prepare 43ms)
+
+
+Running 30 tests using 1 worker
+
+  ✓   1 test/entity-preview-groups.spec.ts:95:2 › category folders group every collection and filter together at desktop (2.9s)
+  ✓   2 test/entity-preview-groups.spec.ts:95:2 › category folders group every collection and filter together at tablet (2.6s)
+  ✓   3 test/entity-preview-groups.spec.ts:95:2 › category folders group every collection and filter together at mobile (2.7s)
+  ✓   4 test/entity-preview-groups.spec.ts:138:2 › source lists category implementation files only at desktop (1.6s)
+  ✓   5 test/entity-preview-groups.spec.ts:138:2 › source lists category implementation files only at tablet (1.6s)
+  ✓   6 test/entity-preview-groups.spec.ts:138:2 › source lists category implementation files only at mobile (1.4s)
+  ✓   7 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at desktop width (735ms)
+  ✓   8 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at desktop width (753ms)
+  ✓   9 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at desktop width (815ms)
+  ✓  10 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at desktop width (837ms)
+  ✓  11 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at desktop width (766ms)
+  ✓  12 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at desktop width (878ms)
+  ✓  13 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at desktop width (900ms)
+  ✓  14 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at tablet width (738ms)
+  ✓  15 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at tablet width (746ms)
+  ✓  16 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at tablet width (864ms)
+  ✓  17 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at tablet width (862ms)
+  ✓  18 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at tablet width (803ms)
+  ✓  19 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at tablet width (733ms)
+  ✓  20 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at tablet width (771ms)
+  ✓  21 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at mobile width (680ms)
+  ✓  22 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at mobile width (642ms)
+  ✓  23 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at mobile width (689ms)
+  ✓  24 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at mobile width (677ms)
+  ✓  25 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at mobile width (640ms)
+  ✓  26 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at mobile width (655ms)
+  ✓  27 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at mobile width (672ms)
+  ✓  28 test/entity-preview-source.spec.ts:132:1 › source file selection and closing retain the detail Source tab (260ms)
+  ✓  29 test/entity-preview-source.spec.ts:153:1 › Source opens file contents in a modal and older histories state an explicit gap (285ms)
+  ✓  30 test/entity-preview-source.spec.ts:188:1 › a delayed previous source read cannot replace the selected file (263ms)
+
+  30 passed (33.0s)

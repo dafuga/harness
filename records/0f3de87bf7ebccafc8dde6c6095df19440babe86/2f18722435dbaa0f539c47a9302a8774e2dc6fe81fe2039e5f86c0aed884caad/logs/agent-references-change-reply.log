@@ -1,0 +1,93 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/packages/desktop
+
+ ❯ test/change-reply.test.ts (4 tests | 4 failed) 80471ms
+   × a completed change keeps the reply of its agent and names the entity it implements 20035ms
+     → Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   × a failed change keeps the text its agent streamed before failing 20118ms
+     → Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   × a cancelled change keeps what was said before the cancellation 20151ms
+     → Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   × a change whose agent said nothing keeps the notice alone 20163ms
+     → Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  12:02:11
+   Duration  81.80s (transform 444ms, setup 0ms, collect 774ms, tests 80.47s, environment 0ms, prepare 101ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-wotC77/report.json
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/change-reply.test.ts > a completed change keeps the reply of its agent and names the entity it implements
+Error: Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/change-reply.test.ts:20:1
+     18| }
+     19| 
+     20| test('a completed change keeps the reply of its agent and names the en…
+       | ^
+     21|  const f = await fixture(async (turn) => {
+     22|   turn.onText('Working on it.');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/change-reply.test.ts > a failed change keeps the text its agent streamed before failing
+Error: Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/change-reply.test.ts:44:1
+     42| }, 20000);
+     43| 
+     44| test('a failed change keeps the text its agent streamed before failing…
+       | ^
+     45|  const f = await fixture(async (turn) => {
+     46|   turn.onText('Halfway through [[unit:app.function.owned]]');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/change-reply.test.ts > a cancelled change keeps what was said before the cancellation
+Error: Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/change-reply.test.ts:59:1
+     57| }, 20000);
+     58| 
+     59| test('a cancelled change keeps what was said before the cancellation',…
+       | ^
+     60|  let entered!: () => void;
+     61|  const ready = new Promise<void>((resolve) => (entered = resolve));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/change-reply.test.ts > a change whose agent said nothing keeps the notice alone
+Error: Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/change-reply.test.ts:77:1
+     75| }, 20000);
+     76| 
+     77| test('a change whose agent said nothing keeps the notice alone', async…
+       | ^
+     78|  const f = await fixture();
+     79|  f.run.mockImplementation(async (turn) => ({ text: '  ', model: turn.m…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+57 | 	status: number | null;
+58 | }
+59 | /** Runner success alone is insufficient: each expected test must have complete actual observations. */
+60 | export function verifiedAssertions(target: VerificationTarget, input: AssertionInput) {
+61 | 	if (input.status !== 0)
+62 | 		throw new Error('Failed or incomplete runner cannot report passed behavior');
+             ^
+error: Failed or incomplete runner cannot report passed behavior
+      at verifiedAssertions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/test/verification-assertions.ts:62:9)
+      at collect (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/test/verification-output.ts:117:15)
+      at run (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/test/verification-output.ts:98:15)
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/test/verification-output.ts:129:20
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)

@@ -1,0 +1,43 @@
+
+Running 1 test using 1 worker
+
+(node:22942) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts at desktop (6.2s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts at desktop 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('[data-preview-unit="reports.page.harness-branch-branch-at-layouts"]').locator('article').filter({ hasText: 'OrdersFrame' }).locator('img')
+    Expected pattern: /synthetic-layout-input\.svg$/
+    Received string:  "/harness/media/ccccccc-default-desktop.png"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-preview-unit="reports.page.harness-branch-branch-at-layouts"]').locator('article').filter({ hasText: 'OrdersFrame' }).locator('img') with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.page.harness-branch-branch-at-layouts"]').locator('article').filter({ hasText: 'OrdersFrame' }).locator('img')
+        14 × locator resolved to <img loading="lazy" decoding="async" alt="Screenshot of OrdersFrame" src="/harness/media/ccccccc-default-desktop.png"/>
+           - unexpected value "/harness/media/ccccccc-default-desktop.png"
+
+
+      90 | 			if (unit.id === 'reports.page.harness-branch-branch-at-layouts') {
+      91 | 				const card = component.locator('article').filter({ hasText: 'OrdersFrame' });
+    > 92 | 				await expect(card.locator('img')).toHaveAttribute('src', /synthetic-layout-input\.svg$/);
+         | 				                                  ^
+      93 | 				await expect(card.getByRole('link', { name: 'OrdersPage', exact: true })).toBeVisible();
+      94 | 			}
+      95 |
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ntfnS0/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:92:39
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-f1bc5-ranch-at-layouts-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-f1bc5-ranch-at-layouts-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-f1bc5-ranch-at-layouts-at-desktop/error-context.md
+
+  1 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts at desktop 

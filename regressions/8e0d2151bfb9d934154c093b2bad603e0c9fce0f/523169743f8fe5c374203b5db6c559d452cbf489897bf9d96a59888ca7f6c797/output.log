@@ -1,0 +1,55 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [172.00ms]
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-yeP81t/packages/reports
+
+ ❯ test/utils/explorer-drawn.test.ts (9 tests | 2 failed) 7ms
+   ✓ a component is shown by the states of the pages that draw it, through any depth 2ms
+   ✓ what every page draws is under every state, and so is what no page draws 0ms
+   ✓ a component is proven by the states that draw it and needs no other 1ms
+   ✓ an import graph change cannot assign another screen to a component 0ms
+   ✓ a state that names a component says so itself: where else it is drawn adds nothing 0ms
+   ✓ a page-only state cannot prove an imported component was drawn 0ms
+   ✓ a page-only state cannot prove an imported shell was drawn 0ms
+   × a page-only state cannot prove an imported layout was drawn 3ms
+     → expected [ 'catalog' ] to deeply equal []
+   × a page-only state cannot prove an imported partial was drawn 0ms
+     → expected [ 'catalog' ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-drawn.test.ts > a page-only state cannot prove an imported layout was drawn
+ FAIL  test/utils/explorer-drawn.test.ts > a page-only state cannot prove an imported partial was drawn
+AssertionError: expected [ 'catalog' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "catalog",
++ ]
+
+ ❯ test/utils/explorer-drawn.test.ts:162:45
+    160|   );
+    161|   const head = at(['catalog', 'entity'], pageOnly, registry);
+    162|   expect(statesOf('component.table', head)).toEqual([]);
+       |                                             ^
+    163|   expect(shown('component.table', head).after.captures).toEqual([]);
+    164|   const unscoped = declared({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 7 passed (9)
+   Start at  01:05:39
+   Duration  234ms (transform 42ms, setup 0ms, collect 51ms, tests 7ms, environment 0ms, prepare 32ms)
+

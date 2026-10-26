@@ -1,0 +1,162 @@
+[harness resources] Memory pressure is warning
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [5.30s]
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-c6D92p/packages/reports/tests/e2e/styles-page.spec.ts
+  0:0  warning  File ignored because no matching configuration was supplied
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-c6D92p/packages/reports/tests/e2e/support/styleCatalog.ts
+  0:0  warning  File ignored because no matching configuration was supplied
+
+✖ 2 problems (0 errors, 2 warnings)
+
+
+Running 3 tests using 1 worker
+
+(node:8799) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at desktop (5.6s)
+(node:9591) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at tablet (5.6s)
+(node:10379) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at mobile (5.6s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at desktop 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Colors', exact: true }).getByRole('article', { name: 'Primary', exact: true }).getByRole('group', { name: 'Base color', exact: true }).locator('[data-style-token]')
+    Expected: "--hx-color-primary"
+    Received: "--hx-gold"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Colors', exact: true }).getByRole('article', { name: 'Primary', exact: true }).getByRole('group', { name: 'Base color', exact: true }).locator('[data-style-token]') with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Colors', exact: true }).getByRole('article', { name: 'Primary', exact: true }).getByRole('group', { name: 'Base color', exact: true }).locator('[data-style-token]')
+        14 × locator resolved to <div data-style-token="--hx-gold">…</div>
+           - unexpected value "--hx-gold"
+
+
+       at support/styleCatalog.ts:32
+
+      30 | 	await expect(base, 'Primary identifies one base color').toBeVisible();
+      31 | 	await expect(base.locator('[data-style-token]')).toHaveCount(1);
+    > 32 | 	await expect(base.locator('[data-style-token]')).toHaveAttribute(
+         | 	                                                 ^
+      33 | 		'data-style-token',
+      34 | 		'--hx-color-primary'
+      35 | 	);
+        at expectColorRoles (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-c6D92p/packages/reports/tests/e2e/support/styleCatalog.ts:32:51)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-c6D92p/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:84:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-ff6a7-er-styles-screen-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-ff6a7-er-styles-screen-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-ff6a7-er-styles-screen-at-desktop/error-context.md
+
+  2) tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at tablet 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Colors', exact: true }).getByRole('article', { name: 'Primary', exact: true }).getByRole('group', { name: 'Base color', exact: true }).locator('[data-style-token]')
+    Expected: "--hx-color-primary"
+    Received: "--hx-gold"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Colors', exact: true }).getByRole('article', { name: 'Primary', exact: true }).getByRole('group', { name: 'Base color', exact: true }).locator('[data-style-token]') with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Colors', exact: true }).getByRole('article', { name: 'Primary', exact: true }).getByRole('group', { name: 'Base color', exact: true }).locator('[data-style-token]')
+        14 × locator resolved to <div data-style-token="--hx-gold">…</div>
+           - unexpected value "--hx-gold"
+
+
+       at support/styleCatalog.ts:32
+
+      30 | 	await expect(base, 'Primary identifies one base color').toBeVisible();
+      31 | 	await expect(base.locator('[data-style-token]')).toHaveCount(1);
+    > 32 | 	await expect(base.locator('[data-style-token]')).toHaveAttribute(
+         | 	                                                 ^
+      33 | 		'data-style-token',
+      34 | 		'--hx-color-primary'
+      35 | 	);
+        at expectColorRoles (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-c6D92p/packages/reports/tests/e2e/support/styleCatalog.ts:32:51)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-c6D92p/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:84:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-ea8aa-rer-styles-screen-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-ea8aa-rer-styles-screen-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-ea8aa-rer-styles-screen-at-tablet/error-context.md
+
+  3) tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at mobile 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Colors', exact: true }).getByRole('article', { name: 'Primary', exact: true }).getByRole('group', { name: 'Base color', exact: true }).locator('[data-style-token]')
+    Expected: "--hx-color-primary"
+    Received: "--hx-gold"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Colors', exact: true }).getByRole('article', { name: 'Primary', exact: true }).getByRole('group', { name: 'Base color', exact: true }).locator('[data-style-token]') with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Colors', exact: true }).getByRole('article', { name: 'Primary', exact: true }).getByRole('group', { name: 'Base color', exact: true }).locator('[data-style-token]')
+        14 × locator resolved to <div data-style-token="--hx-gold">…</div>
+           - unexpected value "--hx-gold"
+
+
+       at support/styleCatalog.ts:32
+
+      30 | 	await expect(base, 'Primary identifies one base color').toBeVisible();
+      31 | 	await expect(base.locator('[data-style-token]')).toHaveCount(1);
+    > 32 | 	await expect(base.locator('[data-style-token]')).toHaveAttribute(
+         | 	                                                 ^
+      33 | 		'data-style-token',
+      34 | 		'--hx-color-primary'
+      35 | 	);
+        at expectColorRoles (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-c6D92p/packages/reports/tests/e2e/support/styleCatalog.ts:32:51)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-c6D92p/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:84:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-77f75-rer-styles-screen-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-77f75-rer-styles-screen-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-77f75-rer-styles-screen-at-mobile/error-context.md
+
+  3 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at mobile 
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false

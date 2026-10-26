@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Rcsnv9/packages/desktop
+
+ ✓ test/services/recorded-evidence.test.ts (6 tests) 11387ms
+   ✓ the tip of a branch is shown alone, with what it was read at  591ms
+   ✓ a commit is compared with its exact first parent, also when it is the tip  429ms
+   ✓ a commit without a record answers with its gap, and a first commit has no parent  488ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  10:02:02
+   Duration  11.95s (transform 264ms, setup 0ms, collect 408ms, tests 11.39s, environment 0ms, prepare 24ms)
+

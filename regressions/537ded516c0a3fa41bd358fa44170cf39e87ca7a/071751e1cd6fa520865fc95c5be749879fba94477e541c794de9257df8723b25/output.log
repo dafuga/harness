@@ -1,0 +1,106 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-56jRUt
+
+ ✓ test/utils/explorer-ui/config-values.test.ts (17 tests) 19ms
+
+ Test Files  1 passed (1)
+      Tests  17 passed (17)
+   Start at  14:13:07
+   Duration  2.83s (transform 156ms, setup 54ms, collect 440ms, tests 19ms, environment 0ms, prepare 31ms)
+
+
+Running 3 tests using 1 worker
+
+(node:2134) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at desktop (1.3s)
+(node:2154) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at tablet (1.3s)
+(node:2204) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at mobile (1.3s)
+
+
+  1) test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at desktop 
+
+    Error: value controls have icons without View value text
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "View value"
+    Received string:        "View value"
+
+      26 | 			await inspect.innerText(),
+      27 | 			'value controls have icons without View value text'
+    > 28 | 		).not.toContain('View value');
+         | 		      ^
+      29 | 		await expect(row.locator('.ex-value-preview')).toHaveCount(0);
+      30 | 		if (name === 'schema') await expect(row).toContainText('5 attributes');
+      31 | 		await inspect.press('Enter');
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-56jRUt/packages/reports/test/entity-preview-groups.spec.ts:28:9)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-56jRUt/packages/reports/test/entity-preview-groups.spec.ts:99:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-56jRUt/packages/reports/test/entity-preview-groups.spec.ts:140:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/error-context.md
+
+  2) test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at tablet 
+
+    Error: value controls have icons without View value text
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "View value"
+    Received string:        "View value"
+
+      26 | 			await inspect.innerText(),
+      27 | 			'value controls have icons without View value text'
+    > 28 | 		).not.toContain('View value');
+         | 		      ^
+      29 | 		await expect(row.locator('.ex-value-preview')).toHaveCount(0);
+      30 | 		if (name === 'schema') await expect(row).toContainText('5 attributes');
+      31 | 		await inspect.press('Enter');
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-56jRUt/packages/reports/test/entity-preview-groups.spec.ts:28:9)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-56jRUt/packages/reports/test/entity-preview-groups.spec.ts:99:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-56jRUt/packages/reports/test/entity-preview-groups.spec.ts:140:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/error-context.md
+
+  3) test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at mobile 
+
+    Error: value controls have icons without View value text
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected substring: not "View value"
+    Received string:        "View value"
+
+      26 | 			await inspect.innerText(),
+      27 | 			'value controls have icons without View value text'
+    > 28 | 		).not.toContain('View value');
+         | 		      ^
+      29 | 		await expect(row.locator('.ex-value-preview')).toHaveCount(0);
+      30 | 		if (name === 'schema') await expect(row).toContainText('5 attributes');
+      31 | 		await inspect.press('Enter');
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-56jRUt/packages/reports/test/entity-preview-groups.spec.ts:28:9)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-56jRUt/packages/reports/test/entity-preview-groups.spec.ts:99:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-56jRUt/packages/reports/test/entity-preview-groups.spec.ts:140:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/error-context.md
+
+  3 failed
+    test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at desktop 
+    test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at tablet 
+    test/entity-preview-groups.spec.ts:114:2 › category folders group every collection and filter together at mobile 

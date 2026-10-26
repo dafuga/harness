@@ -1,0 +1,116 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2RyVA
+
+ ❯ test/utils/explorer-route.test.ts (83 tests | 1 failed) 11ms
+   ✓ keeps page and module entity categories separate from primary navigation 3ms
+   ✓ current branch /modules 0ms
+   ✓ current branch /modules/email 0ms
+   ✓ current branch /module-resources/email.email 0ms
+   ✓ current branch /pages 0ms
+   ✓ current branch /dependencies 0ms
+   ✓ current branch /styles 0ms
+   ✓ current branch /pages/reports.page.titles 0ms
+   ✓ current branch /pages/reports.page.titles/details 0ms
+   ✓ current branch /components 0ms
+   ✓ current branch /components/reports.component.harness-harness-console 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/details 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/history 0ms
+   ✓ current branch /functions 0ms
+   ✓ current branch /functions/function.slugify 0ms
+   ✓ current branch /functions/function.slugify/details 0ms
+   ✓ current branch /functions/function.slugify/history 0ms
+   ✓ current branch /configs 0ms
+   ✓ current branch /configs/config.site 0ms
+   ✓ current branch /configs/config.site/details 0ms
+   ✓ current branch /configs/config.site/history 0ms
+   ✓ current branch /types 0ms
+   ✓ current branch /types/model.input 0ms
+   ✓ current branch /types/model.input/details 0ms
+   ✓ current branch /types/model.input/history 0ms
+   ✓ current branch /services 0ms
+   ✓ current branch /services/service.clock 0ms
+   ✓ current branch /services/service.clock/details 0ms
+   ✓ current branch /services/service.clock/history 0ms
+   ✓ selected commit /modules 0ms
+   ✓ selected commit /modules/email 0ms
+   ✓ selected commit /module-resources/email.email 0ms
+   ✓ selected commit /pages 0ms
+   ✓ selected commit /dependencies 0ms
+   ✓ selected commit /styles 0ms
+   ✓ selected commit /pages/reports.page.titles 0ms
+   ✓ selected commit /pages/reports.page.titles/details 0ms
+   ✓ selected commit /components 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/details 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/history 0ms
+   ✓ selected commit /functions 0ms
+   ✓ selected commit /functions/function.slugify 0ms
+   ✓ selected commit /functions/function.slugify/details 0ms
+   ✓ selected commit /functions/function.slugify/history 0ms
+   ✓ selected commit /configs 0ms
+   ✓ selected commit /configs/config.site 0ms
+   ✓ selected commit /configs/config.site/details 0ms
+   ✓ selected commit /configs/config.site/history 0ms
+   ✓ selected commit /types 0ms
+   ✓ selected commit /types/model.input 0ms
+   ✓ selected commit /types/model.input/details 0ms
+   ✓ selected commit /types/model.input/history 0ms
+   ✓ selected commit /services 0ms
+   ✓ selected commit /services/service.clock 0ms
+   ✓ selected commit /services/service.clock/details 0ms
+   ✓ selected commit /services/service.clock/history 0ms
+   ✓ there are twenty-three designed shapes in each scope, and a Page has a history too 0ms
+   ✓ a branch is one path segment, whatever it contains 0ms
+   ✓ a branch or a commit alone opens Pages in the same scope 0ms
+   ✓ a commit that no branch reaches has no branch invented for it 0ms
+   ✓ a callable has a distinct revision-bound address across tabs and history 0ms
+   ✓ an entity id is one encoded segment 0ms
+   ✓ names no explorer address:  0ms
+   ✓ names no explorer address: / 0ms
+   ✓ names no explorer address: /pages 0ms
+   ✓ names no explorer address: /branch 0ms
+   ✓ names no explorer address: /branch/main/reports 0ms
+   ✓ names no explorer address: /branch/main/analytics 0ms
+   ✓ names no explorer address: /branch/main/activity 0ms
+   ✓ names no explorer address: /branch/main/commit/abc/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/pages 0ms
+   ✓ names no explorer address: /branch/main/pages/x/source 0ms
+   ✓ names no explorer address: /branch/main/dependencies/x 0ms
+   ✓ names no explorer address: /branch/main/dependencies/history 0ms
+   ✓ names no explorer address: /branch/main/pages/x/details/extra 0ms
+   ✓ names no explorer address: /branch/feature/kept/pages 0ms
+   ✓ names no explorer address: /branch/%E0%A4%A/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map 0ms
+   ✓ a trailing slash names the same address 0ms
+   ✓ Models is a page tab and legacy page Contract links open Models in the same scope 0ms
+   ✓ APIs are scoped catalog addresses and a page keeps its APIs tab 0ms
+   × API permission tabs and profile routes retain exact revision scope 2ms
+     → Tab selection reads category beyond its admitted bound
+ ✓ test/utils/console-canonical.test.ts (8 tests) 6ms
+ ✓ test/utils/explorer-legacy.test.ts (6 tests) 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-route.test.ts > API permission tabs and profile routes retain exact revision scope
+Error: Tab selection reads category beyond its admitted bound
+ ❯ Object.get category [as category] test/utils/explorer-route/apis.ts:64:13
+     62|     get category() {
+     63|      if (++reads > bound)
+     64|       throw new Error('Tab selection reads category beyond its admitte…
+       |             ^
+     65|      return category;
+     66|     }
+ ❯ tabQuery src/utils/development-tooling/explorer-route/explorerTabs.ts:119:15
+ ❯ tabOf src/utils/development-tooling/explorer-route/explorerTabs.ts:129:16
+ ❯ Object.apply src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:35:20
+ ❯ Module.assertPermissionGetterAdmission test/utils/explorer-route/apis.ts:68:11
+ ❯ test/utils/explorer-route.test.ts:218:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 96 passed (97)
+   Start at  19:39:41
+   Duration  2.89s (transform 92ms, setup 143ms, collect 56ms, tests 22ms, environment 0ms, prepare 72ms)
+

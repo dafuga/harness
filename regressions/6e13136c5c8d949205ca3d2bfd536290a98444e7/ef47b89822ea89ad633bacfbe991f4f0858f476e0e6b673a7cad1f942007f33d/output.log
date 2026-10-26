@@ -1,0 +1,88 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [14.07s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-r1PDIt
+
+ ❯ test/services/performance-profile.test.ts (8 tests | 2 failed) 27ms
+   ✓ profiles the representative operation and labels process memory honestly 6ms
+   ✓ failed workloads and invalid sampling cannot produce successful observations 2ms
+   × Harness capture retains separate workloads in its standard benchmark evidence protocol 8ms
+     → expected 2 to be 3 // Object.is equality
+   ✓ single-pass observations retain synchronous results and never repeat effects 3ms
+   ✓ awaited observations finish only after the actual operation settles 2ms
+   ✓ observation failures and invalid subjects produce no successful samples 2ms
+   ✓ one-pass captures retain separate callable and workload observations 2ms
+   × observation chunks never overwrite another producer or an earlier flush 2ms
+     → expected 1 to be 3 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/performance-profile.test.ts > Harness capture retains separate workloads in its standard benchmark evidence protocol
+AssertionError: expected 2 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 2
+
+ ❯ test/services/performance-profile.test.ts:71:56
+     69|    .split('\n')
+     70|    .map((line) => JSON.parse(line));
+     71|   expect(new Set(lines.map((line) => line.file)).size).toBe(3);
+       |                                                        ^
+     72|   const captured = await Promise.all(
+     73|    lines.map(async (line) =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/services/performance-profile.test.ts > observation chunks never overwrite another producer or an earlier flush
+AssertionError: expected 1 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 1
+
+ ❯ test/services/performance-profile.test.ts:194:31
+    192|   const files = lines.map((line) => JSON.parse(line).file);
+    193|   expect(files).toHaveLength(3);
+    194|   expect(new Set(files).size).toBe(3);
+       |                               ^
+    195|   for (const file of files) {
+    196|    const capture = benchmarkCaptureSchema.parse(
+ ❯ isolatedProfileCapture test/support/taskProfiles.ts:22:3
+ ❯ test/services/performance-profile.test.ts:183:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 passed (8)
+   Start at  10:55:00
+   Duration  3.49s (transform 90ms, setup 9ms, collect 116ms, tests 27ms, environment 0ms, prepare 42ms)
+

@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+  ✓  1 tests/e2e/ui-designs.spec.ts:16:1 › exact image region, approval, Change, public stream and source disclosure (1.1s)
+  ✓  2 tests/e2e/ui-designs.spec.ts:74:2 › mobile keeps navigation and composer reachable without overflow (380ms)
+  ✓  3 tests/e2e/ui-designs.spec.ts:74:2 › tablet keeps navigation and composer reachable without overflow (329ms)
+  ✓  4 tests/e2e/ui-designs.spec.ts:97:1 › headless committed notes approve without a fabricated image (570ms)
+  ✓  5 tests/e2e/ui-designs.spec.ts:180:2 › persisted failed outcome refreshes entity history and current commit (466ms)
+  ✓  6 tests/e2e/ui-designs.spec.ts:180:2 › persisted cancelled outcome refreshes entity history and current commit (432ms)
+
+  6 passed (4.0s)
+(node:51206) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

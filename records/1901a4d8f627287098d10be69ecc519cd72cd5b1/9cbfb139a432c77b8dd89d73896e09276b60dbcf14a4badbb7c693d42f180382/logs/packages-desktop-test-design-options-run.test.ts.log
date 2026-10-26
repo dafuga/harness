@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-0UFg8p/packages/desktop[39m
+
+ [32m✓[39m test/design-options-run.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 23776[2mms[22m[39m
+   [33m[2m✓[22m[39m a page Plan generates three separately directed options and commits them once [33m 7260[2mms[22m[39m
+   [33m[2m✓[22m[39m a Plan that asks for two options generates two [33m 5466[2mms[22m[39m
+   [33m[2m✓[22m[39m a failed option leaves no version and no design commit [33m 3093[2mms[22m[39m
+   [33m[2m✓[22m[39m a Plan cancelled during an option leaves no version and no design commit [33m 2783[2mms[22m[39m
+   [33m[2m✓[22m[39m a headless Plan keeps notes and generates no image, whatever count it is given [33m 5172[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 19:55:05
+[2m   Duration [22m 24.88s[2m (transform 434ms, setup 0ms, collect 757ms, tests 23.78s, environment 0ms, prepare 56ms)[22m
+

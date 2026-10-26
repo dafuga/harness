@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ljai0H/packages/relay
+
+ ✓ test/services/device-revocation.test.ts (5 tests) 2000ms
+   ✓ revoke-device through management does the same and tells the host  776ms
+   ✓ a late packet of the host for a revoked connection is not delivered  772ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  00:43:01
+   Duration  2.44s (transform 76ms, setup 0ms, collect 251ms, tests 2.00s, environment 0ms, prepare 33ms)
+

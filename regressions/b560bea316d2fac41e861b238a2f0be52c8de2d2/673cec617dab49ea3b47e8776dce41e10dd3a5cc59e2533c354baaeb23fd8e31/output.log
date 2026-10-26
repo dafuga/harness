@@ -1,0 +1,1467 @@
+[harness resources] Memory pressure is warning
+
+
+Running 16 tests using 1 worker
+
+(node:8324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview-groups.spec.ts:83:2 › private dependencies reuse module cards at desktop width (1.0s)
+  ✘   2 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at desktop (46.3s)
+(node:10916) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 test/entity-preview-groups.spec.ts:83:2 › private dependencies reuse module cards at tablet width (946ms)
+  ✘   4 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at tablet (45.9s)
+(node:12462) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   5 test/entity-preview-groups.spec.ts:83:2 › private dependencies reuse module cards at mobile width (839ms)
+  ✘   6 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at mobile (45.7s)
+(node:14118) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 test/entity-preview-groups.spec.ts:133:2 › source lists category implementation files only at desktop (1.6s)
+  ✓   8 test/entity-preview-groups.spec.ts:133:2 › source lists category implementation files only at tablet (1.4s)
+  ✓   9 test/entity-preview-groups.spec.ts:133:2 › source lists category implementation files only at mobile (1.4s)
+  ✓  10 test/entity-preview-words.spec.ts:29:2 › a long word in a narrow column of a collection stays whole (fitting) (240ms)
+  ✓  11 test/entity-preview-words.spec.ts:29:2 › a long word in a narrow column of a collection stays whole (scrolling) (226ms)
+  ✓  12 test/entity-preview-words.spec.ts:49:1 › a long word in a row of a history stays whole too (142ms)
+  ✓  13 test/entity-preview-words.spec.ts:65:1 › the details of a declared contract say what each item is, and fit a phone (560ms)
+  ✓  14 test/entity-preview-words.spec.ts:181:2 › contract has its own typed example view at desktop width (7.1s)
+  ✓  15 test/entity-preview-words.spec.ts:181:2 › contract has its own typed example view at tablet width (6.9s)
+  ✓  16 test/entity-preview-words.spec.ts:181:2 › contract has its own typed example view at mobile width (7.1s)
+
+
+  1) test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at desktop 
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:8)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+    Expected: "10 * 1000"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveAttribute" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code') with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+        14 × locator resolved to <code class="source svelte-1e7mglp">10 * 1000</code>
+           - unexpected value "null"
+
+
+       at entityPreviewConfigs.ts:71
+
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+    > 71 | 		await expect.soft(text).toHaveAttribute('title', source);
+         | 		                        ^
+      72 | 		const layout = await text.evaluate((element) => {
+      73 | 			const style = getComputedStyle(element);
+      74 | 			return {
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:71:27)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ellipsis"
+    Received: "clip"
+
+       at entityPreviewConfigs.ts:84
+
+      82 | 		expect.soft(layout.width, 'the expression prefix has visible space').toBeGreaterThan(0);
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+    > 84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+         | 		                             ^
+      85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:84:32)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "nowrap"
+    Received: "pre-wrap"
+
+       at entityPreviewConfigs.ts:85
+
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+      84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+    > 85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+         | 		                               ^
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+      88 | 	}
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:85:34)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:8)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+    Expected: "10 * 1000"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveAttribute" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code') with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+        14 × locator resolved to <code class="source svelte-1e7mglp">10 * 1000</code>
+           - unexpected value "null"
+
+
+       at entityPreviewConfigs.ts:71
+
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+    > 71 | 		await expect.soft(text).toHaveAttribute('title', source);
+         | 		                        ^
+      72 | 		const layout = await text.evaluate((element) => {
+      73 | 			const style = getComputedStyle(element);
+      74 | 			return {
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:71:27)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ellipsis"
+    Received: "clip"
+
+       at entityPreviewConfigs.ts:84
+
+      82 | 		expect.soft(layout.width, 'the expression prefix has visible space').toBeGreaterThan(0);
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+    > 84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+         | 		                             ^
+      85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:84:32)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "nowrap"
+    Received: "pre-wrap"
+
+       at entityPreviewConfigs.ts:85
+
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+      84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+    > 85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+         | 		                               ^
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+      88 | 	}
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:85:34)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/error-context.md
+
+  2) test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at tablet 
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:8)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+    Expected: "10 * 1000"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveAttribute" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code') with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+        14 × locator resolved to <code class="source svelte-1e7mglp">10 * 1000</code>
+           - unexpected value "null"
+
+
+       at entityPreviewConfigs.ts:71
+
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+    > 71 | 		await expect.soft(text).toHaveAttribute('title', source);
+         | 		                        ^
+      72 | 		const layout = await text.evaluate((element) => {
+      73 | 			const style = getComputedStyle(element);
+      74 | 			return {
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:71:27)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ellipsis"
+    Received: "clip"
+
+       at entityPreviewConfigs.ts:84
+
+      82 | 		expect.soft(layout.width, 'the expression prefix has visible space').toBeGreaterThan(0);
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+    > 84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+         | 		                             ^
+      85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:84:32)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "nowrap"
+    Received: "pre-wrap"
+
+       at entityPreviewConfigs.ts:85
+
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+      84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+    > 85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+         | 		                               ^
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+      88 | 	}
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:85:34)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:8)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+    Expected: "10 * 1000"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveAttribute" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code') with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+        14 × locator resolved to <code class="source svelte-1e7mglp">10 * 1000</code>
+           - unexpected value "null"
+
+
+       at entityPreviewConfigs.ts:71
+
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+    > 71 | 		await expect.soft(text).toHaveAttribute('title', source);
+         | 		                        ^
+      72 | 		const layout = await text.evaluate((element) => {
+      73 | 			const style = getComputedStyle(element);
+      74 | 			return {
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:71:27)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ellipsis"
+    Received: "clip"
+
+       at entityPreviewConfigs.ts:84
+
+      82 | 		expect.soft(layout.width, 'the expression prefix has visible space').toBeGreaterThan(0);
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+    > 84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+         | 		                             ^
+      85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:84:32)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "nowrap"
+    Received: "pre-wrap"
+
+       at entityPreviewConfigs.ts:85
+
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+      84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+    > 85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+         | 		                               ^
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+      88 | 	}
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:85:34)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/error-context.md
+
+  3) test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at mobile 
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:8)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+    Expected: "10 * 1000"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveAttribute" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code') with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+        14 × locator resolved to <code class="source svelte-1e7mglp">10 * 1000</code>
+           - unexpected value "null"
+
+
+       at entityPreviewConfigs.ts:71
+
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+    > 71 | 		await expect.soft(text).toHaveAttribute('title', source);
+         | 		                        ^
+      72 | 		const layout = await text.evaluate((element) => {
+      73 | 			const style = getComputedStyle(element);
+      74 | 			return {
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:71:27)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ellipsis"
+    Received: "clip"
+
+       at entityPreviewConfigs.ts:84
+
+      82 | 		expect.soft(layout.width, 'the expression prefix has visible space').toBeGreaterThan(0);
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+    > 84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+         | 		                             ^
+      85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:84:32)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "nowrap"
+    Received: "pre-wrap"
+
+       at entityPreviewConfigs.ts:85
+
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+      84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+    > 85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+         | 		                               ^
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+      88 | 	}
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:85:34)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:67:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:8)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.remoteEndpoint' }).getByRole('button', { name: 'View value for orderSettings.remoteEndpoint', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.designProperties' }).getByRole('button', { name: 'View value for orderSettings.designProperties', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: config expression prefixes are visible inline
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+    Expected: visible
+    Timeout: 500ms
+    Error: element(s) not found
+
+    Call log:
+      - config expression prefixes are visible inline getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code') with timeout 500ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).locator('td').last().locator('code')
+
+
+       at entityPreviewConfigs.ts:65
+
+      63 | 		await expect
+      64 | 			.soft(text, 'config expression prefixes are visible inline')
+    > 65 | 			.toBeVisible({ timeout: 500 });
+         | 			 ^
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+      68 | 			.toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:65:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveCount" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true }) with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.message' }).getByRole('button', { name: 'View value for orderSettings.message', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewConfigs.ts:68
+
+      66 | 		await expect
+      67 | 			.soft(row.getByRole('button', { name: `View value for orderSettings.${name}`, exact: true }))
+    > 68 | 			.toHaveCount(0);
+         | 			 ^
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+      71 | 		await expect.soft(text).toHaveAttribute('title', source);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:68:5)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+    Expected: "10 * 1000"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "soft toHaveAttribute" getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code') with timeout 5000ms
+      - waiting for getByRole('table', { name: 'orderSettings', exact: true }).getByRole('row').filter({ hasText: 'orderSettings.retryDelay' }).locator('td').last().locator('code')
+        14 × locator resolved to <code class="source svelte-1e7mglp">10 * 1000</code>
+           - unexpected value "null"
+
+
+       at entityPreviewConfigs.ts:71
+
+      69 | 		if (!(await text.count())) continue;
+      70 | 		await expect.soft(text).toHaveText(source);
+    > 71 | 		await expect.soft(text).toHaveAttribute('title', source);
+         | 		                        ^
+      72 | 		const layout = await text.evaluate((element) => {
+      73 | 			const style = getComputedStyle(element);
+      74 | 			return {
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:71:27)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ellipsis"
+    Received: "clip"
+
+       at entityPreviewConfigs.ts:84
+
+      82 | 		expect.soft(layout.width, 'the expression prefix has visible space').toBeGreaterThan(0);
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+    > 84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+         | 		                             ^
+      85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:84:32)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "nowrap"
+    Received: "pre-wrap"
+
+       at entityPreviewConfigs.ts:85
+
+      83 | 		expect.soft(layout.lines, 'multiline expressions occupy one line').toBeLessThan(1.1);
+      84 | 		expect.soft(layout.ellipsis).toBe('ellipsis');
+    > 85 | 		expect.soft(layout.whitespace).toBe('nowrap');
+         | 		                               ^
+      86 | 		if (name === 'designProperties') expect.soft(layout.clipped).toBe(true);
+      87 | 		await expect.soft(row.locator('orders')).toHaveCount(0);
+      88 | 	}
+        at inspectConfigExpressions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:85:34)
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entityPreviewConfigs.ts:20:2)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:76:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-orzJrH/packages/reports/test/entity-preview-groups.spec.ts:117:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/error-context.md
+
+  3 failed
+    test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at desktop 
+    test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at tablet 
+    test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at mobile 
+  13 passed (2.9m)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+

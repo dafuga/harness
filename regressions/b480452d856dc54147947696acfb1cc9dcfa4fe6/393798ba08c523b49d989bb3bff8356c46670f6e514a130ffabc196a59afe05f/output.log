@@ -1,0 +1,75 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-XU9L5l
+
+ ❯ test/generate-workflow.test.ts (5 tests | 1 failed) 116ms
+   ✓ lib generation auto-exports package-safe scaffolds 19ms
+   ✓ app-only scaffolds fail in lib projects 3ms
+   ✓ app generation allows app-only scaffolds without package exports 4ms
+   ✓ generation keeps category folders, imports and package exports in agreement 46ms
+   × the same category works for every source scaffold and can be extended 44ms
+     → src/adapters/commerce/AdapterExampleAdapter.ts separates named types: expected true to be false // Object.is equality
+ ❯ test/audit-adapters.test.ts (13 tests | 1 failed) 46ms
+   ✓ audit profiles select ecosystem adapters 1ms
+   ✓ auto profile detects Svelte apps and Harness libs 4ms
+   ✓ coverage reports covered, ignored, and unknown files 6ms
+   × ecosystem adapters report app and library rule violations 12ms
+     → expected [] to deeply equal [ …(2) ]
+   ✓ utility runtime naming handles named alias 3ms
+   ✓ utility runtime naming handles multiline 3ms
+   ✓ utility runtime naming handles local list 2ms
+   ✓ utility runtime naming handles type clause 2ms
+   ✓ utility runtime naming handles inline type 3ms
+   ✓ utility runtime naming handles another name 2ms
+   ✓ utility runtime naming handles wildcard 2ms
+   ✓ utility runtime naming handles comment 1ms
+   ✓ utility runtime naming handles string 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/audit-adapters.test.ts > ecosystem adapters report app and library rule violations
+AssertionError: expected [] to deeply equal [ …(2) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   "src/components/Payment.svelte",[39m
+[32m-   "src/lib/checkout/payment.ts",[39m
+[32m- ][39m
+[31m+ [][39m
+
+ ❯ test/audit-adapters.test.ts:94:5
+     92|     .filter((f) => f.rule === 'separate-type-declarations')
+     93|     .map((f) => f.path)
+     94|   ).toEqual(['src/components/Payment.svelte', 'src/lib/checkout/paymen…
+       |     ^
+     95|   expect((await auditProject(root, { profile: 'app' })).findings).toEq…
+     96|    expect.arrayContaining([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/generate-workflow.test.ts > the same category works for every source scaffold and can be extended
+AssertionError: src/adapters/commerce/AdapterExampleAdapter.ts separates named types: expected true to be false // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ test/generate-workflow.test.ts:142:87
+    140|        ts.isVariableStatement(node)
+    141|      );
+    142|      expect(runtime && declarations.length > 0, file.path + ' separate…
+       |                                                                                       ^
+    143|       false
+    144|      );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 16 passed (18)
+   Start at  11:34:40
+   Duration  4.48s (transform 238ms, setup 179ms, collect 645ms, tests 162ms, environment 0ms, prepare 84ms)
+

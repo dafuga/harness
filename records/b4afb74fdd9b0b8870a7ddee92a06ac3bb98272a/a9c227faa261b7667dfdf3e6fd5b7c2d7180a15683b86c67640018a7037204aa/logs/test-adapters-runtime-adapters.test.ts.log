@@ -1,0 +1,13 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/adapters/runtime-adapters.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 1441[2mms[22m[39m
+   [33m[2m✓[22m[39m process runtime reports malformed output, crashes, timeouts and missing binaries [33m 438[2mms[22m[39m
+   [33m[2m✓[22m[39m persistent process runtime keeps one process, and recovers after a timeout [33m 456[2mms[22m[39m
+   [33m[2m✓[22m[39m HTTP runtime reports bad status, malformed bodies, timeouts and refused connections [33m 340[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 15:54:10
+[2m   Duration [22m 1.83s[2m (transform 92ms, setup 24ms, collect 89ms, tests 1.44s, environment 0ms, prepare 72ms)[22m
+

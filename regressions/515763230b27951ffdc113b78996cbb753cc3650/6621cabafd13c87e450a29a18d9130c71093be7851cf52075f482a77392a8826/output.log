@@ -1,0 +1,42 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-ZCpe72
+
+ ❯ test/module-data.e2e.test.ts (3 tests | 1 failed) 19982ms
+   × validate persists revision-bound module gaps, filters them and invalidates cached searches 4895ms
+     → Validation cache must stay outside the source worktree
+
+'?? .cache/' !== ''
+
+   ✓ validate commits source-derived page API usage and explicit visual data gaps  10012ms
+   ✓ historical helper layout does not masquerade as missing module metadata  5071ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/module-data.e2e.test.ts > validate persists revision-bound module gaps, filters them and invalidates cached searches
+AssertionError: Validation cache must stay outside the source worktree
+
+'?? .cache/' !== ''
+
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[31m+ ?? .cache/[39m
+
+ ❯ verifyReview test/support/unitProject.ts:118:9
+    116|  head: string
+    117| ) {
+    118|  assert.equal(
+       |         ^
+    119|   (await git(['status', '--porcelain'])).stdout.trim(),
+    120|   '',
+ ❯ test/module-data.e2e.test.ts:44:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  18:43:43
+   Duration  23.40s (transform 176ms, setup 122ms, collect 129ms, tests 19.98s, environment 0ms, prepare 37ms)
+

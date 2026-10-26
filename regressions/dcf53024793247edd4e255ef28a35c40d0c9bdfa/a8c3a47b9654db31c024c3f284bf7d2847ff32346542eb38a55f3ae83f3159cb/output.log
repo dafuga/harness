@@ -1,0 +1,65 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-6IZZks
+
+ ❯ test/adapters/agents-providers/module-task-runner.test.ts (9 tests | 1 failed) 9ms
+   ✓ Claude and Codex launch exact models and intelligence without shell interpolation 2ms
+   ✓ successful public Claude CLI events retain requested model and summary 1ms
+   ✓ fallback eligibility uses structured quota signals (quota) 0ms
+   ✓ fallback eligibility uses structured quota signals (authentication) 0ms
+   ✓ fallback eligibility uses structured quota signals (text-only-quota) 0ms
+   × a completed CLI run that reports another model is rejected 4ms
+     → Worker completions require an exact reported model and preserve usage: expected [ { status: 'rejected', …(3) }, …(5) ] to deeply equal [ { status: 'rejected', …(3) }, …(5) ]
+   ✓ public claude usage is retained without guessing absent counters 0ms
+   ✓ public codex usage is retained without guessing absent counters 0ms
+   ✓ failed turns preserve available usage for cost attribution 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/agents-providers/module-task-runner.test.ts > a completed CLI run that reports another model is rejected
+AssertionError: Worker completions require an exact reported model and preserve usage: expected [ { status: 'rejected', …(3) }, …(5) ] to deeply equal [ { status: 'rejected', …(3) }, …(5) ]
+
+- Expected
++ Received
+
+@@ -15,19 +15,18 @@
+      "inputTokens": 7,
+      "reportedModel": "claude-haiku-5-5",
+      "status": "accepted",
+    },
+    {
+-     "identityError": true,
+      "inputTokens": 7,
+      "reportedModel": null,
+-     "status": "rejected",
++     "status": "accepted",
+    },
+    {
+      "identityError": true,
+      "inputTokens": 7,
+-     "reportedModel": "different-model",
++     "reportedModel": null,
+      "status": "rejected",
+    },
+    {
+      "inputTokens": 7,
+      "reportedModel": "gpt-6-luna",
+
+ ❯ assertTaskModelIdentity test/support/taskModelIdentity.ts:28:92
+     26|   }
+     27|  }
+     28|  expect(outcomes, 'Worker completions require an exact reported model …
+       |                                                                                            ^
+     29|   expected
+     30|  );
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ observedTaskOperation test/support/taskProfiles.ts:64:10
+ ❯ test/adapters/agents-providers/module-task-runner.test.ts:92:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  09:03:12
+   Duration  2.92s (transform 128ms, setup 98ms, collect 95ms, tests 9ms, environment 0ms, prepare 28ms)
+

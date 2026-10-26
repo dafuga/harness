@@ -1,0 +1,12 @@
+
+Running 5 tests using 1 worker
+
+(node:26466) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/compact-agent.spec.ts:10:3 › agent footer leaves room for writing at 1440px in functions (279ms)
+  ✓  2 tests/e2e/compact-agent.spec.ts:10:3 › agent footer leaves room for writing at 1440px in components (234ms)
+  ✓  3 tests/e2e/compact-agent.spec.ts:10:3 › agent footer leaves room for writing at 390px in functions (216ms)
+  ✓  4 tests/e2e/compact-agent.spec.ts:10:3 › agent footer leaves room for writing at 390px in components (196ms)
+  ✓  5 tests/e2e/compact-agent.spec.ts:78:1 › compact controls send the selected provider, model, effort and design count (350ms)
+
+  5 passed (1.9s)

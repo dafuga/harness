@@ -1,0 +1,45 @@
+
+Running 1 test using 1 worker
+
+(node:97132) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.layout.explorer-layout at desktop (5.8s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.layout.explorer-layout at desktop 
+
+    Error: Only the compact value is painted in a closed revision field
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.layout.explorer-layout"]').locator('.hx-revision .has-display select').first()
+    Expected: "rgba(0, 0, 0, 0)"
+    Received: "rgb(242, 245, 250)"
+    Timeout:  5000ms
+
+    Call log:
+      - Only the compact value is painted in a closed revision field locator('[data-preview-unit="reports.layout.explorer-layout"]').locator('.hx-revision .has-display select').first() with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.layout.explorer-layout"]').locator('.hx-revision .has-display select').first()
+        14 × locator resolved to <select aria-label="Branch" class="svelte-5na0ll" title="feature/orders · Tip · ccccccc">…</select>
+           - unexpected value "rgb(242, 245, 250)"
+
+
+      84 | 					field,
+      85 | 					'Only the compact value is painted in a closed revision field'
+    > 86 | 				).toHaveCSS('color', 'rgba(0, 0, 0, 0)');
+         | 				  ^
+      87 | 			if (unit.kind === 'layout') {
+      88 | 				const slot = component.getByRole('region', { name: 'Child content', exact: true });
+      89 | 				await expect(slot).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ScL6aA/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:86:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-748d2--explorer-layout-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-748d2--explorer-layout-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-748d2--explorer-layout-at-desktop/error-context.md
+
+  1 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.layout.explorer-layout at desktop 

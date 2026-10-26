@@ -1,0 +1,1580 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [223.00ms]
+$ bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/hub svelte-kit sync && bun run build:kernel && bun run build:cli && bun run build:api && bun run --cwd packages/reports build && bun scripts/package-reports.ts && bun run build:picker
+$ bun scripts/build-kernel.ts
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling syn v3.0.7
+   Compiling serde_derive v1.0.229
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sBLNG3/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 10.35s
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sBLNG3/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 4.54s
+Built impact kernel: wasm 142396 bytes (wasm-opt wasm-opt version 131), native 402080 bytes.
+$ bun build src/index.ts --target bun --outdir dist
+Bundled 1416 modules in 274ms
+
+  index.js  14.51 MB  (entry point)
+
+$ bun scripts/build-api.ts
+Built public API: contracts, runtime, verification, history, sqlite, catalog, edge, console and index, declarations in dist/types.
+$ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+vite v6.4.4 building SSR bundle for production...
+transforming...
+✓ 1204 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 564 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                                           0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                                        25.91 kB │ gzip:  2.70 kB
+.svelte-kit/output/client/_app/immutable/assets/4.CozlcCPu.css                        0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerPagesScreen.mEVg4ihQ.css      0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerCatalogScreen.C-_Knw6m.css    0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityHistoryScreen.DIYMT5Fc.css      0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityBehaviorScreen.Cai1Hvjk.css     0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityVisualScreen.Bi3IJWvQ.css       0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityConfigScreen.XeJ8lGby.css       0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerControls.1Z2_OMPb.css         0.09 kB │ gzip:  0.07 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityDetailsScreen.BT__AqhW.css      0.10 kB │ gzip:  0.10 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerIndex.BqmaZ7YM.css            0.44 kB │ gzip:  0.27 kB
+.svelte-kit/output/client/_app/immutable/assets/SourceFileList.C7dcRaze.css           0.77 kB │ gzip:  0.33 kB
+.svelte-kit/output/client/_app/immutable/assets/RegressionProof.DXBNCJaG.css          1.89 kB │ gzip:  0.70 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityFrame.B8K3qmj2.css              2.49 kB │ gzip:  0.89 kB
+.svelte-kit/output/client/_app/immutable/assets/36.Bs7XSCt-.css                       2.52 kB │ gzip:  0.79 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerCatalogItems.CoXmkbdM.css     2.95 kB │ gzip:  1.05 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySections.CfrXypwj.css           4.99 kB │ gzip:  1.50 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySummary.DVDoF_il.css            5.80 kB │ gzip:  1.58 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerPlatforms.cnLWqQ5y.css        6.12 kB │ gzip:  1.59 kB
+.svelte-kit/output/client/_app/immutable/assets/gallery.CjQra66f.css                 11.93 kB │ gzip:  3.04 kB
+.svelte-kit/output/client/_app/immutable/assets/0.BeWZl8BK.css                       31.01 kB │ gzip:  7.26 kB
+.svelte-kit/output/client/_app/immutable/assets/HarnessScreen.qYwt1VJq.css           39.76 kB │ gzip:  8.18 kB
+.svelte-kit/output/client/_app/immutable/entry/start.CDz3pzxn.js                      0.12 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/CohI-uuM.js                           0.15 kB │ gzip:  0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/23.hZY1K5c5.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/19.BLbUnI87.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/22.BFSY57p9.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/33.Cc_63IAK.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/11.Cek8_x_6.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/18.DnX_1RWP.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/32.DR1wReQp.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/10.sxuMQOnk.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/29.B1XRGn_7.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/15.DXq3w9kV.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/28.BSUfUiI0.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/7.Cka6SJKA.js                          0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/14.Dn-2365T.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/26.DhQhPqdD.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/6.BEi_C0Sf.js                          0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/24.BimmtR74.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/25.DmfCViNI.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/20.BJlkWSVv.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/21.CqXUYnW2.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/34.BArVoFBN.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/35.BfpawRiq.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/12.DQAvH3Hq.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/13.DYPzkxGo.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/30.BJ0V-AFK.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/31.DNGbva1_.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/16.C8fs5xfb.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/17.CPWbvIpp.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/8.CbZHVfRI.js                          0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/9.DH1cErip.js                          0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/27.D2-NqYAy.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.CEl-zWGP.js                          0.38 kB │ gzip:  0.27 kB
+.svelte-kit/output/client/_app/immutable/chunks/C-lysiSN.js                           0.58 kB │ gzip:  0.38 kB
+.svelte-kit/output/client/_app/immutable/chunks/DOVLsrPz.js                           0.69 kB │ gzip:  0.43 kB
+.svelte-kit/output/client/_app/immutable/chunks/DDhSe5R4.js                           0.83 kB │ gzip:  0.49 kB
+.svelte-kit/output/client/_app/immutable/chunks/CBZPU5LB.js                           0.88 kB │ gzip:  0.50 kB
+.svelte-kit/output/client/_app/immutable/chunks/B8Ecs8OO.js                           0.98 kB │ gzip:  0.37 kB
+.svelte-kit/output/client/_app/immutable/chunks/BNgUnW8e.js                           1.03 kB │ gzip:  0.58 kB
+.svelte-kit/output/client/_app/immutable/chunks/BmSpZ0G9.js                           1.29 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.CJbnACG_.js                          1.31 kB │ gzip:  0.69 kB
+.svelte-kit/output/client/_app/immutable/chunks/C9sK3BWx.js                           1.34 kB │ gzip:  0.71 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js                           1.37 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/DYjP1enO.js                           2.64 kB │ gzip:  1.37 kB
+.svelte-kit/output/client/_app/immutable/nodes/36.CwHJgOK-.js                         3.98 kB │ gzip:  1.80 kB
+.svelte-kit/output/client/_app/immutable/chunks/Deuma9Rl.js                           3.99 kB │ gzip:  1.75 kB
+.svelte-kit/output/client/_app/immutable/chunks/D9MQ8ZIF.js                           4.80 kB │ gzip:  2.15 kB
+.svelte-kit/output/client/_app/immutable/chunks/CVybyFiS.js                           4.93 kB │ gzip:  2.30 kB
+.svelte-kit/output/client/_app/immutable/chunks/DLvBwnwc.js                           5.02 kB │ gzip:  2.14 kB
+.svelte-kit/output/client/_app/immutable/chunks/ag8H3HwC.js                           5.77 kB │ gzip:  2.51 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bfyl862D.js                           6.45 kB │ gzip:  2.92 kB
+.svelte-kit/output/client/_app/immutable/chunks/DLLaDDub.js                          11.15 kB │ gzip:  4.71 kB
+.svelte-kit/output/client/_app/immutable/chunks/C-iOLVsv.js                          11.81 kB │ gzip:  4.87 kB
+.svelte-kit/output/client/_app/immutable/chunks/D7c2Phe5.js                          12.33 kB │ gzip:  5.14 kB
+.svelte-kit/output/client/_app/immutable/entry/app.DJWvu2x_.js                       15.01 kB │ gzip:  4.46 kB
+.svelte-kit/output/client/_app/immutable/chunks/D31YtDi1.js                          16.17 kB │ gzip:  6.35 kB
+.svelte-kit/output/client/_app/immutable/chunks/DE5pvQqm.js                          23.46 kB │ gzip: 10.14 kB
+.svelte-kit/output/client/_app/immutable/chunks/MPjZYi_m.js                          29.90 kB │ gzip: 11.36 kB
+.svelte-kit/output/client/_app/immutable/chunks/_37E0I11.js                          30.55 kB │ gzip: 11.79 kB
+.svelte-kit/output/client/_app/immutable/chunks/6HPqB3i2.js                          30.73 kB │ gzip: 11.82 kB
+.svelte-kit/output/client/_app/immutable/chunks/bqblC-aA.js                          34.71 kB │ gzip: 12.36 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.0WkPSvI_.js                         43.36 kB │ gzip: 15.68 kB
+.svelte-kit/output/client/_app/immutable/chunks/BIV0TZpb.js                          76.76 kB │ gzip: 26.57 kB
+.svelte-kit/output/client/_app/immutable/chunks/DWEE_asH.js                         121.97 kB │ gzip: 41.34 kB
+✓ built in 1.71s
+.svelte-kit/output/server/.vite/manifest.json                                                                         37.12 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CozlcCPu.css                                                     0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityHistoryScreen.DIYMT5Fc.css                                       0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerCatalogScreen.C-_Knw6m.css                                     0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerPagesScreen.mEVg4ihQ.css                                       0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityBehaviorScreen.Cai1Hvjk.css                                      0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityConfigScreen.XeJ8lGby.css                                        0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityVisualScreen.Bi3IJWvQ.css                                        0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerControls.1Z2_OMPb.css                                          0.09 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityDetailsScreen.BT__AqhW.css                                       0.10 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerIndex.BqmaZ7YM.css                                             0.44 kB
+.svelte-kit/output/server/_app/immutable/assets/SourceFileList.C7dcRaze.css                                            0.77 kB
+.svelte-kit/output/server/_app/immutable/assets/RegressionProof.DXBNCJaG.css                                           1.89 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityFrame.B8K3qmj2.css                                               2.49 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.Bs7XSCt-.css                                                     2.52 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerCatalogItems.CoXmkbdM.css                                      2.95 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySections.CfrXypwj.css                                            4.99 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySummary.DVDoF_il.css                                             5.80 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerPlatforms.WmPfBghY.css                                         6.07 kB
+.svelte-kit/output/server/_app/immutable/assets/gallery.h-ZAu4eu.css                                                  11.90 kB
+.svelte-kit/output/server/_app/immutable/assets/_layout.myI7K1CT.css                                                  30.74 kB
+.svelte-kit/output/server/_app/immutable/assets/HarnessScreen.BjoTu2gn.css                                            39.67 kB
+.svelte-kit/output/server/entries/pages/_page.server.ts.js                                                             0.11 kB
+.svelte-kit/output/server/entries/pages/analytics/_page.server.ts.js                                                   0.11 kB
+.svelte-kit/output/server/entries/pages/harness/analytics/_page.server.ts.js                                           0.11 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_page.server.ts.js                                             0.11 kB
+.svelte-kit/output/server/entries/pages/reports/_id_/_page.server.ts.js                                                0.16 kB
+.svelte-kit/output/server/entries/endpoints/harness/data/_...path_/_server.ts.js                                       0.17 kB
+.svelte-kit/output/server/entries/endpoints/harness/media/_file_/_server.ts.js                                         0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                                          0.19 kB
+.svelte-kit/output/server/env.js                                                                                       0.23 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_server.ts.js                                                  0.24 kB
+.svelte-kit/output/server/entries/endpoints/harness/export/_commit_/_server.ts.js                                      0.25 kB
+.svelte-kit/output/server/chunks/Desktop.types.js                                                                      0.30 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_server.ts.js                                             0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/platforms/_page.svelte.js                      0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_page.svelte.js                          0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/_page.svelte.js                 0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/_page.svelte.js               0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/_page.svelte.js            0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_page.svelte.js                        0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_page.svelte.js                       0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_page.svelte.js                      0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_page.svelte.js                     0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/_page.svelte.js              0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/_page.svelte.js             0.35 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                                            0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/platforms/_entity_/_page.svelte.js             0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/details/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/history/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/details/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/history/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/details/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/history/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/details/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/history/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/details/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/history/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/internal.js                                                                                  0.40 kB
+.svelte-kit/output/server/chunks/server.js                                                                             0.45 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.server.ts.js                                           0.48 kB
+.svelte-kit/output/server/chunks/buildStamp.js                                                                         0.51 kB
+.svelte-kit/output/server/entries/endpoints/api/health/_server.ts.js                                                   0.62 kB
+.svelte-kit/output/server/chunks/EntityLink.js                                                                         0.62 kB
+.svelte-kit/output/server/chunks/index2.js                                                                             0.78 kB
+.svelte-kit/output/server/chunks/ExplorerControls.js                                                                   0.84 kB
+.svelte-kit/output/server/chunks/evidenceMedia.js                                                                      1.06 kB
+.svelte-kit/output/server/chunks/utils.js                                                                              1.09 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_id_/_page.server.ts.js                                        1.13 kB
+.svelte-kit/output/server/chunks/ExplorerPagesScreen.js                                                                1.24 kB
+.svelte-kit/output/server/chunks/SourceFileList.js                                                                     1.30 kB
+.svelte-kit/output/server/chunks/ExplorerCatalogScreen.js                                                              1.31 kB
+.svelte-kit/output/server/chunks/EntityBehaviorScreen.js                                                               1.69 kB
+.svelte-kit/output/server/chunks/EntityVisualScreen.js                                                                 1.82 kB
+.svelte-kit/output/server/chunks/mediaResponse.js                                                                      1.84 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-upload/_server.ts.js                                      1.89 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-comparison/_server.ts.js                                  1.99 kB
+.svelte-kit/output/server/chunks/reportAssets.js                                                                       2.06 kB
+.svelte-kit/output/server/chunks/writingLimits.js                                                                      2.10 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_type_/_file_/_server.ts.js                               2.10 kB
+.svelte-kit/output/server/chunks/reportBuildIdentity.js                                                                2.23 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.svelte.js                                              2.37 kB
+.svelte-kit/output/server/chunks/AudioUploadService.js                                                                 2.41 kB
+.svelte-kit/output/server/chunks/index.js                                                                              2.65 kB
+.svelte-kit/output/server/chunks/explorerTabs.js                                                                       2.84 kB
+.svelte-kit/output/server/chunks/explorerName.js                                                                       3.04 kB
+.svelte-kit/output/server/chunks/utils2.js                                                                             3.09 kB
+.svelte-kit/output/server/chunks/internal.js                                                                           3.40 kB
+.svelte-kit/output/server/chunks/EntityConfigScreen.js                                                                 3.47 kB
+.svelte-kit/output/server/chunks/reportSite.js                                                                         3.69 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/styles/_page.svelte.js                         4.15 kB
+.svelte-kit/output/server/entries/endpoints/api/report-screenshot-upload/_server.ts.js                                 4.22 kB
+.svelte-kit/output/server/chunks/helperContract.js                                                                     5.20 kB
+.svelte-kit/output/server/chunks/RegressionProof.js                                                                    5.30 kB
+.svelte-kit/output/server/chunks/exports.js                                                                            5.54 kB
+.svelte-kit/output/server/chunks/harnessEvidence.js                                                                    5.72 kB
+.svelte-kit/output/server/chunks/entityScreens.js                                                                      6.37 kB
+.svelte-kit/output/server/chunks/EntityDetailsScreen.js                                                                6.82 kB
+.svelte-kit/output/server/chunks/ExplorerIndex.js                                                                      7.27 kB
+.svelte-kit/output/server/entries/endpoints/api/analytics-cpu/_server.ts.js                                            7.52 kB
+.svelte-kit/output/server/chunks/gallery.js                                                                            7.82 kB
+.svelte-kit/output/server/entries/endpoints/api/replay-video/_server.ts.js                                             9.27 kB
+.svelte-kit/output/server/chunks/EntityHistoryScreen.js                                                               12.88 kB
+.svelte-kit/output/server/chunks/explorerVerdict.js                                                                   14.69 kB
+.svelte-kit/output/server/chunks/ExplorerPlatforms.js                                                                 16.66 kB
+.svelte-kit/output/server/chunks/ComponentManifestValidator.js                                                        20.77 kB
+.svelte-kit/output/server/chunks/ExplorerCatalogItems.js                                                              22.29 kB
+.svelte-kit/output/server/entries/endpoints/api/project-activity/_server.ts.js                                        24.22 kB
+.svelte-kit/output/server/chunks/reportHttp.js                                                                        26.25 kB
+.svelte-kit/output/server/chunks/shared.js                                                                            34.21 kB
+.svelte-kit/output/server/chunks/EntityFrame.js                                                                       35.79 kB
+.svelte-kit/output/server/remote-entry.js                                                                             36.85 kB
+.svelte-kit/output/server/chunks/HistoryStatusService.js                                                              43.04 kB
+.svelte-kit/output/server/chunks/EntitySummary.js                                                                     54.42 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js                                                             62.07 kB
+.svelte-kit/output/server/chunks/HarnessScreen.js                                                                     71.74 kB
+.svelte-kit/output/server/chunks/EntitySections.js                                                                   103.04 kB
+.svelte-kit/output/server/index.js                                                                                   130.95 kB
+.svelte-kit/output/server/chunks/root.js                                                                             133.59 kB
+.svelte-kit/output/server/chunks/consoleServer.js                                                                    356.61 kB
+.svelte-kit/output/server/entries/hooks.server.js                                                                    385.74 kB
+✓ built in 6.97s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-node
+../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+Circular dependency: ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/core.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/util.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/core.js
+Circular dependency: ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/smol-toml/dist/struct.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/smol-toml/dist/extract.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/smol-toml/dist/struct.js
+Generated an empty chunk: "chunks/internal2.js".
+  ✔ done
+vite v6.4.4 building for production...
+transforming...
+✓ 180 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/viewer/report.css       38.82 kB │ gzip:  8.74 kB
+dist/viewer/report.iife.js  178.34 kB │ gzip: 60.65 kB
+✓ built in 1.52s
+vite v6.4.4 building for production...
+transforming...
+✓ 387 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/console/console.css       98.06 kB │ gzip:  19.62 kB
+dist/console/console.iife.js  390.96 kB │ gzip: 132.94 kB
+✓ built in 2.25s
+$ bun run --cwd packages/reports build:picker && bun scripts/build-picker.ts
+$ vite build --config src/config/pickerViteConfig.ts
+vite v6.4.4 building for production...
+transforming...
+../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 269 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/picker/picker.css       14.60 kB │ gzip:  3.94 kB
+dist/picker/picker.iife.js  295.09 kB │ gzip: 83.99 kB
+✓ built in 1.57s
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sBLNG3
+
+ ✓ test/shared-select-impact.test.ts (5 tests) 7655ms
+   ✓ a change of Select reaches every unit, test and scenario that a change of a consumer reaches  319ms
+   ✓ declaring the Select imports moves those references alone: packages and uncertainties stay  896ms
+ ✓ test/utils/unit-documentation.test.ts (3 tests) 290ms
+ ✓ test/utils/unit-identity.test.ts (2 tests) 32ms
+
+ Test Files  3 passed (3)
+      Tests  10 passed (10)
+   Start at  10:33:36
+   Duration  9.99s (transform 351ms, setup 201ms, collect 944ms, tests 7.98s, environment 0ms, prepare 135ms)
+
+$ bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit
+$ prettier --check .
+Checking formatting...
+All matched files use Prettier code style!
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && svelte-check --tsconfig ./tsconfig.previews.json
+
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+warn - Configure your content sources or your generated CSS will be missing styles.
+warn - https://tailwindcss.com/docs/content-configuration
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sBLNG3/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+warn - Configure your content sources or your generated CSS will be missing styles.
+warn - https://tailwindcss.com/docs/content-configuration
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sBLNG3/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+$ svelte-kit sync && eslint .
+$ bun run test:unit
+$ vitest run
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sBLNG3/packages/reports
+
+ ✓ test/components/entity-overview.test.ts (11 tests) 61ms
+ ✓ test/utils/entity-catalog.test.ts (9 tests) 51ms
+ ✓ test/utils/entity-screens.test.ts (13 tests) 7ms
+ ✓ test/utils/explorer-registry.test.ts (5 tests) 37ms
+ ✓ test/utils/explorer-category.test.ts (13 tests) 59ms
+ ✓ test/utils/entity-contract.test.ts (12 tests) 3ms
+ ✓ test/components/entity-details.test.ts (7 tests) 26ms
+ ✓ test/components/entity-relations.test.ts (5 tests) 54ms
+ ✓ test/utils/explorer-verdict.test.ts (13 tests) 31ms
+ ✓ test/utils/explorer-coverage.test.ts (9 tests) 3ms
+ ✓ test/utils/explorer-entities.test.ts (9 tests) 4ms
+ ✓ test/utils/entity-reasons.test.ts (10 tests) 3ms
+ ✓ test/components/entity-history.test.ts (9 tests) 22ms
+ ✓ test/utils/harness-shell.test.ts (9 tests) 7ms
+ ✓ test/entity-usage.test.ts (7 tests) 26ms
+ ✓ test/components/project-activity.test.ts (4 tests) 10ms
+ ✓ test/utils/entity-measure.test.ts (8 tests) 14ms
+ ✓ test/components/service-contract.test.ts (5 tests) 22ms
+ ✓ test/components/explorer-screens.test.ts (7 tests) 77ms
+ ✓ test/utils/explorer-history.test.ts (8 tests) 4ms
+ ✓ test/utils/harness-emitted.test.ts (4 tests) 2ms
+ ✓ test/components/harness-shell-legacy.test.ts (6 tests) 7ms
+ ✓ test/components/harness-navbar.test.ts (8 tests) 9ms
+ ✓ test/utils/explorer-differences.test.ts (8 tests) 2ms
+ ✓ test/utils/explorer-evidence.test.ts (8 tests) 4ms
+ ✓ test/utils/capture-provenance.test.ts (6 tests) 3ms
+ ✓ test/preview-lifecycle.test.ts (11 tests) 27538ms
+   ✓ repeated starts on another requested port reuse the same owned preview  516ms
+   ✓ another history configuration is refused without starting a second preview  610ms
+   ✓ an occupied preview port is refused instead of silently choosing another  1356ms
+   ✓ an owner that crashes can be restarted without a stale lock or orphan preview  653ms
+   ✓ simultaneous launches elect one owner while the other reuses it  485ms
+   ✓ a different checkout is refused without affecting the owner  662ms
+   ✓ normal shutdown releases both the preview and ownership listeners  778ms
+   ✓ route indexes stay aligned after the normal SvelteKit sync command  1680ms
+   ✓ the owned preview autonomously recovers after crash  5600ms
+   ✓ the owned preview autonomously recovers after hang  9742ms
+   ✓ the owned preview autonomously recovers after module errors  5454ms
+ ✓ test/utils/explorer-name.test.ts (18 tests) 3ms
+ ✓ test/components/entity-tests.test.ts (7 tests) 34ms
+ ✓ test/services/screenshot-retention.test.ts (4 tests) 493ms
+   ✓ 30-day cleanup expires old uploads and preserves newer images; finalized=true  457ms
+ ✓ test/components/explorer-composition.test.ts (6 tests) 1999ms
+   ✓ every page mounts the host with one screen of its own, and none draws every screen  431ms
+   ✓ the four screens of a category are made of different components  417ms
+   ✓ a catalog draws no entity view, and each entity view draws its own and not the others  1069ms
+ ✓ test/components/entity-contract.test.ts (4 tests) 16ms
+ ✓ test/utils/explorer-drawn.test.ts (9 tests) 3ms
+ ✓ test/utils/entity-behavior.test.ts (10 tests) 10ms
+ ✓ test/components/explorer-content.test.ts (6 tests) 22ms
+ ✓ test/utils/explorer-applicable.test.ts (4 tests) 22ms
+ ✓ test/components/explorer-function-card.test.ts (10 tests) 28ms
+ ✓ test/utils/explorer-behavior.test.ts (8 tests) 3ms
+ ✓ test/utils/explorer-reading.test.ts (6 tests) 6ms
+ ✓ test/components/explorer-catalog-screen.test.ts (10 tests) 31ms
+ ✓ test/utils/harness-page.test.ts (7 tests) 5ms
+ ✓ test/components/entity-behavior.test.ts (5 tests) 36ms
+ ✓ test/utils/focus-view.test.ts (5 tests) 9ms
+ ✓ test/utils/explorer-artifact.test.ts (6 tests) 5ms
+ ✓ test/components/entity-sections.test.ts (4 tests) 29ms
+ ✓ test/utils/entity-history.test.ts (7 tests) 3ms
+ ✓ test/components/harness-verdict.test.ts (6 tests) 4ms
+ ✓ test/explorer-shells.test.ts (4 tests) 5ms
+ ✓ test/components/explorer-pages-screen.test.ts (4 tests) 70ms
+ ✓ test/utils/explorer-evidence-pairs.test.ts (3 tests) 3ms
+ ✓ test/report-export.test.ts (2 tests) 280ms
+ ✓ test/jpeg-pdf-preservation.test.ts (2 tests) 2192ms
+   ✓ tall JPEG screenshots retain all vertical content across PDF pages  1906ms
+ ✓ test/utils/explorer-ui/metric-changes.test.ts (4 tests) 3ms
+ ✓ test/report-store.test.ts (4 tests) 310ms
+ ✓ test/services/audio-upload.test.ts (4 tests) 316ms
+ ✓ test/utils/explorer-coverage-inherited.test.ts (2 tests) 3ms
+ ✓ test/components/activity-preview.test.ts (3 tests) 10ms
+ ✓ test/utils/entity-shown.test.ts (7 tests) 6ms
+ ✓ test/report-audio.test.ts (4 tests) 347ms
+ ✓ test/utils/trackpad-zoom.test.ts (3 tests) 2ms
+ ✓ test/report-cloud-retention.test.ts (2 tests) 28ms
+ ✓ test/entity-usage-kinds.test.ts (3 tests) 24ms
+ ✓ test/utils/harness-budget.test.ts (4 tests) 2ms
+ ✓ test/components/explorer-usage.test.ts (12 tests) 26ms
+ ✓ test/utils/teardown-gate.test.ts (3 tests) 8ms
+ ✓ test/utils/navbar-search.test.ts (7 tests) 3ms
+ ✓ test/cloudflare-evidence-default.test.ts (3 tests) 178ms
+ ✓ test/artifact-cases-view.test.ts (6 tests) 8ms
+ ✓ test/utils/console-export.test.ts (2 tests) 66ms
+ ✓ test/pdf-screenshot-visibility.test.ts (1 test) 272ms
+ ✓ test/components/entity-history-row.test.ts (3 tests) 7ms
+ ✓ test/report-storage-backfill.test.ts (3 tests) 17ms
+ ✓ test/utils/recorded-value.test.ts (4 tests) 4ms
+ ✓ test/components/entity-proof.test.ts (4 tests) 33ms
+ ✓ test/components/entity-visual-screen.test.ts (4 tests) 37ms
+ ✓ test/utils/e2e-fixtures.test.ts (4 tests) 283ms
+ ✓ test/report-adapters.test.ts (2 tests) 13ms
+ ✓ test/entity-search.test.ts (6 tests) 3ms
+ ✓ test/utils/explorer-verdict-reasons.test.ts (2 tests) 4ms
+ ✓ test/components/entity-examples.test.ts (4 tests) 4ms
+ ✓ test/services/report-publish.test.ts (2 tests) 26ms
+ ✓ test/utils/artifact-cases.test.ts (4 tests) 2ms
+ ✓ test/utils/harness-ancestry.test.ts (2 tests) 2ms
+ ✓ test/replay-cloud-storage.test.ts (2 tests) 527ms
+ ✓ test/corrected-location.test.ts (3 tests) 4ms
+ ✓ test/utils/entity-lens.test.ts (5 tests) 2ms
+ ✓ test/services/replay-video-service.test.ts (3 tests) 378ms
+   ✓ video exports only registered frames as a playable ordered MP4 and caches the artifact  374ms
+ ✓ test/services/screenshot-upload.test.ts (2 tests) 15ms
+ ✓ test/utils/explorer-scope.test.ts (5 tests) 2ms
+ ✓ test/utils/site-processes.test.ts (1 test) 206ms
+ ✓ test/components/entity-details-screen.test.ts (3 tests) 18ms
+ ✓ test/utils/harness-failures.test.ts (3 tests) 3ms
+ ✓ test/utils/report-server-record.test.ts (2 tests) 200ms
+ ✓ test/components/explorer-ui/explorer-platform-details.test.ts (4 tests) 7ms
+ ✓ test/utils/frozen-build.test.ts (2 tests) 17ms
+ ✓ test/components/entity-reasons.test.ts (3 tests) 3ms
+ ✓ test/components/select.test.ts (4 tests) 5ms
+ ✓ test/components/entity-behavior-screen.test.ts (3 tests) 38ms
+ ✓ test/components/entity-search-results.test.ts (2 tests) 3ms
+ ✓ test/utils/activity-reading.test.ts (2 tests) 7ms
+ ✓ test/console-bridge.test.ts (2 tests) 15ms
+ ✓ test/components/brand-mark.test.ts (8 tests) 49ms
+ ✓ test/gameplay-replay.test.ts (2 tests) 11ms
+ ✓ test/adapters/r2-report-retention.test.ts (3 tests) 4ms
+ ✓ test/services/harness-analytics.test.ts (2 tests) 1271ms
+   ✓ dashboard queries the real CLI aggregation and preserves validated filters  687ms
+   ✓ dashboard consumes a complete large analytics response before parsing  584ms
+ ✓ test/utils/harness-layout.test.ts (3 tests) 3ms
+ ✓ test/components/harness-shell-address.test.ts (3 tests) 2ms
+ ✓ test/utils/harness-keys.test.ts (1 test) 6ms
+ ✓ test/components/explorer-ui/explorer-platforms.test.ts (3 tests) 12ms
+ ✓ test/components/harness-action.test.ts (3 tests) 2ms
+ ✓ test/adapters/r2-evidence-store.test.ts (2 tests) 8ms
+ ✓ test/utils/audio-pairs.test.ts (3 tests) 3ms
+ ✓ test/components/entity-audio.test.ts (3 tests) 28ms
+ ✓ test/adapters/r2-screenshot-store.test.ts (2 tests) 7ms
+ ✓ test/utils/harness-icons.test.ts (3 tests) 6ms
+ ✓ test/utils/report-destination.test.ts (4 tests) 2ms
+ ✓ test/utils/tooltip-place.test.ts (4 tests) 2ms
+ ✓ test/explorer-search-entries.test.ts (2 tests) 3ms
+ ✓ test/console-agent.test.ts (2 tests) 6ms
+ ✓ test/utils/report-pages.test.ts (2 tests) 4ms
+ ✓ test/module-groups.test.ts (1 test) 10ms
+ ✓ test/utils/report-local-cleanup.test.ts (1 test) 11ms
+ ✓ test/components/harness-icon.test.ts (3 tests) 6ms
+ ✓ test/adapters/report-pages-retention.test.ts (2 tests) 6ms
+ ✓ test/shared-test-cases.test.ts (4 tests) 6ms
+ ✓ test/utils/entity-usage.test.ts (2 tests) 2ms
+ ✓ test/utils/brand-mark.test.ts (5 tests) 5ms
+ ✓ test/utils/browser-error-rows.test.ts (3 tests) 2ms
+ ✓ test/utils/report-publication-verify.test.ts (2 tests) 4ms
+ ✓ test/components/entity-frame.test.ts (2 tests) 9ms
+ ✓ test/utils/report-publication.test.ts (2 tests) 30ms
+ ✓ test/harness-navbar-search.test.ts (1 test) 3ms
+ ✓ test/utils/entity-removed.test.ts (3 tests) 5ms
+ ✓ test/components/recorded-value.test.ts (3 tests) 5ms
+ ✓ test/console-workspace.test.ts (1 test) 3ms
+ ✓ test/components/entity-config-screen.test.ts (2 tests) 13ms
+ ✓ test/utils/media-response.test.ts (2 tests) 6ms
+ ✓ test/components/explorer-frame.test.ts (2 tests) 6ms
+ ✓ test/components/usage-examples.test.ts (2 tests) 2ms
+ ✓ test/utils/explorer-ui/entity-metric-comparison.test.ts (2 tests) 6ms
+ ✓ test/components/entity-run.test.ts (2 tests) 8ms
+ ✓ test/components/entity-history-screen.test.ts (2 tests) 12ms
+ ✓ test/utils/evidence-media.test.ts (2 tests) 4ms
+ ✓ test/components/audio-comparison-viewer.test.ts (1 test) 5ms
+ ✓ test/routes/report-screenshot-upload-api.test.ts (2 tests) 6ms
+ ✓ test/utils/replay-frames.test.ts (2 tests) 1ms
+ ✓ test/utils/select-reuse.test.ts (1 test) 92ms
+ ✓ test/components/entity-search.test.ts (1 test) 2ms
+ ✓ test/utils/usage-examples.test.ts (2 tests) 2ms
+ ✓ test/components/entity-cases.test.ts (2 tests) 4ms
+ ✓ test/utils/audio-asset.test.ts (2 tests) 8ms
+ ✓ test/utils/analytics-cpu-client.test.ts (1 test) 3ms
+ ✓ test/components/harness-screen.test.ts (2 tests) 2ms
+ ✓ test/components/browser-errors.test.ts (2 tests) 3ms
+ ✓ test/routes/analytics-cpu-api.test.ts (1 test) 3ms
+ ✓ test/routes/report-audio-comparison-api.test.ts (1 test) 3ms
+ ✓ test/routes/report-audio-upload-api.test.ts (1 test) 3ms
+ ✓ test/styles-route.test.ts (1 test) 2ms
+ ✓ test/utils/wav-info.test.ts (2 tests) 5ms
+ ✓ test/components/explorer-usage-link.test.ts (1 test) 4ms
+ ✓ test/components/activity-list-states.test.ts (1 test) 3ms
+ ✓ test/utils/replay-video.test.ts (1 test) 2ms
+ ✓ test/routes/replay-video-api.test.ts (1 test) 4ms
+ ✓ test/utils/report-retention.test.ts (1 test) 1ms
+ ✓ test/services/evidence-storage.test.ts (1 test) 2ms
+ ✓ test/utils/analytics-display.test.ts (1 test) 1ms
+
+ Test Files  166 passed (166)
+      Tests  687 passed (687)
+   Start at  10:34:22
+   Duration  83.21s (transform 2.58s, setup 0ms, collect 11.85s, tests 38.65s, environment 15ms, prepare 5.23s)
+
+$ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+vite v6.4.4 building SSR bundle for production...
+transforming...
+✓ 1204 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 564 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                                           0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                                        25.91 kB │ gzip:  2.71 kB
+.svelte-kit/output/client/_app/immutable/assets/4.CozlcCPu.css                        0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerPagesScreen.mEVg4ihQ.css      0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerCatalogScreen.C-_Knw6m.css    0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityHistoryScreen.DIYMT5Fc.css      0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityBehaviorScreen.Cai1Hvjk.css     0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityVisualScreen.Bi3IJWvQ.css       0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityConfigScreen.XeJ8lGby.css       0.04 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerControls.1Z2_OMPb.css         0.09 kB │ gzip:  0.07 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityDetailsScreen.BT__AqhW.css      0.10 kB │ gzip:  0.10 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerIndex.BqmaZ7YM.css            0.44 kB │ gzip:  0.27 kB
+.svelte-kit/output/client/_app/immutable/assets/SourceFileList.C7dcRaze.css           0.77 kB │ gzip:  0.33 kB
+.svelte-kit/output/client/_app/immutable/assets/RegressionProof.DXBNCJaG.css          1.89 kB │ gzip:  0.70 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityFrame.B8K3qmj2.css              2.49 kB │ gzip:  0.89 kB
+.svelte-kit/output/client/_app/immutable/assets/36.Bs7XSCt-.css                       2.52 kB │ gzip:  0.79 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerCatalogItems.CoXmkbdM.css     2.95 kB │ gzip:  1.05 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySections.CfrXypwj.css           4.99 kB │ gzip:  1.50 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySummary.DVDoF_il.css            5.80 kB │ gzip:  1.58 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerPlatforms.cnLWqQ5y.css        6.12 kB │ gzip:  1.59 kB
+.svelte-kit/output/client/_app/immutable/assets/gallery.CjQra66f.css                 11.93 kB │ gzip:  3.04 kB
+.svelte-kit/output/client/_app/immutable/assets/0.BeWZl8BK.css                       31.01 kB │ gzip:  7.26 kB
+.svelte-kit/output/client/_app/immutable/assets/HarnessScreen.qYwt1VJq.css           39.76 kB │ gzip:  8.18 kB
+.svelte-kit/output/client/_app/immutable/entry/start.CRvuURgN.js                      0.12 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/Ds2fZEN9.js                           0.15 kB │ gzip:  0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/23.wef2HQiR.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/19.Bg_ZV12_.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/22.BRakEFG_.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/33.D-GNkP5a.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/11.C_8X39bi.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/18.Cmq-TLd_.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/32.BraGW8v2.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/10.BLwnIuTm.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/29.DVqesNcu.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/15.DH1EQWtX.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/28.vRMfbQce.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/7.DwgAajDc.js                          0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/14.eKDLx6Sf.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/26.Bba8tvD6.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/6.BPQQm19b.js                          0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/24.Diz0SslL.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/25.CQF0YxmB.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/20.CKuSlJTW.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/21.COCn1Ei5.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/34.xd_VfJFc.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/35.DzkcEr2h.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/12.D7aINaxw.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/13.BQhT2gul.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/30.kULL33lg.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/31.CwUqQ0Il.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/16.bUP4tkk1.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/17.Hw-oqRWi.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/8.D9a7bACn.js                          0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/9.DXhwD8d6.js                          0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/27.DteJXrRU.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.CHgFnF2c.js                          0.38 kB │ gzip:  0.27 kB
+.svelte-kit/output/client/_app/immutable/chunks/4zkbeD2q.js                           0.58 kB │ gzip:  0.39 kB
+.svelte-kit/output/client/_app/immutable/chunks/DOVLsrPz.js                           0.69 kB │ gzip:  0.43 kB
+.svelte-kit/output/client/_app/immutable/chunks/D1ZU-sx_.js                           0.83 kB │ gzip:  0.49 kB
+.svelte-kit/output/client/_app/immutable/chunks/BvuUR6XL.js                           0.88 kB │ gzip:  0.50 kB
+.svelte-kit/output/client/_app/immutable/chunks/B8Ecs8OO.js                           0.98 kB │ gzip:  0.37 kB
+.svelte-kit/output/client/_app/immutable/chunks/BNgUnW8e.js                           1.03 kB │ gzip:  0.58 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cz71ZKw2.js                           1.29 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.CxEeCzyk.js                          1.31 kB │ gzip:  0.69 kB
+.svelte-kit/output/client/_app/immutable/chunks/0NZDGOYK.js                           1.34 kB │ gzip:  0.70 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js                           1.37 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/BketLKuv.js                           2.64 kB │ gzip:  1.37 kB
+.svelte-kit/output/client/_app/immutable/nodes/36.DjrwCLzx.js                         3.98 kB │ gzip:  1.80 kB
+.svelte-kit/output/client/_app/immutable/chunks/CYgD8xKf.js                           3.99 kB │ gzip:  1.75 kB
+.svelte-kit/output/client/_app/immutable/chunks/DZM70yha.js                           4.80 kB │ gzip:  2.15 kB
+.svelte-kit/output/client/_app/immutable/chunks/5VMXmEAp.js                           4.93 kB │ gzip:  2.31 kB
+.svelte-kit/output/client/_app/immutable/chunks/1S88CHew.js                           5.02 kB │ gzip:  2.15 kB
+.svelte-kit/output/client/_app/immutable/chunks/ag8H3HwC.js                           5.77 kB │ gzip:  2.51 kB
+.svelte-kit/output/client/_app/immutable/chunks/CX4EGESo.js                           6.45 kB │ gzip:  2.92 kB
+.svelte-kit/output/client/_app/immutable/chunks/D7njEkyg.js                          11.15 kB │ gzip:  4.71 kB
+.svelte-kit/output/client/_app/immutable/chunks/C-iOLVsv.js                          11.81 kB │ gzip:  4.87 kB
+.svelte-kit/output/client/_app/immutable/chunks/DAcpfMhi.js                          12.33 kB │ gzip:  5.15 kB
+.svelte-kit/output/client/_app/immutable/entry/app.Dx7DdI-j.js                       15.01 kB │ gzip:  4.45 kB
+.svelte-kit/output/client/_app/immutable/chunks/An8DDR8y.js                          16.17 kB │ gzip:  6.36 kB
+.svelte-kit/output/client/_app/immutable/chunks/DE5pvQqm.js                          23.46 kB │ gzip: 10.14 kB
+.svelte-kit/output/client/_app/immutable/chunks/H0030xUa.js                          29.90 kB │ gzip: 11.36 kB
+.svelte-kit/output/client/_app/immutable/chunks/_37E0I11.js                          30.55 kB │ gzip: 11.79 kB
+.svelte-kit/output/client/_app/immutable/chunks/et_Yg1mG.js                          30.73 kB │ gzip: 11.83 kB
+.svelte-kit/output/client/_app/immutable/chunks/hZ25dcev.js                          34.71 kB │ gzip: 12.37 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.BTRF2F1f.js                         43.36 kB │ gzip: 15.68 kB
+.svelte-kit/output/client/_app/immutable/chunks/D9t6TYhN.js                          76.76 kB │ gzip: 26.57 kB
+.svelte-kit/output/client/_app/immutable/chunks/3A_TvVVe.js                         121.97 kB │ gzip: 41.34 kB
+✓ built in 1.26s
+.svelte-kit/output/server/.vite/manifest.json                                                                         37.12 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CozlcCPu.css                                                     0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityHistoryScreen.DIYMT5Fc.css                                       0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerCatalogScreen.C-_Knw6m.css                                     0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerPagesScreen.mEVg4ihQ.css                                       0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityBehaviorScreen.Cai1Hvjk.css                                      0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityConfigScreen.XeJ8lGby.css                                        0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityVisualScreen.Bi3IJWvQ.css                                        0.04 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerControls.1Z2_OMPb.css                                          0.09 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityDetailsScreen.BT__AqhW.css                                       0.10 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerIndex.BqmaZ7YM.css                                             0.44 kB
+.svelte-kit/output/server/_app/immutable/assets/SourceFileList.C7dcRaze.css                                            0.77 kB
+.svelte-kit/output/server/_app/immutable/assets/RegressionProof.DXBNCJaG.css                                           1.89 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityFrame.B8K3qmj2.css                                               2.49 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.Bs7XSCt-.css                                                     2.52 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerCatalogItems.CoXmkbdM.css                                      2.95 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySections.CfrXypwj.css                                            4.99 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySummary.DVDoF_il.css                                             5.80 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerPlatforms.WmPfBghY.css                                         6.07 kB
+.svelte-kit/output/server/_app/immutable/assets/gallery.h-ZAu4eu.css                                                  11.90 kB
+.svelte-kit/output/server/_app/immutable/assets/_layout.myI7K1CT.css                                                  30.74 kB
+.svelte-kit/output/server/_app/immutable/assets/HarnessScreen.BjoTu2gn.css                                            39.67 kB
+.svelte-kit/output/server/entries/pages/_page.server.ts.js                                                             0.11 kB
+.svelte-kit/output/server/entries/pages/analytics/_page.server.ts.js                                                   0.11 kB
+.svelte-kit/output/server/entries/pages/harness/analytics/_page.server.ts.js                                           0.11 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_page.server.ts.js                                             0.11 kB
+.svelte-kit/output/server/entries/pages/reports/_id_/_page.server.ts.js                                                0.16 kB
+.svelte-kit/output/server/entries/endpoints/harness/data/_...path_/_server.ts.js                                       0.17 kB
+.svelte-kit/output/server/entries/endpoints/harness/media/_file_/_server.ts.js                                         0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                                          0.19 kB
+.svelte-kit/output/server/env.js                                                                                       0.23 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_server.ts.js                                                  0.24 kB
+.svelte-kit/output/server/entries/endpoints/harness/export/_commit_/_server.ts.js                                      0.25 kB
+.svelte-kit/output/server/chunks/Desktop.types.js                                                                      0.30 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_server.ts.js                                             0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/platforms/_page.svelte.js                      0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_page.svelte.js                          0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/_page.svelte.js                 0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/_page.svelte.js               0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/_page.svelte.js            0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_page.svelte.js                        0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_page.svelte.js                       0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_page.svelte.js                      0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_page.svelte.js                     0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/_page.svelte.js              0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/_page.svelte.js             0.35 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                                            0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/platforms/_entity_/_page.svelte.js             0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/details/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/history/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/details/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/history/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/details/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/history/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/details/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/history/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/details/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/history/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/internal.js                                                                                  0.40 kB
+.svelte-kit/output/server/chunks/server.js                                                                             0.45 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.server.ts.js                                           0.48 kB
+.svelte-kit/output/server/chunks/buildStamp.js                                                                         0.51 kB
+.svelte-kit/output/server/entries/endpoints/api/health/_server.ts.js                                                   0.62 kB
+.svelte-kit/output/server/chunks/EntityLink.js                                                                         0.62 kB
+.svelte-kit/output/server/chunks/index2.js                                                                             0.78 kB
+.svelte-kit/output/server/chunks/ExplorerControls.js                                                                   0.84 kB
+.svelte-kit/output/server/chunks/evidenceMedia.js                                                                      1.06 kB
+.svelte-kit/output/server/chunks/utils.js                                                                              1.09 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_id_/_page.server.ts.js                                        1.13 kB
+.svelte-kit/output/server/chunks/ExplorerPagesScreen.js                                                                1.24 kB
+.svelte-kit/output/server/chunks/SourceFileList.js                                                                     1.30 kB
+.svelte-kit/output/server/chunks/ExplorerCatalogScreen.js                                                              1.31 kB
+.svelte-kit/output/server/chunks/EntityBehaviorScreen.js                                                               1.69 kB
+.svelte-kit/output/server/chunks/EntityVisualScreen.js                                                                 1.82 kB
+.svelte-kit/output/server/chunks/mediaResponse.js                                                                      1.84 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-upload/_server.ts.js                                      1.89 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-comparison/_server.ts.js                                  1.99 kB
+.svelte-kit/output/server/chunks/reportAssets.js                                                                       2.06 kB
+.svelte-kit/output/server/chunks/writingLimits.js                                                                      2.10 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_type_/_file_/_server.ts.js                               2.10 kB
+.svelte-kit/output/server/chunks/reportBuildIdentity.js                                                                2.23 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.svelte.js                                              2.37 kB
+.svelte-kit/output/server/chunks/AudioUploadService.js                                                                 2.41 kB
+.svelte-kit/output/server/chunks/index.js                                                                              2.65 kB
+.svelte-kit/output/server/chunks/explorerTabs.js                                                                       2.84 kB
+.svelte-kit/output/server/chunks/explorerName.js                                                                       3.04 kB
+.svelte-kit/output/server/chunks/utils2.js                                                                             3.09 kB
+.svelte-kit/output/server/chunks/internal.js                                                                           3.40 kB
+.svelte-kit/output/server/chunks/EntityConfigScreen.js                                                                 3.47 kB
+.svelte-kit/output/server/chunks/reportSite.js                                                                         3.69 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/styles/_page.svelte.js                         4.15 kB
+.svelte-kit/output/server/entries/endpoints/api/report-screenshot-upload/_server.ts.js                                 4.22 kB
+.svelte-kit/output/server/chunks/helperContract.js                                                                     5.20 kB
+.svelte-kit/output/server/chunks/RegressionProof.js                                                                    5.30 kB
+.svelte-kit/output/server/chunks/exports.js                                                                            5.54 kB
+.svelte-kit/output/server/chunks/harnessEvidence.js                                                                    5.72 kB
+.svelte-kit/output/server/chunks/entityScreens.js                                                                      6.37 kB
+.svelte-kit/output/server/chunks/EntityDetailsScreen.js                                                                6.82 kB
+.svelte-kit/output/server/chunks/ExplorerIndex.js                                                                      7.27 kB
+.svelte-kit/output/server/entries/endpoints/api/analytics-cpu/_server.ts.js                                            7.52 kB
+.svelte-kit/output/server/chunks/gallery.js                                                                            7.82 kB
+.svelte-kit/output/server/entries/endpoints/api/replay-video/_server.ts.js                                             9.27 kB
+.svelte-kit/output/server/chunks/EntityHistoryScreen.js                                                               12.88 kB
+.svelte-kit/output/server/chunks/explorerVerdict.js                                                                   14.69 kB
+.svelte-kit/output/server/chunks/ExplorerPlatforms.js                                                                 16.66 kB
+.svelte-kit/output/server/chunks/ComponentManifestValidator.js                                                        20.77 kB
+.svelte-kit/output/server/chunks/ExplorerCatalogItems.js                                                              22.29 kB
+.svelte-kit/output/server/entries/endpoints/api/project-activity/_server.ts.js                                        24.22 kB
+.svelte-kit/output/server/chunks/reportHttp.js                                                                        26.25 kB
+.svelte-kit/output/server/chunks/shared.js                                                                            34.21 kB
+.svelte-kit/output/server/chunks/EntityFrame.js                                                                       35.79 kB
+.svelte-kit/output/server/remote-entry.js                                                                             36.85 kB
+.svelte-kit/output/server/chunks/HistoryStatusService.js                                                              43.04 kB
+.svelte-kit/output/server/chunks/EntitySummary.js                                                                     54.42 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js                                                             62.07 kB
+.svelte-kit/output/server/chunks/HarnessScreen.js                                                                     71.74 kB
+.svelte-kit/output/server/chunks/EntitySections.js                                                                   103.04 kB
+.svelte-kit/output/server/index.js                                                                                   130.95 kB
+.svelte-kit/output/server/chunks/root.js                                                                             133.59 kB
+.svelte-kit/output/server/chunks/consoleServer.js                                                                    356.61 kB
+.svelte-kit/output/server/entries/hooks.server.js                                                                    385.74 kB
+✓ built in 5.44s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-node
+../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+Circular dependency: ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/core.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/util.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/zod/v4/core/core.js
+Circular dependency: ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/smol-toml/dist/struct.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/smol-toml/dist/extract.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/history-evidence-repair/harness/node_modules/smol-toml/dist/struct.js
+Generated an empty chunk: "chunks/internal2.js".
+  ✔ done
+vite v6.4.4 building for production...
+transforming...
+✓ 180 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/viewer/report.css       38.82 kB │ gzip:  8.74 kB
+dist/viewer/report.iife.js  178.34 kB │ gzip: 60.65 kB
+✓ built in 1.02s
+vite v6.4.4 building for production...
+transforming...
+✓ 387 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/console/console.css       98.06 kB │ gzip:  19.62 kB
+dist/console/console.iife.js  390.96 kB │ gzip: 132.94 kB
+✓ built in 1.71s
+$ bun ../../src/index.ts audit . --profile app
+Harness audit passed. Files and functions are staying small.
+
+Running 24 tests using 1 worker
+
+(node:45651) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at desktop width (865ms)
+  ✓   2 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at desktop width (731ms)
+  ✓   3 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at desktop width (660ms)
+  ✓   4 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at desktop width (793ms)
+  ✓   5 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at desktop width (668ms)
+  ✓   6 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at desktop width (668ms)
+  ✓   7 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at desktop width (739ms)
+  ✓   8 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at tablet width (684ms)
+  ✓   9 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at tablet width (765ms)
+  ✓  10 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at tablet width (777ms)
+  ✓  11 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at tablet width (794ms)
+  ✓  12 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at tablet width (723ms)
+  ✓  13 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at tablet width (731ms)
+  ✓  14 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at tablet width (734ms)
+  ✓  15 test/entity-preview-source.spec.ts:75:3 › Models code opens only from the detail Source tab at mobile width (648ms)
+  ✓  16 test/entity-preview-source.spec.ts:75:3 › Helpers code opens only from the detail Source tab at mobile width (662ms)
+  ✓  17 test/entity-preview-source.spec.ts:75:3 › Pages code opens only from the detail Source tab at mobile width (671ms)
+  ✓  18 test/entity-preview-source.spec.ts:75:3 › Components code opens only from the detail Source tab at mobile width (750ms)
+  ✓  19 test/entity-preview-source.spec.ts:75:3 › Shells code opens only from the detail Source tab at mobile width (698ms)
+  ✓  20 test/entity-preview-source.spec.ts:75:3 › Configs code opens only from the detail Source tab at mobile width (667ms)
+  ✓  21 test/entity-preview-source.spec.ts:75:3 › Services code opens only from the detail Source tab at mobile width (681ms)
+  ✓  22 test/entity-preview-source.spec.ts:121:1 › source file selection and closing retain the detail Source tab (282ms)
+  ✓  23 test/entity-preview-source.spec.ts:142:1 › Source opens file contents in a modal and older histories state an explicit gap (346ms)
+  ✓  24 test/entity-preview-source.spec.ts:172:1 › a delayed previous source read cannot replace the selected file (307ms)
+
+  24 passed (19.1s)
+
+Running 718 tests using 1 worker
+
+(node:45983) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 tests/e2e/explorer-shell-component-catalog.spec.ts:21:1 › every active visual component has its own required capture state (7ms)
+  ✓    2 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-controls at desktop (656ms)
+  ✓    3 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-effort-picker at desktop (633ms)
+  ✓    4 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-model-picker at desktop (617ms)
+  ✓    5 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-settings at desktop (637ms)
+  ✓    6 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.annotated-image at desktop (873ms)
+  ✓    7 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.approval-button at desktop (639ms)
+  ✓    8 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.catalog-view at desktop (989ms)
+  ✓    9 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.choice-dialog at desktop (656ms)
+  ✓   10 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.composer at desktop (604ms)
+  ✓   11 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.contract-panel at desktop (633ms)
+  ✓   12 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.coverage-panel at desktop (720ms)
+  ✓   13 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-activity at desktop (879ms)
+  ✓   14 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-details at desktop (616ms)
+  ✓   15 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-dialog at desktop (885ms)
+  ✓   16 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-progress at desktop (601ms)
+  ✓   17 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-route at desktop (595ms)
+  ✓   18 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.design-panel at desktop (849ms)
+  ✓   19 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.details-panel at desktop (619ms)
+  ✓   20 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.entity-card at desktop (883ms)
+  ✓   21 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.entity-view at desktop (1.2s)
+  ✓   22 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.environment-picker at desktop (596ms)
+  ✓   23 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-authoring-game-graph-fit at desktop (599ms)
+  ✓   24 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-checkpoint-editor at desktop (615ms)
+  ✓   25 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-checkpoint-image at desktop (599ms)
+  ✓   26 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-checkpoint-pane at desktop (659ms)
+  ✓   27 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-create at desktop (634ms)
+  ✓   28 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-graph at desktop (651ms)
+  ✓   29 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-live-video at desktop (676ms)
+  ✓   30 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-mechanics at desktop (637ms)
+  ✓   31 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-preview at desktop (639ms)
+  ✓   32 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-text-field at desktop (647ms)
+  ✓   33 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-trace at desktop (662ms)
+  ✓   34 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-view-fields at desktop (618ms)
+  ✓   35 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-workspace at desktop (782ms)
+  ✓   36 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.history-panel at desktop (606ms)
+  ✓   37 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.hosted-connection at desktop (596ms)
+  ✓   38 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.icon at desktop (596ms)
+  ✓   39 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.image-thumbnail at desktop (872ms)
+  ✓   40 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.measures-panel at desktop (634ms)
+  ✓   41 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.message-list at desktop (597ms)
+  ✓   42 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.nav-bar at desktop (733ms)
+  ✓   43 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.plan-badge at desktop (601ms)
+  ✓   44 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.prior-image at desktop (867ms)
+  ✓   45 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.project-agent at desktop (618ms)
+  ✓   46 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.project-gate at desktop (630ms)
+  ✓   47 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.project-switcher at desktop (579ms)
+  ✓   48 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.recorded-preview at desktop (1.0s)
+  ✓   49 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.reference-text at desktop (604ms)
+  ✓   50 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.relationships-panel at desktop (620ms)
+  ✓   51 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-approval at desktop (647ms)
+  ✓   52 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-connection at desktop (660ms)
+  ✓   53 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-devices at desktop (668ms)
+  ✓   54 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-host-panel at desktop (622ms)
+  ✓   55 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-offer-code at desktop (666ms)
+  ✓   56 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-phone-panel at desktop (630ms)
+  ✓   57 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.revision-picker at desktop (617ms)
+  ✓   58 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.run-status at desktop (596ms)
+  ✓   59 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-artifact at desktop (712ms)
+  ✓   60 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-audio at desktop (763ms)
+  ✓   61 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-behavior at desktop (788ms)
+  ✓   62 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-evidence at desktop (861ms)
+  ✓   63 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-pane at desktop (883ms)
+  ✓   64 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-run at desktop (754ms)
+  ✓   65 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-screens at desktop (872ms)
+  ✓   66 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.segmented-choice at desktop (605ms)
+  ✓   67 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.status-bar at desktop (626ms)
+  ✓   68 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.status-icon at desktop (629ms)
+  ✓   69 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.thread-history at desktop (935ms)
+  ✓   70 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.thread-links at desktop (611ms)
+  ✓   71 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.thread-panel at desktop (932ms)
+  ✓   72 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.workspace-link at desktop (608ms)
+  ✓   73 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.workspace-shell at desktop (1.1s)
+  ✓   74 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.game at desktop (738ms)
+  ✓   75 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.harness-path at desktop (1.1s)
+  ✓   76 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.projects-project-id-harness-path at desktop (1.1s)
+  ✓   77 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.root at desktop (718ms)
+  ✓   78 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.settings at desktop (668ms)
+  ✓   79 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.account-menu at desktop (628ms)
+  ✓   80 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.email-proof-panel at desktop (617ms)
+  ✓   81 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.hosted-workspace at desktop (948ms)
+  ✓   82 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.hub-frame at desktop (708ms)
+  ✓   83 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.invitation-form at desktop (626ms)
+  ✓   84 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.invite-accept at desktop (620ms)
+  ✓   85 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.login-panel at desktop (648ms)
+  ✓   86 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.members-panel at desktop (718ms)
+  ✓   87 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.native-approval at desktop (691ms)
+  ✓   88 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.project-create at desktop (643ms)
+  ✓   89 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.project-list at desktop (670ms)
+  ✓   90 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at desktop (718ms)
+  ✓   91 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.invite-project-id-invitation-id at desktop (717ms)
+  ✓   92 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.native-handoff-id at desktop (743ms)
+  ✓   93 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.projects-project-id-harness-path at desktop (1.0s)
+  ✓   94 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.projects-project-id-members at desktop (680ms)
+  ✓   95 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.root at desktop (695ms)
+  ✓   96 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-agents at desktop (654ms)
+  ✓   97 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-files at desktop (664ms)
+  ✓   98 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-list at desktop (649ms)
+  ✓   99 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-loops at desktop (681ms)
+  ✓  100 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-work at desktop (682ms)
+  ✓  101 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-cpu at desktop (680ms)
+  ✓  102 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-filters at desktop (653ms)
+  ✓  103 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-history at desktop (637ms)
+  ✓  104 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-models at desktop (655ms)
+  ✓  105 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-tasks at desktop (649ms)
+  ✓  106 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-comparison at desktop (653ms)
+  ✓  107 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-comparison-viewer at desktop (699ms)
+  ✓  108 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-evidence at desktop (735ms)
+  ✓  109 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-upload-files at desktop (625ms)
+  ✓  110 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.brand-mark at desktop (667ms)
+  ✓  111 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.browser-errors at desktop (729ms)
+  ✓  112 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.console-chat at desktop (627ms)
+  ✓  113 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.contract-example at desktop (670ms)
+  ✓  114 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.contract-table at desktop (627ms)
+  ✓  115 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.coverage-list at desktop (637ms)
+  ✓  116 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-cases at desktop (645ms)
+  ✓  117 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-contract at desktop (647ms)
+  ✓  118 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-examples at desktop (616ms)
+  ✓  119 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-search at desktop (626ms)
+  ✓  120 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-search-results at desktop (656ms)
+  ✓  121 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-states at desktop (2.6s)
+  ✓  122 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-card at desktop (870ms)
+  ✓  123 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-grid at desktop (898ms)
+  ✓  124 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-provenance at desktop (625ms)
+  ✓  125 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-viewer at desktop (889ms)
+  ✓  126 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-catalog-items at desktop (1.4s)
+  ✓  127 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-function-card at desktop (621ms)
+  ✓  128 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-module-card at desktop (903ms)
+  ✓  129 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platform-details at desktop (688ms)
+  ✓  130 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platforms at desktop (702ms)
+  ✓  131 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-harness-explorer-styles-screen at desktop (733ms)
+  ✓  132 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-usage at desktop (642ms)
+  ✓  133 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-usage-link at desktop (634ms)
+  ✓  134 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.filter-dialog at desktop (612ms)
+  ✓  135 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.floating-chat at desktop (618ms)
+  ✓  136 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.gameplay-replay at desktop (889ms)
+  ✓  137 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-artifact at desktop (731ms)
+  ✓  138 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-audio at desktop (746ms)
+  ✓  139 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-behavior at desktop (802ms)
+  ✓  140 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-behavior-screen at desktop (640ms)
+  ✓  141 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-change at desktop (639ms)
+  ✓  142 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-config at desktop (634ms)
+  ✓  143 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-config-screen at desktop (639ms)
+  ✓  144 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-details at desktop (656ms)
+  ✓  145 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-details-screen at desktop (1.1s)
+  ✓  146 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-frame at desktop (1.1s)
+  ✓  147 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-header at desktop (622ms)
+  ✓  148 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-history at desktop (637ms)
+  ✓  149 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-history-row at desktop (619ms)
+  ✓  150 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-history-screen at desktop (1.1s)
+  ✓  151 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-link at desktop (604ms)
+  ✓  152 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-measures at desktop (640ms)
+  ✓  153 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-missing at desktop (642ms)
+  ✓  154 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-overview at desktop (619ms)
+  ✓  155 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-reasons at desktop (629ms)
+  ✓  156 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-relations at desktop (1.1s)
+  ✓  157 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-run at desktop (768ms)
+  ✓  158 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-screens at desktop (1.1s)
+  ✓  159 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-sections at desktop (643ms)
+  ✓  160 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-source at desktop (637ms)
+  ✓  161 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-summary at desktop (646ms)
+  ✓  162 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-tests at desktop (1.8s)
+  ✓  163 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-visual-screen at desktop (1.2s)
+  ✓  164 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-catalog-screen at desktop (1.4s)
+  ✓  165 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-content at desktop (1.1s)
+  ✓  166 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-controls at desktop (584ms)
+  ✓  167 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-frame at desktop (580ms)
+  ✓  168 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-index at desktop (615ms)
+  ✓  169 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-page-card at desktop (905ms)
+  ✓  170 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-pages-screen at desktop (872ms)
+  ✓  171 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-table at desktop (611ms)
+  ✓  172 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-action at desktop (617ms)
+  ✓  173 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-activity at desktop (707ms)
+  ✓  174 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-compare at desktop (1.6s)
+  ✓  175 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-compare-media at desktop (1.6s)
+  ✓  176 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-console at desktop (1.4s)
+  ✓  177 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-emitted-growth at desktop (601ms)
+  ✓  178 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-failures at desktop (602ms)
+  ✓  179 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-growth at desktop (619ms)
+  ✓  180 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-header at desktop (604ms)
+  ✓  181 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-history at desktop (1.6s)
+  ✓  182 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-icon at desktop (595ms)
+  ✓  183 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-legacy at desktop (599ms)
+  ✓  184 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-map at desktop (602ms)
+  ✓  185 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-navbar at desktop (600ms)
+  ✓  186 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-selectors at desktop (619ms)
+  ✓  187 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-shell at desktop (1.4s)
+  ✓  188 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-tabs at desktop (600ms)
+  ✓  189 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-unit at desktop (633ms)
+  ✓  190 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-verdict at desktop (584ms)
+  ✓  191 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-screen at desktop (1.3s)
+  ✓  192 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.image-zoom at desktop (852ms)
+  ✓  193 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.modal at desktop (605ms)
+  ✓  194 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.project-activity at desktop (650ms)
+  ✓  195 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.provider-picker at desktop (637ms)
+  ✓  196 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.provider-picker-cards at desktop (601ms)
+  ✓  197 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.recorded-value at desktop (603ms)
+  ✓  198 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.regression-proof at desktop (616ms)
+  ✓  199 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.replay-controls at desktop (615ms)
+  ✓  200 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-checks at desktop (596ms)
+  ✓  201 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-findings at desktop (597ms)
+  ✓  202 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-summary at desktop (619ms)
+  ✓  203 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-view at desktop (1.2s)
+  ✓  204 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.select at desktop (578ms)
+  ✓  205 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.site-activity at desktop (650ms)
+  ✓  206 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-code-action at desktop (600ms)
+  ✓  207 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-content at desktop (596ms)
+  ✓  208 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-dialog at desktop (605ms)
+  ✓  209 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-file-list at desktop (595ms)
+  ✓  210 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-viewer at desktop (579ms)
+  ✓  211 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.status-badge at desktop (578ms)
+  ✓  212 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.upload-audio at desktop (597ms)
+  ✓  213 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.upload-comparison at desktop (591ms)
+  ✓  214 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.usage-examples-usage-examples at desktop (593ms)
+  ✓  215 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at desktop (1.4s)
+  ✓  216 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components at desktop (1.4s)
+  ✓  217 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components-entity at desktop (892ms)
+  ✓  218 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components-entity-history at desktop (870ms)
+  ✓  219 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-configs at desktop (632ms)
+  ✓  220 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-configs-entity at desktop (648ms)
+  ✓  221 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-configs-entity-history at desktop (695ms)
+  ✓  222 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-functions at desktop (635ms)
+  ✓  223 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-functions-entity at desktop (739ms)
+  ✓  224 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-functions-entity-history at desktop (656ms)
+  ✓  225 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-models at desktop (644ms)
+  ✓  226 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-models-entity at desktop (638ms)
+  ✓  227 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-models-entity-history at desktop (646ms)
+  ✓  228 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at desktop (871ms)
+  ✓  229 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages-entity at desktop (903ms)
+  ✓  230 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages-entity-history at desktop (638ms)
+  ✓  231 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms at desktop (639ms)
+  ✓  232 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms-entity at desktop (671ms)
+  ✓  233 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-services at desktop (637ms)
+  ✓  234 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-services-entity at desktop (722ms)
+  ✓  235 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-services-entity-history at desktop (621ms)
+  ✓  236 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-shells at desktop (637ms)
+  ✓  237 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-shells-entity at desktop (872ms)
+  ✓  238 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-shells-entity-history at desktop (654ms)
+  ✓  239 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-styles at desktop (671ms)
+  ✓  240 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-view at desktop (679ms)
+  ✓  241 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-controls at tablet (293ms)
+  ✓  242 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-effort-picker at tablet (293ms)
+  ✓  243 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-model-picker at tablet (292ms)
+  ✓  244 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-settings at tablet (293ms)
+  ✓  245 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.annotated-image at tablet (326ms)
+  ✓  246 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.approval-button at tablet (292ms)
+  ✓  247 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.catalog-view at tablet (331ms)
+  ✓  248 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.choice-dialog at tablet (294ms)
+  ✓  249 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.composer at tablet (292ms)
+  ✓  250 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.contract-panel at tablet (295ms)
+  ✓  251 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.coverage-panel at tablet (333ms)
+  ✓  252 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-activity at tablet (328ms)
+  ✓  253 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-details at tablet (277ms)
+  ✓  254 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-dialog at tablet (347ms)
+  ✓  255 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-progress at tablet (295ms)
+  ✓  256 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-route at tablet (294ms)
+  ✓  257 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.design-panel at tablet (332ms)
+  ✓  258 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.details-panel at tablet (260ms)
+  ✓  259 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.entity-card at tablet (323ms)
+  ✓  260 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.entity-view at tablet (365ms)
+  ✓  261 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.environment-picker at tablet (292ms)
+  ✓  262 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-authoring-game-graph-fit at tablet (291ms)
+  ✓  263 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-checkpoint-editor at tablet (296ms)
+  ✓  264 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-checkpoint-image at tablet (296ms)
+  ✓  265 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-checkpoint-pane at tablet (299ms)
+  ✓  266 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-create at tablet (326ms)
+  ✓  267 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-graph at tablet (363ms)
+  ✓  268 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-live-video at tablet (310ms)
+  ✓  269 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-mechanics at tablet (298ms)
+  ✓  270 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-preview at tablet (313ms)
+  ✓  271 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-text-field at tablet (282ms)
+  ✓  272 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-trace at tablet (283ms)
+  ✓  273 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-view-fields at tablet (314ms)
+  ✓  274 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-workspace at tablet (334ms)
+  ✓  275 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.history-panel at tablet (286ms)
+  ✓  276 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.hosted-connection at tablet (279ms)
+  ✓  277 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.icon at tablet (302ms)
+  ✓  278 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.image-thumbnail at tablet (326ms)
+  ✓  279 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.measures-panel at tablet (296ms)
+  ✓  280 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.message-list at tablet (295ms)
+  ✓  281 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.nav-bar at tablet (316ms)
+  ✓  282 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.plan-badge at tablet (297ms)
+  ✓  283 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.prior-image at tablet (336ms)
+  ✓  284 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.project-agent at tablet (298ms)
+  ✓  285 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.project-gate at tablet (310ms)
+  ✓  286 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.project-switcher at tablet (295ms)
+  ✓  287 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.recorded-preview at tablet (331ms)
+  ✓  288 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.reference-text at tablet (295ms)
+  ✓  289 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.relationships-panel at tablet (295ms)
+  ✓  290 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-approval at tablet (331ms)
+  ✓  291 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-connection at tablet (297ms)
+  ✓  292 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-devices at tablet (295ms)
+  ✓  293 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-host-panel at tablet (305ms)
+  ✓  294 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-offer-code at tablet (295ms)
+  ✓  295 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-phone-panel at tablet (296ms)
+  ✓  296 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.revision-picker at tablet (295ms)
+  ✓  297 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.run-status at tablet (296ms)
+  ✓  298 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-artifact at tablet (296ms)
+  ✓  299 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-audio at tablet (315ms)
+  ✓  300 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-behavior at tablet (359ms)
+  ✓  301 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-evidence at tablet (359ms)
+  ✓  302 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-pane at tablet (392ms)
+  ✓  303 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-run at tablet (340ms)
+  ✓  304 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-screens at tablet (360ms)
+  ✓  305 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.segmented-choice at tablet (284ms)
+  ✓  306 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.status-bar at tablet (296ms)
+  ✓  307 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.status-icon at tablet (297ms)
+  ✓  308 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.thread-history at tablet (330ms)
+  ✓  309 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.thread-links at tablet (278ms)
+  ✓  310 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.thread-panel at tablet (389ms)
+  ✓  311 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.workspace-link at tablet (302ms)
+  ✓  312 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.workspace-shell at tablet (440ms)
+  ✓  313 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.game at tablet (355ms)
+  ✓  314 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.harness-path at tablet (443ms)
+  ✓  315 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.projects-project-id-harness-path at tablet (436ms)
+  ✓  316 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.root at tablet (339ms)
+  ✓  317 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.settings at tablet (350ms)
+  ✓  318 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.account-menu at tablet (359ms)
+  ✓  319 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.email-proof-panel at tablet (332ms)
+  ✓  320 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.hosted-workspace at tablet (448ms)
+  ✓  321 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.hub-frame at tablet (445ms)
+  ✓  322 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.invitation-form at tablet (339ms)
+  ✓  323 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.invite-accept at tablet (333ms)
+  ✓  324 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.login-panel at tablet (340ms)
+  ✓  325 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.members-panel at tablet (422ms)
+  ✓  326 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.native-approval at tablet (340ms)
+  ✓  327 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.project-create at tablet (323ms)
+  ✓  328 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.project-list at tablet (397ms)
+  ✓  329 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at tablet (452ms)
+  ✓  330 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.invite-project-id-invitation-id at tablet (455ms)
+  ✓  331 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.native-handoff-id at tablet (364ms)
+  ✓  332 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.projects-project-id-harness-path at tablet (444ms)
+  ✓  333 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.projects-project-id-members at tablet (354ms)
+  ✓  334 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.root at tablet (352ms)
+  ✓  335 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-agents at tablet (315ms)
+  ✓  336 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-files at tablet (314ms)
+  ✓  337 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-list at tablet (280ms)
+  ✓  338 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-loops at tablet (313ms)
+  ✓  339 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-work at tablet (313ms)
+  ✓  340 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-cpu at tablet (327ms)
+  ✓  341 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-filters at tablet (313ms)
+  ✓  342 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-history at tablet (321ms)
+  ✓  343 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-models at tablet (335ms)
+  ✓  344 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-tasks at tablet (299ms)
+  ✓  345 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-comparison at tablet (296ms)
+  ✓  346 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-comparison-viewer at tablet (331ms)
+  ✓  347 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-evidence at tablet (321ms)
+  ✓  348 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-upload-files at tablet (317ms)
+  ✓  349 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.brand-mark at tablet (295ms)
+  ✓  350 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.browser-errors at tablet (296ms)
+  ✓  351 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.console-chat at tablet (295ms)
+  ✓  352 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.contract-example at tablet (297ms)
+  ✓  353 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.contract-table at tablet (295ms)
+  ✓  354 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.coverage-list at tablet (298ms)
+  ✓  355 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-cases at tablet (312ms)
+  ✓  356 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-contract at tablet (298ms)
+  ✓  357 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-examples at tablet (335ms)
+  ✓  358 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-search at tablet (318ms)
+  ✓  359 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-search-results at tablet (301ms)
+  ✓  360 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-states at tablet (497ms)
+  ✓  361 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-card at tablet (420ms)
+  ✓  362 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-grid at tablet (378ms)
+  ✓  363 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-provenance at tablet (317ms)
+  ✓  364 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-viewer at tablet (382ms)
+  ✓  365 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-catalog-items at tablet (418ms)
+  ✓  366 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-function-card at tablet (314ms)
+  ✓  367 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-module-card at tablet (353ms)
+  ✓  368 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platform-details at tablet (336ms)
+  ✓  369 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platforms at tablet (352ms)
+  ✓  370 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-harness-explorer-styles-screen at tablet (382ms)
+  ✓  371 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-usage at tablet (362ms)
+  ✓  372 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-usage-link at tablet (329ms)
+  ✓  373 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.filter-dialog at tablet (344ms)
+  ✓  374 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.floating-chat at tablet (349ms)
+  ✓  375 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.gameplay-replay at tablet (412ms)
+  ✓  376 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-artifact at tablet (388ms)
+  ✓  377 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-audio at tablet (389ms)
+  ✓  378 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-behavior at tablet (353ms)
+  ✓  379 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-behavior-screen at tablet (347ms)
+  ✓  380 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-change at tablet (338ms)
+  ✓  381 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-config at tablet (319ms)
+  ✓  382 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-config-screen at tablet (341ms)
+  ✓  383 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-details at tablet (319ms)
+  ✓  384 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-details-screen at tablet (421ms)
+  ✓  385 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-frame at tablet (437ms)
+  ✓  386 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-header at tablet (318ms)
+  ✓  387 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-history at tablet (314ms)
+  ✓  388 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-history-row at tablet (321ms)
+  ✓  389 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-history-screen at tablet (397ms)
+  ✓  390 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-link at tablet (317ms)
+  ✓  391 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-measures at tablet (301ms)
+  ✓  392 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-missing at tablet (302ms)
+  ✓  393 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-overview at tablet (288ms)
+  ✓  394 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-reasons at tablet (289ms)
+  ✓  395 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-relations at tablet (397ms)
+  ✓  396 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-run at tablet (339ms)
+  ✓  397 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-screens at tablet (419ms)
+  ✓  398 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-sections at tablet (325ms)
+  ✓  399 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-source at tablet (318ms)
+  ✓  400 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-summary at tablet (322ms)
+  ✓  401 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-tests at tablet (524ms)
+  ✓  402 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-visual-screen at tablet (428ms)
+  ✓  403 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-catalog-screen at tablet (437ms)
+  ✓  404 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-content at tablet (481ms)
+  ✓  405 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-controls at tablet (350ms)
+  ✓  406 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-frame at tablet (319ms)
+  ✓  407 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-index at tablet (315ms)
+  ✓  408 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-page-card at tablet (354ms)
+  ✓  409 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-pages-screen at tablet (351ms)
+  ✓  410 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-table at tablet (323ms)
+  ✓  411 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-action at tablet (319ms)
+  ✓  412 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-activity at tablet (343ms)
+  ✓  413 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-compare at tablet (501ms)
+  ✓  414 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-compare-media at tablet (470ms)
+  ✓  415 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-console at tablet (432ms)
+  ✓  416 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-emitted-growth at tablet (280ms)
+  ✓  417 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-failures at tablet (279ms)
+  ✓  418 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-growth at tablet (317ms)
+  ✓  419 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-header at tablet (315ms)
+  ✓  420 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-history at tablet (475ms)
+  ✓  421 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-icon at tablet (297ms)
+  ✓  422 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-legacy at tablet (299ms)
+  ✓  423 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-map at tablet (315ms)
+  ✓  424 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-navbar at tablet (277ms)
+  ✓  425 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-selectors at tablet (282ms)
+  ✓  426 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-shell at tablet (447ms)
+  ✓  427 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-tabs at tablet (294ms)
+  ✓  428 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-unit at tablet (315ms)
+  ✓  429 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-verdict at tablet (292ms)
+  ✓  430 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-screen at tablet (434ms)
+  ✓  431 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.image-zoom at tablet (327ms)
+  ✓  432 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.modal at tablet (304ms)
+  ✓  433 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.project-activity at tablet (318ms)
+  ✓  434 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.provider-picker at tablet (339ms)
+  ✓  435 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.provider-picker-cards at tablet (300ms)
+  ✓  436 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.recorded-value at tablet (294ms)
+  ✓  437 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.regression-proof at tablet (324ms)
+  ✓  438 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.replay-controls at tablet (293ms)
+  ✓  439 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-checks at tablet (296ms)
+  ✓  440 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-findings at tablet (296ms)
+  ✓  441 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-summary at tablet (299ms)
+  ✓  442 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-view at tablet (432ms)
+  ✓  443 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.select at tablet (285ms)
+  ✓  444 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.site-activity at tablet (333ms)
+  ✓  445 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-code-action at tablet (293ms)
+  ✓  446 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-content at tablet (294ms)
+  ✓  447 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-dialog at tablet (306ms)
+  ✓  448 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-file-list at tablet (262ms)
+  ✓  449 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-viewer at tablet (297ms)
+  ✓  450 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.status-badge at tablet (314ms)
+  ✓  451 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.upload-audio at tablet (312ms)
+  ✓  452 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.upload-comparison at tablet (296ms)
+  ✓  453 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.usage-examples-usage-examples at tablet (296ms)
+  ✓  454 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at tablet (450ms)
+  ✓  455 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components at tablet (444ms)
+  ✓  456 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components-entity at tablet (366ms)
+  ✓  457 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components-entity-history at tablet (368ms)
+  ✓  458 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-configs at tablet (330ms)
+  ✓  459 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-configs-entity at tablet (333ms)
+  ✓  460 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-configs-entity-history at tablet (334ms)
+  ✓  461 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-functions at tablet (328ms)
+  ✓  462 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-functions-entity at tablet (332ms)
+  ✓  463 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-functions-entity-history at tablet (333ms)
+  ✓  464 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-models at tablet (334ms)
+  ✓  465 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-models-entity at tablet (333ms)
+  ✓  466 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-models-entity-history at tablet (336ms)
+  ✓  467 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at tablet (370ms)
+  ✓  468 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages-entity at tablet (389ms)
+  ✓  469 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages-entity-history at tablet (336ms)
+  ✓  470 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms at tablet (341ms)
+  ✓  471 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms-entity at tablet (344ms)
+  ✓  472 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-services at tablet (335ms)
+  ✓  473 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-services-entity at tablet (348ms)
+  ✓  474 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-services-entity-history at tablet (333ms)
+  ✓  475 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-shells at tablet (330ms)
+  ✓  476 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-shells-entity at tablet (367ms)
+  ✓  477 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-shells-entity-history at tablet (335ms)
+  ✓  478 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-styles at tablet (370ms)
+  ✓  479 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-view at tablet (369ms)
+  ✓  480 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-controls at mobile (278ms)
+  ✓  481 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-effort-picker at mobile (281ms)
+  ✓  482 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-model-picker at mobile (278ms)
+  ✓  483 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.agent-settings at mobile (296ms)
+  ✓  484 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.annotated-image at mobile (329ms)
+  ✓  485 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.approval-button at mobile (296ms)
+  ✓  486 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.catalog-view at mobile (331ms)
+  ✓  487 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.choice-dialog at mobile (278ms)
+  ✓  488 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.composer at mobile (291ms)
+  ✓  489 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.contract-panel at mobile (297ms)
+  ✓  490 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.coverage-panel at mobile (332ms)
+  ✓  491 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-activity at mobile (365ms)
+  ✓  492 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-details at mobile (296ms)
+  ✓  493 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-dialog at mobile (331ms)
+  ✓  494 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-progress at mobile (279ms)
+  ✓  495 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.deployment-route at mobile (296ms)
+  ✓  496 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.design-panel at mobile (331ms)
+  ✓  497 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.details-panel at mobile (295ms)
+  ✓  498 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.entity-card at mobile (329ms)
+  ✓  499 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.entity-view at mobile (366ms)
+  ✓  500 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.environment-picker at mobile (292ms)
+  ✓  501 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-authoring-game-graph-fit at mobile (298ms)
+  ✓  502 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-checkpoint-editor at mobile (313ms)
+  ✓  503 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-checkpoint-image at mobile (295ms)
+  ✓  504 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-checkpoint-pane at mobile (282ms)
+  ✓  505 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-create at mobile (298ms)
+  ✓  506 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-graph at mobile (293ms)
+  ✓  507 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-live-video at mobile (295ms)
+  ✓  508 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-mechanics at mobile (298ms)
+  ✓  509 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-preview at mobile (276ms)
+  ✓  510 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-text-field at mobile (295ms)
+  ✓  511 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-trace at mobile (298ms)
+  ✓  512 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-view-fields at mobile (294ms)
+  ✓  513 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.game-workspace at mobile (333ms)
+  ✓  514 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.history-panel at mobile (283ms)
+  ✓  515 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.hosted-connection at mobile (278ms)
+  ✓  516 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.icon at mobile (296ms)
+  ✓  517 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.image-thumbnail at mobile (331ms)
+  ✓  518 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.measures-panel at mobile (313ms)
+  ✓  519 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.message-list at mobile (293ms)
+  ✓  520 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.nav-bar at mobile (314ms)
+  ✓  521 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.plan-badge at mobile (320ms)
+  ✓  522 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.prior-image at mobile (353ms)
+  ✓  523 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.project-agent at mobile (314ms)
+  ✓  524 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.project-gate at mobile (311ms)
+  ✓  525 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.project-switcher at mobile (295ms)
+  ✓  526 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.recorded-preview at mobile (364ms)
+  ✓  527 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.reference-text at mobile (321ms)
+  ✓  528 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.relationships-panel at mobile (359ms)
+  ✓  529 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-approval at mobile (322ms)
+  ✓  530 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-connection at mobile (322ms)
+  ✓  531 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-devices at mobile (326ms)
+  ✓  532 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-host-panel at mobile (283ms)
+  ✓  533 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-offer-code at mobile (285ms)
+  ✓  534 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.remote-phone-panel at mobile (318ms)
+  ✓  535 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.revision-picker at mobile (346ms)
+  ✓  536 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.run-status at mobile (294ms)
+  ✓  537 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-artifact at mobile (295ms)
+  ✓  538 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-audio at mobile (313ms)
+  ✓  539 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-behavior at mobile (356ms)
+  ✓  540 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-evidence at mobile (353ms)
+  ✓  541 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-pane at mobile (369ms)
+  ✓  542 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-run at mobile (362ms)
+  ✓  543 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.runtime-screens at mobile (356ms)
+  ✓  544 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.segmented-choice at mobile (278ms)
+  ✓  545 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.status-bar at mobile (279ms)
+  ✓  546 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.status-icon at mobile (279ms)
+  ✓  547 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.thread-history at mobile (332ms)
+  ✓  548 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.thread-links at mobile (294ms)
+  ✓  549 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.thread-panel at mobile (348ms)
+  ✓  550 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.workspace-link at mobile (311ms)
+  ✓  551 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.component.workspace-shell at mobile (410ms)
+  ✓  552 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.game at mobile (334ms)
+  ✓  553 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.harness-path at mobile (377ms)
+  ✓  554 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.projects-project-id-harness-path at mobile (391ms)
+  ✓  555 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.root at mobile (323ms)
+  ✓  556 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.settings at mobile (292ms)
+  ✓  557 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.account-menu at mobile (295ms)
+  ✓  558 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.email-proof-panel at mobile (297ms)
+  ✓  559 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.hosted-workspace at mobile (374ms)
+  ✓  560 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.hub-frame at mobile (370ms)
+  ✓  561 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.invitation-form at mobile (300ms)
+  ✓  562 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.invite-accept at mobile (295ms)
+  ✓  563 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.login-panel at mobile (296ms)
+  ✓  564 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.members-panel at mobile (296ms)
+  ✓  565 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.native-approval at mobile (280ms)
+  ✓  566 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.project-create at mobile (295ms)
+  ✓  567 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.project-list at mobile (290ms)
+  ✓  568 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.layout.root at mobile (320ms)
+  ✓  569 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.invite-project-id-invitation-id at mobile (324ms)
+  ✓  570 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.native-handoff-id at mobile (322ms)
+  ✓  571 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.projects-project-id-harness-path at mobile (356ms)
+  ✓  572 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.projects-project-id-members at mobile (321ms)
+  ✓  573 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.page.root at mobile (329ms)
+  ✓  574 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-agents at mobile (319ms)
+  ✓  575 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-files at mobile (321ms)
+  ✓  576 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-list at mobile (277ms)
+  ✓  577 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-loops at mobile (296ms)
+  ✓  578 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.activity-work at mobile (315ms)
+  ✓  579 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-cpu at mobile (357ms)
+  ✓  580 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-filters at mobile (360ms)
+  ✓  581 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-history at mobile (318ms)
+  ✓  582 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-models at mobile (314ms)
+  ✓  583 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.analytics-tasks at mobile (295ms)
+  ✓  584 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-comparison at mobile (297ms)
+  ✓  585 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-comparison-viewer at mobile (318ms)
+  ✓  586 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-evidence at mobile (315ms)
+  ✓  587 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.audio-upload-files at mobile (295ms)
+  ✓  588 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.brand-mark at mobile (279ms)
+  ✓  589 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.browser-errors at mobile (278ms)
+  ✓  590 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.console-chat at mobile (313ms)
+  ✓  591 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.contract-example at mobile (280ms)
+  ✓  592 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.contract-table at mobile (295ms)
+  ✓  593 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.coverage-list at mobile (297ms)
+  ✓  594 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-cases at mobile (295ms)
+  ✓  595 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-contract at mobile (281ms)
+  ✓  596 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-examples at mobile (293ms)
+  ✓  597 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-search at mobile (295ms)
+  ✓  598 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-search-results at mobile (278ms)
+  ✓  599 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.entity-states at mobile (459ms)
+  ✓  600 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-card at mobile (320ms)
+  ✓  601 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-grid at mobile (362ms)
+  ✓  602 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-provenance at mobile (293ms)
+  ✓  603 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.evidence-viewer at mobile (327ms)
+  ✓  604 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-catalog-items at mobile (437ms)
+  ✓  605 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-function-card at mobile (318ms)
+  ✓  606 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-module-card at mobile (346ms)
+  ✓  607 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platform-details at mobile (332ms)
+  ✓  608 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platforms at mobile (312ms)
+  ✓  609 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-harness-explorer-styles-screen at mobile (348ms)
+  ✓  610 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-usage at mobile (278ms)
+  ✓  611 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-usage-link at mobile (294ms)
+  ✓  612 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.filter-dialog at mobile (291ms)
+  ✓  613 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.floating-chat at mobile (293ms)
+  ✓  614 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.gameplay-replay at mobile (342ms)
+  ✓  615 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-artifact at mobile (292ms)
+  ✓  616 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-audio at mobile (334ms)
+  ✓  617 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-behavior at mobile (328ms)
+  ✓  618 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-behavior-screen at mobile (295ms)
+  ✓  619 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-change at mobile (281ms)
+  ✓  620 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-config at mobile (312ms)
+  ✓  621 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-config-screen at mobile (339ms)
+  ✓  622 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-details at mobile (319ms)
+  ✓  623 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-details-screen at mobile (397ms)
+  ✓  624 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-frame at mobile (395ms)
+  ✓  625 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-header at mobile (296ms)
+  ✓  626 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-history at mobile (312ms)
+  ✓  627 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-history-row at mobile (294ms)
+  ✓  628 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-history-screen at mobile (393ms)
+  ✓  629 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-link at mobile (291ms)
+  ✓  630 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-measures at mobile (310ms)
+  ✓  631 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-missing at mobile (293ms)
+  ✓  632 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-overview at mobile (279ms)
+  ✓  633 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-reasons at mobile (298ms)
+  ✓  634 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-relations at mobile (396ms)
+  ✓  635 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-run at mobile (331ms)
+  ✓  636 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-screens at mobile (379ms)
+  ✓  637 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-sections at mobile (295ms)
+  ✓  638 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-source at mobile (296ms)
+  ✓  639 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-summary at mobile (313ms)
+  ✓  640 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-tests at mobile (499ms)
+  ✓  641 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-entity-visual-screen at mobile (397ms)
+  ✓  642 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-catalog-screen at mobile (410ms)
+  ✓  643 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-content at mobile (398ms)
+  ✓  644 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-controls at mobile (292ms)
+  ✓  645 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-frame at mobile (349ms)
+  ✓  646 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-index at mobile (336ms)
+  ✓  647 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-page-card at mobile (328ms)
+  ✓  648 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-pages-screen at mobile (347ms)
+  ✓  649 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-explorer-table at mobile (284ms)
+  ✓  650 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-action at mobile (297ms)
+  ✓  651 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-activity at mobile (315ms)
+  ✓  652 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-compare at mobile (520ms)
+  ✓  653 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-compare-media at mobile (463ms)
+  ✓  654 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-console at mobile (428ms)
+  ✓  655 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-emitted-growth at mobile (311ms)
+  ✓  656 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-failures at mobile (295ms)
+  ✓  657 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-growth at mobile (292ms)
+  ✓  658 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-header at mobile (294ms)
+  ✓  659 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-history at mobile (466ms)
+  ✓  660 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-icon at mobile (301ms)
+  ✓  661 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-legacy at mobile (297ms)
+  ✓  662 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-map at mobile (331ms)
+  ✓  663 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-navbar at mobile (319ms)
+  ✓  664 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-selectors at mobile (311ms)
+  ✓  665 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-shell at mobile (432ms)
+  ✓  666 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-tabs at mobile (276ms)
+  ✓  667 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-unit at mobile (315ms)
+  ✓  668 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-harness-verdict at mobile (276ms)
+  ✓  669 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.harness-screen at mobile (434ms)
+  ✓  670 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.image-zoom at mobile (325ms)
+  ✓  671 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.modal at mobile (300ms)
+  ✓  672 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.project-activity at mobile (313ms)
+  ✓  673 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.provider-picker at mobile (328ms)
+  ✓  674 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.provider-picker-cards at mobile (295ms)
+  ✓  675 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.recorded-value at mobile (294ms)
+  ✓  676 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.regression-proof at mobile (299ms)
+  ✓  677 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.replay-controls at mobile (294ms)
+  ✓  678 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-checks at mobile (286ms)
+  ✓  679 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-findings at mobile (279ms)
+  ✓  680 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-summary at mobile (298ms)
+  ✓  681 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.report-view at mobile (414ms)
+  ✓  682 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.select at mobile (301ms)
+  ✓  683 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.site-activity at mobile (316ms)
+  ✓  684 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-code-action at mobile (294ms)
+  ✓  685 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-content at mobile (296ms)
+  ✓  686 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-dialog at mobile (316ms)
+  ✓  687 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-file-list at mobile (291ms)
+  ✓  688 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.source-viewer at mobile (297ms)
+  ✓  689 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.status-badge at mobile (279ms)
+  ✓  690 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.upload-audio at mobile (295ms)
+  ✓  691 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.upload-comparison at mobile (296ms)
+  ✓  692 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.usage-examples-usage-examples at mobile (296ms)
+  ✓  693 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.layout.root at mobile (428ms)
+  ✓  694 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components at mobile (469ms)
+  ✓  695 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components-entity at mobile (388ms)
+  ✓  696 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-components-entity-history at mobile (387ms)
+  ✓  697 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-configs at mobile (364ms)
+  ✓  698 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-configs-entity at mobile (337ms)
+  ✓  699 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-configs-entity-history at mobile (349ms)
+  ✓  700 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-functions at mobile (334ms)
+  ✓  701 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-functions-entity at mobile (364ms)
+  ✓  702 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-functions-entity-history at mobile (352ms)
+  ✓  703 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-models at mobile (330ms)
+  ✓  704 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-models-entity at mobile (329ms)
+  ✓  705 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-models-entity-history at mobile (330ms)
+  ✓  706 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages at mobile (386ms)
+  ✓  707 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages-entity at mobile (362ms)
+  ✓  708 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-pages-entity-history at mobile (331ms)
+  ✓  709 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms at mobile (336ms)
+  ✓  710 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms-entity at mobile (331ms)
+  ✓  711 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-services at mobile (337ms)
+  ✓  712 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-services-entity at mobile (372ms)
+  ✓  713 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-services-entity-history at mobile (337ms)
+  ✓  714 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-shells at mobile (332ms)
+  ✓  715 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-shells-entity at mobile (369ms)
+  ✓  716 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-shells-entity-history at mobile (346ms)
+  ✓  717 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-styles at mobile (355ms)
+  ✓  718 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-view at mobile (365ms)
+
+  Slow test file: tests/e2e/explorer-shell-component-catalog.spec.ts (5.6m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  718 passed (5.8m)

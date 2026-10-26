@@ -1,0 +1,183 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [11.25s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-NlXsx1
+
+ ❯ test/source-profile-lifecycle.test.ts (5 tests | 4 failed) 1756ms
+   × unrelated foreign processes never load the source compiler 197ms
+     → expected { value: 7, compilerLoaded: true } to deeply equal { value: 7, compilerLoaded: false }
+   ✓ foreign entries still profile registered imports when work begins 197ms
+   × type imports and live side-effect imports retain normal Bun behavior 223ms
+     → bun --preload /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-NlXsx1/src/adapters/source-profile-adapter/bunPreload.ts run.ts failed with 1
+
+1 | (function (entry, fetcher)
+              ^
+SyntaxError: Export named 'Shape' not found in module '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-profiles-rKLnTi/types.ts'.
+      at loadAndEvaluateModule (1:11)
+
+Bun v1.2.18 (macOS arm64)
+
+   × declaration collection never substitutes for runtime execution evidence 779ms
+     → expected '{"declared":1,"observed":true}\n' to contain '"declared":1,"observed":false'
+   × explicit benchmark children keep user flags and remove only the owned preload 359ms
+     → expected { …(2) } to deeply equal { options: '--smol', …(1) }
+ ❯ test/source-profile-sampling.test.ts (2 tests | 2 failed) 349ms
+   × automatic sampling bounds observer work without replaying or dropping actual calls 180ms
+     → automatic observations must be bounded: expected false to be true // Object.is equality
+   × failed async samples release their slots and quota calls retain original results 168ms
+     → expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/source-profile-lifecycle.test.ts > unrelated foreign processes never load the source compiler
+AssertionError: expected { value: 7, compilerLoaded: true } to deeply equal { value: 7, compilerLoaded: false }
+
+- Expected
++ Received
+
+  {
+-   "compilerLoaded": false,
++   "compilerLoaded": true,
+    "value": 7,
+  }
+
+ ❯ test/source-profile-lifecycle.test.ts:29:34
+     27|    `console.log(JSON.stringify({value:7,compilerLoaded:${cacheProbe}})…
+     28|   );
+     29|   expect(JSON.parse(ran.stdout)).toEqual({ value: 7, compilerLoaded: f…
+       |                                  ^
+     30|   expect(await runnerCaptures(fixture.directory)).toEqual([]);
+     31|  } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  test/source-profile-lifecycle.test.ts > type imports and live side-effect imports retain normal Bun behavior
+Error: bun --preload /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-NlXsx1/src/adapters/source-profile-adapter/bunPreload.ts run.ts failed with 1
+
+1 | (function (entry, fetcher)
+              ^
+SyntaxError: Export named 'Shape' not found in module '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-profiles-rKLnTi/types.ts'.
+      at loadAndEvaluateModule (1:11)
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ runCommand test/support/cli.ts:72:9
+     70| 
+     71|  if (expectSuccess && exitCode !== 0) {
+     72|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     73|  }
+     74| 
+ ❯ test/source-profile-lifecycle.test.ts:69:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  test/source-profile-lifecycle.test.ts > declaration collection never substitutes for runtime execution evidence
+AssertionError: expected '{"declared":1,"observed":true}\n' to contain '"declared":1,"observed":false'
+
+- Expected
++ Received
+
+- "declared":1,"observed":false
++ {"declared":1,"observed":true}
++
+
+ ❯ test/source-profile-lifecycle.test.ts:103:28
+    101|    HARNESS_COLLECT_FILES: '["subject.test.ts"]'
+    102|   });
+    103|   expect(collected.stdout).toContain('"declared":1,"observed":false');
+       |                            ^
+    104|   expect(
+    105|    await runnerCaptures(fixture.directory),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  test/source-profile-lifecycle.test.ts > explicit benchmark children keep user flags and remove only the owned preload
+AssertionError: expected { …(2) } to deeply equal { options: '--smol', …(1) }
+
+- Expected
++ Received
+
+  {
+    "boundary": "benchmark",
+-   "options": "--smol",
++   "options": "--smol --preload=/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-NlXsx1/src/adapters/source-profile-adapter/bunPreload.ts",
+  }
+
+ ❯ test/source-profile-lifecycle.test.ts:136:34
+    134|    BUN_OPTIONS: `--smol --preload=${preload}`
+    135|   });
+    136|   expect(JSON.parse(ran.stdout)).toEqual({ options: '--smol', boundary…
+       |                                  ^
+    137|   expect(await runnerCaptures(fixture.directory)).toEqual([]);
+    138|  } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  test/source-profile-sampling.test.ts > automatic sampling bounds observer work without replaying or dropping actual calls
+AssertionError: automatic observations must be bounded: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ test/source-profile-sampling.test.ts:23:5
+     21|    measurements.every((item) => item.samples! <= 10 && item.samples! >…
+     22|    'automatic observations must be bounded'
+     23|   ).toBe(true);
+       |     ^
+     24|   expect(measurements.every((item) => item.workload?.includes('first-1…
+     25|  } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  test/source-profile-sampling.test.ts > failed async samples release their slots and quota calls retain original results
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ test/source-profile-sampling.test.ts:52:61
+     50|   const measurements = await runnerCaptures(fixture.directory);
+     51|   expect(measurements).toHaveLength(2);
+     52|   expect(measurements.every((item) => item.samples === 10)).toBe(true);
+       |                                                             ^
+     53|  } finally {
+     54|   await fixture.remove();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  6 failed | 1 passed (7)
+   Start at  14:36:01
+   Duration  5.85s (transform 79ms, setup 149ms, collect 19ms, tests 2.10s, environment 0ms, prepare 88ms)
+

@@ -1,0 +1,140 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [189.00ms]
+$ bun run sync:shared && vite build && bun run build:main
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+vite v6.4.4 building SSR bundle for production...
+transforming...
+"handleConnectionChange" is imported from external module "@xyflow/system" but never used in "../../../../../../../../../Users/danielfugere/projects/harness-game-editor-modal/node_modules/@xyflow/svelte/dist/lib/hooks/useNodeConnections.svelte.js" and "../../../../../../../../../Users/danielfugere/projects/harness-game-editor-modal/node_modules/@xyflow/svelte/dist/lib/components/Handle/Handle.svelte".
+✓ 612 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 854 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                            0.03 kB │ gzip:   0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                          7.90 kB │ gzip:   1.19 kB
+.svelte-kit/output/client/_app/immutable/assets/6.DnakDk5X.css         0.80 kB │ gzip:   0.32 kB
+.svelte-kit/output/client/_app/immutable/assets/Modal.D3aeR8s9.css     0.90 kB │ gzip:   0.39 kB
+.svelte-kit/output/client/_app/immutable/assets/3.kje1ZN6o.css        26.88 kB │ gzip:   4.83 kB
+.svelte-kit/output/client/_app/immutable/assets/design.CQ2uwZ_B.css   38.00 kB │ gzip:   7.51 kB
+.svelte-kit/output/client/_app/immutable/assets/2.BSv9V4BJ.css        50.94 kB │ gzip:   8.42 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cpmqpfp-.js            0.04 kB │ gzip:   0.06 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bzak7iHL.js            0.10 kB │ gzip:   0.10 kB
+.svelte-kit/output/client/_app/immutable/entry/start.Ce8F3MfT.js       0.12 kB │ gzip:   0.11 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.DZ7lczP6.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/5.DZ7lczP6.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/B3BHYGM_.js            0.19 kB │ gzip:   0.17 kB
+.svelte-kit/output/client/_app/immutable/chunks/DnsX5tYl.js            0.28 kB │ gzip:   0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.C-W2yMg9.js           0.34 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/ClwhBhLN.js            0.37 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.DyJLLPPJ.js           0.41 kB │ gzip:   0.28 kB
+.svelte-kit/output/client/_app/immutable/chunks/BBUcQNsz.js            0.47 kB │ gzip:   0.31 kB
+.svelte-kit/output/client/_app/immutable/chunks/BVthCS_w.js            0.52 kB │ gzip:   0.33 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js            1.37 kB │ gzip:   0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/sWPKZFPX.js            2.19 kB │ gzip:   1.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/DDEUxeUA.js            2.24 kB │ gzip:   0.99 kB
+.svelte-kit/output/client/_app/immutable/nodes/6.BFe_0nOT.js           2.29 kB │ gzip:   1.21 kB
+.svelte-kit/output/client/_app/immutable/chunks/BYFBxfTf.js            3.01 kB │ gzip:   1.37 kB
+.svelte-kit/output/client/_app/immutable/chunks/BqkZ8Iah.js            3.17 kB │ gzip:   1.48 kB
+.svelte-kit/output/client/_app/immutable/chunks/zz2sKI6X.js            6.48 kB │ gzip:   2.93 kB
+.svelte-kit/output/client/_app/immutable/entry/app.DpDEutaM.js         7.09 kB │ gzip:   3.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/g4BxH8da.js           11.81 kB │ gzip:   4.97 kB
+.svelte-kit/output/client/_app/immutable/chunks/BbFWwgbr.js           15.34 kB │ gzip:   6.78 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bihn2o26.js           21.31 kB │ gzip:   8.22 kB
+.svelte-kit/output/client/_app/immutable/chunks/hul_s3qq.js           31.65 kB │ gzip:  12.09 kB
+.svelte-kit/output/client/_app/immutable/chunks/D6Sp-3cc.js           65.66 kB │ gzip:  21.61 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.B4SlHEis.js         314.90 kB │ gzip: 108.31 kB
+.svelte-kit/output/client/_app/immutable/nodes/3.CgzY_pjx.js         697.80 kB │ gzip: 192.57 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.71s
+.svelte-kit/output/server/.vite/manifest.json                                                     6.44 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.DnakDk5X.css                                0.80 kB
+.svelte-kit/output/server/_app/immutable/assets/Modal.DVGyhi98.css                                0.88 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CrWASipr.css                               16.26 kB
+.svelte-kit/output/server/_app/immutable/assets/design.D_b5cBQw.css                              37.79 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.UoWiYf8k.css                               44.72 kB
+.svelte-kit/output/server/entries/pages/_layout.ts.js                                             0.04 kB
+.svelte-kit/output/server/entries/pages/harness/_...path_/_page.svelte.js                         0.15 kB
+.svelte-kit/output/server/entries/pages/projects/_projectId_/harness/_...path_/_page.svelte.js    0.15 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                                      0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                     0.19 kB
+.svelte-kit/output/server/env.js                                                                  0.23 kB
+.svelte-kit/output/server/internal.js                                                             0.40 kB
+.svelte-kit/output/server/chunks/state.svelte.js                                                  0.43 kB
+.svelte-kit/output/server/chunks/server.js                                                        0.50 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                       0.73 kB
+.svelte-kit/output/server/entries/pages/game/_page.svelte.js                                      0.93 kB
+.svelte-kit/output/server/chunks/utils.js                                                         1.09 kB
+.svelte-kit/output/server/chunks/exports.js                                                       2.39 kB
+.svelte-kit/output/server/chunks/url.js                                                           3.16 kB
+.svelte-kit/output/server/chunks/internal.js                                                      3.44 kB
+.svelte-kit/output/server/chunks/composeModes.js                                                  3.71 kB
+.svelte-kit/output/server/chunks/routing.js                                                       3.76 kB
+.svelte-kit/output/server/entries/pages/settings/_page.svelte.js                                  4.32 kB
+.svelte-kit/output/server/chunks/Modal.svelte_svelte_type_style_lang.js                           6.00 kB
+.svelte-kit/output/server/chunks/shared.js                                                       34.21 kB
+.svelte-kit/output/server/remote-entry.js                                                        36.85 kB
+.svelte-kit/output/server/index.js                                                              130.05 kB
+.svelte-kit/output/server/chunks/root.js                                                        134.65 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                                         289.04 kB
+✓ built in 3.70s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-static
+  Wrote site to "build"
+  ✔ done
+$ bun scripts/build-main.ts
+22333bedb0cca60e83b59a8e541c00549af4c32a708fcb884040e3fcc1ef92df
+$ playwright test --project=chromium --config .cache/game-capture.config.ts game-authoring.spec.ts -g "game authoring exposes independent mechanics and executable checkpoint graph"
+
+Running 1 test using 1 worker
+
+(node:50404) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/e2e/game-authoring.spec.ts:14:1 › game authoring exposes independent mechanics and executable checkpoint graph (9.2s)
+
+
+  1) [chromium] › tests/e2e/game-authoring.spec.ts:14:1 › game authoring exposes independent mechanics and executable checkpoint graph 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'New level', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'New level', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'New level', exact: true })
+
+
+       at game-level-fixture.ts:145
+
+      143 | 			await viewSettings(page);
+      144 | 			await capture(page, 'level-entry-' + dimension);
+    > 145 | 			await expect(page.getByRole('button', { name: 'New level', exact: true })).toBeVisible();
+          | 			                                                                           ^
+      146 | 			await page.getByRole('button', { name: 'New level', exact: true }).click();
+      147 | 			await expect(page.getByRole('button', { name: 'Checkpoints', exact: true })).toBeDisabled();
+      148 | 			await capture(page, 'level-concept-' + dimension);
+        at Module.exerciseLevelPlanning (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-SD92lb/packages/desktop/tests/e2e/game-level-fixture.ts:145:79)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-SD92lb/packages/desktop/tests/e2e/game-authoring.spec.ts:18:2
+
+    Error Context: test-results/game-authoring-game-author-6d576-executable-checkpoint-graph-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/e2e/game-authoring.spec.ts:14:1 › game authoring exposes independent mechanics and executable checkpoint graph 
+error: script "test:e2e" exited with code 1

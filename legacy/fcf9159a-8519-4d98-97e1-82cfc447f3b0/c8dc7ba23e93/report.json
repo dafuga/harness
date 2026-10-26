@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"kind": "legacy-report",
+	"id": "fcf9159a-8519-4d98-97e1-82cfc447f3b0",
+	"project": "harness",
+	"title": "JEV response checking",
+	"mode": "feature",
+	"environment": "Local CLI; synthetic JEV API",
+	"status": "passed",
+	"state": "finalized",
+	"startedAt": "2026-10-06T21:12:23.428Z",
+	"updatedAt": "2026-10-06T21:18:27.604Z",
+	"revision": null,
+	"summary": "Check supplied answers against requests with strict confident-success gates",
+	"checks": [
+		{
+			"id": "full-check",
+			"title": "Harness full verification",
+			"status": "passed"
+		},
+		{
+			"id": "live-calibration",
+			"title": "Live JEV response calibration",
+			"status": "passed"
+		},
+		{
+			"id": "red-green",
+			"title": "Unchanged CLI regressions",
+			"status": "passed"
+		},
+		{
+			"id": "command-1791321504107",
+			"title": "Built CLI live JEV: compliant",
+			"status": "passed"
+		},
+		{
+			"id": "command-1791321504157",
+			"title": "Built CLI live JEV: wrong-format",
+			"status": "passed"
+		}
+	],
+	"media": []
+}

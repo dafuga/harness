@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4RKl8N/packages/desktop
+
+ ✓ test/remote-replay.test.ts (3 tests) 13263ms
+   ✓ a start request re-sent after a reconnect does not start a second run  5314ms
+   ✓ a second connection of a device takes over events without repeating them  4490ms
+   ✓ ending a device session cancels its run and delivers nothing more  3458ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  02:56:33
+   Duration  14.17s (transform 459ms, setup 0ms, collect 736ms, tests 13.26s, environment 0ms, prepare 33ms)
+

@@ -1,0 +1,76 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VCmodL
+
+ ✓ test/history-index.e2e.test.ts (4 tests) 26932ms
+   ✓ the index is deterministic and names every commit, verified or not  1771ms
+   ✓ a revision carries its graph, comparison, inherited provenance, media and reasons  908ms
+   ✓ growth and benchmarks are kept per unit, and another profile is a separate series  5486ms
+   ✓ a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap  7620ms
+ ✓ test/loop.e2e.test.ts (6 tests) 52612ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  2417ms
+   ✓ generated app and lib instructions mention harness loops  757ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  1605ms
+   ✓ bug-fix CLI records proof and leaves verification pending across failed and passing checks  11453ms
+   ✓ fix CLI records proof and leaves verification pending across failed and passing checks  16905ms
+   ✓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks  19474ms
+ ✓ test/case.test.ts (2 tests) 8ms
+
+ Test Files  3 passed (3)
+      Tests  12 passed (12)
+   Start at  15:38:58
+   Duration  82.26s (transform 64ms, setup 14ms, collect 101ms, tests 79.55s, environment 0ms, prepare 98ms)
+
+$ vitest run test/utils/entity-measure.test.ts test/components/harness-verdict.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VCmodL/packages/reports
+
+ ✓ test/components/harness-verdict.test.ts (6 tests) 4ms
+ ✓ test/utils/entity-measure.test.ts (8 tests) 3ms
+
+ Test Files  2 passed (2)
+      Tests  14 passed (14)
+   Start at  15:40:21
+   Duration  954ms (transform 271ms, setup 0ms, collect 377ms, tests 8ms, environment 0ms, prepare 58ms)
+
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts entity-preview-marks.spec.ts --grep "measurements at"
+
+Running 3 tests using 1 worker
+
+(node:20779) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget (466ms)
+  ✓  2 test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget (267ms)
+  ✘  3 test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget (274ms)
+
+
+  1) test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 
+
+    Error: benchmark labels stay whole
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: 2
+
+       at entityPreviewPage.ts:191
+
+      189 | 		return range.getClientRects().length;
+      190 | 	});
+    > 191 | 	expect(fragments, 'benchmark labels stay whole').toBe(1);
+          | 	                                                 ^
+      192 | 	expect(await fits(tab)).toBe(true);
+      193 | }
+      194 |
+        at reviewMeasurements (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VCmodL/packages/reports/test/entityPreviewPage.ts:191:51)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VCmodL/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/error-context.md
+
+  1 failed
+    test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 
+  2 passed (4.1s)
+error: script "test:entities" exited with code 1

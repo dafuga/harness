@@ -1,0 +1,969 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-gNT9UZ
+
+ ❯ test/history-index.e2e.test.ts (4 tests | 1 failed) 27701ms
+   ✓ the index is deterministic and names every commit, verified or not  2275ms
+   × a revision carries its graph, comparison, inherited provenance, media and reasons 1171ms
+     → undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+   ✓ growth and benchmarks are kept per unit, and another profile is a separate series  4273ms
+   ✓ a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap  5803ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/history-index.e2e.test.ts > a revision carries its graph, comparison, inherited provenance, media and reasons
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ expectLegacySourceMeasures test/support/historyIndexFixture.ts:154:7
+    152|      measures,
+    153|      'older prepared revisions gain selected-commit source measurement…
+    154|     ).toContainEqual(
+       |       ^
+    155|      expect.objectContaining({ metric, value: expect.any(Number), test…
+    156|     );
+ ❯ expectSourceMeasures test/support/historyIndexFixture.ts:125:2
+ ❯ test/history-index.e2e.test.ts:128:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  22:13:05
+   Duration  30.41s (transform 111ms, setup 7ms, collect 101ms, tests 27.70s, environment 0ms, prepare 36ms)
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-gNT9UZ/packages/reports
+
+ ❯ test/utils/entity-measure.test.ts (8 tests | 1 failed) 16ms
+   ✓ a size is read in bytes, kilobytes or megabytes, and never rounded to nothing 1ms
+   × a measured size is shown and one nothing measured reads Not measured, never zero 4ms
+     → selected source outranks an older record: expected '2.4 KB' to be '3.5 KB' // Object.is equality
+   ✓ each execution target has its own emitted size, with the reason one could not be built 0ms
+   ✓ a timing names its workload and profile and its tolerance as a percentage 0ms
+   ✓ timings of two profiles stay two rows, and a declared budget nothing measured is not measured 0ms
+   ✓ a tolerance above the five percent policy is marked, not clamped 0ms
+   ✓ why a figure is unavailable is told without the file a recorded note names 0ms
+   ✓ observed performance is visible without a budget and stays scoped to its callable 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/entity-measure.test.ts > a measured size is shown and one nothing measured reads Not measured, never zero
+AssertionError: selected source outranks an older record: expected '2.4 KB' to be '3.5 KB' // Object.is equality
+
+Expected: [32m"[7m3.5[27m KB"[39m
+Received: [31m"[7m2.4[27m KB"[39m
+
+ ❯ test/utils/entity-measure.test.ts:114:87
+    112|  const fresh = entityMeasure(observed, taken);
+    113|  expect(iterations, 'the admitted source iterator is consumed once').t…
+    114|  expect(value(fresh.size, 'Source size'), 'selected source outranks an…
+       |                                                                                       ^
+    115|   '3.5 KB'
+    116|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  22:13:37
+   Duration  359ms (transform 54ms, setup 0ms, collect 90ms, tests 16ms, environment 0ms, prepare 26ms)
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget (1.1s)
+  ✘  2 test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget (1.1s)
+  ✘  3 test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget (1.0s)
+
+
+  1) test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget 
+
+    Error: pages: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: pages: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: shells: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: shells: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: components: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "2.4 KB"
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: components: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "3"
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: functions: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "800 B"
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: functions: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: configs: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: configs: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: services: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: services: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: models: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: models: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-03db8-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-03db8-y-readable-without-a-budget/error-context.md
+
+  2) test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget 
+
+    Error: pages: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: pages: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: shells: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: shells: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: components: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "2.4 KB"
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: components: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "3"
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: functions: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "800 B"
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: functions: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: configs: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: configs: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: services: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: services: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: models: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: models: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-3d6a9-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-3d6a9-y-readable-without-a-budget/error-context.md
+
+  3) test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 
+
+    Error: pages: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: pages: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: shells: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: shells: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: components: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "2.4 KB"
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: components: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "3"
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: functions: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "800 B"
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: functions: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: configs: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: configs: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: services: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: services: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: models: selected-commit source size
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "12.3 KB"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:34
+
+      32 | 		expect
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+    > 34 | 			.toBe('12.3 KB');
+         | 			 ^
+      35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+      36 | 	}
+      37 | }
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:34:5)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: models: selected-commit complexity
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "21"
+    Received: "Not measured The earlier record did not collect this observation."
+
+       at entityPreviewOverview.ts:35
+
+      33 | 			.soft(rows['Source size'], `${route.category}: selected-commit source size`)
+      34 | 			.toBe('12.3 KB');
+    > 35 | 		expect.soft(rows.Complexity, `${route.category}: selected-commit complexity`).toBe('21');
+         | 		                                                                              ^
+      36 | 	}
+      37 | }
+      38 |
+        at reviewMeasuredSources (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewOverview.ts:35:81)
+        at reviewMeasurements (/private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entityPreviewPage.ts:213:2)
+        at /private/tmp/harness-snapshot-gNT9UZ/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/error-context.md
+
+  3 failed
+    test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 
+[WebServer] $ vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+[WebServer] ../../node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] ../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] Circular dependency: ../../node_modules/zod/v4/core/core.js -> ../../node_modules/zod/v4/core/util.js -> ../../node_modules/zod/v4/core/core.js
+[WebServer] Generated an empty chunk: "chunks/internal2.js".
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/e2e/harness-explorer-measures.spec.ts:34:2 › every entity kind shows selected source measurements at desktop width (1.3s)
+  ✓  2 tests/e2e/harness-explorer-measures.spec.ts:34:2 › every entity kind shows selected source measurements at tablet width (1.2s)
+  ✓  3 tests/e2e/harness-explorer-measures.spec.ts:34:2 › every entity kind shows selected source measurements at mobile width (1.1s)
+
+  3 passed (2.5m)

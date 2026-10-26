@@ -1,0 +1,11 @@
+
+Running 4 tests using 1 worker
+
+(node:74745) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/ui-projects.spec.ts:19:1 › the project switcher keeps the category and shows only the chosen project (215ms)
+  ✓  2 tests/e2e/ui-projects.spec.ts:51:1 › an answer for the previous project that arrives late is never rendered (1.9s)
+  ✓  3 tests/e2e/ui-projects.spec.ts:70:1 › the same entity id of another project shows no thread, message or image of the first (226ms)
+  ✓  4 tests/e2e/ui-projects.spec.ts:103:1 › a project link opens its project, full commit, entity and History (133ms)
+
+  4 passed (2.9s)

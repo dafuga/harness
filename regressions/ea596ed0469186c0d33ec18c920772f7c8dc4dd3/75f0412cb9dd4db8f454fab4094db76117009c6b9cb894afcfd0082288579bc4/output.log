@@ -1,0 +1,13 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [163.00ms]
+
+Running 3 tests using 1 worker
+
+(node:67406) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-captures.spec.ts:20:1 › preview captures retain decoded pixels and measured workloads with their served identity (743ms)
+  ✓  2 test/entity-preview-captures.spec.ts:75:1 › screenshots use their capture commit and comparisons show their paired revisions (850ms)
+  ✓  3 test/entity-preview-captures.spec.ts:122:1 › legacy device-qualified captures remain selectable without changing their origin (608ms)
+
+  3 passed (5.0s)

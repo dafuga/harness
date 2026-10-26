@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HUXF1L/packages/planning
+
+ ✓ test/notes-reference.test.ts (2 tests) 6044ms
+   ✓ notes references bind exact entity artifacts without rewriting legacy messages  3646ms
+   ✓ a visual version without notes cannot accept an absent notes hash  2398ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  00:12:52
+   Duration  6.52s (transform 110ms, setup 8ms, collect 193ms, tests 6.04s, environment 0ms, prepare 61ms)
+

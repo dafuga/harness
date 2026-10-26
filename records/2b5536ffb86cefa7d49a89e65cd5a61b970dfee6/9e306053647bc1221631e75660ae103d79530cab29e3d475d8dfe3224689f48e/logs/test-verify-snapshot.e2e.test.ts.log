@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rBWHPX
+
+ ✓ test/verify-snapshot.e2e.test.ts (5 tests) 26829ms
+   ✓ a check that adds a new source file fails the snapshot gate and keeps its record  7278ms
+   ✓ removing or renaming tracked source fails the snapshot gate  3791ms
+   ✓ a file that one check adds and a later check removes is still caught  1990ms
+   ✓ a declared output may be written, and nothing else may be  8075ms
+   ✓ an output declaration cannot cover tracked source  1696ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  23:01:15
+   Duration  27.07s (transform 30ms, setup 10ms, collect 26ms, tests 26.83s, environment 0ms, prepare 38ms)
+

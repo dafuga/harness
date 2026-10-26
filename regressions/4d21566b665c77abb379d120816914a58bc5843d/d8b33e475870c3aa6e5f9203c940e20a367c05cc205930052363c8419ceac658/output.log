@@ -1,0 +1,75 @@
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/build-kernel.ts "$@"' --
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling syn v3.0.7
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling serde_derive v1.0.229
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-5Jcyah/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 14.09s
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling impact-kernel v0.1.0 (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-5Jcyah/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 5.93s
+Built impact kernel: wasm 142396 bytes (wasm-opt wasm-opt version 131), native 402080 bytes.
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/build-api.ts "$@"' --
+[harness resources] Memory pressure is warning
+Built public API: contracts, runtime, verification, history, resources, sqlite, catalog, edge, console and index, declarations in dist/types.
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-5Jcyah
+
+ ✓ test/loop.e2e.test.ts (7 tests) 53349ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  2201ms
+   ✓ generated app and lib instructions mention harness loops  730ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  2843ms
+   ✓ bug-fix CLI records proof and leaves verification pending across failed and passing checks  13385ms
+   ✓ fix CLI records proof and leaves verification pending across failed and passing checks  13458ms
+   ✓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks  15651ms
+   ✓ standalone evidence capture preserves images and measurements without inventing a regression or full verdict  5081ms
+ ✓ test/packaged-api.e2e.test.ts (2 tests) 8808ms
+   ✓ public API type build retains configured entry paths across owned workspaces  1888ms
+   ✓ a packed consumer imports typed contracts and calls real adapters without the CLI  6919ms
+ ✓ test/verify.e2e.test.ts (4 tests) 19616ms
+   ✓ the fixture baseline verifies clean on an exact commit and tree  3276ms
+   ✓ a shared function change re-verifies its service, page and audio scenarios with fresh evidence  2578ms
+   ✓ each tested revision regenerates evidence even when the bytes are identical  6429ms
+   ✓ scenario contracts list their states, viewports, tests and evidence  1395ms
+ ✓ test/resources-cli.e2e.test.ts (5 tests) 5638ms
+   ✓ resources status reports overall CPU, available cores, memory and the shared queue  1045ms
+   ✓ managed . scripts forward caller arguments within a bounded lease  1424ms
+   ✓ managed packages/desktop scripts forward caller arguments within a bounded lease  1324ms
+   ✓ an impossible resource request is rejected before a command starts  631ms
+   ✓ an admitted command receives its bounded budget and releases its shared reservation  1212ms
+ ✓ test/resource-queue.e2e.test.ts (3 tests) 1598ms
+   ✓ separate native processes share atomic reservations and honor agent-test, coding, environment order  976ms
+   ✓ the Node CommonJS desktop bundle shares the Bun SQLite reservation protocol  445ms
+
+ Test Files  5 passed (5)
+      Tests  21 passed (21)
+   Start at  16:27:08
+   Duration  92.37s (transform 168ms, setup 182ms, collect 211ms, tests 89.01s, environment 0ms, prepare 162ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-5Jcyah/packages/desktop
+
+ ✓ test/ios-build-processes.test.ts (4 tests) 13001ms
+   ✓ a build that succeeds leaves no process behind  2506ms
+   ✓ a build that fails leaves no process behind either, and still fails  2257ms
+   ✓ a process the build did not start is never ended, whatever it is called  2852ms
+   ✓ while another build uses the shared Interface Builder tools, nothing is ended  5316ms
+ ✓ test/cli-integration.test.ts (20 tests) 2498ms
+
+ Test Files  2 passed (2)
+      Tests  24 passed (24)
+   Start at  16:28:41
+   Duration  16.37s (transform 292ms, setup 103ms, collect 421ms, tests 15.50s, environment 0ms, prepare 71ms)
+

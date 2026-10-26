@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tA718W/packages/reports
+
+ ✓ test/services/harness-analytics.test.ts (2 tests) 1304ms
+   ✓ dashboard queries the real CLI aggregation and preserves validated filters  704ms
+   ✓ dashboard consumes a complete large analytics response before parsing  599ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  19:20:36
+   Duration  1.86s (transform 43ms, setup 0ms, collect 46ms, tests 1.30s, environment 0ms, prepare 55ms)
+

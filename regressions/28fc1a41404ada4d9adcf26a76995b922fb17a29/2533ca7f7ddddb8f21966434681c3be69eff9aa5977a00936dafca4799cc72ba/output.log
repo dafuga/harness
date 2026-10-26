@@ -1,0 +1,3370 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-KbhxVv
+
+ ❯ test/utils/unit-metadata.test.ts (42 tests | 1 failed) 60ms
+   × revision metadata derives project categories from the same committed source tree 17ms
+     → revision metadata reads model and type declarations: expected { id: 'model.payments-example', …(16) } to have property "modelDefinitions" with value [ { name: 'Example', …(5) }, …(1) ]
+   ✓ revision metadata lists standalone shared exports without requiring callers 5ms
+   ✓ revision metadata counts distinct actual consumers: 2 7ms
+   ✓ revision metadata counts distinct actual consumers: 2 1ms
+   ✓ revision metadata counts distinct actual consumers: 1 1ms
+   ✓ revision metadata counts distinct actual consumers: 2 1ms
+   ✓ revision metadata counts distinct actual consumers: 2 4ms
+   ✓ revision metadata counts distinct actual consumers: +0 1ms
+   ✓ revision metadata counts distinct actual consumers: +0 1ms
+   ✓ revision metadata counts distinct actual consumers: 1 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function env() { return process.env.MODE; } 1ms
+   ✓ helper purity is an explicit, checked source contract: let state = 0;
+/** @pure */
+export function captured() { return state; } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function writeFile() { console.log("side effect"); return 1; } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function formatDate(iso: string) { return new Date(iso).toISOString(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: export function shared(value: string) { return value.trim(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export async function load() { return fetch("/api"); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function now() { return Date.now(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function random() { return Math.random(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function mutate(input: number[]) { return input.sort(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function write(input: {value: number}) { input.value++; return input; } 0ms
+   ✓ helper purity is an explicit, checked source contract: export function fake() { return "/** @pure */"; } 0ms
+   ✓ revision metadata counts distinct runtime service owners: 2 1ms
+   ✓ revision metadata counts distinct runtime service owners: 2 1ms
+   ✓ revision metadata counts distinct runtime service owners: 1 0ms
+   ✓ revision metadata counts distinct runtime service owners: 1 1ms
+   ✓ revision metadata counts distinct runtime service owners: 2 1ms
+   ✓ revision metadata counts distinct runtime service owners: +0 1ms
+   ✓ revision metadata counts distinct runtime service owners: +0 0ms
+   ✓ revision metadata counts distinct runtime service owners: 2 1ms
+   ✓ revision metadata proves service class declarations and construction: 'concrete' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'function' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'object' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'static' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'private' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'abstract' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'callback' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'inherited' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'default' 2ms
+   ✓ revision metadata proves service class declarations and construction: 'forward' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'registry' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'factory' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'shadow' 1ms
+ ❯ test/utils/explorer-route.test.ts (69 tests | 9 failed) 11ms
+   × keeps page and module entity categories separate from primary navigation 4ms
+     → expected [ 'pages', 'layouts', …(6) ] to deeply equal [ 'pages', 'layouts', …(7) ]
+   ✓ current branch /pages 0ms
+   ✓ current branch /pages/reports.page.titles 0ms
+   ✓ current branch /pages/reports.page.titles/details 0ms
+   ✓ current branch /components 0ms
+   ✓ current branch /components/reports.component.harness-harness-console 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/details 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/history 0ms
+   ✓ current branch /functions 0ms
+   ✓ current branch /functions/function.slugify 0ms
+   ✓ current branch /functions/function.slugify/details 0ms
+   ✓ current branch /functions/function.slugify/history 0ms
+   ✓ current branch /configs 0ms
+   ✓ current branch /configs/config.site 0ms
+   ✓ current branch /configs/config.site/details 0ms
+   ✓ current branch /configs/config.site/history 0ms
+   × current branch /types 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(2) }
+   × current branch /types/model.input 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+   × current branch /types/model.input/details 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+   × current branch /types/model.input/history 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+   ✓ current branch /services 0ms
+   ✓ current branch /services/service.clock 0ms
+   ✓ current branch /services/service.clock/details 0ms
+   ✓ current branch /services/service.clock/history 0ms
+   ✓ selected commit /pages 0ms
+   ✓ selected commit /pages/reports.page.titles 0ms
+   ✓ selected commit /pages/reports.page.titles/details 0ms
+   ✓ selected commit /components 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/details 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/history 0ms
+   ✓ selected commit /functions 0ms
+   ✓ selected commit /functions/function.slugify 0ms
+   ✓ selected commit /functions/function.slugify/details 0ms
+   ✓ selected commit /functions/function.slugify/history 0ms
+   ✓ selected commit /configs 0ms
+   ✓ selected commit /configs/config.site 0ms
+   ✓ selected commit /configs/config.site/details 0ms
+   ✓ selected commit /configs/config.site/history 0ms
+   × selected commit /types 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(2) }
+   × selected commit /types/model.input 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+   × selected commit /types/model.input/details 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+   × selected commit /types/model.input/history 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+   ✓ selected commit /services 0ms
+   ✓ selected commit /services/service.clock 0ms
+   ✓ selected commit /services/service.clock/details 0ms
+   ✓ selected commit /services/service.clock/history 0ms
+   ✓ there are twenty-three designed shapes in each scope, and a Page has a history too 0ms
+   ✓ a branch is one path segment, whatever it contains 0ms
+   ✓ a branch or a commit alone opens Pages in the same scope 0ms
+   ✓ a commit that no branch reaches has no branch invented for it 0ms
+   ✓ a callable has a distinct revision-bound address across tabs and history 1ms
+   ✓ an entity id is one encoded segment 0ms
+   ✓ names no explorer address:  0ms
+   ✓ names no explorer address: / 0ms
+   ✓ names no explorer address: /pages 0ms
+   ✓ names no explorer address: /branch 0ms
+   ✓ names no explorer address: /branch/main/reports 0ms
+   ✓ names no explorer address: /branch/main/analytics 0ms
+   ✓ names no explorer address: /branch/main/activity 0ms
+   ✓ names no explorer address: /branch/main/commit/abc/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/pages 0ms
+   ✓ names no explorer address: /branch/main/pages/x/source 0ms
+   ✓ names no explorer address: /branch/main/pages/x/details/extra 0ms
+   ✓ names no explorer address: /branch/feature/kept/pages 0ms
+   ✓ names no explorer address: /branch/%E0%A4%A/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map 0ms
+   ✓ a trailing slash names the same address 0ms
+   ✓ Models is a page tab and legacy page Contract links open Models in the same scope 0ms
+ ✓ test/utils/explorer-legacy.test.ts (6 tests) 3ms
+ ✓ test/utils/console-canonical.test.ts (8 tests) 5ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-route.test.ts > keeps page and module entity categories separate from primary navigation
+AssertionError: expected [ 'pages', 'layouts', …(6) ] to deeply equal [ 'pages', 'layouts', …(7) ]
+
+- Expected
++ Received
+
+@@ -4,8 +4,7 @@
+    "components",
+    "functions",
+    "configs",
+    "services",
+    "models",
+-   "types",
+    "platforms",
+  ]
+
+ ❯ test/utils/explorer-route.test.ts:61:30
+     59| test('keeps page and module entity categories separate from primary na…
+     60|  measureWorkload('function.explorer-route', 'layout-catalog-behavior',…
+     61|   expect(explorerCategories).toEqual([
+       |                              ^
+     62|    'pages',
+     63|    'layouts',
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/utils/explorer-route.test.ts:60:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > current branch /types
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(2) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": null,
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:76:30
+     74|  const location = { branch, commit: null, ...selected } as ExplorerLoc…
+     75|  const path = `/branch/${encoded}${tail}`;
+     76|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     77|  expect(explorerRoutePath(location)).toBe(
+     78|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > current branch /types/model.input
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": null,
+  "entity": "model.input",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:76:30
+     74|  const location = { branch, commit: null, ...selected } as ExplorerLoc…
+     75|  const path = `/branch/${encoded}${tail}`;
+     76|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     77|  expect(explorerRoutePath(location)).toBe(
+     78|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > current branch /types/model.input/details
+ FAIL  test/utils/explorer-route.test.ts > current branch /types/model.input/history
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": null,
+  "entity": "model.input",
+  "section": "details",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:76:30
+     74|  const location = { branch, commit: null, ...selected } as ExplorerLoc…
+     75|  const path = `/branch/${encoded}${tail}`;
+     76|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     77|  expect(explorerRoutePath(location)).toBe(
+     78|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > selected commit /types
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(2) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:84:30
+     82|  const location = { branch, commit: sha, ...selected } as ExplorerLoca…
+     83|  const path = `/branch/${encoded}/commit/${sha}${tail}`;
+     84|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     85|  expect(explorerRoutePath(location)).toBe(
+     86|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > selected commit /types/model.input
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "entity": "model.input",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:84:30
+     82|  const location = { branch, commit: sha, ...selected } as ExplorerLoca…
+     83|  const path = `/branch/${encoded}/commit/${sha}${tail}`;
+     84|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     85|  expect(explorerRoutePath(location)).toBe(
+     86|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > selected commit /types/model.input/details
+ FAIL  test/utils/explorer-route.test.ts > selected commit /types/model.input/history
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(4) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "types",
+  "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "entity": "model.input",
+  "section": "details",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:84:30
+     82|  const location = { branch, commit: sha, ...selected } as ExplorerLoca…
+     83|  const path = `/branch/${encoded}/commit/${sha}${tail}`;
+     84|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     85|  expect(explorerRoutePath(location)).toBe(
+     86|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata derives project categories from the same committed source tree
+AssertionError: revision metadata reads model and type declarations: expected { id: 'model.payments-example', …(16) } to have property "modelDefinitions" with value [ { name: 'Example', …(5) }, …(1) ]
+
+- Expected: 
+[
+  {
+    "fields": [],
+    "kind": "class",
+    "methods": [],
+    "name": "Example",
+    "source": "src/models/payments/Example.ts",
+    "table": {
+      "columns": [
+        {
+          "name": "id",
+          "nullable": false,
+          "primaryKey": true,
+          "property": "id",
+          "type": "TEXT",
+        },
+      ],
+      "name": "examples",
+      "primaryKey": "id",
+    },
+  },
+  {
+    "fields": [
+      {
+        "name": "id",
+        "optional": false,
+        "type": "string",
+      },
+    ],
+    "kind": "interface",
+    "methods": [],
+    "name": "ExampleInput",
+    "source": "src/models/payments/Example.ts",
+  },
+]
+
++ Received: 
+undefined
+
+ ❯ test/utils/unit-metadata.test.ts:29:71
+     27|  await measureWorkload('function.unit-metadata', 'model-and-type-decla…
+     28|  const model = registry.units.find((unit) => unit.kind === 'model')!;
+     29|  expect(model, 'revision metadata reads model and type declarations').…
+       |                                                                       ^
+     30|   'modelDefinitions',
+     31|   modelDeclarations
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+
+ Test Files  2 failed | 2 passed (4)
+      Tests  10 failed | 115 passed (125)
+   Start at  23:26:33
+   Duration  3.29s (transform 167ms, setup 124ms, collect 442ms, tests 79ms, environment 0ms, prepare 106ms)
+
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-KbhxVv/packages/reports
+
+ ❯ test/utils/explorer-category.test.ts (13 tests | 2 failed) 78ms
+   ✓ compatibility details routes are nonvisual: pages 1ms
+   ✓ compatibility details routes are nonvisual: layouts 0ms
+   ✓ compatibility details routes are nonvisual: components 0ms
+   ✓ compatibility details routes are nonvisual: functions 0ms
+   ✓ compatibility details routes are nonvisual: configs 0ms
+   ✓ compatibility details routes are nonvisual: services 0ms
+   ✓ compatibility details routes are nonvisual: models 0ms
+   × a unit of a product kind is listed under the category of that kind 3ms
+     → missing source does not prove a model: expected 'models' to be null
+   ✓ a page is what renders an address, whatever kind it was registered as 0ms
+   ✓ what is not one of the five product kinds has no category and says what it is 0ms
+   ✓ a unit inside a category says its role in a word a reader knows 0ms
+   × the policy holds for Harness's own registry 72ms
+     → raw manifests have no source-derived declaration proof: expected [ { schemaVersion: 1, …(12) }, …(22) ] to deeply equal []
+   ✓ only explicitly pure functions with distinct runtime consumers are helpers 0ms
+ ❯ test/utils/harness-shell.test.ts (9 tests | 4 failed) 9ms
+   × the bar groups module categories under five scoped primary destinations 5ms
+     → expected [ [ 'pages', 'Pages', 'pages' ], …(8) ] to deeply equal [ [ 'pages', 'Pages', 'pages' ], …(4) ]
+   × on a current branch route the viewed commit is the tip, and there is no tip to go to 1ms
+     → expected '/harness/branch/feature%2Fshell%231/l…' to be '/harness/branch/feature%2Fshell%231/c…' // Object.is equality
+   ✓ on a selected commit the tip and the viewed commit are told apart, and Go to tip keeps the place 0ms
+   ✓ a selected commit that is the tip says both, and still leads to the current branch route 0ms
+   ✓ a branch stays in current mode on the same entity, and a commit is always an explicit route 0ms
+   ✓ a commit no branch reaches has no tip, says so, and is listed although no branch lists it 0ms
+   × without a resolved address the bar keeps its navigation and offers no revision 0ms
+     → expected [ 'Pages', 'Layouts', …(7) ] to deeply equal [ 'Pages', 'Modules', 'Styles', …(2) ]
+   × Styles stays active across branch and commit selection without becoming an entity category 1ms
+     → expected { id: 'components', …(5) } to match object { …(2) }
+(4 matching properties omitted from actual)
+   ✓ only a plain left click is followed inside the application 0ms
+ ✓ test/components/explorer-screens.test.ts (7 tests) 72ms
+ ❯ test/components/harness-navbar.test.ts (8 tests | 4 failed) 14ms
+   × one bar holds the brand, repository, entity categories and the Styles screen 8ms
+     → expected [ { label: 'Pages', …(3) }, …(8) ] to deeply equal [ { label: 'Pages', …(3) }, …(4) ]
+   × Styles has its own active state and keeps the selected revision in its address 2ms
+     → expected { label: 'Components', …(3) } to match object { label: 'Styles', …(3) }
+   ✓ the bar has no reports, analytics, activity, growth or legacy view in it 1ms
+   × at the tip of a branch the commit is the tip, said as current, and Go to tip is disabled 1ms
+     → expected '/harness/branch/feature%2Fshell%231/l…' to be '/harness/branch/feature%2Fshell%231/c…' // Object.is equality
+   ✓ at a selected commit the tip and the viewed hash differ, and Go to tip is the current route 1ms
+   ✓ both selectors are the shared select, and the bar writes no field of its own 0ms
+   × without a resolved address the bar keeps its navigation and offers nothing to choose 1ms
+     → expected 'Pages Layouts Components Models Servi…' to be 'Pages Modules Styles Configs Platforms' // Object.is equality
+   ✓ a limited history index keeps revision choices without a limitation banner 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/harness-navbar.test.ts > one bar holds the brand, repository, entity categories and the Styles screen
+AssertionError: expected [ { label: 'Pages', …(3) }, …(8) ] to deeply equal [ { label: 'Pages', …(3) }, …(4) ]
+
+- Expected
++ Received
+
+@@ -4,26 +4,50 @@
+      "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/pages",
+      "iconThenLabel": true,
+      "label": "Pages",
+    },
+    {
+-     "current": true,
++     "current": false,
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/layouts",
++     "iconThenLabel": true,
++     "label": "Layouts",
++   },
++   {
++     "current": false,
+      "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/components",
+      "iconThenLabel": true,
+-     "label": "Modules",
++     "label": "Components",
+    },
+    {
+      "current": false,
+-     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/styles",
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/models",
+      "iconThenLabel": true,
+-     "label": "Styles",
++     "label": "Models",
++   },
++   {
++     "current": false,
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/services",
++     "iconThenLabel": true,
++     "label": "Services",
+    },
+    {
++     "current": true,
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/functions",
++     "iconThenLabel": true,
++     "label": "Helpers",
++   },
++   {
+      "current": false,
+      "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/configs",
+      "iconThenLabel": true,
+      "label": "Configs",
++   },
++   {
++     "current": false,
++     "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/styles",
++     "iconThenLabel": true,
++     "label": "Styles",
+    },
+    {
+      "current": false,
+      "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/platforms",
+      "iconThenLabel": true,
+
+ ❯ test/components/harness-navbar.test.ts:68:22
+     66|  expect(html).toMatch(/^\s*<header class="hx-nav"/);
+     67|  expect(html.match(/<header\b/g)).toHaveLength(1);
+     68|  expect(links(html)).toEqual(
+       |                      ^
+     69|   ['Pages', 'Modules', 'Styles', 'Configs', 'Platforms'].map((label) =…
+     70|    label,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  test/components/harness-navbar.test.ts > Styles has its own active state and keeps the selected revision in its address
+AssertionError: expected { label: 'Components', …(3) } to match object { label: 'Styles', …(3) }
+
+- Expected
++ Received
+
+  {
+-   "current": true,
+-   "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/styles",
++   "current": false,
++   "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/components",
+    "iconThenLabel": true,
+-   "label": "Styles",
++   "label": "Components",
+  }
+
+ ❯ test/components/harness-navbar.test.ts:95:18
+     93|  const menu = links(body(styles));
+     94|  expect(menu.filter((item) => item.current).map((item) => item.label))…
+     95|  expect(menu[2]).toMatchObject({
+       |                  ^
+     96|   label: 'Styles',
+     97|   href: `${scoped}/commit/${sha(4)}/styles`,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  test/components/harness-navbar.test.ts > at the tip of a branch the commit is the tip, said as current, and Go to tip is disabled
+AssertionError: expected '/harness/branch/feature%2Fshell%231/l…' to be '/harness/branch/feature%2Fshell%231/c…' // Object.is equality
+
+Expected: "/harness/branch/feature%2Fshell%231/components"
+Received: "/harness/branch/feature%2Fshell%231/layouts"
+
+ ❯ test/components/harness-navbar.test.ts:124:30
+    122|    .map((item) => item.label)
+    123|  ).toEqual(['Pages']);
+    124|  expect(links(html)[1].href).toBe(`${scoped}/components`);
+       |                              ^
+    125| });
+    126| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  test/components/harness-navbar.test.ts > without a resolved address the bar keeps its navigation and offers nothing to choose
+AssertionError: expected 'Pages Layouts Components Models Servi…' to be 'Pages Modules Styles Configs Platforms' // Object.is equality
+
+Expected: "Pages Modules Styles Configs Platforms"
+Received: "Pages Layouts Components Models Services Helpers Configs Styles Platforms"
+
+ ❯ test/components/harness-navbar.test.ts:150:33
+    148| test('without a resolved address the bar keeps its navigation and offe…
+    149|  const html = body(null, { repository: null, index: null });
+    150|  expect(text(categories(html))).toBe('Pages Modules Styles Configs Pla…
+       |                                 ^
+    151|  expect(links(html)).toEqual([]);
+    152|  expect(categories(html).match(/aria-disabled="true"/g)).toHaveLength(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  test/utils/explorer-category.test.ts > a unit of a product kind is listed under the category of that kind
+AssertionError: missing source does not prove a model: expected 'models' to be null
+
+- Expected: 
+null
+
++ Received: 
+"models"
+
+ ❯ test/utils/explorer-category.test.ts:35:5
+     33|    explorerCategory(unit('model.unknown', 'model', { ...{ modelDefinit…
+     34|    'missing source does not prove a model'
+     35|   ).toBeNull();
+       |     ^
+     36|   expect(
+     37|    explorerCategory(unit('model.value', 'model', { ...{ modelDefinitio…
+ ❯ measureWorkload ../../test/support/measureWorkload.ts:13:23
+ ❯ test/utils/explorer-category.test.ts:24:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  test/utils/explorer-category.test.ts > the policy holds for Harness's own registry
+AssertionError: raw manifests have no source-derived declaration proof: expected [ { schemaVersion: 1, …(12) }, …(22) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [],
++       "origin": "derived",
++       "outputs": [],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "desktop.model.desktop-types",
++         "via": "import",
++       },
++     ],
++     "id": "desktop.model.agent-runner-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "packages/desktop/src/models/AgentRunner.types.ts",
++         "packages/desktop/src/models/agents-providers/AgentRunner.types.ts",
++         "packages/desktop/src/models/agents-providers/AgentRunnerValues.ts",
++       ],
++       "symbols": [
++         "RunCancelled",
++         "CliCommand",
++         "AgentTurn",
++         "AgentResult",
++         "AgentRunner",
++         "ImageRequest",
++         "GeneratedImage",
++         "ImageGenerator",
++         "RunCancelled",
++         "RunCancelled",
++         "RunCancelled.constructor",
++       ],
++     },
++     "responsibility": "Owns the AgentRunner data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "packages/desktop/src/models/agents-providers/AgentRunner.types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "packages/desktop/src/models/agents-providers/AgentRunner.types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [
++       "desktop-native",
++       "desktop-project-runs",
++     ],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "AgentRunner",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "deploymentEnvironments",
++           "type": "unknown",
++         },
++         {
++           "name": "deploymentSteps",
++           "type": "unknown",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "desktop.model.project-context-types",
++         "via": "import",
++       },
++     ],
++     "id": "desktop.model.deployment-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "packages/desktop/src/models/Deployment.types.ts",
++         "packages/desktop/src/models/development-tooling/Deployment.types.ts",
++         "packages/desktop/src/models/development-tooling/DeploymentValues.ts",
++       ],
++       "symbols": [
++         "DeploymentEnvironment",
++         "DeploymentReceipt",
++         "DeploymentStatus",
++         "DeploymentProgress",
++         "DeploymentStep",
++         "DeploymentActivity",
++         "ProductionPromotion",
++         "DeploymentPlan",
++         "DeploymentQuery",
++         "DeployInput",
++         "DeployCommand",
++         "DeployExecutor",
++         "CloudflareTarget",
++         "DeploymentConfig",
++         "DeploymentPlugin",
++         "DeploymentBridge",
++         "deploymentEnvironments",
++         "deploymentSteps",
++         "deploymentEnvironments",
++         "deploymentSteps",
++       ],
++     },
++     "responsibility": "Owns the Deployment data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "packages/desktop/src/models/development-tooling/Deployment.types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "packages/desktop/src/models/development-tooling/Deployment.types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "Deployment",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "channels",
++           "type": "unknown",
++         },
++         {
++           "name": "runEventChannel",
++           "type": "unknown",
++         },
++         {
++           "name": "cacheEventChannel",
++           "type": "unknown",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "desktop.model.deployment-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "desktop.model.desktop-evidence-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "desktop.model.desktop-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "desktop.model.game-desktop-bridge-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "desktop.model.project-context-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "desktop.model.project-task-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "desktop.model.run-context-types",
++         "via": "import",
++       },
++       {
++         "contract": "IPC planning DTOs preserve public versions, approvals, anchors and change targets.",
++         "origin": "declared",
++         "unit": "planning.entry.index",
++         "via": "contract",
++       },
++     ],
++     "id": "desktop.model.desktop-bridge-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "packages/desktop/src/models/DesktopBridge.types.ts",
++         "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
++         "packages/desktop/src/models/development-tooling/DesktopBridgeValues.ts",
++       ],
++       "symbols": [
++         "channels",
++         "runEventChannel",
++         "cacheEventChannel",
++         "ChannelName",
++         "RevisionQuery",
++         "EntityQuery",
++         "SourceQuery",
++         "SourceFile",
++         "ImageQuery",
++         "ProposedContract",
++         "PlanDraft",
++         "ThreadDraft",
++         "ThreadQuery",
++         "ApprovalDraft",
++         "RunRequest",
++         "ProjectRunRequest",
++         "DesktopBridge",
++         "CreatedEntity",
++         "RunPhase",
++         "RunEvent",
++         "ProjectTaskRequest",
++         "channels",
++         "runEventChannel",
++         "cacheEventChannel",
++         "CreatedEntity",
++         "RunPhase",
++         "RunEvent",
++         "ProjectTaskRequest",
++         "channels",
++         "runEventChannel",
++         "cacheEventChannel",
++       ],
++     },
++     "responsibility": "Owns the DesktopBridge data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [
++       "desktop-native",
++       "desktop-project-runs",
++       "desktop-renderer",
++       "agent-creation",
++     ],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "DesktopBridge",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "categories",
++           "type": "unknown",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "desktop.model.design-version-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "desktop.model.project-context-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "function.unit-documentation",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "module.contracts",
++         "via": "import",
++       },
++     ],
++     "id": "desktop.model.desktop-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "packages/desktop/src/models/Desktop.types.ts",
++         "packages/desktop/src/models/development-tooling/Desktop.types.ts",
++         "packages/desktop/src/models/development-tooling/DesktopValues.ts",
++       ],
++       "symbols": [
++         "categories",
++         "Category",
++         "ProviderId",
++         "RunMode",
++         "Verification",
++         "Region",
++         "ModelChoice",
++         "ProviderState",
++         "BranchInfo",
++         "CommitInfo",
++         "Revision",
++         "ApprovalInfo",
++         "ThreadInfo",
++         "ThreadMessage",
++         "ContractField",
++         "EntityContract",
++         "Relationship",
++         "HistoryEvent",
++         "DesignThumbnail",
++         "Thumbnail",
++         "CatalogEntity",
++         "Measure",
++         "EntityDetail",
++         "ProjectSnapshot",
++         "SourceChange",
++         "DesignImage",
++         "DesignOptionInfo",
++         "DesignRevision",
++         "DesignVersion",
++         "categories",
++         "DesignImage",
++         "DesignOptionInfo",
++         "DesignRevision",
++         "DesignVersion",
++         "categories",
++       ],
++     },
++     "responsibility": "Owns the Desktop data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "packages/desktop/src/models/development-tooling/Desktop.types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "packages/desktop/src/models/development-tooling/Desktop.types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [
++       "desktop-native",
++       "desktop-project-runs",
++       "shells-shared-app",
++       "hosted-design-options",
++     ],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "Desktop",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "remoteContext",
++           "type": "unknown",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "desktop.model.desktop-bridge-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "desktop.model.project-context-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "remote.model.remote-control-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "remote.model.remote-types",
++         "via": "import",
++       },
++     ],
++     "id": "desktop.model.environment-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "packages/desktop/src/models/Environment.types.ts",
++         "packages/desktop/src/models/development-tooling/Environment.types.ts",
++         "packages/desktop/src/models/development-tooling/EnvironmentValues.ts",
++       ],
++       "symbols": [
++         "remoteContext",
++         "EnvironmentKind",
++         "RemotePorts",
++         "Environment",
++         "EnvironmentHost",
++         "ScanInput",
++         "RemoteNativeStatus",
++         "RemoteNativeAnswer",
++         "RemoteNativeEvent",
++         "RemoteNativeEvents",
++         "RemoteNativePlugin",
++         "AccountNativeCall",
++         "AccountNativeReply",
++         "AccountNativeStatus",
++         "AccountNativePlugin",
++         "RemoteBinary",
++         "RemoteGrant",
++         "RemoteMethod",
++         "RemoteRevision",
++         "WireChannel",
++         "RemoteDesktopControl",
++         "RemoteDeviceInfo",
++         "RemoteHostStatus",
++         "RemoteMobileControl",
++         "RemoteMobileStatus",
++         "RemotePairingOffer",
++         "RemotePairingRequest",
++         "remoteContext",
++         "RemoteBinary",
++         "RemoteGrant",
++         "RemoteMethod",
++         "RemoteRevision",
++         "WireChannel",
++         "RemoteDesktopControl",
++         "RemoteDeviceInfo",
++         "RemoteHostStatus",
++         "RemoteMobileControl",
++         "RemoteMobileStatus",
++         "RemotePairingOffer",
++         "RemotePairingRequest",
++         "remoteContext",
++       ],
++     },
++     "responsibility": "Owns the Environment data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "packages/desktop/src/models/development-tooling/Environment.types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "packages/desktop/src/models/development-tooling/Environment.types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [
++       "remote-mobile-native",
++       "remote-mobile-ui",
++     ],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "Environment",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "EMAIL_CODE_LENGTH",
++           "type": "unknown",
++         },
++         {
++           "name": "NATIVE_AUDIENCE",
++           "type": "unknown",
++         },
++         {
++           "name": "NATIVE_ACTION",
++           "type": "unknown",
++         },
++       ],
++     },
++     "dependencies": [],
++     "id": "hub.model.hub-auth-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "packages/hub/src/models/HubAuth.types.ts",
++         "packages/hub/src/models/accounts-access/HubAuth.types.ts",
++         "packages/hub/src/models/accounts-access/HubAuthValues.ts",
++       ],
++       "symbols": [
++         "EMAIL_CODE_LENGTH",
++         "NATIVE_AUDIENCE",
++         "NATIVE_ACTION",
++         "HubEnvironment",
++         "AuthEnv",
++         "InstallationTokenInput",
++         "HubAuth",
++         "AuthFailureCode",
++         "EmailProofStatus",
++         "AuthStatus",
++         "SignInResult",
++         "EmailProofMessage",
++         "EmailProofDelivery",
++         "AuthChallenge",
++         "GoogleSignInInput",
++         "GithubStatus",
++         "GithubRepositoryOption",
++         "GithubRepositories",
++         "NativeStartInput",
++         "NativeStartResult",
++         "NativeApproveInput",
++         "NativePollResult",
++         "NativeExchangeInput",
++         "NativeAuthorization",
++         "EMAIL_CODE_LENGTH",
++         "NATIVE_AUDIENCE",
++         "NATIVE_ACTION",
++         "EMAIL_CODE_LENGTH",
++         "NATIVE_AUDIENCE",
++         "NATIVE_ACTION",
++       ],
++     },
++     "responsibility": "Owns the HubAuth data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "packages/hub/src/models/accounts-access/HubAuth.types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "packages/hub/src/models/accounts-access/HubAuth.types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "HubAuth",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "createSqliteAdapter.db",
++           "type": "SqliteDatabase",
++         },
++         {
++           "name": "createSqliteAdapter.models",
++           "type": "readonly SqliteModel[]",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "createSqliteAdapter",
++           "type": "unknown",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "adapter.sqlite",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "import",
++       },
++     ],
++     "id": "model.adapters-sqlite",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/adapters/sqlite.ts",
++       ],
++       "symbols": [
++         "createSqliteAdapter",
++       ],
++     },
++     "responsibility": "Owns the sqlite data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/adapters/sqlite.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/adapters/sqlite.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "sqlite",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [],
++       "origin": "derived",
++       "outputs": [],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "reexport",
++       },
++     ],
++     "id": "model.adapters-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/adapters/types.ts",
++       ],
++       "symbols": [
++         "PersistenceAdapter",
++       ],
++     },
++     "responsibility": "Owns the types data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/adapters/types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/adapters/types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "types",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "AnalyticsEvent.find.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "AnalyticsEvent.find.id",
++           "type": "string",
++         },
++         {
++           "name": "AnalyticsEvent.findBy.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "AnalyticsEvent.findBy.fields",
++           "type": "Partial<AnalyticsEventAttributes>",
++         },
++         {
++           "name": "AnalyticsEvent.create.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "AnalyticsEvent.create.input",
++           "type": "AnalyticsEventCreateInput",
++         },
++         {
++           "name": "AnalyticsEvent.update.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "AnalyticsEvent.update.id",
++           "type": "string",
++         },
++         {
++           "name": "AnalyticsEvent.update.input",
++           "type": "AnalyticsEventUpdateInput",
++         },
++         {
++           "name": "AnalyticsEvent.delete.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "AnalyticsEvent.delete.id",
++           "type": "string",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "AnalyticsEvent.find",
++           "type": "Promise<AnalyticsEventAttributes | null>",
++         },
++         {
++           "name": "AnalyticsEvent.findBy",
++           "type": "Promise<AnalyticsEventAttributes[]>",
++         },
++         {
++           "name": "AnalyticsEvent.create",
++           "type": "Promise<AnalyticsEventAttributes>",
++         },
++         {
++           "name": "AnalyticsEvent.update",
++           "type": "Promise<AnalyticsEventAttributes | null>",
++         },
++         {
++           "name": "AnalyticsEvent.delete",
++           "type": "Promise<boolean>",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "model.analytics-event-types",
++         "via": "import",
++       },
++     ],
++     "id": "model.analytics-event",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/reports-media/AnalyticsEvent.ts",
++       ],
++       "symbols": [
++         "AnalyticsEvent",
++         "AnalyticsEvent.find",
++         "AnalyticsEvent.findBy",
++         "AnalyticsEvent.create",
++         "AnalyticsEvent.update",
++         "AnalyticsEvent.delete",
++       ],
++     },
++     "responsibility": "Owns the AnalyticsEvent data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/reports-media/AnalyticsEvent.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/reports-media/AnalyticsEvent.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "AnalyticsEvent",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "CatalogBranch.find.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogBranch.find.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogBranch.findBy.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogBranch.findBy.fields",
++           "type": "Partial<CatalogBranchAttributes>",
++         },
++         {
++           "name": "CatalogBranch.create.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogBranch.create.input",
++           "type": "CatalogBranchCreateInput",
++         },
++         {
++           "name": "CatalogBranch.update.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogBranch.update.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogBranch.update.input",
++           "type": "CatalogBranchUpdateInput",
++         },
++         {
++           "name": "CatalogBranch.delete.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogBranch.delete.id",
++           "type": "string",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "CatalogBranch.find",
++           "type": "Promise<CatalogBranchAttributes | null>",
++         },
++         {
++           "name": "CatalogBranch.findBy",
++           "type": "Promise<CatalogBranchAttributes[]>",
++         },
++         {
++           "name": "CatalogBranch.create",
++           "type": "Promise<CatalogBranchAttributes>",
++         },
++         {
++           "name": "CatalogBranch.update",
++           "type": "Promise<CatalogBranchAttributes | null>",
++         },
++         {
++           "name": "CatalogBranch.delete",
++           "type": "Promise<boolean>",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "model.catalog-branch-types",
++         "via": "import",
++       },
++     ],
++     "id": "model.catalog-branch",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/git-source-history/CatalogBranch.ts",
++       ],
++       "symbols": [
++         "CatalogBranch",
++         "CatalogBranch.find",
++         "CatalogBranch.findBy",
++         "CatalogBranch.create",
++         "CatalogBranch.update",
++         "CatalogBranch.delete",
++       ],
++     },
++     "responsibility": "Owns the CatalogBranch data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/git-source-history/CatalogBranch.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/git-source-history/CatalogBranch.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "CatalogBranch",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "CatalogDependency.find.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogDependency.find.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogDependency.findBy.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogDependency.findBy.fields",
++           "type": "Partial<CatalogDependencyAttributes>",
++         },
++         {
++           "name": "CatalogDependency.create.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogDependency.create.input",
++           "type": "CatalogDependencyCreateInput",
++         },
++         {
++           "name": "CatalogDependency.update.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogDependency.update.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogDependency.update.input",
++           "type": "CatalogDependencyUpdateInput",
++         },
++         {
++           "name": "CatalogDependency.delete.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogDependency.delete.id",
++           "type": "string",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "CatalogDependency.find",
++           "type": "Promise<CatalogDependencyAttributes | null>",
++         },
++         {
++           "name": "CatalogDependency.findBy",
++           "type": "Promise<CatalogDependencyAttributes[]>",
++         },
++         {
++           "name": "CatalogDependency.create",
++           "type": "Promise<CatalogDependencyAttributes>",
++         },
++         {
++           "name": "CatalogDependency.update",
++           "type": "Promise<CatalogDependencyAttributes | null>",
++         },
++         {
++           "name": "CatalogDependency.delete",
++           "type": "Promise<boolean>",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "model.catalog-dependency-types",
++         "via": "import",
++       },
++     ],
++     "id": "model.catalog-dependency",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/git-source-history/CatalogDependency.ts",
++       ],
++       "symbols": [
++         "CatalogDependency",
++         "CatalogDependency.find",
++         "CatalogDependency.findBy",
++         "CatalogDependency.create",
++         "CatalogDependency.update",
++         "CatalogDependency.delete",
++       ],
++     },
++     "responsibility": "Owns the CatalogDependency data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/git-source-history/CatalogDependency.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/git-source-history/CatalogDependency.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "CatalogDependency",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "CatalogEntity.find.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogEntity.find.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogEntity.findBy.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogEntity.findBy.fields",
++           "type": "Partial<CatalogEntityAttributes>",
++         },
++         {
++           "name": "CatalogEntity.create.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogEntity.create.input",
++           "type": "CatalogEntityCreateInput",
++         },
++         {
++           "name": "CatalogEntity.update.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogEntity.update.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogEntity.update.input",
++           "type": "CatalogEntityUpdateInput",
++         },
++         {
++           "name": "CatalogEntity.delete.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogEntity.delete.id",
++           "type": "string",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "CatalogEntity.find",
++           "type": "Promise<CatalogEntityAttributes | null>",
++         },
++         {
++           "name": "CatalogEntity.findBy",
++           "type": "Promise<CatalogEntityAttributes[]>",
++         },
++         {
++           "name": "CatalogEntity.create",
++           "type": "Promise<CatalogEntityAttributes>",
++         },
++         {
++           "name": "CatalogEntity.update",
++           "type": "Promise<CatalogEntityAttributes | null>",
++         },
++         {
++           "name": "CatalogEntity.delete",
++           "type": "Promise<boolean>",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "model.catalog-entity-types",
++         "via": "import",
++       },
++     ],
++     "id": "model.catalog-entity",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/git-source-history/CatalogEntity.ts",
++       ],
++       "symbols": [
++         "CatalogEntity",
++         "CatalogEntity.find",
++         "CatalogEntity.findBy",
++         "CatalogEntity.create",
++         "CatalogEntity.update",
++         "CatalogEntity.delete",
++       ],
++     },
++     "responsibility": "Owns the CatalogEntity data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/git-source-history/CatalogEntity.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/git-source-history/CatalogEntity.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "CatalogEntity",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "CatalogMetadata.find.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogMetadata.find.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogMetadata.findBy.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogMetadata.findBy.fields",
++           "type": "Partial<CatalogMetadataAttributes>",
++         },
++         {
++           "name": "CatalogMetadata.create.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogMetadata.create.input",
++           "type": "CatalogMetadataCreateInput",
++         },
++         {
++           "name": "CatalogMetadata.update.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogMetadata.update.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogMetadata.update.input",
++           "type": "CatalogMetadataUpdateInput",
++         },
++         {
++           "name": "CatalogMetadata.delete.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogMetadata.delete.id",
++           "type": "string",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "CatalogMetadata.find",
++           "type": "Promise<CatalogMetadataAttributes | null>",
++         },
++         {
++           "name": "CatalogMetadata.findBy",
++           "type": "Promise<CatalogMetadataAttributes[]>",
++         },
++         {
++           "name": "CatalogMetadata.create",
++           "type": "Promise<CatalogMetadataAttributes>",
++         },
++         {
++           "name": "CatalogMetadata.update",
++           "type": "Promise<CatalogMetadataAttributes | null>",
++         },
++         {
++           "name": "CatalogMetadata.delete",
++           "type": "Promise<boolean>",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "model.catalog-metadata-types",
++         "via": "import",
++       },
++     ],
++     "id": "model.catalog-metadata",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/git-source-history/CatalogMetadata.ts",
++       ],
++       "symbols": [
++         "CatalogMetadata",
++         "CatalogMetadata.find",
++         "CatalogMetadata.findBy",
++         "CatalogMetadata.create",
++         "CatalogMetadata.update",
++         "CatalogMetadata.delete",
++       ],
++     },
++     "responsibility": "Owns the CatalogMetadata data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/git-source-history/CatalogMetadata.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/git-source-history/CatalogMetadata.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "CatalogMetadata",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "CatalogRecord.find.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRecord.find.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogRecord.findBy.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRecord.findBy.fields",
++           "type": "Partial<CatalogRecordAttributes>",
++         },
++         {
++           "name": "CatalogRecord.create.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRecord.create.input",
++           "type": "CatalogRecordCreateInput",
++         },
++         {
++           "name": "CatalogRecord.update.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRecord.update.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogRecord.update.input",
++           "type": "CatalogRecordUpdateInput",
++         },
++         {
++           "name": "CatalogRecord.delete.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRecord.delete.id",
++           "type": "string",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "CatalogRecord.find",
++           "type": "Promise<CatalogRecordAttributes | null>",
++         },
++         {
++           "name": "CatalogRecord.findBy",
++           "type": "Promise<CatalogRecordAttributes[]>",
++         },
++         {
++           "name": "CatalogRecord.create",
++           "type": "Promise<CatalogRecordAttributes>",
++         },
++         {
++           "name": "CatalogRecord.update",
++           "type": "Promise<CatalogRecordAttributes | null>",
++         },
++         {
++           "name": "CatalogRecord.delete",
++           "type": "Promise<boolean>",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "model.catalog-record-types",
++         "via": "import",
++       },
++     ],
++     "id": "model.catalog-record",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/git-source-history/CatalogRecord.ts",
++       ],
++       "symbols": [
++         "CatalogRecord",
++         "CatalogRecord.find",
++         "CatalogRecord.findBy",
++         "CatalogRecord.create",
++         "CatalogRecord.update",
++         "CatalogRecord.delete",
++       ],
++     },
++     "responsibility": "Owns the CatalogRecord data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/git-source-history/CatalogRecord.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/git-source-history/CatalogRecord.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "CatalogRecord",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "CatalogRevisionEntity.find.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRevisionEntity.find.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogRevisionEntity.findBy.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRevisionEntity.findBy.fields",
++           "type": "Partial<CatalogRevisionEntityAttributes>",
++         },
++         {
++           "name": "CatalogRevisionEntity.create.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRevisionEntity.create.input",
++           "type": "CatalogRevisionEntityCreateInput",
++         },
++         {
++           "name": "CatalogRevisionEntity.update.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRevisionEntity.update.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogRevisionEntity.update.input",
++           "type": "CatalogRevisionEntityUpdateInput",
++         },
++         {
++           "name": "CatalogRevisionEntity.delete.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRevisionEntity.delete.id",
++           "type": "string",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "CatalogRevisionEntity.find",
++           "type": "Promise<CatalogRevisionEntityAttributes | null>",
++         },
++         {
++           "name": "CatalogRevisionEntity.findBy",
++           "type": "Promise<CatalogRevisionEntityAttributes[]>",
++         },
++         {
++           "name": "CatalogRevisionEntity.create",
++           "type": "Promise<CatalogRevisionEntityAttributes>",
++         },
++         {
++           "name": "CatalogRevisionEntity.update",
++           "type": "Promise<CatalogRevisionEntityAttributes | null>",
++         },
++         {
++           "name": "CatalogRevisionEntity.delete",
++           "type": "Promise<boolean>",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "model.catalog-revision-entity-types",
++         "via": "import",
++       },
++     ],
++     "id": "model.catalog-revision-entity",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/git-source-history/CatalogRevisionEntity.ts",
++       ],
++       "symbols": [
++         "CatalogRevisionEntity",
++         "CatalogRevisionEntity.find",
++         "CatalogRevisionEntity.findBy",
++         "CatalogRevisionEntity.create",
++         "CatalogRevisionEntity.update",
++         "CatalogRevisionEntity.delete",
++       ],
++     },
++     "responsibility": "Owns the CatalogRevisionEntity data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/git-source-history/CatalogRevisionEntity.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/git-source-history/CatalogRevisionEntity.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "CatalogRevisionEntity",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "CatalogRevision.find.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRevision.find.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogRevision.findBy.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRevision.findBy.fields",
++           "type": "Partial<CatalogRevisionAttributes>",
++         },
++         {
++           "name": "CatalogRevision.create.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRevision.create.input",
++           "type": "CatalogRevisionCreateInput",
++         },
++         {
++           "name": "CatalogRevision.update.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRevision.update.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogRevision.update.input",
++           "type": "CatalogRevisionUpdateInput",
++         },
++         {
++           "name": "CatalogRevision.delete.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogRevision.delete.id",
++           "type": "string",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "CatalogRevision.find",
++           "type": "Promise<CatalogRevisionAttributes | null>",
++         },
++         {
++           "name": "CatalogRevision.findBy",
++           "type": "Promise<CatalogRevisionAttributes[]>",
++         },
++         {
++           "name": "CatalogRevision.create",
++           "type": "Promise<CatalogRevisionAttributes>",
++         },
++         {
++           "name": "CatalogRevision.update",
++           "type": "Promise<CatalogRevisionAttributes | null>",
++         },
++         {
++           "name": "CatalogRevision.delete",
++           "type": "Promise<boolean>",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "model.catalog-revision-types",
++         "via": "import",
++       },
++     ],
++     "id": "model.catalog-revision",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/git-source-history/CatalogRevision.ts",
++       ],
++       "symbols": [
++         "CatalogRevision",
++         "CatalogRevision.find",
++         "CatalogRevision.findBy",
++         "CatalogRevision.create",
++         "CatalogRevision.update",
++         "CatalogRevision.delete",
++       ],
++     },
++     "responsibility": "Owns the CatalogRevision data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/git-source-history/CatalogRevision.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/git-source-history/CatalogRevision.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "CatalogRevision",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "CatalogScenario.find.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogScenario.find.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogScenario.findBy.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogScenario.findBy.fields",
++           "type": "Partial<CatalogScenarioAttributes>",
++         },
++         {
++           "name": "CatalogScenario.create.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogScenario.create.input",
++           "type": "CatalogScenarioCreateInput",
++         },
++         {
++           "name": "CatalogScenario.update.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogScenario.update.id",
++           "type": "string",
++         },
++         {
++           "name": "CatalogScenario.update.input",
++           "type": "CatalogScenarioUpdateInput",
++         },
++         {
++           "name": "CatalogScenario.delete.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "CatalogScenario.delete.id",
++           "type": "string",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "CatalogScenario.find",
++           "type": "Promise<CatalogScenarioAttributes | null>",
++         },
++         {
++           "name": "CatalogScenario.findBy",
++           "type": "Promise<CatalogScenarioAttributes[]>",
++         },
++         {
++           "name": "CatalogScenario.create",
++           "type": "Promise<CatalogScenarioAttributes>",
++         },
++         {
++           "name": "CatalogScenario.update",
++           "type": "Promise<CatalogScenarioAttributes | null>",
++         },
++         {
++           "name": "CatalogScenario.delete",
++           "type": "Promise<boolean>",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "model.catalog-scenario-types",
++         "via": "import",
++       },
++     ],
++     "id": "model.catalog-scenario",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/git-source-history/CatalogScenario.ts",
++       ],
++       "symbols": [
++         "CatalogScenario",
++         "CatalogScenario.find",
++         "CatalogScenario.findBy",
++         "CatalogScenario.create",
++         "CatalogScenario.update",
++         "CatalogScenario.delete",
++       ],
++     },
++     "responsibility": "Owns the CatalogScenario data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/git-source-history/CatalogScenario.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/git-source-history/CatalogScenario.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "CatalogScenario",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "ProviderSwitch.find.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "ProviderSwitch.find.id",
++           "type": "string",
++         },
++         {
++           "name": "ProviderSwitch.findBy.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "ProviderSwitch.findBy.fields",
++           "type": "Partial<ProviderSwitchAttributes>",
++         },
++         {
++           "name": "ProviderSwitch.create.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "ProviderSwitch.create.input",
++           "type": "ProviderSwitchCreateInput",
++         },
++         {
++           "name": "ProviderSwitch.update.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "ProviderSwitch.update.id",
++           "type": "string",
++         },
++         {
++           "name": "ProviderSwitch.update.input",
++           "type": "ProviderSwitchUpdateInput",
++         },
++         {
++           "name": "ProviderSwitch.delete.adapter",
++           "type": "PersistenceAdapter",
++         },
++         {
++           "name": "ProviderSwitch.delete.id",
++           "type": "string",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "ProviderSwitch.find",
++           "type": "Promise<ProviderSwitchAttributes | null>",
++         },
++         {
++           "name": "ProviderSwitch.findBy",
++           "type": "Promise<ProviderSwitchAttributes[]>",
++         },
++         {
++           "name": "ProviderSwitch.create",
++           "type": "Promise<ProviderSwitchAttributes>",
++         },
++         {
++           "name": "ProviderSwitch.update",
++           "type": "Promise<ProviderSwitchAttributes | null>",
++         },
++         {
++           "name": "ProviderSwitch.delete",
++           "type": "Promise<boolean>",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "function.sqlite-types",
++         "via": "import",
++       },
++       {
++         "origin": "derived",
++         "unit": "model.provider-switch-types",
++         "via": "import",
++       },
++     ],
++     "id": "model.provider-switch",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "src/models/agents-providers/ProviderSwitch.ts",
++       ],
++       "symbols": [
++         "ProviderSwitch",
++         "ProviderSwitch.find",
++         "ProviderSwitch.findBy",
++         "ProviderSwitch.create",
++         "ProviderSwitch.update",
++         "ProviderSwitch.delete",
++       ],
++     },
++     "responsibility": "Owns the ProviderSwitch data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "src/models/agents-providers/ProviderSwitch.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "src/models/agents-providers/ProviderSwitch.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "ProviderSwitch",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "remoteScanFailures",
++           "type": "unknown",
++         },
++       ],
++     },
++     "dependencies": [],
++     "id": "remote.model.remote-control-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "packages/remote/src/models/RemoteControl.types.ts",
++         "packages/remote/src/models/networking-security/RemoteControl.types.ts",
++         "packages/remote/src/models/networking-security/RemoteControlValues.ts",
++       ],
++       "symbols": [
++         "remoteScanFailures",
++         "RemoteRevision",
++         "RemoteGrant",
++         "RemoteConnectionEvent",
++         "RemotePairingOffer",
++         "RemotePairingRequest",
++         "RemoteDeviceInfo",
++         "RemoteHostState",
++         "RemoteHostStatus",
++         "RemoteApprovalInput",
++         "RemoteDesktopControl",
++         "RemoteMobileState",
++         "RemoteMobileStatus",
++         "RemotePairInput",
++         "RemoteScanInput",
++         "RemoteScanFailure",
++         "RemoteMobileControl",
++         "remoteScanFailures",
++         "remoteScanFailures",
++       ],
++     },
++     "responsibility": "Owns the RemoteControl data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "packages/remote/src/models/networking-security/RemoteControl.types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "packages/remote/src/models/networking-security/RemoteControl.types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [
++       "remote-desktop-boundaries",
++     ],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "RemoteControl",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "localTransport",
++           "type": "unknown",
++         },
++       ],
++     },
++     "dependencies": [],
++     "id": "remote.model.remote-local-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "packages/remote/src/models/RemoteLocal.types.ts",
++         "packages/remote/src/models/networking-security/RemoteLocal.types.ts",
++         "packages/remote/src/models/networking-security/RemoteLocalValues.ts",
++       ],
++       "symbols": [
++         "localTransport",
++         "LocalBootstrap",
++         "WirePart",
++         "localTransport",
++         "localTransport",
++       ],
++     },
++     "responsibility": "Owns the RemoteLocal data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "packages/remote/src/models/networking-security/RemoteLocal.types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "packages/remote/src/models/networking-security/RemoteLocal.types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [
++       "remote-desktop-boundaries",
++     ],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "RemoteLocal",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "relayCloseCodes",
++           "type": "unknown",
++         },
++         {
++           "name": "relayHeaders",
++           "type": "unknown",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "remote.model.remote-secure-types",
++         "via": "import",
++       },
++     ],
++     "id": "remote.model.remote-relay-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "packages/remote/src/models/RemoteRelay.types.ts",
++         "packages/remote/src/models/networking-security/RemoteRelay.types.ts",
++         "packages/remote/src/models/networking-security/RemoteRelayValues.ts",
++       ],
++       "symbols": [
++         "relayCloseCodes",
++         "relayHeaders",
++         "RelayErrorCode",
++         "RelayPairingState",
++         "RelayPairingInfo",
++         "RelayPairingRequest",
++         "RelayPairingPoll",
++         "RelayPairingExchange",
++         "RelayNotice",
++         "RelayHostFrame",
++         "RelayHostCommand",
++         "RelayManageOwner",
++         "RelayManageRegister",
++         "RelayManageDevice",
++         "RelayRegistered",
++         "RemoteHostRegistration",
++         "RemoteHostRegisterInput",
++         "RemoteHostSummary",
++         "relayCloseCodes",
++         "relayHeaders",
++         "relayCloseCodes",
++         "relayHeaders",
++       ],
++     },
++     "responsibility": "Owns the RemoteRelay data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "packages/remote/src/models/networking-security/RemoteRelay.types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "packages/remote/src/models/networking-security/RemoteRelay.types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [
++       "remote-desktop-boundaries",
++     ],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "RemoteRelay",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "SecureFailure.constructor.reason",
++           "type": "SecureFailureReason",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "remote.model.remote-types",
++         "via": "import",
++       },
++     ],
++     "id": "remote.model.remote-secure-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "packages/remote/src/models/RemoteSecure.types.ts",
++         "packages/remote/src/models/networking-security/RemoteSecure.types.ts",
++         "packages/remote/src/models/networking-security/RemoteSecureValues.ts",
++       ],
++       "symbols": [
++         "SecureFailure",
++         "RemoteKeyPair",
++         "StoredRemoteKeys",
++         "SecureRole",
++         "SecureDirection",
++         "SessionKeys",
++         "SecureHello",
++         "SecureAccept",
++         "SecureReject",
++         "SecureSealed",
++         "SecurePacket",
++         "PairingSecret",
++         "PairingApproval",
++         "SecureFailureReason",
++         "SecureFailure",
++         "SecureFailure",
++         "SecureFailure.constructor",
++       ],
++     },
++     "responsibility": "Owns the RemoteSecure data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "packages/remote/src/models/networking-security/RemoteSecure.types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "packages/remote/src/models/networking-security/RemoteSecure.types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [
++       "remote-desktop-boundaries",
++     ],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "RemoteSecure",
++   },
++   {
++     "budgets": {
++       "complexity": "frozen",
++       "performance": [],
++       "size": "frozen",
++     },
++     "contract": {
++       "errors": [],
++       "inputs": [
++         {
++           "name": "RemoteFailure.constructor.code",
++           "type": "RemoteErrorCode",
++         },
++         {
++           "name": "RemoteFailure.constructor.message",
++           "type": "string",
++         },
++       ],
++       "origin": "derived",
++       "outputs": [
++         {
++           "name": "REMOTE_PROTOCOL",
++           "type": "unknown",
++         },
++         {
++           "name": "remoteLimits",
++           "type": "unknown",
++         },
++         {
++           "name": "attachMethod",
++           "type": "unknown",
++         },
++         {
++           "name": "readMethods",
++           "type": "unknown",
++         },
++         {
++           "name": "commentMethods",
++           "type": "unknown",
++         },
++         {
++           "name": "agentMethods",
++           "type": "unknown",
++         },
++         {
++           "name": "localMethods",
++           "type": "unknown",
++         },
++         {
++           "name": "controlMethods",
++           "type": "unknown",
++         },
++         {
++           "name": "remoteMethods",
++           "type": "unknown",
++         },
++         {
++           "name": "revisionMethods",
++           "type": "readonly RemoteMethod[]",
++         },
++         {
++           "name": "projectlessMethods",
++           "type": "readonly RemoteMethod[]",
++         },
++         {
++           "name": "mutationMethods",
++           "type": "readonly RemoteMethod[]",
++         },
++         {
++           "name": "remoteErrorMessages",
++           "type": "unknown",
++         },
++       ],
++     },
++     "dependencies": [
++       {
++         "origin": "derived",
++         "unit": "remote.model.remote-control-types",
++         "via": "import",
++       },
++     ],
++     "id": "remote.model.remote-types",
++     "kind": "model",
++     "owns": {
++       "source": [
++         "packages/remote/src/models/Remote.types.ts",
++         "packages/remote/src/models/networking-security/Remote.types.ts",
++         "packages/remote/src/models/networking-security/RemoteValues.ts",
++       ],
++       "symbols": [
++         "REMOTE_PROTOCOL",
++         "remoteLimits",
++         "attachMethod",
++         "readMethods",
++         "commentMethods",
++         "agentMethods",
++         "localMethods",
++         "controlMethods",
++         "remoteMethods",
++         "revisionMethods",
++         "projectlessMethods",
++         "mutationMethods",
++         "remoteErrorMessages",
++         "RemoteFailure",
++         "RemoteLimits",
++         "RemoteMethod",
++         "RemoteErrorCode",
++         "RemoteError",
++         "WireChannel",
++         "WireRequest",
++         "WireResponse",
++         "WireEvent",
++         "WireMessage",
++         "RemoteResume",
++         "AttachInput",
++         "RemoteAttachment",
++         "RemoteBinary",
++         "RemoteConnectionEvent",
++         "RemoteGrant",
++         "RemoteRevision",
++         "REMOTE_PROTOCOL",
++         "remoteLimits",
++         "attachMethod",
++         "readMethods",
++         "commentMethods",
++         "agentMethods",
++         "localMethods",
++         "controlMethods",
++         "remoteMethods",
++         "revisionMethods",
++         "projectlessMethods",
++         "mutationMethods",
++         "remoteErrorMessages",
++         "RemoteFailure",
++         "RemoteConnectionEvent",
++         "RemoteGrant",
++         "RemoteRevision",
++         "REMOTE_PROTOCOL",
++         "remoteLimits",
++         "attachMethod",
++         "readMethods",
++         "commentMethods",
++         "agentMethods",
++         "localMethods",
++         "controlMethods",
++         "remoteMethods",
++         "revisionMethods",
++         "projectlessMethods",
++         "mutationMethods",
++         "remoteErrorMessages",
++         "RemoteFailure",
++         "RemoteFailure.constructor",
++       ],
++     },
++     "responsibility": "Owns the Remote data model.",
++     "responsibilityOrigin": "derived",
++     "runtime": {
++       "entry": "packages/remote/src/models/networking-security/Remote.types.ts",
++       "kind": "module",
++       "targets": [
++         {
++           "entry": "packages/remote/src/models/networking-security/Remote.types.ts",
++           "kind": "module",
++         },
++       ],
++     },
++     "scenarios": [
++       "remote-desktop-boundaries",
++     ],
++     "schemaVersion": 1,
++     "status": "active",
++     "title": "Remote",
++   },
++ ]
+
+ ❯ test/utils/explorer-category.test.ts:180:86
+    178|  }
+    179|  for (const category of ['functions', 'models', 'types'])
+    180|   expect(listed(category), 'raw manifests have no source-derived decla…
+       |                                                                                      ^
+    181|  for (const category of explorerCategories.filter(
+    182|   (kind) => !['functions', 'models', 'types'].includes(kind)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > the bar groups module categories under five scoped primary destinations
+AssertionError: expected [ [ 'pages', 'Pages', 'pages' ], …(8) ] to deeply equal [ [ 'pages', 'Pages', 'pages' ], …(4) ]
+
+- Expected
++ Received
+
+@@ -3,23 +3,43 @@
+      "pages",
+      "Pages",
+      "pages",
+    ],
+    [
+-     "modules",
+-     "Modules",
+-     "layers",
++     "layouts",
++     "Layouts",
++     "layouts",
+    ],
+    [
+-     "styles",
+-     "Styles",
+-     "styles",
++     "components",
++     "Components",
++     "components",
++   ],
++   [
++     "models",
++     "Models",
++     "database",
+    ],
+    [
++     "services",
++     "Services",
++     "services",
++   ],
++   [
++     "functions",
++     "Helpers",
++     "functions",
++   ],
++   [
+      "configs",
+      "Configs",
+      "configs",
++   ],
++   [
++     "styles",
++     "Styles",
++     "styles",
+    ],
+    [
+      "platforms",
+      "Platforms",
+      "platforms",
+
+ ❯ test/utils/harness-shell.test.ts:42:70
+     40|  await measureWorkload('reports.function.harness-shell', 'scoped-navba…
+     41|   const { categories } = view(historical);
+     42|   expect(categories.map((item) => [item.id, item.label, item.icon])).t…
+       |                                                                      ^
+     43|    ['pages', 'Pages', 'pages'],
+     44|    ['modules', 'Modules', 'layers'],
+ ❯ measureWorkload ../../test/support/measureWorkload.ts:13:23
+ ❯ test/utils/harness-shell.test.ts:40:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > on a current branch route the viewed commit is the tip, and there is no tip to go to
+AssertionError: expected '/harness/branch/feature%2Fshell%231/l…' to be '/harness/branch/feature%2Fshell%231/c…' // Object.is equality
+
+Expected: "/harness/branch/feature%2Fshell%231/components"
+Received: "/harness/branch/feature%2Fshell%231/layouts"
+
+ ❯ test/utils/harness-shell.test.ts:80:29
+     78|   to: { branch: shellBranch, commit: null, category: 'pages' }
+     79|  });
+     80|  expect(categories[1].href).toBe(`${scoped}/components`);
+       |                             ^
+     81|  expect(revision).toMatchObject({
+     82|   branch: shellBranch,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > without a resolved address the bar keeps its navigation and offers no revision
+AssertionError: expected [ 'Pages', 'Layouts', …(7) ] to deeply equal [ 'Pages', 'Modules', 'Styles', …(2) ]
+
+- Expected
++ Received
+
+  [
+    "Pages",
+-   "Modules",
+-   "Styles",
++   "Layouts",
++   "Components",
++   "Models",
++   "Services",
++   "Helpers",
+    "Configs",
++   "Styles",
+    "Platforms",
+  ]
+
+ ❯ test/utils/harness-shell.test.ts:153:47
+    151|  expect(revision).toBeNull();
+    152|  expect(home).toEqual({ href: shellMount, to: null });
+    153|  expect(categories.map((item) => item.label)).toEqual([
+       |                                               ^
+    154|   'Pages',
+    155|   'Modules',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ FAIL  test/utils/harness-shell.test.ts > Styles stays active across branch and commit selection without becoming an entity category
+AssertionError: expected { id: 'components', …(5) } to match object { …(2) }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/styles",
++   "href": "/harness/branch/feature%2Fshell%231/commit/0404040404040404040404040404040404040404/components",
+    "to": {
+      "branch": "feature/shell#1",
+-     "category": "pages",
++     "category": "components",
+      "commit": "0404040404040404040404040404040404040404",
+-     "screen": "styles",
+    },
+  }
+
+ ❯ test/utils/harness-shell.test.ts:175:24
+    173|  const { categories, revision } = view(styles);
+    174|  expect(categories.filter((item) => item.active).map((item) => item.id…
+    175|  expect(categories[2]).toMatchObject({
+       |                        ^
+    176|   href: `${scoped}/commit/${sha(4)}/styles`,
+    177|   to: styles
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+
+
+ Test Files  3 failed | 1 passed (4)
+      Tests  10 failed | 27 passed (37)
+   Start at  23:26:37
+   Duration  1.42s (transform 353ms, setup 0ms, collect 600ms, tests 173ms, environment 0ms, prepare 96ms)
+
+
+
+Running 3 tests using 1 worker
+
+(node:22134) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at desktop width (5.2s)
+(node:22424) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at tablet width (5.2s)
+(node:22577) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at mobile width (5.1s)
+
+
+  1) tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at desktop width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 2
+    + Received  + 6
+
+      Array [
+        "Pages",
+    -   "Modules",
+    -   "Styles",
+    +   "Layouts",
+    +   "Components",
+    +   "Models",
+    +   "Services",
+    +   "Helpers",
+        "Configs",
+    +   "Styles",
+        "Platforms",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+        14 × locator resolved to 9 elements
+
+
+      66 | 		await navigationSpacing(bar);
+      67 | 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
+    > 68 | 		await expect(links).toHaveText(categories);
+         | 		                    ^
+      69 | 		await expect(page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ })).toHaveCount(
+      70 | 			0
+      71 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-KbhxVv/packages/reports/tests/e2e/explorer-shell.spec.ts:68:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/error-context.md
+
+  2) tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at tablet width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 2
+    + Received  + 6
+
+      Array [
+        "Pages",
+    -   "Modules",
+    -   "Styles",
+    +   "Layouts",
+    +   "Components",
+    +   "Models",
+    +   "Services",
+    +   "Helpers",
+        "Configs",
+    +   "Styles",
+        "Platforms",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+        14 × locator resolved to 9 elements
+
+
+      66 | 		await navigationSpacing(bar);
+      67 | 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
+    > 68 | 		await expect(links).toHaveText(categories);
+         | 		                    ^
+      69 | 		await expect(page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ })).toHaveCount(
+      70 | 			0
+      71 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-KbhxVv/packages/reports/tests/e2e/explorer-shell.spec.ts:68:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/error-context.md
+
+  3) tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at mobile width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 2
+    + Received  + 6
+
+      Array [
+        "Pages",
+    -   "Modules",
+    -   "Styles",
+    +   "Layouts",
+    +   "Components",
+    +   "Models",
+    +   "Services",
+    +   "Helpers",
+        "Configs",
+    +   "Styles",
+        "Platforms",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).getByRole('link')
+        14 × locator resolved to 9 elements
+
+
+      66 | 		await navigationSpacing(bar);
+      67 | 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).getByRole('link');
+    > 68 | 		await expect(links).toHaveText(categories);
+         | 		                    ^
+      69 | 		await expect(page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ })).toHaveCount(
+      70 | 			0
+      71 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-KbhxVv/packages/reports/tests/e2e/explorer-shell.spec.ts:68:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/error-context.md
+
+  3 failed
+    tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at desktop width 
+    tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at tablet width 
+    tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at mobile width 
+
+
+Running 3 tests using 1 worker
+
+(node:22783) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width (5.2s)
+(node:22914) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width (5.2s)
+(node:23250) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width (5.2s)
+
+
+  1) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width 
+
+    Error: collections use cards; helpers and models require two distinct visible consumers
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 2
+    Received: 3
+    Timeout:  5000ms
+
+    Call log:
+      - collections use cards; helpers and models require two distinct visible consumers getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 3 elements
+           - unexpected value "3"
+
+
+      64 | 				cards,
+      65 | 				'collections use cards; helpers and models require two distinct visible consumers'
+    > 66 | 			).toHaveCount({ models: 2, types: 1, components: 3, functions: 1, services: 1 }[category]);
+         | 			  ^
+      67 | 			for (const item of await cards.all()) {
+      68 | 				await expect(item).toHaveAttribute('data-harness-component', moduleCard.marker);
+      69 | 				const footer = item.getByRole('group', { name: 'Used In', exact: true });
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-KbhxVv/packages/reports/test/entity-preview-actions.spec.ts:66:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-3a68d--card-grid-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-3a68d--card-grid-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width 
+
+    Error: collections use cards; helpers and models require two distinct visible consumers
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 2
+    Received: 3
+    Timeout:  5000ms
+
+    Call log:
+      - collections use cards; helpers and models require two distinct visible consumers getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 3 elements
+           - unexpected value "3"
+
+
+      64 | 				cards,
+      65 | 				'collections use cards; helpers and models require two distinct visible consumers'
+    > 66 | 			).toHaveCount({ models: 2, types: 1, components: 3, functions: 1, services: 1 }[category]);
+         | 			  ^
+      67 | 			for (const item of await cards.all()) {
+      68 | 				await expect(item).toHaveAttribute('data-harness-component', moduleCard.marker);
+      69 | 				const footer = item.getByRole('group', { name: 'Used In', exact: true });
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-KbhxVv/packages/reports/test/entity-preview-actions.spec.ts:66:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-acd23-a-card-grid-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-acd23-a-card-grid-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width 
+
+    Error: collections use cards; helpers and models require two distinct visible consumers
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 2
+    Received: 3
+    Timeout:  5000ms
+
+    Call log:
+      - collections use cards; helpers and models require two distinct visible consumers getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 3 elements
+           - unexpected value "3"
+
+
+      64 | 				cards,
+      65 | 				'collections use cards; helpers and models require two distinct visible consumers'
+    > 66 | 			).toHaveCount({ models: 2, types: 1, components: 3, functions: 1, services: 1 }[category]);
+         | 			  ^
+      67 | 			for (const item of await cards.all()) {
+      68 | 				await expect(item).toHaveAttribute('data-harness-component', moduleCard.marker);
+      69 | 				const footer = item.getByRole('group', { name: 'Used In', exact: true });
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-KbhxVv/packages/reports/test/entity-preview-actions.spec.ts:66:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-mod-acf4c-a-card-grid-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-mod-acf4c-a-card-grid-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width 
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width 
+    test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width 
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false

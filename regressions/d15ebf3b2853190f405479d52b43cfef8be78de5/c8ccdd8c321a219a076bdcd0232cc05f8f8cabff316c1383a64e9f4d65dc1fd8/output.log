@@ -1,0 +1,61 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-8xvWN1
+
+ ❯ test/api-context.e2e.test.ts (3 tests | 2 failed) 2476ms
+   × API CLI refuses local contract writes when a historical commit is selected 832ms
+     → expected +0 to be 1 // Object.is equality
+   ✓ API CLI refuses hosted contract writes when a historical commit is selected  817ms
+   × API CLI supplies numeric local history pagination while retaining entity and revision binding 825ms
+     → expected { entityId: 'page.example', …(3) } to match object { page: 1, …(2) }
+(2 matching properties omitted from actual)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/api-context.e2e.test.ts > API CLI refuses local contract writes when a historical commit is selected
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/api-context.e2e.test.ts:20:28
+     18|     false
+     19|    );
+     20|    expect(result.exitCode).toBe(1);
+       |                            ^
+     21|    expect(result.stderr).toMatch(/branch tip|historical/i);
+     22|    expect(f.seen.filter((request) => request.operation === 'createPlan…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/api-context.e2e.test.ts > API CLI supplies numeric local history pagination while retaining entity and revision binding
+AssertionError: expected { entityId: 'page.example', …(3) } to match object { page: 1, …(2) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "entityId": "page.example",
+-   "page": 1,
+  }
+
+ ❯ test/api-context.e2e.test.ts:34:76
+     32|  try {
+     33|   await f.cli(['get', 'history', 'page.example']);
+     34|   expect(f.seen.find((request) => request.operation === 'history')?.in…
+       |                                                                            ^
+     35|    page: 1,
+     36|    entityId: 'page.example',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  18:40:26
+   Duration  5.16s (transform 76ms, setup 91ms, collect 29ms, tests 2.48s, environment 0ms, prepare 25ms)
+

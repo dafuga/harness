@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tA718W/packages/reports
+
+ ✓ test/replay-cloud-storage.test.ts (2 tests) 912ms
+   ✓ replay generation uploads a real MP4 and restores the same bytes from R2 without ffmpeg  529ms
+   ✓ backfill uploads existing locally generated MP4s without changing the clip  383ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  19:20:24
+   Duration  1.86s (transform 223ms, setup 0ms, collect 393ms, tests 912ms, environment 0ms, prepare 66ms)
+

@@ -1,0 +1,138 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [737.00ms]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-actions.spec.ts --grep "component and function lists"
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:61:2 › component and function lists use a card grid at desktop width (5.4s)
+  ✘  2 test/entity-preview-actions.spec.ts:61:2 › component and function lists use a card grid at tablet width (5.2s)
+  ✘  3 test/entity-preview-actions.spec.ts:61:2 › component and function lists use a card grid at mobile width (5.2s)
+
+
+  1) test/entity-preview-actions.spec.ts:61:2 › component and function lists use a card grid at desktop width 
+
+    Error: function cards omit detail panels
+
+    expect(locator).not.toContainText(expected) failed
+
+    Locator: getByRole('article').first()
+    Expected pattern: not /Contract|Inputs|Output|Used by|View tests|Shared|Changed/
+    Received string: "Filter orders Returns the orders whose name matches a search.  Contract Inputs orders, search textOutput matching orders Used by Order list  Full coverage passed View tests "
+    Timeout: 5000ms
+
+    Call log:
+      - function cards omit detail panels getByRole('article').first() with timeout 5000ms
+      - waiting for getByRole('article').first()
+        14 × locator resolved to <article aria-label="Filter orders" class="ex-function-tile svelte-f754ar">…</article>
+           - unexpected value "Filter orders Returns the orders whose name matches a search.  Contract Inputs orders, search textOutput matching orders Used by Order list  Full coverage passed View tests "
+
+
+      78 | 			if (category === 'functions') {
+      79 | 				await expect(cards.getByRole('img')).toHaveCount(0);
+    > 80 | 				await expect(cards.first(), 'function cards omit detail panels').not.toContainText(
+         | 				                                                                     ^
+      81 | 					/Contract|Inputs|Output|Used by|View tests|Shared|Changed/
+      82 | 				);
+      83 | 				await expect(cards.locator('.hx-verdict')).toHaveCount(0);
+        at /private/tmp/harness-snapshot-p5vG1C/packages/reports/test/entity-preview-actions.spec.ts:80:74
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-a2705--card-grid-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-a2705--card-grid-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:61:2 › component and function lists use a card grid at tablet width 
+
+    Error: function cards omit detail panels
+
+    expect(locator).not.toContainText(expected) failed
+
+    Locator: getByRole('article').first()
+    Expected pattern: not /Contract|Inputs|Output|Used by|View tests|Shared|Changed/
+    Received string: "Filter orders Returns the orders whose name matches a search.  Contract Inputs orders, search textOutput matching orders Used by Order list  Full coverage passed View tests "
+    Timeout: 5000ms
+
+    Call log:
+      - function cards omit detail panels getByRole('article').first() with timeout 5000ms
+      - waiting for getByRole('article').first()
+        14 × locator resolved to <article aria-label="Filter orders" class="ex-function-tile svelte-f754ar">…</article>
+           - unexpected value "Filter orders Returns the orders whose name matches a search.  Contract Inputs orders, search textOutput matching orders Used by Order list  Full coverage passed View tests "
+
+
+      78 | 			if (category === 'functions') {
+      79 | 				await expect(cards.getByRole('img')).toHaveCount(0);
+    > 80 | 				await expect(cards.first(), 'function cards omit detail panels').not.toContainText(
+         | 				                                                                     ^
+      81 | 					/Contract|Inputs|Output|Used by|View tests|Shared|Changed/
+      82 | 				);
+      83 | 				await expect(cards.locator('.hx-verdict')).toHaveCount(0);
+        at /private/tmp/harness-snapshot-p5vG1C/packages/reports/test/entity-preview-actions.spec.ts:80:74
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-33d29-a-card-grid-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-33d29-a-card-grid-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:61:2 › component and function lists use a card grid at mobile width 
+
+    Error: function cards omit detail panels
+
+    expect(locator).not.toContainText(expected) failed
+
+    Locator: getByRole('article').first()
+    Expected pattern: not /Contract|Inputs|Output|Used by|View tests|Shared|Changed/
+    Received string: "Filter orders Returns the orders whose name matches a search.  Contract Inputs orders, search textOutput matching orders Used by Order list  Full coverage passed View tests "
+    Timeout: 5000ms
+
+    Call log:
+      - function cards omit detail panels getByRole('article').first() with timeout 5000ms
+      - waiting for getByRole('article').first()
+        14 × locator resolved to <article aria-label="Filter orders" class="ex-function-tile svelte-f754ar">…</article>
+           - unexpected value "Filter orders Returns the orders whose name matches a search.  Contract Inputs orders, search textOutput matching orders Used by Order list  Full coverage passed View tests "
+
+
+      78 | 			if (category === 'functions') {
+      79 | 				await expect(cards.getByRole('img')).toHaveCount(0);
+    > 80 | 				await expect(cards.first(), 'function cards omit detail panels').not.toContainText(
+         | 				                                                                     ^
+      81 | 					/Contract|Inputs|Output|Used by|View tests|Shared|Changed/
+      82 | 				);
+      83 | 				await expect(cards.locator('.hx-verdict')).toHaveCount(0);
+        at /private/tmp/harness-snapshot-p5vG1C/packages/reports/test/entity-preview-actions.spec.ts:80:74
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-94238-a-card-grid-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-94238-a-card-grid-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:61:2 › component and function lists use a card grid at desktop width 
+    test/entity-preview-actions.spec.ts:61:2 › component and function lists use a card grid at tablet width 
+    test/entity-preview-actions.spec.ts:61:2 › component and function lists use a card grid at mobile width 
+error: script "test:entities" exited with code 1

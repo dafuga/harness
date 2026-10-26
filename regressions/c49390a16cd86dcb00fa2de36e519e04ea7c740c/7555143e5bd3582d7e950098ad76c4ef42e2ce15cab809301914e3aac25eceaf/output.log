@@ -1,0 +1,79 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-obO4UG
+
+ ❯ test/browser-error-evidence.test.ts (4 tests | 3 failed) 2140ms
+   × verification retains browser diagnostics when the runner exits 0 160ms
+     → expected { id: 'orders:browser', …(7) } to match object { browserErrors: [ { …(7) } ], …(1) }
+(10 matching properties omitted from actual)
+   × verification retains browser diagnostics when the runner exits 1 141ms
+     → expected { id: 'orders:browser', …(7) } to match object { browserErrors: [ { …(7) } ], …(1) }
+(10 matching properties omitted from actual)
+   × verification refuses malformed diagnostics even after a runner wrote them 140ms
+     → expected 'orders: check browser: Browser diagno…' to contain 'Invalid case results'
+   ✓ verification refuses timeout diagnostics even after a runner wrote them  1694ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/browser-error-evidence.test.ts > verification retains browser diagnostics when the runner exits 0
+ FAIL  test/browser-error-evidence.test.ts > verification retains browser diagnostics when the runner exits 1
+AssertionError: expected { id: 'orders:browser', …(7) } to match object { browserErrors: [ { …(7) } ], …(1) }
+(10 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -20,21 +20,6 @@
+        "project": "chromium",
+        "retry": 0,
+        "test": "Orders › recovers from a failed request",
+      },
+    ],
+-   "cases": {
+-     "artifact": {
+-       "bytes": Any<Number>,
+-       "sha256": StringMatching /^[a-f0-9]{64}$/,
+-     },
+-     "outcomes": [
+-       {
+-         "file": "orders.spec.ts",
+-         "retry": 0,
+-         "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-         "status": "passed",
+-         "title": "Orders > recovers from a failed request",
+-       },
+-     ],
+-   },
+  }
+
+ ❯ test/browser-error-evidence.test.ts:54:26
+     52|    });
+     53|    expect(outcome.passed).toBe(exitCode === 0);
+     54|    expect(outcome.entry).toMatchObject({
+       |                          ^
+     55|     browserErrors: [diagnostics],
+     56|     cases: {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/browser-error-evidence.test.ts > verification refuses malformed diagnostics even after a runner wrote them
+AssertionError: expected 'orders: check browser: Browser diagno…' to contain 'Invalid case results'
+
+Expected: "Invalid case results"
+Received: "orders: check browser: Browser diagnostics could not be read or did not match their schema."
+
+ ❯ test/browser-error-evidence.test.ts:123:40
+    121|    expect(outcome.entry).not.toHaveProperty('cases');
+    122|    if (mode === 'malformed')
+    123|     expect(outcome.failures.join(' ')).toContain('Invalid case results…
+       |                                        ^
+    124|    expect(outcome.failures.join(' ')).toMatch(
+    125|     mode === 'timeout' ? /timed out/ : /Browser diagnostics/
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 1 passed (4)
+   Start at  16:15:29
+   Duration  5.03s (transform 145ms, setup 108ms, collect 114ms, tests 2.14s, environment 0ms, prepare 42ms)
+

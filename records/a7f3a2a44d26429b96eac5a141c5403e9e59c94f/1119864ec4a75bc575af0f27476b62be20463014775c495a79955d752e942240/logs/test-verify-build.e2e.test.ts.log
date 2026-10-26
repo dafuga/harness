@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE
+
+ ✓ test/verify-build.e2e.test.ts (3 tests) 20380ms
+   ✓ captures served by the build compiled from the verified tree pass, and the record names it  3765ms
+   ✓ an old bundle relabelled with the current revision is rejected  4167ms
+   ✓ page evidence must name a declared build that setup really produced  5148ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  02:43:50
+   Duration  20.75s (transform 67ms, setup 20ms, collect 76ms, tests 20.38s, environment 0ms, prepare 47ms)
+

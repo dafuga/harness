@@ -1,0 +1,22 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-61cdCq/packages/reports
+
+ ✓ test/components/harness-navbar.test.ts (8 tests) 13ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  23:51:51
+   Duration  595ms (transform 309ms, setup 79ms, collect 363ms, tests 13ms, environment 0ms, prepare 31ms)
+

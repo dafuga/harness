@@ -1,0 +1,20 @@
+
+Running 15 tests using 1 worker
+
+  ✓   1 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at desktop width (5.7s)
+  ✓   2 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at desktop width (3.3s)
+  ✓   3 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at desktop width (466ms)
+  ✓   4 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at desktop width (221ms)
+  ✓   5 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at tablet width (5.6s)
+  ✓   6 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at tablet width (3.4s)
+  ✓   7 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at tablet width (532ms)
+  ✓   8 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at tablet width (207ms)
+  ✓   9 test/entity-preview-actions.spec.ts:32:2 › usage stays in dedicated tabs at mobile width (5.3s)
+  ✓  10 test/entity-preview-actions.spec.ts:46:2 › models, components, helpers and services use a card grid at mobile width (3.2s)
+  ✓  11 test/entity-preview-actions.spec.ts:95:2 › component screenshot cards follow the shown revision at mobile width (485ms)
+  ✓  12 test/entity-preview-actions.spec.ts:120:2 › page cards show a title, screenshot and shared usage footer at mobile width (196ms)
+  ✓  13 test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at desktop width (753ms)
+  ✓  14 test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at tablet width (737ms)
+  ✓  15 test/entity-preview-groups.spec.ts:65:2 › private dependencies reuse module cards at mobile width (753ms)
+
+  15 passed (33.5s)

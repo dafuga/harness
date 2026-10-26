@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RKAYsZ
+
+ ✓ test/late-cleanup.test.ts (4 tests) 12883ms
+   ✓ an observation that answers only after the runner has answered signals nothing  8229ms
+   ✓ a look that is late is ended itself: its tool is gone, not only its answer given up  513ms
+   ✓ a look that is cancelled is ended itself: its tool was running and is gone  478ms
+   ✓ a judgement whose look never answers ends with that look's tool, and protects the process  3099ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  06:23:45
+   Duration  13.35s (transform 75ms, setup 21ms, collect 91ms, tests 12.88s, environment 0ms, prepare 75ms)
+

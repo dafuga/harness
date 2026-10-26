@@ -1,0 +1,94 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [12.48s]
+$ playwright test ui-workspace.spec.ts deployment-activity.spec.ts --grep "workspace selectors|production promotion|mobile deployment"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] (node:56863) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:57013) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 3 tests using 1 worker
+
+(node:57201) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/deployment-activity.spec.ts:6:1 › production promotion previews preprod distance, requires one action and reports live status (4.2s)
+(node:57503) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 tests/e2e/deployment-activity.spec.ts:106:1 › mobile deployment details retain queued and failed steps when status reads fail (1.9s)
+  ✘  3 tests/e2e/ui-workspace.spec.ts:127:1 › workspace selectors start collapsed and environment stays directly selectable (558ms)
+
+
+  1) tests/e2e/deployment-activity.spec.ts:6:1 › production promotion previews preprod distance, requires one action and reports live status 
+
+    Error: Promotion action remains in the viewport
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 480
+    Received:    687.03125
+
+      54 | 		action!.y + action!.height,
+      55 | 		'Promotion action remains in the viewport'
+    > 56 | 	).toBeLessThanOrEqual(480);
+         | 	  ^
+      57 | 	await page.setViewportSize({ width: 667, height: 375 });
+      58 | 	await capture(page, 'production-complete-landscape');
+      59 | 	await mobileDialog(page, 'Deploy');
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PxZbCQ/packages/desktop/tests/e2e/deployment-activity.spec.ts:56:4
+
+    Error Context: test-results/deployment-activity-produc-e793c-ion-and-reports-live-status/error-context.md
+
+  2) tests/e2e/ui-workspace.spec.ts:127:1 › workspace selectors start collapsed and environment stays directly selectable 
+
+    Error: Mobile header must leave room for project content
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 164
+    Received:    374.921875
+
+      173 | 			});
+      174 | 		const header = await page.getByRole('banner').boundingBox();
+    > 175 | 		expect(header!.height, 'Mobile header must leave room for project content').toBeLessThanOrEqual(
+          | 		                                                                            ^
+      176 | 			164
+      177 | 		);
+      178 | 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PxZbCQ/packages/desktop/tests/e2e/ui-workspace.spec.ts:175:79
+
+    Error Context: test-results/ui-workspace-workspace-sel-7ee46-t-stays-directly-selectable/error-context.md
+
+  2 failed
+    tests/e2e/deployment-activity.spec.ts:6:1 › production promotion previews preprod distance, requires one action and reports live status 
+    tests/e2e/ui-workspace.spec.ts:127:1 › workspace selectors start collapsed and environment stays directly selectable 
+  1 passed (11.0s)
+error: script "test:e2e" exited with code 1

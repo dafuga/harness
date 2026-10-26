@@ -1,0 +1,69 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-TFnUa9/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ❯ test/services/game-project.test.ts (6 tests | 2 failed) 22825ms
+   ✓ game operations bind project identity, retain historical graphs and reject stale writes  5838ms
+   ✓ invalid game requests fail at the transport boundary 1ms
+   × project creation initializes a game without overwriting an existing directory 4318ms
+     → Missing or stale committed module data for 5e8bc0567162edc0f7ad4afc2831635c99908f36. Run harness validate --commit 5e8bc0567162edc0f7ad4afc2831635c99908f36 --write.
+   × failed project creation reports its cause, removes only its own target and can be retried 4460ms
+     → Missing or stale committed module data for 6891ec56787bd802280acd1c60ca7401bd6a291f. Run harness validate --commit 6891ec56787bd802280acd1c60ca7401bd6a291f --write.
+   ✓ AI preview fails closed before credential access without a safe transport  3980ms
+   ✓ prepared token minting uses only the server HTTP endpoint with bounded header-auth requests  4216ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/game-project.test.ts > project creation initializes a game without overwriting an existing directory
+Error: Missing or stale committed module data for 5e8bc0567162edc0f7ad4afc2831635c99908f36. Run harness validate --commit 5e8bc0567162edc0f7ad4afc2831635c99908f36 --write.
+ ❯ requireModuleData ../../src/services/git-source-history/module-data-service/moduleDataAdmission.ts:25:9
+     23|   );
+     24|  const failure = formatModuleDataFailure(stored.data, module);
+     25|  if (failure) throw new Error(failure);
+       |         ^
+     26|  return stored.data;
+     27| }
+ ❯ PerformanceProfileService.observeAsync ../../src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ GitSourceAdapter.units src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts:76:12
+ ❯ PerformanceProfileService.observeAsync ../../src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ CatalogService.held src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts:27:35
+ ❯ CatalogService.list src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts:16:28
+ ❯ PerformanceProfileService.observeAsync ../../src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ ProjectSessionService.snapshot src/services/projects-sessions/project-session-service/ProjectSessionService.ts:87:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/services/game-project.test.ts > failed project creation reports its cause, removes only its own target and can be retried
+Error: Missing or stale committed module data for 6891ec56787bd802280acd1c60ca7401bd6a291f. Run harness validate --commit 6891ec56787bd802280acd1c60ca7401bd6a291f --write.
+ ❯ requireModuleData ../../src/services/git-source-history/module-data-service/moduleDataAdmission.ts:25:9
+     23|   );
+     24|  const failure = formatModuleDataFailure(stored.data, module);
+     25|  if (failure) throw new Error(failure);
+       |         ^
+     26|  return stored.data;
+     27| }
+ ❯ PerformanceProfileService.observeAsync ../../src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ GitSourceAdapter.units src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts:76:12
+ ❯ PerformanceProfileService.observeAsync ../../src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ CatalogService.held src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts:27:35
+ ❯ CatalogService.list src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts:16:28
+ ❯ PerformanceProfileService.observeAsync ../../src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ ProjectSessionService.snapshot src/services/projects-sessions/project-session-service/ProjectSessionService.ts:87:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  21:23:18
+   Duration  24.31s (transform 798ms, setup 82ms, collect 1.30s, tests 22.83s, environment 0ms, prepare 23ms)
+

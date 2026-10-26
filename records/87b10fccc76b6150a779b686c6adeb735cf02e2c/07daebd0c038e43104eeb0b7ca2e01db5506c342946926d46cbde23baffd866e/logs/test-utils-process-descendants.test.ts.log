@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4RKl8N
+
+ ✓ test/utils/process-descendants.test.ts (2 tests) 1523ms
+   ✓ a daemon is still known after its parent has ended, and only it is stopped  1143ms
+   ✓ what was never seen under the command is not followed  379ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  04:29:15
+   Duration  1.72s (transform 20ms, setup 10ms, collect 10ms, tests 1.52s, environment 0ms, prepare 35ms)
+

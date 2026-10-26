@@ -1,0 +1,21 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/hub[39m
+
+ [32m✓[39m test/utils/hub-design-options.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 46646[2mms[22m[39m
+   [33m[2m✓[22m[39m every option keeps its direction, exact prompts, generator and own images [33m 4559[2mms[22m[39m
+   [33m[2m✓[22m[39m a version keeps the exact earlier image it revises [33m 4698[2mms[22m[39m
+   [33m[2m✓[22m[39m the approval of option 2 is current, binds option 2 alone, and approves the plan [33m 4865[2mms[22m[39m
+   [33m[2m✓[22m[39m stored options that claim one image twice are refused [33m 6045[2mms[22m[39m
+   [33m[2m✓[22m[39m stored options that leave an image unclaimed are refused [33m 5923[2mms[22m[39m
+   [33m[2m✓[22m[39m stored options that bind a foreign hash are refused [33m 4948[2mms[22m[39m
+   [33m[2m✓[22m[39m stored options that skip an option id are refused [33m 4294[2mms[22m[39m
+   [33m[2m✓[22m[39m an approval of every image, naming no option, approves no option of the version [33m 4382[2mms[22m[39m
+   [33m[2m✓[22m[39m an approval naming option 2 with the images of option 1 approves nothing [33m 4899[2mms[22m[39m
+   [33m[2m✓[22m[39m a single design keeps its flat images, no options, and its approval of every image [33m 2032[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m10 passed[39m[22m[90m (10)[39m
+[2m   Start at [22m 20:58:48
+[2m   Duration [22m 47.79s[2m (transform 549ms, setup 0ms, collect 890ms, tests 46.65s, environment 0ms, prepare 41ms)[22m
+
+JSON report written to /var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-runner-LlS9nZ/report.json

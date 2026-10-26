@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-Zfvhkw
+
+ ✓ test/units-policy.e2e.test.ts (5 tests) 50616ms
+   ✓ CLI exposes execution targets and component versions, and refuses relaxed tolerance  10498ms
+   ✓ CLI records lineage when retired source is recreated under a new identity  9201ms
+   ✓ CLI labels a supplied responsibility as declared and a generated one as derived  4451ms
+   ✓ public configs require real source controls and retain their reviewed declarations  17690ms
+   ✓ source-bound reviews repair historical default runtime targets without changing source commits  8773ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  13:33:40
+   Duration  54.34s (transform 121ms, setup 169ms, collect 26ms, tests 50.62s, environment 0ms, prepare 35ms)
+

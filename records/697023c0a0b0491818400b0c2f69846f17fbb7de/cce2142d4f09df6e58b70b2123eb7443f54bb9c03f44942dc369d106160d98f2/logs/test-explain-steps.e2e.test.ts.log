@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HUXF1L
+
+ ✓ test/explain-steps.e2e.test.ts (2 tests) 10092ms
+   ✓ a range is explained by the reasons of its steps: units as they were added, then each change  3784ms
+   ✓ a verification with no proven ancestor accepts changes explained step by step  2189ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  01:27:12
+   Duration  10.33s (transform 29ms, setup 10ms, collect 25ms, tests 10.09s, environment 0ms, prepare 36ms)
+

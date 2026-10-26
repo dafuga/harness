@@ -1,0 +1,47 @@
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-eUQ0PY/packages/desktop
+
+ ❯ test/catalog-listing.test.ts (6 tests | 1 failed) 1751ms
+   × implemented pages select their declared screenshot rather than an absent planning image 6ms
+     → expected [ 'summary', 'preview' ] to deeply equal [ 'preview', 'summary' ]
+   ✓ the tip lists every ordinary entity and no page manifest that only loads for an address  389ms
+   ✓ what is left out of the list is still opened by its identity, with its sources and history  689ms
+   ✓ the same identity is listed at the earlier commit where it renders, as it was there  617ms
+   ✓ of the registry of this repository, the pages the explorer lists are listed and its route loaders are not 49ms
+   ✓ native and hosted catalogs list pure shared contracts, models and services separately 0ms
+ ✓ test/shells-category.test.ts (6 tests) 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/catalog-listing.test.ts > implemented pages select their declared screenshot rather than an absent planning image
+AssertionError: expected [ 'summary', 'preview' ] to deeply equal [ 'preview', 'summary' ]
+
+- Expected
++ Received
+
+  [
+-   "preview",
+    "summary",
++   "preview",
+  ]
+
+ ❯ expectPreviewReads test/catalog-listing.test.ts:118:16
+    116|  };
+    117|  const entry = catalogUnit(observed, new Set());
+    118|  expect(reads).toEqual(['preview', 'summary']);
+       |                ^
+    119|  expect(entry?.thumbnail).toEqual({ source: 'recorded', ...preview });
+    120| }
+ ❯ test/catalog-listing.test.ts:49:3
+ ❯ measureWorkload ../../test/support/measureWorkload.ts:13:23
+ ❯ test/catalog-listing.test.ts:41:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 11 passed (12)
+   Start at  13:16:16
+   Duration  3.02s (transform 479ms, setup 99ms, collect 741ms, tests 1.76s, environment 0ms, prepare 79ms)
+

@@ -1,0 +1,23 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-CHfmhB
+
+ ✓ test/api-registry.e2e.test.ts (8 tests) 9092ms
+   ✓ API CLI lists every registered local unit, including backend entries outside the catalog  1101ms
+   ✓ API CLI lists every registered hosted unit, including backend entries outside the catalog  1157ms
+   ✓ API CLI reads local backend contracts without relying on a visual catalog entry  1162ms
+   ✓ API CLI reads hosted backend contracts without relying on a visual catalog entry  1143ms
+   ✓ API CLI lists registered local APIs even when their visual snapshot is older  1163ms
+   ✓ API CLI lists registered hosted APIs even when their visual snapshot is older  1137ms
+   ✓ API CLI reads local committed page APIs without a graph script  1124ms
+   ✓ API CLI reads hosted committed page APIs without a graph script  1103ms
+ ✓ test/module-data.e2e.test.ts (2 tests) 16545ms
+   ✓ validate persists revision-bound module gaps, filters them and invalidates cached searches  11785ms
+   ✓ validate commits source-derived page API usage and explicit visual data gaps  4758ms
+ ✓ test/commands/development-tooling/validate.test.ts (1 test) 14ms
+ ✓ test/helpers/git-source-history/format-module-data-failure.test.ts (1 test) 4ms
+
+ Test Files  4 passed (4)
+      Tests  12 passed (12)
+   Start at  11:07:53
+   Duration  31.73s (transform 1.51s, setup 275ms, collect 2.54s, tests 25.66s, environment 0ms, prepare 121ms)
+

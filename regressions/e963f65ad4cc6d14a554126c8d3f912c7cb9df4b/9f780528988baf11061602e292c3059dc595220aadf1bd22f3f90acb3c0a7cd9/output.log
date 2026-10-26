@@ -1,0 +1,101 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [135.00ms]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fCHn7Y
+
+ ❯ test/pieces.test.ts (6 tests | 2 failed | 4 skipped) 8ms
+   × every scaffold kind creates at least one file in a 2d project 6ms
+     → Every public export targets an emitted scaffold: expected [ 'src/helpers/blogPost.ts', …(1) ] to include 'src/helpers/BlogPostHelper.ts'
+   × every scaffold kind creates at least one file in a 3d project 1ms
+     → Every public export targets an emitted scaffold: expected [ 'src/helpers/blogPost.ts', …(1) ] to include 'src/helpers/BlogPostHelper.ts'
+   ↓ view, layout, and api scaffolds use SvelteKit route files
+   ↓ marks only SvelteKit scaffolds as app-only
+   ↓ Rails-ish scaffolds create their expected code shapes
+   ↓ helper scaffolds emit pure camelCase functions with domain parameters
+ ❯ test/cli.e2e.test.ts (4 tests | 1 failed | 3 skipped) 13001ms
+   × CLI scaffolds and checks a lib project 13000ms
+     → bun run check failed with 2
+Checking formatting...
+All matched files use Prettier code style!
+src/index.ts(27,35): error TS2307: Cannot find module './helpers/PublishPostHelper' or its corresponding type declarations.
+
+$ bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit
+$ prettier --check .
+$ tsc --noEmit
+
+   ↓ CLI scaffolds and checks an app project with routes
+   ↓ CLI reports edge errors cleanly
+   ↓ CLI supports force overwrites and generated lint failures
+ ❯ test/project-detection.test.ts (6 tests | 1 failed | 5 skipped) 5ms
+   ↓ detects explicit Harness project kinds
+   ↓ detects app and lib projects from local files
+   × appends missing exports idempotently 4ms
+     → expected 'export { publishPost } from \'./utils…' to be 'export { publishPost } from \'./utils…' // Object.is equality
+   ↓ function.project keeps its callable API at its owner-layer runtime entry
+   ↓ function.exports keeps its callable API at its owner-layer runtime entry
+   ↓ function.validation keeps its callable API at its owner-layer runtime entry
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cli.e2e.test.ts > CLI scaffolds and checks a lib project
+Error: bun run check failed with 2
+Checking formatting...
+All matched files use Prettier code style!
+src/index.ts(27,35): error TS2307: Cannot find module './helpers/PublishPostHelper' or its corresponding type declarations.
+
+$ bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit
+$ prettier --check .
+$ tsc --noEmit
+
+ ❯ runCommand test/support/cli.ts:76:9
+     74| 
+     75|  if (expectSuccess && exitCode !== 0) {
+     76|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     77|  }
+     78| 
+ ❯ test/cli.e2e.test.ts:28:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/pieces.test.ts > every scaffold kind creates at least one file in a 2d project
+ FAIL  test/pieces.test.ts > every scaffold kind creates at least one file in a 3d project
+AssertionError: Every public export targets an emitted scaffold: expected [ 'src/helpers/blogPost.ts', …(1) ] to include 'src/helpers/BlogPostHelper.ts'
+ ❯ test/pieces.test.ts:17:7
+     15|      files.map((file) => file.path),
+     16|      'Every public export targets an emitted scaffold'
+     17|     ).toContain(posix.normalize(`src/${plan.source}.ts`));
+       |       ^
+     18|    expect(
+     19|     files.every((file) => file.path.length > 0 && file.contents.length…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/project-detection.test.ts > appends missing exports idempotently
+AssertionError: expected 'export { publishPost } from \'./utils…' to be 'export { publishPost } from \'./utils…' // Object.is equality
+
+- Expected
++ Received
+
+  export { publishPost } from './utils/publishPost';
+- export { publishPost as publishPostHelper } from './helpers/publishPost';
++ export { publishPost } from './helpers/publishPost';
+
+
+ ❯ test/project-detection.test.ts:53:19
+     51|  const plan = [{ source: './helpers/publishPost', named: ['publishPost…
+     52|  const combined = appendMissingExports(existing, plan);
+     53|  expect(combined).toBe(
+       |                   ^
+     54|   existing + "export { publishPost as publishPostHelper } from './help…
+     55|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  4 failed | 12 skipped (16)
+   Start at  13:36:24
+   Duration  16.06s (transform 101ms, setup 134ms, collect 102ms, tests 13.01s, environment 0ms, prepare 137ms)
+

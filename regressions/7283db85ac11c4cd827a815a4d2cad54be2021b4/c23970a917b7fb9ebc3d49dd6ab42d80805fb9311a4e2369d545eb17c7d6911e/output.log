@@ -1,0 +1,73 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [10.04s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-LOpXry
+
+ ❯ test/source-profile-runners.test.ts (15 tests | 1 failed) 3234ms
+   ✓ normal Vitest imports and its Bun commands capture their own real operations  913ms
+   ✓ Bun runtime profiling leaves actual build artifacts uninstrumented 159ms
+   ✓ ordinary runs and explicit benchmark boundaries retain the original operation 43ms
+   ✓ unowned source and fixture copies never borrow a registered unit identity 144ms
+   × registered 'effect only' modules retain only actual initialization observations 159ms
+     → data initialization cannot replace deferred operations: expected [] to have a length of 2 but got +0
+   ✓ registered 'Map data' modules retain only actual initialization observations 164ms
+   ✓ registered 'nested data' modules retain only actual initialization observations 152ms
+   ✓ registered 'deferred method' modules retain only actual initialization observations 149ms
+   ✓ registered 'nested callback' modules retain only actual initialization observations 150ms
+   ✓ registered 'Map callback' modules retain only actual initialization observations 148ms
+   ✓ registered 'imported object callback' modules retain only actual initialization observations 151ms
+   ✓ registered 'imported Map callback' modules retain only actual initialization observations 159ms
+   ✓ registered 'getter' modules retain only actual initialization observations 153ms
+   ✓ registered 'nested class' modules retain only actual initialization observations 146ms
+   ✓ failed initialization and type-only modules never gain successful scope observations  442ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/source-profile-runners.test.ts > registered 'effect only' modules retain only actual initialization observations
+AssertionError: data initialization cannot replace deferred operations: expected [] to have a length of 2 but got +0
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ test/source-profile-runners.test.ts:177:83
+    175|    expect(ran.stdout.trim()).toBe(expected);
+    176|    const measurements = await runnerCaptures(fixture.directory);
+    177|    expect(measurements, 'data initialization cannot replace deferred o…
+       |                                                                                   ^
+    178|     count
+    179|    );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 passed (15)
+   Start at  04:56:49
+   Duration  6.22s (transform 70ms, setup 87ms, collect 20ms, tests 3.23s, environment 0ms, prepare 30ms)
+

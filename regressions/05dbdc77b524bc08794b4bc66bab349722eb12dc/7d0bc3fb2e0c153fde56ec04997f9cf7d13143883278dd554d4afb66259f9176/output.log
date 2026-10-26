@@ -1,0 +1,78 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run "$@"' -- test/utils/explorer-category.test.ts
+[harness resources] Memory pressure is warning
+[harness resources] Waiting for CPU and memory reservations
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-bMScyE/packages/reports
+
+ ❯ test/utils/explorer-category.test.ts (14 tests | 1 failed) 117ms
+   ✓ compatibility details routes are nonvisual: pages 2ms
+   ✓ compatibility details routes are nonvisual: layouts 0ms
+   ✓ compatibility details routes are nonvisual: components 0ms
+   ✓ compatibility details routes are nonvisual: functions 0ms
+   ✓ compatibility details routes are nonvisual: configs 0ms
+   ✓ compatibility details routes are nonvisual: services 0ms
+   ✓ compatibility details routes are nonvisual: models 0ms
+   ✓ compatibility details routes are nonvisual: types 0ms
+   ✓ a unit of a product kind is listed under the category of that kind 3ms
+   ✓ a page is what renders an address, whatever kind it was registered as 0ms
+   ✓ what is not one of the five product kinds has no category and says what it is 1ms
+   ✓ a unit inside a category says its role in a word a reader knows 0ms
+   × the policy holds for Harness's own registry 108ms
+     → Only visual frames belong in Layouts; bootstrap wrappers are internal: expected [ 'hub.layout.root', …(2) ] to deeply equal [ 'reports.layout.explorer-layout' ]
+   ✓ only explicitly pure functions with distinct runtime consumers are helpers 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-category.test.ts > the policy holds for Harness's own registry
+AssertionError: Only visual frames belong in Layouts; bootstrap wrappers are internal: expected [ 'hub.layout.root', …(2) ] to deeply equal [ 'reports.layout.explorer-layout' ]
+
+- Expected
++ Received
+
+  [
++   "hub.layout.root",
+    "reports.layout.explorer-layout",
++   "reports.layout.root",
+  ]
+
+ ❯ test/utils/explorer-category.test.ts:164:4
+    162|   listed('layouts').map((item) => item.id),
+    163|   'Only visual frames belong in Layouts; bootstrap wrappers are intern…
+    164|  ).toEqual(['reports.layout.explorer-layout']);
+       |    ^
+    165|  for (const id of ['hub.layout.root', 'reports.layout.root']) {
+    166|   const wrapper = units.find((unit) => unit.id === id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  12:44:27
+   Duration  609ms (transform 96ms, setup 83ms, collect 74ms, tests 117ms, environment 0ms, prepare 41ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --config src/configs/shellPlaywrightConfig.ts "$@"' -- explorer-shell-component-catalog.spec.ts --grep "reports.layout.explorer-layout at"
+
+Running 3 tests using 1 worker
+
+(node:3764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.layout.explorer-layout at desktop (785ms)
+  ✓  2 tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.layout.explorer-layout at tablet (366ms)
+  ✓  3 tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.layout.explorer-layout at mobile (329ms)
+
+  3 passed (12.5s)

@@ -1,0 +1,442 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-LSsuVC
+
+ ✓ test/utils/explorer-route.test.ts (61 tests) 9ms
+
+ Test Files  1 passed (1)
+      Tests  61 passed (61)
+   Start at  18:45:34
+   Duration  5.23s (transform 84ms, setup 27ms, collect 44ms, tests 9ms, environment 0ms, prepare 131ms)
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-LSsuVC/packages/reports
+
+ ❯ test/entity-usage.test.ts (6 tests | 2 failed) 112ms
+   × the sections of an entity are named Used In and Uses, and none is a relationship 55ms
+     → expected [ 'Overview', 'Contract', …(5) ] to deeply equal [ Array(6) ]
+   ✓ Used In lists what uses the entity, the pages that show it too, each once and with what it is 2ms
+   ✓ Uses keeps what the entity depends on apart by kind and leaves out a kind it uses nothing of 43ms
+   ✓ the overview and both dedicated usage sections show no source paths 8ms
+   × a former relationships address opens the overview without embedded usage sections 3ms
+     → expected { branch: 'main', commit: null, …(3) } to deeply equal { branch: 'main', commit: null, …(2) }
+   ✓ an entity nothing uses, one that uses nothing and one that was removed each say so 2ms
+ ❯ test/components/entity-details.test.ts (7 tests | 1 failed) 33ms
+   × details opens on the contract with size and performance, and shows no source 16ms
+     → expected [ 'Overview', 'Contract', …(5) ] to deeply equal [ Array(6) ]
+   ✓ a page has details like every other kind: purpose, address, inputs, output and states 2ms
+   ✓ source is shown only when the source tab is the open one 4ms
+   ✓ measurements name the limit each figure is frozen at, or that none is recorded 3ms
+   ✓ a service has each execution target on a line of its own, never added together 1ms
+   ✓ a recorded note that names a file is shown without it on measurements and on the contract 2ms
+   ✓ a declared contract explains each item in its dedicated tab and details 4ms
+ ❯ test/utils/harness-page.test.ts (7 tests | 1 failed) 11ms
+   ✓ the root opens Pages at the tip of the main branch 2ms
+   ✓ a branch address is a page bound to the tip of that branch 1ms
+   ✓ a commit address is a page bound to that commit, with the tip beside it 0ms
+   × a branch or a commit alone opens its Pages, keeping the scope 5ms
+     → expected { location: { …(5) }, …(7) } to deeply equal { kind: 'redirect', …(1) }
+   ✓ an earlier page leads to the entity it showed, at the commit it named 0ms
+   ✓ a commit under the branchless form gets its branch, and a retained one keeps none 0ms
+   ✓ what the history does not hold is missing; no other revision is shown for it 0ms
+ ❯ test/components/entity-relations.test.ts (3 tests | 1 failed) 36ms
+   ✓ what an entity uses is one section of kinds of their own, and what uses it is another 21ms
+   ✓ each related entity is a link to it in the same branch and commit 8ms
+   × a page leads to its components and a component to the components inside it 7ms
+     → expected [ 'Overview', 'Contract', …(5) ] to deeply equal [ Array(6) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/entity-usage.test.ts > the sections of an entity are named Used In and Uses, and none is a relationship
+AssertionError: expected [ 'Overview', 'Contract', …(5) ] to deeply equal [ Array(6) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "Overview",[22m
+[2m    "Contract",[22m
+[31m+   "Used In",[39m
+[2m    "Uses",[22m
+[2m    "States",[22m
+[2m    "History",[22m
+[2m    "Source",[22m
+[2m  ][22m
+
+ ❯ test/entity-usage.test.ts:40:22
+     38|  for (const entity of [list, filter, page]) {
+     39|   const body = content('commit', entity);
+     40|   expect(tabs(body)).toEqual([
+       |                      ^
+     41|    'Overview',
+     42|    'Contract',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/entity-usage.test.ts > a former relationships address opens the overview without embedded usage sections
+AssertionError: expected { branch: 'main', commit: null, …(3) } to deeply equal { branch: 'main', commit: null, …(2) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "branch": "main",[22m
+[2m    "category": "pages",[22m
+[2m    "commit": null,[22m
+[2m    "entity": "app.page.orders",[22m
+[31m+   "tab": "used-in",[39m
+[2m  }[22m
+
+ ❯ test/entity-usage.test.ts:110:47
+    108|   const location = { branch: 'main', commit, ...page };
+    109|   const path = `/branch/main${commit ? `/commit/${commit}` : ''}/pages…
+    110|   expect(explorerRoute(path, '?tab=used-in')).toEqual(location);
+       |                                               ^
+    111|   expect(explorerRoutePath({ ...location, tab: 'used-in' })).toBe(path…
+    112|   const legacy = content(commit ? 'commit' : 'current', { ...page, tab…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/components/entity-details.test.ts > details opens on the contract with size and performance, and shows no source
+AssertionError: expected [ 'Overview', 'Contract', …(5) ] to deeply equal [ Array(6) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "Overview",[22m
+[2m    "Contract",[22m
+[31m+   "Used In",[39m
+[2m    "Uses",[22m
+[2m    "States",[22m
+[2m    "History",[22m
+[2m    "Source",[22m
+[2m  ][22m
+
+ ❯ test/components/entity-details.test.ts:15:21
+     13| test('details opens on the contract with size and performance, and sho…
+     14|  const body = content('commit', page);
+     15|  expect(tabs(body)).toEqual(['Overview', 'Contract', 'Uses', 'States',…
+       |                     ^
+     16|  expect(words(body)).toContain('Lists the orders of an account.');
+     17|  for (const heading of ['Contract', 'Performance profile']) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  test/components/entity-relations.test.ts > a page leads to its components and a component to the components inside it
+AssertionError: expected [ 'Overview', 'Contract', …(5) ] to deeply equal [ Array(6) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "Overview",[22m
+[2m    "Contract",[22m
+[31m+   "Used In",[39m
+[2m    "Uses",[22m
+[2m    "States",[22m
+[2m    "History",[22m
+[2m    "Source",[22m
+[2m  ][22m
+
+ ❯ test/components/entity-relations.test.ts:48:15
+     46|   words(match[1]).trim()
+     47|  );
+     48|  expect(tabs).toEqual(['Overview', 'Contract', 'Uses', 'States', 'Hist…
+       |               ^
+     49| });
+     50| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  test/utils/harness-page.test.ts > a branch or a commit alone opens its Pages, keeping the scope
+AssertionError: expected { location: { …(5) }, …(7) } to deeply equal { kind: 'redirect', …(1) }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "kind": "redirect",[39m
+[32m-   "path": "/branch/feature%2Fkept%231/pages/page.titles",[39m
+[31m+   "atTip": true,[39m
+[31m+   "branch": "feature/kept#1",[39m
+[31m+   "commit": "dddddddddddddddddddddddddddddddddddddddd",[39m
+[31m+   "location": {[39m
+[31m+     "branch": "feature/kept#1",[39m
+[31m+     "category": "pages",[39m
+[31m+     "commit": null,[39m
+[31m+     "entity": "page.titles",[39m
+[31m+     "tab": "used-in",[39m
+[31m+   },[39m
+[31m+   "mode": "current",[39m
+[31m+   "parent": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",[39m
+[31m+   "summary": {[39m
+[31m+     "author": "Synthetic",[39m
+[31m+     "branches": [[39m
+[31m+       "feature/kept#1",[39m
+[31m+     ],[39m
+[31m+     "commit": "dddddddddddddddddddddddddddddddddddddddd",[39m
+[31m+     "committedAt": "2026-10-10T18:00:00+00:00",[39m
+[31m+     "coverage": "verified",[39m
+[31m+     "gaps": [],[39m
+[31m+     "legacy": [],[39m
+[31m+     "parents": [[39m
+[31m+       "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",[39m
+[31m+     ],[39m
+[31m+     "records": [],[39m
+[31m+     "retained": false,[39m
+[31m+     "subject": "commit d",[39m
+[31m+   },[39m
+[31m+   "tip": "dddddddddddddddddddddddddddddddddddddddd",[39m
+[2m  }[22m
+
+ ❯ test/utils/harness-page.test.ts:76:39
+     74|   `/branch/${encoded}/commit/${sha('b')}/pages/page.titles`
+     75|  ])
+     76|   expect(shown(path, '?tab=used-in')).toEqual({ kind: 'redirect', path…
+       |                                       ^
+     77| });
+     78| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  4 failed (4)
+      Tests  5 failed | 18 passed (23)
+   Start at  18:45:41
+   Duration  5.57s (transform 2.20s, setup 0ms, collect 4.04s, tests 193ms, environment 0ms, prepare 242ms)
+
+
+Running 9 tests using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width (5.6s)
+  ✘  2 test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at desktop width (5.3s)
+  ✓  3 test/entity-preview-actions.spec.ts:123:2 › the console keeps a loaded revision responsive at desktop width (596ms)
+  ✘  4 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width (5.3s)
+  ✘  5 test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at tablet width (5.3s)
+  ✓  6 test/entity-preview-actions.spec.ts:123:2 › the console keeps a loaded revision responsive at tablet width (434ms)
+  ✘  7 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width (5.3s)
+  ✘  8 test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at mobile width (5.3s)
+  ✓  9 test/entity-preview-actions.spec.ts:123:2 › the console keeps a loaded revision responsive at mobile width (529ms)
+
+
+  1) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width 
+
+    Error: pages omit Used In
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Used In', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - pages omit Used In getByRole('tab', { name: 'Used In', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Used In', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:20
+
+      18 | 			page.getByRole('tab', { name: 'Used In', exact: true }),
+      19 | 			'pages omit Used In'
+    > 20 | 		).toHaveCount(0);
+         | 		  ^
+      21 | 		await expect(
+      22 | 			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
+      23 | 			'page header stays concise'
+        at reviewOverviewControls (/private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entityPreviewOverview.ts:20:5)
+        at reviewVisual (/private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entityPreviewPage.ts:104:2)
+        at /private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at desktop width ─────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Used In', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab', { name: 'Used In', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Used In', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewUsage.ts:16
+
+      14 | 	await expect(page.getByRole('region', { name: /^(Used In|Uses)$/ })).toHaveCount(0);
+      15 | 	if (category === 'pages') {
+    > 16 | 		await expect(page.getByRole('tab', { name: 'Used In', exact: true })).toHaveCount(0);
+         | 		                                                                      ^
+      17 | 		await open(page, { ...route, tab: 'used-in' });
+      18 | 		await ready(page);
+      19 | 		await capture(page, `legacy-usage-${checkpoint}`);
+        at reviewUsage (/private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entityPreviewUsage.ts:16:73)
+        at /private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entity-preview-actions.spec.ts:34:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-usa-fc122-cated-tabs-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-usa-fc122-cated-tabs-at-desktop-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width 
+
+    Error: pages omit Used In
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Used In', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - pages omit Used In getByRole('tab', { name: 'Used In', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Used In', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:20
+
+      18 | 			page.getByRole('tab', { name: 'Used In', exact: true }),
+      19 | 			'pages omit Used In'
+    > 20 | 		).toHaveCount(0);
+         | 		  ^
+      21 | 		await expect(
+      22 | 			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
+      23 | 			'page header stays concise'
+        at reviewOverviewControls (/private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entityPreviewOverview.ts:20:5)
+        at reviewVisual (/private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entityPreviewPage.ts:104:2)
+        at /private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/error-context.md
+
+  4) test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at tablet width ──────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Used In', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab', { name: 'Used In', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Used In', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewUsage.ts:16
+
+      14 | 	await expect(page.getByRole('region', { name: /^(Used In|Uses)$/ })).toHaveCount(0);
+      15 | 	if (category === 'pages') {
+    > 16 | 		await expect(page.getByRole('tab', { name: 'Used In', exact: true })).toHaveCount(0);
+         | 		                                                                      ^
+      17 | 		await open(page, { ...route, tab: 'used-in' });
+      18 | 		await ready(page);
+      19 | 		await capture(page, `legacy-usage-${checkpoint}`);
+        at reviewUsage (/private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entityPreviewUsage.ts:16:73)
+        at /private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entity-preview-actions.spec.ts:34:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-usa-6ec41-icated-tabs-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-usa-6ec41-icated-tabs-at-tablet-width/error-context.md
+
+  5) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width 
+
+    Error: pages omit Used In
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Used In', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - pages omit Used In getByRole('tab', { name: 'Used In', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Used In', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:20
+
+      18 | 			page.getByRole('tab', { name: 'Used In', exact: true }),
+      19 | 			'pages omit Used In'
+    > 20 | 		).toHaveCount(0);
+         | 		  ^
+      21 | 		await expect(
+      22 | 			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
+      23 | 			'page header stays concise'
+        at reviewOverviewControls (/private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entityPreviewOverview.ts:20:5)
+        at reviewVisual (/private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entityPreviewPage.ts:104:2)
+        at /private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/error-context.md
+
+  6) test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at mobile width ──────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('tab', { name: 'Used In', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('tab', { name: 'Used In', exact: true }) with timeout 5000ms
+      - waiting for getByRole('tab', { name: 'Used In', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewUsage.ts:16
+
+      14 | 	await expect(page.getByRole('region', { name: /^(Used In|Uses)$/ })).toHaveCount(0);
+      15 | 	if (category === 'pages') {
+    > 16 | 		await expect(page.getByRole('tab', { name: 'Used In', exact: true })).toHaveCount(0);
+         | 		                                                                      ^
+      17 | 		await open(page, { ...route, tab: 'used-in' });
+      18 | 		await ready(page);
+      19 | 		await capture(page, `legacy-usage-${checkpoint}`);
+        at reviewUsage (/private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entityPreviewUsage.ts:16:73)
+        at /private/tmp/harness-snapshot-LSsuVC/packages/reports/test/entity-preview-actions.spec.ts:34:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-usa-c5852-icated-tabs-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-usa-c5852-icated-tabs-at-mobile-width/error-context.md
+
+  6 failed
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width 
+    test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at desktop width ──────
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width 
+    test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at tablet width ───────
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width 
+    test/entity-preview-actions.spec.ts:24:2 › usage stays in dedicated tabs at mobile width ───────
+  3 passed (43.1s)

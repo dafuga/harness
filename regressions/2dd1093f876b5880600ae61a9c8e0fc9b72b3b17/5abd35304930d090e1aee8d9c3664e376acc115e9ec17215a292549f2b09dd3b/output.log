@@ -1,0 +1,70 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sOR13X
+
+ ❯ test/shared-workspace-registry.test.ts (6 tests | 1 failed) 17673ms
+   ✓ cataloged application configs keep their implementation and entries under configs 1ms
+   ✓ the source index resolves what the Web workspace imports of the shared workspace 1ms
+   ✓ the registry names the Web workspace beside the Electron and iOS one as a consumer of the shell  9905ms
+   ✓ a change of the shared shell reaches the Web workspace and its page, and the Electron and iOS one 50ms
+   ✓ declaring those imports changes them alone: no other reference or uncertainty moves  559ms
+   × every active visual module has its own required capture state 9ms
+     → Catalog preview states follow canonical unit order: expected [ …(252) ] to deeply equal [ …(252) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/shared-workspace-registry.test.ts > every active visual module has its own required capture state
+AssertionError: Catalog preview states follow canonical unit order: expected [ …(252) ] to deeply equal [ …(252) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -126,11 +126,10 @@[39m
+[2m    "reports.component.evidence-card",[22m
+[2m    "reports.component.evidence-grid",[22m
+[2m    "reports.component.evidence-provenance",[22m
+[2m    "reports.component.evidence-viewer",[22m
+[2m    "reports.component.explorer-catalog-items",[22m
+[32m-   "reports.component.explorer-dependencies-screen",[39m
+[2m    "reports.component.explorer-function-card",[22m
+[2m    "reports.component.explorer-ui-config-value-tree",[22m
+[2m    "reports.component.explorer-ui-explorer-module-card",[22m
+[2m    "reports.component.explorer-ui-explorer-platform-details",[22m
+[2m    "reports.component.explorer-ui-explorer-platforms",[22m
+[33m@@ -226,11 +225,10 @@[39m
+[2m    "reports.page.harness-branch-branch-at-components-entity",[22m
+[2m    "reports.page.harness-branch-branch-at-components-entity-history",[22m
+[2m    "reports.page.harness-branch-branch-at-configs",[22m
+[2m    "reports.page.harness-branch-branch-at-configs-entity",[22m
+[2m    "reports.page.harness-branch-branch-at-configs-entity-history",[22m
+[32m-   "reports.page.harness-branch-branch-at-dependencies",[39m
+[2m    "reports.page.harness-branch-branch-at-functions",[22m
+[2m    "reports.page.harness-branch-branch-at-functions-entity",[22m
+[2m    "reports.page.harness-branch-branch-at-functions-entity-history",[22m
+[2m    "reports.page.harness-branch-branch-at-layouts",[22m
+[2m    "reports.page.harness-branch-branch-at-layouts-entity",[22m
+[33m@@ -249,6 +247,8 @@[39m
+[2m    "reports.page.harness-branch-branch-at-styles",[22m
+[2m    "reports.page.harness-branch-branch-at-translations",[22m
+[2m    "reports.page.harness-branch-branch-at-types",[22m
+[2m    "reports.page.harness-branch-branch-at-types-entity",[22m
+[2m    "reports.page.harness-branch-branch-at-types-entity-history",[22m
+[31m+   "reports.component.explorer-dependencies-screen",[39m
+[31m+   "reports.page.harness-branch-branch-at-dependencies",[39m
+[2m  ][22m
+
+ ❯ test/shared-workspace-registry.test.ts:180:4
+    178|   catalog?.states.map((state) => state.units?.[0]),
+    179|   'Catalog preview states follow canonical unit order'
+    180|  ).toEqual(catalog?.units.slice().sort((left, right) => left.localeCom…
+       |    ^
+    181|  for (const id of visual) {
+    182|   const states = catalog!.states.filter((state) => state.units?.includ…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  17:57:00
+   Duration  21.89s (transform 323ms, setup 112ms, collect 660ms, tests 17.67s, environment 0ms, prepare 36ms)
+

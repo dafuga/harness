@@ -1,0 +1,104 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [15.02s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-WTxH3m
+
+ ❯ test/services/unit-index.test.ts (12 tests | 2 failed) 985ms
+   × recorded source moves retain definitions, owner-local placement and registered identity 409ms
+     → owner-local helper placement: 1 gaps; unitMetadata: definition changed: expected [ 'unitMetadata: definition changed' ] to deeply equal []
+   ✓ public route filenames retain their registered ownership 1ms
+   ✓ declared preview and documentation survive source re-indexing 6ms
+   ✓ declared execution targets survive re-indexing and follow a moved default entry 4ms
+   ✓ recreating retired source elsewhere records lineage to the retired identity 1ms
+   ✓ a unit that takes a retired name records lineage even when its symbols differ 0ms
+   ✓ lineage cannot be dropped by editing the manifest 1ms
+   ✓ unrelated new units carry no lineage 0ms
+   ✓ a declared responsibility survives re-indexing while a derived one follows the unit 1ms
+   ✓ an alternative implementation is a related unit linked by a declared contract dependency 1ms
+   ✓ several owned files produce identical metadata after one indexing pass 1ms
+   × recorded service moves preserve implementations and registered owner-local placement 556ms
+     → service ownership: 11 gaps; src/workflows/verification-evidence/record-regression/RegressionProofService.ts: definition changed; src/workflows/development-tooling/load-units/loadUnits.ts: definition changed; packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts: definition changed; packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts: definition changed; packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts: definition changed; packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts: definition changed: expected [ …(11) ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/unit-index.test.ts > recorded source moves retain definitions, owner-local placement and registered identity
+AssertionError: owner-local helper placement: 1 gaps; unitMetadata: definition changed: expected [ 'unitMetadata: definition changed' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "unitMetadata: definition changed",
++ ]
+
+ ❯ test/services/unit-index.test.ts:24:4
+     22|   gaps,
+     23|   `owner-local helper placement: ${gaps.length} gaps; ${gaps.slice(0, …
+     24|  ).toEqual([]);
+       |    ^
+     25| });
+     26| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/services/unit-index.test.ts > recorded service moves preserve implementations and registered owner-local placement
+AssertionError: service ownership: 11 gaps; src/workflows/verification-evidence/record-regression/RegressionProofService.ts: definition changed; src/workflows/development-tooling/load-units/loadUnits.ts: definition changed; packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts: definition changed; packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts: definition changed; packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts: definition changed; packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts: definition changed: expected [ …(11) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "src/workflows/verification-evidence/record-regression/RegressionProofService.ts: definition changed",
++   "src/workflows/development-tooling/load-units/loadUnits.ts: definition changed",
++   "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts: definition changed",
++   "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts: definition changed",
++   "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts: definition changed",
++   "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts: definition changed",
++   "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts: definition changed",
++   "src/cli/program/history-index-service/HistoryIndexService.ts: definition changed",
++   "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts: definition changed",
++   "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts: definition changed",
++   "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/ChangeRunService.ts: definition changed",
++ ]
+
+ ❯ test/services/unit-index.test.ts:201:89
+    199| test('recorded service moves preserve implementations and registered o…
+    200|  const gaps = [...serviceMoveGaps(services), ...serviceMoveReviews(ser…
+    201|  expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0,…
+       |                                                                                         ^
+    202|   []
+    203|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 10 passed (12)
+   Start at  20:47:19
+   Duration  5.14s (transform 169ms, setup 11ms, collect 495ms, tests 985ms, environment 0ms, prepare 44ms)
+

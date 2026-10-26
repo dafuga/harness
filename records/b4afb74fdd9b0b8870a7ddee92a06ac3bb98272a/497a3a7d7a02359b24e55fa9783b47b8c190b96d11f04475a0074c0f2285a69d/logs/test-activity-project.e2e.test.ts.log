@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VxusZc
+
+ ✓ test/activity-project.e2e.test.ts (5 tests) 8437ms
+   ✓ it names the repository and how often each loop type was used and finished  425ms
+   ✓ recent work is the commits, newest first, with their branch, components and noted reasons  1299ms
+   ✓ each changed file is listed once, at its latest commit, with the components that own it  357ms
+   ✓ what is not committed is told apart, for each checkout, and never listed as committed work  397ms
+   ✓ a working agent is shown with its checkout and the components it says it works on  1303ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  16:20:25
+   Duration  9.07s (transform 54ms, setup 17ms, collect 52ms, tests 8.44s, environment 0ms, prepare 65ms)
+

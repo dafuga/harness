@@ -1,0 +1,157 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [8.44s]
+$ bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/hub svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1A3yh3
+
+ ❯ test/audit-adapters.test.ts (13 tests | 1 failed) 32ms
+   ✓ audit profiles select ecosystem adapters 1ms
+   ✓ auto profile detects Svelte apps and Harness libs 2ms
+   × coverage distinguishes audit exclusions from the complete source inventory 14ms
+     → expected [ 'src/component.vue', 'src/index.ts' ] to deeply equal ArrayContaining{…}
+   ✓ ecosystem adapters report app and library rule violations 3ms
+   ✓ utility runtime naming handles named alias 2ms
+   ✓ utility runtime naming handles multiline 1ms
+   ✓ utility runtime naming handles local list 1ms
+   ✓ utility runtime naming handles type clause 2ms
+   ✓ utility runtime naming handles inline type 1ms
+   ✓ utility runtime naming handles another name 1ms
+   ✓ utility runtime naming handles wildcard 1ms
+   ✓ utility runtime naming handles comment 1ms
+   ✓ utility runtime naming handles string 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/audit-adapters.test.ts > coverage distinguishes audit exclusions from the complete source inventory
+AssertionError: expected [ 'src/component.vue', 'src/index.ts' ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   "ios/App/App/Native.swift",
+-   "android/app/src/main/Native.kt",
++ [
++   "src/component.vue",
++   "src/index.ts",
+  ]
+
+ ❯ test/audit-adapters.test.ts:76:17
+     74|   for (const path of native) expect(await tree.read(path)).toBe('// na…
+     75|   const paths = (await tree.list()).map((entry) => entry.path);
+     76|   expect(paths).toEqual(expect.arrayContaining(native));
+       |                 ^
+     77|   for (const path of generated) expect(paths).not.toContain(path);
+     78|   expect(paths).not.toContain('node_modules/ignored.ts');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+   Start at  03:12:34
+   Duration  337ms (transform 89ms, setup 5ms, collect 146ms, tests 32ms, environment 0ms, prepare 23ms)
+
+$ bun run src/index.ts units check --json
+{
+  "units": 1347,
+  "uncertain": 81,
+  "errors": [
+    "desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HarnessAccountPlugin.swift",
+    "desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HubAccountHandoff.swift",
+    "desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HubAccountHttp.swift",
+    "desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HubAccountModels.swift",
+    "desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HubAccountSession.swift",
+    "desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HubAccountVault.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/HarnessViewController.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/HarnessRemotePlugin.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteCache.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteCacheIndex.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteChannel.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteCoding.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteCrypto.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteKeychain.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteLink.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteMedia.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteModels.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteOffer.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemotePairing.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemotePairingMaterial.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemotePolicy.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemotePulse.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteRelayClient.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteRequests.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteScan.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSecureState.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSession.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionAuthority.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionEvents.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionLink.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionPairing.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionReads.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionScan.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSocketDelegate.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Scanner/RemoteCameraScanner.swift",
+    "desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Scanner/RemoteScannerViewController.swift"
+  ]
+}
+Error: desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HarnessAccountPlugin.swift
+desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HubAccountHandoff.swift
+desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HubAccountHttp.swift
+desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HubAccountModels.swift
+desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HubAccountSession.swift
+desktop.adapter.ios-account owns missing source packages/desktop/ios/App/App/Account/HubAccountVault.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/HarnessViewController.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/HarnessRemotePlugin.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteCache.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteCacheIndex.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteChannel.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteCoding.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteCrypto.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteKeychain.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteLink.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteMedia.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteModels.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteOffer.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemotePairing.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemotePairingMaterial.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemotePolicy.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemotePulse.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteRelayClient.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteRequests.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteScan.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSecureState.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSession.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionAuthority.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionEvents.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionLink.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionPairing.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionReads.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSessionScan.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Remote/RemoteSocketDelegate.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Scanner/RemoteCameraScanner.swift
+desktop.adapter.ios-remote owns missing source packages/desktop/ios/App/App/Scanner/RemoteScannerViewController.swift
+error: script "dev" exited with code 1

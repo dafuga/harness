@@ -1,0 +1,79 @@
+
+
+Running 16 tests using 1 worker
+
+(node:94682) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview-groups.spec.ts:83:2 › private dependencies reuse module cards at desktop width (981ms)
+  ✓   2 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at desktop (3.4s)
+  ✓   3 test/entity-preview-groups.spec.ts:83:2 › private dependencies reuse module cards at tablet width (811ms)
+  ✓   4 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at tablet (3.2s)
+  ✓   5 test/entity-preview-groups.spec.ts:83:2 › private dependencies reuse module cards at mobile width (835ms)
+  ✓   6 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at mobile (3.1s)
+  ✓   7 test/entity-preview-groups.spec.ts:133:2 › source lists category implementation files only at desktop (1.6s)
+  ✓   8 test/entity-preview-groups.spec.ts:133:2 › source lists category implementation files only at tablet (1.6s)
+  ✓   9 test/entity-preview-groups.spec.ts:133:2 › source lists category implementation files only at mobile (1.5s)
+  ✘  10 test/entity-preview-words.spec.ts:29:2 › a long word in a narrow column of a collection stays whole (fitting) (259ms)
+(node:95215) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  11 test/entity-preview-words.spec.ts:29:2 › a long word in a narrow column of a collection stays whole (scrolling) (304ms)
+(node:95248) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 test/entity-preview-words.spec.ts:49:1 › a long word in a row of a history stays whole too (188ms)
+  ✓  13 test/entity-preview-words.spec.ts:65:1 › the details of a declared contract say what each item is, and fit a phone (588ms)
+  ✓  14 test/entity-preview-words.spec.ts:181:2 › contract has its own typed example view at desktop width (7.2s)
+  ✓  15 test/entity-preview-words.spec.ts:181:2 › contract has its own typed example view at tablet width (7.2s)
+  ✓  16 test/entity-preview-words.spec.ts:181:2 › contract has its own typed example view at mobile width (7.0s)
+
+
+  1) test/entity-preview-words.spec.ts:29:2 › a long word in a narrow column of a collection stays whole (fitting) 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      38 | 		}
+      39 | 		await capture(tab, `collection-${wide ? 'wide' : 'long'}-words-mobile`);
+    > 40 | 		expect(await broken(cells.nth(0))).toBe(0);
+         | 		                                   ^
+      41 | 		expect(await broken(cells.nth(1))).toBe(0);
+      42 | 		// Fitting words use their columns; wider words scroll inside the frame, never the page.
+      43 | 		expect(
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-elGn2v/packages/reports/test/entity-preview-words.spec.ts:40:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-a-lon-a53dd-ection-stays-whole-fitting-/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-a-lon-a53dd-ection-stays-whole-fitting-/error-context.md
+
+  2) test/entity-preview-words.spec.ts:29:2 › a long word in a narrow column of a collection stays whole (scrolling) 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      38 | 		}
+      39 | 		await capture(tab, `collection-${wide ? 'wide' : 'long'}-words-mobile`);
+    > 40 | 		expect(await broken(cells.nth(0))).toBe(0);
+         | 		                                   ^
+      41 | 		expect(await broken(cells.nth(1))).toBe(0);
+      42 | 		// Fitting words use their columns; wider words scroll inside the frame, never the page.
+      43 | 		expect(
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-elGn2v/packages/reports/test/entity-preview-words.spec.ts:40:38
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-a-lon-5c90f-tion-stays-whole-scrolling-/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-a-lon-5c90f-tion-stays-whole-scrolling-/error-context.md
+
+  2 failed
+    test/entity-preview-words.spec.ts:29:2 › a long word in a narrow column of a collection stays whole (fitting) 
+    test/entity-preview-words.spec.ts:29:2 › a long word in a narrow column of a collection stays whole (scrolling) 
+  14 passed (44.2s)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+

@@ -1,0 +1,327 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [7.39s]
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4uaakp/packages/desktop
+
+ ❯ test/stores/workspace-projects.test.ts (7 tests | 1 failed) 60ms
+   ✓ a project link selects its project before any read and names it in every request 2ms
+   ✓ switching keeps the category, drops the entity and pushes the link of the new tip 0ms
+   ✓ an answer for the previous project that arrives late is discarded 53ms
+   ✓ an answer that names another project is refused 0ms
+   ✓ a bridge without project operations keeps legacy links and its proven capabilities 0ms
+   ✓ capabilities that cannot be read close every write 0ms
+   × a refreshed account list clears a removed shared project and all of its actions 3ms
+     → removed shared project is no longer rendered: expected { …(7) } to be null
+ ❯ test/stores/hosted-connection.test.ts (8 tests | 4 failed) 8ms
+   × pending approval shows a code and an address and is asked about no sooner than the interval 5ms
+     → expected 3 to be greater than 3
+   ✓ an address that is not a plain approval address is never offered 0ms
+   ✓ an expired code is not asked about again, and disposing stops the asking 0ms
+   ✓ disconnecting removes what was shared from the page before the bridge is asked 0ms
+   ✓ a bridge without the three operations offers no connection 0ms
+   × a signed-in device keeps owned and joined projects current and clears another account first 1ms
+     → signed-in projects refresh automatically: expected "spy" to be called at least once
+   × an account status that arrives after disposal cannot restart polling or repopulate projects 0ms
+     → expected "spy" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st spy call:
+
+    Array []
+
+
+Number of calls: 1
+
+   × account sync pauses while hidden, refreshes when visible and removes listeners on disposal 1ms
+     → expected "spy" to be called 2 times, but got 1 times
+ ❯ test/adapters/capacitor-environment.test.ts (5 tests | 1 failed) 58ms
+   ✓ the phone control port is the native plugin, and nothing of the desktop is offered 2ms
+   ✓ status is heard through the plugin until the listener is released 53ms
+   ✓ each status decides at once what the bridge offers, before anyone acts on it 0ms
+   ✓ what the scanner refuses reaches the page with its code, and no pairing link is listened for 0ms
+   × an unpaired phone signs in and lists owned and invited account projects without a Mac 3ms
+     → Google account connection is offered without pairing: expected 'undefined' to be 'function' // Object.is equality
+ ❯ test/services/native-auth.test.ts (6 tests | 3 failed) 8ms
+   ✓ native PKCE exchanges only approved exact nonce/resource and keeps verifier and bearer outside renderer status 4ms
+   ✓ a wrong native nonce never persists a credential 1ms
+   × revoked or mismatched native status 401 drops the session and protected cache 3ms
+     → promise rejected "Error: Hosted request failed or access wa… { …(2) }" instead of resolving
+   × revoked or mismatched native status 403 drops the session and protected cache 0ms
+     → promise rejected "Error: Hosted request failed or access wa… { …(2) }" instead of resolving
+   × revoked or mismatched native status 200 drops the session and protected cache 0ms
+     → promise rejected "Error: Hosted session does not match the …" instead of resolving
+   ✓ a temporary native status failure preserves the encrypted login 0ms
+ ❯ test/utils/forget-remote.test.ts (3 tests | 1 failed) 5ms
+   ✓ nothing of the computer stays on the page or in its address 2ms
+   ✓ the start address is left alone, and a page without a location is not an error 0ms
+   × disconnecting a Mac leaves the phones independent Google account project visible 3ms
+     → expected [] to deeply equal [ { id: 'cloud', …(2) } ]
+ ❯ test/services/remote-projection.test.ts (3 tests | 2 failed) 42ms
+   ✓ cached project discovery survives disconnect and cache deletion requires online rebuild 27ms
+   × unchanged account discovery does not fetch every project snapshot again 9ms
+     → project discovery stays lightweight: expected [ '/api/projects/p/snapshot' ] to deeply equal []
+   × a removed membership cannot reappear from this devices cached projects or entities 6ms
+     → revoked projects never return from an older offline list: expected [ { id: 'p', name: 'Project', …(1) } ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/capacitor-environment.test.ts > an unpaired phone signs in and lists owned and invited account projects without a Mac
+AssertionError: Google account connection is offered without pairing: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ test/adapters/capacitor-environment.test.ts:119:93
+    117|  const environment = new CapacitorEnvironmentAdapter(config).connect();
+    118|  const bridge = environment.bridge!;
+    119|  expect(typeof bridge.hostedStatus, 'Google account connection is offe…
+       |                                                                                             ^
+    120|   'function'
+    121|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  test/services/native-auth.test.ts > revoked or mismatched native status 401 drops the session and protected cache
+ FAIL  test/services/native-auth.test.ts > revoked or mismatched native status 403 drops the session and protected cache
+AssertionError: promise rejected "Error: Hosted request failed or access wa… { …(2) }" instead of resolving
+ ❯ test/services/native-auth.test.ts:127:78
+    125|    onDisconnect
+    126|   });
+    127|   await expect(service.status(), 'revoked identity returns to Google s…
+       |                                                                              ^
+    128|    configured: true,
+    129|    state: 'signed-out'
+
+Caused by: Error: Hosted request failed or access was refused.
+ ❯ HostedHttpAdapter.checkResponse src/adapters/hosted-http-adapter/HostedHttpAdapter.ts:116:7
+ ❯ HostedHttpAdapter.request src/adapters/hosted-http-adapter/HostedHttpAdapter.ts:95:4
+ ❯ NativeAuthService.refresh src/services/NativeAuthService.ts:98:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { category: 'denied', status: 401 }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  test/services/native-auth.test.ts > revoked or mismatched native status 200 drops the session and protected cache
+AssertionError: promise rejected "Error: Hosted session does not match the …" instead of resolving
+ ❯ test/services/native-auth.test.ts:127:78
+    125|    onDisconnect
+    126|   });
+    127|   await expect(service.status(), 'revoked identity returns to Google s…
+       |                                                                              ^
+    128|    configured: true,
+    129|    state: 'signed-out'
+
+Caused by: Error: Hosted session does not match the signed-in principal.
+ ❯ RemoteProjectResponseValidator.actor src/validators/RemoteProjectResponseValidator.ts:23:10
+ ❯ NativeAuthService.refresh src/services/NativeAuthService.ts:100:40
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  test/services/remote-projection.test.ts > unchanged account discovery does not fetch every project snapshot again
+AssertionError: project discovery stays lightweight: expected [ '/api/projects/p/snapshot' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "/api/projects/p/snapshot",
++ ]
+
+ ❯ test/services/remote-projection.test.ts:27:5
+     25|    f.state.calls.filter((path) => path.includes('/snapshot')),
+     26|    'project discovery stays lightweight'
+     27|   ).toEqual([]);
+       |     ^
+     28|  } finally {
+     29|   await f.cleanup();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  test/services/remote-projection.test.ts > a removed membership cannot reappear from this devices cached projects or entities
+AssertionError: revoked projects never return from an older offline list: expected [ { id: 'p', name: 'Project', …(1) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "id": "p",
++     "kind": "shared",
++     "name": "Project",
++   },
++ ]
+
+ ❯ test/services/remote-projection.test.ts:45:5
+     43|    await f.adapter.listProjects().catch(() => []),
+     44|    'revoked projects never return from an older offline list'
+     45|   ).toEqual([]);
+       |     ^
+     46|   await expect(f.adapter.entity(input), 'removed project copies are pu…
+     47|  } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  test/stores/hosted-connection.test.ts > pending approval shows a code and an address and is asked about no sooner than the interval
+AssertionError: expected 3 to be greater than 3
+ ❯ test/stores/hosted-connection.test.ts:67:41
+     65|  expect(workspace.loadProjects).toHaveBeenCalled();
+     66|  await vi.advanceTimersByTimeAsync(60000);
+     67|  expect(hostedStatus.mock.calls.length).toBeGreaterThan(3);
+       |                                         ^
+     68|  connection.dispose();
+     69| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  test/stores/hosted-connection.test.ts > a signed-in device keeps owned and joined projects current and clears another account first
+AssertionError: signed-in projects refresh automatically: expected "spy" to be called at least once
+ ❯ test/stores/hosted-connection.test.ts:139:77
+    137|  workspace.loadProjects.mockClear();
+    138|  await vi.advanceTimersByTimeAsync(30000);
+    139|  expect(workspace.loadProjects, 'signed-in projects refresh automatica…
+       |                                                                             ^
+    140|  const names: string[][] = [];
+    141|  workspace.loadProjects.mockImplementation(async () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  test/stores/hosted-connection.test.ts > an account status that arrives after disposal cannot restart polling or repopulate projects
+AssertionError: expected "spy" to not be called at all, but actually been called 1 times
+
+Received: 
+
+  1st spy call:
+
+    Array []
+
+
+Number of calls: 1
+
+ ❯ test/stores/hosted-connection.test.ts:170:37
+    168|  answer(signedIn);
+    169|  await loading;
+    170|  expect(workspace.loadProjects).not.toHaveBeenCalled();
+       |                                     ^
+    171|  expect(connection.status).toBeNull();
+    172| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  test/stores/hosted-connection.test.ts > account sync pauses while hidden, refreshes when visible and removes listeners on disposal
+AssertionError: expected "spy" to be called 2 times, but got 1 times
+ ❯ test/stores/hosted-connection.test.ts:195:23
+    193|  page.dispatchEvent(new Event('visibilitychange'));
+    194|  await vi.advanceTimersByTimeAsync(0);
+    195|  expect(hostedStatus).toHaveBeenCalledTimes(2);
+       |                       ^
+    196|  connection.dispose();
+    197|  view.dispatchEvent(new Event('focus'));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  test/stores/workspace-projects.test.ts > a refreshed account list clears a removed shared project and all of its actions
+AssertionError: removed shared project is no longer rendered: expected { …(7) } to be null
+
+- Expected: 
+null
+
++ Received: 
+{
+  "branches": [],
+  "capabilities": {
+    "agents": true,
+    "approval": true,
+    "comments": true,
+    "planning": true,
+    "source": "local",
+  },
+  "commits": [],
+  "entities": [],
+  "project": {
+    "id": "shared",
+    "name": "shared",
+    "root": "/tmp/shared",
+  },
+  "revision": {
+    "atTip": true,
+    "branch": "main",
+    "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "tip": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  },
+  "writable": true,
+}
+
+ ❯ test/stores/workspace-projects.test.ts:204:73
+    202|  await store.loadProjects();
+    203|  expect(store.projects).toEqual([]);
+    204|  expect(store.snapshot, 'removed shared project is no longer rendered'…
+       |                                                                         ^
+    205|  expect(store.entity).toBeNull();
+    206|  expect(store.capabilities.agents).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+ FAIL  test/utils/forget-remote.test.ts > disconnecting a Mac leaves the phones independent Google account project visible
+AssertionError: expected [] to deeply equal [ { id: 'cloud', …(2) } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "id": "cloud",
+-     "kind": "shared",
+-     "name": "Account",
+-   },
+- ]
++ []
+
+ ❯ test/utils/forget-remote.test.ts:65:29
+     63|  };
+     64|  forgetRemote(workspace as unknown as Workspace);
+     65|  expect(workspace.projects).toEqual([{ id: 'cloud', name: 'Account', k…
+       |                             ^
+     66|  expect(workspace.snapshot).toEqual({ project: { id: 'cloud' } });
+     67|  expect(workspace.capabilities.comments).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯
+
+
+ Test Files  6 failed (6)
+      Tests  12 failed | 20 passed (32)
+   Start at  22:52:03
+   Duration  1.32s (transform 235ms, setup 0ms, collect 414ms, tests 182ms, environment 0ms, prepare 132ms)
+

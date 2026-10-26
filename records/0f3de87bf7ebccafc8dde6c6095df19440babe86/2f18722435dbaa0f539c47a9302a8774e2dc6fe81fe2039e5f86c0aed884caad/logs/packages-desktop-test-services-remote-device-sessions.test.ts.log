@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/packages/desktop
+
+ ✓ test/services/remote-device-sessions.test.ts (5 tests) 7849ms
+   ✓ an approved device completes the handshake and is served by its own session  1405ms
+   ✓ an unknown device is rejected before any key is derived  1477ms
+   ✓ a device without the approved key is dropped at its first packet and gets no answer  1611ms
+   ✓ a newer connection of a device replaces the older one  1642ms
+   ✓ revocation ends the session: nothing more is answered and a new hello is rejected  1714ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  09:52:59
+   Duration  8.92s (transform 510ms, setup 0ms, collect 862ms, tests 7.85s, environment 0ms, prepare 32ms)
+

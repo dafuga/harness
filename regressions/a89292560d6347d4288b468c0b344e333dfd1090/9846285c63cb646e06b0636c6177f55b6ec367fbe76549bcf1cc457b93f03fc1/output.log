@@ -1,0 +1,43 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-plKh3a
+
+ ❯ test/validators/component-manifest.test.ts (8 tests | 1 failed) 19ms
+   × visual units can bind a preview to one scenario, state and viewport 10ms
+     → expected [ Array(1) ] to deeply equal []
+   ✓ headless units cannot declare screenshot previews 1ms
+   ✓ a derived unit names its default execution target and lists it as its only target 1ms
+   ✓ a unit may declare every applicable execution target beside its default 1ms
+   ✓ execution targets must include the default and name each runtime once 1ms
+   ✓ manifest data cannot relax the performance tolerance beyond five percent 1ms
+   ✓ a derived responsibility is labelled derived and cannot be edited without declaring it 0ms
+   ✓ a unit can name a committed Markdown document, but never escape its repository 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/validators/component-manifest.test.ts > visual units can bind a preview to one scenario, state and viewport
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "function.rank: manifest Unrecognized key: \"testing\"",
++ ]
+
+ ❯ test/validators/component-manifest.test.ts:42:25
+     40|   } as ComponentManifest;
+     41|   const result = new ComponentManifestValidator().validate(value, file…
+     42|   expect(result.errors).toEqual([]);
+       |                         ^
+     43|   expect(result.value).toHaveProperty('preview', preview);
+     44|   expect(result.value).toHaveProperty('testing', value.testing);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  12:20:40
+   Duration  2.63s (transform 124ms, setup 85ms, collect 295ms, tests 19ms, environment 0ms, prepare 22ms)
+

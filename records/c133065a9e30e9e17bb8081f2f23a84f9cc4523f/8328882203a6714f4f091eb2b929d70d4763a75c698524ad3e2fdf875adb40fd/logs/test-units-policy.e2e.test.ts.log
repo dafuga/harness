@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-MqQFuY
+
+ ✓ test/units-policy.e2e.test.ts (3 tests) 2138ms
+   ✓ CLI exposes execution targets and component versions, and refuses relaxed tolerance  656ms
+   ✓ CLI records lineage when retired source is recreated under a new identity  988ms
+   ✓ CLI labels a supplied responsibility as declared and a generated one as derived  492ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  07:35:13
+   Duration  2.36s (transform 27ms, setup 9ms, collect 11ms, tests 2.14s, environment 0ms, prepare 48ms)
+

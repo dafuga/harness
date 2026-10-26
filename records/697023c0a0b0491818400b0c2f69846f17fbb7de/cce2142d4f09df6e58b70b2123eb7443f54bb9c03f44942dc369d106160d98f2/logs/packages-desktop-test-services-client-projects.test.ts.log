@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HUXF1L/packages/desktop
+
+ ✓ test/services/client-projects.test.ts (3 tests) 4439ms
+   ✓ a client opens a project once, whoever asks first  1558ms
+   ✓ a project that finishes opening after the client ended is dropped, not kept  1648ms
+   ✓ an ended client opens nothing more  1233ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  00:08:12
+   Duration  5.03s (transform 256ms, setup 0ms, collect 423ms, tests 4.44s, environment 0ms, prepare 32ms)
+

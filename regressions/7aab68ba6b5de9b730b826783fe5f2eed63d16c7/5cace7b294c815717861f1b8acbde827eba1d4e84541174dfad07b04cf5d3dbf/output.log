@@ -1,0 +1,36 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-dQpiob
+
+ ❯ test/services/git-source-history/module-data.test.ts (3 tests | 1 failed) 7551ms
+   × metadata admission is required without a project opt-in 1422ms
+     → Every project requires committed module metadata: expected false to be true // Object.is equality
+   ✓ committed relationships include transitive APIs, route layouts and cycles without rewriting raw edges 5ms
+   ✓ sync keeps immutable snapshots while advancing repaired module lookup paths  6105ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/git-source-history/module-data.test.ts > metadata admission is required without a project opt-in
+AssertionError: Every project requires committed module metadata: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/services/git-source-history/module-data.test.ts:21:5
+     19|    await moduleDataRequired(project.root, 'HEAD'),
+     20|    'Every project requires committed module metadata'
+     21|   ).toBe(true);
+       |     ^
+     22|  } finally {
+     23|   await rm(join(project.root, '..'), { recursive: true, force: true });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  17:28:40
+   Duration  12.64s (transform 613ms, setup 185ms, collect 1.27s, tests 7.55s, environment 0ms, prepare 39ms)
+

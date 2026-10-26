@@ -1,0 +1,20 @@
+
+Running 9 tests using 3 workers
+
+(node:65237) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65236) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65238) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › reports.component.module-system-explorer-module-resources-screen at tablet (377ms)
+  ✓  1 tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › reports.component.module-system-explorer-module-resources-screen at mobile (361ms)
+  ✓  3 tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › reports.component.module-system-explorer-module-resources-screen at desktop (695ms)
+  ✓  5 tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › reports.component.module-system-explorer-modules-screen at mobile (341ms)
+  ✓  4 tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › reports.component.module-system-explorer-modules-screen at tablet (350ms)
+  ✓  8 tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › reports.component.networking-security-explorer-permissions-screen at tablet (327ms)
+  ✓  7 tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › reports.component.networking-security-explorer-permissions-screen at mobile (461ms)
+  ✓  6 tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › reports.component.module-system-explorer-modules-screen at desktop (649ms)
+  ✓  9 tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › reports.component.networking-security-explorer-permissions-screen at desktop (643ms)
+
+  9 passed (11.6s)

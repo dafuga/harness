@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW/packages/desktop[39m
+
+ [32m✓[39m test/remote-host-launch-races.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 3422[2mms[22m[39m
+   [33m[2m✓[22m[39m disabling while the stored record is still being read at launch keeps it off [33m 895[2mms[22m[39m
+   [33m[2m✓[22m[39m quitting while the stored record is still being read starts nothing and keeps it on [33m 831[2mms[22m[39m
+   [33m[2m✓[22m[39m quitting while the stored keys are being imported at launch starts nothing [33m 887[2mms[22m[39m
+   [33m[2m✓[22m[39m off and on again during launch: a turning-on that fails leaves it off [33m 809[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 19:36:14
+[2m   Duration [22m 4.53s[2m (transform 576ms, setup 0ms, collect 906ms, tests 3.42s, environment 0ms, prepare 44ms)[22m
+

@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-NpeyTr
+
+ ✓ test/hooks.e2e.test.ts (4 tests) 20572ms
+   ✓ installing composes with an existing hook and uninstalling restores it byte for byte  5403ms
+   ✓ an unverified commit cannot be pushed, a verified one can, and its evidence is attached  6706ms
+   ✓ another worktree is unaffected until it opts in, and --no-verify is a stated bypass  4823ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  07:53:36
+   Duration  20.79s (transform 31ms, setup 10ms, collect 27ms, tests 20.57s, environment 0ms, prepare 35ms)
+

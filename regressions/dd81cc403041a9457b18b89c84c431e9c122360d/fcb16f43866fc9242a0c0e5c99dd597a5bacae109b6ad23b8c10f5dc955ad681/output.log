@@ -1,0 +1,109 @@
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run --exclude "test/**/*.e2e.test.ts" --exclude "test/packaged-reports.e2e.test.ts" "$@"' -- test/utils/explorer-route.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-AQ4Esw
+
+ ❯ test/utils/explorer-route.test.ts (70 tests | 1 failed) 17ms
+   ✓ keeps page and module entity categories separate from primary navigation 3ms
+   ✓ current branch /pages 1ms
+   ✓ current branch /pages/reports.page.titles 0ms
+   ✓ current branch /pages/reports.page.titles/details 0ms
+   ✓ current branch /components 0ms
+   ✓ current branch /components/reports.component.harness-harness-console 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/details 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/history 0ms
+   ✓ current branch /functions 0ms
+   ✓ current branch /functions/function.slugify 0ms
+   ✓ current branch /functions/function.slugify/details 0ms
+   ✓ current branch /functions/function.slugify/history 0ms
+   ✓ current branch /configs 0ms
+   ✓ current branch /configs/config.site 0ms
+   ✓ current branch /configs/config.site/details 0ms
+   ✓ current branch /configs/config.site/history 0ms
+   ✓ current branch /types 0ms
+   ✓ current branch /types/model.input 0ms
+   ✓ current branch /types/model.input/details 0ms
+   ✓ current branch /types/model.input/history 0ms
+   ✓ current branch /services 0ms
+   ✓ current branch /services/service.clock 0ms
+   ✓ current branch /services/service.clock/details 0ms
+   ✓ current branch /services/service.clock/history 0ms
+   ✓ selected commit /pages 0ms
+   ✓ selected commit /pages/reports.page.titles 0ms
+   ✓ selected commit /pages/reports.page.titles/details 0ms
+   ✓ selected commit /components 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/details 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/history 0ms
+   ✓ selected commit /functions 1ms
+   ✓ selected commit /functions/function.slugify 0ms
+   ✓ selected commit /functions/function.slugify/details 0ms
+   ✓ selected commit /functions/function.slugify/history 0ms
+   ✓ selected commit /configs 0ms
+   ✓ selected commit /configs/config.site 0ms
+   ✓ selected commit /configs/config.site/details 0ms
+   ✓ selected commit /configs/config.site/history 0ms
+   ✓ selected commit /types 0ms
+   ✓ selected commit /types/model.input 0ms
+   ✓ selected commit /types/model.input/details 0ms
+   ✓ selected commit /types/model.input/history 0ms
+   ✓ selected commit /services 0ms
+   ✓ selected commit /services/service.clock 0ms
+   ✓ selected commit /services/service.clock/details 0ms
+   ✓ selected commit /services/service.clock/history 0ms
+   ✓ there are twenty-three designed shapes in each scope, and a Page has a history too 0ms
+   ✓ a branch is one path segment, whatever it contains 0ms
+   ✓ a branch or a commit alone opens Pages in the same scope 0ms
+   ✓ a commit that no branch reaches has no branch invented for it 0ms
+   ✓ a callable has a distinct revision-bound address across tabs and history 1ms
+   ✓ an entity id is one encoded segment 0ms
+   ✓ names no explorer address:  0ms
+   ✓ names no explorer address: / 0ms
+   ✓ names no explorer address: /pages 0ms
+   ✓ names no explorer address: /branch 0ms
+   ✓ names no explorer address: /branch/main/reports 0ms
+   ✓ names no explorer address: /branch/main/analytics 0ms
+   ✓ names no explorer address: /branch/main/activity 0ms
+   ✓ names no explorer address: /branch/main/commit/abc/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/pages 0ms
+   ✓ names no explorer address: /branch/main/pages/x/source 0ms
+   ✓ names no explorer address: /branch/main/pages/x/details/extra 0ms
+   ✓ names no explorer address: /branch/feature/kept/pages 0ms
+   ✓ names no explorer address: /branch/%E0%A4%A/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map 0ms
+   ✓ a trailing slash names the same address 0ms
+   × Agents is a scoped screen independent of entity categories 4ms
+     → expected undefined to match object { category: 'pages', screen: 'agents' }
+   ✓ Models is a page tab and legacy page Contract links open Models in the same scope 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-route.test.ts > Agents is a scoped screen independent of entity categories
+AssertionError: expected undefined to match object { category: 'pages', screen: 'agents' }
+
+- Expected: 
+{
+  "category": "pages",
+  "screen": "agents",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:194:17
+    192|  for (const prefix of ['/branch/main', `/branch/main/commit/${sha}`, `…
+    193|   const route = explorerRoute(`${prefix}/agents`)!;
+    194|   expect(route).toMatchObject({ category: 'pages', screen: 'agents' });
+       |                 ^
+    195|   expect(explorerRoutePath(route)).toBe(`${prefix}/agents`);
+    196|   expect(explorerRoute(`${prefix}/agents/unknown`)).toBeUndefined();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 69 passed (70)
+   Start at  17:00:11
+   Duration  2.84s (transform 93ms, setup 112ms, collect 33ms, tests 17ms, environment 0ms, prepare 30ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1

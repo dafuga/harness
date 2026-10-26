@@ -1,0 +1,1236 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-OiGNzW/packages/reports
+
+ ❯ test/components/entity-overview.test.ts (11 tests | 1 failed) 28ms
+   × an overview groups size and timings in Performance profile, with no source 11ms
+     → expected ' Performance profile Source size 800 …' not to contain 'Emitted size'
+   ✓ a page at a selected commit shows the parent and the commit for one state and viewport 2ms
+   ✓ a page at the branch tip shows exactly one screenshot and no before or after 1ms
+   ✓ a side with no capture of the state is a stated gap, never the other side picture 2ms
+   ✓ a component no visual scenario names keeps the screenshot pane, as a stated gap 1ms
+   ✓ a page lists its components as components, each a link in the same scope 1ms
+   ✓ a function at a selected commit shows its end-to-end results before and after 1ms
+   ✓ a function at the branch tip shows one run, and an unrecorded one is a cross 1ms
+   ✓ a behaviour that cannot be established is unknown and shown as failed 1ms
+   ✓ a config shows what it provides and who uses it, with no screenshot and no benchmark 1ms
+   ✓ contract and details list required states without an overview selector 4ms
+ ❯ test/components/entity-details.test.ts (7 tests | 1 failed) 18ms
+   × details opens on the contract with size and performance, and shows no source 9ms
+     → expected ' Pages Orders page Orders page Page O…' not to contain 'Emitted size'
+   ✓ a page has details like every other kind: purpose, address, inputs, output and states 1ms
+   ✓ source is shown only when the source tab is the open one 2ms
+   ✓ measurements name the limit each figure is frozen at, or that none is recorded 1ms
+   ✓ a service has each execution target on a line of its own, never added together 1ms
+   ✓ a recorded note that names a file is shown without it on measurements and on the contract 1ms
+   ✓ a declared contract explains each item in its dedicated tab and details 2ms
+ ❯ test/utils/entity-measure.test.ts (8 tests | 2 failed) 7ms
+   ✓ a size is read in bytes, kilobytes or megabytes, and never rounded to nothing 1ms
+   × a measured size is shown and one nothing measured reads Not measured, never zero 3ms
+     → expected [ Array(3) ] to deep equally contain ObjectContaining{…}
+   × each execution target has its own emitted size, with the reason one could not be built 2ms
+     → expected { …(3) } to match object { target: 'process' }
+(3 matching properties omitted from actual)
+   ✓ a timing names its workload and profile and its tolerance as a percentage 0ms
+   ✓ timings of two profiles stay two rows, and a declared budget nothing measured is not measured 0ms
+   ✓ a tolerance above the five percent policy is marked, not clamped 0ms
+   ✓ why a figure is unavailable is told without the file a recorded note names 0ms
+   ✓ observed performance is visible without a budget and stays scoped to its callable 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-details.test.ts > details opens on the contract with size and performance, and shows no source
+AssertionError: expected ' Pages Orders page Orders page Page O…' not to contain 'Emitted size'
+
+Expected: [32m"Emitted size"[39m
+Received: [31m" Pages Orders page Orders page Page Overview Contract Uses States History Source Contract Purpose Lists the orders of an account. App route /orders Required states default, empty Declared examples are written in the contract. Illustrative ones are placeholders shaped by the type alone. Neither is the result of a test. Inputs 2 Name Type Example Account id string Illustrative "example" Search text string "SERVICE" Outputs 1 Name Type Example Markup string Illustrative "example" Errors 0 No errors declared. Performance profile Source size Not measured Emitted size Not measured This unit declares no process or Wasm output. Complexity Not measured Latency Not measured Memory Not measured No benchmark is recorded for this revision. "[39m
+
+ ❯ test/components/entity-details.test.ts:22:26
+     20|  expect(body).not.toContain('aria-label="Size"');
+     21|  expect(words(body)).toContain('Source size');
+     22|  expect(words(body)).not.toContain('Emitted size');
+       |                          ^
+     23|  expect(words(body)).not.toContain('This unit declares no process or W…
+     24|  expect(words(body)).not.toContain('Back to overview');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/components/entity-overview.test.ts > an overview groups size and timings in Performance profile, with no source
+AssertionError: expected ' Performance profile Source size 800 …' not to contain 'Emitted size'
+
+Expected: [32m"Emitted size"[39m
+Received: [31m" Performance profile Source size 800 B Emitted size Not measured This unit declares no process or Wasm output. Complexity Not measured Workload thousand orders Environment bun-reference p95 ms 0.12 ms Tolerance 5% "[39m
+
+ ❯ test/components/entity-overview.test.ts:19:33
+     17|  for (const label of ['Source size 800 B', 'Complexity', 'thousand ord…
+     18|   expect(words(profile![1])).toContain(label);
+     19|  expect(words(profile![1])).not.toContain('Emitted size');
+       |                                 ^
+     20|  expect(body).not.toContain('aria-label="Contract"');
+     21|  expect(words(content('commit', { ...filter, tab: 'contract' }))).toCo…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/utils/entity-measure.test.ts > a measured size is shown and one nothing measured reads Not measured, never zero
+AssertionError: expected [ Array(3) ] to deep equally contain ObjectContaining{…}
+
+[32m- Expected:[39m 
+ObjectContaining {
+  "label": "Emitted size",
+  "target": "none",
+}
+
+[31m+ Received:[39m 
+[
+  {
+    "label": "Source size",
+    "value": "2.4 KB",
+  },
+  {
+    "label": "Emitted size",
+    "note": "This unit declares no process or Wasm output.",
+    "value": "Not measured",
+  },
+  {
+    "label": "Complexity",
+    "value": "3",
+  },
+]
+
+ ❯ test/utils/entity-measure.test.ts:25:20
+     23|  expect(value(list.size, 'Complexity')).toBe('3');
+     24|  expect(value(list.size, 'Emitted size')).toBe(notMeasured);
+     25|  expect(list.size).toContainEqual(
+       |                    ^
+     26|   expect.objectContaining({ label: 'Emitted size', target: 'none' })
+     27|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/utils/entity-measure.test.ts > each execution target has its own emitted size, with the reason one could not be built
+AssertionError: expected { …(3) } to match object { target: 'process' }
+(3 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "target": "process",[39m
+[31m+   "label": "Emitted size · process (native)",[39m
+[31m+   "note": "no toolchain",[39m
+[31m+   "value": "Not measured",[39m
+[2m  }[22m
+
+ ❯ test/utils/entity-measure.test.ts:39:17
+     37|  expect(native?.value).toBe(notMeasured);
+     38|  expect(native?.note).toContain('no toolchain');
+     39|  expect(native).toMatchObject({ target: 'process' });
+       |                 ^
+     40|  expect(store.size).toContainEqual(
+     41|   expect.objectContaining({ label: 'Emitted size · Wasm', target: 'was…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  4 failed | 22 passed (26)
+   Start at  21:23:06
+   Duration  1.35s (transform 600ms, setup 0ms, collect 914ms, tests 52ms, environment 0ms, prepare 68ms)
+
+
+Running 6 tests using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width (3.3s)
+  ✘  2 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width (3.1s)
+  ✘  3 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width (3.0s)
+  ✘  4 test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget (392ms)
+  ✘  5 test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget (417ms)
+  ✘  6 test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget (367ms)
+
+
+  1) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width 
+
+    Error: performance profile has space above it
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 16
+    Received:    0
+
+       at entityPreviewOverview.ts:40
+
+      38 | 		expect
+      39 | 			.soft(card.y - evidence.y - evidence.height, 'performance profile has space above it')
+    > 40 | 			.toBeGreaterThanOrEqual(16);
+         | 			 ^
+      41 | 	}
+      42 | 	await reviewProfileRows(page);
+      43 | 	expect
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:40:5)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: performance profile has space above it
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 16
+    Received:    0
+
+       at entityPreviewOverview.ts:40
+
+      38 | 		expect
+      39 | 			.soft(card.y - evidence.y - evidence.height, 'performance profile has space above it')
+    > 40 | 			.toBeGreaterThanOrEqual(16);
+         | 			 ^
+      41 | 	}
+      42 | 	await reviewProfileRows(page);
+      43 | 	expect
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:40:5)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width 
+
+    Error: performance profile has space above it
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 16
+    Received:    0
+
+       at entityPreviewOverview.ts:40
+
+      38 | 		expect
+      39 | 			.soft(card.y - evidence.y - evidence.height, 'performance profile has space above it')
+    > 40 | 			.toBeGreaterThanOrEqual(16);
+         | 			 ^
+      41 | 	}
+      42 | 	await reviewProfileRows(page);
+      43 | 	expect
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:40:5)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: performance profile has space above it
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 16
+    Received:    0
+
+       at entityPreviewOverview.ts:40
+
+      38 | 		expect
+      39 | 			.soft(card.y - evidence.y - evidence.height, 'performance profile has space above it')
+    > 40 | 			.toBeGreaterThanOrEqual(16);
+         | 			 ^
+      41 | 	}
+      42 | 	await reviewProfileRows(page);
+      43 | 	expect
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:40:5)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width 
+
+    Error: performance profile has space above it
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 16
+    Received:    0
+
+       at entityPreviewOverview.ts:40
+
+      38 | 		expect
+      39 | 			.soft(card.y - evidence.y - evidence.height, 'performance profile has space above it')
+    > 40 | 			.toBeGreaterThanOrEqual(16);
+         | 			 ^
+      41 | 	}
+      42 | 	await reviewProfileRows(page);
+      43 | 	expect
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:40:5)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    43.90625
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    43.90625
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: performance profile has space above it
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 16
+    Received:    0
+
+       at entityPreviewOverview.ts:40
+
+      38 | 		expect
+      39 | 			.soft(card.y - evidence.y - evidence.height, 'performance profile has space above it')
+    > 40 | 			.toBeGreaterThanOrEqual(16);
+         | 			 ^
+      41 | 	}
+      42 | 	await reviewProfileRows(page);
+      43 | 	expect
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:40:5)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    43.90625
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    43.90625
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    43.90625
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    43.90625
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    43.90625
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    43.90625
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:42:2)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    Error: no output-size row without a compiled target
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+       at entityPreviewOverview.ts:48
+
+      46 | 			'no output-size row without a compiled target'
+      47 | 		)
+    > 48 | 		.toBe(0);
+         | 		 ^
+      49 | 	expect((await profile.boundingBox())!.width).toBeGreaterThan(
+      50 | 		(await page.locator('.ex-summary').boundingBox())!.width * 0.95
+      51 | 	);
+        at reviewProfile (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:48:4)
+        at reviewOverviewControls (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:56:2)
+        at reviewVisual (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:105:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-actions.spec.ts:20:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/error-context.md
+
+  4) test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget 
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-03db8-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-03db8-y-readable-without-a-budget/error-context.md
+
+  5) test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget 
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-3d6a9-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-3d6a9-y-readable-without-a-budget/error-context.md
+
+  6) test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 
+
+    Error: measurement rows have equal heights
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:18
+
+      16 | 	expect
+      17 | 		.soft(Math.max(...heights) - Math.min(...heights), 'measurement rows have equal heights')
+    > 18 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+      21 | 		.toBeLessThanOrEqual(1);
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:18:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: measurement rows follow uniform spacing
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    23.953125
+
+       at entityPreviewOverview.ts:21
+
+      19 | 	expect
+      20 | 		.soft(Math.max(...spacing) - Math.min(...spacing), 'measurement rows follow uniform spacing')
+    > 21 | 		.toBeLessThanOrEqual(1);
+         | 		 ^
+      22 | }
+      23 |
+      24 | /** Visual fixtures have no standalone compiled output, and all displayed rows share one height. */
+        at reviewProfileRows (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewOverview.ts:21:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-OiGNzW/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/error-context.md
+
+  6 failed
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width 
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width 
+    test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 

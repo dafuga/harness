@@ -1,0 +1,160 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [16.01s]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-platforms.spec.ts
+
+Running 4 tests using 1 worker
+
+(node:56635) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-platforms.spec.ts:14:2 › platforms expose revision-bound deployment setup at desktop width (5.3s)
+(node:73125) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-platforms.spec.ts:14:2 › platforms expose revision-bound deployment setup at tablet width (5.2s)
+(node:91602) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-platforms.spec.ts:14:2 › platforms expose revision-bound deployment setup at mobile width (5.2s)
+(node:9505) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 test/entity-preview-platforms.spec.ts:66:1 › platform search and the shared status filter narrow the list independently (30.0s)
+
+
+  1) test/entity-preview-platforms.spec.ts:14:2 › platforms expose revision-bound deployment setup at desktop width 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('navigation', { name: 'Harness categories' }).getByRole('link', { name: 'Platforms', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('navigation', { name: 'Harness categories' }).getByRole('link', { name: 'Platforms', exact: true }) with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Harness categories' }).getByRole('link', { name: 'Platforms', exact: true })
+
+
+      20 | 		await capture(page, `platforms-entry-${viewport}`);
+      21 | 		const navigation = page.getByRole('navigation', { name: 'Harness categories' });
+    > 22 | 		await expect(navigation.getByRole('link', { name: 'Platforms', exact: true })).toBeVisible();
+         | 		                                                                               ^
+      23 | 		await startRoute(page);
+      24 | 		await navigation.getByRole('link', { name: 'Platforms', exact: true }).click();
+      25 | 		await ready(page);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-bsaMKo/packages/reports/test/entity-preview-platforms.spec.ts:22:82
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-platforms-p-b5cdb-ment-setup-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-platforms-p-b5cdb-ment-setup-at-desktop-width/error-context.md
+
+  2) test/entity-preview-platforms.spec.ts:14:2 › platforms expose revision-bound deployment setup at tablet width 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('navigation', { name: 'Harness categories' }).getByRole('link', { name: 'Platforms', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('navigation', { name: 'Harness categories' }).getByRole('link', { name: 'Platforms', exact: true }) with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Harness categories' }).getByRole('link', { name: 'Platforms', exact: true })
+
+
+      20 | 		await capture(page, `platforms-entry-${viewport}`);
+      21 | 		const navigation = page.getByRole('navigation', { name: 'Harness categories' });
+    > 22 | 		await expect(navigation.getByRole('link', { name: 'Platforms', exact: true })).toBeVisible();
+         | 		                                                                               ^
+      23 | 		await startRoute(page);
+      24 | 		await navigation.getByRole('link', { name: 'Platforms', exact: true }).click();
+      25 | 		await ready(page);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-bsaMKo/packages/reports/test/entity-preview-platforms.spec.ts:22:82
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-platforms-p-7e341-yment-setup-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-platforms-p-7e341-yment-setup-at-tablet-width/error-context.md
+
+  3) test/entity-preview-platforms.spec.ts:14:2 › platforms expose revision-bound deployment setup at mobile width 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('navigation', { name: 'Harness categories' }).getByRole('link', { name: 'Platforms', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('navigation', { name: 'Harness categories' }).getByRole('link', { name: 'Platforms', exact: true }) with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Harness categories' }).getByRole('link', { name: 'Platforms', exact: true })
+
+
+      20 | 		await capture(page, `platforms-entry-${viewport}`);
+      21 | 		const navigation = page.getByRole('navigation', { name: 'Harness categories' });
+    > 22 | 		await expect(navigation.getByRole('link', { name: 'Platforms', exact: true })).toBeVisible();
+         | 		                                                                               ^
+      23 | 		await startRoute(page);
+      24 | 		await navigation.getByRole('link', { name: 'Platforms', exact: true }).click();
+      25 | 		await ready(page);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-bsaMKo/packages/reports/test/entity-preview-platforms.spec.ts:22:82
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-platforms-p-56d92-yment-setup-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-platforms-p-56d92-yment-setup-at-mobile-width/error-context.md
+
+  4) test/entity-preview-platforms.spec.ts:66:1 › platform search and the shared status filter narrow the list independently 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('navigation', { name: 'Harness categories' }).getByRole('link', { name: 'Platforms', exact: true })
+
+
+      72 | 		.getByRole('navigation', { name: 'Harness categories' })
+      73 | 		.getByRole('link', { name: 'Platforms', exact: true })
+    > 74 | 		.click();
+         | 		 ^
+      75 | 	const articles = page.getByRole('main').getByRole('article');
+      76 | 	const search = page.getByRole('searchbox', { name: 'Search platforms', exact: true });
+      77 | 	await search.fill('iphone');
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-bsaMKo/packages/reports/test/entity-preview-platforms.spec.ts:74:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-platforms-p-15968-rrow-the-list-independently/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-platforms-p-15968-rrow-the-list-independently/error-context.md
+
+  4 failed
+    test/entity-preview-platforms.spec.ts:14:2 › platforms expose revision-bound deployment setup at desktop width 
+    test/entity-preview-platforms.spec.ts:14:2 › platforms expose revision-bound deployment setup at tablet width 
+    test/entity-preview-platforms.spec.ts:14:2 › platforms expose revision-bound deployment setup at mobile width 
+    test/entity-preview-platforms.spec.ts:66:1 › platform search and the shared status filter narrow the list independently 
+error: script "test:entities" exited with code 1

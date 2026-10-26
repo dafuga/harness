@@ -1,0 +1,1002 @@
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at desktop (38.8s)
+  ✘  2 test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at tablet (38.4s)
+  ✘  3 test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at mobile (38.5s)
+
+
+  1) test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at desktop 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Orders",
+        "OrderStore",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Components",
+    -   "Orders",
+        "OrderList",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Helpers",
+    -   "Orders",
+        "filterOrders",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Configs",
+    -   "Orders",
+        "orderSettings",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Models",
+    -   "Orders",
+        "Order",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Shells",
+    -   "Orders",
+        "OrderFrame",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Pages",
+    -   "Orders",
+        "Orders page",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Orders",
+        "OrderStore",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 2 elements
+
+
+       at entityPreviewFunctions.ts:157
+
+      155 | 		await expect
+      156 | 			.soft(crumbs.getByRole('listitem'))
+    > 157 | 			.toHaveText(['Services', group, 'OrderStore'], { timeout: 500 });
+          | 			 ^
+      158 | 		await page.getByRole('tab', { name: 'History', exact: true }).click();
+      159 | 		await capture(page, `folder-history-${commit ? 'historical' : 'current'}-${viewport}`, [
+      160 | 			'reports.component.harness-entity-header'
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:157:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Orders",
+        "OrderStore",
+        "History",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:164
+
+      162 | 		await expect
+      163 | 			.soft(crumbs.getByRole('listitem'))
+    > 164 | 			.toHaveText(['Services', group, 'OrderStore', 'History'], { timeout: 500 });
+          | 			 ^
+      165 | 	}
+      166 | 	await open(page, service);
+      167 | 	await expect(
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:164:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Purchases",
+        "OrderStore",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 2 elements
+
+
+       at entityPreviewFunctions.ts:157
+
+      155 | 		await expect
+      156 | 			.soft(crumbs.getByRole('listitem'))
+    > 157 | 			.toHaveText(['Services', group, 'OrderStore'], { timeout: 500 });
+          | 			 ^
+      158 | 		await page.getByRole('tab', { name: 'History', exact: true }).click();
+      159 | 		await capture(page, `folder-history-${commit ? 'historical' : 'current'}-${viewport}`, [
+      160 | 			'reports.component.harness-entity-header'
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:157:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Purchases",
+        "OrderStore",
+        "History",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:164
+
+      162 | 		await expect
+      163 | 			.soft(crumbs.getByRole('listitem'))
+    > 164 | 			.toHaveText(['Services', group, 'OrderStore', 'History'], { timeout: 500 });
+          | 			 ^
+      165 | 	}
+      166 | 	await open(page, service);
+      167 | 	await expect(
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:164:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-sour-c8f46-ation-files-only-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-sour-c8f46-ation-files-only-at-desktop/error-context.md
+
+  2) test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at tablet 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Orders",
+        "OrderStore",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Components",
+    -   "Orders",
+        "OrderList",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Helpers",
+    -   "Orders",
+        "filterOrders",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Configs",
+    -   "Orders",
+        "orderSettings",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Models",
+    -   "Orders",
+        "Order",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Shells",
+    -   "Orders",
+        "OrderFrame",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Pages",
+    -   "Orders",
+        "Orders page",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Orders",
+        "OrderStore",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 2 elements
+
+
+       at entityPreviewFunctions.ts:157
+
+      155 | 		await expect
+      156 | 			.soft(crumbs.getByRole('listitem'))
+    > 157 | 			.toHaveText(['Services', group, 'OrderStore'], { timeout: 500 });
+          | 			 ^
+      158 | 		await page.getByRole('tab', { name: 'History', exact: true }).click();
+      159 | 		await capture(page, `folder-history-${commit ? 'historical' : 'current'}-${viewport}`, [
+      160 | 			'reports.component.harness-entity-header'
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:157:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Orders",
+        "OrderStore",
+        "History",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:164
+
+      162 | 		await expect
+      163 | 			.soft(crumbs.getByRole('listitem'))
+    > 164 | 			.toHaveText(['Services', group, 'OrderStore', 'History'], { timeout: 500 });
+          | 			 ^
+      165 | 	}
+      166 | 	await open(page, service);
+      167 | 	await expect(
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:164:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Purchases",
+        "OrderStore",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 2 elements
+
+
+       at entityPreviewFunctions.ts:157
+
+      155 | 		await expect
+      156 | 			.soft(crumbs.getByRole('listitem'))
+    > 157 | 			.toHaveText(['Services', group, 'OrderStore'], { timeout: 500 });
+          | 			 ^
+      158 | 		await page.getByRole('tab', { name: 'History', exact: true }).click();
+      159 | 		await capture(page, `folder-history-${commit ? 'historical' : 'current'}-${viewport}`, [
+      160 | 			'reports.component.harness-entity-header'
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:157:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Purchases",
+        "OrderStore",
+        "History",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:164
+
+      162 | 		await expect
+      163 | 			.soft(crumbs.getByRole('listitem'))
+    > 164 | 			.toHaveText(['Services', group, 'OrderStore', 'History'], { timeout: 500 });
+          | 			 ^
+      165 | 	}
+      166 | 	await open(page, service);
+      167 | 	await expect(
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:164:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-sour-5e360-tation-files-only-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-sour-5e360-tation-files-only-at-tablet/error-context.md
+
+  3) test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at mobile 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Orders",
+        "OrderStore",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Components",
+    -   "Orders",
+        "OrderList",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Helpers",
+    -   "Orders",
+        "filterOrders",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Configs",
+    -   "Orders",
+        "orderSettings",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Models",
+    -   "Orders",
+        "Order",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Shells",
+    -   "Orders",
+        "OrderFrame",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Pages",
+    -   "Orders",
+        "Orders page",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        14 × locator resolved to 2 elements
+
+
+      107 | 			await expect
+      108 | 				.soft(crumbs.getByRole('listitem'))
+    > 109 | 				.toHaveText([
+          | 				 ^
+      110 | 					entityLabels[category].title,
+      111 | 					'Orders',
+      112 | 					await page.getByRole('heading', { level: 1 }).innerText()
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:109:6
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Orders",
+        "OrderStore",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 2 elements
+
+
+       at entityPreviewFunctions.ts:157
+
+      155 | 		await expect
+      156 | 			.soft(crumbs.getByRole('listitem'))
+    > 157 | 			.toHaveText(['Services', group, 'OrderStore'], { timeout: 500 });
+          | 			 ^
+      158 | 		await page.getByRole('tab', { name: 'History', exact: true }).click();
+      159 | 		await capture(page, `folder-history-${commit ? 'historical' : 'current'}-${viewport}`, [
+      160 | 			'reports.component.harness-entity-header'
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:157:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Orders",
+        "OrderStore",
+        "History",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:164
+
+      162 | 		await expect
+      163 | 			.soft(crumbs.getByRole('listitem'))
+    > 164 | 			.toHaveText(['Services', group, 'OrderStore', 'History'], { timeout: 500 });
+          | 			 ^
+      165 | 	}
+      166 | 	await open(page, service);
+      167 | 	await expect(
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:164:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Purchases",
+        "OrderStore",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 2 elements
+
+
+       at entityPreviewFunctions.ts:157
+
+      155 | 		await expect
+      156 | 			.soft(crumbs.getByRole('listitem'))
+    > 157 | 			.toHaveText(['Services', group, 'OrderStore'], { timeout: 500 });
+          | 			 ^
+      158 | 		await page.getByRole('tab', { name: 'History', exact: true }).click();
+      159 | 		await capture(page, `folder-history-${commit ? 'historical' : 'current'}-${viewport}`, [
+      160 | 			'reports.component.harness-entity-header'
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:157:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+    Timeout: 500ms
+    - Expected  - 1
+    + Received  + 0
+
+      Array [
+        "Services",
+    -   "Purchases",
+        "OrderStore",
+        "History",
+      ]
+
+    Call log:
+      - Expect "soft toHaveText" getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem') with timeout 500ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' }).getByRole('listitem')
+        7 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:164
+
+      162 | 		await expect
+      163 | 			.soft(crumbs.getByRole('listitem'))
+    > 164 | 			.toHaveText(['Services', group, 'OrderStore', 'History'], { timeout: 500 });
+          | 			 ^
+      165 | 	}
+      166 | 	await open(page, service);
+      167 | 	await expect(
+        at reviewServiceFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entityPreviewFunctions.ts:164:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1kgcs3/packages/reports/test/entity-preview-groups.spec.ts:123:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-sour-755a3-tation-files-only-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-sour-755a3-tation-files-only-at-mobile/error-context.md
+
+  3 failed
+    test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at desktop 
+    test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at tablet 
+    test/entity-preview-groups.spec.ts:76:2 › source lists category implementation files only at mobile 

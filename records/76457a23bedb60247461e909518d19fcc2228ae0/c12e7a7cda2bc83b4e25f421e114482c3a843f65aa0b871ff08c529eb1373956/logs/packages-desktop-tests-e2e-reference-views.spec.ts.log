@@ -1,0 +1,15 @@
+
+Running 8 tests using 1 worker
+
+(node:63137) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/reference-views.spec.ts:52:2 › desktop: a long unknown reference wraps as text beside a linked unit (313ms)
+  ✓  2 tests/e2e/reference-views.spec.ts:52:2 › tablet: a long unknown reference wraps as text beside a linked unit (233ms)
+  ✓  3 tests/e2e/reference-views.spec.ts:52:2 › mobile: a long unknown reference wraps as text beside a linked unit (246ms)
+  ✓  4 tests/e2e/reference-views.spec.ts:72:1 › a reference opened in a new tab leaves the thread and its draft in place (164ms)
+  ✓  5 tests/e2e/reference-views.spec.ts:90:1 › the project agent says its public reply with the units it names as links (263ms)
+  ✓  6 tests/e2e/reference-views.spec.ts:116:1 › streamed text and run progress in a thread link the units once they are whole (295ms)
+  ✓  7 tests/e2e/reference-views.spec.ts:149:1 › a reference read at a pinned commit opens the unit at that commit (310ms)
+  ✓  8 tests/e2e/reference-views.spec.ts:166:1 › a shared project links a reference in a comment and offers no agent (242ms)
+
+  8 passed (2.7s)

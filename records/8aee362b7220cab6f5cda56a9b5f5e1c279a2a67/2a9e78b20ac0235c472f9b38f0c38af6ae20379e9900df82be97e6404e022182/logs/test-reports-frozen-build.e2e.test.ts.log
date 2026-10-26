@@ -1,0 +1,12 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-MhJrGW[39m
+
+ [32m✓[39m test/reports-frozen-build.e2e.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 796[2mms[22m[39m
+   [33m[2m✓[22m[39m a server on the build directory itself answers a refused page with an error once that directory is rebuilt [33m 407[2mms[22m[39m
+   [33m[2m✓[22m[39m a run serves its own copy of the build, which a rebuild of the directory does not reach [33m 330[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 20:36:10
+[2m   Duration [22m 1.09s[2m (transform 40ms, setup 11ms, collect 31ms, tests 796ms, environment 0ms, prepare 36ms)[22m
+

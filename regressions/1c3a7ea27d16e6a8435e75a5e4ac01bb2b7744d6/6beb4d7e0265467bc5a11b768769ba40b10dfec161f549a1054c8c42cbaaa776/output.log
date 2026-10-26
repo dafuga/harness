@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:29540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.explorer-ui-config-value-tree at desktop (838ms)
+  ✓  2 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-explorer-table at desktop (649ms)
+  ✓  3 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.explorer-ui-config-value-tree at tablet (311ms)
+  ✓  4 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-explorer-table at tablet (294ms)
+  ✓  5 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.explorer-ui-config-value-tree at mobile (307ms)
+  ✓  6 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.component.harness-explorer-table at mobile (315ms)
+
+  6 passed (14.3s)

@@ -1,0 +1,51 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-4L7iDy/packages/reports
+
+ ❯ test/utils/module-data.test.ts (7 tests | 1 failed) 9ms
+   ✓ relationship readers use committed empty results without searching the source graph 1ms
+   ✓ required missing relationships fail instead of silently recomputing them 0ms
+   × retired modules use their committed parent relationships instead of current active-module metadata 2ms
+     → Missing committed relationships for endpoint.orders; run harness validate --write.
+   ✓ the app refuses incomplete committed metadata and exposes the exact module and field 3ms
+   ✓ the app requires committed metadata for legacy and current projects 0ms
+   ✓ an incomplete report is reloaded after a committed repair rather than cached forever 0ms
+   ✓ the app rejects a re-sealed snapshot that omits a module report 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/module-data.test.ts > retired modules use their committed parent relationships instead of current active-module metadata
+Error: Missing committed relationships for endpoint.orders; run harness validate --write.
+ ❯ explorerRelationsRecorded src/utils/explorer-ui/explorerRelationsRecorded.ts:18:10
+     17|   return undefined;
+     18|  }
+     19|  const units = new Map(head.registry.units.map((unit) => [unit.id, uni…
+       |       ^
+     20|  return Object.fromEntries(
+     21|   Object.entries(recorded).map(([key, ids]) => [
+ ❯ call ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:36:31
+ ❯ PerformanceProfileService.observe ../../src/services/verification-evidence/PerformanceProfileService.ts:58:18
+ ❯ Object.apply ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:51:29
+ ❯ src/utils/explorer-ui/explorerRelations.ts:190:20
+ ❯ src/components/explorer-ui/harness-console/consoleView.ts:34:47
+ ❯ test/utils/module-data.test.ts:74:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  20:11:36
+   Duration  252ms (transform 107ms, setup 69ms, collect 90ms, tests 9ms, environment 0ms, prepare 22ms)
+

@@ -1,0 +1,39 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-i0HVK1
+
+ ❯ test/game-runtime.test.ts (5 tests | 1 failed) 8ms
+   ✓ 2d key, door and branch share deterministic mechanics 1ms
+   ✓ 3d key, door and branch share deterministic mechanics 0ms
+   ✓ checkpoint actions use a stable snapshot and cannot cascade within a tick 0ms
+   ✓ invalid references and unknown operations are rejected before execution 1ms
+   × native dimensions select real camera types while preserving engine objects 5ms
+     → expected [ …(2) ] to have a length of 1 but got 2
+ ✓ test/guides.test.ts (7 tests) 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/game-runtime.test.ts > native dimensions select real camera types while preserving engine objects
+AssertionError: expected [ …(2) ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ test/game-runtime.test.ts:85:83
+     83|  expect(deep.isPerspectiveCamera).toBe(true);
+     84|  expect(progressed.state.hasKey).toBe(true);
+     85|  expect(world.children.filter((object: { visible: boolean }) => !objec…
+       |                                                                                   ^
+     86|  expect(canvas.dataset).toEqual({ renderer: 'webgl3d', dimension: '3d'…
+     87|  source.dispose();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 11 passed (12)
+   Start at  19:21:49
+   Duration  2.32s (transform 96ms, setup 75ms, collect 113ms, tests 15ms, environment 0ms, prepare 47ms)
+

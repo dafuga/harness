@@ -1,0 +1,108 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [306.00ms]
+
+Running 3 tests using 1 worker
+
+(node:46196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at desktop width (5.4s)
+(node:46315) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at tablet width (5.3s)
+(node:46411) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at mobile width (5.3s)
+
+
+  1) test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at desktop width 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'initialize method', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'initialize method', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'initialize method', exact: true })
+
+
+      54 | 				await expect(
+      55 | 					page.getByRole('region', { name: `${method} method`, exact: true })
+    > 56 | 				).toBeVisible();
+         | 				  ^
+      57 | 			await expect(page.getByRole('table', { name: 'Outputs', exact: true })).toHaveCount(0);
+      58 | 			await expect(page.getByRole('table', { name: 'Errors', exact: true })).toHaveCount(0);
+      59 | 			await page.getByRole('tab', { name: 'Table', exact: true }).click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zAjmEq/packages/reports/test/entity-preview-contract.spec.ts:56:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-contract-mo-6ce44--structure-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-contract-mo-6ce44--structure-at-desktop-width/error-context.md
+
+  2) test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at tablet width 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'initialize method', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'initialize method', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'initialize method', exact: true })
+
+
+      54 | 				await expect(
+      55 | 					page.getByRole('region', { name: `${method} method`, exact: true })
+    > 56 | 				).toBeVisible();
+         | 				  ^
+      57 | 			await expect(page.getByRole('table', { name: 'Outputs', exact: true })).toHaveCount(0);
+      58 | 			await expect(page.getByRole('table', { name: 'Errors', exact: true })).toHaveCount(0);
+      59 | 			await page.getByRole('tab', { name: 'Table', exact: true }).click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zAjmEq/packages/reports/test/entity-preview-contract.spec.ts:56:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-contract-mo-c33aa-e-structure-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-contract-mo-c33aa-e-structure-at-tablet-width/error-context.md
+
+  3) test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at mobile width 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'initialize method', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'initialize method', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'initialize method', exact: true })
+
+
+      54 | 				await expect(
+      55 | 					page.getByRole('region', { name: `${method} method`, exact: true })
+    > 56 | 				).toBeVisible();
+         | 				  ^
+      57 | 			await expect(page.getByRole('table', { name: 'Outputs', exact: true })).toHaveCount(0);
+      58 | 			await expect(page.getByRole('table', { name: 'Errors', exact: true })).toHaveCount(0);
+      59 | 			await page.getByRole('tab', { name: 'Table', exact: true }).click();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zAjmEq/packages/reports/test/entity-preview-contract.spec.ts:56:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-contract-mo-59b68-e-structure-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-contract-mo-59b68-e-structure-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at desktop width 
+    test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at tablet width 
+    test/entity-preview-contract.spec.ts:39:2 › model detail separates method contracts and table structure at mobile width 

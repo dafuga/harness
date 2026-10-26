@@ -1,0 +1,72 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [124.00ms]
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+The following Vite config options will be overridden by SvelteKit:
+  - root
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wgQqEz/packages/hub
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wgQqEz/packages/hub/src/components/accounts-access/AccountMenu.svelte:10:25
+Error: Expected 1 arguments, but got 2. (ts)
+{#if session.actor}<span class="account-name" title={session.actor.email}>{session.actor.name}</span
+	><a href={resolve('/', {})} data-sveltekit-reload>Projects</a>{#if projectId}<a
+			href={resolve('/projects/[projectId]/members', { projectId })}
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wgQqEz/packages/hub/src/components/shared-primitives/HubFrame.svelte:11:39
+Error: Expected 1 arguments, but got 2. (ts)
+	<header class="topbar">
+		<a class="brand" href={resolve('/', {})} data-sveltekit-reload
+			><span class="brand-mark"><BrandMark /></span> Harness</a
+
+====================================
+svelte-check found 2 errors and 0 warnings in 2 files
+error: script "typecheck" exited with code 1
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wgQqEz/packages/reports
+
+ ✓ test/components/explorer-composition.test.ts (6 tests) 1815ms
+   ✓ every page mounts the host with one screen of its own, and none draws every screen  383ms
+   ✓ the four screens of a category are made of different components  376ms
+   ✓ a catalog draws no entity view, and each entity view draws its own and not the others  991ms
+ ❯ test/components/explorer-pages-screen.test.ts (3 tests | 1 failed) 22ms
+   ✓ the pages screen lists pages as cards, each with its own screenshot and a real link 7ms
+   ✓ a revision without a registry is said to have none, and no page of another is listed 0ms
+   × every dedicated visual catalog capture can appear in its registered catalog card 14ms
+     → Captured previews visible through each registered preview choice: expected [ 'desktop.page.settings', …(4) ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-pages-screen.test.ts > every dedicated visual catalog capture can appear in its registered catalog card
+AssertionError: Captured previews visible through each registered preview choice: expected [ 'desktop.page.settings', …(4) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "desktop.page.settings",
++   "reports.component.explorer-ui-explorer-platform-details",
++   "reports.component.explorer-ui-explorer-platforms",
++   "reports.page.harness-branch-branch-at-platforms",
++   "reports.page.harness-branch-branch-at-platforms-entity",
++ ]
+
+ ❯ test/components/explorer-pages-screen.test.ts:50:90
+     48|   if (!catalogShot(evidence, actual.preview)?.file) unavailable.push(i…
+     49|  }
+     50|  expect(unavailable, 'Captured previews visible through each registere…
+       |                                                                                          ^
+     51|   []
+     52|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 8 passed (9)
+   Start at  03:21:06
+   Duration  3.13s (transform 627ms, setup 0ms, collect 990ms, tests 1.84s, environment 0ms, prepare 44ms)
+

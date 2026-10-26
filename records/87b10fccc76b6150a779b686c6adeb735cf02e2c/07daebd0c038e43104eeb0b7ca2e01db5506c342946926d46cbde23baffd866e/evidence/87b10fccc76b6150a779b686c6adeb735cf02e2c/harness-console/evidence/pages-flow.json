@@ -1,0 +1,33 @@
+{
+  "scenario": "Harness explorer over a fixed synthetic history",
+  "environment": "Chromium against the built reports server",
+  "fixture": "Synthetic Git history seeded for the console",
+  "steps": [
+    "Open /harness/branch/main/commit/6f6c6e5eb2d3672125de609cb0d07acfb325da08/pages",
+    "Wait for the Pages catalog",
+    "Read the address, the heading, the categories and the verification marks"
+  ],
+  "input": {
+    "address": "/harness/branch/main/commit/6f6c6e5eb2d3672125de609cb0d07acfb325da08/pages"
+  },
+  "output": {
+    "address": "/harness/branch/main/commit/6f6c6e5eb2d3672125de609cb0d07acfb325da08/pages",
+    "heading": "Pages",
+    "categories": [
+      "Pages",
+      "Components",
+      "Functions",
+      "Configs",
+      "Services"
+    ],
+    "category": "Pages",
+    "branch": "main",
+    "commit": "6f6c6e5eb2d3672125de609cb0d07acfb325da08",
+    "marks": [
+      "Full coverage passed",
+      "Proven",
+      "Not proven"
+    ],
+    "paths": []
+  }
+}

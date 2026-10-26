@@ -1,0 +1,941 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [6.44s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-267amb
+
+ ✓ test/audit.test.ts (9 tests) 37ms
+ ❯ test/audit-adapters.test.ts (13 tests | 1 failed) 42ms
+   ✓ audit profiles select ecosystem adapters 1ms
+   ✓ auto profile detects Svelte apps and Harness libs 3ms
+   ✓ coverage reports covered, ignored, and unknown files 6ms
+   × ecosystem adapters report app and library rule violations 11ms
+     → expected [ { …(3) }, { …(3) }, { …(3) }, …(5) ] to deeply equal ArrayContaining{…}
+   ✓ utility runtime naming handles named alias 3ms
+   ✓ utility runtime naming handles multiline 3ms
+   ✓ utility runtime naming handles local list 3ms
+   ✓ utility runtime naming handles type clause 2ms
+   ✓ utility runtime naming handles inline type 2ms
+   ✓ utility runtime naming handles another name 2ms
+   ✓ utility runtime naming handles wildcard 2ms
+   ✓ utility runtime naming handles comment 2ms
+   ✓ utility runtime naming handles string 2ms
+ ❯ test/project-template.test.ts (4 tests | 1 failed) 91ms
+   ✓ app projects include SvelteKit and specification files 2ms
+   × library projects include Bun TypeScript test structure 4ms
+     → expected '# AGENTS.md\n\nThis is a Harness Bun …' to contain 'harness info naming'
+   ✓ generated app code and configuration obey their formatter settings 75ms
+   ✓ generated lib code and configuration obey their formatter settings 9ms
+ ❯ test/guides.test.ts (7 tests | 2 failed) 7ms
+   ✓ model guidance is available for agents 1ms
+   × guidance covers every non-model scaffold topic 3ms
+     → controller: expected 'Controllers parse input and shape out…' to contain 'Naming:'
+   × code-rules guidance exposes hard Harness limits 1ms
+     → the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+   ✓ loop guidance describes loop driven development 0ms
+   ✓ scaffold guidance tells agents what generated code contains 0ms
+   ✓ guide lookup accepts common scaffold aliases 0ms
+   ✓ available guide topics are unique for CLI error output 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/audit-adapters.test.ts > ecosystem adapters report app and library rule violations
+AssertionError: expected [ { …(3) }, { …(3) }, { …(3) }, …(5) ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   ObjectContaining {
+-     "path": "src/lib/checkout/payment.ts",
+-     "rule": "file-name-pattern",
++ [
++   {
++     "message": "Dangerous SQL changes need explicit rollback guidance and careful review.",
++     "path": "db/migrations/drop_users.sql",
++     "rule": "sql-dangerous-migration",
++   },
++   {
++     "message": "Migrations should include a rollback or reversible comment.",
++     "path": "db/migrations/drop_users.sql",
++     "rule": "sql-reversible-migration",
++   },
++   {
++     "message": "Shell scripts should start with a shebang.",
++     "path": "scripts/run.sh",
++     "rule": "shell-shebang",
++   },
++   {
++     "message": "Shell scripts should use set -euo pipefail.",
++     "path": "scripts/run.sh",
++     "rule": "shell-strict-mode",
++   },
++   {
++     "message": "Avoid broad rm -rf patterns.",
++     "path": "scripts/run.sh",
++     "rule": "shell-unsafe-rm",
++   },
++   {
++     "message": "Quote shell variables in command arguments.",
++     "path": "scripts/run.sh",
++     "rule": "shell-unquoted-variable",
++   },
++   {
++     "message": "Svelte script blocks should use lang=\"ts\".",
++     "path": "src/components/bad-name.svelte",
++     "rule": "svelte-script-lang",
++   },
++   {
++     "message": "Component files should use PascalCase names.",
++     "path": "src/components/bad-name.svelte",
++     "rule": "svelte-component-name",
+    },
+  ]
+
+ ❯ test/audit-adapters.test.ts:90:67
+     88|   );
+     89| 
+     90|   expect((await auditProject(root, { profile: 'app' })).findings).toEq…
+       |                                                                   ^
+     91|    expect.arrayContaining([
+     92|     expect.objectContaining({ path: 'src/lib/checkout/payment.ts', rul…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/guides.test.ts > guidance covers every non-model scaffold topic
+AssertionError: controller: expected 'Controllers parse input and shape out…' to contain 'Naming:'
+
+- Expected
++ Received
+
+- Naming:
++ Controllers parse input and shape output.
++ Business decisions belong in services or models.
++ Each action should fit on one screen.
+
+ ❯ test/guides.test.ts:17:51
+     15|  for (const kind of scaffoldKinds) {
+     16|   expect(topics.has(kind), kind).toBe(true);
+     17|   expect(findGuide(kind)?.rules.join('\n'), kind).toContain('Naming:');
+       |                                                   ^
+     18|  }
+     19| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/guides.test.ts > code-rules guidance exposes hard Harness limits
+AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+ ❯ test/guides.test.ts:27:35
+     25|  expect(guide?.rules.join('\n')).toContain('Classes stay at or below 1…
+     26|  const naming = findGuide('naming');
+     27|  expect(naming?.rules.join('\n')).toContain('<PascalName>Service.ts');
+       |                                   ^
+     28|  expect(naming?.rules.join('\n')).toContain('<PascalName>.svelte');
+     29|  expect(naming?.rules.join('\n')).toContain('<camelName>.ts');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/project-template.test.ts > library projects include Bun TypeScript test structure
+AssertionError: expected '# AGENTS.md\n\nThis is a Harness Bun …' to contain 'harness info naming'
+
+- Expected
++ Received
+
+- harness info naming
++ # AGENTS.md
++
++ This is a Harness Bun TypeScript library. Treat Harness as the operating contract for every code change in this project.
++
++ ## Required Harness Workflow
++
++ - Read this file and the `.codex/skills/harness/SKILL.md` skill before changing code.
++ - Use Harness generators for supported code shapes instead of hand-rolling new structure.
++ - Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.
++ - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
++ - Add or update a feature spec before implementation.
++ - Keep files small, focused, and aligned with `harness.audit.json` limits.
++ - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`.
++
++ ## Clean Code Review
++
++ - Use `harness info clean-code` for optional Jev reviews.
++ - Preview with `harness audit . --clean-code --dry-run`; reviews remain disabled until enabled.
++ - Configure a project-owned credential and assess advisory results before enabling the gate.
++ - Keep uncertain judgments visible and never call incomplete reviews clean.
++
++ ## Bug and Regression Loops
++
++ - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
++ - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
++ - If no existing test covers the behavior, explain the missing coverage category and extend reusable standardized coverage before product repair.
++ - Run the strengthened test against the broken implementation and record the failing command, assertion and observed result before repair. A fixture or environment error is not defect proof; never manufacture a failure.
++ - Before changing product code, commit the failing test separately. Run harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure> on that commit. Then make a separate fix commit and run loop record --phase green: the tests, fixtures, command and environment must be unchanged. Preserve both commits when landing; do not squash away the failing-test commit. Focused regression results do not replace full verification.
++ - Repair the product while keeping the strengthened test unchanged. Repeat repair and the same unchanged test until it passes; retain failing and passing evidence at their tested revisions, then run normal verification.
++ - When correcting function names or APIs, parameter names describe their domain role; rename source declarations and update callers and contracts, rather than inventing display labels. Diagnose why the original name or API was accepted, then repair the earliest responsible generator, skill or review checkpoint within the authorized project scope. Verify the revised guidance is emitted for generated projects.
++ - For helper catalogs, prove one selected callable per detail page: distinct links for functions sharing a source module, only that callable’s parameters, return and throws, and selection retained across tabs and revisions. Keep module ownership/history explicit; a missing callable must not silently show a sibling.
++ - During read-only planning, report the coverage diagnosis and propose the standardized test change; do not edit tests or product source. Write only within an approved implementation request.
++ - Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.
++ - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
++ - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
++ - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
++ - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
++ - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.
++ - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.
++
++ ## Code Rules
++
++ - Files stay at or below 220 lines.
++ - Functions stay at or below 55 lines.
++ - Classes stay at or below 120 lines.
++ - Methods stay at or below 35 lines.
++ - Nesting stays at or below 4 levels.
++ - Functions and methods take at most 4 parameters.
++ - Cyclomatic complexity stays at or below 10.
++ - Each file defines at most 1 class.
++ - Generated scaffold file names should keep the casing and suffixes prescribed by Harness.
++ - Function exports should use camelCase and generated function files should export the expected name.
++ - Classes should not use catch-all Manager names.
++ - Command modules delegate to workflows instead of importing templates or file-generation helpers.
++ - Core, template, workflow, and command imports move in one direction.
++ - Harness audit applies ecosystem adapters for app and library code surfaces.
++ - Unsupported file types must appear in audit coverage instead of being skipped silently.
++
++ Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.
++
+
+ ❯ test/project-template.test.ts:65:37
+     63|  expect(auditConfig(files).limits.maxFileLines).toBe(220);
+     64|  for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+     65|   expect(fileContents(files, path)).toContain('harness info naming');
+       |                                     ^
+     66|   expect(fileContents(files, path)).toContain('<PascalName>Service.ts'…
+     67|   expect(fileContents(files, path)).toContain('<camelName>.ts');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  3 failed | 1 passed (4)
+      Tests  4 failed | 29 passed (33)
+   Start at  21:33:05
+   Duration  3.13s (transform 149ms, setup 23ms, collect 303ms, tests 177ms, environment 0ms, prepare 106ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-267amb/packages/reports
+
+ ❯ test/utils/entity-catalog.test.ts (9 tests | 4 failed) 53ms
+   ✓ a fresh runtime loads and calls the catalog through '../../src/utils/entityCatalog.ts' 21ms
+   ✓ a fresh runtime loads and calls the catalog through '../../src/components/harness/explorer…' 16ms
+   × a collection lists the entities of its category by the name a person reads 11ms
+     → expected [ 'Order card', 'Order list', …(1) ] to deeply equal [ 'OrderCard', 'OrderList', …(1) ]
+   × a component says which pages it is used on and which components it contains 1ms
+     → expected [ 'Order list' ] to deeply equal [ 'OrderList' ]
+   × service rows require two distinct resolved runtime owners and use that set for links 1ms
+     → expected [ { …(3) }, { …(3) } ] to deeply equal [ { …(3) }, { …(3) } ]
+   ✓ changed is what the commit changed itself, and the verdict is the one it was given 1ms
+   × search reads names and purposes, changed only keeps changes, and an order sorts 1ms
+     → expected [ 'Order list', 'Search box' ] to deeply equal [ 'OrderList', 'SearchBox' ]
+   ✓ a list of names is none, one name, or the first and how many more 0ms
+   ✓ shared helper rows require source exports, list every callable and keep owner links 0ms
+ ❯ test/components/entity-overview.test.ts (11 tests | 1 failed) 39ms
+   ✓ an overview shows contract, size and performance, and nothing of the source 11ms
+   ✓ a page at a selected commit shows the parent and the commit for one state and viewport 4ms
+   ✓ a page at the branch tip shows exactly one screenshot and no before or after 2ms
+   ✓ a side with no capture of the state is a stated gap, never the other side picture 1ms
+   ✓ a component no visual scenario names keeps the screenshot pane, as a stated gap 2ms
+   × a page lists its components as components, each a link in the same scope 4ms
+     → expected ' Pages Orders page Orders page Page L…' to match /Uses\s+3\s+Components\s+2\s+OrderList/
+   ✓ a function at a selected commit shows its end-to-end results before and after 2ms
+   ✓ a function at the branch tip shows one run, and an unrecorded one is a cross 4ms
+   ✓ a behaviour that cannot be established is unknown and shown as failed 2ms
+   ✓ a config shows what it provides and who uses it, with no screenshot and no benchmark 2ms
+   ✓ the contract and details list the required states the overview selector offers 6ms
+ ❯ test/utils/explorer-entities.test.ts (9 tests | 2 failed) 9ms
+   ✓ the active units of the five kinds are listed, each once, pages first 1ms
+   × an entity has a name, a role, a purpose, a verdict and how the commit changed it 5ms
+     → expected { id: 'function.money', …(8) } to match object { name: 'formatMoney', …(1) }
+(23 matching properties omitted from actual)
+   ✓ a page contains components, and components contain components and then functions 1ms
+   ✓ configs and services are sections of their own 0ms
+   ✓ what is none of the five kinds is named with its role, and what is behind it stays reachable 0ms
+   ✓ an entity names the pages that show it at any depth, and what else uses it 0ms
+   ✓ an entity that is not at the revision has no relations, and a cycle ends 0ms
+   × a unit the shown commit removed is listed from its parent, with its last contract 1ms
+     → expected { id: 'function.old', …(9) } to match object { name: 'oldHelper', …(4) }
+(18 matching properties omitted from actual)
+   ✓ private functions are absent from collections and stay with their owner as support 0ms
+ ❯ test/utils/explorer-name.test.ts (18 tests | 12 failed) 7ms
+   × code names retain their declared identifier casing 4ms
+     → expected 'Console route' to be 'consoleRoute' // Object.is equality
+   × code initialisms keep the exact source spelling 0ms
+     → expected 'Report PDF' to be 'reportPdf' // Object.is equality
+   ✓ a title that is an address or a file is not a name; the id gives the words 0ms
+   ✓ a name never shows a path, an id or a file ending 0ms
+   ✓ a page says the address the application serves it at, and nothing else has one 0ms
+   ✓ a title a person wrote is kept as it was written 0ms
+   ✓ a route page is named for the screen its address ends in, not for its parameters 0ms
+   ✓ only a collection of the explorer is named in the singular before a parameter 0ms
+   × service names use the recorded code identity CheckoutService across descriptive titles 0ms
+     → expected 'A descriptive title for orders' to be 'CheckoutService' // Object.is equality
+   × adapter names use the recorded code identity AgentHttpAdapter across descriptive titles 0ms
+     → expected 'A descriptive title for orders' to be 'AgentHttpAdapter' // Object.is equality
+   × repository names use the recorded code identity OrderRepository across descriptive titles 0ms
+     → expected 'A descriptive title for orders' to be 'OrderRepository' // Object.is equality
+   × workflow names use the recorded code identity recordAnalytics across descriptive titles 0ms
+     → expected 'A descriptive title for orders' to be 'recordAnalytics' // Object.is equality
+   × function names use the recorded code identity formatDuration across descriptive titles 0ms
+     → expected 'A descriptive title for orders' to be 'formatDuration' // Object.is equality
+   × module names use the recorded code identity orderRules across descriptive titles 0ms
+     → expected 'A descriptive title for orders' to be 'orderRules' // Object.is equality
+   × component names use the recorded code identity OrderList across descriptive titles 0ms
+     → expected 'A descriptive title for orders' to be 'OrderList' // Object.is equality
+   × model names use the recorded code identity Order across descriptive titles 0ms
+     → expected 'A descriptive title for orders' to be 'Order' // Object.is equality
+   × model names use the recorded code identity Order.types across descriptive titles 0ms
+     → expected 'A descriptive title for orders' to be 'Order.types' // Object.is equality
+   × config names use the recorded code identity orderConfig across descriptive titles 0ms
+     → expected 'A descriptive title for orders' to be 'orderConfig' // Object.is equality
+ ❯ test/components/explorer-function-card.test.ts (10 tests | 1 failed) 14ms
+   × function catalog cards stay concise and retain revision links without detail panels 8ms
+     → expected ' filterOrders(orders, "SERVICE") Used…' to contain 'OrderList'
+   ✓ function calls preserve declared sample values: false 1ms
+   ✓ function calls preserve declared sample values: 0 0ms
+   ✓ function calls preserve declared sample values: null 0ms
+   ✓ function calls preserve declared sample values: "" 0ms
+   ✓ function calls preserve declared sample values: %j 0ms
+   ✓ function calls preserve declared sample values: {"label":"<script>example</script>"} 0ms
+   ✓ function calls preserve declared sample values: "🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪" 0ms
+   ✓ documented parameters belong to the displayed revision; missing values stay variables 1ms
+   ✓ helper usage selects three distinct eligible consumers before truncating 2ms
+ ✓ test/components/entity-details-screen.test.ts (3 tests) 18ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 20 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-overview.test.ts > a page lists its components as components, each a link in the same scope
+AssertionError: expected ' Pages Orders page Orders page Page L…' to match /Uses\s+3\s+Components\s+2\s+OrderList/
+
+- Expected: 
+/Uses\s+3\s+Components\s+2\s+OrderList/
+
++ Received: 
+" Pages Orders page Orders page Page Lists the orders of an account. App route /orders Overview Contract Used In Uses States History Source Uses 3 Components 2 Order list Changed Arranges orders into a searchable list. Search box Takes the text orders are searched by. Configs 1 Order settings Defines how many orders a page shows. "
+
+ ❯ test/components/entity-overview.test.ts:87:22
+     85| test('a page lists its components as components, each a link in the sa…
+     86|  const body = content('commit', { ...page, tab: 'uses' });
+     87|  expect(words(body)).toMatch(/Uses\s+3\s+Components\s+2\s+OrderList/);
+       |                      ^
+     88|  expect(body).toContain(`/commit/${commits.middle}/components/${ids.li…
+     89|  expect(words(body)).toContain('App route');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/20]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > function catalog cards stay concise and retain revision links without detail panels
+AssertionError: expected ' filterOrders(orders, "SERVICE") Used…' to contain 'OrderList'
+
+Expected: "OrderList"
+Received: " filterOrders(orders, "SERVICE") Used In Order list Order store "
+
+ ❯ test/components/explorer-function-card.test.ts:22:23
+     20|   expect(count(card, /<a\b/g), 'function call and its two consumer lin…
+     21|   expect(words(card)).toContain('Used In');
+     22|   expect(words(card)).toContain('OrderList');
+       |                       ^
+     23|   expect(words(card)).toContain('OrderStore');
+     24|   expect(card).toContain(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/20]⎯
+
+ FAIL  test/utils/entity-catalog.test.ts > a collection lists the entities of its category by the name a person reads
+AssertionError: expected [ 'Order card', 'Order list', …(1) ] to deeply equal [ 'OrderCard', 'OrderList', …(1) ]
+
+- Expected
++ Received
+
+  [
+-   "OrderCard",
+-   "OrderList",
+-   "SearchBox",
++   "Order card",
++   "Order list",
++   "Search box",
+  ]
+
+ ❯ test/utils/entity-catalog.test.ts:39:52
+     37| });
+     38| test('a collection lists the entities of its category by the name a pe…
+     39|  expect(rows('components').map((row) => row.name)).toEqual([
+       |                                                    ^
+     40|   'OrderCard',
+     41|   'OrderList',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/20]⎯
+
+ FAIL  test/utils/entity-catalog.test.ts > a component says which pages it is used on and which components it contains
+AssertionError: expected [ 'Order list' ] to deeply equal [ 'OrderList' ]
+
+- Expected
++ Received
+
+  [
+-   "OrderList",
++   "Order list",
+  ]
+
+ ❯ test/utils/entity-catalog.test.ts:86:22
+     84|  const card = rows('components').find((row) => row.id === ids.card)!;
+     85|  expect(card.usedOn).toEqual(['Orders page']);
+     86|  expect(card.usedBy).toEqual(['OrderList']);
+       |                      ^
+     87|  const list = rows('components').find((row) => row.id === ids.list)!;
+     88|  expect(list.contains).toEqual(['OrderCard']);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/20]⎯
+
+ FAIL  test/utils/entity-catalog.test.ts > service rows require two distinct resolved runtime owners and use that set for links
+AssertionError: expected [ { …(3) }, { …(3) } ] to deeply equal [ { …(3) }, { …(3) } ]
+
+- Expected
++ Received
+
+  [
+    {
+      "category": "components",
+      "id": "app.component.order-list",
+-     "name": "OrderList",
++     "name": "Order list",
+    },
+    {
+      "category": "components",
+      "id": "app.component.search-box",
+-     "name": "SearchBox",
++     "name": "Search box",
+    },
+  ]
+
+ ❯ test/utils/entity-catalog.test.ts:96:25
+     94|  expect(service.targets).toEqual(['module', 'wasm', 'process']);
+     95|  expect(service.name).toBe('OrderStore');
+     96|  expect(service.usedIn).toEqual([
+       |                         ^
+     97|   { id: ids.list, name: 'OrderList', category: 'components' },
+     98|   { id: ids.search, name: 'SearchBox', category: 'components' }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/20]⎯
+
+ FAIL  test/utils/entity-catalog.test.ts > search reads names and purposes, changed only keeps changes, and an order sorts
+AssertionError: expected [ 'Order list', 'Search box' ] to deeply equal [ 'OrderList', 'SearchBox' ]
+
+- Expected
++ Received
+
+  [
+-   "OrderList",
+-   "SearchBox",
++   "Order list",
++   "Search box",
+  ]
+
+ ❯ test/utils/entity-catalog.test.ts:142:69
+    140|  const all = rows('components');
+    141|  const names = (found: typeof all) => found.map((row) => row.name);
+    142|  expect(names(catalogFilter(all, { ...filter, search: 'SEARCH' }))).to…
+       |                                                                     ^
+    143|   'OrderList',
+    144|   'SearchBox'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/20]⎯
+
+ FAIL  test/utils/explorer-entities.test.ts > an entity has a name, a role, a purpose, a verdict and how the commit changed it
+AssertionError: expected { id: 'function.money', …(8) } to match object { name: 'formatMoney', …(1) }
+(23 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "change": "direct",
+-   "name": "formatMoney",
++   "name": "Format money",
+  }
+
+ ❯ test/utils/explorer-entities.test.ts:78:37
+     76|  });
+     77|  const byId = new Map(entities.map((item) => [item.id, item]));
+     78|  expect(byId.get('function.money')).toMatchObject({ name: 'formatMoney…
+       |                                     ^
+     79|  expect(byId.get('component.row')).toMatchObject({ change: 'indirect',…
+     80|  expect(byId.get('config.site')?.change).toBe('added');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/20]⎯
+
+ FAIL  test/utils/explorer-entities.test.ts > a unit the shown commit removed is listed from its parent, with its last contract
+AssertionError: expected { id: 'function.old', …(9) } to match object { name: 'oldHelper', …(4) }
+(18 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "category": "functions",
+    "change": "removed",
+    "lastAt": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+-   "name": "oldHelper",
++   "name": "Old helper",
+    "verdict": {
+      "label": "Removed at this commit",
+      "passed": false,
+    },
+  }
+
+ ❯ test/utils/explorer-entities.test.ts:165:14
+    163|  const listed = explorerEntities(after, before);
+    164|  const old = listed.find((item) => item.id === 'function.old');
+    165|  expect(old).toMatchObject({
+       |              ^
+    166|   name: 'oldHelper',
+    167|   category: 'functions',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > code names retain their declared identifier casing
+AssertionError: expected 'Console route' to be 'consoleRoute' // Object.is equality
+
+Expected: "consoleRoute"
+Received: "Console route"
+
+ ❯ test/utils/explorer-name.test.ts:8:70
+      6| 
+      7| test('code names retain their declared identifier casing', () => {
+      8|  expect(named('function.console-route', 'function', 'consoleRoute')).t…
+       |                                                                      ^
+      9|  expect(named('reports.component.harness-harness-console', 'component'…
+     10|   'HarnessConsole'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > code initialisms keep the exact source spelling
+AssertionError: expected 'Report PDF' to be 'reportPdf' // Object.is equality
+
+Expected: "reportPdf"
+Received: "Report PDF"
+
+ ❯ test/utils/explorer-name.test.ts:17:72
+     15| 
+     16| test('code initialisms keep the exact source spelling', () => {
+     17|  expect(named('reports.function.report-pdf', 'function', 'reportPdf'))…
+       |                                                                        ^
+     18|  expect(named('reports.component.analytics-cpu', 'component', 'Analyti…
+     19|   'AnalyticsCpu'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > service names use the recorded code identity CheckoutService across descriptive titles
+AssertionError: expected 'A descriptive title for orders' to be 'CheckoutService' // Object.is equality
+
+Expected: "CheckoutService"
+Received: "A descriptive title for orders"
+
+ ❯ test/utils/explorer-name.test.ts:139:32
+    137|    owns: { source: [source], symbols }
+    138|   });
+    139|   expect(explorerName(record)).toBe(name);
+       |                                ^
+    140|  }
+    141| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > adapter names use the recorded code identity AgentHttpAdapter across descriptive titles
+AssertionError: expected 'A descriptive title for orders' to be 'AgentHttpAdapter' // Object.is equality
+
+Expected: "AgentHttpAdapter"
+Received: "A descriptive title for orders"
+
+ ❯ test/utils/explorer-name.test.ts:139:32
+    137|    owns: { source: [source], symbols }
+    138|   });
+    139|   expect(explorerName(record)).toBe(name);
+       |                                ^
+    140|  }
+    141| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > repository names use the recorded code identity OrderRepository across descriptive titles
+AssertionError: expected 'A descriptive title for orders' to be 'OrderRepository' // Object.is equality
+
+Expected: "OrderRepository"
+Received: "A descriptive title for orders"
+
+ ❯ test/utils/explorer-name.test.ts:139:32
+    137|    owns: { source: [source], symbols }
+    138|   });
+    139|   expect(explorerName(record)).toBe(name);
+       |                                ^
+    140|  }
+    141| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > workflow names use the recorded code identity recordAnalytics across descriptive titles
+AssertionError: expected 'A descriptive title for orders' to be 'recordAnalytics' // Object.is equality
+
+Expected: "recordAnalytics"
+Received: "A descriptive title for orders"
+
+ ❯ test/utils/explorer-name.test.ts:139:32
+    137|    owns: { source: [source], symbols }
+    138|   });
+    139|   expect(explorerName(record)).toBe(name);
+       |                                ^
+    140|  }
+    141| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > function names use the recorded code identity formatDuration across descriptive titles
+AssertionError: expected 'A descriptive title for orders' to be 'formatDuration' // Object.is equality
+
+Expected: "formatDuration"
+Received: "A descriptive title for orders"
+
+ ❯ test/utils/explorer-name.test.ts:139:32
+    137|    owns: { source: [source], symbols }
+    138|   });
+    139|   expect(explorerName(record)).toBe(name);
+       |                                ^
+    140|  }
+    141| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > module names use the recorded code identity orderRules across descriptive titles
+AssertionError: expected 'A descriptive title for orders' to be 'orderRules' // Object.is equality
+
+Expected: "orderRules"
+Received: "A descriptive title for orders"
+
+ ❯ test/utils/explorer-name.test.ts:139:32
+    137|    owns: { source: [source], symbols }
+    138|   });
+    139|   expect(explorerName(record)).toBe(name);
+       |                                ^
+    140|  }
+    141| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > component names use the recorded code identity OrderList across descriptive titles
+AssertionError: expected 'A descriptive title for orders' to be 'OrderList' // Object.is equality
+
+Expected: "OrderList"
+Received: "A descriptive title for orders"
+
+ ❯ test/utils/explorer-name.test.ts:139:32
+    137|    owns: { source: [source], symbols }
+    138|   });
+    139|   expect(explorerName(record)).toBe(name);
+       |                                ^
+    140|  }
+    141| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > model names use the recorded code identity Order across descriptive titles
+AssertionError: expected 'A descriptive title for orders' to be 'Order' // Object.is equality
+
+Expected: "Order"
+Received: "A descriptive title for orders"
+
+ ❯ test/utils/explorer-name.test.ts:139:32
+    137|    owns: { source: [source], symbols }
+    138|   });
+    139|   expect(explorerName(record)).toBe(name);
+       |                                ^
+    140|  }
+    141| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > model names use the recorded code identity Order.types across descriptive titles
+AssertionError: expected 'A descriptive title for orders' to be 'Order.types' // Object.is equality
+
+Expected: "Order.types"
+Received: "A descriptive title for orders"
+
+ ❯ test/utils/explorer-name.test.ts:139:32
+    137|    owns: { source: [source], symbols }
+    138|   });
+    139|   expect(explorerName(record)).toBe(name);
+       |                                ^
+    140|  }
+    141| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/20]⎯
+
+ FAIL  test/utils/explorer-name.test.ts > config names use the recorded code identity orderConfig across descriptive titles
+AssertionError: expected 'A descriptive title for orders' to be 'orderConfig' // Object.is equality
+
+Expected: "orderConfig"
+Received: "A descriptive title for orders"
+
+ ❯ test/utils/explorer-name.test.ts:139:32
+    137|    owns: { source: [source], symbols }
+    138|   });
+    139|   expect(explorerName(record)).toBe(name);
+       |                                ^
+    140|  }
+    141| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/20]⎯
+
+
+ Test Files  5 failed | 1 passed (6)
+      Tests  20 failed | 40 passed (60)
+   Start at  21:33:09
+   Duration  2.48s (transform 722ms, setup 0ms, collect 1.24s, tests 140ms, environment 0ms, prepare 162ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-267amb/packages/desktop
+
+ ❯ test/catalog-listing.test.ts (6 tests | 1 failed) 1482ms
+   × implemented catalog entries retain code identity and declared screenshots 4ms
+     → expected 'Take payments' to be 'PaymentService' // Object.is equality
+   ✓ the tip lists every ordinary entity and no page manifest that only loads for an address  316ms
+   ✓ what is left out of the list is still opened by its identity, with its sources and history  609ms
+   ✓ the same identity is listed at the earlier commit where it renders, as it was there  506ms
+   ✓ of the registry of this repository, the pages the explorer lists are listed and its route loaders are not 47ms
+   ✓ native and hosted catalogs list pure shared contracts, models and services separately 0ms
+ ❯ test/entity-usage.test.ts (4 tests | 2 failed) 5ms
+   × Used In lists what uses the entity once each, with what it is 4ms
+     → expected 'Used In 2 Orders page Page Order list…' to match /OrderList\s+Component\b/
+   × Uses keeps what the entity depends on apart by kind, with what is none of the five last 0ms
+     → expected 'Uses 3 Configs 1 Order settings Servi…' to match /^Uses 3 .*Configs 1 orderSettings.*Se…/
+   ✓ an entity with nothing recorded says so in each section 0ms
+   ✓ each section has an address, and the former one is still read 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/catalog-listing.test.ts > implemented catalog entries retain code identity and declared screenshots
+AssertionError: expected 'Take payments' to be 'PaymentService' // Object.is equality
+
+Expected: "PaymentService"
+Received: "Take payments"
+
+ ❯ test/catalog-listing.test.ts:56:49
+     54|   }
+     55|  };
+     56|  expect(catalogUnit(service, new Set())?.title).toBe('PaymentService');
+       |                                                 ^
+     57|  const source = { units: async () => [unit], changed: async () => new …
+     58|  for (const versions of [[], [imagelessDesign]]) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/entity-usage.test.ts > Used In lists what uses the entity once each, with what it is
+AssertionError: expected 'Used In 2 Orders page Page Order list…' to match /OrderList\s+Component\b/
+
+- Expected: 
+/OrderList\s+Component\b/
+
++ Received: 
+"Used In 2 Orders page Page Order list Component"
+
+ ❯ test/entity-usage.test.ts:41:15
+     39|  expect(used).toMatch(/^Used In 2 /);
+     40|  expect(used).toMatch(/Orders page\s+Page\b/);
+     41|  expect(used).toMatch(/OrderList\s+Component\b/);
+       |               ^
+     42|  expect(times(used, 'OrderList')).toBe(1);
+     43|  expect(used).not.toMatch(/relationship|Used by|Uses|OrderStore|orderS…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/entity-usage.test.ts > Uses keeps what the entity depends on apart by kind, with what is none of the five last
+AssertionError: expected 'Uses 3 Configs 1 Order settings Servi…' to match /^Uses 3 .*Configs 1 orderSettings.*Se…/
+
+- Expected: 
+/^Uses 3 .*Configs 1 orderSettings.*Services 1 OrderStore.*Other 1 Order\b/
+
++ Received: 
+"Uses 3 Configs 1 Order settings Services 1 Order store Other 1 Order"
+
+ ❯ test/entity-usage.test.ts:49:15
+     47| test('Uses keeps what the entity depends on apart by kind, with what i…
+     48|  const uses = panel('uses');
+     49|  expect(uses).toMatch(/^Uses 3 .*Configs 1 orderSettings.*Services 1 O…
+       |               ^
+     50|  expect(uses).not.toMatch(/relationship|Used by|Used In|Orders page|Or…
+     51|  expect(uses, 'usage lists omit verification marks').not.toMatch(/[×✓]…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 7 passed (10)
+   Start at  21:33:13
+   Duration  2.41s (transform 356ms, setup 0ms, collect 591ms, tests 1.49s, environment 0ms, prepare 54ms)
+
+
+Running 3 tests using 1 worker
+
+(node:49241) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at desktop width (5.4s)
+(node:62055) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at tablet width (5.4s)
+(node:74957) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at mobile width (5.4s)
+
+
+  1) test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at desktop width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 2
+    + Received  + 2
+
+      Array [
+    -   "OrderList",
+    -   "OrderStore",
+    +   "Order list",
+    +   "Order store",
+        "Order",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+        14 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:76
+
+      74 | 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
+      75 | 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
+    > 76 | 		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'OrderStore', 'Order']);
+         | 		                                      ^
+      77 | 		const sizes = await card.evaluate((node) => [
+      78 | 			parseFloat(getComputedStyle(node.querySelector('code')!).fontSize),
+      79 | 			parseFloat(getComputedStyle(node.querySelector('[aria-label="Used In"]')!).fontSize)
+        at reviewHelperUsage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-267amb/packages/reports/test/entityPreviewFunctions.ts:76:41)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-267amb/packages/reports/test/entity-preview-actions.spec.ts:89:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-1e92f--card-grid-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-1e92f--card-grid-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at tablet width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 2
+    + Received  + 2
+
+      Array [
+    -   "OrderList",
+    -   "OrderStore",
+    +   "Order list",
+    +   "Order store",
+        "Order",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+        14 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:76
+
+      74 | 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
+      75 | 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
+    > 76 | 		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'OrderStore', 'Order']);
+         | 		                                      ^
+      77 | 		const sizes = await card.evaluate((node) => [
+      78 | 			parseFloat(getComputedStyle(node.querySelector('code')!).fontSize),
+      79 | 			parseFloat(getComputedStyle(node.querySelector('[aria-label="Used In"]')!).fontSize)
+        at reviewHelperUsage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-267amb/packages/reports/test/entityPreviewFunctions.ts:76:41)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-267amb/packages/reports/test/entity-preview-actions.spec.ts:89:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-de7a4-a-card-grid-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-de7a4-a-card-grid-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at mobile width 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+    Timeout: 5000ms
+    - Expected  - 2
+    + Received  + 2
+
+      Array [
+    -   "OrderList",
+    -   "OrderStore",
+    +   "Order list",
+    +   "Order store",
+        "Order",
+      ]
+
+    Call log:
+      - Expect "toHaveText" getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('article').getByRole('group', { name: 'Used In', exact: true }).getByRole('link')
+        14 × locator resolved to 3 elements
+
+
+       at entityPreviewFunctions.ts:76
+
+      74 | 		const usage = card.getByRole('group', { name: 'Used In', exact: true });
+      75 | 		await expect(usage, 'helper cards expose their consumers').toBeVisible();
+    > 76 | 		await expect(usage.getByRole('link')).toHaveText(['OrderList', 'OrderStore', 'Order']);
+         | 		                                      ^
+      77 | 		const sizes = await card.evaluate((node) => [
+      78 | 			parseFloat(getComputedStyle(node.querySelector('code')!).fontSize),
+      79 | 			parseFloat(getComputedStyle(node.querySelector('[aria-label="Used In"]')!).fontSize)
+        at reviewHelperUsage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-267amb/packages/reports/test/entityPreviewFunctions.ts:76:41)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-267amb/packages/reports/test/entity-preview-actions.spec.ts:89:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-58c0d-a-card-grid-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-58c0d-a-card-grid-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at desktop width 
+    test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at tablet width 
+    test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at mobile width 

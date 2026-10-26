@@ -1,0 +1,25 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-H87Uwq/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/services/game-project.test.ts (6 tests) 26060ms
+   ✓ game operations bind project identity, retain historical graphs and reject stale writes  5741ms
+   ✓ project creation initializes a game without overwriting an existing directory  5130ms
+   ✓ failed project creation reports its cause, removes only its own target and can be retried  5746ms
+   ✓ AI preview fails closed before credential access without a safe transport  4952ms
+   ✓ prepared token minting uses only the server HTTP endpoint with bounded header-auth requests  4473ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  21:27:50
+   Duration  27.65s (transform 861ms, setup 90ms, collect 1.40s, tests 26.06s, environment 0ms, prepare 25ms)
+

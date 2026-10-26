@@ -1,0 +1,17 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5/packages/desktop
+
+ ✓ test/utils/prepare-project-run.test.ts (7 tests) 6830ms
+   ✓ a model the provider did not list is refused before anything is asked or written  1397ms
+   ✓ a past commit and a Change add nothing to a project  1088ms
+   ✓ a creation request with no project is refused before anything is asked  864ms
+   ✓ a creation request with a name that is no project identity is refused before anything is asked  896ms
+   ✓ a creation request with a path is refused before anything is asked  867ms
+   ✓ a creation request with another local project is refused before anything is asked  868ms
+   ✓ a creation request with a hosted project that is not open is refused before anything is asked  848ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  18:28:42
+   Duration  7.22s (transform 139ms, setup 0ms, collect 224ms, tests 6.83s, environment 0ms, prepare 26ms)
+

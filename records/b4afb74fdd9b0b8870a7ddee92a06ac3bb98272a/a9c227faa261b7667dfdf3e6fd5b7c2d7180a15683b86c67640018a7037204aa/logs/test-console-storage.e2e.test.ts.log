@@ -1,0 +1,50 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [31m❯[39m test/console-storage.e2e.test.ts [2m([22m[2m5 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 29265[2mms[22m[39m
+   [32m✓[39m with a bucket the history is in neither the host source nor anything it builds[32m 21[2mms[22m[39m
+   [32m✓[39m the administrator reads the history from the bucket, and nobody reaches it another way[32m 120[2mms[22m[39m
+   [32m✓[39m nothing that depends on the session may be kept by a shared cache[32m 82[2mms[22m[39m
+   [33m[2m✓[22m[39m the Worker reports the stamp of the artifact it really runs [33m 417[2mms[22m[39m
+[31m   [31m×[31m a capture from an earlier bundle is rejected although it is labelled with the verified commit[39m[32m 30[2mms[22m[39m
+[31m     → browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/console-storage.e2e.test.ts[2m > [22ma capture from an earlier bundle is rejected although it is labelled with the verified commit
+[31m[1mError[22m: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝[39m
+[36m [2m❯[22m captureHost test/support/hostCapture.ts:[2m53:33[22m[39m
+    [90m 51| [39m path [33m=[39m [32m'/harness'[39m
+    [90m 52| [39m)[33m:[39m [33mPromise[39m[33m<[39m[33mHostCapture[39m[33m>[39m {
+    [90m 53| [39m [35mconst[39m browser [33m=[39m [35mawait[39m chromium[33m.[39m[34mlaunch[39m()[33m;[39m
+    [90m   | [39m                                [31m^[39m
+    [90m 54| [39m [35mtry[39m {
+    [90m 55| [39m  const context = await browser.newContext({ viewport: { width: 1440, …
+[90m [2m❯[22m test/console-storage.e2e.test.ts:[2m150:24[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m4 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 15:59:16
+[2m   Duration [22m 30.10s[2m (transform 150ms, setup 24ms, collect 530ms, tests 29.26s, environment 0ms, prepare 76ms)[22m
+
+
+::error file=/tmp/harness-snapshot-iUpwmz/test/support/hostCapture.ts,title=test/console-storage.e2e.test.ts > a capture from an earlier bundle is rejected although it is labelled with the verified commit,line=53,column=33::Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell%0A╔════════════════════════════════════════════════════════════╗%0A║ Looks like Playwright was just installed or updated.       ║%0A║ Please run the following command to download new browsers: ║%0A║                                                            ║%0A║     npx playwright install                                 ║%0A║                                                            ║%0A║ <3 Playwright Team                                         ║%0A╚════════════════════════════════════════════════════════════╝%0A ❯ captureHost test/support/hostCapture.ts:53:33%0A ❯ test/console-storage.e2e.test.ts:150:24%0A%0A⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯%0ASerialized Error: { log: [] }%0A

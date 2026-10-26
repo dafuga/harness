@@ -1,0 +1,17 @@
+
+Running 10 tests using 1 worker
+
+(node:78575) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview-test-cases.spec.ts:8:2 › service Tests show recorded input and output at desktop width (577ms)
+  ✓   2 test/entity-preview-test-cases.spec.ts:8:2 › service Tests show recorded input and output at tablet width (308ms)
+  ✓   3 test/entity-preview-test-cases.spec.ts:8:2 › service Tests show recorded input and output at mobile width (236ms)
+  ✓   4 test/entity-preview-test-cases.spec.ts:24:1 › service Tests keep parent and selected-commit cases separate (278ms)
+  ✓   5 test/entity-preview-test-cases.spec.ts:38:1 › mobile test values have readable columns without widening the page (273ms)
+  ✓   6 test/entity-preview-test-cases.spec.ts:60:1 › the full recorded result is available even when it has no input and output pair (421ms)
+  ✓   7 test/entity-preview-test-cases.spec.ts:76:1 › the mobile output panel is visible beneath its input (316ms)
+  ✓   8 test/entity-preview-test-cases.spec.ts:102:2 › case names lead roomy input and output panels at desktop width (425ms)
+  ✓   9 test/entity-preview-test-cases.spec.ts:102:2 › case names lead roomy input and output panels at tablet width (480ms)
+  ✓  10 test/entity-preview-test-cases.spec.ts:102:2 › case names lead roomy input and output panels at mobile width (408ms)
+
+  10 passed (6.8s)

@@ -1,0 +1,251 @@
+
+Running 12 tests using 4 workers
+
+(node:70808) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:70809) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:70810) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:70811) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell.spec.ts:170:2 › Go to tip, back, a reload and another branch each keep their place at tablet width (335ms)
+  ✓   3 tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at mobile width (356ms)
+  ✓   6 tests/e2e/explorer-shell.spec.ts:170:2 › Go to tip, back, a reload and another branch each keep their place at mobile width (243ms)
+  ✘   4 tests/e2e/explorer-shell.spec.ts:207:2 › module discovery retains branch and revision at desktop (5.3s)
+(node:70962) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   5 tests/e2e/explorer-shell.spec.ts:207:2 › module discovery retains branch and revision at tablet (5.2s)
+  ✘   2 tests/e2e/explorer-shell.spec.ts:49:2 › the bar shows its navigation with an icon above each label at desktop width (5.6s)
+(node:70968) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   7 tests/e2e/explorer-shell.spec.ts:207:2 › module discovery retains branch and revision at mobile (5.2s)
+(node:70970) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at desktop width (334ms)
+  ✓  11 tests/e2e/explorer-shell.spec.ts:170:2 › Go to tip, back, a reload and another branch each keep their place at desktop width (231ms)
+  ✘   8 tests/e2e/explorer-shell.spec.ts:49:2 › the bar shows its navigation with an icon above each label at tablet width (5.6s)
+(node:71147) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   9 tests/e2e/explorer-shell.spec.ts:49:2 › the bar shows its navigation with an icon above each label at mobile width (5.5s)
+  ✓  12 tests/e2e/explorer-shell.spec.ts:125:2 › the branch with its tip and the viewed commit are told apart at tablet width (289ms)
+
+
+  1) tests/e2e/explorer-shell.spec.ts:49:2 › the bar shows its navigation with an icon above each label at desktop width 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('banner').getByRole('tablist', { name: 'Code categories' }).getByRole('tab', { name: 'Modules', exact: true })
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('banner').getByRole('tablist', { name: 'Code categories' }).getByRole('tab', { name: 'Modules', exact: true }) with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('tablist', { name: 'Code categories' }).getByRole('tab', { name: 'Modules', exact: true })
+        14 × locator resolved to <a role="tab" aria-selected="false" href="/harness/branch/feature%2Fshell%231/modules">Modules</a>
+           - unexpected value "false"
+
+
+       at support/shellChecks.ts:152
+
+      150 | 		await tab.click();
+      151 | 		await expect(page).toHaveURL(`${shellOrigin}${scoped}/${path}`);
+    > 152 | 		await expect(tab).toHaveAttribute('aria-selected', 'true');
+          | 		                  ^
+      153 | 		await expect(page.getByRole('link', { name: 'Code', exact: true })).toHaveAttribute(
+      154 | 			'aria-current',
+      155 | 			'page'
+        at codeDestinations (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/support/shellChecks.ts:152:21)
+        at moduleNavigation (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/support/shellChecks.ts:135:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/explorer-shell.spec.ts:123:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/error-context.md
+
+  2) tests/e2e/explorer-shell.spec.ts:207:2 › module discovery retains branch and revision at desktop 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('banner').getByRole('tab', { name: 'Modules', exact: true })
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('banner').getByRole('tab', { name: 'Modules', exact: true }) with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('tab', { name: 'Modules', exact: true })
+        14 × locator resolved to <a role="tab" aria-selected="false" href="/harness/branch/feature%2Fshell%231/commit/0303030303030303030303030303030303030303/modules">Modules</a>
+           - unexpected value "false"
+
+
+      215 | 		await modules.click();
+      216 | 		await expect(page).toHaveURL(at(`${earlier}/modules`));
+    > 217 | 		await expect(modules).toHaveAttribute('aria-selected', 'true');
+          | 		                      ^
+      218 | 		await expect.poll(() => fits(page)).toBe(true);
+      219 | 	});
+      220 | }
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/explorer-shell.spec.ts:217:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-module-disc-d4fa3-nch-and-revision-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-module-disc-d4fa3-nch-and-revision-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-module-disc-d4fa3-nch-and-revision-at-desktop/error-context.md
+
+  3) tests/e2e/explorer-shell.spec.ts:49:2 › the bar shows its navigation with an icon above each label at tablet width 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('banner').getByRole('tablist', { name: 'Code categories' }).getByRole('tab', { name: 'Modules', exact: true })
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('banner').getByRole('tablist', { name: 'Code categories' }).getByRole('tab', { name: 'Modules', exact: true }) with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('tablist', { name: 'Code categories' }).getByRole('tab', { name: 'Modules', exact: true })
+        14 × locator resolved to <a role="tab" aria-selected="false" href="/harness/branch/feature%2Fshell%231/modules">Modules</a>
+           - unexpected value "false"
+
+
+       at support/shellChecks.ts:152
+
+      150 | 		await tab.click();
+      151 | 		await expect(page).toHaveURL(`${shellOrigin}${scoped}/${path}`);
+    > 152 | 		await expect(tab).toHaveAttribute('aria-selected', 'true');
+          | 		                  ^
+      153 | 		await expect(page.getByRole('link', { name: 'Code', exact: true })).toHaveAttribute(
+      154 | 			'aria-current',
+      155 | 			'page'
+        at codeDestinations (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/support/shellChecks.ts:152:21)
+        at moduleNavigation (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/support/shellChecks.ts:135:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/explorer-shell.spec.ts:123:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/error-context.md
+
+  4) tests/e2e/explorer-shell.spec.ts:207:2 › module discovery retains branch and revision at tablet 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('banner').getByRole('tab', { name: 'Modules', exact: true })
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('banner').getByRole('tab', { name: 'Modules', exact: true }) with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('tab', { name: 'Modules', exact: true })
+        14 × locator resolved to <a role="tab" aria-selected="false" href="/harness/branch/feature%2Fshell%231/commit/0303030303030303030303030303030303030303/modules">Modules</a>
+           - unexpected value "false"
+
+
+      215 | 		await modules.click();
+      216 | 		await expect(page).toHaveURL(at(`${earlier}/modules`));
+    > 217 | 		await expect(modules).toHaveAttribute('aria-selected', 'true');
+          | 		                      ^
+      218 | 		await expect.poll(() => fits(page)).toBe(true);
+      219 | 	});
+      220 | }
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/explorer-shell.spec.ts:217:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-module-disc-bfecc-anch-and-revision-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-module-disc-bfecc-anch-and-revision-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-module-disc-bfecc-anch-and-revision-at-tablet/error-context.md
+
+  5) tests/e2e/explorer-shell.spec.ts:49:2 › the bar shows its navigation with an icon above each label at mobile width 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('banner').getByRole('tablist', { name: 'Code categories' }).getByRole('tab', { name: 'Modules', exact: true })
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('banner').getByRole('tablist', { name: 'Code categories' }).getByRole('tab', { name: 'Modules', exact: true }) with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('tablist', { name: 'Code categories' }).getByRole('tab', { name: 'Modules', exact: true })
+        14 × locator resolved to <a role="tab" aria-selected="false" href="/harness/branch/feature%2Fshell%231/modules">Modules</a>
+           - unexpected value "false"
+
+
+       at support/shellChecks.ts:152
+
+      150 | 		await tab.click();
+      151 | 		await expect(page).toHaveURL(`${shellOrigin}${scoped}/${path}`);
+    > 152 | 		await expect(tab).toHaveAttribute('aria-selected', 'true');
+          | 		                  ^
+      153 | 		await expect(page.getByRole('link', { name: 'Code', exact: true })).toHaveAttribute(
+      154 | 			'aria-current',
+      155 | 			'page'
+        at codeDestinations (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/support/shellChecks.ts:152:21)
+        at moduleNavigation (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/support/shellChecks.ts:135:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/explorer-shell.spec.ts:123:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/error-context.md
+
+  6) tests/e2e/explorer-shell.spec.ts:207:2 › module discovery retains branch and revision at mobile 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('banner').getByRole('tab', { name: 'Modules', exact: true })
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('banner').getByRole('tab', { name: 'Modules', exact: true }) with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('tab', { name: 'Modules', exact: true })
+        14 × locator resolved to <a role="tab" aria-selected="false" href="/harness/branch/feature%2Fshell%231/commit/0303030303030303030303030303030303030303/modules">Modules</a>
+           - unexpected value "false"
+
+
+      215 | 		await modules.click();
+      216 | 		await expect(page).toHaveURL(at(`${earlier}/modules`));
+    > 217 | 		await expect(modules).toHaveAttribute('aria-selected', 'true');
+          | 		                      ^
+      218 | 		await expect.poll(() => fits(page)).toBe(true);
+      219 | 	});
+      220 | }
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rvU933/packages/reports/tests/e2e/explorer-shell.spec.ts:217:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-module-disc-d82aa-anch-and-revision-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-module-disc-d82aa-anch-and-revision-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-module-disc-d82aa-anch-and-revision-at-mobile/error-context.md
+
+  6 failed
+    tests/e2e/explorer-shell.spec.ts:49:2 › the bar shows its navigation with an icon above each label at desktop width 
+    tests/e2e/explorer-shell.spec.ts:207:2 › module discovery retains branch and revision at desktop 
+    tests/e2e/explorer-shell.spec.ts:49:2 › the bar shows its navigation with an icon above each label at tablet width 
+    tests/e2e/explorer-shell.spec.ts:207:2 › module discovery retains branch and revision at tablet 
+    tests/e2e/explorer-shell.spec.ts:49:2 › the bar shows its navigation with an icon above each label at mobile width 
+    tests/e2e/explorer-shell.spec.ts:207:2 › module discovery retains branch and revision at mobile 
+  6 passed (15.8s)

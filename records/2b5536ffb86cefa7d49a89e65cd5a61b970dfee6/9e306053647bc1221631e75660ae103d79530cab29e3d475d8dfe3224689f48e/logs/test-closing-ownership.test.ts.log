@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rBWHPX
+
+ ✓ test/closing-ownership.test.ts (5 tests) 12002ms
+   ✓ a stranger in the group of a reaped command is never signalled, and counts against it  4685ms
+   ✓ a process never seen under its command is not signalled when the command ends, and fails it  6616ms
+   ✓ seen under its command, the same process is the command's own and ends with it  539ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  22:34:24
+   Duration  12.23s (transform 40ms, setup 10ms, collect 39ms, tests 12.00s, environment 0ms, prepare 45ms)
+

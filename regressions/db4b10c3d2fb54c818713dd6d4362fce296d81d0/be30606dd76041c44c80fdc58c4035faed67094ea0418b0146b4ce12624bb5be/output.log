@@ -1,0 +1,60 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vOcgtQ
+
+ ❯ test/resources-cli.e2e.test.ts (4 tests | 2 failed) 954ms
+   × resources status reports overall CPU, available cores, memory and the shared queue 370ms
+     → error: unknown command 'resources'
+: expected 1 to be +0 // Object.is equality
+   ✓ managed . scripts forward caller arguments 100ms
+   ✓ managed packages/desktop scripts forward caller arguments 97ms
+   × an impossible resource request is rejected before a command starts 386ms
+     → expected 'error: unknown command \'resources\'\n' to contain 'exceeds usable capacity'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/resources-cli.e2e.test.ts > resources status reports overall CPU, available cores, memory and the shared queue
+AssertionError: error: unknown command 'resources'
+: expected 1 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 1[39m
+
+ ❯ test/resources-cli.e2e.test.ts:22:41
+     20|   await environment()
+     21|  );
+     22|  expect(result.exitCode, result.stderr).toBe(0);
+       |                                         ^
+     23|  const guidance = await runHarness(['info', 'resources', '--json'], pr…
+     24|  expect(JSON.parse(guidance.stdout).rules.join(' ')).toContain('runnin…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/resources-cli.e2e.test.ts > an impossible resource request is rejected before a command starts
+AssertionError: expected 'error: unknown command \'resources\'\n' to contain 'exceeds usable capacity'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- e[7mxceeds usable capacity[27m[39m
+[31m+ e[7mrror: unknown command 'resources'[27m[39m
+[31m+[39m
+
+ ❯ test/resources-cli.e2e.test.ts:59:24
+     57|  );
+     58|  expect(result.exitCode).toBe(1);
+     59|  expect(result.stderr).toContain('exceeds usable capacity');
+       |                        ^
+     60|  expect(result.stdout).not.toContain('STARTED');
+     61| }, 15000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  13:00:04
+   Duration  3.60s (transform 43ms, setup 55ms, collect 17ms, tests 954ms, environment 0ms, prepare 36ms)
+

@@ -1,0 +1,24 @@
+[WebServer] $ bun run sync:shared && vite dev --host 127.0.0.1 --port 5798 --strictPort --port "5795"
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync
+[WebServer] (node:53218) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:53228) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:53232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:53232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 7 tests using 1 worker
+
+(node:53241) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/hosted-search-fit.spec.ts:46:2 › at 1440 pixels the search, the revision fields and the account fit the bar apart (1.0s)
+  ✓  2 tests/e2e/hosted-search-fit.spec.ts:46:2 › at 1379 pixels the search, the revision fields and the account fit the bar apart (376ms)
+  ✓  3 tests/e2e/hosted-search-fit.spec.ts:46:2 › at 1300 pixels the search, the revision fields and the account fit the bar apart (372ms)
+  ✓  4 tests/e2e/hosted-search-fit.spec.ts:46:2 › at 1251 pixels the search, the revision fields and the account fit the bar apart (373ms)
+  ✓  5 tests/e2e/hosted-search-fit.spec.ts:46:2 › at 920 pixels the search, the revision fields and the account fit the bar apart (374ms)
+  ✓  6 tests/e2e/hosted-search-fit.spec.ts:46:2 › at 768 pixels the search, the revision fields and the account fit the bar apart (373ms)
+  ✓  7 tests/e2e/hosted-search-fit.spec.ts:46:2 › at 390 pixels the search, the revision fields and the account fit the bar apart (374ms)
+
+  7 passed (5.9s)

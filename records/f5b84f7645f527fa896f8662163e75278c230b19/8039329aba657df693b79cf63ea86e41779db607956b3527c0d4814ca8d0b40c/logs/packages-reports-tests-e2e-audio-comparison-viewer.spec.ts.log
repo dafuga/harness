@@ -1,0 +1,10 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 tests/e2e/audio-comparison-viewer.spec.ts:18:1 › switching a phase and closing the viewer stop hidden audio without autoplay on reopening (1.0s)
+  ✓  2 tests/e2e/audio-comparison-viewer.spec.ts:73:1 › opening pauses gallery audio and the Close button pauses the viewer and restores focus (681ms)
+  ✓  3 tests/e2e/audio-comparison-viewer.spec.ts:121:2 › one audio card opens both recordings and retains transcripts at 1440px (662ms)
+  ✓  4 tests/e2e/audio-comparison-viewer.spec.ts:121:2 › one audio card opens both recordings and retains transcripts at 920px (625ms)
+  ✓  5 tests/e2e/audio-comparison-viewer.spec.ts:121:2 › one audio card opens both recordings and retains transcripts at 390px (672ms)
+
+  5 passed (2.0m)

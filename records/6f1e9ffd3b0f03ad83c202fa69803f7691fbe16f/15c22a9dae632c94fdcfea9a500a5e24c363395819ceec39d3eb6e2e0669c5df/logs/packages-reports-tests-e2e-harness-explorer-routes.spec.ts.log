@@ -1,0 +1,43 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 6 tests using 1 worker
+
+(node:86535) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/harness-explorer-routes.spec.ts:20:1 › the explorer has exactly five categories, pages first, and nothing else to go to (660ms)
+  ✓  2 tests/e2e/harness-explorer-routes.spec.ts:35:1 › an earlier map page of a commit opens the entity in the explorer, without its source (682ms)
+  ✓  3 tests/e2e/harness-explorer-routes.spec.ts:51:1 › a branch address follows its tip, a chosen commit has its own address, and Go to tip returns (802ms)
+  ✓  4 tests/e2e/harness-explorer-routes.spec.ts:86:1 › a branch is one encoded segment, and another branch opens at its own tip (690ms)
+  ✓  5 tests/e2e/harness-explorer-routes.spec.ts:111:1 › earlier addresses, reports and analytics all lead into the explorer (811ms)
+  ✓  6 tests/e2e/harness-explorer-routes.spec.ts:141:1 › what the history does not hold is said, and no other revision is shown in its place (657ms)
+
+  6 passed (1.5m)

@@ -1,0 +1,319 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HuX2Hu
+
+ ❯ test/analytics.test.ts (7 tests | 1 failed | 6 skipped) 21ms
+   × module task analytics retain model usage and count rejected completions once 17ms
+     → module task usage and bounce analytics must be available: expected { schemaVersion: 1, …(8) } to match object { tasks: { submissions: 2, …(5) } }
+(25 matching properties omitted from actual)
+   ↓ unreported module usage and unreviewed completions remain unknown
+   ↓ first assessed task attempt is attributed to its first author across revisions
+   ↓ cached checks, dry runs, unlinked and duplicate content are excluded
+   ↓ project and check kind separate identities and no tasks gives null rate
+   ↓ model filters retain the task first author instead of promoting a later revision
+   ↓ model and template names matching object properties still count correctly
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/analytics.test.ts > module task analytics retain model usage and count rejected completions once
+AssertionError: module task usage and bounce analytics must be available: expected { schemaVersion: 1, …(8) } to match object { tasks: { submissions: 2, …(5) } }
+(25 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "tasks": {[39m
+[32m-     "accepted": 1,[39m
+[32m-     "bounceRate": 0.5,[39m
+[32m-     "bounces": 1,[39m
+[32m-     "byModel": [[39m
+[31m+   "benchmarks": [],[39m
+[31m+   "events": [[39m
+[31m+     {[39m
+[31m+       "action": "executed",[39m
+[31m+       "agentModel": "gpt-6-luna",[39m
+[31m+       "id": "1",[39m
+[31m+       "kind": "task",[39m
+[31m+       "moduleTask": {[39m
+[31m+         "apiCost": {[39m
+[31m+           "basis": "standard-api-estimate",[39m
+[31m+           "maximumUsd": 0.002,[39m
+[31m+           "minimumUsd": 0.002,[39m
+[31m+           "usd": 0.002,[39m
+[31m+         },[39m
+[31m+         "attempt": "first",[39m
+[31m+         "feature": "checkout",[39m
+[31m+         "intelligence": "max",[39m
+[31m+         "model": "gpt-6-luna",[39m
+[31m+         "module": "service.orders",[39m
+[31m+         "provider": "codex",[39m
+[31m+         "reportedModel": "gpt-6-luna",[39m
+[31m+         "usage": {[39m
+[31m+           "cacheReadTokens": 30,[39m
+[31m+           "cacheWriteTokens": 0,[39m
+[31m+           "inputTokens": 100,[39m
+[31m+           "outputTokens": 20,[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "project": "/project",[39m
+[31m+       "task": "orders",[39m
+[31m+       "timestamp": "2026-10-24T12:00:00Z",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "action": "submitted",[39m
+[31m+       "agentModel": "gpt-6-luna",[39m
+[31m+       "id": "2",[39m
+[31m+       "kind": "task",[39m
+[31m+       "moduleTask": {[39m
+[31m+         "apiCost": {[39m
+[31m+           "basis": "standard-api-estimate",[39m
+[31m+           "maximumUsd": 0.002,[39m
+[31m+           "minimumUsd": 0.002,[39m
+[31m+           "usd": 0.002,[39m
+[31m+         },[39m
+[31m+         "attempt": "first",[39m
+[31m+         "feature": "checkout",[39m
+[31m+         "intelligence": "max",[39m
+[31m+         "model": "gpt-6-luna",[39m
+[31m+         "module": "service.orders",[39m
+[31m+         "provider": "codex",[39m
+[31m+         "reportedModel": "gpt-6-luna",[39m
+[31m+         "usage": {[39m
+[31m+           "cacheReadTokens": 30,[39m
+[31m+           "cacheWriteTokens": 0,[39m
+[31m+           "inputTokens": 100,[39m
+[31m+           "outputTokens": 20,[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "project": "/project",[39m
+[31m+       "task": "orders",[39m
+[31m+       "timestamp": "2026-10-24T12:00:00Z",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "action": "incomplete",[39m
+[31m+       "agentModel": "gpt-6-luna",[39m
+[31m+       "id": "3",[39m
+[31m+       "kind": "task",[39m
+[31m+       "moduleTask": {[39m
+[31m+         "apiCost": {[39m
+[31m+           "basis": "standard-api-estimate",[39m
+[31m+           "maximumUsd": 0.002,[39m
+[31m+           "minimumUsd": 0.002,[39m
+[31m+           "usd": 0.002,[39m
+[31m+         },[39m
+[31m+         "attempt": "first",[39m
+[31m+         "feature": "checkout",[39m
+[31m+         "intelligence": "max",[39m
+[31m+         "model": "gpt-6-luna",[39m
+[31m+         "module": "service.orders",[39m
+[31m+         "provider": "codex",[39m
+[31m+         "reportedModel": "gpt-6-luna",[39m
+[31m+         "usage": {[39m
+[31m+           "cacheReadTokens": 30,[39m
+[31m+           "cacheWriteTokens": 0,[39m
+[31m+           "inputTokens": 100,[39m
+[31m+           "outputTokens": 20,[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "project": "/project",[39m
+[31m+       "task": "orders",[39m
+[31m+       "timestamp": "2026-10-24T12:00:00Z",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "action": "executed",[39m
+[31m+       "agentModel": "gpt-6-luna",[39m
+[31m+       "id": "4",[39m
+[31m+       "kind": "task",[39m
+[31m+       "moduleTask": {[39m
+[31m+         "apiCost": {[39m
+[31m+           "basis": "standard-api-estimate",[39m
+[31m+           "maximumUsd": 0.002,[39m
+[31m+           "minimumUsd": 0.002,[39m
+[31m+           "usd": 0.002,[39m
+[31m+         },[39m
+[31m+         "attempt": "second",[39m
+[31m+         "feature": "checkout",[39m
+[31m+         "intelligence": "max",[39m
+[31m+         "model": "gpt-6-luna",[39m
+[31m+         "module": "service.orders",[39m
+[31m+         "provider": "codex",[39m
+[31m+         "reportedModel": "gpt-6-luna",[39m
+[31m+         "usage": {[39m
+[31m+           "cacheReadTokens": 30,[39m
+[31m+           "cacheWriteTokens": 0,[39m
+[31m+           "inputTokens": 100,[39m
+[31m+           "outputTokens": 20,[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "project": "/project",[39m
+[31m+       "task": "orders",[39m
+[31m+       "timestamp": "2026-10-24T12:00:00Z",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "action": "submitted",[39m
+[31m+       "agentModel": "gpt-6-luna",[39m
+[31m+       "id": "5",[39m
+[31m+       "kind": "task",[39m
+[31m+       "moduleTask": {[39m
+[31m+         "apiCost": {[39m
+[31m+           "basis": "standard-api-estimate",[39m
+[31m+           "maximumUsd": 0.002,[39m
+[31m+           "minimumUsd": 0.002,[39m
+[31m+           "usd": 0.002,[39m
+[31m+         },[39m
+[31m+         "attempt": "second",[39m
+[31m+         "feature": "checkout",[39m
+[31m+         "intelligence": "max",[39m
+[31m+         "model": "gpt-6-luna",[39m
+[31m+         "module": "service.orders",[39m
+[31m+         "provider": "codex",[39m
+[31m+         "reportedModel": "gpt-6-luna",[39m
+[31m+         "usage": {[39m
+[31m+           "cacheReadTokens": 30,[39m
+[31m+           "cacheWriteTokens": 0,[39m
+[31m+           "inputTokens": 100,[39m
+[31m+           "outputTokens": 20,[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "project": "/project",[39m
+[31m+       "task": "orders",[39m
+[31m+       "timestamp": "2026-10-24T12:00:00Z",[39m
+[31m+     },[39m
+[31m+     {[39m
+[31m+       "action": "accepted",[39m
+[31m+       "agentModel": "gpt-6-luna",[39m
+[31m+       "id": "6",[39m
+[31m+       "kind": "task",[39m
+[31m+       "moduleTask": {[39m
+[31m+         "apiCost": {[39m
+[31m+           "basis": "standard-api-estimate",[39m
+[31m+           "maximumUsd": 0.002,[39m
+[31m+           "minimumUsd": 0.002,[39m
+[31m+           "usd": 0.002,[39m
+[31m+         },[39m
+[31m+         "attempt": "second",[39m
+[31m+         "feature": "checkout",[39m
+[31m+         "intelligence": "max",[39m
+[31m+         "model": "gpt-6-luna",[39m
+[31m+         "module": "service.orders",[39m
+[31m+         "provider": "codex",[39m
+[31m+         "reportedModel": "gpt-6-luna",[39m
+[31m+         "usage": {[39m
+[31m+           "cacheReadTokens": 30,[39m
+[31m+           "cacheWriteTokens": 0,[39m
+[31m+           "inputTokens": 100,[39m
+[31m+           "outputTokens": 20,[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "project": "/project",[39m
+[31m+       "task": "orders",[39m
+[31m+       "timestamp": "2026-10-24T12:00:00Z",[39m
+[31m+     },[39m
+[2m      {[22m
+[32m-         "apiCostUsd": 0.004,[39m
+[32m-         "bounceRate": 0.5,[39m
+[32m-         "bounces": 1,[39m
+[32m-         "cacheReadTokens": 60,[39m
+[32m-         "executions": 2,[39m
+[32m-         "inputTokens": 200,[39m
+[31m+       "action": "incomplete",[39m
+[31m+       "agentModel": "gpt-6-luna",[39m
+[31m+       "id": "3",[39m
+[31m+       "kind": "task",[39m
+[31m+       "moduleTask": {[39m
+[31m+         "apiCost": {[39m
+[31m+           "basis": "standard-api-estimate",[39m
+[31m+           "maximumUsd": 0.002,[39m
+[31m+           "minimumUsd": 0.002,[39m
+[31m+           "usd": 0.002,[39m
+[31m+         },[39m
+[31m+         "attempt": "first",[39m
+[31m+         "feature": "checkout",[39m
+[2m          "intelligence": "max",[22m
+[2m          "model": "gpt-6-luna",[22m
+[32m-         "modelSource": "reported",[39m
+[32m-         "outputTokens": 40,[39m
+[32m-         "reviewed": 2,[39m
+[31m+         "module": "service.orders",[39m
+[31m+         "provider": "codex",[39m
+[31m+         "reportedModel": "gpt-6-luna",[39m
+[31m+         "usage": {[39m
+[31m+           "cacheReadTokens": 30,[39m
+[31m+           "cacheWriteTokens": 0,[39m
+[31m+           "inputTokens": 100,[39m
+[31m+           "outputTokens": 20,[39m
+[31m+         },[39m
+[31m+       },[39m
+[31m+       "project": "/project",[39m
+[31m+       "task": "orders",[39m
+[31m+       "timestamp": "2026-10-24T12:00:00Z",[39m
+[2m      },[22m
+[2m    ],[22m
+[32m-     "reviewed": 2,[39m
+[32m-     "submissions": 2,[39m
+[31m+   "filters": {},[39m
+[31m+   "generatedAt": "2026-10-24T23:34:34.478Z",[39m
+[31m+   "jev": {[39m
+[31m+     "cleanCode": {[39m
+[31m+       "checks": 0,[39m
+[31m+       "excluded": 0,[39m
+[31m+       "firstTry": {[39m
+[31m+         "denominator": 0,[39m
+[31m+         "numerator": 0,[39m
+[31m+         "rate": null,[39m
+[31m+       },[39m
+[31m+       "outcomes": {},[39m
+[31m+       "tasks": [],[39m
+[31m+     },[39m
+[31m+     "response": {[39m
+[31m+       "checks": 0,[39m
+[31m+       "excluded": 0,[39m
+[31m+       "firstTry": {[39m
+[31m+         "denominator": 0,[39m
+[31m+         "numerator": 0,[39m
+[31m+         "rate": null,[39m
+[31m+       },[39m
+[31m+       "outcomes": {},[39m
+[31m+       "tasks": [],[39m
+[31m+     },[39m
+[31m+   },[39m
+[31m+   "loops": [],[39m
+[31m+   "models": {[39m
+[31m+     "authors": {},[39m
+[31m+     "evaluators": {},[39m
+[31m+     "firstTryByAuthor": {},[39m
+[31m+     "inputTokens": 0,[39m
+[31m+     "loopAuthors": {},[39m
+[31m+     "outputTokens": 0,[39m
+[31m+   },[39m
+[31m+   "schemaVersion": 1,[39m
+[31m+   "summary": {[39m
+[31m+     "commands": {},[39m
+[31m+     "completedLoops": 0,[39m
+[31m+     "daily": {[39m
+[31m+       "2026-10-24": 7,[39m
+[31m+     },[39m
+[31m+     "evaluatorOutcomes": {},[39m
+[31m+     "events": 7,[39m
+[31m+     "loops": 0,[39m
+[31m+     "projects": 1,[39m
+[31m+     "templates": {},[39m
+[2m    },[22m
+[2m  }[22m
+
+ ❯ test/analytics.test.ts:60:79
+     58|   () => analyticsSnapshot([...events, events[2]])
+     59|  );
+     60|  expect(snapshot, 'module task usage and bounce analytics must be avai…
+       |                                                                               ^
+     61|   tasks: {
+     62|    submissions: 2,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 skipped (7)
+   Start at  00:34:27
+   Duration  6.77s (transform 342ms, setup 497ms, collect 140ms, tests 21ms, environment 0ms, prepare 88ms)
+

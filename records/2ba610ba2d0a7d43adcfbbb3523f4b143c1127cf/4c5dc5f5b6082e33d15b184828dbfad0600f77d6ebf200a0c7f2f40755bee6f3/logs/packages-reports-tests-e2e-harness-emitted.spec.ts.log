@@ -1,0 +1,49 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 12 tests using 1 worker
+
+(node:27732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/harness-emitted.spec.ts:130:3 › at the desktop viewport › the component panel has a size and a limit for each target, beside the source limits (204ms)
+  ✓   2 tests/e2e/harness-emitted.spec.ts:133:3 › at the desktop viewport › an output that is gone, and a unit that emits nothing, are said as that and never as zero (128ms)
+  ✓   3 tests/e2e/harness-emitted.spec.ts:136:3 › at the desktop viewport › growth has each target commit by commit with its limit, the review and the reason, and leads to the evidence (144ms)
+  ✓   4 tests/e2e/harness-emitted.spec.ts:139:3 › at the desktop viewport › a comparison across the commit that lost an output has its size before and none after (113ms)
+  ✓   5 tests/e2e/harness-emitted.spec.ts:130:3 › at the tablet viewport › the component panel has a size and a limit for each target, beside the source limits (172ms)
+  ✓   6 tests/e2e/harness-emitted.spec.ts:133:3 › at the tablet viewport › an output that is gone, and a unit that emits nothing, are said as that and never as zero (123ms)
+  ✓   7 tests/e2e/harness-emitted.spec.ts:136:3 › at the tablet viewport › growth has each target commit by commit with its limit, the review and the reason, and leads to the evidence (122ms)
+  ✓   8 tests/e2e/harness-emitted.spec.ts:139:3 › at the tablet viewport › a comparison across the commit that lost an output has its size before and none after (107ms)
+  ✓   9 tests/e2e/harness-emitted.spec.ts:130:3 › at the mobile viewport › the component panel has a size and a limit for each target, beside the source limits (148ms)
+  ✓  10 tests/e2e/harness-emitted.spec.ts:133:3 › at the mobile viewport › an output that is gone, and a unit that emits nothing, are said as that and never as zero (122ms)
+  ✓  11 tests/e2e/harness-emitted.spec.ts:136:3 › at the mobile viewport › growth has each target commit by commit with its limit, the review and the reason, and leads to the evidence (149ms)
+  ✓  12 tests/e2e/harness-emitted.spec.ts:139:3 › at the mobile viewport › a comparison across the commit that lost an output has its size before and none after (106ms)
+
+  12 passed (1.2m)

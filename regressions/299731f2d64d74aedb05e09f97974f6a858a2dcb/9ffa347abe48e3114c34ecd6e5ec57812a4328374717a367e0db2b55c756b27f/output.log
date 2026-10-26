@@ -1,0 +1,182 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [5.73s]
+$ bun run --cwd packages/desktop svelte-kit sync && bun run --cwd packages/reports svelte-kit sync && bun run --cwd packages/hub svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HbZzzP
+
+ ❯ test/services/unit-index.test.ts (11 tests | 1 failed) 121ms
+   × recorded source moves retain definitions, owner-local placement and registered identity 112ms
+     → owner-local helper placement: 1 gaps; previewOwner: definition changed: expected [ 'previewOwner: definition changed' ] to deeply equal []
+   ✓ public route filenames retain their registered ownership 0ms
+   ✓ declared preview and documentation survive source re-indexing 3ms
+   ✓ declared execution targets survive re-indexing and follow a moved default entry 2ms
+   ✓ recreating retired source elsewhere records lineage to the retired identity 0ms
+   ✓ a unit that takes a retired name records lineage even when its symbols differ 0ms
+   ✓ lineage cannot be dropped by editing the manifest 1ms
+   ✓ unrelated new units carry no lineage 0ms
+   ✓ a declared responsibility survives re-indexing while a derived one follows the unit 0ms
+   ✓ an alternative implementation is a related unit linked by a declared contract dependency 0ms
+   ✓ several owned files produce identical metadata after one indexing pass 0ms
+ ❯ test/ci-native-verify.test.ts (6 tests | 1 failed) 4ms
+   × the full check stays on Linux with its display and dependency setup 2ms
+     → expected '\n  check:\n    name: Full check\n   …' to match /\n {4}timeout-minutes: 120\n/
+   ✓ the exact commit is verified on Apple silicon macOS, where native evidence exists 0ms
+   ✓ one Xcode is pinned, selected for every tool that asks, and logged before anything runs 0ms
+   ✓ the macOS job keeps every obligation of the verification 0ms
+   ✓ existing evidence is read with a credential that is removed before the code runs 0ms
+   ✓ nothing is relaxed, mapped to a deployment or added as another workflow 0ms
+ ✓ test/ci-workflow.test.ts (4 tests) 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/ci-native-verify.test.ts > the full check stays on Linux with its display and dependency setup
+AssertionError: expected '\n  check:\n    name: Full check\n   …' to match /\n {4}timeout-minutes: 120\n/
+
+- Expected: 
+/\n {4}timeout-minutes: 120\n/
+
++ Received: 
+"
+  check:
+    name: Full check
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ env.COMMIT }}
+          persist-credentials: false
+      - name: Install the pinned Bun
+        run: npm install --global bun@1.2.18
+      - name: Install the pinned Rust toolchain and its Wasm target from rust-toolchain.toml
+        run: rustup show
+      - name: Install dependencies exactly as locked
+        run: bun install --frozen-lockfile
+      - name: Install the locked browser and Linux display dependencies
+        run: node node_modules/@playwright/test/cli.js install --with-deps chromium
+      - name: Install native display, Git LFS and video dependencies
+        run: sudo apt-get install --yes git-lfs xauth libgtk-3-0t64 ffmpeg
+      - name: Prepare the pinned PDF runtime
+        run: |
+          python3 -m venv \"$RUNNER_TEMP/harness-pdf\"
+          \"$RUNNER_TEMP/harness-pdf/bin/python\" -m pip install reportlab==4.4.9 Pillow==12.3.0 pypdf==6.10.0
+          echo \"PROJECT_REPORTS_PYTHON=$RUNNER_TEMP/harness-pdf/bin/python\" >> \"$GITHUB_ENV\"
+      - name: Format, types, lint, Rust native and Wasm, tests, build, package and audits
+        run: xvfb-run -a bun run check
+"
+
+ ❯ test/ci-native-verify.test.ts:19:16
+     17| test('the full check stays on Linux with its display and dependency se…
+     18|  expect(check).toContain('name: Full check\n    runs-on: ubuntu-latest…
+     19|  expect(check).toMatch(/\n {4}timeout-minutes: 120\n/);
+       |                ^
+     20|  expect(check).toContain('@playwright/test/cli.js install --with-deps …
+     21|  expect(check).toContain('sudo apt-get install --yes git-lfs xauth lib…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/services/unit-index.test.ts > recorded source moves retain definitions, owner-local placement and registered identity
+AssertionError: owner-local helper placement: 1 gaps; previewOwner: definition changed: expected [ 'previewOwner: definition changed' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "previewOwner: definition changed",
++ ]
+
+ ❯ test/services/unit-index.test.ts:42:4
+     40|   gaps,
+     41|   `owner-local helper placement: ${gaps.length} gaps; ${gaps.slice(0, …
+     42|  ).toEqual([]);
+       |    ^
+     43| });
+     44| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  2 failed | 19 passed (21)
+   Start at  05:56:53
+   Duration  710ms (transform 65ms, setup 13ms, collect 222ms, tests 127ms, environment 0ms, prepare 56ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HbZzzP/packages/reports
+
+ ❯ test/preview-lifecycle.test.ts (11 tests | 1 failed | 10 skipped) 411ms
+   ↓ repeated starts on another requested port reuse the same owned preview
+   ↓ another history configuration is refused without starting a second preview
+   ↓ an occupied preview port is refused instead of silently choosing another
+   ↓ an owner that crashes can be restarted without a stale lock or orphan preview
+   ↓ simultaneous launches elect one owner while the other reuses it
+   × a different checkout is refused without affecting the owner 410ms
+     → expected '$ BODY_SIZE_LIMIT=110M HARNESS_OWNER_…' to contain 'already running at http://127.0.0.1:6…'
+   ↓ normal shutdown releases both the preview and ownership listeners
+   ↓ route indexes stay aligned after the normal SvelteKit sync command
+   ↓ the owned preview autonomously recovers after crash
+   ↓ the owned preview autonomously recovers after hang
+   ↓ the owned preview autonomously recovers after module errors
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/preview-lifecycle.test.ts > a different checkout is refused without affecting the owner
+AssertionError: expected '$ BODY_SIZE_LIMIT=110M HARNESS_OWNER_…' to contain 'already running at http://127.0.0.1:6…'
+
+- Expected
++ Received
+
+- already running at http://127.0.0.1:61411
++ $ BODY_SIZE_LIMIT=110M HARNESS_OWNER_MODE=loopback HARNESS_BIND=127.0.0.1 bun src/initializers/initializePreview.ts "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-S6yXmR" --config "/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-preview-lifecycle-S6yXmR/vite.config.mjs" --port "61412"
++ A different Harness preview is already running at startup. Close it before switching checkout or history data.
++ error: script "dev" exited with code 1
++
+
+ ❯ test/preview-lifecycle.test.ts:111:25
+    109|   await exited(second);
+    110|   expect(second.child.exitCode).not.toBe(0);
+    111|   expect(second.text()).toContain(`already running at http://127.0.0.1…
+       |                         ^
+    112|   expect(starting.reads()).toBeGreaterThan(1);
+    113|   await expect(fetch(`http://127.0.0.1:${nextPort}`)).rejects.toThrow(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 skipped (11)
+   Start at  05:56:54
+   Duration  601ms (transform 42ms, setup 0ms, collect 72ms, tests 411ms, environment 0ms, prepare 22ms)
+
+$ bun ../../src/index.ts audit . --profile app
+Harness audit passed. Files and functions are staying small.
+$ bun run src/index.ts units check --json
+{
+  "units": 1347,
+  "uncertain": 79,
+  "errors": []
+}

@@ -1,0 +1,11 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/verify-leak.e2e.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 11496[2mms[22m[39m
+   [33m[2m✓[22m[39m a check that leaves a daemon running cannot pass, and the daemon is stopped [33m 5691[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m   Start at [22m 16:13:40
+[2m   Duration [22m 11.85s[2m (transform 69ms, setup 22ms, collect 63ms, tests 11.50s, environment 0ms, prepare 67ms)[22m
+

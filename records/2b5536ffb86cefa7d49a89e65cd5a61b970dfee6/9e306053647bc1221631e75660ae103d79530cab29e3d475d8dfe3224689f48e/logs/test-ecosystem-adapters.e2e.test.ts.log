@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rBWHPX
+
+ ✓ test/ecosystem-adapters.e2e.test.ts (2 tests) 14425ms
+   ✓ generated app audit rejects TypeScript, Svelte, and SQL rule violations  8914ms
+   ✓ generated lib audit rejects C++, Python, shell, and WASM rule violations  5509ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  22:36:08
+   Duration  14.64s (transform 21ms, setup 10ms, collect 10ms, tests 14.42s, environment 0ms, prepare 38ms)
+

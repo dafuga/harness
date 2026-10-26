@@ -1,0 +1,1197 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [14.47s]
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+[WebServer] (node:37447) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:37459) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:37459) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:37459) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] ../../node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] ../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] Circular dependency: ../../node_modules/zod/v4/core/core.js -> ../../node_modules/zod/v4/core/util.js -> ../../node_modules/zod/v4/core/core.js
+[WebServer] Circular dependency: ../../node_modules/smol-toml/dist/struct.js -> ../../node_modules/smol-toml/dist/extract.js -> ../../node_modules/smol-toml/dist/struct.js
+[WebServer] Generated an empty chunk: "chunks/internal2.js".
+[WebServer] (node:37794) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:37807) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 5 tests using 1 worker
+
+(node:38050) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/harness-evidence.spec.ts:47:2 › every explorer state is captured at the desktop viewport (5.2s)
+  ✓  2 tests/e2e/harness-evidence.spec.ts:47:2 › every explorer state is captured at the tablet viewport (4.8s)
+  ✓  3 tests/e2e/harness-evidence.spec.ts:47:2 › every explorer state is captured at the mobile viewport (4.4s)
+  ✓  4 tests/e2e/harness-evidence.spec.ts:65:1 › the recorded tone plays through the explorer player and is captured as it was served (619ms)
+{"observedVisualStates":{"contract":["reports.component.contract-table","reports.component.entity-contract","reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-sections","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"contract-commit":["reports.component.contract-table","reports.component.entity-contract","reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-sections","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"contract-example":["reports.component.contract-example","reports.component.contract-table","reports.component.entity-contract","reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-sections","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.modal","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"contract-example-commit":["reports.component.contract-example","reports.component.contract-table","reports.component.entity-contract","reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-sections","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.modal","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"pages":["reports.component.entity-search","reports.component.explorer-ui-explorer-module-card","reports.component.harness-entity-link","reports.component.harness-explorer-controls","reports.component.harness-explorer-frame","reports.component.harness-explorer-index","reports.component.harness-explorer-pages-screen","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-pages"],"page-current":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-screens","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-pages-entity"],"page-commit":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-pages-entity"],"relationships":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-pages-entity"],"used-in":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-components-entity"],"uses":["reports.component.entity-search","reports.component.explorer-ui-explorer-module-card","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-relations","reports.component.harness-entity-sections","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-pages-entity"],"component":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-components-entity"],"function":["reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-summary","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"service":["reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-summary","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-services-entity"],"config":["reports.component.entity-search","reports.component.harness-entity-config-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-overview","reports.component.harness-entity-sections","reports.component.harness-entity-summary","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-configs-entity"],"details":["reports.component.contract-table","reports.component.entity-contract","reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-sections","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"source":["reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-sections","reports.component.harness-entity-source","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"history":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-history","reports.component.harness-entity-history-screen","reports.component.harness-entity-link","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity-history"],"media":["reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-summary","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-services-entity"],"rejected":["reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-summary","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-services-entity"],"gap":["reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-summary","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"removed":["reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-summary","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"missing":["reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-missing","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"unavailable":["reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-summary","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"emitted":["reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-summary","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"emitted-gone":["reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions-entity"],"page-details":["reports.component.contract-table","reports.component.entity-contract","reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-sections","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-pages-entity"],"page-history":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-history","reports.component.harness-entity-history-row","reports.component.harness-entity-history-screen","reports.component.harness-entity-link","reports.component.harness-entity-reasons","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-pages-entity-history"],"components":["reports.component.entity-search","reports.component.explorer-ui-explorer-module-card","reports.component.harness-entity-link","reports.component.harness-explorer-catalog-screen","reports.component.harness-explorer-controls","reports.component.harness-explorer-frame","reports.component.harness-explorer-index","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-components"],"component-details":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-components-entity"],"component-history":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-history-screen","reports.component.harness-entity-link","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-components-entity-history"],"configs":["reports.component.entity-search","reports.component.harness-entity-link","reports.component.harness-explorer-catalog-screen","reports.component.harness-explorer-controls","reports.component.harness-explorer-frame","reports.component.harness-explorer-index","reports.component.harness-explorer-table","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-configs"],"config-details":["reports.component.contract-table","reports.component.entity-contract","reports.component.entity-search","reports.component.harness-entity-config-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-sections","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-configs-entity"],"config-history":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-history","reports.component.harness-entity-history-row","reports.component.harness-entity-history-screen","reports.component.harness-entity-link","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-configs-entity-history"],"services":["reports.component.entity-search","reports.component.harness-explorer-catalog-screen","reports.component.harness-explorer-controls","reports.component.harness-explorer-frame","reports.component.harness-explorer-index","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-services"],"service-details":["reports.component.entity-contract","reports.component.entity-search","reports.component.harness-entity-behavior-screen","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-sections","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-services-entity"],"service-history":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-history","reports.component.harness-entity-history-screen","reports.component.harness-entity-link","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-services-entity-history"],"retained":["reports.component.entity-search","reports.component.explorer-ui-explorer-module-card","reports.component.harness-entity-link","reports.component.harness-explorer-content","reports.component.harness-explorer-controls","reports.component.harness-explorer-frame","reports.component.harness-explorer-index","reports.component.harness-explorer-pages-screen","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-screen","reports.component.select","reports.page.harness-view"],"shells":["reports.component.entity-search","reports.component.harness-entity-link","reports.component.harness-explorer-catalog-screen","reports.component.harness-explorer-controls","reports.component.harness-explorer-frame","reports.component.harness-explorer-index","reports.component.harness-explorer-table","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-shells"],"shells-tip":["reports.component.entity-search","reports.component.harness-entity-link","reports.component.harness-explorer-catalog-screen","reports.component.harness-explorer-controls","reports.component.harness-explorer-frame","reports.component.harness-explorer-index","reports.component.harness-explorer-table","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-shells"],"shell":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-shells-entity"],"shell-details":["reports.component.contract-table","reports.component.entity-contract","reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-sections","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-shells-entity"],"shell-history":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-history","reports.component.harness-entity-history-row","reports.component.harness-entity-history-screen","reports.component.harness-entity-link","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-shells-entity-history"],"shell-redirect":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-sections","reports.component.harness-entity-source","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-shells-entity"],"shell-earlier":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-link","reports.component.harness-entity-visual-screen","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-components-entity"],"shell-retained":["reports.component.entity-search","reports.component.harness-entity-frame","reports.component.harness-entity-header","reports.component.harness-entity-history","reports.component.harness-entity-history-row","reports.component.harness-entity-history-screen","reports.component.harness-entity-link","reports.component.harness-explorer-content","reports.component.harness-explorer-frame","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-tabs","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.select","reports.page.harness-view"],"search":["reports.component.entity-search","reports.component.entity-search-results","reports.component.harness-entity-link","reports.component.harness-explorer-catalog-screen","reports.component.harness-explorer-controls","reports.component.harness-explorer-frame","reports.component.harness-explorer-index","reports.component.harness-explorer-table","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-harness-verdict","reports.component.harness-screen","reports.component.modal","reports.component.select","reports.page.harness-branch-branch-at-shells"],"search-pinned":["reports.component.entity-search","reports.component.entity-search-results","reports.component.explorer-ui-explorer-module-card","reports.component.harness-entity-link","reports.component.harness-explorer-catalog-screen","reports.component.harness-explorer-controls","reports.component.harness-explorer-frame","reports.component.harness-explorer-index","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-screen","reports.component.modal","reports.component.select","reports.page.harness-branch-branch-at-functions"],"hundreds":["reports.component.entity-search","reports.component.explorer-ui-explorer-module-card","reports.component.harness-entity-link","reports.component.harness-explorer-catalog-screen","reports.component.harness-explorer-controls","reports.component.harness-explorer-frame","reports.component.harness-explorer-index","reports.component.harness-harness-action","reports.component.harness-harness-console","reports.component.harness-harness-header","reports.component.harness-harness-icon","reports.component.harness-harness-navbar","reports.component.harness-harness-selectors","reports.component.harness-screen","reports.component.select","reports.page.harness-branch-branch-at-functions"]}}
+  ✘  5 tests/e2e/harness-evidence.spec.ts:73:1 › what was captured satisfies the scenario contract, and another build would not (9.2s)
+
+
+  1) tests/e2e/harness-evidence.spec.ts:73:1 › what was captured satisfies the scenario contract, and another build would not 
+
+    Error: each state is attributed what it showed
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 176
+    + Received  +   0
+
+    @@ -5,15 +5,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-components-entity",
+        ],
+    @@ -23,15 +20,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-components-entity",
+        ],
+    @@ -41,15 +35,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-history-screen",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-components-entity-history",
+        ],
+    @@ -60,15 +51,12 @@
+          "reports.component.harness-explorer-catalog-screen",
+          "reports.component.harness-explorer-controls",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-explorer-index",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-components",
+        ],
+        "config": Array [
+    @@ -80,16 +68,12 @@
+          "reports.component.harness-entity-overview",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-entity-summary",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-configs-entity",
+        ],
+    @@ -102,16 +86,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-configs-entity",
+        ],
+    @@ -123,16 +103,12 @@
+          "reports.component.harness-entity-history-row",
+          "reports.component.harness-entity-history-screen",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-configs-entity-history",
+        ],
+    @@ -143,15 +119,12 @@
+          "reports.component.harness-explorer-controls",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-explorer-index",
+          "reports.component.harness-explorer-table",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-configs",
+        ],
+    @@ -164,16 +137,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+        ],
+    @@ -186,16 +155,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+        ],
+    @@ -209,16 +174,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.modal",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+    @@ -233,16 +194,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.modal",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+    @@ -256,16 +213,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+        ],
+    @@ -275,16 +228,12 @@
+          "reports.component.harness-entity-frame",
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-summary",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+        ],
+    @@ -293,16 +242,12 @@
+          "reports.component.harness-entity-behavior-screen",
+          "reports.component.harness-entity-frame",
+          "reports.component.harness-entity-header",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+        ],
+    @@ -313,16 +258,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-summary",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+        ],
+    @@ -333,16 +274,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-summary",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+        ],
+    @@ -353,16 +290,12 @@
+          "reports.component.harness-entity-history",
+          "reports.component.harness-entity-history-screen",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity-history",
+        ],
+    @@ -373,15 +306,12 @@
+          "reports.component.harness-explorer-catalog-screen",
+          "reports.component.harness-explorer-controls",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-explorer-index",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions",
+        ],
+        "media": Array [
+    @@ -391,16 +321,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-summary",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-services-entity",
+        ],
+    @@ -409,15 +335,12 @@
+          "reports.component.harness-entity-behavior-screen",
+          "reports.component.harness-entity-frame",
+          "reports.component.harness-entity-missing",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+        ],
+    @@ -427,16 +350,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-pages-entity",
+        ],
+    @@ -447,16 +366,12 @@
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-screens",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-pages-entity",
+        ],
+    @@ -469,16 +384,12 @@
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-pages-entity",
+        ],
+    @@ -491,16 +402,12 @@
+          "reports.component.harness-entity-history-screen",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-reasons",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-pages-entity-history",
+        ],
+    @@ -511,15 +418,12 @@
+          "reports.component.harness-explorer-controls",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-explorer-index",
+          "reports.component.harness-explorer-pages-screen",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-pages",
+        ],
+        "rejected": Array [
+    @@ -529,16 +433,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-summary",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-services-entity",
+        ],
+    @@ -548,16 +448,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-pages-entity",
+        ],
+    @@ -567,16 +463,12 @@
+          "reports.component.harness-entity-frame",
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-summary",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+        ],
+    @@ -588,15 +480,12 @@
+          "reports.component.harness-explorer-controls",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-explorer-index",
+          "reports.component.harness-explorer-pages-screen",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-view",
+        ],
+        "search": Array [
+    @@ -607,15 +496,12 @@
+          "reports.component.harness-explorer-controls",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-explorer-index",
+          "reports.component.harness-explorer-table",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.modal",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-shells",
+    @@ -628,15 +514,12 @@
+          "reports.component.harness-explorer-catalog-screen",
+          "reports.component.harness-explorer-controls",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-explorer-index",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-screen",
+          "reports.component.modal",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions",
+        ],
+    @@ -647,16 +530,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-summary",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-services-entity",
+        ],
+    @@ -668,16 +547,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-services-entity",
+        ],
+    @@ -688,16 +563,12 @@
+          "reports.component.harness-entity-history",
+          "reports.component.harness-entity-history-screen",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-services-entity-history",
+        ],
+    @@ -706,15 +577,12 @@
+          "reports.component.harness-explorer-catalog-screen",
+          "reports.component.harness-explorer-controls",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-explorer-index",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-services",
+        ],
+    @@ -724,16 +592,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-shells-entity",
+        ],
+    @@ -746,16 +610,12 @@
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-shells-entity",
+        ],
+    @@ -765,15 +625,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-components-entity",
+        ],
+    @@ -785,16 +642,12 @@
+          "reports.component.harness-entity-history-row",
+          "reports.component.harness-entity-history-screen",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-shells-entity-history",
+        ],
+    @@ -806,16 +659,12 @@
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-entity-source",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-shells-entity",
+        ],
+    @@ -828,16 +677,12 @@
+          "reports.component.harness-entity-history-screen",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-explorer-content",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-view",
+        ],
+    @@ -848,15 +693,12 @@
+          "reports.component.harness-explorer-controls",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-explorer-index",
+          "reports.component.harness-explorer-table",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-shells",
+        ],
+    @@ -867,15 +709,12 @@
+          "reports.component.harness-explorer-controls",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-explorer-index",
+          "reports.component.harness-explorer-table",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-shells",
+        ],
+    @@ -887,16 +726,12 @@
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-entity-source",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+        ],
+    @@ -906,16 +741,12 @@
+          "reports.component.harness-entity-frame",
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-summary",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-functions-entity",
+        ],
+    @@ -925,15 +756,12 @@
+          "reports.component.harness-entity-header",
+          "reports.component.harness-entity-link",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-components-entity",
+        ],
+    @@ -946,16 +774,12 @@
+          "reports.component.harness-entity-relations",
+          "reports.component.harness-entity-sections",
+          "reports.component.harness-entity-visual-screen",
+          "reports.component.harness-explorer-frame",
+          "reports.component.harness-harness-action",
+    -     "reports.component.harness-harness-console",
+    -     "reports.component.harness-harness-header",
+          "reports.component.harness-harness-icon",
+          "reports.component.harness-harness-navbar",
+    -     "reports.component.harness-harness-selectors",
+    -     "reports.component.harness-harness-tabs",
+          "reports.component.harness-harness-verdict",
+          "reports.component.harness-screen",
+          "reports.component.select",
+          "reports.page.harness-branch-branch-at-pages-entity",
+        ],
+
+      132 | 		attributed[capture.state] = [...listed, unit].sort();
+      133 | 	}
+    > 134 | 	expect.soft(attributed, 'each state is attributed what it showed').toEqual(seen);
+          | 	                                                                   ^
+      135 | 	const order = scenario.states.map((state) => state.id);
+      136 | 	const statesOf = (id: string) => order.filter((state) => seen[state]?.includes(id));
+      137 | 	const covered = scenario.units.filter((id) => visual.has(id));
+        at expectShownAttribution (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0b1GsL/packages/reports/tests/e2e/harness-evidence.spec.ts:134:69)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0b1GsL/packages/reports/tests/e2e/harness-evidence.spec.ts:112:35
+
+    Error: each unit is shown with the states that showed it
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 184
+    + Received  +   4
+
+    @@ -555,114 +555,16 @@
+            "contract-example-commit",
+          ],
+        ],
+        Array [
+          "reports.component.harness-harness-console",
+    -     Array [
+    -       "pages",
+    -       "page-current",
+    -       "page-commit",
+    -       "relationships",
+    -       "used-in",
+    -       "uses",
+    -       "component",
+    -       "function",
+    -       "service",
+    -       "config",
+    -       "details",
+    -       "source",
+    -       "history",
+    -       "media",
+    -       "rejected",
+    -       "gap",
+    -       "removed",
+    -       "missing",
+    -       "unavailable",
+    -       "emitted",
+    -       "emitted-gone",
+    -       "hundreds",
+    -       "page-details",
+    -       "page-history",
+    -       "components",
+    -       "component-details",
+    -       "component-history",
+    -       "configs",
+    -       "config-details",
+    -       "config-history",
+    -       "services",
+    -       "service-details",
+    -       "service-history",
+    -       "retained",
+    -       "shells",
+    -       "shells-tip",
+    -       "shell",
+    -       "shell-details",
+    -       "shell-history",
+    -       "shell-redirect",
+    -       "shell-earlier",
+    -       "shell-retained",
+    -       "search",
+    -       "search-pinned",
+    -       "contract",
+    -       "contract-commit",
+    -       "contract-example",
+    -       "contract-example-commit",
+    +     Array [],
+        ],
+    -   ],
+        Array [
+          "reports.component.harness-harness-header",
+    -     Array [
+    -       "pages",
+    -       "page-current",
+    -       "page-commit",
+    -       "relationships",
+    -       "used-in",
+    -       "uses",
+    -       "component",
+    -       "function",
+    -       "service",
+    -       "config",
+    -       "details",
+    -       "source",
+    -       "history",
+    -       "media",
+    -       "rejected",
+    -       "gap",
+    -       "removed",
+    -       "missing",
+    -       "unavailable",
+    -       "emitted",
+    -       "emitted-gone",
+    -       "hundreds",
+    -       "page-details",
+    -       "page-history",
+    -       "components",
+    -       "component-details",
+    -       "component-history",
+    -       "configs",
+    -       "config-details",
+    -       "config-history",
+    -       "services",
+    -       "service-details",
+    -       "service-history",
+    -       "retained",
+    -       "shells",
+    -       "shells-tip",
+    -       "shell",
+    -       "shell-details",
+    -       "shell-history",
+    -       "shell-redirect",
+    -       "shell-earlier",
+    -       "shell-retained",
+    -       "search",
+    -       "search-pinned",
+    -       "contract",
+    -       "contract-commit",
+    -       "contract-example",
+    -       "contract-example-commit",
+    +     Array [],
+        ],
+    -   ],
+        Array [
+          "reports.component.harness-harness-icon",
+          Array [
+            "pages",
+            "page-current",
+    @@ -767,97 +669,15 @@
+            "contract-example-commit",
+          ],
+        ],
+        Array [
+          "reports.component.harness-harness-selectors",
+    -     Array [
+    -       "pages",
+    -       "page-current",
+    -       "page-commit",
+    -       "relationships",
+    -       "used-in",
+    -       "uses",
+    -       "component",
+    -       "function",
+    -       "service",
+    -       "config",
+    -       "details",
+    -       "source",
+    -       "history",
+    -       "media",
+    -       "rejected",
+    -       "gap",
+    -       "removed",
+    -       "missing",
+    -       "unavailable",
+    -       "emitted",
+    -       "emitted-gone",
+    -       "hundreds",
+    -       "page-details",
+    -       "page-history",
+    -       "components",
+    -       "component-details",
+    -       "component-history",
+    -       "configs",
+    -       "config-details",
+    -       "config-history",
+    -       "services",
+    -       "service-details",
+    -       "service-history",
+    -       "retained",
+    -       "shells",
+    -       "shells-tip",
+    -       "shell",
+    -       "shell-details",
+    -       "shell-history",
+    -       "shell-redirect",
+    -       "shell-earlier",
+    -       "shell-retained",
+    -       "search",
+    -       "search-pinned",
+    -       "contract",
+    -       "contract-commit",
+    -       "contract-example",
+    -       "contract-example-commit",
+    -     ],
+    +     Array [],
+        ],
+        Array [
+          "reports.component.harness-harness-tabs",
+    -     Array [
+    -       "page-current",
+    -       "page-commit",
+    -       "relationships",
+    -       "uses",
+    -       "function",
+    -       "service",
+    -       "config",
+    -       "details",
+    -       "source",
+    -       "history",
+    -       "media",
+    -       "rejected",
+    -       "gap",
+    -       "removed",
+    -       "unavailable",
+    -       "emitted",
+    -       "emitted-gone",
+    -       "page-details",
+    -       "page-history",
+    -       "config-details",
+    -       "config-history",
+    -       "service-details",
+    -       "service-history",
+    -       "shell",
+    -       "shell-details",
+    -       "shell-history",
+    -       "shell-redirect",
+    -       "shell-retained",
+    -       "contract",
+    -       "contract-commit",
+    -       "contract-example",
+    -       "contract-example-commit",
+    -     ],
+    +     Array [],
+        ],
+        Array [
+          "reports.component.harness-harness-verdict",
+          Array [
+            "page-current",
+
+      149 | 			message
+      150 | 		)
+    > 151 | 		.toEqual(shownWith);
+          | 		 ^
+      152 | 	const unshown = covered.filter((id) => statesOf(id).length === 0);
+      153 | 	expect.soft(unshown, 'each visual unit the scenario covers is shown by a state').toEqual([]);
+      154 | 	return units.filter((id) => statesOf(id).length > 0);
+        at expectShownAttribution (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0b1GsL/packages/reports/tests/e2e/harness-evidence.spec.ts:151:4)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0b1GsL/packages/reports/tests/e2e/harness-evidence.spec.ts:112:35
+
+    Error: reports.component.harness-entity-source browser-navigation-ms 1440x900
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+       at support/pageBenchmark.ts:57
+
+      55 | 					),
+      56 | 					`${unit} ${metric} ${viewport.width}x${viewport.height}`
+    > 57 | 				).toBe(true);
+         | 				  ^
+      58 | }
+      59 | /** Runtime observations of the real route, never of a later client-side destination. */
+      60 | export async function pageBenchmark(page: Page, state: string, unit?: string): Promise<void> {
+        at expectPageMeasurements (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0b1GsL/packages/reports/tests/e2e/support/pageBenchmark.ts:57:7)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-0b1GsL/packages/reports/tests/e2e/harness-evidence.spec.ts:112:2
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/harness-evidence-what-was--350e2-and-another-build-would-not/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/harness-evidence-what-was--350e2-and-another-build-would-not/error-context.md
+
+  1 failed
+    tests/e2e/harness-evidence.spec.ts:73:1 › what was captured satisfies the scenario contract, and another build would not 
+  4 passed (2.1m)

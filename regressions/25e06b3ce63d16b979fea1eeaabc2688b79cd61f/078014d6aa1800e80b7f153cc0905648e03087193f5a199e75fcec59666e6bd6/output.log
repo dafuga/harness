@@ -1,0 +1,90 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [17.79s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Ix1NaI
+
+ ❯ test/validators/performance-evidence.test.ts (11 tests | 1 failed) 83ms
+   ✓ actual observations are required even when a unit declares no performance budget 76ms
+   ✓ revision mismatches cannot satisfy required profiling 0ms
+   ✓ profile mismatches cannot satisfy required profiling 0ms
+   ✓ target mismatches cannot satisfy required profiling 0ms
+   ✓ workload mismatches cannot satisfy required profiling 0ms
+   ✓ samples mismatches cannot satisfy required profiling 0ms
+   ✓ unavailable mismatches cannot satisfy required profiling 0ms
+   ✓ one callable cannot lend its observations to another helper in the same module 0ms
+   ✓ type-only models are inapplicable, while unreadable or unexported code stays required 0ms
+   × readable stylesheets are declarative while unreadable and mixed sources stay required 4ms
+     → expected [ { id: 'function.title', …(4) } ] to deeply equal []
+   ✓ synthetic rule-fixture values cannot establish runtime profiling 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/validators/performance-evidence.test.ts > readable stylesheets are declarative while unreadable and mixed sources stay required
+AssertionError: expected [ { id: 'function.title', …(4) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "budgets": {
++       "performance": [],
++     },
++     "id": "function.title",
++     "owns": {
++       "source": [
++         "title.css",
++       ],
++     },
++     "runtime": {
++       "kind": "module",
++       "targets": [
++         {
++           "kind": "module",
++         },
++       ],
++     },
++     "status": "active",
++   },
++ ]
+
+ ❯ test/validators/performance-evidence.test.ts:100:55
+     98|  unit.owns.source = ['title.css'];
+     99|  const validator = new PerformanceEvidenceValidator();
+    100|  expect(validator.required(input.units, input.files)).toEqual([]);
+       |                                                       ^
+    101|  input.files.get('title.css')!.read = false;
+    102|  expect(validator.required(input.units, input.files)).toEqual([unit]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  10:10:25
+   Duration  3.45s (transform 60ms, setup 9ms, collect 102ms, tests 83ms, environment 0ms, prepare 37ms)
+

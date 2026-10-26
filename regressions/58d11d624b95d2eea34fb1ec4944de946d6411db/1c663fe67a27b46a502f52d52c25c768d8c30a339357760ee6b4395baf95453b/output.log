@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-KfkTZ9
+
+ ✓ test/services/agents-providers/module-task.test.ts (3 tests) 737ms
+   ✓ admission rejects missing contracts, unknown modules and mutable task identities  333ms
+   ✓ retry preserves abandoned claims and refuses to steal an active owner  398ms
+ ✓ test/repositories/agents-providers/module-task.test.ts (1 test) 480ms
+   ✓ queue compare-and-swap retains simultaneous writers and commits without touching source HEAD  477ms
+ ✓ test/services/agents-providers/module-task-worker.test.ts (1 test) 453ms
+   ✓ module filters and assignment claims select once, then preserve changes for review  447ms
+ ✓ test/project-template.test.ts (5 tests) 366ms
+ ✓ test/commands/agents-providers/module-task.test.ts (1 test) 14ms
+ ✓ test/adapters/agents-providers/module-task-runner.test.ts (6 tests) 6ms
+
+ Test Files  6 passed (6)
+      Tests  17 passed (17)
+   Start at  23:35:35
+   Duration  8.63s (transform 1.36s, setup 338ms, collect 2.64s, tests 2.06s, environment 0ms, prepare 182ms)
+

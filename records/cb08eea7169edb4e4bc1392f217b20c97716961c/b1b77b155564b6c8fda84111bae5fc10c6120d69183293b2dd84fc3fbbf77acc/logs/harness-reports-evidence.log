@@ -1,0 +1,8 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] error: Cannot find module './dist-cjs/submodules/flexible-checksums/index.js' from '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9coGad/node_modules/@aws-sdk/checksums/flexible-checksums.js'
+[WebServer] 
+[WebServer] Bun v1.2.18 (macOS arm64)
+Error: Process from config.webServer was not able to start. Exit code: 1
+

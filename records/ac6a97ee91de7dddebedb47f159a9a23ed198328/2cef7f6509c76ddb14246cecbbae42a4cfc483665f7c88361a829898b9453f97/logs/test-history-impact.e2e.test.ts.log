@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-55pSB0
+
+ ✓ test/history-impact.e2e.test.ts (6 tests) 7561ms
+   ✓ the index states the same impact for edited as the impact command on the same two commits  404ms
+   ✓ the index states the same impact for rewired as the impact command on the same two commits  424ms
+   ✓ the index states the same impact for unresolved as the impact command on the same two commits  414ms
+   ✓ the index states the same impact for removed as the impact command on the same two commits  405ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  15:00:58
+   Duration  7.84s (transform 28ms, setup 10ms, collect 25ms, tests 7.56s, environment 0ms, prepare 40ms)
+

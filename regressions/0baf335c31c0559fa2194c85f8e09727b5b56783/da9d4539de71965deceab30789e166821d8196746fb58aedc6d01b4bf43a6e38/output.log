@@ -1,0 +1,84 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [10.38s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BRFkJd
+
+ ❯ test/validators/performance-evidence.test.ts (22 tests | 2 failed) 106ms
+   ✓ actual observations are required even when a unit declares no performance budget 79ms
+   × browser observations match only their declared module target 4ms
+     → browser navigation and heap satisfy the declared target: expected [ Array(1) ] to deeply equal []
+   × browser observations match only their declared http target 1ms
+     → browser navigation and heap satisfy the declared target: expected [ Array(1) ] to deeply equal []
+   ✓ revision mismatches cannot satisfy required profiling 0ms
+   ✓ profile mismatches cannot satisfy required profiling 0ms
+   ✓ target mismatches cannot satisfy required profiling 0ms
+   ✓ workload mismatches cannot satisfy required profiling 0ms
+   ✓ samples mismatches cannot satisfy required profiling 0ms
+   ✓ unavailable mismatches cannot satisfy required profiling 0ms
+   ✓ one callable cannot lend its observations to another helper in the same module 0ms
+   ✓ parsed type declarations determines runtime applicability 6ms
+   ✓ parsed type imports determines runtime applicability 3ms
+   ✓ parsed ambient globals determines runtime applicability 2ms
+   ✓ parsed empty module marker determines runtime applicability 1ms
+   ✓ parsed module initialization determines runtime applicability 1ms
+   ✓ parsed side-effect import determines runtime applicability 1ms
+   ✓ parsed value import determines runtime applicability 1ms
+   ✓ parsed private operation determines runtime applicability 1ms
+   ✓ parsed runtime enum determines runtime applicability 1ms
+   ✓ parsed unparseable declaration determines runtime applicability 1ms
+   ✓ readable stylesheets are declarative while unreadable and mixed sources stay required 0ms
+   ✓ synthetic rule-fixture values cannot establish runtime profiling 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/validators/performance-evidence.test.ts > browser observations match only their declared module target
+ FAIL  test/validators/performance-evidence.test.ts > browser observations match only their declared http target
+AssertionError: browser navigation and heap satisfy the declared target: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "function.title (module): profiling requires current latency and memory observations for the same representative workload; run its Harness profile check.",
++ ]
+
+ ❯ test/validators/performance-evidence.test.ts:65:5
+     63|    validator.validate(input),
+     64|    'browser navigation and heap satisfy the declared target'
+     65|   ).toEqual([]);
+       |     ^
+     66|   input.measurements[1].target = target === 'module' ? 'http' : 'modul…
+     67|   expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 20 passed (22)
+   Start at  23:37:43
+   Duration  3.94s (transform 173ms, setup 99ms, collect 333ms, tests 106ms, environment 0ms, prepare 38ms)
+

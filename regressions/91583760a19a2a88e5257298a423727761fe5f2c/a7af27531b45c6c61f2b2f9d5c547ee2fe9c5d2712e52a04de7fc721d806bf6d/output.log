@@ -1,0 +1,9 @@
+{"step": "root-format", "exitCode": 0, "command": ["bun", "run", "format:check"], "log": "/tmp/harness-modules-nav-final-root-format.log"}
+{"step": "root-types", "exitCode": 0, "command": ["bun", "run", "typecheck"], "log": "/tmp/harness-modules-nav-final-root-types.log"}
+{"step": "root-lint", "exitCode": 0, "command": ["bun", "run", "lint"], "log": "/tmp/harness-modules-nav-final-root-lint.log"}
+{"step": "root-audit", "exitCode": 0, "command": ["bun", "run", "dev", "--", "audit", "."], "log": "/tmp/harness-modules-nav-final-root-audit.log"}
+{"step": "root-cases", "exitCode": 0, "command": ["bun", "x", "vitest", "run", "test/utils/explorer-route.test.ts", "test/utils/console-canonical.test.ts", "test/utils/explorer-legacy.test.ts", "test/utils/unit-metadata.test.ts", "test/explorer-shells.test.ts", "test/guides.test.ts", "test/project-template.test.ts", "test/readable-unit-contracts.test.ts", "test/services/unit-index.test.ts", "test/shared-select-impact.test.ts", "test/shared-search-impact.test.ts", "test/shared-alias-index.test.ts", "test/shared-workspace-registry.test.ts"], "log": "/tmp/harness-modules-nav-final-root-cases.log"}
+{"step": "units", "exitCode": 0, "command": ["bun", "run", "dev", "--", "units", "check", "--json"], "log": "/tmp/harness-modules-nav-final-units.log"}
+{"step": "root-build", "exitCode": 0, "command": ["bun", "run", "build"], "log": "/tmp/harness-modules-nav-final-root-build.log"}
+{"step": "reports-check", "exitCode": 1, "command": ["bun", "run", "check"], "log": "/tmp/harness-modules-nav-final-reports-check.log"}
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false

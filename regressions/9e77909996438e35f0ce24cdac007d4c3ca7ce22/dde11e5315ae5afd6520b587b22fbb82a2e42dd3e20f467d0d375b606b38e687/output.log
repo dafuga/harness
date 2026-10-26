@@ -1,0 +1,30 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-op74Oe/packages/reports
+
+ ✓ test/components/entity-overview.test.ts (11 tests) 31ms
+ ✓ test/components/entity-details.test.ts (7 tests) 16ms
+ ✓ test/utils/entity-measure.test.ts (8 tests) 4ms
+ ✓ test/components/entity-details-screen.test.ts (3 tests) 20ms
+
+ Test Files  4 passed (4)
+      Tests  29 passed (29)
+   Start at  21:30:25
+   Duration  1.81s (transform 652ms, setup 0ms, collect 1.14s, tests 72ms, environment 0ms, prepare 111ms)
+
+
+Running 6 tests using 1 worker
+
+  ✓  1 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at desktop width (3.4s)
+  ✓  2 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at tablet width (3.2s)
+  ✓  3 test/entity-preview-actions.spec.ts:15:2 › visual overviews lead with screenshots at mobile width (3.1s)
+  ✓  4 test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget (363ms)
+  ✓  5 test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget (372ms)
+  ✓  6 test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget (329ms)
+
+  6 passed (13.4s)

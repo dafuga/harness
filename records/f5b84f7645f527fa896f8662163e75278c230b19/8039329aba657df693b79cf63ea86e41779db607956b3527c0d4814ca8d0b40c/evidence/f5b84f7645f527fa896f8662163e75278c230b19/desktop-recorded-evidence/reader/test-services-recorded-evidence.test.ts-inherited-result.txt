@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-X30BiD/packages/desktop[39m
+
+ [32m✓[39m test/services/recorded-evidence.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 17076[2mms[22m[39m
+   [33m[2m✓[22m[39m the tip of a branch is shown alone, with what it was read at [33m 1125[2mms[22m[39m
+   [33m[2m✓[22m[39m a commit is compared with its exact first parent, also when it is the tip [33m 746[2mms[22m[39m
+   [33m[2m✓[22m[39m a commit without a record answers with its gap, and a first commit has no parent [33m 994[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 21:42:57
+[2m   Duration [22m 18.59s[2m (transform 776ms, setup 0ms, collect 1.24s, tests 17.08s, environment 0ms, prepare 48ms)[22m
+
+JSON report written to /var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-runner-2RkOzy/report.json

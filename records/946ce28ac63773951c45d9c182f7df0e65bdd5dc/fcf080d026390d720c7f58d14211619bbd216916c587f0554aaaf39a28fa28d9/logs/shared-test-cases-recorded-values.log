@@ -1,0 +1,15 @@
+188 | 	const scope = scopes[scenario];
+189 | 	const tests = runner === 'vitest' ? scope?.vitest[target] : undefined;
+190 | 	let states = tests ? [...new Set(Object.values(tests))] : undefined;
+191 | 	if (runner === 'playwright') states = scope?.playwright[target];
+192 | 	if (!scope || !states || !atVerificationPackage(scope, cwd))
+193 | 		throw new Error('Unknown verification scenario, runner, target or package');
+              ^
+error: Unknown verification scenario, runner, target or package
+      at verificationTarget (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tA718W/test/verification-targets.ts:193:9)
+      at request (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tA718W/test/verification-output.ts:64:5)
+      at run (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tA718W/test/verification-output.ts:70:35)
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tA718W/test/verification-output.ts:129:20
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)

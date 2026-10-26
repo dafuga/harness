@@ -1,0 +1,841 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F
+
+stdout | test/history-source.test.ts > history archives owned text from each commit, deduplicates it and states source gaps
+{"workload":"two committed source trees with text and gaps","method":"performance.now wall time; whole Vitest process RSS","buildMs":720.8486250000001,"processRssBytes":213467136}
+
+ ❯ test/history-source.test.ts (1 test | 1 failed) 2005ms
+   × history archives owned text from each commit, deduplicates it and states source gaps 2003ms
+     → associated tests are retained at the selected revision: expected undefined to deeply equal [ 'test/declared.test.ts', …(1) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/history-source.test.ts > history archives owned text from each commit, deduplicates it and states source gaps
+AssertionError: associated tests are retained at the selected revision: expected undefined to deeply equal [ 'test/declared.test.ts', …(1) ]
+
+[32m- Expected:[39m 
+[
+  "test/declared.test.ts",
+  "test/slugify.test.ts",
+]
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ assertSource test/history-source.test.ts:64:4
+     62|   tests?.map((file) => file.path),
+     63|   'associated tests are retained at the selected revision'
+     64|  ).toEqual(['test/declared.test.ts', 'test/slugify.test.ts']);
+       |    ^
+     65|  const test = tests?.find((file) => file.path === 'test/slugify.test.t…
+     66|  expect(await readFile(join(out, test!.media!), 'utf8')).toBe(expected…
+ ❯ test/history-source.test.ts:109:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  12:15:45
+   Duration  6.12s (transform 486ms, setup 107ms, collect 1.06s, tests 2.00s, environment 0ms, prepare 49ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports
+
+ ❯ test/components/entity-details.test.ts (7 tests | 1 failed) 26ms
+   ✓ details opens on the contract with size and performance, and shows no source 10ms
+   ✓ a page contract shows purpose, address, inputs and output without verification states 2ms
+   × source is shown only when the source tab is the open one 8ms
+     → expected ' Source files src/services/orders/Ord…' to contain 'test/order-store.test.ts'
+   ✓ measurements name the limit each figure is frozen at, or that none is recorded 1ms
+   ✓ a service has each execution target on a line of its own, never added together 1ms
+   ✓ a recorded note that names a file is shown without it on measurements and on the contract 1ms
+   ✓ a declared contract explains each item in its dedicated tab and details 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-details.test.ts > source is shown only when the source tab is the open one
+AssertionError: expected ' Source files src/services/orders/Ord…' to contain 'test/order-store.test.ts'
+
+Expected: [32m"[7mt[27mes[7mt[27m/order[7m-store.test.ts[27m"[39m
+Received: [31m"[7m Source files src/servic[27mes/order[7ms/OrderStore.ts GitHub source unavailable for this revision. [27m"[39m
+
+ ❯ sourceAdmission test/components/entity-details.test.ts:134:22
+    132|  }).body;
+    133|  expect(words(body)).toContain('src/services/orders/OrderStore.ts');
+    134|  expect(words(body)).toContain('test/order-store.test.ts');
+       |                      ^
+    135|  expect(reads.indexed).toBeGreaterThan(0);
+    136|  expect(reads.iterated).toBe(0);
+ ❯ test/components/entity-details.test.ts:74:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  12:15:52
+   Duration  1.59s (transform 949ms, setup 0ms, collect 1.36s, tests 26ms, environment 0ms, prepare 32ms)
+
+
+Running 21 tests using 1 worker
+
+  ✘   1 test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at desktop width (5.5s)
+  ✘   2 test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at desktop width (5.4s)
+  ✘   3 test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at desktop width (5.4s)
+  ✘   4 test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at desktop width (5.5s)
+  ✘   5 test/entity-preview-source.spec.ts:77:3 › Shells code opens only from the detail Source tab at desktop width (5.4s)
+  ✘   6 test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at desktop width (5.4s)
+  ✘   7 test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at desktop width (5.5s)
+  ✘   8 test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at tablet width (5.4s)
+  ✘   9 test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at tablet width (5.4s)
+  ✘  10 test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at tablet width (5.4s)
+  ✘  11 test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at tablet width (5.4s)
+  ✘  12 test/entity-preview-source.spec.ts:77:3 › Shells code opens only from the detail Source tab at tablet width (5.4s)
+  ✘  13 test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at tablet width (5.4s)
+  ✘  14 test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at tablet width (5.4s)
+  ✘  15 test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at mobile width (5.4s)
+  ✘  16 test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at mobile width (5.4s)
+  ✘  17 test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at mobile width (5.4s)
+  ✘  18 test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at mobile width (5.5s)
+  ✘  19 test/entity-preview-source.spec.ts:77:3 › Shells code opens only from the detail Source tab at mobile width (5.4s)
+  ✘  20 test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at mobile width (5.4s)
+  ✘  21 test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at mobile width (5.4s)
+
+
+  1) test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at desktop width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Mode-2a50e-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Mode-2a50e-Source-tab-at-desktop-width/error-context.md
+
+  2) test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at desktop width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-82eb3-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-82eb3-Source-tab-at-desktop-width/error-context.md
+
+  3) test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at desktop width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Page-d0af9-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Page-d0af9-Source-tab-at-desktop-width/error-context.md
+
+  4) test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at desktop width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Comp-812f9-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Comp-812f9-Source-tab-at-desktop-width/error-context.md
+
+  5) test/entity-preview-source.spec.ts:77:3 › Shells code opens only from the detail Source tab at desktop width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Shel-8438a-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Shel-8438a-Source-tab-at-desktop-width/error-context.md
+
+  6) test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at desktop width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Conf-f6b64-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Conf-f6b64-Source-tab-at-desktop-width/error-context.md
+
+  7) test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at desktop width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Serv-7729d-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Serv-7729d-Source-tab-at-desktop-width/error-context.md
+
+  8) test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at tablet width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Mode-6ac6a--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Mode-6ac6a--Source-tab-at-tablet-width/error-context.md
+
+  9) test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at tablet width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-a3ae6--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-a3ae6--Source-tab-at-tablet-width/error-context.md
+
+  10) test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at tablet width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Page-e8afa--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Page-e8afa--Source-tab-at-tablet-width/error-context.md
+
+  11) test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at tablet width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Comp-b2230--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Comp-b2230--Source-tab-at-tablet-width/error-context.md
+
+  12) test/entity-preview-source.spec.ts:77:3 › Shells code opens only from the detail Source tab at tablet width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Shel-60e1f--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Shel-60e1f--Source-tab-at-tablet-width/error-context.md
+
+  13) test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at tablet width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Conf-cc625--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Conf-cc625--Source-tab-at-tablet-width/error-context.md
+
+  14) test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at tablet width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Serv-8e56a--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Serv-8e56a--Source-tab-at-tablet-width/error-context.md
+
+  15) test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at mobile width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Mode-992c7--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Mode-992c7--Source-tab-at-mobile-width/error-context.md
+
+  16) test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at mobile width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-e19c0--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-e19c0--Source-tab-at-mobile-width/error-context.md
+
+  17) test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at mobile width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Page-364a4--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Page-364a4--Source-tab-at-mobile-width/error-context.md
+
+  18) test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at mobile width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Comp-36be6--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Comp-36be6--Source-tab-at-mobile-width/error-context.md
+
+  19) test/entity-preview-source.spec.ts:77:3 › Shells code opens only from the detail Source tab at mobile width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Shel-8dbd7--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Shel-8dbd7--Source-tab-at-mobile-width/error-context.md
+
+  20) test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at mobile width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Conf-21bee--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Conf-21bee--Source-tab-at-mobile-width/error-context.md
+
+  21) test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at mobile width 
+
+    Error: associated tests have their own file list
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('list', { name: 'Test files', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - associated tests have their own file list getByRole('list', { name: 'Test files', exact: true }) with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Test files', exact: true })
+
+
+       at entityPreviewFunctionSource.ts:34
+
+      32 | 	const path = sourceTestPath(id);
+      33 | 	const list = page.getByRole('list', { name: 'Test files', exact: true });
+    > 34 | 	await expect(list, 'associated tests have their own file list').toBeVisible();
+         | 	                                                                ^
+      35 | 	await expect(list.getByRole('link', { name: path, exact: true })).toHaveAttribute(
+      36 | 		'href',
+      37 | 		`https://github.com/example/orders/blob/${commit}/${path}`
+        at testFile (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entityPreviewFunctionSource.ts:34:66)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-v2Vj8F/packages/reports/test/entity-preview-source.spec.ts:100:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Serv-e9407--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Serv-e9407--Source-tab-at-mobile-width/error-context.md
+
+  21 failed
+    test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:77:3 › Shells code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:77:3 › Shells code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:77:3 › Models code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:77:3 › Helpers code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:77:3 › Pages code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:77:3 › Components code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:77:3 › Shells code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:77:3 › Configs code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:77:3 › Services code opens only from the detail Source tab at mobile width 

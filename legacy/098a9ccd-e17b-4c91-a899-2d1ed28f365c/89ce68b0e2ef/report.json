@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"kind": "legacy-report",
+	"id": "098a9ccd-e17b-4c91-a899-2d1ed28f365c",
+	"project": "harness",
+	"title": "Harness analytics dashboard and live CPU",
+	"mode": "feature",
+	"environment": "Local automated browser and native macOS CPU sampler",
+	"status": "running",
+	"state": "active",
+	"startedAt": "2026-10-07T13:09:22.045Z",
+	"updatedAt": "2026-10-07T14:03:29.139Z",
+	"revision": null,
+	"summary": "Implement loop, Jev and model history plus live machine, Codex, Harness and local-agent CPU.",
+	"checks": [
+		{
+			"id": "cpu-unit-integration",
+			"title": "Native CPU sampler and delta attribution tests",
+			"status": "passed"
+		},
+		{
+			"id": "history-red",
+			"title": "Dashboard regression before implementation",
+			"status": "passed"
+		},
+		{
+			"id": "cpu-api-native",
+			"title": "Real localhost CPU API",
+			"status": "passed"
+		},
+		{
+			"id": "manual-browser",
+			"title": "Manual browser verification",
+			"status": "blocked"
+		},
+		{
+			"id": "desktop-host-cpu",
+			"title": "Installed Codex desktop host is included",
+			"status": "passed"
+		},
+		{
+			"id": "full-check",
+			"title": "Full Harness and reporting checks",
+			"status": "passed"
+		},
+		{
+			"id": "dashboard-browser",
+			"title": "Dashboard browser acceptance",
+			"status": "passed"
+		},
+		{
+			"id": "built-preview",
+			"title": "Built Harness website and CPU API",
+			"status": "passed"
+		}
+	],
+	"media": [
+		{
+			"id": "before",
+			"title": "Before: heading-only analytics page",
+			"file": "9d81d7b411a7aa6b136f71d8b8f9286004b8c629706edcbbd020b36e29cd1df0.png",
+			"status": "failed",
+			"mediaType": "image/png",
+			"viewport": "1280px desktop",
+			"provenance": "legacy-report",
+			"sha256": "9d81d7b411a7aa6b136f71d8b8f9286004b8c629706edcbbd020b36e29cd1df0",
+			"bytes": 9707
+		},
+		{
+			"id": "after",
+			"title": "After: complete dashboard",
+			"file": "f85525f89124bd2595677a8e2d4e4019dff4a30dc1539a441fe3b54bbdfdfa87.png",
+			"status": "passed",
+			"mediaType": "image/png",
+			"viewport": "1280px desktop",
+			"provenance": "legacy-report",
+			"sha256": "f85525f89124bd2595677a8e2d4e4019dff4a30dc1539a441fe3b54bbdfdfa87",
+			"bytes": 445746
+		},
+		{
+			"id": "desktop",
+			"title": "Dashboard overview and live CPU",
+			"file": "a229a3d02e3f8b14d0df5c2a345beb300e685ba3200fd9ef3e6d78323ea4e244.png",
+			"status": "passed",
+			"mediaType": "image/png",
+			"viewport": "1440px desktop",
+			"provenance": "legacy-report",
+			"sha256": "a229a3d02e3f8b14d0df5c2a345beb300e685ba3200fd9ef3e6d78323ea4e244",
+			"bytes": 256234
+		},
+		{
+			"id": "models",
+			"title": "Author/evaluator models and task first-try rates",
+			"file": "21c598c51be5e5d800452d933f112409a7e98154270fd777b044bca1a9158958.png",
+			"status": "passed",
+			"mediaType": "image/png",
+			"viewport": "1440px desktop",
+			"provenance": "legacy-report",
+			"sha256": "21c598c51be5e5d800452d933f112409a7e98154270fd777b044bca1a9158958",
+			"bytes": 94770
+		},
+		{
+			"id": "mobile-cpu",
+			"title": "Live CPU on mobile",
+			"file": "c8af958a045d9b18478b06259e529cba2401533d5e85fc6c40436bb33f30c351.png",
+			"status": "passed",
+			"mediaType": "image/png",
+			"viewport": "390px mobile",
+			"provenance": "legacy-report",
+			"sha256": "c8af958a045d9b18478b06259e529cba2401533d5e85fc6c40436bb33f30c351",
+			"bytes": 81265
+		}
+	]
+}

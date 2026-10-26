@@ -1,0 +1,351 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-qQXxcx
+
+ ❯ test/analytics.test.ts (7 tests | 1 failed | 6 skipped) 15ms
+   × module task analytics retain model usage and count rejected completions once 13ms
+     → module task usage and bounce analytics must be available: expected { schemaVersion: 1, …(8) } to match object { tasks: { submissions: 2, …(5) } }
+(25 matching properties omitted from actual)
+   ↓ unreported module usage and unreviewed completions remain unknown
+   ↓ first assessed task attempt is attributed to its first author across revisions
+   ↓ cached checks, dry runs, unlinked and duplicate content are excluded
+   ↓ project and check kind separate identities and no tasks gives null rate
+   ↓ model filters retain the task first author instead of promoting a later revision
+   ↓ model and template names matching object properties still count correctly
+ ❯ test/commands/analytics.test.ts (1 test | 1 failed) 8ms
+   × analytics exposes all query and import/export operations 6ms
+     → expected [ 'cpu', 'summary', 'loops', …(6) ] to deeply equal [ 'cpu', 'summary', 'loops', …(7) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/analytics.test.ts > module task analytics retain model usage and count rejected completions once
+AssertionError: module task usage and bounce analytics must be available: expected { schemaVersion: 1, …(8) } to match object { tasks: { submissions: 2, …(5) } }
+(25 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "tasks": {
+-     "accepted": 1,
+-     "bounceRate": 0.5,
+-     "bounces": 1,
+-     "byModel": [
++   "benchmarks": [],
++   "events": [
++     {
++       "action": "executed",
++       "agentModel": "gpt-6-luna",
++       "id": "1",
++       "kind": "task",
++       "moduleTask": {
++         "apiCost": {
++           "basis": "standard-api-estimate",
++           "maximumUsd": 0.002,
++           "minimumUsd": 0.002,
++           "usd": 0.002,
++         },
++         "attempt": "first",
++         "feature": "checkout",
++         "intelligence": "max",
++         "model": "gpt-6-luna",
++         "module": "service.orders",
++         "provider": "codex",
++         "reportedModel": "gpt-6-luna",
++         "usage": {
++           "cacheReadTokens": 30,
++           "cacheWriteTokens": 0,
++           "inputTokens": 100,
++           "outputTokens": 20,
++         },
++       },
++       "project": "/project",
++       "task": "orders",
++       "timestamp": "2026-10-24T12:00:00Z",
++     },
++     {
++       "action": "submitted",
++       "agentModel": "gpt-6-luna",
++       "id": "2",
++       "kind": "task",
++       "moduleTask": {
++         "apiCost": {
++           "basis": "standard-api-estimate",
++           "maximumUsd": 0.002,
++           "minimumUsd": 0.002,
++           "usd": 0.002,
++         },
++         "attempt": "first",
++         "feature": "checkout",
++         "intelligence": "max",
++         "model": "gpt-6-luna",
++         "module": "service.orders",
++         "provider": "codex",
++         "reportedModel": "gpt-6-luna",
++         "usage": {
++           "cacheReadTokens": 30,
++           "cacheWriteTokens": 0,
++           "inputTokens": 100,
++           "outputTokens": 20,
++         },
++       },
++       "project": "/project",
++       "task": "orders",
++       "timestamp": "2026-10-24T12:00:00Z",
++     },
++     {
++       "action": "incomplete",
++       "agentModel": "gpt-6-luna",
++       "id": "3",
++       "kind": "task",
++       "moduleTask": {
++         "apiCost": {
++           "basis": "standard-api-estimate",
++           "maximumUsd": 0.002,
++           "minimumUsd": 0.002,
++           "usd": 0.002,
++         },
++         "attempt": "first",
++         "feature": "checkout",
++         "intelligence": "max",
++         "model": "gpt-6-luna",
++         "module": "service.orders",
++         "provider": "codex",
++         "reportedModel": "gpt-6-luna",
++         "usage": {
++           "cacheReadTokens": 30,
++           "cacheWriteTokens": 0,
++           "inputTokens": 100,
++           "outputTokens": 20,
++         },
++       },
++       "project": "/project",
++       "task": "orders",
++       "timestamp": "2026-10-24T12:00:00Z",
++     },
++     {
++       "action": "executed",
++       "agentModel": "gpt-6-luna",
++       "id": "4",
++       "kind": "task",
++       "moduleTask": {
++         "apiCost": {
++           "basis": "standard-api-estimate",
++           "maximumUsd": 0.002,
++           "minimumUsd": 0.002,
++           "usd": 0.002,
++         },
++         "attempt": "second",
++         "feature": "checkout",
++         "intelligence": "max",
++         "model": "gpt-6-luna",
++         "module": "service.orders",
++         "provider": "codex",
++         "reportedModel": "gpt-6-luna",
++         "usage": {
++           "cacheReadTokens": 30,
++           "cacheWriteTokens": 0,
++           "inputTokens": 100,
++           "outputTokens": 20,
++         },
++       },
++       "project": "/project",
++       "task": "orders",
++       "timestamp": "2026-10-24T12:00:00Z",
++     },
++     {
++       "action": "submitted",
++       "agentModel": "gpt-6-luna",
++       "id": "5",
++       "kind": "task",
++       "moduleTask": {
++         "apiCost": {
++           "basis": "standard-api-estimate",
++           "maximumUsd": 0.002,
++           "minimumUsd": 0.002,
++           "usd": 0.002,
++         },
++         "attempt": "second",
++         "feature": "checkout",
++         "intelligence": "max",
++         "model": "gpt-6-luna",
++         "module": "service.orders",
++         "provider": "codex",
++         "reportedModel": "gpt-6-luna",
++         "usage": {
++           "cacheReadTokens": 30,
++           "cacheWriteTokens": 0,
++           "inputTokens": 100,
++           "outputTokens": 20,
++         },
++       },
++       "project": "/project",
++       "task": "orders",
++       "timestamp": "2026-10-24T12:00:00Z",
++     },
++     {
++       "action": "accepted",
++       "agentModel": "gpt-6-luna",
++       "id": "6",
++       "kind": "task",
++       "moduleTask": {
++         "apiCost": {
++           "basis": "standard-api-estimate",
++           "maximumUsd": 0.002,
++           "minimumUsd": 0.002,
++           "usd": 0.002,
++         },
++         "attempt": "second",
++         "feature": "checkout",
++         "intelligence": "max",
++         "model": "gpt-6-luna",
++         "module": "service.orders",
++         "provider": "codex",
++         "reportedModel": "gpt-6-luna",
++         "usage": {
++           "cacheReadTokens": 30,
++           "cacheWriteTokens": 0,
++           "inputTokens": 100,
++           "outputTokens": 20,
++         },
++       },
++       "project": "/project",
++       "task": "orders",
++       "timestamp": "2026-10-24T12:00:00Z",
++     },
+      {
+-         "apiCostUsd": 0.004,
+-         "bounceRate": 0.5,
+-         "bounces": 1,
+-         "cacheReadTokens": 60,
+-         "executions": 2,
+-         "inputTokens": 200,
++       "action": "incomplete",
++       "agentModel": "gpt-6-luna",
++       "id": "3",
++       "kind": "task",
++       "moduleTask": {
++         "apiCost": {
++           "basis": "standard-api-estimate",
++           "maximumUsd": 0.002,
++           "minimumUsd": 0.002,
++           "usd": 0.002,
++         },
++         "attempt": "first",
++         "feature": "checkout",
+          "intelligence": "max",
+          "model": "gpt-6-luna",
+-         "modelSource": "reported",
+-         "outputTokens": 40,
+-         "reviewed": 2,
++         "module": "service.orders",
++         "provider": "codex",
++         "reportedModel": "gpt-6-luna",
++         "usage": {
++           "cacheReadTokens": 30,
++           "cacheWriteTokens": 0,
++           "inputTokens": 100,
++           "outputTokens": 20,
++         },
++       },
++       "project": "/project",
++       "task": "orders",
++       "timestamp": "2026-10-24T12:00:00Z",
+      },
+    ],
+-     "reviewed": 2,
+-     "submissions": 2,
++   "filters": {},
++   "generatedAt": "2026-10-25T01:21:56.648Z",
++   "jev": {
++     "cleanCode": {
++       "checks": 0,
++       "excluded": 0,
++       "firstTry": {
++         "denominator": 0,
++         "numerator": 0,
++         "rate": null,
++       },
++       "outcomes": {},
++       "tasks": [],
++     },
++     "response": {
++       "checks": 0,
++       "excluded": 0,
++       "firstTry": {
++         "denominator": 0,
++         "numerator": 0,
++         "rate": null,
++       },
++       "outcomes": {},
++       "tasks": [],
++     },
++   },
++   "loops": [],
++   "models": {
++     "authors": {},
++     "evaluators": {},
++     "firstTryByAuthor": {},
++     "inputTokens": 0,
++     "loopAuthors": {},
++     "outputTokens": 0,
++   },
++   "schemaVersion": 1,
++   "summary": {
++     "commands": {},
++     "completedLoops": 0,
++     "daily": {
++       "2026-10-24": 7,
++     },
++     "evaluatorOutcomes": {},
++     "events": 7,
++     "loops": 0,
++     "projects": 1,
++     "templates": {},
+    },
+  }
+
+ ❯ test/analytics.test.ts:60:79
+     58|   () => analyticsSnapshot([...events, events[2]])
+     59|  );
+     60|  expect(snapshot, 'module task usage and bounce analytics must be avai…
+       |                                                                               ^
+     61|   tasks: {
+     62|    submissions: 2,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/commands/analytics.test.ts > analytics exposes all query and import/export operations
+AssertionError: expected [ 'cpu', 'summary', 'loops', …(6) ] to deeply equal [ 'cpu', 'summary', 'loops', …(7) ]
+
+- Expected
++ Received
+
+@@ -2,11 +2,10 @@
+    "cpu",
+    "summary",
+    "loops",
+    "jev",
+    "models",
+-   "tasks",
+    "benchmarks",
+    "events",
+    "import",
+    "export",
+  ]
+
+ ❯ test/commands/analytics.test.ts:7:72
+      5|  const program = new Command();
+      6|  registerAnalyticsCommand(program);
+      7|  expect(program.commands[0].commands.map((command) => command.name()))…
+       |                                                                        ^
+      8|   'cpu',
+      9|   'summary',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 6 skipped (8)
+   Start at  01:21:53
+   Duration  3.59s (transform 160ms, setup 165ms, collect 125ms, tests 23ms, environment 0ms, prepare 66ms)
+

@@ -1,0 +1,112 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [12.47s]
+$ vitest run test/components/explorer-function-card.test.ts test/components/explorer-catalog-screen.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rAPkGx/packages/reports
+
+ ❯ test/components/explorer-function-card.test.ts (10 tests | 2 failed) 29ms
+   × function catalog cards stay concise and retain revision links without detail panels 18ms
+     → expected '<article class="ex-function-tile svel…' to contain 'data-harness-component="explorer-modu…'
+   ✓ function calls preserve declared sample values: false 1ms
+   ✓ function calls preserve declared sample values: 0 1ms
+   ✓ function calls preserve declared sample values: null 1ms
+   ✓ function calls preserve declared sample values: "" 1ms
+   ✓ function calls preserve declared sample values: %j 1ms
+   ✓ function calls preserve declared sample values: {"label":"<script>example</script>"} 1ms
+   ✓ function calls preserve declared sample values: "🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪🧪" 1ms
+   ✓ documented parameters belong to the displayed revision; missing values stay variables 2ms
+   × helper usage selects three distinct eligible consumers before truncating 3ms
+     → expected '<article class="ex-function-tile svel…' to contain 'data-harness-component="explorer-modu…'
+ ❯ test/components/explorer-catalog-screen.test.ts (10 tests | 1 failed) 30ms
+   ✓ nonvisual collections are tables of their own kind, never image cards 10ms
+   × service cards show only the class name and revision-scoped consumer links 4ms
+     → expected 'OrderStore Used In Components OrderLi…' to be 'OrderStore Used In OrderList SearchBox' // Object.is equality
+   ✓ visual component cards show the selected revision, never the parent or another entity 4ms
+   ✓ component cards keep reused screenshots revision-bound without extra source text 1ms
+   ✓ component cards leave unvalidated captures as explicit gaps 1ms
+   ✓ component cards leave wrong-build captures as explicit gaps 2ms
+   ✓ component cards leave failed captures as explicit gaps 1ms
+   ✓ component cards leave missing captures as explicit gaps 1ms
+   ✓ component cards leave unrelated captures as explicit gaps 2ms
+   ✓ a collection of a revision without a registry shows its gap and no table 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-catalog-screen.test.ts > service cards show only the class name and revision-scoped consumer links
+AssertionError: expected 'OrderStore Used In Components OrderLi…' to be 'OrderStore Used In OrderList SearchBox' // Object.is equality
+
+Expected: [32m"OrderStore Used In OrderList SearchBox"[39m
+Received: [31m"OrderStore Used In [7mComponents [27mOrderList SearchBox"[39m
+
+ ❯ test/components/explorer-catalog-screen.test.ts:25:30
+     23|   expect(count(body, /<article\b/g), 'services use the helper card gri…
+     24|   const card = /<article\b.*?<\/article>/s.exec(body)![0];
+     25|   expect(words(card).trim()).toBe('OrderStore Used In OrderList Search…
+       |                              ^
+     26|   expect(card).not.toMatch(/<h2|<p\b|<img|<button|<svg|hx-verdict/);
+     27|   expect(count(card, /<a\b/g)).toBe(3);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > function catalog cards stay concise and retain revision links without detail panels
+AssertionError: expected '<article class="ex-function-tile svel…' to contain 'data-harness-component="explorer-modu…'
+
+Expected: [32m"[7mdata-harness-component="expl[27morer[7m-module-card"[27m"[39m
+Received: [31m"[7m<article class="ex-function-tile svelte-1cfotb4" aria-label="filterOrders"><a class="ex-function-call" title="Example usage; arguments without recorded sample values remain named variables." href="/harness/branch/feature%2Forders/helpers/filterOrders/in/app.function.filter-orders/contract"><code class="svelte-1cfotb4">filterOrders(orders, "SERVICE")</code><!----></a><!----> <div class="ex-usage svelte-1oujjw5" role="group" aria-label="Used In"><span>Used In</span><!--[-1--><!--]--> <!--[-1--><!--[--><ul aria-label="Components" class="svelte-1oujjw5"><li class="ex-usage-kind svelte-1oujjw5">Components</li> <!--[--><li><!--$s1--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2F[27mor[7md[27mer[7ms/components/app.component.order-list"><!---->OrderList<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><ul aria-label="Services" class="svelte-1oujjw5"><li class="ex-usage-kind svelte-1oujjw5">Services</li> <!--[--><li><!--$s2--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2Forders/services/app.service.order-store"><!---->OrderStore<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><!--]--><!--]--></div><!----></article>[27m"[39m
+
+ ❯ test/components/explorer-function-card.test.ts:22:16
+     20|   expect(count(card, /<a\b/g), 'function call and its two consumer lin…
+     21|   expect(words(card)).toContain('Used In');
+     22|   expect(card).toContain('data-harness-component="explorer-module-card…
+       |                ^
+     23|   expect(card).not.toContain('aria-label="Components"');
+     24|   expect(card).not.toContain('aria-label="Services"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/components/explorer-function-card.test.ts > helper usage selects three distinct eligible consumers before truncating
+AssertionError: expected '<article class="ex-function-tile svel…' to contain 'data-harness-component="explorer-modu…'
+
+Expected: [32m"[7mdata-harness-component="expl[27morer[7m-module-card"[27m"[39m
+Received: [31m"[7m<article class="ex-function-tile svelte-1cfotb4" aria-label="filterOrders"><a class="ex-function-call" title="Example usage; arguments without recorded sample values remain named variables." href="/harness/branch/feature%2Forders/helpers/filterOrders/in/app.function.filter-orders/contract"><code class="svelte-1cfotb4">filterOrders(orders, "SERVICE")</code><!----></a><!----> <div class="ex-usage svelte-1oujjw5" role="group" aria-label="Used In"><span>Used In</span><!--[-1--><!--]--> <!--[-1--><!--[--><ul aria-label="Components" class="svelte-1oujjw5"><li class="ex-usage-kind svelte-1oujjw5">Components</li> <!--[--><li><!--$s1--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2F[27mor[7md[27mer[7ms/components/app.component.order-list"><!---->OrderList<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><ul aria-label="Services" class="svelte-1oujjw5"><li class="ex-usage-kind svelte-1oujjw5">Services</li> <!--[--><li><!--$s2--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2Forders/services/app.service.order-store"><!---->OrderStore<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><ul aria-label="Models" class="svelte-1oujjw5"><li class="ex-usage-kind svelte-1oujjw5">Models</li> <!--[--><li><!--$s3--><span class="ex-usage-link svelte-1w7zk6l"><a href="/harness/branch/feature%2Forders/models/app.model.order"><!---->Order<!----></a><!----><!--[-1--><!--]--></span><!----></li><!--]--></ul><!--]--><!--]--></div><!----></article>[27m"[39m
+
+ ❯ test/components/explorer-function-card.test.ts:111:15
+    109|  const card = /<article\b.*?<\/article>/s.exec(body)![0];
+    110|  expect(words(card)).toContain('Used In');
+    111|  expect(card).toContain('data-harness-component="explorer-module-card"…
+       |               ^
+    112|  expect(card).not.toContain('aria-label="Components"');
+    113|  expect(card).not.toContain('aria-label="Services"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 17 passed (20)
+   Start at  21:38:21
+   Duration  2.16s (transform 1.00s, setup 0ms, collect 1.57s, tests 59ms, environment 0ms, prepare 77ms)
+
+error: script "test:unit" exited with code 1

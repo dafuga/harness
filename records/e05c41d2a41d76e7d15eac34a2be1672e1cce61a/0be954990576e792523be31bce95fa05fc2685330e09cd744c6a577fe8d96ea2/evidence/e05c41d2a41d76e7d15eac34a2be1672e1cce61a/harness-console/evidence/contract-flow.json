@@ -1,0 +1,32 @@
+{
+  "scenario": "Harness explorer over a fixed synthetic history",
+  "environment": "Chromium against the built reports server",
+  "fixture": "Synthetic Git history seeded for the console",
+  "steps": [
+    "Open /harness/branch/explorer%2Ftip/functions/function.slugify?tab=contract",
+    "Wait for the contract fields at the branch tip",
+    "Read the address, the heading, the categories and the verification marks"
+  ],
+  "input": {
+    "address": "/harness/branch/explorer%2Ftip/functions/function.slugify?tab=contract"
+  },
+  "output": {
+    "address": "/harness/branch/explorer%2Ftip/functions/function.slugify?tab=contract",
+    "heading": "Slugify",
+    "categories": [
+      "Pages",
+      "Shells",
+      "Components",
+      "Functions",
+      "Configs",
+      "Services"
+    ],
+    "category": "Functions",
+    "branch": "explorer/tip",
+    "commit": "71594c96137f14326dc859e9a67382439e156ffc",
+    "marks": [
+      "Full coverage passed"
+    ],
+    "paths": []
+  }
+}

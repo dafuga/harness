@@ -1,0 +1,202 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-9GUUiY
+
+ ❯ test/module-data.e2e.test.ts (2 tests | 1 failed) 10856ms
+   × validate persists revision-bound module gaps, filters them and invalidates cached searches 6107ms
+     → Validation returns structured per-module diagnostics: expected '' to contain '"modules"'
+   ✓ validate commits source-derived page API usage and explicit visual data gaps  4747ms
+ ✓ test/api-registry.e2e.test.ts (8 tests) 9200ms
+   ✓ API CLI lists every registered local unit, including backend entries outside the catalog  1145ms
+   ✓ API CLI lists every registered hosted unit, including backend entries outside the catalog  1137ms
+   ✓ API CLI reads local backend contracts without relying on a visual catalog entry  1146ms
+   ✓ API CLI reads hosted backend contracts without relying on a visual catalog entry  1143ms
+   ✓ API CLI lists registered local APIs even when their visual snapshot is older  1145ms
+   ✓ API CLI lists registered hosted APIs even when their visual snapshot is older  1236ms
+   ✓ API CLI reads local committed page APIs without a graph script  1123ms
+   ✓ API CLI reads hosted committed page APIs without a graph script  1125ms
+ ❯ test/ci-workflow.test.ts (4 tests | 1 failed) 10ms
+   ✓ every external action is pinned to a full commit hash 2ms
+   × code under test runs without write credentials 6ms
+     → expected 'name: Harness verify\n\n# Runs the co…' to contain 'refs/harness/module-data:refs/harness…'
+   ✓ publication is a separate trusted workflow that never runs the tested code 0ms
+   ✓ no workflow establishes, approves or relaxes a budget 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/ci-workflow.test.ts > code under test runs without write credentials
+AssertionError: expected 'name: Harness verify\n\n# Runs the co…' to contain 'refs/harness/module-data:refs/harness…'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- refs/harness/module-data:refs/harness/module-data[39m
+[31m+ name: Harness verify[39m
+[31m+[39m
+[31m+ # Runs the code under test. This workflow can read the repository and nothing else: it has no[39m
+[31m+ # write permission and uses no secrets, so a pull request cannot publish or change anything.[39m
+[31m+ # The record it produces is uploaded as plain data; harness-evidence.yml publishes it from[39m
+[31m+ # trusted code. Pushes of evidence, notes and archived source never start this workflow.[39m
+[31m+ on:[39m
+[31m+   pull_request:[39m
+[31m+   push:[39m
+[31m+     branches-ignore:[39m
+[31m+       - harness-evidence[39m
+[31m+[39m
+[31m+ permissions:[39m
+[31m+   contents: read[39m
+[31m+[39m
+[31m+ concurrency:[39m
+[31m+   group: harness-verify-${{ github.event.pull_request.head.sha || github.sha }}[39m
+[31m+   cancel-in-progress: true[39m
+[31m+[39m
+[31m+ env:[39m
+[31m+   COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}[39m
+[31m+[39m
+[31m+ jobs:[39m
+[31m+   check:[39m
+[31m+     name: Full check[39m
+[31m+     runs-on: ubuntu-latest[39m
+[31m+     timeout-minutes: 120[39m
+[31m+     # The serialized command includes CLI, package and browser suites. Run 39681371806[39m
+[31m+     # (job 119505032796) was cancelled at the former 45-minute limit; allow it to finish.[39m
+[31m+     steps:[39m
+[31m+       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2[39m
+[31m+         with:[39m
+[31m+           ref: ${{ env.COMMIT }}[39m
+[31m+           fetch-depth: 0[39m
+[31m+           persist-credentials: false[39m
+[31m+       - name: Read archived source commits[39m
+[31m+         run: git fetch --no-tags origin '+refs/harness/source/*:refs/harness/source/*'[39m
+[31m+       - name: Install the pinned Bun[39m
+[31m+         run: npm install --global bun@1.2.18[39m
+[31m+       - name: Install the pinned Rust toolchain and its Wasm target from rust-toolchain.toml[39m
+[31m+         run: rustup show[39m
+[31m+       - name: Install dependencies exactly as locked[39m
+[31m+         run: bun install --frozen-lockfile[39m
+[31m+       - name: Install the locked browser and Linux display dependencies[39m
+[31m+         run: node node_modules/@playwright/test/cli.js install --with-deps chromium[39m
+[31m+       - name: Install native display, Git LFS and video dependencies[39m
+[31m+         run: sudo apt-get install --yes git-lfs xauth libgtk-3-0t64 ffmpeg[39m
+[31m+       - name: Prepare the pinned PDF runtime[39m
+[31m+         run: |[39m
+[31m+           python3 -m venv "$RUNNER_TEMP/harness-pdf"[39m
+[31m+           "$RUNNER_TEMP/harness-pdf/bin/python" -m pip install reportlab==4.4.9 Pillow==12.3.0 pypdf==6.10.0[39m
+[31m+           echo "PROJECT_REPORTS_PYTHON=$RUNNER_TEMP/harness-pdf/bin/python" >> "$GITHUB_ENV"[39m
+[31m+       - name: Format, types, lint, Rust native and Wasm, tests, build, package and audits[39m
+[31m+         run: xvfb-run -a bun run check[39m
+[31m+[39m
+[31m+   verify:[39m
+[31m+     name: Verify the exact commit[39m
+[31m+     # Native evidence comes from Swift, the iOS SDK and a simulator, which exist only on macOS.[39m
+[31m+     # The full check above stays on Linux; this job runs on Apple silicon.[39m
+[31m+     runs-on: macos-15[39m
+[31m+     # Time for the run to end and leave its record: where an uncertain reference widens the[39m
+[31m+     # impact, every test and scenario is run, one command each, and that took more than an hour.[39m
+[31m+     # It allows time only; it is no budget and it approves nothing.[39m
+[31m+     timeout-minutes: 180[39m
+[31m+     env:[39m
+[31m+       DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer[39m
+[31m+     steps:[39m
+[31m+       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2[39m
+[31m+         with:[39m
+[31m+           ref: ${{ env.COMMIT }}[39m
+[31m+           fetch-depth: 0[39m
+[31m+           persist-credentials: false[39m
+[31m+       - name: Select the pinned Xcode and log what runs[39m
+[31m+         # The image carries several Xcodes and defaults to another. The job fails when the[39m
+[31m+         # pinned one is absent. Tools that ask xcode-select and tools that read DEVELOPER_DIR[39m
+[31m+         # must get the same answer, so the runner's selection is set to it as well.[39m
+[31m+         run: |[39m
+[31m+           test "$(uname -m)" = arm64[39m
+[31m+           test -d "$DEVELOPER_DIR"[39m
+[31m+           sudo xcode-select --switch "$DEVELOPER_DIR"[39m
+[31m+           test "$(xcode-select -p)" = "$DEVELOPER_DIR"[39m
+[31m+           echo "DEVELOPER_DIR=$DEVELOPER_DIR"[39m
+[31m+           xcodebuild -version[39m
+[31m+           xcodebuild -version | grep -Fx "Xcode 26.3"[39m
+[31m+           xcodebuild -showsdks[39m
+[31m+           xcrun --sdk iphonesimulator --show-sdk-version[39m
+[31m+           xcrun simctl list runtimes[39m
+[31m+       - name: Install the pinned Bun[39m
+[31m+         run: npm install --global bun@1.2.18[39m
+[31m+       - name: Install the pinned Rust toolchain and its Wasm target from rust-toolchain.toml[39m
+[31m+         run: rustup show[39m
+[31m+       - name: Install dependencies exactly as locked[39m
+[31m+         run: bun install --frozen-lockfile[39m
+[31m+       - name: Install the locked browser[39m
+[31m+         run: node node_modules/@playwright/test/cli.js install chromium[39m
+[31m+       - name: Install Git LFS and video dependencies[39m
+[31m+         env:[39m
+[31m+           HOMEBREW_NO_AUTO_UPDATE: 1[39m
+[31m+         run: |[39m
+[31m+           brew install git-lfs ffmpeg[39m
+[31m+           git lfs install --local[39m
+[31m+       - name: Prepare the pinned PDF runtime[39m
+[31m+         run: |[39m
+[31m+           python3 -m venv "$RUNNER_TEMP/harness-pdf"[39m
+[31m+           "$RUNNER_TEMP/harness-pdf/bin/python" -m pip install reportlab==4.4.9 Pillow==12.3.0 pypdf==6.10.0[39m
+[31m+           echo "PROJECT_REPORTS_PYTHON=$RUNNER_TEMP/harness-pdf/bin/python" >> "$GITHUB_ENV"[39m
+[31m+       - name: Read existing notes, evidence and media[39m
+[31m+         # Read-only. Without them nothing is proven, and the whole revision is verified.[39m
+[31m+         env:[39m
+[31m+           GH_TOKEN: ${{ github.token }}[39m
+[31m+         run: |[39m
+[31m+           header="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"[39m
+[31m+           git config --local http.https://github.com/.extraheader "$header"[39m
+[31m+           bun run dev -- history fetch origin || echo "::warning::Existing evidence could not be read."[39m
+[31m+           git config --local --unset-all http.https://github.com/.extraheader[39m
+[31m+       - name: Verify in a clean snapshot of the commit[39m
+[31m+         # Performance budgets are judged only against a baseline reviewed for this machine[39m
+[31m+         # profile. A runner without one fails that gate; it never borrows another profile's[39m
+[31m+         # baseline and nothing here establishes or approves one.[39m
+[31m+         id: verify[39m
+[31m+         continue-on-error: true[39m
+[31m+         run: bun run dev -- verify run --commit "$COMMIT"[39m
+[31m+       - name: Keep the record and its evidence, pass or fail[39m
+[31m+         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2[39m
+[31m+         with:[39m
+[31m+           name: harness-record[39m
+[31m+           path: .cache/harness/verifications/${{ env.COMMIT }}[39m
+[31m+           include-hidden-files: true[39m
+[31m+           if-no-files-found: error[39m
+[31m+       - name: Fail when the verification failed[39m
+[31m+         if: steps.verify.outcome != 'success'[39m
+[31m+         run: exit 1[39m
+[31m+[39m
+
+ ❯ test/ci-workflow.test.ts:21:17
+     19|  expect(verify).toContain('pull_request:');
+     20|  expect(verify).toContain('bun run check');
+     21|  expect(verify).toContain('refs/harness/module-data:refs/harness/modul…
+       |                 ^
+     22|  expect(verify).toMatch(/verify run --commit/);
+     23|  expect(verify).toMatch(/npm install --global bun@\d+\.\d+\.\d+/);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/module-data.e2e.test.ts > validate persists revision-bound module gaps, filters them and invalidates cached searches
+AssertionError: Validation returns structured per-module diagnostics: expected '' to contain '"modules"'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- "modules"[39m
+
+ ❯ test/module-data.e2e.test.ts:145:81
+    143|  return async (args: string[]) => {
+    144|   const result = await project.harness(['validate', ...args, '--json']…
+    145|   expect(result.stdout, 'Validation returns structured per-module diag…
+       |                                                                                 ^
+    146|    '"modules"'
+    147|   );
+ ❯ verifyReview test/module-data.e2e.test.ts:128:19
+ ❯ test/module-data.e2e.test.ts:35:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  2 failed | 12 passed (14)
+   Start at  11:42:57
+   Duration  23.53s (transform 117ms, setup 207ms, collect 57ms, tests 20.07s, environment 0ms, prepare 97ms)
+

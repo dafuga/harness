@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-MqQFuY
+
+ ✓ test/budget-comparability.e2e.test.ts (4 tests) 20816ms
+   ✓ a measurement reported in another unit is incompatible, whatever its number  3244ms
+   ✓ a generic capture needs an explicit valid context: a label, a method or a request alone does not compare  6200ms
+   ✓ the same workload name with a cheaper request is incompatible until a reviewer approves the new definition  4066ms
+   ✓ fewer samples under the same workload name are incompatible too  1933ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  07:16:05
+   Duration  21.04s (transform 36ms, setup 13ms, collect 25ms, tests 20.82s, environment 0ms, prepare 48ms)
+

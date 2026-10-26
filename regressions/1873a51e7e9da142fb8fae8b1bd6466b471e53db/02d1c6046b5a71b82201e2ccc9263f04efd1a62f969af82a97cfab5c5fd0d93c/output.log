@@ -1,0 +1,1236 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [51.30s]
+$ bun run build:kernel && bun run build:cli && bun run build:api && bun run --cwd packages/reports build && bun scripts/package-reports.ts && bun run build:picker
+$ bun scripts/build-kernel.ts
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.3
+   Compiling syn v3.0.7
+   Compiling serde_derive v1.0.229
+   Compiling impact-kernel v0.1.0 (/private/tmp/harness-snapshot-E56Qur/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 11.00s
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling impact-kernel v0.1.0 (/private/tmp/harness-snapshot-E56Qur/crates/impact-kernel)
+    Finished `release` profile [optimized] target(s) in 4.58s
+Built impact kernel: wasm 142396 bytes (wasm-opt wasm-opt version 131), native 402080 bytes.
+$ bun build src/index.ts --target bun --outdir dist
+Bundled 1340 modules in 310ms
+
+  index.js  14.31 MB  (entry point)
+
+$ bun scripts/build-api.ts
+Built public API: contracts, runtime, verification, history, edge, console and index, declarations in dist/types.
+$ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+vite v6.4.4 building SSR bundle for production...
+transforming...
+✓ 1031 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 494 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                                           0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                                        21.07 kB │ gzip:  2.19 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityDetailsScreen.BiwRoejT.css      0.06 kB │ gzip:  0.08 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerCatalogScreen.BWiL00iq.css    1.47 kB │ gzip:  0.59 kB
+.svelte-kit/output/client/_app/immutable/assets/explorerName.BTqLquDb.css             1.87 kB │ gzip:  0.62 kB
+.svelte-kit/output/client/_app/immutable/assets/RegressionProof.WwOTQN5N.css          1.87 kB │ gzip:  0.70 kB
+.svelte-kit/output/client/_app/immutable/assets/EntityFrame.BlHkYAzb.css              2.43 kB │ gzip:  0.86 kB
+.svelte-kit/output/client/_app/immutable/assets/ExplorerPageCard.Ch201oWK.css         2.99 kB │ gzip:  0.92 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySections.Cl1O_ecF.css           4.95 kB │ gzip:  1.48 kB
+.svelte-kit/output/client/_app/immutable/assets/EntitySummary.LdfZWK90.css            5.75 kB │ gzip:  1.58 kB
+.svelte-kit/output/client/_app/immutable/assets/HarnessScreen.DtubUGNR.css           36.88 kB │ gzip:  7.47 kB
+.svelte-kit/output/client/_app/immutable/assets/0.Bdr2ESlw.css                       41.01 kB │ gzip:  9.01 kB
+.svelte-kit/output/client/_app/immutable/entry/start.gh1L6jJy.js                      0.12 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/CpI2Ewl1.js                           0.15 kB │ gzip:  0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cjk1jFyq.js                           0.16 kB │ gzip:  0.14 kB
+.svelte-kit/output/client/_app/immutable/nodes/23.DaKLGh_t.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/19.Bvi39IkP.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/22.DMF9SLJ8.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/31.D7dmJNaH.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/11.Db2lj8x3.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/18.C_OB90Ar.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/30.0UbxAuR0.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/10.BMjF0DQ0.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/27.46cQqezz.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/15.y_0VDT_0.js                         0.20 kB │ gzip:  0.16 kB
+.svelte-kit/output/client/_app/immutable/nodes/26.7L_p0Igw.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/7.Bdxd3v-L.js                          0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/14.OGhNQ7mQ.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/6.BIaH_8eK.js                          0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/24.BS3VtAbe.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/25.D7ZHiQzn.js                         0.20 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/20.D9MsJtIH.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/21.B97MzJKx.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/32.Cyt-EVXe.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/33.CXXFpv8_.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/12.y3gWpXy2.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/13.tCshsOYY.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/28.nUkRpSE9.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/29.DFqp8fK6.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/16.D7IesJLQ.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/17.COqcK-p9.js                         0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/8.BO6_bYoJ.js                          0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/9.Bn84yOai.js                          0.21 kB │ gzip:  0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.AEACzrPi.js                          0.38 kB │ gzip:  0.27 kB
+.svelte-kit/output/client/_app/immutable/chunks/KGjjeJo8.js                           0.85 kB │ gzip:  0.50 kB
+.svelte-kit/output/client/_app/immutable/chunks/DNwMIa-S.js                           0.97 kB │ gzip:  0.37 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.CpJyv6cX.js                          1.10 kB │ gzip:  0.58 kB
+.svelte-kit/output/client/_app/immutable/chunks/BbpTXPq5.js                           1.11 kB │ gzip:  0.56 kB
+.svelte-kit/output/client/_app/immutable/chunks/BGmpmyny.js                           1.21 kB │ gzip:  0.62 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js                           1.37 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/BqPI7Uvn.js                           2.41 kB │ gzip:  1.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/DEBsjm1L.js                           2.45 kB │ gzip:  1.30 kB
+.svelte-kit/output/client/_app/immutable/chunks/BNPACB2i.js                           4.42 kB │ gzip:  1.93 kB
+.svelte-kit/output/client/_app/immutable/chunks/nI6zeGYv.js                           4.51 kB │ gzip:  1.99 kB
+.svelte-kit/output/client/_app/immutable/chunks/DXKbcurq.js                           5.77 kB │ gzip:  2.51 kB
+.svelte-kit/output/client/_app/immutable/chunks/D4QT25qt.js                           5.88 kB │ gzip:  2.62 kB
+.svelte-kit/output/client/_app/immutable/chunks/DSu6TuR8.js                           6.46 kB │ gzip:  2.92 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bat6KxBt.js                          10.97 kB │ gzip:  4.43 kB
+.svelte-kit/output/client/_app/immutable/chunks/COiPX_Up.js                          11.81 kB │ gzip:  4.87 kB
+.svelte-kit/output/client/_app/immutable/entry/app.D8pFxj3i.js                       13.50 kB │ gzip:  4.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/BmF7sRzo.js                          18.68 kB │ gzip:  7.19 kB
+.svelte-kit/output/client/_app/immutable/chunks/BNUiWzBb.js                          23.49 kB │ gzip: 10.15 kB
+.svelte-kit/output/client/_app/immutable/chunks/B3-MRnv5.js                          25.19 kB │ gzip:  9.28 kB
+.svelte-kit/output/client/_app/immutable/chunks/0Wsj1NB4.js                          29.90 kB │ gzip: 11.36 kB
+.svelte-kit/output/client/_app/immutable/chunks/BZoiYVQv.js                          30.55 kB │ gzip: 11.79 kB
+.svelte-kit/output/client/_app/immutable/chunks/DIadZTDc.js                          32.06 kB │ gzip: 12.53 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.DuZzdGh-.js                         42.58 kB │ gzip: 15.49 kB
+.svelte-kit/output/client/_app/immutable/chunks/lPuk7XrG.js                          70.44 kB │ gzip: 24.61 kB
+.svelte-kit/output/client/_app/immutable/chunks/DlNnM3yF.js                         114.72 kB │ gzip: 39.12 kB
+✓ built in 1.59s
+.svelte-kit/output/server/.vite/manifest.json                                                                         31.59 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityDetailsScreen.BiwRoejT.css                                       0.06 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerCatalogScreen.BWiL00iq.css                                     1.47 kB
+.svelte-kit/output/server/_app/immutable/assets/explorerName.BTqLquDb.css                                              1.87 kB
+.svelte-kit/output/server/_app/immutable/assets/RegressionProof.WwOTQN5N.css                                           1.87 kB
+.svelte-kit/output/server/_app/immutable/assets/EntityFrame.BlHkYAzb.css                                               2.43 kB
+.svelte-kit/output/server/_app/immutable/assets/ExplorerPageCard.aFQD8lOa.css                                          2.95 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySections.Cl1O_ecF.css                                            4.95 kB
+.svelte-kit/output/server/_app/immutable/assets/EntitySummary.LdfZWK90.css                                             5.75 kB
+.svelte-kit/output/server/_app/immutable/assets/HarnessScreen.VYw5uCKP.css                                            36.79 kB
+.svelte-kit/output/server/_app/immutable/assets/_layout.DZGxK0f1.css                                                  40.70 kB
+.svelte-kit/output/server/entries/pages/_page.server.ts.js                                                             0.11 kB
+.svelte-kit/output/server/entries/pages/analytics/_page.server.ts.js                                                   0.11 kB
+.svelte-kit/output/server/entries/pages/harness/analytics/_page.server.ts.js                                           0.11 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_page.server.ts.js                                             0.11 kB
+.svelte-kit/output/server/entries/pages/reports/_id_/_page.server.ts.js                                                0.16 kB
+.svelte-kit/output/server/entries/endpoints/harness/data/_...path_/_server.ts.js                                       0.17 kB
+.svelte-kit/output/server/entries/endpoints/harness/media/_file_/_server.ts.js                                         0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                                          0.19 kB
+.svelte-kit/output/server/chunks/entityContract.js                                                                     0.20 kB
+.svelte-kit/output/server/env.js                                                                                       0.23 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_server.ts.js                                                  0.24 kB
+.svelte-kit/output/server/entries/endpoints/harness/export/_commit_/_server.ts.js                                      0.25 kB
+.svelte-kit/output/server/chunks/Desktop.types.js                                                                      0.30 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_server.ts.js                                             0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_page.svelte.js                          0.33 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/_page.svelte.js                 0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/_page.svelte.js                0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/_page.svelte.js               0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/_page.svelte.js            0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_page.svelte.js                         0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_page.svelte.js                        0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_page.svelte.js                       0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_page.svelte.js                      0.34 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_page.svelte.js                     0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/_page.svelte.js              0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/_page.svelte.js             0.35 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                                            0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/details/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/pages/_entity_/history/_page.svelte.js         0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/models/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/details/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/shells/_entity_/history/_page.svelte.js        0.35 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/details/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/configs/_entity_/history/_page.svelte.js       0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/details/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/services/_entity_/history/_page.svelte.js      0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/details/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/functions/_entity_/history/_page.svelte.js     0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/details/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/entries/pages/harness/branch/_branch_/_...at_/components/_entity_/history/_page.svelte.js    0.36 kB
+.svelte-kit/output/server/internal.js                                                                                  0.40 kB
+.svelte-kit/output/server/chunks/server.js                                                                             0.45 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.server.ts.js                                           0.48 kB
+.svelte-kit/output/server/chunks/buildStamp.js                                                                         0.51 kB
+.svelte-kit/output/server/entries/endpoints/api/health/_server.ts.js                                                   0.62 kB
+.svelte-kit/output/server/chunks/index2.js                                                                             0.78 kB
+.svelte-kit/output/server/chunks/evidenceMedia.js                                                                      1.06 kB
+.svelte-kit/output/server/chunks/utils.js                                                                              1.09 kB
+.svelte-kit/output/server/entries/pages/harness/reports/_id_/_page.server.ts.js                                        1.12 kB
+.svelte-kit/output/server/chunks/ExplorerPagesScreen.js                                                                1.44 kB
+.svelte-kit/output/server/chunks/EntityVisualScreen.js                                                                 1.51 kB
+.svelte-kit/output/server/chunks/EntityBehaviorScreen.js                                                               1.56 kB
+.svelte-kit/output/server/chunks/mediaResponse.js                                                                      1.84 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-upload/_server.ts.js                                      1.89 kB
+.svelte-kit/output/server/entries/endpoints/api/report-audio-comparison/_server.ts.js                                  1.99 kB
+.svelte-kit/output/server/entries/pages/harness/_...view_/_page.svelte.js                                              2.03 kB
+.svelte-kit/output/server/chunks/reportAssets.js                                                                       2.06 kB
+.svelte-kit/output/server/chunks/writingLimits.js                                                                      2.10 kB
+.svelte-kit/output/server/entries/endpoints/api/reports/_id_/_type_/_file_/_server.ts.js                               2.10 kB
+.svelte-kit/output/server/chunks/reportBuildIdentity.js                                                                2.23 kB
+.svelte-kit/output/server/chunks/AudioUploadService.js                                                                 2.41 kB
+.svelte-kit/output/server/chunks/index.js                                                                              2.65 kB
+.svelte-kit/output/server/chunks/utils2.js                                                                             3.09 kB
+.svelte-kit/output/server/chunks/EntityConfigScreen.js                                                                 3.26 kB
+.svelte-kit/output/server/chunks/internal.js                                                                           3.40 kB
+.svelte-kit/output/server/chunks/EntityAudio.js                                                                        3.47 kB
+.svelte-kit/output/server/chunks/reportSite.js                                                                         3.69 kB
+.svelte-kit/output/server/entries/endpoints/api/report-screenshot-upload/_server.ts.js                                 4.22 kB
+.svelte-kit/output/server/chunks/RegressionProof.js                                                                    4.67 kB
+.svelte-kit/output/server/chunks/explorerRoute.js                                                                      5.26 kB
+.svelte-kit/output/server/chunks/exports.js                                                                            5.54 kB
+.svelte-kit/output/server/chunks/helperContract.js                                                                     5.91 kB
+.svelte-kit/output/server/chunks/EntityDetailsScreen.js                                                                6.36 kB
+.svelte-kit/output/server/entries/endpoints/api/analytics-cpu/_server.ts.js                                            7.52 kB
+.svelte-kit/output/server/chunks/explorerName.js                                                                       9.02 kB
+.svelte-kit/output/server/chunks/ExplorerCatalogScreen.js                                                              9.20 kB
+.svelte-kit/output/server/entries/endpoints/api/replay-video/_server.ts.js                                             9.27 kB
+.svelte-kit/output/server/chunks/explorerVerdict.js                                                                   14.30 kB
+.svelte-kit/output/server/chunks/ExplorerPageCard.js                                                                  16.40 kB
+.svelte-kit/output/server/chunks/ComponentManifestValidator.js                                                        20.02 kB
+.svelte-kit/output/server/chunks/EntityHistoryScreen.js                                                               23.26 kB
+.svelte-kit/output/server/entries/endpoints/api/project-activity/_server.ts.js                                        24.22 kB
+.svelte-kit/output/server/chunks/reportHttp.js                                                                        26.25 kB
+.svelte-kit/output/server/chunks/shared.js                                                                            34.21 kB
+.svelte-kit/output/server/remote-entry.js                                                                             36.85 kB
+.svelte-kit/output/server/chunks/EntityFrame.js                                                                       37.95 kB
+.svelte-kit/output/server/chunks/EntitySummary.js                                                                     39.00 kB
+.svelte-kit/output/server/chunks/HistoryStatusService.js                                                              43.02 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js                                                             59.61 kB
+.svelte-kit/output/server/chunks/HarnessScreen.js                                                                     69.83 kB
+.svelte-kit/output/server/chunks/EntitySections.js                                                                    94.61 kB
+.svelte-kit/output/server/index.js                                                                                   130.95 kB
+.svelte-kit/output/server/chunks/root.js                                                                             133.59 kB
+.svelte-kit/output/server/entries/hooks.server.js                                                                    277.86 kB
+.svelte-kit/output/server/chunks/consoleServer.js                                                                    339.84 kB
+✓ built in 6.32s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-node
+../../node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+Circular dependency: ../../node_modules/zod/v4/core/core.js -> ../../node_modules/zod/v4/core/util.js -> ../../node_modules/zod/v4/core/core.js
+Circular dependency: ../../node_modules/smol-toml/dist/struct.js -> ../../node_modules/smol-toml/dist/extract.js -> ../../node_modules/smol-toml/dist/struct.js
+Generated an empty chunk: "chunks/internal2.js".
+  ✔ done
+vite v6.4.4 building for production...
+transforming...
+✓ 179 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/viewer/report.css       38.81 kB │ gzip:  8.73 kB
+dist/viewer/report.iife.js  177.46 kB │ gzip: 60.32 kB
+✓ built in 1.35s
+vite v6.4.4 building for production...
+transforming...
+✓ 332 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/console/console.css       88.82 kB │ gzip:  17.67 kB
+dist/console/console.iife.js  355.36 kB │ gzip: 121.38 kB
+✓ built in 3.82s
+$ bun run --cwd packages/reports build:picker && bun scripts/build-picker.ts
+$ vite build --config src/config/pickerViteConfig.ts
+vite v6.4.4 building for production...
+transforming...
+../../node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 268 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/picker/picker.css       14.58 kB │ gzip:  3.92 kB
+dist/picker/picker.iife.js  295.06 kB │ gzip: 83.98 kB
+✓ built in 1.61s
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-E56Qur
+
+ ❯ test/loop.e2e.test.ts (6 tests | 3 failed) 40224ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  5440ms
+   ✓ generated app and lib instructions mention harness loops  1130ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  2454ms
+   × bug-fix CLI records proof and leaves verification pending across failed and passing checks 11829ms
+     → focused screenshots survive the committed checkpoint: expected [] to deep equally contain ObjectContaining{…}
+   × fix CLI records proof and leaves verification pending across failed and passing checks 10849ms
+     → focused screenshots survive the committed checkpoint: expected [] to deep equally contain ObjectContaining{…}
+   × regression-prevention CLI records proof and leaves verification pending across failed and passing checks 8518ms
+     → focused screenshots survive the committed checkpoint: expected [] to deep equally contain ObjectContaining{…}
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/loop.e2e.test.ts > bug-fix CLI records proof and leaves verification pending across failed and passing checks
+ FAIL  test/loop.e2e.test.ts > fix CLI records proof and leaves verification pending across failed and passing checks
+ FAIL  test/loop.e2e.test.ts > regression-prevention CLI records proof and leaves verification pending across failed and passing checks
+AssertionError: focused screenshots survive the committed checkpoint: expected [] to deep equally contain ObjectContaining{…}
+
+[32m- Expected:[39m 
+ObjectContaining {
+  "capture": ObjectContaining {
+    "kind": "screenshot",
+    "sha256": Any<String>,
+    "viewport": "desktop",
+  },
+  "unit": "page.sample",
+}
+
+[31m+ Received:[39m 
+[]
+
+ ❯ phaseProof test/support/loopRepair.ts:139:4
+    137|   saved.captures ?? [],
+    138|   'focused screenshots survive the committed checkpoint'
+    139|  ).toContainEqual(
+       |    ^
+    140|   expect.objectContaining({
+    141|    unit: 'page.sample',
+ ❯ exerciseRepair test/support/loopRepair.ts:40:4
+ ❯ test/loop.e2e.test.ts:116:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 3 passed (6)
+   Start at  11:45:58
+   Duration  41.97s (transform 139ms, setup 11ms, collect 229ms, tests 40.22s, environment 0ms, prepare 47ms)
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-E56Qur/packages/reports
+
+ ❯ test/components/entity-overview.test.ts (11 tests | 2 failed) 39ms
+   × an overview groups size and timings in Performance profile, with no source 16ms
+     → expected ' Performance profile Source size 800 …' to contain 'Latency 0.12 ms'
+   ✓ a page at a selected commit shows the parent and the commit for one state and viewport 4ms
+   ✓ a page at the branch tip shows exactly one screenshot and no before or after 1ms
+   × a side with no capture of the state is a stated gap, never the other side picture 3ms
+     → focused screenshots display without a full verification record: expected [] to deeply equal [ 'aaaaaaa-default-desktop.png', …(1) ]
+   ✓ a component no visual scenario names keeps the screenshot pane, as a stated gap 3ms
+   ✓ a page lists its components as components, each a link in the same scope 1ms
+   ✓ a function at a selected commit shows its end-to-end results before and after 1ms
+   ✓ a function at the branch tip shows one run, and an unrecorded one is a cross 2ms
+   ✓ a behaviour that cannot be established is unknown and shown as failed 1ms
+   ✓ a config shows what it provides and who uses it, with no screenshot and no benchmark 2ms
+   ✓ contract and details list required states without an overview selector 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-overview.test.ts > an overview groups size and timings in Performance profile, with no source
+AssertionError: expected ' Performance profile Source size 800 …' to contain 'Latency 0.12 ms'
+
+Expected: [32m"Latency 0.12 ms"[39m
+Received: [31m" Performance profile Source size 800 B Complexity Not measured Workload thousand orders Environment bun-reference p95 ms 0.12 ms Tolerance 5% "[39m
+
+ ❯ test/components/entity-overview.test.ts:18:30
+     16|  expect(profile).not.toBeNull();
+     17|  for (const label of ['Source size 800 B', 'Complexity', 'Latency 0.12…
+     18|   expect(words(profile![1])).toContain(label);
+       |                              ^
+     19|  expect(words(profile![1])).not.toContain('Emitted size');
+     20|  expect(body).not.toContain('aria-label="Contract"');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/components/entity-overview.test.ts > a side with no capture of the state is a stated gap, never the other side picture
+AssertionError: focused screenshots display without a full verification record: expected [] to deeply equal [ 'aaaaaaa-default-desktop.png', …(1) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   "aaaaaaa-default-desktop.png",[39m
+[32m-   "bbbbbbb-default-desktop.png",[39m
+[32m- ][39m
+[31m+ [][39m
+
+ ❯ test/components/entity-overview.test.ts:75:91
+     73|   parent: withFocused(parent)
+     74|  });
+     75|  expect(shots(focused), 'focused screenshots display without a full ve…
+       |                                                                                           ^
+     76|   'aaaaaaa-default-desktop.png',
+     77|   'bbbbbbb-default-desktop.png'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  11:46:41
+   Duration  1.59s (transform 880ms, setup 0ms, collect 1.20s, tests 39ms, environment 0ms, prepare 40ms)
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget (30.0s)
+  ✘  2 test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget (30.0s)
+  ✘  3 test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget (30.1s)
+
+
+  1) test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget 
+
+    Error: overview performance has no table
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Performance profile' }).getByRole('table')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - overview performance has no table getByRole('region', { name: 'Performance profile' }).getByRole('table') with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Performance profile' }).getByRole('table')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:152
+
+      150 | export async function reviewScalarMeasurements(page: Page): Promise<void> {
+      151 | 	const profile = page.getByRole('region', { name: 'Performance profile' });
+    > 152 | 	await expect.soft(profile.getByRole('table'), 'overview performance has no table').toHaveCount(0);
+          | 	                                                                                   ^
+      153 | 	const rows = await profile
+      154 | 		.locator('dl > div')
+      155 | 		.evaluateAll((items) =>
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:152:85)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:193:8)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one latency value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "0.12 ms"
+    Received: undefined
+
+       at entityPreviewOverview.ts:163
+
+      161 | 			)
+      162 | 		);
+    > 163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+          | 	                                               ^
+      164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+      165 | 	await reviewProfileRows(page);
+      166 | }
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:163:49)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one memory value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "93 MB"
+    Received: undefined
+
+       at entityPreviewOverview.ts:164
+
+      162 | 		);
+      163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+    > 164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+          | 	                                             ^
+      165 | 	await reviewProfileRows(page);
+      166 | }
+      167 |
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:164:47)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: focused screenshots appear on both committed sides
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - focused screenshots appear on both committed sides locator('section[aria-labelledby="ex-screens-title"]').getByRole('img') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:133
+
+      131 | 	await expect
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+    > 133 | 		.toHaveCount(2);
+          | 		 ^
+      134 | 	await expect.soft(panel).toContainText('Focused capture');
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:133:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]')
+    Expected substring: "Focused capture"
+    Received string:    "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "soft toContainText" locator('section[aria-labelledby="ex-screens-title"]') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]')
+        14 × locator resolved to <section class="ex-card ex-evidence" aria-labelledby="ex-screens-title">…</section>
+           - unexpected value "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+
+
+       at entityPreviewOverview.ts:134
+
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+      133 | 		.toHaveCount(2);
+    > 134 | 	await expect.soft(panel).toContainText('Focused capture');
+          | 	                         ^
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+      137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:134:27)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-desktop.png$/
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: every viewport has a capture
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - every viewport has a capture locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true }) with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:137
+
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+    > 137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+          | 		                                                          ^
+      138 | 		if (await button.count()) {
+      139 | 			await button.click();
+      140 | 			await expect
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:137:61)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-mobile.png$/
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+      - Test ended.
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: locator.all: Target page, context or browser has been closed
+
+       at entityPreviewOverview.ts:143
+
+      141 | 				.soft(panel.locator('img').last())
+      142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+    > 143 | 			for (const image of await panel.getByRole('img').all())
+          | 			                                                 ^
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+      146 | 	}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:143:53)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-03db8-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-03db8-y-readable-without-a-budget/error-context.md
+
+  2) test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget 
+
+    Error: overview performance has no table
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Performance profile' }).getByRole('table')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - overview performance has no table getByRole('region', { name: 'Performance profile' }).getByRole('table') with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Performance profile' }).getByRole('table')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:152
+
+      150 | export async function reviewScalarMeasurements(page: Page): Promise<void> {
+      151 | 	const profile = page.getByRole('region', { name: 'Performance profile' });
+    > 152 | 	await expect.soft(profile.getByRole('table'), 'overview performance has no table').toHaveCount(0);
+          | 	                                                                                   ^
+      153 | 	const rows = await profile
+      154 | 		.locator('dl > div')
+      155 | 		.evaluateAll((items) =>
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:152:85)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:193:8)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one latency value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "0.12 ms"
+    Received: undefined
+
+       at entityPreviewOverview.ts:163
+
+      161 | 			)
+      162 | 		);
+    > 163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+          | 	                                               ^
+      164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+      165 | 	await reviewProfileRows(page);
+      166 | }
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:163:49)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one memory value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "93 MB"
+    Received: undefined
+
+       at entityPreviewOverview.ts:164
+
+      162 | 		);
+      163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+    > 164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+          | 	                                             ^
+      165 | 	await reviewProfileRows(page);
+      166 | }
+      167 |
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:164:47)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: focused screenshots appear on both committed sides
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - focused screenshots appear on both committed sides locator('section[aria-labelledby="ex-screens-title"]').getByRole('img') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:133
+
+      131 | 	await expect
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+    > 133 | 		.toHaveCount(2);
+          | 		 ^
+      134 | 	await expect.soft(panel).toContainText('Focused capture');
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:133:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]')
+    Expected substring: "Focused capture"
+    Received string:    "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "soft toContainText" locator('section[aria-labelledby="ex-screens-title"]') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]')
+        14 × locator resolved to <section class="ex-card ex-evidence" aria-labelledby="ex-screens-title">…</section>
+           - unexpected value "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+
+
+       at entityPreviewOverview.ts:134
+
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+      133 | 		.toHaveCount(2);
+    > 134 | 	await expect.soft(panel).toContainText('Focused capture');
+          | 	                         ^
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+      137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:134:27)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-desktop.png$/
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: every viewport has a capture
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - every viewport has a capture locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true }) with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:137
+
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+    > 137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+          | 		                                                          ^
+      138 | 		if (await button.count()) {
+      139 | 			await button.click();
+      140 | 			await expect
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:137:61)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-mobile.png$/
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+      - Test ended.
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: locator.all: Target page, context or browser has been closed
+
+       at entityPreviewOverview.ts:143
+
+      141 | 				.soft(panel.locator('img').last())
+      142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+    > 143 | 			for (const image of await panel.getByRole('img').all())
+          | 			                                                 ^
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+      146 | 	}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:143:53)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-3d6a9-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-3d6a9-y-readable-without-a-budget/error-context.md
+
+  3) test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 
+
+    Error: overview performance has no table
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Performance profile' }).getByRole('table')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - overview performance has no table getByRole('region', { name: 'Performance profile' }).getByRole('table') with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Performance profile' }).getByRole('table')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at entityPreviewOverview.ts:152
+
+      150 | export async function reviewScalarMeasurements(page: Page): Promise<void> {
+      151 | 	const profile = page.getByRole('region', { name: 'Performance profile' });
+    > 152 | 	await expect.soft(profile.getByRole('table'), 'overview performance has no table').toHaveCount(0);
+          | 	                                                                                   ^
+      153 | 	const rows = await profile
+      154 | 		.locator('dl > div')
+      155 | 		.evaluateAll((items) =>
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:152:85)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:193:8)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one latency value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "0.12 ms"
+    Received: undefined
+
+       at entityPreviewOverview.ts:163
+
+      161 | 			)
+      162 | 		);
+    > 163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+          | 	                                               ^
+      164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+      165 | 	await reviewProfileRows(page);
+      166 | }
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:163:49)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: one memory value
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "93 MB"
+    Received: undefined
+
+       at entityPreviewOverview.ts:164
+
+      162 | 		);
+      163 | 	expect.soft(rows.Latency, 'one latency value').toBe('0.12 ms');
+    > 164 | 	expect.soft(rows.Memory, 'one memory value').toBe('93 MB');
+          | 	                                             ^
+      165 | 	await reviewProfileRows(page);
+      166 | }
+      167 |
+        at reviewScalarMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:164:47)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:193:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: focused screenshots appear on both committed sides
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+    Expected: 2
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - focused screenshots appear on both committed sides locator('section[aria-labelledby="ex-screens-title"]').getByRole('img') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('img')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:133
+
+      131 | 	await expect
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+    > 133 | 		.toHaveCount(2);
+          | 		 ^
+      134 | 	await expect.soft(panel).toContainText('Focused capture');
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:133:4)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]')
+    Expected substring: "Focused capture"
+    Received string:    "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "soft toContainText" locator('section[aria-labelledby="ex-screens-title"]') with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]')
+        14 × locator resolved to <section class="ex-card ex-evidence" aria-labelledby="ex-screens-title">…</section>
+           - unexpected value "Commit comparison DesktopMobile 1440 × 900  View full comparison   Before · aaaaaaa Parent commit   No capture No verification record is attached to this commit.After · bbbbbbb Selected commit   No capture No verification record is attached to this commit.  Behavior change This commit records no reason for a change of this entity. "
+
+
+       at entityPreviewOverview.ts:134
+
+      132 | 		.soft(panel.getByRole('img'), 'focused screenshots appear on both committed sides')
+      133 | 		.toHaveCount(2);
+    > 134 | 	await expect.soft(panel).toContainText('Focused capture');
+          | 	                         ^
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+      137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:134:27)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-desktop.png$/
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: every viewport has a capture
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - every viewport has a capture locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true }) with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').getByRole('button', { name: 'Tablet', exact: true })
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+       at entityPreviewOverview.ts:137
+
+      135 | 	for (const label of ['Desktop', 'Tablet', 'Mobile']) {
+      136 | 		const button = panel.getByRole('button', { name: label, exact: true });
+    > 137 | 		await expect.soft(button, 'every viewport has a capture').toHaveCount(1);
+          | 		                                                          ^
+      138 | 		if (await button.count()) {
+      139 | 			await button.click();
+      140 | 			await expect
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:137:61)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+    Expected pattern: /-default-mobile.png$/
+    Error: element(s) not found
+
+    Call log:
+      - Expect "soft toHaveAttribute" locator('section[aria-labelledby="ex-screens-title"]').locator('img').last() with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="ex-screens-title"]').locator('img').last()
+      - Test ended.
+
+
+       at entityPreviewOverview.ts:142
+
+      140 | 			await expect
+      141 | 				.soft(panel.locator('img').last())
+    > 142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+          | 				 ^
+      143 | 			for (const image of await panel.getByRole('img').all())
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:142:6)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    Error: locator.all: Target page, context or browser has been closed
+
+       at entityPreviewOverview.ts:143
+
+      141 | 				.soft(panel.locator('img').last())
+      142 | 				.toHaveAttribute('src', new RegExp('-default-' + label.toLowerCase() + '.png$'));
+    > 143 | 			for (const image of await panel.getByRole('img').all())
+          | 			                                                 ^
+      144 | 				await image.evaluate((node: HTMLImageElement) => node.decode());
+      145 | 		}
+      146 | 	}
+        at reviewFocusedScreens (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewOverview.ts:143:53)
+        at reviewMeasurements (/private/tmp/harness-snapshot-E56Qur/packages/reports/test/entityPreviewPage.ts:208:2)
+        at /private/tmp/harness-snapshot-E56Qur/packages/reports/test/entity-preview-marks.spec.ts:216:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-marks-measu-b0c14-y-readable-without-a-budget/error-context.md
+
+  3 failed
+    test/entity-preview-marks.spec.ts:211:2 › measurements at desktop: multiple metrics stay readable without a budget 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at tablet: multiple metrics stay readable without a budget 
+    test/entity-preview-marks.spec.ts:211:2 › measurements at mobile: multiple metrics stay readable without a budget 
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+[WebServer] ../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] ../../node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] Circular dependency: ../../node_modules/zod/v4/core/core.js -> ../../node_modules/zod/v4/core/util.js -> ../../node_modules/zod/v4/core/core.js
+[WebServer] Circular dependency: ../../node_modules/smol-toml/dist/struct.js -> ../../node_modules/smol-toml/dist/extract.js -> ../../node_modules/smol-toml/dist/struct.js
+[WebServer] Generated an empty chunk: "chunks/internal2.js".
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at desktop width (6.2s)
+  ✓  2 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at tablet width (5.7s)
+  ✓  3 tests/e2e/harness-explorer-measures.spec.ts:49:2 › every entity kind shows selected source measurements at mobile width (6.1s)
+
+  3 passed (3.9m)
+$ bun run --cwd packages/planning build && bun run --cwd packages/desktop build
+$ bun build src/index.ts --target node --outdir dist
+Bundled 159 modules in 33ms
+
+  index.js  0.80 MB  (entry point)
+
+$ bun run sync:shared && vite build && bun run build:main
+$ bun run --cwd ../reports svelte-kit sync
+vite v6.4.4 building SSR bundle for production...
+transforming...
+✓ 403 modules transformed.
+rendering chunks...
+vite v6.4.4 building for production...
+transforming...
+✓ 490 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                            0.03 kB │ gzip:   0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                          6.00 kB │ gzip:   0.92 kB
+.svelte-kit/output/client/_app/immutable/assets/5.DbWwJIA3.css         0.63 kB │ gzip:   0.30 kB
+.svelte-kit/output/client/_app/immutable/assets/design.u3-Gae27.css   23.85 kB │ gzip:   5.61 kB
+.svelte-kit/output/client/_app/immutable/assets/2.CDPtSHYC.css        41.04 kB │ gzip:   8.39 kB
+.svelte-kit/output/client/_app/immutable/chunks/a6i_WdGT.js            0.04 kB │ gzip:   0.06 kB
+.svelte-kit/output/client/_app/immutable/nodes/3.CFTDvfKr.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/4.CFTDvfKr.js           0.15 kB │ gzip:   0.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/BFZObvHH.js            0.19 kB │ gzip:   0.17 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.BdTNIgOV.js           0.34 kB │ gzip:   0.26 kB
+.svelte-kit/output/client/_app/immutable/chunks/DZiPonxU.js            0.47 kB │ gzip:   0.31 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.BNP25OvU.js           0.48 kB │ gzip:   0.32 kB
+.svelte-kit/output/client/_app/immutable/chunks/wbPk3Yxo.js            1.37 kB │ gzip:   0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/0TgkRI1x.js            1.39 kB │ gzip:   0.77 kB
+.svelte-kit/output/client/_app/immutable/chunks/Ds_9q-iQ.js            1.81 kB │ gzip:   0.91 kB
+.svelte-kit/output/client/_app/immutable/chunks/UVJyF9PQ.js            2.19 kB │ gzip:   1.10 kB
+.svelte-kit/output/client/_app/immutable/chunks/CGpzyOwG.js            2.24 kB │ gzip:   0.99 kB
+.svelte-kit/output/client/_app/immutable/nodes/5.BxmJRH0c.js           2.73 kB │ gzip:   1.43 kB
+.svelte-kit/output/client/_app/immutable/chunks/BOKNYRS-.js            2.77 kB │ gzip:   1.37 kB
+.svelte-kit/output/client/_app/immutable/chunks/CiTE0pcK.js            6.48 kB │ gzip:   2.93 kB
+.svelte-kit/output/client/_app/immutable/entry/app.DrpD9hV9.js         7.07 kB │ gzip:   3.15 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bc0UXj8l.js            9.23 kB │ gzip:   3.83 kB
+.svelte-kit/output/client/_app/immutable/chunks/B_-qzYAX.js           14.05 kB │ gzip:   6.28 kB
+.svelte-kit/output/client/_app/immutable/entry/start.DvT3sYdb.js      21.30 kB │ gzip:   8.20 kB
+.svelte-kit/output/client/_app/immutable/chunks/CnMSm5Zs.js           29.47 kB │ gzip:  11.29 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.CAGJYZgh.js         372.60 kB │ gzip: 126.43 kB
+✓ built in 1.55s
+.svelte-kit/output/server/.vite/manifest.json                                                     4.64 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.DbWwJIA3.css                                0.63 kB
+.svelte-kit/output/server/_app/immutable/assets/design.BJSQ7p7Y.css                              23.64 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.BIqdXDqU.css                               37.68 kB
+.svelte-kit/output/server/entries/pages/_layout.ts.js                                             0.04 kB
+.svelte-kit/output/server/entries/pages/harness/_...path_/_page.svelte.js                         0.15 kB
+.svelte-kit/output/server/entries/pages/projects/_projectId_/harness/_...path_/_page.svelte.js    0.15 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js                                      0.17 kB
+.svelte-kit/output/server/chunks/internal2.js                                                     0.19 kB
+.svelte-kit/output/server/env.js                                                                  0.23 kB
+.svelte-kit/output/server/internal.js                                                             0.40 kB
+.svelte-kit/output/server/chunks/server.js                                                        0.50 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js                                       1.02 kB
+.svelte-kit/output/server/chunks/utils.js                                                         1.09 kB
+.svelte-kit/output/server/chunks/exports.js                                                       2.39 kB
+.svelte-kit/output/server/chunks/design.js                                                        2.91 kB
+.svelte-kit/output/server/chunks/url.js                                                           3.16 kB
+.svelte-kit/output/server/chunks/internal.js                                                      3.44 kB
+.svelte-kit/output/server/chunks/routing.js                                                       3.76 kB
+.svelte-kit/output/server/entries/pages/settings/_page.svelte.js                                  4.28 kB
+.svelte-kit/output/server/chunks/shared.js                                                       34.21 kB
+.svelte-kit/output/server/remote-entry.js                                                        36.85 kB
+.svelte-kit/output/server/index.js                                                              130.05 kB
+.svelte-kit/output/server/chunks/root.js                                                        134.65 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                                         288.38 kB
+✓ built in 3.89s
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-static
+  Wrote site to "build"
+  ✔ done
+$ bun scripts/build-main.ts
+$ bun run src/index.ts verify stamp packages/desktop/build
+502bdda5dced57e0ab9bc20d90cdd27bcada626c386bc62c84b09bbcc85f9d37
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/e2e/agent-settings.spec.ts:12:2 › Settings owns the persistent design count at 1440px (519ms)
+  ✓  2 tests/e2e/agent-settings.spec.ts:12:2 › Settings owns the persistent design count at 390px (442ms)
+  ✓  3 tests/e2e/agent-settings.spec.ts:39:1 › the workspace links to Settings and a headless Plan omits the design count (519ms)
+
+  3 passed (2.6s)

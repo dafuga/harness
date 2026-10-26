@@ -1,0 +1,44 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 7 tests using 1 worker
+
+(node:58070) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/harness-explorer-measures.spec.ts:28:2 › each emitted size has its own limit, and one that is gone is unavailable, at desktop width (867ms)
+  ✓  2 tests/e2e/harness-explorer-measures.spec.ts:28:2 › each emitted size has its own limit, and one that is gone is unavailable, at tablet width (704ms)
+  ✓  3 tests/e2e/harness-explorer-measures.spec.ts:28:2 › each emitted size has its own limit, and one that is gone is unavailable, at mobile width (701ms)
+  ✓  4 tests/e2e/harness-explorer-measures.spec.ts:54:1 › complexity that was not counted is unavailable and not frozen, beside a counted control (698ms)
+  ✓  5 tests/e2e/harness-explorer-measures.spec.ts:75:1 › reasons that differ only in the file they are about are told once, and all stay to be read (734ms)
+  ✓  6 tests/e2e/harness-explorer-measures.spec.ts:98:1 › a change is compared with its own parent under matching profiles, with its growth (155ms)
+  ✓  7 tests/e2e/harness-explorer-measures.spec.ts:123:2 › a record with hundreds of failures of other units › tells a unit what failed about it, and nothing about the rest (657ms)
+
+  7 passed (1.8m)

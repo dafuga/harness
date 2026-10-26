@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5
+
+ ✓ test/units.e2e.test.ts (3 tests) 4556ms
+   ✓ generic unit generator coexists with the Svelte component generator  1128ms
+   ✓ index derives contracts and keeps identity stable across re-index, moves and recreation  1863ms
+   ✓ check rejects invalid manifests and schemas are exposed  1563ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  20:03:11
+   Duration  4.76s (transform 21ms, setup 5ms, collect 13ms, tests 4.56s, environment 0ms, prepare 22ms)
+

@@ -1,0 +1,176 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] $ bun run --cwd ../desktop svelte-kit sync && vite build && vite build --config src/config/reportViteConfig.ts && vite build --config src/config/consoleViteConfig.ts
+[WebServer] (node:90971) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:91024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+[WebServer] (node:91024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:91024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/util.js (400:0): A comment
+[WebServer] 
+[WebServer] "// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+[WebServer] 
+[WebServer] in "../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/regexes.js (74:0): A comment
+[WebServer] 
+[WebServer] "/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+[WebServer]  * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+[WebServer]  * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+[WebServer] 
+[WebServer] in "../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[WebServer] Circular dependency: ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/core.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/util.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/zod/v4/core/core.js
+[WebServer] Circular dependency: ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/smol-toml/dist/struct.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/smol-toml/dist/extract.js -> ../../../../../../../../../Users/danielfugere/.codex/worktrees/styles-page/harness/node_modules/smol-toml/dist/struct.js
+[WebServer] Generated an empty chunk: "chunks/internal2.js".
+[WebServer] (node:91142) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:91152) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 7 tests using 1 worker
+
+(node:91233) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/styles-page-evidence.spec.ts:51:2 › Styles records its rendered token catalog at desktop width (324ms)
+(node:91258) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/styles-page-evidence.spec.ts:51:2 › Styles records its rendered token catalog at tablet width (200ms)
+(node:91266) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/styles-page-evidence.spec.ts:51:2 › Styles records its rendered token catalog at mobile width (193ms)
+(node:91288) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 tests/e2e/styles-page.spec.ts:8:1 › Styles navigation preserves the selected branch and commit (196ms)
+  ✓  5 tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at desktop width (139ms)
+  ✓  6 tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at tablet width (113ms)
+  ✓  7 tests/e2e/styles-page.spec.ts:19:2 › Styles documents supported design tokens at mobile width (106ms)
+
+
+  1) tests/e2e/styles-page-evidence.spec.ts:51:2 › Styles records its rendered token catalog at desktop width 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "catalog-desktop-screen"
+    Received: "screens"
+
+      21 | 	);
+      22 | 	expect(screenshot?.server).toMatchObject({ revision: process.env.HARNESS_VERIFY_REVISION });
+    > 23 | 	expect(screenshot?.evidence).toBe(`${state}-screen`);
+         | 	                             ^
+      24 | 	const benchmark = benchmarkCaptureSchema.parse(
+      25 | 		JSON.parse(readFileSync(join(directory, `${state}-${viewport}-benchmark.json`), 'utf8'))
+      26 | 	);
+        at expectCapturedMeasurements (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1JdWW4/packages/reports/tests/e2e/styles-page-evidence.spec.ts:23:31)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1JdWW4/packages/reports/tests/e2e/styles-page-evidence.spec.ts:70:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/styles-page-evidence-Style-2311a-en-catalog-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/styles-page-evidence-Style-2311a-en-catalog-at-desktop-width/error-context.md
+
+  2) tests/e2e/styles-page-evidence.spec.ts:51:2 › Styles records its rendered token catalog at tablet width 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "catalog-tablet-screen"
+    Received: "screens"
+
+      21 | 	);
+      22 | 	expect(screenshot?.server).toMatchObject({ revision: process.env.HARNESS_VERIFY_REVISION });
+    > 23 | 	expect(screenshot?.evidence).toBe(`${state}-screen`);
+         | 	                             ^
+      24 | 	const benchmark = benchmarkCaptureSchema.parse(
+      25 | 		JSON.parse(readFileSync(join(directory, `${state}-${viewport}-benchmark.json`), 'utf8'))
+      26 | 	);
+        at expectCapturedMeasurements (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1JdWW4/packages/reports/tests/e2e/styles-page-evidence.spec.ts:23:31)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1JdWW4/packages/reports/tests/e2e/styles-page-evidence.spec.ts:70:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/styles-page-evidence-Style-76a06-ken-catalog-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/styles-page-evidence-Style-76a06-ken-catalog-at-tablet-width/error-context.md
+
+  3) tests/e2e/styles-page-evidence.spec.ts:51:2 › Styles records its rendered token catalog at mobile width 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "catalog-mobile-screen"
+    Received: "screens"
+
+      21 | 	);
+      22 | 	expect(screenshot?.server).toMatchObject({ revision: process.env.HARNESS_VERIFY_REVISION });
+    > 23 | 	expect(screenshot?.evidence).toBe(`${state}-screen`);
+         | 	                             ^
+      24 | 	const benchmark = benchmarkCaptureSchema.parse(
+      25 | 		JSON.parse(readFileSync(join(directory, `${state}-${viewport}-benchmark.json`), 'utf8'))
+      26 | 	);
+        at expectCapturedMeasurements (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1JdWW4/packages/reports/tests/e2e/styles-page-evidence.spec.ts:23:31)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1JdWW4/packages/reports/tests/e2e/styles-page-evidence.spec.ts:70:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/styles-page-evidence-Style-7af22-ken-catalog-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/styles-page-evidence-Style-7af22-ken-catalog-at-mobile-width/error-context.md
+
+  3 failed
+    tests/e2e/styles-page-evidence.spec.ts:51:2 › Styles records its rendered token catalog at desktop width 
+    tests/e2e/styles-page-evidence.spec.ts:51:2 › Styles records its rendered token catalog at tablet width 
+    tests/e2e/styles-page-evidence.spec.ts:51:2 › Styles records its rendered token catalog at mobile width 
+  4 passed (1.7m)

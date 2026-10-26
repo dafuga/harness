@@ -1,0 +1,99 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [146.00ms]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fAtyb3
+
+ ❯ test/pieces.test.ts (6 tests | 2 failed) 12ms
+   ✓ every scaffold kind creates at least one file in a 2d project 4ms
+   ✓ every scaffold kind creates at least one file in a 3d project 1ms
+   ✓ view, layout, and api scaffolds use SvelteKit route files 0ms
+   ✓ marks only SvelteKit scaffolds as app-only 0ms
+   × Rails-ish scaffolds create their expected code shapes 5ms
+     → expected [ 'src/helpers/PostHelper.ts', …(1) ] to include 'src/helpers/post.ts'
+   × helper scaffolds emit pure camelCase functions with domain parameters 0ms
+     → the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+ ❯ test/services/unit-index.test.ts (13 tests | 1 failed) 1031ms
+   ✓ recorded source moves retain definitions, owner-local placement and registered identity 172ms
+   ✓ public route filenames retain their registered ownership 1ms
+   ✓ declared preview and documentation survive source re-indexing 6ms
+   ✓ declared execution targets survive re-indexing and follow a moved default entry 4ms
+   ✓ recreating retired source elsewhere records lineage to the retired identity 1ms
+   ✓ a unit that takes a retired name records lineage even when its symbols differ 1ms
+   ✓ lineage cannot be dropped by editing the manifest 1ms
+   ✓ unrelated new units carry no lineage 0ms
+   ✓ a declared responsibility survives re-indexing while a derived one follows the unit 0ms
+   ✓ an alternative implementation is a related unit linked by a declared contract dependency 1ms
+   ✓ several owned files produce identical metadata after one indexing pass 0ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  837ms
+   × public helper contracts require owned, categorized helper implementation files 5ms
+     → expected [] to include 'function.slugify: slugify must be imp…'
+ ❯ test/utils/unit-documentation.test.ts (3 tests | 1 failed) 37ms
+   ✓ committed documents preserve expected values and never invent observed results 4ms
+   ✓ revision documents come only from their own tree, and their bytes change the unit version 4ms
+   × every committed public helper example executes against its real implementation 29ms
+     → Public helper implementation belongs in src/helpers/<responsibility>: expected 'packages/desktop/src/utils/networking…' to match /(?:^|\/)src\/helpers\/[^/]+\/[^/…/)src\
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/pieces.test.ts > Rails-ish scaffolds create their expected code shapes
+AssertionError: expected [ 'src/helpers/PostHelper.ts', …(1) ] to include 'src/helpers/post.ts'
+ ❯ test/pieces.test.ts:48:64
+     46|   'src/mailers/WelcomeMailer.ts'
+     47|  );
+     48|  expect(pieceFiles('helper', 'Post').map((file) => file.path)).toConta…
+       |                                                                ^
+     49|  expect(pieceFiles('concern', 'Publishable').map((file) => file.path))…
+     50|   'src/concerns/withPublishable.ts'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/pieces.test.ts > helper scaffolds emit pure camelCase functions with domain parameters
+AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+ ❯ test/pieces.test.ts:76:27
+     74|  const files = pieceFiles('helper', 'formatLabel');
+     75|  const source = files.find((file) => file.path === 'src/helpers/format…
+     76|  expect(source?.contents).toContain('/** @pure */');
+       |                           ^
+     77|  expect(source?.contents).toContain('export function formatLabel(textT…
+     78|  expect(source?.contents).not.toContain('class ');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/utils/unit-documentation.test.ts > every committed public helper example executes against its real implementation
+AssertionError: Public helper implementation belongs in src/helpers/<responsibility>: expected 'packages/desktop/src/utils/networking…' to match /(?:^|\/)src\/helpers\/[^/]+\/[^/…/)src\
+
+- Expected: 
+/(?:^|\/)src\/helpers\/[^/]+\/[^/]+\.ts$/
+
++ Received: 
+"packages/desktop/src/utils/networking-security/remoteLabels.ts"
+
+ ❯ test/utils/unit-documentation.test.ts:97:6
+     95|     helper.source,
+     96|     'Public helper implementation belongs in src/helpers/<responsibili…
+     97|    ).toMatch(/(?:^|\/)src\/helpers\/[^/]+\/[^/]+\.ts$/);
+       |      ^
+     98|    expect(helper.examples?.length, 'Callable examples are required').t…
+     99|    const titles = helper.examples.map((example: { name: string }) =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/services/unit-index.test.ts > public helper contracts require owned, categorized helper implementation files
+AssertionError: expected [] to include 'function.slugify: slugify must be imp…'
+ ❯ test/services/unit-index.test.ts:251:24
+    249|   'src/helpers/slugify.ts'
+    250|  ])
+    251|   expect(errors(path)).toContain(
+       |                        ^
+    252|    'function.slugify: slugify must be implemented under src/helpers/<r…
+    253|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  4 failed | 18 passed (22)
+   Start at  12:06:29
+   Duration  4.99s (transform 225ms, setup 201ms, collect 629ms, tests 1.08s, environment 0ms, prepare 153ms)
+

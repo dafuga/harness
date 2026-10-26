@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5
+
+ ✓ test/utils/process-probes.test.ts (4 tests) 1417ms
+   ✓ a tool that does not end is ended within the time allowed and reads as failed  303ms
+   ✓ only a few tools run at a time, however many are asked for  987ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  20:04:04
+   Duration  1.61s (transform 19ms, setup 7ms, collect 7ms, tests 1.42s, environment 0ms, prepare 23ms)
+

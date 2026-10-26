@@ -1,0 +1,132 @@
+
+Running 3 tests using 1 worker
+
+(node:43509) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at desktop (5.7s)
+(node:44078) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at tablet (5.6s)
+(node:44624) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at mobile (5.6s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at desktop 
+
+    Error: Colors combines role guidance and the token inventory
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Color roles', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Colors combines role guidance and the token inventory locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Color roles', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Color roles', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at support/styleCatalog.ts:25
+
+      23 | 		scope.getByRole('region', { name: 'Color roles', exact: true }),
+      24 | 		'Colors combines role guidance and the token inventory'
+    > 25 | 	).toHaveCount(0);
+         | 	  ^
+      26 | 	await expect(palette, 'Styles has one Colors catalog').toHaveCount(1);
+      27 | 	await expect(palette).toBeVisible();
+      28 | 	const primary = palette.getByRole('article', { name: 'Primary', exact: true });
+        at expectColorRoles (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-3yZlrb/packages/reports/tests/e2e/support/styleCatalog.ts:25:4)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-3yZlrb/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:84:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-ff6a7-er-styles-screen-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-ff6a7-er-styles-screen-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-ff6a7-er-styles-screen-at-desktop/error-context.md
+
+  2) tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at tablet 
+
+    Error: Colors combines role guidance and the token inventory
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Color roles', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Colors combines role guidance and the token inventory locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Color roles', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Color roles', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at support/styleCatalog.ts:25
+
+      23 | 		scope.getByRole('region', { name: 'Color roles', exact: true }),
+      24 | 		'Colors combines role guidance and the token inventory'
+    > 25 | 	).toHaveCount(0);
+         | 	  ^
+      26 | 	await expect(palette, 'Styles has one Colors catalog').toHaveCount(1);
+      27 | 	await expect(palette).toBeVisible();
+      28 | 	const primary = palette.getByRole('article', { name: 'Primary', exact: true });
+        at expectColorRoles (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-3yZlrb/packages/reports/tests/e2e/support/styleCatalog.ts:25:4)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-3yZlrb/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:84:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-ea8aa-rer-styles-screen-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-ea8aa-rer-styles-screen-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-ea8aa-rer-styles-screen-at-tablet/error-context.md
+
+  3) tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at mobile 
+
+    Error: Colors combines role guidance and the token inventory
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Color roles', exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Colors combines role guidance and the token inventory locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Color roles', exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.explorer-ui-harness-explorer-styles-screen"]').getByRole('region', { name: 'Color roles', exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at support/styleCatalog.ts:25
+
+      23 | 		scope.getByRole('region', { name: 'Color roles', exact: true }),
+      24 | 		'Colors combines role guidance and the token inventory'
+    > 25 | 	).toHaveCount(0);
+         | 	  ^
+      26 | 	await expect(palette, 'Styles has one Colors catalog').toHaveCount(1);
+      27 | 	await expect(palette).toBeVisible();
+      28 | 	const primary = palette.getByRole('article', { name: 'Primary', exact: true });
+        at expectColorRoles (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-3yZlrb/packages/reports/tests/e2e/support/styleCatalog.ts:25:4)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-3yZlrb/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:84:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-77f75-rer-styles-screen-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-77f75-rer-styles-screen-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-77f75-rer-styles-screen-at-mobile/error-context.md
+
+  3 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:77:3 › reports.component.explorer-ui-harness-explorer-styles-screen at mobile 

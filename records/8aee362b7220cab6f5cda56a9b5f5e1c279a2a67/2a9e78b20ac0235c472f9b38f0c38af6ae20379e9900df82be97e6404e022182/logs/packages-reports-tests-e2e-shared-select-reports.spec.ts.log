@@ -1,0 +1,12 @@
+
+Running 7 tests using 1 worker
+
+  ✓  1 tests/e2e/shared-select-reports.spec.ts:17:1 › the report hub and its filters are gone: their addresses lead into the explorer (270ms)
+  ✓  2 tests/e2e/shared-select-reports.spec.ts:28:2 › the screen size of an uploaded pair is the one its request named, shown at desktop width (369ms)
+  ✓  3 tests/e2e/shared-select-reports.spec.ts:63:2 › the fields of the report viewer are the shared select at desktop width (409ms)
+  ✓  4 tests/e2e/shared-select-reports.spec.ts:28:2 › the screen size of an uploaded pair is the one its request named, shown at tablet width (298ms)
+  ✓  5 tests/e2e/shared-select-reports.spec.ts:63:2 › the fields of the report viewer are the shared select at tablet width (465ms)
+  ✓  6 tests/e2e/shared-select-reports.spec.ts:28:2 › the screen size of an uploaded pair is the one its request named, shown at mobile width (409ms)
+  ✓  7 tests/e2e/shared-select-reports.spec.ts:63:2 › the fields of the report viewer are the shared select at mobile width (430ms)
+
+  7 passed (1.6m)

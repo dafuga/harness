@@ -1,0 +1,31 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-P7mjJ7
+
+ ✓ test/ci-native-verify.test.ts (6 tests) 5ms
+ ❯ test/ci-workflow.test.ts (4 tests | 1 failed) 5ms
+   ✓ every external action is pinned to a full commit hash 1ms
+   × code under test runs without write credentials 2ms
+     → Both CI jobs pin child-process Rust outside the repository: Target cannot be null or undefined.
+   ✓ publication is a separate trusted workflow that never runs the tested code 0ms
+   ✓ no workflow establishes, approves or relaxes a budget 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/ci-workflow.test.ts > code under test runs without write credentials
+AssertionError: Both CI jobs pin child-process Rust outside the repository: Target cannot be null or undefined.
+ ❯ test/ci-workflow.test.ts:27:4
+     25|   verify.match(/RUSTUP_TOOLCHAIN=\$\(rustup show active-toolchain/g),
+     26|   'Both CI jobs pin child-process Rust outside the repository'
+     27|  ).toHaveLength(2);
+       |    ^
+     28| });
+     29| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 9 passed (10)
+   Start at  18:42:17
+   Duration  2.70s (transform 63ms, setup 119ms, collect 7ms, tests 10ms, environment 0ms, prepare 48ms)
+

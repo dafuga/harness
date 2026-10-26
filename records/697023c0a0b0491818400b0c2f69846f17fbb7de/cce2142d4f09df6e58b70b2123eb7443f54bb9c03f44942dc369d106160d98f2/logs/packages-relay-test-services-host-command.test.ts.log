@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HUXF1L/packages/relay
+
+ ✓ test/services/host-command.test.ts (7 tests) 4322ms
+   ✓ a packet of a device reaches the host with the ids the relay gave it  506ms
+   ✓ a packet of the host reaches the connection it names and no other  760ms
+   ✓ a packet for a connection that is unknown or of another device is dropped  756ms
+   ✓ device-drop closes the connection it names with the code of the host  510ms
+   ✓ packets of a device are dropped and answered host-offline while the host is away  1025ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  00:14:19
+   Duration  4.90s (transform 109ms, setup 0ms, collect 344ms, tests 4.32s, environment 0ms, prepare 43ms)
+

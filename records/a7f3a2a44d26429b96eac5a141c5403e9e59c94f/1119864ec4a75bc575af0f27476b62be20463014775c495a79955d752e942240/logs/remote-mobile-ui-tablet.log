@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/e2e/ui-remote-tablet.spec.ts:17:1 › a tablet-wide phone shell keeps the shared workspace and its connection in view (389ms)
+  ✓  2 tests/e2e/ui-remote-tablet.spec.ts:38:1 › at a tablet width the approval shows the whole identity without overflowing (257ms)
+  ✓  3 tests/e2e/ui-remote-tablet.spec.ts:56:1 › a narrow status bar stacks its facts, and a wide one keeps them in one row (199ms)
+
+  3 passed (1.7s)
+(node:39444) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

@@ -1,0 +1,124 @@
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 29 tests using 1 worker
+
+  ✓   1 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 1800 pixels the search, closed, focused or open, leaves the revision fields whole (2.0s)
+  ✓   2 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 1800 pixels a result opens in place, and with a modifier in another tab (402ms)
+  ✓   3 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 1440 pixels the search, closed, focused or open, leaves the revision fields whole (852ms)
+  ✓   4 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 1440 pixels a result opens in place, and with a modifier in another tab (402ms)
+  ✓   5 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 1379 pixels the search, closed, focused or open, leaves the revision fields whole (782ms)
+  ✓   6 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 1379 pixels a result opens in place, and with a modifier in another tab (402ms)
+  ✓   7 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 1300 pixels the search, closed, focused or open, leaves the revision fields whole (796ms)
+  ✓   8 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 1300 pixels a result opens in place, and with a modifier in another tab (397ms)
+  ✓   9 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 1251 pixels the search, closed, focused or open, leaves the revision fields whole (808ms)
+  ✓  10 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 1251 pixels a result opens in place, and with a modifier in another tab (401ms)
+  ✓  11 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 920 pixels the search, closed, focused or open, leaves the revision fields whole (731ms)
+  ✓  12 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 920 pixels a result opens in place, and with a modifier in another tab (398ms)
+  ✓  13 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 768 pixels the search, closed, focused or open, leaves the revision fields whole (736ms)
+  ✓  14 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 768 pixels a result opens in place, and with a modifier in another tab (398ms)
+  ✓  15 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 760 pixels the search, closed, focused or open, leaves the revision fields whole (700ms)
+  ✓  16 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 760 pixels a result opens in place, and with a modifier in another tab (383ms)
+  ✓  17 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 561 pixels the search, closed, focused or open, leaves the revision fields whole (669ms)
+  ✓  18 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 561 pixels a result opens in place, and with a modifier in another tab (399ms)
+  ✘  19 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 560 pixels the search, closed, focused or open, leaves the revision fields whole (357ms)
+  ✓  20 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 560 pixels a result opens in place, and with a modifier in another tab (468ms)
+  ✘  21 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 390 pixels the search, closed, focused or open, leaves the revision fields whole (374ms)
+  ✓  22 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 390 pixels a result opens in place, and with a modifier in another tab (435ms)
+  ✘  23 [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 320 pixels the search, closed, focused or open, leaves the revision fields whole (357ms)
+  ✓  24 [chromium] › tests/e2e/ui-search-fit.spec.ts:128:2 › at 320 pixels a result opens in place, and with a modifier in another tab (488ms)
+  ✓  25 [chromium] › tests/e2e/ui-workspace.spec.ts:3:1 › browser preview exposes no writable backend (221ms)
+  ✓  26 [chromium] › tests/e2e/ui-workspace.spec.ts:13:1 › designless Plan preserves truthful status and branch/commit paths (670ms)
+  ✓  27 [chromium] › tests/e2e/ui-workspace.spec.ts:67:1 › catalog search, changed filter and conversational plan request (491ms)
+  ✓  28 [chromium] › tests/e2e/ui-workspace.spec.ts:90:1 › Go to tip exits both historical and explicitly pinned tip revisions (699ms)
+  ✘  29 [chromium] › tests/e2e/ui-workspace.spec.ts:130:1 › workspace selectors start collapsed and environment stays directly selectable (609ms)
+
+
+  1) [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 560 pixels the search, closed, focused or open, leaves the revision fields whole 
+
+    Error: Mobile header must leave room for project content
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 184
+    Received:    212
+
+      83 | 			(await box(bar(page))).height,
+      84 | 			'Mobile header must leave room for project content'
+    > 85 | 		).toBeLessThanOrEqual(184);
+         | 		  ^
+      86 | 	const fields = await Promise.all(revision(page).map(box));
+      87 | 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
+      88 | 	// The search takes nothing of the room of either revision field.
+        at fits (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-53YDbR/packages/desktop/tests/e2e/ui-search-fit.spec.ts:85:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-53YDbR/packages/desktop/tests/e2e/ui-search-fit.spec.ts:110:3
+
+    Error Context: test-results/ui-search-fit-at-560-pixel-fe932-s-the-revision-fields-whole-chromium/error-context.md
+
+  2) [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 390 pixels the search, closed, focused or open, leaves the revision fields whole 
+
+    Error: Mobile header must leave room for project content
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 184
+    Received:    212
+
+      83 | 			(await box(bar(page))).height,
+      84 | 			'Mobile header must leave room for project content'
+    > 85 | 		).toBeLessThanOrEqual(184);
+         | 		  ^
+      86 | 	const fields = await Promise.all(revision(page).map(box));
+      87 | 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
+      88 | 	// The search takes nothing of the room of either revision field.
+        at fits (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-53YDbR/packages/desktop/tests/e2e/ui-search-fit.spec.ts:85:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-53YDbR/packages/desktop/tests/e2e/ui-search-fit.spec.ts:110:3
+
+    Error Context: test-results/ui-search-fit-at-390-pixel-81084-s-the-revision-fields-whole-chromium/error-context.md
+
+  3) [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 320 pixels the search, closed, focused or open, leaves the revision fields whole 
+
+    Error: Mobile header must leave room for project content
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 184
+    Received:    212
+
+      83 | 			(await box(bar(page))).height,
+      84 | 			'Mobile header must leave room for project content'
+    > 85 | 		).toBeLessThanOrEqual(184);
+         | 		  ^
+      86 | 	const fields = await Promise.all(revision(page).map(box));
+      87 | 	expect(fields.map((one) => meet(search, one, 3))).toEqual([false, false]);
+      88 | 	// The search takes nothing of the room of either revision field.
+        at fits (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-53YDbR/packages/desktop/tests/e2e/ui-search-fit.spec.ts:85:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-53YDbR/packages/desktop/tests/e2e/ui-search-fit.spec.ts:110:3
+
+    Error Context: test-results/ui-search-fit-at-320-pixel-49f93-s-the-revision-fields-whole-chromium/error-context.md
+
+  4) [chromium] › tests/e2e/ui-workspace.spec.ts:130:1 › workspace selectors start collapsed and environment stays directly selectable 
+
+    Error: Mobile header must leave room for project content
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 184
+    Received:    212
+
+      199 | 		expect(branchFits, 'The short current branch name must remain readable on mobile').toBe(true);
+      200 | 		const header = await page.getByRole('banner').boundingBox();
+    > 201 | 		expect(header!.height, 'Mobile header must leave room for project content').toBeLessThanOrEqual(
+          | 		                                                                            ^
+      202 | 			184
+      203 | 		);
+      204 | 		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-53YDbR/packages/desktop/tests/e2e/ui-workspace.spec.ts:201:79
+
+    Error Context: test-results/ui-workspace-workspace-sel-7ee46-t-stays-directly-selectable-chromium/error-context.md
+
+  4 failed
+    [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 560 pixels the search, closed, focused or open, leaves the revision fields whole 
+    [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 390 pixels the search, closed, focused or open, leaves the revision fields whole 
+    [chromium] › tests/e2e/ui-search-fit.spec.ts:105:2 › at 320 pixels the search, closed, focused or open, leaves the revision fields whole 
+    [chromium] › tests/e2e/ui-workspace.spec.ts:130:1 › workspace selectors start collapsed and environment stays directly selectable 
+  25 passed (20.6s)

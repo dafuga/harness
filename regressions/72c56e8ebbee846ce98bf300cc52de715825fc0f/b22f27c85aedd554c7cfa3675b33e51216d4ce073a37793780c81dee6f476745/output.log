@@ -1,0 +1,61 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [31.00ms]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UdcVej
+
+ ✓ test/utils/unit-documentation.test.ts (3 tests) 158ms
+ ✓ test/utils/unit-identity.test.ts (2 tests) 21ms
+
+ Test Files  2 passed (2)
+      Tests  5 passed (5)
+   Start at  03:33:00
+   Duration  2.70s (transform 118ms, setup 74ms, collect 258ms, tests 179ms, environment 0ms, prepare 43ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UdcVej/packages/reports
+
+ ✓ test/utils/explorer-registry.test.ts (5 tests) 34ms
+ ✓ test/utils/explorer-evidence.test.ts (8 tests) 4ms
+ ✓ test/components/explorer-composition.test.ts (6 tests) 1907ms
+   ✓ every page mounts the host with one screen of its own, and none draws every screen  409ms
+   ✓ the four screens of a category are made of different components  396ms
+   ✓ a catalog draws no entity view, and each entity view draws its own and not the others  1036ms
+ ✓ test/utils/explorer-drawn.test.ts (9 tests) 3ms
+ ✓ test/utils/explorer-applicable.test.ts (4 tests) 20ms
+ ✓ test/utils/explorer-evidence-pairs.test.ts (3 tests) 3ms
+ ✓ test/components/explorer-pages-screen.test.ts (3 tests) 23ms
+
+ Test Files  7 passed (7)
+      Tests  38 passed (38)
+   Start at  03:33:06
+   Duration  4.31s (transform 707ms, setup 0ms, collect 1.23s, tests 1.99s, environment 0ms, prepare 162ms)
+
+
+Running 21 tests using 1 worker
+
+(node:64014) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.settings at desktop (621ms)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.account-menu at desktop (587ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.hub-frame at desktop (656ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platform-details at desktop (617ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platforms at desktop (611ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms at desktop (608ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms-entity at desktop (628ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.settings at tablet (288ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.account-menu at tablet (253ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.hub-frame at tablet (361ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platform-details at tablet (308ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platforms at tablet (292ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms at tablet (311ms)
+  ✓  14 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms-entity at tablet (312ms)
+  ✓  15 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › desktop.page.settings at mobile (285ms)
+  ✓  16 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.account-menu at mobile (285ms)
+  ✓  17 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › hub.component.hub-frame at mobile (355ms)
+  ✓  18 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platform-details at mobile (290ms)
+  ✓  19 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.component.explorer-ui-explorer-platforms at mobile (305ms)
+  ✓  20 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms at mobile (307ms)
+  ✓  21 tests/e2e/explorer-shell-component-catalog.spec.ts:32:3 › reports.page.harness-branch-branch-at-platforms-entity at mobile (306ms)
+
+  21 passed (16.0s)

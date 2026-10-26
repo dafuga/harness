@@ -1,0 +1,55 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-AEgroE/packages/reports
+
+ ❯ test/components/harness-navbar.test.ts (8 tests | 1 failed) 16ms
+   ✓ one bar holds the brand, repository, entity categories and the Styles screen 7ms
+   × Code screens select their module tab and retain the selected revision 4ms
+     → expected [] to deeply equal [ 'Code' ]
+   ✓ the bar has no reports, analytics, activity, growth or legacy view in it 1ms
+   ✓ at the tip of a branch the commit is the tip, said as current, and Go to tip is disabled 1ms
+   ✓ at a selected commit the tip and the viewed hash differ, and Go to tip is the current route 0ms
+   ✓ both selectors are the shared select, and the bar writes no field of its own 0ms
+   ✓ without a resolved address the bar keeps its navigation and offers nothing to choose 0ms
+   ✓ a limited history index keeps revision choices without a limitation banner 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/harness-navbar.test.ts > Code screens select their module tab and retain the selected revision
+AssertionError: expected [] to deeply equal [ 'Code' ]
+
+- Expected
++ Received
+
+- [
+-   "Code",
+- ]
++ []
+
+ ❯ test/components/harness-navbar.test.ts:120:5
+    118|     .filter((item) => item.current)
+    119|     .map((item) => item.label)
+    120|   ).toEqual(['Code']);
+       |     ^
+    121|   const strip =
+    122|    /<div\b[^>]*role="tablist"[^>]*aria-label="Code categories"[^>]*>(.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  23:51:45
+   Duration  593ms (transform 313ms, setup 77ms, collect 372ms, tests 16ms, environment 0ms, prepare 25ms)
+

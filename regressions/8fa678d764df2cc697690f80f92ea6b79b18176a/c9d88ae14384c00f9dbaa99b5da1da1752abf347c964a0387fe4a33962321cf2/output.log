@@ -1,0 +1,97 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vhn26m
+
+ ✓ test/services/unit-index.test.ts (12 tests) 892ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  758ms
+ ✓ test/project-template.test.ts (4 tests) 75ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 65ms
+ ✓ test/utils/explorer-route.test.ts (61 tests) 7ms
+ ✓ test/explorer-shells.test.ts (4 tests) 7ms
+ ✓ test/guides.test.ts (7 tests) 5ms
+ ✓ test/utils/console-canonical.test.ts (8 tests) 4ms
+ ✓ test/utils/explorer-legacy.test.ts (6 tests) 3ms
+
+ Test Files  8 passed (8)
+      Tests  104 passed (104)
+   Start at  12:29:33
+   Duration  4.98s (transform 189ms, setup 238ms, collect 419ms, tests 1.06s, environment 1ms, prepare 193ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vhn26m/packages/reports
+
+ ✓ test/components/entity-relations.test.ts (6 tests) 50ms
+ ✓ test/utils/explorer-category.test.ts (13 tests) 67ms
+ ✓ test/components/entity-contract.test.ts (5 tests) 23ms
+ ✓ test/utils/harness-shell.test.ts (9 tests) 5ms
+ ✓ test/components/explorer-screens.test.ts (7 tests) 63ms
+ ✓ test/utils/explorer-name.test.ts (18 tests) 4ms
+ ✓ test/components/explorer-catalog-screen.test.ts (10 tests) 18ms
+ ✓ test/explorer-shells.test.ts (4 tests) 4ms
+ ✓ test/utils/entity-lens.test.ts (5 tests) 4ms
+ ✓ test/utils/harness-icons.test.ts (3 tests) 5ms
+ ✓ test/utils/entity-usage.test.ts (2 tests) 3ms
+
+ Test Files  11 passed (11)
+      Tests  82 passed (82)
+   Start at  12:29:39
+   Duration  3.63s (transform 845ms, setup 0ms, collect 1.65s, tests 246ms, environment 1ms, prepare 255ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vhn26m/packages/desktop
+
+ ✓ test/catalog-listing.test.ts (6 tests) 1655ms
+   ✓ the tip lists every ordinary entity and no page manifest that only loads for an address  404ms
+   ✓ what is left out of the list is still opened by its identity, with its sources and history  646ms
+   ✓ the same identity is listed at the earlier commit where it renders, as it was there  552ms
+ ✓ test/shells-category.test.ts (6 tests) 6ms
+ ✓ test/utils/workspace-search.test.ts (5 tests) 4ms
+ ✓ test/utils/workspace-route.test.ts (6 tests) 6ms
+ ✓ test/shells-planning.test.ts (2 tests) 6091ms
+   ✓ a shell plan is visual: it is planned for the desktop viewport under Shells  1261ms
+   ✓ an agent asked from Shells proposes a shell, and it is planned with an image  4830ms
+ ✓ test/utils/compose-modes.test.ts (4 tests) 4ms
+
+ Test Files  6 passed (6)
+      Tests  29 passed (29)
+   Start at  12:29:43
+   Duration  9.67s (transform 433ms, setup 203ms, collect 697ms, tests 7.77s, environment 0ms, prepare 152ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vhn26m/packages/planning
+
+ ✓ test/planning-registry.test.ts (4 tests) 12791ms
+   ✓ actual planning metadata stays outside active indexing for all five draft categories  8060ms
+   ✓ dirty or invalid registry configuration is never overwritten or committed  1718ms
+   ✓ existing formatter ignores protect immutable artifacts without hiding source  1777ms
+   ✓ dirty formatter ignores refuse planning without changing repository state  1235ms
+ ✓ test/shell-plans.test.ts (2 tests) 2238ms
+   ✓ a shell plan has an id of its own kind in the folder of Shells  1143ms
+   ✓ a shell design is an image: notes alone are refused, and an image is taken  1094ms
+ ✓ test/utils/plan-validate.test.ts (1 test) 2ms
+
+ Test Files  3 passed (3)
+      Tests  7 passed (7)
+   Start at  12:29:53
+   Duration  15.97s (transform 153ms, setup 6ms, collect 333ms, tests 15.03s, environment 0ms, prepare 92ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vhn26m/packages/hub
+
+ ✓ test/hub-shell-plans.test.ts (1 test) 8ms
+ ✓ test/utils/hub-metadata-paths.test.ts (1 test) 3ms
+
+ Test Files  2 passed (2)
+      Tests  2 passed (2)
+   Start at  12:30:11
+   Duration  1.25s (transform 549ms, setup 0ms, collect 885ms, tests 11ms, environment 0ms, prepare 57ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vhn26m/packages/collaboration
+
+ ✓ test/shell-anchors.test.ts (1 test) 17ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  12:30:12
+   Duration  512ms (transform 137ms, setup 0ms, collect 237ms, tests 17ms, environment 0ms, prepare 40ms)
+

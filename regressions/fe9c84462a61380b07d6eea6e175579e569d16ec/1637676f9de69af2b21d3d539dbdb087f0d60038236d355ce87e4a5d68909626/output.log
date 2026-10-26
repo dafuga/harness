@@ -1,0 +1,31 @@
+
+Running 24 tests using 1 worker
+
+(node:71427) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: history at desktop (1.6s)
+  ✓   2 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: revision at desktop (679ms)
+  ✓   3 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: history at tablet (678ms)
+  ✓   4 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: revision at tablet (695ms)
+  ✓   5 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: history at mobile (673ms)
+  ✓   6 tests/e2e/explorer-shell-component-catalog.spec.ts:33:3 › console data loading: revision at mobile (670ms)
+  ✓   7 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › hub.layout.root at desktop (631ms)
+  ✓   8 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.layout.explorer-layout at desktop (649ms)
+  ✓   9 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.layout.root at desktop (637ms)
+  ✓  10 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts at desktop (888ms)
+  ✓  11 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity at desktop (921ms)
+  ✓  12 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity-history at desktop (651ms)
+  ✓  13 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › hub.layout.root at tablet (330ms)
+  ✓  14 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.layout.explorer-layout at tablet (335ms)
+  ✓  15 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.layout.root at tablet (316ms)
+  ✓  16 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts at tablet (380ms)
+  ✓  17 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity at tablet (389ms)
+  ✓  18 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity-history at tablet (353ms)
+  ✓  19 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › hub.layout.root at mobile (318ms)
+  ✓  20 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.layout.explorer-layout at mobile (329ms)
+  ✓  21 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.layout.root at mobile (312ms)
+  ✓  22 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts at mobile (364ms)
+  ✓  23 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity at mobile (381ms)
+  ✓  24 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › reports.page.harness-branch-branch-at-layouts-entity-history at mobile (345ms)
+
+  24 passed (23.0s)

@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5/packages/relay
+
+ ✓ test/controllers/host-object-hibernation.test.ts (3 tests) 12193ms
+   ✓ a host object that slept still forwards between the sockets it had  11805ms
+   ✓ a host object that slept still knows its pairings, its devices and whom to close  12057ms
+   ✓ a host that returns after the object slept is told what is still open and waiting  12053ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  18:36:47
+   Duration  12.59s (transform 68ms, setup 0ms, collect 234ms, tests 12.19s, environment 0ms, prepare 24ms)
+

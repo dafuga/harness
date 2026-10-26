@@ -1,0 +1,69 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-w5jAn1
+
+ ❯ test/loop.e2e.test.ts (7 tests | 1 failed | 6 skipped) 8230ms
+   ↓ loop CLI traces work and remains audit-safe in generated projects
+   ↓ generated app and lib instructions mention harness loops
+   ↓ loop CLI creates from templates, searches, guides next, and evaluates
+   ↓ bug-fix CLI records proof and leaves verification pending across failed and passing checks
+   ↓ fix CLI records proof and leaves verification pending across failed and passing checks
+   ↓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks
+   × standalone evidence capture preserves images and measurements without inventing a regression or full verdict 8228ms
+     → git commit --allow-empty -qm fix: exercise capture binding known failed with 128
+
+Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: empty ident name (for <>) not allowed
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/loop.e2e.test.ts > standalone evidence capture preserves images and measurements without inventing a regression or full verdict
+Error: git commit --allow-empty -qm fix: exercise capture binding known failed with 128
+
+Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: empty ident name (for <>) not allowed
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ exerciseBinding test/support/loop-repair/observedLoop.ts:125:2
+ ❯ expectCaptureBindings test/support/loop-repair/observedLoop.ts:64:3
+ ❯ test/loop.e2e.test.ts:210:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 skipped (7)
+   Start at  04:47:11
+   Duration  10.84s (transform 108ms, setup 64ms, collect 94ms, tests 8.23s, environment 0ms, prepare 28ms)
+
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+

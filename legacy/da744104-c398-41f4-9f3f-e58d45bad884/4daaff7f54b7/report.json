@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"kind": "legacy-report",
+	"id": "da744104-c398-41f4-9f3f-e58d45bad884",
+	"project": "harness",
+	"title": "JEV response checker — verified delivery",
+	"mode": "feature",
+	"environment": "Local CLI; synthetic integration and live JEV API",
+	"status": "passed",
+	"state": "finalized",
+	"startedAt": "2026-10-06T21:18:49.343Z",
+	"updatedAt": "2026-10-06T21:19:11.632Z",
+	"revision": "da5496f",
+	"summary": "Implemented and committed response-check with custom criteria and strict confident-success gating. Full check: 136 unit and 42 CLI E2E tests passed. All 11 live calibration cases matched. Built CLI live pass/fail verified. Initial semantic calibration only; external action verification and package publication are outside scope.",
+	"checks": [
+		{
+			"id": "full-check",
+			"title": "Harness full verification",
+			"status": "passed"
+		},
+		{
+			"id": "live-calibration",
+			"title": "Live JEV response calibration",
+			"status": "passed"
+		},
+		{
+			"id": "red-green",
+			"title": "Unchanged CLI regressions",
+			"status": "passed"
+		},
+		{
+			"id": "command-1791321548333",
+			"title": "Built CLI live JEV: compliant",
+			"status": "passed"
+		},
+		{
+			"id": "command-1791321548385",
+			"title": "Built CLI live JEV: wrong-format",
+			"status": "passed"
+		}
+	],
+	"media": []
+}

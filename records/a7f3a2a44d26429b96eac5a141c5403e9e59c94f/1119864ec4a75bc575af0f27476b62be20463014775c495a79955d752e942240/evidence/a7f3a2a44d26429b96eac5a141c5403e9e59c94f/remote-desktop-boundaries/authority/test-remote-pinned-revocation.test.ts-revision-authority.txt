@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE/packages/desktop
+
+ ✓ test/remote-pinned-revocation.test.ts (3 tests) 8216ms
+   ✓ an explicitly pinned current-tip snapshot cannot authorize a mutation  2682ms
+   ✓ revoking a session during project opening prevents the deferred write  2072ms
+   ✓ revoking during provider preparation cannot append a request or start a CLI  3462ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  03:00:20
+   Duration  9.57s (transform 673ms, setup 0ms, collect 1.08s, tests 8.22s, environment 0ms, prepare 45ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-5WPY11/report.json

@@ -1,0 +1,150 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --config src/configs/shellPlaywrightConfig.ts "$@"' -- explorer-shell.spec.ts --grep "the bar shows its navigation"
+
+Running 3 tests using 1 worker
+
+(node:647) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at desktop width (5.3s)
+(node:937) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at tablet width (5.2s)
+(node:1533) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at mobile width (5.2s)
+
+
+  1) tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at desktop width 
+
+    Error: Code groups project catalogs
+
+    expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).locator('a, button')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 3
+
+      Array [
+        "Pages",
+    -   "Code",
+    +   "Modules",
+    +   "Styles",
+    +   "Configs",
+        "Platforms",
+      ]
+
+    Call log:
+      - Code groups project catalogs getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).locator('a, button') with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).locator('a, button')
+        14 × locator resolved to 5 elements
+
+
+      66 | 		await navigationSpacing(bar);
+      67 | 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).locator('a, button');
+    > 68 | 		await expect(links, 'Code groups project catalogs').toHaveText(categories);
+         | 		                                                    ^
+      69 | 		await expect(links.filter({ hasText: 'Code' }), 'Code has one primary destination').toHaveCount(
+      70 | 			1
+      71 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zhDHoa/packages/reports/tests/e2e/explorer-shell.spec.ts:68:55
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/error-context.md
+
+  2) tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at tablet width 
+
+    Error: Code groups project catalogs
+
+    expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).locator('a, button')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 3
+
+      Array [
+        "Pages",
+    -   "Code",
+    +   "Modules",
+    +   "Styles",
+    +   "Configs",
+        "Platforms",
+      ]
+
+    Call log:
+      - Code groups project catalogs getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).locator('a, button') with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).locator('a, button')
+        14 × locator resolved to 5 elements
+
+
+      66 | 		await navigationSpacing(bar);
+      67 | 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).locator('a, button');
+    > 68 | 		await expect(links, 'Code groups project catalogs').toHaveText(categories);
+         | 		                                                    ^
+      69 | 		await expect(links.filter({ hasText: 'Code' }), 'Code has one primary destination').toHaveCount(
+      70 | 			1
+      71 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zhDHoa/packages/reports/tests/e2e/explorer-shell.spec.ts:68:55
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-36696--each-label-at-tablet-width/error-context.md
+
+  3) tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at mobile width 
+
+    Error: Code groups project catalogs
+
+    expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).locator('a, button')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 3
+
+      Array [
+        "Pages",
+    -   "Code",
+    +   "Modules",
+    +   "Styles",
+    +   "Configs",
+        "Platforms",
+      ]
+
+    Call log:
+      - Code groups project catalogs getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).locator('a, button') with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('navigation', { name: 'Harness categories' }).locator('a, button')
+        14 × locator resolved to 5 elements
+
+
+      66 | 		await navigationSpacing(bar);
+      67 | 		const links = bar.getByRole('navigation', { name: 'Harness categories' }).locator('a, button');
+    > 68 | 		await expect(links, 'Code groups project catalogs').toHaveText(categories);
+         | 		                                                    ^
+      69 | 		await expect(links.filter({ hasText: 'Code' }), 'Code has one primary destination').toHaveCount(
+      70 | 			1
+      71 | 		);
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zhDHoa/packages/reports/tests/e2e/explorer-shell.spec.ts:68:55
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-be358--each-label-at-mobile-width/error-context.md
+
+  3 failed
+    tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at desktop width 
+    tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at tablet width 
+    tests/e2e/explorer-shell.spec.ts:60:2 › the bar shows its navigation with an icon above each label at mobile width 
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:shell" exited with code 1

@@ -1,0 +1,130 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-baR0nm
+
+ ❯ test/cli-environment.e2e.test.ts (5 tests | 3 failed) 1962ms
+   ✓ a command a test starts does not believe it runs inside the verification around the test 89ms
+   ✓ shared fixture support cli imports in a standalone Bun process  468ms
+   × shared fixture support unitProject imports in a standalone Bun process 481ms
+     → Shared fixture support must remain independent of test-runner initialization: 4 | function getWorkerState() {
+5 | 	// @ts-expect-error untyped global
+6 | 	const workerState = globalThis[NAME_WORKER_STATE];
+7 | 	if (!workerState) {
+8 | 		const errorMsg = "Vitest failed to access its internal state.\n\nOne of the following is possible:\n- \"vitest\" is imported directly without running \"vitest\" command\n- \"vitest\" is imported inside \"globalSetup\" (to fix this, use \"setupFiles\" instead, because \"globalSetup\" runs in a different context)\n- \"vitest\" is imported inside Vite / Vitest config file\n- Otherwise, it might be a Vitest bug. Please report it to https://github.com/vitest-dev/vitest/issues\n";
+9 | 		throw new Error(errorMsg);
+            ^
+error: Vitest failed to access its internal state.
+
+One of the following is possible:
+- "vitest" is imported directly without running "vitest" command
+- "vitest" is imported inside "globalSetup" (to fix this, use "setupFiles" instead, because "globalSetup" runs in a different context)
+- "vitest" is imported inside Vite / Vitest config file
+- Otherwise, it might be a Vitest bug. Please report it to https://github.com/vitest-dev/vitest/issues
+
+      at getWorkerState (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/utils.XdZDrNZV.js:9:9)
+      at getCurrentEnvironment (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/utils.XdZDrNZV.js:23:16)
+      at createExpect (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/vi.bdSIJ99Y.js:426:16)
+      at /Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/vi.bdSIJ99Y.js:464:22
+      at requestImportModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+: expected 1 to be +0 // Object.is equality
+   × shared fixture support impactRepo imports in a standalone Bun process 421ms
+     → Shared fixture support must remain independent of test-runner initialization: 4 | function getWorkerState() {
+5 | 	// @ts-expect-error untyped global
+6 | 	const workerState = globalThis[NAME_WORKER_STATE];
+7 | 	if (!workerState) {
+8 | 		const errorMsg = "Vitest failed to access its internal state.\n\nOne of the following is possible:\n- \"vitest\" is imported directly without running \"vitest\" command\n- \"vitest\" is imported inside \"globalSetup\" (to fix this, use \"setupFiles\" instead, because \"globalSetup\" runs in a different context)\n- \"vitest\" is imported inside Vite / Vitest config file\n- Otherwise, it might be a Vitest bug. Please report it to https://github.com/vitest-dev/vitest/issues\n";
+9 | 		throw new Error(errorMsg);
+            ^
+error: Vitest failed to access its internal state.
+
+One of the following is possible:
+- "vitest" is imported directly without running "vitest" command
+- "vitest" is imported inside "globalSetup" (to fix this, use "setupFiles" instead, because "globalSetup" runs in a different context)
+- "vitest" is imported inside Vite / Vitest config file
+- Otherwise, it might be a Vitest bug. Please report it to https://github.com/vitest-dev/vitest/issues
+
+      at getWorkerState (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/utils.XdZDrNZV.js:9:9)
+      at getCurrentEnvironment (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/utils.XdZDrNZV.js:23:16)
+      at createExpect (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/vi.bdSIJ99Y.js:426:16)
+      at /Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/vi.bdSIJ99Y.js:464:22
+      at requestImportModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+: expected 1 to be +0 // Object.is equality
+   × shared fixture support verifyRepo imports in a standalone Bun process 501ms
+     → Shared fixture support must remain independent of test-runner initialization: 4 | function getWorkerState() {
+5 | 	// @ts-expect-error untyped global
+6 | 	const workerState = globalThis[NAME_WORKER_STATE];
+7 | 	if (!workerState) {
+8 | 		const errorMsg = "Vitest failed to access its internal state.\n\nOne of the following is possible:\n- \"vitest\" is imported directly without running \"vitest\" command\n- \"vitest\" is imported inside \"globalSetup\" (to fix this, use \"setupFiles\" instead, because \"globalSetup\" runs in a different context)\n- \"vitest\" is imported inside Vite / Vitest config file\n- Otherwise, it might be a Vitest bug. Please report it to https://github.com/vitest-dev/vitest/issues\n";
+9 | 		throw new Error(errorMsg);
+            ^
+error: Vitest failed to access its internal state.
+
+One of the following is possible:
+- "vitest" is imported directly without running "vitest" command
+- "vitest" is imported inside "globalSetup" (to fix this, use "setupFiles" instead, because "globalSetup" runs in a different context)
+- "vitest" is imported inside Vite / Vitest config file
+- Otherwise, it might be a Vitest bug. Please report it to https://github.com/vitest-dev/vitest/issues
+
+      at getWorkerState (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/utils.XdZDrNZV.js:9:9)
+      at getCurrentEnvironment (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/utils.XdZDrNZV.js:23:16)
+      at createExpect (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/vi.bdSIJ99Y.js:426:16)
+      at /Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/vi.bdSIJ99Y.js:464:22
+      at requestImportModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+: expected 1 to be +0 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cli-environment.e2e.test.ts > shared fixture support unitProject imports in a standalone Bun process
+ FAIL  test/cli-environment.e2e.test.ts > shared fixture support impactRepo imports in a standalone Bun process
+ FAIL  test/cli-environment.e2e.test.ts > shared fixture support verifyRepo imports in a standalone Bun process
+AssertionError: Shared fixture support must remain independent of test-runner initialization: 4 | function getWorkerState() {
+5 | 	// @ts-expect-error untyped global
+6 | 	const workerState = globalThis[NAME_WORKER_STATE];
+7 | 	if (!workerState) {
+8 | 		const errorMsg = "Vitest failed to access its internal state.\n\nOne of the following is possible:\n- \"vitest\" is imported directly without running \"vitest\" command\n- \"vitest\" is imported inside \"globalSetup\" (to fix this, use \"setupFiles\" instead, because \"globalSetup\" runs in a different context)\n- \"vitest\" is imported inside Vite / Vitest config file\n- Otherwise, it might be a Vitest bug. Please report it to https://github.com/vitest-dev/vitest/issues\n";
+9 | 		throw new Error(errorMsg);
+            ^
+error: Vitest failed to access its internal state.
+
+One of the following is possible:
+- "vitest" is imported directly without running "vitest" command
+- "vitest" is imported inside "globalSetup" (to fix this, use "setupFiles" instead, because "globalSetup" runs in a different context)
+- "vitest" is imported inside Vite / Vitest config file
+- Otherwise, it might be a Vitest bug. Please report it to https://github.com/vitest-dev/vitest/issues
+
+      at getWorkerState (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/utils.XdZDrNZV.js:9:9)
+      at getCurrentEnvironment (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/utils.XdZDrNZV.js:23:16)
+      at createExpect (/Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/vi.bdSIJ99Y.js:426:16)
+      at /Users/danielfugere/projects/harness-api-cli-proof-20261024/node_modules/vitest/dist/chunks/vi.bdSIJ99Y.js:464:22
+      at requestImportModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+: expected 1 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 1[39m
+
+ ❯ test/cli-environment.e2e.test.ts:58:5
+     56|    'Shared fixture support must remain independent of test-runner init…
+     57|     result.stderr
+     58|   ).toBe(0);
+       |     ^
+     59|   expect(result.stdout).toContain('fixture support ready');
+     60|  },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 2 passed (5)
+   Start at  13:08:22
+   Duration  7.46s (transform 121ms, setup 165ms, collect 21ms, tests 1.96s, environment 0ms, prepare 36ms)
+

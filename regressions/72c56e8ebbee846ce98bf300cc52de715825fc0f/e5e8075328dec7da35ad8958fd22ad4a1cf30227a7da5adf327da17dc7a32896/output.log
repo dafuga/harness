@@ -1,0 +1,47 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [101.00ms]
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+The following Vite config options will be overridden by SvelteKit:
+  - root
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-8K1w0f/packages/hub
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && svelte-check --tsconfig ./tsconfig.previews.json
+
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+warn - Configure your content sources or your generated CSS will be missing styles.
+warn - https://tailwindcss.com/docs/content-configuration
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-8K1w0f/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+warn - Configure your content sources or your generated CSS will be missing styles.
+warn - https://tailwindcss.com/docs/content-configuration
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-8K1w0f/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-8K1w0f/packages/reports
+
+ ✓ test/components/explorer-composition.test.ts (6 tests) 1883ms
+   ✓ every page mounts the host with one screen of its own, and none draws every screen  401ms
+   ✓ the four screens of a category are made of different components  395ms
+   ✓ a catalog draws no entity view, and each entity view draws its own and not the others  1022ms
+ ✓ test/components/explorer-pages-screen.test.ts (3 tests) 22ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  03:31:14
+   Duration  3.31s (transform 672ms, setup 0ms, collect 1.07s, tests 1.91s, environment 0ms, prepare 50ms)
+

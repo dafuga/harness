@@ -1,0 +1,86 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run "$@"' -- test/components/explorer-catalog-screen.test.ts test/components/explorer-screens.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-e8jHAn/packages/reports
+
+ ❯ test/components/explorer-catalog-screen.test.ts (17 tests | 1 failed) 42ms
+   ✓ Configs exclude non-config initializer modules 6ms
+   ✓ Configs exclude non-config entry modules 1ms
+   ✓ nonvisual collections are tables of their own kind, never image cards 9ms
+   ✓ config variable orderSettings.build.cssCodeSplit has an unambiguous label 2ms
+   ✓ config variable orderSettingsExtra.enabled has an unambiguous label 1ms
+   ✓ config variable otherSettings.enabled has an unambiguous label 1ms
+   ✓ config variable orderSettings has an unambiguous label 1ms
+   ✓ service cards show only the class name and revision-scoped consumer links 2ms
+   ✓ visual component cards show the selected revision, never the parent or another entity 3ms
+   ✓ component cards keep reused screenshots revision-bound without extra source text 1ms
+   ✓ component cards leave unvalidated captures as explicit gaps 1ms
+   ✓ component cards leave wrong-build captures as explicit gaps 1ms
+   ✓ component cards leave failed captures as explicit gaps 1ms
+   ✓ component cards leave missing captures as explicit gaps 1ms
+   ✓ component cards leave unrelated captures as explicit gaps 1ms
+   ✓ a collection of a revision without a registry shows its gap and no table 1ms
+   × project style catalog renders through the embedded screen entry 6ms
+     → Embedded Code navigation renders Styles: expected '<!--[--><div class="ex-shown svelte-4…' to contain 'data-harness-component="explorer-ui-h…'
+ ❯ test/components/explorer-screens.test.ts (8 tests | 1 failed) 76ms
+   ✓ each of the twenty pages mounts the one entry of its screen, and nothing else 2ms
+   ✓ project dependencies have their own scoped page entry 0ms
+   ✓ no entry reaches the content that shows every screen, or the host that mounts it 16ms
+   ✓ collections reuse visual cards and tables without loading entity detail panes 7ms
+   ✓ an overview names its evidence; audio stays in the shared component-tab navigation 37ms
+   ✓ the entity header contract omits the removed Shared badge input 0ms
+   ✓ details and history share component captures while keeping their own screen content 9ms
+   × the content that shows any address holds no screen of its own: it mounts the entries 4ms
+     → expected [ 'EntityBehaviorScreen', …(9) ] to deeply equal [ 'EntityBehaviorScreen', …(10) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-catalog-screen.test.ts > project style catalog renders through the embedded screen entry
+AssertionError: Embedded Code navigation renders Styles: expected '<!--[--><div class="ex-shown svelte-4…' to contain 'data-harness-component="explorer-ui-h…'
+
+Expected: "data-harness-component="explorer-ui-harness-explorer-styles-screen""
+Received: "<!--[--><div class="ex-shown svelte-4wo7rr" data-harness-component="harness-explorer-content"><!--[--><div class="ex-screen svelte-7dvh2q" data-harness-component="harness-explorer-pages-screen"><div class="ex-frame svelte-18rbnt7" data-harness-component="harness-explorer-frame"><div class="ex-content" data-mode="commit"><!--[-1--><section class="ex-index" aria-labelledby="ex-index-title" data-harness-component="harness-explorer-index"><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><svg class="hx-icon svelte-1ttqmoy" data-harness-component="harness-harness-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 8h8M8 12h8M8 16h5"></path></svg><!----></li> <li aria-current="page">Pages</li></ol></nav> <h1 id="ex-index-title">Pages</h1> <p class="ex-lead">Start with the pages people use.</p> <!--[-1--><!--]--> <div class="ex-controls" role="search" aria-label="Find pages" data-harness-component="harness-explorer-controls"><label class="ex-search"><svg class="hx-icon svelte-1ttqmoy" data-harness-component="harness-harness-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M10.5 17a6.5 6.5 0 1 0 0-13a6.5 6.5 0 0 0 0 13zM15.5 15.5L21 21"></path></svg><!----> <input type="search" placeholder="Search pages…" aria-label="Search pages" value=""/></label></div><!----> <p class="ex-hidden" role="status">1 of 1 pages shown</p> <!--[2--><!--[--><section class="ex-group svelte-yj2zkj"><!--$s1--><section class="hx-module-group catalog svelte-1wl4xzi" aria-labelledby="s1-heading" data-harness-component="explorer-ui-harness-group"><!----><h2 id="s1-heading" class="svelte-1wl4xzi"><button type="button" aria-expanded="true" aria-controls="s1-body" class="svelte-1wl4xzi"><svg class="hx-icon svelte-1ttqmoy" data-harness-component="harness-harness-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M5 9l7 7 7-7"></path></svg><!----> <!--[-1--><!--]--> <span class="hx-group-title svelte-1wl4xzi">Uncategorized</span> <span class="hx-group-count svelte-1wl4xzi">1</span></button><!----></h2><!----> <div id="s1-body" class="svelte-1wl4xzi"><!--[-1--><!--]--> <!--[-1--><!--[-1--><div class="ex-page-grid svelte-s8rw2h"><!--[--><article aria-label="Orders page" data-harness-component="explorer-ui-explorer-module-card" class="svelte-zt5p7c ex-page-card ex-page-minimal"><!--[0--><a aria-label="Open Orders page" class="ex-page-open" title="orders-page · default · Captured at bbbbbbb" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/pages/app.page.orders" data-harness-component="harness-entity-link"><h2>Orders page</h2> <span class="ex-thumb"><!--[0--><img src="/harness/media/bbbbbbb-default-desktop.png" alt="Screenshot of Orders page" loading="lazy" decoding="async" onerror="this.__e=event"/><!--]--><!----></span><!----></a><!----> <div class="ex-usage svelte-1oujjw5" role="group" aria-label="Used In"><span>Used In</span><!--[0--><span>—</span><!--]--></div><!----><!--]--></article><!--]--></div><!--]--><!--]--><!----><!----></div></section><!----></section><!--]--><!--]--></section><!----><!--]--> <!--[-1--><!--]--></div></div><!----></div><!--]--></div><!--]-->"
+
+ ❯ test/components/explorer-catalog-screen.test.ts:154:58
+    152| test('project style catalog renders through the embedded screen entry'…
+    153|  const body = content('commit', { category: 'pages', screen: 'styles' …
+    154|  expect(body, 'Embedded Code navigation renders Styles').toContain(
+       |                                                          ^
+    155|   'data-harness-component="explorer-ui-harness-explorer-styles-screen"'
+    156|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/components/explorer-screens.test.ts > the content that shows any address holds no screen of its own: it mounts the entries
+AssertionError: expected [ 'EntityBehaviorScreen', …(9) ] to deeply equal [ 'EntityBehaviorScreen', …(10) ]
+
+- Expected
++ Received
+
+@@ -6,8 +6,7 @@
+    "EntityVisualScreen",
+    "ExplorerCatalogScreen",
+    "ExplorerDependenciesScreen",
+    "ExplorerPagesScreen",
+    "ExplorerPlatforms",
+-   "ExplorerStylesScreen",
+    "ExplorerTranslationsScreen",
+  ]
+
+ ❯ test/components/explorer-screens.test.ts:169:43
+    167| 
+    168| test('the content that shows any address holds no screen of its own: i…
+    169|  expect(direct('ExplorerContent').sort()).toEqual(
+       |                                           ^
+    170|   [
+    171|    ...Object.values(entries),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 23 passed (25)
+   Start at  16:38:54
+   Duration  1.70s (transform 900ms, setup 118ms, collect 1.19s, tests 118ms, environment 0ms, prepare 54ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1

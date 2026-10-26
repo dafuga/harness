@@ -1,0 +1,125 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [575.00ms]
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+Loading svelte-check in workspace: /private/tmp/harness-snapshot-ZGo2Wk/packages/reports
+Getting Svelte diagnostics...
+
+[32msvelte-check found 0 errors and 0 warnings
+[39m$ playwright test --config src/config/shellPlaywrightConfig.ts "tests/e2e/explorer-shell-search-fit.spec.ts" --grep "at (685|834|1024) pixels the search" "--reporter=list"
+
+Running 3 tests using 1 worker
+
+  ✘  1 tests/e2e/explorer-shell-search-fit.spec.ts:102:2 › at 1024 pixels the search, closed, focused or open, leaves the revision controls whole (186ms)
+  ✘  2 tests/e2e/explorer-shell-search-fit.spec.ts:102:2 › at 834 pixels the search, closed, focused or open, leaves the revision controls whole (178ms)
+  ✘  3 tests/e2e/explorer-shell-search-fit.spec.ts:102:2 › at 685 pixels the search, closed, focused or open, leaves the revision controls whole (179ms)
+
+
+  1) tests/e2e/explorer-shell-search-fit.spec.ts:102:2 › at 1024 pixels the search, closed, focused or open, leaves the revision controls whole 
+
+    Error: tablet revision and search controls use at most 120 pixels
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 120
+    Received:    160.375
+
+      87 | 			searchRow.y + searchRow.height - revision.y,
+      88 | 			'tablet revision and search controls use at most 120 pixels'
+    > 89 | 		).toBeLessThanOrEqual(120);
+         | 		  ^
+      90 | 		for (const control of [...placed, search]) expect(control.height).toBeGreaterThanOrEqual(44);
+      91 | 	}
+      92 | }
+        at fits (/private/tmp/harness-snapshot-ZGo2Wk/packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts:89:5)
+        at /private/tmp/harness-snapshot-ZGo2Wk/packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts:107:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-search-fit--24bc6-the-revision-controls-whole/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-fit--24bc6-the-revision-controls-whole/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-fit--24bc6-the-revision-controls-whole/error-context.md
+
+  2) tests/e2e/explorer-shell-search-fit.spec.ts:102:2 › at 834 pixels the search, closed, focused or open, leaves the revision controls whole 
+
+    Error: tablet revision and search controls use at most 120 pixels
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 120
+    Received:    160.375
+
+      87 | 			searchRow.y + searchRow.height - revision.y,
+      88 | 			'tablet revision and search controls use at most 120 pixels'
+    > 89 | 		).toBeLessThanOrEqual(120);
+         | 		  ^
+      90 | 		for (const control of [...placed, search]) expect(control.height).toBeGreaterThanOrEqual(44);
+      91 | 	}
+      92 | }
+        at fits (/private/tmp/harness-snapshot-ZGo2Wk/packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts:89:5)
+        at /private/tmp/harness-snapshot-ZGo2Wk/packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts:107:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-search-fit--da24c-the-revision-controls-whole/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-fit--da24c-the-revision-controls-whole/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-fit--da24c-the-revision-controls-whole/error-context.md
+
+  3) tests/e2e/explorer-shell-search-fit.spec.ts:102:2 › at 685 pixels the search, closed, focused or open, leaves the revision controls whole 
+
+    Error: tablet revision fields share a row
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 2
+    Received:   95.375
+
+      79 | 	);
+      80 | 	if (width >= 600 && width <= 1024) {
+    > 81 | 		expect(Math.abs(placed[0].y - placed[1].y), 'tablet revision fields share a row').toBeLessThan(
+         | 		                                                                                  ^
+      82 | 			2
+      83 | 		);
+      84 | 		const revision = await box(bar(page).locator('.hx-revision'));
+        at fits (/private/tmp/harness-snapshot-ZGo2Wk/packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts:81:85)
+        at /private/tmp/harness-snapshot-ZGo2Wk/packages/reports/tests/e2e/explorer-shell-search-fit.spec.ts:107:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-search-fit--3cc51-the-revision-controls-whole/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-fit--3cc51-the-revision-controls-whole/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-search-fit--3cc51-the-revision-controls-whole/error-context.md
+
+  3 failed
+    tests/e2e/explorer-shell-search-fit.spec.ts:102:2 › at 1024 pixels the search, closed, focused or open, leaves the revision controls whole 
+    tests/e2e/explorer-shell-search-fit.spec.ts:102:2 › at 834 pixels the search, closed, focused or open, leaves the revision controls whole 
+    tests/e2e/explorer-shell-search-fit.spec.ts:102:2 › at 685 pixels the search, closed, focused or open, leaves the revision controls whole 
+error: script "test:shell" exited with code 1

@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DDicOZ
+
+ ✓ test/utils/run-isolated.test.ts (5 tests) 8262ms
+   ✓ a command that ignores termination is still stopped at its limit  884ms
+   ✓ children of a timed-out or finished command are torn down with it  2504ms
+   ✓ a process that left the group of a finished command is stopped and reported, never left running  4500ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  05:18:25
+   Duration  8.48s (transform 32ms, setup 14ms, collect 15ms, tests 8.26s, environment 0ms, prepare 49ms)
+

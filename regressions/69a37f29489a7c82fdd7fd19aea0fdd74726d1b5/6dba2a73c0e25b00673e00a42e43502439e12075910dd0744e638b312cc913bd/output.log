@@ -1,0 +1,105 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [11.13s]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts --grep "Models code opens only from the detail Source tab at desktop width|source file selection and closing"
+
+Running 2 tests using 1 worker
+
+  ✓  1 test/entity-preview-source.spec.ts:73:3 › Models code opens only from the detail Source tab at desktop width (740ms)
+  ✓  2 test/entity-preview-source.spec.ts:117:1 › source file selection and closing retain the detail Source tab (250ms)
+
+  2 passed (4.1s)
+$ vitest run test/components/entity-details.test.ts test/components/entity-details-screen.test.ts
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-dJMh9U/packages/reports
+
+ ✓ test/components/entity-details.test.ts (7 tests) 29ms
+ ✓ test/components/entity-details-screen.test.ts (3 tests) 24ms
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  16:48:41
+   Duration  1.97s (transform 891ms, setup 0ms, collect 1.37s, tests 53ms, environment 0ms, prepare 80ms)
+
+$ playwright test entity-source-code.spec.ts --grep "1440px"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+[WebServer] ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+[WebServer] 
+[WebServer]     tsconfig.json:2:12:
+[WebServer]       2 │   "extends": "./.svelte-kit/tsconfig.json",
+[WebServer]         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[WebServer] 
+
+Running 1 test using 1 worker
+
+  ✓  1 tests/e2e/entity-source-code.spec.ts:48:2 › only the detail Source tab opens code at the selected revision at 1440px (1.6s)
+
+  1 passed (4.4s)
+$ bun run sync:shared && vitest run test/project-integration.test.ts -t "project selection and slash branches"
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-dJMh9U/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/project-integration.test.ts (4 tests | 3 skipped) 4002ms
+   ✓ project selection and slash branches retain full ancestry and explicit historical views are immutable  4002ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 3 skipped (4)
+   Start at  16:48:49
+   Duration  4.57s (transform 206ms, setup 0ms, collect 344ms, tests 4.00s, environment 0ms, prepare 41ms)
+
+$ bun run sync:shared && vitest run test/services/hub-projection.test.ts -t "GitHub snapshot"
+$ bun run --cwd ../desktop svelte-kit sync && bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-dJMh9U/packages/hub
+
+ ✓ test/services/hub-projection.test.ts (3 tests | 2 skipped) 11ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 2 skipped (3)
+   Start at  16:48:56
+   Duration  1.00s (transform 484ms, setup 0ms, collect 762ms, tests 11ms, environment 0ms, prepare 40ms)
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-dJMh9U
+
+ ✓ test/history-index.e2e.test.ts (4 tests | 3 skipped) 18872ms
+   ✓ the index is deterministic and names every commit, verified or not  3005ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 3 skipped (4)
+   Start at  16:48:58
+   Duration  19.18s (transform 47ms, setup 8ms, collect 45ms, tests 18.87s, environment 0ms, prepare 40ms)
+

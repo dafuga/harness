@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ljai0H
+
+ ✓ test/history-reasons.e2e.test.ts (3 tests) 15110ms
+   ✓ the reasons of a committed range are kept in notes and explain it in any working tree  1680ms
+   ✓ a change without a reason is reported and nothing is invented for it  447ms
+   ✓ a record of a longer range does not date the reasons of earlier commits to its commit  9416ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  01:49:00
+   Duration  15.32s (transform 29ms, setup 9ms, collect 26ms, tests 15.11s, environment 0ms, prepare 32ms)
+

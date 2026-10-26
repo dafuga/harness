@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rBWHPX/packages/desktop
+
+ ✓ test/remote-permissions.test.ts (6 tests) 9735ms
+   ✓ a device reaches only the local projects it was granted  2282ms
+   ✓ folders, hosted credentials and the control port are not device methods  984ms
+   ✓ without the agents permission a device reads and comments only  1316ms
+   ✓ a change needs the checked-out tip: history and other branches are read-only  2261ms
+   ✓ answers and refusals carry no local path  1761ms
+   ✓ bridge inputs follow the same rules as on the desktop  1131ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  21:23:24
+   Duration  10.36s (transform 314ms, setup 0ms, collect 491ms, tests 9.74s, environment 0ms, prepare 23ms)
+

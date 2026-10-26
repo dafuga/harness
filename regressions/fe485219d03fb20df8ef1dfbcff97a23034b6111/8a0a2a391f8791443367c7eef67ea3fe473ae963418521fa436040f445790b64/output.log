@@ -1,0 +1,39 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-e4IPxz
+
+ ❯ test/services/module-system/module-catalog.test.ts (6 tests | 1 failed | 5 skipped) 12ms
+   ↓ module library exposes Email and Offline with instructions and resource generators
+   ↓ installing modules enables resource generation without replacing existing source
+   ↓ projects define a resource generator once and the catalog discovers it
+   ↓ module admission rejects invalid definitions, collisions and escaping output paths
+   × included modules expose every existing Code catalog through the module contract 10ms
+     → expected [] to have a length of 9 but got +0
+   ↓ included and project modules use declared catalogs and real scaffold generation
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/module-system/module-catalog.test.ts > included modules expose every existing Code catalog through the module contract
+AssertionError: expected [] to have a length of 9 but got +0
+
+- Expected
++ Received
+
+- 9
++ 0
+
+ ❯ test/services/module-system/module-catalog.test.ts:147:19
+    145|  const catalog = await new ModuleCatalogService().load(await project()…
+    146|  const included = catalog.modules.filter((entry) => entry.definition.i…
+    147|  expect(included).toHaveLength(9);
+       |                   ^
+    148|  expect(
+    149|   included.every((entry) =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  15:27:34
+   Duration  2.56s (transform 93ms, setup 84ms, collect 55ms, tests 12ms, environment 0ms, prepare 26ms)
+

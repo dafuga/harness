@@ -1,0 +1,13 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-ElRlB1/packages/hub[39m
+
+ [32m✓[39m test/test-preview-refusal.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 3511[2mms[22m[39m
+   [33m[2m✓[22m[39m a server that already answers on the preview port is refused, and no test is run on it [33m 1234[2mms[22m[39m
+   [33m[2m✓[22m[39m a port override that is no port is refused by its name before anything starts [33m 1888[2mms[22m[39m
+   [33m[2m✓[22m[39m with no port named the preview has a port of its own, apart from development, and is not reused [33m 388[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 20:56:39
+[2m   Duration [22m 3.79s[2m (transform 32ms, setup 0ms, collect 33ms, tests 3.51s, environment 0ms, prepare 54ms)[22m
+

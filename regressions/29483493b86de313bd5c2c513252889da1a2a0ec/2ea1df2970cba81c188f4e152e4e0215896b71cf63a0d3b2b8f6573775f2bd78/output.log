@@ -1,0 +1,34 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-R3bOOm
+
+ ✓ test/cli-environment.e2e.test.ts (5 tests) 1806ms
+   ✓ shared fixture support cli imports in a standalone Bun process  449ms
+   ✓ shared fixture support unitProject imports in a standalone Bun process  431ms
+   ✓ shared fixture support impactRepo imports in a standalone Bun process  441ms
+   ✓ shared fixture support verifyRepo imports in a standalone Bun process  413ms
+ ✓ test/units-policy.e2e.test.ts (5 tests) 46679ms
+   ✓ CLI exposes execution targets and component versions, and refuses relaxed tolerance  9420ms
+   ✓ CLI records lineage when retired source is recreated under a new identity  8930ms
+   ✓ CLI labels a supplied responsibility as declared and a generated one as derived  4373ms
+   ✓ public configs require real source controls and retain their reviewed declarations  16065ms
+   ✓ source-bound reviews repair historical default runtime targets without changing source commits  7890ms
+ ✓ test/module-data.e2e.test.ts (3 tests) 30889ms
+   ✓ validate persists revision-bound module gaps, filters them and invalidates cached searches  19760ms
+   ✓ validate commits source-derived page API usage and explicit visual data gaps  5054ms
+   ✓ historical helper layout does not masquerade as missing module metadata  6069ms
+ ✓ test/api-registry.e2e.test.ts (8 tests) 10531ms
+   ✓ API CLI lists every registered local unit, including backend entries outside the catalog  1373ms
+   ✓ API CLI lists every registered hosted unit, including backend entries outside the catalog  1361ms
+   ✓ API CLI reads local backend contracts without relying on a visual catalog entry  1327ms
+   ✓ API CLI reads hosted backend contracts without relying on a visual catalog entry  1298ms
+   ✓ API CLI lists registered local APIs even when their visual snapshot is older  1268ms
+   ✓ API CLI lists registered hosted APIs even when their visual snapshot is older  1268ms
+   ✓ API CLI reads local committed page APIs without a graph script  1276ms
+   ✓ API CLI reads hosted committed page APIs without a graph script  1359ms
+ ✓ test/adapters/git-source-history/module-data-source.test.ts (1 test) 5ms
+
+ Test Files  5 passed (5)
+      Tests  22 passed (22)
+   Start at  13:13:47
+   Duration  94.17s (transform 195ms, setup 348ms, collect 178ms, tests 89.91s, environment 0ms, prepare 177ms)
+

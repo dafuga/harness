@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4Tk9NY
+
+ ✓ test/explain-versions.e2e.test.ts (4 tests) 18973ms
+   ✓ under writing 2 an attempt of 16 words is refused when it is written, and nothing is stored  3768ms
+   ✓ a revision that declares writing 1 keeps its 20 words, written or put in by hand  2784ms
+   ✓ a note put in by hand for a writing 2 change is held to 15 words, whatever date it carries  4353ms
+   ✓ a range of both versions holds each step to its own version  4468ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  10:37:49
+   Duration  19.22s (transform 33ms, setup 8ms, collect 52ms, tests 18.97s, environment 0ms, prepare 38ms)
+

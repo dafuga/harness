@@ -1,0 +1,45 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-MS2QAl
+
+ ✓ test/history-index.e2e.test.ts (4 tests) 22505ms
+   ✓ the index is deterministic and names every commit, verified or not  1774ms
+   ✓ a revision carries its graph, comparison, inherited provenance, media and reasons  834ms
+   ✓ growth and benchmarks are kept per unit, and another profile is a separate series  3451ms
+   ✓ a fresh clone rebuilds the same index from Git alone, and missing media is a stated gap  4526ms
+ ✓ test/loop.e2e.test.ts (6 tests) 31245ms
+   ✓ loop CLI traces work and remains audit-safe in generated projects  1801ms
+   ✓ generated app and lib instructions mention harness loops  597ms
+   ✓ loop CLI creates from templates, searches, guides next, and evaluates  1225ms
+   ✓ bug-fix CLI records proof and leaves verification pending across failed and passing checks  8770ms
+   ✓ fix CLI records proof and leaves verification pending across failed and passing checks  8816ms
+   ✓ regression-prevention CLI records proof and leaves verification pending across failed and passing checks  10036ms
+ ✓ test/case.test.ts (2 tests) 7ms
+
+ Test Files  3 passed (3)
+      Tests  12 passed (12)
+   Start at  15:26:30
+   Duration  56.32s (transform 53ms, setup 12ms, collect 78ms, tests 53.76s, environment 0ms, prepare 77ms)
+
+$ vitest run test/utils/entity-measure.test.ts test/components/harness-verdict.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-MS2QAl/packages/reports
+
+ ✓ test/components/harness-verdict.test.ts (6 tests) 4ms
+ ✓ test/utils/entity-measure.test.ts (8 tests) 3ms
+
+ Test Files  2 passed (2)
+      Tests  14 passed (14)
+   Start at  15:27:27
+   Duration  679ms (transform 194ms, setup 0ms, collect 253ms, tests 7ms, environment 0ms, prepare 45ms)
+
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts entity-preview-marks.spec.ts --grep "measurements at"
+
+Running 3 tests using 1 worker
+
+(node:25275) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-marks.spec.ts:208:2 › measurements at desktop: observations need no budget and missing evidence is neutral (336ms)
+  ✓  2 test/entity-preview-marks.spec.ts:208:2 › measurements at tablet: observations need no budget and missing evidence is neutral (215ms)
+  ✓  3 test/entity-preview-marks.spec.ts:208:2 › measurements at mobile: observations need no budget and missing evidence is neutral (212ms)
+
+  3 passed (2.8s)

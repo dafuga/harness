@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-PkpOjJ/packages/desktop
+
+ ✓ test/local-transport-bounds.test.ts (4 tests) 9962ms
+   ✓ a socket opens only with a fresh ticket, from the app page, on the transport path  2439ms
+   ✓ a ticket is short-lived, and the number of sockets is bounded  2000ms
+   ✓ frames that break the bounds close the socket and reach no operation  2249ms
+   ✓ a request that never completes is never performed  3272ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  20:46:23
+   Duration  12.01s (transform 1.04s, setup 0ms, collect 1.74s, tests 9.96s, environment 0ms, prepare 61ms)
+

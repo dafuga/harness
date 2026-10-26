@@ -1,0 +1,724 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-144Lc7
+
+ ❯ test/services/unit-index.test.ts (12 tests | 1 failed | 11 skipped) 215ms
+   ↓ recorded source moves retain definitions, owner-local placement and registered identity
+   ↓ public route filenames retain their registered ownership
+   ↓ declared preview and documentation survive source re-indexing
+   ↓ declared execution targets survive re-indexing and follow a moved default entry
+   ↓ recreating retired source elsewhere records lineage to the retired identity
+   ↓ a unit that takes a retired name records lineage even when its symbols differ
+   ↓ lineage cannot be dropped by editing the manifest
+   ↓ unrelated new units carry no lineage
+   ↓ a declared responsibility survives re-indexing while a derived one follows the unit
+   ↓ an alternative implementation is a related unit linked by a declared contract dependency
+   ↓ several owned files produce identical metadata after one indexing pass
+   × recorded service moves preserve implementations and registered owner-local placement 214ms
+     → service ownership: 513 gaps; packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts: missing; packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts: missing; packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts: missing; packages/desktop/src/lib/desktop-initialization/NativeAuthService.ts: missing; src/workflows/generate-code/exportPlans.ts: missing; src/workflows/record-regression/RegressionProofService.ts: missing: expected [ …(513) ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/unit-index.test.ts > recorded service moves preserve implementations and registered owner-local placement
+AssertionError: service ownership: 513 gaps; packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts: missing; packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts: missing; packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts: missing; packages/desktop/src/lib/desktop-initialization/NativeAuthService.ts: missing; src/workflows/generate-code/exportPlans.ts: missing; src/workflows/record-regression/RegressionProofService.ts: missing: expected [ …(513) ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/NativeConnectionService.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/NativeAuthService.ts: missing",[39m
+[31m+   "src/workflows/generate-code/exportPlans.ts: missing",[39m
+[31m+   "src/workflows/record-regression/RegressionProofService.ts: missing",[39m
+[31m+   "src/workflows/load-units/loadUnits.ts: missing",[39m
+[31m+   "src/workflows/load-units/unit-index-service/UnitIndexService.ts: missing",[39m
+[31m+   "src/workflows/load-units/unit-index-service/deriveManifest.ts: missing",[39m
+[31m+   "src/workflows/load-units/unit-index-service/derivedResponsibility.ts: missing",[39m
+[31m+   "src/workflows/load-units/unit-index-service/unitLineage.ts: missing",[39m
+[31m+   "src/cli/program/AnalyticsCommand.ts: missing",[39m
+[31m+   "src/cli/program/AnalyticsService.ts: missing",[39m
+[31m+   "src/cli/program/analyticsMetrics.ts: missing",[39m
+[31m+   "src/cli/program/analyticsJevMetrics.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-bridge/desktopBridge.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-bridge/RecordedEvidenceService.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/services/desktop-bridge-service/DesktopBridgeService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/desktop-bridge-service/HostedProjectService.ts: missing",[39m
+[31m+   "src/cli/program/loop.ts: missing",[39m
+[31m+   "src/cli/program/loopEvaluate.ts: missing",[39m
+[31m+   "scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts: missing",[39m
+[31m+   "src/cli/program/generate.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/RemoteHostRuntimeService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/RemoteDeviceSessionsService.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceQuery.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-api-controller/hubEvidenceRead.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-api-controller/hubHttp.ts: missing",[39m
+[31m+   "scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/ReportImportService.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/VitestReportAdapter.ts: missing",[39m
+[31m+   "packages/remote/src/services/wire-session-service/EventLogService.ts: missing",[39m
+[31m+   "src/cli/program/ImpactCommand.ts: missing",[39m
+[31m+   "src/services/agent-activity-service/AgentRegistryRepository.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/hostRuntime.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/HostCommandService.ts: missing",[39m
+[31m+   "packages/desktop/src/utils/select-environment/selectEnvironment.ts: missing",[39m
+[31m+   "packages/desktop/src/utils/select-environment/ElectronEnvironmentAdapter.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/installation-token-service/InstallationTokenService.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/installation-token-service/githubAppJwt.ts: missing",[39m
+[31m+   "src/cli/program/HistoryCommand.ts: missing",[39m
+[31m+   "src/cli/program/importReports.ts: missing",[39m
+[31m+   "src/workflows/run-budget/runBudget.ts: missing",[39m
+[31m+   "src/workflows/run-budget/UnitBenchmarkService.ts: missing",[39m
+[31m+   "src/cli/program/BudgetCommand.ts: missing",[39m
+[31m+   "src/cli/program/signBudget.ts: missing",[39m
+[31m+   "src/cli/program/new.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hubArtifactCommit.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hubCatalog.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesigns.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntity.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hubEntityContract.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hubPng.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hubPngChunks.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSize.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSnapshot.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hubThreads.ts: missing",[39m
+[31m+   "src/cli/program/KernelCommand.ts: missing",[39m
+[31m+   "src/cli/program/run-kernel-bench/benchMeasurement.ts: missing",[39m
+[31m+   "src/cli/program/run-kernel-bench/runKernelBench.ts: missing",[39m
+[31m+   "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts: missing",[39m
+[31m+   "src/cli/program/run-kernel-bench/kernel-benchmark-service/benchSamples.ts: missing",[39m
+[31m+   "src/cli/program/run-kernel-bench/kernel-benchmark-service/peakMemory.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hostedImage.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/relay-link-service/RelayLinkService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/relay-link-service/relayFrame.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/NativeAccountStatusService.ts: missing",[39m
+[31m+   "src/cli/program/UnitsCommand.ts: missing",[39m
+[31m+   "src/cli/program/inspectUnits.ts: missing",[39m
+[31m+   "src/workflows/run-verify/runVerify.ts: missing",[39m
+[31m+   "src/workflows/run-verify/verification-service/VerificationService.ts: missing",[39m
+[31m+   "src/workflows/run-verify/verification-service/scenarioCoverage.ts: missing",[39m
+[31m+   "src/workflows/run-verify/verification-service/sealRecord.ts: missing",[39m
+[31m+   "src/workflows/run-verify/verification-service/verifyPlan.ts: missing",[39m
+[31m+   "src/workflows/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts: missing",[39m
+[31m+   "src/workflows/run-verify/verification-service/record-assembly-service/recordedBuilds.ts: missing",[39m
+[31m+   "src/workflows/run-verify/verification-service/record-assembly-service/sealRecord.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/stores/AgentSettingsAdapter.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/HubAuthController.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/RemoteLifecycleService.ts: missing",[39m
+[31m+   "src/cli/program/CodexCommand.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/report-retention-service/ReportRetentionService.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/report-retention-service/reportCleanupLog.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/report-retention-service/reportLocalCleanup.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/report-retention-service/ReportPagesRetentionAdapter.ts: missing",[39m
+[31m+   "src/workflows/loop-templates/loopTemplates.ts: missing",[39m
+[31m+   "src/workflows/loop-templates/builtInLoopTemplates.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/PlaywrightReportAdapter.ts: missing",[39m
+[31m+   "src/cli/program/manageUnits.ts: missing",[39m
+[31m+   "src/cli/program/ExplainCommand.ts: missing",[39m
+[31m+   "packages/desktop/src/services/project-session-service/ProjectSessionService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/project-session-service/catalog-service/CatalogService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/project-session-service/catalog-service/catalogDetail.ts: missing",[39m
+[31m+   "packages/desktop/src/services/project-session-service/catalog-service/catalogHistory.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-bridge/ProjectOperationsService.ts: missing",[39m
+[31m+   "packages/relay/src/lib/relay/PublicRelayController.ts: missing",[39m
+[31m+   "packages/relay/src/lib/relay/ConnectGuardMiddleware.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/ResendEmailAdapter.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/EmailProofController.ts: missing",[39m
+[31m+   "packages/reports/src/routes/api/replay-video/replay-video-service/ReplayVideoService.ts: missing",[39m
+[31m+   "packages/reports/src/routes/api/replay-video/replay-video-service/replayVideo.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteArtifactCacheService.ts: missing",[39m
+[31m+   "src/cli/program/ConsoleCommand.ts: missing",[39m
+[31m+   "src/cli/program/installConsole.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/HostRegistryService.ts: missing",[39m
+[31m+   "src/cli/program/buildHistory.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/socket-frame-service/SocketFrameService.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/socket-frame-service/frameTooLarge.ts: missing",[39m
+[31m+   "src/workflows/run-verify/TrustedBaseService.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/HostSocketsAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/LocalTransportService.ts: missing",[39m
+[31m+   "packages/reports/src/lib/console-workspace/ConsoleBridgeAdapter.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/HostStorageAdapter.ts: missing",[39m
+[31m+   "src/cli/program/info.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/HostLinkService.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/GoogleIdentityService.ts: missing",[39m
+[31m+   "src/cli/program/ScenariosCommand.ts: missing",[39m
+[31m+   "src/cli/program/ResponseCheckCommand.ts: missing",[39m
+[31m+   "src/cli/program/runResponseCheck.ts: missing",[39m
+[31m+   "src/cli/program/responseCheckInput.ts: missing",[39m
+[31m+   "src/serializers/claude-tools-serializer/ClaudeToolsSerializer.ts: missing",[39m
+[31m+   "src/serializers/claude-tools-serializer/GatewayEventsService.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubNotes.ts: missing",[39m
+[31m+   "packages/hub/src/services/hub-evidence-service/hub-attached-service/HubAttachedService.ts: missing",[39m
+[31m+   "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubAttachedRecord.ts: missing",[39m
+[31m+   "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubEvidenceFile.ts: missing",[39m
+[31m+   "packages/hub/src/services/hub-evidence-service/hub-attached-service/hubPinnedSource.ts: missing",[39m
+[31m+   "packages/desktop/src/utils/select-environment/CapacitorEnvironmentAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/utils/select-environment/CapacitorProjectsService.ts: missing",[39m
+[31m+   "src/cli/program/console-install-service/ConsoleInstallService.ts: missing",[39m
+[31m+   "src/cli/program/console-install-service/consoleDataModules.ts: missing",[39m
+[31m+   "src/cli/program/console-install-service/consoleHostFiles.ts: missing",[39m
+[31m+   "src/cli/program/console-install-service/installableHost.ts: missing",[39m
+[31m+   "src/cli/program/HooksCommand.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/hostedEvidencePath.ts: missing",[39m
+[31m+   "src/cli/program/ActivityCommand.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/device-session-service/DeviceSessionService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/device-session-service/remoteFailureText.ts: missing",[39m
+[31m+   "src/cli/program/legacy-import-service/LegacyImportService.ts: missing",[39m
+[31m+   "src/cli/program/legacy-import-service/legacyReport.ts: missing",[39m
+[31m+   "src/cli/program/legacy-import-service/LegacyReportRepository.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/projection-cache-service/ProjectionCacheService.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/projection-cache-service/projectionCacheDiscard.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/projection-cache-service/projectionCachePurge.ts: missing",[39m
+[31m+   "scripts/prepare-desktop-experiment/DesktopExperimentService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/RemotePairingControlService.ts: missing",[39m
+[31m+   "packages/hub/src/services/hub-evidence-service/HubRecordStatusService.ts: missing",[39m
+[31m+   "packages/reports/src/components/harness/harness-compare/HandlerRuntimeAdapter.ts: missing",[39m
+[31m+   "src/cli/program/generateUnit.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/MiraReportAdapter.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/PairingController.ts: missing",[39m
+[31m+   "src/services/history-status-service/HistoryStatusService.ts: missing",[39m
+[31m+   "src/services/history-status-service/attached-record-service/AttachedRecordService.ts: missing",[39m
+[31m+   "src/services/history-status-service/attached-record-service/lfsPointer.ts: missing",[39m
+[31m+   "packages/desktop/src/services/desktop-run-service/project-run-service/ProjectRunService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/desktop-run-service/project-run-service/projectProposal.ts: missing",[39m
+[31m+   "packages/desktop/src/services/desktop-run-service/project-run-service/proposalUnits.ts: missing",[39m
+[31m+   "src/cli/program/runHooks.ts: missing",[39m
+[31m+   "src/cli/program/syncHistory.ts: missing",[39m
+[31m+   "src/cli/program/history-sync-service/HistorySyncService.ts: missing",[39m
+[31m+   "src/cli/program/history-sync-service/historyRefs.ts: missing",[39m
+[31m+   "packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/services/project-session-service/git-source-adapter/gitBlobs.ts: missing",[39m
+[31m+   "packages/desktop/src/services/project-session-service/git-source-adapter/gitRead.ts: missing",[39m
+[31m+   "src/cli/program/inspectScenarios.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/ManageController.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/RemoteRegistrationAdapter.ts: missing",[39m
+[31m+   "src/workflows/run-verify/verification-service/SnapshotRunService.ts: missing",[39m
+[31m+   "src/workflows/run-verify/verification-service/CheckRunService.ts: missing",[39m
+[31m+   "src/workflows/run-verify/verification-service/check-run-service/CheckRunService.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/ReportStorageSyncService.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/request-session-service/RequestSessionService.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/request-session-service/authHttp.ts: missing",[39m
+[31m+   "src/cli/program/VerifyCommand.ts: missing",[39m
+[31m+   "src/cli/program/analyticsHtml.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts: missing",[39m
+[31m+   "src/cli/program/ReportCommand.ts: missing",[39m
+[31m+   "src/cli/program/run-report/reportsEnvironment.ts: missing",[39m
+[31m+   "src/cli/program/run-report/runReport.ts: missing",[39m
+[31m+   "packages/hub/src/hooks.server/hooks.server.ts: missing",[39m
+[31m+   "packages/hub/src/hooks.server/HubResponsesMiddleware.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/device-session-service/device-operations-service/deviceCapabilities.ts: missing",[39m
+[31m+   "packages/desktop/src/services/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningMessage.ts: missing",[39m
+[31m+   "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningReads.ts: missing",[39m
+[31m+   "packages/desktop/src/services/project-session-service/planning-facade-adapter/planningWrites.ts: missing",[39m
+[31m+   "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/cachedSnapshot.ts: missing",[39m
+[31m+   "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteArtifact.ts: missing",[39m
+[31m+   "packages/desktop/src/utils/select-environment/capacitor-bridge-adapter/remoteGrant.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/preload-initialization/initializePreload.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/preload-initialization/LocalTransportClientService.ts: missing",[39m
+[31m+   "src/cli/program/runKernelBoundary.ts: missing",[39m
+[31m+   "src/cli/program/manageLoop.ts: missing",[39m
+[31m+   "src/cli/program/LegacyHistoryService.ts: missing",[39m
+[31m+   "src/services/revision-detail-service/source-impact-service/SourceImpactService.ts: missing",[39m
+[31m+   "src/services/revision-detail-service/source-impact-service/sideImpact.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/host-pairing-service/HostPairingService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/host-pairing-service/remoteIdentity.ts: missing",[39m
+[31m+   "src/cli/program/responseCheckEvaluate.ts: missing",[39m
+[31m+   "src/services/cpu-usage-service/cpu-process-adapter/CpuProcessAdapter.ts: missing",[39m
+[31m+   "src/services/cpu-usage-service/cpu-process-adapter/cpuProcesses.ts: missing",[39m
+[31m+   "src/cli/program/codex-gateway-service/CodexGatewayService.ts: missing",[39m
+[31m+   "src/cli/program/codex-gateway-service/gatewayReplay.ts: missing",[39m
+[31m+   "src/cli/program/codex-gateway-service/gatewayStream.ts: missing",[39m
+[31m+   "src/cli/program/codex-gateway-service/ClaudeGatewayAdapter.ts: missing",[39m
+[31m+   "packages/reports/src/lib/server-hooks/hooks.server.ts: missing",[39m
+[31m+   "packages/reports/src/lib/server-hooks/ConsoleAgentController.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/SocketAcceptService.ts: missing",[39m
+[31m+   "src/cli/program/loopNext.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/RemoteProjectionService.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/remote-http-project-adapter/ProjectDiscoveryService.ts: missing",[39m
+[31m+   "src/audit/reviewCleanCode.ts: missing",[39m
+[31m+   "packages/desktop/src/services/desktop-run-service/PlanRunService.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/DeviceRevocationService.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/GithubApiAdapter.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/D1AuthStoreAdapter.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1CredentialStores.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1EmailStores.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1GrantStore.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/d1-auth-store-adapter/d1OneTimeStores.ts: missing",[39m
+[31m+   "src/cli/program/history-index-service/HistoryIndexService.ts: missing",[39m
+[31m+   "src/cli/program/history-index-service/budgetReviews.ts: missing",[39m
+[31m+   "src/cli/program/history-index-service/historySeries.ts: missing",[39m
+[31m+   "src/cli/program/history-index-service/revisionChanges.ts: missing",[39m
+[31m+   "src/cli/program/history-index-service/history-media-service/HistoryMediaService.ts: missing",[39m
+[31m+   "src/cli/program/history-index-service/history-media-service/mediaPlace.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/PairingOfferService.ts: missing",[39m
+[31m+   "src/services/agent-activity-service/ProcessIdentityAdapter.ts: missing",[39m
+[31m+   "packages/remote/src/services/wire-session-service/ResponseLedgerService.ts: missing",[39m
+[31m+   "src/cli/program/ConsoleUninstallService.ts: missing",[39m
+[31m+   "packages/reports/src/lib/server-hooks/ConsoleAgentService.ts: missing",[39m
+[31m+   "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService.ts: missing",[39m
+[31m+   "src/cli/program/codex-gateway-service/claude-query-service/gatewayMessages.ts: missing",[39m
+[31m+   "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions.ts: missing",[39m
+[31m+   "src/cli/program/codex-gateway-service/claude-query-service/gatewayPrompt.ts: missing",[39m
+[31m+   "src/cli/program/codex-picker-command/CodexPickerCommand.ts: missing",[39m
+[31m+   "src/cli/program/codex-picker-command/pickerPaths.ts: missing",[39m
+[31m+   "src/cli/program/codex-picker-command/PickerPreviewService.ts: missing",[39m
+[31m+   "packages/planning/src/lib/planning/planning-service/PlanningService.ts: missing",[39m
+[31m+   "packages/planning/src/lib/planning/planning-service/planDesign.ts: missing",[39m
+[31m+   "packages/planning/src/lib/planning/planning-service/planHistory.ts: missing",[39m
+[31m+   "packages/planning/src/lib/planning/planning-service/planOptions.ts: missing",[39m
+[31m+   "packages/planning/src/lib/planning/planning-service/planReads.ts: missing",[39m
+[31m+   "packages/planning/src/lib/planning/planning-service/planRegistry.ts: missing",[39m
+[31m+   "packages/planning/src/lib/planning/planning-service/planThread.ts: missing",[39m
+[31m+   "packages/planning/src/lib/planning/planning-service/planWrite.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-bridge/PinnedHistoryAdapter.ts: missing",[39m
+[31m+   "src/cli/program/codex-gateway-service/codex-session-repository/CodexSessionRepository.ts: missing",[39m
+[31m+   "src/cli/program/codex-gateway-service/codex-session-repository/gatewayTypes.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/GithubOwnerService.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/report-retention-service/R2ReportRetentionAdapter.ts: missing",[39m
+[31m+   "src/workflows/run-verify/verification-service/record-assembly-service/VerificationGates.ts: missing",[39m
+[31m+   "src/cli/program/persistReasons.ts: missing",[39m
+[31m+   "src/cli/program/run-kernel/impactKernel.ts: missing",[39m
+[31m+   "src/cli/program/run-kernel/kernelWorkload.ts: missing",[39m
+[31m+   "src/cli/program/run-kernel/runKernel.ts: missing",[39m
+[31m+   "src/cli/program/run-kernel/RuntimeServerService.ts: missing",[39m
+[31m+   "src/cli/program/loopSearch.ts: missing",[39m
+[31m+   "src/cli/program/audit.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/report-publish-service/ReportPublishService.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/report-publish-service/reportPages.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/report-publish-service/reportPublication.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/report-publish-service/reportPublicationVerify.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/PairingExchangeService.ts: missing",[39m
+[31m+   "src/cli/program/hook-run-service/HookRunService.ts: missing",[39m
+[31m+   "src/cli/program/hook-run-service/pushedRefs.ts: missing",[39m
+[31m+   "src/services/native-picker-bridge-service/NativePickerBridgeService.ts: missing",[39m
+[31m+   "src/services/native-picker-bridge-service/NativePickerDefaultsService.ts: missing",[39m
+[31m+   "src/cli/program/runAudit.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/github-connection-controller/GithubConnectionController.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/github-connection-controller/authHttp.ts: missing",[39m
+[31m+   "packages/reports/src/lib/preview-node/previewNode.ts: missing",[39m
+[31m+   "packages/reports/src/lib/preview-node/preview-worker-service/PreviewWorkerService.ts: missing",[39m
+[31m+   "packages/reports/src/lib/preview-node/preview-worker-service/previewHealth.ts: missing",[39m
+[31m+   "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/GithubGrantService.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-bridge/ProjectImageCacheService.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/report-server-service/ReportServerService.ts: missing",[39m
+[31m+   "packages/reports/src/services/report-command-service/report-server-service/reportServerRecord.ts: missing",[39m
+[31m+   "src/adapters/wasm-runtime-adapter/WasmRuntimeAdapter.ts: missing",[39m
+[31m+   "src/adapters/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/NativeHandoffController.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/LocalClientService.ts: missing",[39m
+[31m+   "packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/RateLimitService.ts: missing",[39m
+[31m+   "src/cli/program/hook-install-service/HookInstallService.ts: missing",[39m
+[31m+   "src/cli/program/hook-install-service/hookScript.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/native-handoff-service/NativeHandoffService.ts: missing",[39m
+[31m+   "packages/hub/src/lib/server/auth/native-handoff-service/authSecrets.ts: missing",[39m
+[31m+   "src/services/native-picker-bridge-service/NativePickerSwitchService.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/PairingAccessService.ts: missing",[39m
+[31m+   "packages/relay/src/lib/host-runtime/HostObjectController.ts: missing",[39m
+[31m+   "packages/reports/src/routes/api/health/SiteReportRepository.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/device-session-service/ClientProjectsService.ts: missing",[39m
+[31m+   "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts: missing",[39m
+[31m+   "packages/desktop/src/utils/select-environment/capacitor-account-adapter/CapacitorAccountAdapter.ts: missing",[39m
+[31m+   "packages/desktop/src/utils/select-environment/capacitor-account-adapter/capacitorAccountCodec.ts: missing",[39m
+[31m+   "src/cli/program/create-project/createProject.ts: missing",[39m
+[31m+   "src/cli/program/create-project/validation.ts: missing",[39m
+[31m+   "packages/desktop/src/services/remote-host-service/RemoteHostRecordService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/desktop-run-service/project-task-service/ProjectTaskService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/desktop-run-service/project-task-service/proposalUnits.ts: missing",[39m
+[31m+   "packages/desktop/src/services/desktop-run-service/change-run-service/ChangeRunService.ts: missing",[39m
+[31m+   "packages/desktop/src/services/desktop-run-service/change-run-service/changeExecute.ts: missing",[39m
+[31m+   "packages/reports/src/lib/console-workspace/consoleWorkspace.svelte.ts: missing",[39m
+[31m+   "desktop.service.native-auth: outside owner",[39m
+[31m+   "workflow.export-plans: outside owner",[39m
+[31m+   "service.regression-proof: outside owner",[39m
+[31m+   "service.unit-index: outside owner",[39m
+[31m+   "workflow.analytics-jev-metrics: outside owner",[39m
+[31m+   "desktop.adapter.evidence-refs: outside owner",[39m
+[31m+   "desktop.service.hosted-project: outside owner",[39m
+[31m+   "workflow.loop-evaluate: outside owner",[39m
+[31m+   "adapter.desktop-archive: outside owner",[39m
+[31m+   "command.generate: outside owner",[39m
+[31m+   "desktop.service.remote-device-sessions: outside owner",[39m
+[31m+   "hub.controller.hub-api: outside owner",[39m
+[31m+   "adapter.desktop-integrity: outside owner",[39m
+[31m+   "hub.controller.hub-remote: outside owner",[39m
+[31m+   "reports.adapter.vitest-report: outside owner",[39m
+[31m+   "remote.service.event-log: outside owner",[39m
+[31m+   "command.impact: outside owner",[39m
+[31m+   "repository.agent-registry: outside owner",[39m
+[31m+   "relay.service.host-command: outside owner",[39m
+[31m+   "desktop.adapter.electron-environment: outside owner",[39m
+[31m+   "hub.service.installation-token: outside owner",[39m
+[31m+   "workflow.import-reports: outside owner",[39m
+[31m+   "command.history: outside owner",[39m
+[31m+   "service.unit-benchmark: outside owner",[39m
+[31m+   "workflow.sign-budget: outside owner",[39m
+[31m+   "command.new: outside owner",[39m
+[31m+   "hub.service.hub-projection: outside owner",[39m
+[31m+   "service.kernel-benchmark: outside owner",[39m
+[31m+   "desktop.service.hosted-evidence: outside owner",[39m
+[31m+   "desktop.service.relay-link: outside owner",[39m
+[31m+   "desktop.service.native-account-status: outside owner",[39m
+[31m+   "workflow.inspect-units: outside owner",[39m
+[31m+   "service.record-assembly: outside owner",[39m
+[31m+   "desktop.adapter.agent-settings: outside owner",[39m
+[31m+   "hub.controller.hub-auth: outside owner",[39m
+[31m+   "desktop.service.remote-lifecycle: outside owner",[39m
+[31m+   "command.codex: outside owner",[39m
+[31m+   "reports.adapter.report-pages-retention: outside owner",[39m
+[31m+   "workflow.built-in-loop-templates: outside owner",[39m
+[31m+   "reports.adapter.playwright-report: outside owner",[39m
+[31m+   "workflow.manage-units: outside owner",[39m
+[31m+   "command.explain: outside owner",[39m
+[31m+   "desktop.service.catalog: outside owner",[39m
+[31m+   "desktop.service.project-operations: outside owner",[39m
+[31m+   "relay.middleware.connect-guard: outside owner",[39m
+[31m+   "hub.adapter.resend-email: outside owner",[39m
+[31m+   "hub.controller.email-proof: outside owner",[39m
+[31m+   "reports.service.replay-video: outside owner",[39m
+[31m+   "command.budget: outside owner",[39m
+[31m+   "desktop.service.remote-artifact-cache: outside owner",[39m
+[31m+   "command.console: outside owner",[39m
+[31m+   "workflow.install-console: outside owner",[39m
+[31m+   "relay.service.host-registry: outside owner",[39m
+[31m+   "workflow.build-history: outside owner",[39m
+[31m+   "relay.service.socket-frame: outside owner",[39m
+[31m+   "service.trusted-base: outside owner",[39m
+[31m+   "relay.adapter.host-sockets: outside owner",[39m
+[31m+   "desktop.service.local-transport: outside owner",[39m
+[31m+   "reports.adapter.console-bridge: outside owner",[39m
+[31m+   "relay.adapter.host-storage: outside owner",[39m
+[31m+   "command.info: outside owner",[39m
+[31m+   "relay.service.host-link: outside owner",[39m
+[31m+   "hub.service.google-identity: outside owner",[39m
+[31m+   "command.scenarios: outside owner",[39m
+[31m+   "workflow.response-check-input: outside owner",[39m
+[31m+   "service.gateway-events: outside owner",[39m
+[31m+   "hub.service.hub-evidence: outside owner",[39m
+[31m+   "hub.service.hub-attached: outside owner",[39m
+[31m+   "desktop.adapter.capacitor-environment: outside owner",[39m
+[31m+   "desktop.service.capacitor-projects: outside owner",[39m
+[31m+   "service.console-install: outside owner",[39m
+[31m+   "command.hooks: outside owner",[39m
+[31m+   "desktop.adapter.hosted-evidence: outside owner",[39m
+[31m+   "command.activity: outside owner",[39m
+[31m+   "desktop.service.device-session: outside owner",[39m
+[31m+   "repository.legacy-report: outside owner",[39m
+[31m+   "desktop.service.projection-cache: outside owner",[39m
+[31m+   "service.desktop-experiment: outside owner",[39m
+[31m+   "desktop.service.remote-pairing-control: outside owner",[39m
+[31m+   "hub.service.hub-record-status: outside owner",[39m
+[31m+   "adapter.handler-runtime: outside owner",[39m
+[31m+   "workflow.generate-unit: outside owner",[39m
+[31m+   "reports.adapter.mira-report: outside owner",[39m
+[31m+   "relay.controller.pairing: outside owner",[39m
+[31m+   "service.attached-record: outside owner",[39m
+[31m+   "desktop.service.project-run: outside owner",[39m
+[31m+   "workflow.run-hooks: outside owner",[39m
+[31m+   "desktop.adapter.remote-http-project: outside owner",[39m
+[31m+   "service.history-sync: outside owner",[39m
+[31m+   "desktop.adapter.git-source: outside owner",[39m
+[31m+   "workflow.inspect-scenarios: outside owner",[39m
+[31m+   "relay.controller.manage: outside owner",[39m
+[31m+   "desktop.adapter.remote-registration: outside owner",[39m
+[31m+   "command.response-check: outside owner",[39m
+[31m+   "service.check-run: outside owner",[39m
+[31m+   "workflow.sync-history: outside owner",[39m
+[31m+   "reports.service.report-storage-sync: outside owner",[39m
+[31m+   "hub.service.request-session: outside owner",[39m
+[31m+   "desktop.service.recorded-evidence: outside owner",[39m
+[31m+   "desktop.service.remote-host-runtime: outside owner",[39m
+[31m+   "desktop.service.native-connection: outside owner",[39m
+[31m+   "command.verify: outside owner",[39m
+[31m+   "workflow.analytics-html: outside owner",[39m
+[31m+   "reports.service.report-import: outside owner",[39m
+[31m+   "hub.controller.hub-agent: outside owner",[39m
+[31m+   "command.report: outside owner",[39m
+[31m+   "workflow.run-report: outside owner",[39m
+[31m+   "hub.middleware.hub-responses: outside owner",[39m
+[31m+   "desktop.service.device-operations: outside owner",[39m
+[31m+   "desktop.adapter.planning-facade: outside owner",[39m
+[31m+   "desktop.adapter.capacitor-bridge: outside owner",[39m
+[31m+   "workflow.run-kernel-bench: outside owner",[39m
+[31m+   "desktop.service.local-transport-client: outside owner",[39m
+[31m+   "workflow.run-kernel-boundary: outside owner",[39m
+[31m+   "workflow.manage-loop: outside owner",[39m
+[31m+   "service.legacy-history: outside owner",[39m
+[31m+   "service.source-impact: outside owner",[39m
+[31m+   "remote.service.host-pairing: outside owner",[39m
+[31m+   "workflow.response-check-evaluate: outside owner",[39m
+[31m+   "adapter.cpu-process: outside owner",[39m
+[31m+   "adapter.claude-gateway: outside owner",[39m
+[31m+   "reports.controller.console-agent: outside owner",[39m
+[31m+   "relay.service.socket-accept: outside owner",[39m
+[31m+   "workflow.loop-next: outside owner",[39m
+[31m+   "desktop.service.project-discovery: outside owner",[39m
+[31m+   "workflow.review-clean-code: outside owner",[39m
+[31m+   "desktop.service.plan-run: outside owner",[39m
+[31m+   "relay.service.device-revocation: outside owner",[39m
+[31m+   "hub.adapter.github-api: outside owner",[39m
+[31m+   "service.codex-gateway: outside owner",[39m
+[31m+   "command.analytics: outside owner",[39m
+[31m+   "command.units: outside owner",[39m
+[31m+   "hub.adapter.d1-auth-store: outside owner",[39m
+[31m+   "reports.service.report-retention: outside owner",[39m
+[31m+   "service.history-media: outside owner",[39m
+[31m+   "relay.service.pairing-offer: outside owner",[39m
+[31m+   "adapter.process-identity: outside owner",[39m
+[31m+   "remote.service.response-ledger: outside owner",[39m
+[31m+   "service.console-uninstall: outside owner",[39m
+[31m+   "reports.service.console-agent: outside owner",[39m
+[31m+   "service.claude-query: outside owner",[39m
+[31m+   "service.picker-preview: outside owner",[39m
+[31m+   "planning.service.planning: outside owner",[39m
+[31m+   "desktop.adapter.pinned-history: outside owner",[39m
+[31m+   "service.snapshot-run: outside owner",[39m
+[31m+   "repository.codex-session: outside owner",[39m
+[31m+   "hub.service.github-owner: outside owner",[39m
+[31m+   "reports.adapter.r2-report-retention: outside owner",[39m
+[31m+   "service.verification-gates: outside owner",[39m
+[31m+   "workflow.persist-reasons: outside owner",[39m
+[31m+   "service.runtime-server: outside owner",[39m
+[31m+   "workflow.loop-search: outside owner",[39m
+[31m+   "command.audit: outside owner",[39m
+[31m+   "reports.service.report-publish: outside owner",[39m
+[31m+   "command.codex-picker: outside owner",[39m
+[31m+   "relay.service.pairing-exchange: outside owner",[39m
+[31m+   "service.hook-run: outside owner",[39m
+[31m+   "service.native-picker-defaults: outside owner",[39m
+[31m+   "workflow.run-audit: outside owner",[39m
+[31m+   "hub.controller.github-connection: outside owner",[39m
+[31m+   "reports.service.preview-worker: outside owner",[39m
+[31m+   "service.verification: outside owner",[39m
+[31m+   "hub.adapter.relay-manage: outside owner",[39m
+[31m+   "desktop.service.remote-host-switch: outside owner",[39m
+[31m+   "hub.service.github-grant: outside owner",[39m
+[31m+   "desktop.service.project-image-cache: outside owner",[39m
+[31m+   "reports.service.report-server: outside owner",[39m
+[31m+   "adapter.wasm-module-runtime: outside owner",[39m
+[31m+   "hub.controller.native-handoff: outside owner",[39m
+[31m+   "desktop.service.local-operations: outside owner",[39m
+[31m+   "desktop.service.local-client: outside owner",[39m
+[31m+   "relay.service.rate-limit: outside owner",[39m
+[31m+   "service.hook-install: outside owner",[39m
+[31m+   "workflow.analytics-metrics: outside owner",[39m
+[31m+   "command.loop: outside owner",[39m
+[31m+   "service.legacy-import: outside owner",[39m
+[31m+   "hub.service.native-handoff: outside owner",[39m
+[31m+   "service.native-picker-switch: outside owner",[39m
+[31m+   "command.kernel: outside owner",[39m
+[31m+   "relay.service.pairing-access: outside owner",[39m
+[31m+   "relay.controller.host-object: outside owner",[39m
+[31m+   "workflow.run-kernel: outside owner",[39m
+[31m+   "reports.repository.site-report: outside owner",[39m
+[31m+   "desktop.service.client-projects: outside owner",[39m
+[31m+   "desktop.service.remote-projection: outside owner",[39m
+[31m+   "reports.service.screenshot-upload: outside owner",[39m
+[31m+   "desktop.adapter.capacitor-account: outside owner",[39m
+[31m+   "workflow.create-project: outside owner",[39m
+[31m+   "workflow.run-response-check: outside owner",[39m
+[31m+   "service.history-index: outside owner",[39m
+[31m+   "relay.controller.public-relay: outside owner",[39m
+[31m+   "desktop.service.remote-host-record: outside owner",[39m
+[31m+   "service.analytics: outside owner",[39m
+[31m+   "desktop.service.project-task: outside owner",[39m
+[31m+   "desktop.service.change-run: outside owner",[39m
+[31m+ ][39m
+
+ ❯ test/services/unit-index.test.ts:200:89
+    198| test('recorded service moves preserve implementations and registered o…
+    199|  const gaps = serviceMoveGaps(services);
+    200|  expect(gaps, `service ownership: ${gaps.length} gaps; ${gaps.slice(0,…
+       |                                                                                         ^
+    201|   []
+    202|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 skipped (12)
+   Start at  18:00:19
+   Duration  4.79s (transform 163ms, setup 12ms, collect 494ms, tests 215ms, environment 0ms, prepare 51ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-144Lc7
+
+ ❯ test/utils/unit-metadata.test.ts (28 tests | 8 failed) 79ms
+   ✓ revision metadata lists standalone shared exports without requiring callers 29ms
+   ✓ revision metadata counts distinct actual consumers: 2 8ms
+   ✓ revision metadata counts distinct actual consumers: 2 2ms
+   ✓ revision metadata counts distinct actual consumers: 1 1ms
+   ✓ revision metadata counts distinct actual consumers: 2 3ms
+   ✓ revision metadata counts distinct actual consumers: 2 6ms
+   ✓ revision metadata counts distinct actual consumers: +0 2ms
+   ✓ revision metadata counts distinct actual consumers: +0 1ms
+   ✓ revision metadata counts distinct actual consumers: 1 2ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function env() { return process.env.MODE; } 3ms
+   ✓ helper purity is an explicit, checked source contract: let state = 0;
+/** @pure */
+export function captured() { return state; } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function writeFile() { console.log("side effect"); return 1; } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function formatDate(iso: string) { return new Date(iso).toISOString(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: export function shared(value: string) { return value.trim(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export async function load() { return fetch("/api"); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function now() { return Date.now(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function random() { return Math.random(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function mutate(input: number[]) { return input.sort(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function write(input: {value: number}) { input.value++; return input; } 1ms
+   ✓ helper purity is an explicit, checked source contract: export function fake() { return "/** @pure */"; } 0ms
+   × revision metadata counts distinct runtime service owners: 2 4ms
+     → only distinct runtime owners establish sharing: expected undefined to be 2 // Object.is equality
+   × revision metadata counts distinct runtime service owners: 2 2ms
+     → only distinct runtime owners establish sharing: expected undefined to be 2 // Object.is equality
+   × revision metadata counts distinct runtime service owners: 1 1ms
+     → only distinct runtime owners establish sharing: expected undefined to be 1 // Object.is equality
+   × revision metadata counts distinct runtime service owners: 1 1ms
+     → only distinct runtime owners establish sharing: expected undefined to be 1 // Object.is equality
+   × revision metadata counts distinct runtime service owners: 2 2ms
+     → only distinct runtime owners establish sharing: expected undefined to be 2 // Object.is equality
+   × revision metadata counts distinct runtime service owners: +0 2ms
+     → only distinct runtime owners establish sharing: expected undefined to be +0 // Object.is equality
+   × revision metadata counts distinct runtime service owners: +0 1ms
+     → only distinct runtime owners establish sharing: expected undefined to be +0 // Object.is equality
+   × revision metadata counts distinct runtime service owners: 2 1ms
+     → only distinct runtime owners establish sharing: expected undefined to be 2 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata counts distinct runtime service owners: 2
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata counts distinct runtime service owners: 2
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata counts distinct runtime service owners: 2
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata counts distinct runtime service owners: 2
+AssertionError: only distinct runtime owners establish sharing: expected undefined to be 2 // Object.is equality
+
+[32m- Expected:[39m 
+2
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/utils/unit-metadata.test.ts:192:94
+    190|    unit.owns.source.includes('src/services/SharedService.ts')
+    191|   )!;
+    192|   expect(service.serviceConsumers?.length, 'only distinct runtime owne…
+       |                                                                                              ^
+    193|    serviceCount
+    194|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata counts distinct runtime service owners: 1
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata counts distinct runtime service owners: 1
+AssertionError: only distinct runtime owners establish sharing: expected undefined to be 1 // Object.is equality
+
+[32m- Expected:[39m 
+1
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/utils/unit-metadata.test.ts:192:94
+    190|    unit.owns.source.includes('src/services/SharedService.ts')
+    191|   )!;
+    192|   expect(service.serviceConsumers?.length, 'only distinct runtime owne…
+       |                                                                                              ^
+    193|    serviceCount
+    194|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata counts distinct runtime service owners: +0
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata counts distinct runtime service owners: +0
+AssertionError: only distinct runtime owners establish sharing: expected undefined to be +0 // Object.is equality
+
+[32m- Expected:[39m 
+0
+
+[31m+ Received:[39m 
+undefined
+
+ ❯ test/utils/unit-metadata.test.ts:192:94
+    190|    unit.owns.source.includes('src/services/SharedService.ts')
+    191|   )!;
+    192|   expect(service.serviceConsumers?.length, 'only distinct runtime owne…
+       |                                                                                              ^
+    193|    serviceCount
+    194|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 20 passed (28)
+   Start at  18:00:25
+   Duration  1.11s (transform 211ms, setup 8ms, collect 776ms, tests 79ms, environment 0ms, prepare 41ms)
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at desktop width (7.6s)
+Testing stopped early after 1 maximum allowed failures.
+
+
+  1) test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at desktop width 
+
+    Error: collections use cards; helpers require two distinct visible consumers
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('article')
+    Expected: 1
+    Received: 6
+    Timeout:  5000ms
+
+    Call log:
+      - collections use cards; helpers require two distinct visible consumers getByRole('article') with timeout 5000ms
+      - waiting for getByRole('article')
+        14 × locator resolved to 6 elements
+           - unexpected value "6"
+
+
+      78 | 				cards,
+      79 | 				'collections use cards; helpers require two distinct visible consumers'
+    > 80 | 			).toHaveCount(category === 'components' ? 3 : 1);
+         | 			  ^
+      81 | 			const card = (await cards.first().boundingBox())!;
+      82 | 			const available = (await tab.locator('.ex-index').boundingBox())!;
+      83 | 			if (name !== 'mobile') {
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-144Lc7/packages/reports/test/entity-preview-actions.spec.ts:80:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-com-1e92f--card-grid-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-com-1e92f--card-grid-at-desktop-width/error-context.md
+
+  1 failed
+    test/entity-preview-actions.spec.ts:65:2 › component, helper and service lists use a card grid at desktop width 
+  2 did not run
+  1 error was not a part of any test, see above for details

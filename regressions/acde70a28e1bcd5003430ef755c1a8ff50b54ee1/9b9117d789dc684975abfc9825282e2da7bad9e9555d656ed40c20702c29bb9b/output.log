@@ -1,0 +1,28 @@
+[harness resources] Waiting for CPU and memory reservations
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-GRhi2D
+
+stdout | test/browser-console-expected.e2e.test.ts > intentional errors retain diagnostics and cannot hide missing, duplicate or unrelated errors
+E2E integration worker 1
+
+stdout | test/browser-console-errors.e2e.test.ts > generated browser tests reject errors in normal flows and pass after the error disappears
+E2E integration worker 2
+
+stdout | test/browser-console-errors.e2e.test.ts > generated browser tests reject errors in normal flows and pass after the error disappears
+Effective Playwright workers: 1
+
+stdout | test/browser-console-expected.e2e.test.ts > intentional errors retain diagnostics and cannot hide missing, duplicate or unrelated errors
+Effective Playwright workers: 1
+
+stdout | test/browser-console-expected.e2e.test.ts > API-only checks do not require a browser executable
+E2E integration worker 1
+
+ ✓ test/browser-console-expected.e2e.test.ts > intentional errors retain diagnostics and cannot hide missing, duplicate or unrelated errors 6263ms
+ ✓ test/browser-console-expected.e2e.test.ts > API-only checks do not require a browser executable 3567ms
+ ✓ test/browser-console-errors.e2e.test.ts > generated browser tests reject errors in normal flows and pass after the error disappears 13970ms
+
+ Test Files  2 passed (2)
+      Tests  3 passed (3)
+   Start at  15:54:45
+   Duration  17.64s (transform 131ms, setup 332ms, collect 53ms, tests 23.80s, environment 0ms, prepare 99ms)
+

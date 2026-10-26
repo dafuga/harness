@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xCGYgj/packages/desktop
+
+ ✓ test/cli-integration.test.ts (10 tests) 1883ms
+   ✓ Codex initializes subscription RPC, discovers models and confines public turn events  465ms
+   ✓ Claude uses requested model, project cwd, stdin and subscription-only environment  373ms
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  06:21:24
+   Duration  2.52s (transform 219ms, setup 0ms, collect 382ms, tests 1.88s, environment 0ms, prepare 46ms)
+

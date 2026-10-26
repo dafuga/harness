@@ -1,0 +1,65 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [30.99s]
+$ bun run test:unit --run test/components/entity-frame.test.ts
+$ vitest run --run test/components/entity-frame.test.ts
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-SC9XYf/packages/reports
+
+ ❯ test/components/entity-frame.test.ts (4 tests | 2 failed) 27ms
+   ✓ an entity screen is headed by the entity, and is handed the entity it shows 15ms
+   ✓ an entity the revision does not hold has no header and no screen, only that it is missing 1ms
+   × a removed private function retains its parent contract when the head entry is retired 8ms
+     → removed private functions retain the parent contract: expected '<!--[--><div class="ex-content" data-…' to contain 'aria-label="Removed at this commit"'
+   × a removed private function retains its parent contract when the head entry is absent 3ms
+     → removed private functions retain the parent contract: expected '<!--[--><div class="ex-content" data-…' to contain 'aria-label="Removed at this commit"'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-frame.test.ts > a removed private function retains its parent contract when the head entry is retired
+ FAIL  test/components/entity-frame.test.ts > a removed private function retains its parent contract when the head entry is absent
+AssertionError: removed private functions retain the parent contract: expected '<!--[--><div class="ex-content" data-…' to contain 'aria-label="Removed at this commit"'
+
+Expected: [32m"aria-label="Removed at this commit""[39m
+Received: [31m"<!--[--><div class="ex-content" data-mode="commit"><!--[-1--><!--[-1--><section class="ex-card ex-missing" aria-labelledby="ex-missing-title"><h1 id="ex-missing-title">Not at this revision</h1> <p><!--$s1--><span class="hx-verdict svelte-1lwyhm3 failed"><button type="button" aria-label="Not shown" aria-describedby="s1" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM15.5 7.1l1.4 1.4L13.4 12l3.5 3.5-1.4 1.4L12 13.4l-3.5 3.5-1.4-1.4L10.6 12 7.1 8.5l1.4-1.4L12 10.6z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s1" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Not shown</strong><!--[--><!--]--></span></span><!----></p> <p class="ex-lead">Nothing named function.private is in the registry at bbbbbbb.</p> <p class="ex-soft">Nothing from another revision is shown in its place.</p> <!--[0--><a class="hx-action gold" href="/harness/branch/feature%2Forders/commit/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/functions"><!--[0--><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M20 12H4M10 6l-6 6 6 6"></path></svg><!--]--> <!---->Back to the collection<!----> <!--[-1--><!--]--><!----></a><!--]--><!----></section><!--]--><!----><!--]--></div><!--]-->"[39m
+
+ ❯ test/components/entity-frame.test.ts:55:72
+     53|   }));
+     54|   const body = render(EntityFrame, { props: { host, children: contract…
+     55|   expect(body, 'removed private functions retain the parent contract')…
+       |                                                                        ^
+     56|    'aria-label="Removed at this commit"'
+     57|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  18:42:47
+   Duration  4.36s (transform 2.54s, setup 0ms, collect 3.69s, tests 27ms, environment 0ms, prepare 138ms)
+
+error: script "test:unit" exited with code 1
+error: script "test" exited with code 1

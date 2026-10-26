@@ -1,0 +1,103 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [30.00ms]
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+The following Vite config options will be overridden by SvelteKit:
+  - root
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZWIdM0/packages/hub
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZWIdM0/packages/hub/src/components/accounts-access/AccountMenu.svelte:10:25
+Error: Expected 1 arguments, but got 2. (ts)
+{#if session.actor}<span class="account-name" title={session.actor.email}>{session.actor.name}</span
+	><a href={resolve('/', {})} data-sveltekit-reload>Projects</a>{#if projectId}<a
+			href={resolve('/projects/[projectId]/members', { projectId })}
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZWIdM0/packages/hub/src/components/shared-primitives/HubFrame.svelte:11:39
+Error: Expected 1 arguments, but got 2. (ts)
+	<header class="topbar">
+		<a class="brand" href={resolve('/', {})} data-sveltekit-reload
+			><span class="brand-mark"><BrandMark /></span> Harness</a
+
+====================================
+svelte-check found 2 errors and 0 warnings in 2 files
+error: script "typecheck" exited with code 1
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && svelte-check --tsconfig ./tsconfig.previews.json
+
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+warn - Configure your content sources or your generated CSS will be missing styles.
+warn - https://tailwindcss.com/docs/content-configuration
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZWIdM0/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+warn - Configure your content sources or your generated CSS will be missing styles.
+warn - https://tailwindcss.com/docs/content-configuration
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZWIdM0/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZWIdM0/packages/reports
+
+ ✓ test/components/explorer-composition.test.ts (6 tests) 1849ms
+   ✓ every page mounts the host with one screen of its own, and none draws every screen  403ms
+   ✓ the four screens of a category are made of different components  388ms
+   ✓ a catalog draws no entity view, and each entity view draws its own and not the others  993ms
+ ❯ test/components/explorer-pages-screen.test.ts (3 tests | 1 failed) 25ms
+   ✓ the pages screen lists pages as cards, each with its own screenshot and a real link 7ms
+   ✓ a revision without a registry is said to have none, and no page of another is listed 1ms
+   × every dedicated visual catalog capture can appear in its registered catalog card 17ms
+     → Captured previews visible through each registered preview choice: expected [ …(15) ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/explorer-pages-screen.test.ts > every dedicated visual catalog capture can appear in its registered catalog card
+AssertionError: Captured previews visible through each registered preview choice: expected [ …(15) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "desktop.page.settings:desktop",
++   "desktop.page.settings:tablet",
++   "desktop.page.settings:mobile",
++   "reports.component.explorer-ui-explorer-platform-details:desktop",
++   "reports.component.explorer-ui-explorer-platform-details:tablet",
++   "reports.component.explorer-ui-explorer-platform-details:mobile",
++   "reports.component.explorer-ui-explorer-platforms:desktop",
++   "reports.component.explorer-ui-explorer-platforms:tablet",
++   "reports.component.explorer-ui-explorer-platforms:mobile",
++   "reports.page.harness-branch-branch-at-platforms:desktop",
++   "reports.page.harness-branch-branch-at-platforms:tablet",
++   "reports.page.harness-branch-branch-at-platforms:mobile",
++   "reports.page.harness-branch-branch-at-platforms-entity:desktop",
++   "reports.page.harness-branch-branch-at-platforms-entity:tablet",
++   "reports.page.harness-branch-branch-at-platforms-entity:mobile",
++ ]
+
+ ❯ test/components/explorer-pages-screen.test.ts:61:90
+     59|     unavailable.push(id + ':' + viewport);
+     60|  }
+     61|  expect(unavailable, 'Captured previews visible through each registere…
+       |                                                                                          ^
+     62|   []
+     63|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 8 passed (9)
+   Start at  03:30:31
+   Duration  3.19s (transform 642ms, setup 0ms, collect 1.01s, tests 1.87s, environment 0ms, prepare 46ms)
+

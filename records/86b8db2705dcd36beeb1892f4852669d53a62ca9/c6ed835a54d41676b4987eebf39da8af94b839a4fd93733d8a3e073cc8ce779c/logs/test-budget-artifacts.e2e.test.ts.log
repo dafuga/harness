@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RKAYsZ
+
+ ✓ test/budget-artifacts.e2e.test.ts (5 tests) 19180ms
+   ✓ one target that grows fails without approval, although the source kept its size and the other target shrank by as much  4841ms
+   ✓ an output that was measured at its baseline and is no longer built fails  1577ms
+   ✓ an output that could not be built when the limits were reviewed is stated, and needs a reviewed limit once it is built  4002ms
+   ✓ an output a unit starts to emit after its baseline needs a reviewed limit before it passes  4204ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  06:06:52
+   Duration  19.44s (transform 39ms, setup 10ms, collect 39ms, tests 19.18s, environment 0ms, prepare 39ms)
+

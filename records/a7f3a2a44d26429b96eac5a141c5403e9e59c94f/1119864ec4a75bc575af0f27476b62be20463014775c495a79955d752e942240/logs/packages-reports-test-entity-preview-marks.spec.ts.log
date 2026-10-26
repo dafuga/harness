@@ -1,0 +1,18 @@
+
+Running 11 tests using 1 worker
+
+(node:78184) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview-marks.spec.ts:18:2 › components at desktop: a verdict is the mark alone, told on hover and by the keyboard (393ms)
+  ✓   2 test/entity-preview-marks.spec.ts:18:2 › components at tablet: a verdict is the mark alone, told on hover and by the keyboard (254ms)
+  ✓   3 test/entity-preview-marks.spec.ts:18:2 › components at mobile: a verdict is the mark alone, told on hover and by the keyboard (286ms)
+  ✓   4 test/entity-preview-marks.spec.ts:47:1 › a tap opens what a mark tells, and a tap elsewhere closes it (235ms)
+  ✓   5 test/entity-preview-marks.spec.ts:60:1 › every collection, a header, the tests and a history show marks without status words (441ms)
+  ✓   6 test/entity-preview-marks.spec.ts:94:2 › a long legacy history stays short at desktop, and opens in full on request (311ms)
+  ✓   7 test/entity-preview-marks.spec.ts:94:2 › a long legacy history stays short at tablet, and opens in full on request (300ms)
+  ✓   8 test/entity-preview-marks.spec.ts:94:2 › a long legacy history stays short at mobile, and opens in full on request (281ms)
+  ✓   9 test/entity-preview-marks.spec.ts:134:1 › the overview of a long legacy change is short too, with the same reasons to open (277ms)
+  ✓  10 test/entity-preview-marks.spec.ts:149:1 › a recorded clip plays on the overview: one at the tip, a pair at a commit (494ms)
+  ✓  11 test/entity-preview-marks.spec.ts:184:1 › a title that wraps onto two lines is one solid area to press (202ms)
+
+  11 passed (5.6s)

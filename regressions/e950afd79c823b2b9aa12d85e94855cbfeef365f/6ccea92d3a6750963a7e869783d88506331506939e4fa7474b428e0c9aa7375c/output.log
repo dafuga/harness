@@ -1,0 +1,23 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-anUfVC
+
+ ✓ test/shared-test-cases.test.ts (3 tests) 5719ms
+   ✓ the declared recorded-values command produces checked input and output examples  5714ms
+ ✓ test/services/unit-index.test.ts (14 tests) 3058ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2904ms
+ ✓ test/project-template.test.ts (5 tests) 282ms
+ ✓ test/pieces.test.ts (6 tests) 227ms
+ ✓ test/self-verify-config.test.ts (81 tests) 95ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 108ms
+ ✓ test/regression-loops.test.ts (8 tests) 64ms
+ ✓ test/services/verification-evidence/test-expectation.test.ts (4 tests) 38ms
+ ✓ test/services/verification-evidence/test-contract.test.ts (2 tests) 20ms
+ ✓ test/validators/verification-evidence/test-case.test.ts (1 test) 20ms
+ ✓ test/adapters/agents-providers/module-task-runner.test.ts (9 tests) 5ms
+ ✓ test/guides.test.ts (7 tests) 9ms
+
+ Test Files  12 passed (12)
+      Tests  142 passed (142)
+   Start at  09:05:51
+   Duration  16.49s (transform 658ms, setup 481ms, collect 2.36s, tests 9.65s, environment 1ms, prepare 306ms)
+

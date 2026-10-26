@@ -1,0 +1,87 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --config src/configs/shellPlaywrightConfig.ts "$@"' -- explorer-shell-component-catalog.spec.ts --grep "harness-explorer-index at (desktop|mobile)"
+
+Running 2 tests using 1 worker
+
+(node:29422) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.harness-explorer-index at desktop (5.4s)
+(node:30677) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.harness-explorer-index at mobile (5.3s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.harness-explorer-index at desktop 
+
+    Error: Catalogs omit the proof legend
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.component.harness-explorer-index"]').getByText('Hover, focus or tap a mark to read why.', { exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Catalogs omit the proof legend locator('[data-preview-unit="reports.component.harness-explorer-index"]').getByText('Hover, focus or tap a mark to read why.', { exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.harness-explorer-index"]').getByText('Hover, focus or tap a mark to read why.', { exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      90 | 					component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
+      91 | 					'Catalogs omit the proof legend'
+    > 92 | 				).toHaveCount(0);
+         | 				  ^
+      93 | 				await expect(
+      94 | 					component.getByRole('button', { name: /^(?:Not proven|Proven)$/ }),
+      95 | 					'Catalogs omit the standalone proof marks'
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CGh057/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:92:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-34fa1-s-explorer-index-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-34fa1-s-explorer-index-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-34fa1-s-explorer-index-at-desktop/error-context.md
+
+  2) tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.harness-explorer-index at mobile 
+
+    Error: Catalogs omit the proof legend
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-preview-unit="reports.component.harness-explorer-index"]').getByText('Hover, focus or tap a mark to read why.', { exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Catalogs omit the proof legend locator('[data-preview-unit="reports.component.harness-explorer-index"]').getByText('Hover, focus or tap a mark to read why.', { exact: true }) with timeout 5000ms
+      - waiting for locator('[data-preview-unit="reports.component.harness-explorer-index"]').getByText('Hover, focus or tap a mark to read why.', { exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      90 | 					component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
+      91 | 					'Catalogs omit the proof legend'
+    > 92 | 				).toHaveCount(0);
+         | 				  ^
+      93 | 				await expect(
+      94 | 					component.getByRole('button', { name: /^(?:Not proven|Proven)$/ }),
+      95 | 					'Catalogs omit the standalone proof marks'
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-CGh057/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:92:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-36e5f-ss-explorer-index-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-36e5f-ss-explorer-index-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-36e5f-ss-explorer-index-at-mobile/error-context.md
+
+  2 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.harness-explorer-index at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:81:3 › reports.component.harness-explorer-index at mobile 
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:shell" exited with code 1

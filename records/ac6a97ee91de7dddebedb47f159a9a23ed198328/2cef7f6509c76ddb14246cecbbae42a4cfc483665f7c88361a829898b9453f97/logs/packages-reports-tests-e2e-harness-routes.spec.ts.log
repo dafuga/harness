@@ -1,0 +1,45 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 8 tests using 1 worker
+
+(node:94348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/harness-routes.spec.ts:15:1 › the root and the earlier query addresses lead to a page with its own path (232ms)
+  ✓  2 tests/e2e/harness-routes.spec.ts:35:1 › every branch, commit, view and selection is a path that reloads and goes back and forward (336ms)
+  ✓  3 tests/e2e/harness-routes.spec.ts:73:1 › a comparison, a record and a growth view each have a direct link (408ms)
+  ✓  4 tests/e2e/harness-routes.spec.ts:110:1 › a branch name with a slash is one branch, and a commit on no branch gets no branch (236ms)
+  ✓  5 tests/e2e/harness-routes.spec.ts:133:1 › an address that names nothing in this history says so and offers the way back (477ms)
+  ✓  6 tests/e2e/harness-routes.spec.ts:155:1 › page paths are refused without the owner policy, like every other address (36ms)
+  ✓  7 tests/e2e/harness-routes.spec.ts:174:1 › the pages keep to a phone width (182ms)
+  ✓  8 tests/e2e/harness-routes.spec.ts:189:1 › on a phone all five views can be seen and chosen without scrolling anything sideways (468ms)
+
+  8 passed (1.6m)

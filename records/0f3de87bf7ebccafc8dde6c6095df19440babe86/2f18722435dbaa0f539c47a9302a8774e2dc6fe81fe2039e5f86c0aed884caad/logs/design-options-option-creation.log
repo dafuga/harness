@@ -1,0 +1,110 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/packages/desktop
+
+ ❯ test/design-options-creation.test.ts (4 tests | 3 failed) 59459ms
+   × a new visual plan is made as three separately directed options in one version 16851ms
+     → Matcher did not succeed in time.
+     → ENOTEMPTY: directory not empty, rmdir '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-run-5LvKJy/.git/objects'
+   × a new visual plan asked for two options from a headless catalog makes two 15006ms
+     → Matcher did not succeed in time.
+   × a new headless plan makes no image whatever count it is given 14985ms
+     → Matcher did not succeed in time.
+   ✓ a failed option of a new plan saves no version and names the draft it made  12617ms
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 1 passed (4)
+   Start at  12:04:34
+   Duration  60.76s (transform 501ms, setup 0ms, collect 864ms, tests 59.46s, environment 0ms, prepare 71ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-ZaTNyo/report.json
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/design-options-creation.test.ts > a new visual plan is made as three separately directed options in one version
+Error: Matcher did not succeed in time.
+ ❯ match ../../test/verificationExpect.ts:98:26
+     96|  try {
+     97|   if (wrap) Reflect.set(target, '_obj', input(value, context, false));
+     98|   const result = Reflect.apply(Reflect.get(target, matcher), target, e…
+       |                          ^
+     99|   if (thenable(result))
+    100|    return result.then(
+ ❯ Proxy.<anonymous> ../../test/verificationExpect.ts:128:30
+ ❯ created test/design-options-creation.test.ts:27:62
+ ❯ test/design-options-creation.test.ts:45:15
+
+Caused by: AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/design-options-creation.test.ts > a new visual plan is made as three separately directed options in one version
+Error: ENOTEMPTY: directory not empty, rmdir '/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-run-5LvKJy/.git/objects'
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/design-options-creation.test.ts > a new visual plan asked for two options from a headless catalog makes two
+Error: Matcher did not succeed in time.
+ ❯ match ../../test/verificationExpect.ts:98:26
+     96|  try {
+     97|   if (wrap) Reflect.set(target, '_obj', input(value, context, false));
+     98|   const result = Reflect.apply(Reflect.get(target, matcher), target, e…
+       |                          ^
+     99|   if (thenable(result))
+    100|    return result.then(
+ ❯ Proxy.<anonymous> ../../test/verificationExpect.ts:128:30
+ ❯ created test/design-options-creation.test.ts:27:62
+ ❯ test/design-options-creation.test.ts:54:15
+
+Caused by: AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/design-options-creation.test.ts > a new headless plan makes no image whatever count it is given
+Error: Matcher did not succeed in time.
+ ❯ match ../../test/verificationExpect.ts:98:26
+     96|  try {
+     97|   if (wrap) Reflect.set(target, '_obj', input(value, context, false));
+     98|   const result = Reflect.apply(Reflect.get(target, matcher), target, e…
+       |                          ^
+     99|   if (thenable(result))
+    100|    return result.then(
+ ❯ Proxy.<anonymous> ../../test/verificationExpect.ts:128:30
+ ❯ created test/design-options-creation.test.ts:27:62
+ ❯ test/design-options-creation.test.ts:61:15
+
+Caused by: AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+57 | 	status: number | null;
+58 | }
+59 | /** Runner success alone is insufficient: each expected test must have complete actual observations. */
+60 | export function verifiedAssertions(target: VerificationTarget, input: AssertionInput) {
+61 | 	if (input.status !== 0)
+62 | 		throw new Error('Failed or incomplete runner cannot report passed behavior');
+             ^
+error: Failed or incomplete runner cannot report passed behavior
+      at verifiedAssertions (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/test/verification-assertions.ts:62:9)
+      at collect (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/test/verification-output.ts:117:15)
+      at run (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/test/verification-output.ts:98:15)
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/test/verification-output.ts:129:20
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)

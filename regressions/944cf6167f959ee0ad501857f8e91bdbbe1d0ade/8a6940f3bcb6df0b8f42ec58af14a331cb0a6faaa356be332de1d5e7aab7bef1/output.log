@@ -1,0 +1,22 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-bd2Af2
+
+ ✓ test/module-data.e2e.test.ts (2 tests) 19949ms
+   ✓ validate persists revision-bound module gaps, filters them and invalidates cached searches  15080ms
+   ✓ validate commits source-derived page API usage and explicit visual data gaps  4867ms
+ ✓ test/api-registry.e2e.test.ts (8 tests) 9386ms
+   ✓ API CLI lists every registered local unit, including backend entries outside the catalog  1196ms
+   ✓ API CLI lists every registered hosted unit, including backend entries outside the catalog  1193ms
+   ✓ API CLI reads local backend contracts without relying on a visual catalog entry  1183ms
+   ✓ API CLI reads hosted backend contracts without relying on a visual catalog entry  1161ms
+   ✓ API CLI lists registered local APIs even when their visual snapshot is older  1181ms
+   ✓ API CLI lists registered hosted APIs even when their visual snapshot is older  1148ms
+   ✓ API CLI reads local committed page APIs without a graph script  1174ms
+   ✓ API CLI reads hosted committed page APIs without a graph script  1149ms
+ ✓ test/ci-workflow.test.ts (4 tests) 4ms
+
+ Test Files  3 passed (3)
+      Tests  14 passed (14)
+   Start at  11:58:39
+   Duration  32.97s (transform 112ms, setup 209ms, collect 56ms, tests 29.34s, environment 0ms, prepare 97ms)
+

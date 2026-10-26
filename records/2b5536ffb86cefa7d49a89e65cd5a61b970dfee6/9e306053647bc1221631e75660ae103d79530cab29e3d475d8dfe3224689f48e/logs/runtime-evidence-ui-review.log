@@ -1,0 +1,14 @@
+
+Running 7 tests using 1 worker
+
+  ✓  1 tests/e2e/ui-evidence-review.spec.ts:39:1 › the address decides the section, also when the entity stays the same (651ms)
+  ✓  2 tests/e2e/ui-evidence-review.spec.ts:66:1 › going to the tip from a named commit leaves the commit, as it did before (508ms)
+  ✓  3 tests/e2e/ui-evidence-review.spec.ts:81:1 › a commit of the history is a link only where the shown branch is known to contain it (697ms)
+  ✓  4 tests/e2e/ui-evidence-review.spec.ts:102:1 › the status beside the name is the verdict of the record that was read, or says why there is none (1.1s)
+  ✓  5 tests/e2e/ui-evidence-review.spec.ts:126:1 › a backend that cannot read evidence leaves the status unknown and says so (679ms)
+  ✓  6 tests/e2e/ui-evidence-review.spec.ts:137:1 › a capture is said to be recorded for the tip, and made where it was made (539ms)
+  ✓  7 tests/e2e/ui-evidence-review.spec.ts:165:1 › an entity is named in words, and a page states its address as a fact (559ms)
+
+  7 passed (6.7s)
+(node:74725) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

@@ -1,0 +1,24 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts "$@"' -- test/entity-preview-groups.spec.ts -g "category folders group every collection and filter together"
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] Memory pressure is warning
+
+Running 3 tests using 1 worker
+
+(node:44653) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at desktop (3.9s)
+  ✓  2 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at tablet (3.2s)
+  ✓  3 test/entity-preview-groups.spec.ts:88:2 › category folders group every collection and filter together at mobile (3.0s)
+
+  3 passed (14.7s)
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run "$@"' -- test/components/explorer-catalog-screen.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZfyikX/packages/reports
+
+ ✓ test/components/explorer-catalog-screen.test.ts (16 tests) 64ms
+
+ Test Files  1 passed (1)
+      Tests  16 passed (16)
+   Start at  11:32:00
+   Duration  1.91s (transform 1.05s, setup 81ms, collect 1.44s, tests 64ms, environment 0ms, prepare 36ms)
+

@@ -1,0 +1,69 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [755.00ms]
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+Loading svelte-check in workspace: /private/tmp/harness-snapshot-X1YKj0/packages/reports
+Getting Svelte diagnostics...
+
+[32msvelte-check found 0 errors and 0 warnings
+[39m$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/tmp/harness-snapshot-X1YKj0/packages/desktop
+Getting Svelte diagnostics...
+
+[32msvelte-check found 0 errors and 0 warnings
+[39m$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-actions.spec.ts --grep "usage stays in dedicated" "--reporter=list,json" --output "/tmp/harness-usage-sealed-browser-20261018"
+
+Running 3 tests using 1 worker
+
+  ✓  1 test/entity-preview-actions.spec.ts:34:2 › usage stays in dedicated tabs at desktop width (1.4s)
+  ✓  2 test/entity-preview-actions.spec.ts:34:2 › usage stays in dedicated tabs at tablet width (995ms)
+  ✓  3 test/entity-preview-actions.spec.ts:34:2 › usage stays in dedicated tabs at mobile width (939ms)
+
+  3 passed (5.5s)
+$ vitest run test/components/entity-relations.test.ts
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-X1YKj0/packages/reports[39m
+
+ [32m✓[39m test/components/entity-relations.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 21:11:41
+[2m   Duration [22m 901ms[2m (transform 485ms, setup 0ms, collect 650ms, tests 10ms, environment 0ms, prepare 32ms)[22m
+
+$ bun run sync:shared && vitest run test/entity-usage.test.ts
+$ bun run --cwd ../reports svelte-kit sync
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-X1YKj0/packages/desktop[39m
+
+ [32m✓[39m test/entity-usage.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 21:11:43
+[2m   Duration [22m 452ms[2m (transform 184ms, setup 0ms, collect 291ms, tests 3ms, environment 0ms, prepare 24ms)[22m
+

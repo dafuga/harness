@@ -1,0 +1,85 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [11.05s]
+$ vitest run test/components/service-contract.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-4XIyjg/packages/reports
+
+ ❯ test/components/service-contract.test.ts (5 tests | 2 failed) 17ms
+   × service contracts group parameters, return and errors by method, with initialize 10ms
+     → expected 'aria-label="initialize method"><h3 cl…' not to contain 'aria-label="Throws"'
+   ✓ an older revision without class metadata reads methods from qualified names 1ms
+   ✓ each class of a service keeps its own methods, same-named ones apart 1ms
+   × AgentActivityService shows each method it declares now, its class-wide error once 3ms
+     → expected ' Services AgentActivityService AgentA…' not to contain 'Errors not tied to a method'
+   ✓ a service contract that names no method keeps its fields together 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/service-contract.test.ts > service contracts group parameters, return and errors by method, with initialize
+AssertionError: expected 'aria-label="initialize method"><h3 cl…' not to contain 'aria-label="Throws"'
+
+- Expected
++ Received
+
+- aria-label="Throws"
++ aria-label="initialize method"><h3 class="svelte-1awoqrz"><code>initialize(timeoutMs: number): Promise&lt;void></code></h3> <!--[--><div class="group svelte-1c3wa0r" data-harness-component="contract-table"><!--[1--><p class="label svelte-1c3wa0r">Parameters</p><!--]--> <!--[-1--><div class="frame svelte-1c3wa0r"><table aria-label="Parameters" class="svelte-1c3wa0r"><thead class="svelte-1c3wa0r"><tr><!--[0--><th scope="col" class="leading svelte-1c3wa0r">Name</th><!--]--><th scope="col" class="leading svelte-1c3wa0r">Type</th><th scope="col" class="svelte-1c3wa0r">Example</th><th scope="col" class="act svelte-1c3wa0r" aria-label="Actions"></th></tr></thead><tbody class="svelte-1c3wa0r"><!--[-1--><!--]--><!--[--><tr class="svelte-1c3wa0r"><!--[0--><th scope="row" class="svelte-1c3wa0r">timeoutMs</th><!--]--><td class="svelte-1c3wa0r"><code class="type svelte-1c3wa0r">number</code></td><td class="example svelte-1c3wa0r"><!--[-1--><!--]--> <!--[0--><code>500</code><!--]--></td><td class="act svelte-1c3wa0r"><button type="button" class="info svelte-1c3wa0r" aria-label="View example for timeoutMs" aria-haspopup="dialog"><svg class="hx-icon svelte-hvc05" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class="group svelte-1c3wa0r" data-harness-component="contract-table"><!--[1--><p class="label svelte-1c3wa0r">Returns</p><!--]--> <!--[-1--><div class="frame svelte-1c3wa0r"><table aria-label="Returns" class="svelte-1c3wa0r"><thead class="svelte-1c3wa0r"><tr><!--[0--><th scope="col" class="leading svelte-1c3wa0r">Name</th><!--]--><th scope="col" class="leading svelte-1c3wa0r">Type</th><th scope="col" class="svelte-1c3wa0r">Example</th><th scope="col" class="act svelte-1c3wa0r" aria-label="Actions"></th></tr></thead><tbody class="svelte-1c3wa0r"><!--[-1--><!--]--><!--[--><tr class="svelte-1c3wa0r"><!--[0--><th scope="row" class="svelte-1c3wa0r">returnValue</th><!--]--><td class="svelte-1c3wa0r"><code class="type svelte-1c3wa0r">Promise&lt;void></code></td><td class="example svelte-1c3wa0r"><!--[0--><i>Example not recorded</i><!--]--> <!--[-1--><!--]--></td><td class="act svelte-1c3wa0r"><button type="button" class="info svelte-1c3wa0r" aria-label="View example for returnValue" aria-haspopup="dialog"><svg class="hx-icon svelte-hvc05" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><div class="group svelte-1c3wa0r" data-harness-component="contract-table"><!--[1--><p class="label svelte-1c3wa0r">Throws</p><!--]--> <!--[-1--><div class="frame svelte-1c3wa0r"><table aria-label="Throws" class="svelte-1c3wa0r"><thead class="svelte-1c3wa0r"><tr><!--[-1--><!--]--><th scope="col" class="leading svelte-1c3wa0r">Type</th><th scope="col" class="svelte-1c3wa0r">Example</th><th scope="col" class="act svelte-1c3wa0r" aria-label="Actions"></th></tr></thead><tbody class="svelte-1c3wa0r"><!--[-1--><!--]--><!--[--><tr class="svelte-1c3wa0r"><!--[-1--><!--]--><td class="svelte-1c3wa0r"><code class="type svelte-1c3wa0r">TimeoutError</code></td><td class="example svelte-1c3wa0r"><!--[-1--><!--]--> <!--[0--><code>{
++   "name": "TimeoutError",
++   "message": "The feed did not answer in 500 ms."
++ }</code><!--]--></td><td class="act svelte-1c3wa0r"><button type="button" class="info svelte-1c3wa0r" aria-label="View example for Timeout" aria-haspopup="dialog"><svg class="hx-icon svelte-hvc05" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17zM12 11v5.5M12 7.6v.1"></path></svg><!----></button></td></tr><!--]--></tbody></table></div><!--]--></div><!--]-->
+
+ ❯ test/components/service-contract.test.ts:42:25
+     40|  for (const group of ['Parameters', 'Returns'])
+     41|   expect(initialize).toContain(`aria-label="${group}"`);
+     42|  expect(initialize).not.toContain('aria-label="Throws"');
+       |                         ^
+     43|  expect(body.indexOf('aria-label="Errors"')).toBeGreaterThan(
+     44|   body.indexOf('aria-label="latest method"')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/components/service-contract.test.ts > AgentActivityService shows each method it declares now, its class-wide error once
+AssertionError: expected ' Services AgentActivityService AgentA…' not to contain 'Errors not tied to a method'
+
+Expected: "Errors not tied to a method"
+Received: " Services AgentActivityService AgentActivityService Service Registers agents, records their heartbeats and ends, and lists the agents of a repository with whether each is working now. Overview Contract Used In Uses Examples History Source Contract Runs as Module Declared examples are written in the contract. Illustrative ones are placeholders shaped by the type alone. Neither is the result of a test. constructor(root: string, checkouts: Checkout[]) Parameters Name Type Example root string Illustrative "example" checkouts Checkout[] Example not recorded Creates the service. register(input: AgentInput): Promise&lt;StoredAgent> Parameters Name Type Example input AgentInput Example not recorded Returns Name Type Example returnValue Promise&lt;StoredAgent> Example not recorded heartbeat(id: string, input: AgentInput): Promise&lt;AgentBeat> Parameters Name Type Example id string Illustrative "example" input AgentInput Example not recorded Returns Name Type Example returnValue Promise&lt;AgentBeat> Example not recorded finish(id: string, failed: boolean, outcome: string): Promise&lt;void> Parameters Name Type Example id string Illustrative "example" failed boolean Illustrative true outcome string Illustrative "example" Returns Name Type Example returnValue Promise&lt;void> Example not recorded roster(): Promise&lt;AgentRoster> Parameters Name Type Example No parameters. Returns Name Type Example returnValue Promise&lt;AgentRoster> Example not recorded Errors not tied to a method ExpectedCliError "
+
+ ❯ test/components/service-contract.test.ts:127:26
+    125|  expect(mirrored, 'the browser fixture shows the same methods').toEqua…
+    126|  expect(words(methodOf(body, 'roster'))).toContain('No parameters.');
+    127|  expect(words(body)).not.toContain('Errors not tied to a method');
+       |                          ^
+    128|  expect(body.indexOf('aria-label="Errors"')).toBeGreaterThan(
+    129|   body.indexOf('aria-label="roster method"')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 3 passed (5)
+   Start at  21:14:33
+   Duration  1.27s (transform 780ms, setup 0ms, collect 1.10s, tests 17ms, environment 0ms, prepare 35ms)
+
+error: script "test:unit" exited with code 1

@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DQ1VbX
+
+ ✓ test/history-attach.e2e.test.ts (3 tests) 14764ms
+   ✓ a passing record is stored immutably in Git without changing the source commit  2492ms
+   ✓ a failed record stays failed, and a tampered record or capture is refused  4589ms
+   ✓ separate runs of one commit are both kept and earlier evidence never changes  4127ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  06:37:51
+   Duration  15.01s (transform 30ms, setup 9ms, collect 27ms, tests 14.76s, environment 0ms, prepare 31ms)
+

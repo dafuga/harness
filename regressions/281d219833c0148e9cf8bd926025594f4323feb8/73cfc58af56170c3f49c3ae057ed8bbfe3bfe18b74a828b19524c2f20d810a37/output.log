@@ -1,0 +1,14 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --config src/configs/shellPlaywrightConfig.ts "$@"' -- explorer-shell-component-catalog.spec.ts --grep "(?:reports.component.explorer-dependencies-screen|reports.page.harness-branch-branch-at-dependencies) at"
+
+Running 6 tests using 1 worker
+
+(node:54820) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/explorer-shell-component-catalog.spec.ts:85:3 › reports.component.explorer-dependencies-screen at desktop (813ms)
+  ✓  2 tests/e2e/explorer-shell-component-catalog.spec.ts:85:3 › reports.page.harness-branch-branch-at-dependencies at desktop (784ms)
+  ✓  3 tests/e2e/explorer-shell-component-catalog.spec.ts:85:3 › reports.component.explorer-dependencies-screen at tablet (383ms)
+  ✓  4 tests/e2e/explorer-shell-component-catalog.spec.ts:85:3 › reports.page.harness-branch-branch-at-dependencies at tablet (422ms)
+  ✓  5 tests/e2e/explorer-shell-component-catalog.spec.ts:85:3 › reports.component.explorer-dependencies-screen at mobile (392ms)
+  ✓  6 tests/e2e/explorer-shell-component-catalog.spec.ts:85:3 › reports.page.harness-branch-branch-at-dependencies at mobile (436ms)
+
+  6 passed (12.9s)

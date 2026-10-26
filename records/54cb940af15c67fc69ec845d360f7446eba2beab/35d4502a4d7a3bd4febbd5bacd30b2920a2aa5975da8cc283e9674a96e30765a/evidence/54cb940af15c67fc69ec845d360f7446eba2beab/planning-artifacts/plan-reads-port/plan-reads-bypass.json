@@ -1,0 +1,140 @@
+{
+	"schemaVersion": 1,
+	"kind": "function-invocations",
+	"unitId": "planning.function.plan-reads",
+	"symbol": "planReads",
+	"cases": [
+		{
+			"name": "show",
+			"input": {
+				"args": [
+					"show",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+				],
+				"input": "stdin"
+			},
+			"output": "show aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+		},
+		{
+			"name": "show",
+			"input": {
+				"args": [
+					"show",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+				],
+				"input": "stdin"
+			},
+			"output": "show aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+		},
+		{
+			"name": "show",
+			"input": {
+				"args": [
+					"show",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+				],
+				"env": {
+					"GIT_INDEX_FILE": "/fixture/index"
+				}
+			},
+			"output": "show aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+		},
+		{
+			"name": "show",
+			"input": {
+				"args": [
+					"show",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+				],
+				"env": {
+					"GIT_INDEX_FILE": "/fixture/index"
+				}
+			},
+			"output": "show aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+		},
+		{
+			"name": "update-ref",
+			"input": {
+				"args": [
+					"update-ref",
+					"refs/heads/main",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				]
+			},
+			"output": "update-ref refs/heads/main aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+		},
+		{
+			"name": "update-ref",
+			"input": {
+				"args": [
+					"update-ref",
+					"refs/heads/main",
+					"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				]
+			},
+			"output": "update-ref refs/heads/main aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+		},
+		{
+			"name": "hash-object",
+			"input": {
+				"args": [
+					"hash-object",
+					"-w",
+					"--stdin"
+				],
+				"input": "blob"
+			},
+			"output": "hash-object -w --stdin"
+		},
+		{
+			"name": "hash-object",
+			"input": {
+				"args": [
+					"hash-object",
+					"-w",
+					"--stdin"
+				],
+				"input": "blob"
+			},
+			"output": "hash-object -w --stdin"
+		}
+	],
+	"reachedGit": [
+		[
+			"show",
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+		],
+		[
+			"show",
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+		],
+		[
+			"show",
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+		],
+		[
+			"show",
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:page.home/plan.json"
+		],
+		[
+			"update-ref",
+			"refs/heads/main",
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+		],
+		[
+			"update-ref",
+			"refs/heads/main",
+			"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+		],
+		[
+			"hash-object",
+			"-w",
+			"--stdin"
+		],
+		[
+			"hash-object",
+			"-w",
+			"--stdin"
+		]
+	]
+}

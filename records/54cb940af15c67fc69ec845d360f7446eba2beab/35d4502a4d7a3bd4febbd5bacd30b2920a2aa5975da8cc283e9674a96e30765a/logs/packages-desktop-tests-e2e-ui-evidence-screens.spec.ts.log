@@ -1,0 +1,12 @@
+
+Running 5 tests using 1 worker
+
+(node:7241) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/ui-evidence-screens.spec.ts:41:1 › a page at its branch tip shows one current screenshot beside its contract, apart from its designs (406ms)
+  ✓  2 tests/e2e/ui-evidence-screens.spec.ts:100:1 › the tip named as a commit is shown beside its first parent, and an older commit beside its own (918ms)
+  ✓  3 tests/e2e/ui-evidence-screens.spec.ts:150:1 › an inherited capture is not the current one, and sides that are not alike are not compared (458ms)
+  ✓  4 tests/e2e/ui-evidence-screens.spec.ts:186:2 › phone: both sides stay inside the page and keep their images (422ms)
+  ✓  5 tests/e2e/ui-evidence-screens.spec.ts:186:2 › tablet: both sides stay inside the page and keep their images (477ms)
+
+  5 passed (3.2s)

@@ -1,0 +1,68 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+765 packages installed [9.51s]
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts test/entity-preview-captures.spec.ts
+
+Running 1 test using 1 worker
+
+(node:63359) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-captures.spec.ts:8:1 › screenshots use their capture commit and comparisons show their paired revisions (5.3s)
+
+
+  1) test/entity-preview-captures.spec.ts:8:1 › screenshots use their capture commit and comparisons show their paired revisions 
+
+    Error: expect(locator).not.toContainText(expected) failed
+
+    Locator: locator('.ex-pane figcaption strong')
+    Expected substring: not "Branch tip"
+    Received string: "Branch tip · ccccccc"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "not toContainText" locator('.ex-pane figcaption strong') with timeout 5000ms
+      - waiting for locator('.ex-pane figcaption strong')
+        14 × locator resolved to <strong>Branch tip · ccccccc</strong>
+           - unexpected value "Branch tip · ccccccc"
+
+
+      14 | 	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/ccccccc-default-desktop.png');
+      15 | 	await expect(tab.locator('.ex-pane figcaption strong')).toContainText('ccccccc');
+    > 16 | 	await expect(tab.locator('.ex-pane figcaption strong')).not.toContainText('Branch tip');
+         | 	                                                            ^
+      17 | 	await capture(tab, 'page-current-desktop');
+      18 | 	await tab.getByRole('button', { name: 'Mobile' }).click();
+      19 | 	await expect(tab.locator(shots)).toHaveAttribute('src', '/media/ccccccc-default-mobile.png');
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-GduIZ7/packages/reports/test/entity-preview-captures.spec.ts:16:62
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-captures-sc-2f468-show-their-paired-revisions/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-captures-sc-2f468-show-their-paired-revisions/error-context.md
+
+  1 failed
+    test/entity-preview-captures.spec.ts:8:1 › screenshots use their capture commit and comparisons show their paired revisions 
+error: script "test:entities" exited with code 1

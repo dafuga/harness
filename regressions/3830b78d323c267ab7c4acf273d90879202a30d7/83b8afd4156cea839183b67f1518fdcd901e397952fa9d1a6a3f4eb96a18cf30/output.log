@@ -1,0 +1,63 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [13.63s]
+
+Running 1 test using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:140:2 › the console keeps a loaded revision responsive at tablet width (432ms)
+
+
+  1) test/entity-preview-actions.spec.ts:140:2 › the console keeps a loaded revision responsive at tablet width 
+
+    Error: expect(locator).not.toContainText(expected) failed
+
+    Locator: locator('.hx-shell')
+    Expected substring: not "Older commits were left out"
+    Error: strict mode violation: locator('.hx-shell') resolved to 2 elements:
+        1) <div class="hx-shell">…</div> aka locator('div').first()
+        2) <div class="hx-shell">…</div> aka locator('#app div').filter({ hasText: 'Harness Synthetic orders' })
+
+    Call log:
+      - Expect "not toContainText" locator('.hx-shell') with timeout 5000ms
+      - waiting for locator('.hx-shell')
+
+
+      144 | 		await open(tab, page, 'console');
+      145 | 		await capture(tab, `quiet-console-${name}`);
+    > 146 | 		await expect(tab.locator('.hx-shell')).not.toContainText('Older commits were left out');
+          | 		                                           ^
+      147 | 		const content = await tab.locator('.ex-content').elementHandle();
+      148 | 		const start = await tab.evaluate(() => performance.now());
+      149 | 		await tab.getByRole('tab', { name: 'Used In', exact: true }).click();
+        at /private/tmp/harness-snapshot-vMc6Xb/packages/reports/test/entity-preview-actions.spec.ts:146:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-the-9cc51--responsive-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-the-9cc51--responsive-at-tablet-width/error-context.md
+
+  1 failed
+    test/entity-preview-actions.spec.ts:140:2 › the console keeps a loaded revision responsive at tablet width 

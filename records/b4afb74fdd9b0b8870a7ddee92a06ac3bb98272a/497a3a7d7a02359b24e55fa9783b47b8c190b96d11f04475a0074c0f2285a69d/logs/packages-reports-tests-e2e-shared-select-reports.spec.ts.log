@@ -1,0 +1,46 @@
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at emitWarning (internal:tty:33:24)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+[WebServer] Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer]       at warnOnDeactivatedColors (internal:tty:33:24)
+[WebServer]       at getColorDepth (internal:tty:42:39)
+[WebServer]       at shouldColorize (internal:util/colors:14:109)
+[WebServer]       at refresh (internal:util/colors:18:31)
+[WebServer]       at internal:util/colors (internal:util/colors:24:16)
+[WebServer]       at internal:assert/assertion_error (internal:assert/assertion_error:2:187)
+[WebServer]       at loadAssertionError (node:assert:28:96)
+[WebServer] 
+
+Running 9 tests using 1 worker
+
+(node:66566) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/shared-select-reports.spec.ts:16:2 › the report filters are the shared select and narrow the reports at desktop width (1.1s)
+  ✓  2 tests/e2e/shared-select-reports.spec.ts:51:2 › the upload viewport is the shared select, held during an upload and sent with it at desktop width (504ms)
+  ✓  3 tests/e2e/shared-select-reports.spec.ts:103:2 › the fields that were the shared select before are the same field at desktop width (376ms)
+  ✓  4 tests/e2e/shared-select-reports.spec.ts:16:2 › the report filters are the shared select and narrow the reports at tablet width (258ms)
+  ✓  5 tests/e2e/shared-select-reports.spec.ts:51:2 › the upload viewport is the shared select, held during an upload and sent with it at tablet width (468ms)
+  ✓  6 tests/e2e/shared-select-reports.spec.ts:103:2 › the fields that were the shared select before are the same field at tablet width (357ms)
+  ✓  7 tests/e2e/shared-select-reports.spec.ts:16:2 › the report filters are the shared select and narrow the reports at mobile width (231ms)
+  ✓  8 tests/e2e/shared-select-reports.spec.ts:51:2 › the upload viewport is the shared select, held during an upload and sent with it at mobile width (373ms)
+  ✓  9 tests/e2e/shared-select-reports.spec.ts:103:2 › the fields that were the shared select before are the same field at mobile width (400ms)
+
+  9 passed (2.8m)

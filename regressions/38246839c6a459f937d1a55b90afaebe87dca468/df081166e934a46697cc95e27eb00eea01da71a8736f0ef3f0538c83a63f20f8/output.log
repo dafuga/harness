@@ -1,0 +1,28 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-bpJaJd
+
+ ✓ test/services/module-system/module-catalog.test.ts (6 tests | 5 skipped) 10ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 5 skipped (6)
+   Start at  21:33:32
+   Duration  2.61s (transform 156ms, setup 75ms, collect 357ms, tests 10ms, environment 0ms, prepare 25ms)
+
+        3.16 real         3.30 user         0.67 sys
+           436699136  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              106125  page reclaims
+                 613  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 687  messages sent
+                 663  messages received
+                   3  signals received
+                 627  voluntary context switches
+               16963  involuntary context switches
+         12745659160  instructions retired
+          4135416807  cycles elapsed
+           253725704  peak memory footprint

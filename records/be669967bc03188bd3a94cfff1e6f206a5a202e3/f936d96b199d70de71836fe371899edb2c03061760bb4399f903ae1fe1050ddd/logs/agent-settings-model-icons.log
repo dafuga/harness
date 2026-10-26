@@ -1,0 +1,11 @@
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/e2e/agent-model-choices.spec.ts:10:2 › compact agent uses model and intelligence icons at 1440px (358ms)
+  ✓  2 tests/e2e/agent-model-choices.spec.ts:10:2 › compact agent uses model and intelligence icons at 390px (179ms)
+  ✓  3 tests/e2e/agent-model-choices.spec.ts:28:1 › one model picker shows both CLIs and sends the selected model and supported intelligence (341ms)
+  ✓  4 tests/e2e/agent-model-choices.spec.ts:56:1 › Escape closes the model picker and returns focus without closing the agent panel (101ms)
+
+  4 passed (1.6s)
+(node:28433) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

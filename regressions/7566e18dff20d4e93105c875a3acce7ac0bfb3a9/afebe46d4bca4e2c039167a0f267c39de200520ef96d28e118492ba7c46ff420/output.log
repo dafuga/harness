@@ -1,0 +1,201 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-9l5SAC/packages/reports
+
+ ❯ test/utils/entity-screens.test.ts (11 tests | 1 failed) 19ms
+   ✓ a visual entity offers the states and viewports its scenario declares; a function offers none 1ms
+   ✓ the first state and viewport are shown until a person picks; an unknown pick is not kept 0ms
+   ✓ the branch tip shows exactly one screenshot, the one of the picked state and viewport 2ms
+   ✓ a selected commit pairs the parent and the commit for the same state and viewport 2ms
+   ✓ a side with no capture is a stated gap and is never filled from the other side 2ms
+   ✓ a revision without a record has a gap for its screenshot, in the words its side gives 0ms
+   ✓ a first commit has no before pane to fill: its parent side says why 0ms
+   ✓ an inherited capture is never the screenshot of the tip: it is a gap that names its origin 0ms
+   ✓ the gallery gets every screenshot of both sides, each side marked as what it is 2ms
+   ✓ a declared catalog preview selects its exact state and viewport without a fallback 0ms
+   × validated unchanged screenshots stay visible with their capture origin 9ms
+     → expected { …(9) } to match object { missing: false, …(1) }
+(7 matching properties omitted from actual)
+ ❯ test/components/entity-visual-screen.test.ts (4 tests | 1 failed) 65ms
+   ✓ a page and a component open on their screenshots: a pair at a commit, one at the tip 28ms
+   ✓ the tabs of the address open what it uses and its tests on the same screen 24ms
+   ✓ an entity the revision does not hold is said to be missing, with the way back 1ms
+   × a page overview keeps its declared screenshot state and viewport 11ms
+     → expected '<!--[--><div class="ex-content" data-…' to contain '/harness/media/ccccccc-empty-mobile.p…'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/components/entity-visual-screen.test.ts > a page overview keeps its declared screenshot state and viewport
+AssertionError: expected '<!--[--><div class="ex-content" data-…' to contain '/harness/media/ccccccc-empty-mobile.p…'
+
+Expected: [32m"/harness/media/ccccccc-empty-mobile.png"[39m
+Received: [31m"<!--[--><div class="ex-content" data-mode="current"><!--[-1--><!--[1--><nav class="ex-crumbs" aria-label="Breadcrumb"><ol><li><a href="/harness/branch/feature%2Forders/pages"><!---->Pages<!----></a><!----></li> <!--[-1--><li aria-current="page">Orders page</li><!--]--></ol></nav> <header class="ex-head"><span class="ex-tile"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false"><path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 8h8M8 12h8M8 16h5"></path></svg><!----></span> <div class="ex-head-main"><div class="ex-head-title"><h1>Orders page</h1> <span class="ex-pill">Page</span> <!--[-1--><!--]--> <!--[-1--><!--]--> <!--$s1--><span class="hx-verdict svelte-1lwyhm3 passed"><button type="button" aria-label="Full coverage passed" aria-describedby="s1" aria-expanded="false" class="svelte-1lwyhm3"><svg class="hx-icon svelte-1b1a29i solid" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20a10 10 0 0 0 0-20zM10.6 16.8l-4.3-4.3 1.4-1.4 2.9 2.9 5.7-5.7 1.4 1.4z"></path></svg><!----></button> <span class="hx-tip svelte-1lwyhm3" role="tooltip" id="s1" tabindex="-1" hidden="" style="visibility:hidden"><strong class="svelte-1lwyhm3">Full coverage passed</strong><!--[--><!--]--></span></span><!----></div> <p class="ex-lead">Lists the orders of an account.</p></div> <div class="ex-head-actions"><!--[0--><p class="ex-route"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M6 20a2 2 0 1 0 0-4a2 2 0 0 0 0 4zM18 8a2 2 0 1 0 0-4a2 2 0 0 0 0 4zM8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"></path></svg><!----> <span>App route</span> <!--[0--><a href="/orders" target="_blank" rel="noreferrer"><code>/orders</code><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M14 4h6v6M20 4l-9 9M18 13.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5.5"></path></svg><!----></a><!--]--></p><!--]--></div></header> <!--[-1--><!--]--><!----> <div class="hx-tabs" role="tablist" aria-label="Orders page sections"><!--[--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/pages/app.page.orders" aria-selected="true">Overview</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/pages/app.page.orders?tab=contract" aria-selected="false">Contract</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/pages/app.page.orders?tab=used-in" aria-selected="false">Used In</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/pages/app.page.orders?tab=uses" aria-selected="false">Uses</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/pages/app.page.orders?tab=states" aria-selected="false">States</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/pages/app.page.orders/history" aria-selected="false">History</a><!--]--><!--[0--><a role="tab" href="/harness/branch/feature%2Forders/pages/app.page.orders?tab=source" aria-selected="false">Source</a><!--]--><!--]--></div><!----><!----> <!--[-1--><!--]--> <!--[-1--><div role="tabpanel" aria-label="Orders page overview"><!--[0--><!--[0--><section class="ex-card ex-evidence" aria-labelledby="ex-screens-title"><header class="ex-evidence-head"><div><h2 id="ex-screens-title"><!--[0-->Current screenshot<!--]--></h2> <p class="ex-soft"><!--[0-->One screenshot of this entity at the current branch tip.<!--]--></p></div> <!--[-1--><!--[0--><a class="hx-action plain" href="/harness/branch/feature%2Forders/commit/cccccccccccccccccccccccccccccccccccccccc/pages/app.page.orders"><!--[-1--><!--]--> <!---->View commit changes<!----> <!--[0--><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M4 12h16M14 6l6 6-6 6"></path></svg><!--]--><!----></a><!--]--><!--]--></header> <!--[-1--><!--]--> <!--[0--><div class="ex-facts" role="group" aria-label="What is shown"><label>Scenario <span class="report-select svelte-124sfg disabled"><select aria-label="Scenario" disabled="" class="svelte-124sfg"><!--[--><option value="orders-page" selected="">Orders page over synthetic orders</option><!--]--><!----><!></select> <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" class="svelte-124sfg"><path d="m4 6 4 4 4-4"></path></svg> <!--[-1--><!--]--></span><!----></label> <label>State <span class="report-select svelte-124sfg"><select aria-label="State" class="svelte-124sfg"><!--[--><option value="default" selected="">default</option><option value="empty">empty</option><!--]--><!----><!></select> <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" class="svelte-124sfg"><path d="m4 6 4 4 4-4"></path></svg> <!--[-1--><!--]--></span><!----></label> <div class="ex-segments" role="group" aria-label="Viewport"><!--[--><button type="button" aria-pressed="true" title="1440 × 900">Desktop</button><button type="button" aria-pressed="false" title="390 × 844">Mobile</button><!--]--></div> <span class="ex-soft">1440 × 900</span></div><!--]--> <div class="ex-panes"><!--[--><figure class="ex-pane" aria-label="Current snapshot · ccccccc"><figcaption><strong>Current snapshot · ccccccc</strong> <span class="ex-pill">Branch tip</span> <!--[0--><button type="button" class="ex-text-button"><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"></path></svg><!----> Open full size</button><!--]--></figcaption> <!--[-1--><button type="button" class="ex-shot"><img src="/harness/media/ccccccc-default-desktop.png" alt="orders-page · default at desktop"/></button> <p class="ex-standing">Fresh capture · passed</p><!--]--></figure><!--]--></div> <!--[-1--><!--]--></section> <!--[-1--><!--]--><!----><!--]--> <!--[-1--><!--]--><!----><!----><!----><!--]--> <div class="ex-summary svelte-9u3o22 compact"><section class="ex-card" aria-label="Size"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9M8 5.3l8 4.5"></path></svg><!----> Size</h2> <dl class="ex-rows ex-figures"><!--[--><div><dt>Source size</dt> <dd class="unmeasured">Not measured <!--[-1--><!--]--></dd></div><div><dt>Emitted size</dt> <dd title="This unit declares no process or Wasm output." class="unmeasured">Not measured <!--[0--><span class="ex-note svelte-9u3o22">This unit declares no process or Wasm output.</span><!--]--></dd></div><div><dt>Complexity</dt> <dd class="unmeasured">Not measured <!--[-1--><!--]--></dd></div><!--]--></dl></section> <section class="ex-card" aria-label="Performance profile"><h2><svg class="hx-icon svelte-1b1a29i" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4.5 17a8.5 8.5 0 1 1 15 0M12 13l3.5-4M12 14.2a1.2 1.2 0 1 0 0-2.4a1.2 1.2 0 0 0 0 2.4z"></path></svg><!----> Performance profile</h2> <!--[0--><dl class="ex-rows ex-figures"><div><dt>Latency</dt> <dd class="unmeasured">Not measured</dd></div> <div><dt>Memory</dt> <dd class="unmeasured">Not measured</dd></div></dl> <p class="ex-note svelte-9u3o22">No benchmark is recorded for this revision.</p><!--]--></section></div><!----> <!--[-1--><!--]--></div><!--]--><!----><!--]--><!----><!--]--></div><!--]-->"[39m
+
+ ❯ test/components/entity-visual-screen.test.ts:57:15
+     55|  );
+     56|  const body = screen(EntityVisualScreen, 'current', page, { head });
+     57|  expect(body).toContain('/harness/media/ccccccc-empty-mobile.png');
+       |               ^
+     58|  expect(body).not.toContain('/harness/media/ccccccc-default-desktop.pn…
+     59| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/utils/entity-screens.test.ts > validated unchanged screenshots stay visible with their capture origin
+AssertionError: expected { …(9) } to match object { missing: false, …(1) }
+(7 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "file": "bbbbbbb-default-desktop.png",[39m
+[32m-   "missing": false,[39m
+[31m+   "file": "",[39m
+[31m+   "missing": true,[39m
+[2m  }[22m
+
+ ❯ test/utils/entity-screens.test.ts:140:22
+    138|  expect(usable.after.captures[0].usable, 'fixture has validated unchan…
+    139|  const shown = entityScreens(usable, screenPick(options, {})!);
+    140|  expect(shown.after).toMatchObject({ missing: false, file: 'bbbbbbb-de…
+       |                      ^
+    141|  expect(shown.fresh).toBe(false);
+    142|  expect(shown.origin).toBe(commits.middle);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 13 passed (15)
+   Start at  16:30:16
+   Duration  3.56s (transform 1.54s, setup 0ms, collect 2.30s, tests 84ms, environment 0ms, prepare 137ms)
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at desktop width (5.7s)
+  ✘  2 test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at tablet width (5.3s)
+  ✘  3 test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at mobile width (5.3s)
+
+
+  1) test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at desktop width 
+
+    Error: page header stays concise
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-head .ex-lead, .ex-head .ex-route')
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - page header stays concise locator('.ex-head .ex-lead, .ex-head .ex-route') with timeout 5000ms
+      - waiting for locator('.ex-head .ex-lead, .ex-head .ex-route')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewPage.ts:206
+
+      204 | 			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
+      205 | 			'page header stays concise'
+    > 206 | 		).toHaveCount(0);
+          | 		  ^
+      207 | 	}
+      208 | 	await expect(
+      209 | 		page.getByRole('combobox', { name: /^(Scenario|State)$/ }),
+        at reviewOverviewControls (/private/tmp/harness-snapshot-9l5SAC/packages/reports/test/entityPreviewPage.ts:206:5)
+        at reviewVisual (/private/tmp/harness-snapshot-9l5SAC/packages/reports/test/entityPreviewPage.ts:103:8)
+        at /private/tmp/harness-snapshot-9l5SAC/packages/reports/test/entity-preview-actions.spec.ts:19:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-6e20f-creenshots-at-desktop-width/error-context.md
+
+  2) test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at tablet width 
+
+    Error: page header stays concise
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-head .ex-lead, .ex-head .ex-route')
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - page header stays concise locator('.ex-head .ex-lead, .ex-head .ex-route') with timeout 5000ms
+      - waiting for locator('.ex-head .ex-lead, .ex-head .ex-route')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewPage.ts:206
+
+      204 | 			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
+      205 | 			'page header stays concise'
+    > 206 | 		).toHaveCount(0);
+          | 		  ^
+      207 | 	}
+      208 | 	await expect(
+      209 | 		page.getByRole('combobox', { name: /^(Scenario|State)$/ }),
+        at reviewOverviewControls (/private/tmp/harness-snapshot-9l5SAC/packages/reports/test/entityPreviewPage.ts:206:5)
+        at reviewVisual (/private/tmp/harness-snapshot-9l5SAC/packages/reports/test/entityPreviewPage.ts:103:8)
+        at /private/tmp/harness-snapshot-9l5SAC/packages/reports/test/entity-preview-actions.spec.ts:19:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-ec3df-screenshots-at-tablet-width/error-context.md
+
+  3) test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at mobile width 
+
+    Error: page header stays concise
+
+    expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.ex-head .ex-lead, .ex-head .ex-route')
+    Expected: 0
+    Received: 2
+    Timeout:  5000ms
+
+    Call log:
+      - page header stays concise locator('.ex-head .ex-lead, .ex-head .ex-route') with timeout 5000ms
+      - waiting for locator('.ex-head .ex-lead, .ex-head .ex-route')
+        14 × locator resolved to 2 elements
+           - unexpected value "2"
+
+
+       at entityPreviewPage.ts:206
+
+      204 | 			page.locator('.ex-head .ex-lead, .ex-head .ex-route'),
+      205 | 			'page header stays concise'
+    > 206 | 		).toHaveCount(0);
+          | 		  ^
+      207 | 	}
+      208 | 	await expect(
+      209 | 		page.getByRole('combobox', { name: /^(Scenario|State)$/ }),
+        at reviewOverviewControls (/private/tmp/harness-snapshot-9l5SAC/packages/reports/test/entityPreviewPage.ts:206:5)
+        at reviewVisual (/private/tmp/harness-snapshot-9l5SAC/packages/reports/test/entityPreviewPage.ts:103:8)
+        at /private/tmp/harness-snapshot-9l5SAC/packages/reports/test/entity-preview-actions.spec.ts:19:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-actions-vis-5375c-screenshots-at-mobile-width/error-context.md
+
+  3 failed
+    test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at desktop width 
+    test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at tablet width 
+    test/entity-preview-actions.spec.ts:14:2 › visual overviews lead with screenshots at mobile width 

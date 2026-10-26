@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HUXF1L/packages/desktop
+
+ ✓ test/remote-enable-lifecycle.test.ts (2 tests) 2642ms
+   ✓ disabling during registration cannot enable or start the host later  1302ms
+   ✓ quitting during registration cannot persist or start the host later  1339ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  00:05:04
+   Duration  3.29s (transform 292ms, setup 0ms, collect 481ms, tests 2.64s, environment 0ms, prepare 33ms)
+

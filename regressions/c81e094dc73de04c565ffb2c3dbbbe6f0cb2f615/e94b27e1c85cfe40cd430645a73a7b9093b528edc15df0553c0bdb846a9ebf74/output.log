@@ -1,0 +1,60 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-jTShyz/packages/reports
+
+ ❯ test/utils/harness-shell.test.ts (9 tests | 1 failed) 11ms
+   ✓ the bar groups module categories under four scoped primary destinations 4ms
+   ✓ on a current branch route the viewed commit is the tip, and there is no tip to go to 0ms
+   ✓ on a selected commit the tip and the viewed commit are told apart, and Go to tip keeps the place 0ms
+   ✓ a selected commit that is the tip says both, and still leads to the current branch route 0ms
+   ✓ a branch stays in current mode on the same entity, and a commit is always an explicit route 0ms
+   ✓ a commit no branch reaches has no tip, says so, and is listed although no branch lists it 0ms
+   ✓ without a resolved address the bar keeps its navigation and offers no revision 0ms
+   ✓ Styles stays active across branch and commit selection without becoming an entity category 0ms
+   × installed modules contribute scoped Code entries from their resource definitions 4ms
+     → expected { id: 'module-library', …(6) } to match object { label: 'Plugins', active: true }
+(9 matching properties omitted from actual)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/harness-shell.test.ts > installed modules contribute scoped Code entries from their resource definitions
+AssertionError: expected { id: 'module-library', …(6) } to match object { label: 'Plugins', active: true }
+(9 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "active": true,
+-   "label": "Plugins",
++   "label": "Modules",
+  }
+
+ ❯ assertLegacyLibraryNavigation test/moduleNavigationCases.ts:59:70
+     57|   }
+     58|  });
+     59|  expect(result.modules.find((item) => item.id === 'module-library')).t…
+       |                                                                      ^
+     60|   label: 'Plugins',
+     61|   active: true
+ ❯ test/utils/harness-shell.test.ts:210:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  00:03:00
+   Duration  302ms (transform 102ms, setup 83ms, collect 75ms, tests 11ms, environment 0ms, prepare 28ms)
+

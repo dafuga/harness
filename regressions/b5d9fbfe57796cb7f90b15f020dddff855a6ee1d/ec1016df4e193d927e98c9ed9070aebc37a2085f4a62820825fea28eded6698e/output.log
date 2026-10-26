@@ -1,0 +1,43 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-WxLhoU
+
+ ❯ test/pieces.test.ts (6 tests | 1 failed) 520ms
+   ✓ every scaffold kind creates at least one file in a 2d project 123ms
+   ✓ every scaffold kind creates at least one file in a 3d project 69ms
+   ✓ view, layout, and api scaffolds use SvelteKit route files 8ms
+   ✓ marks only SvelteKit scaffolds as app-only 0ms
+   × Rails-ish scaffolds create their expected code shapes 313ms
+     → Generated repository method-state cases compile: expected [ Array(1) ] to deeply equal []
+   ✓ helper scaffolds emit pure camelCase functions with domain parameters 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/pieces.test.ts > Rails-ish scaffolds create their expected code shapes
+AssertionError: Generated repository method-state cases compile: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "Object literal may only specify known properties, and 'label' does not exist in type 'RepositoryRecord'.",
++ ]
+
+ ❯ assertRepositoryTypes test/support/generatedContracts.ts:166:4
+    164|    .map((issue) => ts.flattenDiagnosticMessageText(issue.messageText, …
+    165|   'Generated repository method-state cases compile'
+    166|  ).toEqual([]);
+       |    ^
+    167| }
+    168| 
+ ❯ assertClassMatrices test/support/generatedContracts.ts:104:2
+ ❯ test/pieces.test.ts:71:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  09:15:32
+   Duration  3.66s (transform 120ms, setup 90ms, collect 331ms, tests 520ms, environment 0ms, prepare 32ms)
+

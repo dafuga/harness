@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fByx75
+
+ ✓ test/history-restore.e2e.test.ts (2 tests) 9451ms
+   ✓ attached records are restored from Git when the local cache is gone  3095ms
+   ✓ a record belongs to one commit, and an evidence revision is never verified as source  2366ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  12:25:56
+   Duration  9.71s (transform 35ms, setup 10ms, collect 36ms, tests 9.45s, environment 0ms, prepare 39ms)
+

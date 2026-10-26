@@ -1,0 +1,110 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+720 packages installed [9.45s]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xoLito
+
+ ❯ test/validators/performance-evidence.test.ts (20 tests | 8 failed) 87ms
+   ✓ actual observations are required even when a unit declares no performance budget 69ms
+   ✓ revision mismatches cannot satisfy required profiling 0ms
+   ✓ profile mismatches cannot satisfy required profiling 0ms
+   ✓ target mismatches cannot satisfy required profiling 0ms
+   ✓ workload mismatches cannot satisfy required profiling 0ms
+   ✓ samples mismatches cannot satisfy required profiling 0ms
+   ✓ unavailable mismatches cannot satisfy required profiling 0ms
+   ✓ one callable cannot lend its observations to another helper in the same module 1ms
+   ✓ parsed type declarations determines runtime applicability 3ms
+   ✓ parsed type imports determines runtime applicability 1ms
+   × parsed ambient globals determines runtime applicability 4ms
+     → parsed source determines profiling: expected [ { id: 'function.title', …(4) } ] to have a length of +0 but got 1
+   × parsed empty module marker determines runtime applicability 1ms
+     → parsed source determines profiling: expected [ { id: 'function.title', …(4) } ] to have a length of +0 but got 1
+   × parsed module initialization determines runtime applicability 1ms
+     → parsed source determines profiling: expected [] to have a length of 1 but got +0
+   × parsed side-effect import determines runtime applicability 1ms
+     → parsed source determines profiling: expected [] to have a length of 1 but got +0
+   × parsed value import determines runtime applicability 1ms
+     → parsed source determines profiling: expected [] to have a length of 1 but got +0
+   × parsed private operation determines runtime applicability 1ms
+     → parsed source determines profiling: expected [] to have a length of 1 but got +0
+   × parsed runtime enum determines runtime applicability 0ms
+     → parsed source determines profiling: expected [] to have a length of 1 but got +0
+   × parsed unparseable declaration determines runtime applicability 0ms
+     → parsed source determines profiling: expected [] to have a length of 1 but got +0
+   ✓ readable stylesheets are declarative while unreadable and mixed sources stay required 0ms
+   ✓ synthetic rule-fixture values cannot establish runtime profiling 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/validators/performance-evidence.test.ts > parsed ambient globals determines runtime applicability
+ FAIL  test/validators/performance-evidence.test.ts > parsed empty module marker determines runtime applicability
+AssertionError: parsed source determines profiling: expected [ { id: 'function.title', …(4) } ] to have a length of +0 but got 1
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/validators/performance-evidence.test.ts:121:5
+    119|    validator.required(input.units, input.files),
+    120|    'parsed source determines profiling'
+    121|   ).toHaveLength(required ? 1 : 0);
+       |     ^
+    122|   input.files.get(path)!.read = false;
+    123|   expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/validators/performance-evidence.test.ts > parsed module initialization determines runtime applicability
+ FAIL  test/validators/performance-evidence.test.ts > parsed side-effect import determines runtime applicability
+ FAIL  test/validators/performance-evidence.test.ts > parsed value import determines runtime applicability
+ FAIL  test/validators/performance-evidence.test.ts > parsed private operation determines runtime applicability
+ FAIL  test/validators/performance-evidence.test.ts > parsed runtime enum determines runtime applicability
+ FAIL  test/validators/performance-evidence.test.ts > parsed unparseable declaration determines runtime applicability
+AssertionError: parsed source determines profiling: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/validators/performance-evidence.test.ts:121:5
+    119|    validator.required(input.units, input.files),
+    120|    'parsed source determines profiling'
+    121|   ).toHaveLength(required ? 1 : 0);
+       |     ^
+    122|   input.files.get(path)!.read = false;
+    123|   expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 12 passed (20)
+   Start at  16:10:21
+   Duration  3.10s (transform 135ms, setup 84ms, collect 275ms, tests 87ms, environment 0ms, prepare 30ms)
+

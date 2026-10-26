@@ -1,0 +1,74 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [149.00ms]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mHxn1x
+
+ ✓ test/services/unit-index.test.ts (12 tests) 1152ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  909ms
+ ✓ test/utils/unit-documentation.test.ts (3 tests) 239ms
+ ✓ test/generate-workflow.test.ts (5 tests) 100ms
+ ✓ test/project-template.test.ts (4 tests) 90ms
+ ✓ test/utils/unit-metadata.test.ts (42 tests) 69ms
+ ✓ test/utils/unit-identity.test.ts (3 tests) 32ms
+ ✓ test/project-detection.test.ts (6 tests) 180ms
+ ✓ test/guides.test.ts (7 tests) 9ms
+ ✓ test/pieces.test.ts (6 tests) 5ms
+
+ Test Files  9 passed (9)
+      Tests  88 passed (88)
+   Start at  13:41:11
+   Duration  5.04s (transform 338ms, setup 371ms, collect 1.43s, tests 1.88s, environment 1ms, prepare 261ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mHxn1x/packages/reports
+
+ ✓ test/components/entity-details.test.ts (7 tests) 24ms
+ ✓ test/components/explorer-composition.test.ts (6 tests) 2520ms
+   ✓ every page mounts the host with one screen of its own, and none draws every screen  442ms
+   ✓ the four screens of a category are made of different components  485ms
+   ✓ a catalog draws no entity view, and each entity view draws its own and not the others  1526ms
+ ✓ test/module-groups.test.ts (6 tests) 40ms
+
+ Test Files  3 passed (3)
+      Tests  19 passed (19)
+   Start at  13:41:17
+   Duration  4.48s (transform 852ms, setup 0ms, collect 1.44s, tests 2.58s, environment 0ms, prepare 83ms)
+
+
+Running 30 tests using 1 worker
+
+(node:70449) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at desktop (2.8s)
+  ✓   2 test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at tablet (2.3s)
+  ✓   3 test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at mobile (2.3s)
+  ✓   4 test/entity-preview-groups.spec.ts:107:2 › source lists category implementation files only at desktop (1.4s)
+  ✓   5 test/entity-preview-groups.spec.ts:107:2 › source lists category implementation files only at tablet (1.4s)
+  ✓   6 test/entity-preview-groups.spec.ts:107:2 › source lists category implementation files only at mobile (1.4s)
+  ✓   7 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at desktop width (701ms)
+  ✓   8 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at desktop width (701ms)
+  ✓   9 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at desktop width (641ms)
+  ✓  10 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at desktop width (801ms)
+  ✓  11 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at desktop width (659ms)
+  ✓  12 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at desktop width (681ms)
+  ✓  13 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at desktop width (675ms)
+  ✓  14 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at tablet width (656ms)
+  ✓  15 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at tablet width (701ms)
+  ✓  16 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at tablet width (649ms)
+  ✓  17 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at tablet width (714ms)
+  ✓  18 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at tablet width (659ms)
+  ✓  19 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at tablet width (650ms)
+  ✓  20 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at tablet width (668ms)
+  ✓  21 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at mobile width (669ms)
+  ✓  22 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at mobile width (686ms)
+  ✓  23 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at mobile width (654ms)
+  ✓  24 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at mobile width (688ms)
+  ✓  25 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at mobile width (650ms)
+  ✓  26 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at mobile width (644ms)
+  ✓  27 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at mobile width (681ms)
+  ✓  28 test/entity-preview-source.spec.ts:132:1 › source file selection and closing retain the detail Source tab (233ms)
+  ✓  29 test/entity-preview-source.spec.ts:153:1 › Source opens file contents in a modal and older histories state an explicit gap (349ms)
+  ✓  30 test/entity-preview-source.spec.ts:188:1 › a delayed previous source read cannot replace the selected file (253ms)
+
+  30 passed (30.4s)

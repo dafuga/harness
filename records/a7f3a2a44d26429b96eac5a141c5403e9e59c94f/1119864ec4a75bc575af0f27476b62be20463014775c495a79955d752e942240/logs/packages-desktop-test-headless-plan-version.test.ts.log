@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-VmT9RE/packages/desktop
+
+ ✓ test/headless-plan-version.test.ts (4 tests) 35645ms
+   ✓ functions Plan comments retain the exact notes version through later revisions  9899ms
+   ✓ services Plan comments retain the exact notes version through later revisions  10194ms
+   ✓ configs Plan comments retain the exact notes version through later revisions  9964ms
+   ✓ visual comments keep image links and cannot fall back to their design notes  5588ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  00:32:10
+   Duration  36.09s (transform 158ms, setup 0ms, collect 260ms, tests 35.65s, environment 0ms, prepare 28ms)
+

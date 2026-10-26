@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-o9Pri5
+
+ ✓ test/console-update.e2e.test.ts (5 tests) 8418ms
+   ✓ a requested update is a tracked change: saved, recorded, in the Git diff and in the impact  1870ms
+   ✓ later edits by the agent are kept or replaced on request, never lost  495ms
+   ✓ restoring brings the host route back exactly, and repeated installs then leave it alone  500ms
+   ✓ uninstalling removes what was generated, keeps the record, and the console installs again  517ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  19:40:19
+   Duration  8.63s (transform 29ms, setup 6ms, collect 24ms, tests 8.42s, environment 0ms, prepare 22ms)
+

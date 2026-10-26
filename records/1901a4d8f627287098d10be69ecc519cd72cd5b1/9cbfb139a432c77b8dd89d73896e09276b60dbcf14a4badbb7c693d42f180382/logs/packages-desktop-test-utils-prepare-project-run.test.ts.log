@@ -1,0 +1,17 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-0UFg8p/packages/desktop[39m
+
+ [32m✓[39m test/utils/prepare-project-run.test.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 11697[2mms[22m[39m
+   [33m[2m✓[22m[39m a model the provider did not list is refused before anything is asked or written [33m 1631[2mms[22m[39m
+   [33m[2m✓[22m[39m a past commit and a Change add nothing to a project [33m 1814[2mms[22m[39m
+   [33m[2m✓[22m[39m a creation request with no project is refused before anything is asked [33m 1561[2mms[22m[39m
+   [33m[2m✓[22m[39m a creation request with a name that is no project identity is refused before anything is asked [33m 1705[2mms[22m[39m
+   [33m[2m✓[22m[39m a creation request with a path is refused before anything is asked [33m 1770[2mms[22m[39m
+   [33m[2m✓[22m[39m a creation request with another local project is refused before anything is asked [33m 1638[2mms[22m[39m
+   [33m[2m✓[22m[39m a creation request with a hosted project that is not open is refused before anything is asked [33m 1578[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m   Start at [22m 20:11:58
+[2m   Duration [22m 12.88s[2m (transform 500ms, setup 0ms, collect 805ms, tests 11.70s, environment 0ms, prepare 82ms)[22m
+

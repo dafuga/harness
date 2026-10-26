@@ -1,0 +1,17 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fByx75/packages/desktop
+
+Switched to a new branch 'feature/design'
+Switched to branch 'main'
+ ✓ test/recorded-artifact.test.ts (6 tests) 15203ms
+   ✓ a listed capture is read as its recorded bytes, with a media type that was checked  632ms
+   ✓ a capture of another entity, record, side or hash is refused  447ms
+   ✓ a capture is read only in the project that recorded it  1053ms
+   ✓ a notes-only update renews the identity and keeps the shown artifact readable  1222ms
+   ✓ a newer record of the same commit never stands in for the one that was shown  3140ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  11:14:14
+   Duration  15.77s (transform 280ms, setup 0ms, collect 432ms, tests 15.20s, environment 0ms, prepare 25ms)
+

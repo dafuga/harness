@@ -1,0 +1,13 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/var/folders/nj/vtw8zd2j31d1gdrtntc5y4600000gn/T/harness-snapshot-ElRlB1[39m
+
+ [32m✓[39m test/adapters/runtime-adapters.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 1676[2mms[22m[39m
+   [33m[2m✓[22m[39m process runtime reports malformed output, crashes, timeouts and missing binaries [33m 575[2mms[22m[39m
+   [33m[2m✓[22m[39m persistent process runtime keeps one process, and recovers after a timeout [33m 546[2mms[22m[39m
+   [33m[2m✓[22m[39m HTTP runtime reports bad status, malformed bodies, timeouts and refused connections [33m 340[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 21:49:06
+[2m   Duration [22m 2.04s[2m (transform 83ms, setup 14ms, collect 88ms, tests 1.68s, environment 0ms, prepare 44ms)[22m
+

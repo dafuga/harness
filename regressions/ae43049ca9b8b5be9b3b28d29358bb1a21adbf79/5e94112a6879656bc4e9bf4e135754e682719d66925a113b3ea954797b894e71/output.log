@@ -1,0 +1,801 @@
+
+Running 24 tests using 1 worker
+
+  ✘   1 test/entity-preview-source.spec.ts:71:3 › Models code opens only from the detail Source tab at desktop width (2.5s)
+  ✘   2 test/entity-preview-source.spec.ts:71:3 › Helpers code opens only from the detail Source tab at desktop width (2.4s)
+  ✘   3 test/entity-preview-source.spec.ts:71:3 › Pages code opens only from the detail Source tab at desktop width (2.4s)
+  ✘   4 test/entity-preview-source.spec.ts:71:3 › Components code opens only from the detail Source tab at desktop width (2.5s)
+  ✘   5 test/entity-preview-source.spec.ts:71:3 › Layouts code opens only from the detail Source tab at desktop width (2.4s)
+  ✘   6 test/entity-preview-source.spec.ts:71:3 › Configs code opens only from the detail Source tab at desktop width (2.4s)
+  ✘   7 test/entity-preview-source.spec.ts:71:3 › Services code opens only from the detail Source tab at desktop width (2.4s)
+  ✘   8 test/entity-preview-source.spec.ts:71:3 › Models code opens only from the detail Source tab at tablet width (2.4s)
+  ✘   9 test/entity-preview-source.spec.ts:71:3 › Helpers code opens only from the detail Source tab at tablet width (2.4s)
+  ✘  10 test/entity-preview-source.spec.ts:71:3 › Pages code opens only from the detail Source tab at tablet width (2.4s)
+  ✘  11 test/entity-preview-source.spec.ts:71:3 › Components code opens only from the detail Source tab at tablet width (2.4s)
+  ✘  12 test/entity-preview-source.spec.ts:71:3 › Layouts code opens only from the detail Source tab at tablet width (2.4s)
+  ✘  13 test/entity-preview-source.spec.ts:71:3 › Configs code opens only from the detail Source tab at tablet width (2.4s)
+  ✘  14 test/entity-preview-source.spec.ts:71:3 › Services code opens only from the detail Source tab at tablet width (2.5s)
+  ✘  15 test/entity-preview-source.spec.ts:71:3 › Models code opens only from the detail Source tab at mobile width (2.4s)
+  ✘  16 test/entity-preview-source.spec.ts:71:3 › Helpers code opens only from the detail Source tab at mobile width (2.4s)
+  ✘  17 test/entity-preview-source.spec.ts:71:3 › Pages code opens only from the detail Source tab at mobile width (2.4s)
+  ✘  18 test/entity-preview-source.spec.ts:71:3 › Components code opens only from the detail Source tab at mobile width (2.4s)
+  ✘  19 test/entity-preview-source.spec.ts:71:3 › Layouts code opens only from the detail Source tab at mobile width (2.4s)
+  ✘  20 test/entity-preview-source.spec.ts:71:3 › Configs code opens only from the detail Source tab at mobile width (2.4s)
+  ✘  21 test/entity-preview-source.spec.ts:71:3 › Services code opens only from the detail Source tab at mobile width (2.4s)
+  ✘  22 test/entity-preview-source.spec.ts:129:1 › source file selection and closing retain the detail Source tab (2.1s)
+  ✓  23 test/entity-preview-source.spec.ts:150:1 › Source opens file contents in a modal and older histories state an explicit gap (365ms)
+  ✓  24 test/entity-preview-source.spec.ts:185:1 › a delayed previous source read cannot replace the selected file (246ms)
+
+
+  1) test/entity-preview-source.spec.ts:71:3 › Models code opens only from the detail Source tab at desktop width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/orders/Order.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/orders/Order.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/orders/Order.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/models/orders/Order.ts">src/models/orders/Order.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Mode-2a50e-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Mode-2a50e-Source-tab-at-desktop-width/error-context.md
+
+  2) test/entity-preview-source.spec.ts:71:3 › Helpers code opens only from the detail Source tab at desktop width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/helpers/orders/filterOrders.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/helpers/orders/filterOrders.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/helpers/orders/filterOrders.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/helpers/orders/filterOrders.ts">src/helpers/orders/filterOrders.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-82eb3-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-82eb3-Source-tab-at-desktop-width/error-context.md
+
+  3) test/entity-preview-source.spec.ts:71:3 › Pages code opens only from the detail Source tab at desktop width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/routes/orders/+page.svelte', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/routes/orders/+page.svelte', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/routes/orders/+page.svelte', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/routes/orders/%2Bpage.svelte">src/routes/orders/+page.svelte</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Page-d0af9-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Page-d0af9-Source-tab-at-desktop-width/error-context.md
+
+  4) test/entity-preview-source.spec.ts:71:3 › Components code opens only from the detail Source tab at desktop width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/components/orders/OrderCard.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/components/orders/OrderCard.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/components/orders/OrderCard.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/components/orders/OrderCard.ts">src/components/orders/OrderCard.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Comp-812f9-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Comp-812f9-Source-tab-at-desktop-width/error-context.md
+
+  5) test/entity-preview-source.spec.ts:71:3 › Layouts code opens only from the detail Source tab at desktop width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/layouts/orders/OrderFrame.svelte', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/layouts/orders/OrderFrame.svelte', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/layouts/orders/OrderFrame.svelte', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/layouts/orders/OrderFrame.svelte">src/layouts/orders/OrderFrame.svelte</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Layo-9f29c-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Layo-9f29c-Source-tab-at-desktop-width/error-context.md
+
+  6) test/entity-preview-source.spec.ts:71:3 › Configs code opens only from the detail Source tab at desktop width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/configs/orders/orderSettings.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/configs/orders/orderSettings.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/configs/orders/orderSettings.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/configs/orders/orderSettings.ts">src/configs/orders/orderSettings.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Conf-f6b64-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Conf-f6b64-Source-tab-at-desktop-width/error-context.md
+
+  7) test/entity-preview-source.spec.ts:71:3 › Services code opens only from the detail Source tab at desktop width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/OrderStore.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/OrderStore.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/OrderStore.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/services/orders/OrderStore.ts">src/services/orders/OrderStore.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Serv-7729d-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Serv-7729d-Source-tab-at-desktop-width/error-context.md
+
+  8) test/entity-preview-source.spec.ts:71:3 › Models code opens only from the detail Source tab at tablet width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/orders/Order.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/orders/Order.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/orders/Order.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/models/orders/Order.ts">src/models/orders/Order.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Mode-6ac6a--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Mode-6ac6a--Source-tab-at-tablet-width/error-context.md
+
+  9) test/entity-preview-source.spec.ts:71:3 › Helpers code opens only from the detail Source tab at tablet width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/helpers/orders/filterOrders.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/helpers/orders/filterOrders.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/helpers/orders/filterOrders.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/helpers/orders/filterOrders.ts">src/helpers/orders/filterOrders.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-a3ae6--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-a3ae6--Source-tab-at-tablet-width/error-context.md
+
+  10) test/entity-preview-source.spec.ts:71:3 › Pages code opens only from the detail Source tab at tablet width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/routes/orders/+page.svelte', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/routes/orders/+page.svelte', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/routes/orders/+page.svelte', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/routes/orders/%2Bpage.svelte">src/routes/orders/+page.svelte</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Page-e8afa--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Page-e8afa--Source-tab-at-tablet-width/error-context.md
+
+  11) test/entity-preview-source.spec.ts:71:3 › Components code opens only from the detail Source tab at tablet width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/components/orders/OrderCard.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/components/orders/OrderCard.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/components/orders/OrderCard.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/components/orders/OrderCard.ts">src/components/orders/OrderCard.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Comp-b2230--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Comp-b2230--Source-tab-at-tablet-width/error-context.md
+
+  12) test/entity-preview-source.spec.ts:71:3 › Layouts code opens only from the detail Source tab at tablet width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/layouts/orders/OrderFrame.svelte', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/layouts/orders/OrderFrame.svelte', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/layouts/orders/OrderFrame.svelte', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/layouts/orders/OrderFrame.svelte">src/layouts/orders/OrderFrame.svelte</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Layo-795e0--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Layo-795e0--Source-tab-at-tablet-width/error-context.md
+
+  13) test/entity-preview-source.spec.ts:71:3 › Configs code opens only from the detail Source tab at tablet width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/configs/orders/orderSettings.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/configs/orders/orderSettings.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/configs/orders/orderSettings.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/configs/orders/orderSettings.ts">src/configs/orders/orderSettings.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Conf-cc625--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Conf-cc625--Source-tab-at-tablet-width/error-context.md
+
+  14) test/entity-preview-source.spec.ts:71:3 › Services code opens only from the detail Source tab at tablet width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/OrderStore.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/OrderStore.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/OrderStore.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/services/orders/OrderStore.ts">src/services/orders/OrderStore.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Serv-8e56a--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Serv-8e56a--Source-tab-at-tablet-width/error-context.md
+
+  15) test/entity-preview-source.spec.ts:71:3 › Models code opens only from the detail Source tab at mobile width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/orders/Order.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/orders/Order.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/models/orders/Order.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/models/orders/Order.ts">src/models/orders/Order.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Mode-992c7--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Mode-992c7--Source-tab-at-mobile-width/error-context.md
+
+  16) test/entity-preview-source.spec.ts:71:3 › Helpers code opens only from the detail Source tab at mobile width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/helpers/orders/filterOrders.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/helpers/orders/filterOrders.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/helpers/orders/filterOrders.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/helpers/orders/filterOrders.ts">src/helpers/orders/filterOrders.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-e19c0--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-e19c0--Source-tab-at-mobile-width/error-context.md
+
+  17) test/entity-preview-source.spec.ts:71:3 › Pages code opens only from the detail Source tab at mobile width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/routes/orders/+page.svelte', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/routes/orders/+page.svelte', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/routes/orders/+page.svelte', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/routes/orders/%2Bpage.svelte">src/routes/orders/+page.svelte</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Page-364a4--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Page-364a4--Source-tab-at-mobile-width/error-context.md
+
+  18) test/entity-preview-source.spec.ts:71:3 › Components code opens only from the detail Source tab at mobile width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/components/orders/OrderCard.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/components/orders/OrderCard.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/components/orders/OrderCard.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/components/orders/OrderCard.ts">src/components/orders/OrderCard.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Comp-36be6--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Comp-36be6--Source-tab-at-mobile-width/error-context.md
+
+  19) test/entity-preview-source.spec.ts:71:3 › Layouts code opens only from the detail Source tab at mobile width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/layouts/orders/OrderFrame.svelte', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/layouts/orders/OrderFrame.svelte', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/layouts/orders/OrderFrame.svelte', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/layouts/orders/OrderFrame.svelte">src/layouts/orders/OrderFrame.svelte</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Layo-78807--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Layo-78807--Source-tab-at-mobile-width/error-context.md
+
+  20) test/entity-preview-source.spec.ts:71:3 › Configs code opens only from the detail Source tab at mobile width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/configs/orders/orderSettings.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/configs/orders/orderSettings.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/configs/orders/orderSettings.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/configs/orders/orderSettings.ts">src/configs/orders/orderSettings.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Conf-21bee--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Conf-21bee--Source-tab-at-mobile-width/error-context.md
+
+  21) test/entity-preview-source.spec.ts:71:3 › Services code opens only from the detail Source tab at mobile width 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/OrderStore.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/OrderStore.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/OrderStore.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/services/orders/OrderStore.ts">src/services/orders/OrderStore.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:98:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Serv-e9407--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Serv-e9407--Source-tab-at-mobile-width/error-context.md
+
+  22) test/entity-preview-source.spec.ts:129:1 › source file selection and closing retain the detail Source tab 
+
+    Error: Source paths stay on one line
+
+    expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/Order types #é.ts', exact: true })
+    Expected: "nowrap"
+    Received: "normal"
+    Timeout:  2000ms
+
+    Call log:
+      - Source paths stay on one line getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/Order types #é.ts', exact: true }) with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link', { name: 'src/services/orders/Order types #é.ts', exact: true })
+        21 × locator resolved to <a target="_blank" rel="noreferrer" class="svelte-13h9jce" href="https://github.com/example/orders/blob/cccccccccccccccccccccccccccccccccccccccc/src/services/orders/Order%20types%20%23%C3%A9.ts">src/services/orders/Order types #é.ts</a>
+           - unexpected value "normal"
+
+
+      28 | 	);
+      29 | 	await expect(link).toHaveAttribute('target', '_blank');
+    > 30 | 	await expect(link, 'Source paths stay on one line').toHaveCSS('white-space', 'nowrap');
+         | 	                                                    ^
+      31 | 	await expect(link).toHaveAttribute('title', path);
+      32 | 	const row = (await link.locator('..').boundingBox())!;
+      33 | 	expect(row.height).toBeLessThanOrEqual(page.viewportSize()!.width > 480 ? 56 : 84);
+        at fileLink (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:30:54)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-W9pGE9/packages/reports/test/entity-preview-source.spec.ts:132:2
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-sour-8f6ef-etain-the-detail-Source-tab/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-sour-8f6ef-etain-the-detail-Source-tab/error-context.md
+
+  22 failed
+    test/entity-preview-source.spec.ts:71:3 › Models code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:71:3 › Helpers code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:71:3 › Pages code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:71:3 › Components code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:71:3 › Layouts code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:71:3 › Configs code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:71:3 › Services code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:71:3 › Models code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:71:3 › Helpers code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:71:3 › Pages code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:71:3 › Components code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:71:3 › Layouts code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:71:3 › Configs code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:71:3 › Services code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:71:3 › Models code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:71:3 › Helpers code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:71:3 › Pages code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:71:3 › Components code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:71:3 › Layouts code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:71:3 › Configs code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:71:3 › Services code opens only from the detail Source tab at mobile width 
+    test/entity-preview-source.spec.ts:129:1 › source file selection and closing retain the detail Source tab 
+  2 passed (1.1m)

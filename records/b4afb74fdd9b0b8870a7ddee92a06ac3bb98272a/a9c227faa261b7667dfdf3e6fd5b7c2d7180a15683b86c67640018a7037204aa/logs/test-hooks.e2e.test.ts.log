@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/hooks.e2e.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 26217[2mms[22m[39m
+   [33m[2m✓[22m[39m installing composes with an existing hook and uninstalling restores it byte for byte [33m 6085[2mms[22m[39m
+   [33m[2m✓[22m[39m an unverified commit cannot be pushed, a verified one can, and its evidence is attached [33m 8380[2mms[22m[39m
+   [33m[2m✓[22m[39m another worktree is unaffected until it opts in, and --no-verify is a stated bypass [33m 6351[2mms[22m[39m
+   [33m[2m✓[22m[39m a hooks directory that lives in the working tree is left alone [33m 534[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 16:05:08
+[2m   Duration [22m 26.59s[2m (transform 88ms, setup 25ms, collect 80ms, tests 26.22s, environment 0ms, prepare 64ms)[22m
+

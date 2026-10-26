@@ -1,0 +1,35 @@
+
+Running 1 test using 1 worker
+
+(node:65973) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-words.spec.ts:24:1 › a long word in a narrow column of a collection stays whole, and the table scrolls (439ms)
+
+
+  1) test/entity-preview-words.spec.ts:24:1 › a long word in a narrow column of a collection stays whole, and the table scrolls 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      37 | 	expect(
+      38 | 		await tab.locator('.ex-scroll').evaluate((frame) => frame.scrollWidth > frame.clientWidth)
+    > 39 | 	).toBe(true);
+         | 	  ^
+      40 | 	expect(await fits(tab)).toBe(true);
+      41 | });
+      42 |
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UzlOGs/packages/reports/test/entity-preview-words.spec.ts:39:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-words-a-lon-ec3ed-whole-and-the-table-scrolls/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-words-a-lon-ec3ed-whole-and-the-table-scrolls/error-context.md
+
+  1 failed
+    test/entity-preview-words.spec.ts:24:1 › a long word in a narrow column of a collection stays whole, and the table scrolls 
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+

@@ -1,0 +1,132 @@
+
+Running 3 tests using 1 worker
+
+(node:87924) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at desktop (5.4s)
+(node:91124) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at tablet (5.4s)
+(node:93994) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at mobile (5.3s)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at desktop 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: locator('[data-preview-unit="desktop.component.relationships-panel"]').locator('.chip')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+        "Page",
+    -   "Layout",
+    +   "Shell",
+      ]
+
+    Call log:
+      - Expect "toHaveText" locator('[data-preview-unit="desktop.component.relationships-panel"]').locator('.chip') with timeout 5000ms
+      - waiting for locator('[data-preview-unit="desktop.component.relationships-panel"]').locator('.chip')
+        14 × locator resolved to 2 elements
+
+
+      138 | 			}
+      139 | 			if (unit.id === 'desktop.component.relationships-panel')
+    > 140 | 				await expect(component.locator('.chip')).toHaveText(['Page', 'Layout']);
+          | 				                                         ^
+      141 | 			if (unit.id === 'reports.component.provider-picker-cards') {
+      142 | 				await expect(component.getByText('GPT 6.1', { exact: true })).toBeVisible();
+      143 | 				await expect(component.getByText('Claude Opus 5.5', { exact: true })).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zDgIva/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:140:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-0ff2b-ationships-panel-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-0ff2b-ationships-panel-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-0ff2b-ationships-panel-at-desktop/error-context.md
+
+  2) tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at tablet 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: locator('[data-preview-unit="desktop.component.relationships-panel"]').locator('.chip')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+        "Page",
+    -   "Layout",
+    +   "Shell",
+      ]
+
+    Call log:
+      - Expect "toHaveText" locator('[data-preview-unit="desktop.component.relationships-panel"]').locator('.chip') with timeout 5000ms
+      - waiting for locator('[data-preview-unit="desktop.component.relationships-panel"]').locator('.chip')
+        14 × locator resolved to 2 elements
+
+
+      138 | 			}
+      139 | 			if (unit.id === 'desktop.component.relationships-panel')
+    > 140 | 				await expect(component.locator('.chip')).toHaveText(['Page', 'Layout']);
+          | 				                                         ^
+      141 | 			if (unit.id === 'reports.component.provider-picker-cards') {
+      142 | 				await expect(component.getByText('GPT 6.1', { exact: true })).toBeVisible();
+      143 | 				await expect(component.getByText('Claude Opus 5.5', { exact: true })).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zDgIva/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:140:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-0bcf9-lationships-panel-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-0bcf9-lationships-panel-at-tablet/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-0bcf9-lationships-panel-at-tablet/error-context.md
+
+  3) tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at mobile 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: locator('[data-preview-unit="desktop.component.relationships-panel"]').locator('.chip')
+    Timeout: 5000ms
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+        "Page",
+    -   "Layout",
+    +   "Shell",
+      ]
+
+    Call log:
+      - Expect "toHaveText" locator('[data-preview-unit="desktop.component.relationships-panel"]').locator('.chip') with timeout 5000ms
+      - waiting for locator('[data-preview-unit="desktop.component.relationships-panel"]').locator('.chip')
+        14 × locator resolved to 2 elements
+
+
+      138 | 			}
+      139 | 			if (unit.id === 'desktop.component.relationships-panel')
+    > 140 | 				await expect(component.locator('.chip')).toHaveText(['Page', 'Layout']);
+          | 				                                         ^
+      141 | 			if (unit.id === 'reports.component.provider-picker-cards') {
+      142 | 				await expect(component.getByText('GPT 6.1', { exact: true })).toBeVisible();
+      143 | 				await expect(component.getByText('Claude Opus 5.5', { exact: true })).toBeVisible();
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-zDgIva/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:140:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-7df84-lationships-panel-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-7df84-lationships-panel-at-mobile/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-7df84-lationships-panel-at-mobile/error-context.md
+
+  3 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at desktop 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at tablet 
+    tests/e2e/explorer-shell-component-catalog.spec.ts:76:3 › desktop.component.relationships-panel at mobile 

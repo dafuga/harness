@@ -1,0 +1,11 @@
+
+Running 4 tests using 1 worker
+
+  ✓  1 tests/e2e/agent-picker-focus.spec.ts:9:3 › Choose model preserves focus, dismissal and bounds at 1440px (184ms)
+  ✓  2 tests/e2e/agent-picker-focus.spec.ts:9:3 › Reasoning effort preserves focus, dismissal and bounds at 1440px (154ms)
+  ✓  3 tests/e2e/agent-picker-focus.spec.ts:9:3 › Choose model preserves focus, dismissal and bounds at 390px (153ms)
+  ✓  4 tests/e2e/agent-picker-focus.spec.ts:9:3 › Reasoning effort preserves focus, dismissal and bounds at 390px (155ms)
+
+  4 passed (1.1s)
+(node:46429) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

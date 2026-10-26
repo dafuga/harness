@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DQ1VbX
+
+ ✓ test/budget-calibration.e2e.test.ts (2 tests) 6495ms
+   ✓ a calibration file or a failed record can never establish or approve a baseline  1629ms
+   ✓ a slowdown in a dependency fails the gate of the unit that owns the boundary  1467ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  06:34:05
+   Duration  6.71s (transform 26ms, setup 9ms, collect 21ms, tests 6.50s, environment 0ms, prepare 33ms)
+

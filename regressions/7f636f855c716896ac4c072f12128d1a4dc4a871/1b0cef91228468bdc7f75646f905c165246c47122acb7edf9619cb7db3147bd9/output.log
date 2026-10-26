@@ -1,0 +1,254 @@
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+[harness resources] CPU reserve is exhausted
+[harness resources] Waiting for CPU and memory reservations
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-mQkLOJ
+
+stdout | test/browser-console-expected.e2e.test.ts > intentional errors retain diagnostics and cannot hide missing, duplicate or unrelated errors
+E2E integration worker 1
+
+stdout | test/browser-console-errors.e2e.test.ts > generated browser tests reject errors in normal flows and pass after the error disappears
+E2E integration worker 2
+
+stdout | test/browser-console-expected.e2e.test.ts > intentional errors retain diagnostics and cannot hide missing, duplicate or unrelated errors
+Effective Playwright workers: undefined
+
+stdout | test/browser-console-errors.e2e.test.ts > generated browser tests reject errors in normal flows and pass after the error disappears
+Effective Playwright workers: undefined
+
+stdout | test/browser-console-expected.e2e.test.ts > API-only checks do not require a browser executable
+E2E integration worker 1
+
+ × test/browser-console-errors.e2e.test.ts > generated browser tests reject errors in normal flows and pass after the error disappears 3742ms
+   → Cannot read properties of undefined (reading 'specs')
+ × test/browser-console-expected.e2e.test.ts > intentional errors retain diagnostics and cannot hide missing, duplicate or unrelated errors 3740ms
+   → Cannot read properties of undefined (reading 'specs')
+ × test/browser-console-expected.e2e.test.ts > API-only checks do not require a browser executable 3164ms
+   → {
+  "config": {
+    "argv": [
+      "/Users/danielfugere/.bun/bin/bun",
+      "/Users/danielfugere/projects/harness-contract-test-policy-20261025/node_modules/@playwright/test/cli.js",
+      "test"
+    ],
+    "configFile": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-only-iftrBJ/api-only/playwright.config.ts",
+    "rootDir": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-only-iftrBJ/api-only/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-only-iftrBJ/api-only/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "",
+        "name": "",
+        "testDir": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-only-iftrBJ/api-only/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "api-page.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 5,
+    "webServer": null
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "First argument must use the object destructuring pattern: _fixtures",
+      "location": {
+        "file": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-only-iftrBJ/api-only/tests/e2e/support/browserTest.ts",
+        "line": 16,
+        "column": 25
+      },
+      "snippet": "   at support/browserTest.ts:16\n\n  14 |\n  15 | /** Normal flows require no errors. Deliberate failures declare exact expected diagnostics. */\n> 16 | export const test = base.extend<{\n     |                         ^\n  17 | \tbrowserErrors: ReturnType<typeof browserErrorCollector>;\n  18 | \tmatchScreenshot: MatchScreenshot;\n  19 | }>({"
+    }
+  ],
+  "stats": {
+    "startTime": "2026-10-25T15:05:31.435Z",
+    "duration": 19.81400000000002,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
+: expected 1 to be +0 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/browser-console-errors.e2e.test.ts > generated browser tests reject errors in normal flows and pass after the error disappears
+TypeError: Cannot read properties of undefined (reading 'specs')
+ ❯ outcomes test/browser-console-errors.e2e.test.ts:122:26
+    120| 
+    121| function outcomes(report: { suites: { specs: { tests: { status: string…
+    122|  return report.suites[0].specs.map((spec) => spec.tests[0].status);
+       |                          ^
+    123| }
+    124| 
+ ❯ test/browser-console-errors.e2e.test.ts:26:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/browser-console-expected.e2e.test.ts > intentional errors retain diagnostics and cannot hide missing, duplicate or unrelated errors
+TypeError: Cannot read properties of undefined (reading 'specs')
+ ❯ test/browser-console-expected.e2e.test.ts:32:36
+     30|   const report = JSON.parse(result.stdout);
+     31|   console.info(`Effective Playwright workers: ${report.config.metadata…
+     32|   const results = report.suites[0].specs.map((spec: Spec) => spec.test…
+       |                                    ^
+     33|   expect(results.map((item: Execution) => item.status)).toEqual([
+     34|    'expected',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/browser-console-expected.e2e.test.ts > API-only checks do not require a browser executable
+AssertionError: {
+  "config": {
+    "argv": [
+      "/Users/danielfugere/.bun/bin/bun",
+      "/Users/danielfugere/projects/harness-contract-test-policy-20261025/node_modules/@playwright/test/cli.js",
+      "test"
+    ],
+    "configFile": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-only-iftrBJ/api-only/playwright.config.ts",
+    "rootDir": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-only-iftrBJ/api-only/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-only-iftrBJ/api-only/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "",
+        "name": "",
+        "testDir": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-only-iftrBJ/api-only/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "api-page.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 5,
+    "webServer": null
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "First argument must use the object destructuring pattern: _fixtures",
+      "location": {
+        "file": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-api-only-iftrBJ/api-only/tests/e2e/support/browserTest.ts",
+        "line": 16,
+        "column": 25
+      },
+      "snippet": "   at support/browserTest.ts:16\n\n  14 |\n  15 | /** Normal flows require no errors. Deliberate failures declare exact expected diagnostics. */\n> 16 | export const test = base.extend<{\n     |                         ^\n  17 | \tbrowserErrors: ReturnType<typeof browserErrorCollector>;\n  18 | \tmatchScreenshot: MatchScreenshot;\n  19 | }>({"
+    }
+  ],
+  "stats": {
+    "startTime": "2026-10-25T15:05:31.435Z",
+    "duration": 19.81400000000002,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
+: expected 1 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 1[39m
+
+ ❯ test/browser-console-expected.e2e.test.ts:105:42
+    103|    false
+    104|   );
+    105|   expect(result.exitCode, result.stdout).toBe(0);
+       |                                          ^
+    106|  } finally {
+    107|   await rm(root, { recursive: true, force: true });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed (3)
+   Start at  15:05:20
+   Duration  11.08s (transform 147ms, setup 372ms, collect 60ms, tests 10.65s, environment 0ms, prepare 99ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false

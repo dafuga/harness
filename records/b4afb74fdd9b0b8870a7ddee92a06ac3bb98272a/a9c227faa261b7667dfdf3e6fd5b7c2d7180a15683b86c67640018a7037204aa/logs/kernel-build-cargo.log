@@ -1,0 +1,48 @@
+$ cargo fmt --check && cargo clippy --locked --all-targets -- -D warnings && cargo test --locked
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+    Checking memchr v2.8.3
+    Checking itoa v1.0.18
+   Compiling syn v3.0.7
+   Compiling serde_derive v1.0.229
+    Checking impact-kernel v0.1.0 (/tmp/harness-snapshot-iUpwmz/crates/impact-kernel)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.03s
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling impact-kernel v0.1.0 (/tmp/harness-snapshot-iUpwmz/crates/impact-kernel)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.88s
+     Running unittests src/lib.rs (target/debug/deps/impact_kernel-cd14f926a1451da8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/impact_kernel-0692d80a73572bb3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/vectors.rs (target/debug/deps/vectors-db6facd05665dfdd)
+
+running 2 tests
+test invalid_utf8_and_empty_input_are_refused_as_invalid_json ... ok
+test every_shared_vector_matches ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests impact_kernel
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

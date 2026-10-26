@@ -1,0 +1,31 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QzSnKx
+
+ ✓ test/units.e2e.test.ts (4 tests | 3 skipped) 2181ms
+   ✓ index records reviewed shared helper contracts for clients without source rescans  2179ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 3 skipped (4)
+   Start at  21:45:56
+   Duration  4.67s (transform 28ms, setup 6ms, collect 17ms, tests 2.18s, environment 0ms, prepare 30ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-QzSnKx
+
+ ✓ test/project-template.test.ts (4 tests) 88ms
+ ✓ test/utils/unit-documentation.test.ts (3 tests) 183ms
+
+ Test Files  2 passed (2)
+      Tests  7 passed (7)
+   Start at  21:46:02
+   Duration  1.06s (transform 161ms, setup 12ms, collect 383ms, tests 271ms, environment 0ms, prepare 52ms)
+
+$ ENTITY_PREVIEW_HOME=output/entity-preview playwright test --config test/entityPreviewPlaywright.ts entity-preview-words.spec.ts --grep desktop
+
+Running 1 test using 1 worker
+
+(node:89740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/entity-preview-words.spec.ts:167:2 › contract has its own typed example view at desktop width (4.8s)
+
+  1 passed (7.5s)

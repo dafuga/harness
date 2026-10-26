@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Rcsnv9/packages/desktop
+
+ ✓ test/remote-host-races.test.ts (6 tests) 5859ms
+   ✓ disabling while the enabled record is being written leaves it stored as off  842ms
+   ✓ quitting while the enabled record is being written lets it land and starts nothing  855ms
+   ✓ quitting waits for a record that is being written  804ms
+   ✓ a registration that fails after turning off leaves no error behind  1586ms
+   ✓ a registration that answers late does not replace the one in use  960ms
+   ✓ turning on changes nothing when the record cannot be written  812ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  10:00:36
+   Duration  6.50s (transform 314ms, setup 0ms, collect 488ms, tests 5.86s, environment 0ms, prepare 24ms)
+

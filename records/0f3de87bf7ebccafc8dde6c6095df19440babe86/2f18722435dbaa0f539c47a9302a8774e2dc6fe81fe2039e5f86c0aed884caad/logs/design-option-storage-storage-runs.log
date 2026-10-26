@@ -1,0 +1,18 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2DPal2/packages/planning
+
+ ✓ test/design-options.test.ts (7 tests) 26004ms
+   ✓ a version keeps every requested option as its own identity, committed once  2980ms
+   ✓ approving one option binds that option alone; binding two is refused  5898ms
+   ✓ 0 options are refused, and nothing is committed  2293ms
+   ✓ 11 options are refused, and nothing is committed  2092ms
+   ✓ options that are one image copied are refused, and nothing is committed  1889ms
+   ✓ a thread anchors one exact image of one option  7429ms
+   ✓ a single design written without options reads and approves as before  3423ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  12:06:23
+   Duration  26.63s (transform 155ms, setup 9ms, collect 286ms, tests 26.00s, environment 0ms, prepare 63ms)
+
+JSON report written to /var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-runner-4bbdzl/report.json

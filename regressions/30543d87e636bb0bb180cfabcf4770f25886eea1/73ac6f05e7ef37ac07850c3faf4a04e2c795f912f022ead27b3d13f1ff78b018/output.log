@@ -1,0 +1,57 @@
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run --exclude "test/**/*.e2e.test.ts" --exclude "test/packaged-reports.e2e.test.ts" "$@"' -- test/units-shell-kind.test.ts
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-2T6aek
+
+ ❯ test/units-shell-kind.test.ts (1 test | 1 failed) 1830ms
+   × a declared shell kind survives reindexing under the same id, and new components stay components 1829ms
+     → expected '<!-- @harness-tier molecule -->\n<!--…' to contain '@harness-tier page'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units-shell-kind.test.ts > a declared shell kind survives reindexing under the same id, and new components stay components
+AssertionError: expected '<!-- @harness-tier molecule -->\n<!--…' to contain '@harness-tier page'
+
+- Expected
++ Received
+
+- @harness-tier page
++ <!-- @harness-tier molecule -->
++ <!-- @harness-atoms ../../../../components/atoms -->
++ <script lang="ts">
++ 	import { dev } from '$app/environment';
++ 	import { error as previewError } from '@sveltejs/kit';
++ 	import { page } from '$app/state';
++ 	import AppFrame from '../../../../components/AppFrame.svelte';
++
++ 	if (!dev && import.meta.env.MODE !== 'test') {
++ 		throw previewError(404, 'Not found');
++ 	}
++ 	const label = $derived(page.url.searchParams.get('label') ?? undefined);
++ 	const error = $derived(page.url.searchParams.get('error') ?? undefined);
++ </script>
++
++ <svelte:head>
++ 	<title>AppFrame component preview</title>
++ </svelte:head>
++
++ <AppFrame {label} {error} />
++
+
+ ❯ test/units-shell-kind.test.ts:10:87
+      8|  const project = await unitProject('app');
+      9|  await project.harness(['generate', 'component', 'AppFrame']);
+     10|  expect(await project.read('src/routes/__harness/components/app-frame/…
+       |                                                                                       ^
+     11|   '@harness-tier page'
+     12|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  14:59:18
+   Duration  4.78s (transform 73ms, setup 97ms, collect 15ms, tests 1.83s, environment 0ms, prepare 24ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1

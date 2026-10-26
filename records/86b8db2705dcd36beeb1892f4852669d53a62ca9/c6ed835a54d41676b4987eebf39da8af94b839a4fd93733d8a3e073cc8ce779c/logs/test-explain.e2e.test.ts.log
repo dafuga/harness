@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-RKAYsZ
+
+ ✓ test/explain.e2e.test.ts (3 tests) 18171ms
+   ✓ a changed function without a reason blocks verification until it is explained  6048ms
+   ✓ a reason goes stale when the function changes again  2489ms
+   ✓ added, removed and unindexed units need unit-wide reasons  3866ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  06:14:07
+   Duration  18.86s (transform 76ms, setup 22ms, collect 57ms, tests 18.17s, environment 0ms, prepare 104ms)
+

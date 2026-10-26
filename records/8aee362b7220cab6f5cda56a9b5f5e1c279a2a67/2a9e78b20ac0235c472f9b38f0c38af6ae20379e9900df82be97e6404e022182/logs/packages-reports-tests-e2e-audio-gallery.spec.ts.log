@@ -1,0 +1,10 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 tests/e2e/audio-gallery.spec.ts:69:2 › mixed media plays, seeks and downloads original audio at 1440px (1.2s)
+  ✓  2 tests/e2e/audio-gallery.spec.ts:69:2 › mixed media plays, seeks and downloads original audio at 920px (1.1s)
+  ✓  3 tests/e2e/audio-gallery.spec.ts:69:2 › mixed media plays, seeks and downloads original audio at 390px (869ms)
+  ✓  4 tests/e2e/audio-gallery.spec.ts:113:1 › a browser playback failure keeps the original download and reports not-proven playback (381ms)
+  ✓  5 tests/e2e/audio-gallery.spec.ts:140:1 › the report page and its upload form are gone: the address leads into the explorer (369ms)
+
+  5 passed (1.7m)

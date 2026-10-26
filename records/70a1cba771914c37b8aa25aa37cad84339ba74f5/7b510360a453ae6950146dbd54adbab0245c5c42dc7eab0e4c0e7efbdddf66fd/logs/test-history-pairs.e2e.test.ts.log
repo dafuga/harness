@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DQ1VbX
+
+ ✓ test/history-pairs.e2e.test.ts (7 tests) 6082ms
+   ✓ across a change that was reverted the stored sides give what the impact command gives  303ms
+   ✓ backwards, from a later commit to an earlier one the stored sides give what the impact command gives  307ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  06:39:49
+   Duration  6.37s (transform 50ms, setup 10ms, collect 76ms, tests 6.08s, environment 0ms, prepare 30ms)
+

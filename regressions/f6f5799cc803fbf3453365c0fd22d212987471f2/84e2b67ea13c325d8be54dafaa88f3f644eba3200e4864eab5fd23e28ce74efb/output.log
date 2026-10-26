@@ -1,0 +1,19 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [145.00ms]
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-iM0WTW/packages/reports
+
+ ✓ test/utils/explorer-drawn.test.ts (9 tests) 3ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  01:10:31
+   Duration  186ms (transform 42ms, setup 0ms, collect 49ms, tests 3ms, environment 0ms, prepare 30ms)
+

@@ -1,0 +1,140 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Yu7dRs
+
+ ❯ test/utils/explorer-route.test.ts (75 tests | 2 failed) 13ms
+   ✓ keeps page and module entity categories separate from primary navigation 3ms
+   ✓ current branch /pages 1ms
+   × current branch /dependencies 3ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+   ✓ current branch /styles 0ms
+   ✓ current branch /pages/reports.page.titles 0ms
+   ✓ current branch /pages/reports.page.titles/details 0ms
+   ✓ current branch /components 0ms
+   ✓ current branch /components/reports.component.harness-harness-console 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/details 0ms
+   ✓ current branch /components/reports.component.harness-harness-console/history 0ms
+   ✓ current branch /functions 0ms
+   ✓ current branch /functions/function.slugify 0ms
+   ✓ current branch /functions/function.slugify/details 0ms
+   ✓ current branch /functions/function.slugify/history 0ms
+   ✓ current branch /configs 0ms
+   ✓ current branch /configs/config.site 0ms
+   ✓ current branch /configs/config.site/details 0ms
+   ✓ current branch /configs/config.site/history 0ms
+   ✓ current branch /types 0ms
+   ✓ current branch /types/model.input 0ms
+   ✓ current branch /types/model.input/details 0ms
+   ✓ current branch /types/model.input/history 0ms
+   ✓ current branch /services 0ms
+   ✓ current branch /services/service.clock 0ms
+   ✓ current branch /services/service.clock/details 0ms
+   ✓ current branch /services/service.clock/history 0ms
+   ✓ selected commit /pages 0ms
+   × selected commit /dependencies 0ms
+     → expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+   ✓ selected commit /styles 0ms
+   ✓ selected commit /pages/reports.page.titles 0ms
+   ✓ selected commit /pages/reports.page.titles/details 0ms
+   ✓ selected commit /components 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/details 0ms
+   ✓ selected commit /components/reports.component.harness-harness-console/history 0ms
+   ✓ selected commit /functions 0ms
+   ✓ selected commit /functions/function.slugify 0ms
+   ✓ selected commit /functions/function.slugify/details 0ms
+   ✓ selected commit /functions/function.slugify/history 0ms
+   ✓ selected commit /configs 0ms
+   ✓ selected commit /configs/config.site 0ms
+   ✓ selected commit /configs/config.site/details 0ms
+   ✓ selected commit /configs/config.site/history 0ms
+   ✓ selected commit /types 0ms
+   ✓ selected commit /types/model.input 0ms
+   ✓ selected commit /types/model.input/details 0ms
+   ✓ selected commit /types/model.input/history 0ms
+   ✓ selected commit /services 0ms
+   ✓ selected commit /services/service.clock 0ms
+   ✓ selected commit /services/service.clock/details 0ms
+   ✓ selected commit /services/service.clock/history 0ms
+   ✓ there are twenty-three designed shapes in each scope, and a Page has a history too 0ms
+   ✓ a branch is one path segment, whatever it contains 0ms
+   ✓ a branch or a commit alone opens Pages in the same scope 0ms
+   ✓ a commit that no branch reaches has no branch invented for it 0ms
+   ✓ a callable has a distinct revision-bound address across tabs and history 0ms
+   ✓ an entity id is one encoded segment 0ms
+   ✓ names no explorer address:  0ms
+   ✓ names no explorer address: / 0ms
+   ✓ names no explorer address: /pages 0ms
+   ✓ names no explorer address: /branch 0ms
+   ✓ names no explorer address: /branch/main/reports 0ms
+   ✓ names no explorer address: /branch/main/analytics 0ms
+   ✓ names no explorer address: /branch/main/activity 0ms
+   ✓ names no explorer address: /branch/main/commit/abc/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/pages 0ms
+   ✓ names no explorer address: /branch/main/pages/x/source 0ms
+   ✓ names no explorer address: /branch/main/dependencies/x 0ms
+   ✓ names no explorer address: /branch/main/dependencies/history 0ms
+   ✓ names no explorer address: /branch/main/pages/x/details/extra 0ms
+   ✓ names no explorer address: /branch/feature/kept/pages 0ms
+   ✓ names no explorer address: /branch/%E0%A4%A/pages 0ms
+   ✓ names no explorer address: /branch/main/commit/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/map 0ms
+   ✓ a trailing slash names the same address 0ms
+   ✓ Models is a page tab and legacy page Contract links open Models in the same scope 0ms
+ ✓ test/utils/console-canonical.test.ts (8 tests) 8ms
+ ✓ test/utils/explorer-legacy.test.ts (6 tests) 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-route.test.ts > current branch /dependencies
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "pages",
+  "commit": null,
+  "screen": "dependencies",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:78:30
+     76|  const location = { branch, commit: null, ...selected } as ExplorerLoc…
+     77|  const path = `/branch/${encoded}${tail}`;
+     78|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     79|  expect(explorerRoutePath(location)).toBe(
+     80|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/utils/explorer-route.test.ts > selected commit /dependencies
+AssertionError: expected undefined to deeply equal { branch: 'feature/kept#1', …(3) }
+
+- Expected: 
+{
+  "branch": "feature/kept#1",
+  "category": "pages",
+  "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "screen": "dependencies",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/explorer-route.test.ts:86:30
+     84|  const location = { branch, commit: sha, ...selected } as ExplorerLoca…
+     85|  const path = `/branch/${encoded}/commit/${sha}${tail}`;
+     86|  expect(explorerRoute(path)).toEqual(location);
+       |                              ^
+     87|  expect(explorerRoutePath(location)).toBe(
+     88|   path.replace(/\/details$/, location.category === 'pages' ? '?tab=mod…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  2 failed | 87 passed (89)
+   Start at  16:06:16
+   Duration  3.06s (transform 102ms, setup 156ms, collect 65ms, tests 27ms, environment 0ms, prepare 78ms)
+

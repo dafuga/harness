@@ -1,0 +1,125 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-H1WMeR
+
+ ❯ test/services/agents-providers/module-task-server.test.ts (7 tests | 7 failed) 9ms
+   × ModuleTaskServerService.submit > validates all entries, then admits the full scope in one selected-source update 4ms
+     → f.service.submit is not a function
+   × ModuleTaskServerService.submit > reuses equivalent definitions and rejects conflicting task or feature ids without mutation 0ms
+     → f.service.submit is not a function
+   × ModuleTaskServerService.submit > rejects malformed plans, modules, metadata, goals, contracts, model settings and scopes before update 0ms
+     → f.service.submit is not a function
+   × ModuleTaskServerService.run > returns the actual review outcome unchanged 2ms
+     → expected 'module-task-server' to deeply equal { submission: { …(3) }, …(1) }
+   × ModuleTaskServerService.run > returns the actual failed outcome unchanged 1ms
+     → expected 'module-task-server' to deeply equal { submission: { …(3) }, …(1) }
+   × ModuleTaskServerService.run > keeps idle distinct and rejects invalid or pre-aborted inputs before submission 1ms
+     → You must provide a Promise to expect() when using .resolves, not 'string'.
+   × ModuleTaskServerService.run > watch polls and awaits the active worker before propagating cancellation 0ms
+     → pending.then is not a function
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/agents-providers/module-task-server.test.ts > ModuleTaskServerService.submit > validates all entries, then admits the full scope in one selected-source update
+TypeError: f.service.submit is not a function
+ ❯ test/services/agents-providers/module-task-server.test.ts:27:34
+     25|     intelligence: 'max'
+     26|    });
+     27|   const result = await f.service.submit(plan([one, task('task-two', 's…
+       |                                  ^
+     28|   expect(result).toEqual({ created: ['task-one', 'task-two'], reused: …
+     29|   expect(f.collaborators.openTree).toHaveBeenCalledWith(root, 'HEAD');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/services/agents-providers/module-task-server.test.ts > ModuleTaskServerService.submit > reuses equivalent definitions and rejects conflicting task or feature ids without mutation
+TypeError: f.service.submit is not a function
+ ❯ test/services/agents-providers/module-task-server.test.ts:55:19
+     53|   const f = makeFixture(),
+     54|    desired = plan([task('task-one')]);
+     55|   await f.service.submit(desired);
+       |                   ^
+     56|   expect(await f.service.submit(desired)).toMatchObject({
+     57|    created: [],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  test/services/agents-providers/module-task-server.test.ts > ModuleTaskServerService.submit > rejects malformed plans, modules, metadata, goals, contracts, model settings and scopes before update
+TypeError: f.service.submit is not a function
+ ❯ rejectBeforeUpdate test/services/agents-providers/fixtures/module-task-server.fixtures.ts:93:25
+     91| ) => {
+     92|  const f = makeFixture(options);
+     93|  await expect(f.service.submit(value)).rejects.toThrow();
+       |                         ^
+     94|  expect(f.collaborators.repository.update).not.toHaveBeenCalled();
+     95| };
+ ❯ test/services/agents-providers/module-task-server.test.ts:102:47
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  test/services/agents-providers/module-task-server.test.ts > ModuleTaskServerService.run > returns the actual review outcome unchanged
+ FAIL  test/services/agents-providers/module-task-server.test.ts > ModuleTaskServerService.run > returns the actual failed outcome unchanged
+AssertionError: expected 'module-task-server' to deeply equal { submission: { …(3) }, …(1) }
+
+- Expected: 
+{
+  "results": [
+    {
+      "result": {
+        "opaqueWorkerResult": true,
+      },
+      "status": "review",
+      "task": "task-one",
+    },
+  ],
+  "submission": {
+    "commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "created": [
+      "task-one",
+    ],
+    "reused": [],
+  },
+}
+
++ Received: 
+"module-task-server"
+
+ ❯ test/services/agents-providers/module-task-server.test.ts:115:19
+    113|    f.collaborators.worker.once.mockResolvedValue(actual);
+    114|    const result = await invoke(f, 'worker-one', ['service.alpha'], tru…
+    115|    expect(result).toEqual({
+       |                   ^
+    116|     submission: { created: ['task-one'], reused: [], commit: nextCommi…
+    117|     results: [actual]
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  test/services/agents-providers/module-task-server.test.ts > ModuleTaskServerService.run > keeps idle distinct and rejects invalid or pre-aborted inputs before submission
+TypeError: You must provide a Promise to expect() when using .resolves, not 'string'.
+ ❯ test/services/agents-providers/module-task-server.test.ts:131:60
+    129|   const idle = makeFixture(),
+    130|    signal = new AbortController().signal;
+    131|   await expect(invoke(idle, 'worker-one', [], true, signal)).resolves.…
+       |                                                            ^
+    132|    results: [{ status: 'idle' }]
+    133|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  test/services/agents-providers/module-task-server.test.ts > ModuleTaskServerService.run > watch polls and awaits the active worker before propagating cancellation
+TypeError: pending.then is not a function
+ ❯ test/services/agents-providers/module-task-server.test.ts:161:16
+    159|    pending = invoke(f, 'worker-one', [], false, controller.signal);
+    160|   let settled = false;
+    161|   void pending.then(
+       |                ^
+    162|    () => (settled = true),
+    163|    () => (settled = true)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed (7)
+   Start at  02:17:53
+   Duration  2.80s (transform 74ms, setup 100ms, collect 9ms, tests 9ms, environment 0ms, prepare 28ms)
+

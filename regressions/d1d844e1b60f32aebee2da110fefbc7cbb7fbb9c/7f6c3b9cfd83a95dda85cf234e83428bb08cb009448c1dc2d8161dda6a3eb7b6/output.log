@@ -1,0 +1,13 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-flsGe0
+
+ ✓ test/services/git-source-history/module-data.test.ts (4 tests) 5759ms
+   ✓ diagnostic cache stays within its disk budget while retaining the newest source facts  1874ms
+   ✓ metadata admission is required without a project opt-in  726ms
+   ✓ sync keeps immutable snapshots while advancing repaired module lookup paths  3143ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  19:07:12
+   Duration  8.51s (transform 352ms, setup 77ms, collect 636ms, tests 5.76s, environment 0ms, prepare 28ms)
+

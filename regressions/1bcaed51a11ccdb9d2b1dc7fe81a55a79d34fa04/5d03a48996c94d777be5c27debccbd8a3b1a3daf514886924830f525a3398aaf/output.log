@@ -1,0 +1,96 @@
+
+Running 3 tests using 1 worker
+
+(node:237) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/entity-preview-groups.spec.ts:63:2 › category folders group every collection and filter together at desktop (1.6s)
+(node:349) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 test/entity-preview-groups.spec.ts:63:2 › category folders group every collection and filter together at tablet (1.2s)
+(node:440) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 test/entity-preview-groups.spec.ts:63:2 › category folders group every collection and filter together at mobile (1.2s)
+
+
+  1) test/entity-preview-groups.spec.ts:63:2 › category folders group every collection and filter together at desktop 
+
+    Error: long values stay compact
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 150
+    Received:   241.6875
+
+      19 | 	]) {
+      20 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+    > 21 | 		expect((await row.boundingBox())!.height, 'long values stay compact').toBeLessThan(150);
+         | 		                                                                      ^
+      22 | 		const inspect = row.getByRole('button', { name: `View value for orderSettings.${name}` });
+      23 | 		await inspect.click();
+      24 | 		const dialog = page.getByRole('dialog', { name: `orderSettings.${name} · Value`, exact: true });
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xknwcc/packages/reports/test/entity-preview-groups.spec.ts:21:73)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xknwcc/packages/reports/test/entity-preview-groups.spec.ts:49:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xknwcc/packages/reports/test/entity-preview-groups.spec.ts:89:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/error-context.md
+
+  2) test/entity-preview-groups.spec.ts:63:2 › category folders group every collection and filter together at tablet 
+
+    Error: long values stay compact
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 150
+    Received:   233.6875
+
+      19 | 	]) {
+      20 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+    > 21 | 		expect((await row.boundingBox())!.height, 'long values stay compact').toBeLessThan(150);
+         | 		                                                                      ^
+      22 | 		const inspect = row.getByRole('button', { name: `View value for orderSettings.${name}` });
+      23 | 		await inspect.click();
+      24 | 		const dialog = page.getByRole('dialog', { name: `orderSettings.${name} · Value`, exact: true });
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xknwcc/packages/reports/test/entity-preview-groups.spec.ts:21:73)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xknwcc/packages/reports/test/entity-preview-groups.spec.ts:49:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xknwcc/packages/reports/test/entity-preview-groups.spec.ts:89:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/error-context.md
+
+  3) test/entity-preview-groups.spec.ts:63:2 › category folders group every collection and filter together at mobile 
+
+    Error: long values stay compact
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 150
+    Received:   233.6875
+
+      19 | 	]) {
+      20 | 		const row = table.getByRole('row').filter({ hasText: `orderSettings.${name}` });
+    > 21 | 		expect((await row.boundingBox())!.height, 'long values stay compact').toBeLessThan(150);
+         | 		                                                                      ^
+      22 | 		const inspect = row.getByRole('button', { name: `View value for orderSettings.${name}` });
+      23 | 		await inspect.click();
+      24 | 		const dialog = page.getByRole('dialog', { name: `orderSettings.${name} · Value`, exact: true });
+        at inspectConfigValues (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xknwcc/packages/reports/test/entity-preview-groups.spec.ts:21:73)
+        at configVariables (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xknwcc/packages/reports/test/entity-preview-groups.spec.ts:49:2)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-xknwcc/packages/reports/test/entity-preview-groups.spec.ts:89:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/error-context.md
+
+  3 failed
+    test/entity-preview-groups.spec.ts:63:2 › category folders group every collection and filter together at desktop 
+    test/entity-preview-groups.spec.ts:63:2 › category folders group every collection and filter together at tablet 
+    test/entity-preview-groups.spec.ts:63:2 › category folders group every collection and filter together at mobile 

@@ -1,0 +1,58 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-nWvJ14
+
+ ❯ test/utils/explorer-ui/project-dependencies.test.ts (3 tests | 3 failed) 456ms
+   × project package catalog preserves declared versions, workspace origins and dependency kinds 185ms
+     → Selected revision retains its package declarations: expected undefined to be defined
+   × Cargo dependency declarations include workspace inheritance and build/dev dependencies 140ms
+     → Selected revision retains its package declarations: expected undefined to be defined
+   × missing and malformed declarations stay explicit without substituting installed packages 122ms
+     → Selected revision retains its package declarations: expected undefined to be defined
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/explorer-ui/project-dependencies.test.ts > project package catalog preserves declared versions, workspace origins and dependency kinds
+AssertionError: Selected revision retains its package declarations: expected undefined to be defined
+ ❯ snapshot test/utils/explorer-ui/project-dependencies.test.ts:51:73
+     49|    }
+     50|   ).projectDependencies;
+     51|   expect(catalog, 'Selected revision retains its package declarations'…
+       |                                                                         ^
+     52|   return catalog!;
+     53|  } finally {
+ ❯ test/utils/explorer-ui/project-dependencies.test.ts:77:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/utils/explorer-ui/project-dependencies.test.ts > Cargo dependency declarations include workspace inheritance and build/dev dependencies
+AssertionError: Selected revision retains its package declarations: expected undefined to be defined
+ ❯ snapshot test/utils/explorer-ui/project-dependencies.test.ts:51:73
+     49|    }
+     50|   ).projectDependencies;
+     51|   expect(catalog, 'Selected revision retains its package declarations'…
+       |                                                                         ^
+     52|   return catalog!;
+     53|  } finally {
+ ❯ test/utils/explorer-ui/project-dependencies.test.ts:132:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/utils/explorer-ui/project-dependencies.test.ts > missing and malformed declarations stay explicit without substituting installed packages
+AssertionError: Selected revision retains its package declarations: expected undefined to be defined
+ ❯ snapshot test/utils/explorer-ui/project-dependencies.test.ts:51:73
+     49|    }
+     50|   ).projectDependencies;
+     51|   expect(catalog, 'Selected revision retains its package declarations'…
+       |                                                                         ^
+     52|   return catalog!;
+     53|  } finally {
+ ❯ test/utils/explorer-ui/project-dependencies.test.ts:159:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  15:32:43
+   Duration  4.31s (transform 454ms, setup 101ms, collect 837ms, tests 456ms, environment 0ms, prepare 31ms)
+

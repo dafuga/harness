@@ -1,0 +1,922 @@
+bun install v1.2.18 (0d4089ea)
+
+Checked 827 installs across 923 packages (no changes) [226.00ms]
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX
+
+ ❯ test/project-template.test.ts (4 tests | 1 failed) 86ms
+   × app projects include SvelteKit and specification files 5ms
+     → expected '# AGENTS.md\n\nThis is a Harness Svel…' to contain 'General text helpers belong in Strings'
+   ✓ library projects include Bun TypeScript test structure 1ms
+   ✓ generated app code and configuration obey their formatter settings 73ms
+   ✓ generated lib code and configuration obey their formatter settings 7ms
+ ❯ test/utils/unit-metadata.test.ts (42 tests | 1 failed) 70ms
+   × revision metadata derives project categories from the same committed source tree 15ms
+     → expected { name: 'example', …(6) } to have property "group" with value { id: 'payments', title: 'Payments' }
+   ✓ revision metadata lists standalone shared exports without requiring callers 8ms
+   ✓ revision metadata counts distinct actual consumers: 2 8ms
+   ✓ revision metadata counts distinct actual consumers: 2 1ms
+   ✓ revision metadata counts distinct actual consumers: 1 1ms
+   ✓ revision metadata counts distinct actual consumers: 2 1ms
+   ✓ revision metadata counts distinct actual consumers: 2 5ms
+   ✓ revision metadata counts distinct actual consumers: +0 1ms
+   ✓ revision metadata counts distinct actual consumers: +0 1ms
+   ✓ revision metadata counts distinct actual consumers: 1 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function env() { return process.env.MODE; } 1ms
+   ✓ helper purity is an explicit, checked source contract: let state = 0;
+/** @pure */
+export function captured() { return state; } 1ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function writeFile() { console.log("side effect"); return 1; } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function formatDate(iso: string) { return new Date(iso).toISOString(); } 1ms
+   ✓ helper purity is an explicit, checked source contract: export function shared(value: string) { return value.trim(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export async function load() { return fetch("/api"); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function now() { return Date.now(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function random() { return Math.random(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function mutate(input: number[]) { return input.sort(); } 0ms
+   ✓ helper purity is an explicit, checked source contract: /** @pure */
+export function write(input: {value: number}) { input.value++; return input; } 0ms
+   ✓ helper purity is an explicit, checked source contract: export function fake() { return "/** @pure */"; } 0ms
+   ✓ revision metadata counts distinct runtime service owners: 2 1ms
+   ✓ revision metadata counts distinct runtime service owners: 2 1ms
+   ✓ revision metadata counts distinct runtime service owners: 1 1ms
+   ✓ revision metadata counts distinct runtime service owners: 1 1ms
+   ✓ revision metadata counts distinct runtime service owners: 2 1ms
+   ✓ revision metadata counts distinct runtime service owners: +0 1ms
+   ✓ revision metadata counts distinct runtime service owners: +0 1ms
+   ✓ revision metadata counts distinct runtime service owners: 2 1ms
+   ✓ revision metadata proves service class declarations and construction: 'concrete' 2ms
+   ✓ revision metadata proves service class declarations and construction: 'function' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'object' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'static' 2ms
+   ✓ revision metadata proves service class declarations and construction: 'private' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'abstract' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'callback' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'inherited' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'default' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'forward' 2ms
+   ✓ revision metadata proves service class declarations and construction: 'registry' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'factory' 1ms
+   ✓ revision metadata proves service class declarations and construction: 'shadow' 1ms
+ ❯ test/utils/unit-documentation.test.ts (3 tests | 1 failed) 46ms
+   ✓ committed documents preserve expected values and never invent observed results 5ms
+   ✓ revision documents come only from their own tree, and their bytes change the unit version 4ms
+   × every committed public helper example executes against its real implementation 36ms
+     → Public helper implementation belongs in src/helpers/<responsibility>: expected 'packages/desktop/src/utils/networking…' to match /(?:^|\/)src\/helpers\/[^/]+\/[^/…/)src\
+ ❯ test/utils/unit-identity.test.ts (3 tests | 1 failed) 29ms
+   ✓ unitIdentity derives kind and name from Harness scaffold folders 1ms
+   ✓ unitIdentity prefixes named workspaces and skips tests and unknown files 0ms
+   × public helper contracts require owned, categorized helper implementation files 6ms
+     → expected [] to include 'function.slugify: slugify must be imp…'
+ ❯ test/guides.test.ts (7 tests | 2 failed) 9ms
+   ✓ model guidance is available for agents 2ms
+   × guidance covers every non-model scaffold topic 3ms
+     → game-view: expected 'Naming: Game views use <camelName>Vie…' to contain 'General text helpers belong in Strings'
+   × code-rules guidance exposes hard Harness limits 2ms
+     → expected 'Files stay at or below 220 lines.\nFu…' to contain 'General text helpers belong in Strings'
+   ✓ loop guidance describes loop driven development 0ms
+   ✓ scaffold guidance tells agents what generated code contains 0ms
+   ✓ guide lookup accepts common scaffold aliases 0ms
+   ✓ available guide topics are unique for CLI error output 1ms
+ ✓ test/services/unit-index.test.ts (12 tests) 1079ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  876ms
+ ❯ test/pieces.test.ts (6 tests | 2 failed) 9ms
+   ✓ every scaffold kind creates at least one file in a 2d project 4ms
+   ✓ every scaffold kind creates at least one file in a 3d project 1ms
+   ✓ view, layout, and api scaffolds use SvelteKit route files 0ms
+   ✓ marks only SvelteKit scaffolds as app-only 0ms
+   × Rails-ish scaffolds create their expected code shapes 3ms
+     → expected [ 'src/helpers/PostHelper.ts', …(1) ] to include 'src/helpers/post.ts'
+   × helper scaffolds emit pure camelCase functions with domain parameters 0ms
+     → the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/guides.test.ts > guidance covers every non-model scaffold topic
+AssertionError: game-view: expected 'Naming: Game views use <camelName>Vie…' to contain 'General text helpers belong in Strings'
+
+- Expected
++ Received
+
+- General text helpers belong in Strings
++ Naming: Game views use <camelName>ViewConfig.ts with a matching camelCase config export.
++ Generated code is a starting shape.
++ Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.
++ Use harness generate <kind> <name> --group <category> when adding code. Reuse a project category; an explicit new category extends harness.groups.json. Categories are not a fixed list.
++ Categorized projects infer only an unambiguous whole-word match from the name or responsibility. Missing or ambiguous matches require --group; do not invent a misleading category.
++ Share one project taxonomy across components, helpers, configs, models, services and all other module kinds. Folders drive revision-bound explorer headings and filters.
++ Keep framework entry filenames and public routes stable; generated route groups organize files without changing URLs. Keep single-owner implementations with that owner.
++ Keep public behavior covered by focused tests.
++ This scaffold belongs in Harness game projects.
+
+ ❯ test/guides.test.ts:27:52
+     25|    expect(topics.has(kind), kind).toBe(true);
+     26|    expect(findGuide(kind)?.rules.join('\n'), kind).toContain('Naming:'…
+     27|    expect(findGuide(kind)?.rules.join('\n'), kind).toContain(
+       |                                                    ^
+     28|     'General text helpers belong in Strings'
+     29|    );
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/guides.test.ts:16:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/guides.test.ts > code-rules guidance exposes hard Harness limits
+AssertionError: expected 'Files stay at or below 220 lines.\nFu…' to contain 'General text helpers belong in Strings'
+
+- Expected
++ Received
+
+- General text helpers belong in Strings
++ Files stay at or below 220 lines.
++ Functions stay at or below 55 lines.
++ Classes stay at or below 120 lines.
++ Methods stay at or below 35 lines.
++ Nesting stays at or below 4 levels.
++ Functions and methods take at most 4 parameters.
++ Cyclomatic complexity stays at or below 10.
++ Each file defines at most 1 class.
++ Use harness info naming and the scaffold guide before naming a module.
++ Naming: Controller classes use <PascalName>Controller.ts and export the matching class, including inside an owner's folder.
++ Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner folder. Shared service catalogs require instantiated classes with multiple public instance methods and two distinct active runtime owners; functions, objects and static namespaces are not service classes.
++ Naming: Decorator classes use <PascalName>Decorator.ts and export the matching class, including inside an owner's folder.
++ Naming: Adapter classes use <PascalName>Adapter.ts and export the matching class, including inside an owner's folder.
++ Naming: Repository classes use <PascalName>Repository.ts and export the matching class, including inside an owner's folder.
++ Naming: Validator classes use <PascalName>Validator.ts and export the matching class, including inside an owner's folder.
++ Naming: Serializer classes use <PascalName>Serializer.ts and export the matching class, including inside an owner's folder.
++ Naming: Policy classes use <PascalName>Policy.ts and export the matching class, including inside an owner's folder.
++ Naming: Job classes use <PascalName>Job.ts and export the matching class, including inside an owner's folder.
++ Naming: Notification classes use <PascalName>Notification.ts and export the matching class, including inside an owner's folder.
++ Naming: Command classes use <PascalName>Command.ts and export the matching class, including inside an owner's folder.
++ Naming: Mailer classes use <PascalName>Mailer.ts and export the matching class, including inside an owner's folder.
++ Naming: Helper classes use <PascalName>Helper.ts and export the matching class, including inside an owner's folder.
++ Naming: Channel classes use <PascalName>Channel.ts and export the matching class, including inside an owner's folder.
++ Naming: Form classes use <PascalName>Form.ts and export the matching class, including inside an owner's folder.
++ Naming: Middleware classes use <PascalName>Middleware.ts and export the matching class, including inside an owner's folder.
++ Naming: Game views use <camelName>ViewConfig.ts with a matching camelCase config export.
++ Naming: Mechanic functions use <camelName>.ts and export the matching descriptive camelCase function.
++ Naming: Checkpoints use <camelName>CheckpointConfig.ts with a matching camelCase config export.
++ Naming: Models use <PascalName>.ts with a matching class or type; type collections use <PascalName>.types.ts.
++ Naming: Components use <PascalName>.svelte and the same PascalCase import name.
++ Naming: Partials use <PascalName>Partial.svelte and the same PascalCase import name.
++ Naming: Shell components use <PascalName>.svelte and the same PascalCase import name.
++ Naming: Functions and pure helper callables use descriptive camelCase names; utility modules use <camelName>.ts. Review the actual input-to-output operation, not only casing.
++ Naming: Utilities use <camelName>.ts with a matching camelCase export that describes its actual operation.
++ Naming: Value modules use <camelName>.ts; class and type modules follow their own type rules. Keep framework .client, .server, .svelte and .d suffixes where required.
++ Naming: Workflow modules use <camelName>.ts; exported operations use descriptive camelCase names.
++ Naming: Config objects use <camelName>Config.ts with a matching camelCase export.
++ Naming: Stores use <camelName>.svelte.ts and export create<PascalName>Store.
++ Naming: Hooks use <camelName>Hook.server.ts and export <camelName>Hook; preserve the framework hooks.server.ts entry.
++ Naming: Concerns use with<PascalName>.ts and export with<PascalName>.
++ Naming: Initializers use initialize<PascalName>.ts and export initialize<PascalName>.
++ Naming: Seeders use <kebab-name>.ts and export seed<PascalName>.
++ Naming: Pages preserve src/routes/<kebab-name>/+page.svelte; their screen labels may be human readable.
++ Naming: Pages preserve framework +page.svelte and +page.server.ts filenames and their exported handlers.
++ Naming: Layouts preserve src/routes/<kebab-name>/+layout.svelte and framework handler names.
++ Naming: API routes preserve src/routes/api/<kebab-name>/+server.ts and HTTP method exports such as GET and POST.
++ Naming: Entrypoints keep framework-required filenames and exports; other operation modules use <camelName>.ts.
++ Naming: Unit tests use <kebab-name>.test.ts.
++ Naming: Browser tests use <kebab-name>.spec.ts.
++ Naming: Feature specifications use <kebab-name>.md.
++ Naming: Migrations use lowercase kebab-case or snake_case .sql filenames.
++ Naming: Each generated resource piece follows its own model, controller, policy, serializer, route or test naming rule.
++ Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.
++ Use harness generate <kind> <name> --group <category> when adding code. Reuse a project category; an explicit new category extends harness.groups.json. Categories are not a fixed list.
++ Categorized projects infer only an unambiguous whole-word match from the name or responsibility. Missing or ambiguous matches require --group; do not invent a misleading category.
++ Share one project taxonomy across components, helpers, configs, models, services and all other module kinds. Folders drive revision-bound explorer headings and filters.
++ Keep framework entry filenames and public routes stable; generated route groups organize files without changing URLs. Keep single-owner implementations with that owner.
++ Code catalogs, usage links and detail headings retain the same recorded code name; stable dotted unit IDs and framework filenames do not change with a display title.
++ Classes should not use catch-all Manager names.
++ Command modules delegate to workflows instead of importing templates or file-generation helpers.
++ Core, template, workflow, and command imports move in one direction.
++ Harness audit applies ecosystem adapters for app and library code surfaces.
++ Unsupported file types must appear in audit coverage instead of being skipped silently.
+
+ ❯ test/guides.test.ts:37:65
+     35| test('code-rules guidance exposes hard Harness limits', () =>
+     36|  measureWorkload('function.catalog', 'helper-category-guidance', () =>…
+     37|   expect(harnessRuleSummariesFor(harnessRuleLimits).join('\n')).toCont…
+       |                                                                 ^
+     38|    'General text helpers belong in Strings'
+     39|   );
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/guides.test.ts:36:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  test/pieces.test.ts > Rails-ish scaffolds create their expected code shapes
+AssertionError: expected [ 'src/helpers/PostHelper.ts', …(1) ] to include 'src/helpers/post.ts'
+ ❯ test/pieces.test.ts:55:64
+     53|   'src/mailers/WelcomeMailer.ts'
+     54|  );
+     55|  expect(pieceFiles('helper', 'Post').map((file) => file.path)).toConta…
+       |                                                                ^
+     56|  expect(pieceFiles('concern', 'Publishable').map((file) => file.path))…
+     57|   'src/concerns/withPublishable.ts'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  test/pieces.test.ts > helper scaffolds emit pure camelCase functions with domain parameters
+AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+ ❯ test/pieces.test.ts:83:27
+     81|  const files = pieceFiles('helper', 'formatLabel');
+     82|  const source = files.find((file) => file.path === 'src/helpers/format…
+     83|  expect(source?.contents).toContain('/** @pure */');
+       |                           ^
+     84|  expect(source?.contents).toContain('export function formatLabel(textT…
+     85|  expect(source?.contents).not.toContain('class ');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  test/project-template.test.ts > app projects include SvelteKit and specification files
+AssertionError: expected '# AGENTS.md\n\nThis is a Harness Svel…' to contain 'General text helpers belong in Strings'
+
+- Expected
++ Received
+
+- General text helpers belong in Strings
++ # AGENTS.md
++
++ This is a Harness SvelteKit app. Treat Harness as the operating contract for every code change in this project.
++
++ ## Required Harness Workflow
++
++ - Read this file and the `.codex/skills/harness/SKILL.md` skill before changing code.
++ - Use Harness generators for supported code shapes instead of hand-rolling new structure.
++ - Ask `harness info <topic>` before adding unfamiliar code or choosing a scaffold shape.
++ - For non-trivial work, ask what the loop should prove, search templates, then create or continue a `harness loop`.
++ - Add or update a feature spec before implementation.
++ - Keep files small, focused, and aligned with `harness.audit.json` limits.
++ - Run `bun run check` before handing work back; it includes formatting, type checks, lint, tests, build, and `bun run audit`.
++
++ ## Clean Code Review
++
++ - Use `harness info clean-code` for optional Jev reviews.
++ - Preview with `harness audit . --clean-code --dry-run`; reviews remain disabled until enabled.
++ - Configure a project-owned credential and assess advisory results before enabling the gate.
++ - Keep uncertain judgments visible and never call incomplete reviews clean.
++
++ ## Callable usage examples
++
++ - Every public helper needs committed usage examples in its callable contract: a real call, argument values, and expected output or error. Verify examples against the implementation; never invent outcomes.
++ - Use descriptive behavior titles, never numbered placeholders. Choose one representative example per distinct behavior; combine redundant inputs. Review the implementation to identify features, including meaningful error or empty states. Equal outputs alone do not establish duplication. Keep exhaustive boundary cases in tests, not the Examples tab.
++ - Run `harness units check`: missing helper examples, placeholder titles and repeated titles or calls must fail. Re-indexing must preserve authored examples. Each helper detail page shows only its own examples at the viewed commit.
++
++ ## Bug and Regression Loops
++
++ - For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.
++ - Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.
++ - If no existing test covers the behavior, explain the missing coverage category and extend reusable standardized coverage before product repair.
++ - Run the strengthened test against the broken implementation and record the failing command, assertion and observed result before repair. A fixture or environment error is not defect proof; never manufacture a failure.
++ - Before changing product code, commit the failing test separately. Run harness loop record <loop> --phase red --test <path> --command <command> --assertion <actual failure> on that commit. Then make a separate fix commit and run loop record --phase green: the tests, fixtures, command and environment must be unchanged. Preserve both commits when landing; do not squash away the failing-test commit. Focused regression results do not replace full verification.
++ - Repair the product while keeping the strengthened test unchanged. Repeat repair and the same unchanged test until it passes; retain failing and passing evidence at their tested revisions, then run normal verification.
++ - When correcting function names or APIs, parameter names describe their domain role; rename source declarations and update callers and contracts, rather than inventing display labels. Diagnose why the original name or API was accepted, then repair the earliest responsible generator, skill or review checkpoint within the authorized project scope. Verify the revised guidance is emitted for generated projects.
++ - For helper catalogs, prove one selected callable per detail page: distinct links for functions sharing a source module, only that callable’s parameters, return and throws, and selection retained across tabs and revisions. Keep module ownership/history explicit; a missing callable must not silently show a sibling.
++ - During read-only planning, report the coverage diagnosis and propose the standardized test change; do not edit tests or product source. Write only within an approved implementation request.
++ - Use `harness loop create <name> --from bug-fix --goal <text>` for bug repairs: reproduce with a failing test before implementation, then repeat repair and the same unchanged test until it passes.
++ - Use `--from regression-prevention` for regressions requiring durable prevention: identify the root cause, propose the repair and guard, implement both, and include the guard in normal project verification.
++ - Prove the guard rejects reintroducing the original failure in an isolated fixture or temporary workspace; restore the repair and prove the guard passes.
++ - Record failing and passing commands, assertions, and results as step evidence. Keep green/guard/verification steps pending while proof fails; the agent retries repairs and checks. Harness does not launch an AI repair runner or automatically complete steps.
++ - For affected UI paths, exercise the browser flow and capture fresh screenshots, then inspect the images before recording proof. Report blockers without claiming completion.
++ - Browser normal flows, including screenshot/video runs, must have no unexpected console.error or pageerror events. Use the shared browserTest fixture; watch extra contexts before navigation. Keep logs for expected errors and declare their exact messages and reasons in that test. For unexpected errors, prove a failing log assertion before repair, then rerun the same unchanged regression until the error disappears; preserve diagnostics and keep verification pending while errors remain.
++ - Shared browser fixtures must preserve lazy setup. When their dependencies change, prove API-only tests run with an unavailable browser executable alongside actual browser cases.
++
++ ## Naming
++
++ Read `harness info naming` and the scaffold guide before naming code. Keep code names consistent across cards, usage links and detail headings.
++
++ - Naming: Controller classes use <PascalName>Controller.ts and export the matching class, including inside an owner's folder.
++ - Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner folder. Shared service catalogs require instantiated classes with multiple public instance methods and two distinct active runtime owners; functions, objects and static namespaces are not service classes.
++ - Naming: Decorator classes use <PascalName>Decorator.ts and export the matching class, including inside an owner's folder.
++ - Naming: Adapter classes use <PascalName>Adapter.ts and export the matching class, including inside an owner's folder.
++ - Naming: Repository classes use <PascalName>Repository.ts and export the matching class, including inside an owner's folder.
++ - Naming: Validator classes use <PascalName>Validator.ts and export the matching class, including inside an owner's folder.
++ - Naming: Serializer classes use <PascalName>Serializer.ts and export the matching class, including inside an owner's folder.
++ - Naming: Policy classes use <PascalName>Policy.ts and export the matching class, including inside an owner's folder.
++ - Naming: Job classes use <PascalName>Job.ts and export the matching class, including inside an owner's folder.
++ - Naming: Notification classes use <PascalName>Notification.ts and export the matching class, including inside an owner's folder.
++ - Naming: Command classes use <PascalName>Command.ts and export the matching class, including inside an owner's folder.
++ - Naming: Mailer classes use <PascalName>Mailer.ts and export the matching class, including inside an owner's folder.
++ - Naming: Helper classes use <PascalName>Helper.ts and export the matching class, including inside an owner's folder.
++ - Naming: Channel classes use <PascalName>Channel.ts and export the matching class, including inside an owner's folder.
++ - Naming: Form classes use <PascalName>Form.ts and export the matching class, including inside an owner's folder.
++ - Naming: Middleware classes use <PascalName>Middleware.ts and export the matching class, including inside an owner's folder.
++ - Naming: Game views use <camelName>ViewConfig.ts with a matching camelCase config export.
++ - Naming: Mechanic functions use <camelName>.ts and export the matching descriptive camelCase function.
++ - Naming: Checkpoints use <camelName>CheckpointConfig.ts with a matching camelCase config export.
++ - Naming: Models use <PascalName>.ts with a matching class or type; type collections use <PascalName>.types.ts.
++ - Naming: Components use <PascalName>.svelte and the same PascalCase import name.
++ - Naming: Partials use <PascalName>Partial.svelte and the same PascalCase import name.
++ - Naming: Shell components use <PascalName>.svelte and the same PascalCase import name.
++ - Naming: Functions and pure helper callables use descriptive camelCase names; utility modules use <camelName>.ts. Review the actual input-to-output operation, not only casing.
++ - Naming: Utilities use <camelName>.ts with a matching camelCase export that describes its actual operation.
++ - Naming: Value modules use <camelName>.ts; class and type modules follow their own type rules. Keep framework .client, .server, .svelte and .d suffixes where required.
++ - Naming: Workflow modules use <camelName>.ts; exported operations use descriptive camelCase names.
++ - Naming: Config objects use <camelName>Config.ts with a matching camelCase export.
++ - Naming: Stores use <camelName>.svelte.ts and export create<PascalName>Store.
++ - Naming: Hooks use <camelName>Hook.server.ts and export <camelName>Hook; preserve the framework hooks.server.ts entry.
++ - Naming: Concerns use with<PascalName>.ts and export with<PascalName>.
++ - Naming: Initializers use initialize<PascalName>.ts and export initialize<PascalName>.
++ - Naming: Seeders use <kebab-name>.ts and export seed<PascalName>.
++ - Naming: Pages preserve src/routes/<kebab-name>/+page.svelte; their screen labels may be human readable.
++ - Naming: Pages preserve framework +page.svelte and +page.server.ts filenames and their exported handlers.
++ - Naming: Layouts preserve src/routes/<kebab-name>/+layout.svelte and framework handler names.
++ - Naming: API routes preserve src/routes/api/<kebab-name>/+server.ts and HTTP method exports such as GET and POST.
++ - Naming: Entrypoints keep framework-required filenames and exports; other operation modules use <camelName>.ts.
++ - Naming: Unit tests use <kebab-name>.test.ts.
++ - Naming: Browser tests use <kebab-name>.spec.ts.
++ - Naming: Feature specifications use <kebab-name>.md.
++ - Naming: Migrations use lowercase kebab-case or snake_case .sql filenames.
++ - Naming: Each generated resource piece follows its own model, controller, policy, serializer, route or test naming rule.
++ - Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.
++ - Use harness generate <kind> <name> --group <category> when adding code. Reuse a project category; an explicit new category extends harness.groups.json. Categories are not a fixed list.
++ - Categorized projects infer only an unambiguous whole-word match from the name or responsibility. Missing or ambiguous matches require --group; do not invent a misleading category.
++ - Share one project taxonomy across components, helpers, configs, models, services and all other module kinds. Folders drive revision-bound explorer headings and filters.
++ - Keep framework entry filenames and public routes stable; generated route groups organize files without changing URLs. Keep single-owner implementations with that owner.
++
++ ## Screenshot Evidence
++
++ - A changed UI is not ready to hand off or merge while any required screenshot is missing. Capture each applicable page, tab/state and desktop, tablet and mobile viewport through its standard test, from the exact committed build. Fix capture failures and rerun; a green assertion alone is insufficient.
++ - Register and retain the original image bytes, hashes, unit, state, viewport, served build and revision in Harness evidence before temporary workspace cleanup. A scratch path, broken image URL or image in chat is not durable screenshot delivery.
++ - Layouts are reusable visual frames with a child-content slot; routing hosts, data loaders and options-only modules are not layouts. Reuse component cards with title, image and page-usage links. Capture the actual layout with a labelled Child content placeholder in its real child slot.
++ - Public category or route renames must inventory canonical and compatibility titles and links. Update exposed labels, preserve stable IDs and aliases, and extend the standard composition check across overview, details and history. Run affected downstream consumer tests alongside their typechecks. Run the affected package lint and audit as well.
++ - Full-frame previews own their content boundaries. Apply content-container styling inside the frame, never around its navigation. When changing fixture context, extend the existing standard acceptance assertions for affected controls and inspect retained pixels before accepting the UI.
++ - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
++ - Rebuild or reopen the delivered history from its Git evidence, decode every required image, and inspect fresh screenshots before reporting completion. Both comparison sides need their own images; never substitute another unit, state or revision.
++ - After squash landing, check the actual remote base commit's prepared history and decode its visible previews. Identical complete Git trees may retain focused captures with their original revision and status; a different tree requires new captures. Feature-branch screenshots alone do not prove merged delivery.
++ - Complete and format tracked loop metadata before the final capture run. Keep that captured tree unchanged through landing; further tracked changes require fresh captures.
++ - Keep focused screenshots available even when full verification fails, with their focused run and outcome clearly labelled. They grant no full verification verdict. Missing or corrupt bytes keep the visual check open; report the exact blocker and continue the repair.
++
++ ## Code Rules
++
++ - Files stay at or below 220 lines.
++ - Functions stay at or below 55 lines.
++ - Classes stay at or below 120 lines.
++ - Methods stay at or below 35 lines.
++ - Nesting stays at or below 4 levels.
++ - Functions and methods take at most 4 parameters.
++ - Cyclomatic complexity stays at or below 10.
++ - Each file defines at most 1 class.
++ - Use harness info naming and the scaffold guide before naming a module.
++ - Naming: Controller classes use <PascalName>Controller.ts and export the matching class, including inside an owner's folder.
++ - Naming: Service classes use <PascalName>Service.ts and export the matching class, including inside an owner folder. Shared service catalogs require instantiated classes with multiple public instance methods and two distinct active runtime owners; functions, objects and static namespaces are not service classes.
++ - Naming: Decorator classes use <PascalName>Decorator.ts and export the matching class, including inside an owner's folder.
++ - Naming: Adapter classes use <PascalName>Adapter.ts and export the matching class, including inside an owner's folder.
++ - Naming: Repository classes use <PascalName>Repository.ts and export the matching class, including inside an owner's folder.
++ - Naming: Validator classes use <PascalName>Validator.ts and export the matching class, including inside an owner's folder.
++ - Naming: Serializer classes use <PascalName>Serializer.ts and export the matching class, including inside an owner's folder.
++ - Naming: Policy classes use <PascalName>Policy.ts and export the matching class, including inside an owner's folder.
++ - Naming: Job classes use <PascalName>Job.ts and export the matching class, including inside an owner's folder.
++ - Naming: Notification classes use <PascalName>Notification.ts and export the matching class, including inside an owner's folder.
++ - Naming: Command classes use <PascalName>Command.ts and export the matching class, including inside an owner's folder.
++ - Naming: Mailer classes use <PascalName>Mailer.ts and export the matching class, including inside an owner's folder.
++ - Naming: Helper classes use <PascalName>Helper.ts and export the matching class, including inside an owner's folder.
++ - Naming: Channel classes use <PascalName>Channel.ts and export the matching class, including inside an owner's folder.
++ - Naming: Form classes use <PascalName>Form.ts and export the matching class, including inside an owner's folder.
++ - Naming: Middleware classes use <PascalName>Middleware.ts and export the matching class, including inside an owner's folder.
++ - Naming: Game views use <camelName>ViewConfig.ts with a matching camelCase config export.
++ - Naming: Mechanic functions use <camelName>.ts and export the matching descriptive camelCase function.
++ - Naming: Checkpoints use <camelName>CheckpointConfig.ts with a matching camelCase config export.
++ - Naming: Models use <PascalName>.ts with a matching class or type; type collections use <PascalName>.types.ts.
++ - Naming: Components use <PascalName>.svelte and the same PascalCase import name.
++ - Naming: Partials use <PascalName>Partial.svelte and the same PascalCase import name.
++ - Naming: Shell components use <PascalName>.svelte and the same PascalCase import name.
++ - Naming: Functions and pure helper callables use descriptive camelCase names; utility modules use <camelName>.ts. Review the actual input-to-output operation, not only casing.
++ - Naming: Utilities use <camelName>.ts with a matching camelCase export that describes its actual operation.
++ - Naming: Value modules use <camelName>.ts; class and type modules follow their own type rules. Keep framework .client, .server, .svelte and .d suffixes where required.
++ - Naming: Workflow modules use <camelName>.ts; exported operations use descriptive camelCase names.
++ - Naming: Config objects use <camelName>Config.ts with a matching camelCase export.
++ - Naming: Stores use <camelName>.svelte.ts and export create<PascalName>Store.
++ - Naming: Hooks use <camelName>Hook.server.ts and export <camelName>Hook; preserve the framework hooks.server.ts entry.
++ - Naming: Concerns use with<PascalName>.ts and export with<PascalName>.
++ - Naming: Initializers use initialize<PascalName>.ts and export initialize<PascalName>.
++ - Naming: Seeders use <kebab-name>.ts and export seed<PascalName>.
++ - Naming: Pages preserve src/routes/<kebab-name>/+page.svelte; their screen labels may be human readable.
++ - Naming: Pages preserve framework +page.svelte and +page.server.ts filenames and their exported handlers.
++ - Naming: Layouts preserve src/routes/<kebab-name>/+layout.svelte and framework handler names.
++ - Naming: API routes preserve src/routes/api/<kebab-name>/+server.ts and HTTP method exports such as GET and POST.
++ - Naming: Entrypoints keep framework-required filenames and exports; other operation modules use <camelName>.ts.
++ - Naming: Unit tests use <kebab-name>.test.ts.
++ - Naming: Browser tests use <kebab-name>.spec.ts.
++ - Naming: Feature specifications use <kebab-name>.md.
++ - Naming: Migrations use lowercase kebab-case or snake_case .sql filenames.
++ - Naming: Each generated resource piece follows its own model, controller, policy, serializer, route or test naming rule.
++ - Organize every module kind by responsibility: src/<kind>/<category>/<module>. Keep owner-private code inside its owner category and keep stable unit IDs.
++ - Use harness generate <kind> <name> --group <category> when adding code. Reuse a project category; an explicit new category extends harness.groups.json. Categories are not a fixed list.
++ - Categorized projects infer only an unambiguous whole-word match from the name or responsibility. Missing or ambiguous matches require --group; do not invent a misleading category.
++ - Share one project taxonomy across components, helpers, configs, models, services and all other module kinds. Folders drive revision-bound explorer headings and filters.
++ - Keep framework entry filenames and public routes stable; generated route groups organize files without changing URLs. Keep single-owner implementations with that owner.
++ - Code catalogs, usage links and detail headings retain the same recorded code name; stable dotted unit IDs and framework filenames do not change with a display title.
++ - Classes should not use catch-all Manager names.
++ - Command modules delegate to workflows instead of importing templates or file-generation helpers.
++ - Core, template, workflow, and command imports move in one direction.
++ - Harness audit applies ecosystem adapters for app and library code surfaces.
++ - Unsupported file types must appear in audit coverage instead of being skipped silently.
++
++ Hard limits: files 220, functions 55, classes 120, methods 35, nesting 4.
++
+
+ ❯ test/project-template.test.ts:32:38
+     30|   for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+     31|    expect(fileContents(files, path)).toContain('Callable usage example…
+     32|    expect(fileContents(files, path)).toContain('General text helpers b…
+       |                                      ^
+     33|    expect(fileContents(files, path)).toContain(
+     34|     'reusable visual frames with a child-content slot'
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/project-template.test.ts:7:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  test/utils/unit-documentation.test.ts > every committed public helper example executes against its real implementation
+AssertionError: Public helper implementation belongs in src/helpers/<responsibility>: expected 'packages/desktop/src/utils/networking…' to match /(?:^|\/)src\/helpers\/[^/]+\/[^/…/)src\
+
+- Expected: 
+/(?:^|\/)src\/helpers\/[^/]+\/[^/]+\.ts$/
+
++ Received: 
+"packages/desktop/src/utils/networking-security/remoteLabels.ts"
+
+ ❯ test/utils/unit-documentation.test.ts:97:6
+     95|     helper.source,
+     96|     'Public helper implementation belongs in src/helpers/<responsibili…
+     97|    ).toMatch(/(?:^|\/)src\/helpers\/[^/]+\/[^/]+\.ts$/);
+       |      ^
+     98|    expect(helper.examples?.length, 'Callable examples are required').t…
+     99|    const titles = helper.examples.map((example: { name: string }) =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  test/utils/unit-identity.test.ts > public helper contracts require owned, categorized helper implementation files
+AssertionError: expected [] to include 'function.slugify: slugify must be imp…'
+ ❯ test/utils/unit-identity.test.ts:129:24
+    127|   'src/helpers/slugify.ts'
+    128|  ])
+    129|   expect(errors(path)).toContain(
+       |                        ^
+    130|    'function.slugify: slugify must be implemented under src/helpers/<r…
+    131|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  test/utils/unit-metadata.test.ts > revision metadata derives project categories from the same committed source tree
+AssertionError: expected { name: 'example', …(6) } to have property "group" with value { id: 'payments', title: 'Payments' }
+
+- Expected: 
+{
+  "id": "payments",
+  "title": "Payments",
+}
+
++ Received: 
+undefined
+
+ ❯ test/utils/unit-metadata.test.ts:37:76
+     35|  for (const unit of registry.units)
+     36|   expect(unit).toHaveProperty('group', { id: 'payments', title: 'Payme…
+     37|  expect(registry.units.find((unit) => unit.helpers?.length)?.helpers?.…
+       |                                                                            ^
+     38|   'group',
+     39|   { id: 'payments', title: 'Payments' }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  6 failed | 1 passed (7)
+      Tests  8 failed | 69 passed (77)
+   Start at  13:38:12
+   Duration  3.48s (transform 258ms, setup 232ms, collect 958ms, tests 1.33s, environment 0ms, prepare 169ms)
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports
+
+ ❯ test/module-groups.test.ts (6 tests | 5 failed) 42ms
+   ✓ catalog categories survive across kinds and combine with other filters 8ms
+   × a helper row uses its callable folder instead of its owning module category 7ms
+     → expected { …(15) } to have property "group" with value { id: 'strings', title: 'Strings' }
+   × Strings relocation preserves public entry 'humanize' 4ms
+     → Unknown variable dynamic import: ../src/helpers/strings/humanize.ts
+   × Strings relocation preserves public entry 'shortCommit' 6ms
+     → Unknown variable dynamic import: ../src/helpers/strings/shortCommit.ts
+   × Strings relocation preserves public entry 'plural' 13ms
+     → Unknown variable dynamic import: ../src/helpers/strings/plural.ts
+   × Strings relocation preserves public entry 'formatDuration' 4ms
+     → Unknown variable dynamic import: ../src/helpers/strings/formatDuration.ts
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/module-groups.test.ts > a helper row uses its callable folder instead of its owning module category
+AssertionError: expected { …(15) } to have property "group" with value { id: 'strings', title: 'Strings' }
+
+- Expected
++ Received
+
+  {
+-   "id": "strings",
+-   "title": "Strings",
++   "id": "orders",
++   "title": "Orders",
+  }
+
+ ❯ test/module-groups.test.ts:56:25
+     54|   () => helperEntity(rows.find((row) => row.name === 'plural')?.entity…
+     55|  );
+     56|  expect(selected?.unit).toHaveProperty('group', { id: 'strings', title…
+       |                         ^
+     57|  expect(rows.find((row) => row.name === 'plural')).toHaveProperty('gro…
+     58|   id: 'strings',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/module-groups.test.ts > Strings relocation preserves public entry 'humanize'
+Error: Unknown variable dynamic import: ../src/helpers/strings/humanize.ts
+ ❯  vite/dynamic-import-helper.js:6:106
+ ❯ __vite_ssr_export_default__  vite/dynamic-import-helper.js:5:9
+ ❯ test/module-groups.test.ts:79:60
+     77|  async ({ unit, entry, name, args, output }) => {
+     78|   const legacy = await import(`../src/utils/${entry}.ts`);
+     79|   const canonical = await import(`../src/helpers/strings/${name}.ts`);
+       |                                                            ^
+     80|   expect(legacy[name]).toBe(canonical[name]);
+     81|   await measureWorkload(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/module-groups.test.ts > Strings relocation preserves public entry 'shortCommit'
+Error: Unknown variable dynamic import: ../src/helpers/strings/shortCommit.ts
+ ❯  vite/dynamic-import-helper.js:6:106
+ ❯ __vite_ssr_export_default__  vite/dynamic-import-helper.js:5:9
+ ❯ test/module-groups.test.ts:79:60
+     77|  async ({ unit, entry, name, args, output }) => {
+     78|   const legacy = await import(`../src/utils/${entry}.ts`);
+     79|   const canonical = await import(`../src/helpers/strings/${name}.ts`);
+       |                                                            ^
+     80|   expect(legacy[name]).toBe(canonical[name]);
+     81|   await measureWorkload(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  test/module-groups.test.ts > Strings relocation preserves public entry 'plural'
+Error: Unknown variable dynamic import: ../src/helpers/strings/plural.ts
+ ❯  vite/dynamic-import-helper.js:6:106
+ ❯ __vite_ssr_export_default__  vite/dynamic-import-helper.js:5:9
+ ❯ test/module-groups.test.ts:79:60
+     77|  async ({ unit, entry, name, args, output }) => {
+     78|   const legacy = await import(`../src/utils/${entry}.ts`);
+     79|   const canonical = await import(`../src/helpers/strings/${name}.ts`);
+       |                                                            ^
+     80|   expect(legacy[name]).toBe(canonical[name]);
+     81|   await measureWorkload(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  test/module-groups.test.ts > Strings relocation preserves public entry 'formatDuration'
+Error: Unknown variable dynamic import: ../src/helpers/strings/formatDuration.ts
+ ❯  vite/dynamic-import-helper.js:6:106
+ ❯ __vite_ssr_export_default__  vite/dynamic-import-helper.js:5:9
+ ❯ test/module-groups.test.ts:79:60
+     77|  async ({ unit, entry, name, args, output }) => {
+     78|   const legacy = await import(`../src/utils/${entry}.ts`);
+     79|   const canonical = await import(`../src/helpers/strings/${name}.ts`);
+       |                                                            ^
+     80|   expect(legacy[name]).toBe(canonical[name]);
+     81|   await measureWorkload(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 1 passed (6)
+   Start at  13:38:16
+   Duration  651ms (transform 158ms, setup 0ms, collect 233ms, tests 42ms, environment 0ms, prepare 37ms)
+
+
+Running 30 tests using 1 worker
+
+(node:54221) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   1 test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at desktop (10.9s)
+(node:70638) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   2 test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at tablet (10.9s)
+(node:86280) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   3 test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at mobile (11.0s)
+(node:88542) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 test/entity-preview-groups.spec.ts:107:2 › source lists category implementation files only at desktop (1.6s)
+  ✓   5 test/entity-preview-groups.spec.ts:107:2 › source lists category implementation files only at tablet (1.5s)
+  ✓   6 test/entity-preview-groups.spec.ts:107:2 › source lists category implementation files only at mobile (1.4s)
+  ✓   7 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at desktop width (746ms)
+  ✘   8 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at desktop width (2.4s)
+(node:96796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at desktop width (796ms)
+  ✓  10 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at desktop width (836ms)
+  ✓  11 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at desktop width (733ms)
+  ✓  12 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at desktop width (781ms)
+  ✓  13 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at desktop width (806ms)
+  ✓  14 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at tablet width (637ms)
+  ✘  15 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at tablet width (2.4s)
+(node:9076) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  16 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at tablet width (731ms)
+  ✓  17 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at tablet width (766ms)
+  ✓  18 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at tablet width (642ms)
+  ✓  19 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at tablet width (656ms)
+  ✓  20 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at tablet width (713ms)
+  ✓  21 test/entity-preview-source.spec.ts:78:3 › Models code opens only from the detail Source tab at mobile width (632ms)
+  ✘  22 test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at mobile width (2.4s)
+(node:14862) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  23 test/entity-preview-source.spec.ts:78:3 › Pages code opens only from the detail Source tab at mobile width (663ms)
+  ✓  24 test/entity-preview-source.spec.ts:78:3 › Components code opens only from the detail Source tab at mobile width (681ms)
+  ✓  25 test/entity-preview-source.spec.ts:78:3 › Layouts code opens only from the detail Source tab at mobile width (646ms)
+  ✓  26 test/entity-preview-source.spec.ts:78:3 › Configs code opens only from the detail Source tab at mobile width (644ms)
+  ✓  27 test/entity-preview-source.spec.ts:78:3 › Services code opens only from the detail Source tab at mobile width (664ms)
+  ✓  28 test/entity-preview-source.spec.ts:132:1 › source file selection and closing retain the detail Source tab (241ms)
+  ✓  29 test/entity-preview-source.spec.ts:153:1 › Source opens file contents in a modal and older histories state an explicit gap (277ms)
+  ✓  30 test/entity-preview-source.spec.ts:188:1 › a delayed previous source read cannot replace the selected file (245ms)
+
+
+  1) test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at desktop 
+
+    Error: Helper folder follows callable source
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: /^Strings 1$/, level: 2 })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Helper folder follows callable source getByRole('heading', { name: /^Strings 1$/, level: 2 }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: /^Strings 1$/, level: 2 })
+
+
+      165 | 				'Helper folder follows callable source'
+      166 | 			)
+    > 167 | 			.toBeVisible();
+          | 			 ^
+      168 | 		await page.getByRole('link', { name: 'plural(2, "item")', exact: true }).click();
+      169 | 		await capture(page, `helper-folder-detail-${commit.slice(0, 7)}-${viewport}`, [
+      170 | 			'reports.component.harness-entity-frame',
+        at helperFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:167:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:92:34
+
+    Error: Helper folder follows callable source
+
+    expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' })
+    Expected substring: "Strings"
+    Received string:    "Helpers Orders plural"
+    Timeout: 5000ms
+
+    Call log:
+      - Helper folder follows callable source getByRole('navigation', { name: 'Breadcrumb' }) with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' })
+        14 × locator resolved to <nav class="ex-crumbs" aria-label="Breadcrumb">…</nav>
+           - unexpected value "Helpers Orders plural"
+
+
+      175 | 			page.getByRole('navigation', { name: 'Breadcrumb' }),
+      176 | 			'Helper folder follows callable source'
+    > 177 | 		).toContainText(title);
+          | 		  ^
+      178 | 		await page.reload();
+      179 | 		await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText(title);
+      180 | 	}
+        at helperFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:177:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:92:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-07df9--filter-together-at-desktop/error-context.md
+
+  2) test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at tablet 
+
+    Error: Helper folder follows callable source
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: /^Strings 1$/, level: 2 })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Helper folder follows callable source getByRole('heading', { name: /^Strings 1$/, level: 2 }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: /^Strings 1$/, level: 2 })
+
+
+      165 | 				'Helper folder follows callable source'
+      166 | 			)
+    > 167 | 			.toBeVisible();
+          | 			 ^
+      168 | 		await page.getByRole('link', { name: 'plural(2, "item")', exact: true }).click();
+      169 | 		await capture(page, `helper-folder-detail-${commit.slice(0, 7)}-${viewport}`, [
+      170 | 			'reports.component.harness-entity-frame',
+        at helperFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:167:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:92:34
+
+    Error: Helper folder follows callable source
+
+    expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' })
+    Expected substring: "Strings"
+    Received string:    "Helpers Orders plural"
+    Timeout: 5000ms
+
+    Call log:
+      - Helper folder follows callable source getByRole('navigation', { name: 'Breadcrumb' }) with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' })
+        14 × locator resolved to <nav class="ex-crumbs" aria-label="Breadcrumb">…</nav>
+           - unexpected value "Helpers Orders plural"
+
+
+      175 | 			page.getByRole('navigation', { name: 'Breadcrumb' }),
+      176 | 			'Helper folder follows callable source'
+    > 177 | 		).toContainText(title);
+          | 		  ^
+      178 | 		await page.reload();
+      179 | 		await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText(title);
+      180 | 	}
+        at helperFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:177:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:92:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-192d8-d-filter-together-at-tablet/error-context.md
+
+  3) test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at mobile 
+
+    Error: Helper folder follows callable source
+
+    expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: /^Strings 1$/, level: 2 })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Helper folder follows callable source getByRole('heading', { name: /^Strings 1$/, level: 2 }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: /^Strings 1$/, level: 2 })
+
+
+      165 | 				'Helper folder follows callable source'
+      166 | 			)
+    > 167 | 			.toBeVisible();
+          | 			 ^
+      168 | 		await page.getByRole('link', { name: 'plural(2, "item")', exact: true }).click();
+      169 | 		await capture(page, `helper-folder-detail-${commit.slice(0, 7)}-${viewport}`, [
+      170 | 			'reports.component.harness-entity-frame',
+        at helperFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:167:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:92:34
+
+    Error: Helper folder follows callable source
+
+    expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('navigation', { name: 'Breadcrumb' })
+    Expected substring: "Strings"
+    Received string:    "Helpers Orders plural"
+    Timeout: 5000ms
+
+    Call log:
+      - Helper folder follows callable source getByRole('navigation', { name: 'Breadcrumb' }) with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Breadcrumb' })
+        14 × locator resolved to <nav class="ex-crumbs" aria-label="Breadcrumb">…</nav>
+           - unexpected value "Helpers Orders plural"
+
+
+      175 | 			page.getByRole('navigation', { name: 'Breadcrumb' }),
+      176 | 			'Helper folder follows callable source'
+    > 177 | 		).toContainText(title);
+          | 		  ^
+      178 | 		await page.reload();
+      179 | 		await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText(title);
+      180 | 	}
+        at helperFolders (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:177:5)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-groups.spec.ts:92:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-groups-cate-1eb81-d-filter-together-at-mobile/error-context.md
+
+  4) test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at desktop width 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link')
+    Expected: 1
+    Received: 3
+    Timeout:  2000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('list', { name: 'Source files', exact: true }).getByRole('link') with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link')
+        21 × locator resolved to 3 elements
+           - unexpected value "3"
+
+
+      104 | 				await expect(
+      105 | 					page.getByRole('list', { name: 'Source files', exact: true }).getByRole('link')
+    > 106 | 				).toHaveCount(1);
+          | 				  ^
+      107 | 			const started = await page.evaluate(() => performance.now());
+      108 | 			await action.click();
+      109 | 			const dialog = page.getByRole('dialog', { name: `${title} · Source code` });
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-source.spec.ts:106:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-82eb3-Source-tab-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-82eb3-Source-tab-at-desktop-width/error-context.md
+
+  5) test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at tablet width 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link')
+    Expected: 1
+    Received: 3
+    Timeout:  2000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('list', { name: 'Source files', exact: true }).getByRole('link') with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link')
+        21 × locator resolved to 3 elements
+           - unexpected value "3"
+
+
+      104 | 				await expect(
+      105 | 					page.getByRole('list', { name: 'Source files', exact: true }).getByRole('link')
+    > 106 | 				).toHaveCount(1);
+          | 				  ^
+      107 | 			const started = await page.evaluate(() => performance.now());
+      108 | 			await action.click();
+      109 | 			const dialog = page.getByRole('dialog', { name: `${title} · Source code` });
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-source.spec.ts:106:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-a3ae6--Source-tab-at-tablet-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-a3ae6--Source-tab-at-tablet-width/error-context.md
+
+  6) test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at mobile width 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('list', { name: 'Source files', exact: true }).getByRole('link')
+    Expected: 1
+    Received: 3
+    Timeout:  2000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('list', { name: 'Source files', exact: true }).getByRole('link') with timeout 2000ms
+      - waiting for getByRole('list', { name: 'Source files', exact: true }).getByRole('link')
+        21 × locator resolved to 3 elements
+           - unexpected value "3"
+
+
+      104 | 				await expect(
+      105 | 					page.getByRole('list', { name: 'Source files', exact: true }).getByRole('link')
+    > 106 | 				).toHaveCount(1);
+          | 				  ^
+      107 | 			const started = await page.evaluate(() => performance.now());
+      108 | 			await action.click();
+      109 | 			const dialog = page.getByRole('dialog', { name: `${title} · Source code` });
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-9hSFIX/packages/reports/test/entity-preview-source.spec.ts:106:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/entity-preview-source-Help-e19c0--Source-tab-at-mobile-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/entity-preview-source-Help-e19c0--Source-tab-at-mobile-width/error-context.md
+
+  6 failed
+    test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at desktop 
+    test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at tablet 
+    test/entity-preview-groups.spec.ts:65:2 › category folders group every collection and filter together at mobile 
+    test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at desktop width 
+    test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at tablet width 
+    test/entity-preview-source.spec.ts:78:3 › Helpers code opens only from the detail Source tab at mobile width 
+  24 passed (1.1m)

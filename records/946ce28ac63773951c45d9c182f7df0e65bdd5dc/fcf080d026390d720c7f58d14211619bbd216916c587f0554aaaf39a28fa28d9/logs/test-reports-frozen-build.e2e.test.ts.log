@@ -1,0 +1,12 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tA718W
+
+ ✓ test/reports-frozen-build.e2e.test.ts (3 tests) 856ms
+   ✓ a server on the build directory itself answers a refused page with an error once that directory is rebuilt  465ms
+   ✓ a run serves its own copy of the build, which a rebuild of the directory does not reach  325ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  20:17:16
+   Duration  1.13s (transform 27ms, setup 6ms, collect 17ms, tests 856ms, environment 0ms, prepare 39ms)
+

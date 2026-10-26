@@ -1,0 +1,35 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HUXF1L
+
+fatal: not a git repository (or any of the parent directories): .git
+ ❯ test/self-verify-runtime-state.test.ts (4 tests | 1 failed) 196ms
+   ✓ the local Cloudflare state of the Hub dev server is a declared output 70ms
+   × exactly that state is declared, and no tracked file of this repository lies in it 8ms
+     → Command failed: git ls-files -- packages/hub/.wrangler
+fatal: not a git repository (or any of the parent directories): .git
+
+   ✓ any other file a check leaves still fails: beside the state, ignored, or elsewhere 62ms
+   ✓ changed or removed Hub source still fails, whatever else is declared 56ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/self-verify-runtime-state.test.ts > exactly that state is declared, and no tracked file of this repository lies in it
+Error: Command failed: git ls-files -- packages/hub/.wrangler
+fatal: not a git repository (or any of the parent directories): .git
+
+ ❯ test/self-verify-runtime-state.test.ts:75:17
+     73|  const about = declared().filter((output) => output.includes('wrangler…
+     74|  expect(about).toEqual(['packages/hub/.wrangler/state/']);
+     75|  const listed = execFileSync('git', ['ls-files', '--', 'packages/hub/.…
+       |                 ^
+     76|   encoding: 'utf8'
+     77|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  01:46:44
+   Duration  474ms (transform 40ms, setup 10ms, collect 68ms, tests 196ms, environment 0ms, prepare 39ms)
+

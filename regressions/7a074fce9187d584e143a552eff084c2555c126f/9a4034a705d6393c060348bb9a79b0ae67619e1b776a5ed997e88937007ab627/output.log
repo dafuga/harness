@@ -1,0 +1,98 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-TJErpF
+
+ ❯ test/services/module-system/module-catalog.test.ts (6 tests | 3 failed) 54ms
+   × module library exposes Email and Offline with instructions and resource generators 11ms
+     → expected [ 'apis', 'components', …(14) ] to deeply equal [ 'apis', 'components', …(16) ]
+   × installing modules enables resource generation without replacing existing source 12ms
+     → expected [ …(14) ] to have a length of 15 but got 14
+   ✓ projects define a resource generator once and the catalog discovers it 4ms
+   ✓ module admission rejects invalid definitions, collisions and escaping output paths 2ms
+   × included modules expose every existing Code catalog through the module contract 1ms
+     → expected [] to have a length of 12 but got +0
+   ✓ included and project modules use declared catalogs and real scaffold generation 19ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/module-system/module-catalog.test.ts > module library exposes Email and Offline with instructions and resource generators
+AssertionError: expected [ 'apis', 'components', …(14) ] to deeply equal [ 'apis', 'components', …(16) ]
+
+- Expected
++ Received
+
+@@ -2,18 +2,16 @@
+    "apis",
+    "components",
+    "configs",
+    "dependencies",
+    "email",
+-   "headless-audio",
+    "helpers",
+    "layouts",
+    "models",
+    "modules",
+    "offline",
+    "permissions",
+-   "playwright",
+    "rust-backend",
+    "rust-wasm",
+    "services",
+    "styles",
+    "types",
+
+ ❯ test/services/module-system/module-catalog.test.ts:26:68
+     24|   const catalog = await new ModuleCatalogService().load(await project(…
+     25|   expect(catalog.gaps).toEqual([]);
+     26|   expect(catalog.modules.map((item) => item.definition.id).sort()).toE…
+       |                                                                    ^
+     27|    'apis components configs dependencies email headless-audio helpers …
+     28|     ' '
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+ ❯ test/services/module-system/module-catalog.test.ts:23:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/services/module-system/module-catalog.test.ts > installing modules enables resource generation without replacing existing source
+AssertionError: expected [ …(14) ] to have a length of 15 but got 14
+
+- Expected
++ Received
+
+- 15
++ 14
+
+ ❯ test/services/module-system/module-catalog.test.ts:60:59
+     58|  );
+     59|  const catalog = await new ModuleCatalogService().load(root);
+     60|  expect(catalog.modules.filter((item) => item.installed)).toHaveLength…
+       |                                                           ^
+     61|  await measureWorkload('service.module-system-module-resource', 'gener…
+     62|   resources.generate(root, 'email', 'email', 'Welcome')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/services/module-system/module-catalog.test.ts > included modules expose every existing Code catalog through the module contract
+AssertionError: expected [] to have a length of 12 but got +0
+
+- Expected
++ Received
+
+- 12
++ 0
+
+ ❯ test/services/module-system/module-catalog.test.ts:138:19
+    136|  const catalog = await new ModuleCatalogService().load(await project()…
+    137|  const included = catalog.modules.filter((entry) => entry.definition.v…
+    138|  expect(included).toHaveLength(12);
+       |                   ^
+    139|  expect(
+    140|   included.every((entry) =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 3 passed (6)
+   Start at  23:09:27
+   Duration  2.98s (transform 177ms, setup 85ms, collect 382ms, tests 54ms, environment 0ms, prepare 32ms)
+

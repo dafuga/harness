@@ -1,0 +1,63 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun x svelte-kit sync && (cd ../desktop && bun x svelte-kit sync) && (cd ../hub && bun x svelte-kit sync) && SHELL_FIXTURE_PAGE=navbar vite build --config src/configs/shellViteConfig.ts && SHELL_FIXTURE_PAGE=primitives vite build --config src/configs/shellViteConfig.ts && SHELL_FIXTURE_PAGE=errors vite build --config src/configs/shellViteConfig.ts && SHELL_FIXTURE_PAGE=activity vite build --config src/configs/shellViteConfig.ts && SHELL_FIXTURE_PAGE=catalog vite build --config src/configs/shellViteConfig.ts "$@"' --
+../../../../../../../../../Users/danielfugere/.codex/worktrees/page-feature-groups/harness/node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/page-feature-groups/harness/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../../../../../../../../Users/danielfugere/.codex/worktrees/page-feature-groups/harness/node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../../../../../../../../Users/danielfugere/.codex/worktrees/page-feature-groups/harness/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --config src/configs/shellPlaywrightConfig.ts "$@"' -- explorer-shell.spec.ts --grep "navigation with an icon" "--max-failures=1"
+
+Running 3 tests using 1 worker
+
+(node:13785) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/explorer-shell.spec.ts:63:2 › the bar shows its navigation with an icon above each label at desktop width (5.4s)
+Testing stopped early after 1 maximum allowed failures.
+
+
+  1) tests/e2e/explorer-shell.spec.ts:63:2 › the bar shows its navigation with an icon above each label at desktop width 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('banner').getByRole('navigation', { name: 'Module categories' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('banner').getByRole('navigation', { name: 'Module categories' }) with timeout 5000ms
+      - waiting for getByRole('banner').getByRole('navigation', { name: 'Module categories' })
+
+
+       at support/shellChecks.ts:104
+
+      102 | 	await pictured(page, `explorer-shell-modules-${screen}`);
+      103 | 	await captureShell(page, home, { state: 'modules', viewport: screen });
+    > 104 | 	await expect(modules).toBeVisible();
+          | 	                      ^
+      105 | 	await expect(page).toHaveURL(before);
+      106 | 	await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+      107 | 	expect((await box(bar)).height, 'the bubble overlays the page').toBe(height);
+        at moduleNavigation (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-c82Hcp/packages/reports/tests/e2e/support/shellChecks.ts:104:24)
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-c82Hcp/packages/reports/tests/e2e/explorer-shell.spec.ts:133:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-the-bar-sho-5c9a4-each-label-at-desktop-width/error-context.md
+
+  1 failed
+    tests/e2e/explorer-shell.spec.ts:63:2 › the bar shows its navigation with an icon above each label at desktop width 
+  2 did not run
+  1 error was not a part of any test, see above for details
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:shell" exited with code 1

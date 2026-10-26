@@ -1,0 +1,60 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-DuWEyo
+
+ ❯ test/audit.test.ts (9 tests | 1 failed) 95ms
+   ✓ audit reports oversized files 18ms
+   ✓ audit reports oversized functions and ignores build folders 4ms
+   ✓ audit ignores symlinks without following missing build outputs 1ms
+   ✓ audit reports class, method, complexity, nesting, parameter, count, and naming rules 7ms
+   ✓ audit reports architecture rule violations 3ms
+   × audit reports scaffold naming and generated foundation structure violations 40ms
+     → expected [ Array(3) ] to deeply equal []
+   ✓ audit rejects files and folders outside the Harness structure 6ms
+   ✓ audit honors local ignored finding baselines 2ms
+   ✓ every SvelteKit route segment form is a valid folder name, and nothing else in brackets is 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/audit.test.ts > audit reports scaffold naming and generated foundation structure violations
+AssertionError: expected [ Array(3) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "message": "Browser E2E tests should live in tests/e2e.",
++     "path": "tests/audio/",
++     "rule": "harness-e2e-structure",
++   },
++   {
++     "message": "Browser E2E tests should live in tests/e2e.",
++     "path": "tests/browser/",
++     "rule": "harness-e2e-structure",
++   },
++   {
++     "message": "Browser E2E tests should live in tests/e2e.",
++     "path": "tests/plugin-support/",
++     "rule": "harness-e2e-structure",
++   },
++ ]
+
+ ❯ assertTestingFoundations test/support/moduleAuditAdmission.ts:87:19
+     85|    )
+     86|  );
+     87|  expect(findings).toEqual([]);
+       |                   ^
+     88| }
+     89| 
+ ❯ assertModuleAuditAdmission test/support/moduleAuditAdmission.ts:58:2
+ ❯ test/audit.test.ts:128:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  02:21:33
+   Duration  3.65s (transform 351ms, setup 104ms, collect 665ms, tests 95ms, environment 0ms, prepare 24ms)
+

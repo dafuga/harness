@@ -1,0 +1,100 @@
+bun install v1.2.18 (0d4089ea)
+
++ @eslint/js@9.39.4
++ @sveltejs/adapter-cloudflare@7.2.9
++ @sveltejs/adapter-static@3.0.10
++ @types/bun@1.3.13
++ @types/node@22.19.17
++ @typescript-eslint/eslint-plugin@8.59.1
++ @typescript-eslint/parser@8.59.1
++ eslint@9.39.4
++ eslint-config-prettier@10.1.8
++ prettier@3.8.3
++ typescript@5.9.3
++ vitest@3.2.4
++ wrangler@4.149.0
++ @anthropic-ai/claude-agent-sdk@0.3.292
++ @aws-sdk/client-s3@3.1146.0
++ @electron/asar@4.1.0
++ @modelcontextprotocol/ext-apps@2.0.3
++ @modelcontextprotocol/sdk@1.32.1
++ @typesafe-ai/sdk@0.6.0
++ commander@12.1.0
++ zod@4.6.5
+
+718 packages installed [7.82s]
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-q1Ol8R/packages/reports
+
+3 | 
+4 | const first = (flag: (row: CatalogRow) => boolean) => (left: CatalogRow, right: CatalogRow) =>
+5 | 	Number(flag(right)) - Number(flag(left)) || byName(left, right);
+6 | 
+7 | const orders: Record<CatalogOrder, (left: CatalogRow, right: CatalogRow) => number> = {
+8 | 	name: byName,
+           ^
+ReferenceError: Cannot access 'byName' before initialization.
+      at /private/tmp/harness-snapshot-q1Ol8R/packages/reports/src/components/harness/explorer-index/entityCatalog.ts:8:8
+      at requestImportModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+ ❯ test/utils/entity-catalog.test.ts (9 tests | 1 failed) 47ms
+   × a fresh runtime loads and calls the catalog through '../../src/utils/entityCatalog.ts' 20ms
+     → Command failed: bun -e const m = await import("/private/tmp/harness-snapshot-q1Ol8R/packages/reports/src/utils/entityCatalog.ts"); console.log(JSON.stringify({ types: ["catalogFilter","entityCatalog","isShared","listed"].map(name => typeof m[name]), rows: m.catalogFilter([], { search: '', changedOnly: false, order: 'name' }) }));
+3 | 
+4 | const first = (flag: (row: CatalogRow) => boolean) => (left: CatalogRow, right: CatalogRow) =>
+5 | 	Number(flag(right)) - Number(flag(left)) || byName(left, right);
+6 | 
+7 | const orders: Record<CatalogOrder, (left: CatalogRow, right: CatalogRow) => number> = {
+8 | 	name: byName,
+           ^
+ReferenceError: Cannot access 'byName' before initialization.
+      at /private/tmp/harness-snapshot-q1Ol8R/packages/reports/src/components/harness/explorer-index/entityCatalog.ts:8:8
+      at requestImportModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+   ✓ a fresh runtime loads and calls the catalog through '../../src/components/harness/explorer…' 16ms
+   ✓ a collection lists the entities of its category by the name a person reads 9ms
+   ✓ a component says which pages it is used on and which components it contains 1ms
+   ✓ a page counts the components it contains and a service names its targets 0ms
+   ✓ changed is what the commit changed itself, and the verdict is the one it was given 1ms
+   ✓ search reads names and purposes, changed only keeps changes, and an order sorts 1ms
+   ✓ a list of names is none, one name, or the first and how many more 0ms
+   ✓ shared helper rows require source exports, list every callable and keep owner links 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/entity-catalog.test.ts > a fresh runtime loads and calls the catalog through '../../src/utils/entityCatalog.ts'
+Error: Command failed: bun -e const m = await import("/private/tmp/harness-snapshot-q1Ol8R/packages/reports/src/utils/entityCatalog.ts"); console.log(JSON.stringify({ types: ["catalogFilter","entityCatalog","isShared","listed"].map(name => typeof m[name]), rows: m.catalogFilter([], { search: '', changedOnly: false, order: 'name' }) }));
+3 | 
+4 | const first = (flag: (row: CatalogRow) => boolean) => (left: CatalogRow, right: CatalogRow) =>
+5 | 	Number(flag(right)) - Number(flag(left)) || byName(left, right);
+6 | 
+7 | const orders: Record<CatalogOrder, (left: CatalogRow, right: CatalogRow) => number> = {
+8 | 	name: byName,
+           ^
+ReferenceError: Cannot access 'byName' before initialization.
+      at /private/tmp/harness-snapshot-q1Ol8R/packages/reports/src/components/harness/explorer-index/entityCatalog.ts:8:8
+      at requestImportModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ src/components/harness/explorer-index/entityCatalog.ts:8:8
+      6| 
+      7| const orders: Record<CatalogOrder, (left: CatalogRow, right: CatalogRo…
+      8|  name: byName,
+       |        ^
+      9|  'name-desc': (left, right) => byName(right, left),
+     10|  changed: first((row) => row.changed),
+ ❯ test/utils/entity-catalog.test.ts:30:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  19:58:26
+   Duration  288ms (transform 59ms, setup 0ms, collect 76ms, tests 47ms, environment 0ms, prepare 37ms)
+
+error: "vitest" exited with code 1

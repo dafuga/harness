@@ -1,0 +1,14 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/tmp/harness-snapshot-iUpwmz[39m
+
+ [32m✓[39m test/console-install.e2e.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 26410[2mms[22m[39m
+   [33m[2m✓[22m[39m the installer refuses to serve anything without a policy of the host [33m 1194[2mms[22m[39m
+   [33m[2m✓[22m[39m the installed host builds for Workers and keeps history out of everything public [33m 7148[2mms[22m[39m
+   [33m[2m✓[22m[39m in workerd only the host administrator reaches the console, its data and its media [33m 2103[2mms[22m[39m
+   [33m[2m✓[22m[39m the mobile build of the same host still succeeds and carries no history [33m 6920[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m5 passed[39m[22m[90m (5)[39m
+[2m   Start at [22m 15:58:47
+[2m   Duration [22m 26.79s[2m (transform 94ms, setup 23ms, collect 89ms, tests 26.41s, environment 0ms, prepare 81ms)[22m
+

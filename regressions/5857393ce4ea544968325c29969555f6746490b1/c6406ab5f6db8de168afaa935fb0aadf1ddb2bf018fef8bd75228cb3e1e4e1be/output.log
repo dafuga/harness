@@ -1,0 +1,36 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-Sqcy19
+
+ ❯ test/module-data.e2e.test.ts (3 tests | 1 failed) 26657ms
+   × validate persists revision-bound module gaps, filters them and invalidates cached searches 15259ms
+     → Evidence updates must preserve committed metadata admission: expected false to be true // Object.is equality
+   ✓ validate commits source-derived page API usage and explicit visual data gaps  5417ms
+   ✓ historical helper layout does not masquerade as missing module metadata  5977ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/module-data.e2e.test.ts > validate persists revision-bound module gaps, filters them and invalidates cached searches
+AssertionError: Evidence updates must preserve committed metadata admission: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ test/module-data.e2e.test.ts:46:5
+     44|    (await invoke([])).committed,
+     45|    'Evidence updates must preserve committed metadata admission'
+     46|   ).toBe(true);
+       |     ^
+     47|   const cached = await invoke(['--module', 'service.title']);
+     48|   expect(cached.cached).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  14:59:20
+   Duration  30.27s (transform 200ms, setup 154ms, collect 163ms, tests 26.66s, environment 0ms, prepare 41ms)
+

@@ -1,0 +1,84 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-eBUZwG
+
+ ❯ test/units-policy.e2e.test.ts (5 tests | 1 failed) 46138ms
+   ✓ CLI exposes execution targets and component versions, and refuses relaxed tolerance  10112ms
+   ✓ CLI records lineage when retired source is recreated under a new identity  7973ms
+   ✓ CLI labels a supplied responsibility as declared and a generated one as derived  4235ms
+   ✓ public configs require real source controls and retain their reviewed declarations  17545ms
+   × source-bound reviews repair historical default runtime targets without changing source commits 6270ms
+     → Validation returns structured per-module diagnostics: ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "runtime"
+    ],
+    "path": [
+      "metadata"
+    ],
+    "message": "Unrecognized key: \"runtime\""
+  },
+  {
+    "code": "custom",
+    "path": [
+      "metadata"
+    ],
+    "message": "Invalid input"
+  }
+]
+
+Bun v1.2.18 (macOS arm64)
+: expected '' to contain '"modules"'
+ ✓ test/module-data.e2e.test.ts (3 tests) 27287ms
+   ✓ validate persists revision-bound module gaps, filters them and invalidates cached searches  16289ms
+   ✓ validate commits source-derived page API usage and explicit visual data gaps  5209ms
+   ✓ historical helper layout does not masquerade as missing module metadata  5787ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units-policy.e2e.test.ts > source-bound reviews repair historical default runtime targets without changing source commits
+AssertionError: Validation returns structured per-module diagnostics: ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "runtime"
+    ],
+    "path": [
+      "metadata"
+    ],
+    "message": "Unrecognized key: \"runtime\""
+  },
+  {
+    "code": "custom",
+    "path": [
+      "metadata"
+    ],
+    "message": "Invalid input"
+  }
+]
+
+Bun v1.2.18 (macOS arm64)
+: expected '' to contain '"modules"'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- "modules"[39m
+
+ ❯ test/support/unitProject.ts:92:5
+     90|    result.stdout,
+     91|    'Validation returns structured per-module diagnostics: ' + result.s…
+     92|   ).toContain('"modules"');
+       |     ^
+     93|   return { ...(JSON.parse(result.stdout) as ValidationReport), exitCod…
+     94|  };
+ ❯ test/units-policy.e2e.test.ts:191:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 7 passed (8)
+   Start at  12:33:58
+   Duration  77.24s (transform 123ms, setup 209ms, collect 58ms, tests 73.42s, environment 0ms, prepare 78ms)
+
