@@ -3,6 +3,7 @@ import {
 	expectMissingScreenshotResults
 } from './support/browserBaselineResults';
 import { assertModuleProject } from './support/moduleScenario';
+import { assertAuthoredLibraryResult } from './support/project-template/foundations';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -15,6 +16,7 @@ test('CLI scaffolds and checks a lib project', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-lib-'));
 	await runHarness(['new', 'lib', 'demo-lib'], root);
 	const project = join(root, 'demo-lib');
+	await runHarness(['units', 'check'], project);
 	await sqliteRuntimePackage(project);
 	await runHarness(['generate', 'model', 'Post', 'title:string', '--adapter', 'sqlite'], project);
 	await runHarness(['generate', 'model', 'Event', 'startsAt:date', '--adapter', 'd1'], project);
@@ -26,6 +28,7 @@ test('CLI scaffolds and checks a lib project', async () => {
 		await runHarness(['generate', kind, 'PublishPost'], project);
 	}
 	await runCommand(['bun', 'install'], project);
+	await assertAuthoredLibraryResult(project);
 	const check = await runCommand(['bun', 'run', 'check'], project);
 	expect(check.stdout).toContain('Checking formatting...');
 	expect(check.stdout).toContain('Harness audit passed');

@@ -1,12 +1,29 @@
 import { ESLint } from 'eslint';
 import { format } from 'prettier';
-import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import type { PlannedFile } from '../../../src/core/development-tooling/files';
 import { builtinModules } from '../../../src/templates/module-system/builtinModules';
 import { expect } from '../../verificationExpect';
 import { measureWorkload } from '../measureWorkload';
+import { runCommand } from '../cli';
+
+/** The generated case must fail when its authored Example expects a different result. */
+export async function assertAuthoredLibraryResult(project: string): Promise<void> {
+	const path = join(project, 'specification/units/entry.index.json');
+	const original = await readFile(path, 'utf8');
+	try {
+		const manifest = JSON.parse(original);
+		manifest.testing.examples[0].expected.value = 'changed authored greeting';
+		await writeFile(path, JSON.stringify(manifest, null, '\t') + '\n');
+		const changed = await runCommand(['bun', 'run', 'test:unit'], project, false);
+		expect(changed.exitCode).toBe(1);
+		expect(changed.stdout + changed.stderr).toContain('changed authored greeting');
+	} finally {
+		await writeFile(path, original);
+	}
+}
 
 /** Validate real emitted foundations with generated lint rules in a minimal typed source project. */
 export async function assertFoundationLint(project: PlannedFile[], kind: string): Promise<void> {

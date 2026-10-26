@@ -2,6 +2,11 @@ import { format, type Options } from 'prettier';
 import { test } from 'vitest';
 import { expect } from './verificationExpect';
 import { projectFiles } from '../src/templates/project';
+import type { ComponentManifest } from '../src/core/unitTypes';
+import type { UnitDocumentation } from '../src/utils/unit-documentation/unitDocumentation';
+import { TestCaseValidator } from '../src/validators/verification-evidence/TestCaseValidator';
+import { hydrateUnitDocumentation } from '../src/services/revision-detail-service/unitDocumentation';
+import { usageExamples } from '../packages/reports/src/components/usage-examples/usageExamples';
 import { measureWorkload } from './support/measureWorkload';
 import { assertFoundationLint } from './support/project-template/foundations';
 import { assertAtomCompiler } from './support/project-template/atoms';
@@ -74,8 +79,12 @@ test('app projects include SvelteKit and specification files', () =>
 		expect(packageJson.devDependencies.prettier).toBeDefined();
 	}));
 
-test('library projects include Bun TypeScript test structure', () => {
-	const files = projectFiles({ kind: 'lib', name: 'demo-lib' });
+test('library projects include Bun TypeScript test structure', async () => {
+	const files = await measureWorkload('template.project', 'library-authored-example', () =>
+		measureWorkload('template.project-tests', 'library-authored-example', () =>
+			projectFiles({ kind: 'lib', name: 'demo-lib' })
+		)
+	);
 	const paths = files.map((file) => file.path);
 	const packageJson = JSON.parse(
 		files.find((file) => file.path === 'package.json')?.contents ?? '{}'
@@ -89,6 +98,32 @@ test('library projects include Bun TypeScript test structure', () => {
 	expect(paths).toContain('.prettierignore');
 	expect(paths).toContain('scripts/harness-audit.ts');
 	expect(paths).toContain('test/index.test.ts');
+	expect(paths).toContain('specification/units/entry.index.json');
+	const unit = JSON.parse(
+		fileContents(files, 'specification/units/entry.index.json')
+	) as ComponentManifest;
+	expect(new TestCaseValidator().validate(unit, unit.testing).errors).toEqual([]);
+	expect(unit.testing?.cases).toHaveLength(1);
+	const documented = {
+		id: unit.id,
+		testing: unit.testing,
+		documentation: undefined as UnitDocumentation | undefined
+	};
+	await hydrateUnitDocumentation(
+		{
+			read: async () => {
+				throw new Error('No separate document');
+			}
+		},
+		[documented]
+	);
+	expect(usageExamples(documented.documentation!.examples)).toEqual([
+		'helloHarness()\n// => "hello from Harness"'
+	]);
+	const exampleTest = fileContents(files, 'test/index.test.ts');
+	expect(exampleTest).toContain("test('helloHarness: returns a greeting'");
+	expect(exampleTest).toContain('unit.testing.examples[0].expected.value');
+	expect(exampleTest).not.toContain('hello from Harness');
 	expect(paths).toContain('tsconfig.json');
 	expect(paths).toContain('.codex/skills/harness/SKILL.md');
 	expect(fileContents(files, 'AGENTS.md')).toContain('Treat Harness as the operating contract');
