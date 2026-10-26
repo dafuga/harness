@@ -19,7 +19,7 @@
 			{
 				"name": "designPrompt.context",
 				"type": "RunContext",
-				"description": "The entity title and requested thread identity. A matching thread supplies state, viewport and optional region; defaults are default state, desktop viewport and the whole image."
+				"description": "The entity title and requested thread identity. A matching thread supplies state, viewport and optional region; defaults are default state, desktop viewport and the whole image. The original request text is authoritative for the change scope and is passed to the image generator separately from the agent proposal."
 			},
 			{
 				"name": "designPrompt.prompt",
@@ -36,7 +36,7 @@
 			{
 				"name": "designPrompt",
 				"type": "string",
-				"description": "Instructs the image generator to change only the selected thread region or the area described by the user, preserving all unrequested areas of an attached reference, including framing, content and styling. Explicit whole-page requests remain possible. If no reference is attached, it states that limitation and does not claim to preserve unseen pixels. User proposal text is included unchanged. These are instructions, not a pixel-level enforcement guarantee."
+				"description": "Instructs the image generator to change only the selected thread region or the area described by the user, preserving all unrequested areas of an attached reference, including framing, content and styling. Explicit whole-page requests remain possible. If no reference is attached, it states that limitation and does not claim to preserve unseen pixels. User proposal text is included unchanged. These are instructions, not a pixel-level enforcement guarantee. Includes the original user request separately from the planning proposal so the requested edit scope cannot be lost in summarization."
 			}
 		],
 		"errors": []
