@@ -4,6 +4,7 @@ import { mkdir, mkdtemp, writeFile, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
+import manifest from '../../specification/units/adapter.desktop-integrity.json';
 import { measureWorkload } from '../support/measureWorkload';
 
 test('copy packaging refreshes the embedded digest and keeps validation enabled', async () => {
@@ -39,10 +40,9 @@ test('copy packaging refreshes the embedded digest and keeps validation enabled'
 });
 
 test('integrity updates refuse the installed original app', async () => {
+	const expected = manifest.testing.cases[1].expected.value;
+	if (!expected) throw new Error('Missing authored refusal expectation');
 	await expect(
 		new DesktopIntegrityAdapter().update('/Applications/ChatGPT.app')
-	).rejects.toMatchObject({
-		name: 'Error',
-		message: 'Integrity changes require the experimental copy'
-	});
+	).rejects.toMatchObject(expected);
 });
