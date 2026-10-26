@@ -2,7 +2,7 @@
 	"name": "plugin-app-dependency-compatibility",
 	"goal": "Generated Harness apps can generate both built-in browser testing plugins without dependency-version conflicts, while incompatible dependencies remain rejected.",
 	"createdAt": "2026-10-26T23:06:41.280Z",
-	"updatedAt": "2026-10-26T23:07:32.564Z",
+	"updatedAt": "2026-10-26T23:14:51.100Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:14:46.137Z",
+			"evidence": "99f8b7c3b4 uses one pinned Playwright version for generated apps and both built-in testing plugins; strict incompatible dependency rejection remains unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:14:51.100Z",
+			"evidence": "Green proof e3a2da5eb8471d8c2f99bbb42bd0ba3ef994757c0cf31335ab88d6c227ed7295 at 99f8b7c3b4 passes the unchanged test and fixture from red proof a267ca4677b33307ce9c402aa02d86602e467af5b53bf294fb5c560bd6245070 at 950f317aa0 in the same environment."
 		},
 		{
 			"id": "verify",

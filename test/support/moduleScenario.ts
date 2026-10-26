@@ -33,6 +33,20 @@ export async function assertModuleProject(root: string): Promise<void> {
 	expect(repeated.stdout).toContain('already installed');
 	await assertRustModuleProject(project);
 	await runCommand(['bun', 'install'], project);
+	await assertTestingPlugins(project);
+	await prepareBrowserBaselineReport(project);
+	await runCommand(['bun', 'run', 'format'], project);
+	const check = await runCommand(['bun', 'run', 'check'], project, false);
+	const output = check.stdout + check.stderr;
+	expect(check.exitCode).toBe(1);
+	expect(output).toContain('svelte-check found 0 errors');
+	expect(output).toContain('Harness audit passed');
+	// The normal suite includes three app viewports and the two generated plugin tests.
+	await expectMissingScreenshotResults(project, output, 5);
+	await runCommand(['bun', 'run', 'build'], project);
+}
+
+async function assertTestingPlugins(project: string): Promise<void> {
 	await measureWorkload(
 		'template.module-system-testing-plugins',
 		'generate-browser-plugin-test',
@@ -59,13 +73,4 @@ export async function assertModuleProject(root: string): Promise<void> {
 	await measureWorkload('service.module-system-testing-plugin', 'run-headless-audio-plugin', () =>
 		runHarness(['plugin', 'test', 'headless-audio'], project)
 	);
-	await prepareBrowserBaselineReport(project);
-	await runCommand(['bun', 'run', 'format'], project);
-	const check = await runCommand(['bun', 'run', 'check'], project, false);
-	const output = check.stdout + check.stderr;
-	expect(check.exitCode).toBe(1);
-	expect(output).toContain('svelte-check found 0 errors');
-	expect(output).toContain('Harness audit passed');
-	await expectMissingScreenshotResults(project, output, 3);
-	await runCommand(['bun', 'run', 'build'], project);
 }
