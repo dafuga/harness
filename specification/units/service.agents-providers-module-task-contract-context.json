@@ -43,7 +43,7 @@
 			{
 				"name": "create",
 				"type": "Promise<ModuleTaskContractContext>",
-				"description": "{scope:TaskRunScope,binDirectory:string,cleanup():Promise<void>}; snapshot and executable CLI immutable, scratch separate, app-wide contracts metadata only. SourceCommit includes selected task revision; versions are forwarded committed records; binDirectory included in trusted scope. Restricted CLI may omit source/test resource fields explicitly. Private CLI launcher must use only trusted configuration; no task worktree Bun config/preloads before executing sealed CLI."
+				"description": "{scope:TaskRunScope,binDirectory:string,cleanup():Promise<void>}; snapshot and executable CLI immutable, scratch separate, app-wide contracts metadata only. SourceCommit includes selected task revision; versions are forwarded committed records; binDirectory included in trusted scope. Restricted CLI may omit source/test resource fields explicitly. Private CLI launcher must use only trusted configuration; no task worktree Bun config/preloads before executing sealed CLI. Sealed executable is <binDirectory>/harness mode 0555; its absolute shebang uses canonical process.execPath. Bun uses an empty readonly <binDirectory>/bunfig.toml. scope.readPaths includes runtime and binDirectory; snapshot is separately sealed readonly. No special environment is required."
 			}
 		],
 		"errors": [
