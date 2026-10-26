@@ -1,0 +1,394 @@
+{
+	"schemaVersion": 1,
+	"id": "function.resource-request",
+	"kind": "function",
+	"title": "resourceRequest",
+	"responsibility": "Resolves explicit or automatic CPU and memory requests against live headroom or an inherited parent reservation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/execution-runtimes/resourceRequest.ts"],
+		"symbols": ["resourceRequest"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "resourceRequest.flags",
+				"type": "Record<string, string>",
+				"description": "Resources CLI priority, CPU, RAM and label fields, including supported auto sizing."
+			},
+			{
+				"name": "resourceRequest.service",
+				"type": "Pick<ResourceQueueService, 'home' | 'snapshot'> & { queue: Pick<ResourceQueueService['queue'], 'all'>; }",
+				"description": "Queue access, current telemetry and configuration directory used to resolve automatic requests."
+			},
+			{
+				"name": "resourceRequest.env",
+				"type": "Record<string, string | undefined>",
+				"description": "Reads HARNESS_RESOURCE_LEASE to detect an inherited parent lease, then HARNESS_RESOURCE_CPUS and HARNESS_RESOURCE_MEMORY_MIB as its budget for auto fields. Other entries are ignored."
+			}
+		],
+		"outputs": [
+			{
+				"name": "resourceRequest",
+				"type": "Promise<ResourceRequest>",
+				"description": "Validated concrete request preserving parent limits for nested automatic sizing."
+			}
+		],
+		"errors": [
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Thrown when the resolved priority, CPU, memory or label fails the request schema, including malformed or non-positive numbers."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.resource-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.resource-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/execution-runtimes/resourceRequest.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/execution-runtimes/resourceRequest.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "resourceRequest",
+				"name": "Size an automatic worker from idle headroom",
+				"call": "await resourceRequest({ priority: 'agent-test', cpus: 'auto', memoryMib: 'auto' }, service, {})",
+				"input": {
+					"outcome": "request",
+					"flags": { "priority": "agent-test", "cpus": "auto", "memoryMib": "auto" },
+					"queue": [],
+					"env": {}
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"priority": "agent-test",
+						"cpus": 9,
+						"memoryMiB": 4864,
+						"label": "Managed work"
+					}
+				}
+			},
+			{
+				"subject": "resourceRequest",
+				"name": "Subtract root reservations and ignore nested children when sizing",
+				"call": "await resourceRequest({ priority: 'agent-test', cpus: 'auto', memoryMib: 'auto' }, service, {})",
+				"input": {
+					"outcome": "request",
+					"flags": { "priority": "agent-test", "cpus": "auto", "memoryMib": "auto" },
+					"queue": [
+						{ "name": "root", "state": "running", "cpus": 6 },
+						{ "name": "nested", "parent": "root", "state": "running", "cpus": 6 }
+					],
+					"env": {}
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"priority": "agent-test",
+						"cpus": 3,
+						"memoryMiB": 1792,
+						"label": "Managed work"
+					}
+				}
+			},
+			{
+				"subject": "resourceRequest",
+				"name": "Use the inherited parent budget for automatic sizing",
+				"call": "await resourceRequest({ priority: 'agent-test', cpus: 'auto', memoryMib: 'auto' }, service, env)",
+				"input": {
+					"outcome": "request",
+					"flags": { "priority": "agent-test", "cpus": "auto", "memoryMib": "auto" },
+					"queue": [{ "name": "root", "state": "running", "cpus": 6 }],
+					"env": {
+						"HARNESS_RESOURCE_LEASE": "parent",
+						"HARNESS_RESOURCE_CPUS": "2",
+						"HARNESS_RESOURCE_MEMORY_MIB": "1024"
+					}
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"priority": "agent-test",
+						"cpus": 2,
+						"memoryMiB": 1024,
+						"label": "Managed work"
+					}
+				}
+			},
+			{
+				"subject": "resourceRequest",
+				"name": "Keep explicit CPU and memory requests ahead of an inherited budget",
+				"call": "await resourceRequest({ priority: 'agent-test', cpus: '3', memoryMib: '2048' }, service, env)",
+				"input": {
+					"outcome": "request",
+					"flags": { "priority": "agent-test", "cpus": "3", "memoryMib": "2048" },
+					"queue": [],
+					"env": {
+						"HARNESS_RESOURCE_LEASE": "parent",
+						"HARNESS_RESOURCE_CPUS": "2",
+						"HARNESS_RESOURCE_MEMORY_MIB": "1024"
+					}
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"priority": "agent-test",
+						"cpus": 3,
+						"memoryMiB": 2048,
+						"label": "Managed work"
+					}
+				}
+			},
+			{
+				"subject": "resourceRequest",
+				"name": "Derive automatic memory from an explicit CPU request",
+				"call": "await resourceRequest({ priority: 'agent-test', cpus: '2', memoryMib: 'auto' }, service, {})",
+				"input": {
+					"outcome": "request",
+					"flags": { "priority": "agent-test", "cpus": "2", "memoryMib": "auto" },
+					"queue": [],
+					"env": {}
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"priority": "agent-test",
+						"cpus": 2,
+						"memoryMiB": 1280,
+						"label": "Managed work"
+					}
+				}
+			},
+			{
+				"subject": "resourceRequest",
+				"name": "Keep a CPU reserve on a single-core quota",
+				"call": "await resourceRequest({ priority: 'agent-test', cpus: 'auto', memoryMib: 'auto' }, service, {})",
+				"input": {
+					"outcome": "request",
+					"flags": { "priority": "agent-test", "cpus": "auto", "memoryMib": "auto" },
+					"telemetry": { "logicalCores": 1, "usableCores": 1, "cpuAvailableCores": 1 },
+					"queue": [],
+					"env": {}
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"priority": "agent-test",
+						"cpus": 0.9,
+						"memoryMiB": 716.8,
+						"label": "Managed work"
+					}
+				}
+			},
+			{
+				"subject": "resourceRequest",
+				"name": "Wait with one CPU when telemetry is unavailable",
+				"call": "await resourceRequest({ priority: 'agent-test', cpus: 'auto', memoryMib: 'auto' }, service, {})",
+				"input": {
+					"outcome": "request",
+					"flags": { "priority": "agent-test", "cpus": "auto", "memoryMib": "auto" },
+					"telemetry": { "status": "unavailable", "usableCores": 0 },
+					"queue": [],
+					"env": {}
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"priority": "agent-test",
+						"cpus": 1,
+						"memoryMiB": 768,
+						"label": "Managed work"
+					}
+				}
+			},
+			{
+				"subject": "resourceRequest",
+				"name": "Reject a malformed CPU flag",
+				"call": "await resourceRequest({ priority: 'agent-test', cpus: 'bad', memoryMib: 'auto' }, service, {})",
+				"input": {
+					"outcome": "rejection",
+					"flags": { "priority": "agent-test", "cpus": "bad", "memoryMib": "auto" },
+					"queue": [{ "name": "root", "state": "running", "cpus": 6 }],
+					"env": {}
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"name": "ZodError",
+						"issuePaths": [["cpus"], ["memoryMiB"]]
+					}
+				}
+			},
+			{
+				"subject": "resourceRequest",
+				"name": "Reject a zero CPU request",
+				"call": "await resourceRequest({ priority: 'agent-test', cpus: '0', memoryMib: 'auto' }, service, {})",
+				"input": {
+					"outcome": "rejection",
+					"flags": { "priority": "agent-test", "cpus": "0", "memoryMib": "auto" },
+					"queue": [],
+					"env": {}
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"name": "ZodError",
+						"issuePaths": [["cpus"]]
+					}
+				}
+			}
+		],
+		"states": ["automatic", "inherited", "explicit", "boundary", "invalid"],
+		"props": ["flags", "service", "env"],
+		"cases": [
+			{
+				"id": "resource-request.idle-headroom",
+				"state": "automatic",
+				"subject": "resourceRequest",
+				"example": "Size an automatic worker from idle headroom",
+				"fixture": "test/support/resourceRequestExamples.ts",
+				"test": {
+					"file": "test/utils/resource-request.test.ts",
+					"title": "resourceRequest: Size an automatic worker from idle headroom"
+				},
+				"props": ["flags", "service"]
+			},
+			{
+				"id": "resource-request.root-reservations",
+				"state": "automatic",
+				"subject": "resourceRequest",
+				"example": "Subtract root reservations and ignore nested children when sizing",
+				"fixture": "test/support/resourceRequestExamples.ts",
+				"test": {
+					"file": "test/utils/resource-request.test.ts",
+					"title": "resourceRequest: Subtract root reservations and ignore nested children when sizing"
+				},
+				"props": ["flags", "service"]
+			},
+			{
+				"id": "resource-request.inherited-budget",
+				"state": "inherited",
+				"subject": "resourceRequest",
+				"example": "Use the inherited parent budget for automatic sizing",
+				"fixture": "test/support/resourceRequestExamples.ts",
+				"test": {
+					"file": "test/utils/resource-request.test.ts",
+					"title": "resourceRequest: Use the inherited parent budget for automatic sizing"
+				},
+				"props": ["flags", "service", "env"]
+			},
+			{
+				"id": "resource-request.explicit-flags",
+				"state": "explicit",
+				"subject": "resourceRequest",
+				"example": "Keep explicit CPU and memory requests ahead of an inherited budget",
+				"fixture": "test/support/resourceRequestExamples.ts",
+				"test": {
+					"file": "test/utils/resource-request.test.ts",
+					"title": "resourceRequest: Keep explicit CPU and memory requests ahead of an inherited budget"
+				},
+				"props": ["flags", "env"]
+			},
+			{
+				"id": "resource-request.explicit-cpu",
+				"state": "explicit",
+				"subject": "resourceRequest",
+				"example": "Derive automatic memory from an explicit CPU request",
+				"fixture": "test/support/resourceRequestExamples.ts",
+				"test": {
+					"file": "test/utils/resource-request.test.ts",
+					"title": "resourceRequest: Derive automatic memory from an explicit CPU request"
+				},
+				"props": ["flags"]
+			},
+			{
+				"id": "resource-request.single-core",
+				"state": "boundary",
+				"subject": "resourceRequest",
+				"example": "Keep a CPU reserve on a single-core quota",
+				"fixture": "test/support/resourceRequestExamples.ts",
+				"test": {
+					"file": "test/utils/resource-request.test.ts",
+					"title": "resourceRequest: Keep a CPU reserve on a single-core quota"
+				},
+				"props": ["flags", "service"]
+			},
+			{
+				"id": "resource-request.unavailable-telemetry",
+				"state": "boundary",
+				"subject": "resourceRequest",
+				"example": "Wait with one CPU when telemetry is unavailable",
+				"fixture": "test/support/resourceRequestExamples.ts",
+				"test": {
+					"file": "test/utils/resource-request.test.ts",
+					"title": "resourceRequest: Wait with one CPU when telemetry is unavailable"
+				},
+				"props": ["flags", "service"]
+			},
+			{
+				"id": "resource-request.malformed-flag",
+				"state": "invalid",
+				"subject": "resourceRequest",
+				"example": "Reject a malformed CPU flag",
+				"fixture": "test/support/resourceRequestExamples.ts",
+				"test": {
+					"file": "test/utils/resource-request.test.ts",
+					"title": "resourceRequest: Reject a malformed CPU flag"
+				},
+				"props": ["flags", "service"],
+				"errors": ["ZodError"]
+			},
+			{
+				"id": "resource-request.zero-cpu",
+				"state": "invalid",
+				"subject": "resourceRequest",
+				"example": "Reject a zero CPU request",
+				"fixture": "test/support/resourceRequestExamples.ts",
+				"test": {
+					"file": "test/utils/resource-request.test.ts",
+					"title": "resourceRequest: Reject a zero CPU request"
+				},
+				"props": ["flags"],
+				"errors": ["ZodError"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
