@@ -1,4 +1,5 @@
 import { test } from 'vitest';
+import { assertDependencyWorker } from './module-task-dependency-worker.test.fixtures';
 import { assertDependencyClaims } from './module-task-worker.claim.test.fixtures';
 import { expect } from '../../verificationExpect';
 import { assertWorkspacePlacement } from './module-task-workspace.test.fixtures';
@@ -34,6 +35,7 @@ test('module filters and assignment claims select once, then preserve changes fo
 	}
 });
 test('worker passes the exact prepared scope through quota fallback', async () => {
+	await assertDependencyWorker();
 	const { f, service, worker, contexts, runInputs } = await reviewFixture();
 	try {
 		await worker.once('owner');
@@ -61,7 +63,6 @@ test('worker passes the exact prepared scope through quota fallback', async () =
 		await f.dispose();
 	}
 });
-
 test('incomplete review commits a repair base, requeues once, and keeps prior work and contract', async () => {
 	const { f, service, worker, contexts, runInputs } = await reviewFixture();
 	try {
@@ -109,7 +110,6 @@ test('incomplete review commits a repair base, requeues once, and keeps prior wo
 		await f.dispose();
 	}
 });
-
 test('context cleanup waits for runner rejection and cancellation settlement', async () => {
 	const outcomes: string[] = [];
 	for (const outcome of ['reject', 'cancel'] as const) {
