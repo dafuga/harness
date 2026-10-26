@@ -480,3 +480,39 @@ The updated inventory has 1,117 suite files, 4,606 declarations, 45 standardized
 units, 693 registered cases and 5,937 gaps. It retains three skipped or
 expected-failure declarations and 337 computed registrations requiring runner
 discovery. Full migration remains open.
+
+## Continuation: entity form admission
+
+The existing TestCaseValidator case previously accepted a service class with a
+component screenshot or API JSON contract. The strengthened case keeps its title
+and checks page, view, layout, component, shell, partial and endpoint kinds against
+all applicable forms. Test-only `2c3c23fc70` failed in red `043d32e525ff`; source
+repair `9def2e7ec7` passed the unchanged case in green `28cd3c026769`. Layouts
+retain the labelled child-slot rule. Nonvisual kinds may still choose helper or
+class forms according to their authored behavior; proving the underlying callable
+or class identity remains open.
+
+The TestContractService fixture had presented a function as an API. Commit
+`9f470b5922` indexes a real endpoint for that case and aligns the existing matrix
+fixtures with their entity kinds. A blank-line cleanup in `7cf0f4890a` satisfies
+the file limit. Capture `bcac289523db` passes seven cases across the validator,
+contract, discovery and unchanged readable-contract suites. An isolated mutant
+`3804f884f5` failed the same validator case in capture `f1f5dfd0bb00`; restoring
+the source produced tree `7be5428a3d`, identical to `7cf0f4890a`, and passed in
+capture `2e38ae11e16d`. These captures do not replace aggregate verification.
+
+At that tree, registry validation passed for 1,827 units with 166 uncertain
+references, root typecheck and audit passed, and targeted formatting and lint
+passed. The archive snapshot registry run failed because its missing Git index
+excluded tracked iOS files under ignore rules; that failed capture remains
+`d68d98bf1fe6`. The real Git worktree check supplied the index and passed. Source
+measurement for `validator.verification-evidence-test-case` is 13,147 bytes,
+330 lines, complexity 107 and five dependencies; its module has no separate
+emitted artifact. The layout/page admission workload took 0.874 ms and observed
+192,102,400 bytes whole-worker RSS, not isolated unit memory.
+
+The separate baseline-preparation fixture remains uncommitted. Its authored
+helper and class cases now pass admission, but both parent cases still fail on
+`page.titles`, which needs real Playwright screenshot cases and reviewed
+baselines. Full migration, provider qualification, complete history, the full
+other-laptop check and delivered Explorer/audio proof remain open.
