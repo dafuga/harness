@@ -3,7 +3,7 @@
 	"id": "service.agents-providers-feature-plan-preparation",
 	"kind": "service",
 	"title": "FeaturePlanPreparationService",
-	"responsibility": "Prepare complete page designs and an unapproved feature plan from committed module relationships.",
+	"responsibility": "Prepare affected page designs and pass a coverage-checked feature plan draft to trusted collaborators.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,20 +11,66 @@
 			"src/services/agents-providers/FeaturePlanPreparationService.ts",
 			"src/services/agents-providers/FeaturePlanPreparationService.types.ts"
 		],
-		"symbols": ["FeaturePlanPreparationService", "FeaturePlanPreparationService.run"]
+		"symbols": [
+			"FeaturePlanPreparationService",
+			"FeaturePlanPreparationService.constructor",
+			"FeaturePlanPreparationService.run",
+			"FeaturePlanPreparationService.prepare",
+			"FeaturePlanProposal",
+			"PreparedFeaturePlan",
+			"PreparationPage",
+			"PreparationDiscovery",
+			"PreparationCoverage",
+			"FeaturePlanPreparationInput",
+			"FeaturePlanPreparationDependencies"
+		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [
+		"origin": "declared",
+		"inputs": [
 			{
-				"name": "FeaturePlanPreparationService.run",
-				"type": "string"
+				"name": "FeaturePlanPreparationService.constructor.dependencies",
+				"type": "FeaturePlanPreparationDependencies",
+				"description": "Trusted discovery, admitted page preparation, artifact finalization, coverage verification, and draft collaborators. The finalizer must independently verify the resulting committed artifacts and metadata."
+			},
+			{
+				"name": "FeaturePlanPreparationService.prepare.input",
+				"type": "FeaturePlanPreparationInput",
+				"description": "Unapproved proposal, committed module metadata, and cancellation signal. The source and metadata commits must match."
 			}
 		],
-		"errors": []
+		"outputs": [
+			{
+				"name": "FeaturePlanPreparationService.prepare",
+				"type": "Promise<FeaturePlan>",
+				"description": "Discovers affected pages, admits parallel preparation of three distinct unselected choices with exactly one preferred option per page, waits for all admitted page work to settle, checks final metadata and coverage, then returns the trusted draft collaborator result. It does not start workers or itself verify Git lineage."
+			},
+			{
+				"name": "FeaturePlanPreparationService.run",
+				"type": "string",
+				"description": "Returns the scaffold identity."
+			}
+		],
+		"errors": [
+			{
+				"name": "Incomplete or cancelled preparation",
+				"type": "Error",
+				"description": "Rejects missing collaborators, inconsistent revisions, invalid discovery, malformed choices, incomplete coverage, collaborator errors, or cancellation before drafting."
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/agents-providers/FeaturePlanPreparationService.ts",

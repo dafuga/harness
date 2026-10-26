@@ -142,6 +142,39 @@ async function assertIncompleteDesigns() {
 		expect(deps.draft, kind).not.toHaveBeenCalled();
 	}
 }
+
+async function assertAdmittedWorkSettles() {
+	const { service, input, deps } = fixture(['page.first', 'page.second']);
+	let release!: () => void;
+	const gate = new Promise<void>((resolve) => {
+		release = resolve;
+	});
+	deps.preparePage.mockImplementation(async ({ module }) => {
+		if (module === 'page.first') throw new Error('First page failed');
+		await gate;
+		return page(module);
+	});
+	let settled = false;
+	const pending = service.prepare(input).then(
+		() => {
+			settled = true;
+			return null;
+		},
+		(error: unknown) => {
+			settled = true;
+			return error;
+		}
+	);
+	try {
+		await vi.waitFor(() => expect(deps.preparePage).toHaveBeenCalledTimes(2));
+		expect(settled).toBe(false);
+		expect(deps.finalize).not.toHaveBeenCalled();
+	} finally {
+		release();
+	}
+	expect(await pending).toMatchObject({ message: 'First page failed' });
+	expect(deps.draft).not.toHaveBeenCalled();
+}
 test('FeaturePlanPreparationService.run from default initialization returns the file name', async () => {
 	expect(new FeaturePlanPreparationService().run()).toBe('feature-plan-preparation');
 	await assertPreparedPages(['page.orders', 'page.checkout', 'page.orders']);
@@ -149,4 +182,5 @@ test('FeaturePlanPreparationService.run from default initialization returns the 
 	await assertNonvisual();
 	await assertRefusals();
 	await assertIncompleteDesigns();
+	await assertAdmittedWorkSettles();
 });
