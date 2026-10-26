@@ -2,7 +2,7 @@
 	"name": "contract-generated-registry-canonical",
 	"goal": "Reject generated projects with stale or noncanonical unit registries",
 	"createdAt": "2026-10-26T20:12:00.981Z",
-	"updatedAt": "2026-10-26T20:12:05.346Z",
+	"updatedAt": "2026-10-26T20:13:53.792Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,27 +25,37 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:12:35.518Z",
+			"evidence": "The existing template case rejects the generated entry.index as stale while the other four cases pass."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:12:36.101Z",
+			"evidence": "Emit fields in the declared schema order and retain the existing template case as a full generated-registry admission guard."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:13:06.387Z",
+			"evidence": "Emit the authored examples and budgets in registry schema order."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:13:07.853Z",
+			"evidence": "The same five cases pass at 9e63736d55; the generated registry now has no admission or staleness errors."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:13:53.792Z",
+			"evidence": "Isolated mutant a9aa17b860 restored the rejected ordering: capture e74889267a62 fails one case. Restored source 9e63736d55 passes all five in capture 4ee0a934b4fd."
 		},
 		{
 			"id": "verify",

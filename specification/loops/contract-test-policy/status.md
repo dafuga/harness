@@ -1,6 +1,6 @@
 # Migration remains incomplete
 
-Status at 2026-10-26 20:05 UTC. Global `testing: 1` remains disabled. Existing
+Status at 2026-10-26 20:18 UTC. Global `testing: 1` remains disabled. Existing
 unmigrated entrypoints and substantive assertions remain. No production action or
 remote-main delivery is claimed.
 
@@ -52,6 +52,33 @@ Every reported child failure is an unreviewed-baseline refusal, with no child
 skips or flakiness. Earlier rejected record invocations created no passing evidence.
 Baseline review provenance in Harness evidence and full visual-suite migration
 remain open; missing-baseline refusals are not visual acceptance.
+
+The initial library's existing greeting case now reads its expected value from
+the generated `entry.index` Example. Test checkpoint `581908221d` fails before
+source repair `5b280466ff`; matched records `dc76949493e2` and `7b66bfa98c46`
+retain the same five project-template cases. Registry admission then exposed a
+noncanonical generated manifest. Existing-case checkpoint `ae0373fb79` and
+repair `9e63736d55` retain red `c7b2730ec211` and green `2d3a4f9c3ac5`.
+Isolated mutant `a9aa17b860` fails the guard in capture `e74889267a62`;
+restored source passes in `4ee0a934b4fd`. On harbor-mbp-2, the existing generated
+library CLI case passes at `9e63736d55`: the real registry is admitted, changing
+the authored expected result makes the same unit case fail, and restoration
+passes the generated check. Four other CLI cases were intentionally unselected.
+The prevention control now runs full registry admission on the generated file
+plan inside that existing project-template case. It catches schema-valid but
+stale or noncanonical registries before the slower generated-project CLI check,
+at the cost of one in-memory index during that case.
+This does not prove the Examples UI: `entry.index` has no public Explorer page,
+and it must not be presented as a shared helper. Generated app and plugin suite
+admission and the wider migration remain incomplete.
+
+At `9e63736d55`, source measurement records 8,117 bytes, 223 lines, 10
+complexity points and 11 dependencies for `template.project`, and 3,556 bytes,
+92 lines, 7 points and 4 dependencies for `template.project-tests`. Each unit
+spans its registered source files; neither has a separately emitted artifact.
+The normal library-planning workload in green capture `2d3a4f9c3ac5` took
+0.91 ms and 0.76 ms respectively. Both memory observations are the whole Vitest
+worker RSS of 264,110,080 bytes, not unit-attributed memory.
 
 ## Stable-case repairs and evidence
 
@@ -144,15 +171,20 @@ three skipped and one failing because its silent WAV inherited a tone transcript
 The existing case was strengthened in `cf4bfeee8f`, and focused Harness red
 `090731082929` records the fixture mismatch. This is a fixture correction, not a
 product red/green repair: Harness freezes all test fixtures between those phases.
-The corrected fixture and unchanged case pass locally; its browser case and the
-remaining laptop workspaces still need a run. All automated E2Es stay off the
-primary Mac.
+The corrected fixture passes 20 focused Desktop unit cases, and all five existing
+audio-flow browser cases pass at `f0774446e5` on harbor-mbp-2 with its configured
+one worker. The renderer's current-audio capture was inspected; it is a synthetic
+fixture screenshot, not a baseline comparison or current-main proof. Remaining
+laptop workspaces still need a run. All automated E2Es stay off the primary Mac.
 
 Merge `1f6800338e` integrates remote main `395e517bd7` without dropping its
 plugin, Rust, browser or audio assertions. Root compiler, audit, registry (1,827
 units) and 175 focused cases passed; a later 37-case Reports and 20-case Desktop
 focused run also passed. The newly imported browser and audio plugin generators
 still emit unsupported test shapes and need migration before policy admission.
+The later full check at `f0774446e5` passed formatting, then waited for CPU at
+typecheck. It was cancelled after its source became stale; it has no aggregate
+verdict. The latest committed source still requires the full laptop check.
 
 ## Execution identity
 
@@ -183,7 +215,9 @@ metadata `ac8a4161e1ee`. Two new verification-only module tasks requested
 `claude-haiku-5-5/max` and `gpt-6-luna/max` with no fallback. The former failed
 with an invalid structured response; the latter failed with a workspace-read
 permission error. Neither reported a model or made edits, and neither assignment
-is accepted. Their exact results remain in the Harness queue.
+is accepted. Their exact results remain in the Harness queue. A direct host status
+check reported Claude logged out; Codex reported a ChatGPT login. Neither status
+establishes that the corresponding sandboxed task can use its requested model.
 
 ## History and outstanding acceptance
 

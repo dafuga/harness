@@ -2,7 +2,7 @@
 	"name": "contract-library-examples",
 	"goal": "Generate library examples from one authored expectation for tests and Explorer",
 	"createdAt": "2026-10-26T20:07:28.912Z",
-	"updatedAt": "2026-10-26T20:07:30.038Z",
+	"updatedAt": "2026-10-26T20:10:48.789Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:08:59.902Z",
+			"evidence": "The existing library project case fails because its generated registry has no authored Example; four other cases pass."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:10:47.373Z",
+			"evidence": "The generated library keeps one greeting case and reads its expected value from its registered authored Example."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:10:48.789Z",
+			"evidence": "The same five project-template cases pass unchanged at 5b280466ff in the matched environment; Git record 7b66bfa98c46 retains the observations."
 		},
 		{
 			"id": "verify",
