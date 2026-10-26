@@ -1,0 +1,120 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hReZS0
+
+ ❯ test/ecosystem-adapters.e2e.test.ts (2 tests | 1 failed) 32080ms
+   × generated app audit rejects TypeScript, Svelte, and SQL rule violations 18155ms
+     → svelte-script-lang: expected 'Checking formatting...\nAll matched f…' to contain 'svelte-script-lang'
+   ✓ generated lib audit rejects C++, Python, shell, and WASM rule violations  13922ms
+ ❯ test/project-template.test.ts (5 tests | 1 failed) 555ms
+   ✓ generated element atoms preserve native compilation and emitted runtime source  343ms
+   × app projects include SvelteKit and specification files 14ms
+     → Static gates precede screenshot admission: expected [ 'bun run format:check', …(3) ] to deeply equal [ 'bun run format:check', …(3) ]
+   ✓ library projects include Bun TypeScript test structure 3ms
+   ✓ generated app code and configuration obey their formatter settings 176ms
+   ✓ generated lib code and configuration obey their formatter settings 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/ecosystem-adapters.e2e.test.ts > generated app audit rejects TypeScript, Svelte, and SQL rule violations
+AssertionError: svelte-script-lang: expected 'Checking formatting...\nAll matched f…' to contain 'svelte-script-lang'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- svelte-script-lang[39m
+[31m+ Checking formatting...[39m
+[31m+ All matched files use Prettier code style![39m
+[31m+ Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-app-adapters-cQq7Hs/adapter-app[39m
+[31m+ Getting Svelte diagnostics...[39m
+[31m+[39m
+[31m+ svelte-check found 0 errors and 0 warnings[39m
+[31m+[39m
+[31m+ [1m[46m RUN [49m[22m [36mv3.2.7 [31m[90m/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-app-adapters-cQq7Hs/adapter-app[31m[39m
+[31m+[39m
+[31m+ No test files found, exiting with code 0[39m
+[31m+[39m
+[31m+[39m
+[31m+ Running 1 test using 1 worker[39m
+[31m+[39m
+[31m+   ✘  1 tests/e2e/app.spec.ts:3:1 › app page initial state (127ms)[39m
+[31m+[39m
+[31m+[39m
+[31m+   1) tests/e2e/app.spec.ts:3:1 › app page initial state ────────────────────────────────────────────[39m
+[31m+[39m
+[31m+     Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-app-adapters-cQq7Hs/adapter-app/tests/e2e/app.spec.ts-snapshots/initial-darwin.png.[39m
+[31m+[39m
+[31m+        at support/browserScreenshot.ts:16[39m
+[31m+[39m
+[31m+       14 | 		await settleScreenshot(target, options);[39m
+[31m+       15 | 		if (screenshotEvidenceRequested()) await attachScreenshot(testInfo, target, name, options);[39m
+[31m+     > 16 | 		await expect(target).toHaveScreenshot(name, {[39m
+[31m+          | 		                     ^[39m
+[31m+       17 | 			animations: 'disabled',[39m
+[31m+       18 | 			caret: 'hide',[39m
+[31m+       19 | 			...options[39m
+[31m+         at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-app-adapters-cQq7Hs/adapter-app/tests/e2e/support/browserScreenshot.ts:16:24[39m
+[31m+         at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-app-adapters-cQq7Hs/adapter-app/tests/e2e/app.spec.ts:5:2[39m
+[31m+[39m
+[31m+     Error Context: test-results/app-app-page-initial-state/error-context.md[39m
+[31m+[39m
+[31m+   1 failed[39m
+[31m+     tests/e2e/app.spec.ts:3:1 › app page initial state ─────────────────────────────────────────────[39m
+[31m+[39m
+[31m+ $ bun run format:check && bun run typecheck && bun run lint && bun run test && bun run test:e2e && bun run build && bun run audit[39m
+[31m+ $ prettier --check .[39m
+[31m+ $ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json[39m
+[31m+ $ svelte-kit sync && eslint .[39m
+[31m+ $ bun run test:unit[39m
+[31m+ $ vitest run --passWithNoTests[39m
+[31m+ [2minclude: [22m[33mtest/**/*.test.ts[31m[39m
+[31m+ [2mexclude:  [22m[33m**/node_modules/**[2m, [22m**/dist/**[2m, [22m**/cypress/**[2m, [22m**/.{idea,git,cache,output,temp}/**[2m, [22m**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*[31m[39m
+[31m+[39m
+[31m+ $ playwright test[39m
+[31m+ [WebServer] $ vite dev --host --port 3322 --host "127.0.0.1" --port "49924"[39m
+[31m+ error: script "test:e2e" exited with code 1[39m
+[31m+ error: script "check" exited with code 1[39m
+[31m+[39m
+
+ ❯ expectRules test/ecosystem-adapters.e2e.test.ts:71:24
+     69| function expectRules(output: string, rules: string[]): void {
+     70|  for (const rule of rules) {
+     71|   expect(output, rule).toContain(rule);
+       |                        ^
+     72|  }
+     73| }
+ ❯ test/ecosystem-adapters.e2e.test.ts:35:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/project-template.test.ts > app projects include SvelteKit and specification files
+AssertionError: Static gates precede screenshot admission: expected [ 'bun run format:check', …(3) ] to deeply equal [ 'bun run format:check', …(3) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[2m    "bun run format:check",[22m
+[2m    "bun run typecheck",[22m
+[2m    "bun run lint",[22m
+[32m-   "bun run audit",[39m
+[31m+   "bun run test",[39m
+[2m  ][22m
+
+ ❯ expectStaticCheckOrder test/support/project-template/guidance.ts:87:87
+     85| /** Static admission precedes any browser baseline decision in the gen…
+     86| export function expectStaticCheckOrder(check: string): void {
+     87|  expect(check.split(' && ').slice(0, 4), 'Static gates precede screens…
+       |                                                                                       ^
+     88|   'bun run format:check',
+     89|   'bun run typecheck',
+ ❯ test/project-template.test.ts:65:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 5 passed (7)
+   Start at  11:30:56
+   Duration  37.20s (transform 236ms, setup 224ms, collect 639ms, tests 32.64s, environment 0ms, prepare 69ms)
+
