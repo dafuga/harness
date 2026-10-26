@@ -1,0 +1,45 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-gSnQCd
+
+ ❯ test/services/agents-providers/module-task-server-approved.test.ts (2 tests | 2 failed) 8ms
+   × approved dispatch verifies the plan and limits parallel workers to its exact scope 6ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × approved dispatch rejects unsafe requests before launching any worker 0ms
+     → f.service.runApproved is not a function
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/agents-providers/module-task-server-approved.test.ts > approved dispatch verifies the plan and limits parallel workers to its exact scope
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: [32m"[7mf[27mun[7mction[27m"[39m
+Received: [31m"un[7mdefined[27m"[39m
+
+ ❯ test/services/agents-providers/module-task-server-approved.test.ts:22:39
+     20|  });
+     21|  f.collaborators.worker.onceApproved = onceApproved;
+     22|  expect(typeof f.service.runApproved).toBe('function');
+       |                                       ^
+     23|  const run = f.service.runApproved(request, {
+     24|   worker: 'worker-one',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/services/agents-providers/module-task-server-approved.test.ts > approved dispatch rejects unsafe requests before launching any worker
+TypeError: f.service.runApproved is not a function
+ ❯ test/services/agents-providers/module-task-server-approved.test.ts:66:14
+     64|   const input = mode === 'stale' ? { ...request, expectedDigest: 'd'.r…
+     65|   await expect(
+     66|    f.service.runApproved(input, {
+       |              ^
+     67|     worker: 'worker-one',
+     68|     parallelism: mode === 'parallelism' ? 0 : 2,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  00:35:12
+   Duration  3.61s (transform 737ms, setup 105ms, collect 1.25s, tests 8ms, environment 0ms, prepare 25ms)
+
