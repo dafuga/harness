@@ -5,7 +5,7 @@ export function designPrompt(
 	referenceAttached: boolean
 ): string {
 	const thread = context.entity.threads.find((t) => t.id === context.request.threadId);
-	const request = context.request.text?.trim() ? context.request.text : prompt;
+	const request = context.request.text || prompt;
 	const location =
 		referenceAttached && thread?.region
 			? `The selected edit region is the normalized rectangle ${JSON.stringify(thread.region)}.`
