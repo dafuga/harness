@@ -1,0 +1,63 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-vwK71S
+
+ ❯ test/services/unit-index.test.ts (14 tests | 1 failed | 13 skipped) 18ms
+   ↓ HTTP requests bind to endpoints in the owning app and selected source tree
+   ↓ atomic levels follow runtime calls and survive projections
+   ↓ recorded source moves retain definitions, owner-local placement and registered identity
+   ↓ public route filenames retain their registered ownership
+   ↓ declared preview and documentation survive source re-indexing
+   ↓ declared execution targets survive re-indexing and follow a moved default entry
+   ↓ recreating retired source elsewhere records lineage to the retired identity
+   ↓ a unit that takes a retired name records lineage even when its symbols differ
+   ↓ lineage cannot be dropped by editing the manifest
+   ↓ unrelated new units carry no lineage
+   ↓ a declared responsibility survives re-indexing while a derived one follows the unit
+   × an alternative implementation is a related unit linked by a declared contract dependency 13ms
+     → registered cases connect their test files to the subject: expected [ { …(3) }, { …(3) } ] to deep equally contain { …(3) }
+   ↓ several owned files produce identical metadata after one indexing pass
+   ↓ recorded service moves preserve implementations and registered owner-local placement
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/unit-index.test.ts > an alternative implementation is a related unit linked by a declared contract dependency
+AssertionError: registered cases connect their test files to the subject: expected [ { …(3) }, { …(3) } ] to deep equally contain { …(3) }
+
+- Expected: 
+{
+  "from": "file:test/rank.example.test.ts",
+  "to": "unit:function.rank",
+  "via": "covers",
+}
+
++ Received: 
+[
+  {
+    "from": "file:test/rank.consumer.test.ts",
+    "to": "file:src/utils/rank.ts",
+    "via": "import",
+  },
+  {
+    "from": "unit:function.rank",
+    "to": "file:src/utils/rank.ts",
+    "via": "owns",
+  },
+]
+
+ ❯ assertRegisteredCaseImpact test/services/unit-index/graph.ts:63:82
+     61|  );
+     62|  const edge = { from: 'file:test/rank.example.test.ts', to: 'unit:func…
+     63|  expect(graph.edges, 'registered cases connect their test files to the…
+       |                                                                                  ^
+     64|   edge
+     65|  );
+ ❯ assertContractGraph test/services/unit-index/graph.ts:18:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 skipped (14)
+   Start at  22:56:48
+   Duration  2.81s (transform 197ms, setup 88ms, collect 404ms, tests 18ms, environment 0ms, prepare 22ms)
+
