@@ -1,4 +1,7 @@
 import { randomUUID } from 'node:crypto';
+import { isDeepStrictEqual } from 'node:util';
+import { sameTask } from '../../../helpers/agents-providers/moduleTaskApprovedSubmission';
+import type { ApprovedTaskScope } from '../../../helpers/agents-providers/moduleTaskApprovedSubmission.types';
 import type { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import type {
 	ModuleTask,
@@ -36,12 +39,47 @@ function dependencyCheckpoints(queue: ModuleTaskQueue, task: ModuleTask) {
 	}
 	return checkpoints;
 }
+
+/** Retain global contention and dependency records while admitting only verified queued tasks. */
+export function approvedClaimQueue(queue: ModuleTaskQueue, scope: ApprovedTaskScope) {
+	const { plan, feature, records } = scope;
+	const latest = queue.plans?.filter((item) => item.feature === plan.feature).at(-1);
+	const features = queue.features.filter((item) => item.id === feature.id);
+	const ids = new Set(plan.tasks.map((task) => task.id));
+	const validScope = [
+		isDeepStrictEqual(latest, plan),
+		plan.approval?.digest === plan.digest,
+		feature.id === plan.feature,
+		feature.goal === plan.goal,
+		feature.tldr === plan.tldr,
+		features.length === 1,
+		isDeepStrictEqual(features[0], feature),
+		ids.size === plan.tasks.length,
+		records.length === ids.size,
+		new Set(records.map((task) => task.id)).size === ids.size
+	];
+	if (!validScope.every(Boolean))
+		throw new Error('Approved plan or task scope changed before claim.');
+	for (const record of records) {
+		const stored = queue.tasks.filter((task) => task.id === record.id);
+		if (stored.length !== 1 || !ids.has(record.id))
+			throw new Error('Approved task definition changed before claim.');
+		if (!isDeepStrictEqual(record.feature, feature) || !sameTask(stored[0], record))
+			throw new Error('Approved task definition changed before claim.');
+	}
+	return {
+		...queue,
+		tasks: queue.tasks.filter((task) => task.status !== 'queued' || ids.has(task.id))
+	};
+}
 export function claimedTask(
 	queue: ModuleTaskQueue,
 	worker: string,
 	modules: string[],
-	owner: NonNullable<ModuleTask['claim']>['owner'],
-	prepare: (task: ModuleTask, checkpoints: string[]) => void = () => {}
+	...[owner, prepare = () => {}]: [
+		NonNullable<ModuleTask['claim']>['owner'],
+		((task: ModuleTask, checkpoints: string[]) => void)?
+	]
 ) {
 	const running = queue.tasks.filter((t) => t.status === 'running');
 	const busy = new Set(running.map((t) => t.module.id));

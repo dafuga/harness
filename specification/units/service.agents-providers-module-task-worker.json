@@ -15,7 +15,9 @@
 			"ModuleTaskWorkerService",
 			"ModuleTaskWorkerService.constructor",
 			"ModuleTaskWorkerService.once",
+			"ModuleTaskWorkerService.onceApproved",
 			"pendingTaskResult",
+			"approvedClaimQueue",
 			"claimedTask",
 			"finishTask",
 			"taskWrites"
@@ -120,6 +122,21 @@
 				"name": "ModuleTaskWorkerService.constructor.dependencyBase",
 				"type": "optional Pick<ModuleTaskDependencyBaseAdapter,\"resolve\">",
 				"description": "Trusted fourth collaborator; default composes committed accepted checkpoints."
+			},
+			{
+				"name": "ModuleTaskWorkerService.onceApproved.worker",
+				"type": "string",
+				"description": "Worker id subject to the same validation as once."
+			},
+			{
+				"name": "ModuleTaskWorkerService.onceApproved.scope",
+				"type": "ApprovedTaskScope",
+				"description": "Trusted server-verified approved plan, feature, and exact prepared task definitions; copied before asynchronous work."
+			},
+			{
+				"name": "ModuleTaskWorkerService.onceApproved.signal",
+				"type": "AbortSignal",
+				"description": "Optional cancellation signal with the same behavior as once."
 			}
 		],
 		"outputs": [
@@ -152,6 +169,11 @@
 				"name": "TaskRunResult",
 				"type": "TaskSelection & {text: string; reportedModel: string | null; usage?: TaskUsage}",
 				"description": "Committed repository contract for TaskRunner.run. The worker later merges dispatch output into the task workspace result and records execution history."
+			},
+			{
+				"name": "ModuleTaskWorkerService.onceApproved",
+				"type": "Promise<{status: 'idle'} | {status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']>}>",
+				"description": "Atomically verify the latest matching approval and exact prepared task definitions before claiming only a task from that approved plan, while retaining all running tasks for file and module contention and accepted tasks for dependency checks. Then use the existing execution and finalization path."
 			}
 		],
 		"errors": [
@@ -191,6 +213,11 @@
 				"name": "Dependency missing or composition failure",
 				"type": "idle or safe failed result",
 				"description": "Missing/unaccepted/cross-feature/invalid dependency checkpoints are not claimed; composition errors never call context or provider and do not invent usage."
+			},
+			{
+				"name": "Approval scope changed",
+				"type": "Error",
+				"description": "Reject before queue mutation or provider execution if the plan, approval, feature or admitted task definitions no longer match the committed queue."
 			}
 		]
 	},
@@ -207,6 +234,11 @@
 		},
 		{
 			"unit": "adapter.git",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.agents-providers-module-task-approved-submission",
 			"via": "import",
 			"origin": "derived"
 		},

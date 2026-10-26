@@ -2,6 +2,8 @@ import {
 	featureSchema,
 	taskInputSchema
 } from '../../repositories/agents-providers/ModuleTaskRepository';
+import { isDeepStrictEqual } from 'node:util';
+import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
 import type {
 	ModuleTask,
 	ModuleTaskInput,
@@ -20,7 +22,7 @@ export function moduleTaskApprovedSubmission(textToFormat: string): string {
 	return textToFormat.trim();
 }
 
-const isRecord = (value: unknown): value is Record<string, any> =>
+const isRecord = (value: unknown): value is Record<string, unknown> =>
 	value !== null && typeof value === 'object' && !Array.isArray(value);
 const safePath = (value: unknown): value is string =>
 	typeof value === 'string' &&
@@ -42,15 +44,15 @@ const parsePlan = (value: unknown): { feature: TaskFeature; tasks: ModuleTaskInp
 	return { feature, tasks };
 };
 
-const validateModule = (manifest: any, task: ModuleTaskInput): string[] => {
+const validateModule = (manifest: ComponentManifest, task: ModuleTaskInput): string[] => {
 	if (manifest.status !== 'active') throw new Error(`Module ${task.module} is not active`);
 	const sources = manifest.owns?.source;
 	if (!Array.isArray(sources) || !sources.length || !sources.every(safePath))
 		throw new Error(`Module ${task.module} has no safe owned source scope`);
 	if (manifest.responsibilityOrigin === 'derived' && !task.moduleGoal)
 		throw new Error(`Task ${task.id} requires a module goal`);
-	const moduleContract = { ...manifest.contract, responsibility: manifest.responsibility };
-	delete moduleContract.origin;
+	const { inputs, outputs, errors } = manifest.contract;
+	const moduleContract = { inputs, outputs, errors, responsibility: manifest.responsibility };
 	taskInputSchema.parse({ ...task, wantedContract: moduleContract });
 	return sources;
 };
@@ -61,8 +63,15 @@ const taskDefinitionKeys = (
 	'id title feature module moduleGoal verificationFiles assignedFiles role instructions ' +
 	'wantedContract model provider intelligence assignee sourceCommit contractHash dependsOn'
 ).split(' ') as Array<keyof ModuleTask>;
-const sameTask = (left: ModuleTask, right: ModuleTask) =>
-	taskDefinitionKeys.every((key) => JSON.stringify(left[key]) === JSON.stringify(right[key]));
+export const sameTask = (left: ModuleTask, right: ModuleTask) =>
+	taskDefinitionKeys.every((key) => isDeepStrictEqual(left[key], right[key]));
+
+const existingTask = (queue: ModuleTaskQueue, task: ModuleTask) => {
+	const matches = queue.tasks.filter((item) => item.id === task.id);
+	if (matches.length > 1 || (matches[0] && !sameTask(matches[0], task)))
+		throw new Error(`Conflicting task: ${task.id}`);
+	return matches.length > 0;
+};
 
 export const mergePlan = (
 	queue: ModuleTaskQueue,
@@ -76,11 +85,9 @@ export const mergePlan = (
 		reused: string[] = [],
 		additions: ModuleTask[] = [];
 	for (const task of tasks) {
-		const matches = queue.tasks.filter((item) => item.id === task.id);
-		if (matches.length > 1 || (matches[0] && !sameTask(matches[0], task)))
-			throw new Error(`Conflicting task: ${task.id}`);
-		(matches.length ? reused : created).push(task.id);
-		if (!matches.length) additions.push(task);
+		const exists = existingTask(queue, task);
+		(exists ? reused : created).push(task.id);
+		if (!exists) additions.push(task);
 	}
 	if (!features.length) queue.features.push(feature);
 	queue.tasks.push(...additions);
@@ -98,10 +105,10 @@ export async function prepareSubmission(
 		throw new Error('Approved plan source is no longer current.');
 	const registry = await dependencies.registry.read(tree);
 	if (registry.errors.length) throw new Error('Selected unit registry contains invalid manifests');
-	const units = new Map<string, any>();
-	const admissions: Array<{ task: ModuleTaskInput; unit: any; files: string[] }> = [];
+	const units = new Map<string, ComponentManifest>();
+	const admissions: Array<{ task: ModuleTaskInput; unit: ComponentManifest; files: string[] }> = [];
 	for (const task of tasks) {
-		const manifest = registry.manifests.find((item: any) => item.id === task.module);
+		const manifest = registry.manifests.find((item) => item.id === task.module);
 		if (!manifest) throw new Error(`Module ${task.module} is not registered`);
 		validateModule(manifest, task);
 		units.set(task.module, manifest);

@@ -14,9 +14,11 @@
 		"symbols": [
 			"SubmissionDependencies",
 			"moduleTaskApprovedSubmission",
+			"sameTask",
 			"mergePlan",
 			"prepareSubmission",
-			"SubmissionDependencies"
+			"SubmissionDependencies",
+			"ApprovedTaskScope"
 		]
 	},
 	"contract": {
@@ -49,6 +51,14 @@
 			{
 				"name": "moduleTaskApprovedSubmission.textToFormat",
 				"type": "string"
+			},
+			{
+				"name": "sameTask.left",
+				"type": "ModuleTask"
+			},
+			{
+				"name": "sameTask.right",
+				"type": "ModuleTask"
 			}
 		],
 		"outputs": [
@@ -66,6 +76,11 @@
 				"name": "moduleTaskApprovedSubmission",
 				"type": "string",
 				"description": "Retained generated trim helper."
+			},
+			{
+				"name": "sameTask",
+				"type": "boolean",
+				"description": "Compare immutable admitted task definitions, ignoring claim, status, results and review history."
 			}
 		],
 		"errors": [
@@ -79,6 +94,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
 			"via": "import",
 			"origin": "derived"
 		},
