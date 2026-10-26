@@ -45,23 +45,7 @@ test('app projects include SvelteKit and specification files', () =>
 		expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
 			'harness info scaffolds --json'
 		);
-		for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
-			expect(fileContents(files, path)).toContain('Callable usage examples');
-			expect(fileContents(files, path)).toContain('General text helpers belong in Strings');
-			expect(fileContents(files, path)).toContain(
-				'reusable visual frames with a child-content slot'
-			);
-			expect(fileContents(files, path)).toContain('Child content');
-			expect(fileContents(files, path)).toContain(
-				'Full-frame previews own their content boundaries'
-			);
-			expect(fileContents(files, path), 'Behavior-focused example guidance').toContain(
-				'one representative example per distinct behavior'
-			);
-			expect(fileContents(files, path)).toContain('descriptive behavior titles');
-			expect(fileContents(files, path)).toContain('src/helpers/<responsibility>/<camelName>.ts');
-			expect(fileContents(files, path)).toContain('selected callable implementation');
-		}
+		expectAppGuidance(files);
 		await measureWorkload('function.bug-repair-policy', 'layout-page-agent-guidance', () =>
 			expectGeneratedGuidance(files)
 		);
@@ -200,4 +184,20 @@ function auditConfig(files: ReturnType<typeof projectFiles>): { limits: Record<s
 function expectResourceGuidance(files: ReturnType<typeof projectFiles>): void {
 	expect(fileContents(files, 'AGENTS.md')).toContain('harness resources run');
 	expect(fileContents(files, 'AGENTS.md')).toContain('Finish current tests under pressure');
+}
+
+function expectAppGuidance(files: ReturnType<typeof projectFiles>): void {
+	for (const path of ['AGENTS.md', '.codex/skills/harness/SKILL.md']) {
+		expect(fileContents(files, path)).toContain('Callable usage examples');
+		expect(fileContents(files, path)).toContain('General text helpers belong in Strings');
+		expect(fileContents(files, path)).toContain('reusable visual frames with a child-content slot');
+		expect(fileContents(files, path)).toContain('Child content');
+		expect(fileContents(files, path)).toContain('Full-frame previews own their content boundaries');
+		expect(fileContents(files, path), 'Behavior-focused example guidance').toContain(
+			'one representative example per distinct behavior'
+		);
+		expect(fileContents(files, path)).toContain('descriptive behavior titles');
+		expect(fileContents(files, path)).toContain('src/helpers/<responsibility>/<camelName>.ts');
+		expect(fileContents(files, path)).toContain('selected callable implementation');
+	}
 }

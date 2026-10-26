@@ -4,7 +4,8 @@ import { pieceFiles } from '../../src/templates/pieces';
 export function assertAppPieceContracts() {
 	assertComponentContract();
 	assertPageContract();
-	assertRegionContract();
+	assertLayoutContract();
+	assertPartialContract();
 	assertAppBehavior();
 }
 
@@ -47,7 +48,7 @@ function assertPageContract() {
 	expect(new Set(resourcePaths).size).toBe(resourcePaths.length);
 }
 
-function assertRegionContract() {
+function assertLayoutContract() {
 	const layout = pieceFiles('layout', 'BlogPost');
 	expect(layout.map((file) => file.path)).toContain('src/routes/blog-post/+layout.svelte');
 	expect(layout.map((file) => file.path)).toContain('src/routes/blog-post/__harness/+page.svelte');
@@ -68,6 +69,9 @@ function assertRegionContract() {
 	expect(layout.find((file) => file.path.endsWith('/+layout.svelte'))?.contents).toContain(
 		'{@render children()}'
 	);
+}
+
+function assertPartialContract() {
 	const partial = pieceFiles('partial', 'PostCard');
 	expect(partial.map((file) => file.path)).toContain(
 		'src/routes/__harness/partials/post-card/+page.svelte'

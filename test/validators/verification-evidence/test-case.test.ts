@@ -51,11 +51,7 @@ test('validate each allowed shape and its missing or invalid states', async () =
 		'authored Examples'
 	);
 	assertAuthoredExampleCases(unit, item);
-	await measureWorkload(
-		'validator.verification-evidence-test-case',
-		'layout-page-case-admission',
-		() => assertLayoutPageCases(unit, item)
-	);
+	await assertMeasuredLayoutPageCases(unit, item);
 	assertMethodStateCases(unit, item);
 	expect(
 		validator.validate(unit, {
@@ -139,4 +135,12 @@ function assertMethodStateCases(unit: ComponentManifest, item: ContractCase) {
 	expect(
 		validator.validate(owner, { ...contract, cases: cases.slice(1) }).errors.join(' ')
 	).toContain('missing method/state');
+}
+
+async function assertMeasuredLayoutPageCases(unit: ComponentManifest, item: ContractCase) {
+	await measureWorkload(
+		'validator.verification-evidence-test-case',
+		'layout-page-case-admission',
+		() => assertLayoutPageCases(unit, item)
+	);
 }
