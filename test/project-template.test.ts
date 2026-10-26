@@ -2,6 +2,7 @@ import { format, type Options } from 'prettier';
 import { test } from 'vitest';
 import { expect } from './verificationExpect';
 import { projectFiles } from '../src/templates/project';
+import { testingPlugins } from '../src/templates/module-system/testingPlugins';
 import { measureWorkload } from './support/measureWorkload';
 import { assertFoundationLint } from './support/project-template/foundations';
 import { assertAtomCompiler } from './support/project-template/atoms';
@@ -61,6 +62,10 @@ test('app projects include SvelteKit and specification files', () =>
 		);
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 		expect(packageJson.harness.kind).toBe('app');
+		expect(testingPlugins.map((plugin) => plugin.devDependencies['@playwright/test'])).toEqual([
+			packageJson.devDependencies['@playwright/test'],
+			packageJson.devDependencies['@playwright/test']
+		]);
 		expect(packageJson.scripts['test:e2e']).toBe('playwright test');
 		expect(packageJson.scripts.audit).toContain('harness-audit');
 		expect(packageJson.scripts.check).toContain('format:check');
