@@ -3,16 +3,22 @@ import { unit, relationships, data, change, plan } from './feature-plan-coverage
 import { FeaturePlanCoverageValidator } from '../../../src/validators/agents-providers/FeaturePlanCoverageValidator';
 
 test('FeaturePlanCoverageValidator.validate from default initialization covers supported and invalid inputs', () => {
-	const validator = new FeaturePlanCoverageValidator();
-	// => { valid: true, errors: [] }
-	expect(validator.validate({ title: 'value' })).toEqual({ valid: true, errors: [] });
-	// => { valid: false, errors: ['input is empty'] }
-	expect(validator.validate({})).toEqual({ valid: false, errors: ['input is empty'] });
-	// throws TypeError
-	expect(() => validator.validate(null as never)).toThrow(TypeError);
+	for (const input of [{ title: 'value' }, {}, null, undefined]) {
+		const result = validate(input);
+		expect(result).toEqual({
+			valid: false,
+			affectedPages: [],
+			missingPages: [],
+			errors: expect.any(Array)
+		});
+		expect(result.errors.length).toBeGreaterThan(0);
+	}
+	const missingMetadata = validate(plan());
+	expect(missingMetadata.valid).toBe(false);
+	expect(missingMetadata.errors.length).toBeGreaterThan(0);
 });
 
-function validate(input: ReturnType<typeof plan>, metadata: ReturnType<typeof data>) {
+function validate(input: unknown, metadata?: unknown) {
 	const validator = new FeaturePlanCoverageValidator();
 	return (
 		validator.validate as unknown as (

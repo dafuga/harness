@@ -3,7 +3,7 @@
 	"id": "validator.agents-providers-feature-plan-coverage",
 	"kind": "validator",
 	"title": "FeaturePlanCoverageValidator",
-	"responsibility": "Identify affected page designs from committed module relationships before approval.",
+	"responsibility": "Check affected visual page coverage from committed relationships and plan hierarchy.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,20 +19,33 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "FeaturePlanCoverageValidator.validate.input",
-				"type": "Record<string, unknown>"
+				"name": "validate.plan",
+				"type": "FeaturePlan",
+				"description": "Candidate feature plan with change tree and page options."
+			},
+			{
+				"name": "validate.data",
+				"type": "ModuleData",
+				"description": "Committed revision-bound registry, relationships and unresolved graph references."
 			}
 		],
 		"outputs": [
 			{
-				"name": "FeaturePlanCoverageValidator.validate",
-				"type": "FeaturePlanCoverageValidatorResult"
+				"name": "validate",
+				"type": "{valid:boolean,affectedPages:string[],missingPages:string[],errors:string[]}",
+				"description": "Union direct changed pages, transitive consuming pages from relationships, and planned page ancestors; require a page design entry for each. Deduplicate and order deterministically. Requires sourceCommit equal metadata commit, an available registry, valid graph and no unresolved references; unregistered additions must first have committed module scaffolds."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Incomplete coverage or graph",
+				"type": "returned errors",
+				"description": "Missing pages, unknown/inactive changed modules, absent relationship data or unresolved committed graph references reject without mutation."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
