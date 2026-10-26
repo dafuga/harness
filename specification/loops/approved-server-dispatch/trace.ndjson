@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-26T23:34:25.738Z","name":"approved-server-dispatch","goal":"Dispatch only verified approved plan tasks with bounded workers","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-10-26T23:35:05.903Z","loop":"approved-server-dispatch","step":"spec","evidence":"Approved-plan scope, bounded synthetic workers, cancellation and pre-dispatch readiness checks; preserve existing submit and run APIs."}
