@@ -3,8 +3,8 @@
 	"id": "adapter.provider-catalog",
 	"kind": "adapter",
 	"title": "ProviderCatalogAdapter",
-	"responsibility": "Owns the ProviderCatalogAdapter integration boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Reads local provider model catalogs independently, omitting hidden models and invalid catalogs.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -19,17 +19,19 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProviderCatalogAdapter.constructor.paths",
-				"type": "{ openai: string; claude: string }"
+				"type": "{ openai: string; claude: string }",
+				"description": "Paths to the local OpenAI and Claude model catalog files."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProviderCatalogAdapter.list",
-				"type": "Promise<PickerModel[]>"
+				"type": "Promise<PickerModel[]>",
+				"description": "Visible, validated models from each readable catalog; an unavailable or invalid catalog contributes no models."
 			}
 		],
 		"errors": []
@@ -52,6 +54,25 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "list.initialized",
+				"state": "initialized",
+				"subject": "ProviderCatalogAdapter.list",
+				"test": {
+					"file": "test/adapters/provider-catalog.test.ts",
+					"title": "discovers each provider independently, omits hidden models and leaves missing catalogs empty"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
