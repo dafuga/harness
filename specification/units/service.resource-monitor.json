@@ -73,7 +73,7 @@
 			{
 				"name": "Error",
 				"type": "thrown",
-				"description": "Cancelled, expired, impossible, disappeared or orphaned queued reservations reject before executing work."
+				"description": "Cancelled, expired, impossible, disappeared or orphaned queued reservations reject before executing work. Timeouts include the last available waiting reason and resource snapshot."
 			}
 		]
 	},

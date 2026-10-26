@@ -1,4 +1,5 @@
 import { setTimeout as delay } from 'node:timers/promises';
+import { mib } from '../../../core/execution-runtimes/resourceTypes';
 import type {
 	ResourceJob,
 	ResourceRequest,
@@ -57,16 +58,24 @@ export class ResourceMonitorService {
 		const began = Date.now(),
 			timeout = options.waitTimeoutMs ?? 1800000;
 		let stated = '';
+		let lastSample: ResourceSnapshot | undefined;
+		let lastJobs: ResourceJob[] = [];
+		const check = () =>
+			checkWaiting(options, began + timeout, () =>
+				timeoutMessage(stated, lastSample, request, lastJobs)
+			);
 		while (true) {
-			checkWaiting(options, began + timeout);
+			check();
 			await this.sweep();
 			this.options.queue.patch(id, { heartbeatAt: Date.now() });
 			const sample = await this.snapshot(),
 				config = resourceConfig(this.options.home);
-			checkWaiting(options, began + timeout);
+			lastSample = sample;
+			check();
 			if (impossibleRequest(request, sample, config))
 				throw new Error('Resource request exceeds usable capacity after reserves');
-			const job = this.options.queue.schedule(sample, config).find((j) => j.id === id);
+			lastJobs = this.options.queue.schedule(sample, config);
+			const job = lastJobs.find((j) => j.id === id);
 			if (!job) throw new Error('Resource request disappeared');
 			this.checkParent(job);
 			if (job.state === 'running') return;
@@ -79,7 +88,33 @@ export class ResourceMonitorService {
 	}
 }
 
-function checkWaiting(options: RunOptions, deadline: number): void {
+function checkWaiting(options: RunOptions, deadline: number, message: () => string): void {
 	options.signal?.throwIfAborted();
-	if (Date.now() > deadline) throw new Error('Resource queue wait timed out');
+	if (Date.now() > deadline) throw new Error(message());
+}
+
+function timeoutMessage(
+	reason: string,
+	sample: ResourceSnapshot | undefined,
+	request: ResourceRequest,
+	jobs: ResourceJob[]
+): string {
+	const parts = ['Resource queue wait timed out'];
+	if (reason) parts.push(`last reason: ${reason}`);
+	if (!sample) return parts.join('; ');
+	const round = (value: number) => Math.round(value * 100) / 100;
+	parts.push(
+		`telemetry ${sample.status}, pressure ${sample.memoryPressure}`,
+		`CPU available ${round(sample.cpuAvailableCores)}/${sample.usableCores} cores`,
+		`memory available ${Math.floor(sample.memoryAvailableBytes / mib)}/${Math.floor(sample.memoryTotalBytes / mib)} MiB`,
+		`request ${request.cpus} cores/${request.memoryMiB} MiB`
+	);
+	const ids = new Set(jobs.map((job) => job.id));
+	const roots = jobs.filter(
+		(job) => job.state === 'running' && (!job.parentId || !ids.has(job.parentId))
+	);
+	const cpu = roots.reduce((sum, job) => sum + job.cpus, 0);
+	const memory = roots.reduce((sum, job) => sum + job.memoryMiB, 0);
+	parts.push(`running reservations ${round(cpu)} cores/${round(memory)} MiB`);
+	return parts.join('; ');
 }

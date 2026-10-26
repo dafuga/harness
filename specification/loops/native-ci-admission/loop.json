@@ -2,7 +2,7 @@
 	"name": "native-ci-admission",
 	"goal": "Expose admission timeouts so native CI can identify and resolve its blocking condition",
 	"createdAt": "2026-10-26T20:06:50.702Z",
-	"updatedAt": "2026-10-26T20:08:51.013Z",
+	"updatedAt": "2026-10-26T20:10:49.542Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,7 +34,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T20:10:49.542Z",
+			"evidence": "Timeouts retain the last admission reason, host capacity, requested resources and root reservations; resource policy is unchanged."
 		},
 		{
 			"id": "green",
