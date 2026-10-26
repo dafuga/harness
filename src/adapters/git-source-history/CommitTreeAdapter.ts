@@ -69,6 +69,7 @@ export class CommitTreeAdapter implements SourceTree {
 			const text = output.subarray(end + 1, end + 1 + size).toString('utf8');
 			offset = end + size + 2;
 			keepBlobText(`${this.format}/${hash}`, text);
+			this.texts.delete(hash);
 			for (const resolve of resolvers) resolve(text);
 		}
 	}
