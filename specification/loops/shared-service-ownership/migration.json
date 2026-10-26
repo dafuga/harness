@@ -2634,13 +2634,13 @@
 			"unit": "command.units",
 			"from": "src/commands/UnitsCommand.ts",
 			"to": "src/cli/program/UnitsCommand.ts",
-			"definition": "8827b4e69445df5104469d525586100343378e16b1a3fe846cf8d1294d2a4e27",
+			"definition": "381892cfb318c693af63290666eaa59174585190609c2fad0286a9b86ea9d968",
 			"relocationDefinition": "56b7063d4a3eaae60eab61f13b0a1da62432d13e4f6ee5e0cd0cc25f997289b0",
 			"review": {
-				"commit": "4495c8fed8f815024b9950290e30e9359fb2e86d",
+				"commit": "ae303220c0cd9f6f0cc6b815bedb668056491704",
 				"path": "src/cli/program/UnitsCommand.ts",
-				"definition": "8827b4e69445df5104469d525586100343378e16b1a3fe846cf8d1294d2a4e27",
-				"reason": "Adds CLI-backed authoring and validation for existing unit contracts."
+				"definition": "381892cfb318c693af63290666eaa59174585190609c2fad0286a9b86ea9d968",
+				"reason": "Allow atomic CLI authoring of standardized testing metadata while preserving existing contract input behavior."
 			},
 			"previousReviews": [
 				{
@@ -2654,6 +2654,12 @@
 					"path": "src/cli/program/UnitsCommand.ts",
 					"definition": "2f4f017d6d6654465e272877b03aaa6329c47c3024b322c1afb1d07d4f1a83e6",
 					"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+				},
+				{
+					"commit": "4495c8fed8f815024b9950290e30e9359fb2e86d",
+					"path": "src/cli/program/UnitsCommand.ts",
+					"definition": "8827b4e69445df5104469d525586100343378e16b1a3fe846cf8d1294d2a4e27",
+					"reason": "Adds CLI-backed authoring and validation for existing unit contracts."
 				}
 			]
 		},
