@@ -2,7 +2,7 @@
 	"name": "historical-resource-timeout",
 	"goal": "Do not report historical resource admission timeouts as model calls",
 	"createdAt": "2026-10-26T23:56:46.235Z",
-	"updatedAt": "2026-10-26T23:57:23.924Z",
+	"updatedAt": "2026-10-26T23:58:25.200Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:58:23.559Z",
+			"evidence": "Classified the exact pre-spawn resource wait failure without usage or model evidence in 4cac9f351d."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:58:25.200Z",
+			"evidence": "Recorded passing unchanged regression cdf0299a at 4cac9f351d; CLI analytics now shows four unpriced attempts and one prelaunch failure for the affected task."
 		},
 		{
 			"id": "verify",
