@@ -6,7 +6,8 @@ import { execFileSync } from 'node:child_process';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ModuleDataService } from '../../../src/services/git-source-history/ModuleDataService';
-import { ConsoleAgentService } from '../src/services/ConsoleAgentService';
+import { ModuleTaskRepository } from '../../../src/repositories/agents-providers/ModuleTaskRepository';
+import { ConsoleAgentService, consoleAgent } from '../src/services/ConsoleAgentService';
 import { recordedRepo, binding, page, git } from '../../desktop/test/recorded-evidence-fixture';
 import type { Recorded } from '../../desktop/test/recorded-evidence-fixture';
 import type * as HistoryIndexFixture from '../../../test/support/historyIndexFixture';
@@ -87,6 +88,44 @@ afterAll(async () => {
 	client?.close();
 	await fixture?.repo.dispose();
 });
+
+test('owner session Work reads return only the selected project committed queue', async () => {
+	const feature = { id: 'work.fixture', goal: 'Inspect committed work', tldr: 'Synthetic work' };
+	const { commit } = await new ModuleTaskRepository(fixture.root).update((queue) => {
+		queue.features.push(feature);
+	});
+	const connected = (await consoleAgent({ method: 'connect' })) as {
+		token: string;
+		snapshot: { project: { id: string } };
+	};
+	const input = { projectId: connected.snapshot.project.id };
+	const request = { method: 'projectWork', token: connected.token, input };
+	try {
+		await expect(consoleAgent({ ...request, token: 'invalid-session' })).rejects.toThrow(
+			/session/i
+		);
+		await expect(consoleAgent(request)).resolves.toEqual({
+			queueCommit: commit,
+			features: [{ ...feature, plan: null, tasks: [] }]
+		});
+		for (const malformed of [
+			null,
+			[],
+			{},
+			{ projectId: '' },
+			{ projectId: '   ' },
+			{ projectId: 7 }
+		])
+			await expect(consoleAgent({ ...request, input: malformed })).rejects.toThrow();
+		await expect(
+			consoleAgent({ ...request, input: { projectId: 'local-' + 'f'.repeat(64) } })
+		).rejects.toThrow();
+		await expect(consoleAgent(request)).resolves.toMatchObject({ queueCommit: commit });
+	} finally {
+		await consoleAgent({ method: 'disconnect', token: connected.token });
+	}
+	await expect(consoleAgent(request)).rejects.toThrow(/session/i);
+}, 60000);
 
 test('the real local API exposes backend unit contracts outside its visual catalog', async () => {
 	const result = (await measureWorkload('reports.service.console-agent', 'local-api-registry', () =>

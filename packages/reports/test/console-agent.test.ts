@@ -16,24 +16,29 @@ const request = (headers: Record<string, string> = {}, body = '{}') =>
 	});
 test('owner web chat requires loopback Host, same origin and JSON before invoking its executor', async () => {
 	vi.mocked(consoleAgent).mockClear();
+	const work = JSON.stringify({
+		method: 'projectWork',
+		token: 'synthetic-session',
+		input: { projectId: 'local-selected' }
+	});
 	const refused: Record<string, string>[] = [
 		{ origin: 'https://other.invalid' },
 		{ 'sec-fetch-site': 'cross-site' },
 		{ 'content-type': 'text/plain' }
 	];
 	for (const headers of refused) {
-		expect((await controller.handle(request(headers))).status).toBeGreaterThanOrEqual(400);
+		expect((await controller.handle(request(headers, work))).status).toBeGreaterThanOrEqual(400);
 	}
 	const rebound = new Request('http://attacker.invalid/api/agent', {
 		method: 'POST',
 		headers: { origin: 'http://attacker.invalid', 'content-type': 'application/json' },
-		body: '{}'
+		body: work
 	});
 	expect((await controller.handle(rebound)).status).toBe(403);
 	expect(consoleAgent).not.toHaveBeenCalled();
-	const accepted = await controller.handle(request());
+	const accepted = await controller.handle(request({}, work));
 	expect(accepted.status).toBe(200);
-	expect(consoleAgent).toHaveBeenCalledOnce();
+	expect(consoleAgent).toHaveBeenCalledExactlyOnceWith(JSON.parse(work));
 });
 test('oversized and malformed payloads never reach the executor', async () => {
 	vi.mocked(consoleAgent).mockClear();
