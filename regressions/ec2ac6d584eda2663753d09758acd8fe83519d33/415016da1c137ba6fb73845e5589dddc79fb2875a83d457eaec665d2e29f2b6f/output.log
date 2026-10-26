@@ -1,0 +1,49 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-U7sI5T
+
+ ❯ test/self-verify-runtime-state.test.ts (6 tests | 1 failed) 598ms
+   × create initialized exports the committed source and cleans up failed creation 147ms
+     → expected [ { allocated: true, …(1) }, …(1) ] to deeply equal [ { allocated: true, …(1) }, …(1) ]
+   ✓ link initialized shares an existing path only once 63ms
+   ✓ misdeclared initialized rejects outputs covering tracked source 128ms
+   ✓ drift initialized detects changed source and undeclared additions 137ms
+   ✓ artifact initialized measures files inside the snapshot 62ms
+   ✓ remove initialized clears the exported snapshot and inventory 59ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/self-verify-runtime-state.test.ts > create initialized exports the committed source and cleans up failed creation
+AssertionError: expected [ { allocated: true, …(1) }, …(1) ] to deeply equal [ { allocated: true, …(1) }, …(1) ]
+
+- Expected
++ Received
+
+  [
+    {
+      "allocated": true,
+-     "contents": "pre-existing",
++     "contents": null,
+    },
+    {
+      "allocated": true,
+-     "contents": "pre-existing",
++     "contents": null,
+    },
+  ]
+
+ ❯ test/self-verify-runtime-state.test.ts:108:29
+    106|  const early = await unownedInventoryOutcome(snapshot.directory, 'miss…
+    107|  const collision = await unownedInventoryOutcome(await hubRoot(), 'HEA…
+    108|  expect([early, collision]).toEqual([
+       |                             ^
+    109|   { allocated: true, contents: 'pre-existing' },
+    110|   { allocated: true, contents: 'pre-existing' }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  00:12:09
+   Duration  3.27s (transform 104ms, setup 112ms, collect 48ms, tests 598ms, environment 0ms, prepare 25ms)
+
