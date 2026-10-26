@@ -21,3 +21,8 @@ The shell browser fixture previously booted only from history.state. A direct UR
 load has no such state, so the new resource-link assertion exposed a fixture gap.
 The fixture now uses the real public route parser on boot and popstate, matching
 the host contract. This correction adds no product navigation behavior.
+
+Clean-snapshot recording also exposed missing generated SvelteKit type configs.
+Only catalog fixture builds prepared the workspaces, while navbar builds depended
+on an earlier build in the checkout. Every fixture now uses that same existing
+workspace preparation. The unchanged navigation assertions remain required.

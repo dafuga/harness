@@ -24,7 +24,7 @@ const types: Record<string, string> = { js: 'text/javascript', css: 'text/css' }
  */
 export function buildShellFixture(pages: ShellPage[]): string {
 	if (process.env.HARNESS_VERIFY) return compiled;
-	if (pages.includes('catalog')) prepareCatalog();
+	prepareWorkspaces();
 	mkdirSync('output', { recursive: true });
 	const home = mkdtempSync(join('output', 'shell-fixture-'));
 	for (const page of pages) {
@@ -41,7 +41,7 @@ export function buildShellFixture(pages: ShellPage[]): string {
 }
 
 /** Cross-workspace components need each application's generated SvelteKit type configuration. */
-function prepareCatalog() {
+function prepareWorkspaces() {
 	for (const directory of ['.', '../desktop', '../hub']) {
 		execFileSync('bun', ['x', 'svelte-kit', 'sync'], { cwd: resolve(directory), stdio: 'pipe' });
 	}
