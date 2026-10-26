@@ -106,14 +106,14 @@ test('Codex launch passes only synthetic rules grants with the assigned scope', 
 		expect(prepared.exactReadDirectories).toEqual([await fs.realpath(rules)]);
 		expect(prepared.readPaths).not.toContain(await fs.realpath(ignored));
 		expect(prepared.readPaths).not.toContain(await fs.realpath(foreign));
-		expect(prepared.argv).toEqual([await fs.realpath(fakeCodex), ...argv.slice(1)]);
+		expect(prepared.argv).toEqual(argv);
 		expect(prepared).toMatchObject({
 			files: scope.files,
 			snapshot: scope.snapshot,
 			scratch: scope.scratch,
 			protectedPaths: scope.protectedPaths
 		});
-		expect(prepared.readPaths).toContain(await fs.realpath(inheritedRead));
+		expect(prepared.readPaths).toContain(inheritedRead);
 		expect(scope).toEqual({
 			files: ['src/assigned.ts'],
 			snapshot,

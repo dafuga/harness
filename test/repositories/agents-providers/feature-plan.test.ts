@@ -156,7 +156,7 @@ test('FeaturePlanRepository.approve binds latest exact digest and is idempotent 
 	}
 	const approved = {
 		...plan(2),
-		approval: { reviewer: approval.reviewer, approvedAt: approval.approvedAt }
+		approval: { reviewer: approval.reviewer, approvedAt: approval.approvedAt, digest: latest.digest }
 	};
 	expect(await repository.approve(latest)).toEqual({ commit: 'queue-3', plan: approved });
 	expect(await repository.approve(latest)).toEqual({ commit: 'queue-3', plan: approved });
