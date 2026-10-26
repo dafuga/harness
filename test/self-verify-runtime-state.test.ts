@@ -103,11 +103,15 @@ test('create initialized exports the committed source and cleans up failed creat
 		vi.unstubAllEnvs();
 		await rm(parent, { recursive: true, force: true });
 	}
-	await assertUnownedInventory(snapshot.directory, 'missing');
-	await assertUnownedInventory(await hubRoot(), 'HEAD');
+	const early = await unownedInventoryOutcome(snapshot.directory, 'missing');
+	const collision = await unownedInventoryOutcome(await hubRoot(), 'HEAD');
+	expect([early, collision]).toEqual([
+		{ allocated: true, contents: 'pre-existing' },
+		{ allocated: true, contents: 'pre-existing' }
+	]);
 });
 
-async function assertUnownedInventory(source: string, commit: string): Promise<void> {
+async function unownedInventoryOutcome(source: string, commit: string) {
 	const parent = await mkdtemp(join(tmpdir(), 'harness-inventory-owner-'));
 	const directory = join(parent, 'harness-snapshot-fixed');
 	const inventory = `${directory}.tracked.json`;
@@ -116,9 +120,10 @@ async function assertUnownedInventory(source: string, commit: string): Promise<v
 	allocation.next = directory;
 	try {
 		await expect(SnapshotAdapter.create(source, commit, [])).rejects.toThrow();
-		expect(allocation.next).toBe('');
-		expect(existsSync(inventory), 'pre-existing inventory').toBe(true);
-		expect(await readFile(inventory, 'utf8')).toBe('pre-existing');
+		return {
+			allocated: allocation.next === '',
+			contents: existsSync(inventory) ? await readFile(inventory, 'utf8') : null
+		};
 	} finally {
 		allocation.next = '';
 		await rm(parent, { recursive: true, force: true });
