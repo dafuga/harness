@@ -14,21 +14,22 @@ import { componentManifestSchema, unitIdPattern } from '../../core/development-t
 export class TestArtifactService {
 	constructor(private readonly env: Environment = process.env) {}
 	capture(input: TestArtifact) {
-		const facts = this.audio(input);
-		this.registered(input);
+		const artifact = snapshotArtifact(input);
+		const facts = this.audio(artifact);
+		this.registered(artifact);
 		const sha256 = createHash('sha256').update(facts.bytes).digest('hex');
 		const line = captureLineSchema.parse({
-			evidence: input.evidence,
-			state: input.state,
+			evidence: artifact.evidence,
+			state: artifact.state,
 			kind: 'audio',
-			file: input.file,
+			file: artifact.file,
 			mediaType: 'audio/wav',
-			provenance: input.provenance,
-			transcript: input.transcript,
+			provenance: artifact.provenance,
+			transcript: artifact.transcript,
 			durationSeconds: facts.durationSeconds,
 			note: JSON.stringify({
-				unit: input.unit,
-				case: input.case,
+				unit: artifact.unit,
+				case: artifact.case,
 				revision: this.env.HARNESS_VERIFY_REVISION ?? null,
 				sha256
 			})
@@ -70,7 +71,7 @@ export class TestArtifactService {
 		)
 			throw new Error('Audio artifacts require their registered case/state/slot');
 	}
-	private audio(input: TestArtifact) {
+	private audio(input: TestArtifact & { bytes: Buffer }) {
 		if (typeof input.unit !== 'string' || !unitIdPattern.test(input.unit))
 			throw new Error('Audio artifacts require a registered unit identity');
 		if (typeof input.case !== 'string' || !/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(input.case))
@@ -81,11 +82,25 @@ export class TestArtifactService {
 			throw new Error(
 				'Audio artifacts require a transcript, including an explicit no-speech description.'
 			);
-		const bytes = Buffer.from(input.bytes);
+		const bytes = input.bytes;
 		const facts = mediaFacts(bytes, 'audio/wav');
 		if ('error' in facts) throw new Error(`Invalid audio artifact: ${facts.error}`);
 		if (facts.kind !== 'audio') throw new Error('Expected audio artifact');
 		return { ...facts, bytes };
 	}
+}
+
+/** Read each caller-owned field once before validating and retaining it. */
+function snapshotArtifact(input: TestArtifact): TestArtifact & { bytes: Buffer } {
+	return {
+		bytes: Buffer.from(input.bytes),
+		unit: input.unit,
+		case: input.case,
+		state: input.state,
+		evidence: input.evidence,
+		file: input.file,
+		transcript: input.transcript,
+		provenance: input.provenance
+	};
 }
 export type { TestArtifact } from './TestArtifactService.types';
