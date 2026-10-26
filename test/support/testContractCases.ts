@@ -3,6 +3,54 @@ import { expect } from 'vitest';
 import type { TestContractService } from '../../src/services/verification-evidence/TestContractService';
 import { assertMatrixAdmissionObjects } from './matrixAdmissionInputs';
 
+/** Each required scenario check names the active cases it actually intends to execute. */
+export function assertScenarioReferences(
+	registry: Parameters<TestContractService['validate']>[0],
+	service: TestContractService
+) {
+	const unit = registry.units[0];
+	const scenario: (typeof registry.scenarios)[number] = {
+		schemaVersion: 1,
+		id: 'rank',
+		title: 'Rank response',
+		kind: 'headless',
+		units: [unit.id],
+		states: [{ id: 'ready', title: 'Ready', coverage: 'required' }],
+		viewports: [],
+		tests: [{ id: 'response', kind: 'unit', runner: 'vitest', target: 'test/rank.test.ts' }],
+		evidence: []
+	};
+	const validate = (entry: typeof scenario, required = true, units = registry.units) =>
+		service.validate({ ...registry, units, scenarios: [entry], required });
+	for (const cases of [undefined, []]) {
+		const entry = { ...scenario, tests: [{ ...scenario.tests[0], cases }] };
+		expect(validate(entry).join(' ')).toContain('requires declared cases');
+		expect(validate(entry, false)).toEqual([]);
+	}
+	const reference = { unit: unit.id, case: 'ready' };
+	const entry = { ...scenario, tests: [{ ...scenario.tests[0], cases: [reference] }] };
+	expect(validate(entry)).toEqual([]);
+	expect(
+		validate({ ...entry, tests: [{ ...entry.tests[0], cases: [reference, reference] }] }).join(' ')
+	).toContain('duplicate case reference');
+	expect(
+		validate({
+			...entry,
+			tests: [{ ...entry.tests[0], cases: [{ ...reference, case: 'absent' }] }]
+		}).join(' ')
+	).toContain('orphaned case');
+	expect(validate(entry, true, [{ ...unit, status: 'retired' }]).join(' ')).toContain(
+		'orphaned case'
+	);
+	for (const coverage of ['missing', 'inapplicable'] as const)
+		expect(validate({ ...entry, states: [{ ...entry.states[0], coverage }] }).join(' ')).toContain(
+			'requires a covered state'
+		);
+	expect(
+		validate({ ...entry, states: [{ ...entry.states[0], units: ['endpoint.other'] }] }).join(' ')
+	).toContain('state does not cover unit');
+}
+
 export function assertExecutedCases(
 	registry: Parameters<TestContractService['validate']>[0],
 	service: TestContractService

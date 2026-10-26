@@ -1,7 +1,8 @@
 import {
 	assertExecutedCases,
 	assertExpandedCapabilities,
-	assertMatrixRows
+	assertMatrixRows,
+	assertScenarioReferences
 } from '../../support/testContractCases';
 import { expect, test } from 'vitest';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
@@ -68,6 +69,7 @@ test('validate initialized and invalid registries against declared cases', async
 		'duplicate case'
 	);
 	assertExecutedCases(registry, service);
+	assertScenarioReferences(registry, service);
 	await measureWorkload('validator.verification-evidence-test-case', 'matrix-row-admission', () =>
 		assertMatrixRows(unit, service, 'validate')
 	);
