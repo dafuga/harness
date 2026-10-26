@@ -1,7 +1,6 @@
-import { createHash } from 'node:crypto';
-import { expect, test, vi } from 'vitest';
+import { expect, test } from 'vitest';
 import { FeaturePlanService } from '../../../src/services/agents-providers/FeaturePlanService';
-import { FeaturePlanValidator } from '../../../src/validators/agents-providers/FeaturePlanValidator';
+import { assertApprovedGuard, digest, fixture } from './feature-plan-approval.test.fixtures';
 import type { FeaturePlan } from '../../../src/repositories/agents-providers/ModuleTaskRepository.types';
 test('FeaturePlanService.run from default initialization returns the file name', () => {
 	expect(new FeaturePlanService().run()).toBe('feature-plan');
@@ -27,61 +26,6 @@ function proposal(): Omit<FeaturePlan, 'revision' | 'digest' | 'approval'> {
 		],
 		changes: [{ unit: 'page.checkout', kind: 'reuse', assignedFiles: [] }],
 		tasks: []
-	};
-}
-function canonical(value: unknown): string {
-	if (Array.isArray(value)) return `[${value.map(canonical).join(',')}]`;
-	if (value !== null && typeof value === 'object') {
-		return `{${Object.entries(value)
-			.sort(([a], [b]) => a.localeCompare(b))
-			.map(([key, item]) => `${JSON.stringify(key)}:${canonical(item)}`)
-			.join(',')}}`;
-	}
-	return JSON.stringify(value);
-}
-function digest(plan: FeaturePlan) {
-	const { digest: _digest, approval: _approval, ...content } = plan;
-	return createHash('sha256').update(canonical(content)).digest('hex');
-}
-function fixture() {
-	const plans: FeaturePlan[] = [];
-	const repository = {
-		read: vi.fn(async () => ({ commit: 'queue', plans: structuredClone(plans) })),
-		append: vi.fn(async (plan: FeaturePlan) => {
-			plans.push(structuredClone(plan));
-			return { commit: 'queue', plan: structuredClone(plan) };
-		}),
-		approve: vi.fn(
-			async (input: {
-				feature: string;
-				revision: number;
-				digest: string;
-				reviewer: string;
-				approvedAt: string;
-			}) => {
-				const current = plans.at(-1)!;
-				current.approval = {
-					digest: input.digest,
-					reviewer: input.reviewer,
-					approvedAt: input.approvedAt
-				};
-				return { commit: 'queue', plan: structuredClone(current) };
-			}
-		)
-	};
-	const verifyReady = vi.fn(async (_plan: FeaturePlan) => {});
-	const dependencies = {
-		repository,
-		validator: new FeaturePlanValidator(),
-		verifyReady,
-		now: () => '2026-10-26T12:00:00.000Z'
-	};
-	return {
-		plans,
-		repository,
-		verifyReady,
-		dependencies,
-		service: new FeaturePlanService(dependencies)
 	};
 }
 test('FeaturePlanService.draft persists immutable revisions with canonical content digests', async () => {
@@ -174,6 +118,7 @@ test('FeaturePlanService.approve verifies fully selected latest content before p
 		}
 	});
 	expect(state.plans[0]).toEqual(first);
+	await assertApprovedGuard(approved);
 });
 test('FeaturePlanService.approve fails closed for tampering, absent readiness and repository conflicts', async () => {
 	const state = fixture();
