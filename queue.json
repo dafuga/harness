@@ -6697,7 +6697,7 @@
 			},
 			"sourceCommit": "6591099341ac0f3d0f5de2f1a439d854162f2719",
 			"contractHash": "9757f629702e828f2a22a9a4c97ffced709ca759acea643feee85695119e0102",
-			"status": "queued",
+			"status": "running",
 			"repairCommit": "c860b9f742cec073f3f8b7179ff6d81453607861",
 			"reviews": [
 				{
@@ -6713,6 +6713,16 @@
 				}
 			],
 			"createdAt": "2026-10-25T20:59:36.610Z",
+			"claim": {
+				"worker": "resource-request-examples",
+				"token": "8464f912-b308-481e-8e51-1e633e5d6d2e",
+				"startedAt": "2026-10-26T01:35:16.655Z",
+				"owner": {
+					"workspace": "0f9aa0f4-4388-4edd-955c-409ec301cb33",
+					"pid": 92855,
+					"startedAt": "Mon Oct 26 01:35:16 2026"
+				}
+			},
 			"claimHistory": [
 				{
 					"worker": "resource-request-examples",
