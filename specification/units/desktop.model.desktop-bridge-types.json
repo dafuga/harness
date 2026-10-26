@@ -89,6 +89,11 @@
 			{
 				"name": "cacheEventChannel",
 				"type": "unknown"
+			},
+			{
+				"name": "projectWork",
+				"type": "optional (input:{projectId:string})=>Promise<FeatureWorkSnapshot>",
+				"description": "Reads one project-scoped committed feature-work snapshot when supported by the host."
 			}
 		],
 		"errors": []
@@ -131,6 +136,11 @@
 		},
 		{
 			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-feature-work",
 			"via": "import",
 			"origin": "derived"
 		},

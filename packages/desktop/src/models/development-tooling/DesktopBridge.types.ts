@@ -1,4 +1,5 @@
 import type { LiveActivity } from '../../../../../src/core/activityTypes';
+import type { FeatureWorkSnapshot } from '../../../../../src/services/agents-providers/FeatureWorkService.types';
 import type { ProjectContext } from '../projects-sessions/ProjectContext.types';
 import type { CacheStatus } from '../projects-sessions/ProjectContext.types';
 import type { NativeHostedStatus } from '../projects-sessions/ProjectContext.types';
@@ -133,6 +134,8 @@ export interface ProjectRunRequest extends ProjectContext {
 export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
 	/** Live registrations of the selected repository; absent on unsupported hosts. */
 	agentActivity?(input: ProjectContext): Promise<Pick<LiveActivity, 'sampledAt' | 'agents'>>;
+	/** Committed feature work for the selected project; absent on unsupported hosts. */
+	projectWork?(input: { projectId: string }): Promise<FeatureWorkSnapshot>;
 	onCacheStatus?(listener: (event: CacheStatus) => void): () => void;
 	history?(
 		input: EntityQuery & { page: number; branch?: string }
