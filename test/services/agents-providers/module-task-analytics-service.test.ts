@@ -173,6 +173,11 @@ test('quota fallback distinguishes a blocked second launch and corrects its prio
 		historical.result!.executions[1].apiCost.note = 'Legacy unavailable cost';
 		const corrected = taskEvents([historical], 'fixture');
 		expect(corrected[1]).toMatchObject({ id: events[1].id, action: 'prelaunch-failed' });
+		historical.result!.error = 'Resource queue wait timed out';
+		expect(taskEvents([historical], 'fixture')[1]).toMatchObject({
+			id: events[1].id,
+			action: 'prelaunch-failed'
+		});
 	} finally {
 		await f.dispose();
 	}
