@@ -653,3 +653,29 @@ and runner, at `b88d23bc33`.
 Complete history reconstruction within the memory target, baseline fixture
 migration, provider qualification, the other-laptop E2E and aggregate gates, and
 current-main Explorer and audio proof remain open. No production action was taken.
+
+## Continuation: provider and task fixtures
+
+`722975316c` registers the existing ProviderCatalogAdapter method case without
+changing its title or count. Disposable catalog files cover absent and malformed
+files, hidden models, valid length boundaries, invalid lengths and empty effort
+lists. Capture `530fb8f13191` passed its case and the unchanged readability guard;
+the two-catalog workload took 0.202 ms with 91,389,952 bytes whole-worker RSS.
+The adapter has 1,461 source bytes, 45 lines, complexity four and three
+dependencies; it emits no separate artifact. This is a synthetic local-catalog
+case, not a live provider qualification.
+
+`05d032facf` registers the existing ModuleTaskWorktreeAdapter method case under
+its unchanged title. Its real disposable Git fixtures cover empty paths, wrong
+source, a foreign repository and a missing path while retaining the staged,
+unstaged and HEAD assertions. Capture `2b5ebe85107e` passed that case and the
+readability guard. The private-index workload took 45.35 ms and observed
+92,848,128 bytes peak whole-process RSS; the adapter has 1,774 source bytes,
+41 lines, complexity five and five dependencies, with no separate artifact.
+Both new contracts passed targeted case admission; the full registry check is
+still pending.
+
+The shared preview at port 5690 currently shows "Missing committed module data"
+for both main `395e517bd7` and the older prepared task-branch `6e1db0b364`.
+The original main tab was restored. Neither view proves the current task head,
+and Tests, Examples, History and playable-audio browser inspection remain open.
