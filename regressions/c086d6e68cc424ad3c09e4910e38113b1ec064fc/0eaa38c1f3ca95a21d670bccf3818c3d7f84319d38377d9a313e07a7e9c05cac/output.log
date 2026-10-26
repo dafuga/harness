@@ -1,0 +1,44 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-Qbj3V0
+
+ ❯ test/services/unit-index.test.ts (18 tests | 1 failed) 3887ms
+   ✓ HTTP requests bind to endpoints in the owning app and selected source tree 14ms
+   × source indexing bounds pending reads and keeps every file in source order 16ms
+     → expected 300 to be less than or equal to 256
+   ✓ source indexing reports failed reads even after its read window fills 11ms
+   ✓ identical blobs keep path-specific references and ignored files stay unread 1ms
+   ✓ source indexing preserves admitted entry getters, species, and method receivers 0ms
+   ✓ atomic levels follow runtime calls and survive projections 6ms
+   ✓ recorded source moves retain definitions, owner-local placement and registered identity 122ms
+   ✓ public route filenames retain their registered ownership 0ms
+   ✓ declared preview and documentation survive source re-indexing 2ms
+   ✓ declared execution targets survive re-indexing and follow a moved default entry 1ms
+   ✓ recreating retired source elsewhere records lineage to the retired identity 0ms
+   ✓ a unit that takes a retired name records lineage even when its symbols differ 0ms
+   ✓ lineage cannot be dropped by editing the manifest 0ms
+   ✓ unrelated new units carry no lineage 0ms
+   ✓ a declared responsibility survives re-indexing while a derived one follows the unit 0ms
+   ✓ an alternative implementation is a related unit linked by a declared contract dependency 1ms
+   ✓ several owned files produce identical metadata after one indexing pass 2ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  3705ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/unit-index.test.ts > source indexing bounds pending reads and keeps every file in source order
+AssertionError: expected 300 to be less than or equal to 256
+ ❯ test/services/unit-index/sourceIndex.ts:35:21
+     33|   new SourceIndexService().index(tree, defaultUnitsConfig)
+     34|  );
+     35|  expect(state.peak).toBeLessThanOrEqual(256);
+       |                     ^
+     36|  expect(state.active).toBe(0);
+     37|  expect(state.completed).toHaveLength(entries.length);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 passed (18)
+   Start at  21:53:07
+   Duration  7.90s (transform 230ms, setup 102ms, collect 595ms, tests 3.89s, environment 0ms, prepare 33ms)
+
