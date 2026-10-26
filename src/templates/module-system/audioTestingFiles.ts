@@ -8,12 +8,13 @@ export const audioTestingFiles = [
 	})),
 	{
 		path: 'src/configs/headless-audio/audioPlaywrightConfig.ts',
-		contents: `import { defineConfig } from '@playwright/test';
+		contents: `import { env } from 'node:process';
+import { defineConfig } from '@playwright/test';
 export default defineConfig({
  testDir: '../../../tests/audio',
  outputDir: '../../../test-results/audio',
  use: { headless: true, browserName: 'chromium' },
- workers: Number(process.env.HARNESS_RESOURCE_CPUS ?? 1),
+ workers: Number(env.HARNESS_RESOURCE_CPUS ?? 1),
  reporter: 'list'
 });
 `

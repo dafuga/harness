@@ -8,12 +8,13 @@ export const browserTestingFiles = [
 	})),
 	{
 		path: 'src/configs/playwright/browserPlaywrightConfig.ts',
-		contents: `import { defineConfig } from '@playwright/test';
+		contents: `import { env } from 'node:process';
+import { defineConfig } from '@playwright/test';
 export default defineConfig({
  testDir: '../../../tests/browser',
  outputDir: '../../../test-results/browser',
  use: { headless: true, browserName: 'chromium', screenshot: 'only-on-failure' },
- workers: Number(process.env.HARNESS_RESOURCE_CPUS ?? 1),
+ workers: Number(env.HARNESS_RESOURCE_CPUS ?? 1),
  reporter: 'list'
 });
 `
