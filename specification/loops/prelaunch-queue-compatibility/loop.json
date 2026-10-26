@@ -2,7 +2,7 @@
 	"name": "prelaunch-queue-compatibility",
 	"goal": "Keep shared task queues readable by older Harness clients",
 	"createdAt": "2026-10-26T23:50:38.774Z",
-	"updatedAt": "2026-10-26T23:52:13.451Z",
+	"updatedAt": "2026-10-26T23:54:11.556Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:54:09.897Z",
+			"evidence": "Preserved the existing execution-status enum and recorded a stable prelaunch note in 76bfed8e9b."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:54:11.556Z",
+			"evidence": "Recorded passing unchanged regression 0ced28c6 at 76bfed8e9b."
 		},
 		{
 			"id": "verify",
