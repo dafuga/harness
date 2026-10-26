@@ -1,0 +1,59 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-seuZ3K
+
+ ❯ test/services/verification-evidence/test-contract.test.ts (2 tests | 2 failed) 20ms
+   × validate initialized and invalid registries against declared cases 12ms
+     → api rejects a repeated matrix row: expected '' to contain 'duplicate matrix row'
+   × compare initialized contracts preserves identities unless capabilities change 3ms
+     → api rejects a repeated matrix row: expected '' to contain 'duplicate matrix row'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-contract.test.ts > validate initialized and invalid registries against declared cases
+AssertionError: api rejects a repeated matrix row: expected '' to contain 'duplicate matrix row'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- duplicate matrix row[39m
+
+ ❯ assertMatrixRows test/support/testContractCases.ts:138:77
+    136|     : service.validate({ units: [after], scenarios: [], files: new Set…
+    137|   };
+    138|   expect(check(second).join(' '), `${shape} rejects a repeated matrix …
+       |                                                                             ^
+    139|    'duplicate matrix row'
+    140|   );
+ ❯ test/services/verification-evidence/test-contract.test.ts:74:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-contract.test.ts:73:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/services/verification-evidence/test-contract.test.ts > compare initialized contracts preserves identities unless capabilities change
+AssertionError: api rejects a repeated matrix row: expected '' to contain 'duplicate matrix row'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- duplicate matrix row[39m
+
+ ❯ assertMatrixRows test/support/testContractCases.ts:138:77
+    136|     : service.validate({ units: [after], scenarios: [], files: new Set…
+    137|   };
+    138|   expect(check(second).join(' '), `${shape} rejects a repeated matrix …
+       |                                                                             ^
+    139|    'duplicate matrix row'
+    140|   );
+ ❯ test/services/verification-evidence/test-contract.test.ts:127:9
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-contract.test.ts:124:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  21:24:00
+   Duration  2.75s (transform 166ms, setup 98ms, collect 361ms, tests 20ms, environment 0ms, prepare 22ms)
+
