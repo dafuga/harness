@@ -30,7 +30,7 @@
 			{
 				"name": "ProjectWorkFeature",
 				"type": "markup",
-				"description": "Accessible nested feature, module, wanted-contract and design-option metadata; actual stored task status labels and blockers, with planned but unsubmitted tasks distinctly labeled."
+				"description": "Accessible nested feature, module, wanted-contract and design-option metadata; actual stored task status labels and blockers, with planned but unsubmitted tasks distinctly labeled. User-expanded and collapsed feature rows remain in their chosen state as the selected project queue refreshes, including when a later queue commit changes task status."
 			}
 		],
 		"errors": []
