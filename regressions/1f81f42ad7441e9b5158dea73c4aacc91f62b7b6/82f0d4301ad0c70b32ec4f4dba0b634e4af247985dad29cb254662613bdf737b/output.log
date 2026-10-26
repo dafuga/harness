@@ -1,0 +1,84 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-6Q3gmm
+
+stderr | test/cli.e2e.test.ts
+[harness resources] queue-state {"inherited":{"lease":"65dc0609-4d53-4618-a7e0-9b9ab019965b","cpus":"1","memoryMiB":"3072"},"snapshot":{"status":"available","sampledAt":1792978859229,"logicalCores":10,"usableCores":10,"cpuUsedPercent":97.42574257425743,"cpuAvailableCores":0.25742574257425743,"memoryTotalBytes":68719476736,"memoryAvailableBytes":29010739200,"memoryPressure":"normal"},"jobs":[{"id":"08a5e8e8-c37c-4802-9273-5e37a72e184e","state":"running","cpus":1,"memoryMiB":4096,"ownerPid":31418,"workerPid":31422,"notice":"CPU reserve is exhausted"},{"id":"fb59bc26-718f-47bb-888e-0be005757804","state":"running","cpus":1,"memoryMiB":6144,"ownerPid":71742,"workerPid":23725,"notice":"CPU reserve is exhausted"},{"id":"c808c17b-40be-483f-b6ac-d31af80b6d80","parentId":"fb59bc26-718f-47bb-888e-0be005757804","state":"running","cpus":1,"memoryMiB":6144,"ownerPid":27566,"workerPid":27811,"notice":"CPU reserve is exhausted"},{"id":"65dc0609-4d53-4618-a7e0-9b9ab019965b","state":"running","cpus":1,"memoryMiB":3072,"ownerPid":39793,"workerPid":89357,"notice":"CPU reserve is exhausted"},{"id":"4bdc042a-fe3c-4dd1-9389-bdf9926a228e","state":"queued","cpus":1,"memoryMiB":3072,"ownerPid":39797,"notice":"CPU reserve is exhausted"},{"id":"2bc47e80-6298-4cf1-a7b9-12fca25272d0","state":"queued","cpus":1,"memoryMiB":512,"ownerPid":33075,"notice":"CPU reserve is exhausted"},{"id":"1e2dc1a0-830f-4748-a603-92d04b69ed07","state":"queued","cpus":1,"memoryMiB":1024,"ownerPid":33892,"notice":"CPU reserve is exhausted"},{"id":"38696ea4-6815-4e3e-95ac-28f0bb0ff619","state":"queued","cpus":5,"memoryMiB":8192,"ownerPid":46351,"notice":"CPU reserve is exhausted"},{"id":"8265ba7c-7ecf-4b96-b972-33e6c2b4b322","state":"queued","cpus":1,"memoryMiB":2048,"ownerPid":83603,"notice":"CPU reserve is exhausted"},{"id":"37afd876-1c21-41f2-b42f-f82a65d05a5b","state":"queued","cpus":1,"memoryMiB":1536,"ownerPid":87884,"notice":"CPU reserve is exhausted"},{"id":"59d0975d-d7d1-40ce-b6be-082ada843576","state":"queued","cpus":1,"memoryMiB":2048,"ownerPid":16868,"notice":"CPU reserve is exhausted"}],"total":11}
+
+(node:90143) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ test/cli.e2e.test.ts (5 tests | 1 failed | 4 skipped) 155681ms
+   ↓ CLI scaffolds and checks a lib project
+   ↓ CLI scaffolds and checks an app project with routes
+   ↓ CLI reports edge errors cleanly
+   ↓ CLI supports force overwrites and generated lint failures
+   × CLI installs module foundations and generates their declared resources 155671ms
+     → bun run check failed with 1
+Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-ptxNmB/module-app
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-ptxNmB/module-app/src/configs/headless-audio/audioPlaywrightConfig.ts
+  6:18  error  'process' is not defined  no-undef
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-ptxNmB/module-app/src/configs/playwright/browserPlaywrightConfig.ts
+  6:18  error  'process' is not defined  no-undef
+
+✖ 2 problems (2 errors, 0 warnings)
+
+
+$ bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+$ svelte-kit sync && eslint .
+error: script "lint" exited with code 1
+error: script "check" exited with code 1
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/cli.e2e.test.ts > CLI installs module foundations and generates their declared resources
+Error: bun run check failed with 1
+Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-ptxNmB/module-app
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-ptxNmB/module-app/src/configs/headless-audio/audioPlaywrightConfig.ts
+  6:18  error  'process' is not defined  no-undef
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-cli-modules-ptxNmB/module-app/src/configs/playwright/browserPlaywrightConfig.ts
+  6:18  error  'process' is not defined  no-undef
+
+✖ 2 problems (2 errors, 0 warnings)
+
+
+$ bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+$ svelte-kit sync && eslint .
+error: script "lint" exited with code 1
+error: script "check" exited with code 1
+
+ ❯ runCommand test/support/cli.ts:71:9
+     69| 
+     70|  if (expectSuccess && exitCode !== 0) {
+     71|   throw new Error(`${args.join(' ')} failed with ${exitCode}\n${stdout…
+       |         ^
+     72|  }
+     73| 
+ ❯ assertModuleProject test/support/moduleScenario.ts:58:16
+ ❯ test/cli.e2e.test.ts:205:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  01:38:17
+   Duration  161.36s (transform 361ms, setup 445ms, collect 381ms, tests 155.68s, environment 0ms, prepare 139ms)
+
