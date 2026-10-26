@@ -1,0 +1,598 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (607ms)
+
+  1 passed (4.0s)
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-fu6u28/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-fu6u28/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-fu6u28/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (583ms)
+
+  1 passed (3.2s)
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-KxvwA5/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-KxvwA5/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-KxvwA5/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (612ms)
+
+  1 passed (3.2s)
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-oG1lYL/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-oG1lYL/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-oG1lYL/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (571ms)
+
+  1 passed (3.2s)
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-vue5TH/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-vue5TH/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-vue5TH/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+ ❯ test/game-cli.e2e.test.ts (5 tests | 4 failed) 138338ms
+   × CLI creates 2d games through source and supports app and game generators 60048ms
+     → Command failed: bun -e 
+const {command,cwd}=JSON.parse(process.argv[1]);
+const started=performance.now();
+const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+const elapsedMs=performance.now()-started;
+if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString()})); {"command":["bun","run","check"],"cwd":"/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-fu6u28/adventure"}
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-fu6u28/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-fu6u28/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-fu6u28/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+   × CLI creates 3d games through source and supports app and game generators 22900ms
+     → Command failed: bun -e 
+const {command,cwd}=JSON.parse(process.argv[1]);
+const started=performance.now();
+const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+const elapsedMs=performance.now()-started;
+if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString()})); {"command":["bun","run","check"],"cwd":"/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-KxvwA5/adventure"}
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-KxvwA5/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-KxvwA5/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-KxvwA5/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+   × CLI creates 2d games through bundled and supports app and game generators 18155ms
+     → Command failed: bun -e 
+const {command,cwd}=JSON.parse(process.argv[1]);
+const started=performance.now();
+const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+const elapsedMs=performance.now()-started;
+if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString()})); {"command":["bun","run","check"],"cwd":"/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-oG1lYL/adventure"}
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-oG1lYL/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-oG1lYL/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-oG1lYL/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+   × CLI creates 3d games through bundled and supports app and game generators 18519ms
+     → Command failed: bun -e 
+const {command,cwd}=JSON.parse(process.argv[1]);
+const started=performance.now();
+const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+const elapsedMs=performance.now()-started;
+if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString()})); {"command":["bun","run","check"],"cwd":"/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-vue5TH/adventure"}
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-vue5TH/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-vue5TH/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-vue5TH/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+   ✓ game-only generators reject apps before creating broken imports  18713ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 2d games through source and supports app and game generators
+Error: Command failed: bun -e 
+const {command,cwd}=JSON.parse(process.argv[1]);
+const started=performance.now();
+const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+const elapsedMs=performance.now()-started;
+if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString()})); {"command":["bun","run","check"],"cwd":"/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-fu6u28/adventure"}
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-fu6u28/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-fu6u28/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-fu6u28/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ [eval]:6:30
+ ❯ gameCommand test/support/gameCommand.ts:24:3
+     22| export function gameCommand(command: string[], cwd: string, scope: Sco…
+     23|  const reported: Reported = JSON.parse(
+     24|   execFileSync('bun', ['-e', driver, JSON.stringify({ command, cwd })]…
+       |   ^
+     25|    encoding: 'utf8',
+     26|    env: { ...process.env, HARNESS_CLI_PATH: scope.cli ?? resolve('src/…
+ ❯ test/game-cli.e2e.test.ts:33:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 3d games through source and supports app and game generators
+Error: Command failed: bun -e 
+const {command,cwd}=JSON.parse(process.argv[1]);
+const started=performance.now();
+const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+const elapsedMs=performance.now()-started;
+if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString()})); {"command":["bun","run","check"],"cwd":"/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-KxvwA5/adventure"}
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-KxvwA5/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-KxvwA5/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-KxvwA5/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ [eval]:6:30
+ ❯ gameCommand test/support/gameCommand.ts:24:3
+     22| export function gameCommand(command: string[], cwd: string, scope: Sco…
+     23|  const reported: Reported = JSON.parse(
+     24|   execFileSync('bun', ['-e', driver, JSON.stringify({ command, cwd })]…
+       |   ^
+     25|    encoding: 'utf8',
+     26|    env: { ...process.env, HARNESS_CLI_PATH: scope.cli ?? resolve('src/…
+ ❯ test/game-cli.e2e.test.ts:33:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 2d games through bundled and supports app and game generators
+Error: Command failed: bun -e 
+const {command,cwd}=JSON.parse(process.argv[1]);
+const started=performance.now();
+const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+const elapsedMs=performance.now()-started;
+if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString()})); {"command":["bun","run","check"],"cwd":"/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-oG1lYL/adventure"}
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-oG1lYL/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-oG1lYL/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-oG1lYL/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ [eval]:6:30
+ ❯ gameCommand test/support/gameCommand.ts:24:3
+     22| export function gameCommand(command: string[], cwd: string, scope: Sco…
+     23|  const reported: Reported = JSON.parse(
+     24|   execFileSync('bun', ['-e', driver, JSON.stringify({ command, cwd })]…
+       |   ^
+     25|    encoding: 'utf8',
+     26|    env: { ...process.env, HARNESS_CLI_PATH: scope.cli ?? resolve('src/…
+ ❯ test/game-cli.e2e.test.ts:33:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/game-cli.e2e.test.ts > CLI creates 3d games through bundled and supports app and game generators
+Error: Command failed: bun -e 
+const {command,cwd}=JSON.parse(process.argv[1]);
+const started=performance.now();
+const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+const elapsedMs=performance.now()-started;
+if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString()})); {"command":["bun","run","check"],"cwd":"/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-vue5TH/adventure"}
+1 | 
+2 | const {command,cwd}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==0)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                 ^
+error: Checking formatting...
+All matched files use Prettier code style!
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-vue5TH/adventure
+Getting Svelte diagnostics...
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-vue5TH/adventure/src/routes/game/+page.svelte:10:6
+Warn: `canvas` is updated, but is not declared with `$state(...)`. Changing its value will not correctly trigger updates
+https://svelte.dev/e/non_reactive_update (svelte)
+ import type {GameView,GameRun} from '$lib/game/models/Game.types';
+ let canvas:HTMLCanvasElement; let run=$state(createRun()); let ready=$state(false);
+ assertDocument(document);
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-cli-vue5TH/adventure/src/routes/inventory/+page.svelte:4:23
+Error: Cannot find module '$app/state' or its corresponding type declarations. (ts)
+<script lang="ts">
+	import { page } from '$app/state';
+
+====================================
+svelte-check found 1 error and 1 warning in 2 files
+$ bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build
+$ prettier --check .
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+error: script "typecheck" exited with code 1
+error: script "check" exited with code 1
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-41teV5/[eval]:6:30
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ [eval]:6:30
+ ❯ gameCommand test/support/gameCommand.ts:24:3
+     22| export function gameCommand(command: string[], cwd: string, scope: Sco…
+     23|  const reported: Reported = JSON.parse(
+     24|   execFileSync('bun', ['-e', driver, JSON.stringify({ command, cwd })]…
+       |   ^
+     25|    encoding: 'utf8',
+     26|    env: { ...process.env, HARNESS_CLI_PATH: scope.cli ?? resolve('src/…
+ ❯ test/game-cli.e2e.test.ts:33:4
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed (5)
+   Start at  11:29:59
+   Duration  142.08s (transform 134ms, setup 152ms, collect 53ms, tests 138.34s, environment 0ms, prepare 35ms)
+
