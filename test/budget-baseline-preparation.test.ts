@@ -50,6 +50,11 @@ test('a prepared baseline whose second verification fails is refused, its failed
 test('a valid prepared baseline is returned once its second verification passed', async () => {
 	const { seen, result } = await prepare(false);
 	try {
+		expect(seen.outcomes.length).toBeGreaterThan(0);
+		const gaps = seen.outcomes[0].record.failures.filter((failure) =>
+			/missing standardized test contract|missing executed case/.test(failure)
+		);
+		expect(gaps, 'fixture contract and executed cases must be complete').toEqual([]);
 		expect(seen.outcomes).toHaveLength(2);
 		expect(seen.outcomes[1].exitCode).toBe(0);
 		expect(seen.outcomes[1].record.failures).toEqual([]);
