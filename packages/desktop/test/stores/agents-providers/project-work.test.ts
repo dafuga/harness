@@ -97,6 +97,27 @@ test('a previous project reply never becomes visible', async () => {
 });
 
 test('selection changes hide old data before another refresh starts', async () => {
+	for (const replacement of [
+		null,
+		{},
+		{
+			projectWork: vi.fn().mockRejectedValue(new Error('Replacement bridge failed'))
+		}
+	]) {
+		const { store, workspace, read } = setup();
+		read.mockResolvedValueOnce(loaded);
+		await store.refresh();
+		expect(store.snapshot).toEqual(loaded);
+		workspace.bridge = replacement;
+		expect(workspace.projectId).toBe('project-a');
+		expect.soft(store.snapshot, 'bridge changes hide data before refresh').toBeNull();
+		await store.refresh();
+		expect.soft(store.snapshot, 'unavailable or failed replacement cannot restore data').toBeNull();
+		expect(store.error).toMatch(
+			/unavailable|not available|not connected|Replacement bridge failed/i
+		);
+		expect(read).toHaveBeenCalledTimes(1);
+	}
 	const { store, workspace, read } = setup();
 	read.mockResolvedValueOnce(loaded);
 	await store.refresh();
