@@ -89,25 +89,7 @@ test('compare initialized contracts preserves identities unless capabilities cha
 		}
 	};
 	expect(service.compare([unit], [changed]).join(' ')).toContain('case identities/count changed');
-	const documented = {
-		...changed,
-		contract: {
-			...changed.contract,
-			origin: 'declared' as const,
-			inputs: changed.contract.inputs.map((item) => ({
-				...item,
-				description: 'Clarified existing input'
-			}))
-		}
-	};
-	expect(service.compare([unit], [documented]).join(' ')).toContain(
-		'case identities/count changed'
-	);
-	const reordered = {
-		...changed,
-		owns: { ...changed.owns, symbols: [...changed.owns.symbols].reverse() }
-	};
-	expect(service.compare([unit], [reordered]).join(' ')).toContain('case identities/count changed');
+	assertMetadataCannotInflate(unit, changed);
 	expect(
 		service.compare(
 			[unit],
@@ -131,6 +113,28 @@ test('compare initialized contracts preserves identities unless capabilities cha
 	expect(service.compare([], [unit])).toEqual([]);
 	assertSiblingCaseIdentity(unit);
 });
+
+function assertMetadataCannotInflate(unit: ComponentManifest, changed: ComponentManifest) {
+	const documented = {
+		...changed,
+		contract: {
+			...changed.contract,
+			origin: 'declared' as const,
+			inputs: changed.contract.inputs.map((item) => ({
+				...item,
+				description: 'Clarified existing input'
+			}))
+		}
+	};
+	expect(service.compare([unit], [documented]).join(' ')).toContain(
+		'case identities/count changed'
+	);
+	const reordered = {
+		...changed,
+		owns: { ...changed.owns, symbols: [...changed.owns.symbols].reverse() }
+	};
+	expect(service.compare([unit], [reordered]).join(' ')).toContain('case identities/count changed');
+}
 
 function assertSiblingCaseIdentity(unit: ComponentManifest) {
 	const names = ['first', 'second'];
