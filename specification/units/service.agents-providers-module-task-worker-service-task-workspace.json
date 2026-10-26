@@ -84,8 +84,8 @@
 			},
 			{
 				"name": "worker once error boundary",
-				"type": "thrown or recorded",
-				"description": "The public ModuleTaskWorkerService.once contract says taskWorkspace/preparation failures after claim reject once before its guarded worktree/run/snapshot block and can leave the task running. A snapshotTaskWork rejection inside that guarded block is converted to result.error and normally finalized as failed."
+				"type": "recorded failed result",
+				"description": "The worker guards taskWorkspace and snapshotTaskWork after claim. Workspace preparation failures produce a safe nonempty failed result with empty worktree, no provider usage or execution, and finalize the claim; snapshot failures also become failed results."
 			}
 		]
 	},
