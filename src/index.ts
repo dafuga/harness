@@ -206,3 +206,4 @@ export { FeaturePlanCommand } from './commands/agents-providers/FeaturePlanComma
 export { ModuleTaskCodexProfileAdapter } from './adapters/agents-providers/ModuleTaskCodexProfileAdapter';
 export { moduleTaskApprovedSubmission } from './helpers/agents-providers/moduleTaskApprovedSubmission';
 export { ModuleTaskDependencyBaseAdapter } from './adapters/agents-providers/ModuleTaskDependencyBaseAdapter';
+export { FeaturePlanCoverageValidator } from './validators/agents-providers/FeaturePlanCoverageValidator';
