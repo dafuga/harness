@@ -1,7 +1,7 @@
 import type { ContractUnit } from './testContractCases.types';
 import { expect } from 'vitest';
-import { componentManifestSchema } from '../../src/core/unitTypes';
 import type { TestContractService } from '../../src/services/verification-evidence/TestContractService';
+import { assertMatrixAdmissionObjects } from './matrixAdmissionInputs';
 
 export function assertExecutedCases(
 	registry: Parameters<TestContractService['validate']>[0],
@@ -91,32 +91,68 @@ export function assertExpandedCapabilities(
 	).toContain('case identities/count changed');
 }
 
-/** Admission is exercised in memory: JSON round trips would erase these accepted properties. */
-export function assertCaseAdmissionInputs(unit: ContractUnit, service: TestContractService) {
-	let reads = 0;
-	const id = unit.testing.cases[0].id;
-	const item = { ...unit.testing.cases[0] };
-	Object.defineProperty(item, 'id', {
-		enumerable: true,
-		get: () => {
-			reads++;
-			return id;
-		}
-	});
-	const cases = [item];
-	Object.defineProperty(cases, Symbol.iterator, {
-		value: function* () {
-			yield item;
-		}
-	});
-	Object.defineProperty(cases, 'constructor', { value: { [Symbol.species]: Array } });
-	const raw = { ...unit, testing: { ...unit.testing, cases } };
-	expect(componentManifestSchema.safeParse(raw).success).toBe(true);
-	expect(service.compare([raw], [raw])).toEqual([]);
-	const inflated = {
-		...raw,
-		testing: { ...raw.testing, cases: [...cases, { ...item, id: 'extra' }] }
+/** Equal matrix coordinates are one capability, even under a newly declared state. */
+export function assertMatrixRows(
+	unit: ContractUnit,
+	service: TestContractService,
+	mode: 'validate' | 'compare'
+) {
+	for (const shape of ['api', 'page', 'component'] as const)
+		assertShapeRows(unit, service, mode, shape);
+	assertMatrixAdmissionObjects(unit, service, mode);
+}
+
+function assertShapeRows(
+	unit: ContractUnit,
+	service: TestContractService,
+	mode: 'validate' | 'compare',
+	shape: 'api' | 'page' | 'component'
+) {
+	const state = shape === 'component' ? 'rest' : 'ready';
+	const expected =
+		shape === 'api'
+			? { kind: 'json' as const, value: { result: 'error' } }
+			: { kind: 'screenshot' as const, file: 'error.png' };
+	const original = {
+		...unit.testing.cases[0],
+		state,
+		expected,
+		...(shape === 'api' ? {} : { viewports: ['desktop'] })
 	};
-	expect(service.compare([raw], [inflated]).join(' ')).toContain('case identities/count changed');
-	expect(reads).toBeGreaterThan(0);
+	const before = {
+		...unit,
+		testing: { ...unit.testing, shape, states: [state], cases: [original] }
+	};
+	const first = {
+		...original,
+		id: 'error.one',
+		state: 'error',
+		input: { limit: 0, mode: 'invalid' },
+		test: { ...original.test, title: 'error one' }
+	};
+	const second = {
+		...first,
+		id: 'error.two',
+		input: { mode: 'invalid', limit: 0 },
+		test: { ...first.test, title: 'error two' }
+	};
+	const check = (other: typeof second) => {
+		const after = {
+			...before,
+			testing: { ...before.testing, states: [state, 'error'], cases: [original, first, other] }
+		};
+		return mode === 'compare'
+			? service.compare([before], [after])
+			: service.validate({ units: [after], scenarios: [], files: new Set([original.test.file]) });
+	};
+	expect(check(second).join(' ')).toContain('duplicate matrix row');
+	if (shape !== 'api')
+		expect(check({ ...second, viewports: ['desktop', 'mobile'] }).join(' ')).toContain(
+			'duplicate matrix row'
+		);
+	const distinct =
+		shape === 'api'
+			? { ...second, input: { ...second.input, limit: 1 } }
+			: { ...second, viewports: ['mobile'] };
+	expect(check(distinct), `${shape} accepts a distinct boundary or viewport`).toEqual([]);
 }

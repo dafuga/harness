@@ -1,32 +1,50 @@
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import type { ContractCase } from '../TestContractService.types';
+import { TestCaseValidator } from '../../../validators/verification-evidence/TestCaseValidator';
 
 /** An added capability permits its own new case; supported existing identities stay intact. */
 export function caseIdentityChanges(before: ComponentManifest, after: ComponentManifest): string[] {
 	const prior = before.testing!.cases,
 		next = after.testing!.cases;
 	const errors: string[] = [];
-	const refuse = (item: ContractCase) =>
-		errors.push(
-			`${after.id}/${item.subject ?? after.id}: case identities/count changed without a matching declared capability change; strengthen existing cases for bugs`
-		);
 	for (const item of prior) {
 		const current = next.find((candidate) => candidate.id === item.id);
-		if (!current && stillSupported(before, after, item)) refuse(item);
+		if (!current && stillSupported(before, after, item)) errors.push(refusal(after, item));
 		else if (
 			current &&
 			(identity(before, item) !== identity(after, current) ||
 				current.test.title !== item.test.title)
 		)
-			refuse(item);
+			errors.push(refusal(after, item));
 	}
-	for (const item of next)
-		if (
-			!prior.some((candidate) => candidate.id === item.id) &&
-			!addedCapability(before, after, item)
-		)
-			refuse(item);
+	errors.push(...addedCases(before, after, prior, next));
 	return errors;
+}
+
+function addedCases(
+	before: ComponentManifest,
+	after: ComponentManifest,
+	prior: ContractCase[],
+	next: ContractCase[]
+): string[] {
+	const errors: string[] = [];
+	let introduced = false;
+	for (const item of next) {
+		if (prior.some((candidate) => candidate.id === item.id)) continue;
+		introduced = true;
+		if (!addedCapability(before, after, item)) errors.push(refusal(after, item));
+	}
+	if (introduced && ['page', 'component', 'api'].includes(after.testing!.shape))
+		errors.push(
+			...new TestCaseValidator()
+				.validate(after, after.testing)
+				.errors.filter((error) => error.includes(': duplicate matrix row '))
+		);
+	return errors;
+}
+
+function refusal(unit: ComponentManifest, item: ContractCase): string {
+	return `${unit.id}/${item.subject ?? unit.id}: case identities/count changed without a matching declared capability change; strengthen existing cases for bugs`;
 }
 
 function identity(unit: ComponentManifest, item: ContractCase): string {
