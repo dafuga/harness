@@ -7,7 +7,7 @@ afterEach(() => {
 	cleanup.splice(0).forEach((f) => f());
 });
 test('queued cancellation releases reservations without ever starting the callback', async () => {
-	const observe = observeResources(['service.resource-monitor'], 'Queued admission and cleanup');
+	const observe = observeResources(['service.resource-monitor'], 'queued-admission-and-cleanup');
 	const { service } = resourceQueueFixture(cleanup),
 		abort = new AbortController();
 	let started = false;
