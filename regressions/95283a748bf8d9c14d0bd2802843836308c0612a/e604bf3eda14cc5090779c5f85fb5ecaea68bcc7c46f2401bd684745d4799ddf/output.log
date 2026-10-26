@@ -1,0 +1,72 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-MYIiuQ
+
+stdout | test/cli.e2e.test.ts > CLI scaffolds and checks an app project with routes
+Generated browser baseline gate: Running 33 tests using 6 workers; every failure is a missing baseline.
+
+stdout | test/cli.e2e.test.ts > CLI installs module foundations and generates their declared resources
+Generated browser baseline gate: Running 3 tests using 1 worker; every failure is a missing baseline.
+
+ ✓ test/cli.e2e.test.ts (5 tests) 232978ms
+   ✓ CLI scaffolds and checks a lib project  76058ms
+   ✓ CLI scaffolds and checks an app project with routes  67928ms
+   ✓ CLI reports edge errors cleanly  10161ms
+   ✓ CLI supports force overwrites and generated lint failures  7212ms
+   ✓ CLI installs module foundations and generates their declared resources  71616ms
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (548ms)
+
+  1 passed (3.7s)
+stdout | test/game-cli.e2e.test.ts > CLI creates 2d games through source and supports app and game generators
+Generated browser baseline gate: Running 9 tests using 2 workers; every failure is a missing baseline.
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (570ms)
+
+  1 passed (3.2s)
+stdout | test/game-cli.e2e.test.ts > CLI creates 3d games through source and supports app and game generators
+Generated browser baseline gate: Running 9 tests using 2 workers; every failure is a missing baseline.
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (550ms)
+
+  1 passed (3.4s)
+stdout | test/game-cli.e2e.test.ts > CLI creates 2d games through bundled and supports app and game generators
+Generated browser baseline gate: Running 9 tests using 2 workers; every failure is a missing baseline.
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'playwright test --project=chromium "$@"' -- "tests/e2e/checkpoint-images.spec.ts" --grep "a generated game displays"
+[WebServer] $ bun run --cwd ../reports svelte-kit sync
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/e2e/checkpoint-images.spec.ts:64:1 › a generated game displays the saved reference after completing its checkpoint (541ms)
+
+  1 passed (3.1s)
+stdout | test/game-cli.e2e.test.ts > CLI creates 3d games through bundled and supports app and game generators
+Generated browser baseline gate: Running 9 tests using 2 workers; every failure is a missing baseline.
+
+ ✓ test/game-cli.e2e.test.ts (5 tests) 169388ms
+   ✓ CLI creates 2d games through source and supports app and game generators  40438ms
+   ✓ CLI creates 3d games through source and supports app and game generators  40861ms
+   ✓ CLI creates 2d games through bundled and supports app and game generators  33149ms
+   ✓ CLI creates 3d games through bundled and supports app and game generators  38424ms
+   ✓ game-only generators reject apps before creating broken imports  16514ms
+ ✓ test/project-template.test.ts (5 tests) 434ms
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  13:53:48
+   Duration  407.40s (transform 245ms, setup 233ms, collect 817ms, tests 402.80s, environment 0ms, prepare 97ms)
+
