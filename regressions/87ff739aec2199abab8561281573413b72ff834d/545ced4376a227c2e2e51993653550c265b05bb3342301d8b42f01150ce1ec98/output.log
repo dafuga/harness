@@ -1,0 +1,104 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-GpnUeX
+
+error: unknown command 'contract'
+error: unknown command 'contract'
+error: unknown command 'contract'
+error: unknown command 'contract'
+error: unknown command 'contract'
+error: unknown command 'contract'
+error: unknown command 'contract'
+error: unknown command 'contract'
+ ❯ test/units-command.test.ts (9 tests | 9 failed) 12ms
+   × registers the existing units commands and the public contract authoring options 6ms
+     → expected [ 'check', 'graph', 'index', …(4) ] to deeply equal [ 'check', 'contract', 'graph', …(5) ]
+   × authors the declared contract while preserving the rest of the manifest 2ms
+     → error: unknown command 'contract'
+   × 'malformed JSON' fails without writing registry state 1ms
+     → expected CommanderError: error: unknown command 'c… { …(3) } to not have property "code" with value 'commander.unknownCommand'
+   × 'unknown top-level key' fails without writing registry state 0ms
+     → expected CommanderError: error: unknown command 'c… { …(3) } to not have property "code" with value 'commander.unknownCommand'
+   × 'unknown contract key' fails without writing registry state 0ms
+     → expected CommanderError: error: unknown command 'c… { …(3) } to not have property "code" with value 'commander.unknownCommand'
+   × 'unknown item key' fails without writing registry state 0ms
+     → expected CommanderError: error: unknown command 'c… { …(3) } to not have property "code" with value 'commander.unknownCommand'
+   × 'missing typed field' fails without writing registry state 0ms
+     → expected CommanderError: error: unknown command 'c… { …(3) } to not have property "code" with value 'commander.unknownCommand'
+   × 'unknown unit' fails without writing registry state 0ms
+     → expected CommanderError: error: unknown command 'c… { …(3) } to not have property "code" with value 'commander.unknownCommand'
+   × 'retired unit' fails without writing registry state 0ms
+     → expected CommanderError: error: unknown command 'c… { …(3) } to not have property "code" with value 'commander.unknownCommand'
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/units-command.test.ts > registers the existing units commands and the public contract authoring options
+AssertionError: expected [ 'check', 'graph', 'index', …(4) ] to deeply equal [ 'check', 'contract', 'graph', …(5) ]
+
+- Expected
++ Received
+
+@@ -1,8 +1,7 @@
+  [
+    "check",
+-   "contract",
+    "graph",
+    "index",
+    "list",
+    "retire",
+    "schema",
+
+ ❯ test/units-command.test.ts:115:66
+    113| test('registers the existing units commands and the public contract au…
+    114|  const units = createProgram().commands.find((command) => command.name…
+    115|  expect(units?.commands.map((command) => command.name()).sort()).toEqu…
+       |                                                                  ^
+    116|   'check',
+    117|   'contract',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  test/units-command.test.ts > authors the declared contract while preserving the rest of the manifest
+CommanderError: error: unknown command 'contract'
+ ❯ Command._exit ../../../../../../../Users/danielfugere/.codex/worktrees/harness-api-cli/harness/node_modules/commander/lib/command.js:509:26
+ ❯ Command.error ../../../../../../../Users/danielfugere/.codex/worktrees/harness-api-cli/harness/node_modules/commander/lib/command.js:1831:10
+ ❯ Command.unknownCommand ../../../../../../../Users/danielfugere/.codex/worktrees/harness-api-cli/harness/node_modules/commander/lib/command.js:2053:10
+ ❯ Command._parseCommand ../../../../../../../Users/danielfugere/.codex/worktrees/harness-api-cli/harness/node_modules/commander/lib/command.js:1525:14
+ ❯ ../../../../../../../Users/danielfugere/.codex/worktrees/harness-api-cli/harness/node_modules/commander/lib/command.js:1265:27
+ ❯ Command._chainOrCall ../../../../../../../Users/danielfugere/.codex/worktrees/harness-api-cli/harness/node_modules/commander/lib/command.js:1386:12
+ ❯ Command._dispatchSubcommand ../../../../../../../Users/danielfugere/.codex/worktrees/harness-api-cli/harness/node_modules/commander/lib/command.js:1261:25
+ ❯ Command._parseCommand ../../../../../../../Users/danielfugere/.codex/worktrees/harness-api-cli/harness/node_modules/commander/lib/command.js:1457:19
+ ❯ Command.parseAsync ../../../../../../../Users/danielfugere/.codex/worktrees/harness-api-cli/harness/node_modules/commander/lib/command.js:1092:16
+ ❯ runContract test/units-command.test.ts:88:24
+     86| 
+     87| async function runContract(id: string): Promise<void> {
+     88|  await createProgram().parseAsync([
+       |                        ^
+     89|   'node',
+     90|   'units-command-test',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  test/units-command.test.ts > 'malformed JSON' fails without writing registry state
+ FAIL  test/units-command.test.ts > 'unknown top-level key' fails without writing registry state
+ FAIL  test/units-command.test.ts > 'unknown contract key' fails without writing registry state
+ FAIL  test/units-command.test.ts > 'unknown item key' fails without writing registry state
+ FAIL  test/units-command.test.ts > 'missing typed field' fails without writing registry state
+ FAIL  test/units-command.test.ts > 'unknown unit' fails without writing registry state
+ FAIL  test/units-command.test.ts > 'retired unit' fails without writing registry state
+AssertionError: expected CommanderError: error: unknown command 'c… { …(3) } to not have property "code" with value 'commander.unknownCommand'
+ ❯ test/units-command.test.ts:209:21
+    207|   );
+    208|   expect(error).toBeInstanceOf(Error);
+    209|   expect(error).not.toHaveProperty('code', 'commander.unknownCommand');
+       |                     ^
+    210|   expect(mocks.registryWrite).not.toHaveBeenCalled();
+    211|   expect(mocks.writeFile).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed (9)
+   Start at  02:52:46
+   Duration  5.04s (transform 630ms, setup 203ms, collect 1.79s, tests 12ms, environment 0ms, prepare 39ms)
+
