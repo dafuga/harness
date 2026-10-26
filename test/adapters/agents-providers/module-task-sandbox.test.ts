@@ -93,7 +93,7 @@ async function prepare(fixture: Fixture, files = ['src/[branch].ts']): Promise<S
 		files,
 		snapshot: fixture.snapshot,
 		scratch: fixture.scratch,
-		readPaths: [bun, p.bunfig, p.preload],
+		readPaths: [bun],
 		protectedPaths: [join(fixture.cwd, '.git'), join(fixture.root, 'common.git')],
 		argv: [
 			bun,
@@ -149,7 +149,7 @@ nativeTest('enforces exact reads and writes in a real child', async () => {
 	try {
 		await fs.symlink(fixture.paths.outside, fixture.paths.link);
 		await fs.link(fixture.paths.outside, fixture.paths.scratchHardlink);
-		config = await prepare(fixture);
+		config = await prepare(fixture, ['src/[branch].ts', 'bunfig.toml', 'bunfig-preload.js']);
 		const hostCwd = await fs.realpath(config.cwd);
 		expect(hostCwd).not.toBe(await fs.realpath(fixture.cwd));
 		expect(relative(fixture.cwd, hostCwd)).toMatch(/^\.\.(?:\/|$)/);
