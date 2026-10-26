@@ -1,0 +1,39 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Yeemea
+
+ ❯ test/adapters/git-source-history/commit-tree.test.ts (6 tests | 1 failed) 981ms
+   ✓ CommitTreeAdapter.open empty resolves the exact commit and refuses absent revisions 73ms
+   ✓ CommitTreeAdapter.open populated establishes the object format before caching 79ms
+   ✓ CommitTreeAdapter.list empty returns no source entries 66ms
+   ✓ CommitTreeAdapter.list populated retains blob identities and paths 77ms
+   ✓ CommitTreeAdapter.read empty rejects missing paths 59ms
+   × CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths 624ms
+     → a missing committed blob must be reported: expected 'fulfilled' to be 'rejected' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/git-source-history/commit-tree.test.ts > CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths
+AssertionError: a missing committed blob must be reported: expected 'fulfilled' to be 'rejected' // Object.is equality
+
+Expected: "rejected"
+Received: "fulfilled"
+
+ ❯ missingBlob test/adapters/git-source-history/commit-tree.test.ts:166:70
+    164|  ]);
+    165|  expect(present).toEqual({ status: 'fulfilled', value: values.present …
+    166|  expect(missing.status, 'a missing committed blob must be reported').t…
+       |                                                                      ^
+    167|  if (missing.status === 'rejected') expect(String(missing.reason)).toC…
+    168|  failNext();
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:115:6
+ ❯ fixture test/adapters/git-source-history/commit-tree.test.ts:27:3
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:84:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  00:32:48
+   Duration  3.61s (transform 167ms, setup 225ms, collect 78ms, tests 981ms, environment 0ms, prepare 28ms)
+
