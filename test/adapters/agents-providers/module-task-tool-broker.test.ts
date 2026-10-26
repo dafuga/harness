@@ -1,3 +1,4 @@
+import { assertSealedBroker } from './module-task-tool-broker.test.fixtures';
 import { expect, test, vi } from 'vitest';
 import { createHash } from 'node:crypto';
 import {
@@ -66,6 +67,7 @@ function safeContract() {
 	};
 }
 test('ModuleTaskToolBrokerAdapter.readContract projects metadata through fixed sealed CLI arguments', async () => {
+	await assertSealedBroker();
 	const f = await brokerFixture();
 	try {
 		const expected = safeContract();
@@ -94,7 +96,7 @@ test('ModuleTaskToolBrokerAdapter.readContract projects metadata through fixed s
 	} finally {
 		await f.dispose();
 	}
-});
+}, 60000);
 test('ModuleTaskToolBrokerAdapter.listContracts exposes only contract index metadata', async () => {
 	const f = await brokerFixture();
 	try {
