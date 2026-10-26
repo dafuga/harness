@@ -3,28 +3,36 @@
 	"id": "service.git-source-history-module-data-service-module-relationships",
 	"kind": "service",
 	"title": "moduleRelationships",
-	"responsibility": "Owns the moduleRelationships service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Owns committed module relationship discovery.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/git-source-history/module-data-service/moduleRelationships.ts"],
 		"symbols": ["moduleRelationships"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "moduleRelationships.registry",
-				"type": "RevisionRegistry"
+				"type": "RevisionRegistry",
+				"description": "Active revision-bound manifests and declared dependency edges; no source bytes are read."
 			}
 		],
 		"outputs": [
 			{
 				"name": "moduleRelationships",
-				"type": "Record<string, ModuleRelationships>"
+				"type": "Record<string,ModuleRelationships>",
+				"description": "For each active unit, pages is reverse consumer traversal until the first page on each path; layouts/components/functions/configs/services/types are forward dependencies through uncategorized support to first categorized boundaries; apis/models are full transitive forward dependencies; usedBy is reverse traversal to first categorized non-page consumers; support is uncategorized forward support. Walks are cycle-safe, deduplicated and exclude the starting unit."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Incomplete declared graph",
+				"type": "not reported by this function",
+				"description": "Skips missing/inactive units and only uses declared edges plus inferred page-to-ancestor-layout paths. Callers must separately inspect committed sourceGraph uncertainty and include a changed page itself."
+			}
+		]
 	},
 	"dependencies": [
 		{
