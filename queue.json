@@ -7747,6 +7747,63 @@
 				]
 			},
 			"attempts": []
+		},
+		{
+			"id": "contract-first.runner-launch-diagnosis",
+			"title": "Diagnose runner launch failures from the assigned adapter contract",
+			"moduleGoal": "Expose correct contract-first execution diagnostics and identify the smallest repair needed for real Codex and Claude task launch.",
+			"instructions": "Read-only bootstrap investigation in a Codex app subagent. Inspect only source owned by this assigned adapter; dependency behavior must come from Harness CLI contracts. Do not read test suites, foreign implementations or credentials. Do not change files, commit, push, deploy, install, start model CLI runs, broad tests or E2Es. Report contract-level findings without code snippets: how prompts reach both CLIs, what safe failure details are discarded, whether waiting for resources can be misreported as a provider execution failure, and the exact modules/files a repair would need. Preserve other work. This is a Codex app bootstrap diagnostic, not proof of automatic native CLI dispatch. Model usage/cost not exposed by the app must remain unknown.",
+			"wantedContract": {
+				"responsibility": "Report the assigned runner launch and error-reporting behavior as usable contracts, with no source or test-suite discovery outside ownership.",
+				"inputs": [
+					{
+						"name": "runner interface",
+						"type": "Harness CLI module contract and three assigned adapter source files"
+					},
+					{
+						"name": "observations",
+						"type": "Native attempts fail generically without edits; remote Claude is signed out, remote Codex refresh was rejected; primary runtime 0.154 and task-owned 0.164 are available."
+					}
+				],
+				"outputs": [
+					{
+						"name": "diagnosis",
+						"type": "contract-level findings and minimal scoped repair proposal",
+						"description": "Separate observed facts from hypotheses and disclose unavailable token/cost data; do not claim native dispatch or completion."
+					}
+				],
+				"errors": [
+					{
+						"name": "missing dependency contract",
+						"type": "explicit missing-data report rather than reading its implementation"
+					}
+				]
+			},
+			"model": "gpt-6-luna",
+			"provider": "codex",
+			"intelligence": "max",
+			"assignee": "codex-app-runner-diagnosis",
+			"feature": {
+				"id": "contract-first-execution",
+				"goal": "Harness users and agents develop from committed contracts; server-managed workers can read app-wide contracts and modify only their assigned files, with complete metadata validation and tracked executions.",
+				"tldr": "Extend the API-backed CLI and mandatory revision metadata with contract authoring, contract-first Codex guidance, enforced worker scopes, and automatic server task creation and dispatch. Preserve local and hosted permissions, existing history and exact model/usage/cost/bounce records."
+			},
+			"module": {
+				"id": "adapter.agents-providers-module-task-runner",
+				"goal": "Expose correct contract-first execution diagnostics and identify the smallest repair needed for real Codex and Claude task launch.",
+				"files": [
+					"src/adapters/agents-providers/ModuleTaskRunnerAdapter.ts",
+					"src/adapters/agents-providers/ModuleTaskRunnerAdapter.types.ts",
+					"src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts"
+				]
+			},
+			"sourceCommit": "999a930e6219b2dce00e5e0e81fd45bdeab8229a",
+			"contractHash": "dd90b72e98bbb03d7b742a4163312e9b780aa794a16338f6366d2892ed3083c8",
+			"status": "queued",
+			"reviews": [],
+			"createdAt": "2026-10-26T00:52:33.316Z",
+			"claimHistory": [],
+			"attempts": []
 		}
 	]
 }
