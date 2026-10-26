@@ -38,6 +38,7 @@ export async function assertModuleProject(root: string): Promise<void> {
 	);
 	await runHarness(['plugin', 'generate', 'headless-audio', 'test', 'Playback'], project);
 	await runCommand(['bun', 'install'], project);
+	await runCommand(['bun', 'x', 'playwright', 'install', 'chromium'], project);
 	const plugins = JSON.parse((await runHarness(['plugin', 'list', '--json'], project)).stdout);
 	expect(plugins.modules).toHaveLength(6);
 	expect(
