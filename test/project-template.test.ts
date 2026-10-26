@@ -11,7 +11,7 @@ test(
 );
 
 test('app projects include SvelteKit and specification files', () =>
-	measureWorkload('template.project-guidance', 'layout-catalog-behavior', () => {
+	measureWorkload('template.project-guidance', 'layout-catalog-behavior', async () => {
 		const files = projectFiles({ kind: 'app', name: 'demo-app' });
 		const paths = files.map((file) => file.path);
 		const packageJson = JSON.parse(fileContents(files, 'package.json'));
@@ -62,7 +62,9 @@ test('app projects include SvelteKit and specification files', () =>
 			expect(fileContents(files, path)).toContain('src/helpers/<responsibility>/<camelName>.ts');
 			expect(fileContents(files, path)).toContain('selected callable implementation');
 		}
-		expectGeneratedGuidance(files);
+		await measureWorkload('function.bug-repair-policy', 'layout-page-agent-guidance', () =>
+			expectGeneratedGuidance(files)
+		);
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 		expect(packageJson.harness.kind).toBe('app');
 		expect(packageJson.scripts['test:e2e']).toBe('playwright test');
@@ -164,6 +166,9 @@ function expectStandardTestForms(files: ReturnType<typeof projectFiles>): void {
 		expect(text, path).toContain('Use exactly these five forms');
 		expect(text, path).toContain(
 			'Pages: Playwright screenshot matches of each declared page state'
+		);
+		expect(text, path).toContain(
+			'Layouts use the page form, with a labelled Child content placeholder in the real child slot.'
 		);
 		expect(text, path).toContain(
 			'Components: Playwright screenshot matches of the component at rest'

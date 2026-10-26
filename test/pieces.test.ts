@@ -47,9 +47,14 @@ test.each(['2d', '3d'] as const)(
 	}
 );
 
-test('view, layout, and api scaffolds use SvelteKit route files', () => {
-	assertAppPieceContracts();
-});
+test('view, layout, and api scaffolds use SvelteKit route files', () =>
+	measureWorkload('template.app-pieces', 'layout-page-child-slot', () =>
+		measureWorkload(
+			'template.development-tooling-app-pieces-app-contract-tests',
+			'layout-page-screenshot-generation',
+			assertAppPieceContracts
+		)
+	));
 
 test('marks only SvelteKit scaffolds as app-only', () => {
 	expect(scaffoldKinds).not.toContain('test');

@@ -3,6 +3,7 @@ import type { ComponentManifest } from '../../../src/core/unitTypes';
 import type { ContractCase } from '../../../src/services/verification-evidence/TestContractService';
 import { TestCaseValidator } from '../../../src/validators/verification-evidence/TestCaseValidator';
 import { indexFiles, unitOf } from '../../support/memoryTree';
+import { measureWorkload } from '../../support/measureWorkload';
 
 const validator = new TestCaseValidator();
 test('validate each allowed shape and its missing or invalid states', async () => {
@@ -50,6 +51,9 @@ test('validate each allowed shape and its missing or invalid states', async () =
 		'authored Examples'
 	);
 	assertAuthoredExampleCases(unit, item);
+	await measureWorkload('validator.verification-evidence-test-case', 'layout-page-case-admission', () =>
+		assertLayoutPageCases(unit, item)
+	);
 	assertMethodStateCases(unit, item);
 	expect(
 		validator.validate(unit, {
@@ -58,6 +62,27 @@ test('validate each allowed shape and its missing or invalid states', async () =
 		}).valid
 	).toBe(false);
 });
+
+function assertLayoutPageCases(unit: ComponentManifest, item: ContractCase) {
+	const layout = { ...unit, kind: 'layout' };
+	const page = {
+		version: 1,
+		shape: 'page',
+		states: ['rest'],
+		cases: [
+			{
+				...item,
+				fixture: 'src/routes/blog-post/__harness/+page.svelte',
+				expected: { kind: 'screenshot', file: 'layout.png' },
+				viewports: ['desktop', 'tablet', 'mobile']
+			}
+		]
+	};
+	const observed = ['page', 'component', 'layout'].map((shape) =>
+		validator.validate(layout, { ...page, shape }).valid
+	);
+	expect(observed, 'Layouts use the existing page form').toEqual([true, false, false]);
+}
 
 function assertAuthoredExampleCases(unit: ComponentManifest, item: ContractCase) {
 	const authored = {
