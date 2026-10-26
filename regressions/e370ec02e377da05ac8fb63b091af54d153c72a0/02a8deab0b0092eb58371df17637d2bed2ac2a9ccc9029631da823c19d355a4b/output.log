@@ -1,0 +1,49 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-tGv2cm
+
+ ❯ test/audit.test.ts (9 tests | 1 failed) 68ms
+   ✓ audit reports oversized files 15ms
+   ✓ audit reports oversized functions and ignores build folders 4ms
+   ✓ audit ignores symlinks without following missing build outputs 2ms
+   ✓ audit reports class, method, complexity, nesting, parameter, count, and naming rules 8ms
+   ✓ audit reports architecture rule violations 3ms
+   ✓ audit reports Harness scaffold file and function naming violations 7ms
+   ✓ audit rejects files and folders outside the Harness structure 4ms
+   ✓ audit honors local ignored finding baselines 3ms
+   × every SvelteKit route segment form is a valid folder name, and nothing else in brackets is 15ms
+     → Reserved preview folders belong only under routes: expected [ '[...]', '[..path]', …(8) ] to deeply equal [ '[...]', '[..path]', …(7) ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/audit.test.ts > every SvelteKit route segment form is a valid folder name, and nothing else in brackets is
+AssertionError: Reserved preview folders belong only under routes: expected [ '[...]', '[..path]', …(8) ] to deeply equal [ '[...]', '[..path]', …(7) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -5,7 +5,8 @@[39m
+[2m    "[[lang]",[22m
+[2m    "[id=]",[22m
+[2m    "__harness",[22m
+[2m    "__harness",[22m
+[2m    "__harness",[22m
+[31m+   "__harness",[39m
+[2m    "__other",[22m
+[2m  ][22m
+
+ ❯ test/audit.test.ts:214:78
+    212|   .filter((finding) => finding.rule === 'folder-name-pattern')
+    213|   .map((finding) => finding.path.replace(/\/$/, '').split('/').pop());
+    214|  expect(flagged.sort(), 'Reserved preview folders belong only under ro…
+       |                                                                              ^
+    215|   [...invalid, '__harness', '__harness', '__harness'].sort()
+    216|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  10:17:28
+   Duration  4.26s (transform 236ms, setup 138ms, collect 595ms, tests 68ms, environment 0ms, prepare 36ms)
+
