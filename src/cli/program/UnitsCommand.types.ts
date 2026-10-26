@@ -7,6 +7,7 @@ export interface DeclaredContractInput {
 		outputs: ContractItem[];
 		errors: ContractItem[];
 	};
+	testing?: unknown;
 }
 
 export interface Flags {

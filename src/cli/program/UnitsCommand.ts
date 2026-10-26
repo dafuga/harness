@@ -59,9 +59,14 @@ export function registerUnitsCommand(program: Command): void {
 function registerContract(units: Command): void {
 	units
 		.command('contract <id>')
-		.requiredOption('--input <file>', 'JSON file with the declared responsibility and contract.')
+		.requiredOption(
+			'--input <file>',
+			'JSON file with the declared responsibility, contract and optional testing.'
+		)
 		.option('--json', 'Print structured results.')
-		.description('Author the declared responsibility and contract for an existing unit.')
+		.description(
+			'Author the declared responsibility, contract and optional testing for an existing unit.'
+		)
 		.action(async (id: string, flags: Flags) => {
 			const declaration = await readContractInput(flags.input ?? '');
 			const root = process.cwd();
@@ -74,7 +79,8 @@ function registerContract(units: Command): void {
 				...current,
 				responsibility: declaration.responsibility,
 				responsibilityOrigin: 'declared' as const,
-				contract: { origin: 'declared' as const, ...declaration.contract }
+				contract: { origin: 'declared' as const, ...declaration.contract },
+				...(declaration.testing === undefined ? {} : { testing: declaration.testing })
 			};
 			const validated = componentManifestSchema.safeParse(candidate);
 			if (!validated.success) fail(`Invalid declared contract: ${validated.error.message}`);
@@ -101,7 +107,7 @@ async function readContractInput(file: string): Promise<DeclaredContractInput> {
 
 function parseContractInput(value: unknown): DeclaredContractInput {
 	if (!isRecord(value)) fail('Contract input must be a JSON object.');
-	rejectExtraKeys(value, ['responsibility', 'contract'], 'input');
+	rejectExtraKeys(value, ['responsibility', 'contract', 'testing'], 'input');
 	if (typeof value.responsibility !== 'string' || value.responsibility.trim().length === 0) {
 		fail('Contract input requires a non-empty responsibility string.');
 	}
@@ -113,7 +119,8 @@ function parseContractInput(value: unknown): DeclaredContractInput {
 			inputs: parseContractItems(value.contract.inputs, 'inputs'),
 			outputs: parseContractItems(value.contract.outputs, 'outputs'),
 			errors: parseContractItems(value.contract.errors, 'errors')
-		}
+		},
+		...(value.testing === undefined ? {} : { testing: value.testing })
 	};
 }
 

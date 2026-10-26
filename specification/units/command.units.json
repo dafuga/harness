@@ -3,31 +3,39 @@
 	"id": "command.units",
 	"kind": "command",
 	"title": "UnitsCommand",
-	"responsibility": "Owns the UnitsCommand command registration.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Register unit registry inspection, validation and contract authoring commands.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/cli/program/UnitsCommand.ts", "src/cli/program/UnitsCommand.types.ts"],
 		"symbols": ["registerUnitsCommand", "DeclaredContractInput", "Flags"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "registerUnitsCommand.program",
-				"type": "Command"
+				"type": "Command",
+				"description": "Commander program receiving the units command tree."
+			},
+			{
+				"name": "units contract --input",
+				"type": "{responsibility:string,contract:Contract,testing?:ComponentManifest.testing}",
+				"description": "Optional testing replaces the declared standard cases after candidate schema validation; omission keeps the current testing metadata."
 			}
 		],
 		"outputs": [
 			{
 				"name": "registerUnitsCommand",
-				"type": "void"
+				"type": "void",
+				"description": "Registers index, check, list, contract, show, graph, retire, schema and tests commands. The contract command writes one validated manifest after parsing all provided fields."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown by command actions",
+				"description": "Invalid files, contract or testing input, unknown fields, missing or retired units and invalid manifests fail before the contract command writes."
 			}
 		]
 	},
