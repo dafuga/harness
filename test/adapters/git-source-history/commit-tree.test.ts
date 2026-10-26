@@ -116,7 +116,7 @@ test('CommitTreeAdapter.read populated reuses immutable blobs across revisions w
 						root,
 						git,
 						() => void bytes.mockRejectedValueOnce(new Error('synthetic Git failure')),
-						() => void bytes.mockResolvedValueOnce(Buffer.from('malformed response\n'))
+						(response) => void bytes.mockResolvedValueOnce(response)
 					);
 				}
 			},
@@ -142,21 +142,22 @@ async function missingBlob(
 	root: string,
 	git: GitAdapter,
 	failNext: () => void,
-	malformNext: () => void
+	malformNext: (response: Buffer) => void
 ): Promise<void> {
 	const values = {
 		present: `present ${root}`,
 		missing: `missing ${root}`,
 		retry: `retry ${root}`,
 		retryPeer: `retry peer ${root}`,
-		malformed: `malformed ${root}`
+		malformed: `malformed ${root}`,
+		truncated: `truncated ${root}`
 	};
 	for (const [name, value] of Object.entries(values))
 		await writeFile(join(root, `${name}.txt`), value);
 	await git.run(['add', '.']);
 	await git.run(['commit', '-m', 'feat: add object fixtures']);
 	const tree = await CommitTreeAdapter.open(root, 'HEAD');
-	await tree.list();
+	const entries = await tree.list();
 	const hash = await git.run(['rev-parse', 'HEAD:missing.txt']);
 	await rm(join(root, '.git', 'objects', hash.slice(0, 2), hash.slice(2)));
 	const [present, missing] = await Promise.allSettled([
@@ -175,7 +176,12 @@ async function missingBlob(
 		});
 	await expect(tree.read('retry.txt')).resolves.toBe(values.retry);
 	await expect(tree.read('retryPeer.txt')).resolves.toBe(values.retryPeer);
-	malformNext();
+	malformNext(Buffer.from('malformed response\n'));
 	await expect(tree.read('malformed.txt')).rejects.toThrow('Invalid Git batch response');
 	await expect(tree.read('malformed.txt')).resolves.toBe(values.malformed);
+	const truncated = entries.find((entry) => entry.path === 'truncated.txt');
+	if (!truncated) throw new Error('The truncated fixture was not committed');
+	malformNext(Buffer.from(`${truncated.hash} blob 4\nx`));
+	await expect(tree.read('truncated.txt')).rejects.toThrow('Invalid Git batch response');
+	await expect(tree.read('truncated.txt')).resolves.toBe(values.truncated);
 }
