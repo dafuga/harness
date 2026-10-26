@@ -1,6 +1,6 @@
 import { assertModuleAuditAdmission } from './support/moduleAuditAdmission';
 import { mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { expect, test } from 'vitest';
 import { auditPath } from '../src/audit/audit';
@@ -135,6 +135,32 @@ test('audit reports Harness scaffold file and function naming violations', async
 	await rm(root, { recursive: true, force: true });
 });
 
+async function designArtifactFixtures(root: string) {
+	const base = 'specification/features/planned';
+	const valid = ['png', 'jpg', 'jpeg', 'webp'].map(
+		(extension) => `${base}/checkout-flow/desktop-option.${extension}`
+	);
+	const invalid = [
+		`${base}/checkout-flow/desktop-option.gif`,
+		`${base}/checkout-flow/desktop-option.svg`,
+		`${base}/checkout-flow/desktop-option.txt`,
+		`${base}/checkout-flow/BadName.png`,
+		`${base}/BadFeature/desktop-option.png`,
+		`${base}/orphan-feature/desktop-option.png`,
+		`${base}/checkout-flow/nested/desktop-option.png`,
+		`${base}/desktop-option.png`,
+		'specification/features/desktop-option.png'
+	];
+	for (const path of [...valid, ...invalid, `${base}/checkout-flow.md`]) {
+		await mkdir(dirname(join(root, path)), { recursive: true });
+		await writeFile(
+			join(root, path),
+			path.endsWith('.md') ? '# Checkout flow\n' : new Uint8Array([0])
+		);
+	}
+	return { valid, invalid };
+}
+
 test('audit rejects files and folders outside the Harness structure', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-audit-'));
 	await mkdir(join(root, 'src/random-things'), { recursive: true });
@@ -151,7 +177,9 @@ test('audit rejects files and folders outside the Harness structure', async () =
 	await writeFile(join(root, 'db/archive/old.sql'), 'select 1;\n');
 	await writeFile(join(root, 'specification/features/Draft/BadName.md'), '# Feature\n');
 
+	const artifacts = await designArtifactFixtures(root);
 	const findings = await auditPath(root);
+	await rm(root, { recursive: true, force: true });
 	const rules = findings.map((finding) => finding.rule);
 
 	expect(rules).toEqual(
@@ -164,7 +192,20 @@ test('audit rejects files and folders outside the Harness structure', async () =
 			'harness-spec-structure'
 		])
 	);
-	await rm(root, { recursive: true, force: true });
+	for (const path of artifacts.invalid) {
+		expect(
+			findings.some(
+				(finding) => finding.path === path && finding.rule === 'harness-spec-structure'
+			),
+			path
+		).toBe(true);
+	}
+	for (const path of artifacts.valid) {
+		expect(
+			findings.filter((finding) => finding.path === path),
+			path
+		).toEqual([]);
+	}
 });
 
 test('audit honors local ignored finding baselines', async () => {
