@@ -2,9 +2,11 @@
 	"name": "native-restore-memory",
 	"goal": "Bound evidence restoration memory while preserving note selection and missing evidence checks",
 	"createdAt": "2026-10-26T21:46:04.637Z",
-	"updatedAt": "2026-10-26T21:46:05.952Z",
+	"updatedAt": "2026-10-26T21:50:28.533Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:47:37.163Z",
+			"evidence": "Committed note-history test c9265cf3 failed its bounded RSS assertion; record cfd4963e keeps the command, expected missing evidence and workload observation."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:50:27.290Z",
+			"evidence": "Commit 8a0a0c3d reads verification notes in batches and scans cached record ids without retaining unrelated records."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:50:28.533Z",
+			"evidence": "Unchanged note-history test passed at 8a0a0c3d; green record 72e4f5b3 pairs with red 59d7b6af in the same environment."
 		},
 		{
 			"id": "verify",
