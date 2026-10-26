@@ -3,8 +3,8 @@
 	"id": "service.agents-providers-module-task-contract-context",
 	"kind": "service",
 	"title": "ModuleTaskContractContextService",
-	"responsibility": "Owns the ModuleTaskContractContextService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Create a sealed per-task offline Harness CLI that serves selected-revision app contracts while the native worker lacks foreign source and Git access.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -18,15 +18,47 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [
+		"origin": "declared",
+		"inputs": [
 			{
-				"name": "ModuleTaskContractContextService.run",
-				"type": "string"
+				"name": "constructor.root",
+				"type": "string; trusted repository root"
+			},
+			{
+				"name": "create.task",
+				"type": "ModuleTask; committed sourceCommit and module assignment"
+			},
+			{
+				"name": "create.worktree",
+				"type": "absolute isolated worktree path"
+			},
+			{
+				"name": "create.files",
+				"type": "trusted canonical role-specific relative file grants"
 			}
 		],
-		"errors": []
+		"outputs": [
+			{
+				"name": "create",
+				"type": "Promise<ModuleTaskContractContext>",
+				"description": "{scope:TaskRunScope,binDirectory:string,cleanup():Promise<void>}; snapshot and executable CLI immutable, scratch separate, app-wide contracts metadata only. SourceCommit includes selected task revision; versions are forwarded committed records; binDirectory included in trusted scope. Restricted CLI may omit source/test resource fields explicitly. Private CLI launcher must use only trusted configuration; no task worktree Bun config/preloads before executing sealed CLI."
+			}
+		],
+		"errors": [
+			{
+				"name": "missing or invalid committed metadata",
+				"type": "prelaunch rejection without source scanning or repair"
+			},
+			{
+				"name": "tampered context, unknown contract or forbidden command",
+				"type": "nonzero safe CLI diagnostic"
+			},
+			{
+				"name": "Unknown assigned module",
+				"type": "Error before creating context",
+				"description": "Reject task.module.id absent from committed declarations; do not expose a context for an invalid assignment."
+			}
+		]
 	},
 	"dependencies": [
 		{
