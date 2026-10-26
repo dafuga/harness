@@ -200,3 +200,4 @@ export { ModuleTaskSandboxProcessAdapter } from './adapters/agents-providers/Mod
 export { FeaturePlanRepository } from './repositories/agents-providers/FeaturePlanRepository';
 export { FeaturePlanService } from './services/agents-providers/FeaturePlanService';
 export { ModuleTaskProviderConfigAdapter } from './adapters/agents-providers/ModuleTaskProviderConfigAdapter';
+export { FeaturePlanValidator } from './validators/agents-providers/FeaturePlanValidator';

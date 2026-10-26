@@ -1,0 +1,54 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.agents-providers-feature-plan",
+	"kind": "validator",
+	"title": "FeaturePlanValidator",
+	"responsibility": "Validate feature plan modules, page options, task dependencies and approval readiness.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/validators/agents-providers/FeaturePlanValidator.ts",
+			"src/validators/agents-providers/FeaturePlanValidator.types.ts"
+		],
+		"symbols": [
+			"FeaturePlanValidator",
+			"FeaturePlanValidator.validate",
+			"FeaturePlanValidatorResult",
+			"FeaturePlanValidatorResult"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "FeaturePlanValidator.validate.input",
+				"type": "Record<string, unknown>"
+			}
+		],
+		"outputs": [
+			{
+				"name": "FeaturePlanValidator.validate",
+				"type": "FeaturePlanValidatorResult"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/agents-providers/FeaturePlanValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/agents-providers/FeaturePlanValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
