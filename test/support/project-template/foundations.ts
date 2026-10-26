@@ -25,13 +25,23 @@ export async function assertAuthoredLibraryResult(project: string): Promise<void
 		const manifest = JSON.parse(original);
 		manifest.testing.examples[0].expected.value = 'changed authored greeting';
 		await writeFile(path, JSON.stringify(manifest, null, '\t') + '\n');
-		const changed = await runCommand(['bun', 'run', 'test:unit'], project, false, env);
+		const changed = await runCommand(
+			['bun', 'run', 'test:unit', 'test/index.test.ts'],
+			project,
+			false,
+			env
+		);
 		expect(changed.exitCode).toBe(1);
 		expect(changed.stdout + changed.stderr).toContain('changed authored greeting');
 		await expectLibraryOutcome(evidence, revision, 'failed');
 		await rm(join(evidence, 'case-results.ndjson'));
 		await writeFile(path, original);
-		const restored = await runCommand(['bun', 'run', 'test:unit'], project, false, env);
+		const restored = await runCommand(
+			['bun', 'run', 'test:unit', 'test/index.test.ts'],
+			project,
+			false,
+			env
+		);
 		expect(restored.exitCode).toBe(0);
 		await expectLibraryOutcome(evidence, revision, 'passed');
 	} finally {
