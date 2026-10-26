@@ -1,0 +1,17 @@
+
+Running 12 tests using 1 worker
+
+  ✓   1 tests/e2e/explorer-shell.spec.ts:36:2 › the bar shows its navigation with an icon above each label at desktop width (764ms)
+  ✓   2 tests/e2e/explorer-shell.spec.ts:112:2 › the branch with its tip and the viewed commit are told apart at desktop width (374ms)
+  ✓   3 tests/e2e/explorer-shell.spec.ts:157:2 › Go to tip, back, a reload and another branch each keep their place at desktop width (322ms)
+  ✓   4 tests/e2e/explorer-shell.spec.ts:194:2 › module discovery retains branch and revision at desktop (323ms)
+  ✓   5 tests/e2e/explorer-shell.spec.ts:36:2 › the bar shows its navigation with an icon above each label at tablet width (680ms)
+  ✓   6 tests/e2e/explorer-shell.spec.ts:112:2 › the branch with its tip and the viewed commit are told apart at tablet width (334ms)
+  ✓   7 tests/e2e/explorer-shell.spec.ts:157:2 › Go to tip, back, a reload and another branch each keep their place at tablet width (279ms)
+  ✓   8 tests/e2e/explorer-shell.spec.ts:194:2 › module discovery retains branch and revision at tablet (321ms)
+  ✓   9 tests/e2e/explorer-shell.spec.ts:36:2 › the bar shows its navigation with an icon above each label at mobile width (672ms)
+  ✓  10 tests/e2e/explorer-shell.spec.ts:112:2 › the branch with its tip and the viewed commit are told apart at mobile width (319ms)
+  ✓  11 tests/e2e/explorer-shell.spec.ts:157:2 › Go to tip, back, a reload and another branch each keep their place at mobile width (279ms)
+  ✓  12 tests/e2e/explorer-shell.spec.ts:194:2 › module discovery retains branch and revision at mobile (284ms)
+
+  12 passed (9.7s)
