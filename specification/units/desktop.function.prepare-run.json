@@ -49,8 +49,8 @@
 			},
 			{
 				"name": "prepareRun.preparation",
-				"type": "Preparation",
-				"description": "The session, provider discovery, generator and event callback used for preparation."
+				"type": "{session:ProjectSessionService,providers:ProviderDiscoveryService,generator:ImageGenerator,emit:(event:RunEvent)=>void}",
+				"description": "No current screenshot evidence collaborator is currently supplied."
 			},
 			{
 				"name": "prepareRun.request",
@@ -97,7 +97,7 @@
 			{
 				"name": "prepareRun",
 				"type": "Promise<RunContext>",
-				"description": "A promise for the prepared run context with a new identity. Checks thread membership and Change approval, selects image support if needed, checks cancellation, then appends the user request. It does not launch the runner."
+				"description": "A promise for the prepared run context with a new identity. Checks thread membership and Change approval, selects image support if needed, checks cancellation, then appends the user request. It does not launch the runner. It does not currently provide RunContext.currentImage; recorded screenshot fallback requires host evidence integration."
 			},
 			{
 				"name": "messageFor",
