@@ -1,0 +1,24 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-SuqG8L/packages/reports
+
+ ✓ test/services/harness-analytics.test.ts (2 tests) 3943ms
+   ✓ dashboard queries the real CLI aggregation and preserves validated filters  2174ms
+   ✓ dashboard consumes a complete large analytics response before parsing  1768ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  19:07:10
+   Duration  4.24s (transform 100ms, setup 133ms, collect 26ms, tests 3.94s, environment 0ms, prepare 34ms)
+
