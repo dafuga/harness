@@ -2,7 +2,7 @@
 	"name": "prelaunch-accounting",
 	"goal": "Never report a model execution that did not start",
 	"createdAt": "2026-10-26T23:41:13.933Z",
-	"updatedAt": "2026-10-26T23:41:28.202Z",
+	"updatedAt": "2026-10-26T23:45:33.163Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:45:26.214Z",
+			"evidence": "Recorded failing regression 41895510 at ee802336c8."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:45:31.446Z",
+			"evidence": "Separated prelaunch and ambiguous historical outcomes in 134d237580, preserving event identities."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:45:33.163Z",
+			"evidence": "Recorded passing regression b485876f at 134d237580; checked SQLite event replacement without a provider call."
 		},
 		{
 			"id": "verify",

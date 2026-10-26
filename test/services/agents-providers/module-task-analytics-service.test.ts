@@ -133,3 +133,44 @@ test('missing Codex cache-write counts produce a priced range rather than a gues
 	expect(cost.minimumUsd).toBeCloseTo(0.0000173, 10);
 	expect(cost.maximumUsd).toBeCloseTo(0.0000278, 10);
 });
+
+test('quota fallback distinguishes a blocked second launch and corrects its prior event', async () => {
+	const f = await moduleTaskFixture();
+	try {
+		const service = new ModuleTaskService(f.root);
+		await service.feature({
+			id: 'checkout',
+			goal: 'Reliable checkout',
+			tldr: 'Build validated orders.'
+		});
+		await service.add(JSON.parse(await readFile(await f.input(), 'utf8')));
+		let calls = 0;
+		const worker = new ModuleTaskWorkerService(
+			f.root,
+			{
+				run: async () => {
+					if (!calls++) throw Object.assign(new Error('quota'), { quotaRejected: true });
+					throw Object.assign(new Error('Provider launch was blocked before execution.'), {
+						diagnostic: { phase: 'prelaunch' }
+					});
+				}
+			},
+			mockContexts().contexts
+		);
+		expect((await worker.once('owner')).status).toBe('failed');
+		const task = (await service.show('orders-validation')).task;
+		expect(task.result?.executions.map((item) => item.status)).toEqual(['failed', 'not-started']);
+		const events = taskEvents([task], 'fixture');
+		expect(events.map((event) => event.action)).toEqual(['executed', 'prelaunch-failed']);
+		expect(new ModuleTaskAnalyticsService().metrics(events)).toMatchObject({
+			executions: 1,
+			prelaunchFailures: 1
+		});
+		const historical = structuredClone(task);
+		historical.result!.executions[1].status = 'failed';
+		const corrected = taskEvents([historical], 'fixture');
+		expect(corrected[1]).toMatchObject({ id: events[1].id, action: 'prelaunch-failed' });
+	} finally {
+		await f.dispose();
+	}
+});
