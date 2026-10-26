@@ -159,7 +159,10 @@ test('quota fallback distinguishes a blocked second launch and corrects its prio
 		);
 		expect((await worker.once('owner')).status).toBe('failed');
 		const task = (await service.show('orders-validation')).task;
-		expect(task.result?.executions.map((item) => item.status)).toEqual(['failed', 'not-started']);
+		expect(task.result?.executions.map((item) => item.status)).toEqual(['failed', 'failed']);
+		expect(task.result?.executions[1].apiCost.note).toBe(
+			'Provider did not start; no usage or cost was incurred.'
+		);
 		const events = taskEvents([task], 'fixture');
 		expect(events.map((event) => event.action)).toEqual(['executed', 'prelaunch-failed']);
 		expect(new ModuleTaskAnalyticsService().metrics(events)).toMatchObject({
@@ -167,7 +170,7 @@ test('quota fallback distinguishes a blocked second launch and corrects its prio
 			prelaunchFailures: 1
 		});
 		const historical = structuredClone(task);
-		historical.result!.executions[1].status = 'failed';
+		historical.result!.executions[1].apiCost.note = 'Legacy unavailable cost';
 		const corrected = taskEvents([historical], 'fixture');
 		expect(corrected[1]).toMatchObject({ id: events[1].id, action: 'prelaunch-failed' });
 	} finally {

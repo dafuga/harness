@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-26T23:50:38.774Z","name":"prelaunch-queue-compatibility","goal":"Keep shared task queues readable by older Harness clients","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-26T23:51:41.045Z","loop":"prelaunch-queue-compatibility","step":"spec","evidence":"Older Harness clients must continue parsing the shared task queue after a blocked provider launch."}
+{"event":"step.completed","timestamp":"2026-10-26T23:51:41.642Z","loop":"prelaunch-queue-compatibility","step":"coverage","evidence":"The prelaunch regression checked analytics but did not test the prior execution-status schema, so the added status broke older readers."}
