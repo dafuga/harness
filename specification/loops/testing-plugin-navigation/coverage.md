@@ -16,3 +16,8 @@ This assertion remains in the normal Reports component suite.
 The committed failing matrix is replayed in Harness's isolated regression snapshot;
 the repaired source must pass that unchanged matrix. The original failing revision
 also provides the isolated guard replay after repair. No live server is rolled back.
+
+The shell browser fixture previously booted only from history.state. A direct URL
+load has no such state, so the new resource-link assertion exposed a fixture gap.
+The fixture now uses the real public route parser on boot and popstate, matching
+the host contract. This correction adds no product navigation behavior.

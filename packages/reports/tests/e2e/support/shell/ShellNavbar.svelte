@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { explorerRoute } from '../../../../../../src/utils/explorerRoute';
 	import HarnessHeader from '../../../../src/components/explorer-ui/HarnessHeader.svelte';
 	import type { ExplorerLocation } from '../../../../src/models/Explorer.types';
 	import {
@@ -13,7 +14,9 @@
 	// The host of the shell in miniature: one address, kept in the browser history, and the header
 	// the console calls. It gives the header what a host gives it and decides nothing else.
 	const start: ExplorerLocation = { branch: shellBranch, commit: null, category: 'pages' };
-	const kept = (): ExplorerLocation => (history.state as ExplorerLocation | null) ?? start;
+	const kept = (): ExplorerLocation =>
+		explorerRoute(window.location.pathname.slice(shellMount.length), window.location.search) ??
+		start;
 	let location = $state(kept());
 	let scope = $derived(shellScope(location));
 	// A host reads a revision before it hands its entities over. `__searchLag` makes that read take
