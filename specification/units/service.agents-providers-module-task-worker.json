@@ -25,27 +25,123 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "constructor.root",
+				"name": "ModuleTaskWorkerService.once.worker",
+				"type": "string",
+				"description": "Worker id. Must match ^[a-z0-9]+(?:[.-][a-z0-9]+)*$; invalid values throw before owner lookup or task mutation."
+			},
+			{
+				"name": "ModuleTaskWorkerService.once.modules",
+				"type": "string[]",
+				"description": "Optional exact module-id allowlist. Defaults to []; an empty array permits any eligible module. Values are matched exactly and are not independently validated or normalized."
+			},
+			{
+				"name": "ModuleTaskWorkerService.once.signal",
+				"type": "AbortSignal",
+				"description": "Optional cancellation signal. Already-aborted signals reject before owner/queue access; active execution is awaited before context cleanup."
+			},
+			{
+				"name": "pendingTaskResult.selection",
+				"type": "TaskSelection",
+				"description": "Selected provider, model and intelligence recorded on the initial pending result."
+			},
+			{
+				"name": "pendingTaskResult.worktree",
+				"type": "string",
+				"description": "Worktree path recorded on the initial pending result."
+			},
+			{
+				"name": "claimedTask.queue",
+				"type": "ModuleTaskQueue",
+				"description": "Mutable queue clone supplied by ModuleTaskRepository.update."
+			},
+			{
+				"name": "claimedTask.worker",
+				"type": "string",
+				"description": "Worker id compared against optional task assignee and stored in the claim."
+			},
+			{
+				"name": "claimedTask.modules",
+				"type": "string[]",
+				"description": "Exact module-id allowlist; empty permits any module."
+			},
+			{
+				"name": "claimedTask.owner",
+				"type": "NonNullable<ModuleTask['claim']>['owner']",
+				"description": "Current clone owner from ModuleTaskRepository.owner: workspace UUID, positive process id and process start-time text."
+			},
+			{
+				"name": "finishTask.queue",
+				"type": "ModuleTaskQueue",
+				"description": "Mutable queue clone to receive the result if the original running claim and task definition still match."
+			},
+			{
+				"name": "finishTask.claimed",
+				"type": "ModuleTask",
+				"description": "Task record returned by the claim update; its id, claim token, contractHash, sourceCommit and repairCommit are compared with the current queue record."
+			},
+			{
+				"name": "finishTask.result",
+				"type": "ModuleTask['result']",
+				"description": "Result to persist. A truthy error selects failed; no error or an empty error string selects review."
+			},
+			{
+				"name": "taskWrites.git",
+				"type": "GitAdapter",
+				"description": "Git boundary used to inspect the worktree HEAD, tracked differences and non-ignored untracked files."
+			},
+			{
+				"name": "taskWrites.task",
+				"type": "ModuleTask",
+				"description": "Stored task whose sourceCommit and module.files define the permitted worktree head and path allowlist."
+			},
+			{
+				"name": "TaskRunner.run.input",
+				"type": "TaskRunInput",
+				"description": "Selected provider/model/intelligence plus cwd, prompt, signal and trusted transient TaskRunScope. Exact files come from prepare; scope is passed to each attempt and never stored in the queue result."
+			},
+			{
+				"name": "ModuleTaskWorkerService.constructor.root",
 				"type": "string optional existing repository root"
 			},
 			{
-				"name": "constructor.runner",
+				"name": "ModuleTaskWorkerService.constructor.runner",
 				"type": "TaskRunner optional existing collaborator"
 			},
 			{
-				"name": "constructor.contexts",
+				"name": "ModuleTaskWorkerService.constructor.contexts",
 				"type": "optional Pick<ModuleTaskContractContextService,\"create\">; default real context service at root"
-			},
-			{
-				"name": "once",
-				"type": "(worker:string,modules?:string[],signal?:AbortSignal)"
 			}
 		],
 		"outputs": [
 			{
-				"name": "once",
-				"type": "existing idle|failed|review result",
+				"name": "ModuleTaskWorkerService.once",
+				"type": "Promise<{status: 'idle'} | {status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']>}>",
 				"description": "Uses ModuleTaskService.prepare(task).files/role, creates detached worktree from selected repairCommit??sourceCommit, obtains contexts.create(task with selected sourceCommit,worktree,exact prepared files), passes scope to every run including quota-only fallback. Waits owned runner settlement before context.cleanup; cleanup awaited on success/failure/cancel/context-safe errors. No scope/snapshot/bin paths leaked into committed result. Post-diff/checkpoint uses prepared exact files, never broader legacy module.files. Existing claim/finish CAS and actual usage/analytics retained; no self-acceptance."
+			},
+			{
+				"name": "pendingTaskResult",
+				"type": "NonNullable<ModuleTask['result']>",
+				"description": "Builds an initial result from selection and worktree with reportedModel null, empty text, empty changedFiles and executions arrays, fallback false, and finishedAt set to the current ISO timestamp. It does not persist the result."
+			},
+			{
+				"name": "claimedTask",
+				"type": "ModuleTask | null",
+				"description": "Mutates the supplied queue clone. Computes busy module ids from all running tasks, then chooses the first queued task whose assignee is absent or equals worker, whose module is allowed or modules is empty, and whose module id is not busy. Returns null without mutation when none matches. Otherwise sets status running and claim {worker, token: random UUID, startedAt: ISO timestamp, owner}. It does not itself persist or validate worker/module identifiers; ModuleTaskWorkerService.once validates worker before calling it. Validates pure task preparation before changing status to running, so malformed prompt/selection cannot strand a claim."
+			},
+			{
+				"name": "finishTask",
+				"type": "void",
+				"description": "Finds the current task by claimed.id and throws if it is absent, is not running, has a different optional claim token, contractHash, sourceCommit or repairCommit. On a match it sets status to failed for a truthy result.error or review otherwise, then stores result. It mutates only the supplied queue clone, does not commit, append attempts/claimHistory or clear the claim, and a second finalization after status leaves running is rejected."
+			},
+			{
+				"name": "taskWrites",
+				"type": "Promise<string[]>",
+				"description": "First requires git rev-parse HEAD to equal task.sourceCommit, otherwise throws and leaves the worktree in place. Collects tracked changed paths from git diff --name-only -z HEAD and non-ignored untracked paths from git ls-files --others --exclude-standard -z; removes empty entries and deduplicates in first-seen order. Any collected path not exactly included in task.module.files throws and reports the outside paths, with the worktree preserved. Otherwise returns all collected paths. It does not stage, commit, normalize paths or report ignored untracked files. Worker callers supply task.module.files narrowed to the exact prepared role-specific files."
+			},
+			{
+				"name": "TaskRunResult",
+				"type": "TaskSelection & {text: string; reportedModel: string | null; usage?: TaskUsage}",
+				"description": "Committed repository contract for TaskRunner.run. The worker later merges dispatch output into the task workspace result and records execution history."
 			}
 		],
 		"errors": [
@@ -70,6 +166,11 @@
 			{
 				"name": "Outside prepared grant",
 				"type": "reject checkpoint/submission, keep worktree for review"
+			},
+			{
+				"name": "ModuleTaskRepository queue data validation",
+				"type": "ZodError or SyntaxError propagated",
+				"description": "Per the committed repository contract, invalid stored queue data fails schema parsing and malformed queue.json fails JSON parsing. Repository Git, filesystem, callback and 16-attempt CAS exhaustion errors also propagate from claim or finish updates."
 			}
 		]
 	},
