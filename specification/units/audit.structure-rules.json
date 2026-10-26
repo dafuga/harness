@@ -3,8 +3,8 @@
 	"id": "audit.structure-rules",
 	"kind": "audit",
 	"title": "structureRules",
-	"responsibility": "Owns the structureRules audit rule.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Report violations of Harness repository and module structure.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -21,25 +21,28 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "moduleCategoryFindings.structure",
-				"type": "AuditStructure"
+				"name": "auditHarnessStructure.structure",
+				"type": "AuditStructure",
+				"description": "Enumerated repository paths and project structure metadata."
 			},
 			{
-				"name": "auditHarnessStructure.structure",
+				"name": "moduleCategoryFindings.structure",
 				"type": "AuditStructure"
 			}
 		],
 		"outputs": [
 			{
-				"name": "moduleCategoryFindings",
-				"type": "AuditFinding[]"
+				"name": "auditHarnessStructure",
+				"type": "AuditFinding[]",
+				"description": "Reports invalid Harness shapes. Planned feature image artifacts are allowed only at specification/features/planned/<kebab-feature>/<kebab-image>.(png|jpg|jpeg|webp) when the matching planned feature markdown exists."
 			},
 			{
-				"name": "auditHarnessStructure",
-				"type": "AuditFinding[]"
+				"name": "moduleCategoryFindings",
+				"type": "AuditFinding[]",
+				"description": "Reports invalid module category structure."
 			}
 		],
 		"errors": []

@@ -130,8 +130,12 @@ function auditSourceFiles(files: string[], moduleFolders: Set<string>): AuditFin
 }
 
 function auditSpecFiles(files: string[]): AuditFinding[] {
+	const present = new Set(files);
 	return files.flatMap((file) => {
 		if (!file.startsWith('specification/features/')) return [];
+		const image =
+			/^specification\/features\/planned\/([a-z0-9]+(?:-[a-z0-9]+)*)\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:png|jpg|jpeg|webp)$/.exec(file);
+		if (image && present.has(`specification/features/planned/${image[1]}.md`)) return [];
 		if (
 			/^specification\/features\/(?:(?:implemented|planned)\/)?[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(
 				file
