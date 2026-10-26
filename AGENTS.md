@@ -183,7 +183,7 @@ When changing a shared Game renderer, include the root `test/game-runtime.test.t
 
 Use exactly these five forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.
 
-1. Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile).
+1. Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile). Layouts use the page form, with a labelled Child content placeholder in the real child slot.
 2. Components: Playwright screenshot matches of the component at rest, plus each declared interaction, prop and error state.
 3. Helpers: one unit case per authored example, asserting its documented output or error.
 4. Classes: one case per method and declared initialization or lifecycle state, including each declared error.

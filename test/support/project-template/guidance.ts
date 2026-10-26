@@ -42,6 +42,9 @@ function expectStandardTestForms(files: ReturnType<typeof projectFiles>): void {
 		expect(text, path).toContain(
 			'Components: Playwright screenshot matches of the component at rest'
 		);
+		expect(text, path).toContain(
+			'Layouts use the page form, with a labelled Child content placeholder in the real child slot.'
+		);
 		expect(text, path).toContain('Helpers: one unit case per authored example');
 		expect(text, path).toContain(
 			'Classes: one case per method and declared initialization or lifecycle state'

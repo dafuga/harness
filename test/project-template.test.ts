@@ -15,7 +15,7 @@ test(
 );
 
 test('app projects include SvelteKit and specification files', () =>
-	measureWorkload('template.project-guidance', 'layout-catalog-behavior', () => {
+	measureWorkload('template.project-guidance', 'layout-catalog-behavior', async () => {
 		const files = projectFiles({ kind: 'app', name: 'demo-app' });
 		const paths = files.map((file) => file.path);
 		const packageJson = JSON.parse(fileContents(files, 'package.json'));
@@ -50,7 +50,9 @@ test('app projects include SvelteKit and specification files', () =>
 			'harness info scaffolds --json'
 		);
 		expectCatalogGuidance(files);
-		expectGeneratedGuidance(files);
+		await measureWorkload('function.bug-repair-policy', 'layout-page-agent-guidance', () =>
+			expectGeneratedGuidance(files)
+		);
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 		expect(packageJson.harness.kind).toBe('app');
 		expect(packageJson.scripts['test:e2e']).toBe('playwright test');

@@ -57,6 +57,7 @@ const orders = {
 const standardFormGuidance = [
 	'Use exactly these five contract-driven test forms',
 	'Pages: Playwright screenshot matches of each declared page state at every required viewport',
+	'Layouts use the page form, with a labelled Child content placeholder in the real child slot.',
 	'Components: Playwright screenshot matches of the component at rest, plus each declared interaction, prop and error state.',
 	'Helpers: one unit case per authored example, asserting its documented output or error.',
 	'Classes: one case per method and declared initialization or lifecycle state, including each declared error.',

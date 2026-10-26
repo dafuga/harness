@@ -4,7 +4,8 @@ import { pieceFiles } from '../../src/templates/pieces';
 export function assertAppPieceContracts() {
 	assertComponentContract();
 	assertPageContract();
-	assertRegionContract();
+	assertLayoutContract();
+	assertPartialContract();
 	assertAppBehavior();
 }
 
@@ -47,13 +48,30 @@ function assertPageContract() {
 	expect(new Set(resourcePaths).size).toBe(resourcePaths.length);
 }
 
-function assertRegionContract() {
+function assertLayoutContract() {
 	const layout = pieceFiles('layout', 'BlogPost');
 	expect(layout.map((file) => file.path)).toContain('src/routes/blog-post/+layout.svelte');
 	expect(layout.map((file) => file.path)).toContain('src/routes/blog-post/__harness/+page.svelte');
 	const layoutTest = layout.find((file) => file.path.endsWith('-layout.spec.ts'));
 	expect(layoutTest?.contents).toContain('[data-harness-layout="blog-post"]');
 	expect(layoutTest?.contents).toContain('state.screenshot[viewport.id]');
+	expect(layoutTest?.contents, 'Layouts use the page screenshot form').toContain(
+		'matchScreenshot(page,'
+	);
+	expect(layoutTest?.contents).toContain('fullPage: true');
+	expect(layoutTest?.contents).toContain(
+		'layout.locator(\'[data-harness-layout-content="blog-post"]\')'
+	);
+	expect(layoutTest?.contents).toContain("toContainText('Child content placeholder')");
+	expect(layout.find((file) => file.path.endsWith('/__harness/+page.svelte'))?.contents).toContain(
+		'Child content placeholder'
+	);
+	expect(layout.find((file) => file.path.endsWith('/+layout.svelte'))?.contents).toContain(
+		'{@render children()}'
+	);
+}
+
+function assertPartialContract() {
 	const partial = pieceFiles('partial', 'PostCard');
 	expect(partial.map((file) => file.path)).toContain(
 		'src/routes/__harness/partials/post-card/+page.svelte'

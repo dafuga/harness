@@ -99,6 +99,7 @@ test('scaffold guidance tells agents what generated code contains', () =>
 			'reviewed baseline retained through Harness evidence'
 		);
 		expect(generatedRules('view')).toContain('Test shape: page screenshot match.');
+		assertLayoutPageGuidance(generatedRules, catalogRules());
 		expect(generatedRules('helper')).toContain('must match the comment beside the example');
 		expect(generatedRules('api')).toContain('every field and every error body');
 		expect(generatedRules('feature')).toContain('Test shape: none.');
@@ -135,3 +136,14 @@ test('available guide topics are unique for CLI error output', () => {
 	expect(topics).toEqual([...new Set(topics)]);
 	expect(topics.filter((topic) => topic === 'controller')).toHaveLength(1);
 });
+
+function assertLayoutPageGuidance(
+	generatedRules: (topic: string) => string,
+	catalog: string
+): void {
+	expect(generatedRules('layout')).toContain('Test shape: page screenshot match.');
+	expect(findGuide('layout')?.contains?.join(' ')).toContain('Layout page screenshot matches');
+	expect(catalog.split('\n').find((line) => line.startsWith('layout:'))).toContain(
+		'Test shape: page screenshot match.'
+	);
+}

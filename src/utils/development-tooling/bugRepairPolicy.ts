@@ -3,7 +3,7 @@ const rules = [
 	'For a reported bug, first diagnose why existing tests missed it. Name the responsible standardized test or scenario and its missing inputs, lifecycle, fixture or assertion; record the coverage gap before product repair.',
 	"Strengthen the existing standardized test and shared fixtures or assertions using the project's Harness scenario, state, viewport, registered-test and evidence format. Do not add a one-off bug-specific regression test.",
 	"Use exactly these five contract-driven test forms. Each draws its cases from the entity's declared contract as a finite, documented matrix.",
-	'Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile).',
+	'Pages: Playwright screenshot matches of each declared page state at every required viewport (desktop, tablet and mobile). Layouts use the page form, with a labelled Child content placeholder in the real child slot.',
 	'Components: Playwright screenshot matches of the component at rest, plus each declared interaction, prop and error state.',
 	'Helpers: one unit case per authored example, asserting its documented output or error.',
 	'Classes: one case per method and declared initialization or lifecycle state, including each declared error.',

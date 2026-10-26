@@ -3,6 +3,7 @@ import type { ComponentManifest } from '../../../src/core/unitTypes';
 import type { ContractCase } from '../../../src/services/verification-evidence/TestContractService';
 import { TestCaseValidator } from '../../../src/validators/verification-evidence/TestCaseValidator';
 import { indexFiles, unitOf } from '../../support/memoryTree';
+import { measureWorkload } from '../../support/measureWorkload';
 import {
 	observedDeclaredCases,
 	observedAuthoredCases,
@@ -56,6 +57,7 @@ test('validate each allowed shape and its missing or invalid states', async () =
 		[...authored, ...declared],
 		'helper case expectations must match their authored Example; method/state matrices must be finite'
 	).toEqual([false, false, false, false, false, false, false, false, false, false]);
+	await assertMeasuredLayoutPageCases(unit, item);
 	assertMethodStateCases(unit, item);
 	expect(
 		validator.validate(unit, {
@@ -102,4 +104,33 @@ function assertMethodStateCases(unit: ComponentManifest, item: ContractCase) {
 	expect(
 		validator.validate(owner, { ...contract, cases: cases.slice(1) }).errors.join(' ')
 	).toContain('missing method/state');
+}
+
+function assertLayoutPageCases(unit: ComponentManifest, item: ContractCase) {
+	const layout = { ...unit, kind: 'layout' };
+	const page = {
+		version: 1,
+		shape: 'page',
+		states: ['rest'],
+		cases: [
+			{
+				...item,
+				fixture: 'src/routes/blog-post/__harness/+page.svelte',
+				expected: { kind: 'screenshot', file: 'layout.png' },
+				viewports: ['desktop', 'tablet', 'mobile']
+			}
+		]
+	};
+	const observed = ['page', 'component', 'layout'].map(
+		(shape) => validator.validate(layout, { ...page, shape }).valid
+	);
+	expect(observed, 'Layouts use the existing page form').toEqual([true, false, false]);
+}
+
+async function assertMeasuredLayoutPageCases(unit: ComponentManifest, item: ContractCase) {
+	await measureWorkload(
+		'validator.verification-evidence-test-case',
+		'layout-page-case-admission',
+		() => assertLayoutPageCases(unit, item)
+	);
 }
