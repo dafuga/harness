@@ -9,12 +9,17 @@ export class FeaturePlanCoverageValidator {
 	): FeaturePlanCoverageValidatorResult {
 		const errors: string[] = [];
 		const affected = new Set<string>();
-		if (!input || !Array.isArray(input.changes) || !Array.isArray(input.pages))
+		if (!planShape(input))
 			return result(affected, [], ['Feature plan changes and pages are required.']);
 		if (!data || !data.registry || !Array.isArray(data.registry.units) || !data.relationships)
 			return result(affected, [], ['Committed registry and relationship metadata are required.']);
 		const plan = input as FeaturePlan;
-		validateMetadata(plan, data, errors);
+		validateMetadata(
+			plan,
+			data,
+			errors,
+			plan.changes.some((change) => change.kind !== 'reuse')
+		);
 		const units = new Map(data.registry.units.map((unit) => [unit.id, unit]));
 		const changes = new Map(plan.changes.map((change) => [change.unit, change]));
 		if (units.size !== data.registry.units.length)
@@ -38,6 +43,24 @@ export type { FeaturePlanCoverageValidatorResult } from './FeaturePlanCoverageVa
 type Unit = ModuleData['registry']['units'][number];
 type Change = FeaturePlan['changes'][number];
 
+function planShape(input: FeaturePlan | Record<string, unknown>): boolean {
+	return (
+		!!input &&
+		typeof input.sourceCommit === 'string' &&
+		input.sourceCommit.length > 0 &&
+		Array.isArray(input.changes) &&
+		input.changes.every(
+			(change) =>
+				change &&
+				typeof change.unit === 'string' &&
+				change.unit.length > 0 &&
+				['add', 'modify', 'remove', 'reuse'].includes(change.kind)
+		) &&
+		Array.isArray(input.pages) &&
+		input.pages.every((page) => page && typeof page.module === 'string' && page.module.length > 0)
+	);
+}
+
 function result(
 	affected: Set<string>,
 	declared: string[],
@@ -52,14 +75,21 @@ function result(
 	return { valid: issues.length === 0, affectedPages, missingPages, errors: issues };
 }
 
-function validateMetadata(plan: FeaturePlan, data: ModuleData, errors: string[]): void {
+function validateMetadata(
+	plan: FeaturePlan,
+	data: ModuleData,
+	errors: string[],
+	hasChanges: boolean
+): void {
 	if (!data.registry.available) errors.push('Committed registry is unavailable.');
 	if (data.commit !== plan.sourceCommit)
 		errors.push('Committed metadata does not match plan sourceCommit.');
+	if (!hasChanges) return;
 	if (!Array.isArray(data.references) || !Array.isArray(data.sourceGraph?.uncertain))
 		errors.push('Committed graph reference metadata is missing.');
-	else if (data.references.length || data.sourceGraph.uncertain.length)
-		errors.push('Committed graph contains unresolved references.');
+	else
+		for (const reference of [...data.references, ...data.sourceGraph.uncertain])
+			errors.push(referenceDiagnostic(reference));
 	const graph = data.registry.graph;
 	if (!graph || !Array.isArray(graph.nodes) || !Array.isArray(graph.edges)) {
 		errors.push('Committed registry graph is missing.');
@@ -69,6 +99,16 @@ function validateMetadata(plan: FeaturePlan, data: ModuleData, errors: string[])
 	for (const edge of graph.edges)
 		if (!nodes.has(edge.from) || !nodes.has(edge.to))
 			errors.push(`Unresolved committed graph edge: ${edge.from} -> ${edge.to}`);
+}
+
+function referenceDiagnostic(reference: unknown): string {
+	const fields =
+		reference && typeof reference === 'object' ? (reference as Record<string, unknown>) : {};
+	const details = ['node', 'reason', 'detail'].map(
+		(key) =>
+			`${key}=${typeof fields[key] === 'string' ? JSON.stringify(fields[key]) : '[missing or invalid]'}`
+	);
+	return `Unresolved committed graph reference: ${details.join('; ')}`;
 }
 
 function activeUnit(id: string, units: Map<string, Unit>, errors: string[]): Unit | undefined {
