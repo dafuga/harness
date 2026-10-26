@@ -1,0 +1,14 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-oixDQz
+
+ ✓ test/adapters/git-source-history/commit-tree.test.ts (6 tests) 891ms
+   ✓ CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths  610ms
+ ✓ test/services/platform-catalog.test.ts (11 tests) 460ms
+   ✓ configuration is read from the selected Git commit, including commits before it existed  444ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 80ms
+
+ Test Files  3 passed (3)
+      Tests  19 passed (19)
+   Start at  00:30:23
+   Duration  5.02s (transform 509ms, setup 159ms, collect 882ms, tests 1.43s, environment 0ms, prepare 66ms)
+
