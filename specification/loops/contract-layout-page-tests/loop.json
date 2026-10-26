@@ -2,7 +2,7 @@
 	"name": "contract-layout-page-tests",
 	"goal": "Layouts use page screenshot cases at every declared viewport with a labelled placeholder in their real child slot",
 	"createdAt": "2026-10-26T02:12:14.766Z",
-	"updatedAt": "2026-10-26T02:12:16.876Z",
+	"updatedAt": "2026-10-26T08:45:24.191Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T08:42:53.148Z",
+			"evidence": "Unchanged formatted cases at 0a253125f4 fail seven product assertions and pass twenty. Harness preserved the failing record; no environment failure."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T08:44:07.078Z",
+			"evidence": "Commit 98ab91902b changes seven product modules only: page captures, real nested placeholder, shared guidance and layout form validation. Existing tests remain unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T08:45:24.191Z",
+			"evidence": "Matched records bd1683db8d31 (red:7 failed/20 passed) and adcc970bf025 (green:27 passed) share unchanged cases, command, inputs and environment. Product fix 98ab91902b."
 		},
 		{
 			"id": "verify",
