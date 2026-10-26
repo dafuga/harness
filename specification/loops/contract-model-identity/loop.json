@@ -2,7 +2,7 @@
 	"name": "contract-model-identity",
 	"goal": "Require the requested exact worker model to be reported; preserve usage and leave unidentified executions failed without fallback",
 	"createdAt": "2026-10-26T01:32:32.682Z",
-	"updatedAt": "2026-10-26T01:32:33.811Z",
+	"updatedAt": "2026-10-26T09:04:23.386Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T09:03:37.133Z",
+			"evidence": "Checkpoint dcf5302479: one existing case fails, eight pass. Missing Codex identity is accepted and mismatched actual identity is lost. Record a8c3a47b9654."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T09:04:03.625Z",
+			"evidence": "The runner rejects a missing Codex model and retains the final provider identity on failure, alongside unchanged usage. Historical task outcomes are untouched."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T09:04:23.386Z",
+			"evidence": "Matched record a8c3a47b9654 fails one existing case; 2d8410341c19 passes all nine at 47e2bd5b1b. Same test bytes, command and reserved environment; no fallback or historical rewriting."
 		},
 		{
 			"id": "verify",
