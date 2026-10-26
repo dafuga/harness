@@ -1,0 +1,77 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-MN36ly
+
+ ❯ test/budget-baseline-preparation.test.ts (2 tests | 1 failed | 1 skipped) 10122ms
+   ↓ a prepared baseline whose second verification fails is refused, its failed record kept
+   × a valid prepared baseline is returned once its second verification passed 10120ms
+     → fixture contract and executed cases must be complete: expected [ …(41) ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/budget-baseline-preparation.test.ts > a valid prepared baseline is returned once its second verification passed
+AssertionError: fixture contract and executed cases must be complete: expected [ …(41) ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "function.clock: missing standardized test contract",[39m
+[31m+   "function.slugify: missing standardized test contract",[39m
+[31m+   "page.titles: missing standardized test contract",[39m
+[31m+   "service.clock: missing standardized test contract",[39m
+[31m+   "service.title: missing standardized test contract",[39m
+[31m+   "test/index.test.ts: function.clock: missing standardized test contract",[39m
+[31m+   "test/index.test.ts: function.slugify: missing standardized test contract",[39m
+[31m+   "test/index.test.ts: page.titles: missing standardized test contract",[39m
+[31m+   "test/index.test.ts: service.clock: missing standardized test contract",[39m
+[31m+   "test/index.test.ts: service.title: missing standardized test contract",[39m
+[31m+   "test/index.test.ts: entry.index/greeting.default: missing executed case",[39m
+[31m+   "test/services/clock.test.ts: function.clock: missing standardized test contract",[39m
+[31m+   "test/services/clock.test.ts: function.slugify: missing standardized test contract",[39m
+[31m+   "test/services/clock.test.ts: page.titles: missing standardized test contract",[39m
+[31m+   "test/services/clock.test.ts: service.clock: missing standardized test contract",[39m
+[31m+   "test/services/clock.test.ts: service.title: missing standardized test contract",[39m
+[31m+   "test/services/title.test.ts: function.clock: missing standardized test contract",[39m
+[31m+   "test/services/title.test.ts: function.slugify: missing standardized test contract",[39m
+[31m+   "test/services/title.test.ts: page.titles: missing standardized test contract",[39m
+[31m+   "test/services/title.test.ts: service.clock: missing standardized test contract",[39m
+[31m+   "test/services/title.test.ts: service.title: missing standardized test contract",[39m
+[31m+   "titles-audio:audio: function.clock: missing standardized test contract",[39m
+[31m+   "titles-audio:audio: function.slugify: missing standardized test contract",[39m
+[31m+   "titles-audio:audio: page.titles: missing standardized test contract",[39m
+[31m+   "titles-audio:audio: service.clock: missing standardized test contract",[39m
+[31m+   "titles-audio:audio: service.title: missing standardized test contract",[39m
+[31m+   "titles-boundary:bench: function.clock: missing standardized test contract",[39m
+[31m+   "titles-boundary:bench: function.slugify: missing standardized test contract",[39m
+[31m+   "titles-boundary:bench: page.titles: missing standardized test contract",[39m
+[31m+   "titles-boundary:bench: service.clock: missing standardized test contract",[39m
+[31m+   "titles-boundary:bench: service.title: missing standardized test contract",[39m
+[31m+   "clock:clock: function.clock: missing standardized test contract",[39m
+[31m+   "clock:clock: function.slugify: missing standardized test contract",[39m
+[31m+   "clock:clock: page.titles: missing standardized test contract",[39m
+[31m+   "clock:clock: service.clock: missing standardized test contract",[39m
+[31m+   "clock:clock: service.title: missing standardized test contract",[39m
+[31m+   "titles-page:page: function.clock: missing standardized test contract",[39m
+[31m+   "titles-page:page: function.slugify: missing standardized test contract",[39m
+[31m+   "titles-page:page: page.titles: missing standardized test contract",[39m
+[31m+   "titles-page:page: service.clock: missing standardized test contract",[39m
+[31m+   "titles-page:page: service.title: missing standardized test contract",[39m
+[31m+ ][39m
+
+ ❯ test/budget-baseline-preparation.test.ts:57:72
+     55|    /missing standardized test contract|missing executed case/.test(fai…
+     56|   );
+     57|   expect(gaps, 'fixture contract and executed cases must be complete')…
+       |                                                                        ^
+     58|   expect(seen.outcomes).toHaveLength(2);
+     59|   expect(seen.outcomes[1].exitCode).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 skipped (2)
+   Start at  20:48:37
+   Duration  14.15s (transform 128ms, setup 170ms, collect 35ms, tests 10.12s, environment 0ms, prepare 36ms)
+
