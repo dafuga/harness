@@ -11,9 +11,13 @@ Static validation passed for both skill frontmatters and instruction structure
 using the skill-creator validator with isolated PyYAML 6.0.2. This is instruction
 validation, not application test execution or completed migration proof.
 
-Installed file hashes at 2026-10-25T23:35:01.795851+00:00:
+Installed file hashes at 2026-10-26T01:02:22.605107+00:00:
 
 - `/Users/danielfugere/.codex/skills/harness-project/SKILL.md`
-  SHA-256: `12633e35ada7e991eb79f439d2c72984ca2c8106b89e3ffcb7bde569c3f25d10`.
+  SHA-256: `3adb8a1d96848a21bed40ef313ec3000e139d0d61668aa558072aadffddde222`.
 - `/Users/danielfugere/.codex/skills/regression-first-issue-fixing/SKILL.md`
-  SHA-256: `77df59b0d1ecb69af38832e678a9ec77d23c10818eab2b58a8f10758cd4681f2`.
+  SHA-256: `680bc827d899efd8655ab0ba9e4b9f22de987016049157e1dab6acf1e1653516`.
+
+The installed policies also require explicit states and make prop/error additions
+strengthen existing rows. Only a distinct declared state, Example or method adds a
+row. Static validation was rerun after this alignment.

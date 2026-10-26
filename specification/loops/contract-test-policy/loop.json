@@ -2,7 +2,7 @@
 	"name": "contract-test-policy",
 	"goal": "Only five contract-driven suites; stable bug case counts; matching visual and JSON evidence; complete Git history reconstruction",
 	"createdAt": "2026-10-25T12:18:40.439Z",
-	"updatedAt": "2026-10-25T12:18:40.439Z",
+	"updatedAt": "2026-10-26T01:26:35.876Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -11,12 +11,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the regression, prior working behavior, root cause, and evidence.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T01:26:35.037Z",
+			"evidence": "Approved scope is this repository’s workspaces, generators and agent guidance: exactly page/component screenshot matching, helper Examples, class method/state cases and complete API JSON comparisons. Stable case counts, error props, revision-bound artifacts and full Git-only history reconstruction are required; external app migration and production are excluded."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the regression; name the coverage gap and reusable test or shared guard change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T01:26:35.876Z",
+			"evidence": "Inventory is 1110 suite files and 4581 discovered declarations. The current qualified migration covers 44 units and 692 cases; 5887 gaps remain and global testing cutover is disabled. Existing cases exposed count inflation, authored-data loss and dropped class audio. Visual baselines, remaining module migrations, normal aggregate verification, manual Explorer flows and exhaustive history remain pending."
 		},
 		{
 			"id": "red",

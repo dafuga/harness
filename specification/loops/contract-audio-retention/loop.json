@@ -2,11 +2,9 @@
 	"name": "contract-audio-retention",
 	"goal": "Retain class-generated audio in revision-bound proof and Examples with failures and provenance intact",
 	"createdAt": "2026-10-26T00:10:42.686Z",
-	"updatedAt": "2026-10-26T00:10:44.026Z",
+	"updatedAt": "2026-10-26T00:45:19.340Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,27 +25,37 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T00:30:35.274Z",
+			"evidence": "Retained red 86364a3ca50b at test-only 1bda78322134 on harbor-mbp-2. The unchanged single artifact method case observes [0,0] retained audio, a sealed-reader decode rejection and four accepted forged bindings before asserting. Compiler, full lint, audit and five generated-project cases pass."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T00:30:36.010Z",
+			"evidence": "Retain decoded audio through the same focused evidence pipeline as screenshots, with registered unit/case, revision/hash and declared scenario binding. Keep audio free of screenshot viewports and HTTP-server assumptions. Reuse exact stored bytes and validate the sealed media kind and audio provenance before projecting history; preserve original statuses."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T00:45:16.260Z",
+			"evidence": "Committed 37096c026eaf retains decoded class audio with declared unit/case/state/slot, tested revision, media hash and transcript. Audio is not assigned a screenshot viewport or HTTP server identity. The Git reader validates WAV kind and provenance; old image checks and statuses stay intact."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T00:45:17.899Z",
+			"evidence": "Matched harbor-mbp-2 red 77a3588bbfaa at 1bda78322134 fails the same single existing method case; green cfc1e6939d4a at 37096c026eaf passes. Both records retain the original d62864e6ea73 WAV and source-bound class/case notes. Tests, fixtures, authored expectations, command and environment are unchanged."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T00:45:19.340Z",
+			"evidence": "The clean original product snapshot 1bda78322134 fails retention, sealed-reader decoding and forged-binding observations; repaired 37096c026eaf passes unchanged. Both failing/passing records preserve playable bytes and outcomes. Diagnostic qualification passed compiler, full lint, registry, audit and 32 method, CLI screenshot/history, generator, ownership and readability checks on harbor-mbp-2."
 		},
 		{
 			"id": "verify",

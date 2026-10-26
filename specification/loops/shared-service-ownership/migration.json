@@ -1643,10 +1643,10 @@
 			"definition": "31b77a66cd2751b8b01b4ba45e3fdb0ecddff4899f747d8717ab3429bc3ddc15",
 			"relocationDefinition": "fe7669ca45e2a0ea78e302821cd1fb8a23eb10a79522d1afd2e7f95d093c865c",
 			"review": {
-				"commit": "bfc281f4b374dec4b8bfbaf98dfe88a967109570",
+				"commit": "37096c026eafe524e73c927701f06207231c9f24",
 				"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
 				"definition": "31b77a66cd2751b8b01b4ba45e3fdb0ecddff4899f747d8717ab3429bc3ddc15",
-				"reason": "Seal authored expectation provenance alongside the unchanged test blob corpus; preserve all original source and review records."
+				"reason": "Review revision-bound class audio retention and sealed decoding in the owned proof pipeline; preserve original moves, earlier reviews and image behavior."
 			},
 			"previousReviews": [
 				{
@@ -1684,6 +1684,12 @@
 					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
 					"definition": "691d2c0809e3f2571deb6718a0ebc71329cef179c48379d861b93a51dca58232",
 					"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+				},
+				{
+					"commit": "bfc281f4b374dec4b8bfbaf98dfe88a967109570",
+					"path": "src/workflows/verification-evidence/record-regression/RegressionProofService.ts",
+					"definition": "31b77a66cd2751b8b01b4ba45e3fdb0ecddff4899f747d8717ab3429bc3ddc15",
+					"reason": "Seal authored expectation provenance alongside the unchanged test blob corpus; preserve all original source and review records."
 				}
 			]
 		},
