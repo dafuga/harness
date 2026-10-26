@@ -2,15 +2,21 @@ import { readFile } from 'node:fs/promises';
 import { setTimeout } from 'node:timers/promises';
 import type { Command } from 'commander';
 import { ModuleTaskService } from '../../services/agents-providers/ModuleTaskService';
+import { ModuleTaskServerService } from '../../services/agents-providers/ModuleTaskServerService';
 import { ModuleTaskWorkerService } from '../../services/agents-providers/ModuleTaskWorkerService';
-import type { WorkerFlags } from './ModuleTaskCommand.types';
+import type { ServeFlags, WorkerFlags } from './ModuleTaskCommand.types';
+type TaskServer = Pick<ModuleTaskServerService, 'run'>;
 /** Task admission, discovery and foreground worker wiring; task check keeps its completion gate. */
 export class ModuleTaskCommand {
-	constructor(private readonly service = new ModuleTaskService()) {}
+	constructor(
+		private readonly service = new ModuleTaskService(),
+		private readonly server: Pick<ModuleTaskServerService, 'run'> = new ModuleTaskServerService()
+	) {}
 	register(task: Command): void {
 		this.authoring(task);
 		this.reads(task);
 		this.operations(task);
+		serverCommands(task, this.server);
 		this.reviews(task);
 	}
 	private authoring(task: Command): void {
@@ -96,6 +102,44 @@ export class ModuleTaskCommand {
 				'Pick up matching assignments in isolated worktrees; watch polls until interrupted.'
 			)
 			.action(worker);
+	}
+}
+function serverCommands(task: Command, server: TaskServer): void {
+	task
+		.command('serve')
+		.requiredOption('--input <file>')
+		.requiredOption('--worker <id>')
+		.option(
+			'--module <id>',
+			'Limit dispatch to this module; repeat to include more modules.',
+			(id, modules: string[] = []) => [...modules, id],
+			[]
+		)
+		.option('--once', 'Run one worker attempt instead of watching.')
+		.option('--json', 'Print the actual server result as JSON.')
+		.description(
+			'Submit a committed plan to server-managed workers; watch until interrupted by default.'
+		)
+		.action((flags: ServeFlags) => runServerPlan(server, flags));
+}
+async function runServerPlan(server: TaskServer, flags: ServeFlags): Promise<void> {
+	const plan = JSON.parse(await readFile(flags.input, 'utf8'));
+	const controller = new AbortController();
+	const abort = () => controller.abort(new Error('Module task server interrupted.'));
+	process.on('SIGINT', abort);
+	process.on('SIGTERM', abort);
+	try {
+		print(
+			await server.run(plan, {
+				worker: flags.worker,
+				modules: flags.module ?? [],
+				once: flags.once ?? false,
+				signal: controller.signal
+			})
+		);
+	} finally {
+		process.off('SIGINT', abort);
+		process.off('SIGTERM', abort);
 	}
 }
 function print(value: unknown): void {

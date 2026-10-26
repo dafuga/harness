@@ -3,7 +3,7 @@
 	"id": "command.agents-providers-module-task",
 	"kind": "command",
 	"title": "ModuleTaskCommand",
-	"responsibility": "Expose committed feature contexts, module tasks and assigned foreground workers through the Harness CLI.",
+	"responsibility": "Expose existing task commands and a task serve command that delegates an entire plan to the server-owned executor.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,27 +19,37 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ModuleTaskCommand.constructor.service",
-				"type": "unknown"
+				"name": "constructor.service",
+				"type": "ModuleTaskService optional existing first collaborator"
 			},
 			{
-				"name": "ModuleTaskCommand.register.task",
-				"type": "Command"
+				"name": "constructor.server",
+				"type": "Pick<ModuleTaskServerService,\"run\"> optional second collaborator"
+			},
+			{
+				"name": "serve",
+				"type": "--input <JSON plan file> --worker <id> [--module <id> repeated] [--once] [--json]",
+				"description": "Uses full plan, worker, exact module filter and owned AbortSignal. once invokes exactly one attempt; default watch until interrupted. No separatemanualadd/worker call."
 			}
 		],
 		"outputs": [
 			{
-				"name": "ModuleTaskCommand.register",
-				"type": "void"
+				"name": "register",
+				"type": "void",
+				"description": "Registers serve along with existingcommands. Delegates server.run(plan,{worker,modules,once,signal}); serializes actual one-shot result. SIGINT/SIGTERM abort owned signal, awaits server settlement then removes only own listeners."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Malformed plan/read/server failure",
+				"type": "propagated safe CLI failure; no fallback or fake completion"
+			},
+			{
+				"name": "Cancellation",
+				"type": "abort awaited, no detached worker, no success claim"
 			}
 		]
 	},

@@ -3,7 +3,7 @@
 	"id": "adapter.agents-providers-module-task-worktree",
 	"kind": "adapter",
 	"title": "ModuleTaskWorktreeAdapter",
-	"responsibility": "Preserve submitted task source as Git objects without moving source HEAD or changing user indexes.",
+	"responsibility": "Preserve an assigned task submission in a source-bound checkpoint and publish complete committed module metadata before returning its revision.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -19,27 +19,33 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ModuleTaskWorktreeAdapter.constructor.root",
-				"type": "string"
+				"name": "constructor.root",
+				"type": "string; owning repository root"
 			},
 			{
-				"name": "ModuleTaskWorktreeAdapter.checkpoint.input",
-				"type": "TaskCheckpointInput"
+				"name": "checkpoint.input",
+				"type": "TaskCheckpointInput = {cwd:string;source:string;paths:string[]}",
+				"description": "cwd is same-repository detached task worktree with HEAD equal to source. paths must be exact changed files already checked by taskWrites against prepared role-specific grant; adapter uses literal pathspecs."
 			}
 		],
 		"outputs": [
 			{
-				"name": "ModuleTaskWorktreeAdapter.checkpoint",
-				"type": "Promise<string>"
+				"name": "checkpoint",
+				"type": "Promise<string>",
+				"description": "Verifies same canonical Git common directory and exact worktree HEAD. For changed paths creates a commit object with parent source using private temporary index, generic author fallback, preserving source HEAD, branch refs and user index; empty paths return source unchanged. Before returning either revision, publishes module metadata via ModuleDataService.validate({commit,write:true}) and admits it via require. Requires valid and committed metadata; evidence gaps are reported and do not block. Finally removes only its private index directory; task worktree retained for review."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Changed source/repository or Git/filesystem failure",
+				"type": "Error rejection; no branch/index overwrite"
+			},
+			{
+				"name": "Incomplete checkpoint metadata",
+				"type": "Error rejection with safe validation command for exact checkpoint; never return an unreadable successful revision"
 			}
 		]
 	},
