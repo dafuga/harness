@@ -119,6 +119,8 @@ function assertShapeRows(
 	};
 	const before = {
 		...unit,
+		id: shape === 'api' ? 'endpoint.api-rank' : `${shape}.rank`,
+		kind: shape === 'api' ? 'endpoint' : shape,
 		testing: { ...unit.testing, shape, states: [state], cases: [original] }
 	};
 	const first = {

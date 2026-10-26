@@ -6,19 +6,19 @@ import {
 import { expect, test } from 'vitest';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { TestContractService } from '../../../src/services/verification-evidence/TestContractService';
-import { indexFiles, unitOf } from '../../support/memoryTree';
+import { indexFiles } from '../../support/memoryTree';
 import { measureWorkload } from '../../support/measureWorkload';
 import { assertCaseAdmissionInputs } from '../../support/testCaseAdmissionCases';
 import { assertDeclaredInputCapabilities } from '../../support/testCapabilityCases';
 
 const service = new TestContractService();
 async function fixture() {
-	const unit = unitOf(
-		await indexFiles({
-			'src/utils/rank.ts': 'export function rank(value: number): number { return value; }'
-		}),
-		'function.rank'
-	);
+	const indexed = await indexFiles({
+		'src/routes/api/rank/+server.ts':
+			'export function GET() { return Response.json({ value: 1 }); }'
+	});
+	const unit = indexed.result.manifests.find((item) => item.kind === 'endpoint');
+	if (!unit) throw new Error('The rank endpoint was not indexed');
 	return {
 		...unit,
 		testing: {
@@ -111,7 +111,7 @@ test('compare initialized contracts preserves identities unless capabilities cha
 		() => assertMatrixRows(unit, service, 'compare')
 	);
 	expect(service.compare([], [unit])).toEqual([]);
-	assertSiblingCaseIdentity(unit);
+	assertSiblingCaseIdentity({ ...unit, id: 'function.values', kind: 'function' });
 });
 
 function assertMetadataCannotInflate(unit: ComponentManifest, changed: ComponentManifest) {

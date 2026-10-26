@@ -21,7 +21,12 @@ function fixture(unit: ContractUnit, shape: 'api' | 'page' | 'component') {
 			? {}
 			: { viewports: shape === 'page' ? ['desktop', 'tablet', 'mobile'] : ['desktop'] })
 	};
-	const before = { ...unit, testing: { ...unit.testing, shape, states: [state], cases: [item] } };
+	const before = {
+		...unit,
+		id: shape === 'api' ? 'endpoint.api-rank' : `${shape}.rank`,
+		kind: shape === 'api' ? 'endpoint' : shape,
+		testing: { ...unit.testing, shape, states: [state], cases: [item] }
+	};
 	const row = {
 		...item,
 		id: 'extra-row',
