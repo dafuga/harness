@@ -2,7 +2,7 @@
 	"name": "contract-case-realpath",
 	"goal": "Retain actual runner case outcomes when snapshot and runner paths resolve to the same source",
 	"createdAt": "2026-10-26T21:27:13.755Z",
-	"updatedAt": "2026-10-26T21:28:22.260Z",
+	"updatedAt": "2026-10-26T21:33:57.980Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -41,17 +41,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:33:54.849Z",
+			"evidence": "Both the shared reporter and generated library reporter resolve existing paths before preserving or rejecting outcome identity."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:33:56.419Z",
+			"evidence": "Record 5cb2810eb1a7 passes the unchanged reporter cases at afb71fb68d against red 135d6520aa09 in the same normalized environment."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:33:57.980Z",
+			"evidence": "Isolated mutant c7edaeba18 failed capture 7dcbbe99d553; restored 76a85d77a6 passed capture 055435367d49 with the same cases."
 		},
 		{
 			"id": "verify",
