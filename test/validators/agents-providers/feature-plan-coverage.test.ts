@@ -95,12 +95,29 @@ test('includes a registered planned page ancestor through intermediate planned m
 test('reuse alone does not introduce consuming-page coverage obligations', () => {
 	const metadata = data();
 	metadata.relationships['component.shared'].pages = ['page.alpha'];
-	expect(validate(plan([change('component.shared', 'reuse')]), metadata)).toEqual({
-		valid: true,
-		affectedPages: [],
-		missingPages: [],
-		errors: []
-	});
+	for (const references of [
+		[],
+		[
+			{
+				node: 'test/unrelated.test.ts',
+				reason: 'dynamic-import',
+				detail: 'Unrelated test fixture import'
+			}
+		]
+	]) {
+		metadata.references = references;
+		for (const changes of [[], [change('component.shared', 'reuse')]]) {
+			const input = plan(changes);
+			const before = structuredClone({ input, metadata });
+			expect(validate(input, metadata)).toEqual({
+				valid: true,
+				affectedPages: [],
+				missingPages: [],
+				errors: []
+			});
+			expect({ input, metadata }).toEqual(before);
+		}
+	}
 });
 
 test('removed components still require all their consuming page designs', () => {
@@ -135,12 +152,24 @@ test('missing relationship metadata fails closed instead of silently reporting n
 
 test('unresolved committed graph references reject even otherwise complete designs', () => {
 	const metadata = data();
-	metadata.references = [
-		{ from: 'src/component.shared.ts', specifier: './dynamic', reason: 'unresolved' }
+	const references = [
+		{ node: 'src/component.shared.ts', reason: 'unresolved', detail: './dynamic-shared' },
+		{ node: 'src/component.other.ts', reason: 'dynamic-import', detail: './dynamic-other' }
 	];
-	const result = validate(plan(), metadata);
+	metadata.references = references;
+	const input = plan([change('component.shared'), change('component.other')]);
+	const before = structuredClone({ input, metadata });
+	const result = validate(input, metadata);
 	expect(result.valid).toBe(false);
 	expect(result.errors.join('\n')).toMatch(/unresolved|uncertain/i);
+	for (const reference of references) {
+		expect(
+			result.errors.some((error) =>
+				Object.values(reference).every((field) => error.includes(field))
+			)
+		).toBe(true);
+	}
+	expect({ input, metadata }).toEqual(before);
 });
 
 test('unregistered added pages and children fail closed until metadata is committed', () => {
