@@ -1,3 +1,4 @@
+import { standardCodeModules } from '../../../src/templates/module-system/standardCodeModules';
 import { expect } from 'vitest';
 import type { HarnessNavbarInput } from '../src/utils/explorer-ui/harnessShell.types';
 import { harnessShell } from '../src/components/explorer-ui/harness-navbar/harnessShell';
@@ -28,4 +29,35 @@ export function assertModuleArrayAdmission(input: HarnessNavbarInput): void {
 	}
 	Object.setPrototypeOf(entries, SpeciesArray.prototype);
 	expect(() => harnessShell(props)).toThrow('species admission retained');
+}
+
+/** Frozen included definitions retain their generators while the public catalog uses Plugins. */
+export function assertLegacyLibraryNavigation(input: HarnessNavbarInput): void {
+	const modules = standardCodeModules.map((definition) => ({
+		definition:
+			definition.id === 'modules'
+				? {
+						...definition,
+						title: 'Modules',
+						visibility: undefined,
+						resources: definition.resources.map((resource) => ({ ...resource, title: 'Modules' }))
+					}
+				: definition,
+		source: 'builtin' as const,
+		installed: true,
+		instances: []
+	}));
+	const scope = input.scope!;
+	const result = harnessShell({
+		...input,
+		modules: { modules, gaps: [] },
+		scope: {
+			...scope,
+			location: { ...scope.location, category: 'pages', screen: 'modules' }
+		}
+	});
+	expect(result.modules.find((item) => item.id === 'module-library')).toMatchObject({
+		label: 'Plugins',
+		active: true
+	});
 }

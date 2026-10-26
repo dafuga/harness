@@ -1,4 +1,7 @@
-import { assertModuleArrayAdmission } from '../moduleNavigationCases';
+import {
+	assertLegacyLibraryNavigation,
+	assertModuleArrayAdmission
+} from '../moduleNavigationCases';
 import { moduleData } from '../../tests/e2e/support/component-previews/modules';
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
@@ -15,7 +18,6 @@ import {
 	shellMount,
 	shellScope
 } from '../../tests/e2e/support/shellData';
-
 const input = (location: ExplorerLocation | null): HarnessNavbarInput => ({
 	base: shellMount,
 	repository: 'synthetic-repository',
@@ -38,7 +40,6 @@ const historical: ExplorerLocation = {
 };
 const canonical = { ...historical };
 delete canonical.section;
-
 test('the bar groups module categories under four scoped primary destinations', async () => {
 	await measureWorkload('reports.function.harness-shell', 'scoped-navbar-destinations', () => {
 		const { categories } = view(historical);
@@ -82,7 +83,7 @@ test('the bar groups module categories under four scoped primary destinations', 
 					'module-library'
 				].map((id) => ({
 					id,
-					href: `${scoped}/commit/${sha(4)}/${id === 'module-library' ? 'modules' : id}`,
+					href: `${scoped}/commit/${sha(4)}/${id === 'module-library' ? 'plugins' : id}`,
 					active: id === category
 				}))
 			});
@@ -206,6 +207,7 @@ test('installed modules contribute scoped Code entries from their resource defin
 	const props = input(historical);
 	props.modules = moduleData;
 	assertModuleArrayAdmission(props);
+	assertLegacyLibraryNavigation(props);
 	const menu = harnessShell(props).modules;
 	expect(menu.find((item) => item.label === 'Emails')).toMatchObject({
 		id: 'resource:email.email',
