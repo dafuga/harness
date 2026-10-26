@@ -1,7 +1,10 @@
+import {
+	prepareBrowserBaselineReport,
+	expectMissingScreenshotResults
+} from './support/browserBaselineResults';
 import { assertModuleProject } from './support/moduleScenario';
 import { spawn } from 'node:child_process';
-import { stripVTControlCharacters } from 'node:util';
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -47,22 +50,12 @@ test('CLI scaffolds and checks an app project with routes', async () => {
 		await runHarness(['g', kind, 'PublishPost'], project);
 	}
 	await runCommand(['bun', 'install'], project);
-	const browserConfig = join(project, 'playwright.config.ts');
-	await writeFile(
-		browserConfig,
-		(await readFile(browserConfig, 'utf8'))
-			.replaceAll('3322', String(await freePort()))
-			.replace('reuseExistingServer: true', 'reuseExistingServer: false')
-	);
+	await prepareBrowserBaselineReport(project);
 	const check = await runCommand(['bun', 'run', 'check'], project, false);
 	expect(check.stdout).toContain('Checking formatting...');
 	expect(check.exitCode).toBe(1);
 	expect(check.stdout + check.stderr).toContain("A snapshot doesn't exist");
-	const workers = stripVTControlCharacters(check.stdout).match(
-		/Running \d+ tests using \d+ workers?/
-	);
-	expect(workers, 'The generated screenshot suites reached their browser workers').not.toBeNull();
-	console.info(`Generated app: ${workers![0]}`);
+	await expectMissingScreenshotResults(project, check.stdout + check.stderr, 31);
 	await runCommand(['bun', 'run', 'build'], project);
 	const audit = await runCommand(['bun', 'run', 'audit'], project);
 	expect(audit.stdout).toContain('Harness audit passed');

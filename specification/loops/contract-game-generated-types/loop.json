@@ -2,9 +2,11 @@
 	"name": "contract-game-generated-types",
 	"goal": "Compile generated 2d and 3d game projects through source and bundled CLI entrypoints using their unchanged standard cases",
 	"createdAt": "2026-10-26T11:25:17.263Z",
-	"updatedAt": "2026-10-26T11:35:55.969Z",
+	"updatedAt": "2026-10-26T11:56:32.944Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -25,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T11:46:15.167Z",
+			"evidence": "At test-only f37f77d370, laptop red e16f1da1a990 fails the existing standalone app type-reference case and four existing game combinations. Compiler output identifies unresolved $app/state before screenshot baseline admission."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T11:56:31.522Z",
+			"evidence": "Product-only a1dd559fbc emits src/app.d.ts with the framework ambient type reference for every generated app/game. Standalone routes resolve virtual modules without incidental API imports; frozen cases are unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T11:56:32.944Z",
+			"evidence": "Matched laptop green 3d6924ccbe4a passes the identical ten-case command after red e16f1da1a990. All four game combinations compile, reject missing baselines, build, audit and retain gameplay/invalid-document assertions."
 		},
 		{
 			"id": "verify",

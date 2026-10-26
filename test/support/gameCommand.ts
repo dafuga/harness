@@ -1,3 +1,7 @@
+import {
+	prepareBrowserBaselineReport,
+	expectMissingScreenshotResults
+} from './browserBaselineResults';
 import type { Scope, Observed, Reported } from './gameCommand.types';
 import { execFileSync } from 'node:child_process';
 import { expect } from 'vitest';
@@ -122,11 +126,13 @@ function recordCommand(scope: Scope, output: Observed) {
 }
 
 /** Missing baselines are the sole admitted failure; static, unit, build and audit gates still run. */
-export function assertGameCheck(cwd: string, scope: Scope): void {
+export async function assertGameCheck(cwd: string, scope: Scope): Promise<void> {
+	await prepareBrowserBaselineReport(cwd);
 	const check = gameCommand(['bun', 'run', 'check'], cwd, { ...scope, expectedExitCode: 1 });
 	const output = check.stdout + check.stderr;
 	expect(output).toContain("A snapshot doesn't exist");
 	expect(output).toContain('svelte-check found 0 errors');
+	await expectMissingScreenshotResults(cwd, output, 7);
 	for (const stage of ['build', 'audit'])
 		gameCommand(['bun', 'run', stage], cwd, {
 			...scope,

@@ -35,7 +35,7 @@ test.each([
 			const saved = await repository.read();
 			saved.document.views[0].title = 'Authored courtyard';
 			await repository.save(saved.document, saved.revision);
-			assertGameCheck(cwd, {
+			await assertGameCheck(cwd, {
 				cli,
 				workload: `game-check-${dimension}-${entry}`,
 				units: ['template.game-project', 'template.project']
