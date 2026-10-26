@@ -1,6 +1,6 @@
 import { separateTypeDeclarations } from '../development-tooling/separateTypeDeclarations';
 import type { ProjectTemplateInput } from './project.types';
-import { appTestFiles } from './projectTests';
+import { appTestFiles, libTestFiles } from './projectTests';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { auditConfigFiles } from '../development-tooling/auditConfig';
 import { auditRunnerFiles } from '../development-tooling/auditRunner';
@@ -115,7 +115,7 @@ function libFiles(name: string): PlannedFile[] {
 		{
 			path: 'tsconfig.json',
 			contents:
-				'{\n\t"compilerOptions": {\n\t\t"target": "ES2022",\n\t\t"module": "ESNext",\n\t\t"moduleResolution": "Bundler",\n\t\t"strict": true,\n\t\t"skipLibCheck": true,\n\t\t"types": ["bun-types"]\n\t},\n\t"include": ["src/**/*.ts", "test/**/*.ts", "db/**/*.ts"]\n}\n'
+				'{\n\t"compilerOptions": {\n\t\t"target": "ES2022",\n\t\t"module": "ESNext",\n\t\t"moduleResolution": "Bundler",\n\t\t"resolveJsonModule": true,\n\t\t"strict": true,\n\t\t"skipLibCheck": true,\n\t\t"types": ["bun-types"]\n\t},\n\t"include": ["src/**/*.ts", "test/**/*.ts", "db/**/*.ts"]\n}\n'
 		},
 		{
 			path: 'AGENTS.md',
@@ -129,11 +129,7 @@ function libFiles(name: string): PlannedFile[] {
 			path: 'src/index.ts',
 			contents: "export function helloHarness(): string {\n\treturn 'hello from Harness';\n}\n"
 		},
-		{
-			path: 'test/index.test.ts',
-			contents:
-				"import { expect, test } from 'vitest';\nimport { helloHarness } from '../src';\n\ntest('returns a greeting', () => {\n\texpect(helloHarness()).toBe('hello from Harness');\n});\n"
-		}
+		...libTestFiles()
 	];
 }
 
