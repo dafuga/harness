@@ -3,7 +3,7 @@
 	"id": "adapter.agents-providers-module-task-codex-profile",
 	"kind": "adapter",
 	"title": "ModuleTaskCodexProfileAdapter",
-	"responsibility": "Construct an isolated native Codex tool profile without granting credentials to task commands.",
+	"responsibility": "Construct and validate native Codex permission profiles for isolated task tools.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -20,20 +20,33 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "ModuleTaskCodexProfileAdapter.constructor.config",
-				"type": "ModuleTaskCodexProfileAdapterConfig"
+				"name": "prepare.input",
+				"type": "ModuleTaskSandboxInput",
+				"description": "Validated source, exact assigned files, readonly contract snapshot and sealed CLI, private scratch, and Codex exec argv."
 			}
 		],
 		"outputs": [
 			{
-				"name": "ModuleTaskCodexProfileAdapter.connect",
-				"type": "string"
+				"name": "prepare",
+				"type": "Promise<SandboxProcess>",
+				"description": "Resolved trusted Codex executable with a strict native profile: only exact assigned source files writable, scratch writable, snapshot/sealed CLI/trusted runtime readonly, all other paths including credentials denied. No tool network, inherited token env, plugins, apps, multi-agent or user approvals. Preserve user/project rules and exact model/intelligence. Run host outside the outer sandbox, never expose provider credential paths to tools. Construction is not a live-launch authorization: inherited descriptors, real-model tool inventory, apply_patch, runtime hardlinks and login shells require qualification. Reject project config or rules that neutral cwd cannot honor; default runtime is pinned to the tested macOS Apple Silicon Codex 0.154.0."
+			},
+			{
+				"name": "connect",
+				"type": "string",
+				"description": "Retained adapter scaffold compatibility method."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "unsafe or unverifiable isolation",
+				"type": "Error before launch",
+				"description": "Reject non-Codex argv, unsupported host/runtime, unsafe paths, secret-bearing grants or untrusted/symlink/hardlink scopes; never fall back unrestricted."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
