@@ -1,6 +1,8 @@
 import { describe, expect, test, vi } from 'vitest';
 import {
 	admissionTrace,
+	checkApprovedSubmission,
+	checkApprovedRejections,
 	contract,
 	feature,
 	invoke,
@@ -14,9 +16,9 @@ import {
 	sourceCommit,
 	task
 } from './fixtures/module-task-server.fixtures';
-
 describe('ModuleTaskServerService.submit', () => {
 	test('validates all entries, then admits the full scope in one selected-source update', async () => {
+		await checkApprovedSubmission();
 		const f = makeFixture(),
 			one = Object.assign(task('task-one'), {
 				verificationFiles: ['test/task-one.test.ts'],
@@ -61,7 +63,6 @@ describe('ModuleTaskServerService.submit', () => {
 			{ id: 'task-two', role: 'implementation', module: { files: ['src/beta.ts'] } }
 		]);
 	});
-
 	test('reuses equivalent definitions and rejects conflicting task or feature ids without mutation', async () => {
 		const f = makeFixture(),
 			desired = plan([task('task-one')]);
@@ -82,8 +83,8 @@ describe('ModuleTaskServerService.submit', () => {
 		expect(f.queue()).toEqual(before);
 		expect(f.commit()).toBe(nextCommit);
 	});
-
 	test('rejects malformed plans, modules, metadata, goals, contracts, model settings and scopes before update', async () => {
+		await checkApprovedRejections();
 		const alpha = manifest('service.alpha');
 		const cases: Array<[unknown, Parameters<typeof makeFixture>[0]]> = [
 			[plan([task('task-one'), task('task-one')]), {}],
@@ -116,7 +117,6 @@ describe('ModuleTaskServerService.submit', () => {
 		];
 		for (const [value, options] of cases) await rejectBeforeUpdate(value, options);
 	});
-
 	test('preflights every grant before mutation or worker launch', async () => {
 		const f = makeFixture();
 		f.collaborators.validateGrant
@@ -138,7 +138,6 @@ describe('ModuleTaskServerService.submit', () => {
 		expect(f.queue()).toEqual(before);
 	});
 });
-
 describe('ModuleTaskServerService.run', () => {
 	test.each(['review', 'failed'] as const)(
 		'returns the actual %s outcome unchanged',
@@ -165,7 +164,6 @@ describe('ModuleTaskServerService.run', () => {
 			expect(f.queue().tasks[0].status).toBe('queued');
 		}
 	);
-
 	test('keeps idle distinct and rejects invalid or pre-aborted inputs before submission', async () => {
 		const idle = makeFixture(),
 			signal = new AbortController().signal;
@@ -188,7 +186,6 @@ describe('ModuleTaskServerService.run', () => {
 			expect(f.collaborators.worker.once).not.toHaveBeenCalled();
 		}
 	});
-
 	test('watch polls and awaits the active worker before propagating cancellation', async () => {
 		const f = makeFixture();
 		let finish!: (value: unknown) => void;
