@@ -4,7 +4,7 @@
 	"kind": "service",
 	"title": "ProjectSessionService",
 	"responsibility": "Owns the ProjectSessionService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -27,7 +27,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectSessionService.constructor.options",
@@ -53,7 +53,8 @@
 		"outputs": [
 			{
 				"name": "ProjectSessionService.assertProject",
-				"type": "unknown"
+				"type": "void",
+				"description": "Rejects a defined ID that differs from the currently selected project; undefined does nothing."
 			},
 			{
 				"name": "ProjectSessionService.selecting",
@@ -69,15 +70,22 @@
 			},
 			{
 				"name": "ProjectSessionService.requireProject",
-				"type": "unknown"
+				"type": "{root,source,planning,catalog}",
+				"description": "Returns selected project services, without a project ID field; rejects when no project is open."
 			},
 			{
 				"name": "ProjectSessionService.mutable",
-				"type": "unknown"
+				"type": "{root,source,planning,catalog,revision}",
+				"description": "Returns selected writable project services and revision, without a project ID field."
 			},
 			{
 				"name": "ProjectSessionService.atBranch",
 				"type": "unknown"
+			},
+			{
+				"name": "ProjectSessionService.projectId",
+				"type": "string | null",
+				"description": "Public selected project identity, assigned from registry.register(root).id during open."
 			}
 		],
 		"errors": [
