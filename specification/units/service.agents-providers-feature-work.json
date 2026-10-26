@@ -7,21 +7,65 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/agents-providers/FeatureWorkService.ts"],
-		"symbols": ["FeatureWorkService", "FeatureWorkService.run"]
+		"source": [
+			"src/services/agents-providers/FeatureWorkService.ts",
+			"src/services/agents-providers/FeatureWorkService.types.ts"
+		],
+		"symbols": [
+			"FeatureWorkSnapshot",
+			"FeatureWorkTask",
+			"FeatureWorkService",
+			"FeatureWorkService.constructor",
+			"FeatureWorkService.run",
+			"FeatureWorkService.read",
+			"FeatureWorkTask",
+			"FeatureWorkSnapshot"
+		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "FeatureWorkService.constructor.repository",
+				"type": "Pick<ModuleTaskRepository, 'read'> | undefined",
+				"description": "Trusted reader of one project's committed task queue; required for read()."
+			}
+		],
 		"outputs": [
 			{
 				"name": "FeatureWorkService.run",
-				"type": "string"
+				"type": "string",
+				"description": "Retained scaffold compatibility; returns feature-work."
+			},
+			{
+				"name": "FeatureWorkService.read",
+				"type": "Promise<FeatureWorkSnapshot>",
+				"description": "Reads the queue once and returns its commit and each feature's highest-revision plan plus its own stored tasks. Task status is unchanged; blockedBy contains same-feature dependencies not accepted, including missing IDs. Plans and task arrays are defensive copies. Task projections omit claims, execution output, worktree and task file grants."
+			},
+			{
+				"name": "FeatureWorkSnapshot",
+				"type": "{queueCommit:string|null,features:(TaskFeature & {plan:FeaturePlan|null,tasks:FeatureWorkTask[]})[]}"
+			},
+			{
+				"name": "FeatureWorkTask",
+				"type": "{id:string,title:string,module:string,status:'queued'|'running'|'review'|'failed'|'accepted',dependsOn:string[],blockedBy:string[],belongsToPlan:boolean}"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "missing repository or failed queue read",
+				"type": "Error",
+				"description": "Rejects without fabricating a result; repository errors propagate."
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/agents-providers/FeatureWorkService.ts",
