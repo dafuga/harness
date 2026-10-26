@@ -32,8 +32,8 @@
 		"outputs": [
 			{
 				"name": "planDesign",
-				"type": "unknown",
-				"description": "A promise for a saved-version message. Pages, shells and components generate the requested 1–10 options, three by default, sequentially before saving one version. A single option is saved as one image. A version and thread notice are then saved and emitted for review; temporary generation files are removed after the main attempt."
+				"type": "Promise<string>",
+				"description": "For pages/layouts/components, generates 1–10 options (three by default) sequentially and saves a design version. A reference is used only when the selected thread names a version and image hash: planning.image reads exact revision/hash/option bytes, writes reference.png in an owned temporary directory, and passes that local path to every generateImage call. No thread reference silently passes null; latest wanted designs and recorded current screenshots are not selected automatically. Saved options have no preferred flag. Returns Saved <version> for review."
 			}
 		],
 		"errors": [
@@ -41,6 +41,11 @@
 				"name": "RunCancelled",
 				"type": "thrown",
 				"description": "Rejects when cancellation is observed after a generation or before saving. Generated options are not saved if generation fails or is cancelled before the save step."
+			},
+			{
+				"name": "reference, generator or persistence failure",
+				"type": "propagated Error",
+				"description": "Reference/image generation failures occur before design save. Message persistence may fail after design save; no rollback. Invalid designOptions is checked after temp-directory creation but before cleanup block and can leave that directory."
 			}
 		]
 	},
