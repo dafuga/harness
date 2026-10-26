@@ -1,5 +1,12 @@
 import { expect, test } from 'vitest';
-import { unit, relationships, data, change, plan } from './feature-plan-coverage.test.fixtures';
+import {
+	unit,
+	relationships,
+	data,
+	change,
+	plan,
+	assertScopedUncertainty
+} from './feature-plan-coverage.test.fixtures';
 import { FeaturePlanCoverageValidator } from '../../../src/validators/agents-providers/FeaturePlanCoverageValidator';
 
 test('FeaturePlanCoverageValidator.validate from default initialization covers supported and invalid inputs', () => {
@@ -151,6 +158,7 @@ test('missing relationship metadata fails closed instead of silently reporting n
 });
 
 test('unresolved committed graph references reject even otherwise complete designs', () => {
+	assertScopedUncertainty();
 	const metadata = data();
 	const references = [
 		{ node: 'src/component.shared.ts', reason: 'unresolved', detail: './dynamic-shared' },
