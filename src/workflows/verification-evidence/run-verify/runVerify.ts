@@ -68,6 +68,15 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 	const impact = await new ImpactService(runtime)
 		.compute(base, head)
 		.finally(() => runtime.close());
+	const reasons = await new CommitMessageService(root).reported(
+		await new ReasonPathService(root, commitLoader(root)).report(
+			{ base, head, baseCommit, headCommit: commit },
+			await new ExplanationRepository(root).all()
+		),
+		baseCommit,
+		commit
+	);
+	retainVerificationIndexes(base, head, impact.units);
 	return new VerificationService({
 		root,
 		commit,
@@ -87,16 +96,24 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		},
 		// What was written about the range is held to the writing limits: its reasons, and the
 		// stored messages of its commits, so a commit made past the hook does not pass.
-		explained: async () =>
-			new CommitMessageService(root).reported(
-				await new ReasonPathService(root, commitLoader(root)).report(
-					{ base, head, baseCommit, headCommit: commit },
-					await new ExplanationRepository(root).all()
-				),
-				baseCommit,
-				commit
-			)
+		explained: async () => reasons
 	}).run();
+}
+
+/** Keep only facts the record measures; impact and registry checks use the other side fields. */
+function retainVerificationIndexes(
+	base: RevisionSide,
+	head: RevisionSide,
+	units: { direct: string[]; added: string[]; indirect: string[] }
+): void {
+	const measured = new Set([...units.direct, ...units.added, ...units.indirect]);
+	const paths = new Set(
+		head.manifests.filter((unit) => measured.has(unit.id)).flatMap((unit) => unit.owns.source)
+	);
+	for (const path of head.index.files.keys()) {
+		if (!paths.has(path)) head.index.files.delete(path);
+	}
+	base.index.files.clear();
 }
 
 async function verifyConfig(head: RevisionSide): Promise<VerifyConfig> {

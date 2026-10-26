@@ -1,6 +1,10 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { verifyRun } from '../src/workflows/verification-evidence/run-verify/runVerify';
-import { profileMissingMeasurements, taskProfile } from './support/taskProfiles';
+import {
+	observedTaskOperation,
+	profileMissingMeasurements,
+	taskProfile
+} from './support/taskProfiles';
 import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
 
 let baseline: VerifyRepo;
@@ -16,7 +20,11 @@ test('task verification rejects missing profiling even without performance budge
 	try {
 		await repo.change('src/utils/slugify.ts', upper);
 		const request = { root: repo.root, requirePerformance: true };
-		const { record } = await verifyRun(request);
+		const { record } = await observedTaskOperation(
+			'workflow.run-verify',
+			'single-unit-change',
+			() => verifyRun(request)
+		);
 		await taskProfile('workflow.run-verify', 'reject-unprofiled-change', () => verifyRun(request));
 		expect(record.gates?.performance, 'task profiling is mandatory without a budget').toBe(
 			'failed'
