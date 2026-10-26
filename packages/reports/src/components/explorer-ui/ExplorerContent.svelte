@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import ExplorerPermissionsScreen from '../networking-security/ExplorerPermissionsScreen.svelte';
 	import type { Screen } from './ExplorerContent.types';
 
 	import type { Component } from 'svelte';
@@ -17,6 +18,8 @@
 	import ExplorerTranslationsScreen from './ExplorerTranslationsScreen.svelte';
 	import ExplorerStylesScreen from './ExplorerStylesScreen.svelte';
 	import ExplorerDependenciesScreen from './ExplorerDependenciesScreen.svelte';
+	import ExplorerModulesScreen from '../module-system/ExplorerModulesScreen.svelte';
+	import ExplorerModuleResourcesScreen from '../module-system/ExplorerModuleResourcesScreen.svelte';
 	let host: ExplorerScreenProps = $props();
 	const overviews: Record<ExplorerCategory, Screen> = {
 		pages: EntityVisualScreen,
@@ -40,6 +43,9 @@
 		if (host.route.screen === 'styles') return ExplorerStylesScreen;
 		if (host.route.screen === 'translations') return ExplorerTranslationsScreen;
 		if (host.route.screen === 'dependencies') return ExplorerDependenciesScreen;
+		if (host.route.screen === 'permissions') return ExplorerPermissionsScreen;
+		if (host.route.screen === 'modules') return ExplorerModulesScreen;
+		if (host.route.screen === 'module-resources') return ExplorerModuleResourcesScreen;
 		if (category === 'platforms') return ExplorerPlatforms;
 		if (!entity && !host.route.helper)
 			return category === 'pages' ? ExplorerPagesScreen : ExplorerCatalogScreen;

@@ -1,0 +1,134 @@
+import { expect } from 'vitest';
+import { join } from 'node:path';
+import { readFile } from 'node:fs/promises';
+import { spawn } from 'node:child_process';
+import { runCommand, runHarness } from './cli';
+import { browserErrorCollector } from './browserTest';
+import { measureWorkload } from './measureWorkload';
+
+/** Compile both declared Rust targets and exercise their actual browser and HTTP boundaries. */
+export async function assertRustModuleProject(project: string): Promise<void> {
+	for (const id of ['rust-wasm', 'rust-backend']) {
+		await runHarness(['module', 'add', id], project);
+		await runHarness(['module', 'generate', id, 'kernel', 'Metrics'], project);
+	}
+	await measureWorkload(
+		'template.module-system-rust-wasm-module',
+		'test-and-compile-generated-wasm',
+		async () => {
+			await runCommand(
+				[
+					'cargo',
+					'test',
+					'--manifest-path',
+					'src/services/rust-wasm/metrics/Cargo.toml',
+					'--target-dir',
+					'.cache/rust-wasm/metrics'
+				],
+				project
+			);
+			await runCommand(['bun', 'run', 'build:wasm', 'metrics'], project);
+		}
+	);
+	const target = join(project, '.cache/rust-backend/metrics');
+	await measureWorkload(
+		'template.module-system-rust-backend-module',
+		'compile-and-request-generated-backend',
+		async () => {
+			await runCommand(['bun', 'run', 'check:rust-backend', 'metrics'], project);
+			await runCommand(['bun', 'run', 'build:rust-backend', 'metrics'], project);
+			await assertRustHttp(join(target, 'debug/metrics'), project);
+		}
+	);
+	await assertRustBrowser(project);
+}
+
+async function assertRustHttp(binary: string, project: string): Promise<void> {
+	const child = spawn(binary, [], {
+		cwd: project,
+		env: { ...process.env, PORT: '0' },
+		stdio: ['ignore', 'pipe', 'pipe']
+	});
+	let output = '';
+	child.stdout.on('data', (bytes) => {
+		output += String(bytes);
+	});
+	child.stderr.resume();
+	try {
+		const deadline = Date.now() + 15000;
+		while (!output.includes('LISTENING ') && child.exitCode === null && Date.now() < deadline)
+			await new Promise((resolve) => setTimeout(resolve, 50));
+		const url = /LISTENING (http:\/\/127\.0\.0\.1:\d+)/.exec(output)?.[1];
+		expect(url, 'Rust backend announces its loopback listener').toBeTruthy();
+		expect((await fetch(url + '/health')).status).toBe(200);
+		const response = await fetch(url + '/run', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ limit: 4 })
+		});
+		expect(await response.json()).toEqual({ total: 14 });
+		expect(
+			(
+				await fetch(url + '/run', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ limit: 1000001 })
+				})
+			).status
+		).toBe(400);
+	} finally {
+		child.kill('SIGTERM');
+		await new Promise<void>((resolve) => {
+			if (child.exitCode !== null || child.signalCode) resolve();
+			else child.once('exit', () => resolve());
+		});
+	}
+}
+async function assertRustBrowser(project: string): Promise<void> {
+	await runCommand(
+		[
+			'bun',
+			'build',
+			'src/services/rust-wasm/MetricsWasmService.ts',
+			'--target',
+			'browser',
+			'--outfile',
+			'.cache/wasm-service.js'
+		],
+		project
+	);
+	const { chromium } = await import('@playwright/test');
+	const browser = await chromium.launch();
+	const context = await browser.newContext();
+	const errors = browserErrorCollector('chromium');
+	errors.watch(context);
+	try {
+		const page = await context.newPage();
+		const wasm = await readFile(join(project, 'static/wasm/metrics.wasm'));
+		const script = await readFile(join(project, '.cache/wasm-service.js'));
+		let wasmRequests = 0;
+		await page.route('http://rust-module.fixture/**', (route) => {
+			const path = new URL(route.request().url()).pathname;
+			if (path === '/metrics.wasm') {
+				wasmRequests++;
+				return route.fulfill({ contentType: 'application/wasm', body: wasm });
+			}
+			if (path === '/service.js')
+				return route.fulfill({ contentType: 'text/javascript', body: script });
+			return route.fulfill({
+				contentType: 'text/html',
+				body: '<!doctype html><html><head><title>Rust module</title></head><body>Rust module execution fixture</body></html>'
+			});
+		});
+		await page.goto('http://rust-module.fixture/');
+		const totals = await page.evaluate<number[]>(
+			"(async () => { const { MetricsWasmService } = await import('/service.js'); const service = new MetricsWasmService('/metrics.wasm'); return [await service.sumSquares(4), await service.sumSquares(5)]; })()"
+		);
+		expect(totals).toEqual([14, 30]);
+		expect(wasmRequests).toBe(1);
+		await errors.finish();
+	} finally {
+		await context.close();
+		await browser.close();
+	}
+}

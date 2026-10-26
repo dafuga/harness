@@ -39,6 +39,8 @@ jobs:
         run: npm install --global bun@1.2.18
       - name: Install the pinned Rust toolchain and its Wasm target from rust-toolchain.toml
         run: rustup show
+      - name: Keep generated project subprocesses on the installed Rust toolchain
+        run: echo "RUSTUP_TOOLCHAIN=$(rustup show active-toolchain | cut -d ' ' -f1)" >> "$GITHUB_ENV"
       - name: Install dependencies exactly as locked
         run: bun install --frozen-lockfile
       - name: Install the locked browser and Linux display dependencies
@@ -89,6 +91,8 @@ jobs:
         run: npm install --global bun@1.2.18
       - name: Install the pinned Rust toolchain and its Wasm target from rust-toolchain.toml
         run: rustup show
+      - name: Keep generated project subprocesses on the installed Rust toolchain
+        run: echo "RUSTUP_TOOLCHAIN=$(rustup show active-toolchain | cut -d ' ' -f1)" >> "$GITHUB_ENV"
       - name: Install dependencies exactly as locked
         run: bun install --frozen-lockfile
       - name: Install the locked browser

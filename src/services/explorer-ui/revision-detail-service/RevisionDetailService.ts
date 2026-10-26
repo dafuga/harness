@@ -1,3 +1,4 @@
+import { PermissionCatalogService } from '../../networking-security/PermissionCatalogService';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
 import { translationCatalog } from './translationCatalog';
 import type { Stored, BuiltRevision, RevisionDetail } from './RevisionDetailService.types';
@@ -19,6 +20,7 @@ import { RegressionProofRepository } from '../../../repositories/RegressionProof
 import { unitMetadata } from './unitMetadata';
 import { readPlatformCatalog } from './platformCatalog';
 import { projectDependencies } from './projectDependencies';
+import { ModuleCatalogService } from '../../module-system/ModuleCatalogService';
 /** What the source of a commit says, whatever is noted on it: shared, it is read only once. */
 export const revisionSources = (root: string) => ({
 	source: new sourceImpact.SourceImpactService(root),
@@ -144,7 +146,6 @@ export class RevisionDetailService {
 		return revisionReasons({ parent, own: await this.kept.source.reasons(commit), noted, records });
 	}
 }
-
 function groupMeasurements<T extends { unit: string }>(values: T[]): Map<string, T[]> {
 	const groups = new Map<string, T[]>();
 	for (const value of values) {
@@ -179,20 +180,21 @@ async function regressionProofs(
 	const repository = new RegressionProofRepository(root, history.pinned?.evidence);
 	return repository.history(commit, await history.all(), media);
 }
-
 export type { RevisionDetail, BuiltRevision } from './RevisionDetailService.types';
-
 function catalogFields(stored: Stored) {
 	return {
 		platforms: stored.platforms,
 		translations: stored.translations,
-		projectDependencies: stored.projectDependencies
+		projectDependencies: stored.projectDependencies,
+		permissions: stored.permissions,
+		modules: stored.modules
 	};
 }
-
 async function readCatalogs(tree: SourceTree, registry: RevisionRegistry) {
 	return {
 		platforms: await readPlatformCatalog(tree),
+		permissions: await new PermissionCatalogService().at(tree),
+		modules: await new ModuleCatalogService().at(tree),
 		projectDependencies: await projectDependencies(tree),
 		translations: await translationCatalog(tree, registry.units)
 	};

@@ -1,3 +1,4 @@
+import { modulesGuide } from '../module-system/modules';
 import { resourcesGuide } from '../execution-runtimes/resources';
 import type { Guide } from './guide.types';
 import { loopGuide } from './loop';
@@ -21,6 +22,7 @@ import { unitGuides } from './units';
 import { verificationGuides } from '../verification-evidence/verification';
 
 export const guides: Guide[] = [
+	modulesGuide,
 	benchmarkGuide,
 	resourcesGuide,
 	gameGuide,

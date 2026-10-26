@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "helper.module-system-module-resource-location",
+	"kind": "helper",
+	"title": "moduleResourceLocation",
+	"responsibility": "Resolve module resource destinations while preserving revision scope.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"catalog": {
+		"visibility": "internal"
+	},
+	"owns": {
+		"source": ["src/helpers/module-system/moduleResourceLocation.ts"],
+		"symbols": ["moduleResourceLocation"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "moduleResourceLocation.scope",
+				"type": "Pick<ExplorerLocation, 'branch' | 'commit'>",
+				"description": "Selected branch and commit; unrelated entity context is discarded."
+			},
+			{
+				"name": "moduleResourceLocation.module",
+				"type": "string",
+				"description": "Identity of the module declaring this resource."
+			},
+			{
+				"name": "moduleResourceLocation.resource",
+				"type": "ModuleResource",
+				"description": "Resource declaration with an optional existing catalog destination."
+			}
+		],
+		"outputs": [
+			{
+				"name": "moduleResourceLocation",
+				"type": "ExplorerLocation",
+				"description": "A fresh catalog or module-resource location in the supplied branch and commit."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.explorer-route",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/helpers/module-system/moduleResourceLocation.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/helpers/module-system/moduleResourceLocation.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

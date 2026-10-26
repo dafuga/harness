@@ -29,6 +29,11 @@
 		"origin": "declared",
 		"inputs": [
 			{
+				"name": "HarnessNavbar.modules",
+				"type": "ModuleCatalog",
+				"description": "Optional selected-revision module catalog. Installed resources supply Code tabs; omitted catalogs use included standard modules."
+			},
+			{
 				"name": "HarnessNavbar.base",
 				"type": "string",
 				"description": "Required explorer mount address. Used for the brand link before a branch is resolved and as the fallback search link."
@@ -73,7 +78,7 @@
 			{
 				"name": "HarnessNavbar",
 				"type": "markup",
-				"description": "Five primary destinations, revision controls and entity search. Modules opens Components; its six scoped category links stay in a horizontal row below the primary navigation. Unresolved navigation is disabled; modified links retain browser behavior."
+				"description": "Pages, Code, Translations and Platforms navigation; module-declared Code entries include APIs, user profiles and module discovery while preserving branch and commit scope."
 			}
 		],
 		"errors": []

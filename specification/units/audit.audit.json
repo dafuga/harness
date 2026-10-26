@@ -98,6 +98,21 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.module-system-module-catalog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-writes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "workflow.review-clean-code",
 			"via": "import",
 			"origin": "derived"

@@ -1,3 +1,4 @@
+import { permissionProfiles } from '../../../test/support/permissionProfiles';
 import type { HarnessRevision, HarnessUnit } from '../src/models/Harness.types';
 import { commits, ids } from './entityUnits';
 
@@ -43,8 +44,15 @@ export function withApis(detail: HarnessRevision): HarnessRevision {
 				}
 			: unit
 	);
-	units.push(api(apiIds.orders, '/api/orders', current ? ['GET', 'POST'] : ['GET']));
+	units.push(api(apiIds.orders, '/api/orders', current ? ['GET', 'POST', 'DELETE'] : ['GET']));
 	units.push(api(apiIds.unused, '/api/status', ['GET']));
 	if (current) units.push(api(apiIds.refunds, '/api/refunds', ['POST']));
-	return { ...detail, registry: { ...detail.registry, units } };
+	const profiles = permissionProfiles.profiles.filter(
+		(profile) => current || (detail.commit === commits.middle && profile.id === 'member')
+	);
+	return {
+		...detail,
+		permissions: { gaps: [], profiles },
+		registry: { ...detail.registry, units }
+	};
 }

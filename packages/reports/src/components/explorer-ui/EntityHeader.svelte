@@ -44,6 +44,7 @@
 	const row: Record<string, Place> = {
 		overview: {},
 		contract: { tab: 'contract' },
+  permissions: {tab:'permissions'},
 		table: { tab: 'table' },
 		models: { tab: 'models' },
 		apis: { tab: 'apis' },
@@ -59,6 +60,7 @@
 	const labels = [
 		'Overview',
 		'Contract',
+  'Permissions',
 		'APIs',
 		'Table',
 		'Used In',
@@ -76,6 +78,7 @@
 				(label) =>
 					(entity.category !== 'pages' || label !== 'Used In') &&
 					(label !== 'APIs' || entity.category === 'pages') &&
+     (label !== 'Permissions' || entity.category === 'apis') &&
 					(label !== 'Table' || entity.category === 'models') &&
 					(label !== 'Audio' || entity.category === 'components') &&
 					(label !== 'Uses' || usesAvailable)

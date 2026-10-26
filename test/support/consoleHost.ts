@@ -131,13 +131,14 @@ export async function visitCodeCatalogs(page: Page, base: string, head: string) 
 	await page.waitForURL(`**${base}functions`);
 }
 
-/** The same primary API destination is reachable without changing the selected revision. */
+/** The module-contributed API destination is reachable without changing the selected revision. */
 export async function visitApiCatalog(page: Page, path: string, commit: string): Promise<void> {
 	expect(await page.getByRole('link', { name: /Reports|Analytics|Activity|Growth/ }).count()).toBe(
 		0
 	);
 	const bar = page.getByRole('banner');
-	await bar.getByRole('link', { name: 'APIs', exact: true }).click();
+	await bar.getByRole('link', { name: 'Code', exact: true }).click();
+	await bar.getByRole('tab', { name: 'APIs', exact: true }).click();
 	await page.waitForURL(`**${path}`);
 	await page.getByRole('heading', { level: 1, name: 'APIs', exact: true }).waitFor();
 	expect(await bar.getByRole('combobox', { name: 'Commit', exact: true }).inputValue()).toBe(
