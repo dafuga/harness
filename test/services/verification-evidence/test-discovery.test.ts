@@ -1,8 +1,9 @@
 import { expect, test } from 'vitest';
 import { TestDiscoveryService } from '../../../src/services/verification-evidence/TestDiscoveryService';
+import { measureWorkload } from '../../support/measureWorkload';
 
 const service = new TestDiscoveryService();
-test('scan initialized source finds imported cases, aliases and computed registration', () => {
+test('scan initialized source finds imported cases, aliases and computed registration', async () => {
 	const found = service.scan(
 		`import { test as check } from 'vitest'; check('ready', () => {}); check.skip('missing', () => {}); check.each([1, 2])('row %i', () => {}); check.fails('expected failure', () => {});`,
 		'test/service.test.ts'
@@ -28,7 +29,38 @@ test('scan initialized source finds imported cases, aliases and computed registr
 		['active > ready', false],
 		['disabled > inner > ready', true]
 	]);
+	await measureWorkload(
+		'service.verification-evidence-test-discovery',
+		'parameterized-modifiers',
+		() => assertParameterizedCases(service)
+	);
 });
+
+function assertParameterizedCases(subject: TestDiscoveryService): void {
+	const found = subject.scan(
+		`import { test as check } from 'vitest';
+		check.each(['beta.function.only'])('data-only', () => {});
+		check.each(['data.describe'])('data-describe', () => {});
+		check.each(['data.use'])('data-use', () => {});
+		check.each(['data.fails'])('data-fails', () => {});
+		check.skip.each(['data.only'])('explicit-skip', () => {});
+		check['only']('bracket-only', () => {});
+		check[modifier]('unknown-modifier', () => {});`,
+		'test/parameters.test.ts'
+	);
+	expect(
+		found.map(({ title, dynamic, disabled }) => [title, dynamic, disabled]),
+		'parameter data is not a runner modifier'
+	).toEqual([
+		['data-only', true, false],
+		['data-describe', true, false],
+		['data-use', true, false],
+		['data-fails', true, false],
+		['explicit-skip', true, true],
+		['bracket-only', false, true],
+		['unknown-modifier', true, false]
+	]);
+}
 
 test('discover initialized and unreadable sources retain explicit discovery gaps', async () => {
 	const manifest = await discoveryManifest();
