@@ -2,7 +2,7 @@
 	"name": "contract-case-realpath",
 	"goal": "Retain actual runner case outcomes when snapshot and runner paths resolve to the same source",
 	"createdAt": "2026-10-26T21:27:13.755Z",
-	"updatedAt": "2026-10-26T21:27:14.993Z",
+	"updatedAt": "2026-10-26T21:28:22.260Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:28:21.591Z",
+			"evidence": "Record 2ef4b86176c1 fails both configured reporter method cases when the root is a symlink to the same source tree."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T21:28:22.260Z",
+			"evidence": "Resolve existing root and test-file paths before containment checks; retain lexical behavior for unavailable paths and reject symlink escapes."
 		},
 		{
 			"id": "implement",
