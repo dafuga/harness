@@ -1,5 +1,8 @@
 import { expect } from '../../verificationExpect';
-import { claimedTask } from '../../../src/services/agents-providers/module-task-worker-service/taskClaim';
+import {
+	claimedTask,
+	pendingTaskResult
+} from '../../../src/services/agents-providers/module-task-worker-service/taskClaim';
 
 const owner = { workspace: '00000000-0000-4000-8000-000000000001', pid: 1, startedAt: 'synthetic' };
 
@@ -19,12 +22,26 @@ function queueOf(tasks: Parameters<typeof claimedTask>[0]['tasks']) {
 	return { schemaVersion: 1 as const, features: [tasks[0].feature], tasks };
 }
 
+function acceptedResult(checkpointCommit: string) {
+	return {
+		...pendingTaskResult(
+			{ provider: 'codex', model: 'gpt-6-luna', intelligence: 'max' },
+			'/synthetic'
+		),
+		checkpointCommit
+	};
+}
+
 function assertDependencies(base: Parameters<typeof claimedTask>[0]['tasks'][number]) {
 	const outcomes = [];
 	for (const status of ['missing', 'queued', 'running', 'review', 'failed', 'accepted'] as const) {
 		const dependent = { ...candidate(base, 'dependent'), dependsOn: ['prerequisite', 'accepted'] };
 		const independent = candidate(base, 'independent');
-		const accepted = { ...candidate(base, 'accepted'), status: 'accepted' as const };
+		const accepted = {
+			...candidate(base, 'accepted'),
+			status: 'accepted' as const,
+			result: acceptedResult(base.sourceCommit)
+		};
 		const prerequisites =
 			status === 'missing'
 				? []
@@ -32,6 +49,7 @@ function assertDependencies(base: Parameters<typeof claimedTask>[0]['tasks'][num
 						{
 							...candidate(base, 'prerequisite'),
 							status,
+							result: accepted.result,
 							assignee: 'another-worker'
 						}
 					];

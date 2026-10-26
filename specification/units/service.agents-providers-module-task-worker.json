@@ -113,15 +113,20 @@
 			},
 			{
 				"name": "claimedTask.prepare",
-				"type": "((task:ModuleTask)=>void) | undefined",
-				"description": "Optional pure preparation callback invoked before marking a selected task running. Worker supplies it and captures copied selection/files/role; a callback rejection leaves the queue unclaimed. No I/O or persistent side effects."
+				"type": "((task:ModuleTask,checkpoints:string[])=>void) | undefined",
+				"description": "Pure callback receives the selected task and accepted same-feature checkpoint IDs copied atomically from the queue before claiming."
+			},
+			{
+				"name": "ModuleTaskWorkerService.constructor.dependencyBase",
+				"type": "optional Pick<ModuleTaskDependencyBaseAdapter,\"resolve\">",
+				"description": "Trusted fourth collaborator; default composes committed accepted checkpoints."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskWorkerService.once",
 				"type": "Promise<{status: 'idle'} | {status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']>}>",
-				"description": "Uses ModuleTaskService.prepare(task).files/role, creates detached worktree from selected repairCommit??sourceCommit, obtains contexts.create(task with selected sourceCommit,worktree,exact prepared files), passes scope to every run including quota-only fallback. Waits owned runner settlement before context.cleanup; cleanup awaited on success/failure/cancel/context-safe errors. No scope/snapshot/bin paths leaked into committed result. Post-diff/checkpoint uses prepared exact files, never broader legacy module.files. Existing claim/finish CAS and actual usage/analytics retained; no self-acceptance."
+				"description": "Uses ModuleTaskService.prepare(task).files/role, creates detached worktree from selected repairCommit??sourceCommit, obtains contexts.create(task with selected sourceCommit,worktree,exact prepared files), passes scope to every run including quota-only fallback. Waits owned runner settlement before context.cleanup; cleanup awaited on success/failure/cancel/context-safe errors. No scope/snapshot/bin paths leaked into committed result. Post-diff/checkpoint uses prepared exact files, never broader legacy module.files. Existing claim/finish CAS and actual usage/analytics retained; no self-acceptance. Dependent tasks compose accepted checkpoints and optional repair revision; the effective source is used for prompt, context, worktree, snapshot and result while the original queued task identity remains unchanged."
 			},
 			{
 				"name": "pendingTaskResult",
@@ -131,7 +136,7 @@
 			{
 				"name": "claimedTask",
 				"type": "ModuleTask | null",
-				"description": "Selects the first queued task eligible for the worker and module, with every named dependency present and accepted, no running task in the same module, and no overlapping exact frozen file grant with another running task. Blocked candidates remain queued while later independent candidates can run. Invokes optional preparation before changing status; on success records the running claim with worker, random token, time and owner."
+				"description": "Selects the first queued task eligible for the worker and module, with every named dependency present and accepted, no running task in the same module, and no overlapping exact frozen file grant with another running task. Blocked candidates remain queued while later independent candidates can run. Invokes optional preparation before changing status; on success records the running claim with worker, random token, time and owner. Every dependency must have an accepted same-feature result with a valid checkpoint; the preparation callback receives the captured checkpoint list."
 			},
 			{
 				"name": "finishTask",
@@ -181,6 +186,11 @@
 				"name": "Workspace preparation failure after claim",
 				"type": "failed finalized result; worktree empty string and no provider usage",
 				"description": "If taskWorkspace rejects, finalize the valid claim as failed with a safe nonempty error, worktree:\"\", changedFiles:[], no usage/executions, and no snapshot of an unavailable worktree. The stored result schema explicitly accepts empty worktree; never invent an artifact path."
+			},
+			{
+				"name": "Dependency missing or composition failure",
+				"type": "idle or safe failed result",
+				"description": "Missing/unaccepted/cross-feature/invalid dependency checkpoints are not claimed; composition errors never call context or provider and do not invent usage."
 			}
 		]
 	},

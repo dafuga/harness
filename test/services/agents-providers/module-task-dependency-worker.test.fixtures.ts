@@ -133,10 +133,10 @@ async function assertDependencySuccess(repair: boolean) {
 			contractHash: s.before.contractHash,
 			module: s.before.module,
 			dependsOn: s.before.dependsOn,
-			repairCommit: s.repairCommit,
 			claim: { worker: 'owner' },
 			result: { sourceCommit: s.resolved }
 		});
+		expect(stored.repairCommit).toBe(s.before.repairCommit);
 		expect(await s.f.git.run(['rev-parse', 'HEAD'])).toBe(s.f.source);
 	} finally {
 		await s.f.dispose();

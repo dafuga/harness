@@ -20,28 +20,43 @@ export function pendingTaskResult(
 		finishedAt: new Date().toISOString()
 	};
 }
+function dependencyCheckpoints(queue: ModuleTaskQueue, task: ModuleTask) {
+	const checkpoints: string[] = [];
+	for (const id of task.dependsOn ?? []) {
+		const dependency = queue.tasks.find((candidate) => candidate.id === id);
+		const checkpoint = dependency?.result?.checkpointCommit;
+		if (
+			dependency?.status !== 'accepted' ||
+			dependency.feature.id !== task.feature.id ||
+			!checkpoint ||
+			!/^[a-f0-9]{40}$/.test(checkpoint)
+		)
+			return null;
+		checkpoints.push(checkpoint);
+	}
+	return checkpoints;
+}
 export function claimedTask(
 	queue: ModuleTaskQueue,
 	worker: string,
 	modules: string[],
 	owner: NonNullable<ModuleTask['claim']>['owner'],
-	prepare: (task: ModuleTask) => void = () => {}
+	prepare: (task: ModuleTask, checkpoints: string[]) => void = () => {}
 ) {
 	const running = queue.tasks.filter((t) => t.status === 'running');
 	const busy = new Set(running.map((t) => t.module.id));
 	const busyFiles = new Set(running.flatMap((t) => t.module.files));
-	const accepted = new Set(queue.tasks.filter((t) => t.status === 'accepted').map((t) => t.id));
 	const task = queue.tasks.find(
 		(t) =>
 			t.status === 'queued' &&
 			(!t.assignee || t.assignee === worker) &&
 			(!modules.length || modules.includes(t.module.id)) &&
 			!busy.has(t.module.id) &&
-			(t.dependsOn ?? []).every((dependency) => accepted.has(dependency)) &&
+			dependencyCheckpoints(queue, t) !== null &&
 			!t.module.files.some((file) => busyFiles.has(file))
 	);
 	if (!task) return null;
-	prepare(task);
+	prepare(task, dependencyCheckpoints(queue, task)!);
 	task.status = 'running';
 	task.claim = { worker, token: randomUUID(), startedAt: new Date().toISOString(), owner };
 	return task;

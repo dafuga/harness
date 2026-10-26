@@ -3,7 +3,7 @@
 	"id": "helper.agents-providers-module-task-execution",
 	"kind": "helper",
 	"title": "moduleTaskExecution",
-	"responsibility": "Execute a claimed module task with isolated dependency context and cleanup.",
+	"responsibility": "Execute a claimed task in its isolated dependency context.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -11,23 +11,30 @@
 		"symbols": ["moduleTaskExecution"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "moduleTaskExecution.textToFormat",
-				"type": "string"
+				"name": "executeClaimedTask.input",
+				"type": "{root:string,task:ModuleTask,commit:string,checkpoints:string[],signal:AbortSignal,preflight:ReturnType<ModuleTaskService[\"prepare\"]>,runner:TaskRunner,contexts:Pick<ModuleTaskContractContextService,\"create\">,dependencyBase:Pick<ModuleTaskDependencyBaseAdapter,\"resolve\">}"
 			}
 		],
 		"outputs": [
 			{
+				"name": "executeClaimedTask",
+				"type": "Promise<ModuleTaskResult>",
+				"description": "Returns a result using the resolved dependency base with exact assigned scope, recording safe failures and cleanup."
+			},
+			{
 				"name": "moduleTaskExecution",
-				"type": "string"
+				"type": "(textToFormat:string)=>string",
+				"description": "Retained generated trim helper."
 			}
 		],
 		"errors": [
 			{
-				"name": "TypeError",
-				"type": "thrown"
+				"name": "prelaunch, execution or cleanup failure",
+				"type": "safe failed result",
+				"description": "No fake usage; cleanup follows child settlement; preserve worktree for review."
 			}
 		]
 	},

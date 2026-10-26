@@ -1,142 +1,15 @@
-import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import { ModuleTaskRunnerAdapter } from '../../adapters/agents-providers/ModuleTaskRunnerAdapter';
+import { ModuleTaskDependencyBaseAdapter } from '../../adapters/agents-providers/ModuleTaskDependencyBaseAdapter';
+import { executeClaimedTask } from '../../helpers/agents-providers/moduleTaskExecution';
 import { ModuleTaskAnalyticsService } from './ModuleTaskAnalyticsService';
 import { ModuleTaskContractContextService } from './ModuleTaskContractContextService';
-import { dispatchTaskAttempt } from './module-task-worker-service/dispatchTaskAttempt';
-import { taskWorkspace, snapshotTaskWork } from './module-task-worker-service/taskWorkspace';
-import { moduleTaskPrompt } from './module-task-service/taskPrompt';
 import type {
 	ModuleTask,
-	TaskRunner,
-	TaskSelection,
-	TaskExecution,
-	TaskRunInput,
-	TaskRunScope
+	TaskRunner
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import { ModuleTaskRepository } from '../../repositories/agents-providers/ModuleTaskRepository';
 import { ModuleTaskService } from './ModuleTaskService';
-import { claimedTask, finishTask, pendingTaskResult } from './module-task-worker-service/taskClaim';
-async function runTaskAttempts(
-	runner: TaskRunner,
-	task: ModuleTask,
-	input: TaskRunInput & { scope: TaskRunScope },
-	onFallback: (selection: TaskSelection) => void,
-	executions: TaskExecution[]
-) {
-	try {
-		return { ...(await dispatchTaskAttempt(runner, input, executions)), fallback: false };
-	} catch (error) {
-		if (
-			task.model !== 'auto' ||
-			!error ||
-			typeof error !== 'object' ||
-			!('quotaRejected' in error) ||
-			error.quotaRejected !== true
-		)
-			throw error;
-		input.signal.throwIfAborted();
-		const choice: TaskSelection = { provider: 'codex', model: 'gpt-6-luna', intelligence: 'max' };
-		onFallback(choice);
-		return {
-			...(await dispatchTaskAttempt(runner, { ...input, ...choice }, executions)),
-			fallback: true
-		};
-	}
-}
-async function executeScopedTask(
-	runner: TaskRunner,
-	task: ModuleTask,
-	prepared: ReturnType<ModuleTaskService['prepare']>,
-	result: Awaited<ReturnType<typeof taskWorkspace>>,
-	signal: AbortSignal,
-	scope: TaskRunScope
-) {
-	let current = result;
-	try {
-		const execution = await runTaskAttempts(
-			runner,
-			task,
-			{
-				...prepared.selection,
-				cwd: result.worktree,
-				prompt: prepared.prompt,
-				signal,
-				scope
-			},
-			(choice) => {
-				current = { ...current, ...choice, fallback: true };
-			},
-			result.executions
-		);
-		return { ...current, ...execution };
-	} catch (error) {
-		current.error = error instanceof Error ? error.message : 'Task worker failed.';
-		return current;
-	}
-}
-async function cleanupTaskContext(
-	context: Awaited<ReturnType<ModuleTaskContractContextService['create']>>,
-	result: Awaited<ReturnType<typeof taskWorkspace>>
-) {
-	try {
-		await context.cleanup();
-	} catch {
-		result.error = result.error
-			? `${result.error} Contract context cleanup failed.`
-			: 'Harness contract context cleanup failed.';
-	}
-	return result;
-}
-async function snapshotPreparedTask(
-	root: string,
-	task: ModuleTask,
-	prepared: ReturnType<ModuleTaskService['prepare']>,
-	result: Awaited<ReturnType<typeof taskWorkspace>>
-) {
-	if (result.error) return result;
-	try {
-		await snapshotTaskWork(
-			root,
-			{ ...task, module: { ...task.module, files: prepared.files } },
-			result
-		);
-	} catch (error) {
-		result.error = error instanceof Error ? error.message : 'Task worker failed.';
-	}
-	return result;
-}
-async function runWithContractContext(
-	root: string,
-	runner: TaskRunner,
-	contexts: Pick<ModuleTaskContractContextService, 'create'>,
-	task: ModuleTask,
-	prepared: ReturnType<ModuleTaskService['prepare']>,
-	result: Awaited<ReturnType<typeof taskWorkspace>>,
-	signal: AbortSignal
-) {
-	let context: Awaited<ReturnType<ModuleTaskContractContextService['create']>>;
-	try {
-		context = await contexts.create(
-			{ ...task, sourceCommit: result.sourceCommit },
-			result.worktree,
-			prepared.files
-		);
-	} catch {
-		result.error = 'Harness contract context unavailable.';
-		return result;
-	}
-	const execution = await executeScopedTask(runner, task, prepared, result, signal, context.scope);
-	const cleaned = await cleanupTaskContext(context, execution);
-	return snapshotPreparedTask(root, task, prepared, cleaned);
-}
-function workerResult(task: ModuleTask, result: Awaited<ReturnType<typeof taskWorkspace>>) {
-	return {
-		status: result.error ? ('failed' as const) : ('review' as const),
-		task: task.id,
-		result
-	};
-}
-
+import { claimedTask, finishTask } from './module-task-worker-service/taskClaim';
 /** Foreground workers claim atomically in a shared Git repository and preserve isolated review work. */
 export class ModuleTaskWorkerService {
 	private readonly repository: ModuleTaskRepository;
@@ -146,7 +19,11 @@ export class ModuleTaskWorkerService {
 		private readonly contexts: Pick<
 			ModuleTaskContractContextService,
 			'create'
-		> = new ModuleTaskContractContextService(root)
+		> = new ModuleTaskContractContextService(root),
+		private readonly dependencyBase: Pick<
+			ModuleTaskDependencyBaseAdapter,
+			'resolve'
+		> = new ModuleTaskDependencyBaseAdapter(root)
 	) {
 		this.repository = new ModuleTaskRepository(root);
 	}
@@ -158,9 +35,11 @@ export class ModuleTaskWorkerService {
 		signal.throwIfAborted();
 		const service = new ModuleTaskService(this.root);
 		let prepared: ReturnType<ModuleTaskService['prepare']> | undefined;
+		let checkpoints: string[] = [];
 		const claim = await this.repository.update((queue) => {
 			signal.throwIfAborted();
-			return claimedTask(queue, worker, modules, owner, (task) => {
+			return claimedTask(queue, worker, modules, owner, (task, acceptedCheckpoints) => {
+				checkpoints = [...acceptedCheckpoints];
 				const candidate = service.prepare(task, task.sourceCommit);
 				prepared = {
 					...candidate,
@@ -170,49 +49,35 @@ export class ModuleTaskWorkerService {
 			});
 		});
 		if (!claim.value) return { status: 'idle' as const };
-		return this.execute(claim.value, claim.commit!, signal, prepared!);
+		return this.execute(claim.value, claim.commit!, signal, prepared!, checkpoints);
 	}
 	private async execute(
 		task: ModuleTask,
 		commit: string,
 		signal: AbortSignal,
-		preflight: ReturnType<ModuleTaskService['prepare']>
+		preflight: ReturnType<ModuleTaskService['prepare']>,
+		checkpoints: string[]
 	) {
-		const prepared = {
-			...preflight,
-			prompt: moduleTaskPrompt(task, commit, preflight.files, preflight.role)
-		};
-		let result: Awaited<ReturnType<typeof taskWorkspace>> = {
-			...pendingTaskResult(prepared.selection, ''),
-			attempt: task.claim!.token,
-			sourceCommit: task.repairCommit ?? task.sourceCommit
-		};
-		try {
-			result = await taskWorkspace(this.root, task, prepared.selection);
-			const addWorktree = ['worktree', 'add', '--detach', result.worktree, result.sourceCommit];
-			await new GitAdapter(this.root).run(addWorktree);
-			result = await runWithContractContext(
-				this.root,
-				this.runner,
-				this.contexts,
-				task,
-				prepared,
-				result,
-				signal
-			);
-		} catch (error) {
-			result.error = !result.worktree
-				? 'Task workspace preparation failed.'
-				: error instanceof Error && error.message
-					? error.message
-					: 'Task worker failed.';
-		}
-		result.finishedAt = new Date().toISOString();
+		const result = await executeClaimedTask({
+			root: this.root,
+			task,
+			commit,
+			signal,
+			preflight,
+			checkpoints,
+			runner: this.runner,
+			contexts: this.contexts,
+			dependencyBase: this.dependencyBase
+		});
 		await this.repository.update(
 			(queue) => finishTask(queue, task, result),
 			result.checkpointCommit
 		);
 		await new ModuleTaskAnalyticsService().sync(this.root);
-		return workerResult(task, result);
+		return {
+			status: result.error ? ('failed' as const) : ('review' as const),
+			task: task.id,
+			result
+		};
 	}
 }
