@@ -17,6 +17,8 @@ import {
 	expectGeneratedLibraryExample
 } from './support/project-template/guidance';
 
+const visualCheck = 'bun run build && harness verify stamp .svelte-kit/output && playwright test';
+
 test(
 	'generated element atoms preserve native compilation and emitted runtime source',
 	assertAtomCompiler
@@ -52,7 +54,7 @@ test('app projects include SvelteKit and specification files', () =>
 		expect(paths).toContain('.codex/skills/harness/SKILL.md');
 		expect(fileContents(files, 'AGENTS.md')).toContain('Treat Harness as the operating contract');
 		expect(fileContents(files, 'AGENTS.md')).toContain('bun run check');
-		expectResourceGuidance(files);
+		expectAppEnvironment(files);
 		expect(fileContents(files, '.codex/skills/harness/SKILL.md')).toContain(
 			'Use this skill whenever'
 		);
@@ -65,7 +67,7 @@ test('app projects include SvelteKit and specification files', () =>
 		);
 		expect(auditConfig(files).limits.maxMethodLines).toBe(35);
 		expect(packageJson.harness.kind).toBe('app');
-		expect(packageJson.scripts['test:e2e']).toBe('playwright test');
+		expect(packageJson.scripts['test:e2e']).toBe(visualCheck);
 		expect(packageJson.scripts.audit).toContain('harness-audit');
 		expect(packageJson.scripts.check).toContain('format:check');
 		expect(packageJson.scripts.check).toContain('audit');
@@ -145,7 +147,20 @@ function auditConfig(files: ReturnType<typeof projectFiles>): { limits: Record<s
 	};
 }
 
-function expectResourceGuidance(files: ReturnType<typeof projectFiles>): void {
+function expectAppEnvironment(files: ReturnType<typeof projectFiles>): void {
 	expect(fileContents(files, 'AGENTS.md')).toContain('harness resources run');
 	expect(fileContents(files, 'AGENTS.md')).toContain('Finish current tests under pressure');
+	expect(
+		fileContents(files, 'src/app.html'),
+		'Generated visual builds need a stamp slot'
+	).toContain(`harness-build:${'0'.repeat(64)}`);
+	const config = fileContents(files, 'playwright.config.ts');
+	expect(config).toContain("command: 'bun run preview -- --host 127.0.0.1 --port 3322'");
+	expect(config).toContain('reuseExistingServer: false');
+	const verify = JSON.parse(fileContents(files, 'harness.verify.json'));
+	expect(verify.setup).toEqual([
+		{ command: 'bun run build' },
+		{ command: 'harness verify stamp .svelte-kit/output' }
+	]);
+	expect(JSON.parse(fileContents(files, 'package.json')).scripts.preview).toBe('vite preview');
 }
