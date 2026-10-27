@@ -5,6 +5,7 @@ import { expect, test, vi } from 'vitest';
 import { CommitTreeAdapter } from '../../../src/adapters/git-source-history/CommitTreeAdapter';
 import { GitAdapter } from '../../../src/adapters/git-source-history/GitAdapter';
 import { measureWorkload } from '../../support/measureWorkload';
+import { assertBoundedCommittedReads } from '../../support/commitTreeBatchCases';
 
 // Complete public-method matrix: a committed empty tree and a populated immutable tree.
 async function fixture(
@@ -117,6 +118,11 @@ test('CommitTreeAdapter.read populated reuses immutable blobs across revisions w
 						git,
 						() => void bytes.mockRejectedValueOnce(new Error('synthetic Git failure')),
 						(response) => void bytes.mockResolvedValueOnce(response)
+					);
+					await assertBoundedCommittedReads(root, git, () =>
+						bytes.mock.calls
+							.filter(([args]) => args[0] === 'cat-file' && args[1] === '--batch')
+							.map(([, options]) => String(options?.input ?? ''))
 					);
 				}
 			},
