@@ -1851,7 +1851,10 @@ that commit passed 30 profile, process and unchanged registry-guard cases.
 Units check, focused typecheck, lint and formatting passed. Workload observations
 include 4.12 ms for the complete fixture and assertion case and 92,733,440 bytes
 of whole-worker RSS, not isolated unit memory. The manifest reason is in Git
-notes. Full verification and integration remain pending.
+notes. After registration, removing the guard failed capture `eee00fc25225`
+at `d62e661a2d`; restoring the identical complete tree passed `747fd288c92e`
+at `bc71de5ec6` on the same profile. Full verification and integration remain
+pending.
 
 An official standalone Codex 0.164.0 package was downloaded to a task-owned
 temporary directory and verified against the npm SHA-512 integrity value; the
