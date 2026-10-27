@@ -1,0 +1,45 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-emLINJ
+
+ ❯ test/adapters/agents-providers/module-task-codex-profile.test.ts (4 tests | 1 failed) 63ms
+   ✓ ModuleTaskCodexProfileAdapter.connect from default initialization returns the file name 1ms
+   ✓ ModuleTaskCodexProfileAdapter.connect from custom initialization returns the configured name 0ms
+   ✓ ModuleTaskCodexProfileAdapter.prepare from default initialization validates a native profile 14ms
+   × ModuleTaskCodexProfileAdapter.prepare admits exact native permissions and rejects unsafe scopes 45ms
+     → Example unexpectedly failed
+
+true !== false
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/agents-providers/module-task-codex-profile.test.ts > ModuleTaskCodexProfileAdapter.prepare admits exact native permissions and rejects unsafe scopes
+AssertionError: Example unexpectedly failed
+
+true !== false
+
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:98:4
+     96|    deepStrictEqual(Object.hasOwn(observation, 'error'), false, 'Exampl…
+     97|    deepStrictEqual(
+     98|     observation.output,
+       |    ^
+     99|     example.output,
+    100|     'Example output differs from its comment'
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ src/services/verification-evidence/TestExpectationService.ts:37:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  15:12:13
+   Duration  2.49s (transform 116ms, setup 102ms, collect 75ms, tests 63ms, environment 0ms, prepare 23ms)
+
