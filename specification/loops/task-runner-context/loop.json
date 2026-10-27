@@ -2,7 +2,7 @@
 	"name": "task-runner-context",
 	"goal": "Preserve trusted sandbox context through the task process without exposing provider keys",
 	"createdAt": "2026-10-27T11:52:38.965Z",
-	"updatedAt": "2026-10-27T11:52:45.126Z",
+	"updatedAt": "2026-10-27T11:55:10.763Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:55:10.763Z",
+			"evidence": "At 5144203311 the existing forwarding case failed because the child received null for all three supplied context paths; synthetic provider keys stayed absent. Red 35c29c53133b was recorded on harbor-mbp-2."
 		},
 		{
 			"id": "implement",
