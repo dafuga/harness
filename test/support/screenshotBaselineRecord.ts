@@ -26,7 +26,8 @@ export async function attachSyntheticScreenshot(
 	await mkdir(join(directory, dirname(seed.path)), { recursive: true });
 	await mkdir(join(directory, 'logs'), { recursive: true });
 	await writeFile(join(directory, seed.path), seed.image);
-	if (seed.sibling) await writeFile(join(directory, seed.sibling.path), seed.image);
+	if (seed.sibling && !seed.sibling.omitCapture)
+		await writeFile(join(directory, seed.sibling.path), seed.image);
 	await writeFile(join(directory, 'logs/visual.log'), seed.log);
 	await writeFile(join(directory, 'case-results.ndjson'), seed.caseBytes);
 	await store.save(record, directory);
@@ -45,7 +46,10 @@ function fixtureSeed(
 		unit: 'page.fixture',
 		case: options.bindingCase ?? 'default.desktop',
 		revision: commit,
-		sha256
+		sha256,
+		...(options.attempts && options.attempts !== 'legacy'
+			? { retry: options.attempts === 'duplicate' ? 1 : 0 }
+			: {})
 	});
 	const outcome = {
 		file: 'test/page.spec.ts',
@@ -78,6 +82,20 @@ function siblingCapture(
 	sha256: string,
 	outcome: ScreenshotFixtureSeed['outcome']
 ): ScreenshotFixtureSeed['sibling'] {
+	if (options.attempts) {
+		return {
+			path: `evidence/${commit}/visual/page/retry-1.png`,
+			note: JSON.stringify({
+				unit: 'page.fixture',
+				case: 'default.desktop',
+				revision: commit,
+				sha256,
+				...(options.attempts === 'legacy' ? {} : { retry: 1 })
+			}),
+			outcome: { ...outcome, status: 'passed', retry: 1 },
+			...(['legacy', 'missing'].includes(options.attempts) ? { omitCapture: true } : {})
+		};
+	}
 	if (!options.sibling && !options.duplicate) return undefined;
 	const caseId = options.sibling ? 'default.secondary' : 'default.desktop';
 	return {
@@ -140,7 +158,9 @@ function syntheticScenario(seed: ScreenshotFixtureSeed): VerificationRecord['sce
 				coverage: 'required',
 				captures: [
 					syntheticCapture(seed),
-					...(seed.sibling ? [syntheticCapture(seed, seed.sibling)] : [])
+					...(seed.sibling && !seed.sibling.omitCapture
+						? [syntheticCapture(seed, seed.sibling)]
+						: [])
 				]
 			}
 		]
