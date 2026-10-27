@@ -2716,7 +2716,14 @@
 			"unit": "function.scenario-coverage",
 			"from": "src/services/verification-service/scenarioCoverage.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
-			"definition": "7c6fde05df18fa70a2c12eae9a58acdd175271911693f14df619e73bd8938ffe"
+			"definition": "bb23c819f53f884ce32b83f7c534c31f52c71aa92671a8e807f5b60d3c431a4f",
+			"relocationDefinition": "7c6fde05df18fa70a2c12eae9a58acdd175271911693f14df619e73bd8938ffe",
+			"review": {
+				"commit": "9bd3c0d300791e74e51cc0b903e70dbd36004432",
+				"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
+				"definition": "bb23c819f53f884ce32b83f7c534c31f52c71aa92671a8e807f5b60d3c431a4f",
+				"reason": "Require evidence kind to match each declared scenario requirement."
+			}
 		},
 		{
 			"unit": "function.seal-record",

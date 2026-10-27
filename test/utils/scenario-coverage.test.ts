@@ -75,7 +75,7 @@ test('scenarioCoverage: accepts a stamped flow', () => {
 
 test('problem: accepts a fixture flow', () => {
 	const example = manifest.testing.examples[1];
-	const input = coverageFixture(example.input[0] as Parameters<typeof coverageFixture>[0]);
+	const input = coverageFixture(example.input[0]);
 	expect(example.expected.kind).toBe('void');
 	expect(problem(input, input.gathered[0])).toBeUndefined();
 	expect(judged({})).toEqual([]);

@@ -5509,6 +5509,13 @@
 			"commit": "8ee38965ae7865f1bb9d4344c43744c3f24097a2",
 			"reason": "Accept compact index summaries while preserving all growth and focused workload observations.",
 			"definition": "def9830dc94abdfc91a75b5d3ed364102cd0eaca17f5553a4a7715e3c359fcb8"
+		},
+		{
+			"unit": "function.scenario-coverage",
+			"name": "scenarioCoverage",
+			"commit": "9bd3c0d300791e74e51cc0b903e70dbd36004432",
+			"reason": "Require the declared capture kind when judging scenario evidence.",
+			"definition": "5d5b20a570d5335326b5fd18abd95b867681f159f3f2e56f7c70cd5a7afc29ab"
 		}
 	]
 }
