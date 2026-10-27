@@ -1756,3 +1756,19 @@ with the capture, and source reasons are in Git notes. Recognition of a static
 registrar is not proof of execution: a passing case still requires its actual
 runner outcome. Integration, broader migration and deferred verification remain
 open.
+
+Computed manifest arguments could make generated registrations disappear from
+the static inventory. The existing discovery case now covers imported runner
+aliases, disabled registrars and an ordinary stub callback without adding a
+test. Red `d26af55c71ef` at `9c12f78353` shows the missing declaration; green
+`1492f22f48b3` at `94a88ea6eb` passes the unchanged test and fixture on the same
+profile. Fixture-only lint cleanup followed at `2771f87e1c`. The old reader
+failed mutation capture `b0f8db9f1ba7`; restored identical-tree capture
+`d380b551b374` passed on the same profile. Focused capture `e6bd3244613b`
+passed 18 discovery and unchanged registry-guard cases; units check, targeted
+typecheck, lint and formatting passed. Five actual test files retained 2, 4,
+24, 2 and 1 discovered cases with no discovery errors. At this tree the example
+reader measured 7,424 bytes, 220 lines, complexity 76 and five dependencies;
+it has no separate emitted artifact. Timing, whole-process memory and reasons
+remain in Harness evidence and Git notes. The branch is still isolated and
+does not establish full migration, execution coverage or current-main delivery.
