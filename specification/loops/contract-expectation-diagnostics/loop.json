@@ -2,7 +2,7 @@
 	"name": "contract-expectation-diagnostics",
 	"goal": "Preserve the original error when an authored example unexpectedly fails.",
 	"createdAt": "2026-10-27T01:31:19.065Z",
-	"updatedAt": "2026-10-27T01:31:27.512Z",
+	"updatedAt": "2026-10-27T01:37:15.730Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T01:37:09.367Z",
+			"evidence": "Committed test a819be0cd8 failed in c821694fe96f because the original error message and cause were missing."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T01:37:13.931Z",
+			"evidence": "f3a574274a preserves the unexpected thrown value and message; 73ea1d2d48 simplifies the formatter."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T01:37:15.730Z",
+			"evidence": "Unchanged case passed at 73ea1d2d48 in 78b689e81bef; mutant 4a3d35249b36 failed and restored 22c75953df74 passed."
 		},
 		{
 			"id": "verify",

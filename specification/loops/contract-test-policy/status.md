@@ -1061,3 +1061,32 @@ inventory at `75d26d700a` reports 1,119 suite files, 4,650 test declarations,
 service has 12 discovered cases and no reported gap. The current-main preview
 still shows missing committed module data, so Tests, Examples, History and
 in-Explorer playback remain unverified.
+## Continuation: unexpected example failure diagnostics
+
+The existing `TestExpectationService.example` case checked only the generic
+failure phrase, so a real invalid-revision fixture error lost its message and
+original thrown value. Test-only `a819be0cd8` strengthens that same case for
+value and void examples, Error objects, strings and non-Error values without
+adding a test. Harness red `c821694fe96f` failed on the missing original
+message. Source-only `f3a574274a` retains the original cause and reports its
+message; `73ea1d2d48` removes a nested conditional flagged by lint. Unchanged
+green `78b689e81bef` passed at the latter commit under the same environment.
+
+The final repair was also checked in an isolated worktree: mutant `d46bccc088`
+failed capture `4a3d35249b36`, and restored `9fda792e4a` passed capture
+`22c75953df74` with the identical source tree to `73ea1d2d48`. Their task-owned
+refs and evidence remain available. Focused capture `240b7c8d4b55` passed 153
+tests across root, Reports, Remote, Relay, Planning and Desktop, plus registry
+and scenario checks, formatting, lint, root and five workspace typechecks, and
+both applicable audits. Reports Svelte checks had zero errors or warnings;
+Tailwind emitted its missing-content warning. It also retained the audio fixture
+captures at the tested revision.
+
+One root-case profile observed 0.034 ms for ten successful awaited service
+operations and 203,341,824 bytes whole-process peak RSS, including the runner;
+other workloads retain their own observations in the capture. At the committed
+revision the service owns 8,272 source bytes, 198 lines, complexity 62 and six
+dependencies, with no separate emitted module artifact. The source-change
+reasons are retained in Git notes. The bug loop's full verification step remains
+pending because the requested aggregate run and current-main Explorer proof are
+still open.
