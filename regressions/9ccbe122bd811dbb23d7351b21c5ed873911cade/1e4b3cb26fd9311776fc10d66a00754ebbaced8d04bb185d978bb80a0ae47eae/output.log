@@ -1,0 +1,18 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pV7LZf
+
+ ✓ test/services/unit-index.test.ts (14 tests) 2998ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2839ms
+ ✓ test/entity-usage-captures.test.ts (5 tests) 182ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 80ms
+ ✓ test/utils/scenario-coverage.test.ts (5 tests) 5ms
+
+ Test Files  4 passed (4)
+      Tests  26 passed (26)
+   Start at  05:13:03
+   Duration  6.55s (transform 261ms, setup 183ms, collect 512ms, tests 3.27s, environment 0ms, prepare 85ms)
+
+$ bun run src/index.ts units check
+Units registry is valid: 1828 units, 168 uncertain references.
+$ bun run src/index.ts audit
+Harness audit passed. Files and functions are staying small.
