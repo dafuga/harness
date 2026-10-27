@@ -2,7 +2,7 @@
 	"name": "native-measured-unit-identity",
 	"goal": "Preserve source identities for every measured or removed unit after verification releases indexes",
 	"createdAt": "2026-10-27T09:53:21.619Z",
-	"updatedAt": "2026-10-27T09:53:22.872Z",
+	"updatedAt": "2026-10-27T10:02:52.546Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:02:52.546Z",
+			"evidence": "The Desktop recorded-artifact fixture failed at 9cab783e5b73e130770a4e41cdd83d107fd5da69 because benchmarked service.title lost its committed source hash before attachment."
 		},
 		{
 			"id": "implement",
