@@ -38,6 +38,3 @@ export interface ProjectAgentStateFixtureGap {
 export type ProjectAgentFixtureMessage = Awaited<
 	ReturnType<NonNullable<DesktopBridge['messages']>>
 >[number];
-export type ProjectAgentFixtureProjectMessage = Awaited<
-	ReturnType<NonNullable<DesktopBridge['projectMessages']>>
->[number];

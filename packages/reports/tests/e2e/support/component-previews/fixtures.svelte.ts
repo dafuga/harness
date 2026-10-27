@@ -57,10 +57,7 @@ export function previewFixture(id: string, variant = '') {
 		cases[id] ??
 		nativeAtomFixture(id);
 	if (!props) throw new Error(`No representative fixture for ${id}`);
-	const selectedProps =
-		id === 'desktop.component.project-agent'
-			? projectAgentStateFixture(desktop, props, (variant || 'rest') as ProjectAgentState)
-			: props;
+	const selectedProps = projectAgentProps(id, props, desktop, variant);
 	const rendered = variantProps(id, selectedProps, variant);
 	// A shell that reads its place from the browser is opened where its host serves it.
 	const address = { ...legacyAddresses, ...hub.addresses }[id];
@@ -77,6 +74,16 @@ export function previewFixture(id: string, variant = '') {
 	};
 }
 
+function projectAgentProps(
+	id: string,
+	props: PreviewCases[string],
+	desktop: ReturnType<typeof createDesktopData>,
+	variant: string
+) {
+	if (id === 'desktop.component.project-agent')
+		return projectAgentStateFixture(desktop, props, (variant || 'rest') as ProjectAgentState);
+	return props;
+}
 function desktopCases(desktop: ReturnType<typeof createDesktopData>) {
 	return Object.fromEntries(
 		Object.entries({ ...desktopControls, ...desktopRuntime, ...deploymentCases }).map(

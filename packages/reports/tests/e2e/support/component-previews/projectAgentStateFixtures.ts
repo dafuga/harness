@@ -3,8 +3,7 @@ import type { PreviewProps } from './shared.types';
 import type {
 	ProjectAgentState,
 	ProjectAgentStateFixtureGap,
-	ProjectAgentFixtureMessage,
-	ProjectAgentFixtureProjectMessage
+	ProjectAgentFixtureMessage
 } from './projectAgentStateFixtures.types';
 
 const gaps: Partial<Record<ProjectAgentState, string>> = {
@@ -75,15 +74,13 @@ function setConversation(data: DesktopData) {
 	const assistant = {
 		...data.message,
 		id: 'preview-assistant-message',
-		author: 'assistant' as const,
+		author: 'agent' as const,
 		text: 'A deterministic assistant response wraps across the available component width. '.repeat(
 			12
 		)
 	} satisfies ProjectAgentFixtureMessage;
 	const messages = [human, assistant];
 	data.bridge.messages = async () => messages;
-	data.bridge.projectMessages = async () =>
-		messages as unknown as ProjectAgentFixtureProjectMessage[];
 }
 
 function setAgentActivity(data: DesktopData, state: ProjectAgentState) {
