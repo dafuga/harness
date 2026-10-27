@@ -3,7 +3,7 @@
 	"id": "desktop.service.project-image-cache",
 	"kind": "service",
 	"title": "ProjectImageCacheService",
-	"responsibility": "Owns the ProjectImageCacheService service workflow.",
+	"responsibility": "Read and cache committed project images without returning a stale project session response.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -37,13 +37,18 @@
 			{
 				"name": "ProjectImageCacheService.read",
 				"type": "Promise<Uint8Array>",
-				"description": "Checks the selected project and finds the requested version, image hash and supplied option in the entity at the requested commit before using cached bytes. A cached value is returned when its length matches the declared image size. On a cache miss, reads through the planning port at the requested revision with the optional option, checks byte length and SHA-256, caches the result and returns it. This service does not explicitly recheck project identity after asynchronous reads."
+				"description": "Binds the request to the selected project, validates the entity, version, image hash and optional option, and uses a cache identity derived from that captured project. Rechecks the selected project services after asynchronous reads and before returning bytes or beginning a cache write. A cache write already in progress remains keyed to its original project and the response is rechecked afterward."
 			}
 		],
 		"errors": [
 			{
 				"name": "Error",
 				"type": "thrown"
+			},
+			{
+				"name": "Changed project session",
+				"type": "Error",
+				"description": "Rejects if the selected project or its services differ at a recheck; no stale bytes are returned in that case. A switch away and back between rechecks cannot be independently observed."
 			}
 		]
 	},
