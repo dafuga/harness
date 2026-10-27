@@ -59,6 +59,7 @@ export const localMethods = [
 	'planDeployment',
 	'deploy',
 	'agentActivity',
+	'projectWork',
 	'openProject',
 	'selectProject',
 	'hostedStatus',

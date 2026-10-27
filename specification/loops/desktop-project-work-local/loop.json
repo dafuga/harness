@@ -2,7 +2,7 @@
 	"name": "desktop-project-work-local",
 	"goal": "Expose the committed project Work snapshot to the local Electron renderer without widening remote access.",
 	"createdAt": "2026-10-27T01:27:14.003Z",
-	"updatedAt": "2026-10-27T01:27:21.471Z",
+	"updatedAt": "2026-10-27T01:32:24.332Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T01:30:52.494Z",
+			"evidence": "b2082a8dc9d05d70d727e14c663e675205dbe4036068e9b1e00c6911c934a1c7: local transport reports the projectWork operation does not exist at the committed test revision."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T01:32:24.332Z",
+			"evidence": "Added projectWork to local-only wire methods and exposed it from the Electron preload; local selection checks remain in the existing bridge."
 		},
 		{
 			"id": "green",
