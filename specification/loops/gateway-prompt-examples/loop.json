@@ -2,7 +2,7 @@
 	"name": "gateway-prompt-examples",
 	"goal": "Register gateway prompt examples with authored results and error coverage",
 	"createdAt": "2026-10-27T12:30:14.580Z",
-	"updatedAt": "2026-10-27T12:30:17.773Z",
+	"updatedAt": "2026-10-27T12:39:17.741Z",
 	"template": "refactor",
 	"templateLineage": [
 		"feature",
@@ -20,12 +20,16 @@
 		{
 			"id": "implement",
 			"title": "Extract or reorganize one responsibility at a time.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:39:13.957Z",
+			"evidence": "Declared four authored prompt examples and their expected values or propagated error; source behavior is unchanged."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:39:17.741Z",
+			"evidence": "Four registered cases pass in capture ef00e770248a at d7e6e778f6; static discovery finds exactly four. The first capture failed because the measurement wrapper was not awaited, and that fixture was corrected."
 		},
 		{
 			"id": "verify",
