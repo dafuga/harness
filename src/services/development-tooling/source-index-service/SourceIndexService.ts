@@ -51,6 +51,8 @@ export class SourceIndexService {
 			entries.map((entry) => this.file(entry, { config, paths }, read))
 		);
 		const kept = files.filter((file): file is SourceFile => file !== undefined);
+		const current = new Set(kept.map((file) => cacheKey(file.hash, file.language, file.path)));
+		for (const key of this.parsed.keys()) if (!current.has(key)) this.parsed.delete(key);
 		return { revision: tree.revision, files: new Map(kept.map((file) => [file.path, file])) };
 	}
 
@@ -90,7 +92,7 @@ export class SourceIndexService {
 		entry: TreeEntry,
 		language: SourceLanguage
 	): Promise<Parsed> {
-		const key = `${entry.hash}:${language}:${componentName(entry.path)}`;
+		const key = cacheKey(entry.hash, language, entry.path);
 		const cached = this.parsed.get(key);
 		if (cached) return cached;
 		const readable = language !== 'other' || textExtensions.has(extname(entry.path).toLowerCase());
@@ -115,6 +117,10 @@ function boundedRead(tree: SourceTree): SourceTree['read'] {
 			else active--;
 		}
 	};
+}
+
+function cacheKey(hash: string, language: SourceLanguage, path: string): string {
+	return `${hash}:${language}:${componentName(path)}`;
 }
 
 const empty: Parsed = {
