@@ -1504,3 +1504,8 @@ admission because the CPU reserve was exhausted. At that admission attempt,
 task RSS peaked at 243 MB, shared or unattributed RSS at 4.56 GB, identified
 other-project RSS at 14.84 GB and system free memory was at least 67%. No
 workspace product repair has been made.
+
+A second admission attempt waited 181.8 seconds and again timed out on the
+CPU reserve without starting the test. Its attributed task peak was 256 MB,
+shared or unattributed RSS was 4.69 GB, identified other-project RSS was
+19.87 GB and system free memory stayed at or above 67%.
