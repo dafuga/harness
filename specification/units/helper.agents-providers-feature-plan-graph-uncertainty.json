@@ -31,7 +31,7 @@
 			{
 				"name": "featurePlanGraphUncertainty",
 				"type": "(string)=>string | (ModuleData,unknown[])=>string[]",
-				"description": "String overload preserves generated trim. Metadata overload returns sorted deduplicated node/reason/detail errors for page-reachable or unclassifiable uncertainty, using reverse graph traversal excluding scenario edges; proven unrelated test/script paths are omitted. Missing/duplicate/dangling graphs and unknown owners fail closed; known inactive pages are not active consumers."
+				"description": "String overload preserves generated trim. Metadata overload returns sorted deduplicated errors for page-reachable or unclassifiable uncertainty using reverse graph traversal without scenario edges. A dangling edge is ignored only when its existing origin is proven unreachable from active pages or the edge is scoped to a known scenario. Missing origins, page-reachable gaps, missing or duplicate graphs, and unknown ownership fail closed. Before ignoring references or non-scenario dangling edges, every active page must have a classified source node and committed ownership edge for each owned source file."
 			}
 		],
 		"errors": [

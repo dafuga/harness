@@ -82,17 +82,61 @@ function relevant(origin: string, data: ModuleData, reverse: Map<string, string[
 	}
 	return false;
 }
-function graphErrors(data: ModuleData): string[] {
+function pageAnchors(
+	data: ModuleData,
+	nodes: Map<string, ModuleData['sourceGraph']['nodes'][number]>
+) {
+	const edges = new Set(
+		data.sourceGraph.edges
+			.filter((edge) => edge.via === 'owns')
+			.map((edge) => `${edge.from}\0${edge.to}`)
+	);
+	return data.registry.units
+		.filter((unit) => unit.status === 'active' && unit.kind === 'page')
+		.every((page) => {
+			const id = `unit:${page.id}`;
+			const anchor = nodes.get(id);
+			if (anchor?.kind !== 'unit' || (anchor.unit && anchor.unit !== page.id)) return false;
+			if (!page.owns.source.length) return false;
+			return page.owns.source.every((file) => {
+				const fileId = `file:${file}`;
+				const node = nodes.get(fileId);
+				return !!node && classified(node, data) && edges.has(`${id}\0${fileId}`);
+			});
+		});
+}
+
+type GraphNodes = Map<string, ModuleData['sourceGraph']['nodes'][number]>;
+type GraphEdge = ModuleData['sourceGraph']['edges'][number];
+function scenarioEdge(edge: GraphEdge, nodes: GraphNodes): boolean {
+	return nodes.get(edge.from)?.kind === 'scenario' || nodes.get(edge.to)?.kind === 'scenario';
+}
+function danglingErrors(
+	data: ModuleData,
+	state: { nodes: GraphNodes; dangling: GraphEdge[]; ambiguous: boolean; complete: boolean }
+): string[] {
+	const reverse = reverseGraph(data);
+	return state.dangling.flatMap((edge) => {
+		if (!state.ambiguous && scenarioEdge(edge, state.nodes)) return [];
+		if (!state.complete || !state.nodes.has(edge.from) || relevant(edge.from, data, reverse))
+			return [`Unresolved committed source graph edge: ${edge.from} -> ${edge.to}`];
+		return [];
+	});
+}
+
+function graphErrors(data: ModuleData, hasReferences: boolean): string[] {
 	const graph = data.sourceGraph;
 	if (!graph || !Array.isArray(graph.nodes) || !Array.isArray(graph.edges))
 		return ['Committed source graph is missing.'];
-	const nodes = new Set(graph.nodes.map((node) => node.id));
+	const nodes = new Map(graph.nodes.map((node) => [node.id, node]));
 	const errors: string[] = [];
-	if (nodes.size !== graph.nodes.length) errors.push('Ambiguous committed source graph nodes.');
-	for (const edge of graph.edges) {
-		if (!nodes.has(edge.from) || !nodes.has(edge.to))
-			errors.push(`Unresolved committed source graph edge: ${edge.from} -> ${edge.to}`);
-	}
+	const ambiguous = nodes.size !== graph.nodes.length;
+	if (ambiguous) errors.push('Ambiguous committed source graph nodes.');
+	const dangling = graph.edges.filter((edge) => !nodes.has(edge.from) || !nodes.has(edge.to));
+	const needsCheck = hasReferences || dangling.some((edge) => !scenarioEdge(edge, nodes));
+	const complete = !ambiguous && (!needsCheck || pageAnchors(data, nodes));
+	if (!ambiguous && !complete) errors.push('Committed page ownership graph is incomplete.');
+	errors.push(...danglingErrors(data, { nodes, dangling, ambiguous, complete }));
 	return errors;
 }
 
@@ -106,7 +150,7 @@ export function featurePlanGraphUncertainty(
 	if (typeof input === 'string') return input.trim();
 	if (!input || !references)
 		throw new TypeError('featurePlanGraphUncertainty expects text or committed graph data');
-	const errors = graphErrors(input);
+	const errors = graphErrors(input, references.length > 0);
 	if (errors.length) return [...new Set([...errors, ...references.map(diagnostic)])].sort();
 	const reverse = reverseGraph(input);
 	for (const reference of references) {
