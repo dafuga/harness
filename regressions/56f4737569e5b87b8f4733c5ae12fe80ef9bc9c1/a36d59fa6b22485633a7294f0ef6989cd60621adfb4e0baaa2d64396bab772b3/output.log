@@ -1,0 +1,82 @@
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run --exclude "test/**/*.e2e.test.ts" --exclude "test/packaged-reports.e2e.test.ts" "$@"' -- test/services/agents-providers/module-task-worker.test.ts -t "context rejection is safe" "--maxWorkers=1" "--testTimeout=30000"
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-GMtj9y
+
+ ❯ test/services/agents-providers/module-task-worker.test.ts (7 tests | 1 failed | 6 skipped) 797ms
+   ↓ module filters and assignment claims select once, then preserve changes for review
+   ↓ worker passes the exact prepared scope through quota fallback
+   ↓ incomplete review commits a repair base, requeues once, and keeps prior work and contract
+   ↓ context cleanup waits for runner rejection and cancellation settlement
+   × context rejection is safe and an aborted preclaim does not write the queue 788ms
+     → promise resolved "{ status: 'failed', …(2) }" instead of rejecting
+   ↓ workspace preparation failure finalizes without a worktree or runner context
+   ↓ approved claims reject stale or unrelated work before running a provider
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/agents-providers/module-task-worker.test.ts > context rejection is safe and an aborted preclaim does not write the queue
+AssertionError: promise resolved "{ status: 'failed', …(2) }" instead of rejecting
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- Error {[39m
+[32m-   "message": "rejected promise",[39m
+[31m+ {[39m
+[31m+   "result": {[39m
+[31m+     "attempt": "16765426-01ae-467d-9580-ede211f7d276",[39m
+[31m+     "changedFiles": [],[39m
+[31m+     "error": "Provider launch was blocked before execution.",[39m
+[31m+     "executions": [[39m
+[31m+       {[39m
+[31m+         "apiCost": {[39m
+[31m+           "basis": "unavailable",[39m
+[31m+           "maximumUsd": null,[39m
+[31m+           "minimumUsd": null,[39m
+[31m+           "note": "Provider did not start; no usage or cost was incurred.",[39m
+[31m+           "rateCard": "standard-global-2026-10-25",[39m
+[31m+           "source": "https://platform.claude.com/docs/en/about-claude/pricing",[39m
+[31m+           "usd": null,[39m
+[31m+         },[39m
+[31m+         "finishedAt": "2026-10-27T12:51:58.288Z",[39m
+[31m+         "intelligence": "medium",[39m
+[31m+         "model": "claude-haiku-5-5",[39m
+[31m+         "provider": "claude",[39m
+[31m+         "reportedModel": null,[39m
+[31m+         "startedAt": "2026-10-27T12:51:58.288Z",[39m
+[31m+         "status": "failed",[39m
+[31m+         "usage": undefined,[39m
+[31m+       },[39m
+[31m+     ],[39m
+[31m+     "fallback": false,[39m
+[31m+     "finishedAt": "2026-10-27T12:51:58.288Z",[39m
+[31m+     "intelligence": "medium",[39m
+[31m+     "model": "claude-haiku-5-5",[39m
+[31m+     "provider": "claude",[39m
+[31m+     "reportedModel": null,[39m
+[31m+     "sourceCommit": "9e664c1e899589205825f8b2130dd7d7008b2182",[39m
+[31m+     "text": "",[39m
+[31m+     "worktree": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/.cache/harness/task-worktrees/ba9a837f1d0f9b870ca74ff0146225eac5be53c6ba513b97192ea315a695df2f/16765426-01ae-467d-9580-ede211f7d276",[39m
+[31m+   },[39m
+[31m+   "status": "failed",[39m
+[31m+   "task": "orders-validation",[39m
+[2m  }[22m
+
+ ❯ test/services/agents-providers/module-task-worker.test.ts:164:41
+    162|    unqualifiedContexts.contexts
+    163|   );
+    164|   await expect(unqualified.once('owner')).rejects.toMatchObject({ quot…
+       |                                         ^
+    165|   expect(await service.repository.read()).toEqual(beforeQualification);
+    166|   expect(unqualifiedContexts.calls).toHaveLength(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 skipped (7)
+   Start at  12:51:52
+   Duration  6.04s (transform 847ms, setup 161ms, collect 1.50s, tests 797ms, environment 0ms, prepare 36ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1
