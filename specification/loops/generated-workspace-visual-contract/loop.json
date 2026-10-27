@@ -2,7 +2,7 @@
 	"name": "generated-workspace-visual-contract",
 	"goal": "Register visual cases from nested workspaces at the repository registry",
 	"createdAt": "2026-10-27T09:10:18.131Z",
-	"updatedAt": "2026-10-27T09:42:58.668Z",
+	"updatedAt": "2026-10-27T09:54:36.615Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:54:34.609Z",
+			"evidence": "Commit 23d96efe42 registers nested visual cases at the repository registry and selects their workspace build."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:54:36.615Z",
+			"evidence": "Harness record 2248893c5eeb39b4de6e12f1d210e5639cfb81f4196246e135c179ab09d58a40 passed the unchanged case at 23d96efe42 on harbor-mbp-2 with the red profile."
 		},
 		{
 			"id": "verify",
