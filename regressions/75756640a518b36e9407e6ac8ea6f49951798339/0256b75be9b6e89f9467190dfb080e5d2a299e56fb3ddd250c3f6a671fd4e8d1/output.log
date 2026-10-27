@@ -1,0 +1,70 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-5nm4Bn
+
+ ❯ test/rules.test.ts (2 tests | 1 failed | 1 skipped) 1903ms
+   ↓ Harness rule catalog defines Small Harness thresholds
+   × current and generated lint rules handle TypeScript overloads without losing guards 1902ms
+     → expected [ …(3) ] to deeply equal []
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/rules.test.ts > current and generated lint rules handle TypeScript overloads without losing guards
+AssertionError: expected [ …(3) ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   {[39m
+[31m+     "column": 17,[39m
+[31m+     "endColumn": 24,[39m
+[31m+     "endLine": 2,[39m
+[31m+     "line": 2,[39m
+[31m+     "message": "'convert' is already defined.",[39m
+[31m+     "messageId": "redeclared",[39m
+[31m+     "nodeType": "Identifier",[39m
+[31m+     "ruleId": "no-redeclare",[39m
+[31m+     "severity": 2,[39m
+[31m+   },[39m
+[31m+   {[39m
+[31m+     "column": 17,[39m
+[31m+     "endColumn": 24,[39m
+[31m+     "endLine": 3,[39m
+[31m+     "line": 3,[39m
+[31m+     "message": "'convert' is already defined.",[39m
+[31m+     "messageId": "redeclared",[39m
+[31m+     "nodeType": "Identifier",[39m
+[31m+     "ruleId": "no-redeclare",[39m
+[31m+     "severity": 2,[39m
+[31m+   },[39m
+[31m+   {[39m
+[31m+     "column": 9,[39m
+[31m+     "endColumn": 15,[39m
+[31m+     "endLine": 4,[39m
+[31m+     "line": 4,[39m
+[31m+     "message": "'secret' is assigned a value but never used.",[39m
+[31m+     "messageId": "unusedVar",[39m
+[31m+     "nodeType": "Identifier",[39m
+[31m+     "ruleId": "@typescript-eslint/no-unused-vars",[39m
+[31m+     "severity": 2,[39m
+[31m+   },[39m
+[31m+ ][39m
+
+ ❯ checkDeclarations test/rules.test.ts:63:68
+     61|   'const duplicate = 1; const duplicate = 2; const unused = 3; console…
+     62|  const [pass] = await eslint.lintText(valid, { filePath });
+     63|  expect(pass.messages.filter((message) => message.severity === 2)).toE…
+       |                                                                    ^
+     64|  const [fail] = await eslint.lintText(invalid, { filePath });
+     65|  expect(fail.messages.map((message) => message.ruleId)).toEqual(
+ ❯ test/rules.test.ts:25:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 skipped (2)
+   Start at  01:01:15
+   Duration  4.49s (transform 87ms, setup 125ms, collect 65ms, tests 1.90s, environment 0ms, prepare 25ms)
+
