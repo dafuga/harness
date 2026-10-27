@@ -1884,6 +1884,14 @@ no separate module artifact. The manifest reason is in Git notes. This function
 is excluded from the public Functions catalog, so the shared preview's Examples
 tab remains unproven. Integration and deferred full verification remain open.
 
+Follow-up `7e9c51733b` keeps the seven liveness case titles and adds the
+one-second stale detail, completed and failed short-circuit behavior, and a
+malformed process-result error inside the existing cases. Capture
+`4e33c020108c` at that commit passed the seven cases and 16 registry guards;
+units check, focused typecheck, lint and formatting passed. The earlier
+authored-expectation mutation proof remains bound to `13a963a459`, not this
+later commit.
+
 The existing uncommitted verification fixture edits were left byte-for-byte
 unchanged. With those edits present, the focused non-browser
 `test/history-source.test.ts` case passed on the primary Mac against a disposable
