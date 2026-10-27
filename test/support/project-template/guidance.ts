@@ -115,6 +115,9 @@ function expectStandardTestForms(files: ReturnType<typeof projectFiles>): void {
 			'distinct declared case bindings sharing a state, viewport and evidence slot'
 		);
 		expect(text, path).toContain('plus wrong and duplicate bindings');
+		expect(text, path).toContain(
+			'Scope screenshots to each scenario check when cases share a test file'
+		);
 		expect(text, path).toContain('retries with differing outcomes');
 		expect(text, path).toContain(
 			'Preserve the unit, case, tested revision, attempt, original hash and outcome'
