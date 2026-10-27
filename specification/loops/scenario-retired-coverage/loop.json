@@ -2,7 +2,7 @@
 	"name": "scenario-retired-coverage",
 	"goal": "Reject scenario coverage that names a retired unit without inventing replacement proof",
 	"createdAt": "2026-10-27T12:05:21.062Z",
-	"updatedAt": "2026-10-27T12:15:43.798Z",
+	"updatedAt": "2026-10-27T12:17:55.782Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:17:49.415Z",
+			"evidence": "Commit 7d28b8a59c makes both scenario and registry checks report retired unit references; scenario data remains unchanged for the regression pair."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:17:55.782Z",
+			"evidence": "Green e3ed2050910f at 7d28b8a59c passes the unchanged case and fixtures on the red laptop profile; mutation and current-scenario checks remain pending."
 		},
 		{
 			"id": "verify",
