@@ -25,6 +25,9 @@ export const revisionSources = (root: string) => ({
 	source: new sourceImpact.SourceImpactService(root),
 	registries: new Map<string, Stored>()
 });
+function sourceTree(git: GitAdapter, commit: string) {
+	return git.attempt(['rev-parse', '--verify', '--quiet', `${commit}^{tree}`]);
+}
 /** A commit's own registry, records and reasons, with captures placed by the caller. */
 export class RevisionDetailService {
 	private readonly git: GitAdapter;
@@ -42,12 +45,7 @@ export class RevisionDetailService {
 	): Promise<BuiltRevision> {
 		const { status, records, sound } = await this.recorded(commit, media);
 		const side = await this.kept.source.stored(commit);
-		const sideTree = await this.git.attempt([
-			'rev-parse',
-			'--verify',
-			'--quiet',
-			`${commit}^{tree}`
-		]);
+		const sideTree = await sourceTree(this.git, commit);
 		const tree = await CommitTreeAdapter.open(this.root, commit);
 		const stored = await revisionRegistryAt(this.root, commit, this.kept);
 		await this.sourceMeasures(commit, stored.registry);

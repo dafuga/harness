@@ -40,6 +40,9 @@ function overlaps(left: string, right: string): boolean {
 	};
 	return contains(left, right) || contains(right, left);
 }
+function isMissing(error: unknown): boolean {
+	return !!error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT';
+}
 async function verifyCachePath(candidate: string): Promise<void> {
 	let ancestor = candidate;
 	while (true) {
@@ -49,8 +52,7 @@ async function verifyCachePath(candidate: string): Promise<void> {
 				throw new Error('The task worktree cache cannot be resolved safely.');
 			return;
 		} catch (error) {
-			if (!error || typeof error !== 'object' || !('code' in error) || error.code !== 'ENOENT')
-				throw error;
+			if (!isMissing(error)) throw error;
 			const parent = dirname(ancestor);
 			if (parent === ancestor) throw new Error('The task worktree cache is unavailable.');
 			ancestor = parent;

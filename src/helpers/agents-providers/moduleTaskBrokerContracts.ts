@@ -34,20 +34,22 @@ function text(value: unknown): string {
 	if (typeof value !== 'string') throw new Error('Invalid contract text');
 	return value;
 }
+function jsonEntries(value: object, parents: Set<object>) {
+	if (parents.has(value)) throw new Error('Invalid JSON example');
+	if (!Array.isArray(value) && ![Object.prototype, null].includes(Object.getPrototypeOf(value)))
+		throw new Error('Invalid JSON example');
+	const entries = Object.getOwnPropertyDescriptors(value);
+	if (Object.getOwnPropertySymbols(value).length) throw new Error('Invalid JSON example');
+	if (Object.values(entries).some((entry) => !('value' in entry)))
+		throw new Error('Invalid JSON example');
+	return entries;
+}
 function jsonExample(value: unknown, parents = new Set<object>()): unknown {
 	if (value === null || typeof value === 'string' || typeof value === 'boolean') return value;
 	if (typeof value === 'number' && Number.isFinite(value)) return value;
-	if (typeof value !== 'object' || !value || parents.has(value))
-		throw new Error('Invalid JSON example');
-	if (!Array.isArray(value) && ![Object.prototype, null].includes(Object.getPrototypeOf(value)))
-		throw new Error('Invalid JSON example');
+	if (typeof value !== 'object' || !value) throw new Error('Invalid JSON example');
+	const entries = jsonEntries(value, parents);
 	parents.add(value);
-	const entries = Object.getOwnPropertyDescriptors(value);
-	if (
-		Object.getOwnPropertySymbols(value).length ||
-		Object.values(entries).some((entry) => !('value' in entry))
-	)
-		throw new Error('Invalid JSON example');
 	const result = Array.isArray(value)
 		? Array.from(value, (item) => jsonExample(item, parents))
 		: Object.fromEntries(
@@ -129,20 +131,22 @@ export function projectBrokerList(value: unknown, kind?: string) {
 		};
 	});
 }
+function isListCommand(argv: string[]) {
+	return argv[1] === 'list' && argv[2] === '--json';
+}
 function validateArguments(argv: string[]): void {
 	if (argv[0] !== 'units') throw new Error('Unsupported CLI operation');
 	if (argv[1] === 'show' && argv.length === 4 && argv[3] === '--json') {
 		brokerUnitId(argv[2]);
 		return;
 	}
-	if (argv[1] === 'list' && argv.length === 3 && argv[2] === '--json') return;
-	if (argv[1] === 'list' && argv.length === 5 && argv[2] === '--json' && argv[3] === '--kind') {
+	if (isListCommand(argv) && argv.length === 3) return;
+	if (isListCommand(argv) && argv.length === 5 && argv[3] === '--kind') {
 		brokerKind(argv[4]);
 		return;
 	}
 	throw new Error('Unsupported CLI operation');
 }
-
 function runCli(process: SandboxProcess): Promise<unknown> {
 	return new Promise((resolve, reject) => {
 		const child = spawn(process.command, process.args, {
@@ -192,7 +196,6 @@ function runCli(process: SandboxProcess): Promise<unknown> {
 		});
 	});
 }
-
 export async function invokeBrokerCli(
 	scope: ModuleTaskToolBrokerScope,
 	argv: string[]

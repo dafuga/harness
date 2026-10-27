@@ -5,6 +5,11 @@ const id = z.string().regex(unitIdPattern).max(150);
 const text = z.string().trim().min(1).max(16000);
 const commit = z.string().regex(/^[a-f0-9]{40}$/);
 const path = z.string().regex(/^(?!\/)(?!.*(?:^|\/)\.{1,2}(?:\/|$))[^\0\r\n]+$/);
+const hasControl = (value: string) =>
+	Array.from(value).some((character) => {
+		const code = character.charCodeAt(0);
+		return code < 32 || (code >= 127 && code <= 159);
+	});
 const assignedFile = z
 	.string()
 	.min(1)
@@ -14,7 +19,9 @@ const assignedFile = z
 			!value.startsWith('/') &&
 			!/^[a-zA-Z]:/.test(value) &&
 			!value.includes('\\') &&
-			!/[\u0000-\u001f\u007f-\u009f*?]/.test(value) &&
+			!hasControl(value) &&
+			!value.includes('*') &&
+			!value.includes('?') &&
 			segments.every(
 				(segment) =>
 					segment.length > 0 &&

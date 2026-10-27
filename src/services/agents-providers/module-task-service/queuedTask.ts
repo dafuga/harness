@@ -11,7 +11,11 @@ import type {
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
 const verificationPath = /(^|\/)(test|tests)\/|\.(test|spec)\.[jt]sx?$/;
-const control = /[\u0000-\u001f\u007f-\u009f]/;
+const hasControl = (value: string) =>
+	Array.from(value).some((character) => {
+		const code = character.charCodeAt(0);
+		return code < 32 || (code >= 127 && code <= 159);
+	});
 function canonicalFile(file: string): boolean {
 	const parts = file.split('/');
 	return (
@@ -19,7 +23,7 @@ function canonicalFile(file: string): boolean {
 		!file.startsWith('/') &&
 		!/^[a-zA-Z]:/.test(file) &&
 		!file.includes('\\') &&
-		!control.test(file) &&
+		!hasControl(file) &&
 		!/[*?]/.test(file) &&
 		parts.every((part) => part && part !== '.' && part !== '..' && part.toLowerCase() !== '.git')
 	);
@@ -56,8 +60,7 @@ function resolveTaskFiles(
 	input: ModuleTaskInput,
 	role: 'implementation' | 'verification',
 	verification: string[],
-	owned: string[],
-	committedFiles: string[]
+	source: { owned: string[]; committedFiles: string[] }
 ): string[] {
 	if (input.assignedFiles !== undefined) {
 		assertPaths(input.assignedFiles, 'Assigned files');
@@ -67,8 +70,8 @@ function resolveTaskFiles(
 	if (role === 'verification') return verification;
 	return [
 		...new Set(
-			owned.flatMap((pattern) =>
-				committedFiles.filter(
+			source.owned.flatMap((pattern) =>
+				source.committedFiles.filter(
 					(file) => !verificationPath.test(file) && ownedPatternMatches(file, pattern)
 				)
 			)
@@ -78,23 +81,21 @@ function resolveTaskFiles(
 function assertTaskFileGrant(
 	file: string,
 	role: 'implementation' | 'verification',
-	allowed: string[],
-	committed: Set<string>,
-	committedFiles: string[]
+	scope: { allowed: string[]; committed: Set<string>; committedFiles: string[] }
 ) {
 	const isAllowed =
 		role === 'verification'
-			? allowed.includes(file)
+			? scope.allowed.includes(file)
 			: !verificationPath.test(file) &&
-				allowed.some((pattern) => ownedPatternMatches(file, pattern));
+				scope.allowed.some((pattern) => ownedPatternMatches(file, pattern));
 	if (!isAllowed)
 		throw new Error(
 			role === 'verification'
 				? 'Verification tasks may use only explicitly declared verification files.'
 				: 'Implementation tasks may use only committed module-owned source files.'
 		);
-	if (committed.has(file)) return;
-	if (committedFiles.some((candidate) => candidate.toLowerCase() === file.toLowerCase()))
+	if (scope.committed.has(file)) return;
+	if (scope.committedFiles.some((candidate) => candidate.toLowerCase() === file.toLowerCase()))
 		throw new Error('Assigned files must use the exact case from the selected source revision.');
 	throw new Error('Assigned files must exist in the selected committed source revision.');
 }
@@ -109,16 +110,21 @@ export async function taskGrantFiles(
 	const committedFiles = (await tree.list()).map((entry) => entry.path);
 	assertVerificationFiles(verification);
 	const allowed = role === 'verification' ? verification : owned;
-	const files = resolveTaskFiles(input, role, verification, owned, committedFiles);
+	const files = resolveTaskFiles(input, role, verification, { owned, committedFiles });
 	if (!files.length) throw new Error(`A ${role} task requires an explicit nonempty file grant.`);
 	assertPaths(files, 'Resolved file grant');
 	const committed = new Set(committedFiles);
-	for (const file of files) assertTaskFileGrant(file, role, allowed, committed, committedFiles);
+	for (const file of files) assertTaskFileGrant(file, role, { allowed, committed, committedFiles });
 	return [...files];
 }
 export async function validateTaskGrant(root: string, files: string[]): Promise<void> {
 	const resolvedRoot = await realpath(root);
 	await Promise.all(files.map((file) => validateWorkingFile(resolvedRoot, file)));
+}
+function unsafeEntry(entry: Awaited<ReturnType<typeof lstat>>, parent: boolean) {
+	return (
+		entry.isSymbolicLink() || (parent ? !entry.isDirectory() : !entry.isFile() || entry.nlink !== 1)
+	);
 }
 async function validateWorkingFile(root: string, file: string): Promise<void> {
 	let current = root;
@@ -128,11 +134,7 @@ async function validateWorkingFile(root: string, file: string): Promise<void> {
 			if (!(await readdir(current)).includes(part)) throw new Error();
 			current = resolve(current, part);
 			const entry = await lstat(current);
-			if (
-				entry.isSymbolicLink() ||
-				(index < parts.length - 1 ? !entry.isDirectory() : !entry.isFile() || entry.nlink !== 1)
-			)
-				throw new Error();
+			if (unsafeEntry(entry, index < parts.length - 1)) throw new Error();
 		} catch {
 			throw new Error(
 				'Assigned files must be regular files without symlinks, hard links or symlink parents.'
@@ -152,10 +154,13 @@ export function queuedTask(
 	input: ModuleTaskInput,
 	feature: TaskFeature,
 	unit: ComponentManifest,
-	sourceCommit: string,
-	files = input.assignedFiles ??
-		(input.role === 'verification' ? (input.verificationFiles ?? []) : unit.owns.source)
+	...selection: [sourceCommit: string, files?: string[]]
 ): ModuleTask {
+	const [
+		sourceCommit,
+		files = input.assignedFiles ??
+			(input.role === 'verification' ? (input.verificationFiles ?? []) : unit.owns.source)
+	] = selection;
 	return {
 		...input,
 		feature,

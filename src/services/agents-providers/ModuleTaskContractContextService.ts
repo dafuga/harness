@@ -136,7 +136,9 @@ async function removeContext(root: string): Promise<void> {
 	for (const path of [join(root, 'bin'), root]) {
 		try {
 			await chmod(path, 0o700);
-		} catch {}
+		} catch {
+			// Removal still runs if the context was only partially created.
+		}
 	}
 	await rm(root, { recursive: true, force: true });
 }
@@ -144,10 +146,9 @@ async function createContext(
 	root: string,
 	task: ModuleTask,
 	files: string[],
-	data: ModuleData,
-	protectedPaths: string[],
-	runtimePath: string
+	options: { data: ModuleData; protectedPaths: string[]; runtimePath: string }
 ): Promise<ModuleTaskContractContext> {
+	const { data, protectedPaths, runtimePath } = options;
 	const contextRoot = await realpath(root);
 	assertOutside(contextRoot, [...protectedPaths, runtimePath]);
 	const snapshot = join(contextRoot, 'snapshot.json');
@@ -209,7 +210,7 @@ export class ModuleTaskContractContextService {
 		assertOutside(runtimePath, protectedPaths);
 		const contextRoot = await mkdtemp(join(tmpdir(), 'harness-contract-context-'));
 		try {
-			return await createContext(contextRoot, task, files, data, protectedPaths, runtimePath);
+			return await createContext(contextRoot, task, files, { data, protectedPaths, runtimePath });
 		} catch (error) {
 			await removeContext(contextRoot);
 			throw error;
