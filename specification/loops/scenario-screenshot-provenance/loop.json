@@ -1,0 +1,60 @@
+{
+	"name": "scenario-screenshot-provenance",
+	"goal": "Require screenshots to match their declared capture provenance",
+	"createdAt": "2026-10-27T04:17:33.782Z",
+	"updatedAt": "2026-10-27T04:19:19.327Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T04:17:41.539Z",
+			"evidence": "A screenshot marked fixture or lacking provenance can satisfy an actual-capture screenshot slot."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T04:17:42.160Z",
+			"evidence": "The existing element screenshot example uses only actual captures; retain its title and add fixture and missing provenance inputs."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T04:18:42.886Z",
+			"evidence": "Existing element screenshot case fails at 7d0f49a0ba: fixture provenance is accepted for actual-capture evidence."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T04:19:17.517Z",
+			"evidence": "Fix 44a2d10d23 checks screenshots against any declared provenance before accepting their build stamp."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T04:19:19.327Z",
+			"evidence": "Paired green reruns the five unchanged cases at 44a2d10d23; fixture, missing and opposite provenance are rejected."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

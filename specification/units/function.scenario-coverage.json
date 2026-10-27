@@ -44,7 +44,7 @@
 			{
 				"name": "scenarioCoverage",
 				"type": "CoverageResult",
-				"description": "Scenario states with capture statuses plus prefixed failures for missing or invalid evidence. A capture must match its declared evidence kind; screenshots require valid dimensions and revision/build provenance, audio requires duration/transcript and stated provenance, and benchmarks must match their schema."
+				"description": "Scenario states with capture statuses plus prefixed failures for missing or invalid evidence. A capture must match its declared evidence kind; screenshots require valid dimensions, matching declared provenance when present, and revision/build identity. Audio requires duration, transcript and stated provenance; benchmarks must match their schema."
 			}
 		],
 		"errors": []

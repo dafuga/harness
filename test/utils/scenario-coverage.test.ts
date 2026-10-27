@@ -89,7 +89,13 @@ function picture(mode = 'element', scale = 1) {
 		kind: 'ui',
 		viewports: [{ id: 'desktop', width: 920, height: 700, scale }],
 		evidence: [
-			{ ...scenario.evidence[0], kind: 'screenshot', viewports: ['desktop'], capture: mode }
+			{
+				...scenario.evidence[0],
+				kind: 'screenshot',
+				viewports: ['desktop'],
+				capture: mode,
+				provenance: 'actual-capture'
+			}
 		]
 	});
 }
@@ -123,6 +129,18 @@ test('scenarioCoverage: accepts an element screenshot', () => {
 	expect(imageFailures(item)).toEqual([]);
 	expect(imageFailures(image({}, 316, 100), 'element', 2)).toEqual([]);
 	expect(imageFailures(image({}, 198, 63), 'element', 1.25)).toEqual([]);
+	for (const [provenance, stated] of [
+		['fixture', 'fixture'],
+		[undefined, 'none']
+	] as const)
+		expect(imageFailures(image({ provenance }))).toEqual([
+			`explorer-flow: capture pages-flow.json has provenance ${stated} but evidence flow requires actual-capture`
+		]);
+	const fixture = coverageFixture(manifest.testing.examples[2].input[0]);
+	fixture.scenario.evidence[0].provenance = 'fixture';
+	expect(scenarioCoverage(fixture).failures).toEqual([
+		'explorer-flow: capture pages-flow.json has provenance actual-capture but evidence flow requires fixture'
+	]);
 });
 
 test('scenarioCoverage: rejects a capture of the wrong kind', () => {

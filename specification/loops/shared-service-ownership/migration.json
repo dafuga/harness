@@ -2719,11 +2719,25 @@
 			"definition": "bb23c819f53f884ce32b83f7c534c31f52c71aa92671a8e807f5b60d3c431a4f",
 			"relocationDefinition": "7c6fde05df18fa70a2c12eae9a58acdd175271911693f14df619e73bd8938ffe",
 			"review": {
-				"commit": "9bd3c0d300791e74e51cc0b903e70dbd36004432",
+				"commit": "5e5187769d390ab5a21a7bfd0f8013c9667b6b41",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
 				"definition": "bb23c819f53f884ce32b83f7c534c31f52c71aa92671a8e807f5b60d3c431a4f",
-				"reason": "Require evidence kind to match each declared scenario requirement."
-			}
+				"reason": "Keep screenshot provenance validation focused in the owned problem helper."
+			},
+			"previousReviews": [
+				{
+					"commit": "44a2d10d2388305d6ef09cf709249f3dbbbbbd83",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
+					"definition": "bb23c819f53f884ce32b83f7c534c31f52c71aa92671a8e807f5b60d3c431a4f",
+					"reason": "Validate screenshot provenance through the owned problem helper."
+				},
+				{
+					"commit": "9bd3c0d300791e74e51cc0b903e70dbd36004432",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts",
+					"definition": "bb23c819f53f884ce32b83f7c534c31f52c71aa92671a8e807f5b60d3c431a4f",
+					"reason": "Require evidence kind to match each declared scenario requirement."
+				}
+			]
 		},
 		{
 			"unit": "function.seal-record",
