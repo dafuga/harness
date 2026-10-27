@@ -50,7 +50,7 @@ function agentSettings(args: string[]) {
 	};
 }
 
-function assertExactGrants(config: string, f: Awaited<ReturnType<typeof profileFixture>>) {
+function assertRequestedGrants(config: string, f: Awaited<ReturnType<typeof profileFixture>>) {
 	const grants = new Map(
 		[...config.matchAll(/(["'])(.*?)\1\s*=\s*(["'])(read|write|deny)\3/g)].map((match) => [
 			match[2],
@@ -88,7 +88,7 @@ async function assertNativeProfile() {
 		prepared = await f.adapter.prepare(f.input);
 		expect(prepared.command).toBe(f.executable);
 		assertNativeArgs(prepared.args);
-		assertExactGrants(configOverrides(prepared.args).join('\n'), f);
+		assertRequestedGrants(configOverrides(prepared.args).join('\n'), f);
 		expect(JSON.stringify(prepared.env)).not.toMatch(
 			/synthetic-openai-secret|synthetic-github-secret/
 		);
@@ -114,7 +114,7 @@ async function assertDefaultProfile() {
 		prepared = await adapter.prepare(f.input);
 		expect(prepared.command).toBe(f.pinnedExecutable);
 		assertNativeArgs(prepared.args);
-		assertExactGrants(configOverrides(prepared.args).join('\n'), f);
+		assertRequestedGrants(configOverrides(prepared.args).join('\n'), f);
 		await expect(adapter.prepare({ ...f.input, argv: ['sh', 'exec'] })).rejects.toThrow(
 			'Expected explicit Codex exec arguments.'
 		);
@@ -145,7 +145,7 @@ new TestExpectationService().registerCases(
 				assertNativeProfile
 			);
 			await assertUnsafeProfiles();
-			return { permissionsVerified: true, aliasesRejected: true, ...settings };
+			return { requestedGrantsVerified: true, aliasesRejected: true, ...settings };
 		}
 	}
 );

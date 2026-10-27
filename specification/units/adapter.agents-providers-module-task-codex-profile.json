@@ -33,7 +33,7 @@
 			{
 				"name": "prepare",
 				"type": "Promise<SandboxProcess>",
-				"description": "Resolved trusted Codex executable with a strict native profile: only exact assigned source files writable, scratch writable, snapshot/sealed CLI/trusted runtime readonly, all other paths including credentials denied. No tool network, inherited token env, plugins, apps, multi-agent or user approvals. Preserve user/project rules and exact model/intelligence. Run host outside the outer sandbox, never expose provider credential paths to tools. Construction is not a live-launch authorization: inherited descriptors, real-model tool inventory, apply_patch, runtime hardlinks and login shells require qualification. Reject project config or rules that neutral cwd cannot honor; default runtime is pinned to the tested macOS Apple Silicon Codex 0.154.0."
+				"description": "Resolved trusted Codex executable with requested exact-file, scratch and read-only runtime grants, denied tool network and inherited token environment, and disabled plugins, apps, agents and approvals. Native runtime defaults may grant more access than those requested rules: the pinned macOS Codex 0.154.0 permits shared temporary paths despite explicit denial, and a 0.164.0 probe also permitted application-directory reads. Profile construction does not authorize a launch or prove credential isolation. A trusted host must independently qualify the complete tool and filesystem boundary; reject project config or rules that neutral cwd cannot honor."
 			},
 			{
 				"name": "connect",
@@ -141,7 +141,7 @@
 				"expected": {
 					"kind": "value",
 					"value": {
-						"permissionsVerified": true,
+						"requestedGrantsVerified": true,
 						"aliasesRejected": true,
 						"agentsDisabled": true,
 						"agentV2Disabled": true
