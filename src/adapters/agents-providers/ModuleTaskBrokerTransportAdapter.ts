@@ -4,9 +4,15 @@ import type {
 	BrokerClientResult,
 	BrokerSession,
 	BrokerTools,
-	ModuleTaskBrokerTransportAdapterConfig
+	ModuleTaskBrokerTransportAdapterConfig,
+	TaskUsage
 } from './ModuleTaskBrokerTransportAdapter.types';
-import type { TaskRunInput, TaskRunResult } from '../../repositories/agents-providers/ModuleTaskRepository.types';
+import type {
+	TaskRunInput,
+	TaskRunResult
+} from '../../repositories/agents-providers/ModuleTaskRepository.types';
+
+type TaskRunScope = NonNullable<TaskRunInput['scope']>;
 
 interface QualifiedBindings {
 	ready(): Promise<void>;
@@ -40,8 +46,13 @@ function qualifiedBindings(
 	const ready = client?.ready;
 	const run = client?.run;
 	const openBroker = config.openBroker;
-	if (!client || typeof ready !== 'function' || typeof run !== 'function' ||
-		typeof openBroker !== 'function') return undefined;
+	if (
+		!client ||
+		typeof ready !== 'function' ||
+		typeof run !== 'function' ||
+		typeof openBroker !== 'function'
+	)
+		return undefined;
 	return {
 		ready: ready.bind(client),
 		run: run.bind(client),
@@ -50,35 +61,55 @@ function qualifiedBindings(
 }
 
 function snapshotTaskInput(input: TaskRunInput): TaskRunInput | undefined {
-	if (!isRecord(input)) return undefined;
-	const { provider, model, intelligence, cwd, prompt, signal, scope } = input;
+	if (!isRecord(input) || !isValidTaskInput(input)) return undefined;
+	const { provider, model, intelligence, cwd, prompt, signal } = input;
+	const scope = snapshotScope(input.scope, cwd);
+	if (!scope) return undefined;
+	return Object.freeze({ provider, model, intelligence, cwd, prompt, signal, scope });
+}
+
+function isValidTaskInput(input: TaskRunInput): boolean {
+	const { provider, model, intelligence, cwd, prompt, signal } = input;
+	return (
+		provider === 'codex' &&
+		typeof model === 'string' &&
+		typeof intelligence === 'string' &&
+		typeof cwd === 'string' &&
+		cwd.length > 0 &&
+		typeof prompt === 'string' &&
+		Boolean(signal) &&
+		typeof signal.aborted === 'boolean'
+	);
+}
+
+function snapshotScope(value: unknown, cwd: string): TaskRunScope | undefined {
+	if (!isRecord(value)) return undefined;
+	const { files, snapshot, scratch, readPaths, protectedPaths, binDirectory } = value;
 	if (
-		provider !== 'codex' || typeof model !== 'string' || typeof intelligence !== 'string' ||
-		typeof cwd !== 'string' || cwd.length === 0 || typeof prompt !== 'string' ||
-		!signal || typeof signal.aborted !== 'boolean' || !isRecord(scope)
-	) return undefined;
-	const { files, snapshot, scratch, readPaths, protectedPaths, binDirectory } = scope;
-	if (
-		!isStringArray(files) || typeof snapshot !== 'string' || typeof scratch !== 'string' ||
-		!isStringArray(readPaths) || !isStringArray(protectedPaths) ||
+		!hasValidScopePaths([files, readPaths, protectedPaths]) ||
+		typeof snapshot !== 'string' ||
+		typeof scratch !== 'string' ||
 		(binDirectory !== undefined && typeof binDirectory !== 'string') ||
-		!isAbsolute(scratch) || !isOutsideEditableCwd(cwd, scratch)
-	) return undefined;
-	const pinnedScope = Object.freeze({
-		files: freezeStrings(files),
+		!isAbsolute(scratch) ||
+		!isOutsideEditableCwd(cwd, scratch)
+	)
+		return undefined;
+	return Object.freeze({
+		files: freezeStrings(files as string[]),
 		snapshot,
 		scratch,
-		readPaths: freezeStrings(readPaths),
-		protectedPaths: freezeStrings(protectedPaths),
+		readPaths: freezeStrings(readPaths as string[]),
+		protectedPaths: freezeStrings(protectedPaths as string[]),
 		...(binDirectory === undefined ? {} : { binDirectory })
 	});
-	return Object.freeze({ provider, model, intelligence, cwd, prompt, signal, scope: pinnedScope });
 }
+
+const hasValidScopePaths = (paths: unknown[]): boolean => paths.every(isStringArray);
 
 function isOutsideEditableCwd(cwd: string, scratch: string): boolean {
 	const fromCwd = relative(resolve(cwd), resolve(scratch));
-	return fromCwd !== '' && (
-		fromCwd === '..' || fromCwd.startsWith(`..${sep}`) || isAbsolute(fromCwd)
+	return (
+		fromCwd !== '' && (fromCwd === '..' || fromCwd.startsWith(`..${sep}`) || isAbsolute(fromCwd))
 	);
 }
 
@@ -95,15 +126,16 @@ function freezeStrings(values: string[]): string[] {
 }
 
 function projectSessionTools(session: unknown): BrokerTools {
-	if (!isRecord(session) || typeof session.close !== 'function' || !isRecord(session.tools)) {
-		throw new Error('Invalid broker session');
-	}
+	if (!isRecord(session) || !isRecord(session.tools)) throw new Error('Invalid broker session');
 	const source = session.tools;
 	const { readContract, listContracts, readAssigned, writeAssigned } = source;
 	if (
-		typeof readContract !== 'function' || typeof listContracts !== 'function' ||
-		typeof readAssigned !== 'function' || typeof writeAssigned !== 'function'
-	) throw new Error('Invalid broker session');
+		typeof readContract !== 'function' ||
+		typeof listContracts !== 'function' ||
+		typeof readAssigned !== 'function' ||
+		typeof writeAssigned !== 'function'
+	)
+		throw new Error('Invalid broker session');
 	return Object.freeze({
 		readContract: readContract.bind(source) as BrokerTools['readContract'],
 		listContracts: listContracts.bind(source) as BrokerTools['listContracts'],
@@ -112,12 +144,18 @@ function projectSessionTools(session: unknown): BrokerTools {
 	});
 }
 
+function sessionCloser(session: unknown): (() => Promise<void>) | undefined {
+	if (!isRecord(session)) return undefined;
+	const close = session.close;
+	if (typeof close !== 'function') return undefined;
+	return close.bind(session) as () => Promise<void>;
+}
+
 async function executeBrokerTask(
 	input: TaskRunInput,
 	bindings: QualifiedBindings
 ): Promise<TaskRunResult> {
-	let session: unknown;
-	let sessionCreated = false;
+	let close: (() => Promise<void>) | undefined;
 	let hasFailure = false;
 	let failure: unknown;
 	let result: TaskRunResult | undefined;
@@ -125,8 +163,8 @@ async function executeBrokerTask(
 	try {
 		await bindings.ready();
 		throwIfCancelled(input.signal);
-		session = await bindings.openBroker(input);
-		sessionCreated = true;
+		const session = await bindings.openBroker(input);
+		close = sessionCloser(session);
 		const tools = projectSessionTools(session);
 		throwIfCancelled(input.signal);
 		clientStarted = true;
@@ -137,9 +175,9 @@ async function executeBrokerTask(
 		hasFailure = true;
 		failure = clientStarted && input.signal.aborted ? cancelledError() : error;
 	}
-	if (sessionCreated) {
+	if (close) {
 		try {
-			await closeSession(session);
+			await close();
 		} catch (error) {
 			if (!hasFailure) {
 				hasFailure = true;
@@ -164,23 +202,28 @@ function clientRequest(input: TaskRunInput, tools: BrokerTools): BrokerClientReq
 }
 
 function taskResult(input: TaskRunInput, response: BrokerClientResult): TaskRunResult {
-	const identity = response.reportedModel;
+	const { reportedModel, usage } = response;
 	const result: TaskRunResult = {
 		provider: input.provider,
 		model: input.model,
 		intelligence: input.intelligence,
 		text: response.text,
-		reportedModel: typeof identity === 'string' && identity.length > 0 ? identity : null
+		reportedModel: typeof reportedModel === 'string' ? reportedModel || null : null
 	};
-	if (response.usage !== undefined) result.usage = { ...response.usage };
+	if (usage !== undefined) result.usage = copyUsage(usage);
 	return result;
 }
 
-async function closeSession(session: unknown): Promise<void> {
-	if (!isRecord(session)) return;
-	const close = session.close;
-	if (typeof close !== 'function') return;
-	await close.call(session);
+function copyUsage(usage: TaskUsage): TaskUsage {
+	return {
+		inputTokens: usage.inputTokens ?? null,
+		outputTokens: usage.outputTokens ?? null,
+		cacheReadTokens: usage.cacheReadTokens ?? null,
+		cacheWriteTokens: usage.cacheWriteTokens ?? null,
+		cacheWriteLongTokens: usage.cacheWriteLongTokens ?? null,
+		reportedCostUsd: usage.reportedCostUsd ?? null,
+		reasoningTokens: usage.reasoningTokens ?? null
+	};
 }
 
 function throwIfCancelled(signal: AbortSignal): void {
