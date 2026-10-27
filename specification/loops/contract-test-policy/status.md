@@ -1571,3 +1571,9 @@ using that same test and environment. The source changes remain in the isolated
 `dafuga/visual-evidence-source-20261027` branch pending that browser proof.
 Reviewed-baseline retrieval, the API-only browserless check, fresh Explorer
 screenshots, full verification and final delivery remain open.
+
+A fresh static inventory from a clean `20fa00a308` checkout still reports 1,120
+suite files, 4,656 declarations, 61 standardized units, 771 registered cases
+and 6,066 gaps. The repository-wide `testing: 1` gate is not declared. This is
+an inventory of unfinished migration, not a passing compliance check; the JSON
+snapshot has SHA-256 `1650d79297692f72bf61e460e690f5467775da6dc9eca740eeca15b5f4efb5c1`.
