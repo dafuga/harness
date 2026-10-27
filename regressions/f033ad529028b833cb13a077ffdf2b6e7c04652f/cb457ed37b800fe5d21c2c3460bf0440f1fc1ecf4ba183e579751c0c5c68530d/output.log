@@ -1,0 +1,32 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-YjRUBn
+
+ ❯ test/generate-workflow.test.ts (5 tests | 1 failed | 4 skipped) 5653ms
+   ↓ lib generation auto-exports package-safe scaffolds
+   ↓ app-only scaffolds fail in lib projects
+   × app generation allows app-only scaffolds without package exports 5643ms
+     → page.dashboard has a generated page contract: expected undefined to be defined
+   ↓ generation keeps category folders, imports and package exports in agreement
+   ↓ the same category works for every source scaffold and can be extended
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/generate-workflow.test.ts > app generation allows app-only scaffolds without package exports
+AssertionError: page.dashboard has a generated page contract: expected undefined to be defined
+ ❯ assertGeneratedPageLayoutRegistry test/support/generatedPageLayoutRegistry.ts:31:72
+     29|    const scenarioFile = `specification/scenarios/${entry.scenario}.jso…
+     30|    const unit = await project.json<ComponentManifest>(unitFile);
+     31|    expect(unit.testing, `${entry.unit} has a generated page contract`)…
+       |                                                                        ^
+     32|    const scenario = await project.json<ScenarioManifest>(scenarioFile);
+     33|    expect(new ComponentManifestValidator().validate(unit, unitFile).er…
+ ❯ test/generate-workflow.test.ts:67:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  06:12:01
+   Duration  9.78s (transform 304ms, setup 151ms, collect 701ms, tests 5.65s, environment 0ms, prepare 32ms)
+
