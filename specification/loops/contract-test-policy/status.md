@@ -1509,3 +1509,25 @@ A second admission attempt waited 181.8 seconds and again timed out on the
 CPU reserve without starting the test. Its attributed task peak was 256 MB,
 shared or unattributed RSS was 4.69 GB, identified other-project RSS was
 19.87 GB and system free memory stayed at or above 67%.
+
+The nested-workspace case subsequently ran on harbor-mbp-2. Test-only commit
+`41822ff57b` failed at the missing `portal.component.workspace-card` contract
+in red `b93a4c173fef`; fix `23d96efe42` passed unchanged in green `2248893c5eeb`.
+Both records used the same command and environment profile. The existing test
+file retained five cases. The repair registers repository-relative source and
+baseline paths, workspace-relative execution and the selected declared build;
+it rejects missing, ambiguous and undeclared workspace builds before writing.
+The work was integrated without squashing at `d4d82fd194`.
+
+The five focused files passed 34 unit cases. Root typecheck, targeted lint and
+formatting, unit registry validation and the unchanged readable-contract and
+unit-index guards passed on the repair tree. `budget measure` at that source
+tree observed 21,961 bytes, 536 lines, complexity 125 and 28 dependencies for
+the generator, and 15,262 bytes, 342 lines, complexity 35 and five dependencies
+for the template. Neither module emits a separate artifact. The green record
+retains focused timing and whole-process RSS samples, not an approved budget.
+
+The first isolated mutation attempt timed out in resource admission; it did not
+run the test and is not defect evidence. A guarded retry remains queued. Reviewed
+browser baselines, case-bound captures, full verification, and final delivery
+remain open. The unrelated unfinished verification fixture diff is unchanged.
