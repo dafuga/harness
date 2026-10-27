@@ -92,7 +92,7 @@ export class ModuleTaskService {
 			role
 		};
 	}
-	assign(id: string, worker: string) {
+	async assign(id: string, worker: string) {
 		const assignee = taskInputSchema.shape.assignee.unwrap().parse(worker);
 		return this.repository.update((queue) => {
 			const task = queue.tasks.find((entry) => entry.id === id);
