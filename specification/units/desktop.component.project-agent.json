@@ -42,7 +42,155 @@
 			{
 				"name": "ProjectAgent",
 				"type": "markup",
-				"description": "A persistent round chat bubble and conversation panel. Read users browse; Comment users leave comments; Write users can choose a model and ask, plan or change at a writable branch tip. Registered unit references open their history."
+				"description": "A persistent round chat bubble and conversation panel. Read users browse; Comment users leave comments; Write users can choose a model and ask, plan or change at a writable branch tip. Registered unit references open their history.",
+				"examples": [
+					{
+						"state": "rest",
+						"expected": "Existing open-panel catalog identity and screenshot remain unchanged.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "closed",
+						"title": "Closed launcher",
+						"expected": "Panel hidden; one accessible launcher remains. Open, close and Escape preserve the conversation and draft; focus returns safely.",
+						"capture": "launcher",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "read-only",
+						"title": "Read-only conversation",
+						"expected": "Read permission can browse messages and references; no comment or agent submission is available.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "local-comment",
+						"title": "Pending local comment",
+						"expected": "Disconnected comment-capable context explains local pending drafts. Blank text cannot submit; typed comment is human-only.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "hosted-comment",
+						"title": "Connected human comment",
+						"expected": "Connected comment-only context saves a trimmed human comment without launching an agent and clears it on success.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "comment-retry",
+						"title": "Failed comment preserves draft",
+						"expected": "A synthetic comment-save refusal is visible and preserves entered text for retry; no agent launches.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "conversation",
+						"title": "Conversation and references",
+						"expected": "Human and assistant messages, long wrapped text, known unit history links and unknown/plain references render safely.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "historical",
+						"title": "Historical revision",
+						"expected": "Pinned or historical selection keeps its revision on links and blocks write-mode agent requests.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "ask",
+						"title": "Ask request",
+						"expected": "Writable agent-capable context selects Ask with discovered model and effort; trimmed request has the exact chosen identity.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "plan",
+						"title": "Plan request",
+						"expected": "Writable nonvisual context selects Plan; requires a provider/model and sends a plan request.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "visual-plan",
+						"title": "Visual Plan request",
+						"expected": "Visual context uses the saved valid design-option count for Plan; mode controls remain compact and usable.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "change",
+						"title": "Change request",
+						"expected": "Writable authorized context selects Change and submits only with its prerequisites; no real agent/provider is contacted.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "no-provider",
+						"title": "No available agent model",
+						"expected": "Agent-capable context without a usable provider/model cannot submit an agent request; comments remain usable if allowed.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "running",
+						"title": "Agent running",
+						"expected": "Matching synthetic public progress is visible while message entry and duplicate submission are disabled; terminal completion unlocks it.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "saved-plan",
+						"title": "Saved plan retained",
+						"expected": "A completed plan retains its public saved-plan response and associated registered-unit references in the conversation.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "failure",
+						"title": "Agent failure",
+						"expected": "Synthetic terminal failure is visible in the owning conversation and leaves the composer usable for a deliberate retry.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "agents-empty",
+						"title": "Agents tracked and empty",
+						"expected": "Agents tab distinguishes a successful empty roster from unknown tracking and preserves the Chat draft on return.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "agents-active",
+						"title": "Active agents and ownership",
+						"expected": "Agents tab shows current sessions, tasks and module assignments with resolved module history links.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "agents-unknown",
+						"title": "Unknown agent tracking",
+						"expected": "Unavailable or unsupported activity tracking is explicitly unknown; it does not claim an empty or current roster.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "agents-stale",
+						"title": "Stale agent tracking",
+						"expected": "Stale activity data is visibly stale and carries no current module ownership claim.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					},
+					{
+						"state": "agents-many",
+						"title": "Long agents roster",
+						"expected": "A deterministic long roster scrolls within the component while task and module labels remain readable and navigation stays usable.",
+						"capture": "panel",
+						"viewports": ["desktop", "tablet", "mobile"]
+					}
+				]
 			}
 		],
 		"errors": []
@@ -124,7 +272,7 @@
 			}
 		]
 	},
-	"scenarios": ["agent-creation", "agent-references"],
+	"scenarios": ["agent-creation", "agent-references", "component-catalog-previews"],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
