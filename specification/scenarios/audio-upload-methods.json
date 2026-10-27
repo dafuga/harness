@@ -1,0 +1,146 @@
+{
+	"schemaVersion": 1,
+	"id": "audio-upload-methods",
+	"title": "Audio upload method states and generated fixture audio",
+	"kind": "audio",
+	"units": ["reports.service.audio-upload"],
+	"states": [
+		{
+			"id": "active",
+			"title": "Active",
+			"coverage": "required"
+		},
+		{
+			"id": "invalid-input",
+			"title": "Invalid Input",
+			"coverage": "required"
+		},
+		{
+			"id": "finalizing",
+			"title": "Finalizing",
+			"coverage": "required"
+		},
+		{
+			"id": "finalized",
+			"title": "Finalized",
+			"coverage": "required"
+		},
+		{
+			"id": "missing-report",
+			"title": "Missing Report",
+			"coverage": "required"
+		},
+		{
+			"id": "storage-failure",
+			"title": "Storage Failure",
+			"coverage": "required"
+		}
+	],
+	"viewports": [],
+	"tests": [
+		{
+			"id": "audio-methods",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/services/audio-upload.test.ts",
+			"cwd": "packages/reports",
+			"cases": [
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "upload-active"
+				},
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "upload-invalid-input"
+				},
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "upload-finalizing"
+				},
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "upload-finalized"
+				},
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "upload-missing-report"
+				},
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "upload-storage-failure"
+				},
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "uploadcomparison-active"
+				},
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "uploadcomparison-invalid-input"
+				},
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "uploadcomparison-finalizing"
+				},
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "uploadcomparison-finalized"
+				},
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "uploadcomparison-missing-report"
+				},
+				{
+					"unit": "reports.service.audio-upload",
+					"case": "uploadcomparison-storage-failure"
+				}
+			]
+		}
+	],
+	"evidence": [
+		{
+			"id": "single-audio",
+			"kind": "audio",
+			"states": [
+				"active",
+				"invalid-input",
+				"finalizing",
+				"finalized",
+				"missing-report",
+				"storage-failure"
+			],
+			"viewports": [],
+			"provenance": "fixture",
+			"required": true
+		},
+		{
+			"id": "comparison-before",
+			"kind": "audio",
+			"states": [
+				"active",
+				"invalid-input",
+				"finalizing",
+				"finalized",
+				"missing-report",
+				"storage-failure"
+			],
+			"viewports": [],
+			"provenance": "fixture",
+			"required": true
+		},
+		{
+			"id": "comparison-after",
+			"kind": "audio",
+			"states": [
+				"active",
+				"invalid-input",
+				"finalizing",
+				"finalized",
+				"missing-report",
+				"storage-failure"
+			],
+			"viewports": [],
+			"provenance": "fixture",
+			"required": true
+		}
+	]
+}

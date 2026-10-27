@@ -3,8 +3,8 @@
 	"id": "reports.service.audio-upload",
 	"kind": "service",
 	"title": "AudioUploadService",
-	"responsibility": "Owns the AudioUploadService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Validates and stores single or paired audio evidence in active reports.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -26,43 +26,61 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AudioUploadService.constructor.repository",
-				"type": "ReportRepository"
+				"type": "ReportRepository",
+				"description": "Repository holding the target report and its evidence assets."
 			},
 			{
 				"name": "AudioUploadService.upload.reportId",
-				"type": "string"
+				"type": "string",
+				"description": "Identity of the active report receiving one audio file."
 			},
 			{
 				"name": "AudioUploadService.upload.input",
-				"type": "AudioUploadInput"
+				"type": "AudioUploadInput",
+				"description": "Title, note, source and one audio File; text limits and audio format are validated."
 			},
 			{
 				"name": "AudioUploadService.uploadComparison.reportId",
-				"type": "string"
+				"type": "string",
+				"description": "Identity of the active report receiving the comparison."
 			},
 			{
 				"name": "AudioUploadService.uploadComparison.input",
-				"type": "AudioComparisonInput"
+				"type": "AudioComparisonInput",
+				"description": "Title, note, source and before/after audio Files; both files are validated before either is written."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AudioUploadService.upload",
-				"type": "unknown"
+				"type": "Promise<Report>",
+				"description": "Updated report with one not-proven audio evidence item and the original content-addressed bytes."
 			},
 			{
 				"name": "AudioUploadService.uploadComparison",
-				"type": "unknown"
+				"type": "Promise<Report>",
+				"description": "Updated report with before and after audio evidence sharing a comparison identity."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "validation",
+				"type": "Error",
+				"description": "Rejects blank or oversized titles, excessive notes or source, empty or oversized files, unsupported formats and invalid audio content."
+			},
+			{
+				"name": "report-not-active",
+				"type": "Error",
+				"description": "Rejects uploads when the report is finalizing or finalized."
+			},
+			{
+				"name": "repository",
+				"type": "Error",
+				"description": "Propagates invalid or absent report identities and repository failures."
 			}
 		]
 	},
@@ -98,7 +116,816 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["audio-upload-methods"],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": [
+			"active",
+			"invalid-input",
+			"finalizing",
+			"finalized",
+			"missing-report",
+			"storage-failure"
+		],
+		"props": ["reportId", "title", "note", "source", "audio", "before", "after"],
+		"cases": [
+			{
+				"id": "upload-active",
+				"state": "active",
+				"subject": "AudioUploadService.upload",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": []
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "uploads locally with original bytes and not-proven status"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"main": {
+							"count": 1,
+							"mediaTypes": ["audio"],
+							"durationSeconds": [3],
+							"statuses": ["not-proven"],
+							"notes": ["Recognition failed"],
+							"sources": ["Synthetic fixture"],
+							"capturedAtAbsent": true,
+							"originalBytes": true,
+							"contentAddressed": true
+						},
+						"boundary": {
+							"titleLength": 120,
+							"noteLength": 2000,
+							"sourceLength": 200
+						},
+						"defaultSource": "Manual audio upload · recording date not supplied"
+					}
+				},
+				"props": ["reportId", "title", "note", "source", "audio"],
+				"errors": [],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "single-audio"
+					}
+				]
+			},
+			{
+				"id": "upload-invalid-input",
+				"state": "invalid-input",
+				"subject": "AudioUploadService.upload",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": [
+						{
+							"name": "blank title",
+							"field": "title",
+							"mode": "literal",
+							"value": " ",
+							"count": 0
+						},
+						{
+							"name": "title above limit",
+							"field": "title",
+							"mode": "repeat",
+							"value": "T",
+							"count": 121
+						},
+						{
+							"name": "note above limit",
+							"field": "note",
+							"mode": "repeat",
+							"value": "N",
+							"count": 2001
+						},
+						{
+							"name": "source above limit",
+							"field": "source",
+							"mode": "repeat",
+							"value": "S",
+							"count": 201
+						},
+						{
+							"name": "invalid report ID",
+							"field": "reportId",
+							"mode": "literal",
+							"value": "../bad",
+							"count": 0
+						},
+						{
+							"name": "audio empty",
+							"field": "audio",
+							"mode": "empty",
+							"value": "",
+							"count": 0
+						},
+						{
+							"name": "audio too large",
+							"field": "audio",
+							"mode": "oversize",
+							"value": "",
+							"count": 50000001
+						},
+						{
+							"name": "audio invalid WAV",
+							"field": "audio",
+							"mode": "fake",
+							"value": "",
+							"count": 0
+						},
+						{
+							"name": "audio unsupported format",
+							"field": "audio",
+							"mode": "unsupported",
+							"value": "",
+							"count": 0
+						}
+					]
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "invalid content and finalized reports never gain uploaded evidence"
+				},
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"name": "blank title",
+							"error": "Audio title must be 1–120 characters",
+							"evidence": 0
+						},
+						{
+							"name": "title above limit",
+							"error": "Audio title must be 1–120 characters",
+							"evidence": 0
+						},
+						{
+							"name": "note above limit",
+							"error": "Audio notes or source exceed size limit",
+							"evidence": 0
+						},
+						{
+							"name": "source above limit",
+							"error": "Audio notes or source exceed size limit",
+							"evidence": 0
+						},
+						{
+							"name": "invalid report ID",
+							"error": "Invalid report or asset ID",
+							"evidence": 0
+						},
+						{
+							"name": "audio empty",
+							"error": "Audio file must be 1 byte to 50 MB",
+							"evidence": 0
+						},
+						{
+							"name": "audio too large",
+							"error": "Audio file must be 1 byte to 50 MB",
+							"evidence": 0
+						},
+						{
+							"name": "audio invalid WAV",
+							"error": "Invalid WAV audio",
+							"evidence": 0
+						},
+						{
+							"name": "audio unsupported format",
+							"error": "Unsupported audio format",
+							"evidence": 0
+						}
+					]
+				},
+				"props": ["reportId", "title", "note", "source", "audio"],
+				"errors": ["validation", "repository"],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "single-audio"
+					}
+				]
+			},
+			{
+				"id": "upload-finalizing",
+				"state": "finalizing",
+				"subject": "AudioUploadService.upload",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": []
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "upload rejects a finalizing report without adding evidence"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "Cannot update finalizing or finalized report",
+						"state": "finalizing",
+						"evidence": 0
+					}
+				},
+				"props": ["reportId", "title", "note", "source", "audio"],
+				"errors": ["report-not-active"],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "single-audio"
+					}
+				]
+			},
+			{
+				"id": "upload-finalized",
+				"state": "finalized",
+				"subject": "AudioUploadService.upload",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": []
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "upload rejects a finalized report without adding evidence"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "Cannot update finalizing or finalized report",
+						"state": "finalized",
+						"evidence": 0
+					}
+				},
+				"props": ["reportId", "title", "note", "source", "audio"],
+				"errors": ["report-not-active"],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "single-audio"
+					}
+				]
+			},
+			{
+				"id": "upload-missing-report",
+				"state": "missing-report",
+				"subject": "AudioUploadService.upload",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": []
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "upload rejects a missing report without adding evidence"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"code": "ENOENT",
+						"state": "active",
+						"evidence": 0
+					}
+				},
+				"props": ["reportId", "title", "note", "source", "audio"],
+				"errors": ["repository"],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "single-audio"
+					}
+				]
+			},
+			{
+				"id": "upload-storage-failure",
+				"state": "storage-failure",
+				"subject": "AudioUploadService.upload",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": []
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "upload rejects a repository failure without adding evidence"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "Synthetic storage failure",
+						"state": "active",
+						"evidence": 0
+					}
+				},
+				"props": ["reportId", "title", "note", "source", "audio"],
+				"errors": ["repository"],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "single-audio"
+					}
+				]
+			},
+			{
+				"id": "uploadcomparison-active",
+				"state": "active",
+				"subject": "AudioUploadService.uploadComparison",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": []
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "paired upload retains both original files with one comparison and independent phases"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"main": {
+							"count": 2,
+							"mediaTypes": ["audio", "audio"],
+							"durationSeconds": [3, 3],
+							"statuses": ["not-proven", "not-proven"],
+							"notes": ["Recognition failed", "Recognition failed"],
+							"sources": ["Synthetic fixture", "Synthetic fixture"],
+							"capturedAtAbsent": true,
+							"originalBytes": true,
+							"phases": ["before", "after"],
+							"sharedComparison": true,
+							"contentAddressed": true
+						},
+						"boundary": {
+							"titleLength": 120,
+							"noteLength": 2000,
+							"sourceLength": 200
+						},
+						"defaultSource": "Manual audio upload · recording date not supplied"
+					}
+				},
+				"props": ["reportId", "title", "note", "source", "before", "after"],
+				"errors": [],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "comparison-before"
+					},
+					{
+						"kind": "audio",
+						"evidence": "comparison-after"
+					}
+				]
+			},
+			{
+				"id": "uploadcomparison-invalid-input",
+				"state": "invalid-input",
+				"subject": "AudioUploadService.uploadComparison",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": [
+						{
+							"name": "blank title",
+							"field": "title",
+							"mode": "literal",
+							"value": " ",
+							"count": 0
+						},
+						{
+							"name": "title above limit",
+							"field": "title",
+							"mode": "repeat",
+							"value": "T",
+							"count": 121
+						},
+						{
+							"name": "note above limit",
+							"field": "note",
+							"mode": "repeat",
+							"value": "N",
+							"count": 2001
+						},
+						{
+							"name": "source above limit",
+							"field": "source",
+							"mode": "repeat",
+							"value": "S",
+							"count": 201
+						},
+						{
+							"name": "invalid report ID",
+							"field": "reportId",
+							"mode": "literal",
+							"value": "../bad",
+							"count": 0
+						},
+						{
+							"name": "before empty",
+							"field": "before",
+							"mode": "empty",
+							"value": "",
+							"count": 0
+						},
+						{
+							"name": "before too large",
+							"field": "before",
+							"mode": "oversize",
+							"value": "",
+							"count": 50000001
+						},
+						{
+							"name": "before invalid WAV",
+							"field": "before",
+							"mode": "fake",
+							"value": "",
+							"count": 0
+						},
+						{
+							"name": "before unsupported format",
+							"field": "before",
+							"mode": "unsupported",
+							"value": "",
+							"count": 0
+						},
+						{
+							"name": "after empty",
+							"field": "after",
+							"mode": "empty",
+							"value": "",
+							"count": 0
+						},
+						{
+							"name": "after too large",
+							"field": "after",
+							"mode": "oversize",
+							"value": "",
+							"count": 50000001
+						},
+						{
+							"name": "after invalid WAV",
+							"field": "after",
+							"mode": "fake",
+							"value": "",
+							"count": 0
+						},
+						{
+							"name": "after unsupported format",
+							"field": "after",
+							"mode": "unsupported",
+							"value": "",
+							"count": 0
+						}
+					]
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "a bad second audio file or finalized history adds neither comparison member"
+				},
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"name": "blank title",
+							"error": "Audio title must be 1–120 characters",
+							"evidence": 0
+						},
+						{
+							"name": "title above limit",
+							"error": "Audio title must be 1–120 characters",
+							"evidence": 0
+						},
+						{
+							"name": "note above limit",
+							"error": "Audio notes or source exceed size limit",
+							"evidence": 0
+						},
+						{
+							"name": "source above limit",
+							"error": "Audio notes or source exceed size limit",
+							"evidence": 0
+						},
+						{
+							"name": "invalid report ID",
+							"error": "Invalid report or asset ID",
+							"evidence": 0
+						},
+						{
+							"name": "before empty",
+							"error": "Audio file must be 1 byte to 50 MB",
+							"evidence": 0
+						},
+						{
+							"name": "before too large",
+							"error": "Audio file must be 1 byte to 50 MB",
+							"evidence": 0
+						},
+						{
+							"name": "before invalid WAV",
+							"error": "Invalid WAV audio",
+							"evidence": 0
+						},
+						{
+							"name": "before unsupported format",
+							"error": "Unsupported audio format",
+							"evidence": 0
+						},
+						{
+							"name": "after empty",
+							"error": "Audio file must be 1 byte to 50 MB",
+							"evidence": 0
+						},
+						{
+							"name": "after too large",
+							"error": "Audio file must be 1 byte to 50 MB",
+							"evidence": 0
+						},
+						{
+							"name": "after invalid WAV",
+							"error": "Invalid WAV audio",
+							"evidence": 0
+						},
+						{
+							"name": "after unsupported format",
+							"error": "Unsupported audio format",
+							"evidence": 0
+						}
+					]
+				},
+				"props": ["reportId", "title", "note", "source", "before", "after"],
+				"errors": ["validation", "repository"],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "comparison-before"
+					},
+					{
+						"kind": "audio",
+						"evidence": "comparison-after"
+					}
+				]
+			},
+			{
+				"id": "uploadcomparison-finalizing",
+				"state": "finalizing",
+				"subject": "AudioUploadService.uploadComparison",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": []
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "uploadComparison rejects a finalizing report without adding evidence"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "Cannot update finalizing or finalized report",
+						"state": "finalizing",
+						"evidence": 0
+					}
+				},
+				"props": ["reportId", "title", "note", "source", "before", "after"],
+				"errors": ["report-not-active"],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "comparison-before"
+					},
+					{
+						"kind": "audio",
+						"evidence": "comparison-after"
+					}
+				]
+			},
+			{
+				"id": "uploadcomparison-finalized",
+				"state": "finalized",
+				"subject": "AudioUploadService.uploadComparison",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": []
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "uploadComparison rejects a finalized report without adding evidence"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "Cannot update finalizing or finalized report",
+						"state": "finalized",
+						"evidence": 0
+					}
+				},
+				"props": ["reportId", "title", "note", "source", "before", "after"],
+				"errors": ["report-not-active"],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "comparison-before"
+					},
+					{
+						"kind": "audio",
+						"evidence": "comparison-after"
+					}
+				]
+			},
+			{
+				"id": "uploadcomparison-missing-report",
+				"state": "missing-report",
+				"subject": "AudioUploadService.uploadComparison",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": []
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "uploadComparison rejects a missing report without adding evidence"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"code": "ENOENT",
+						"state": "active",
+						"evidence": 0
+					}
+				},
+				"props": ["reportId", "title", "note", "source", "before", "after"],
+				"errors": ["repository"],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "comparison-before"
+					},
+					{
+						"kind": "audio",
+						"evidence": "comparison-after"
+					}
+				]
+			},
+			{
+				"id": "uploadcomparison-storage-failure",
+				"state": "storage-failure",
+				"subject": "AudioUploadService.uploadComparison",
+				"input": {
+					"title": "Fresh sound",
+					"note": "Recognition failed",
+					"source": "Synthetic fixture",
+					"seconds": 3,
+					"singleFrequency": 440,
+					"beforeFrequency": 220,
+					"afterFrequency": 440,
+					"limits": {
+						"title": 120,
+						"note": 2000,
+						"source": 200
+					},
+					"variants": []
+				},
+				"test": {
+					"file": "packages/reports/test/services/audio-upload.test.ts",
+					"title": "uploadComparison rejects a repository failure without adding evidence"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"error": "Synthetic storage failure",
+						"state": "active",
+						"evidence": 0
+					}
+				},
+				"props": ["reportId", "title", "note", "source", "before", "after"],
+				"errors": ["repository"],
+				"artifacts": [
+					{
+						"kind": "audio",
+						"evidence": "comparison-before"
+					},
+					{
+						"kind": "audio",
+						"evidence": "comparison-after"
+					}
+				]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
