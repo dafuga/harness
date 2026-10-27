@@ -918,3 +918,27 @@ The committed-tree inventory at `b9c6b337e9` reports 1,118 suite files,
 4,626 declarations, 53 standardized units, 727 registered cases and 6,087
 remaining gaps. The history-reference unit has 13 discovered cases and no
 reported gap. Full migration and aggregate verification remain pending.
+
+## Continuation: benchmark comparison context examples
+
+`5f50f207f2` replaces two grouped tests with nine declared examples for
+`requestDigest` and `comparisonContext`. The original digest distinctions and
+schema checks remain inside the applicable cases; the declared matrix also
+covers a null request, invalid sampling and propagated getter errors. Expected
+SHA-256 values were calculated independently from canonical JSON, and all nine
+displayed calls were executed against their authored results. `cef31ee621`
+strengthens the same error case with the missing-request TypeError, without
+adding another case.
+
+Capture `7b592bb34356` passed 53 focused cases, registry validation, formatting,
+lint, typecheck and audit. Seven successful example workloads observed
+0.022–0.366 ms and 91,684,864–92,012,544 bytes whole-worker RSS; the two
+error examples intentionally throw and have no successful timings. The unit
+has 1,252 source bytes, 37 lines, complexity two and three dependencies, with no
+separate emitted artifact. Both manifest-change reasons are retained in Git
+notes.
+
+The committed-tree inventory at `cef31ee621` reports 1,118 suite files,
+4,633 declarations, 54 standardized units, 736 registered cases and 6,084
+remaining gaps. The comparison-context unit has nine discovered cases and no
+reported gap. Full migration and aggregate verification remain pending.
