@@ -1193,3 +1193,29 @@ typecheck, lint and kernel checks/build, then the memory guard stopped it during
 root unit tests at 9,446,719,488 bytes combined upper-estimate RSS. Its own
 peak was 3,293,462,528 bytes. Another session's browser suite was active; no
 Harness E2E result from this aggregate is claimed.
+
+## Continuation: generated initial page registration
+
+A fresh generated app emitted three initial-page tests without a registered
+unit or scenario. Test-only `7a0914c4d3` strengthened the existing app-template
+case; Harness red `590fe3501af9` failed on the missing page contract. Source-only
+`5bd1842794` declares the same three page cases, their screenshot scenario,
+the build and deterministic cache paths, and enables strict unit admission.
+Unchanged green `5bd0d4ff6384` passed. Mutant `f8a3cd089c` failed
+`801f5f6929e8`; restored `aade78d515` passed `daf51a18ab74` with the same tree
+as the fix. No screenshot bytes or approvals were generated.
+
+Focused capture `4517c32403e1` passed 27 project, piece, registry and readable
+contract cases, targeted lint, root typecheck, registry and audit. A separate
+fresh app was generated and reindexed: its initial page has three registered
+cases with no page-specific inventory errors. Its strict `units check` still
+fails on 195 genuine gaps: 192 generated native atoms and three scripts. The
+scenario cannot yet produce reviewed visual evidence because browser capture,
+served-build binding and baseline loading remain unfinished.
+
+At `5bd1842794`, project template source bytes/lines/complexity/dependencies
+were 8203/223/10/11 and project-test template values were 9003/217/12/5; neither
+module has a separate emitted artifact. The normal generation workloads took
+2.74 ms and 0.15 ms, with 261,423,104 and 261,472,256 bytes whole-worker RSS.
+The source reasons are retained in Git notes. Browser and aggregate checks stay
+pending.
