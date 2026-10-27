@@ -12,6 +12,7 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { CaseResultAdapter } from '../../../src/adapters/verification-evidence/CaseResultAdapter';
 import type { RunnerTask } from '../../../src/adapters/verification-evidence/CaseResultAdapter.types';
+import { measureWorkload } from '../../support/measureWorkload';
 
 const revision = 'c'.repeat(40);
 function fixture() {
@@ -154,7 +155,7 @@ test('CaseResultAdapter.onFinished disabled writes no evidence', () => {
 	}
 });
 
-test('CaseResultAdapter.onTestEnd configured retains browser status and suite identity', () => {
+test('CaseResultAdapter.onTestEnd configured retains browser status and suite identity', async () => {
 	const config = fixture();
 	try {
 		const adapter = new CaseResultAdapter(config);
@@ -162,7 +163,12 @@ test('CaseResultAdapter.onTestEnd configured retains browser status and suite id
 			location: { file: config.file },
 			titlePath: () => ['', 'chromium', 'sample.test.ts', 'orders', 'ready']
 		};
-		for (const status of ['passed', 'failed', 'timedOut', 'interrupted', 'skipped'])
+		await measureWorkload(
+			'adapter.verification-evidence-case-result',
+			'record-nested-browser-case',
+			() => adapter.onTestEnd(sample, { status: 'passed', retry: 0 })
+		);
+		for (const status of ['failed', 'timedOut', 'interrupted', 'skipped'])
 			adapter.onTestEnd(sample, { status, retry: 0 });
 		expect(read(config.directory)).toEqual(
 			['passed', 'failed', 'failed', 'failed', 'skipped'].map((status) => ({
