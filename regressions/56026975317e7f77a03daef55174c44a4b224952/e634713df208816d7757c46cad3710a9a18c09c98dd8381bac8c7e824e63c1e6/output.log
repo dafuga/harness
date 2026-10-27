@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-iQSMBL
+
+ ✓ test/services/unit-index.test.ts (14 tests) 2811ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2649ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 80ms
+ ✓ test/pieces.test.ts (6 tests) 569ms
+   ✓ Rails-ish scaffolds create their expected code shapes  322ms
+ ✓ test/project-template.test.ts (5 tests) 1568ms
+   ✓ generated app code and configuration obey their formatter settings  863ms
+   ✓ generated lib code and configuration obey their formatter settings  516ms
+
+ Test Files  4 passed (4)
+      Tests  27 passed (27)
+   Start at  03:58:46
+   Duration  8.95s (transform 415ms, setup 180ms, collect 1.17s, tests 5.03s, environment 0ms, prepare 86ms)
+
+Units registry is valid: 1828 units, 167 uncertain references.
+Harness audit passed. Files and functions are staying small.
