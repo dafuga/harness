@@ -1,0 +1,117 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-HMGhLA
+
+ ❯ test/adapters/agents-providers/module-task-codex-profile.test.ts (4 tests | 2 failed) 50ms
+   ✓ ModuleTaskCodexProfileAdapter.connect from default initialization returns the file name 1ms
+   ✓ ModuleTaskCodexProfileAdapter.connect from custom initialization returns the configured name 0ms
+   × ModuleTaskCodexProfileAdapter.prepare from default initialization validates a native profile 12ms
+     → Example output differs from its comment
++ actual - expected
+
+  {
++   agentV2Disabled: false,
++   agentsDisabled: false,
+-   agentV2Disabled: true,
+-   agentsDisabled: true,
+    profilePrepared: true,
+    unsafeArgRejected: true
+  }
+
+   × ModuleTaskCodexProfileAdapter.prepare admits exact native permissions and rejects unsafe scopes 34ms
+     → Example output differs from its comment
++ actual - expected
+
+  {
++   agentV2Disabled: false,
++   agentsDisabled: false,
+-   agentV2Disabled: true,
+-   agentsDisabled: true,
+    aliasesRejected: true,
+    permissionsVerified: true
+  }
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/agents-providers/module-task-codex-profile.test.ts > ModuleTaskCodexProfileAdapter.prepare from default initialization validates a native profile
+AssertionError: Example output differs from its comment
++ actual - expected
+
+  {
++   agentV2Disabled: false,
++   agentsDisabled: false,
+-   agentV2Disabled: true,
+-   agentsDisabled: true,
+    profilePrepared: true,
+    unsafeArgRejected: true
+  }
+
+
+- Expected
++ Received
+
+  {
+-   "agentV2Disabled": true,
+-   "agentsDisabled": true,
++   "agentV2Disabled": false,
++   "agentsDisabled": false,
+    "profilePrepared": true,
+    "unsafeArgRejected": true,
+  }
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:99:4
+     97|    deepStrictEqual(
+     98|     observation.output,
+     99|     example.output,
+       |    ^
+    100|     'Example output differs from its comment'
+    101|    );
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ src/services/verification-evidence/TestExpectationService.ts:37:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-codex-profile.test.ts > ModuleTaskCodexProfileAdapter.prepare admits exact native permissions and rejects unsafe scopes
+AssertionError: Example output differs from its comment
++ actual - expected
+
+  {
++   agentV2Disabled: false,
++   agentsDisabled: false,
+-   agentV2Disabled: true,
+-   agentsDisabled: true,
+    aliasesRejected: true,
+    permissionsVerified: true
+  }
+
+
+- Expected
++ Received
+
+  {
+-   "agentV2Disabled": true,
+-   "agentsDisabled": true,
++   "agentV2Disabled": false,
++   "agentsDisabled": false,
+    "aliasesRejected": true,
+    "permissionsVerified": true,
+  }
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:99:4
+     97|    deepStrictEqual(
+     98|     observation.output,
+     99|     example.output,
+       |    ^
+    100|     'Example output differs from its comment'
+    101|    );
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ src/services/verification-evidence/TestExpectationService.ts:37:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  15:39:13
+   Duration  2.22s (transform 82ms, setup 80ms, collect 45ms, tests 50ms, environment 0ms, prepare 21ms)
+
