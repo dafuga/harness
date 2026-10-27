@@ -175,7 +175,7 @@ function summary(
 	};
 }
 
-function profiles(records: VerificationRecord[]): HistoryIndex['profiles'] {
+function profiles(records: Array<Pick<VerificationRecord, 'profile'>>): HistoryIndex['profiles'] {
 	const known = new Map(records.map((record) => [record.profile.id, record.profile]));
 	return [...known.keys()].sort().map((id) => known.get(id) as VerificationRecord['profile']);
 }

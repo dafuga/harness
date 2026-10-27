@@ -1,4 +1,4 @@
-import type { Growth, Point, Head, Line } from './historySeries.types';
+import type { Growth, Point, Head, Line, FocusedRun } from './historySeries.types';
 import type { BenchmarkSeries } from '../../../core/git-source-history/historyIndexTypes';
 import type {
 	Measurement,
@@ -8,7 +8,6 @@ import { frozenMetrics } from '../../../utils/verification-evidence/budgetFindin
 import type { BudgetReview } from '../../../utils/verification-evidence/budgetReviews';
 import { canonicalJson } from '../../../utils/development-tooling/canonicalJson';
 import { emittedKey, emittedSizes } from '../../../utils/development-tooling/emittedSizes';
-import type { RegressionView } from '../../../core/verification-evidence/regressionTypes';
 
 /** A figure of the unit itself: it names no workload and no machine, unlike a benchmark's. */
 const own = (item: Measurement) => !item.workload && !item.profile;
@@ -20,7 +19,7 @@ const own = (item: Measurement) => !item.workload && !item.profile;
  * unit's own figures are taken; a size a benchmark reports about its run is not one of them.
  */
 export function unitGrowth(
-	records: VerificationRecord[],
+	records: Array<Pick<VerificationRecord, 'id' | 'measurements'>>,
 	reviews: Map<string, BudgetReview[]> = new Map()
 ): Growth {
 	const units = new Map<string, Map<string, Point>>();
@@ -86,7 +85,7 @@ function timed(
  */
 export function historySeries(
 	records: Array<Pick<VerificationRecord, 'id' | 'measurements'>>,
-	focused: RegressionView[] = []
+	focused: FocusedRun[] = []
 ): BenchmarkSeries[] {
 	const groups = new Map<string, { head: Head; lines: Map<string, Line> }>();
 	for (const record of [...records, ...focusedMeasurements(focused)]) {
@@ -116,7 +115,7 @@ export function historySeries(
 }
 
 /** Focused observations keep their original tested revision and never establish a verdict. */
-function focusedMeasurements(runs: RegressionView[]) {
+function focusedMeasurements(runs: FocusedRun[]) {
 	const points = runs.filter((run) => !run.gap).flatMap((run) => [run.red, run.green]);
 	const records = points.flatMap((point) =>
 		point?.id

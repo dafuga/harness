@@ -1,0 +1,62 @@
+{
+	"name": "history-index-retained-memory",
+	"goal": "Keep history index aggregation bounded while preserving all revision evidence.",
+	"createdAt": "2026-10-27T01:50:16.704Z",
+	"updatedAt": "2026-10-27T01:58:51.489Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T01:50:17.273Z",
+			"evidence": "The history index retains complete record views and focused output after writing each revision, although index aggregation needs only summaries and measurements."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T01:50:17.827Z",
+			"evidence": "The existing HistoryIndexService.build case checks archived source and media but never checks whether unused payloads remain retained or whether compact summaries preserve index results."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T01:58:48.286Z",
+			"evidence": "Existing build case fails on retained written payloads; red f221424055c7 records the exact command at c3c32fbf69."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T01:58:49.514Z",
+			"evidence": "Project only aggregation fields after writing complete revision details; preserve workload measurements and historical gaps."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T01:58:51.489Z",
+			"evidence": "Unchanged build case passes at 8ee38965ae; matching green 9c285c2e4bca uses the same profile and command."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

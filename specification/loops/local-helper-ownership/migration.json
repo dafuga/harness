@@ -4997,9 +4997,18 @@
 		{
 			"unit": "function.history-series",
 			"name": "historySeries",
-			"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
-			"reason": "Include distinct, non-gapped focused workload observations at their original tested revision without granting a verification verdict.",
-			"definition": "84610fd59c3deb65877e1d8c15133dbc07ccd0c7b311277141394765f59e272c"
+			"commit": "8ee38965ae7865f1bb9d4344c43744c3f24097a2",
+			"reason": "Accept compact index summaries while preserving all growth and focused workload observations.",
+			"definition": "397780a49a0c1c7ad86f98e4443315a3b6083e045d82b4120754764c3db7665e",
+			"previousDefinitions": [
+				{
+					"unit": "function.history-series",
+					"name": "historySeries",
+					"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
+					"reason": "Include distinct, non-gapped focused workload observations at their original tested revision without granting a verification verdict.",
+					"definition": "84610fd59c3deb65877e1d8c15133dbc07ccd0c7b311277141394765f59e272c"
+				}
+			]
 		},
 		{
 			"unit": "reports.function.contract-fields",
@@ -5493,6 +5502,13 @@
 			"commit": "bfc281f4b374dec4b8bfbaf98dfe88a967109570",
 			"reason": "Admit authored contract edits while rejecting disguised product changes; preserve owner-local source and the original move definition.",
 			"definition": "f96e34ebc9d513585f5976e25fdd9eb3d31751f3b9afc245c9612c180dad389f"
+		},
+		{
+			"unit": "function.history-series",
+			"name": "unitGrowth",
+			"commit": "8ee38965ae7865f1bb9d4344c43744c3f24097a2",
+			"reason": "Accept compact index summaries while preserving all growth and focused workload observations.",
+			"definition": "def9830dc94abdfc91a75b5d3ed364102cd0eaca17f5553a4a7715e3c359fcb8"
 		}
 	]
 }

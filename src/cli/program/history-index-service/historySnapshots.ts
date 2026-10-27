@@ -8,6 +8,8 @@ import type {
 import type { CatalogSnapshot } from '../../../services/git-source-history/CatalogWriteService';
 import type { BudgetEvent } from '../../../core/verification-evidence/budgetTypes';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
+import type { RegressionPoint } from '../../../core/verification-evidence/regressionTypes';
+import type { FocusedPoint, FocusedRun } from './historySeries.types';
 import type { RecordedDetail } from '../../../services/projects-sessions/project-activity-service/ProjectActivityService.types';
 
 /** Only summary facts stay live; the complete, revision-specific snapshot is already on disk. */
@@ -18,7 +20,7 @@ export function compactRevision(
 	const { commit, records, sourceImpact, explanations, regressions, registry } = result.detail;
 	return {
 		status: result.status,
-		sound: result.sound,
+		sound: result.sound.map(({ id, profile, measurements }) => ({ id, profile, measurements })),
 		ledger: result.ledger.map((event) => {
 			const key = stableJson(event);
 			const known = events.get(key) ?? event;
@@ -27,16 +29,38 @@ export function compactRevision(
 		}),
 		detail: {
 			commit,
-			records,
+			records: records.map(({ id, profile, finishedAt, source }) => ({
+				id,
+				profile,
+				finishedAt,
+				source
+			})),
 			sourceImpact,
 			explanations,
-			regressions,
+			regressions: regressions?.map(compactRegression),
 			registry: {
 				available: registry.available,
 				units: registry.units.map(({ id, version }) => ({ id, version }))
 			}
 		}
 	};
+}
+
+/** Keep only the focused facts consumed by index aggregation; full details are already on disk. */
+function compactRegression(
+	run: NonNullable<BuiltRevision['detail']['regressions']>[number]
+): FocusedRun {
+	return {
+		loop: run.loop,
+		gap: run.gap,
+		red: compactPoint(run.red),
+		...(run.green ? { green: compactPoint(run.green)! } : {})
+	};
+}
+
+function compactPoint(point: RegressionPoint | null): FocusedPoint | null {
+	if (!point) return null;
+	return { id: point.id, commit: point.commit, measurements: point.measurements };
 }
 
 /** Catalog insertion consumes each immutable file once, without retaining all registries. */

@@ -4329,15 +4329,21 @@
 			"unit": "service.history-index",
 			"from": "src/services/history-index-service/HistoryIndexService.ts",
 			"to": "src/cli/program/history-index-service/HistoryIndexService.ts",
-			"definition": "75071e50a10b53265f750ea934eaa70d6c3a9e504b1b89871eaad6ba52dac0a0",
+			"definition": "bbd2eb517675ffff99c486f2556d6ad6e38bc719756f8f361a8117d5ab1cff83",
 			"relocationDefinition": "97187fefdb5f0d466f569ec40cfaa64eb3979340465655336c7464d3674410cb",
 			"review": {
-				"commit": "d2b739feeade8bd818eda7f49262e0ffbd5decc9",
+				"commit": "8ee38965ae7865f1bb9d4344c43744c3f24097a2",
 				"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
-				"definition": "75071e50a10b53265f750ea934eaa70d6c3a9e504b1b89871eaad6ba52dac0a0",
-				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+				"definition": "bbd2eb517675ffff99c486f2556d6ad6e38bc719756f8f361a8117d5ab1cff83",
+				"reason": "Use typed compact history summaries while preserving retained evidence and index results."
 			},
 			"previousReviews": [
+				{
+					"commit": "d2b739feeade8bd818eda7f49262e0ffbd5decc9",
+					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
+					"definition": "75071e50a10b53265f750ea934eaa70d6c3a9e504b1b89871eaad6ba52dac0a0",
+					"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+				},
 				{
 					"commit": "acb1a676d2a5186986369c5a4fb52ec1eabdaae9",
 					"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
@@ -4374,15 +4380,21 @@
 			"unit": "function.history-series",
 			"from": "src/services/history-index-service/historySeries.ts",
 			"to": "src/cli/program/history-index-service/historySeries.ts",
-			"definition": "476daeb76e1573d1a5c34396fe9526be592b4bce41beaae06f5a20c14f7c9337",
+			"definition": "8ce7599df83f5deb3402d0d943eb7de62befbd4183c85af185f1f40e2f3e6cde",
 			"relocationDefinition": "92697a7d2e73e368db3abe4e27cc48a861b4e40b2ca75e7e3132b1fe5db910e9",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "8ee38965ae7865f1bb9d4344c43744c3f24097a2",
 				"path": "src/cli/program/history-index-service/historySeries.ts",
-				"definition": "476daeb76e1573d1a5c34396fe9526be592b4bce41beaae06f5a20c14f7c9337",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "8ce7599df83f5deb3402d0d943eb7de62befbd4183c85af185f1f40e2f3e6cde",
+				"reason": "Use typed compact history summaries while preserving retained evidence and index results."
 			},
 			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/history-index-service/historySeries.ts",
+					"definition": "476daeb76e1573d1a5c34396fe9526be592b4bce41beaae06f5a20c14f7c9337",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
 				{
 					"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
 					"path": "src/cli/program/history-index-service/historySeries.ts",

@@ -1,6 +1,6 @@
 import type { Snapshot } from './history-source.test.types';
 import { createHash } from 'node:crypto';
-import { assertCatalogRevision } from './support/historyCatalog';
+import { assertCatalogRevision, assertCompactHistorySummary } from './support/historyCatalog';
 import { readFile, readdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -107,6 +107,7 @@ test('history archives owned text from each commit, deduplicates it and states s
 		const started = performance.now();
 		await new HistoryIndexService(repo.root).build(out, 10, async () => []);
 		archiveMeasurements(performance.now() - started);
+		assertCompactHistorySummary();
 		console.log(
 			JSON.stringify({
 				workload: 'three commits, including an unchanged tree, with text and gaps',
@@ -121,6 +122,15 @@ test('history archives owned text from each commit, deduplicates it and states s
 		expect((await readdir(join(out, 'media'))).map((name) => `media/${name}`).sort()).toEqual(
 			[...media].sort()
 		);
+		await expect(
+			new HistoryIndexService(repo.root).build(
+				join(dirname(repo.root), 'failed-history'),
+				10,
+				async () => {
+					throw new Error('legacy fixture failure');
+				}
+			)
+		).rejects.toThrow('legacy fixture failure');
 	} finally {
 		await repo.dispose();
 	}
