@@ -1720,3 +1720,21 @@ whole-process memory observations remain in capture evidence. The branch
 `dafuga/contract-discovery-skipped-20261027` remains isolated, and its new
 internal callable still needs its own declared example contract as the broader
 migration proceeds. Full verification, integration and Explorer proof are open.
+
+The same discovery unit also treated conditional literal tests and dormant
+function bodies as statically active, and invented cases from conditional
+runner factories. Its existing `scan` method case was strengthened without
+changing the two-case suite count. Red `1982298fea5b` at `44d14ca08a` shows the
+wrong classifications and invented titles; green `8b0d336e6e92` at `6458362373`
+passes the unchanged case with the same command and profile. The subsequent
+lint-only source cleanup is `2a2a92de0f`. Reintroducing the old reader failed
+in `280218994bf9`; restored identical-tree capture `687a51698808` passed on
+the same mutation profile. At `2a2a92de0f`, capture `2199764cf869` passed all
+18 discovery and unchanged registry-guard cases; registry check, targeted
+typecheck, lint and formatting passed. A read-only check of four actual test
+files found 2, 24, 2 and 1 declarations respectively with no discovery errors.
+The current discovery unit measures 8,896 bytes, 255 lines, complexity 74 and
+three dependencies; it has no separate emitted artifact. The focused capture
+retains workload timing and whole-process memory. Reasons are in Git notes.
+This branch still needs integration, full verification and the internal
+callable's Example contract.
