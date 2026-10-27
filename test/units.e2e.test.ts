@@ -6,7 +6,7 @@ import {
 	slugifySource,
 	titleServiceSource,
 	unitProject,
-	unitLifecycleScenario,
+	scenarioUnitChecks,
 	sharedDateHelperProject,
 	utcDateExamples
 } from './support/unitProject';
@@ -139,26 +139,8 @@ test('check rejects invalid manifests and schemas are exposed', async () => {
 	const info = await project.harness(['info', 'unit']);
 	expect(info.stdout).toContain('harness generate unit');
 	try {
-		await project.write(path, JSON.stringify(manifest));
-		await project.write(
-			'test/slugify.test.ts',
-			"import { expect, test } from 'vitest'; import { slugify } from '../src/utils/slugify'; test('slugify: lowercases a title', () => expect(slugify('A B')).toBe('a-b'));\n"
-		);
-		await project.write(
-			'specification/scenarios/unit-lifecycle.json',
-			JSON.stringify(unitLifecycleScenario)
-		);
-		expect((await project.harness(['scenarios', 'check'], false)).exitCode).toBe(0);
-		await project.write(
-			path,
-			JSON.stringify({
-				...manifest,
-				status: 'retired',
-				retired: { reason: 'Fixture retired', at: '2026-01-01T00:00:00.000Z' }
-			})
-		);
-		const retired = await project.harness(['scenarios', 'check'], false);
-		const registry = await project.harness(['units', 'check'], false);
+		const { active, retired, registry } = await scenarioUnitChecks(project, path, manifest);
+		expect(active.exitCode).toBe(0);
 		const message = 'unit-lifecycle covers retired unit function.slugify';
 		expect([retired.stderr.includes(message), registry.stderr.includes(message)], message).toEqual([
 			true,

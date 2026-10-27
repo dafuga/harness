@@ -77,6 +77,31 @@ export const unitLifecycleScenario = {
 	evidence: [{ id: 'output', kind: 'output', states: ['ready'], viewports: [], required: true }]
 };
 
+/** Exercise the same disposable scenario before and after its unit is retired. */
+export async function scenarioUnitChecks(project: UnitProject, path: string, manifest: object) {
+	await project.write(path, JSON.stringify(manifest));
+	await project.write(
+		'test/slugify.test.ts',
+		"import { expect, test } from 'vitest'; import { slugify } from '../src/utils/slugify'; test('slugify: lowercases a title', () => expect(slugify('A B')).toBe('a-b'));\n"
+	);
+	await project.write(
+		'specification/scenarios/unit-lifecycle.json',
+		JSON.stringify(unitLifecycleScenario)
+	);
+	const active = await project.harness(['scenarios', 'check'], false);
+	await project.write(
+		path,
+		JSON.stringify({
+			...manifest,
+			status: 'retired',
+			retired: { reason: 'Fixture retired', at: '2026-01-01T00:00:00.000Z' }
+		})
+	);
+	const retired = await project.harness(['scenarios', 'check'], false);
+	const registry = await project.harness(['units', 'check'], false);
+	return { active, retired, registry };
+}
+
 export const utcDateExamples = [
 	{
 		name: 'UTC date',
