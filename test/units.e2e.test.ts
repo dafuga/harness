@@ -41,7 +41,6 @@ test('generic unit generator coexists with the Svelte component generator', asyn
 	expect(service.stdout).toContain('create specification/units/service.billing.json');
 	await rm(join(project.root, '..'), { recursive: true, force: true });
 }, 60_000);
-
 test('index derives contracts and keeps identity stable across re-index, moves and recreation', async () => {
 	const project = await unitProject('lib');
 	await project.write('src/utils/slugify.ts', slugifySource);
@@ -96,7 +95,6 @@ test('index derives contracts and keeps identity stable across re-index, moves a
 	expect(revived.added).toEqual([]);
 	await rm(join(project.root, '..'), { recursive: true, force: true });
 }, 60_000);
-
 test('check rejects invalid manifests and schemas are exposed', async () => {
 	const project = await unitProject('lib');
 	await project.write('src/utils/slugify.ts', slugifySource);
@@ -160,8 +158,13 @@ test('check rejects invalid manifests and schemas are exposed', async () => {
 			})
 		);
 		const retired = await project.harness(['scenarios', 'check'], false);
-		expect(retired.stderr).toContain('unit-lifecycle covers retired unit function.slugify');
-		expect(retired.exitCode).toBe(1);
+		const registry = await project.harness(['units', 'check'], false);
+		const message = 'unit-lifecycle covers retired unit function.slugify';
+		expect([retired.stderr.includes(message), registry.stderr.includes(message)], message).toEqual([
+			true,
+			true
+		]);
+		expect([retired.exitCode, registry.exitCode]).toEqual([1, 1]);
 	} finally {
 		await rm(join(project.root, '..'), { recursive: true, force: true });
 	}
