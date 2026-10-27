@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-module-task-codex-broker",
+	"kind": "adapter",
+	"title": "ModuleTaskCodexBrokerAdapter",
+	"responsibility": "Run Harness-owned ephemeral Codex tasks through an exact-file MCP broker after verified client isolation; the current code is scaffold-only.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/ModuleTaskCodexBrokerAdapter.ts",
+			"src/adapters/agents-providers/ModuleTaskCodexBrokerAdapter.types.ts",
+			"src/adapters/agents-providers/module-task-codex-broker-adapter/codexBrokerProfile.ts",
+			"src/adapters/agents-providers/module-task-codex-broker-adapter/codexBrokerProtocol.ts",
+			"src/adapters/agents-providers/module-task-codex-broker-adapter/codexBrokerExecution.ts",
+			"src/adapters/agents-providers/module-task-codex-broker-adapter/codexBrokerScope.ts"
+		],
+		"symbols": [
+			"ModuleTaskCodexBrokerAdapter",
+			"ModuleTaskCodexBrokerAdapter.constructor",
+			"ModuleTaskCodexBrokerAdapter.connect",
+			"ModuleTaskCodexBrokerAdapterConfig",
+			"ModuleTaskCodexBrokerAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ModuleTaskCodexBrokerAdapter.constructor.config",
+				"type": "ModuleTaskCodexBrokerAdapterConfig"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ModuleTaskCodexBrokerAdapter.connect",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/ModuleTaskCodexBrokerAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/ModuleTaskCodexBrokerAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -204,7 +204,8 @@
 			"FeaturePlanPreparationService",
 			"featureSpecStructure",
 			"featurePlanImage",
-			"featurePlanImpact"
+			"featurePlanImpact",
+			"ModuleTaskCodexBrokerAdapter"
 		]
 	},
 	"contract": {
@@ -216,6 +217,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.agents-providers-feature-plan-readiness",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-codex-broker",
 			"via": "reexport",
 			"origin": "derived"
 		},

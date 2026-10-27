@@ -217,3 +217,4 @@ export { FeaturePlanPreparationService } from './services/agents-providers/Featu
 export { featureSpecStructure } from './helpers/development-tooling/featureSpecStructure';
 export { featurePlanImage } from './utils/agents-providers/featurePlanImage';
 export { featurePlanImpact } from './utils/agents-providers/featurePlanImpact';
+export { ModuleTaskCodexBrokerAdapter } from './adapters/agents-providers/ModuleTaskCodexBrokerAdapter';
