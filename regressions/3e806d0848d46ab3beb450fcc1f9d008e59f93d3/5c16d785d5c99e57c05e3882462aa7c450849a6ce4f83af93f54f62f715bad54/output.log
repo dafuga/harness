@@ -1,0 +1,32 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-xhBfVj
+
+ ❯ test/generate-workflow.test.ts (5 tests | 1 failed | 4 skipped) 12007ms
+   ↓ lib generation auto-exports package-safe scaffolds
+   ↓ app-only scaffolds fail in lib projects
+   × app generation allows app-only scaffolds without package exports 11996ms
+     → portal.component.workspace-card has a generated workspace contract: expected undefined to be defined
+   ↓ generation keeps category folders, imports and package exports in agreement
+   ↓ the same category works for every source scaffold and can be extended
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/generate-workflow.test.ts > app generation allows app-only scaffolds without package exports
+AssertionError: portal.component.workspace-card has a generated workspace contract: expected undefined to be defined
+ ❯ assertGeneratedWorkspaceRegistry test/support/generatedWorkspaceRegistry.ts:52:77
+     50|   ] as const) {
+     51|    const unit = await project.json<ComponentManifest>(`specification/u…
+     52|    expect(unit.testing, `${entry.unit} has a generated workspace contr…
+       |                                                                             ^
+     53|    const scenarioId = entry.unit.replace('.', '-');
+     54|    const scenario = await project.json<ScenarioManifest>(
+ ❯ test/generate-workflow.test.ts:69:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  09:57:10
+   Duration  16.59s (transform 380ms, setup 176ms, collect 842ms, tests 12.01s, environment 0ms, prepare 48ms)
+
