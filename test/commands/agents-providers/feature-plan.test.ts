@@ -17,6 +17,10 @@ async function assertJsonCommands() {
 		'show',
 		'start'
 	]);
+	const start = f.task.commands[0].commands.find((command) => command.name() === 'start');
+	expect(start?.options.map((option) => option.long)).toEqual(
+		expect.arrayContaining(['--worker', '--parallelism'])
+	);
 	await f.run(['draft', '--input', 'synthetic.json', '--json']);
 	expect(f.readInput).toHaveBeenCalledExactlyOnceWith('synthetic.json');
 	expect(f.service.draft).toHaveBeenCalledExactlyOnceWith({
