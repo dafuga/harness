@@ -84,6 +84,12 @@ export class ModuleTaskCommand {
 	}
 	private operations(task: Command): void {
 		task
+			.command('assign <id>')
+			.requiredOption('--worker <id>')
+			.option('--json')
+			.description('Assign an untouched ad hoc task to a named worker.')
+			.action(async (id, flags) => print(await this.service.assign(id, flags.worker)));
+		task
 			.command('retry <id>')
 			.option('--json')
 			.description('Retry a failed or confirmed abandoned local task, retaining prior attempts.')

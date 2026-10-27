@@ -92,6 +92,27 @@ export class ModuleTaskService {
 			role
 		};
 	}
+	assign(id: string, worker: string) {
+		const assignee = taskInputSchema.shape.assignee.unwrap().parse(worker);
+		return this.repository.update((queue) => {
+			const task = queue.tasks.find((entry) => entry.id === id);
+			const planned = queue.plans?.some((plan) => plan.tasks.some((entry) => entry.id === id));
+			if (
+				!task ||
+				task.status !== 'queued' ||
+				planned ||
+				task.claim ||
+				task.result ||
+				task.repairCommit ||
+				task.claimHistory.length ||
+				task.attempts.length ||
+				task.reviews.length
+			)
+				throw new Error('Only untouched ad hoc queued tasks can be assigned.');
+			task.assignee = assignee;
+			return task;
+		});
+	}
 	async retry(id: string) {
 		const owner = await this.repository.owner();
 		return this.repository.update((queue) => {
