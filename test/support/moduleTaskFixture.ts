@@ -23,12 +23,16 @@ export async function moduleTaskFixture() {
 	}
 	const syntheticScript = join(root, 'synthetic-worker.ts');
 	await writeFile(syntheticScript, syntheticWorkerScript());
+	const environment = {
+		PATH: `${bin}:${process.env.PATH}`,
+		HARNESS_ANALYTICS_HOME: join(root, 'analytics')
+	};
 	const cli = (args: string[], success = true) =>
-		runHarness(['task', ...args], root, success, { PATH: `${bin}:${process.env.PATH}` });
+		runHarness(['task', ...args], root, success, environment);
 	const syntheticWorker = (args: string[], success = true) =>
-		runCommand(['bun', syntheticScript, ...args], root, success, {
-			PATH: `${bin}:${process.env.PATH}`
-		});
+		runCommand(['bun', syntheticScript, ...args], root, success, environment);
+	const analytics = () =>
+		runHarness(['analytics', 'tasks', '--project', root, '--json'], root, true, environment);
 	const input = (extra: Record<string, unknown> = {}) => taskInput(root, extra);
 	const feature = (success = true) =>
 		cli(
@@ -48,6 +52,7 @@ export async function moduleTaskFixture() {
 		source,
 		cli,
 		syntheticWorker,
+		analytics,
 		input,
 		feature,
 		dispose: () => rm(root, { recursive: true, force: true })

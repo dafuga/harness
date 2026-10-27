@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { runHarness } from './support/cli';
+import { moduleTaskFixture } from './support/moduleTaskFixture';
 
 test('analytics imports loops idempotently and provides linked models and reports', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-analytics-'));
@@ -104,3 +105,50 @@ test('analytics cpu CLI samples real local counters with safe process output', a
 	).toBeCloseTo(sample.trackedPercent);
 	expect(result.stdout).not.toMatch(/parentPid|cpuMs|commandLine|--secret/);
 }, 10000);
+
+test('analytics reconciles synthetic task usage, price range and returned reviews', async () => {
+	const f = await moduleTaskFixture();
+	try {
+		await runHarness(['validate', '--write', '--json'], f.root, true, {
+			HARNESS_ANALYTICS_HOME: join(f.root, 'analytics')
+		});
+		await f.feature();
+		await f.cli(['add', '--input', await f.input({ model: 'gpt-6-luna', intelligence: 'max' })]);
+		await f.syntheticWorker(['worker', '--worker', 'owner', '--once', '--json']);
+		const task = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
+		expect(task.status).toBe('review');
+		expect(task.result.reportedModel).toBe('gpt-6-luna');
+		expect(task.result.executions[0].apiCost).toMatchObject({ basis: 'standard-api-estimate' });
+		expect(task.result.executions[0].apiCost.minimumUsd).toBeGreaterThan(0);
+		const stats = JSON.parse((await f.analytics()).stdout).tasks;
+		expect(stats).toMatchObject({
+			executions: 1,
+			submissions: 1,
+			reviewed: 0,
+			bounceRate: null,
+			byModel: [
+				expect.objectContaining({
+					model: 'gpt-6-luna',
+					intelligence: 'max',
+					inputTokens: 100,
+					outputTokens: 20
+				})
+			]
+		});
+		await f.cli([
+			'review',
+			'orders-validation',
+			'--attempt',
+			task.result.attempt,
+			'--verdict',
+			'incomplete',
+			'--feedback',
+			'Repair fixture'
+		]);
+		const bounced = JSON.parse((await f.analytics()).stdout).tasks;
+		expect(bounced).toMatchObject({ reviewed: 1, bounces: 1, bounceRate: 1 });
+		expect(JSON.parse((await f.analytics()).stdout).tasks).toEqual(bounced);
+	} finally {
+		await f.dispose();
+	}
+}, 30000);
