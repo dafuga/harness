@@ -1792,3 +1792,12 @@ not pass the conservative source guard for its `Set` construction, and its
 source is outside the required `src/helpers` location. Making it visible needs a
 reviewed purity and ownership migration that preserves in-memory iterator,
 species and getter behavior; the six passing cases do not prove that migration.
+
+The shared preview was refreshed again and now returns HTTP 404 for
+`/harness/data/index.json`; Tests, Examples, History and audio cannot be
+inspected there. Its existing owner remains running and was not changed. Remote
+`main` still points to `688cea71b2`, while the last loaded preview selected
+`395e517bd7`. A later host Claude authentication check reported `loggedIn: false`;
+the login Keychain settings query failed, though a metadata-only item lookup
+succeeded. No credential was read or printed. A renewed sign-in is pending,
+and successful sign-in alone would not qualify the current worker sandbox.
