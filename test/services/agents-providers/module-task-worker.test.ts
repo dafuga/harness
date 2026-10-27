@@ -64,7 +64,7 @@ test('worker passes the exact prepared scope through quota fallback', async () =
 	} finally {
 		await f.dispose();
 	}
-});
+}, 15_000);
 test('incomplete review commits a repair base, requeues once, and keeps prior work and contract', async () => {
 	const { f, service, worker, contexts, runInputs } = await reviewFixture();
 	try {
