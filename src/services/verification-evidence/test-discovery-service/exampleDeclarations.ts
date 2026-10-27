@@ -3,7 +3,6 @@ import { posix } from 'node:path';
 import { componentManifestSchema } from '../../../core/development-tooling/unitTypes';
 import type { SourceTree } from '../../../core/development-tooling/sourceTypes';
 import type { DiscoveredTest } from '../TestDiscoveryService.types';
-import { registrationScope } from './runnerDeclarations';
 
 /** The same committed examples drive static discovery, runtime registration and display. */
 export async function exampleDeclarations(
@@ -20,10 +19,10 @@ export async function exampleDeclarations(
 			if (!call.file) {
 				tests.push({
 					file,
-					title: [...call.titles, '<computed registration file>'].join(' > '),
+					title: '<computed registration file>',
 					line: call.line,
 					dynamic: true,
-					disabled: call.disabled
+					disabled: false
 				});
 				continue;
 			}
@@ -32,10 +31,10 @@ export async function exampleDeclarations(
 					.filter((item) => item.test.file === call.file)
 					.map((item) => ({
 						file,
-						title: [...call.titles, item.test.title].join(' > '),
+						title: item.test.title,
 						line: call.line,
-						dynamic: call.dynamic,
-						disabled: call.disabled
+						dynamic: false,
+						disabled: false
 					}))
 			);
 			continue;
@@ -49,10 +48,10 @@ export async function exampleDeclarations(
 		for (const example of examples)
 			tests.push({
 				file,
-				title: [...call.titles, `${example.subject}: ${example.name}`].join(' > '),
+				title: `${example.subject}: ${example.name}`,
 				line: call.line,
-				dynamic: call.dynamic,
-				disabled: call.disabled
+				dynamic: false,
+				disabled: false
 			});
 	}
 	return tests;
@@ -75,15 +74,7 @@ function manifestImports(source: ts.SourceFile, file: string): Map<string, strin
 	return manifests;
 }
 function registeredCalls(source: ts.SourceFile, manifests: Map<string, string>) {
-	const calls: Array<{
-		path: string;
-		line: number;
-		method: string;
-		file?: string;
-		titles: string[];
-		dynamic: boolean;
-		disabled: boolean;
-	}> = [];
+	const calls: Array<{ path: string; line: number; method: string; file?: string }> = [];
 	const visit = (node: ts.Node) => {
 		if (
 			ts.isCallExpression(node) &&
@@ -99,7 +90,6 @@ function registeredCalls(source: ts.SourceFile, manifests: Map<string, string>) 
 					path,
 					line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
 					method: node.expression.name.text,
-					...registrationScope(source, node),
 					...registrationFile(node)
 				});
 		}
