@@ -3,6 +3,7 @@ import { expect } from '../../verificationExpect';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { assertTaskModelIdentity } from '../../support/taskModelIdentity';
 import { observedTaskOperation } from '../../support/taskProfiles';
+import { isolateRunnerEnvironment } from './module-task-runner-environment.test.fixtures';
 import {
 	claudeCompletion,
 	claudeOtherModelCompletion,
@@ -18,6 +19,7 @@ import {
 	makeWrapperProbe,
 	runnerFor
 } from './module-task-runner.test.fixtures';
+isolateRunnerEnvironment();
 test('Claude and Codex launch exact models and intelligence without shell interpolation', () => {
 	const runner = new ModuleTaskRunnerAdapter();
 	expect(
