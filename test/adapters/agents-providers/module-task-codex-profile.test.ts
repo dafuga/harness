@@ -171,6 +171,7 @@ async function assertNativeProfile() {
 }
 
 async function assertUnsafeProfiles() {
+	const accepted: string[] = [];
 	for (const kind of [
 		'missing',
 		'parent',
@@ -178,6 +179,11 @@ async function assertUnsafeProfiles() {
 		'hardlink',
 		'runtime-credential',
 		'runtime-source',
+		'runtime-hardlink',
+		'runtime-symlink',
+		'read-parent-symlink',
+		'sealed-cli-hardlink',
+		'snapshot-hardlink',
 		'non-codex',
 		'scratch-link'
 	]) {
@@ -193,13 +199,39 @@ async function assertUnsafeProfiles() {
 			}
 			if (kind === 'runtime-credential') f.input.readPaths.push(f.credential);
 			if (kind === 'runtime-source') f.input.readPaths.push(f.input.cwd);
+			if (kind === 'runtime-hardlink')
+				await link(f.credential, join(f.input.readPaths[0], 'alias.txt'));
+			if (kind === 'runtime-symlink')
+				await symlink(f.credential, join(f.input.readPaths[0], 'alias.txt'));
+			if (kind === 'read-parent-symlink') {
+				await mkdir(join(f.input.readPaths[0], 'nested'));
+				const alias = join(f.root, 'runtime-alias');
+				await symlink(f.input.readPaths[0], alias);
+				f.input.readPaths.push(join(alias, 'nested'));
+			}
+			if (kind === 'sealed-cli-hardlink')
+				await link(f.credential, join(f.input.binDirectory, 'alias.txt'));
+			if (kind === 'snapshot-hardlink') {
+				f.input.snapshot = join(f.root, 'snapshot-alias.json');
+				await link(f.credential, f.input.snapshot);
+			}
 			if (kind === 'non-codex') f.input.argv[0] = 'sh';
 			if (kind === 'scratch-link') await symlink(f.credential, join(f.input.scratch, 'escape'));
-			await expect(f.adapter.prepare(f.input)).rejects.toThrow();
+			let prepared: Awaited<ReturnType<typeof f.adapter.prepare>> | undefined;
+			try {
+				prepared = await f.adapter.prepare(f.input);
+			} catch (error) {
+				expect(error).toBeInstanceOf(Error);
+			}
+			if (prepared) {
+				accepted.push(kind);
+				await prepared.cleanup();
+			}
 		} finally {
 			await f.dispose();
 		}
 	}
+	expect(accepted).toEqual([]);
 }
 
 test('ModuleTaskCodexProfileAdapter.prepare admits exact native permissions and rejects unsafe scopes', async () => {
