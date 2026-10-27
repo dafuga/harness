@@ -49,6 +49,12 @@ test('featurePlanImpact rejects malformed input before reading committed metadat
 		await expect(featurePlanImpact(input, { readData: f.readData })).rejects.toThrow();
 	}
 	expect(f.readData).not.toHaveBeenCalled();
+	const failure = new Error('Committed metadata unavailable');
+	const discover = vi.fn();
+	await expect(
+		featurePlanImpact(f.proposal, { readData: vi.fn().mockRejectedValue(failure), discover })
+	).rejects.toBe(failure);
+	expect(discover).not.toHaveBeenCalled();
 });
 
 test('featurePlanImpact reports stale metadata and every incomplete graph blocker', async () => {
@@ -65,7 +71,7 @@ test('registerFeaturePlanImpact prints blockers and fails the CLI without a prov
 	const f = fixture();
 	delete f.metadata.relationships['component.shared'];
 	const program = new Command().exitOverride();
-	const output = vi.fn();
+	const output = vi.fn<(text: string) => void>();
 	const readInput = vi.fn(async () => f.proposal);
 	const previous = process.exitCode;
 	process.exitCode = 0;
@@ -85,4 +91,19 @@ test('registerFeaturePlanImpact prints blockers and fails the CLI without a prov
 	} finally {
 		process.exitCode = previous;
 	}
+});
+
+test('registerFeaturePlanImpact renders affected pages for a human reader', async () => {
+	const f = fixture();
+	const program = new Command().exitOverride();
+	const output = vi.fn<(text: string) => void>();
+	registerFeaturePlanImpact(
+		program,
+		(input) => featurePlanImpact(input, { readData: f.readData }),
+		async () => f.proposal,
+		output
+	);
+	await program.parseAsync(['impact', '--input', 'proposal.json'], { from: 'user' });
+	expect(output.mock.calls[0][0]).toContain('page.alpha');
+	expect(output.mock.calls[0][0]).toContain('page.direct');
 });
