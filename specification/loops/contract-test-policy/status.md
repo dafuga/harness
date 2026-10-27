@@ -740,3 +740,15 @@ visual evidence. This earlier revision and focused run do not satisfy the full
 E2E or aggregate gate at the current task head. `harness history fetch` merged
 the laptop's notes and evidence locally; this record contains measurements and
 test logs, but no retained product screenshot captures.
+
+## Continuation: budget preparation fixture
+
+`8999c4882b` keeps the existing two budget-preparation cases and their
+assertions while giving them a disposable class fixture with declared method
+states and an explicitly synthetic budget value. The shared page and media
+fixture entrypoints are unchanged. On `harbor-mbp-2`, committed capture
+`f1c2a2b56405` passed both cases with one Vitest worker; its peak task-process
+RSS was 1,744,076,800 bytes. The evidence was fetched and read back locally.
+Targeted lint, formatting, root typecheck, the 1,827-unit registry check and
+audit also passed. The general verification fixture remains uncommitted and
+still needs real reviewed page screenshots and scenario case references.
