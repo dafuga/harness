@@ -1,0 +1,65 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-IfLIGa[39m
+
+(node:34415) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [31m❯[39m test/adapters/agents-providers/module-task-runner.test.ts [2m([22m[2m21 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m20 skipped[39m[2m)[22m[33m 342[2mms[22m[39m
+   [2m[90m↓[39m[22m Claude and Codex launch exact models and intelligence without shell interpolation
+   [2m[90m↓[39m[22m successful public Claude CLI events retain requested model and summary
+   [2m[90m↓[39m[22m fallback eligibility uses structured quota signals (quota)
+   [2m[90m↓[39m[22m fallback eligibility uses structured quota signals (authentication)
+   [2m[90m↓[39m[22m fallback eligibility uses structured quota signals (text-only-quota)
+   [2m[90m↓[39m[22m a completed CLI run that reports another model is rejected
+   [2m[90m↓[39m[22m public claude usage is retained without guessing absent counters
+   [2m[90m↓[39m[22m public codex usage is retained without guessing absent counters
+   [2m[90m↓[39m[22m failed turns preserve available usage for cost attribution
+   [2m[90m↓[39m[22m Codex auth failures are safe and actionable without quota fallback
+   [2m[90m↓[39m[22m Codex model failures are safe and actionable without quota fallback
+   [2m[90m↓[39m[22m Codex permission failures are safe and actionable without quota fallback
+   [2m[90m↓[39m[22m Codex malformed failures are safe and actionable without quota fallback
+   [2m[90m↓[39m[22m Codex unknown failures are safe and actionable without quota fallback
+   [2m[90m↓[39m[22m Codex execute rejection remains distinct from a provider failure
+   [2m[90m↓[39m[22m missing trusted scope fails before sandbox or process launch
+   [2m[90m↓[39m[22m sandbox preparation rejection is safe and never launches provider work
+[31m   [31m×[31m provider execution forwards exact sandbox argv, cwd and environment[39m[33m 333[2mms[22m[39m
+[31m     → expected { CLAUDE_CONFIG_DIR: null, …(5) } to deeply equal { …(6) }[39m
+   [2m[90m↓[39m[22m cleans the wrapped process once after execute resolve
+   [2m[90m↓[39m[22m cleans the wrapped process once after execute reject
+   [2m[90m↓[39m[22m cleans the wrapped process once after execute cancel
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/adapters/agents-providers/module-task-runner.test.ts[2m > [22mprovider execution forwards exact sandbox argv, cwd and environment
+[31m[1mAssertionError[22m: expected { CLAUDE_CONFIG_DIR: null, …(5) } to deeply equal { …(6) }[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "ANTHROPIC_API_KEY": null,[22m
+[2m    "CLAUDE_CODE_OAUTH_TOKEN": null,[22m
+[32m-   "CLAUDE_CONFIG_DIR": "/tmp/synthetic-claude",[39m
+[32m-   "CODEX_HOME": "/tmp/synthetic-codex",[39m
+[32m-   "HARNESS_TASK_CONTRACT_SNAPSHOT": "/tmp/synthetic-contract.json",[39m
+[31m+   "CLAUDE_CONFIG_DIR": null,[39m
+[31m+   "CODEX_HOME": null,[39m
+[31m+   "HARNESS_TASK_CONTRACT_SNAPSHOT": null,[39m
+[2m    "OPENAI_API_KEY": null,[22m
+[2m  }[22m
+
+[36m [2m❯[22m test/adapters/agents-providers/module-task-runner.test.ts:[2m202:45[22m[39m
+    [90m200| [39m [34mexpect[39m(probe[33m.[39minput)[33m.[39m[34mtoEqual[39m(probe[33m.[39mbefore)[33m;[39m
+    [90m201| [39m [34mexpect[39m(probe[33m.[39mcleanup)[33m.[39m[34mtoHaveBeenCalledTimes[39m([34m1[39m)[33m;[39m
+    [90m202| [39m expect(await runTrustedEnvironmentProbe()).toEqual(expectedSandboxEnv…
+    [90m   | [39m                                            [31m^[39m
+    [90m203| [39m})[33m;[39m
+    [90m204| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m20 skipped[39m[90m (21)[39m
+[2m   Start at [22m 11:58:25
+[2m   Duration [22m 3.81s[2m (transform 200ms, setup 134ms, collect 162ms, tests 342ms, environment 0ms, prepare 31ms)[22m
+
