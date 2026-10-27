@@ -1592,3 +1592,25 @@ check. Capture `167b40831c30` retains the focused run and observations at the
 committed tree. Source measurements are 973 bytes, 28 lines, complexity seven
 and two dependencies; the module has no separate emitted artifact. Full project
 verification and the remaining repository migration are still open.
+
+The exact-model access recheck returned `model_not_found` for `gpt-6-luna` with
+`max` requested. It reported no model and did not run a Harness task. A separate
+Haiku restricted-mode qualification probe reported `claude-haiku-5-5`, denied a
+synthetic outside-file read and edited an assigned disposable file. This does
+not qualify the actual Harness worker or independently attest effort.
+
+In the existing Harness sandbox, Claude initially failed before initialization
+because it could not create its shared temporary directory. A disposable probe
+with `CLAUDE_CODE_TMPDIR` directed to scratch reached the requested model's
+initialization but then reported not logged in. `CLAUDE_TMPDIR` alone did not
+resolve the initial directory failure. A query for a nonexistent synthetic
+Keychain item returned the same missing-item status inside and outside the
+sandbox; it did not test or reveal a real credential. The cause of the sandboxed
+login failure is unproven. The provider launcher remains blocked pending real
+credential isolation and execution qualification. The existing provider branch
+also predates the current remote main and remains separate from this task branch.
+
+The guarded browser wait expired while another laptop full check was still
+running. No new parallel browser red record was created; the earlier one-worker
+red remains evidence only for its original configuration. A matching parallel
+red and green, reviewed-baseline retrieval, and the full check remain pending.
