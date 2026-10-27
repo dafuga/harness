@@ -1364,3 +1364,21 @@ record retains sampled execution timing and whole-process peak RSS. The local
 helper and shared service ledgers preserve the original relocation and now name
 the reviewed fix. This is focused unit proof; the full laptop check, real browser
 captures and remaining screenshot-case bindings are still pending.
+
+A screenshot with fixture or absent provenance also satisfied a slot that
+explicitly required an actual capture. The existing element screenshot case
+now exercises those mismatches and the opposite declaration without changing
+its registered identity or the five-case count. Test commit `7d0f49a0ba`
+failed in red `497c73e1e384`; fix `44a2d10d23` passed in green `a8d24b216dae`.
+A lint-driven extraction at `5e5187769d` passed the unchanged case in green
+`498975cd48e6`. Final-source mutant `655037f010` failed in `2ac8b5ec1e74`;
+the restored tree `2e11654347` passed in `bebd160b76f6`.
+
+Snapshot `c8249100ea52` at `94d23491dc` passed 26 cases, registry validation,
+root typecheck and audit; target lint and formatting passed. The source unit
+had 10,779 bytes, 255 lines, complexity 71 and six dependencies, with no separate
+module artifact; sampled timings and whole-process peak RSS remain in the
+record. Prior ownership reviews and both changed source definitions are retained.
+A legacy screenshot slot without a provenance declaration keeps its former
+behavior. Required declarations, case-to-capture binding, real browser evidence
+and the full laptop gate remain open.
