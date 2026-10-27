@@ -2,7 +2,7 @@
 	"name": "generated-visual-case-evidence",
 	"goal": "Generated visual cases retain real screenshots bound to their declared cases and served builds",
 	"createdAt": "2026-10-27T10:01:06.542Z",
-	"updatedAt": "2026-10-27T10:02:33.954Z",
+	"updatedAt": "2026-10-27T10:15:09.504Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:15:09.504Z",
+			"evidence": "At ab25b02b7b the existing browser-support case failed because no case-bound capture index was written. Harness red record 3dfa181cbace74a4e7be503eec3d56616523cae11bcfe15e45301c1698571c83 uses a disposable synthetic unit fixture; real browser proof remains pending."
 		},
 		{
 			"id": "implement",
