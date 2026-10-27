@@ -2,7 +2,7 @@
 	"name": "history-note-bounded-reads",
 	"goal": "Read large Git note sets without collecting every blob in one batch while preserving each note and revision.",
 	"createdAt": "2026-10-27T00:35:54.942Z",
-	"updatedAt": "2026-10-27T00:36:18.799Z",
+	"updatedAt": "2026-10-27T00:38:52.866Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:37:57.201Z",
+			"evidence": "Committed test b301644345; red record 3ffaf20f7a3c failed because one payload requested 130 blobs instead of at most 64."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:38:00.528Z",
+			"evidence": "b7e48fe6ca parses at most 64 note blobs per Git payload while retaining original order and pinned revisions."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:38:52.866Z",
+			"evidence": "Red 759a041a055f and green 56749ce13b8f used the identical command, tests, runtime and environment; the unchanged case passed at b7e48fe6ca."
 		},
 		{
 			"id": "verify",

@@ -801,3 +801,38 @@ writing a revision. Sampling observed 2,185,576,448 bytes task-process peak and
 9,018,572,800 bytes as an upper estimate including shared processes. This
 demonstrates progress within one stage, not full memory-safe history coverage.
 No old revision was retested and historical missing proof remains missing.
+
+## Continuation: preserved history inputs and bounded note reads
+
+An isolated checkout now preserves all 2,378 selected source refs from its
+snapshot and the original remote names. It also keeps three source-like backup
+or work refs under their original names, with archive aliases in that checkout
+only. Harness fetched the existing notes, evidence and media without pushing.
+The selected original refs reach 3,638 revisions; the extra heads add five,
+for 3,643 revisions, 457 matching branch identities and 71 retained-only
+revisions. The 100,000 limit is untruncated. This is a source inventory, not a
+rebuilt history index. Private stash and snapshot refs were not included.
+
+The existing note-order case used two commits and did not constrain large note
+reads. Test-only `b301644345` failed paired red `759a041a055f` when 130 notes
+were sent in one Git payload. Source-only `b7e48fe6ca` passed green
+`56749ce13b8f` with the same test and environment. The case retains its title
+and checks real disposable Git notes, pinned revisions, invalid lines and
+copied lines. A one-sample isolated diagnostic of the same 1,620 notes and
+79,797 entries observed 749,043,712 bytes RSS after the original read and
+467,238,912 after a temporary 64-note batching change; the parsed data hash was
+the same. This is not a peak-memory guarantee.
+
+Capture `0e38f701c94b` passed 22 tests and the registry check but failed the
+new fixture's lint rule. `514932a786` simplified that fixture branching without
+changing its assertions. Capture `58f113c6d354` passed the same 22 tests,
+registry validation, formatting, lint, typecheck and audit. Its 130-note
+workload took 22.71 ms and observed 105,578,496 bytes whole-worker RSS after
+the read. `unitMeasurements` on that committed tree found 5,971 owned source
+bytes, 142 lines, complexity 29 and seven dependencies; this module has no
+separate emitted artifact. Mutation `b1bbd8cdf8` failed capture `b4a584120daa`
+at the original batch-size assertion; restored `ec29b923e5` passed `48a0c708725c` with the same
+tree as `514932a786`. Two source-change reasons are retained in Git notes.
+Each request now has at most 64 blobs, but a single oversized note is not
+byte-bounded. Full reconstruction, integration and aggregate verification
+remain pending.
