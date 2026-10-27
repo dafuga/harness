@@ -1,0 +1,38 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fUhDyt
+
+ ❯ test/services/verification-evidence/test-contract.test.ts (2 tests | 1 failed) 23ms
+   × validate initialized and invalid registries against declared cases 14ms
+     → expected '' to contain 'has no required screenshot'
+   ✓ compare initialized contracts preserves identities unless capabilities change 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-contract.test.ts > validate initialized and invalid registries against declared cases
+AssertionError: expected '' to contain 'has no required screenshot'
+
+- Expected
++ Received
+
+- has no required screenshot
+
+ ❯ assertVisualScenarioGaps test/support/testCapabilityCases.ts:153:55
+    151|   { ...evidence, viewports: [] }
+    152|  ])
+    153|   expect(validate({ ...scenario, evidence: [slot] })).toContain('has n…
+       |                                                       ^
+    154|  const last = evidence.viewports.at(-1)!;
+    155|  const partial = { ...evidence, viewports: evidence.viewports.slice(0,…
+ ❯ assertVisualScenarioEvidence test/support/testCapabilityCases.ts:94:3
+ ❯ test/services/verification-evidence/test-contract.test.ts:83:9
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-contract.test.ts:80:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  05:32:00
+   Duration  2.68s (transform 160ms, setup 91ms, collect 351ms, tests 23ms, environment 0ms, prepare 21ms)
+
