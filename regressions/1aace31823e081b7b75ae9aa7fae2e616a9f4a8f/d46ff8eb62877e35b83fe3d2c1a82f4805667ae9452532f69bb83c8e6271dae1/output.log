@@ -1,0 +1,36 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-gq1OG4
+
+ ❯ test/commands/agents-providers/feature-plan.test.ts (2 tests | 1 failed) 66ms
+   ✓ FeaturePlanCommand.run from default initialization returns the file name 1ms
+   × FeaturePlanCommand.register exposes draft, show, select and approve with safe output 62ms
+     → failed worker outcome must fail the CLI: expected +0 to be 1 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/commands/agents-providers/feature-plan.test.ts > FeaturePlanCommand.register exposes draft, show, select and approve with safe output
+AssertionError: failed worker outcome must fail the CLI: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ assertFailedDispatchExit test/commands/agents-providers/feature-plan.test.ts:169:71
+    167|   ]);
+    168|   expect(f.output.mock.calls.map(([text]) => JSON.parse(text))).toEqua…
+    169|   expect(process.exitCode, 'failed worker outcome must fail the CLI').…
+       |                                                                       ^
+    170|  } finally {
+    171|   process.exitCode = previous;
+ ❯ test/commands/agents-providers/feature-plan.test.ts:180:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  01:38:45
+   Duration  3.61s (transform 618ms, setup 90ms, collect 1.02s, tests 66ms, environment 0ms, prepare 26ms)
+
