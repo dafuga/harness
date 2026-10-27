@@ -1,0 +1,23 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1BlxSC
+
+stdout | test/history-source.test.ts > history archives owned text from each commit, deduplicates it and states source gaps
+{"workload":"three commits, including an unchanged tree, with text and gaps","method":"performance.now wall time; whole Vitest process RSS","buildMs":371.685833,"processRssBytes":231604224}
+
+ ✓ test/history-source.test.ts (1 test) 2336ms
+   ✓ history archives owned text from each commit, deduplicates it and states source gaps  2319ms
+ ✓ test/services/unit-index.test.ts (14 tests) 2766ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2605ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 80ms
+ ✓ test/utils/budget-reviews.test.ts (4 tests) 4ms
+ ✓ test/utils/growth-notes.test.ts (1 test) 3ms
+
+ Test Files  5 passed (5)
+      Tests  22 passed (22)
+   Start at  02:58:36
+   Duration  9.15s (transform 500ms, setup 214ms, collect 1.06s, tests 5.19s, environment 0ms, prepare 105ms)
+
+Units registry is valid: 1827 units, 167 uncertain references.
+Checking formatting...
+All matched files use Prettier code style!
+Harness audit passed. Files and functions are staying small.
