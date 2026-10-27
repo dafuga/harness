@@ -1,0 +1,28 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run sync:shared && vitest run "$@"' -- test/recorded-artifact-limits.test.ts "--maxWorkers=1"
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-identity-proof.a7HYcu/harness-snapshot-CkvAnB/packages/desktop
+
+Overwriting existing notes for object b0c27482a7ccc0b3c1edb7ef41608da3211c48ad
+ ✓ test/recorded-artifact-limits.test.ts (4 tests) 34114ms
+   ✓ a capture of exactly 11 MiB is read, and one byte more is refused and stays listed  763ms
+   ✓ tampered capture bytes are never returned as verified  978ms
+   ✓ a corrupted record is never returned as verified  1005ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  11:25:12
+   Duration  36.31s (transform 1.16s, setup 101ms, collect 1.94s, tests 34.11s, environment 0ms, prepare 30ms)
+
