@@ -1,0 +1,126 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BrSeOZ
+
+ ❯ test/pieces.test.ts (6 tests | 1 failed | 5 skipped) 19ms
+   ↓ every scaffold kind creates at least one file in a 2d project
+   ↓ every scaffold kind creates at least one file in a 3d project
+   × view, layout, and api scaffolds use SvelteKit route files 17ms
+     → Generated visual case identities must be statically discoverable: expected [ { …(2) } ] to deeply equal [ { …(2) }, { …(2) }, { …(2) }, …(6) ]
+   ↓ marks only SvelteKit scaffolds as app-only
+   ↓ Rails-ish scaffolds create their expected code shapes
+   ↓ helper scaffolds emit pure camelCase functions with domain parameters
+ ❯ test/project-template.test.ts (5 tests | 1 failed | 4 skipped) 24ms
+   ↓ generated element atoms preserve native compilation and emitted runtime source
+   × app projects include SvelteKit and specification files 20ms
+     → Generated initial page case identities must be statically discoverable: expected [ { …(2) } ] to deeply equal [ { …(2) }, { …(2) }, { …(2) } ]
+   ↓ library projects include Bun TypeScript test structure
+   ↓ generated app code and configuration obey their formatter settings
+   ↓ generated lib code and configuration obey their formatter settings
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/pieces.test.ts > view, layout, and api scaffolds use SvelteKit route files
+AssertionError: Generated visual case identities must be statically discoverable: expected [ { …(2) } ] to deeply equal [ { …(2) }, { …(2) }, { …(2) }, …(6) ]
+
+- Expected
++ Received
+
+  [
+    {
+-     "dynamic": false,
+-     "title": "StatusBadge.svelte states > desktop viewport > rest",
+-   },
+-   {
+-     "dynamic": false,
+-     "title": "StatusBadge.svelte states > desktop viewport > label-prop",
+-   },
+-   {
+-     "dynamic": false,
+-     "title": "StatusBadge.svelte states > desktop viewport > error-prop",
+-   },
+-   {
+-     "dynamic": false,
+-     "title": "StatusBadge.svelte states > tablet viewport > rest",
+-   },
+-   {
+-     "dynamic": false,
+-     "title": "StatusBadge.svelte states > tablet viewport > label-prop",
+-   },
+-   {
+-     "dynamic": false,
+-     "title": "StatusBadge.svelte states > tablet viewport > error-prop",
+-   },
+-   {
+-     "dynamic": false,
+-     "title": "StatusBadge.svelte states > mobile viewport > rest",
+-   },
+-   {
+-     "dynamic": false,
+-     "title": "StatusBadge.svelte states > mobile viewport > label-prop",
+-   },
+-   {
+-     "dynamic": false,
+-     "title": "StatusBadge.svelte states > mobile viewport > error-prop",
++     "dynamic": true,
++     "title": "StatusBadge.svelte states > viewport.id + ' viewport' > state.id",
+    },
+  ]
+
+ ❯ assertVisualCases test/support/generatedContracts.ts:110:4
+    108|   found.map(({ title, dynamic }) => ({ title, dynamic })),
+    109|   'Generated visual case identities must be statically discoverable'
+    110|  ).toEqual(expected);
+       |    ^
+    111| }
+    112| 
+ ❯ assertComponentContract test/support/generatedContracts.ts:30:2
+ ❯ assertAppPieceContracts test/support/generatedContracts.ts:8:2
+ ❯ test/pieces.test.ts:60:5
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/pieces.test.ts:56:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/pieces.test.ts:55:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/project-template.test.ts > app projects include SvelteKit and specification files
+AssertionError: Generated initial page case identities must be statically discoverable: expected [ { …(2) } ] to deeply equal [ { …(2) }, { …(2) }, { …(2) } ]
+
+- Expected
++ Received
+
+  [
+    {
+-     "dynamic": false,
+-     "title": "desktop viewport > app page initial state",
+-   },
+-   {
+-     "dynamic": false,
+-     "title": "tablet viewport > app page initial state",
+-   },
+-   {
+-     "dynamic": false,
+-     "title": "mobile viewport > app page initial state",
++     "dynamic": true,
++     "title": "viewport.id + ' viewport' > app page initial state",
+    },
+  ]
+
+ ❯ expectInitialPageViewports test/support/project-template/guidance.ts:161:4
+    159|   found.map(({ title, dynamic }) => ({ title, dynamic })),
+    160|   'Generated initial page case identities must be statically discovera…
+    161|  ).toEqual(
+       |    ^
+    162|   ['desktop', 'tablet', 'mobile'].map((viewport) => ({
+    163|    title: `${viewport} viewport > app page initial state`,
+ ❯ test/project-template.test.ts:40:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 9 skipped (11)
+   Start at  03:57:28
+   Duration  3.39s (transform 357ms, setup 122ms, collect 883ms, tests 44ms, environment 0ms, prepare 43ms)
+
