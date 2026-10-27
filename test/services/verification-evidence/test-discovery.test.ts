@@ -111,7 +111,71 @@ test('discover initialized and unreadable sources retain explicit discovery gaps
 		'Cannot read test declarations: missing',
 		'present:1: computed case requires runner discovery'
 	]);
+	await measureWorkload(
+		'service.verification-evidence-test-discovery',
+		'registration-contexts',
+		() => assertRegistrationContexts(service, tree.read)
+	);
 });
+
+async function assertRegistrationContexts(
+	subject: TestDiscoveryService,
+	read: (file: string) => Promise<string>
+) {
+	const rows = [
+		{ code: 'registerExamples(test.skip, unit, {})', title: 'finish: Finish', disabled: true },
+		{ code: "registerExamples(test['only'], unit, {})", title: 'finish: Finish', disabled: true },
+		{
+			code: "registerCases(test.skip, unit, 'test/methods.test.ts', {})",
+			title: 'Runner.finish initialized',
+			disabled: true,
+			method: true
+		},
+		{
+			code: "describe.skip('disabled', () => { service.registerExamples(test, unit, {}); })",
+			title: 'disabled > finish: Finish',
+			disabled: true,
+			suite: true
+		},
+		{
+			code: "describe('active', () => { service.registerExamples(test, unit, {}); })",
+			title: 'active > finish: Finish',
+			suite: true
+		},
+		{ code: 'registerExamples(test[modifier], unit, {})', title: 'finish: Finish', dynamic: true },
+		{
+			code: 'if (condition) service.registerExamples(test, unit, {})',
+			title: 'finish: Finish',
+			dynamic: true,
+			suite: true
+		},
+		{
+			code: 'function later() { service.registerExamples(test, unit, {}); }',
+			title: 'finish: Finish',
+			dynamic: true,
+			suite: true
+		}
+	];
+	for (const row of rows) {
+		const file = row.method ? 'test/methods.test.ts' : 'test/examples.test.ts';
+		const manifest = row.method ? './method-unit.json' : './unit.json';
+		const registration = row.suite ? row.code : `service.${row.code};`;
+		const source = `import { test, describe } from 'vitest'; import unit from '${manifest}'; ${registration}`;
+		const found = await subject.discover(
+			{ read: (path) => (path === file ? Promise.resolve(source) : read(path)) },
+			[file]
+		);
+		expect(
+			found.tests.map(({ title, disabled, dynamic }) => ({ title, disabled, dynamic })),
+			row.code
+		).toEqual([
+			{ title: row.title, disabled: Boolean(row.disabled), dynamic: Boolean(row.dynamic) }
+		]);
+		const error = row.disabled ? 'skipped, exclusive' : row.dynamic ? 'computed case' : undefined;
+		if (error) expect(found.errors.join(' '), row.code).toContain(error);
+		else expect(found.errors, row.code).toEqual([]);
+	}
+}
 
 async function discoveryManifest() {
 	const original = (await import('../../../specification/units/function.case.json')).default;
