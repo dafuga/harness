@@ -1,0 +1,85 @@
+
+ RUN  v3.2.4 /private/tmp/harness-native-ef964.lzQXx3/harness-snapshot-rtuAjm
+
+ ❯ test/services/unit-index.test.ts (19 tests | 1 failed) 9361ms
+   ✓ atomic levels follow runtime calls and survive projections 14ms
+   ✓ HTTP requests bind to endpoints in the owning app and selected source tree 19ms
+   ✓ source indexing bounds pending reads and keeps every file in source order 32ms
+   ✓ source indexing reports failed reads even after its read window fills 17ms
+   ✓ source indexing releases parsed blobs from prior revisions 3ms
+   ✓ identical blobs keep path-specific references and ignored files stay unread 1ms
+   ✓ source indexing preserves admitted entry getters, species, and method receivers 0ms
+   ✓ recorded source moves retain definitions, owner-local placement and registered identity 249ms
+   ✓ public route filenames retain their registered ownership 0ms
+   ✓ declared preview and documentation survive source re-indexing 3ms
+   ✓ declared execution targets survive re-indexing and follow a moved default entry 2ms
+   ✓ recreating retired source elsewhere records lineage to the retired identity 1ms
+   ✓ a unit that takes a retired name records lineage even when its symbols differ 0ms
+   ✓ lineage cannot be dropped by editing the manifest 1ms
+   ✓ unrelated new units carry no lineage 0ms
+   ✓ a declared responsibility survives re-indexing while a derived one follows the unit 1ms
+   ✓ an alternative implementation is a related unit linked by a declared contract dependency 1ms
+   ✓ several owned files produce identical metadata after one indexing pass 4ms
+   × recorded service moves preserve implementations and registered owner-local placement 9005ms
+     → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+stdout | test/repositories/explanation-notes-order.test.ts > restoration keeps a large note history bounded and still refuses missing evidence
+Note history RSS: restore 402292736; raw 297746432
+
+ ✓ test/repositories/explanation-notes-order.test.ts (6 tests) 18708ms
+   ✓ notes alone hold the latest recorded reason for an exact change, wherever each is noted  1762ms
+   ✓ a step of a chain noted again is held by its latest reason, wherever each is noted  3414ms
+   ✓ a later long reason in the notes still fails, however the notes list it  3433ms
+   ✓ a date that cannot be read is never later than one that can; equal ones agree everywhere  2718ms
+   ✓ restoration keeps a large note history bounded and still refuses missing evidence  6039ms
+   ✓ a large note retains every valid verification entry in order  1140ms
+ ✓ test/history-reason-steps.e2e.test.ts (4 tests) 180124ms
+   ✓ the reasons of every explained step are kept, and a fresh clone with the notes explains the range  16574ms
+   ✓ reason history loaders retain compact facts across a 32-revision walk  103048ms
+   ✓ a step keeps the writing limits of its own revision when a later one declares limits  9570ms
+   ✓ a step without a reason keeps the range open: nothing is kept for it and the failure is said  12668ms
+stdout | test/services/trusted-base.test.ts > a large history keeps ancestry checks bounded and still rejects damaged lineage
+History RSS: trusted 570867712; one full read 800571392
+
+ ✓ test/services/trusted-base.test.ts (3 tests) 5100ms
+   ✓ TrustedBaseService finds the nearest revision a passing record proves  432ms
+   ✓ a later failure, a forged outcome and a record for another tree are not trusted  444ms
+   ✓ a large history keeps ancestry checks bounded and still rejects damaged lineage  3922ms
+(node:35151) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/services/resource-queue.test.ts (7 tests) 2993ms
+   ✓ queued cancellation releases reservations without ever starting the callback  577ms
+   ✓ pressure is observed during a running task; that task finishes and subsequent work waits  1644ms
+   ✓ parallel nested tasks share a bounded parent budget instead of each borrowing the full reservation  332ms
+   ✓ a queued sibling cannot block the descendant needed to release its ancestor reservation  333ms
+(node:37192) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/verify-measures.e2e.test.ts (5 tests) 67710ms
+   ✓ task verification rejects missing profiling even without performance budgets  11285ms
+   ✓ measures that do not apply or were not taken are stated, never left out  5573ms
+   ✓ a benchmarked unit outside impact keeps its committed source identity  9147ms
+   ✓ a removed unit keeps its base source identity in the verification record  22229ms
+   ✓ an artifact built in the snapshot is measured with its hash, and a missing one is stated  6623ms
+ ✓ test/required-reasons.test.ts (1 test) 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/unit-index.test.ts > recorded service moves preserve implementations and registered owner-local placement
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/services/unit-index.test.ts:199:1
+    197| });
+    198| 
+    199| test('recorded service moves preserve implementations and registered o…
+       | ^
+    200|  expect(
+    201|   new Set(services.files.map((file) => file.to)).size,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 6 passed (7)
+      Tests  1 failed | 44 passed (45)
+   Start at  10:38:06
+   Duration  293.14s (transform 920ms, setup 451ms, collect 3.22s, tests 284.01s, environment 1ms, prepare 251ms)
+
