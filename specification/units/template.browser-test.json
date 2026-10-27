@@ -3,23 +3,58 @@
 	"id": "template.browser-test",
 	"kind": "template",
 	"title": "browserTest",
-	"responsibility": "Owns the browserTest scaffold template.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Emits shared Playwright fixtures and maintains their screenshot implementation.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/browserTest.ts", "src/templates/development-tooling/browserTest.ts"],
-		"symbols": ["browserTestFiles", "browserTestFiles"]
+		"source": [
+			"src/templates/browserTest.ts",
+			"src/templates/development-tooling/browser-fixture/browserScreenshot.ts",
+			"src/templates/development-tooling/browser-fixture/browserScreenshot.types.ts",
+			"src/templates/development-tooling/browser-fixture/browserTest.types.ts",
+			"src/templates/development-tooling/browserTest.ts"
+		],
+		"symbols": [
+			"browserTestFiles",
+			"createMatchScreenshot",
+			"MatchScreenshot",
+			"MatchScreenshotOptions",
+			"ScreenshotName",
+			"ScreenshotTarget",
+			"BrowserError",
+			"ExpectedBrowserError",
+			"DiagnosticInfo",
+			"ScreenshotTarget",
+			"ScreenshotName",
+			"MatchScreenshotOptions",
+			"MatchScreenshot",
+			"browserTestFiles"
+		]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "createMatchScreenshot.testInfo",
+				"type": "TestInfo"
+			}
+		],
 		"outputs": [
+			{
+				"name": "createMatchScreenshot",
+				"type": "MatchScreenshot"
+			},
 			{
 				"name": "browserTestFiles",
 				"type": "PlannedFile[]"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		]
 	},
 	"dependencies": [
 		{
