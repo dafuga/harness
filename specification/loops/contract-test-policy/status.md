@@ -1692,3 +1692,9 @@ before and after with no identity changes. Capture `188b48476e1b` passed all
 four, and `76095b809706` passed the 16 unchanged registry guards. Registry,
 focused typecheck, lint and formatting passed again; the new reason is in Git
 notes. This remains isolated pending integration.
+
+Remote `main` was rechecked at `688cea71b2`; it has advanced beyond the policy
+branch. The shared preview still selects `395e517bd7` and reports missing
+committed module data. No branch was merged or preview owner changed. Any later
+integration must refresh all source heads, incorporate current main safely, and
+rerun the deferred gates before claiming current-main delivery.
