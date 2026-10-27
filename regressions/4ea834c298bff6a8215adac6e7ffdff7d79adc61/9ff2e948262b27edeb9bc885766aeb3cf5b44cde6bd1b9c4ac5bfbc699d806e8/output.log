@@ -1,0 +1,62 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-qVIFXm
+
+ ❯ test/project-template.test.ts (5 tests | 1 failed | 4 skipped) 30ms
+   ↓ generated element atoms preserve native compilation and emitted runtime source
+   × app projects include SvelteKit and specification files 25ms
+     → Generated app must install its Playwright case reporter: expected 'import { defineConfig } from \'@playw…' to contain './test/support/harnessCaseReporter.js'
+   ↓ library projects include Bun TypeScript test structure
+   ↓ generated app code and configuration obey their formatter settings
+   ↓ generated lib code and configuration obey their formatter settings
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-template.test.ts > app projects include SvelteKit and specification files
+AssertionError: Generated app must install its Playwright case reporter: expected 'import { defineConfig } from \'@playw…' to contain './test/support/harnessCaseReporter.js'
+
+- Expected
++ Received
+
+- ./test/support/harnessCaseReporter.js
++ import { defineConfig } from '@playwright/test';
++
++ export default defineConfig({
++ 	testDir: 'tests/e2e',
++ 	snapshotPathTemplate: '.cache/harness/visual-baselines/{testFilePath}/{arg}{ext}',
++ 	updateSnapshots: 'none',
++ 	webServer: {
++ 		command: 'bun run dev -- --host 127.0.0.1 --port 3322',
++ 		url: 'http://127.0.0.1:3322',
++ 		reuseExistingServer: true
++ 	},
++ 	use: {
++ 		baseURL: 'http://127.0.0.1:3322',
++ 		browserName: 'chromium',
++ 		deviceScaleFactor: 1,
++ 		locale: 'en-US',
++ 		timezoneId: 'UTC',
++ 		colorScheme: 'light',
++ 		reducedMotion: 'reduce'
++ 	}
++ });
++
+
+ ❯ assertGeneratedBrowserOutcome test/support/project-template/foundations.ts:17:76
+     15| export async function assertGeneratedBrowserOutcome(project: PlannedFi…
+     16|  const config = project.find((file) => file.path === 'playwright.confi…
+     17|  expect(config, 'Generated app must install its Playwright case report…
+       |                                                                            ^
+     18|   './test/support/harnessCaseReporter.js'
+     19|  );
+ ❯ test/project-template.test.ts:43:54
+ ❯ test/project-template.test.ts:43:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  04:29:16
+   Duration  2.97s (transform 324ms, setup 91ms, collect 643ms, tests 30ms, environment 0ms, prepare 23ms)
+
