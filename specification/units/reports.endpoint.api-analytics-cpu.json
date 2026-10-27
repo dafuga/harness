@@ -3,28 +3,81 @@
 	"id": "reports.endpoint.api-analytics-cpu",
 	"kind": "endpoint",
 	"title": "/api/analytics-cpu",
-	"responsibility": "Owns the /api/analytics-cpu HTTP endpoint.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Serves site-scoped CPU telemetry to loopback hosts and rejects other hosts.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/routes/api/analytics-cpu/+server.ts"],
 		"symbols": ["GET"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "GET.input",
-				"type": "{ url: URL }"
+				"name": "GET.url",
+				"type": "URL",
+				"description": "Request URL; only localhost, 127.0.0.1 and [::1] hostnames are admitted."
 			}
 		],
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "Promise<Response>"
+				"type": "Promise<Response>",
+				"description": "JSON telemetry with all snapshot fields and site-scoped agents; local responses disable caching."
+			},
+			{
+				"name": "status",
+				"type": "string",
+				"description": "Telemetry availability, or unavailable when a non-loopback host is refused."
+			},
+			{
+				"name": "sampledAt",
+				"type": "string",
+				"description": "Time the telemetry sample was taken for admitted hosts."
+			},
+			{
+				"name": "intervalMs",
+				"type": "number",
+				"description": "Measured sample interval in milliseconds."
+			},
+			{
+				"name": "logicalCores",
+				"type": "number",
+				"description": "Number of logical CPU cores in the sample."
+			},
+			{
+				"name": "machinePercent",
+				"type": "number | null",
+				"description": "Machine CPU percentage, or null when unavailable."
+			},
+			{
+				"name": "trackedPercent",
+				"type": "number | null",
+				"description": "Site-scoped total of tracked groups, or null when unavailable."
+			},
+			{
+				"name": "groups",
+				"type": "CpuGroup[]",
+				"description": "CPU groups with the agents group recalculated for this site."
+			},
+			{
+				"name": "agents",
+				"type": "CpuAgent[]",
+				"description": "Only agent processes attributable to this site."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "remote-host",
+				"type": "HTTP 403",
+				"description": "A non-loopback hostname receives an unavailable JSON response before telemetry is sampled."
+			},
+			{
+				"name": "telemetry-unavailable",
+				"type": "HTTP 503",
+				"description": "An admitted host receives the complete unavailable snapshot with caching disabled."
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -49,6 +102,498 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "api",
+		"states": [
+			"remote",
+			"ipv4-available",
+			"localhost-available",
+			"ipv6-available",
+			"ipv4-unavailable",
+			"localhost-unavailable",
+			"ipv6-unavailable"
+		],
+		"props": [
+			"url.hostname",
+			"status",
+			"sampledAt",
+			"intervalMs",
+			"logicalCores",
+			"machinePercent",
+			"trackedPercent",
+			"groups",
+			"agents"
+		],
+		"cases": [
+			{
+				"id": "remote",
+				"state": "remote",
+				"subject": "GET",
+				"input": {
+					"url": "https://reports.example/api/analytics-cpu"
+				},
+				"test": {
+					"file": "packages/reports/test/routes/analytics-cpu-api.test.ts",
+					"title": "GET CPU telemetry: remote"
+				},
+				"expected": {
+					"kind": "json",
+					"value": {
+						"statusCode": 403,
+						"contentType": "application/json",
+						"cacheControl": null,
+						"body": {
+							"status": "unavailable"
+						}
+					}
+				},
+				"props": ["url.hostname", "status"],
+				"errors": ["remote-host"]
+			},
+			{
+				"id": "ipv4.available",
+				"state": "ipv4-available",
+				"subject": "GET",
+				"input": {
+					"url": "http://127.0.0.1/api/analytics-cpu",
+					"snapshot": {
+						"status": "available",
+						"sampledAt": "2026-10-10T20:00:00.000Z",
+						"intervalMs": 250,
+						"logicalCores": 8,
+						"machinePercent": 40,
+						"trackedPercent": 17,
+						"groups": [
+							{
+								"id": "codex",
+								"label": "Codex app",
+								"corePercent": 40,
+								"machinePercent": 5,
+								"processes": 3
+							},
+							{
+								"id": "harness",
+								"label": "Harness",
+								"corePercent": 16,
+								"machinePercent": 2,
+								"processes": 1
+							},
+							{
+								"id": "agents",
+								"label": "Local agents",
+								"corePercent": 80,
+								"machinePercent": 10,
+								"processes": 6
+							}
+						],
+						"agents": []
+					}
+				},
+				"test": {
+					"file": "packages/reports/test/routes/analytics-cpu-api.test.ts",
+					"title": "GET CPU telemetry: ipv4-available"
+				},
+				"expected": {
+					"kind": "json",
+					"value": {
+						"statusCode": 200,
+						"contentType": "application/json",
+						"cacheControl": "no-store",
+						"body": {
+							"status": "available",
+							"sampledAt": "2026-10-10T20:00:00.000Z",
+							"intervalMs": 250,
+							"logicalCores": 8,
+							"machinePercent": 40,
+							"trackedPercent": 7,
+							"groups": [
+								{
+									"id": "codex",
+									"label": "Codex app",
+									"corePercent": 40,
+									"machinePercent": 5,
+									"processes": 3
+								},
+								{
+									"id": "harness",
+									"label": "Harness",
+									"corePercent": 16,
+									"machinePercent": 2,
+									"processes": 1
+								},
+								{
+									"id": "agents",
+									"label": "Local agents",
+									"corePercent": 0,
+									"machinePercent": 0,
+									"processes": 0
+								}
+							],
+							"agents": []
+						}
+					}
+				},
+				"props": [
+					"url.hostname",
+					"status",
+					"sampledAt",
+					"intervalMs",
+					"logicalCores",
+					"machinePercent",
+					"trackedPercent",
+					"groups",
+					"agents"
+				]
+			},
+			{
+				"id": "localhost.available",
+				"state": "localhost-available",
+				"subject": "GET",
+				"input": {
+					"url": "http://localhost/api/analytics-cpu",
+					"snapshot": {
+						"status": "available",
+						"sampledAt": "2026-10-10T20:00:00.000Z",
+						"intervalMs": 250,
+						"logicalCores": 8,
+						"machinePercent": 0,
+						"trackedPercent": 17,
+						"groups": [
+							{
+								"id": "codex",
+								"label": "Codex app",
+								"corePercent": 40,
+								"machinePercent": 5,
+								"processes": 3
+							},
+							{
+								"id": "harness",
+								"label": "Harness",
+								"corePercent": 16,
+								"machinePercent": 2,
+								"processes": 1
+							},
+							{
+								"id": "agents",
+								"label": "Local agents",
+								"corePercent": 80,
+								"machinePercent": 10,
+								"processes": 6
+							}
+						],
+						"agents": []
+					}
+				},
+				"test": {
+					"file": "packages/reports/test/routes/analytics-cpu-api.test.ts",
+					"title": "GET CPU telemetry: localhost-available"
+				},
+				"expected": {
+					"kind": "json",
+					"value": {
+						"statusCode": 200,
+						"contentType": "application/json",
+						"cacheControl": "no-store",
+						"body": {
+							"status": "available",
+							"sampledAt": "2026-10-10T20:00:00.000Z",
+							"intervalMs": 250,
+							"logicalCores": 8,
+							"machinePercent": 0,
+							"trackedPercent": 7,
+							"groups": [
+								{
+									"id": "codex",
+									"label": "Codex app",
+									"corePercent": 40,
+									"machinePercent": 5,
+									"processes": 3
+								},
+								{
+									"id": "harness",
+									"label": "Harness",
+									"corePercent": 16,
+									"machinePercent": 2,
+									"processes": 1
+								},
+								{
+									"id": "agents",
+									"label": "Local agents",
+									"corePercent": 0,
+									"machinePercent": 0,
+									"processes": 0
+								}
+							],
+							"agents": []
+						}
+					}
+				},
+				"props": [
+					"url.hostname",
+					"status",
+					"sampledAt",
+					"intervalMs",
+					"logicalCores",
+					"machinePercent",
+					"trackedPercent",
+					"groups",
+					"agents"
+				]
+			},
+			{
+				"id": "ipv6.available",
+				"state": "ipv6-available",
+				"subject": "GET",
+				"input": {
+					"url": "http://[::1]/api/analytics-cpu",
+					"snapshot": {
+						"status": "available",
+						"sampledAt": "2026-10-10T20:00:00.000Z",
+						"intervalMs": 250,
+						"logicalCores": 8,
+						"machinePercent": 100,
+						"trackedPercent": 17,
+						"groups": [
+							{
+								"id": "codex",
+								"label": "Codex app",
+								"corePercent": 40,
+								"machinePercent": 5,
+								"processes": 3
+							},
+							{
+								"id": "harness",
+								"label": "Harness",
+								"corePercent": 16,
+								"machinePercent": 2,
+								"processes": 1
+							},
+							{
+								"id": "agents",
+								"label": "Local agents",
+								"corePercent": 80,
+								"machinePercent": 10,
+								"processes": 6
+							}
+						],
+						"agents": []
+					}
+				},
+				"test": {
+					"file": "packages/reports/test/routes/analytics-cpu-api.test.ts",
+					"title": "GET CPU telemetry: ipv6-available"
+				},
+				"expected": {
+					"kind": "json",
+					"value": {
+						"statusCode": 200,
+						"contentType": "application/json",
+						"cacheControl": "no-store",
+						"body": {
+							"status": "available",
+							"sampledAt": "2026-10-10T20:00:00.000Z",
+							"intervalMs": 250,
+							"logicalCores": 8,
+							"machinePercent": 100,
+							"trackedPercent": 7,
+							"groups": [
+								{
+									"id": "codex",
+									"label": "Codex app",
+									"corePercent": 40,
+									"machinePercent": 5,
+									"processes": 3
+								},
+								{
+									"id": "harness",
+									"label": "Harness",
+									"corePercent": 16,
+									"machinePercent": 2,
+									"processes": 1
+								},
+								{
+									"id": "agents",
+									"label": "Local agents",
+									"corePercent": 0,
+									"machinePercent": 0,
+									"processes": 0
+								}
+							],
+							"agents": []
+						}
+					}
+				},
+				"props": [
+					"url.hostname",
+					"status",
+					"sampledAt",
+					"intervalMs",
+					"logicalCores",
+					"machinePercent",
+					"trackedPercent",
+					"groups",
+					"agents"
+				]
+			},
+			{
+				"id": "ipv4.unavailable",
+				"state": "ipv4-unavailable",
+				"subject": "GET",
+				"input": {
+					"url": "http://127.0.0.1/api/analytics-cpu",
+					"snapshot": {
+						"status": "unavailable",
+						"sampledAt": "2026-10-10T20:00:00.000Z",
+						"intervalMs": 0,
+						"logicalCores": 0,
+						"machinePercent": null,
+						"trackedPercent": null,
+						"groups": [],
+						"agents": []
+					}
+				},
+				"test": {
+					"file": "packages/reports/test/routes/analytics-cpu-api.test.ts",
+					"title": "GET CPU telemetry: ipv4-unavailable"
+				},
+				"expected": {
+					"kind": "json",
+					"value": {
+						"statusCode": 503,
+						"contentType": "application/json",
+						"cacheControl": "no-store",
+						"body": {
+							"status": "unavailable",
+							"sampledAt": "2026-10-10T20:00:00.000Z",
+							"intervalMs": 0,
+							"logicalCores": 0,
+							"machinePercent": null,
+							"trackedPercent": null,
+							"groups": [],
+							"agents": []
+						}
+					}
+				},
+				"props": [
+					"url.hostname",
+					"status",
+					"sampledAt",
+					"intervalMs",
+					"logicalCores",
+					"machinePercent",
+					"trackedPercent",
+					"groups",
+					"agents"
+				],
+				"errors": ["telemetry-unavailable"]
+			},
+			{
+				"id": "localhost.unavailable",
+				"state": "localhost-unavailable",
+				"subject": "GET",
+				"input": {
+					"url": "http://localhost/api/analytics-cpu",
+					"snapshot": {
+						"status": "unavailable",
+						"sampledAt": "2026-10-10T20:00:00.000Z",
+						"intervalMs": 0,
+						"logicalCores": 0,
+						"machinePercent": null,
+						"trackedPercent": null,
+						"groups": [],
+						"agents": []
+					}
+				},
+				"test": {
+					"file": "packages/reports/test/routes/analytics-cpu-api.test.ts",
+					"title": "GET CPU telemetry: localhost-unavailable"
+				},
+				"expected": {
+					"kind": "json",
+					"value": {
+						"statusCode": 503,
+						"contentType": "application/json",
+						"cacheControl": "no-store",
+						"body": {
+							"status": "unavailable",
+							"sampledAt": "2026-10-10T20:00:00.000Z",
+							"intervalMs": 0,
+							"logicalCores": 0,
+							"machinePercent": null,
+							"trackedPercent": null,
+							"groups": [],
+							"agents": []
+						}
+					}
+				},
+				"props": [
+					"url.hostname",
+					"status",
+					"sampledAt",
+					"intervalMs",
+					"logicalCores",
+					"machinePercent",
+					"trackedPercent",
+					"groups",
+					"agents"
+				],
+				"errors": ["telemetry-unavailable"]
+			},
+			{
+				"id": "ipv6.unavailable",
+				"state": "ipv6-unavailable",
+				"subject": "GET",
+				"input": {
+					"url": "http://[::1]/api/analytics-cpu",
+					"snapshot": {
+						"status": "unavailable",
+						"sampledAt": "2026-10-10T20:00:00.000Z",
+						"intervalMs": 0,
+						"logicalCores": 0,
+						"machinePercent": null,
+						"trackedPercent": null,
+						"groups": [],
+						"agents": []
+					}
+				},
+				"test": {
+					"file": "packages/reports/test/routes/analytics-cpu-api.test.ts",
+					"title": "GET CPU telemetry: ipv6-unavailable"
+				},
+				"expected": {
+					"kind": "json",
+					"value": {
+						"statusCode": 503,
+						"contentType": "application/json",
+						"cacheControl": "no-store",
+						"body": {
+							"status": "unavailable",
+							"sampledAt": "2026-10-10T20:00:00.000Z",
+							"intervalMs": 0,
+							"logicalCores": 0,
+							"machinePercent": null,
+							"trackedPercent": null,
+							"groups": [],
+							"agents": []
+						}
+					}
+				},
+				"props": [
+					"url.hostname",
+					"status",
+					"sampledAt",
+					"intervalMs",
+					"logicalCores",
+					"machinePercent",
+					"trackedPercent",
+					"groups",
+					"agents"
+				],
+				"errors": ["telemetry-unavailable"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -1,4 +1,9 @@
 import { expect, test, vi } from 'vitest';
+import type { ComponentManifest } from '../../../../src/core/development-tooling/unitTypes';
+import { TestExpectationService } from '../../../../src/services/verification-evidence/TestExpectationService';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
+import manifest from '../../../../specification/units/reports.endpoint.api-analytics-cpu.json' with { type: 'json' };
+
 const snapshot = vi.hoisted(() => vi.fn());
 vi.mock('../../../../src/services/cpu-usage-service/CpuUsageService', () => ({
 	CpuUsageService: class {
@@ -6,13 +11,32 @@ vi.mock('../../../../src/services/cpu-usage-service/CpuUsageService', () => ({
 	}
 }));
 import { GET } from '../../src/routes/api/analytics-cpu/+server';
-test('CPU telemetry is local-only and never cached', async () => {
-	const blocked = await GET({ url: new URL('https://reports.example/api/analytics-cpu') });
-	expect(blocked.status).toBe(403);
-	snapshot.mockResolvedValue({ status: 'available', machinePercent: 10 });
-	const response = await GET({ url: new URL('http://127.0.0.1/api/analytics-cpu') });
-	expect(response.headers.get('cache-control')).toBe('no-store');
-	expect(await response.json()).toMatchObject({ machinePercent: 10 });
-	snapshot.mockResolvedValue({ status: 'unavailable', machinePercent: null });
-	expect((await GET({ url: new URL('http://localhost/api/analytics-cpu') })).status).toBe(503);
-});
+
+async function responseFor(input: { url: string; snapshot?: unknown }) {
+	snapshot.mockReset();
+	if (input.snapshot !== undefined) snapshot.mockResolvedValue(input.snapshot);
+	const response = await GET({ url: new URL(input.url) });
+	if (input.snapshot === undefined) expect(snapshot).not.toHaveBeenCalled();
+	return {
+		statusCode: response.status,
+		contentType: response.headers.get('content-type'),
+		cacheControl: response.headers.get('cache-control'),
+		body: await response.json()
+	};
+}
+
+const cases = Object.fromEntries(
+	manifest.testing.cases.map((item) => [
+		item.id,
+		() =>
+			measureWorkload('reports.endpoint.api-analytics-cpu', 'cpu-json-response', () =>
+				responseFor(item.input)
+			)
+	])
+);
+new TestExpectationService().registerCases(
+	test,
+	manifest as ComponentManifest,
+	'packages/reports/test/routes/analytics-cpu-api.test.ts',
+	cases
+);
