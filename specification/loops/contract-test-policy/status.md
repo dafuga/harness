@@ -1801,3 +1801,39 @@ inspected there. Its existing owner remains running and was not changed. Remote
 the login Keychain settings query failed, though a metadata-only item lookup
 succeeded. No credential was read or printed. A renewed sign-in is pending,
 and successful sign-in alone would not qualify the current worker sandbox.
+
+The newer app-bundled Codex client completed a no-tool `gpt-6-luna/max` probe.
+Its app-server reported that model and effort in the thread configuration; the
+completion event did not independently report the model. A synthetic native
+profile allowed the assigned file and scratch, denied sibling and synthetic
+credential reads, outside writes, a symlink escape and loopback networking.
+The model's shell tool could not read a deliberately inherited synthetic file
+descriptor, although a direct sandboxed process could read one. An actual
+`apply_patch` attempt against an unassigned synthetic file was observed in the
+raw event stream and denied. These are focused probes, not a Harness worker.
+The neutral client also exposed collaboration tools with multi-agent disabled;
+a read-only `list_agents` call succeeded. No spawning or messaging tool was
+invoked. Tool inventory, descriptor handling, trusted runtime isolation and
+worker integration still require qualification. Claude host authentication
+again reported signed out. Probe summaries are in task-owned `/tmp/harness-luna-*`
+files and are not durable revision evidence.
+
+A synthetic hard link inside a read-granted runtime directory exposed its
+otherwise denied original file. The existing profile method case had checked
+assigned and scratch aliases but not runtime, sealed CLI or snapshot aliases.
+Test-only commit `b80443b14f` failed red `f80fb7a65d6b` for five accepted
+variants; source fix `35f1defac1` passed the unchanged four-case suite in green
+`dadd38576f14`. A transient `CODEX_TOOL_CALL_ID` initially made Harness reject
+the green environment; both recorded phases were repeated with that variable
+absent and share the same profile. Fixture and workload cleanup followed at
+`f6fafd1de4`. Mutation `3d3a0d8789` failed capture `f4837af93236`, while
+restored identical tree `bcaf089bcd` passed `4f2a107ef453` under the same
+mutation profile. Capture `e211e4a1d928` passed the four cases and retains
+timing and whole-worker RSS. The related sandbox process suite passed ten
+cases; units check passed for 1,887 units with 166 uncertain references, and
+the 16 unchanged registry guards passed. Focused typecheck, lint and formatting
+passed. At `f6fafd1de4`, the profile unit measured 8,309 source bytes, 221
+unit-owned lines, complexity 68 and five dependencies; it emits no separate
+artifact. Its source reasons are in Git notes. The validation is an additional
+prelaunch guard, not proof against concurrent mutation of trusted directories.
+The branch remains isolated and full verification and integration are pending.
