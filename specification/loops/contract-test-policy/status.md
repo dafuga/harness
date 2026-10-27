@@ -1160,3 +1160,36 @@ service or load reviewed pixels for screenshot comparisons. Real page, layout
 and component captures and their inspection remain open. The disposable
 verification fixture migration is also unfinished, with its changes preserved in
 the task worktree. No production or shared-preview publication was performed.
+
+## Continuation: generated visual case discovery
+
+The project and entity screenshot generators used computed Playwright titles,
+which the strict Harness discovery service correctly reported as unresolved.
+Existing generator cases checked screenshot text and viewports but did not ask
+discovery for the individual identities. Test-only `cb05e2b5e5` strengthened
+those cases without adding test titles. Harness red `da2ad0f7a987` failed on
+both generated component and initial-page identities.
+
+Source-only `5602697531` emits literal titles for the same runtime states and
+viewports and shares the original interaction and screenshot assertions.
+Unchanged green `e4fcb1ed4831` passed. Restoring the original generators in
+isolated mutant `263d42bad1` failed `994c109bd592`; restored `906a7b7a50`
+passed `0d079edfe15e` with the same complete tree as the repair.
+
+Focused capture `e634713df208` passed the full 11 project and piece cases, the
+16 unchanged registry and readable-contract guards, targeted lint, registry,
+root typecheck and audit. Generated page, layout, component and partial test
+files also typechecked in an isolated fixture; this was not a browser run.
+At the repair, the entity generator had 6,956 bytes, 76 lines, complexity 13
+and zero dependencies; the project-test generator had 6,222 bytes, 110 lines,
+complexity seven and five dependencies. The observed generation workloads were
+9.56 ms and 0.019 ms, with whole-worker RSS of 275,300,352 and 265,191,424
+bytes respectively. Neither module emits a separate artifact. Reasons are in
+Git notes; the generator loop keeps its browser and full verification pending.
+
+On `harbor-mbp-2`, aggregate `6fe0a18de0` initially stopped because its PATH
+omitted the installed pinned Rust toolchain. A corrected run passed formatting,
+typecheck, lint and kernel checks/build, then the memory guard stopped it during
+root unit tests at 9,446,719,488 bytes combined upper-estimate RSS. Its own
+peak was 3,293,462,528 bytes. Another session's browser suite was active; no
+Harness E2E result from this aggregate is claimed.
