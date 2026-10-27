@@ -1,0 +1,74 @@
+{
+	"name": "generated-visual-discovery",
+	"goal": "Emit stable discoverable visual case identities while retaining every generated state and viewport.",
+	"createdAt": "2026-10-27T02:53:24.240Z",
+	"updatedAt": "2026-10-27T03:00:16.595Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T02:53:29.748Z",
+			"evidence": "Generated initial pages and page, layout, component and partial state matrices use computed Playwright titles; Harness discovery reports them as unresolved dynamic cases."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T02:53:30.307Z",
+			"evidence": "The existing project-template and piece-generator cases check screenshot text and viewports but never require discovery to enumerate stable qualified case identities. Strengthen those cases without adding test titles."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T02:59:53.125Z",
+			"evidence": "Test-only cb05e2b5e5 strengthened existing generator cases; Harness red da2ad0f7a987 failed because visual case titles remained computed."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:00:00.635Z",
+			"evidence": "Source-only 5602697531 emits literal viewport and state titles, sharing the existing assertions and screenshot behavior without changing the runtime matrix."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:00:02.524Z",
+			"evidence": "Unchanged cases passed Harness green e4fcb1ed4831 at 5602697531 with the same command and environment as red."
+		},
+		{
+			"id": "guard",
+			"title": "Reject and restore the original computed registration.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:00:16.041Z",
+			"evidence": "Original source mutant 263d42bad1 failed capture 994c109bd592 on both discovery assertions; restored 906a7b7a50 passed 0d079edfe15e with the same complete tree as 5602697531."
+		},
+		{
+			"id": "source-measurements",
+			"title": "Retain source and focused workload observations.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:00:16.595Z",
+			"evidence": "At 5602697531, app contract template bytes/lines/complexity/dependencies were 6956/76/13/0 and project tests 6222/110/7/5; both are modules without separate artifacts. Focused capture e634713df208 retains generation timing and whole-worker RSS."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

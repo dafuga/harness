@@ -2,6 +2,7 @@ import { expect } from 'vitest';
 import ts from 'typescript';
 import { resolve } from 'node:path';
 import { pieceFiles } from '../../src/templates/pieces';
+import { TestDiscoveryService } from '../../src/services/verification-evidence/TestDiscoveryService';
 
 export function assertAppPieceContracts() {
 	assertComponentContract();
@@ -26,6 +27,11 @@ function assertComponentContract() {
 	expect(componentTest?.contents).toContain('desktop');
 	expect(componentTest?.contents).toContain('matchScreenshot');
 	expect(componentTest?.contents).toContain('state.screenshot[viewport.id]');
+	assertVisualCases(componentTest?.contents, 'StatusBadge.svelte states', [
+		'rest',
+		'label-prop',
+		'error-prop'
+	]);
 	expect(componentPreview?.contents).toContain("import.meta.env.MODE !== 'test'");
 }
 
@@ -39,6 +45,10 @@ function assertPageContract() {
 	expect(viewTest?.contents).toContain('state.screenshot[viewport.id]');
 	expect(viewTest?.contents).toContain('fullPage: true');
 	expect(viewTest?.contents).toContain("id: 'error-state'");
+	assertVisualCases(viewTest?.contents, 'blog-post view route is generated', [
+		'default',
+		'error-state'
+	]);
 	const e2eTest = pieceFiles('e2e', 'BlogPost').find((file) =>
 		file.path.endsWith('blog-post-page.spec.ts')
 	);
@@ -81,6 +91,23 @@ function assertPartialContract() {
 	const partialTest = partial.find((file) => file.path.endsWith('-partial.spec.ts'));
 	expect(partialTest?.contents).toContain('[data-harness-partial="post-card"]');
 	expect(partialTest?.contents).toContain('toHaveText(state.label');
+	assertVisualCases(partialTest?.contents, 'PostCardPartial.svelte states', ['rest', 'label-prop']);
+}
+
+export function assertVisualCases(
+	source: string | undefined,
+	suite: string,
+	states: string[]
+): void {
+	expect(source).toBeDefined();
+	const found = new TestDiscoveryService().scan(source!, 'generated.spec.ts');
+	const expected = ['desktop', 'tablet', 'mobile'].flatMap((viewport) =>
+		states.map((state) => ({ title: `${suite} > ${viewport} viewport > ${state}`, dynamic: false }))
+	);
+	expect(
+		found.map(({ title, dynamic }) => ({ title, dynamic })),
+		'Generated visual case identities must be statically discoverable'
+	).toEqual(expected);
 }
 
 function assertAppBehavior() {
