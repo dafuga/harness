@@ -10,7 +10,8 @@ export function normalizeJson(value: unknown, path: string): void {
 	if (!parent || typeof parent !== 'object' || !Object.hasOwn(parent, key))
 		throw new Error(`Missing normalization field ${path}`);
 	const record = parent as Record<string, unknown>;
-	if (record[key] === null || typeof record[key] === 'object')
+	if (record[key] === null) return;
+	if (typeof record[key] === 'object')
 		throw new Error(`Normalization must name a scalar field: ${path}`);
 	record[key] = { normalizedType: typeof record[key] };
 }
