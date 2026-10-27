@@ -47,7 +47,17 @@ function imageProblem(
 	}
 	const viewport = input.scenario.viewports.find((entry) => entry.id === line.viewport);
 	const size = viewport ? sizeProblem(facts, viewport, evidence?.capture, line.clip) : undefined;
-	return size ? `capture ${line.file} ${size}` : stampProblem(input, item, evidence);
+	if (size) return `capture ${line.file} ${size}`;
+	return screenshotProvenanceProblem(line, evidence) ?? stampProblem(input, item, evidence);
+}
+
+function screenshotProvenanceProblem(
+	line: Gathered['line'],
+	evidence?: Evidence
+): string | undefined {
+	if (evidence?.provenance && line.provenance !== evidence.provenance)
+		return `capture ${line.file} has provenance ${line.provenance ?? 'none'} but evidence ${evidence.id} requires ${evidence.provenance}`;
+	return undefined;
 }
 
 /** A viewport capture has exactly the viewport's pixels; a full-page one is at least as tall. */
