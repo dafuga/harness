@@ -2,7 +2,7 @@
 	"name": "contract-discovery-skipped-cases",
 	"goal": "Reject skipped and unresolved authored-case registrations during test discovery",
 	"createdAt": "2026-10-27T12:51:34.721Z",
-	"updatedAt": "2026-10-27T12:52:08.402Z",
+	"updatedAt": "2026-10-27T12:57:04.036Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:54:22.596Z",
+			"evidence": "Committed case 7ffa041d12 failed: test.skip registration was marked enabled; immutable checkpoint ec10cb1f1fff."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:56:44.574Z",
+			"evidence": "Runner context now carries suite titles, disabled modifiers and unresolved control flow into generated case declarations."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:57:04.036Z",
+			"evidence": "The unchanged discovery case passed at 8ab8e3be39 under the same command and environment as checkpoint ec10cb1f1fff."
 		},
 		{
 			"id": "verify",

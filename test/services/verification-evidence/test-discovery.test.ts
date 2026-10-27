@@ -122,7 +122,29 @@ async function assertRegistrationContexts(
 	subject: TestDiscoveryService,
 	read: (file: string) => Promise<string>
 ) {
-	const rows = [
+	for (const row of registrationRows()) {
+		const file = row.method ? 'test/methods.test.ts' : 'test/examples.test.ts';
+		const manifest = row.method ? './method-unit.json' : './unit.json';
+		const registration = row.suite ? row.code : `service.${row.code};`;
+		const source = `import { test, describe } from 'vitest'; import unit from '${manifest}'; ${registration}`;
+		const found = await subject.discover(
+			{ read: (path) => (path === file ? Promise.resolve(source) : read(path)) },
+			[file]
+		);
+		expect(
+			found.tests.map(({ title, disabled, dynamic }) => ({ title, disabled, dynamic })),
+			row.code
+		).toEqual([
+			{ title: row.title, disabled: Boolean(row.disabled), dynamic: Boolean(row.dynamic) }
+		]);
+		if (row.disabled) expect(found.errors.join(' '), row.code).toContain('skipped, exclusive');
+		else if (row.dynamic) expect(found.errors.join(' '), row.code).toContain('computed case');
+		else expect(found.errors, row.code).toEqual([]);
+	}
+}
+
+function registrationRows() {
+	return [
 		{ code: 'registerExamples(test.skip, unit, {})', title: 'finish: Finish', disabled: true },
 		{ code: "registerExamples(test['only'], unit, {})", title: 'finish: Finish', disabled: true },
 		{
@@ -156,25 +178,6 @@ async function assertRegistrationContexts(
 			suite: true
 		}
 	];
-	for (const row of rows) {
-		const file = row.method ? 'test/methods.test.ts' : 'test/examples.test.ts';
-		const manifest = row.method ? './method-unit.json' : './unit.json';
-		const registration = row.suite ? row.code : `service.${row.code};`;
-		const source = `import { test, describe } from 'vitest'; import unit from '${manifest}'; ${registration}`;
-		const found = await subject.discover(
-			{ read: (path) => (path === file ? Promise.resolve(source) : read(path)) },
-			[file]
-		);
-		expect(
-			found.tests.map(({ title, disabled, dynamic }) => ({ title, disabled, dynamic })),
-			row.code
-		).toEqual([
-			{ title: row.title, disabled: Boolean(row.disabled), dynamic: Boolean(row.dynamic) }
-		]);
-		const error = row.disabled ? 'skipped, exclusive' : row.dynamic ? 'computed case' : undefined;
-		if (error) expect(found.errors.join(' '), row.code).toContain(error);
-		else expect(found.errors, row.code).toEqual([]);
-	}
 }
 
 async function discoveryManifest() {
