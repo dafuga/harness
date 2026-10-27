@@ -30,10 +30,10 @@ test('app projects include SvelteKit and specification files', () =>
 		expect(paths).toContain('svelte.config.js');
 		expect(paths).toContain('playwright.config.ts');
 		expect(paths).toContain('tests/e2e/app.spec.ts');
-		expect(paths).not.toContain('test/smoke.test.ts');
-		expect(files.find((file) => file.path === 'playwright.config.ts')?.contents).toContain(
-			"updateSnapshots: 'none'"
+		expect(paths, 'The initial page must declare its standard screenshot cases').toContain(
+			'specification/units/page.root.json'
 		);
+		expect(paths).not.toContain('test/smoke.test.ts');
 		expect(initialPageTest).toContain("from './support/browserTest'");
 		expect(initialPageTest).toContain("test('app page initial state'");
 		expect(initialPageTest).toContain("await page.goto('/')");

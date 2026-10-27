@@ -54,7 +54,7 @@ function appConfigFiles(name: string): PlannedFile[] {
 		{
 			path: 'playwright.config.ts',
 			contents:
-				"import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n\ttestDir: 'tests/e2e',\n\tupdateSnapshots: 'none',\n\twebServer: {\n\t\tcommand: 'bun run dev -- --host 127.0.0.1 --port 3322',\n\t\turl: 'http://127.0.0.1:3322',\n\t\treuseExistingServer: true\n\t},\n\tuse: {\n\t\tbaseURL: 'http://127.0.0.1:3322',\n\t\tbrowserName: 'chromium',\n\t\tdeviceScaleFactor: 1,\n\t\tlocale: 'en-US',\n\t\ttimezoneId: 'UTC',\n\t\tcolorScheme: 'light',\n\t\treducedMotion: 'reduce'\n\t}\n});\n"
+				"import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n\ttestDir: 'tests/e2e',\n\tsnapshotPathTemplate: '.cache/harness/visual-baselines/{testFilePath}/{arg}{ext}',\n\tupdateSnapshots: 'none',\n\twebServer: {\n\t\tcommand: 'bun run dev -- --host 127.0.0.1 --port 3322',\n\t\turl: 'http://127.0.0.1:3322',\n\t\treuseExistingServer: true\n\t},\n\tuse: {\n\t\tbaseURL: 'http://127.0.0.1:3322',\n\t\tbrowserName: 'chromium',\n\t\tdeviceScaleFactor: 1,\n\t\tlocale: 'en-US',\n\t\ttimezoneId: 'UTC',\n\t\tcolorScheme: 'light',\n\t\treducedMotion: 'reduce'\n\t}\n});\n"
 		},
 		{
 			path: 'tsconfig.json',

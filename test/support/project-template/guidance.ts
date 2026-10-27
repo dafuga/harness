@@ -10,6 +10,8 @@ import { usageExamples } from '../../../packages/reports/src/components/usage-ex
 import { loadUnits } from '../../../src/workflows/development-tooling/load-units/loadUnits';
 import { registryErrors } from '../../../src/cli/program/manageUnits';
 import { TestDiscoveryService } from '../../../src/services/verification-evidence/TestDiscoveryService';
+import { TestContractService } from '../../../src/services/verification-evidence/TestContractService';
+import { ScenarioManifestValidator } from '../../../src/validators/verification-evidence/ScenarioManifestValidator';
 import { memoryTree } from '../memoryTree';
 
 /** One generated library case and its rendered comment use the same registered Example. */
@@ -146,6 +148,7 @@ export async function expectInitialPageViewports(files: ReturnType<typeof projec
 	const direct = await measureWorkload('template.project-tests', 'initial-page-viewport-plan', () =>
 		appTestFiles()
 	);
+	expect(fileContents(files, 'playwright.config.ts')).toContain("updateSnapshots: 'none'");
 	const source = fileContents(files, 'tests/e2e/app.spec.ts');
 	expect(source).toBe(fileContents(direct, 'tests/e2e/app.spec.ts'));
 	for (const row of [
@@ -169,4 +172,29 @@ export async function expectInitialPageViewports(files: ReturnType<typeof projec
 	expect(source).toContain(
 		"matchScreenshot(page, 'initial-' + viewport.id + '.png', { fullPage: true })"
 	);
+	const unit = JSON.parse(fileContents(files, 'specification/units/page.root.json'));
+	const scenario = JSON.parse(fileContents(files, 'specification/scenarios/initial-page.json'));
+	expect(new ScenarioManifestValidator().validate(scenario, 'initial-page.json').errors).toEqual(
+		[]
+	);
+	expect(
+		new TestContractService().validate({
+			units: [unit],
+			scenarios: [scenario],
+			files: new Set(['tests/e2e/app.spec.ts']),
+			tests: found,
+			required: true
+		})
+	).toEqual([]);
+	expect(
+		unit.testing.cases.map((item: { expected: { file: string } }) => item.expected.file)
+	).toEqual(
+		['desktop', 'tablet', 'mobile'].map(
+			(viewport) => `.cache/harness/visual-baselines/app.spec.ts/initial-${viewport}.png`
+		)
+	);
+	expect(fileContents(files, 'playwright.config.ts')).toContain(
+		"snapshotPathTemplate: '.cache/harness/visual-baselines/{testFilePath}/{arg}{ext}'"
+	);
+	expect(JSON.parse(fileContents(files, 'harness.units.json')).testing).toBe(1);
 }
