@@ -1,0 +1,128 @@
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-fs1MBp/packages/reports
+
+ ❯ test/utils/entity-screens.test.ts (13 tests | 1 failed) 15ms
+   ✓ source-identical squash previews retain origin and reject a changed source tree 4ms
+   ✓ device states share a picker while original metadata and missing-device gaps remain intact 0ms
+   ✓ a visual entity offers the states and viewports its scenario declares; a function offers none 0ms
+   ✓ the first state and viewport are shown until a person picks; an unknown pick is not kept 0ms
+   ✓ the branch tip shows exactly one screenshot, the one of the picked state and viewport 1ms
+   ✓ a selected commit pairs the parent and the commit for the same state and viewport 0ms
+   ✓ a side with no capture is a stated gap and is never filled from the other side 0ms
+   ✓ a revision without a record has a gap for its screenshot, in the words its side gives 0ms
+   ✓ a first commit has no before pane to fill: its parent side says why 0ms
+   ✓ an inherited capture is never the screenshot of the tip: it is a gap that names its origin 0ms
+   × galleryItems: distinct class audio cases retain tested provenance 5ms
+     → class audio cases must stay distinct and retain tested provenance: expected [ { …(19) }, { …(19) } ] to deeply equal [ { …(18) }, { …(18) } ]
+   ✓ a declared catalog preview selects its exact state and viewport without a fallback 0ms
+   ✓ validated unchanged screenshots stay visible with their capture origin 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/entity-screens.test.ts > galleryItems: distinct class audio cases retain tested provenance
+AssertionError: class audio cases must stay distinct and retain tested provenance: expected [ { …(19) }, { …(19) } ] to deeply equal [ { …(18) }, { …(18) } ]
+
+- Expected
++ Received
+
+  [
+    {
+      "capturedAt": "2026-10-27T00:00:00Z",
+      "category": "focused",
+-     "comparison": "focused|active|clip|audio|generate.initialized",
++     "comparison": "focused|active|clip|audio",
+      "durationSeconds": 1,
+      "file": "first.wav",
+-     "id": "current-ccccccc-focused-active-clip-audio-generate.initialized",
++     "id": "current-ccccccc-focused-active-clip-audio",
+      "mediaType": "audio",
+      "mimeType": "audio/wav",
+      "missing": false,
+-     "note": "Captured at the tested revision; this focused run grants no full verification verdict.",
++     "note": "Captured from the exact served revision; this focused run grants no full verification verdict.",
+      "order": 0,
+      "phase": "current",
+      "provenance": [
+        {
+          "label": "Focused run",
+          "value": "upload-cases · passed",
+        },
+-       {
+-         "label": "Audio origin",
+-         "value": "Generated fixture",
+-       },
+      ],
+-     "source": "cccccccccccccccccccccccccccccccccccccccc",
++     "source": undefined,
+      "standing": "Focused capture",
+      "status": "not-proven",
+-     "title": "focused · active · generate.initialized",
++     "title": "focused · active",
+      "transcript": "Synthetic tone. No speech.",
++     "viewport": undefined,
+    },
+    {
+      "capturedAt": "2026-10-27T00:00:00Z",
+      "category": "focused",
+-     "comparison": "focused|active|clip|audio|generate.cancelled",
++     "comparison": "focused|active|clip|audio",
+      "durationSeconds": 1,
+      "file": "second.wav",
+-     "id": "current-ccccccc-focused-active-clip-audio-generate.cancelled",
++     "id": "current-ccccccc-focused-active-clip-audio",
+      "mediaType": "audio",
+      "mimeType": "audio/wav",
+      "missing": false,
+-     "note": "Captured at the tested revision; this focused run grants no full verification verdict.",
++     "note": "Captured from the exact served revision; this focused run grants no full verification verdict.",
+      "order": 1,
+      "phase": "current",
+      "provenance": [
+        {
+          "label": "Focused run",
+          "value": "upload-cases · passed",
+-       },
+-       {
+-         "label": "Audio origin",
+-         "value": "Actual capture",
+        },
+      ],
+-     "source": "cccccccccccccccccccccccccccccccccccccccc",
++     "source": undefined,
+      "standing": "Focused capture",
+      "status": "not-proven",
+-     "title": "focused · active · generate.cancelled",
++     "title": "focused · active",
+      "transcript": "Recorded speech.",
++     "viewport": undefined,
+    },
+  ]
+
+ ❯ test/utils/entity-screens.test.ts:181:89
+    179|   () => galleryItems(example.input[0] as unknown as ExplorerEvidence)
+    180|  );
+    181|  expect(projected, 'class audio cases must stay distinct and retain te…
+       |                                                                                         ^
+    182|   example.expected.value
+    183|  );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+   Start at  03:14:45
+   Duration  408ms (transform 174ms, setup 91ms, collect 174ms, tests 15ms, environment 0ms, prepare 24ms)
+
