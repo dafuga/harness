@@ -1825,7 +1825,9 @@ Test-only commit `b80443b14f` failed red `f80fb7a65d6b` for five accepted
 variants; source fix `35f1defac1` passed the unchanged four-case suite in green
 `dadd38576f14`. A transient `CODEX_TOOL_CALL_ID` initially made Harness reject
 the green environment; both recorded phases were repeated with that variable
-absent and share the same profile. Fixture and workload cleanup followed at
+absent and share the same profile. This isolated provider branch predates the
+existing policy-branch fix `1fee21a175` for that transient identity; no duplicate
+repair was made. Fixture and workload cleanup followed at
 `f6fafd1de4`. Mutation `3d3a0d8789` failed capture `f4837af93236`, while
 restored identical tree `bcaf089bcd` passed `4f2a107ef453` under the same
 mutation profile. Capture `e211e4a1d928` passed the four cases and retains
