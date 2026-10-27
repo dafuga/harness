@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-27T05:38:23.797Z","name":"generated-component-contract","goal":"Register each generated component screenshot state and scenario","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-27T05:38:30.914Z","loop":"generated-component-contract","step":"spec","evidence":"Generated component screenshot tests exist but their unit manifest and scenario do not register those cases."}
+{"event":"step.completed","timestamp":"2026-10-27T05:38:34.965Z","loop":"generated-component-contract","step":"coverage","evidence":"The existing generator case checks emitted test titles but never indexes the component or checks its nine case references and screenshot scenario."}
