@@ -12,7 +12,7 @@ export async function exampleDeclarations(
 	file: string
 ): Promise<DiscoveredTest[]> {
 	const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true);
-	const calls = registeredCalls(source, manifestImports(source, file), file);
+	const calls = registeredCalls(source, manifestImports(source, file));
 	const tests: DiscoveredTest[] = [];
 	for (const call of calls) {
 		const unit = componentManifestSchema.parse(JSON.parse(await tree.read(call.path)));
@@ -74,7 +74,7 @@ function manifestImports(source: ts.SourceFile, file: string): Map<string, strin
 	}
 	return manifests;
 }
-function registeredCalls(source: ts.SourceFile, manifests: Map<string, string>, file: string) {
+function registeredCalls(source: ts.SourceFile, manifests: Map<string, string>) {
 	const calls: Array<{
 		path: string;
 		line: number;
@@ -84,7 +84,6 @@ function registeredCalls(source: ts.SourceFile, manifests: Map<string, string>, 
 		dynamic: boolean;
 		disabled: boolean;
 	}> = [];
-	const bindings = registrarBindings(source, file);
 	const visit = (node: ts.Node) => {
 		if (
 			ts.isCallExpression(node) &&
@@ -95,92 +94,19 @@ function registeredCalls(source: ts.SourceFile, manifests: Map<string, string>, 
 			while (input && (ts.isAsExpression(input) || ts.isParenthesizedExpression(input)))
 				input = input.expression;
 			const path = input && ts.isIdentifier(input) ? manifests.get(input.text) : undefined;
-			if (path) {
-				const scope = registrationScope(source, node);
+			if (path)
 				calls.push({
 					path,
 					line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
 					method: node.expression.name.text,
-					...scope,
-					dynamic: [scope.dynamic, !trustedReceiver(node.expression.expression, bindings)].includes(
-						true
-					),
+					...registrationScope(source, node),
 					...registrationFile(node)
 				});
-			}
 		}
 		ts.forEachChild(node, visit);
 	};
 	visit(source);
 	return calls;
-}
-
-function registrarBindings(source: ts.SourceFile, file: string) {
-	const constructors = registrarImports(source, file);
-	const instances = new Set<string>();
-	for (const node of source.statements) {
-		if (!ts.isVariableStatement(node) || !(node.declarationList.flags & ts.NodeFlags.Const))
-			continue;
-		for (const item of node.declarationList.declarations)
-			if (ts.isIdentifier(item.name) && constructedRegistrar(item.initializer, constructors))
-				instances.add(item.name.text);
-	}
-	return { constructors, instances };
-}
-
-function registrarImports(source: ts.SourceFile, file: string): Set<string> {
-	const names = new Set<string>();
-	for (const node of source.statements) {
-		const bindings = registrarImport(node, file);
-		if (!bindings) continue;
-		for (const item of bindings.elements)
-			if (
-				!item.isTypeOnly &&
-				(item.propertyName?.text ?? item.name.text) === 'TestExpectationService'
-			)
-				names.add(item.name.text);
-	}
-	return names;
-}
-
-function registrarImport(node: ts.Node, file: string): ts.NamedImports | undefined {
-	if (!ts.isImportDeclaration(node) || !ts.isStringLiteral(node.moduleSpecifier)) return undefined;
-	if (!trustedImport(node.moduleSpecifier.text, file) || node.importClause?.isTypeOnly)
-		return undefined;
-	const bindings = node.importClause?.namedBindings;
-	return bindings && ts.isNamedImports(bindings) ? bindings : undefined;
-}
-
-function trustedImport(specifier: string, file: string): boolean {
-	if (['@dafuga01/harness', '@dafuga01/harness/verification'].includes(specifier)) return true;
-	if (!specifier.startsWith('.')) return false;
-	const path = posix
-		.normalize(posix.join(posix.dirname(file), specifier))
-		.replace(/\.[cm]?[jt]s$/, '');
-	return [
-		'src/services/verification-evidence/TestExpectationService',
-		'src/lib/verification',
-		'src/lib/index',
-		'src/index'
-	].includes(path);
-}
-
-function trustedReceiver(
-	receiver: ts.Expression,
-	bindings: { constructors: Set<string>; instances: Set<string> }
-): boolean {
-	return ts.isIdentifier(receiver)
-		? bindings.instances.has(receiver.text)
-		: constructedRegistrar(receiver, bindings.constructors);
-}
-
-function constructedRegistrar(node: ts.Expression | undefined, constructors: Set<string>): boolean {
-	return Boolean(
-		node &&
-		ts.isNewExpression(node) &&
-		ts.isIdentifier(node.expression) &&
-		constructors.has(node.expression.text)
-	);
 }
 
 function registrationFile(call: ts.CallExpression): { file?: string } {
