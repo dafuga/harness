@@ -31,23 +31,28 @@
 		"inputs": [
 			{
 				"name": "ProjectSessionService.constructor.options",
-				"type": "{ registry?: ProjectRegistryService; outbox?: CommentOutboxService; cache?: ProjectionCacheService; remote?: RemoteProjectPort; auth?: NativeAuthService; arbiter?: RepositoryArbiterService; }"
+				"type": "{ registry?: ProjectRegistryService; outbox?: CommentOutboxService; cache?: ProjectionCacheService; remote?: RemoteProjectPort; auth?: NativeAuthService; arbiter?: RepositoryArbiterService; }",
+				"description": "Registry, outbox and arbiter default to local services; cache, remote and auth may be absent."
 			},
 			{
 				"name": "ProjectSessionService.assertProject.projectId",
-				"type": "string"
+				"type": "string | undefined",
+				"description": "Optional selected-project identity; a defined value must equal the current project ID."
 			},
 			{
 				"name": "ProjectSessionService.open.directory",
-				"type": "string"
+				"type": "string",
+				"description": "A directory inside the repository to select."
 			},
 			{
 				"name": "ProjectSessionService.snapshot.query",
-				"type": "RevisionQuery"
+				"type": "RevisionQuery",
+				"description": "Requested branch and commit with optional project identity."
 			},
 			{
 				"name": "ProjectSessionService.atBranch.branch",
-				"type": "string"
+				"type": "string",
+				"description": "Expected checked-out branch name."
 			}
 		],
 		"outputs": [
@@ -58,15 +63,18 @@
 			},
 			{
 				"name": "ProjectSessionService.selecting",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True while an open operation is in progress."
 			},
 			{
 				"name": "ProjectSessionService.open",
-				"type": "Promise<ProjectSnapshot>"
+				"type": "Promise<ProjectSnapshot>",
+				"description": "Refuses to switch while busy, pending or already opening; otherwise resolves the repository root, selects its project services and returns a snapshot."
 			},
 			{
 				"name": "ProjectSessionService.snapshot",
-				"type": "Promise<ProjectSnapshot>"
+				"type": "Promise<ProjectSnapshot>",
+				"description": "Reads the requested revision and updates the session view; concurrent snapshot reads can update the view while another operation is pending."
 			},
 			{
 				"name": "ProjectSessionService.requireProject",
@@ -75,23 +83,45 @@
 			},
 			{
 				"name": "ProjectSessionService.mutable",
-				"type": "{root,source,planning,catalog,revision}",
-				"description": "Returns selected writable project services and revision, without a project ID field."
+				"type": "Promise<{root,source,planning,catalog,revision}>",
+				"description": "Returns a promise for selected project services and a revision only when the current view is the checked-out branch tip and is not the evidence branch."
 			},
 			{
 				"name": "ProjectSessionService.atBranch",
-				"type": "unknown"
+				"type": "Promise<{root,source,planning,catalog}>",
+				"description": "Returns selected project services if the checked-out branch matches the supplied name; otherwise rejects."
 			},
 			{
 				"name": "ProjectSessionService.projectId",
 				"type": "string | null",
 				"description": "Public selected project identity, assigned from registry.register(root).id during open."
+			},
+			{
+				"name": "ProjectSessionService.pending",
+				"type": "number",
+				"description": "Count of pending bridge operations. Opening another project is refused while this count is nonzero; callers own its lifetime."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Project unavailable or mismatched",
+				"type": "Error",
+				"description": "A missing selected project or defined foreign project ID is rejected."
+			},
+			{
+				"name": "Project switch blocked",
+				"type": "Error",
+				"description": "Opening is refused while a run, bridge operation or another open is in progress."
+			},
+			{
+				"name": "Read-only revision or changed branch",
+				"type": "Error",
+				"description": "mutable rejects historical, non-current, non-tip and evidence-branch views; atBranch rejects a changed checked-out branch."
+			},
+			{
+				"name": "Underlying project failure",
+				"type": "Error",
+				"description": "Filesystem, Git, registry, planning and catalog failures propagate."
 			}
 		]
 	},
