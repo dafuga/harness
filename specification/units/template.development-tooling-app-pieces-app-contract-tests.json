@@ -37,6 +37,10 @@
 				"type": "string"
 			},
 			{
+				"name": "componentContractFiles.location",
+				"type": "{ root: string; build: string }"
+			},
+			{
 				"name": "componentContractTest.componentName",
 				"type": "string"
 			},
@@ -83,6 +87,10 @@
 			{
 				"name": "pageContractFiles.workspace",
 				"type": "string"
+			},
+			{
+				"name": "pageContractFiles.location",
+				"type": "{ root: string; build: string }"
 			}
 		],
 		"outputs": [

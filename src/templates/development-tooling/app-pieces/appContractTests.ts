@@ -18,14 +18,17 @@ export const appVisualViewports = [
 export function componentContractFiles(
 	name: string,
 	source: string,
-	workspace: string
+	workspace: string,
+	location: { root: string; build: string } = { root: '.', build: 'app' }
 ): PlannedFile[] {
 	const identity = unitIdentity(source, workspace);
 	if (identity?.kind !== 'component') throw new Error(`Invalid component source: ${source}`);
 	const symbol = toPascalCase(name);
 	const file = toKebabCase(name);
 	const scenario = identity.id.replace('.', '-');
-	const cases = componentCases(symbol, file);
+	const prefix = `${location.root}/`.replace(/^\.\//, '');
+	const entry = `${prefix}${source}`;
+	const cases = componentCases(symbol, file, prefix);
 	const unit: ComponentManifest = {
 		schemaVersion: 1,
 		id: identity.id,
@@ -34,10 +37,10 @@ export function componentContractFiles(
 		responsibility: `Owns the ${symbol} Svelte component.`,
 		responsibilityOrigin: 'derived',
 		status: 'active',
-		owns: { source: [source], symbols: [symbol] },
+		owns: { source: [entry], symbols: [symbol] },
 		contract: { origin: 'derived', inputs: [], outputs: [], errors: [] },
 		dependencies: [],
-		runtime: { kind: 'module', entry: source, targets: [{ kind: 'module', entry: source }] },
+		runtime: { kind: 'module', entry, targets: [{ kind: 'module', entry }] },
 		scenarios: [scenario],
 		testing: {
 			version: 1,
@@ -52,14 +55,15 @@ export function componentContractFiles(
 		{ path: `specification/units/${identity.id}.json`, contents: stableJson(unit) },
 		{
 			path: `specification/scenarios/${scenario}.json`,
-			contents: stableJson(componentScenario(unit, file))
+			contents: stableJson(componentScenario(unit, file, location))
 		}
 	];
 }
 
 function componentCases(
 	symbol: string,
-	file: string
+	file: string,
+	prefix: string
 ): NonNullable<ComponentManifest['testing']>['cases'] {
 	const input: Record<string, string>[] = [
 		{},
@@ -75,18 +79,22 @@ function componentCases(
 			props: props[index],
 			viewports: [viewport],
 			test: {
-				file: `tests/e2e/${file}-component.spec.ts`,
+				file: `${prefix}tests/e2e/${file}-component.spec.ts`,
 				title: `${symbol}.svelte states > ${viewport} viewport > ${state}`
 			},
 			expected: {
 				kind: 'screenshot' as const,
-				file: `.cache/harness/visual-baselines/${file}-component.spec.ts/${file}-${state}-${viewport}.png`
+				file: `${prefix}.cache/harness/visual-baselines/${file}-component.spec.ts/${file}-${state}-${viewport}.png`
 			}
 		}))
 	);
 }
 
-function componentScenario(unit: ComponentManifest, file: string): ScenarioManifest {
+function componentScenario(
+	unit: ComponentManifest,
+	file: string,
+	location: { root: string; build: string }
+): ScenarioManifest {
 	return {
 		schemaVersion: 1,
 		id: unit.scenarios[0],
@@ -101,6 +109,7 @@ function componentScenario(unit: ComponentManifest, file: string): ScenarioManif
 				kind: 'e2e',
 				runner: 'playwright',
 				target: `tests/e2e/${file}-component.spec.ts`,
+				...(location.root === '.' ? {} : { cwd: location.root }),
 				cases: unit.testing!.cases.map(({ id }) => ({ unit: unit.id, case: id }))
 			}
 		],
@@ -111,7 +120,7 @@ function componentScenario(unit: ComponentManifest, file: string): ScenarioManif
 				states: [...componentStates],
 				viewports: appVisualViewports.map(({ id }) => id),
 				provenance: 'actual-capture',
-				build: 'app',
+				build: location.build,
 				capture: 'element',
 				required: true
 			}
