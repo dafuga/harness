@@ -1,0 +1,102 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-SgilxT
+
+ ❯ test/history-reason-steps.e2e.test.ts (4 tests | 4 skipped) 120005ms
+   ↓ the reasons of every explained step are kept, and a fresh clone with the notes explains the range
+   ↓ reason history loaders retain compact facts across a 32-revision walk
+   ↓ a step keeps the writing limits of its own revision when a later one declares limits
+   ↓ a step without a reason keeps the range open: nothing is kept for it and the failure is said
+ ❯ test/services/unit-index.test.ts (19 tests | 2 failed) 10205ms
+   ✓ atomic levels follow runtime calls and survive projections 15ms
+   ✓ HTTP requests bind to endpoints in the owning app and selected source tree 18ms
+   ✓ source indexing bounds pending reads and keeps every file in source order 28ms
+   ✓ source indexing reports failed reads even after its read window fills 15ms
+   × source indexing releases parsed blobs from prior revisions 4ms
+     → expected 2 to be 1 // Object.is equality
+   ✓ identical blobs keep path-specific references and ignored files stay unread 1ms
+   ✓ source indexing preserves admitted entry getters, species, and method receivers 0ms
+   ✓ recorded source moves retain definitions, owner-local placement and registered identity 244ms
+   ✓ public route filenames retain their registered ownership 1ms
+   ✓ declared preview and documentation survive source re-indexing 3ms
+   ✓ declared execution targets survive re-indexing and follow a moved default entry 1ms
+   ✓ recreating retired source elsewhere records lineage to the retired identity 1ms
+   ✓ a unit that takes a retired name records lineage even when its symbols differ 0ms
+   ✓ lineage cannot be dropped by editing the manifest 1ms
+   ✓ unrelated new units carry no lineage 0ms
+   ✓ a declared responsibility survives re-indexing while a derived one follows the unit 1ms
+   ✓ an alternative implementation is a related unit linked by a declared contract dependency 1ms
+   ✓ several owned files produce identical metadata after one indexing pass 2ms
+   × recorded service moves preserve implementations and registered owner-local placement 9860ms
+     → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/history-reason-steps.e2e.test.ts [ test/history-reason-steps.e2e.test.ts ]
+Error: Hook timed out in 120000ms.
+If this is a long-running hook, pass a timeout value as the last argument or configure it globally with "hookTimeout".
+ ❯ test/history-reason-steps.e2e.test.ts:11:1
+      9| import { observedTaskOperation } from './support/taskProfiles';
+     10| let baseline: VerifyRepo;
+     11| beforeAll(async () => {
+       | ^
+     12|  baseline = await baselineRepo();
+     13| }, 120_000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/history-reason-steps.e2e.test.ts [ test/history-reason-steps.e2e.test.ts ]
+TypeError: Cannot read properties of undefined (reading 'dispose')
+ ❯ test/history-reason-steps.e2e.test.ts:14:25
+     12|  baseline = await baselineRepo();
+     13| }, 120_000);
+     14| afterAll(() => baseline.dispose());
+       |                         ^
+     15| 
+     16| const file = 'src/utils/extra.ts';
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/unit-index.test.ts > source indexing releases parsed blobs from prior revisions
+AssertionError: expected 2 to be 1 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1[39m
+[31m+ 2[39m
+
+ ❯ test/services/unit-index/sourceIndex.ts:70:23
+     68|     defaultUnitsConfig
+     69|    );
+     70|    expect(cache.size).toBe(1);
+       |                       ^
+     71|   }
+     72|  });
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+ ❯ test/services/unit-index/sourceIndex.ts:59:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/services/unit-index.test.ts > recorded service moves preserve implementations and registered owner-local placement
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/services/unit-index.test.ts:199:1
+    197| });
+    198| 
+    199| test('recorded service moves preserve implementations and registered o…
+       | ^
+    200|  expect(
+    201|   new Set(services.files.map((file) => file.to)).size,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 17 passed | 4 skipped (23)
+   Start at  01:07:24
+   Duration  135.61s (transform 470ms, setup 210ms, collect 1.40s, tests 130.21s, environment 0ms, prepare 76ms)
+
