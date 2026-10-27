@@ -2,7 +2,7 @@
 	"name": "cli-dispatch-failure-exit",
 	"goal": "Return a nonzero CLI status when an approved worker batch reports failure.",
 	"createdAt": "2026-10-27T00:38:10.411Z",
-	"updatedAt": "2026-10-27T00:38:58.685Z",
+	"updatedAt": "2026-10-27T00:39:52.474Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:39:50.801Z",
+			"evidence": "Commit 6203a9181b sets a nonzero exit status after printing a failed approved worker result."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:39:52.474Z",
+			"evidence": "Record 99dcf097f899 passes the unchanged command case at 6203a9181b in the same environment."
 		},
 		{
 			"id": "verify",
