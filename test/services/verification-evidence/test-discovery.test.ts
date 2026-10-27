@@ -45,12 +45,15 @@ function assertParameterizedCases(subject: TestDiscoveryService): void {
 		check.each(['data.fails'])('data-fails', () => {});
 		check.skip.each(['data.only'])('explicit-skip', () => {});
 		check['only']('bracket-only', () => {});
-		check[modifier]('unknown-modifier', () => {});`,
+		check[modifier]('unknown-modifier', () => {});
+		check.skipIf(condition)('conditional-skip', () => {}); check.runIf(condition)('conditional-run', () => {});
+		if (condition) check('conditional-branch', () => {}); function dormant() { check('dormant', () => {}); }
+		check.describe('nested', () => { if (condition) check('conditional', () => {}); check('active', () => {}); });`,
 		'test/parameters.test.ts'
 	);
 	expect(
 		found.map(({ title, dynamic, disabled }) => [title, dynamic, disabled]),
-		'parameter data is not a runner modifier'
+		'runner context controls whether cases are statically known'
 	).toEqual([
 		['data-only', true, false],
 		['data-describe', true, false],
@@ -58,10 +61,15 @@ function assertParameterizedCases(subject: TestDiscoveryService): void {
 		['data-fails', true, false],
 		['explicit-skip', true, true],
 		['bracket-only', false, true],
-		['unknown-modifier', true, false]
+		['unknown-modifier', true, false],
+		['conditional-skip', true, false],
+		['conditional-run', true, false],
+		['conditional-branch', true, false],
+		['dormant', true, false],
+		['nested > conditional', true, false],
+		['nested > active', false, false]
 	]);
 }
-
 test('discover initialized and unreadable sources retain explicit discovery gaps', async () => {
 	const manifest = await discoveryManifest();
 	const tree = {
