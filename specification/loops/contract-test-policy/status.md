@@ -1883,3 +1883,9 @@ one dependency; its normal examples retain timing and whole-worker RSS, with
 no separate module artifact. The manifest reason is in Git notes. This function
 is excluded from the public Functions catalog, so the shared preview's Examples
 tab remains unproven. Integration and deferred full verification remain open.
+
+The existing uncommitted verification fixture edits were left byte-for-byte
+unchanged. With those edits present, the focused non-browser
+`test/history-source.test.ts` case passed on the primary Mac against a disposable
+three-revision history. This is working-tree fixture evidence only; it does not
+replace committed verification, reviewed screenshots or the full history build.
