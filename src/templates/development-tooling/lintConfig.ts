@@ -39,7 +39,7 @@ ${eslintIgnoreConfig()},
 			'@typescript-eslint/no-floating-promises': 'error',
 			'@typescript-eslint/no-misused-promises': 'error',
 			'@typescript-eslint/no-redeclare': 'error',
-			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', ignoreRestSiblings: true }],
+${unusedRule()},
 			complexity: ['error', harnessRuleLimits.maxComplexity],
 			'harness/max-class-lines': 'error',
 			'harness/max-method-lines': 'error',
@@ -60,6 +60,13 @@ ${eslintIgnoreConfig()},
 	}
 ];
 `;
+}
+
+function unusedRule(): string {
+	return `			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{ argsIgnorePattern: '^_', ignoreRestSiblings: true }
+			]`;
 }
 
 function eslintIgnoreConfig(): string {
