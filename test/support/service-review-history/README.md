@@ -51,6 +51,10 @@ const reads = [
 		'e7fbf522ad7c865b69ffa5b9ec316864cbc3c7aa',
 		'src/services/verification-evidence/test-contract-service/executionCaseErrors.ts'
 	],
+	[
+		'31dda56c8f7e24a8821e87c537affec97605db49',
+		'src/services/verification-evidence/test-contract-service/executionCaseErrors.ts'
+	],
 	...d.files.flatMap((f) =>
 		[...(f.review ? [f.review] : []), ...(f.previousReviews ?? [])].map((r) => [r.commit, r.path])
 	)
@@ -94,3 +98,4 @@ The `44a2d10d23` review also retains the owned `problem` helper that validates d
 The focused implementation at `5e5187769d` retains the same guard within the lint complexity limit.
 Visual case binding retains `66419b84a0` for the case gate and test-contract validation.
 The formatted binding implementation is retained at `e7fbf522ad`.
+The case scoping repair is retained at `31dda56c8f`.

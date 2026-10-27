@@ -2,7 +2,7 @@
 	"name": "visual-case-sibling",
 	"goal": "Match visual evidence to cases selected by each scenario check",
 	"createdAt": "2026-10-27T04:57:58.970Z",
-	"updatedAt": "2026-10-27T05:01:00.165Z",
+	"updatedAt": "2026-10-27T05:05:26.842Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T05:01:48.261Z",
+			"evidence": "Limit visual requirements to the current scenario check references while retaining failures for unbound captures."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T05:05:26.842Z",
+			"evidence": "Record 9a700f1b111b at 31dda56c8f passed the unchanged case against red b479fcddfddb in the same laptop environment."
 		},
 		{
 			"id": "verify",
