@@ -2789,15 +2789,21 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "002c5b0b24a4d6660f5c151d8e9d297e68345aadc596bd11ad452e44494adeb1",
+			"definition": "86201da909998203cdcb7c6675db41ee624527c36ee5c4697f92c02df7395d2c",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "e2851bc0f1946cff58cc105f1eb9966d575fa6bf",
+				"commit": "dd8e4d21b6829d39d650aa38a6a08e37a8005cde",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "002c5b0b24a4d6660f5c151d8e9d297e68345aadc596bd11ad452e44494adeb1",
-				"reason": "Seal measured and removed unit versions with their retained source hashes."
+				"definition": "86201da909998203cdcb7c6675db41ee624527c36ee5c4697f92c02df7395d2c",
+				"reason": "Retain standardized case validation and source-hash identity together in the integrated verification record."
 			},
 			"previousReviews": [
+				{
+					"commit": "e2851bc0f1946cff58cc105f1eb9966d575fa6bf",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "002c5b0b24a4d6660f5c151d8e9d297e68345aadc596bd11ad452e44494adeb1",
+					"reason": "Seal measured and removed unit versions with their retained source hashes."
+				},
 				{
 					"commit": "96a034905fd30aa4f0d95385266f39e831f8d152",
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
