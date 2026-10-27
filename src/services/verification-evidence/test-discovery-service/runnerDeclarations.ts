@@ -30,10 +30,11 @@ export function runnerDeclarations(text: string, file: string): DiscoveredTest[]
 				file,
 				title: [...scope.titles, call.title].join(' > '),
 				line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
-				dynamic:
-					scope.dynamic ||
-					call.dynamic ||
-					enclosingContext(source, node as ts.CallExpression, aliases).dynamic,
+				dynamic: [
+					scope.dynamic,
+					call.dynamic,
+					enclosingContext(source, node as ts.CallExpression, aliases).dynamic
+				].includes(true),
 				disabled: scope.disabled || call.disabled
 			});
 		const next =
