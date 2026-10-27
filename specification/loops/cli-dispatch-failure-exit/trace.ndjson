@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-27T00:38:10.411Z","name":"cli-dispatch-failure-exit","goal":"Return a nonzero CLI status when an approved worker batch reports failure.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-27T00:38:10.965Z","loop":"cli-dispatch-failure-exit","step":"spec","evidence":"A worker can return failed without throwing, and the CLI currently prints that result with a zero process status."}
+{"event":"step.completed","timestamp":"2026-10-27T00:38:11.515Z","loop":"cli-dispatch-failure-exit","step":"coverage","evidence":"The existing command registration case checks successful and idle dispatch but does not assert the CLI exit status of a failed worker result."}

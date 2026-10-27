@@ -63,7 +63,7 @@
 			{
 				"name": "start",
 				"type": "{created:string[],reused:string[],commit:string|undefined} | {submission:object,results:unknown[]}",
-				"description": "Without --worker, idempotently submit an approved plan. With --worker, await and report the approval-scoped server batch, including actual worker outcomes."
+				"description": "Without --worker, idempotently submit an approved plan. With --worker, await and report the approval-scoped server batch, including actual worker outcomes. A returned failed worker outcome sets the CLI process exit code to 1 after the actual outcome is printed."
 			}
 		],
 		"errors": [

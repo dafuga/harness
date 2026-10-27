@@ -38,7 +38,7 @@
 			{
 				"name": "startFeaturePlan",
 				"type": "Promise<void>",
-				"description": "Without a worker, await and print idempotent approved submission. With a worker, await and print the actual bounded approved batch; remove only this command's signal listeners when settled."
+				"description": "Without a worker, await and print idempotent approved submission. With a worker, await and print the actual bounded approved batch; remove only this command's signal listeners when settled. A returned failed worker outcome sets the CLI process exit code to 1 after the actual outcome is printed."
 			}
 		],
 		"errors": [
