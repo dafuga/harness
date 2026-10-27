@@ -32,6 +32,20 @@ export async function prepareBrowserBaselineReport(project: string): Promise<voi
 	await writeFile(path, await format(next, { ...(await resolveConfig(path)), filepath: path }));
 }
 
+/** The generated reporter and the baseline report share one Playwright configuration. */
+export async function assertComposableBrowserReport(
+	project: string,
+	config: string
+): Promise<void> {
+	const path = join(project, 'playwright.config.ts');
+	await writeFile(path, config);
+	await prepareBrowserBaselineReport(project);
+	const prepared = await readFile(path, 'utf8');
+	expect(prepared.match(/\breporter\s*:/g)).toHaveLength(1);
+	expect(prepared).toContain('./test/support/harnessCaseReporter.js');
+	expect(prepared).toContain('.cache/harness/browser-results.json');
+}
+
 /** An admitted baseline refusal cannot hide a timeout, console error, failed API or skipped case. */
 export async function expectMissingScreenshotResults(
 	project: string,

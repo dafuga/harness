@@ -10,7 +10,7 @@ import { builtinModules } from '../../../src/templates/module-system/builtinModu
 import { expect } from '../../verificationExpect';
 import { measureWorkload } from '../measureWorkload';
 import { runCommand } from '../cli';
-import { prepareBrowserBaselineReport } from '../browserBaselineResults';
+import { assertComposableBrowserReport } from '../browserBaselineResults';
 
 /** Generated Playwright cases retain their declared title, retries and actual outcome. */
 export async function assertGeneratedBrowserOutcome(project: PlannedFile[]): Promise<void> {
@@ -31,7 +31,7 @@ export async function assertGeneratedBrowserOutcome(project: PlannedFile[]): Pro
 		const file = join(snapshot, 'tests/e2e/app.spec.ts');
 		await mkdir(dirname(file), { recursive: true });
 		await writeFile(file, '');
-		await expectComposableBrowserReport(snapshot, config);
+		await assertComposableBrowserReport(snapshot, config);
 		await symlink(snapshot, join(root, 'snapshot-alias'), 'dir');
 		const reporterFile = join(root, 'reporter.mjs');
 		await writeFile(reporterFile, source!);
@@ -59,16 +59,6 @@ export async function assertGeneratedBrowserOutcome(project: PlannedFile[]): Pro
 		}
 		await rm(root, { recursive: true, force: true });
 	}
-}
-
-async function expectComposableBrowserReport(snapshot: string, config: string): Promise<void> {
-	const path = join(snapshot, 'playwright.config.ts');
-	await writeFile(path, config);
-	await prepareBrowserBaselineReport(snapshot);
-	const prepared = await readFile(path, 'utf8');
-	expect(prepared.match(/\breporter\s*:/g)).toHaveLength(1);
-	expect(prepared).toContain('./test/support/harnessCaseReporter.js');
-	expect(prepared).toContain('.cache/harness/browser-results.json');
 }
 
 async function expectBrowserOutcomes(directory: string): Promise<void> {
