@@ -1,0 +1,32 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-B0WtLZ
+
+ ❯ test/generate-workflow.test.ts (5 tests | 1 failed | 4 skipped) 2787ms
+   ↓ lib generation auto-exports package-safe scaffolds
+   ↓ app-only scaffolds fail in lib projects
+   × app generation allows app-only scaffolds without package exports 2780ms
+     → component.post-card has a generated component contract: expected undefined to be defined
+   ↓ generation keeps category folders, imports and package exports in agreement
+   ↓ the same category works for every source scaffold and can be extended
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/generate-workflow.test.ts > app generation allows app-only scaffolds without package exports
+AssertionError: component.post-card has a generated component contract: expected undefined to be defined
+ ❯ assertGeneratedComponentRegistry test/support/generatedComponentRegistry.ts:27:73
+     25|   ] as const) {
+     26|    const unit = await project.json<ComponentManifest>(`specification/u…
+     27|    expect(unit.testing, `${unitId} has a generated component contract`…
+       |                                                                         ^
+     28|    const scenarioId = unitId.replace('.', '-');
+     29|    const scenario = await project.json<ScenarioManifest>(
+ ❯ test/generate-workflow.test.ts:65:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  06:05:55
+   Duration  6.93s (transform 272ms, setup 136ms, collect 644ms, tests 2.79s, environment 0ms, prepare 34ms)
+
