@@ -109,7 +109,7 @@ export class FeaturePlanValidator {
 		}
 		const ready = [...remaining.keys()].filter((id) => remaining.get(id) === 0);
 		for (let index = 0; index < ready.length; index++) {
-			for (const dependent of dependents.get(ready[index]!) ?? []) {
+			for (const dependent of dependents.get(ready[index]) ?? []) {
 				const count = remaining.get(dependent)! - 1;
 				remaining.set(dependent, count);
 				if (count === 0) ready.push(dependent);

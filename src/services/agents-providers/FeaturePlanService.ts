@@ -41,7 +41,7 @@ export class FeaturePlanService {
 		const latest = await this.expected(input.feature, input.expectedDigest);
 		const { revision, digest: _digest, approval: _approval, ...candidate } = latest;
 		const page = candidate.pages.find((entry) => entry.module === input.page);
-		if (!page || !page.options.some((option) => option.id === input.option))
+		if (!page?.options.some((option) => option.id === input.option))
 			throw new Error('Unknown page or design option.');
 		page.selected = input.option;
 		return this.append(candidate, revision + 1);
@@ -73,7 +73,7 @@ export class FeaturePlanService {
 		const dependencies = this.required();
 		if (!dependencies.verifyReady) throw new Error('Trusted readiness verification is required.');
 		const latest = await this.expected(feature, expectedDigest);
-		if (!latest.approval || latest.approval.digest !== expectedDigest)
+		if (latest.approval?.digest !== expectedDigest)
 			throw new Error('Feature plan requires approval of the exact expected digest.');
 		this.validate(latest, true);
 		const verifiedContent = canonical(latest);
@@ -108,7 +108,8 @@ export class FeaturePlanService {
 
 	private async expected(feature: string, expectedDigest: string): Promise<FeaturePlan> {
 		const latest = await this.latest(feature);
-		if (!latest || latest.digest !== expectedDigest) throw new Error('Stale feature plan digest.');
+		if (!latest) throw new Error('Stale feature plan digest.');
+		if (latest.digest !== expectedDigest) throw new Error('Stale feature plan digest.');
 		return latest;
 	}
 

@@ -32,7 +32,7 @@ export class FeaturePlanCoverageValidator {
 		const affected = new Set<string>();
 		if (!impactShape(input))
 			return impactResult(affected, ['Feature plan sourceCommit and changes are required.']);
-		if (!data || !data.registry || !Array.isArray(data.registry.units) || !data.relationships)
+		if (!data?.registry || !Array.isArray(data.registry.units) || !data.relationships)
 			return impactResult(affected, ['Committed registry and relationship metadata are required.']);
 		const plan = input as FeaturePlanImpactInput;
 		validateMetadata(
@@ -133,7 +133,7 @@ function validateMetadata(
 
 function activeUnit(id: string, units: Map<string, Unit>, errors: string[]): Unit | undefined {
 	const unit = units.get(id);
-	if (!unit || unit.status !== 'active') {
+	if (unit?.status !== 'active') {
 		errors.push(`Missing or inactive committed unit: ${id}`);
 		return undefined;
 	}

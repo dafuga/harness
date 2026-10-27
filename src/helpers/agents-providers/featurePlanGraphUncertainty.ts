@@ -22,7 +22,7 @@ function classified(node: ModuleData['sourceGraph']['nodes'][number], data: Modu
 	if (
 		node.unit &&
 		(units.filter((unit) => unit.id === node.unit).length !== 1 ||
-			(owners.length === 1 && owners[0]!.id !== node.unit))
+			(owners.length === 1 && owners[0].id !== node.unit))
 	)
 		return false;
 	if (node.kind === 'test' || (node.kind as string) === 'ignored') return true;

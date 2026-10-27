@@ -17,7 +17,7 @@ export class ModuleTaskCodexProfileAdapter {
 			throw new Error('Native Codex task profiles require verified macOS isolation.');
 		const args = admittedArguments(input.argv);
 		await rejectProjectPolicy(input.cwd);
-		const executable = await trustedExecutable(input.argv[0]!, this.config.resolveExecutable);
+		const executable = await trustedExecutable(input.argv[0], this.config.resolveExecutable);
 		const runtime = dirname(executable).endsWith(`${sep}bin`)
 			? dirname(dirname(executable))
 			: dirname(executable);
@@ -68,7 +68,7 @@ function admittedArguments(argv: string[]): string[] {
 		throw new Error('Expected explicit Codex exec arguments.');
 	const result: string[] = [];
 	for (let index = 2; index < argv.length; index++) {
-		const argument = argv[index]!;
+		const argument = argv[index];
 		if (['--json', '--ephemeral', '--skip-git-repo-check'].includes(argument)) {
 			result.push(argument);
 			continue;

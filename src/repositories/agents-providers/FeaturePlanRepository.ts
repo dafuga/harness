@@ -68,7 +68,7 @@ export class FeaturePlanRepository<T extends RepositoryRecord = RepositoryRecord
 				.reduce<
 					FeaturePlan | undefined
 				>((found, plan) => (!found || plan.revision > found.revision ? plan : found), undefined);
-			if (!latest || latest.revision !== revision || latest.digest !== approval.digest)
+			if (latest?.revision !== revision || latest.digest !== approval.digest)
 				throw new Error('Stale plan revision or digest');
 			if (latest.approval) {
 				if (!isDeepStrictEqual(latest.approval, approval))

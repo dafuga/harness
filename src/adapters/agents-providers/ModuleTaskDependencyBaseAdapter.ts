@@ -88,7 +88,7 @@ async function compose(root: string, source: string, checkpoints: string[]) {
 	if (checkpoints.length < 2) return checkpoints[0] ?? source;
 	const directory = await mkdtemp(join(tmpdir(), 'harness-task-base-'));
 	try {
-		let result = checkpoints[0]!;
+		let result = checkpoints[0];
 		for (const checkpoint of checkpoints.slice(1)) {
 			await rm(join(directory, 'index'), { force: true });
 			result = await mergePair(root, result, checkpoint, join(directory, 'index'));

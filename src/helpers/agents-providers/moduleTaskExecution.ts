@@ -1,6 +1,5 @@
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
-import { ModuleTaskRunnerAdapter } from '../../adapters/agents-providers/ModuleTaskRunnerAdapter';
-import { ModuleTaskContractContextService } from '../../services/agents-providers/ModuleTaskContractContextService';
+import type { ModuleTaskContractContextService } from '../../services/agents-providers/ModuleTaskContractContextService';
 import { dispatchTaskAttempt } from '../../services/agents-providers/module-task-worker-service/dispatchTaskAttempt';
 import {
 	taskWorkspace,
@@ -15,7 +14,7 @@ import type {
 	TaskRunInput,
 	TaskRunScope
 } from '../../repositories/agents-providers/ModuleTaskRepository.types';
-import { ModuleTaskService } from '../../services/agents-providers/ModuleTaskService';
+import type { ModuleTaskService } from '../../services/agents-providers/ModuleTaskService';
 import { pendingTaskResult } from '../../services/agents-providers/module-task-worker-service/taskClaim';
 import type { ClaimedTaskExecution, ExecutionResult } from './moduleTaskExecution.types';
 export type { ClaimedTaskExecution } from './moduleTaskExecution.types';

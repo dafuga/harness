@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-27T00:04:34.381Z","name":"integration-lint-cleanup","goal":"Clear integrated branch lint failures without weakening lint checks or changing task behavior","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-10-27T00:04:37.320Z","loop":"integration-lint-cleanup","step":"spec","evidence":"Remove existing lint findings while preserving behavior, security isolation, authored contracts and existing test assertions; verify affected suites and full lint."}
