@@ -1,9 +1,12 @@
 import { expect, test } from 'vitest';
 import { scenarioManifestSchema } from '../../src/core/unitTypes';
 import type { Gathered } from '../../src/utils/gatherCaptures';
+import type { CoverageInput } from '../../src/utils/scenarioCoverage';
 import { scenarioCoverage } from '../../src/services/verification-service/scenarioCoverage';
+import { problem } from '../../src/utils/scenarioCoverage';
 import { captureLineSchema } from '../../src/core/verification-evidence/verifyTypes';
 import { captureSchema } from '../../src/core/verification-evidence/verificationTypes';
+import manifest from '../../specification/units/function.scenario-coverage.json';
 
 const commit = 'a'.repeat(40);
 const scenario = scenarioManifestSchema.parse({
@@ -60,7 +63,8 @@ const served = (buildId: string, revision = commit) => ({
 	server: { buildId, revision }
 });
 
-test('an end-to-end result that says it was captured from running software is bound to its build', () => {
+test('scenarioCoverage: accepts a stamped flow', () => {
+	expect(exampleFailures(0)).toEqual(manifest.testing.examples[0].expected.value);
 	expect(judged(served('build-1'))).toEqual([]);
 	expect(judged({ provenance: 'actual-capture' })).toEqual([
 		'explorer-flow: capture pages-flow.json has no build stamp'
@@ -69,7 +73,11 @@ test('an end-to-end result that says it was captured from running software is bo
 	expect(judged(served('build-0'))[0]).toContain('was served by build build-0');
 });
 
-test('a result that claims no running software is judged as before', () => {
+test('problem: accepts a fixture flow', () => {
+	const example = manifest.testing.examples[1];
+	const input = coverageFixture(example.input[0]);
+	expect(example.expected.kind).toBe('void');
+	expect(problem(input, input.gathered[0])).toBeUndefined();
 	expect(judged({})).toEqual([]);
 	expect(judged({ provenance: 'fixture' })).toEqual([]);
 });
@@ -107,7 +115,8 @@ const imageFailures = (item: Gathered, mode = 'element', scale = 1) =>
 		builds: { declared: ['reports'], compiled: new Map([['reports', 'build-1']]) }
 	}).failures;
 
-test('element captures retain explicit bounds in wire and stored evidence', () => {
+test('scenarioCoverage: accepts an element screenshot', () => {
+	expect(exampleFailures(2)).toEqual(manifest.testing.examples[2].expected.value);
 	const item = image();
 	expect(captureLineSchema.parse(item.line)).toHaveProperty('clip', region);
 	expect(captureSchema.parse(item.capture)).toHaveProperty('clip', region);
@@ -116,7 +125,16 @@ test('element captures retain explicit bounds in wire and stored evidence', () =
 	expect(imageFailures(image({}, 198, 63), 'element', 1.25)).toEqual([]);
 });
 
-test('element captures reject absent or mismatched bounds and retain build checks', () => {
+test('scenarioCoverage: rejects a capture of the wrong kind', () => {
+	expect(exampleFailures(3)).toEqual(manifest.testing.examples[3].expected.value);
+	const input = manifest.testing.examples[3].input[0] as Parameters<typeof coverageFixture>[0];
+	const mixed = coverageFixture(input);
+	mixed.gathered.unshift(image());
+	const result = scenarioCoverage(mixed);
+	expect(result.failures).toEqual([
+		'explorer-flow: capture pages-flow.json has kind output but evidence flow requires screenshot'
+	]);
+	expect(result.states[0].captures.map((capture) => capture.status)).toEqual(['passed', 'failed']);
 	expect(imageFailures(image({ clip: undefined }))[0]).toContain('requires capture bounds');
 	expect(imageFailures(image({}, 920, 700))[0]).toContain('does not match');
 	expect(imageFailures(image({ clip: { ...region, x: 900 } }))[0]).toContain('outside viewport');
@@ -129,9 +147,35 @@ test('element captures reject absent or mismatched bounds and retain build check
 		expect(captureLineSchema.safeParse({ ...image().line, clip }).success).toBe(false);
 });
 
-test('viewport and full-page evidence retain their original dimensions', () => {
+test('scenarioCoverage: accepts a viewport screenshot', () => {
+	expect(exampleFailures(4)).toEqual(manifest.testing.examples[4].expected.value);
 	expect(imageFailures(image({}, 920, 700), 'viewport')).toEqual([]);
 	expect(imageFailures(image({}, 920, 900), 'full-page')).toEqual([]);
 	expect(imageFailures(image(), 'viewport')[0]).toContain('requires 920x700');
 	expect(imageFailures(image(), 'full-page')[0]).toContain('920 wide and at least 700 tall');
 });
+
+/** Reconstruct only the explicitly named fixture; the example supplies the changing inputs. */
+function coverageFixture(input: {
+	fixture: string;
+	capture: object;
+	mode?: string;
+	width?: number;
+	height?: number;
+}): CoverageInput {
+	if (!['flow', 'image'].includes(input.fixture))
+		throw new Error(`Unknown scenario coverage fixture: ${input.fixture}`);
+	const visual = input.fixture === 'image';
+	return {
+		scenario: visual ? picture(input.mode) : scenario,
+		commit,
+		gathered: [visual ? image(input.capture, input.width, input.height) : gathered(input.capture)],
+		checkFailed: false,
+		builds: { declared: ['reports'], compiled: new Map([['reports', 'build-1']]) }
+	};
+}
+
+function exampleFailures(index: number): string[] {
+	const input = manifest.testing.examples[index].input[0] as Parameters<typeof coverageFixture>[0];
+	return scenarioCoverage(coverageFixture(input)).failures;
+}
