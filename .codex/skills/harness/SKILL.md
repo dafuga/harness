@@ -397,6 +397,7 @@ Use exactly these five forms. Each draws its cases from the entity's declared co
 - Retain reviewed baselines through Harness evidence with source revision, media hash and review provenance. Never automatically accept a missing or changed image.
 - Matrices include boundaries, invalid inputs and prop combinations that change behavior. Static types and configuration use compiler, lint, build and audit checks.
 - Generated app pipelines keep compiler, lint and audit checks before browser screenshot gates. When adding a mandatory gate, strengthen the existing generator-order and real CLI static-violation cases.
+- When generating or changing a test runner, verify its reporter records declared files, titles and revisions for passed, failed, skipped and retried cases in the existing generator cases. Also exercise the real runner on the designated test host.
 - Before accepting a test migration, run the compiler and structure audit for the root and every affected workspace. Check companion type files and Svelte source explicitly; an ignored-file lint warning is not Svelte verification.
 - Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.
 

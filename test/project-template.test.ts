@@ -3,7 +3,10 @@ import { test } from 'vitest';
 import { expect } from './verificationExpect';
 import { projectFiles } from '../src/templates/project';
 import { measureWorkload } from './support/measureWorkload';
-import { assertFoundationLint } from './support/project-template/foundations';
+import {
+	assertFoundationLint,
+	assertGeneratedBrowserOutcome
+} from './support/project-template/foundations';
 import { assertAtomCompiler } from './support/project-template/atoms';
 import {
 	expectGeneratedGuidance,
@@ -37,7 +40,7 @@ test('app projects include SvelteKit and specification files', () =>
 		expect(initialPageTest).toContain("from './support/browserTest'");
 		expect(initialPageTest).toContain("test('app page initial state'");
 		expect(initialPageTest).toContain("await page.goto('/')");
-		await expectInitialPageViewports(files);
+		await expectInitialPageViewports(files).then(() => assertGeneratedBrowserOutcome(files));
 		expect(paths).toContain('eslint.config.js');
 		expect(paths).toContain('eslint.harness-rules.js');
 		expect(paths).toContain('harness.audit.json');

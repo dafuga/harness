@@ -1,0 +1,88 @@
+{
+	"name": "generated-playwright-outcomes",
+	"goal": "Record generated app Playwright outcomes under their declared case identities.",
+	"createdAt": "2026-10-27T03:28:19.785Z",
+	"updatedAt": "2026-10-27T03:34:30.915Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:28:20.364Z",
+			"evidence": "Generated apps configure page cases but install no reporter that writes their Playwright outcomes for Harness verification."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:28:20.920Z",
+			"evidence": "The existing app generator case checked discovery and scenarios but not runner outcome production. Extend that case with the generated reporter and status, retry and title expectations."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:29:29.186Z",
+			"evidence": "The existing generator case failed because the generated Playwright configuration does not install a case reporter."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:29:59.603Z",
+			"evidence": "The generated app installs the shared case reporter; its Playwright callback writes declared titles, attempts and observed outcomes."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:30:27.337Z",
+			"evidence": "The unchanged generator case passed at 7a4aa4a35a after failing on the test-only commit, using the same environment."
+		},
+		{
+			"id": "guard",
+			"title": "Reintroduce and restore the missing reporter in the existing generator case.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:31:48.531Z",
+			"evidence": "Mutant 9ad293cb34 failed capture fc1e0d77c85c; restored 7ce145771b passed with the same tree as a037516b06."
+		},
+		{
+			"id": "source-measurements",
+			"title": "Measure changed templates and retain their normal workloads.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:33:05.518Z",
+			"evidence": "At a037516b06, source bytes/lines/complexity/dependencies: project tests 9259/218/12/5, project 8271/223/10/11, guidance 18267/145/9/3. Capture 98aab9d9f393 retains normal workloads and whole-worker RSS; modules emit no separate artifacts."
+		},
+		{
+			"id": "generated-app",
+			"title": "Inspect a freshly generated app and its strict case inventory.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:33:06.815Z",
+			"evidence": "A fresh CLI app contains the reporter and three registered initial-page cases; strict registry still reports 195 unrelated atom and script gaps. Browser execution remains pending."
+		},
+		{
+			"id": "generated-static",
+			"title": "Run static checks and build in the fresh generated app.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:34:30.915Z",
+			"evidence": "The disposable generated app passed Svelte typecheck, lint, audit, formatting and build with its own installed dependencies. Its strict registry still reports 195 coverage gaps; no browser ran."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -4,11 +4,81 @@ import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
+import { pathToFileURL } from 'node:url';
 import type { PlannedFile } from '../../../src/core/development-tooling/files';
 import { builtinModules } from '../../../src/templates/module-system/builtinModules';
 import { expect } from '../../verificationExpect';
 import { measureWorkload } from '../measureWorkload';
 import { runCommand } from '../cli';
+
+/** Generated Playwright cases retain their declared title, retries and actual outcome. */
+export async function assertGeneratedBrowserOutcome(project: PlannedFile[]): Promise<void> {
+	const config = project.find((file) => file.path === 'playwright.config.ts')?.contents ?? '';
+	expect(config, 'Generated app must install its Playwright case reporter').toContain(
+		'./test/support/harnessCaseReporter.js'
+	);
+	const source = project.find(
+		(file) => file.path === 'test/support/harnessCaseReporter.js'
+	)?.contents;
+	expect(source, 'Generated app must emit its Playwright case reporter').toBeDefined();
+	const root = await mkdtemp(join(tmpdir(), 'harness-browser-case-result-'));
+	const names = ['HARNESS_VERIFY_CASE_ROOT', 'HARNESS_EVIDENCE_DIR', 'HARNESS_VERIFY_REVISION'];
+	const previous = names.map((name) => process.env[name]);
+	try {
+		const snapshot = join(root, 'snapshot');
+		const directory = join(root, 'evidence');
+		const file = join(snapshot, 'tests/e2e/app.spec.ts');
+		await mkdir(dirname(file), { recursive: true });
+		await writeFile(file, '');
+		await symlink(snapshot, join(root, 'snapshot-alias'), 'dir');
+		const reporterFile = join(root, 'reporter.mjs');
+		await writeFile(reporterFile, source!);
+		process.env.HARNESS_VERIFY_CASE_ROOT = join(root, 'snapshot-alias');
+		process.env.HARNESS_EVIDENCE_DIR = directory;
+		process.env.HARNESS_VERIFY_REVISION = 'a'.repeat(40);
+		const { default: Reporter } = await import(pathToFileURL(reporterFile).href);
+		const reporter = new Reporter();
+		const test = {
+			location: { file },
+			titlePath: () => ['', 'chromium', 'app.spec.ts', 'desktop viewport', 'app page initial state']
+		};
+		for (const [status, retry] of [
+			['failed', 0],
+			['passed', 1],
+			['skipped', 0],
+			['timedOut', 0]
+		] as const)
+			reporter.onTestEnd(test, { status, retry });
+		await expectBrowserOutcomes(directory);
+	} finally {
+		for (const [index, name] of names.entries()) {
+			if (previous[index] === undefined) delete process.env[name];
+			else process.env[name] = previous[index];
+		}
+		await rm(root, { recursive: true, force: true });
+	}
+}
+
+async function expectBrowserOutcomes(directory: string): Promise<void> {
+	const outcomes = (await readFile(join(directory, 'case-results.ndjson'), 'utf8'))
+		.trim()
+		.split('\n')
+		.map((line) => JSON.parse(line));
+	expect(outcomes).toEqual(
+		[
+			['failed', 0],
+			['passed', 1],
+			['skipped', 0],
+			['failed', 0]
+		].map(([status, retry]) => ({
+			file: 'tests/e2e/app.spec.ts',
+			title: 'desktop viewport > app page initial state',
+			revision: 'a'.repeat(40),
+			retry,
+			status
+		}))
+	);
+}
 
 /** The generated case must fail when its authored Example expects a different result. */
 export async function assertAuthoredLibraryResult(project: string): Promise<void> {

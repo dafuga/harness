@@ -101,6 +101,10 @@ function expectStandardTestForms(files: ReturnType<typeof projectFiles>): void {
 		expect(text, path).toContain('Projects without UI have no page or component cases');
 		expect(text, path).toContain('Do not auto-accept screenshot baselines');
 		expect(text, path).toContain(
+			'passed, failed, skipped and retried cases in the existing generator cases'
+		);
+		expect(text, path).toContain('exercise the real runner on the designated test host');
+		expect(text, path).toContain(
 			'distinct declared case bindings sharing a state, viewport and evidence slot'
 		);
 		expect(text, path).toContain('plus wrong and duplicate bindings');
