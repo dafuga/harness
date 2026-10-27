@@ -97,3 +97,46 @@ async function assertExampleFields(
 	if (parsed.helperContracts?.length)
 		expect(parsed.helperContracts[0].examples?.[0].output).toEqual(raw);
 }
+
+/** Unexpected failures retain their original reason in both value and void examples. */
+export async function assertUnexpectedDiagnostics(service: TestExpectationService) {
+	const reason = new Error('Audio artifacts require a valid tested revision');
+	for (const example of [
+		{ name: 'Value', input: null, output: 1 },
+		{ name: 'Void', input: null, returns: 'void' as const }
+	]) {
+		const result = await service
+			.example(() => {
+				throw reason;
+			}, example)
+			.then(
+				() => {
+					throw new Error('Expected unexpected failure');
+				},
+				(error: Error) => error
+			);
+		expect(result.message).toBe(
+			'Example unexpectedly failed: Audio artifacts require a valid tested revision'
+		);
+		expect(result.cause).toBe(reason);
+	}
+	for (const reason of ['invalid fixture', { problem: 'invalid fixture' }]) {
+		const result = await service
+			.example(
+				() => {
+					throw reason;
+				},
+				{ name: 'Value', input: null, output: 1 }
+			)
+			.then(
+				() => {
+					throw new Error('Expected unexpected failure');
+				},
+				(error: Error) => error
+			);
+		expect(result.message).toBe(
+			`Example unexpectedly failed: ${typeof reason === 'string' ? reason : 'non-Error value thrown'}`
+		);
+		expect(result.cause).toBe(reason);
+	}
+}

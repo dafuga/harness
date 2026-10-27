@@ -1,4 +1,7 @@
-import { assertAuthoredJsonFields } from '../../support/testExpectationAuthoredCases';
+import {
+	assertAuthoredJsonFields,
+	assertUnexpectedDiagnostics
+} from '../../support/testExpectationAuthoredCases';
 import { assertRegisteredResults } from '../../support/testExpectationRegistrationCases';
 import {
 	assertJsonAdmission,
@@ -51,11 +54,7 @@ test('example asserts authored comments for successful and error inputs', async 
 		}, failure)
 	).resolves.toMatchObject({ error: 'Missing input' });
 	await expect(service.example(() => 1, failure)).rejects.toThrow('Expected example to fail');
-	await expect(
-		service.example(() => {
-			throw new Error('Unexpected');
-		}, example)
-	).rejects.toThrow('unexpectedly failed');
+	await assertUnexpectedDiagnostics(service);
 });
 
 test('registerExamples registers exactly the authored examples and rejects absent implementations', async () => {
