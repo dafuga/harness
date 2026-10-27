@@ -1448,3 +1448,30 @@ module artifact. Its recorded case took 65.688 ms and the whole worker reported
 216,760,320 bytes RSS. The laptop browser rerun is pending while another
 project's Playwright suite runs; missing baselines must still fail without being
 accepted automatically.
+
+The laptop browser rerun at `a11e45f2b6` passed the existing outer generator
+case, which confirmed that all 33 Playwright cases refused missing baselines;
+five browser workers ran. This proves refusal, not reviewed visual coverage.
+The full laptop check at `9076aa7a92` stopped at root unit failures: 1,518
+tests passed, five failed and 27 were skipped. E2Es and later gates did not run.
+The verification fixture still needs honest case-bound page captures, and
+the generated app still has missing native atom and script contracts.
+
+The component generator emitted nine screenshot tests without registering
+their cases or scenario. The existing generator case now checks ordinary and
+categorized components without adding a test. Test commit `b4b9c96350` failed
+in red `fd30558ceff0`; fix `c82cd6e83f` passed in green `130785fb017f` on
+harbor-mbp-2 with the same profile. It preserves existing authored metadata.
+The focused generator, registry and readable-contract checks passed 27 cases;
+root typecheck, targeted lint and formatting passed. The source was integrated
+at `1009599c93`; the unchanged-case mutation guard and fresh workloads remain
+open.
+
+Generated pages and layouts had the same registration gap. The existing case
+now checks page states and a categorized layout with a labelled child-slot
+placeholder. Test commit `f033ad5290` failed in red `cb457ed37b80`; fix
+`e4efd0ea5f` passed in green `02a2fa33f9f4` on harbor-mbp-2 with the same
+profile. The same 27 focused checks and root typecheck passed on the draft;
+targeted lint and formatting passed. The source was integrated at `a95c449ae5`.
+Mutation proof, source and runtime measurements, reviewed browser baselines,
+case-bound browser evidence and the full verification gate remain open.
