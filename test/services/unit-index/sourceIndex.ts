@@ -53,6 +53,28 @@ test('source indexing reports failed reads even after its read window fills', as
 	);
 });
 
+test('source indexing releases parsed blobs from prior revisions', async () => {
+	const service = new SourceIndexService();
+	const cache = (service as unknown as { parsed: Map<string, unknown> }).parsed;
+	const revisions = [
+		{ revision: 'first', path: 'src/utils/first.ts', hash: 'first-blob' },
+		{ revision: 'second', path: 'src/utils/second.ts', hash: 'second-blob' }
+	];
+	for (const revision of revisions) {
+		await measureWorkload('service.source-index', 'index-next-revision', () =>
+			service.index(
+				{
+					revision: revision.revision,
+					list: async () => [{ path: revision.path, hash: revision.hash }],
+					read: async () => `export const value = '${revision.revision}';\n`
+				},
+				defaultUnitsConfig
+			)
+		);
+		expect(cache.size).toBe(1);
+	}
+});
+
 test('identical blobs keep path-specific references and ignored files stay unread', async () => {
 	const entries = [
 		{ path: 'src/utils/one/copy.ts', hash: 'same' },
