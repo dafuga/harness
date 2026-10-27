@@ -42,6 +42,13 @@ test('the bridge works over a socket that only this machine can reach', async ()
 	await expect(client.request('startDeployment', { planId: 'invalid' })).rejects.toThrow('Invalid');
 	const opened = await client.request<ProjectSnapshot>('openProject');
 	expect(opened.project).toMatchObject({ root: f.root, id: f.project.id });
+	expect(await client.request('projectWork' as never, { projectId: f.project.id })).toEqual({
+		queueCommit: null,
+		features: []
+	});
+	await expect(
+		client.request('projectWork' as never, { projectId: 'another-project' })
+	).rejects.toThrow();
 	expect(await client.request('listProjects')).toMatchObject([{ id: f.project.id, kind: 'local' }]);
 	expect((await client.request<ProjectSnapshot>('snapshot', view)).writable).toBe(true);
 	expect(await client.request('deploymentStatus')).toEqual(

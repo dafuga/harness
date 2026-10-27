@@ -19,7 +19,12 @@ const state = vi.hoisted(() => {
 		ready: vi.fn(() => new Promise<void>(() => undefined)),
 		choose: vi.fn(() => 0),
 		host: { enabled: vi.fn(() => false), stop: vi.fn(async () => undefined) },
-		transport: { close: vi.fn(async () => undefined) }
+		transport: { close: vi.fn(async () => undefined) },
+		expose: vi.fn((_name: string, _value: unknown) => undefined),
+		request: vi.fn(async (_method: string, _input: unknown) => ({
+			queueCommit: null,
+			features: []
+		}))
 	};
 });
 /** A window as `new BrowserWindow()` makes it: its own events and those of its page. */
@@ -42,8 +47,10 @@ vi.mock('electron', () => ({
 		getAppPath: () => tmpdir()
 	},
 	BrowserWindow: browserWindow,
+	contextBridge: { exposeInMainWorld: state.expose },
 	dialog: { showMessageBoxSync: state.choose, showOpenDialog: vi.fn() },
 	ipcMain: { handle: vi.fn(), removeHandler: vi.fn() },
+	ipcRenderer: { invoke: vi.fn() },
 	powerMonitor: { on: vi.fn() },
 	protocol: { registerSchemesAsPrivileged: vi.fn(), handle: vi.fn() },
 	safeStorage: { isEncryptionAvailable: () => false },
@@ -73,6 +80,14 @@ vi.mock('../src/services/LocalTransportService', () => ({
 		};
 	}
 }));
+vi.mock(
+	'../src/lib/development-tooling/preload-initialization/LocalTransportClientService',
+	() => ({
+		LocalTransportClientService: function LocalTransportClientService() {
+			return { request: state.request, on: vi.fn() };
+		}
+	})
+);
 beforeEach(() => {
 	vi.resetModules();
 	vi.clearAllMocks();
@@ -90,6 +105,19 @@ async function started() {
 }
 const event = () => ({ preventDefault: vi.fn() });
 const settled = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+test('preload exposes the selected project Work reader over the local transport', async () => {
+	await import('../src/lib/development-tooling/preload-initialization/initializePreload');
+	const bridge = state.expose.mock.calls.find(([name]) => name === 'harness')?.[1] as {
+		projectWork?: (input: { projectId: string }) => Promise<unknown>;
+	};
+	expect(bridge.projectWork).toBeTypeOf('function');
+	await expect(bridge.projectWork!({ projectId: 'project-a' })).resolves.toEqual({
+		queueCommit: null,
+		features: []
+	});
+	expect(state.request).toHaveBeenCalledWith('projectWork', { projectId: 'project-a' });
+});
 
 test('only the first app instance reaches readiness and backend startup', async () => {
 	await import('../src/initializers/initializeDesktop');

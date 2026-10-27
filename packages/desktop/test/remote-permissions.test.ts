@@ -39,6 +39,7 @@ test('folders, hosted credentials and the control port are not device methods', 
 		expect(attachment.methods).not.toContain(method);
 		expect(await outcome(client, method, { projectId: f.project.id })).toBe('method-denied');
 	}
+	expect(await outcome(client, 'projectWork', { projectId: f.project.id })).toBe('method-denied');
 	expect(await outcome(client, 'shell.run', { command: 'id' })).toBe('unknown-method');
 	expect(attachment).toMatchObject({
 		role: 'device',
