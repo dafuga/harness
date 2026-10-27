@@ -69,7 +69,7 @@
 			{
 				"name": "ScreenshotBaselineService.review",
 				"type": "Promise<ScreenshotReview>",
-				"description": "Stores a content-addressed review in Git evidence after validating the original captured PNG, case, record and served build. Retains the source run and case outcomes."
+				"description": "Stores a content-addressed review after validating the original PNG, case, record and served build. Selects the latest executed attempt and retains its retry when bound, along with source run and case outcomes."
 			},
 			{
 				"name": "ScreenshotBaselineService.load",
@@ -81,7 +81,7 @@
 			{
 				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Missing, ambiguous, damaged or mismatched source evidence and reviews are refused."
+				"description": "Missing, ambiguous, unbound or unexecuted attempts, damaged evidence and mismatched reviews are refused."
 			},
 			{
 				"name": "ZodError",
