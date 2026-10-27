@@ -25,13 +25,18 @@
 				"name": "IpcRequestValidator.parse.input",
 				"type": "unknown",
 				"description": "Untrusted request payload."
+			},
+			{
+				"name": "IpcRequestValidator.featurePlanPayload.input",
+				"type": "unknown",
+				"description": "Untrusted prepareFeaturePlan payload. Accepts the exact project, source revision, original user request, proposal with wanted contracts/tasks, and per-page committed reference plus optional normalized edit region; rejects unknown top-level and nested keys."
 			}
 		],
 		"outputs": [
 			{
 				"name": "IpcRequestValidator.parse",
 				"type": "unknown",
-				"description": "Channel-specific validated payload. project:work and feature-plan actions require a nonblank projectId; feature-plan actions retain only the declared project, feature, digest and selected option or reviewer fields."
+				"description": "Returns the channel-specific validated payload. Feature preparation preserves the distinct original request and validates the project/source binding, proposal and exact per-page reference/region records before desktop dispatch; feature-plan actions validate their project, feature, digest and selected option or reviewer."
 			}
 		],
 		"errors": [
@@ -49,6 +54,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.function.ipc-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.ipc-payload",
 			"via": "import",
 			"origin": "derived"
@@ -60,6 +70,11 @@
 		},
 		{
 			"unit": "desktop.validator.project-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
 			"via": "import",
 			"origin": "derived"
 		}

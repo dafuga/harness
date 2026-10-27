@@ -14,11 +14,15 @@
 		"symbols": [
 			"FeaturePlanPreparationService",
 			"FeaturePlanPreparationService.constructor",
-			"FeaturePlanPreparationService.run",
 			"FeaturePlanPreparationService.prepare",
 			"FeaturePlanProposal",
 			"PreparedFeaturePlan",
 			"PreparationPage",
+			"PreparationOption",
+			"PreparationChoice",
+			"GeneratedPage",
+			"PreparationDesignReference",
+			"PreparationPageDesign",
 			"PreparationDiscovery",
 			"PreparationCoverage",
 			"FeaturePlanPreparationInput",
@@ -44,11 +48,6 @@
 				"name": "FeaturePlanPreparationService.prepare",
 				"type": "Promise<FeaturePlan>",
 				"description": "Discovers affected pages, admits parallel preparation of three distinct unselected choices with exactly one preferred option per page, waits for all admitted page work to settle, checks final metadata and coverage, then returns the trusted draft collaborator result. It does not start workers or itself verify Git lineage."
-			},
-			{
-				"name": "FeaturePlanPreparationService.run",
-				"type": "string",
-				"description": "Returns the scaffold identity."
 			}
 		],
 		"errors": [
@@ -82,6 +81,34 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["preparation"],
+		"cases": [
+			{
+				"id": "prepare-complete-page-plan",
+				"state": "preparation",
+				"subject": "FeaturePlanPreparationService.prepare",
+				"call": "prepare(input)",
+				"input": "Proposal with module goals and wanted contracts, shared goal/TLDR, original request, page references, edit regions, and cancellation signal.",
+				"test": {
+					"file": "test/services/agents-providers/feature-plan-preparation.test.ts",
+					"title": "prepare drafts only after every affected page design is committed and coverage is complete"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"approved": false,
+						"pagesUnselected": true,
+						"designCoverageComplete": true,
+						"finalizeBeforeDraft": true
+					}
+				},
+				"errors": ["Incomplete or cancelled preparation"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

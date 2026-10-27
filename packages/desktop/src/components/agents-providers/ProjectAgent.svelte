@@ -6,17 +6,22 @@
 	import { createProjectAgentStore } from '../../lib/stores/agents-providers/projectAgent.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { visualCategory } from '../../utils/explorer-ui/composeModes';
+	import type { RunDraft } from '../../utils/explorer-ui/composeModes';
 	import Composer from '../shared-primitives/Composer.svelte';
 	import ReferenceText from '../explorer-ui/reference-text/ReferenceText.svelte';
 	import ChatAgents from './ChatAgents.svelte';
 	import ProjectWork from './ProjectWork.svelte';
 	import { createProjectWorkStore } from '../../lib/stores/agents-providers/projectWork.svelte';
+	import { createProjectWorkActionsStore } from '../../lib/stores/agents-providers/projectWorkActions.svelte';
+	import type { FeatureWorkSnapshot } from '../../../../../src/services/agents-providers/FeatureWorkService.types';
 	let { workspace, open = $bindable(false) }: { workspace: Workspace; open?: boolean } = $props();
 	// Rebuilt only for another project; the workspace itself is one object throughout.
 	// svelte-ignore state_referenced_locally
 	const agent = createProjectAgentStore(workspace);
 	// svelte-ignore state_referenced_locally
 	const work = createProjectWorkStore(workspace);
+	// svelte-ignore state_referenced_locally
+	const workActions = createProjectWorkActionsStore(workspace, work);
 	const kind = $derived(workspace.category.slice(0, -1));
 	const label = $derived(agent.allowed ? 'Work with agent' : 'Open project chat');
 	let view = $state<'chat' | 'work' | 'agents'>('chat');
@@ -54,6 +59,27 @@
 		if (!agent.active) return false;
 		const end = agent.messages.slice(-2);
 		return Boolean(text) && !end.some((item) => item.author === author && item.text === text);
+	}
+	function workTone(status: string) {
+		return status === 'accepted' ? 'green' : status === 'failed' ? 'red' : status === 'running' || status === 'review' ? 'amber' : 'gray';
+	}
+	function workLabel(status: string) {
+		return status === 'accepted' ? 'Completed' : status === 'failed' ? 'Failed' : status === 'running' || status === 'review' ? 'In progress' : 'To do';
+	}
+	function workItems(feature: FeatureWorkSnapshot['features'][number]) {
+		const stored = feature.tasks.filter((task) => task.belongsToPlan), ids = new Set(stored.map((task) => task.id));
+		return [
+			...stored.map(({ id, title, status }) => ({ id, title, status })),
+			...(feature.plan?.tasks.filter((task) => !ids.has(task.id)).map(({ id, title }) => ({ id, title, status: 'queued' })) ?? [])
+		];
+	}
+	function countWork(feature: FeatureWorkSnapshot['features'][number], state: 'accepted' | 'running' | 'queued') {
+		return workItems(feature).filter((task) => state === 'running' ? task.status === 'running' || task.status === 'review' : task.status === state).length;
+	}
+	async function send(draft: RunDraft) {
+		const sent = await agent.send(draft);
+		await work.refresh();
+		return sent;
 	}
 </script>
 
@@ -106,9 +132,20 @@
 			<hx-div class="chat-thread">
 				{#if work.snapshot?.features.length}
 					{#key workspace.projectId}
-						<hx-details class="chat-work">
-							<hx-summary>Feature work</hx-summary>
-							<ProjectWork snapshot={work.snapshot} loading={work.loading} error={work.error} />
+						<hx-details class="chat-work" data-harness-component="project-work">
+							<hx-summary>
+								<hx-span>Feature work</hx-span>
+								{#each work.snapshot.features as feature (feature.id)}
+									<hx-div class="chat-work-feature">
+										<hx-small>{feature.goal || feature.id}</hx-small>
+						<hx-span class="chat-work-dots" role="list" aria-label={`Tasks for ${feature.id}`}>
+							{#each workItems(feature) as task (task.id)}<hx-span class="dot {workTone(task.status)}" role="listitem" title={`${task.title}: ${workLabel(task.status)}`} aria-label={`${task.title}: ${workLabel(task.status)}`}></hx-span>{/each}
+										</hx-span>
+						<hx-small>{countWork(feature, 'accepted')} completed · {countWork(feature, 'running')} in progress · {countWork(feature, 'queued')} to do</hx-small>
+									</hx-div>
+								{/each}
+							</hx-summary>
+						<ProjectWork snapshot={work.snapshot} loading={work.loading} error={work.error} {workspace} actions={workActions} />
 						</hx-details>
 					{/key}
 				{/if}
@@ -145,7 +182,7 @@
 					running={agent.active || workspace.busy}
 					placeholder={`Describe the ${kind} to add…`}
 					comment={(text) => agent.comment(text)}
-					send={agent.send}
+					send={send}
 				/>
 			</hx-div>
 		</hx-div>
@@ -156,7 +193,7 @@
 			aria-labelledby="{id}-work-tab"
 			hidden={view !== 'work'}
 		>
-			<ProjectWork snapshot={work.snapshot} loading={work.loading} error={work.error} />
+			<ProjectWork snapshot={work.snapshot} loading={work.loading} error={work.error} {workspace} actions={workActions} />
 		</hx-div>
 		<hx-div
 			class="work-pane"
@@ -172,4 +209,6 @@
 
 <style>
 	@import './project-agent/projectAgent.css';
+	.chat-work-feature { display: grid; gap: 0.2rem; min-width: 12rem; padding-top: 0.2rem; }
+	.chat-work-dots { display: flex; gap: 0.28rem; }
 </style>

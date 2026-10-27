@@ -2,9 +2,17 @@ import type { Prepared } from './DesktopRunService.types';
 import type {
 	ProjectRunRequest,
 	ProjectTaskRequest,
+	FeaturePlanPreparationRequest,
 	RunEvent,
 	RunRequest
 } from '../../../models/development-tooling/DesktopBridge.types';
+import type { FeaturePlan } from '../../../../../../src/repositories/agents-providers/ModuleTaskRepository.types';
+import { FeaturePlanRepository } from '../../../../../../src/repositories/agents-providers/FeaturePlanRepository';
+import { FeaturePlanService } from '../../../../../../src/services/agents-providers/FeaturePlanService';
+import { FeaturePlanPreparationService } from '../../../../../../src/services/agents-providers/FeaturePlanPreparationService';
+import { ModuleDataService } from '../../../../../../src/services/git-source-history/ModuleDataService';
+import { FeaturePlanCoverageValidator } from '../../../../../../src/validators/agents-providers/FeaturePlanCoverageValidator';
+import { FeaturePlanValidator } from '../../../../../../src/validators/agents-providers/FeaturePlanValidator';
 import {
 	repositoryLease,
 	type RepositoryLease
@@ -25,6 +33,10 @@ import { recordRunFailure } from '../../../utils/agents-providers/prepareRun';
 import { prepareProjectTask } from './prepareProjectTask';
 import { type ProjectTaskContext } from '../../../utils/agents-providers/prepareProjectTask';
 import { ProjectTaskService } from './project-task-service/ProjectTaskService';
+import { FeaturePlanPreparationHostService } from '../FeaturePlanPreparationHostService';
+import { ProjectImageCacheService } from '../../../lib/development-tooling/desktop-bridge/ProjectImageCacheService';
+import { gitRevision } from '../../../utils/projects-sessions/gitRead';
+import { createHash } from 'node:crypto';
 
 /** A creation run has no entity yet: it is told apart by what it was asked, not by a guess. */
 function creates(context: Prepared): context is ProjectRunContext {
@@ -66,6 +78,59 @@ export class DesktopRunService {
 		} catch (error) {
 			await this.release(root);
 			throw error;
+		}
+	}
+	async prepareFeaturePlan(input: FeaturePlanPreparationRequest): Promise<FeaturePlan> {
+		const { session } = this, root = session.root;
+		session.assertProject(input.projectId);
+		if (!root || session.busy || !this.claim(root)) throw new Error('A project operation is already active.');
+		session.busy = true;
+		const controller = new AbortController();
+		this.active = { id: `feature-plan:${input.proposal.feature}`, controller };
+		try {
+			this.lease = await repositoryLease(root);
+			if (!this.lease) throw new Error('A planning write is active in another Harness app.');
+			this.lease.signal.addEventListener('abort', () => controller.abort(), { once: true });
+			controller.signal.throwIfAborted();
+			const project = await session.mutable();
+			if (project.revision.commit !== input.sourceCommit || input.proposal.sourceCommit !== input.sourceCommit)
+				throw new Error('Feature plan source must match the writable project revision.');
+			const data = await new ModuleDataService(root).require(input.sourceCommit),
+				coverage = new FeaturePlanCoverageValidator(),
+				repository = new FeaturePlanRepository(root),
+				planService = new FeaturePlanService({ repository, validator: new FeaturePlanValidator() });
+			const host = new FeaturePlanPreparationHostService({
+				generator: this.generator,
+				planning: project.planning,
+				revision: () => gitRevision(root),
+				data: (commit) => new ModuleDataService(root).require(commit)
+			});
+			const preparation = new FeaturePlanPreparationService({
+				discover: (proposal, metadata) => coverage.discover(proposal, metadata),
+				preparePage: async (page) => {
+					const bytes = await new ProjectImageCacheService(session).read({
+						projectId: input.projectId, entityId: page.module, commit: page.reference.commit,
+						version: page.reference.version, sha256: page.reference.sha256,
+						...(page.reference.option ? { option: page.reference.option } : {})
+					});
+					if (createHash('sha256').update(bytes).digest('hex') !== page.reference.sha256)
+						throw new Error(`The exact design reference hash changed for ${page.module}.`);
+					return host.preparePage({ ...page, referenceBytes: bytes });
+				},
+				admit: (action) => action(),
+				finalize: (value, signal) => host.finalize(value, signal),
+				verify: (plan, metadata) => coverage.validate(plan, metadata),
+				draft: (plan) => planService.draft(plan)
+			});
+			const plan = await preparation.prepare({
+				proposal: input.proposal, data, originalRequest: input.originalRequest,
+				pageDesigns: input.pageDesigns, signal: controller.signal
+			});
+			session.assertProject(input.projectId);
+			if (session.root !== root) throw new Error('The selected project changed during feature preparation.');
+			return plan;
+		} finally {
+			await this.release(root);
 		}
 	}
 	cancelActive(): void {

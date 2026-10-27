@@ -3,7 +3,7 @@
 	"id": "desktop.component.project-agent",
 	"kind": "component",
 	"title": "Project chat",
-	"responsibility": "Keep project chat, feature work and agent activity available across the selected workspace.",
+	"responsibility": "Provide one project conversation with shared Chat, Work and Agents views and live committed work progress.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -20,6 +20,7 @@
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-ol",
 			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-small",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-summary"
 		]
@@ -50,10 +51,16 @@
 			{
 				"name": "ProjectAgent",
 				"type": "markup",
-				"description": "Persistent Chat, Work and Agents tabs. Chat and Work share the same real selected-project feature snapshot; Work shows honest loading, unavailable and stale states. Polling runs only while the panel is open and cleans up. Existing conversation and access rules remain in force."
+				"description": "Chat and Work share one selected-project committed work snapshot. Chat includes a compact task summary with colored to-do, in-progress, completed and failed dots and counts. Work exposes page choices, wanted contracts, digest-bound selection and explicit approval. Plans use committed Harness contracts and metadata; no implementation task is admitted before approval. Polling runs only while the panel is open and cleans up. Existing conversation and access rules remain in force."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "work unavailable",
+				"type": "visible error",
+				"description": "Shows committed stale data with a stale marker or an unavailable message; never fabricates progress."
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -83,6 +90,11 @@
 		},
 		{
 			"unit": "desktop.store.agents-providers-project-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.agents-providers-project-work-actions",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -132,12 +144,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-summary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-feature-work",
 			"via": "import",
 			"origin": "derived"
 		}

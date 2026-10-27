@@ -37,6 +37,7 @@ export const channels = {
 	providers: 'providers:list',
 	agentActivity: 'project:agents',
 	projectWork: 'project:work',
+	prepareFeaturePlan: 'feature-plan:prepare',
 	selectFeaturePlan: 'feature-plan:select',
 	approveFeaturePlan: 'feature-plan:approve',
 	startRun: 'run:start',

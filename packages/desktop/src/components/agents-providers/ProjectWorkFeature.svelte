@@ -12,19 +12,19 @@
 		FeaturePlanPage as Page
 	} from '../../../../../src/repositories/agents-providers/ModuleTaskRepository.types';
 
-	let {
-		feature: f,
-		initiallyOpen
-	}: { feature: FeatureWorkSnapshot['features'][number]; initiallyOpen: boolean } = $props();
-	// Initialize once; subsequent queue refreshes must preserve the user's choice.
-	// svelte-ignore state_referenced_locally
-	let expanded = $state(initiallyOpen);
+	type Preview = { url?: string; error?: string; loading?: boolean };
+	type Select = (input: { feature: string; page: string; option: string; expectedDigest: string }) => Promise<boolean>;
+	let { feature: f, previewFor, loadPage, select, pending = false }: {
+		feature: FeatureWorkSnapshot['features'][number];
+		previewFor: (page: Page, option: Page['options'][number]) => Preview;
+		loadPage: (page: Page) => Promise<void>; select: Select; pending?: boolean;
+	} = $props();
 
 	const STATUS: Record<string, { label: string; tone: string }> = {
 		queued: { label: 'To do', tone: 'gray' },
 		running: { label: 'In progress', tone: 'amber' },
 		review: { label: 'In review', tone: 'amber' },
-		accepted: { label: 'Accepted', tone: 'green' },
+		accepted: { label: 'Completed', tone: 'green' },
 		failed: { label: 'Failed', tone: 'red' }
 	};
 	const KIND: Record<string, string> = {
@@ -43,60 +43,27 @@
 	const selection = (page: Page) =>
 		page.selected ? `Selected ${page.selected}` : 'No option selected';
 
-	function progress(f: FeatureWorkSnapshot['features'][number]) {
-		const accepted = f.tasks.filter((t) => t.status === 'accepted').length;
-		const stored = f.tasks.length
-			? `${accepted} of ${f.tasks.length} stored tasks accepted`
-			: 'No stored tasks';
-		const planned = plannedOnly(f).length;
-		return planned ? `${stored} · ${planned} planned, not stored` : stored;
-	}
-
-	// Ordered parent/child forest; each change renders once, even inside a malformed parent cycle.
 	function changeTree(changes: Change[]) {
-		const units = new Set(changes.map((c) => c.unit));
-		const roots: Change[] = [];
-		const kids = new SvelteMap<Change, Change[]>();
+		const units = new Set(changes.map((c) => c.unit)), roots: Change[] = [], kids = new SvelteMap<Change, Change[]>();
 		const place = (c: Change, siblings: Change[]) => {
 			if (kids.has(c)) return;
-			const own: Change[] = [];
-			kids.set(c, own);
-			siblings.push(c);
-			changes.filter((k) => k.parent === c.unit).forEach((k) => place(k, own));
+			const own: Change[] = []; kids.set(c, own); siblings.push(c);
+			for (const child of changes) if (child.parent === c.unit) place(child, own);
 		};
 		const tops = changes.filter((c) => !c.parent || c.parent === c.unit || !units.has(c.parent));
-		[...tops, ...changes].forEach((c) => place(c, roots));
+		for (const change of [...tops, ...changes]) place(change, roots);
 		return { roots, kids };
 	}
 
 	function otherModules(f: FeatureWorkSnapshot['features'][number]) {
 		const units = new Set(f.plan?.changes.map((c) => c.unit));
-		return [...new Set([...f.tasks, ...plannedOnly(f)].map((t) => t.module))].filter(
-			(m) => !units.has(m)
-		);
+		return [...new Set([...f.tasks, ...plannedOnly(f)].map((t) => t.module))].filter((m) => !units.has(m));
 	}
 </script>
 
-<hx-li>
-	<hx-details bind:open={expanded}>
-		<hx-summary>
-			<hx-strong class="grow">{f.goal || f.id}</hx-strong>
-			<hx-small class="full">{f.id} · {progress(f)}</hx-small>
-		</hx-summary>
-		{#if f.tldr}<hx-p class="meta">{f.tldr}</hx-p>{/if}
-		{#if f.plan}
-			{@render planView(f, f.plan)}
-		{:else}
-			<hx-p class="meta">No committed plan for this feature.</hx-p>
-		{/if}
-		{#each otherModules(f) as m (m)}
-			<hx-p class="meta">
-				<hx-code>{m}</hx-code>{f.plan ? ' · not among this plan’s changes' : ''}
-			</hx-p>
-			{@render moduleTasks(f, m)}
-		{/each}
-	</hx-details>
-</hx-li>
+{#if f.tldr}<hx-p class="meta">{f.tldr}</hx-p>{/if}
+{#if f.plan}{@render planView(f, f.plan)}{:else}<hx-p class="meta">No committed plan for this feature.</hx-p>{/if}
+{#each otherModules(f) as m (m)}<hx-p class="meta"><hx-code>{m}</hx-code>{f.plan ? ' · not among this plan’s changes' : ''}</hx-p>{@render moduleTasks(f, m)}{/each}
 
 {#snippet planView(f: FeatureWorkSnapshot['features'][number], p: Plan)}
 	{@const tree = changeTree(p.changes)}
@@ -108,24 +75,26 @@
 			different digest{:else}approved by {p.approval.reviewer} at
 			<hx-time datetime={p.approval.approvedAt}>{p.approval.approvedAt}</hx-time>{/if}
 	</hx-p>
-	<hx-p class="meta">Design previews and approval controls are not available in this panel.</hx-p>
 	{#each p.pages as page (page.module)}
-		<hx-details>
+		<hx-details ontoggle={(event) => (event.currentTarget as HTMLDetailsElement).open && loadPage(page)}>
 			<hx-summary
 				><hx-span class="grow">Design <hx-code>{page.module}</hx-code></hx-span><hx-span class="tag"
 					>{selection(page)}</hx-span
 				></hx-summary
 			>
-			<hx-ul class="tree">
+			<hx-div class="option-grid" aria-label={`Design options for ${page.module}`}>
 				{#each page.options as o (o.id)}
-					<hx-li class="row">
-						<hx-span class="grow">{o.id} · {o.version}</hx-span>
-						{#if o.id === page.selected}<hx-span class="tag amber">Selected</hx-span>{/if}
-						{#if o.preferred}<hx-span class="tag amber">Preferred</hx-span>{/if}
-						<hx-code class="full" title="sha256 {o.sha256}">{o.path} @ {short(o.commit)}</hx-code>
-					</hx-li>
+					{@const preview = previewFor(page, o)}
+					<hx-div class="option-card">
+						{#if preview?.url}<img src={preview.url} alt={`Design ${o.id} for ${page.module}`} loading="lazy" />
+						{:else if preview?.error}<hx-p class="image-error" role="alert">{preview.error}</hx-p>
+						{:else}<hx-p class="image-placeholder">{preview?.loading ? 'Loading exact preview…' : 'Expand this page to load previews.'}</hx-p>{/if}
+						<hx-div class="option-meta"><hx-strong>{o.id}</hx-strong>{#if o.id === page.selected}<hx-span class="tag amber">Selected</hx-span>{/if}{#if o.preferred}<hx-span class="tag">Preferred</hx-span>{/if}</hx-div>
+						<hx-code title="sha256 {o.sha256}">{o.path} @ {short(o.commit)}</hx-code>
+						<hx-button type="button" disabled={pending || Boolean(p.approval)} aria-pressed={o.id === page.selected} onclick={() => select({ feature: f.id, page: page.module, option: o.id, expectedDigest: p.digest })}>Choose this design</hx-button>
+					</hx-div>
 				{/each}
-			</hx-ul>
+			</hx-div>
 		</hx-details>
 	{/each}
 	{#if tree.roots.length}
@@ -204,10 +173,19 @@
 			{/each}
 			{#each planned as t (t.id)}
 				<hx-li class="row planned">
-					<hx-span class="dot" aria-hidden="true"></hx-span><hx-span class="grow">{t.title}</hx-span
-					><hx-span>Planned, not stored</hx-span>
+					<hx-span class="dot gray" aria-hidden="true"></hx-span><hx-span class="grow">{t.title}</hx-span
+					><hx-span>To do · planned, not stored</hx-span>
 				</hx-li>
 			{/each}
 		</hx-ul>
 	{/if}
 {/snippet}
+
+<style>
+	.option-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.65rem; }
+	.option-card { display: grid; gap: 0.45rem; min-width: 0; padding: 0.55rem; border: 1px solid var(--hx-border, #334155); border-radius: 0.65rem; }
+	.option-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 0.45rem; }
+	.option-meta { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+	.image-placeholder, .image-error { min-height: 5rem; display: grid; place-items: center; text-align: center; }
+	.image-error { color: var(--hx-danger, #ef4444); }
+</style>

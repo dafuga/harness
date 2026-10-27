@@ -15,7 +15,7 @@ import { sameImage } from '../../src/components/thread-links/threadAnchor';
 import { versionOption } from '../../src/components/entity-view/threadAnchor';
 import type { DesignVersion } from '../../src/models/Desktop.types';
 
-const image = { state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 10 };
+const image = { file: 'o1-default-desktop.png', state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 10 };
 const revision = { branch: 'feat/x', commit: 'c'.repeat(40), tip: 'a'.repeat(40), atTip: false };
 
 test('an image target binds the exact version, image, state and viewport', () => {
@@ -61,6 +61,7 @@ test('threads belong to one image by version and hash', () => {
 
 /** Two options of one version: o2 holds a desktop and a phone image. */
 const picture = (sha256: string, option: string, viewport = 'desktop') => ({
+	file: `${option}-default-${viewport}.png`,
 	state: 'default',
 	viewport,
 	sha256,

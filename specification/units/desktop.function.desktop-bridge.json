@@ -3,7 +3,7 @@
 	"id": "desktop.function.desktop-bridge",
 	"kind": "function",
 	"title": "Expose desktop project operations",
-	"responsibility": "Connects desktop project, planning, evidence and agent operations to the selected project session.",
+	"responsibility": "Connect desktop project, planning, evidence and agent operations to the selected project session.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -21,46 +21,56 @@
 			{
 				"name": "desktopBridge.context",
 				"type": "BridgeContext",
-				"description": "The project session, provider discovery, run service, folder chooser and optional session-liveness check. The folder chooser returns a directory or null for cancellation."
+				"description": "Selected project session, provider discovery, task/image run service, folder chooser and optional session-liveness check."
+			},
+			{
+				"name": "prepareFeaturePlan.input",
+				"type": "FeaturePlanPreparationRequest",
+				"description": "Exact project and source commit, original user request, shared feature goal/TLDR, module changes with wanted contracts, dependency-ordered task definitions, and one committed current or wanted image reference plus optional edit region for each affected page."
 			}
 		],
 		"outputs": [
 			{
 				"name": "desktopBridge",
 				"type": "Omit<DesktopBridge, 'onRunEvent'>",
-				"description": "A desktop operations object without the run-event subscription. Most operations assert any supplied project identity and track a pending request until completion; open, select and list operations are delegated separately. Planning writes are serialized per repository. Opening returns the selected project snapshot or null when cancelled."
+				"description": "Selected-project desktop operations with repository-serialized planning writes."
 			},
 			{
 				"name": "projectWork",
 				"type": "(input:{projectId:string})=>Promise<FeatureWorkSnapshot>",
-				"description": "Reads one committed task-queue snapshot for the exact selected local project; rechecks project identity, root and client liveness before returning."
+				"description": "Reads one exact selected-project committed task-queue snapshot and rechecks project identity and session liveness."
+			},
+			{
+				"name": "prepareFeaturePlan",
+				"type": "(input:FeaturePlanPreparationRequest)=>Promise<FeaturePlan>",
+				"description": "Generates three distinct GPT Image choices per affected page from the exact current/wanted reference, passes the original request and requested region, verifies and commits artifacts, wanted contracts and dependency-ordered tasks as an unapproved plan; never dispatches."
 			},
 			{
 				"name": "selectFeaturePlan",
 				"type": "(input:FeaturePlanSelection)=>Promise<FeaturePlan>",
-				"description": "For the selected local project, serialize the action under the repository lease and select an option only for the current writable source and exact latest plan digest."
+				"description": "Serializes selection for the current writable source and exact latest plan digest; creates a new unapproved digest."
 			},
 			{
 				"name": "approveFeaturePlan",
-				"type": "(input:FeaturePlanApproval)=>Promise<FeaturePlan>",
-				"description": "For the selected local project, serialize readiness-checked approval and submission of the exact approved task records. Does not start a provider."
+				"type": "(input:FeaturePlanApproval)=>Promise<FeaturePlanExecutionResult>",
+				"description": "Readiness-checks explicit approval of the visible digest, submits only its task records, then runs their dependency-aware workers within trusted memory limits and returns actual results."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown",
-				"description": "Returned operations can reject stale project context and underlying service failures. Planning changes refuse a busy repository or ended client. Opening a thread refuses an unknown entity; source reading refuses a draft without registered source. Hosted connection refuses when sign-in is not configured."
+				"name": "foreign or stale project/plan",
+				"type": "Error",
+				"description": "Rejects before writing or dispatch when project, source revision, digest, reference, page coverage or approval is stale or foreign."
 			},
 			{
-				"name": "foreign, changed or unavailable project",
+				"name": "preparation failure",
 				"type": "Error",
-				"description": "Rejects without returning work from another project."
+				"description": "Missing/unsafe reference, incomplete design coverage, generator, artifact or metadata failure rejects without a partial committed plan or worker dispatch."
 			},
 			{
-				"name": "feature plan action failure",
+				"name": "dispatch failure",
 				"type": "Error",
-				"description": "Rejects stale, foreign, read-only or unavailable context and propagates readiness or admission errors. An approval may already be committed if task submission later fails."
+				"description": "Queue/readiness failures reject; worker outcomes are returned as actual results and are not represented as completed when they failed."
 			}
 		]
 	},

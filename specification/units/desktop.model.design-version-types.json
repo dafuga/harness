@@ -19,8 +19,8 @@
 		"outputs": [
 			{
 				"name": "DesignImage",
-				"type": "{state:string,viewport:string,sha256:string,bytes:number,option?:string}",
-				"description": "bytes is a size, not image bytes; no path or URL is declared."
+				"type": "{file:string,state:string,viewport:string,sha256:string,bytes:number,option?:string}",
+				"description": "file is the exact committed relative image filename for this version; bytes is size metadata, and option identifies the stored design choice."
 			},
 			{
 				"name": "DesignOptionInfo",
@@ -34,7 +34,7 @@
 			{
 				"name": "DesignVersion",
 				"type": "{version:string,createdAt:string,commit:string|null,generator:string,prompt:string,notes?:string,baseRevision:string,images:DesignImage[],approval:ApprovalInfo|null,options?:DesignOptionInfo[],revises?:DesignRevision|null}",
-				"description": "Optioned versions expose alternatives but no preferred or selected field."
+				"description": "Images preserve each exact committed file path and option binding; optioned versions expose alternatives but no preferred or selected field."
 			}
 		],
 		"errors": []

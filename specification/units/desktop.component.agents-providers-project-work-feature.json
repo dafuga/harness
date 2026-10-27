@@ -3,14 +3,16 @@
 	"id": "desktop.component.agents-providers-project-work-feature",
 	"kind": "component",
 	"title": "ProjectWorkFeature",
-	"responsibility": "Render one feature work plan and its module task tree.",
+	"responsibility": "Render one feature plan, its design choices and the parented module task tree.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
 		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-details",
+			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-small",
@@ -31,24 +33,50 @@
 			{
 				"name": "ProjectWorkFeature.feature",
 				"type": "FeatureWorkSnapshot feature",
-				"description": "The selected feature, its plan and projected task progress from the project queue."
+				"description": "The selected feature, committed plan, page options, module wanted contracts and projected task progress."
 			},
 			{
-				"name": "ProjectWorkFeature.initiallyOpen",
+				"name": "ProjectWorkFeature.previewFor",
+				"type": "(page:FeaturePlanPage,option:FeaturePlanOption)=>Preview",
+				"description": "Returns a preview only for the exact feature digest, selected project, source revision, version, option and image hash."
+			},
+			{
+				"name": "ProjectWorkFeature.loadPage",
+				"type": "(page:FeaturePlanPage)=>Promise<void>",
+				"description": "Loads exact committed page option images after the user expands that page."
+			},
+			{
+				"name": "ProjectWorkFeature.select",
+				"type": "(input:FeaturePlanSelection)=>Promise<boolean>",
+				"description": "Selects an option bound to the current plan digest."
+			},
+			{
+				"name": "ProjectWorkFeature.pending",
 				"type": "boolean",
-				"description": "Whether the feature row is expanded when first rendered; later refreshes preserve the user selection."
+				"description": "Whether a selection or approval action is pending."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectWorkFeature",
 				"type": "markup",
-				"description": "Accessible nested feature, module, wanted-contract and design-option metadata; actual stored task status labels and blockers, with planned but unsubmitted tasks distinctly labeled. User-expanded and collapsed feature rows remain in their chosen state as the selected project queue refreshes, including when a later queue commit changes task status."
+				"description": "Shows exact option images, hashes, revisions, preferred and selected labels; digest-bound selection controls; nested module relationships and wanted contracts; stored task states, dependency blockers and planned-but-unsubmitted tasks. Completed tasks use the completed label. Page expansion remains user-controlled."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "image unavailable",
+				"type": "visible error",
+				"description": "Reports that the exact revision-bound preview could not be read and never substitutes a different image."
+			}
+		]
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-code",
 			"via": "import",
@@ -56,6 +84,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-details",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

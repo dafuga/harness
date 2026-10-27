@@ -2,6 +2,8 @@ import type { ApprovalInfo, Region } from '../development-tooling/Desktop.types'
 
 /** One image of a design version; `option` names the design option holding it, when it has one. */
 export interface DesignImage {
+	/** The exact path within the version directory, required for revision-bound reads. */
+	file: string;
 	state: string;
 	viewport: string;
 	sha256: string;

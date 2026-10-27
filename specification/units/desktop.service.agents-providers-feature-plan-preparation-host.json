@@ -3,27 +3,111 @@
 	"id": "desktop.service.agents-providers-feature-plan-preparation-host",
 	"kind": "service",
 	"title": "FeaturePlanPreparationHostService",
-	"responsibility": "Owns the FeaturePlanPreparationHostService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Generate three reference-bound GPT Image design choices for every affected page and commit exact, revision-bound artifacts without approving or dispatching work.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/agents-providers/FeaturePlanPreparationHostService.ts"
 		],
-		"symbols": ["FeaturePlanPreparationHostService", "FeaturePlanPreparationHostService.run"]
+		"symbols": [
+			"FeaturePlanPreparationHostService",
+			"FeaturePlanPreparationHostService.constructor",
+			"FeaturePlanPreparationHostService.preparePage",
+			"FeaturePlanPreparationHostService.finalize"
+		]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
-		"outputs": [
+		"origin": "declared",
+		"inputs": [
 			{
-				"name": "FeaturePlanPreparationHostService.run",
-				"type": "string"
+				"name": "FeaturePlanPreparationHostService.constructor.dependencies",
+				"type": "{generator:ImageGenerator,planning:PlanningPort,revision:()=>Promise<string>,data:(commit:string)=>Promise<ModuleData>}",
+				"description": "Trusted image generation, planning write/read, current branch revision, and exact committed metadata boundaries. Tests use synthetic providers and committed plan fixtures."
+			},
+			{
+				"name": "preparePage.input",
+				"type": "FeaturePlanPreparationDependencies.preparePage input & {referenceBytes:Uint8Array}",
+				"description": "Contains original user text, shared goal/TLDR first, module goal, exact committed reference, optional normalized edit region, three distinct option directions/instructions with one preferred choice, image prompt, and AbortSignal."
+			},
+			{
+				"name": "preparePage.referenceBytes",
+				"type": "Uint8Array",
+				"description": "Bytes for the exact entity, revision, version, state, viewport, file, SHA-256 and optional choice. The host checks the committed planning record, verifies the byte hash and PNG format, then writes the same bytes to a private temporary path for generation."
+			},
+			{
+				"name": "finalize.input",
+				"type": "{sourceCommit:string,pages:GeneratedPage[],designs:PreparationPageDesign[]}",
+				"description": "All generated page choices plus the exact design reference/region/choice records used to produce them. Page and design sets must match one-to-one."
+			},
+			{
+				"name": "finalize.signal",
+				"type": "AbortSignal",
+				"description": "Cancellation is checked before each page commit and before returning. An in-flight planning write settles before the caller releases its repository lease."
 			}
 		],
-		"errors": []
+		"outputs": [
+			{
+				"name": "FeaturePlanPreparationHostService.preparePage",
+				"type": "Promise<GeneratedPage>",
+				"description": "Calls GPT Image with the exact reference path and an image prompt beginning with the shared overall goal/TLDR. For a scoped region it tells the model to edit only that normalized rectangle and preserve all surrounding page structure and content. Returns three validated image byte arrays with the exact submitted and provider-revised prompts, unchanged option IDs/directions and one preferred flag."
+			},
+			{
+				"name": "FeaturePlanPreparationHostService.finalize",
+				"type": "Promise<{sourceCommit:string,data:ModuleData,pages:FeaturePlanPage[]}>",
+				"description": "Serially writes each page's three generated options against the current branch tip and expected latest plan version; re-reads each commit and checks option IDs, direction, prompts, image bytes, SHA-256, path and preferred choice. Returns metadata bound to the last exact design commit. It never approves a plan or starts a worker."
+			}
+		],
+		"errors": [
+			{
+				"name": "Invalid reference, choices, or generated image",
+				"type": "Error",
+				"description": "Rejects a missing or changed committed design reference, bad byte hash, unsafe or unsupported image path, non-PNG data, fewer or duplicate choices, multiple/no preferred choices, malformed generated image, or incomplete persisted design option."
+			},
+			{
+				"name": "Revision conflict or cancellation",
+				"type": "Error or preserved abort",
+				"description": "Rejects source branch drift, a stale latest design version, unexpected commit tip, mismatched design/page sets, metadata from another commit, or cancellation; temporary reference bytes are removed in every outcome."
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "desktop.model.agent-runner-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.planning-port-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.validator.image-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-feature-plan-preparation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/services/agents-providers/FeaturePlanPreparationHostService.ts",
@@ -35,6 +119,55 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["operation"],
+		"cases": [
+			{
+				"id": "prepare-page-exact-reference",
+				"state": "operation",
+				"subject": "FeaturePlanPreparationHostService.preparePage",
+				"call": "preparePage(input)",
+				"input": "Three unique directions and one preferred choice; reference bytes match the committed image.",
+				"test": {
+					"file": "packages/desktop/test/services/agents-providers/feature-plan-preparation-host.test.ts",
+					"title": "preparePage uses the exact reference and refuses invalid inputs"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"module": "pages.home",
+						"optionIds": ["o1", "o2", "o3"],
+						"imageCount": 3,
+						"temporaryInputRemoved": true
+					}
+				},
+				"errors": ["Invalid reference, choices, or generated image"]
+			},
+			{
+				"id": "finalize-exact-designs",
+				"state": "operation",
+				"subject": "FeaturePlanPreparationHostService.finalize",
+				"call": "finalize(input, signal)",
+				"input": "Matching source commit, reference anchor, options and design record.",
+				"test": {
+					"file": "packages/desktop/test/services/agents-providers/feature-plan-preparation-host.test.ts",
+					"title": "finalize writes exact image references and refuses stale designs before writing"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"sourceCommit": "committed design revision",
+						"pageOptions": 3,
+						"preferredOptions": 1,
+						"metadataCommitMatches": true
+					}
+				},
+				"errors": ["Revision conflict or cancellation"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

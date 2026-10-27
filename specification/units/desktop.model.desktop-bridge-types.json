@@ -3,7 +3,7 @@
 	"id": "desktop.model.desktop-bridge-types",
 	"kind": "model",
 	"title": "DesktopBridge",
-	"responsibility": "Owns desktop bridge request and channel models.",
+	"responsibility": "Owns project-scoped desktop bridge request, response, image-reference, and channel models.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -29,6 +29,10 @@
 			"ApprovalDraft",
 			"FeaturePlanSelection",
 			"FeaturePlanApproval",
+			"FeaturePlanReference",
+			"FeaturePlanPageDesign",
+			"FeaturePlanPreparationRequest",
+			"FeaturePlanExecutionResult",
 			"RunRequest",
 			"ProjectRunRequest",
 			"DesktopBridge",
@@ -53,8 +57,8 @@
 		"inputs": [
 			{
 				"name": "RunRequest",
-				"type": "ProjectContext & {environment?:DeploymentEnvironment,mode:\"plan\"|\"change\",provider:\"codex\"|\"claude\",model:string,effort:string|null,entityId:string,threadId:string,text:string,approval:Omit<ApprovalDraft,\"entityId\">|null,designOptions?:number}",
-				"description": "designOptions is plan-only, 1–10/default 3; no explicit reference selector is declared."
+				"type": "ProjectContext & {environment?:DeploymentEnvironment,mode:plan|change,provider:codex|claude,model:string,effort:string|null,entityId:string,threadId:string,text:string,approval:Omit<ApprovalDraft,entityId>|null,designOptions?:number}",
+				"description": "designOptions is plan-only, 1–10/default 3. Planning reference selection is carried by FeaturePlanPreparationRequest."
 			},
 			{
 				"name": "ApprovalDraft",
@@ -65,6 +69,21 @@
 				"name": "ImageQuery",
 				"type": "EntityQuery & {version:string,sha256:string,option?:string}",
 				"description": "EntityQuery binds entityId and commit; the optional option names the exact design choice."
+			},
+			{
+				"name": "FeaturePlanReference",
+				"type": "{kind:current|wanted,entityId:string,commit:string,version:string,state:string,viewport:string,file:string,sha256:string,option?:string}",
+				"description": "Identifies the exact committed source image, its state and viewport, and optional choice. The host verifies bytes by entity, commit, version, hash and option before generation."
+			},
+			{
+				"name": "FeaturePlanPageDesign",
+				"type": "{module:string,reference:FeaturePlanReference,region:Region|null,options:[{id:string,preferred:boolean,direction:string,prompt:string} x3]}",
+				"description": "Every affected page names an exact current or wanted image and exactly three distinct proposed choices with exactly one preferred direction; region coordinates are normalized image fractions, and null means the user requested a whole-page design."
+			},
+			{
+				"name": "FeaturePlanPreparationRequest",
+				"type": "{projectId:string,sourceCommit:string,originalRequest:string,proposal:FeaturePlanProposal,pageDesigns:FeaturePlanPageDesign[]}",
+				"description": "proposal carries shared goal/TLDR, module changes with wanted contracts, and dependency-ordered tasks with moduleGoal. Preparation commits three image options per affected page and returns an unapproved plan; it never starts a worker."
 			},
 			{
 				"name": "FeaturePlanSelection",
@@ -92,8 +111,7 @@
 			},
 			{
 				"name": "channels",
-				"type": "unknown",
-				"description": "Typed desktop channel map; projectWork uses project:work."
+				"type": "Typed desktop channel map; projectWork uses project:work."
 			},
 			{
 				"name": "runEventChannel",
@@ -109,6 +127,11 @@
 				"description": "Reads one project-scoped committed feature-work snapshot when supported by the host."
 			},
 			{
+				"name": "prepareFeaturePlan",
+				"type": "optional (input:FeaturePlanPreparationRequest)=>Promise<FeaturePlan>",
+				"description": "Commits complete, reference-bound, unapproved designs and wanted contracts; dispatch requires a later explicit approval."
+			},
+			{
 				"name": "selectFeaturePlan",
 				"type": "optional (input:FeaturePlanSelection)=>Promise<FeaturePlan>",
 				"description": "Local desktop feature-plan selection; absent on unsupported hosts."
@@ -119,7 +142,18 @@
 				"description": "Local desktop feature-plan approval and task admission; absent on unsupported hosts."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Invalid or stale project context",
+				"type": "Error",
+				"description": "Foreign projects and stale source or plan digests are rejected before returning or mutating project data."
+			},
+			{
+				"name": "Invalid design reference or edit region",
+				"type": "Error",
+				"description": "Rejects unsafe paths, mismatched image bytes, incomplete page coverage and invalid normalized regions before committing a plan."
+			}
+		]
 	},
 	"dependencies": [
 		{

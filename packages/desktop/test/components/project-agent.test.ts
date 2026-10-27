@@ -79,11 +79,14 @@ const workText = (
 	snapshot: FeatureWorkSnapshot | null,
 	loading = false,
 	error: string | null = null
-) =>
-	render(ProjectWork, { props: { snapshot, loading, error } as never })
+) => {
+	const workspace = { projectId: 'local-1', bridge: null } as unknown as Workspace,
+		actions = { pending: false, error: null, select: async () => true, approve: async () => true };
+	return render(ProjectWork, { props: { snapshot, loading, error, workspace, actions } as never })
 		.body.replace(/<[^>]*>/g, ' ')
 		.replace(/\s+/g, ' ')
 		.trim();
+};
 
 const wantedContract = {
 	responsibility: 'Calculate the exact basket total',
@@ -114,6 +117,7 @@ function planTasks(tasks: FeatureWorkSnapshot['features'][number]['tasks']) {
 		id,
 		title,
 		module,
+		moduleGoal: `Implement ${module}`,
 		dependsOn,
 		feature: 'checkout',
 		instructions: 'Implement checkout',
@@ -197,7 +201,7 @@ test('feature Work renders committed plan hierarchy, explicit statuses and depen
 	for (const task of snapshot.features[0].tasks) {
 		expect(body).toContain(task.title);
 	}
-	for (const status of [/queued|to do/i, /running|in progress/i, /review/i, /accepted/i, /failed/i])
+	for (const status of [/to do/i, /running|in progress/i, /review/i, /completed/i, /failed/i])
 		expect(body).toMatch(status);
 	expect(body).toMatch(/blocked|waiting/i);
 	expect(body).toContain('checkout.failed');

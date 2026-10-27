@@ -7,6 +7,7 @@ import { ModuleTaskRepository } from '../../../../../src/repositories/agents-pro
 import { FeaturePlanService } from '../../../../../src/services/agents-providers/FeaturePlanService';
 import { ModuleTaskServerService } from '../../../../../src/services/agents-providers/ModuleTaskServerService';
 import { FeaturePlanValidator } from '../../../../../src/validators/agents-providers/FeaturePlanValidator';
+import type { HostResourcesAdapter } from '../../../../../src/services/execution-runtimes/resource-queue-service/resource-monitor-service/host-resources-adapter/HostResourcesAdapter';
 import type { FeaturePlan } from '../../../../../src/repositories/agents-providers/ModuleTaskRepository.types';
 import type { BridgeContext } from '../../../src/lib/development-tooling/desktop-bridge/desktopBridge.types';
 import { featurePlanAction } from '../../../src/utils/development-tooling/featurePlanAction';
@@ -43,6 +44,18 @@ const approval = {
 	expectedDigest: digest
 };
 
+type ResourceSnapshot = Awaited<ReturnType<HostResourcesAdapter['sample']>>;
+
+function resourceSample(memoryAvailableBytes: number, memoryPressure = 'normal') {
+	const snapshot = {
+		status: 'available',
+		memoryAvailableBytes,
+		memoryTotalBytes: 32 * 1024 ** 3,
+		memoryPressure
+	} as unknown as ResourceSnapshot;
+	return async () => snapshot;
+}
+
 function fixture() {
 	const assertProject = vi.fn((id: string) => {
 		if (id !== 'project-a') throw new Error('Wrong project.');
@@ -60,58 +73,108 @@ function fixture() {
 	const submit = vi
 		.spyOn(ModuleTaskServerService.prototype, 'submitApproved')
 		.mockResolvedValue({ created: ['feature.task'], reused: [], commit: undefined });
-	return { context, project, writable, read, select, approve, submit };
+	const runApproved = vi
+		.spyOn(ModuleTaskServerService.prototype, 'runApproved')
+		.mockResolvedValue({
+			submission: { created: ['feature.task'], reused: [], commit: undefined },
+			results: []
+		});
+	const sampleResources = vi.fn(resourceSample(16 * 1024 ** 3));
+	return { context, project, writable, read, select, approve, submit, runApproved, sampleResources };
 }
 afterEach(() => vi.restoreAllMocks());
 
 test('featurePlanAction rejects a foreign project and stale plan before a write', async () => {
 	const f = fixture();
 	await expect(
-		featurePlanAction(f.context, { ...selection, projectId: 'other' }, f.writable)
+		featurePlanAction(
+			f.context,
+			{ ...selection, projectId: 'other' },
+			f.writable,
+			f.sampleResources
+		)
 	).rejects.toThrow('Wrong project');
 	await expect(
-		featurePlanAction(f.context, { ...selection, expectedDigest: 'c'.repeat(64) }, f.writable)
+		featurePlanAction(
+			f.context,
+			{ ...selection, expectedDigest: 'c'.repeat(64) },
+			f.writable,
+			f.sampleResources
+		)
 	).rejects.toThrow('changed');
 	f.read.mockResolvedValueOnce({
 		commit: undefined,
 		plans: [{ ...plan, sourceCommit: 'c'.repeat(40) }]
 	});
-	await expect(featurePlanAction(f.context, selection, f.writable)).rejects.toThrow('changed');
+	await expect(
+		featurePlanAction(f.context, selection, f.writable, f.sampleResources)
+	).rejects.toThrow('changed');
 	expect(f.select).not.toHaveBeenCalled();
 	expect(f.approve).not.toHaveBeenCalled();
 	expect(f.submit).not.toHaveBeenCalled();
+	expect(f.runApproved).not.toHaveBeenCalled();
 });
 
 test('featurePlanAction refuses a changed revision before selection or task admission', async () => {
 	const f = fixture(),
 		changed = { ...f.project, revision: { ...f.project.revision, commit: 'c'.repeat(40) } };
 	f.writable.mockResolvedValueOnce(f.project).mockResolvedValueOnce(changed);
-	await expect(featurePlanAction(f.context, selection, f.writable)).rejects.toThrow(
+	await expect(featurePlanAction(f.context, selection, f.writable, f.sampleResources)).rejects.toThrow(
 		'revision has changed'
 	);
 	expect(f.select).not.toHaveBeenCalled();
+	expect(f.runApproved).not.toHaveBeenCalled();
 	f.writable
 		.mockResolvedValueOnce(f.project)
 		.mockResolvedValueOnce(f.project)
 		.mockResolvedValueOnce(changed);
-	await expect(featurePlanAction(f.context, approval, f.writable)).rejects.toThrow(
+	await expect(featurePlanAction(f.context, approval, f.writable, f.sampleResources)).rejects.toThrow(
 		'revision has changed'
 	);
 	expect(f.approve).toHaveBeenCalledOnce();
 	expect(f.submit).not.toHaveBeenCalled();
+	expect(f.runApproved).not.toHaveBeenCalled();
 });
 
 test('featurePlanAction propagates readiness and queue errors and submits only the approved digest', async () => {
 	const f = fixture();
+	const tasks = Array.from({ length: 4 }, (_, index) => ({ id: `task-${index}` })) as unknown as FeaturePlan['tasks'];
+	f.read.mockResolvedValue({ commit: undefined, plans: [{ ...plan, tasks }] });
 	f.approve.mockRejectedValueOnce(new Error('Not ready.'));
-	await expect(featurePlanAction(f.context, approval, f.writable)).rejects.toThrow('Not ready');
-	expect(f.submit).not.toHaveBeenCalled();
-	f.submit.mockRejectedValueOnce(new Error('Queue unavailable.'));
-	await expect(featurePlanAction(f.context, approval, f.writable)).rejects.toThrow(
-		'Queue unavailable'
+	await expect(
+		featurePlanAction(f.context, approval, f.writable, f.sampleResources)
+	).rejects.toThrow('Not ready');
+	expect(f.runApproved).not.toHaveBeenCalled();
+	f.runApproved
+		.mockRejectedValueOnce(new Error('Worker unavailable.'))
+		.mockRejectedValueOnce(new Error('Worker unavailable.'));
+	f.sampleResources
+		.mockImplementationOnce(resourceSample(16 * 1024 ** 3, 'warning'))
+		.mockRejectedValueOnce(new Error('Resource probe unavailable.'));
+	await expect(featurePlanAction(f.context, approval, f.writable, f.sampleResources)).rejects.toThrow(
+		'Worker unavailable'
 	);
-	await expect(featurePlanAction(f.context, approval, f.writable)).resolves.toEqual(approved);
-	expect(f.submit).toHaveBeenCalledWith({ feature: 'feature', expectedDigest: digest });
+	await expect(featurePlanAction(f.context, approval, f.writable, f.sampleResources)).rejects.toThrow(
+		'Worker unavailable'
+	);
+	await expect(
+		featurePlanAction(f.context, approval, f.writable, f.sampleResources)
+	).resolves.toMatchObject({ plan: approved, results: [] });
+	expect(f.submit).not.toHaveBeenCalled();
+	expect(f.runApproved).toHaveBeenNthCalledWith(
+		1,
+		{ feature: 'feature', expectedDigest: digest },
+		expect.objectContaining({ worker: 'project-agent', parallelism: 1 })
+	);
+	expect(f.runApproved).toHaveBeenNthCalledWith(
+		2,
+		{ feature: 'feature', expectedDigest: digest },
+		expect.objectContaining({ worker: 'project-agent', parallelism: 1 })
+	);
+	expect(f.runApproved).toHaveBeenLastCalledWith(
+		{ feature: 'feature', expectedDigest: digest },
+		expect.objectContaining({ worker: 'project-agent', parallelism: 2 })
+	);
 });
 
 async function committedFixture() {
@@ -192,6 +255,16 @@ async function draftFixtureTask(root: string, module: string, sourceCommit: stri
 test('featurePlanAction approves and admits a committed fixture task without starting a provider', async () => {
 	const { f, module, sourceCommit } = await committedFixture();
 	const { task, draft } = await draftFixtureTask(f.root, module, sourceCommit);
+	const runApproved = vi.spyOn(ModuleTaskServerService.prototype, 'runApproved').mockImplementation(
+		async function (this: ModuleTaskServerService, input, _execution) {
+			const submission = await this.submitApproved(input);
+			return {
+				submission,
+				results: [{ status: 'review', task: task.id, result: { text: 'completed' } }]
+			};
+		}
+	);
+	const submitApproved = vi.spyOn(ModuleTaskServerService.prototype, 'submitApproved');
 	const context = { session: f.session } as unknown as BridgeContext;
 	const result = await featurePlanAction(
 		context,
@@ -201,15 +274,28 @@ test('featurePlanAction approves and admits a committed fixture task without sta
 			expectedDigest: draft.digest,
 			reviewer: 'Daniel'
 		},
-		() => f.session.mutable()
+		() => f.session.mutable(),
+		resourceSample(16 * 1024 ** 3)
 	);
-	expect(result.approval?.digest).toBe(draft.digest);
+	expect(result).toMatchObject({
+		plan: { approval: { digest: draft.digest } },
+		submission: { created: [task.id] },
+		results: [{ status: 'review', task: task.id }],
+		parallelism: 1
+	});
+	expect(submitApproved).toHaveBeenCalledOnce();
+	expect(runApproved).toHaveBeenCalledOnce();
+	expect(runApproved).toHaveBeenCalledWith(
+		{ feature: draft.feature, expectedDigest: draft.digest },
+		expect.objectContaining({ worker: 'project-agent', parallelism: 1 })
+	);
 	const queue = (await new ModuleTaskRepository(f.root).read()).data;
 	expect(queue.tasks.map((item) => item.id)).toEqual([task.id]);
 	expect(queue.tasks[0]).toMatchObject({
 		status: 'queued',
 		sourceCommit,
 		assignedFiles: ['src/owned.ts'],
+		moduleGoal: 'Return the owned fixture value.',
 		module: { id: module, files: ['src/owned.ts'] }
 	});
 	expect(f.run).not.toHaveBeenCalled();

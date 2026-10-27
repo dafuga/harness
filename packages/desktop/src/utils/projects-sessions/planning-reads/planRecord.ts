@@ -50,6 +50,7 @@ export async function planVersion(
 			? await gitText(context.root, revision, directory + version.notes.file)
 			: undefined,
 		images: version.images.map((i) => ({
+			file: i.file,
 			state: i.state,
 			viewport: i.viewport,
 			sha256: i.sha256,

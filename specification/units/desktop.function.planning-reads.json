@@ -127,7 +127,7 @@
 			{
 				"name": "planVersion",
 				"type": "Promise<DesignVersion>",
-				"description": "A promise for a design version with prompt and optional notes read at the requested revision, image and option metadata, the last approval for that version, and any exact image-revision binding."
+				"description": "Returns the requested design version with prompt/notes, approval, revisions, option metadata and every image exact committed relative filename."
 			},
 			{
 				"name": "readPlanMessages",

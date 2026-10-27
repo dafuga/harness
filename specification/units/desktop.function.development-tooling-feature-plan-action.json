@@ -3,12 +3,12 @@
 	"id": "desktop.function.development-tooling-feature-plan-action",
 	"kind": "function",
 	"title": "featurePlanAction",
-	"responsibility": "Bind local feature-plan selection and approval to the selected project and reviewed source, then admit only approved tasks.",
+	"responsibility": "Select a page design or explicitly approve and dispatch the exact ready feature plan under the selected project repository lease.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/development-tooling/featurePlanAction.ts"],
-		"symbols": ["featurePlanAction"]
+		"symbols": ["featurePlanAction", "featurePlanAction", "featurePlanAction"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -16,42 +16,62 @@
 			{
 				"name": "featurePlanAction.context",
 				"type": "BridgeContext",
-				"description": "Trusted selected project session; the caller holds the project repository lease."
+				"description": "Trusted selected project session; caller holds the repository write lease."
 			},
 			{
 				"name": "featurePlanAction.input",
 				"type": "FeaturePlanSelection | FeaturePlanApproval",
-				"description": "Explicit project ID, feature and expected plan digest; selection names a page and option, while approval names a reviewer."
+				"description": "Explicit project and feature identity plus exact current plan digest; selection includes one page and option, approval includes a named reviewer."
 			},
 			{
 				"name": "featurePlanAction.writable",
 				"type": "() => Promise<mutable project>",
-				"description": "Trusted caller check for a live client and a writable selected project revision."
+				"description": "Trusted live-client and writable-source revision check, repeated around asynchronous work."
+			},
+			{
+				"name": "featurePlanAction.sampleResources",
+				"type": "() => Promise<ResourceSnapshot>",
+				"description": "Optional host memory and pressure sample; missing or unavailable data limits approval dispatch to one worker."
 			}
 		],
 		"outputs": [
 			{
-				"name": "featurePlanAction",
+				"name": "featurePlanAction.select",
 				"type": "Promise<FeaturePlan>",
-				"description": "Checks project identity, the latest plan digest and its source against the writable revision, then rechecks context. Selection commits a new unapproved plan revision. Approval uses the real readiness verifier, rechecks context, and submits the exact approved tasks without starting a worker. Repository and revision checks are repeated but do not lock external Git operations."
+				"description": "Validates project identity, current plan digest and source revision, then commits the selected page option as a new unapproved plan revision."
+			},
+			{
+				"name": "featurePlanAction.approve",
+				"type": "Promise<FeaturePlanExecutionResult>",
+				"description": "Rechecks project and source, readiness-validates and commits the named approval, then invokes ModuleTaskServerService.runApproved with the exact plan digest and memory-bounded parallelism. Returns actual admitted task IDs, run results and selected parallelism."
 			}
 		],
 		"errors": [
 			{
-				"name": "Invalid or stale context",
+				"name": "stale or foreign context",
 				"type": "Error",
-				"description": "Rejects missing or foreign project, stale digest, mismatched source, changed writable revision, ended client, or underlying service failures."
+				"description": "Rejects missing or foreign project, stale digest, changed source or ended client before mutating or dispatching."
 			},
 			{
-				"name": "Approval or submission failure",
+				"name": "readiness, queue or worker failure",
 				"type": "Error",
-				"description": "Readiness and queue errors propagate. Approval can already be committed if context changes or submission fails afterward; the approved plan can be retried with the CLI task plan start command."
+				"description": "Propagates plan readiness and task admission failures. A committed approval may remain after a later dispatch failure and can be retried with the same plan digest."
+			},
+			{
+				"name": "resource probe failure",
+				"type": "bounded dispatch",
+				"description": "Keeps approval eligible and limits worker concurrency to one when resource information is missing, unavailable or pressured."
 			}
 		]
 	},
 	"dependencies": [
 		{
 			"unit": "adapter.agents-providers-feature-plan-readiness",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.host-resources",
 			"via": "import",
 			"origin": "derived"
 		},

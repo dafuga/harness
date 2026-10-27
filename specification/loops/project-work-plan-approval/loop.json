@@ -1,0 +1,45 @@
+{
+	"completion": {
+		"version": 1,
+		"kind": "coding"
+	},
+	"name": "project-work-plan-approval",
+	"goal": "Show committed design options and wanted contracts in the project Work tree, allow digest-bound option selection and approval, and dispatch only approved assigned module work.",
+	"createdAt": "2026-10-27T16:06:39.839Z",
+	"updatedAt": "2026-10-27T19:09:21.130Z",
+	"steps": [
+		{
+			"id": "prepare-plan",
+			"title": "Commit coverage-checked page design options and wanted contracts.",
+			"status": "pending"
+		},
+		{
+			"id": "review-plan",
+			"title": "Show page design options, preferred choice, module tree and wanted-contract changes for explicit review.",
+			"status": "pending"
+		},
+		{
+			"id": "approve-dispatch",
+			"title": "Bind selection and approval to the visible plan digest, then dispatch approved tasks within memory limits.",
+			"status": "pending"
+		},
+		{
+			"id": "progress-panel",
+			"title": "Show the same real task statuses in Chat and Work with distinct to-do, in-progress and completed dots.",
+			"status": "pending"
+		},
+		{
+			"id": "verify-feature",
+			"title": "Run focused contract, service and Work-panel verification; keep broader checks deferred per the user instruction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T19:09:21.130Z",
+			"evidence": "HARNESS_RESOURCE_PRIORITY=coding bun run test:unit -- test/services/agents-providers/feature-plan-preparation.test.ts: 1 passed; desktop focused unit suite (9 files): 48 passed; desktop typecheck: 0 errors/0 warnings; harness units check: 1,889 units, 0 errors. UI screenshot and full delivery verification remain pending in verify-delivered."
+		},
+		{
+			"id": "verify-delivered",
+			"title": "Verify the frozen delivered revision with required project checks and browser flows on harbor-mbp-2, then inspect current-main screenshots and report every remaining gate.",
+			"status": "pending"
+		}
+	],
+	"agentModel": "gpt-6-luna"
+}

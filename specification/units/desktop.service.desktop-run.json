@@ -3,8 +3,8 @@
 	"id": "desktop.service.desktop-run",
 	"kind": "service",
 	"title": "DesktopRunService",
-	"responsibility": "Owns the DesktopRunService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Runs desktop agent work and prepares unapproved, reference-bound feature plans for the selected local project.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -16,6 +16,7 @@
 			"DesktopRunService",
 			"DesktopRunService.constructor",
 			"DesktopRunService.start",
+			"DesktopRunService.prepareFeaturePlan",
 			"DesktopRunService.cancelActive",
 			"DesktopRunService.cancel",
 			"Prepared",
@@ -23,7 +24,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DesktopRunService.constructor.session",
@@ -48,6 +49,11 @@
 			{
 				"name": "DesktopRunService.cancel.runId",
 				"type": "string"
+			},
+			{
+				"name": "DesktopRunService.prepareFeaturePlan.input",
+				"type": "FeaturePlanPreparationRequest",
+				"description": "Exact selected project and writable source revision; proposal goal/TLDR, module contracts and tasks; original request; each affected page reference and optional edit region; cancellation is owned by the service."
 			}
 		],
 		"outputs": [
@@ -62,18 +68,34 @@
 			{
 				"name": "DesktopRunService.cancel",
 				"type": "boolean"
+			},
+			{
+				"name": "DesktopRunService.prepareFeaturePlan",
+				"type": "Promise<FeaturePlan>",
+				"description": "Claims the local project operation and repository lease, verifies committed metadata and exact design references, generates three choices per affected page, commits their exact image paths and returns an unapproved plan draft. It never starts workers."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Unavailable or busy project",
+				"type": "Error",
+				"description": "Rejects absent, stale, foreign or read-only local project context, or another active Harness operation before draft publication."
+			},
+			{
+				"name": "Preparation failure",
+				"type": "Error or preserved abort",
+				"description": "Rejects source or metadata mismatch, missing references, failed image generation, commit conflicts or cancellation; releases the project lease and busy state."
 			}
 		]
 	},
 	"dependencies": [
 		{
 			"unit": "desktop.function.design-count",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.git-read",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -113,12 +135,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.service.agents-providers-feature-plan-preparation-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.service.change-run",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "desktop.service.plan-run",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.project-image-cache",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -141,6 +173,41 @@
 			"unit": "desktop.service.provider-discovery",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-feature-plan-preparation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-feature-plan-coverage",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
@@ -160,6 +227,78 @@
 		"agent-creation",
 		"plan-fixture-contracts"
 	],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["operation"],
+		"cases": [
+			{
+				"id": "start-plan-run",
+				"state": "operation",
+				"subject": "DesktopRunService.start",
+				"call": "start(request)",
+				"input": "A committed plan request with an approved contract and valid project context.",
+				"test": {
+					"file": "packages/desktop/test/run-integration.test.ts",
+					"title": "Plan uses read-only CLI and saves a committed immutable version without claiming verification"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"runId": "created"
+					}
+				}
+			},
+			{
+				"id": "prepare-plan-guards",
+				"state": "operation",
+				"subject": "DesktopRunService.prepareFeaturePlan",
+				"call": "prepareFeaturePlan(input)",
+				"input": "A scoped preparation request for a selected project.",
+				"test": {
+					"file": "packages/desktop/test/services/agents-providers/desktop-run-feature-plan.test.ts",
+					"title": "prepareFeaturePlan enforces project and revision guards while releasing its lease"
+				},
+				"expected": {
+					"kind": "error",
+					"value": "A project operation is already active"
+				},
+				"errors": ["Unavailable or busy project", "Preparation failure"]
+			},
+			{
+				"id": "cancel-active-run",
+				"state": "operation",
+				"subject": "DesktopRunService.cancelActive",
+				"call": "cancelActive()",
+				"input": "A currently active run with an AbortController.",
+				"test": {
+					"file": "packages/desktop/test/services/agents-providers/desktop-run-feature-plan.test.ts",
+					"title": "cancelActive aborts the currently active desktop run"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"id": "cancel-matching-run",
+				"state": "operation",
+				"subject": "DesktopRunService.cancel",
+				"call": "cancel(runId)",
+				"input": "A run ID that may or may not match the active run.",
+				"test": {
+					"file": "packages/desktop/test/services/agents-providers/desktop-run-feature-plan.test.ts",
+					"title": "cancel aborts only the matching desktop run ID"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"matching": true,
+						"foreign": false
+					}
+				}
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

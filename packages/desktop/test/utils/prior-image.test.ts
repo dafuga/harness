@@ -5,6 +5,7 @@ import type { DesignVersion } from '../../src/models/Desktop.types';
 const first = 'c'.repeat(40);
 const second = 'a'.repeat(40);
 const image = (viewport: string, sha: string) => ({
+	file: `${sha}-default-${viewport}.png`,
 	state: 'default',
 	viewport,
 	sha256: sha.repeat(64),
@@ -39,7 +40,7 @@ test('nothing is compared where the data does not support it', () => {
 });
 
 test('a version of options compares with the exact image it revises, never by option order', () => {
-	const shown = { state: 'default', viewport: 'desktop', sha256: 'new-o1', bytes: 1, option: 'o1' };
+	const shown = { file: 'o1-default-desktop.png', state: 'default', viewport: 'desktop', sha256: 'new-o1', bytes: 1, option: 'o1' };
 	const before = {
 		...{ version: 'v002', createdAt: '', commit: 'c1', generator: 'GPT Image', prompt: '' },
 		...{ baseRevision: '', approval: null },

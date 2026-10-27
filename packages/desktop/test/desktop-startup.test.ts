@@ -110,6 +110,7 @@ test('preload exposes the selected project Work reader over the local transport'
 	await import('../src/lib/development-tooling/preload-initialization/initializePreload');
 	const bridge = state.expose.mock.calls.find(([name]) => name === 'harness')?.[1] as {
 		projectWork?: (input: { projectId: string }) => Promise<unknown>;
+		prepareFeaturePlan?: (input: object) => Promise<unknown>;
 		selectFeaturePlan?: (input: object) => Promise<unknown>;
 		approveFeaturePlan?: (input: object) => Promise<unknown>;
 	};
@@ -119,6 +120,14 @@ test('preload exposes the selected project Work reader over the local transport'
 		features: []
 	});
 	expect(state.request).toHaveBeenCalledWith('projectWork', { projectId: 'project-a' });
+	const preparation = {
+		projectId: 'project-a', sourceCommit: 'a'.repeat(40), originalRequest: 'Improve the page.',
+		proposal: { feature: 'feature', sourceCommit: 'a'.repeat(40), goal: 'Improve the page.', tldr: 'Design then build.', changes: [], tasks: [] },
+		pageDesigns: []
+	};
+	expect(bridge.prepareFeaturePlan).toBeTypeOf('function');
+	await bridge.prepareFeaturePlan!(preparation);
+	expect(state.request).toHaveBeenCalledWith('prepareFeaturePlan', preparation);
 	const selection = {
 		projectId: 'project-a',
 		feature: 'feature',

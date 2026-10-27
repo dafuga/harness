@@ -3,16 +3,26 @@
 	"id": "desktop.component.agents-providers-project-work",
 	"kind": "component",
 	"title": "ProjectWork",
-	"responsibility": "Present selected-project feature plans and actual task progress.",
+	"responsibility": "Present selected-project feature plans, reference-bound design choices, wanted contracts, approval controls and actual task progress.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
 		"uses": [
 			"desktop.component.agents-providers-project-work-feature",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-details",
+			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-input",
+			"reports.component.shared-primitives-atoms-html-label",
+			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-small",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-atoms-html-summary",
 			"reports.component.shared-primitives-atoms-html-ul"
 		]
 	},
@@ -26,7 +36,7 @@
 			{
 				"name": "ProjectWork.snapshot",
 				"type": "FeatureWorkSnapshot | null",
-				"description": "One committed project-scoped queue snapshot."
+				"description": "One committed project-scoped queue snapshot including plan choices, wanted contracts and persisted task states."
 			},
 			{
 				"name": "ProjectWork.loading",
@@ -37,20 +47,51 @@
 				"name": "ProjectWork.error",
 				"type": "string | null",
 				"description": "Unavailable or stale-read explanation."
+			},
+			{
+				"name": "ProjectWork.workspace",
+				"type": "Workspace",
+				"description": "Selected project identity, exact-image reader and current bridge capabilities."
+			},
+			{
+				"name": "ProjectWork.actions",
+				"type": "ProjectWorkActionsStore",
+				"description": "Digest-bound design selection and explicit approval with pending/error state."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectWork",
 				"type": "markup",
-				"description": "Honest loading, unavailable, empty and stale states plus real feature trees; no fabricated statuses. Design previews and approval controls are explicitly unavailable until connected."
+				"description": "Honest loading, unavailable, empty and stale states; each feature has a plan/design/approval/work timeline and nested module tree with wanted contracts and dependency-ordered task dots. Page choices show exact committed images and preferred/selected state. Selection is bound to the current digest; approval requires all page choices and a named reviewer, then submits only approved task records."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "unavailable or stale project",
+				"type": "visible status",
+				"description": "Shows the last committed snapshot as stale or a clear unavailable state; never invents task progress or displays an image from another revision."
+			},
+			{
+				"name": "stale plan action",
+				"type": "visible action error",
+				"description": "Preserves the plan and reports a digest or revision conflict; no stale selection or approval is shown as successful."
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "desktop.component.agents-providers-project-work-feature",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.agents-providers-project-work-actions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -60,7 +101,37 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-details",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -75,7 +146,32 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-summary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
 			"via": "import",
 			"origin": "derived"
 		},

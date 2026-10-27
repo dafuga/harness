@@ -67,6 +67,7 @@ const bridge: DesktopBridge = {
 	providers: call('providers'),
 	agentActivity: call('agentActivity'),
 	projectWork: call('projectWork'),
+	prepareFeaturePlan: call('prepareFeaturePlan'),
 	selectFeaturePlan: call('selectFeaturePlan'),
 	approveFeaturePlan: call('approveFeaturePlan'),
 	startRun: call('startRun'),

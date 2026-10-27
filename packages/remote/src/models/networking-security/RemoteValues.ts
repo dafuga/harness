@@ -60,6 +60,7 @@ export const localMethods = [
 	'deploy',
 	'agentActivity',
 	'projectWork',
+	'prepareFeaturePlan',
 	'selectFeaturePlan',
 	'approveFeaturePlan',
 	'openProject',
@@ -105,6 +106,7 @@ export const projectlessMethods: readonly RemoteMethod[] = [
 export const mutationMethods: readonly RemoteMethod[] = [
 	...commentMethods,
 	...agentMethods,
+	'prepareFeaturePlan',
 	'gameCreate',
 	'selectFeaturePlan',
 	'approveFeaturePlan',

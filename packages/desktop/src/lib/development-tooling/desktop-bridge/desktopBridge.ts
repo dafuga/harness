@@ -16,7 +16,8 @@ import { RecordedEvidenceService } from './RecordedEvidenceService';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
 import type {
 	FeaturePlanSelection,
-	FeaturePlanApproval
+	FeaturePlanApproval,
+	FeaturePlanPreparationRequest
 } from '../../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
 import type { DeploymentBridge } from '../../../models/Deployment.types';
@@ -107,6 +108,13 @@ async function projectWork(context: BridgeContext, input: { projectId: string })
 }
 function featurePlanOperations(context: BridgeContext) {
 	return {
+		prepareFeaturePlan: async (input: FeaturePlanPreparationRequest) => {
+			const project = await writable(context);
+			context.session.assertProject(input.projectId);
+			if (project.revision.commit !== input.sourceCommit || input.proposal.sourceCommit !== input.sourceCommit)
+				throw new Error('Feature preparation must use the exact writable source revision.');
+			return context.runs.prepareFeaturePlan(input);
+		},
 		selectFeaturePlan: (input: FeaturePlanSelection) =>
 			exclusive(context.session, () => featurePlanAction(context, input, () => writable(context))),
 		approveFeaturePlan: (input: FeaturePlanApproval) =>

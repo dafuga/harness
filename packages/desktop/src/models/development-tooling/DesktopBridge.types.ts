@@ -114,6 +114,41 @@ export interface FeaturePlanApproval {
 	expectedDigest: string;
 }
 
+export interface FeaturePlanReference {
+	kind: 'current' | 'wanted';
+	entityId: string;
+	commit: string;
+	version: string;
+	state: string;
+	viewport: string;
+	file: string;
+	sha256: string;
+	option?: string;
+}
+
+export interface FeaturePlanPageDesign {
+	module: string;
+	reference: FeaturePlanReference;
+	region: Region | null;
+	options: Array<{ id: string; preferred: boolean; direction: string; instruction: string }>;
+}
+
+export interface FeaturePlanPreparationRequest {
+	projectId: string;
+	sourceCommit: string;
+	originalRequest: string;
+	proposal: Omit<FeaturePlan, 'pages' | 'revision' | 'digest' | 'approval'>;
+	pageDesigns: FeaturePlanPageDesign[];
+}
+
+/** Exact approval-scoped task admission and worker outcomes returned to Chat and Work. */
+export interface FeaturePlanExecutionResult {
+	plan: FeaturePlan;
+	submission: { created: string[]; reused: string[]; commit: string | null };
+	results: unknown[];
+	parallelism: number;
+}
+
 export interface RunRequest extends ProjectContext {
 	environment?: DeploymentEnvironment;
 	mode: RunMode;
@@ -154,8 +189,10 @@ export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
 	agentActivity?(input: ProjectContext): Promise<Pick<LiveActivity, 'sampledAt' | 'agents'>>;
 	/** Committed feature work for the selected project; absent on unsupported hosts. */
 	projectWork?(input: { projectId: string }): Promise<FeatureWorkSnapshot>;
+	/** Commits an unapproved, reference-bound plan; absent on unsupported hosts. */
+	prepareFeaturePlan?(input: FeaturePlanPreparationRequest): Promise<FeaturePlan>;
 	selectFeaturePlan?(input: FeaturePlanSelection): Promise<FeaturePlan>;
-	approveFeaturePlan?(input: FeaturePlanApproval): Promise<FeaturePlan>;
+	approveFeaturePlan?(input: FeaturePlanApproval): Promise<FeaturePlanExecutionResult>;
 	onCacheStatus?(listener: (event: CacheStatus) => void): () => void;
 	history?(
 		input: EntityQuery & { page: number; branch?: string }
