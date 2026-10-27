@@ -1,0 +1,261 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-qy8WZG
+
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts (13 tests | 13 failed) 8ms
+   × ModuleTaskBrokerTransportAdapter.ready from qualified initialization 4ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.ready from unconfigured initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.ready from qualification-rejected initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.run from invalid-input initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.run from qualification-rejected initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.run from open-failed initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.run from invalid-session initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.run from qualified initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.run from client-failed initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.run from cancelled-before initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.run from cancelled-opening initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.run from cancelled-running initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+   × ModuleTaskBrokerTransportAdapter.run from cleanup-failed initialization 0ms
+     → expected 'undefined' to be 'function' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.ready from qualified initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireReady test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:18:29
+     16| 
+     17| export function requireReady(value: Partial<Transport>): asserts value…
+     18|  expect(typeof value.ready).toBe('function');
+       |                             ^
+     19| }
+     20| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:16:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.ready from unconfigured initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireReady test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:18:29
+     16| 
+     17| export function requireReady(value: Partial<Transport>): asserts value…
+     18|  expect(typeof value.ready).toBe('function');
+       |                             ^
+     19| }
+     20| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:23:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.ready from qualification-rejected initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireReady test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:18:29
+     16| 
+     17| export function requireReady(value: Partial<Transport>): asserts value…
+     18|  expect(typeof value.ready).toBe('function');
+       |                             ^
+     19| }
+     20| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:36:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.run from invalid-input initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireRun test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:22:27
+     20| 
+     21| export function requireRun(value: Partial<Transport>): asserts value i…
+     22|  expect(typeof value.run).toBe('function');
+       |                           ^
+     23| }
+     24| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:45:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.run from qualification-rejected initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireRun test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:22:27
+     20| 
+     21| export function requireRun(value: Partial<Transport>): asserts value i…
+     22|  expect(typeof value.run).toBe('function');
+       |                           ^
+     23| }
+     24| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:65:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.run from open-failed initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireRun test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:22:27
+     20| 
+     21| export function requireRun(value: Partial<Transport>): asserts value i…
+     22|  expect(typeof value.run).toBe('function');
+       |                           ^
+     23| }
+     24| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:78:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.run from invalid-session initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireRun test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:22:27
+     20| 
+     21| export function requireRun(value: Partial<Transport>): asserts value i…
+     22|  expect(typeof value.run).toBe('function');
+       |                           ^
+     23| }
+     24| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:89:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.run from qualified initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireRun test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:22:27
+     20| 
+     21| export function requireRun(value: Partial<Transport>): asserts value i…
+     22|  expect(typeof value.run).toBe('function');
+       |                           ^
+     23| }
+     24| 
+ ❯ runQualifiedCase test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:158:2
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:97:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.run from client-failed initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireRun test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:22:27
+     20| 
+     21| export function requireRun(value: Partial<Transport>): asserts value i…
+     22|  expect(typeof value.run).toBe('function');
+       |                           ^
+     23| }
+     24| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:109:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.run from cancelled-before initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireRun test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:22:27
+     20| 
+     21| export function requireRun(value: Partial<Transport>): asserts value i…
+     22|  expect(typeof value.run).toBe('function');
+       |                           ^
+     23| }
+     24| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:118:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.run from cancelled-opening initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireRun test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:22:27
+     20| 
+     21| export function requireRun(value: Partial<Transport>): asserts value i…
+     22|  expect(typeof value.run).toBe('function');
+       |                           ^
+     23| }
+     24| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:137:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.run from cancelled-running initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireRun test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:22:27
+     20| 
+     21| export function requireRun(value: Partial<Transport>): asserts value i…
+     22|  expect(typeof value.run).toBe('function');
+       |                           ^
+     23| }
+     24| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:172:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/13]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-broker-transport.test.ts > ModuleTaskBrokerTransportAdapter.run from cleanup-failed initialization
+AssertionError: expected 'undefined' to be 'function' // Object.is equality
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ requireRun test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts:22:27
+     20| 
+     21| export function requireRun(value: Partial<Transport>): asserts value i…
+     22|  expect(typeof value.run).toBe('function');
+       |                           ^
+     23| }
+     24| 
+ ❯ test/adapters/agents-providers/module-task-broker-transport.test.ts:201:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/13]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  13 failed (13)
+   Start at  19:38:34
+   Duration  2.36s (transform 63ms, setup 81ms, collect 9ms, tests 8ms, environment 0ms, prepare 24ms)
+
