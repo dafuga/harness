@@ -1,0 +1,47 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-1oUnFz
+
+ ❯ test/history-reason-steps.e2e.test.ts (4 tests | 1 failed) 146549ms
+   ✓ the reasons of every explained step are kept, and a fresh clone with the notes explains the range  15586ms
+   × reason history loaders retain compact facts across a 32-revision walk 96835ms
+     → expected [ 'config', 'entries', 'graph', …(7) ] to deeply equal [ 'index', 'manifests', 'writing' ]
+   ✓ a step keeps the writing limits of its own revision when a later one declares limits  9272ms
+   ✓ a step without a reason keeps the range open: nothing is kept for it and the failure is said  12737ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/history-reason-steps.e2e.test.ts > reason history loaders retain compact facts across a 32-revision walk
+AssertionError: expected [ 'config', 'entries', 'graph', …(7) ] to deeply equal [ 'index', 'manifests', 'writing' ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[31m+   "config",[39m
+[31m+   "entries",[39m
+[31m+   "graph",[39m
+[2m    "index",[22m
+[2m    "manifests",[22m
+[31m+   "revision",[39m
+[31m+   "scenarios",[39m
+[31m+   "stored",[39m
+[31m+   "tree",[39m
+[2m    "writing",[22m
+[2m  ][22m
+
+ ❯ test/history-reason-steps.e2e.test.ts:103:36
+    101|  expect(sides).toHaveLength(32);
+    102|  for (const side of sides) {
+    103|   expect(Object.keys(side).sort()).toEqual(['index', 'manifests', 'wri…
+       |                                    ^
+    104|   for (const file of side.index.files.values()) {
+    105|    expect(Object.keys(file).sort()).toEqual(['blocks', 'hash']);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  00:59:48
+   Duration  150.69s (transform 336ms, setup 131ms, collect 754ms, tests 146.55s, environment 0ms, prepare 36ms)
+

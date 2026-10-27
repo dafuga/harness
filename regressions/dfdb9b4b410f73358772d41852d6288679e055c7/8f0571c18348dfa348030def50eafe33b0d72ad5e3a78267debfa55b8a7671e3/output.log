@@ -1,0 +1,95 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-f21EZo
+
+ ❯ test/adapters/agents-providers/module-task-runner.test.ts (15 tests | 5 failed) 16ms
+   ✓ Claude and Codex launch exact models and intelligence without shell interpolation 2ms
+   ✓ successful public Claude CLI events retain requested model and summary 2ms
+   ✓ fallback eligibility uses structured quota signals (quota) 1ms
+   ✓ fallback eligibility uses structured quota signals (authentication) 0ms
+   ✓ fallback eligibility uses structured quota signals (text-only-quota) 0ms
+   ✓ a completed CLI run that reports another model is rejected 0ms
+   ✓ public claude usage is retained without guessing absent counters 0ms
+   ✓ public codex usage is retained without guessing absent counters 0ms
+   ✓ failed turns preserve available usage for cost attribution 0ms
+   × Codex auth failures are safe and actionable without quota fallback 5ms
+     → expected Error: Codex task failed; inspect CLI aut… { …(2) } to match object { quotaRejected: false }
+(9 matching properties omitted from actual)
+   × Codex model failures are safe and actionable without quota fallback 1ms
+     → expected Error: Codex task failed; inspect CLI aut… { …(2) } to match object { quotaRejected: false }
+(9 matching properties omitted from actual)
+   × Codex permission failures are safe and actionable without quota fallback 0ms
+     → expected Error: Codex task failed; inspect CLI aut… { …(2) } to match object { quotaRejected: false }
+(9 matching properties omitted from actual)
+   × Codex malformed failures are safe and actionable without quota fallback 0ms
+     → expected SyntaxError: Expected property name or '}… to match object { quotaRejected: false }
+   × Codex unknown failures are safe and actionable without quota fallback 0ms
+     → expected Error: Codex task failed; inspect CLI aut… { …(2) } to match object { quotaRejected: false }
+(9 matching properties omitted from actual)
+   ✓ Codex execute rejection remains distinct from a provider failure 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/agents-providers/module-task-runner.test.ts > Codex auth failures are safe and actionable without quota fallback
+ FAIL  test/adapters/agents-providers/module-task-runner.test.ts > Codex model failures are safe and actionable without quota fallback
+ FAIL  test/adapters/agents-providers/module-task-runner.test.ts > Codex permission failures are safe and actionable without quota fallback
+ FAIL  test/adapters/agents-providers/module-task-runner.test.ts > Codex unknown failures are safe and actionable without quota fallback
+AssertionError: expected Error: Codex task failed; inspect CLI aut… { …(2) } to match object { quotaRejected: false }
+(9 matching properties omitted from actual)
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- {[39m
+[32m-   "quotaRejected": false,[39m
+[31m+ Error {[39m
+[31m+   "message": "Codex task failed; inspect CLI authentication, permissions or model access.",[39m
+[31m+   "usage": {[39m
+[31m+     "cacheReadTokens": null,[39m
+[31m+     "cacheWriteLongTokens": null,[39m
+[31m+     "cacheWriteTokens": null,[39m
+[31m+     "inputTokens": null,[39m
+[31m+     "outputTokens": null,[39m
+[31m+     "reasoningTokens": null,[39m
+[31m+     "reportedCostUsd": null,[39m
+[31m+   },[39m
+[31m+   "reportedModel": null,[39m
+[2m  }[22m
+
+ ❯ test/adapters/agents-providers/module-task-runner.test.ts:208:3
+    206|  async (_, stdout, stderr, nextStep) => {
+    207|   const failure = runCodexFailure(stdout, stderr);
+    208|   await expect(failure).rejects.toMatchObject({ quotaRejected: false }…
+       |   ^
+    209|   await expect(failure).rejects.toThrow(nextStep);
+    210|   await expect(failure).rejects.not.toThrow(/sk-test-provider-secret|p…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-runner.test.ts > Codex malformed failures are safe and actionable without quota fallback
+AssertionError: expected SyntaxError: Expected property name or '}… to match object { quotaRejected: false }
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- {[39m
+[32m-   "quotaRejected": false,[39m
+[31m+ SyntaxError {[39m
+[31m+   "message": "Expected property name or '}' in JSON at position 1 (line 1 column 2)",[39m
+[2m  }[22m
+
+ ❯ test/adapters/agents-providers/module-task-runner.test.ts:208:3
+    206|  async (_, stdout, stderr, nextStep) => {
+    207|   const failure = runCodexFailure(stdout, stderr);
+    208|   await expect(failure).rejects.toMatchObject({ quotaRejected: false }…
+       |   ^
+    209|   await expect(failure).rejects.toThrow(nextStep);
+    210|   await expect(failure).rejects.not.toThrow(/sk-test-provider-secret|p…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 10 passed (15)
+   Start at  01:47:57
+   Duration  3.61s (transform 179ms, setup 126ms, collect 147ms, tests 16ms, environment 0ms, prepare 36ms)
+
