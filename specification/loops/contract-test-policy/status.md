@@ -1633,7 +1633,10 @@ This is fixture evidence, not a product red/green claim. Focused capture
 `1101e9da0fe5` at that commit passed 13 cases with one platform-specific skip.
 The laptop used a private dependency overlay matching the lockfile for the
 sandbox runtime and its dependencies. Targeted formatting and lint passed.
-Registry validation reported one stale process-adapter manifest and is pending.
+Harness reconciled the process-adapter manifest's field order at `01a1ff2bb1`;
+its values did not change. Registry validation then passed for 1,887 units with
+166 uncertain references, and the 16 unchanged readable-contract and ownership
+guard cases passed in capture `2121b1e9a855` at that committed tree.
 
 The coordinated integration branch and this policy branch have conflicting
 changes; no merge has been started. Full verification, browser screenshot
