@@ -2,7 +2,7 @@
 	"name": "visual-scenario-admission",
 	"goal": "Require every declared visual case viewport to have real screenshot evidence and a build",
 	"createdAt": "2026-10-27T04:28:00.919Z",
-	"updatedAt": "2026-10-27T04:28:05.208Z",
+	"updatedAt": "2026-10-27T04:29:45.412Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T04:29:45.412Z",
+			"evidence": "Existing validation case at 2c7f3b57e6 accepts visual references without required screenshot evidence."
 		},
 		{
 			"id": "implement",
