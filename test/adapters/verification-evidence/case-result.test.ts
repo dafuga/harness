@@ -13,6 +13,7 @@ import { expect, test } from 'vitest';
 import { CaseResultAdapter } from '../../../src/adapters/verification-evidence/CaseResultAdapter';
 import type { RunnerTask } from '../../../src/adapters/verification-evidence/CaseResultAdapter.types';
 import { measureWorkload } from '../../support/measureWorkload';
+import { assertScenarioCaseResults } from './case-result.scenario.fixtures';
 
 const revision = 'c'.repeat(40);
 function fixture() {
@@ -103,9 +104,8 @@ function assertAliasedFinished(config: ReturnType<typeof fixture>, tasks: Runner
 		rmSync(outside, { recursive: true, force: true });
 	}
 }
-
 // Declared matrix: each reporter method with configured and disabled evidence collection.
-test('CaseResultAdapter.onFinished configured retains nested results, retries and failures', () => {
+test('CaseResultAdapter.onFinished configured retains nested results, retries and failures', async () => {
 	const config = fixture();
 	try {
 		const adapter = new CaseResultAdapter(config);
@@ -128,6 +128,7 @@ test('CaseResultAdapter.onFinished configured retains nested results, retries an
 			{ type: 'suite', name: 'external', filepath: '/outside/source.test.ts', tasks }
 		]);
 		expect(read(config.directory)).toHaveLength(5);
+		await assertScenarioCaseResults();
 		expect(() =>
 			new CaseResultAdapter({ ...config, revision: 'invalid' }).onFinished([
 				{ type: 'suite', name: 'file', filepath: config.file, tasks }
@@ -136,7 +137,7 @@ test('CaseResultAdapter.onFinished configured retains nested results, retries an
 	} finally {
 		rmSync(config.root, { recursive: true, force: true });
 	}
-});
+}, 90_000);
 
 test('CaseResultAdapter.onFinished disabled writes no evidence', () => {
 	const config = fixture();

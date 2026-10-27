@@ -83,6 +83,7 @@
 				"id": "onfinished.configured",
 				"state": "configured",
 				"subject": "CaseResultAdapter.onFinished",
+				"fixture": "test/adapters/verification-evidence/case-result.scenario.fixtures.ts",
 				"test": {
 					"file": "test/adapters/verification-evidence/case-result.test.ts",
 					"title": "CaseResultAdapter.onFinished configured retains nested results, retries and failures"
