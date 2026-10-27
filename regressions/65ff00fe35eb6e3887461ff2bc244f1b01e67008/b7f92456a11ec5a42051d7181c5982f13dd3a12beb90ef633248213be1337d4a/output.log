@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/tmp/harness-reason-walk.n7ECFE/harness-snapshot-MVLvRK
+
+ ✓ test/history-reason-steps.e2e.test.ts (4 tests) 141063ms
+   ✓ the reasons of every explained step are kept, and a fresh clone with the notes explains the range  15718ms
+   ✓ reason history loaders retain compact facts across a 32-revision walk  91943ms
+   ✓ a step keeps the writing limits of its own revision when a later one declares limits  8925ms
+   ✓ a step without a reason keeps the range open: nothing is kept for it and the failure is said  12135ms
+ ✓ test/required-reasons.test.ts (1 test) 16ms
+
+ Test Files  2 passed (2)
+      Tests  5 passed (5)
+   Start at  10:01:47
+   Duration  145.85s (transform 373ms, setup 174ms, collect 1.15s, tests 141.08s, environment 0ms, prepare 69ms)
+
