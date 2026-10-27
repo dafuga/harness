@@ -972,3 +972,28 @@ inventory reports 1,118 suite files, 4,639 declarations, 55 standardized units,
 cases and no reported gap. Full migration and aggregate verification remain
 pending.
 
+## Continuation: Reports health API cases
+
+`90348011ad` declares the existing health endpoint behavior and adds three
+complete-response cases for absent, present and unvalidated revision values.
+The endpoint currently returns an unvalidated string as supplied; the case
+records that behavior rather than inventing an error response. Only the
+environment-dependent root hash is declared for normalization, and each case
+also checks that it is the SHA-256 of the actual configured repository root.
+The response body, status, content type and cache header are otherwise matched
+in full.
+
+Capture `802e23f1d9ec` passed 28 focused cases, registry validation, formatting,
+lint, root and Reports typechecks and both audits. Reports typechecks had zero
+Svelte errors or warnings; Tailwind printed its missing-content configuration
+warning. Three response workloads observed 0.153–1.780 ms and
+104,349,696–104,939,520 bytes whole-worker RSS. The endpoint's forwarding unit
+has 75 source bytes, three lines, complexity zero and one dependency, with no
+separate emitted artifact. Its manifest reason is retained in Git notes.
+
+The committed-tree inventory at `90348011ad` reports 1,119 suite files, 4,642
+declarations, 56 standardized units, 746 registered cases and 6,081 remaining
+gaps. The health API has three discovered cases and no reported gap. The shared
+preview still reports missing committed module data for remote main `395e517bd7`;
+the requested Explorer and audio inspection is not yet proved.
+
