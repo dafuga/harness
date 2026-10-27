@@ -1,7 +1,9 @@
 export interface ScreenshotFixtureOptions {
 	bindingCase?: string;
 	corruptImage?: boolean;
+	duplicate?: boolean;
 	provenance?: 'fixture' | 'actual-capture';
+	sibling?: boolean;
 	skipped?: boolean;
 	snapshotFailed?: boolean;
 	wrongBuild?: boolean;
@@ -22,6 +24,7 @@ export interface ScreenshotFixtureSeed {
 		status: 'failed' | 'skipped';
 		retry: number;
 	};
+	sibling?: { path: string; note: string; outcome?: ScreenshotFixtureSeed['outcome'] };
 	caseBytes: Buffer;
 	log: Buffer;
 	options: ScreenshotFixtureOptions;

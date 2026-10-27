@@ -1,4 +1,6 @@
-export function fixtureUnit() {
+import type { ScreenshotFixtureOptions } from './screenshotBaselineFixture.types';
+
+export function fixtureUnit(options: ScreenshotFixtureOptions = {}) {
 	return {
 		schemaVersion: 1,
 		id: 'page.fixture',
@@ -20,19 +22,33 @@ export function fixtureUnit() {
 			version: 1,
 			shape: 'page',
 			states: ['default'],
-			cases: ['desktop', 'tablet', 'mobile'].map((viewport) => ({
-				id: `default.${viewport}`,
-				state: 'default',
-				viewports: [viewport],
-				test: { file: 'test/page.spec.ts', title: `fixture ${viewport}` },
-				expected: { kind: 'screenshot', file: `test/baselines/${viewport}.png` }
-			}))
+			cases: [
+				...['desktop', 'tablet', 'mobile'].map((viewport) => ({
+					id: `default.${viewport}`,
+					state: 'default',
+					viewports: [viewport],
+					test: { file: 'test/page.spec.ts', title: `fixture ${viewport}` },
+					expected: { kind: 'screenshot', file: `test/baselines/${viewport}.png` }
+				})),
+				...(options.sibling
+					? [
+							{
+								id: 'default.secondary',
+								state: 'default',
+								input: { variant: 'secondary' },
+								viewports: ['desktop'],
+								test: { file: 'test/page.spec.ts', title: 'fixture secondary desktop' },
+								expected: { kind: 'screenshot', file: 'test/baselines/secondary.png' }
+							}
+						]
+					: [])
+			]
 		},
 		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
 	};
 }
 
-export function fixtureScenario() {
+export function fixtureScenario(options: ScreenshotFixtureOptions = {}) {
 	return {
 		schemaVersion: 1,
 		id: 'visual',
@@ -47,10 +63,13 @@ export function fixtureScenario() {
 				kind: 'e2e',
 				runner: 'playwright',
 				target: 'test/page.spec.ts',
-				cases: ['desktop', 'tablet', 'mobile'].map((viewport) => ({
-					unit: 'page.fixture',
-					case: `default.${viewport}`
-				}))
+				cases: [
+					...['desktop', 'tablet', 'mobile'].map((viewport) => ({
+						unit: 'page.fixture',
+						case: `default.${viewport}`
+					})),
+					...(options.sibling ? [{ unit: 'page.fixture', case: 'default.secondary' }] : [])
+				]
 			}
 		],
 		evidence: [
