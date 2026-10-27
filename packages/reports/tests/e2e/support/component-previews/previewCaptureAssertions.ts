@@ -14,7 +14,7 @@ export async function assertComponentCapture(
 	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
 	if (!directory) return;
-	const selector: Record<string, string> = {
+	const selectors: Record<string, string> = {
 		'desktop.component.environment-picker': '.environment-choice',
 		'desktop.component.deployment-route': '.deployment-route',
 		'reports.component.harness-harness-icon': 'svg',
@@ -22,10 +22,16 @@ export async function assertComponentCapture(
 		'desktop.component.deployment-dialog': 'dialog[open]',
 		'desktop.component.project-agent': '.floating-chat-panel'
 	};
-	if (!selector[id]) return;
+	const selector =
+		id === 'desktop.component.project-agent'
+			? variant === 'closed'
+				? '.floating-chat-bubble'
+				: '.floating-chat-panel'
+			: selectors[id];
+	if (!selector) return;
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	const boxes = await content
-		.locator(selector[id])
+		.locator(selector)
 		.evaluateAll((nodes) =>
 			nodes
 				.map((node) => node.getBoundingClientRect().toJSON())
