@@ -42,7 +42,7 @@ process.stdout.write(JSON.stringify(result));
 `;
 
 export async function makeFixture(): Promise<Fixture> {
-	const root = await fs.mkdtemp(join(tmpdir(), 'harness-task-sandbox-'));
+	const root = await fs.realpath(await fs.mkdtemp(join(tmpdir(), 'harness-task-sandbox-')));
 	const cwd = join(root, 'project');
 	const scratch = join(root, 'scratch');
 	const snapshot = join(root, 'contracts.json');

@@ -143,6 +143,9 @@ function taskEnvironment(
 	for (const key of [
 		'PATH',
 		'HOME',
+		'CODEX_HOME',
+		'CLAUDE_CONFIG_DIR',
+		'HARNESS_TASK_CONTRACT_SNAPSHOT',
 		'USER',
 		'LOGNAME',
 		'SHELL',

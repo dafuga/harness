@@ -1,0 +1,62 @@
+{
+	"name": "claude-sandbox-scratch",
+	"goal": "Keep Claude temporary files within the task scratch directory",
+	"createdAt": "2026-10-27T11:07:34.717Z",
+	"updatedAt": "2026-10-27T11:25:38.599Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T11:08:11.549Z",
+			"evidence": "A sandboxed Claude launch fails creating /tmp/claude; pointing CLAUDE_CODE_TMPDIR to task scratch reaches initialization without changing the shared directory."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T11:08:12.222Z",
+			"evidence": "The process adapter had one unregistered connect case and no arguments method/state case. Declare its methods and initialization states; assert the provider-specific scratch variable in the arguments case."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T11:20:21.656Z",
+			"evidence": "At 3cc1cb4a3c, the two arguments state cases failed for both missing Claude scratch variables; eight other cases passed. Red de52006ab858 retained on harbor-mbp-2."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T11:25:37.133Z",
+			"evidence": "Commit 8bb0cb31cb passes both Claude temporary variables to the provider inside the existing task scratch directory."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T11:25:38.599Z",
+			"evidence": "Green dffd48add2c9 passes all 10 unchanged cases on the red profile. Mutant 86f2f16066c7 fails the same cases; identical restored tree passes 261cb11b4081."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

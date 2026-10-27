@@ -35,7 +35,9 @@ export class ModuleTaskSandboxProcessAdapter {
 
 	arguments(scope: ModuleTaskSandboxInput): string[] {
 		return ['/usr/bin/env'].concat(
-			['TMPDIR', 'TMP', 'TEMP'].map((key) => `${key}=${scope.scratch}`),
+			['TMPDIR', 'TMP', 'TEMP', 'CLAUDE_CODE_TMPDIR', 'CLAUDE_TMPDIR'].map(
+				(key) => `${key}=${scope.scratch}`
+			),
 			['/bin/sh', '-c', 'cd -P -- "$1" || exit; shift; exec "$@"', 'harness-task', scope.cwd],
 			scope.argv
 		);
