@@ -1120,3 +1120,43 @@ complexity 35 and seven dependencies. Neither module emits a separate artifact.
 A three-commit build workload observed 371.69 ms and 231,604,224 bytes of whole
 Vitest-process RSS. The full preserved-ref rebuild and its media verification
 remain open, as do the other migration, provider, laptop and preview gates.
+
+## Continuation: audio case identity and reviewed screenshot storage
+
+The audio gallery's existing case collapsed different class cases sharing a
+scenario, state and evidence slot. Test-only `0f268c6e2d` strengthened that
+same gallery case; red `730d9bbc59ad` failed on duplicate identities and a
+mislabelled fixture revision. The source repair in `92e0fd3a86` and focused
+follow-up `3094e518fc` distinguish bound unit, case, revision and media hash,
+and retain the tested revision in fixture labels. Unchanged green
+`09a40ae321be` passed. An independent mutant failed `49f923e7a0c9`; restored
+source passed `906581d55531` with the same tree as `3094e518fc`.
+
+Focused capture `368892253c49` passed 62 tests, the unit registry, targeted
+formatting and lint, Reports audit, root typecheck, and Reports and Desktop
+typechecks. Reports Tailwind reported its existing missing-content warning.
+The suite retained 13 titles; 12 other titles in that file remain outside a
+declared standard case. The changed unit's normal gallery workload took
+0.026 ms and used 94,748,672 bytes of whole-worker RSS. These are focused
+results, not current-main browser or playable-audio proof.
+
+The new screenshot baseline service and explicit history commands were added
+in `7d1da532fe`; `3df0052df1` preserves the history command's previous and new
+ownership reviews. Focused capture `74c2473287fd` at the latter revision passed
+29 tests, including six newly declared method/state cases, with registry,
+typecheck and audit checks. The cases use disposable synthetic pixels solely
+to test storage integrity; they are not browser screenshots or reviewed
+baselines. Source reasons are attached to `7d1da532fe` in Git notes.
+
+At `3df0052df1`, source bytes/lines/complexity/dependencies were 17502/454/104/11
+for the baseline service, 7626/168/16/8 for the history command, 9079/151/0/1
+for the history guide and 14626/217/6/143 for the entry. The modules emit no
+separate artifacts. The focused review workload observed 149.26 ms and
+205,291,520 bytes whole-worker RSS; loading observed 81.86 ms and 226,590,720
+bytes. The CLI workload includes process startup and shared code.
+
+The browser fixture does not yet emit the case binding required by the review
+service or load reviewed pixels for screenshot comparisons. Real page, layout
+and component captures and their inspection remain open. The disposable
+verification fixture migration is also unfinished, with its changes preserved in
+the task worktree. No production or shared-preview publication was performed.
