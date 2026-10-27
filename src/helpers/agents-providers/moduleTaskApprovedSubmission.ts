@@ -44,17 +44,22 @@ const parsePlan = (value: unknown): { feature: TaskFeature; tasks: ModuleTaskInp
 	return { feature, tasks };
 };
 
-const validateModule = (manifest: ComponentManifest, task: ModuleTaskInput): string[] => {
+const validateModule = (
+	manifest: ComponentManifest,
+	task: ModuleTaskInput
+): { task: ModuleTaskInput; files: string[] } => {
 	if (manifest.status !== 'active') throw new Error(`Module ${task.module} is not active`);
 	const sources = manifest.owns?.source;
 	if (!Array.isArray(sources) || !sources.length || !sources.every(safePath))
 		throw new Error(`Module ${task.module} has no safe owned source scope`);
-	if (manifest.responsibilityOrigin === 'derived' && !task.moduleGoal)
-		throw new Error(`Task ${task.id} requires a module goal`);
+	const moduleGoal = manifest.responsibility;
+	if (typeof moduleGoal !== 'string' || !moduleGoal.trim())
+		throw new Error(`Module ${task.module} has no committed responsibility`);
 	const { inputs, outputs, errors } = manifest.contract;
-	const moduleContract = { inputs, outputs, errors, responsibility: manifest.responsibility };
-	taskInputSchema.parse({ ...task, wantedContract: moduleContract });
-	return sources;
+	const moduleContract = { inputs, outputs, errors, responsibility: moduleGoal };
+	const admittedTask = { ...task, moduleGoal };
+	taskInputSchema.parse({ ...admittedTask, wantedContract: moduleContract });
+	return { task: admittedTask, files: sources };
 };
 
 const sameFeature = (left: TaskFeature, right: TaskFeature) =>
@@ -110,11 +115,11 @@ export async function prepareSubmission(
 	for (const task of tasks) {
 		const manifest = registry.manifests.find((item) => item.id === task.module);
 		if (!manifest) throw new Error(`Module ${task.module} is not registered`);
-		validateModule(manifest, task);
+		const validated = validateModule(manifest, task);
 		units.set(task.module, manifest);
-		const files = await dependencies.grantFiles(task, manifest, tree);
+		const files = await dependencies.grantFiles(validated.task, manifest, tree);
 		await dependencies.validateGrant(dependencies.root, files);
-		admissions.push({ task, unit: manifest, files });
+		admissions.push({ task: validated.task, unit: manifest, files });
 	}
 	for (const module of units.keys())
 		await dependencies.requireMetadata(dependencies.root, tree.revision, module);

@@ -3,7 +3,7 @@
 	"id": "service.agents-providers-module-task-server",
 	"kind": "service",
 	"title": "ModuleTaskServerService",
-	"responsibility": "Validates module-task plans and committed-module admission prerequisites before updating the task queue, then dispatches matching assignments through the existing worker without accepting submissions.",
+	"responsibility": "Validate module-task plans against committed module contracts, preserve each module responsibility as the task goal, and dispatch only matching assignments through workers without accepting submissions.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -70,7 +70,7 @@
 			{
 				"name": "ModuleTaskServerService.submit",
 				"type": "Promise<{ created: string[]; reused: string[]; commit: string | undefined }>",
-				"description": "Returns created and reused task ID arrays from the queue merge and the repository update commit, which may be undefined. Equivalent queued definitions are reused; conflicting feature or task definitions reject. It does not return feature or task objects. The service prepares all records and calls repository.update once with the selected tree revision after plan, module and metadata checks; the repository dependency contract does not specify compare-and-swap semantics. It schema-validates a task using the current module contract with root responsibility included and origin removed, but does not compare that contract to the submitted wantedContract."
+				"description": "Returns created and reused task ID arrays from the queue merge and the repository update commit, which may be undefined. Equivalent queued definitions are reused; conflicting feature or task definitions reject. It does not return feature or task objects. The service prepares all records and calls repository.update once with the selected tree revision after plan, module and metadata checks; the repository dependency contract does not specify compare-and-swap semantics. It validates each task against the selected-commit module contract with root responsibility included and sets the admitted task moduleGoal to that exact non-empty responsibility; the task-specific wantedContract remains unchanged."
 			},
 			{
 				"name": "ModuleTaskServerService.run",

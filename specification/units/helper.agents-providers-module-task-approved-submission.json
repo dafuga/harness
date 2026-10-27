@@ -3,7 +3,7 @@
 	"id": "helper.agents-providers-module-task-approved-submission",
 	"kind": "helper",
 	"title": "moduleTaskApprovedSubmission",
-	"responsibility": "Prepare safe module tasks and merge them into a queue draft.",
+	"responsibility": "Prepare approved module tasks with the exact committed module responsibility as their canonical module goal, while preserving task-specific wanted contracts.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -68,7 +68,7 @@
 			{
 				"name": "prepareSubmission",
 				"type": "Promise<{feature:TaskFeature,records:ModuleTask[],sourceCommit:string}>",
-				"description": "Validate, admit, and prepare all tasks without queue mutation."
+				"description": "Validate and prepare every task without queue mutation. Each admitted record has moduleGoal equal to the exact non-empty responsibility read from its module in the selected source revision, even when the input omitted moduleGoal; task-specific wantedContract remains unchanged."
 			},
 			{
 				"name": "mergePlan",
@@ -91,6 +91,11 @@
 				"name": "invalid or conflicting submission",
 				"type": "Error",
 				"description": "No partial queue mutation on rejected input or conflict."
+			},
+			{
+				"name": "missing module responsibility",
+				"type": "Error",
+				"description": "Reject a missing or blank committed module responsibility before task records are prepared or queue state can mutate."
 			}
 		]
 	},
