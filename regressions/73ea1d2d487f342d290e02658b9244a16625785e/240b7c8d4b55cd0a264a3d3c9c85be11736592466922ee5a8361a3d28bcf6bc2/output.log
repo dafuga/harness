@@ -1,0 +1,108 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uoZ8sS
+
+ ✓ test/services/unit-index.test.ts (14 tests) 2853ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2686ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 81ms
+ ✓ test/services/verification-evidence/test-expectation.test.ts (4 tests) 37ms
+ ✓ test/services/verification-evidence/test-contract.test.ts (2 tests) 21ms
+ ✓ test/case.test.ts (24 tests) 11ms
+
+ Test Files  5 passed (5)
+      Tests  46 passed (46)
+   Start at  02:35:44
+   Duration  7.06s (transform 388ms, setup 216ms, collect 1.09s, tests 3.00s, environment 0ms, prepare 108ms)
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run "$@"' -- test/services/audio-upload.test.ts test/routes/report-audio-comparison-api.test.ts "--maxWorkers=1" "--minWorkers=1"
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uoZ8sS/packages/reports
+
+ ✓ test/services/audio-upload.test.ts (12 tests) 69ms
+ ✓ test/routes/report-audio-comparison-api.test.ts (1 test) 16ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  02:35:52
+   Duration  706ms (transform 176ms, setup 124ms, collect 242ms, tests 85ms, environment 0ms, prepare 47ms)
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run "$@"' -- test/services/device-pairing.test.ts "--maxWorkers=1" "--minWorkers=1"
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uoZ8sS/packages/remote
+
+ ✓ test/services/device-pairing.test.ts (20 tests) 50ms
+
+ Test Files  1 passed (1)
+      Tests  20 passed (20)
+   Start at  02:35:54
+   Duration  397ms (transform 133ms, setup 102ms, collect 109ms, tests 50ms, environment 0ms, prepare 27ms)
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run "$@"' -- test/utils/is-record.test.ts "--maxWorkers=1" "--minWorkers=1"
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uoZ8sS/packages/relay
+
+ ✓ test/utils/is-record.test.ts (17 tests) 3ms
+
+ Test Files  1 passed (1)
+      Tests  17 passed (17)
+   Start at  02:35:56
+   Duration  264ms (transform 79ms, setup 92ms, collect 36ms, tests 3ms, environment 0ms, prepare 25ms)
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run --testTimeout 20000 --hookTimeout 20000 "$@"' -- test/planning-registry.test.ts "--maxWorkers=1" "--minWorkers=1"
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uoZ8sS/packages/planning
+
+ ✓ test/planning-registry.test.ts (4 tests) 12075ms
+   ✓ actual planning metadata stays outside active indexing for all five draft categories  7062ms
+   ✓ dirty or invalid registry configuration is never overwritten or committed  1651ms
+   ✓ existing formatter ignores protect immutable artifacts without hiding source  1854ms
+   ✓ dirty formatter ignores refuse planning without changing repository state  1503ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  02:35:57
+   Duration  12.45s (transform 149ms, setup 90ms, collect 148ms, tests 12.07s, environment 0ms, prepare 22ms)
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run sync:shared && vitest run "$@"' -- test/utils/remote-labels.test.ts "--maxWorkers=1" "--minWorkers=1"
+$ bun run --cwd ../reports svelte-kit sync
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uoZ8sS/packages/desktop
+
+ ✓ test/utils/remote-labels.test.ts (53 tests) 6ms
+
+ Test Files  1 passed (1)
+      Tests  53 passed (53)
+   Start at  02:36:11
+   Duration  363ms (transform 131ms, setup 129ms, collect 82ms, tests 6ms, environment 0ms, prepare 34ms)
+
+Units registry is valid: 1827 units, 167 uncertain references.
+Scenario contracts are valid: 49 scenarios.
+Checking formatting...
+All matched files use Prettier code style!
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && svelte-check --tsconfig ./tsconfig.previews.json "$@"' --
+
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+warn - Configure your content sources or your generated CSS will be missing styles.
+warn - https://tailwindcss.com/docs/content-configuration
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uoZ8sS/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uoZ8sS/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'tsc --noEmit "$@"' --
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'tsc --noEmit "$@"' --
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'tsc --noEmit "$@"' --
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json "$@"' --
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-uoZ8sS/packages/desktop
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+$ bun ../../src/index.ts audit . --profile app
+Harness audit passed. Files and functions are staying small.
+Harness audit passed. Files and functions are staying small.
