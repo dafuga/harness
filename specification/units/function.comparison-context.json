@@ -52,7 +52,18 @@
 				"description": "Context containing the request digest, public-invocation boundary, harness-rounds/1 protocol and sampling with three warm-up calls."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An error raised while reading the request or sampling is propagated unchanged."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A null sampling value cannot supply rounds or iterations."
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -77,6 +88,301 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "requestDigest",
+				"name": "Fingerprint the complete request",
+				"call": "requestDigest({\"operation\":\"rank\",\"input\":{\"size\":20000,\"seed\":7}})",
+				"input": [
+					{
+						"operation": "rank",
+						"input": {
+							"size": 20000,
+							"seed": 7
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "c1fe9c28f809bfb762c68fcf39bcedcd36128025bfdf9ea8ef925b9054167181"
+				}
+			},
+			{
+				"subject": "requestDigest",
+				"name": "Ignore object key order",
+				"call": "requestDigest({\"input\":{\"seed\":7,\"size\":20000},\"operation\":\"rank\"})",
+				"input": [
+					{
+						"input": {
+							"seed": 7,
+							"size": 20000
+						},
+						"operation": "rank"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "c1fe9c28f809bfb762c68fcf39bcedcd36128025bfdf9ea8ef925b9054167181"
+				}
+			},
+			{
+				"subject": "requestDigest",
+				"name": "Include a changed input value",
+				"call": "requestDigest({\"operation\":\"rank\",\"input\":{\"size\":20000,\"seed\":8}})",
+				"input": [
+					{
+						"operation": "rank",
+						"input": {
+							"size": 20000,
+							"seed": 8
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "5d58526be7e3db341f6a55dba37717359dd78482c0464bc4850788a59d2dee7a"
+				}
+			},
+			{
+				"subject": "requestDigest",
+				"name": "Include a missing input field",
+				"call": "requestDigest({\"operation\":\"rank\"})",
+				"input": [
+					{
+						"operation": "rank"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff"
+				}
+			},
+			{
+				"subject": "requestDigest",
+				"name": "Fingerprint a null request",
+				"call": "requestDigest(null)",
+				"input": [null],
+				"expected": {
+					"kind": "value",
+					"value": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+				}
+			},
+			{
+				"subject": "requestDigest",
+				"name": "Propagate a request getter error",
+				"call": "requestDigest({ get input() { throw new Error(\"request unavailable\"); } })",
+				"input": [
+					{
+						"$fixture": "throwing-request",
+						"message": "request unavailable"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "request unavailable"
+					}
+				}
+			},
+			{
+				"subject": "comparisonContext",
+				"name": "Describe a complete benchmark request",
+				"call": "comparisonContext({\"operation\":\"rank\",\"input\":{\"size\":20000,\"seed\":7}}, {\"rounds\":5,\"iterations\":30})",
+				"input": [
+					{
+						"operation": "rank",
+						"input": {
+							"size": 20000,
+							"seed": 7
+						}
+					},
+					{
+						"rounds": 5,
+						"iterations": 30
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"request": "c1fe9c28f809bfb762c68fcf39bcedcd36128025bfdf9ea8ef925b9054167181",
+						"boundary": "public-invocation",
+						"protocol": "harness-rounds/1",
+						"sampling": {
+							"warmup": 3,
+							"rounds": 5,
+							"iterations": 30
+						}
+					}
+				}
+			},
+			{
+				"subject": "comparisonContext",
+				"name": "Copy sampling values without validation",
+				"call": "comparisonContext({\"operation\":\"rank\",\"input\":{\"size\":20000,\"seed\":7}}, {\"rounds\":0,\"iterations\":30})",
+				"input": [
+					{
+						"operation": "rank",
+						"input": {
+							"size": 20000,
+							"seed": 7
+						}
+					},
+					{
+						"rounds": 0,
+						"iterations": 30
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"request": "c1fe9c28f809bfb762c68fcf39bcedcd36128025bfdf9ea8ef925b9054167181",
+						"boundary": "public-invocation",
+						"protocol": "harness-rounds/1",
+						"sampling": {
+							"warmup": 3,
+							"rounds": 0,
+							"iterations": 30
+						}
+					}
+				}
+			},
+			{
+				"subject": "comparisonContext",
+				"name": "Propagate a sampling getter error",
+				"call": "comparisonContext({\"operation\":\"rank\",\"input\":{\"size\":20000,\"seed\":7}}, { get rounds() { throw new Error(\"sampling unavailable\"); }, iterations: 30 })",
+				"input": [
+					{
+						"operation": "rank",
+						"input": {
+							"size": 20000,
+							"seed": 7
+						}
+					},
+					{
+						"$fixture": "throwing-sampling",
+						"message": "sampling unavailable",
+						"iterations": 30
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "sampling unavailable"
+					}
+				}
+			}
+		],
+		"states": ["digest", "digest-error", "context", "invalid-sampling", "sampling-error"],
+		"props": ["request", "sampling"],
+		"cases": [
+			{
+				"id": "digest.request",
+				"state": "digest",
+				"subject": "requestDigest",
+				"example": "Fingerprint the complete request",
+				"test": {
+					"file": "test/utils/comparison-context.test.ts",
+					"title": "requestDigest: Fingerprint the complete request"
+				},
+				"props": ["request"]
+			},
+			{
+				"id": "digest.reordered",
+				"state": "digest",
+				"subject": "requestDigest",
+				"example": "Ignore object key order",
+				"test": {
+					"file": "test/utils/comparison-context.test.ts",
+					"title": "requestDigest: Ignore object key order"
+				},
+				"props": ["request"]
+			},
+			{
+				"id": "digest.changed",
+				"state": "digest",
+				"subject": "requestDigest",
+				"example": "Include a changed input value",
+				"test": {
+					"file": "test/utils/comparison-context.test.ts",
+					"title": "requestDigest: Include a changed input value"
+				},
+				"props": ["request"]
+			},
+			{
+				"id": "digest.missing",
+				"state": "digest",
+				"subject": "requestDigest",
+				"example": "Include a missing input field",
+				"test": {
+					"file": "test/utils/comparison-context.test.ts",
+					"title": "requestDigest: Include a missing input field"
+				},
+				"props": ["request"]
+			},
+			{
+				"id": "digest.null",
+				"state": "digest",
+				"subject": "requestDigest",
+				"example": "Fingerprint a null request",
+				"test": {
+					"file": "test/utils/comparison-context.test.ts",
+					"title": "requestDigest: Fingerprint a null request"
+				},
+				"props": ["request"]
+			},
+			{
+				"id": "digest.error",
+				"state": "digest-error",
+				"subject": "requestDigest",
+				"example": "Propagate a request getter error",
+				"test": {
+					"file": "test/utils/comparison-context.test.ts",
+					"title": "requestDigest: Propagate a request getter error"
+				},
+				"props": ["request"],
+				"errors": ["Error"]
+			},
+			{
+				"id": "context.standard",
+				"state": "context",
+				"subject": "comparisonContext",
+				"example": "Describe a complete benchmark request",
+				"test": {
+					"file": "test/utils/comparison-context.test.ts",
+					"title": "comparisonContext: Describe a complete benchmark request"
+				},
+				"props": ["request", "sampling"]
+			},
+			{
+				"id": "context.zero",
+				"state": "invalid-sampling",
+				"subject": "comparisonContext",
+				"example": "Copy sampling values without validation",
+				"test": {
+					"file": "test/utils/comparison-context.test.ts",
+					"title": "comparisonContext: Copy sampling values without validation"
+				},
+				"props": ["request", "sampling"]
+			},
+			{
+				"id": "context.error",
+				"state": "sampling-error",
+				"subject": "comparisonContext",
+				"example": "Propagate a sampling getter error",
+				"test": {
+					"file": "test/utils/comparison-context.test.ts",
+					"title": "comparisonContext: Propagate a sampling getter error"
+				},
+				"props": ["request", "sampling"],
+				"errors": ["Error", "TypeError"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
