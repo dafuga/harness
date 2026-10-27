@@ -1658,8 +1658,15 @@ remain on the isolated sandbox branch pending integration and full checks.
 One current relay scenario still referenced retired `remote.function.pairing-link`.
 Both scenario and registry checks missed it. The existing manifest-check case
 was strengthened without a new title; red `6db9280462e1` at `efbaa7af55` shows
-both missing errors. Fix `c23a612233` is isolated and removes only the obsolete
-current association; it does not claim the replacement offer's scan coverage.
-The first green attempt timed out before resource admission with stale telemetry.
-No test ran, so that attempt proves neither failure nor success. The unchanged
-green, mutation guard, lint repair and broader verification remain open.
+both missing errors. The first combined repair `c23a612233` also changed a frozen
+scenario file, so Harness correctly rejected its green attempt; it is not proof.
+The separate validator repair `7d28b8a59c` passed unchanged tests and fixtures
+in green `e3ed2050910f` on the red profile. The same case was then shortened
+without changing its title or assertions, and the obsolete current association
+was removed at `ad5234a924` without claiming the replacement offer's scan
+coverage. Focused capture `f9991d13dc1b` passed at that tree. Mutant capture
+`db04e2f237df` failed both errors; restored identical-tree capture `3fbd30cfc6aa`
+passed on the same profile. Current checks passed for 49 scenarios and 1,828
+units, with 168 uncertain references. Targeted lint and formatting passed.
+Source reasons are stored in Git notes. The branch is isolated; integration and
+the user's deferred full verification remain open.
