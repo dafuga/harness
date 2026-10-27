@@ -1,0 +1,93 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-frpWlp
+
+ ❯ test/adapters/agents-providers/module-task-tool-broker.test.ts (25 tests | 2 failed) 386ms
+   ✓ ModuleTaskToolBrokerAdapter.connect from default initialization returns the file name 1ms
+   ✓ ModuleTaskToolBrokerAdapter.connect from custom initialization returns the configured name 0ms
+   ✓ ModuleTaskToolBrokerAdapter.connect with invalid config throws TypeError 1ms
+   ✓ ModuleTaskToolBrokerAdapter.connect from scoped initialization 6ms
+   ✓ ModuleTaskToolBrokerAdapter.connect from scoped-named initialization 3ms
+   ✓ ModuleTaskToolBrokerAdapter.readContract from default initialization 0ms
+   ✓ ModuleTaskToolBrokerAdapter.readContract from named initialization 0ms
+   ✓ ModuleTaskToolBrokerAdapter.readContract from invalid initialization 0ms
+   × ModuleTaskToolBrokerAdapter.readContract from scoped initialization 25ms
+     → Example unexpectedly failed
+
+true !== false
+
+   ✓ ModuleTaskToolBrokerAdapter.readContract projects metadata through fixed sealed CLI arguments 7ms
+   ✓ ModuleTaskToolBrokerAdapter.listContracts from default initialization 0ms
+   ✓ ModuleTaskToolBrokerAdapter.listContracts from named initialization 0ms
+   ✓ ModuleTaskToolBrokerAdapter.listContracts from invalid initialization 0ms
+   × ModuleTaskToolBrokerAdapter.listContracts from scoped initialization 19ms
+     → Example unexpectedly failed
+
+true !== false
+
+   ✓ ModuleTaskToolBrokerAdapter.listContracts exposes only contract index metadata 3ms
+   ✓ ModuleTaskToolBrokerAdapter.readAssigned from default initialization 0ms
+   ✓ ModuleTaskToolBrokerAdapter.readAssigned from named initialization 0ms
+   ✓ ModuleTaskToolBrokerAdapter.readAssigned from invalid initialization 0ms
+   ✓ ModuleTaskToolBrokerAdapter.readAssigned from scoped initialization 16ms
+   ✓ ModuleTaskToolBrokerAdapter.readAssigned limits access to exact safe UTF-8 files 148ms
+   ✓ ModuleTaskToolBrokerAdapter.writeAssigned from default initialization 0ms
+   ✓ ModuleTaskToolBrokerAdapter.writeAssigned from named initialization 0ms
+   ✓ ModuleTaskToolBrokerAdapter.writeAssigned from invalid initialization 0ms
+   ✓ ModuleTaskToolBrokerAdapter.writeAssigned from scoped initialization 35ms
+   ✓ ModuleTaskToolBrokerAdapter.writeAssigned enforces hashes and atomic bounded edits 115ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/agents-providers/module-task-tool-broker.test.ts > ModuleTaskToolBrokerAdapter.readContract from scoped initialization
+AssertionError: Example unexpectedly failed
+
+true !== false
+
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:98:4
+     96|    deepStrictEqual(Object.hasOwn(observation, 'error'), false, 'Exampl…
+     97|    deepStrictEqual(
+     98|     observation.output,
+       |    ^
+     99|     example.output,
+    100|     'Example output differs from its comment'
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ src/services/verification-evidence/TestExpectationService.ts:37:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/adapters/agents-providers/module-task-tool-broker.test.ts > ModuleTaskToolBrokerAdapter.listContracts from scoped initialization
+AssertionError: Example unexpectedly failed
+
+true !== false
+
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:98:4
+     96|    deepStrictEqual(Object.hasOwn(observation, 'error'), false, 'Exampl…
+     97|    deepStrictEqual(
+     98|     observation.output,
+       |    ^
+     99|     example.output,
+    100|     'Example output differs from its comment'
+ ❯ src/services/verification-evidence/TestExpectationService.ts:37:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 23 passed (25)
+   Start at  15:13:33
+   Duration  5.69s (transform 732ms, setup 164ms, collect 1.39s, tests 386ms, environment 0ms, prepare 35ms)
+
