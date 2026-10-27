@@ -12,6 +12,11 @@ export async function assertComponentCapture(
 ) {
 	assertCaptureSlot(id, viewport, variant);
 	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
+	if (id === 'desktop.component.project-agent')
+		await expect(
+			page.locator('[data-preview-unit="desktop.component.project-agent"] .floating-chat-panel'),
+			'ProjectAgent capture shows the open chat panel'
+		).toBeVisible();
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
 	if (!directory) return;
 	const selector: Record<string, string> = {
@@ -19,7 +24,8 @@ export async function assertComponentCapture(
 		'desktop.component.deployment-route': '.deployment-route',
 		'reports.component.harness-harness-icon': 'svg',
 		'hub.component.account-menu': ':scope > *',
-		'desktop.component.deployment-dialog': 'dialog[open]'
+		'desktop.component.deployment-dialog': 'dialog[open]',
+		'desktop.component.project-agent': '.floating-chat-panel'
 	};
 	if (!selector[id]) return;
 	const content = page.locator(`[data-preview-unit="${id}"]`);
@@ -47,6 +53,26 @@ export async function assertComponentCapture(
 			captured[dimension as keyof typeof captured],
 			`${id} excludes the preview title and empty canvas`
 		).toBeLessThanOrEqual(Math.ceil(actual) + 18);
+	}
+	if (id === 'desktop.component.project-agent') {
+		const panelClip = await content.locator(selector[id]).evaluate((node) => {
+			const box = node.getBoundingClientRect();
+			const left = Math.max(0, Math.floor(box.left + scrollX) - 8);
+			const top = Math.max(0, Math.floor(box.top + scrollY) - 8);
+			const right = Math.min(
+				document.documentElement.scrollWidth,
+				Math.ceil(box.right + scrollX) + 8
+			);
+			const bottom = Math.min(
+				document.documentElement.scrollHeight,
+				Math.ceil(box.bottom + scrollY) + 8
+			);
+			return { width: right - left, height: bottom - top };
+		});
+		expect(
+			captured,
+			'ProjectAgent screenshot dimensions match only the open panel and its 8px edge allowance'
+		).toEqual(panelClip);
 	}
 }
 
