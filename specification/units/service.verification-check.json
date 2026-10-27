@@ -23,44 +23,58 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "VerificationCheckService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"description": "Path of the Git repository and verification store."
 			},
 			{
 				"name": "VerificationCheckService.constructor.indexer",
-				"type": "SourceIndexService"
+				"type": "SourceIndexService",
+				"description": "Optional source indexer; a new indexer is used when omitted."
 			},
 			{
 				"name": "VerificationCheckService.check.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Commit the stored verification is expected to prove."
 			},
 			{
 				"name": "VerificationCheckService.check.stored",
-				"type": "StoredRecord"
+				"type": "StoredRecord",
+				"description": "Stored verification record and its evidence directory."
 			},
 			{
 				"name": "VerificationCheckService.integrity.commit",
-				"type": "string"
+				"type": "string",
+				"description": "Commit the stored verification must identify."
 			},
 			{
 				"name": "VerificationCheckService.integrity.stored",
-				"type": "StoredRecord"
+				"type": "StoredRecord",
+				"description": "Stored verification record and its evidence directory."
 			}
 		],
 		"outputs": [
 			{
 				"name": "VerificationCheckService.check",
-				"type": "Promise<CheckReport>"
+				"type": "Promise<CheckReport>",
+				"description": "Report containing the commit, record, status and integrity or lineage problems."
 			},
 			{
 				"name": "VerificationCheckService.integrity",
-				"type": "Promise<string[]>"
+				"type": "Promise<string[]>",
+				"description": "Identity, component and evidence problems independent of the recorded outcome."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Git cannot read the requested repository or commit, including a non-repository root."
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -128,7 +142,7 @@
 	"testing": {
 		"version": 1,
 		"shape": "service",
-		"states": ["default", "indexer-parity"],
+		"states": ["default", "indexer-parity", "invalid-root"],
 		"cases": [
 			{
 				"id": "integrity.default",
@@ -185,6 +199,42 @@
 					"kind": "value",
 					"value": ["passed", "failed", "failed"]
 				}
+			},
+			{
+				"id": "integrity.invalid-root",
+				"state": "invalid-root",
+				"subject": "VerificationCheckService.integrity",
+				"fixture": "test/support/budgetFixture.ts",
+				"test": {
+					"file": "test/verification-check-shared.test.ts",
+					"title": "VerificationCheckService.integrity rejects a non-repository root"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "fatal: not a git repository"
+					}
+				},
+				"errors": ["Error"]
+			},
+			{
+				"id": "check.invalid-root",
+				"state": "invalid-root",
+				"subject": "VerificationCheckService.check",
+				"fixture": "test/support/budgetFixture.ts",
+				"test": {
+					"file": "test/verification-check-shared.test.ts",
+					"title": "VerificationCheckService.check rejects a non-repository root"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "fatal: not a git repository"
+					}
+				},
+				"errors": ["Error"]
 			}
 		]
 	},

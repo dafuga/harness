@@ -50,6 +50,12 @@
 			"title": "Default checker across intact and changed records",
 			"coverage": "required",
 			"units": ["service.verification-check"]
+		},
+		{
+			"id": "invalid-root",
+			"title": "An invalid repository root is refused",
+			"coverage": "required",
+			"units": ["service.verification-check"]
 		}
 	],
 	"viewports": [],
@@ -93,6 +99,14 @@
 				{
 					"unit": "service.verification-check",
 					"case": "check.indexer-parity"
+				},
+				{
+					"unit": "service.verification-check",
+					"case": "integrity.invalid-root"
+				},
+				{
+					"unit": "service.verification-check",
+					"case": "check.invalid-root"
 				}
 			]
 		}
@@ -108,7 +122,8 @@
 				"changed-grandparent-log",
 				"changed-parent-capture",
 				"indexer-parity",
-				"default"
+				"default",
+				"invalid-root"
 			],
 			"viewports": [],
 			"required": true
@@ -123,7 +138,8 @@
 				"changed-grandparent-log",
 				"changed-parent-capture",
 				"indexer-parity",
-				"default"
+				"default",
+				"invalid-root"
 			],
 			"viewports": [],
 			"required": true

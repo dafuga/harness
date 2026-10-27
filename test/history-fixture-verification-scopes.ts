@@ -22,7 +22,9 @@ export const historyFixtureVerificationScopes: Record<string, VerificationScope>
 				'a checker shared by the records of a chain answers as a fresh checker for each':
 					'indexer-parity',
 				'VerificationCheckService.check from default initialization': 'default',
-				'VerificationCheckService.check with an injected indexer': 'indexer-parity'
+				'VerificationCheckService.check with an injected indexer': 'indexer-parity',
+				'VerificationCheckService.integrity rejects a non-repository root': 'invalid-root',
+				'VerificationCheckService.check rejects a non-repository root': 'invalid-root'
 			}
 		},
 		playwright: {}

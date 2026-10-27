@@ -1,5 +1,6 @@
 import { expect } from './verificationExpect';
-import { writeFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, test } from 'vitest';
 import {
@@ -74,6 +75,28 @@ function assertLineage(results: Awaited<ReturnType<typeof reports>>) {
 	expect(results[1].problems).toContain(mismatch);
 	expect(results[2].problems).toContainEqual(expect.stringContaining(mismatch));
 }
+async function assertInvalidRoot(method: 'integrity' | 'check'): Promise<void> {
+	const item = (manifest as ComponentManifest).testing?.cases.find(
+		(entry) => entry.id === `${method}.invalid-root`
+	);
+	const expected = item?.expected?.kind === 'error' ? item.expected.value : undefined;
+	if (
+		!expected ||
+		typeof expected !== 'object' ||
+		Array.isArray(expected) ||
+		typeof expected.message !== 'string'
+	)
+		throw new Error(`Missing expected error for ${method}`);
+	const root = await mkdtemp(join(tmpdir(), 'harness-check-invalid-root-'));
+	try {
+		const checker = new VerificationCheckService(root);
+		await expect(checker[method](records[0].record.source.commit, records[0])).rejects.toThrow(
+			expected.message
+		);
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+}
 function wrongCommit() {
 	const wrong = '0'.repeat(40);
 	return `record is for commit ${records[0].record.source.commit}, not ${wrong}`;
@@ -122,4 +145,12 @@ test('VerificationCheckService.check with an injected indexer', async () => {
 	const wrong = await injected().check('0'.repeat(40), records[0]);
 	expect(wrong.status).toBe('failed');
 	expect(wrong.problems).toEqual([wrongCommit()]);
+});
+
+test('VerificationCheckService.integrity rejects a non-repository root', async () => {
+	await assertInvalidRoot('integrity');
+});
+
+test('VerificationCheckService.check rejects a non-repository root', async () => {
+	await assertInvalidRoot('check');
 });
