@@ -1,0 +1,99 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-VUXaty[39m
+
+ [31m❯[39m test/adapters/agents-providers/module-task-sandbox-process.test.ts [2m([22m[2m10 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[33m 727[2mms[22m[39m
+   [32m✓[39m ModuleTaskSandboxProcessAdapter connects[32m 1[2mms[22m[39m
+   [32m✓[39m ModuleTaskSandboxProcessAdapter.connect in named state[32m 0[2mms[22m[39m
+   [32m✓[39m ModuleTaskSandboxProcessAdapter.command in default state[32m 69[2mms[22m[39m
+   [32m✓[39m ModuleTaskSandboxProcessAdapter.command in named state[32m 72[2mms[22m[39m
+   [33m[2m✓[22m[39m ModuleTaskSandboxProcessAdapter.validateScratch in default state [33m 571[2mms[22m[39m
+   [32m✓[39m ModuleTaskSandboxProcessAdapter.validateScratch in named state[32m 2[2mms[22m[39m
+[31m   [31m×[31m ModuleTaskSandboxProcessAdapter.arguments in default state[39m[32m 6[2mms[22m[39m
+[31m     → Example output differs from its comment
++ actual - expected
+
+  [
+    '/usr/bin/env',
+    'TMPDIR=/tmp/harness-scratch',
+    'TMP=/tmp/harness-scratch',
+    'TEMP=/tmp/harness-scratch',
+-   'CLAUDE_CODE_TMPDIR=/tmp/harness-scratch',
+    '/bin/sh',
+    '-c',
+    'cd -P -- "$1" || exit; shift; exec "$@"',
+    'harness-task',
+    '/tmp/harness-app',
+[39m
+[31m   [31m×[31m ModuleTaskSandboxProcessAdapter.arguments in named state[39m[32m 1[2mms[22m[39m
+[31m     → Example output differs from its comment
++ actual - expected
+
+  [
+    '/usr/bin/env',
+    'TMPDIR=/tmp/harness-scratch',
+    'TMP=/tmp/harness-scratch',
+    'TEMP=/tmp/harness-scratch',
+-   'CLAUDE_CODE_TMPDIR=/tmp/harness-scratch',
+    '/bin/sh',
+    '-c',
+    'cd -P -- "$1" || exit; shift; exec "$@"',
+    'harness-task',
+    '/tmp/harness-app',
+[39m
+   [32m✓[39m ModuleTaskSandboxProcessAdapter.environment in default state[32m 0[2mms[22m[39m
+   [32m✓[39m ModuleTaskSandboxProcessAdapter.environment in named state[32m 0[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/adapters/agents-providers/module-task-sandbox-process.test.ts[2m > [22mModuleTaskSandboxProcessAdapter.arguments in default state
+[41m[1m FAIL [22m[49m test/adapters/agents-providers/module-task-sandbox-process.test.ts[2m > [22mModuleTaskSandboxProcessAdapter.arguments in named state
+[31m[1mAssertionError[22m: Example output differs from its comment
++ actual - expected
+
+  [
+    '/usr/bin/env',
+    'TMPDIR=/tmp/harness-scratch',
+    'TMP=/tmp/harness-scratch',
+    'TEMP=/tmp/harness-scratch',
+-   'CLAUDE_CODE_TMPDIR=/tmp/harness-scratch',
+    '/bin/sh',
+    '-c',
+    'cd -P -- "$1" || exit; shift; exec "$@"',
+    'harness-task',
+    '/tmp/harness-app',
+[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -1,11 +1,10 @@[39m
+[2m  [[22m
+[2m    "/usr/bin/env",[22m
+[2m    "TMPDIR=/tmp/harness-scratch",[22m
+[2m    "TMP=/tmp/harness-scratch",[22m
+[2m    "TEMP=/tmp/harness-scratch",[22m
+[32m-   "CLAUDE_CODE_TMPDIR=/tmp/harness-scratch",[39m
+[2m    "/bin/sh",[22m
+[2m    "-c",[22m
+[2m    "cd -P -- \"$1\" || exit; shift; exec \"$@\"",[22m
+[2m    "harness-task",[22m
+[2m    "/tmp/harness-app",[22m
+
+[36m [2m❯[22m TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:[2m99:4[22m[39m
+    [90m 97| [39m   [34mdeepStrictEqual[39m(
+    [90m 98| [39m    observation[33m.[39moutput[33m,[39m
+    [90m 99| [39m    example[33m.[39moutput[33m,[39m
+    [90m   | [39m   [31m^[39m
+    [90m100| [39m    [32m'Example output differs from its comment'[39m
+    [90m101| [39m   )[33m;[39m
+[90m [2m❯[22m PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:[2m69:18[22m[39m
+[90m [2m❯[22m src/services/verification-evidence/TestExpectationService.ts:[2m37:10[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (10)[39m
+[2m   Start at [22m 11:17:09
+[2m   Duration [22m 4.42s[2m (transform 132ms, setup 148ms, collect 55ms, tests 727ms, environment 0ms, prepare 41ms)[22m
+
