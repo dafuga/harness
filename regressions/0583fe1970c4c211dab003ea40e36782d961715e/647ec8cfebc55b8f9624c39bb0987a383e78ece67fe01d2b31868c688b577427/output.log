@@ -1,0 +1,87 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hN1bvL
+
+ ❯ test/services/verification-evidence/screenshot-baseline.test.ts (6 tests | 2 failed | 4 skipped) 3283ms
+   ↓ ScreenshotBaselineService.review from empty accepts a reviewed candidate
+   × ScreenshotBaselineService.review after review validates each new request 1204ms
+     → Baseline screenshot is missing or ambiguous.
+   × ScreenshotBaselineService.review rejects damaged source evidence 2068ms
+     → promise resolved "{ …(25) }" instead of rejecting
+   ↓ ScreenshotBaselineService.load from reviewed returns the original bytes
+   ↓ ScreenshotBaselineService.load from empty refuses a missing review
+   ↓ ScreenshotBaselineService.load rejects damaged original evidence
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/screenshot-baseline.test.ts > ScreenshotBaselineService.review after review validates each new request
+ExpectedCliError: Baseline screenshot is missing or ambiguous.
+ ❯ fail src/core/development-tooling/errors.ts:8:8
+      7| }
+      8| 
+      9| export function isExpectedCliError(error: unknown): error is ExpectedC…
+       |       ^
+     10|  return error instanceof ExpectedCliError;
+     11| }
+ ❯ call src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:36:31
+ ❯ PerformanceProfileService.observe src/services/verification-evidence/PerformanceProfileService.ts:58:18
+ ❯ Object.apply src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:51:29
+ ❯ selectScreenshot src/services/verification-evidence/screenshot-baseline-service/selectScreenshot.ts:35:35
+ ❯ call src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:36:31
+ ❯ PerformanceProfileService.observe src/services/verification-evidence/PerformanceProfileService.ts:58:18
+ ❯ Object.apply src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:51:29
+ ❯ screenshotCandidate src/services/verification-evidence/screenshot-baseline-service/screenshotCandidate.ts:33:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/services/verification-evidence/screenshot-baseline.test.ts > ScreenshotBaselineService.review rejects damaged source evidence
+AssertionError: promise resolved "{ …(25) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "buildId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
++   "bytes": 71,
++   "capturePath": "evidence/9b2843d5295a02c68ba2ce2b1f36d65c4e4fff89/visual/page/desktop.png",
++   "captureStatus": "failed",
++   "case": "default.desktop",
++   "caseStatus": "passed",
++   "commit": "9b2843d5295a02c68ba2ce2b1f36d65c4e4fff89",
++   "evidence": "screens",
++   "file": "test/baselines/desktop.png",
++   "id": "336adb2e96fcb288bb0daa66a84543651eb5748d7dc946b84a8b7f2ec004f49d",
++   "profile": "profile-1",
++   "reason": "Inspected synthetic pixels in a disposable test.",
++   "record": "17b1b4a9ca850f05d3d0ca681d44aba14fcde3b3b38d71423aaffc8e8393107f",
++   "recordStatus": "failed",
++   "reviewedAt": "2026-10-27T03:48:25.586Z",
++   "reviewer": "Fixture reviewer",
++   "scenario": "visual",
++   "schemaVersion": 1,
++   "sha256": "43dd63e54e0cb5bb10a74d892d7a0781395b4086e1d4d27464e1fc25bc1d8fd2",
++   "state": "default",
++   "testFile": "test/page.spec.ts",
++   "testTitle": "fixture desktop",
++   "tree": "4449751e00dade3f0f7656865745e165df420a77",
++   "unit": "page.fixture",
++   "viewport": "desktop",
+  }
+
+ ❯ test/services/verification-evidence/screenshot-baseline.test.ts:120:53
+    118|      new ScreenshotBaselineService(join(fixture.root, 'missing')).revi…
+    119|     ).rejects.toBeInstanceOf(Error);
+    120|    } else await expect(service.review(fixture.input)).rejects.toThrow(…
+       |                                                     ^
+    121|   } finally {
+    122|    await fixture.dispose();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 skipped (6)
+   Start at  04:48:19
+   Duration  6.12s (transform 308ms, setup 100ms, collect 568ms, tests 3.28s, environment 0ms, prepare 21ms)
+
