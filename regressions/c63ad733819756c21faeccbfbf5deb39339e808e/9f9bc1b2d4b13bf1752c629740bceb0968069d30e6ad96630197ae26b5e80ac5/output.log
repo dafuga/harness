@@ -1,0 +1,42 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-w8oIlX/packages/desktop
+
+ ❯ test/local-transport.test.ts (8 tests | 1 failed | 7 skipped) 3226ms
+   × the bridge works over a socket that only this machine can reach 3205ms
+     → This operation does not exist.
+   ↓ an image of more than a mebibyte crosses the socket in bounded frames and arrives intact
+   ↓ two large answers take turns on the socket and a small one does not wait for them
+   ↓ each window is its own client: its own project, its own run events, one repository lock
+   ↓ a reload keeps the session of its window; closing the window ends its socket and its run only
+   ↓ a game of nearly a mebibyte crosses to the main process in bounded frames and reopens
+   ↓ the control port travels over the same socket, with exactly what the page gave
+   ↓ repeated concurrent listens reuse one listener and closing releases it
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/local-transport.test.ts > the bridge works over a socket that only this machine can reach
+RemoteFailure: This operation does not exist.
+ ❯ WireClientService.receive ../remote/src/services/networking-security/WireClientService.ts:92:24
+     90|   else waiting?.reject(new RemoteFailure(message.error.code, message.e…
+     91|  }
+     92|  /** Runs before any replayed event is read, so the cursor is right fo…
+       |                        ^
+     93|  private adopt(attachment: RemoteAttachment): void {
+     94|   const { epoch, sequence, replay } = attachment,
+ ❯ call ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:36:31
+ ❯ PerformanceProfileService.observe ../../src/services/verification-evidence/PerformanceProfileService.ts:58:18
+ ❯ Object.apply ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:51:29
+ ❯ LocalTransportClientService.receive src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts:80:33
+ ❯ WebSocket.socket.onmessage src/lib/development-tooling/preload-initialization/LocalTransportClientService.ts:71:38
+ ❯ callListener ../../../../../Users/danielfugere/projects/harness-api-main-integration-20261026/node_modules/ws/lib/event-target.js:290:14
+ ❯ WebSocket.onMessage ../../../../../Users/danielfugere/projects/harness-api-main-integration-20261026/node_modules/ws/lib/event-target.js:209:9
+ ❯ Receiver.receiverOnMessage ../../../../../Users/danielfugere/projects/harness-api-main-integration-20261026/node_modules/ws/lib/websocket.js:1239:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 skipped (8)
+   Start at  02:33:46
+   Duration  5.88s (transform 1.47s, setup 125ms, collect 2.35s, tests 3.23s, environment 0ms, prepare 38ms)
+
