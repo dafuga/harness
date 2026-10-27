@@ -72,3 +72,5 @@ Default metadata admission retains `fb59885d0f` for hosted registry routing and 
 Work-panel integration retains `2df73acde4` for project-scoped queue snapshots in the desktop bridge and local console. Earlier relocation and behavior reviews remain present.
 
 Local Work access retains `0109831d9f` for exposing the selected-project reader through the isolated desktop preload. The preceding preload reviews remain present.
+
+Feature-plan actions retain `2a174efe27` for the local bridge and preload. Earlier reviews and the original relocation proofs remain present.
