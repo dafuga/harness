@@ -2,7 +2,7 @@
 	"name": "scenario-screenshot-provenance",
 	"goal": "Require screenshots to match their declared capture provenance",
 	"createdAt": "2026-10-27T04:17:33.782Z",
-	"updatedAt": "2026-10-27T04:18:42.886Z",
+	"updatedAt": "2026-10-27T04:19:19.327Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T04:19:17.517Z",
+			"evidence": "Fix 44a2d10d23 checks screenshots against any declared provenance before accepting their build stamp."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T04:19:19.327Z",
+			"evidence": "Paired green reruns the five unchanged cases at 44a2d10d23; fixture, missing and opposite provenance are rejected."
 		},
 		{
 			"id": "verify",

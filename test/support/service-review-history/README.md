@@ -31,6 +31,14 @@ const d = JSON.parse(
 const reads = [
 	[d.originalProof, 'specification/loops/shared-service-ownership/migration.json'],
 	[d.originalProof, 'src/cli/program/history-index-service/HistoryIndexService.ts'],
+	[
+		'44a2d10d2388305d6ef09cf709249f3dbbbbbd83',
+		'src/utils/verification-evidence/scenarioCoverage.ts'
+	],
+	[
+		'5e5187769d390ab5a21a7bfd0f8013c9667b6b41',
+		'src/utils/verification-evidence/scenarioCoverage.ts'
+	],
 	...d.files.flatMap((f) =>
 		[...(f.review ? [f.review] : []), ...(f.previousReviews ?? [])].map((r) => [r.commit, r.path])
 	)
@@ -70,3 +78,5 @@ Scoped screenshot admission retains implementation commit `b0fc91c01` for select
 Regression profile review retains `1fee21a175` for transient tool-call identity while preserving the earlier proof pipeline reviews.
 
 Scenario coverage review retains `9bd3c0d300` for matching each capture to its declared evidence kind.
+The `44a2d10d23` review also retains the owned `problem` helper that validates declared screenshot provenance.
+The focused implementation at `5e5187769d` retains the same guard within the lint complexity limit.

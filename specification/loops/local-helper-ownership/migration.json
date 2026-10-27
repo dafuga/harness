@@ -5513,9 +5513,25 @@
 		{
 			"unit": "function.scenario-coverage",
 			"name": "scenarioCoverage",
-			"commit": "9bd3c0d300791e74e51cc0b903e70dbd36004432",
-			"reason": "Require the declared capture kind when judging scenario evidence.",
-			"definition": "5d5b20a570d5335326b5fd18abd95b867681f159f3f2e56f7c70cd5a7afc29ab"
+			"commit": "5e5187769d390ab5a21a7bfd0f8013c9667b6b41",
+			"reason": "Keep declared screenshot provenance validation within complexity limits.",
+			"definition": "5d5b20a570d5335326b5fd18abd95b867681f159f3f2e56f7c70cd5a7afc29ab",
+			"previousReviews": [
+				{
+					"unit": "function.scenario-coverage",
+					"name": "scenarioCoverage",
+					"commit": "44a2d10d2388305d6ef09cf709249f3dbbbbbd83",
+					"reason": "Validate declared screenshot provenance through the coverage helper.",
+					"definition": "5d5b20a570d5335326b5fd18abd95b867681f159f3f2e56f7c70cd5a7afc29ab"
+				},
+				{
+					"unit": "function.scenario-coverage",
+					"name": "scenarioCoverage",
+					"commit": "9bd3c0d300791e74e51cc0b903e70dbd36004432",
+					"reason": "Require the declared capture kind when judging scenario evidence.",
+					"definition": "5d5b20a570d5335326b5fd18abd95b867681f159f3f2e56f7c70cd5a7afc29ab"
+				}
+			]
 		}
 	]
 }
