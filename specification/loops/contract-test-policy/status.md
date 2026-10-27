@@ -1738,3 +1738,21 @@ three dependencies; it has no separate emitted artifact. The focused capture
 retains workload timing and whole-process memory. Reasons are in Git notes.
 This branch still needs integration, full verification and the internal
 callable's Example contract.
+
+Generated declarations also accepted a look-alike object as a registrar. The
+existing discovery method case now marks that receiver unresolved. Red
+`254bd580cd7a` at `00c225bbc1` failed because the fake registrar appeared
+active; green `018f62b7f2dc` at `4512c4a77b` passed the unchanged case and
+fixture on the same profile. The follow-up fixture commit `bc1f68fe31` covers
+the published verification import, aliased constructors, type-only or foreign
+imports and mutable versus immutable bindings. It retains the two-case suite
+count. The old reader failed mutation capture `49f712b01149`; restored
+identical-tree capture `028b6fbc55e3` passed on the same profile. Focused
+capture `cf47a97d68ea` passed all 18 discovery and registry-guard cases at that
+tree. Units check, targeted typecheck, lint and formatting passed. The example
+reader measured 6,210 bytes, 189 lines, complexity 58 and five dependencies;
+it has no separate emitted artifact. Timing and whole-process RSS are retained
+with the capture, and source reasons are in Git notes. Recognition of a static
+registrar is not proof of execution: a passing case still requires its actual
+runner outcome. Integration, broader migration and deferred verification remain
+open.
