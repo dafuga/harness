@@ -1,0 +1,54 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wj9ZOG
+
+ ❯ test/services/unit-index.test.ts (19 tests | 1 failed | 18 skipped) 16ms
+   ↓ atomic levels follow runtime calls and survive projections
+   ↓ HTTP requests bind to endpoints in the owning app and selected source tree
+   ↓ source indexing bounds pending reads and keeps every file in source order
+   ↓ source indexing reports failed reads even after its read window fills
+   × source indexing releases parsed blobs from prior revisions 11ms
+     → expected 2 to be 1 // Object.is equality
+   ↓ identical blobs keep path-specific references and ignored files stay unread
+   ↓ source indexing preserves admitted entry getters, species, and method receivers
+   ↓ recorded source moves retain definitions, owner-local placement and registered identity
+   ↓ public route filenames retain their registered ownership
+   ↓ declared preview and documentation survive source re-indexing
+   ↓ declared execution targets survive re-indexing and follow a moved default entry
+   ↓ recreating retired source elsewhere records lineage to the retired identity
+   ↓ a unit that takes a retired name records lineage even when its symbols differ
+   ↓ lineage cannot be dropped by editing the manifest
+   ↓ unrelated new units carry no lineage
+   ↓ a declared responsibility survives re-indexing while a derived one follows the unit
+   ↓ an alternative implementation is a related unit linked by a declared contract dependency
+   ↓ several owned files produce identical metadata after one indexing pass
+   ↓ recorded service moves preserve implementations and registered owner-local placement
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/unit-index.test.ts > source indexing releases parsed blobs from prior revisions
+AssertionError: expected 2 to be 1 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1[39m
+[31m+ 2[39m
+
+ ❯ test/services/unit-index/sourceIndex.ts:70:23
+     68|     defaultUnitsConfig
+     69|    );
+     70|    expect(cache.size).toBe(1);
+       |                       ^
+     71|   }
+     72|  });
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+ ❯ test/services/unit-index/sourceIndex.ts:59:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 skipped (19)
+   Start at  00:58:02
+   Duration  4.07s (transform 263ms, setup 121ms, collect 643ms, tests 16ms, environment 0ms, prepare 35ms)
+
