@@ -133,5 +133,199 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
+	},
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["default", "named"],
+		"cases": [
+			{
+				"id": "connect.default",
+				"state": "default",
+				"subject": "ModuleTaskSandboxProcessAdapter.connect",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-sandbox-process.test.ts",
+					"title": "ModuleTaskSandboxProcessAdapter connects"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "module-task-sandbox-process"
+				},
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "connect.named",
+				"state": "named",
+				"subject": "ModuleTaskSandboxProcessAdapter.connect",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-sandbox-process.test.ts",
+					"title": "ModuleTaskSandboxProcessAdapter.connect in named state"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "sandbox-worker"
+				}
+			},
+			{
+				"id": "command.default",
+				"state": "default",
+				"subject": "ModuleTaskSandboxProcessAdapter.command",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-sandbox-process.test.ts",
+					"title": "ModuleTaskSandboxProcessAdapter.command in default state"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"argvPreserved": true,
+						"hardlinksDenied": true,
+						"invalidWrapperRejected": true,
+						"initializationFailureRejected": true
+					}
+				},
+				"errors": ["Unknown wrapper shape or sandbox initialization failure"]
+			},
+			{
+				"id": "command.named",
+				"state": "named",
+				"subject": "ModuleTaskSandboxProcessAdapter.command",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-sandbox-process.test.ts",
+					"title": "ModuleTaskSandboxProcessAdapter.command in named state"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"argvPreserved": true,
+						"hardlinksDenied": true,
+						"invalidWrapperRejected": true,
+						"initializationFailureRejected": true
+					}
+				},
+				"errors": ["Unknown wrapper shape or sandbox initialization failure"]
+			},
+			{
+				"id": "validatescratch.default",
+				"state": "default",
+				"subject": "ModuleTaskSandboxProcessAdapter.validateScratch",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-sandbox-process.test.ts",
+					"title": "ModuleTaskSandboxProcessAdapter.validateScratch in default state"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"errors": ["Unsafe scratch contents"]
+			},
+			{
+				"id": "validatescratch.named",
+				"state": "named",
+				"subject": "ModuleTaskSandboxProcessAdapter.validateScratch",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-sandbox-process.test.ts",
+					"title": "ModuleTaskSandboxProcessAdapter.validateScratch in named state"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"errors": ["Unsafe scratch contents"]
+			},
+			{
+				"id": "arguments.default",
+				"state": "default",
+				"subject": "ModuleTaskSandboxProcessAdapter.arguments",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-sandbox-process.test.ts",
+					"title": "ModuleTaskSandboxProcessAdapter.arguments in default state"
+				},
+				"expected": {
+					"kind": "value",
+					"value": [
+						"/usr/bin/env",
+						"TMPDIR=/tmp/harness-scratch",
+						"TMP=/tmp/harness-scratch",
+						"TEMP=/tmp/harness-scratch",
+						"CLAUDE_CODE_TMPDIR=/tmp/harness-scratch",
+						"/bin/sh",
+						"-c",
+						"cd -P -- \"$1\" || exit; shift; exec \"$@\"",
+						"harness-task",
+						"/tmp/harness-app",
+						"claude",
+						"-p"
+					]
+				},
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "arguments.named",
+				"state": "named",
+				"subject": "ModuleTaskSandboxProcessAdapter.arguments",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-sandbox-process.test.ts",
+					"title": "ModuleTaskSandboxProcessAdapter.arguments in named state"
+				},
+				"expected": {
+					"kind": "value",
+					"value": [
+						"/usr/bin/env",
+						"TMPDIR=/tmp/harness-scratch",
+						"TMP=/tmp/harness-scratch",
+						"TEMP=/tmp/harness-scratch",
+						"CLAUDE_CODE_TMPDIR=/tmp/harness-scratch",
+						"/bin/sh",
+						"-c",
+						"cd -P -- \"$1\" || exit; shift; exec \"$@\"",
+						"harness-task",
+						"/tmp/harness-app",
+						"claude",
+						"-p"
+					]
+				},
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "environment.default",
+				"state": "default",
+				"subject": "ModuleTaskSandboxProcessAdapter.environment",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-sandbox-process.test.ts",
+					"title": "ModuleTaskSandboxProcessAdapter.environment in default state"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tmpdir": "/tmp/harness-policy",
+						"tmp": "/tmp/harness-policy",
+						"temp": "/tmp/harness-policy",
+						"snapshot": "/tmp/harness-contracts.json",
+						"pathMatches": true,
+						"apiKeysExcluded": true
+					}
+				},
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "environment.named",
+				"state": "named",
+				"subject": "ModuleTaskSandboxProcessAdapter.environment",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-sandbox-process.test.ts",
+					"title": "ModuleTaskSandboxProcessAdapter.environment in named state"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"tmpdir": "/tmp/harness-policy",
+						"tmp": "/tmp/harness-policy",
+						"temp": "/tmp/harness-policy",
+						"snapshot": "/tmp/harness-contracts.json",
+						"pathMatches": true,
+						"apiKeysExcluded": true
+					}
+				},
+				"errors": ["TypeError"]
+			}
+		]
 	}
 }
