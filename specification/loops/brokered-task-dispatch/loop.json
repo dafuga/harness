@@ -1,0 +1,43 @@
+{
+	"name": "brokered-task-dispatch",
+	"goal": "Normal Harness CLI and approved app-server tasks use a qualified exact-file broker transport with truthful model and usage records, without exposing credentials or native tools.",
+	"createdAt": "2026-10-27T17:07:30.286Z",
+	"updatedAt": "2026-10-27T17:08:52.099Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T17:08:52.099Z",
+			"evidence": "The scope is a supported broker transport for normal CLI and approved app-server work. Preserve the four-operation exact-file boundary, host qualification, cancellation, truthful nullable model and usage fields, and existing native denial. A generated scaffold and wanted verification contract exist; no working transport or passing implementation is claimed."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

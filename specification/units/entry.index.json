@@ -204,7 +204,8 @@
 			"FeaturePlanPreparationService",
 			"featureSpecStructure",
 			"featurePlanImage",
-			"featurePlanImpact"
+			"featurePlanImpact",
+			"ModuleTaskBrokerTransportAdapter"
 		]
 	},
 	"contract": {
@@ -216,6 +217,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.agents-providers-feature-plan-readiness",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-broker-transport",
 			"via": "reexport",
 			"origin": "derived"
 		},
