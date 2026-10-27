@@ -3,6 +3,20 @@ import type { ContractCase } from '../../../src/services/verification-evidence/T
 
 export type MethodStateMap = Record<string, string[]>;
 
+export interface TestCaseFixtureContract {
+	version: number;
+	shape: string;
+	states: string[];
+	cases: ContractCase[];
+}
+
+export interface MethodLifecycleValidator {
+	validate(
+		unit: ComponentManifest,
+		input: unknown
+	): { valid: boolean; errors: string[] };
+}
+
 export interface SyntheticMethodLifecycleContract {
 	version: 1;
 	shape: 'service';

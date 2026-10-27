@@ -10,9 +10,9 @@ import {
 	assertExampleAdmissionInputs
 } from '../../support/testCaseAdmissionCases';
 import {
-	methodLifecycleDiagnostics,
-	syntheticMethodLifecycleFixture
+	assertMethodSpecificLifecycleCases
 } from './test-case.test.fixtures';
+import type { TestCaseFixtureContract } from './test-case.test.types';
 
 const validator = new TestCaseValidator();
 test('validate each allowed shape and its missing or invalid states', async () => {
@@ -25,12 +25,37 @@ test('validate each allowed shape and its missing or invalid states', async () =
 		expected: { kind: 'value' as const, value: 1 }
 	};
 	const contract = { version: 1, shape: 'service', states: ['rest'], cases: [item] };
+	assertStandardShapeCases(validator, unit, contract, item);
+	const authored = observedAuthoredCases(validator, helper, { ...item, subject: 'rank' });
+	const declared = observedDeclaredCases(validator, unit, helper, item);
+	assertExampleAdmissionInputs(validator, helper, item);
+	expect(
+		[...authored, ...declared],
+		'helper case expectations must match their authored Example; method/state matrices must be finite'
+	).toEqual([false, false, false, false, false, false, false, false, false, false]);
+	await assertMeasuredLayoutPageCases(unit, item);
+	assertMethodStateCases(unit, item);
+	assertMethodSpecificLifecycleCases(validator, unit, item);
+	expect(
+		validator.validate(unit, {
+			...contract,
+			cases: [{ ...item, test: { ...item.test, file: '../escape.test.ts' } }]
+		}).valid
+	).toBe(false);
+});
+
+function assertStandardShapeCases(
+	validator: TestCaseValidator,
+	unit: ComponentManifest,
+	contract: TestCaseFixtureContract,
+	item: ContractCase
+) {
 	expect(validator.validate(unit, contract).errors).toEqual([]);
 	expect(validator.validate(unit, { ...contract, shape: 'smoke' }).valid).toBe(false);
 	expect(validator.validate(unit, { ...contract, cases: [] }).valid).toBe(false);
-	expect(validator.validate(unit, { ...contract, states: ['missing'] }).errors.join(' ')).toContain(
-		'missing state'
-	);
+	expect(
+		validator.validate(unit, { ...contract, states: ['missing'] }).errors.join(' ')
+	).toContain('missing state');
 	expect(validator.validate(unit, { ...contract, shape: 'component' }).errors.join(' ')).toContain(
 		'screenshot matching'
 	);
@@ -54,30 +79,6 @@ test('validate each allowed shape and its missing or invalid states', async () =
 	expect(validator.validate(unit, { ...contract, shape: 'helper' }).errors.join(' ')).toContain(
 		'authored Examples'
 	);
-	const authored = observedAuthoredCases(validator, helper, { ...item, subject: 'rank' });
-	const declared = observedDeclaredCases(validator, unit, helper, item);
-	assertExampleAdmissionInputs(validator, helper, item);
-	expect(
-		[...authored, ...declared],
-		'helper case expectations must match their authored Example; method/state matrices must be finite'
-	).toEqual([false, false, false, false, false, false, false, false, false, false]);
-	await assertMeasuredLayoutPageCases(unit, item);
-	assertMethodStateCases(unit, item);
-	assertMethodSpecificLifecycleCases(unit, item);
-	expect(
-		validator.validate(unit, {
-			...contract,
-			cases: [{ ...item, test: { ...item.test, file: '../escape.test.ts' } }]
-		}).valid
-	).toBe(false);
-});
-
-async function indexedOwners() {
-	const indexed = await indexFiles({
-		'src/utils/rank.ts': 'export function rank(value: number): number { return value; }',
-		'src/services/runner.ts': 'export class Runner { run(value: number): number { return value; } }'
-	});
-	return { unit: unitOf(indexed, 'service.runner'), helper: unitOf(indexed, 'function.rank') };
 }
 
 function assertMethodStateCases(unit: ComponentManifest, item: ContractCase) {
@@ -111,123 +112,12 @@ function assertMethodStateCases(unit: ComponentManifest, item: ContractCase) {
 	).toContain('missing method/state');
 }
 
-function assertMethodSpecificLifecycleCases(unit: ComponentManifest, item: ContractCase) {
-	const { owner, contract } = syntheticMethodLifecycleFixture(unit, item);
-	const validate = (input: unknown) =>
-		validator.validate(owner, input as Parameters<typeof validator.validate>[1]);
-
-	const complete = validate(contract);
-	expect(complete.valid, 'method-specific lifecycle states need no global states').toBe(true);
-	expect(complete.errors).toEqual([]);
-	expect(contract).not.toHaveProperty('states');
-
-	const missingPair = validate({
-		...contract,
-		cases: contract.cases.filter(
-			(caseItem) => !(caseItem.subject === 'Synthetic.run' && caseItem.state === 'cancelled')
-		)
+async function indexedOwners() {
+	const indexed = await indexFiles({
+		'src/utils/rank.ts': 'export function rank(value: number): number { return value; }',
+		'src/services/runner.ts': 'export class Runner { run(value: number): number { return value; } }'
 	});
-	expect(missingPair.valid).toBe(false);
-	expect(missingPair.errors).toContain(methodLifecycleDiagnostics.missingPair);
-
-	const undeclaredPair = validate({
-		...contract,
-		cases: [
-			...contract.cases,
-			{
-				...contract.cases[0],
-				id: 'Synthetic.ready.cancelled',
-				state: 'cancelled',
-				subject: 'Synthetic.ready',
-				test: { ...contract.cases[0].test, title: 'Synthetic.ready cancelled' }
-			}
-		]
-	});
-	expect(undeclaredPair.valid).toBe(false);
-	expect(undeclaredPair.errors).toContain(methodLifecycleDiagnostics.undeclaredPair);
-
-	const missingMethodDeclaration = validate({
-		...contract,
-		methodStates: { 'Synthetic.ready': ['qualified', 'unconfigured'] }
-	});
-	expect(missingMethodDeclaration.valid).toBe(false);
-	expect(missingMethodDeclaration.errors).toContain(methodLifecycleDiagnostics.missingMethod);
-
-	const unknownMethod = validate({
-		...contract,
-		methodStates: {
-			...contract.methodStates,
-			'Synthetic.unknown': ['qualified']
-		}
-	});
-	expect(unknownMethod.valid).toBe(false);
-	expect(unknownMethod.errors).toContain(methodLifecycleDiagnostics.unknownMethod);
-
-	const constructorMethod = validate({
-		...contract,
-		methodStates: {
-			...contract.methodStates,
-			'Synthetic.constructor': ['qualified']
-		}
-	});
-	expect(constructorMethod.valid).toBe(false);
-	expect(constructorMethod.errors).toContain(methodLifecycleDiagnostics.constructorMethod);
-
-	const emptyMap = validate({ ...contract, methodStates: {} });
-	expect(emptyMap.valid).toBe(false);
-	expect(emptyMap.errors).toContain(methodLifecycleDiagnostics.emptyMap);
-
-	const emptyList = validate({
-		...contract,
-		methodStates: { ...contract.methodStates, 'Synthetic.ready': [] }
-	});
-	expect(emptyList.valid).toBe(false);
-	expect(emptyList.errors).toContain(methodLifecycleDiagnostics.emptyList);
-
-	const duplicateStates = validate({
-		...contract,
-		methodStates: {
-			...contract.methodStates,
-			'Synthetic.ready': ['qualified', 'qualified']
-		}
-	});
-	expect(duplicateStates.valid).toBe(false);
-	expect(duplicateStates.errors).toContain(methodLifecycleDiagnostics.duplicateStates);
-
-	const invalidState = validate({
-		...contract,
-		methodStates: { ...contract.methodStates, 'Synthetic.ready': ['not a state'] }
-	});
-	expect(invalidState.valid).toBe(false);
-	expect(invalidState.errors).toContain(methodLifecycleDiagnostics.invalidState);
-
-	const nonServiceShape = validate({ ...contract, shape: 'component' });
-	expect(nonServiceShape.valid).toBe(false);
-	expect(nonServiceShape.errors).toContain(methodLifecycleDiagnostics.unsupportedShape);
-
-	const ambiguousGlobalStates = validate({
-		...contract,
-		states: ['qualified', 'unconfigured', 'cancelled']
-	});
-	expect(ambiguousGlobalStates.valid).toBe(false);
-	expect(ambiguousGlobalStates.errors).toContain(methodLifecycleDiagnostics.ambiguousGlobalStates);
-
-	const duplicateCase = validate({
-		...contract,
-		cases: [
-			...contract.cases,
-			{
-				...contract.cases[0],
-				id: 'Synthetic.ready.qualified.duplicate',
-				test: {
-					...contract.cases[0].test,
-					title: 'Synthetic.ready qualified duplicate'
-				}
-			}
-		]
-	});
-	expect(duplicateCase.valid).toBe(false);
-	expect(duplicateCase.errors.join(' ')).toContain('exactly one method/state');
+	return { unit: unitOf(indexed, 'service.runner'), helper: unitOf(indexed, 'function.rank') };
 }
 
 function assertLayoutPageCases(unit: ComponentManifest, item: ContractCase) {
