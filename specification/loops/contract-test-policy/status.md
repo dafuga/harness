@@ -1320,3 +1320,29 @@ build. Its 33-file build was stamped and independently identified as
 The app still has 195 missing atom and script coverage contracts. No browser
 or server was started for this proof. Case-bound screenshot capture, reviewed
 baseline loading, remote E2Es and full verification remain pending.
+
+## Continuation: screenshot retry provenance
+
+Screenshot case bindings lacked retry identity. A legacy capture from a failed
+first attempt could be labeled with a later passing outcome, while two bound
+attempts were rejected as ambiguous. Test-only `0583fe1970` strengthened two
+existing review cases; paired red `647ec8cfebc5` reproduced both failures.
+Source-only `ff24e7bf72` selects the latest executed bound attempt, records its
+optional retry and rejects unbound, missing, duplicate, skipped or unreported
+attempts. Unchanged green `ef7541fd3f8f` passed. Legacy single-attempt reviews
+remain readable, and no case titles were added.
+
+The existing case fixture then added the remaining invalid-attempt matrix and a
+representative retry workload. Final mutant `631a0bc0ed` failed capture
+`72707949c83d`; restored `4d7437e59d` passed `492a32371a5e` with the same tree
+as `7cae68c838`. Focused capture `e4f505deb90b` passed 27 class, generator,
+registry and readable-contract cases, typecheck and audit. At `7cae68c838`,
+source bytes/lines/complexity/dependencies were 19708/520/128/11 for the
+baseline service and 18519/146/9/3 for project guidance. The retry review took
+132.56 ms with 212,336,640 bytes whole-worker RSS; guidance took 13.47 ms with
+263,241,728 bytes. Neither module emits a separate artifact. Source reasons are
+in Git notes. The skill and generated instructions now require retry outcomes
+and attempt provenance in existing screenshot evidence cases.
+
+These tests use synthetic image bytes solely to test evidence integrity. Real
+browser capture, reviewed baseline loading and full verification remain open.
