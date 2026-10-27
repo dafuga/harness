@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-kdatHO
+
+ ✓ test/services/unit-index.test.ts (14 tests) 2832ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2673ms
+ ✓ test/source-history-heads.test.ts (3 tests) 367ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 78ms
+ ✓ test/utils/history-refs.test.ts (13 tests) 7ms
+ ✓ test/utils/source-branches.test.ts (5 tests) 4ms
+
+ Test Files  5 passed (5)
+      Tests  37 passed (37)
+   Start at  01:59:03
+   Duration  6.73s (transform 255ms, setup 215ms, collect 514ms, tests 3.29s, environment 0ms, prepare 109ms)
+
+Units registry is valid: 1827 units, 166 uncertain references.
+Checking formatting...
+All matched files use Prettier code style!
+Harness audit passed. Files and functions are staying small.
