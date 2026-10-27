@@ -76,7 +76,7 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		baseCommit,
 		commit
 	);
-	retainVerificationIndexes(base, head, impact.units);
+	const sourceHashes = retainVerificationIndexes(base, head, impact.units);
 	return new VerificationService({
 		root,
 		commit,
@@ -86,6 +86,7 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		requestedBase,
 		base,
 		head,
+		sourceHashes,
 		impact,
 		config,
 		requirePerformance: requiresPerformance(options, config),
@@ -100,12 +101,13 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 	}).run();
 }
 
-/** Keep only facts the record measures; impact and registry checks use the other side fields. */
+/** Keep hashes for all unit versions and full source facts only for impacted units. */
 function retainVerificationIndexes(
 	base: RevisionSide,
 	head: RevisionSide,
 	units: { direct: string[]; added: string[]; indirect: string[] }
-): void {
+) {
+	const sourceHashes = { base: unitSourceHashes(base), head: unitSourceHashes(head) };
 	const measured = new Set([...units.direct, ...units.added, ...units.indirect]);
 	const paths = new Set(
 		head.manifests.filter((unit) => measured.has(unit.id)).flatMap((unit) => unit.owns.source)
@@ -114,6 +116,18 @@ function retainVerificationIndexes(
 		if (!paths.has(path)) head.index.files.delete(path);
 	}
 	base.index.files.clear();
+	return sourceHashes;
+}
+
+function unitSourceHashes(side: RevisionSide): Map<string, { hash: string }> {
+	const hashes = new Map<string, { hash: string }>();
+	for (const unit of side.manifests) {
+		for (const path of unit.owns.source) {
+			const file = side.index.files.get(path);
+			if (file) hashes.set(path, { hash: file.hash });
+		}
+	}
+	return hashes;
 }
 
 async function verifyConfig(head: RevisionSide): Promise<VerifyConfig> {

@@ -32,6 +32,7 @@
 			"referencedScenario",
 			"recordComponents",
 			"benchmarkMeasurements",
+			"VerificationSourceHashes",
 			"Side",
 			"referencedScenario"
 		]
@@ -47,7 +48,7 @@
 			{
 				"name": "recordComponents.sides",
 				"type": "{ base: Side; head: Side }",
-				"description": "Base and head manifests/source facts used to identify the tested version, using base for removed units."
+				"description": "Base and head manifests and owned source hashes used to identify the tested version, using base for removed units."
 			},
 			{
 				"name": "recordComponents.measured",

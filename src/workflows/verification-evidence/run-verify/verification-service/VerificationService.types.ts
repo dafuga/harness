@@ -2,6 +2,7 @@ import type { ImpactReport } from '../../../../core/development-tooling/impactTy
 import type { VerifyConfig } from '../../../../core/verification-evidence/verifyTypes';
 import type { ReasonReport } from '../../../../services/development-tooling/ExplanationService';
 import type { RevisionSide } from '../../../development-tooling/loadRevisions';
+import type { VerificationSourceHashes } from './record-assembly-service/sealRecord.types';
 
 export interface VerifyContext {
 	requirePerformance?: boolean;
@@ -16,6 +17,7 @@ export interface VerifyContext {
 	requestedBase: string | null;
 	base: RevisionSide;
 	head: RevisionSide;
+	sourceHashes?: VerificationSourceHashes;
 	impact: ImpactReport;
 	config: VerifyConfig;
 	testTimeoutMs?: number;
