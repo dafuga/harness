@@ -1,6 +1,7 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
+	import { SvelteMap } from 'svelte/reactivity';
 	import type {
 		FeatureWorkSnapshot,
 		FeatureWorkTask as Task
@@ -56,7 +57,7 @@
 	function changeTree(changes: Change[]) {
 		const units = new Set(changes.map((c) => c.unit));
 		const roots: Change[] = [];
-		const kids = new Map<Change, Change[]>();
+		const kids = new SvelteMap<Change, Change[]>();
 		const place = (c: Change, siblings: Change[]) => {
 			if (kids.has(c)) return;
 			const own: Change[] = [];
@@ -107,7 +108,7 @@
 			<time datetime={p.approval.approvedAt}>{p.approval.approvedAt}</time>{/if}
 	</p>
 	<p class="meta">Design previews and approval controls are not available in this panel.</p>
-	{#each p.pages as page}
+	{#each p.pages as page (page.module)}
 		<details>
 			<summary
 				><span class="grow">Design <code>{page.module}</code></span><span class="tag"
@@ -115,7 +116,7 @@
 				></summary
 			>
 			<ul class="tree">
-				{#each page.options as o}
+				{#each page.options as o (o.id)}
 					<li class="row">
 						<span class="grow">{o.id} · {o.version}</span>
 						{#if o.id === page.selected}<span class="tag amber">Selected</span>{/if}
@@ -128,7 +129,7 @@
 	{/each}
 	{#if tree.roots.length}
 		<ul class="tree">
-			{#each tree.roots as c}{@render changeNode(f, c, tree.kids)}{/each}
+			{#each tree.roots as c (c.unit)}{@render changeNode(f, c, tree.kids)}{/each}
 		</ul>
 	{:else}
 		<p class="meta">This plan lists no module changes.</p>
@@ -147,10 +148,10 @@
 				<details>
 					<summary>Wanted contract</summary>
 					<p class="meta">{w.responsibility}</p>
-					{#each FIELDS as field}
+					{#each FIELDS as field (field)}
 						{@const entries = w[field] ?? []}
 						<p class="meta label">{field}{entries.length ? '' : ': none declared'}</p>
-						{#each entries as e}
+						{#each entries as e, index (index)}
 							<p class="meta">
 								<code>{e.name}</code>{e.type ? `: ${e.type}` : ''}{e.description
 									? ` — ${e.description}`
@@ -163,7 +164,7 @@
 			{#if c.assignedFiles.length}<p class="meta">Files: {c.assignedFiles.join(', ')}</p>{/if}
 			{@render moduleTasks(f, c.unit)}
 			{#if kids.get(c)?.length}<ul class="tree">
-					{#each kids.get(c) ?? [] as k}{@render changeNode(f, k, kids)}{/each}
+					{#each kids.get(c) ?? [] as k (k.unit)}{@render changeNode(f, k, kids)}{/each}
 				</ul>{/if}
 		</details>
 	</li>
@@ -195,7 +196,7 @@
 					</details>
 				</li>
 			{/each}
-			{#each planned as t}
+			{#each planned as t (t.id)}
 				<li class="row planned">
 					<span class="dot" aria-hidden="true"></span><span class="grow">{t.title}</span><span
 						>Planned, not stored</span

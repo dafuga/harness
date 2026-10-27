@@ -2,7 +2,7 @@
 	"name": "desktop-project-work-local",
 	"goal": "Expose the committed project Work snapshot to the local Electron renderer without widening remote access.",
 	"createdAt": "2026-10-27T01:27:14.003Z",
-	"updatedAt": "2026-10-27T01:32:24.332Z",
+	"updatedAt": "2026-10-27T01:34:20.060Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T01:34:20.060Z",
+			"evidence": "d10fb56f0fe2dcb1ebd9606121a4c41bcef26fad660369a93e4b4048a1953e56 passed the unchanged clean-snapshot socket case in the same environment as red 9f9bc1b2d4b13bf1752c629740bceb0968069d30e6ad96630197ae26b5e80ac5."
 		},
 		{
 			"id": "verify",

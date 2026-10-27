@@ -95,6 +95,19 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id);
 			await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
+			if (
+				unit.id === 'desktop.component.agents-providers-project-work' ||
+				unit.id === 'desktop.component.agents-providers-project-work-feature'
+			) {
+				await expect(component.getByText('Plan revision 1', { exact: false })).toBeVisible();
+				await expect(component.getByText('Selected option-a', { exact: true })).toBeVisible();
+				for (const status of ['To do', 'In progress', 'Accepted'])
+					await expect(component.getByText(status, { exact: true })).toBeVisible();
+				await component.getByText('Wanted contract', { exact: true }).first().click();
+				await expect(
+					component.getByText('Keep checkout behavior consistent.').first()
+				).toBeVisible();
+			}
 			if (unit.id === 'reports.component.module-system-explorer-modules-screen' && !variant) {
 				await expect(component.locator('article')).toHaveCount(6);
 				await expect(component.getByText('Testing', { exact: true })).toHaveCount(2);

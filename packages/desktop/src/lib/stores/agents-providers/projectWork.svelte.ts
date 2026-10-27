@@ -1,6 +1,12 @@
 import type { FeatureWorkSnapshot } from '../../../../../../src/services/agents-providers/FeatureWorkService.types';
 import type { Workspace } from '../workspace.svelte';
 
+function workError(error: unknown) {
+	return error instanceof Error && error.message
+		? error.message
+		: 'Feature work could not be loaded.';
+}
+
 class ProjectWorkStore {
 	private data = $state<FeatureWorkSnapshot | null>(null);
 	private failure = $state<string | null>(null);
@@ -54,11 +60,7 @@ class ProjectWorkStore {
 			const snapshot = await reader.call(bridge, { projectId });
 			if (current()) this.data = snapshot;
 		} catch (error) {
-			if (current())
-				this.failure =
-					error instanceof Error && error.message
-						? error.message
-						: 'Feature work could not be loaded.';
+			if (current()) this.failure = workError(error);
 		} finally {
 			if (current()) this.pending = false;
 		}

@@ -28,21 +28,7 @@ export function capture(evidence = 'screen-a') {
 		}
 	};
 }
-export async function currentFixture(planned = false) {
-	const f = await fixture();
-	const { catalog } = f.session.requireProject();
-	const entity = catalog.entity.bind(catalog);
-	vi.spyOn(catalog, 'entity').mockImplementation(async (...args) => ({
-		...(await entity(...args)),
-		planned
-	}));
-	const query = {
-		projectId: f.session.projectId!,
-		entityId: f.request.entityId,
-		branch: 'main',
-		commit: git(f.root, 'rev-parse', 'HEAD'),
-		mode: 'commit' as const
-	};
+function currentResponse(query: { projectId: string; commit: string }) {
 	const side = {
 		commit: query.commit,
 		detail: null,
@@ -58,7 +44,7 @@ export async function currentFixture(planned = false) {
 		coverage: [],
 		gap: null
 	};
-	const response = {
+	return {
 		scope: {
 			mode: 'commit',
 			branch: 'main',
@@ -92,6 +78,24 @@ export async function currentFixture(planned = false) {
 		},
 		behavior: {}
 	};
+}
+
+export async function currentFixture(planned = false) {
+	const f = await fixture();
+	const { catalog } = f.session.requireProject();
+	const entity = catalog.entity.bind(catalog);
+	vi.spyOn(catalog, 'entity').mockImplementation(async (...args) => ({
+		...(await entity(...args)),
+		planned
+	}));
+	const query = {
+		projectId: f.session.projectId!,
+		entityId: f.request.entityId,
+		branch: 'main',
+		commit: git(f.root, 'rev-parse', 'HEAD'),
+		mode: 'commit' as const
+	};
+	const response = currentResponse(query);
 	const evidence = {
 		evidence: vi.fn().mockImplementation(async (input: { mode: string; commit: string }) => {
 			if (input.mode === 'current' && git(f.root, 'rev-parse', 'HEAD') !== input.commit)
