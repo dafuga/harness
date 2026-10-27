@@ -2606,15 +2606,21 @@
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "2aeadec22d59808aca2321b043abac5171e749030dd3750d088397db0a47df00",
+			"definition": "0a00e3a481743871561e9e3dba677231d4ea6650406dbcf91d924d4f0a0f0195",
 			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
 			"review": {
-				"commit": "7a77ce34c5dc3332354be7c4aea2b2c8edec7a18",
+				"commit": "e2851bc0f1946cff58cc105f1eb9966d575fa6bf",
 				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-				"definition": "2aeadec22d59808aca2321b043abac5171e749030dd3750d088397db0a47df00",
-				"reason": "Free unneeded source facts before worker admission while retaining the reason report and every measured head source."
+				"definition": "0a00e3a481743871561e9e3dba677231d4ea6650406dbcf91d924d4f0a0f0195",
+				"reason": "Retain compact source hashes for measured and removed units before releasing full indexes."
 			},
 			"previousReviews": [
+				{
+					"commit": "7a77ce34c5dc3332354be7c4aea2b2c8edec7a18",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "2aeadec22d59808aca2321b043abac5171e749030dd3750d088397db0a47df00",
+					"reason": "Free unneeded source facts before worker admission while retaining the reason report and every measured head source."
+				},
 				{
 					"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
 					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
@@ -2682,15 +2688,21 @@
 			"unit": "service.record-assembly",
 			"from": "src/services/record-assembly-service/RecordAssemblyService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-			"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
+			"definition": "002c5b0b24a4d6660f5c151d8e9d297e68345aadc596bd11ad452e44494adeb1",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+				"commit": "e2851bc0f1946cff58cc105f1eb9966d575fa6bf",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
-				"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
-				"reason": "Validate required representative performance observations and retain unavailable source measurements and current failure reporting."
+				"definition": "002c5b0b24a4d6660f5c151d8e9d297e68345aadc596bd11ad452e44494adeb1",
+				"reason": "Seal measured and removed unit versions with their retained source hashes."
 			},
 			"previousReviews": [
+				{
+					"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "e1624ad46a7a9bac7d7696a793f19a6b8674bdb06bb7f32a12630adfd27bbff1",
+					"reason": "Validate required representative performance observations and retain unavailable source measurements and current failure reporting."
+				},
 				{
 					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
