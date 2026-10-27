@@ -1,0 +1,41 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-loGb6a
+
+ ❯ test/services/verification-evidence/test-expectation.test.ts (4 tests | 1 failed) 44ms
+   ✓ json checks complete responses, type-preserving scalar normalization and errors 12ms
+   × example asserts authored comments for successful and error inputs 4ms
+     → expected 'Example unexpectedly failed\n\ntrue !…' to be 'Example unexpectedly failed: Audio ar…' // Object.is equality
+   ✓ registerExamples registers exactly the authored examples and rejects absent implementations 20ms
+   ✓ registerCases binds complete method matrices and API results to canonical file identities 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-expectation.test.ts > example asserts authored comments for successful and error inputs
+AssertionError: expected 'Example unexpectedly failed\n\ntrue !…' to be 'Example unexpectedly failed: Audio ar…' // Object.is equality
+
+- Expected
++ Received
+
+- Example unexpectedly failed: Audio artifacts require a valid tested revision
++ Example unexpectedly failed
++
++ true !== false
++
+
+ ❯ assertUnexpectedDiagnostics test/support/testExpectationAuthoredCases.ts:118:26
+    116|     (error: Error) => error
+    117|    );
+    118|   expect(result.message).toBe(
+       |                          ^
+    119|    'Example unexpectedly failed: Audio artifacts require a valid teste…
+    120|   );
+ ❯ test/services/verification-evidence/test-expectation.test.ts:57:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  02:35:04
+   Duration  2.99s (transform 325ms, setup 102ms, collect 587ms, tests 44ms, environment 0ms, prepare 23ms)
+
