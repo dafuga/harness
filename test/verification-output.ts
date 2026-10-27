@@ -86,6 +86,7 @@ function run() {
 						'20000',
 						'--reporter=default',
 						'--reporter=json',
+						`--reporter=${resolve(import.meta.dirname, '../src/adapters/verification-evidence/CaseResultAdapter.ts')}`,
 						`--outputFile.json=${report}`
 					]
 				: ['x', runner, 'test', file];
