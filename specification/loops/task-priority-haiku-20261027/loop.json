@@ -2,7 +2,7 @@
 	"name": "task-priority-haiku-20261027",
 	"goal": "Promote an eligible queued task without changing its definition or bypassing worker safety.",
 	"createdAt": "2026-10-27T13:12:47.261Z",
-	"updatedAt": "2026-10-27T13:12:47.261Z",
+	"updatedAt": "2026-10-27T13:21:57.407Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -12,17 +12,23 @@
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T13:21:49.832Z",
+			"evidence": "Queue order is backward compatible; eligibility and sandbox guards remain intact."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T13:21:53.454Z",
+			"evidence": "Commit a2e55966b4 adds task priority and a qualification follow-up note."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T13:21:57.407Z",
+			"evidence": "On harbor-mbp-2, priority checks failed at 6e8ad608d1 and passed at a2e55966b4; 25 focused tests passed."
 		},
 		{
 			"id": "verify",

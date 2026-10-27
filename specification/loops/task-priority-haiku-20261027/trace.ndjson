@@ -1,1 +1,4 @@
 {"event":"loop.created","timestamp":"2026-10-27T13:12:47.261Z","name":"task-priority-haiku-20261027","goal":"Promote an eligible queued task without changing its definition or bypassing worker safety.","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-10-27T13:21:49.832Z","loop":"task-priority-haiku-20261027","step":"spec","evidence":"Queue order is backward compatible; eligibility and sandbox guards remain intact."}
+{"event":"step.completed","timestamp":"2026-10-27T13:21:53.454Z","loop":"task-priority-haiku-20261027","step":"implement","evidence":"Commit a2e55966b4 adds task priority and a qualification follow-up note."}
+{"event":"step.completed","timestamp":"2026-10-27T13:21:57.407Z","loop":"task-priority-haiku-20261027","step":"test","evidence":"On harbor-mbp-2, priority checks failed at 6e8ad608d1 and passed at a2e55966b4; 25 focused tests passed."}
