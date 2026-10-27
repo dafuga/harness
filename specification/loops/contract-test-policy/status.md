@@ -1984,3 +1984,35 @@ model field; Codex 0.164.0's `turn.completed` schema exposes usage only. The
 existing Harness runner requires a reported model and has no brokered MCP
 transport, so this is provider access evidence, not a qualified worker or
 independent backend model attestation. The trusted launch gate remains closed.
+
+## Continuation: bounded history diagnostics
+
+An isolated mirror on `harbor-mbp-2` copied the frozen repository refs without
+changing the original checkout. Its sorted ref names and object IDs matched the
+source snapshot's SHA-256 `9e4291b87a74d89e25ebc19ae711f3b47d1891eb819a5cdf2309ecf148b41e76`.
+At builder revision `b36f93c78b`, a five-revision `history build` with a 2 GiB
+reservation and task guard stopped after 13.68 seconds at 2,209,857,536 bytes
+summed task RSS. One revision and its side were written; no index was written.
+The separately sampled laptop shared-process RSS upper estimate peaked at
+1,210,433,536 bytes. The guard cancellation is not a product test failure.
+
+A second disposable checkout used the same refs and builder tree with only
+`SourceIndexService.ts` replaced by the exact bytes from `272129f592`. The same
+five-revision, 2 GiB diagnostic stopped after 14.25 seconds at 2,252,914,688
+bytes task RSS and 1,211,088,896 bytes sampled shared RSS upper estimate. It too
+wrote one revision and no index. The completed revision and side matched the
+first diagnostic byte-for-byte, but one matching revision does not establish
+full-history equivalence or memory safety. The repaired source-index code alone
+did not fit this diagnostic's reservation.
+
+The diagnostic JSON and log SHA-256 values are respectively `58820bcdb2d495925c828cf4d98dd198a9bcb92cd25a634ae081770c15413458`
+and `9dc360e3196fdc70915bb782300ea7ff53a4238de6184500f757f141123fb6cb`
+for the unmodified builder, and `0245ec8a8cc4c5fe1a645421c18f5b4b5ad453702ba0a1c300bfd858bd3a909d`
+and `f8f2b1a11032c528dc851202fd037d792a4b24d7acac3b3499a811f3cf0970d3`
+for the working-tree comparison. Their original files and partial outputs remain
+in task-owned `/tmp/harness-history-bounded-five-20261027*` and
+`/tmp/harness-history-source-cache-five-20261027*` on the laptop; these are not
+durable Harness history evidence. A later conservative process snapshot found
+2.90 GiB of primary-Mac agent and Harness process RSS plus shared app processes
+that cannot be attributed to this task. A larger run is deferred while that
+shared headroom is uncertain. Full history reconstruction remains open.
