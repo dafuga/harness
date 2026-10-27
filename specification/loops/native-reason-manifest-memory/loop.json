@@ -2,7 +2,7 @@
 	"name": "native-reason-manifest-memory",
 	"goal": "Retain only reason-relevant manifest declarations across source history",
 	"createdAt": "2026-10-27T01:15:37.490Z",
-	"updatedAt": "2026-10-27T09:32:39.241Z",
+	"updatedAt": "2026-10-27T09:58:03.582Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:42:35.634Z",
+			"evidence": "65ff00fe35 keeps only unit identity, owned paths and declared configuration fingerprints in historical reason sides."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:58:03.582Z",
+			"evidence": "The unchanged history and in-memory compatibility tests passed 5 of 5 on 65ff00fe35eb6e3887461ff2bc244f1b01e67008 on harbor-mbp-2."
 		},
 		{
 			"id": "verify",

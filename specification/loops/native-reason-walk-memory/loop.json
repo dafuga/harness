@@ -2,9 +2,11 @@
 	"name": "native-reason-walk-memory",
 	"goal": "Bound memory retained by long reason-history walks while preserving every explanation result",
 	"createdAt": "2026-10-27T00:33:58.584Z",
-	"updatedAt": "2026-10-27T00:41:34.117Z",
+	"updatedAt": "2026-10-27T10:04:48.399Z",
 	"template": "bug-fix",
-	"templateLineage": ["bug-fix"],
+	"templateLineage": [
+		"bug-fix"
+	],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -32,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:42:36.959Z",
+			"evidence": "65ff00fe35 compacts historical reason facts while retaining the shared parser cache bound."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:04:48.399Z",
+			"evidence": "The unchanged history and in-memory compatibility tests passed on 65ff00fe35eb6e3887461ff2bc244f1b01e67008 on harbor-mbp-2."
 		},
 		{
 			"id": "verify",
