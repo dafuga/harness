@@ -1,0 +1,20 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-R4UZU5
+
+ ✓ test/services/unit-index.test.ts (14 tests) 2983ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2825ms
+ ✓ test/source-profile-runners.test.ts (14 tests) 4153ms
+   ✓ normal Vitest imports and its Bun commands capture their own real operations  1324ms
+   ✓ Bun runtime profiling leaves actual build artifacts uninstrumented  996ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 89ms
+ ✓ test/adapters/verification-evidence/case-result.test.ts (4 tests) 10ms
+
+ Test Files  4 passed (4)
+      Tests  34 passed (34)
+   Start at  04:26:29
+   Duration  10.48s (transform 243ms, setup 185ms, collect 504ms, tests 7.23s, environment 0ms, prepare 89ms)
+
+$ bun run src/index.ts units check
+Units registry is valid: 1828 units, 167 uncertain references.
+$ bun run src/index.ts audit .
+Harness audit passed. Files and functions are staying small.
