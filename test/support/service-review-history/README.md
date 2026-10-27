@@ -76,3 +76,5 @@ Local Work access retains `0109831d9f` for exposing the selected-project reader 
 Feature-plan actions retain `2a174efe27` for the local bridge and preload. Earlier reviews and the original relocation proofs remain present.
 
 Option-bound image reads retain `075cde02d5` for the desktop image cache, alongside its original relocation proof.
+
+Project-session image reads retain `5ace9cac31`, the preceding option-bound review, and the original relocation proof.

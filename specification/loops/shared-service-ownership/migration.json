@@ -4986,14 +4986,22 @@
 			"unit": "desktop.service.project-image-cache",
 			"from": "packages/desktop/src/services/ProjectImageCacheService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts",
-			"definition": "1f6690b2a8f8d977981ace0c6967d3fbf064ac415fd5772a997197b026a92516",
+			"definition": "b48fa354e5a0d08280aff704e85bde05f5839220dfd5f49a45d4c241e1e5a7ec",
 			"relocationDefinition": "12b147900f1bc34523186d2943b3a53390bd2b6dfcbcf12d19dc91fb445d039d",
 			"review": {
-				"commit": "075cde02d5e57f0f059bf55ae96e00c0dbfcd150",
+				"commit": "5ace9cac311df9afb33db6f186bfb4986e0b2dde",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts",
-				"definition": "1f6690b2a8f8d977981ace0c6967d3fbf064ac415fd5772a997197b026a92516",
-				"reason": "Checks the requested design option before serving cached or committed image bytes while preserving legacy hash-only reads."
-			}
+				"definition": "b48fa354e5a0d08280aff704e85bde05f5839220dfd5f49a45d4c241e1e5a7ec",
+				"reason": "Bind asynchronous image reads and cache identity to the selected project while retaining option, revision and hash checks."
+			},
+			"previousReviews": [
+				{
+					"commit": "075cde02d5e57f0f059bf55ae96e00c0dbfcd150",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/ProjectImageCacheService.ts",
+					"definition": "1f6690b2a8f8d977981ace0c6967d3fbf064ac415fd5772a997197b026a92516",
+					"reason": "Checks the requested design option before serving cached or committed image bytes while preserving legacy hash-only reads."
+				}
+			]
 		},
 		{
 			"unit": "reports.service.report-server",
