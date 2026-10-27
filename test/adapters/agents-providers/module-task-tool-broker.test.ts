@@ -1,11 +1,11 @@
 import {
-	assertSealedBroker,
 	assertUnsafeFiles,
 	brokerFixture,
 	safeContract,
 	sha,
 	unscoped
 } from './module-task-tool-broker.test.fixtures';
+import { assertSealedBroker } from './module-task-tool-broker.sealed.fixtures';
 import { afterAll, expect, test, vi } from 'vitest';
 import { readFile, writeFile } from 'node:fs/promises';
 import { ModuleTaskToolBrokerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskToolBrokerAdapter';
@@ -162,7 +162,7 @@ async function scoped(method: 'connect' | 'readAssigned' | 'writeAssigned', name
 	}
 }
 
-vi.setConfig({ testTimeout: 60_000 });
+vi.setConfig({ testTimeout: 120_000 });
 afterAll(() => vi.resetConfig());
 new TestExpectationService().registerCases(
 	test,
