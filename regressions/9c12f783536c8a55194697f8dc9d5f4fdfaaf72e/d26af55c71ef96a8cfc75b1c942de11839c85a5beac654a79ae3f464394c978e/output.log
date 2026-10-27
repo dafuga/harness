@@ -1,0 +1,39 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-a8OkiC
+
+ ❯ test/services/verification-evidence/test-discovery.test.ts (2 tests | 1 failed | 1 skipped) 20ms
+   ↓ scan initialized source finds imported cases, aliases and computed registration
+   × discover initialized and unreadable sources retain explicit discovery gaps 18ms
+     → import { test as check } from 'vitest'; import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; const unit = loadManifest(); new TestExpectationService().registerExamples(check, unit, {});: expected [] to deeply equal [ true ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-discovery.test.ts > discover initialized and unreadable sources retain explicit discovery gaps
+AssertionError: import { test as check } from 'vitest'; import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; const unit = loadManifest(); new TestExpectationService().registerExamples(check, unit, {});: expected [] to deeply equal [ true ]
+
+- Expected
++ Received
+
+- [
+-   true,
+- ]
++ []
+
+ ❯ assertRegistrationContexts test/services/verification-evidence/test-discovery.test.ts:162:5
+    160|    found.tests.map((item) => item.dynamic),
+    161|    row.source
+    162|   ).toEqual([row.dynamic]);
+       |     ^
+    163|   if (row.computed)
+    164|    expect(found.tests[0].title, row.source).toBe('<computed registrati…
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+ ❯ test/services/verification-evidence/test-discovery.test.ts:123:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 skipped (2)
+   Start at  14:17:56
+   Duration  2.45s (transform 75ms, setup 82ms, collect 159ms, tests 20ms, environment 0ms, prepare 23ms)
+
