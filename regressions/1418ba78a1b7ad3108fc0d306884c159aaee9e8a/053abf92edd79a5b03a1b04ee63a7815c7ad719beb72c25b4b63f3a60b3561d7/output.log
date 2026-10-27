@@ -1,0 +1,77 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-BFqnAO
+
+ ❯ test/adapters/verification-evidence/case-result.test.ts (4 tests | 1 failed) 14ms
+   ✓ CaseResultAdapter.onFinished configured retains nested results, retries and failures 6ms
+   ✓ CaseResultAdapter.onFinished disabled writes no evidence 0ms
+   × CaseResultAdapter.onTestEnd configured retains browser status and suite identity 6ms
+     → expected [ { …(5) }, { …(5) }, { …(5) }, …(2) ] to deeply equal [ { …(5) }, { …(5) }, { …(5) }, …(2) ]
+   ✓ CaseResultAdapter.onTestEnd disabled writes no evidence 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/verification-evidence/case-result.test.ts > CaseResultAdapter.onTestEnd configured retains browser status and suite identity
+AssertionError: expected [ { …(5) }, { …(5) }, { …(5) }, …(2) ] to deeply equal [ { …(5) }, { …(5) }, { …(5) }, …(2) ]
+
+- Expected
++ Received
+
+@@ -2,36 +2,36 @@
+    {
+      "file": "test/sample.test.ts",
+      "retry": 0,
+      "revision": "cccccccccccccccccccccccccccccccccccccccc",
+      "status": "passed",
+-     "title": "orders > ready",
++     "title": "sample.test.ts > orders > ready",
+    },
+    {
+      "file": "test/sample.test.ts",
+      "retry": 0,
+      "revision": "cccccccccccccccccccccccccccccccccccccccc",
+      "status": "failed",
+-     "title": "orders > ready",
++     "title": "sample.test.ts > orders > ready",
+    },
+    {
+      "file": "test/sample.test.ts",
+      "retry": 0,
+      "revision": "cccccccccccccccccccccccccccccccccccccccc",
+      "status": "failed",
+-     "title": "orders > ready",
++     "title": "sample.test.ts > orders > ready",
+    },
+    {
+      "file": "test/sample.test.ts",
+      "retry": 0,
+      "revision": "cccccccccccccccccccccccccccccccccccccccc",
+      "status": "failed",
+-     "title": "orders > ready",
++     "title": "sample.test.ts > orders > ready",
+    },
+    {
+      "file": "test/sample.test.ts",
+      "retry": 0,
+      "revision": "cccccccccccccccccccccccccccccccccccccccc",
+      "status": "skipped",
+-     "title": "orders > ready",
++     "title": "sample.test.ts > orders > ready",
+    },
+  ]
+
+ ❯ test/adapters/verification-evidence/case-result.test.ts:173:34
+    171|   for (const status of ['failed', 'timedOut', 'interrupted', 'skipped'…
+    172|    adapter.onTestEnd(sample, { status, retry: 0 });
+    173|   expect(read(config.directory)).toEqual(
+       |                                  ^
+    174|    ['passed', 'failed', 'failed', 'failed', 'skipped'].map((status) =>…
+    175|     file: 'test/sample.test.ts',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  04:24:23
+   Duration  2.39s (transform 72ms, setup 93ms, collect 17ms, tests 14ms, environment 0ms, prepare 22ms)
+
