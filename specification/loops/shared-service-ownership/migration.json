@@ -4047,13 +4047,13 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
+			"definition": "b9333a64af7cac7c72a811f7df399c3142da2b051ecbf86945ac20aef79a50d6",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+				"commit": "0109831d9f79c2ffde67005a6b5f596e1d490a10",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
-				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+				"definition": "b9333a64af7cac7c72a811f7df399c3142da2b051ecbf86945ac20aef79a50d6",
+				"reason": "Exposes the selected-project Work reader through the local preload without granting remote-device access."
 			},
 			"previousReviews": [
 				{
@@ -4085,6 +4085,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
 					"reason": "Exposes gameLevelGenerate through the existing isolated preload while preserving its location, registered identity and previous bridge methods."
+				},
+				{
+					"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "1321a44da2dd99384ed21498d8618cfb9bab01e0e6389ebb89ad8ad0d4a05fc6",
+					"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
 				}
 			]
 		},
