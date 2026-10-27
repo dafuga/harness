@@ -7,6 +7,7 @@ import {
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
+import { claimedTask } from '../../../src/services/agents-providers/module-task-worker-service/taskClaim';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { readFile } from 'node:fs/promises';
 import { taskSelection } from '../../../src/services/agents-providers/module-task-service/taskPrompt';
@@ -65,6 +66,51 @@ test('assign preserves untouched grants and rejects plan-bound or previously use
 		const input = JSON.parse(await readFile(await f.input(), 'utf8'));
 		await service.add(input);
 		await assertSafeTaskAssignment(service, f.root, input);
+	} finally {
+		await f.dispose();
+	}
+});
+test('priority moves only a queued task ahead of other eligible tasks', async () => {
+	const f = await moduleTaskFixture();
+	try {
+		const service = new ModuleTaskService(f.root);
+		await service.feature({ id: 'checkout', goal: 'Reliable checkout', tldr: 'Build orders.' });
+		const input = JSON.parse(await readFile(await f.input(), 'utf8'));
+		await service.add(input);
+		await service.add({ ...input, id: 'priority-task', assignee: 'priority-owner' });
+		await service.add({ ...input, id: 'blocked-task', dependsOn: ['missing-task'] });
+		const before = await service.repository.read();
+		const promoted = await observedTaskOperation(
+			'service.agents-providers-module-task',
+			'prioritize-queued-task',
+			() => service.prioritize('priority-task')
+		);
+		const after = await service.repository.read();
+		expect(after.data.tasks).toEqual([
+			before.data.tasks[1],
+			before.data.tasks[0],
+			before.data.tasks[2]
+		]);
+		expect(promoted.value).toEqual(before.data.tasks[1]);
+		expect((await service.prioritize('priority-task')).commit).toBe(after.commit);
+		const owner = await service.repository.owner();
+		expect(claimedTask(structuredClone(after.data), 'priority-owner', [], owner)?.id).toBe(
+			'priority-task'
+		);
+		expect(claimedTask(structuredClone(after.data), 'other-owner', [], owner)?.id).toBe(input.id);
+		await service.prioritize('blocked-task');
+		const blocked = await service.repository.read();
+		expect(claimedTask(structuredClone(blocked.data), 'priority-owner', [], owner)?.id).toBe(
+			'priority-task'
+		);
+		await expect(service.prioritize('missing-task')).rejects.toThrow('queued');
+		expect(await service.repository.read()).toEqual(blocked);
+		await service.repository.update((queue) => {
+			queue.tasks.find((task) => task.id === 'priority-task')!.status = 'failed';
+		});
+		const failed = await service.repository.read();
+		await expect(service.prioritize('priority-task')).rejects.toThrow('queued');
+		expect(await service.repository.read()).toEqual(failed);
 	} finally {
 		await f.dispose();
 	}

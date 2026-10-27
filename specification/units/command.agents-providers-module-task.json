@@ -3,7 +3,7 @@
 	"id": "command.agents-providers-module-task",
 	"kind": "command",
 	"title": "ModuleTaskCommand",
-	"responsibility": "Expose existing task commands and a task serve command that delegates an entire plan to the server-owned executor. Expose safe explicit assignment of untouched ad hoc queued tasks.",
+	"responsibility": "Expose task commands and a task serve command that delegates an entire plan to the server-owned executor. Expose safe assignment and priority for queued tasks.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -42,6 +42,11 @@
 				"description": "Trusted in-process collaborator for worker routing. Omission constructs the real worker when invoked; no CLI, task or environment input controls this collaborator."
 			},
 			{
+				"name": "priority",
+				"type": "<id> [--json]",
+				"description": "Passes the exact task id to ModuleTaskService.prioritize; does not launch a provider."
+			},
+			{
 				"name": "assign",
 				"type": "<id> --worker <id> [--json]",
 				"description": "Passes the exact task id and worker id to ModuleTaskService.assign; does not launch a provider."
@@ -59,6 +64,11 @@
 				"description": "Routes parsed worker ID and module filters to the supplied collaborator or the real guarded worker. A failed result sets process exit code 1; owned signal listeners are removed."
 			},
 			{
+				"name": "priority",
+				"type": "JSON priority result",
+				"description": "Prints the actual repository result returned by the service."
+			},
+			{
 				"name": "assign",
 				"type": "JSON assignment result",
 				"description": "Prints the actual repository result returned by the service."
@@ -72,6 +82,10 @@
 			{
 				"name": "Cancellation",
 				"type": "abort awaited, no detached worker, no success claim"
+			},
+			{
+				"name": "Invalid or ineligible priority",
+				"type": "propagated safe CLI failure without queue mutation"
 			},
 			{
 				"name": "Invalid or ineligible assignment",

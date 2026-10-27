@@ -79,3 +79,20 @@ test('assign routes the task and required worker to the service without running 
 		output.mockRestore();
 	}
 });
+
+test('priority routes the task to the service without running a worker', async () => {
+	const result = { value: { id: 'task.alpha' }, commit: 'queue-commit' };
+	const service = { prioritize: vi.fn().mockResolvedValue(result) };
+	const worker = { once: vi.fn() };
+	const output = vi.spyOn(console, 'log').mockImplementation(() => {});
+	const program = new Command().exitOverride();
+	new ModuleTaskCommand(service as never, {} as never, worker).register(program.command('task'));
+	try {
+		await program.parseAsync(['node', 'harness', 'task', 'priority', 'task.alpha']);
+		expect(service.prioritize).toHaveBeenCalledExactlyOnceWith('task.alpha');
+		expect(output).toHaveBeenCalledWith(JSON.stringify(result, null, 2));
+		expect(worker.once).not.toHaveBeenCalled();
+	} finally {
+		output.mockRestore();
+	}
+});
