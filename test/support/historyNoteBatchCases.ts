@@ -67,7 +67,10 @@ function seedNotes(root: string, commits: string[], explanation: Explanation): v
 		const valid = JSON.stringify({ schemaVersion: 1, kind: 'reason', commit, explanation }) + '\n';
 		const copied =
 			JSON.stringify({ schemaVersion: 1, kind: 'reason', commit: commits[0], explanation }) + '\n';
-		const text = valid + (index === 0 ? 'invalid json\n' : index === 1 ? copied : '');
+		let extra = '';
+		if (index === 0) extra = 'invalid json\n';
+		else if (index === 1) extra = copied;
+		const text = valid + extra;
 		return `blob\nmark :${index + 1}\ndata ${Buffer.byteLength(text)}\n${text}\n`;
 	});
 	const files = commits.map((commit, index) => `M 100644 :${index + 1} ${commit}\n`);
