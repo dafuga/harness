@@ -113,6 +113,448 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["default", "named", "invalid", "scoped", "scoped-named"],
+		"cases": [
+			{
+				"id": "connect.default",
+				"state": "default",
+				"subject": "ModuleTaskToolBrokerAdapter.connect",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.connect from default initialization returns the file name"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "module-task-tool-broker"
+				}
+			},
+			{
+				"id": "connect.named",
+				"state": "named",
+				"subject": "ModuleTaskToolBrokerAdapter.connect",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.connect from custom initialization returns the configured name"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "custom"
+				}
+			},
+			{
+				"id": "connect.invalid",
+				"state": "invalid",
+				"subject": "ModuleTaskToolBrokerAdapter.connect",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.connect with invalid config throws TypeError"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "TypeError",
+						"message": "Broker configuration must be an object"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "connect.scoped",
+				"state": "scoped",
+				"subject": "ModuleTaskToolBrokerAdapter.connect",
+				"fixture": "test/adapters/agents-providers/module-task-tool-broker.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.connect from scoped initialization"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "module-task-tool-broker"
+				}
+			},
+			{
+				"id": "connect.scoped-named",
+				"state": "scoped-named",
+				"subject": "ModuleTaskToolBrokerAdapter.connect",
+				"fixture": "test/adapters/agents-providers/module-task-tool-broker.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.connect from scoped-named initialization"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "custom"
+				}
+			},
+			{
+				"id": "read-contract.default",
+				"state": "default",
+				"subject": "ModuleTaskToolBrokerAdapter.readContract",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.readContract from default initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "read-contract.named",
+				"state": "named",
+				"subject": "ModuleTaskToolBrokerAdapter.readContract",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.readContract from named initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "read-contract.invalid",
+				"state": "invalid",
+				"subject": "ModuleTaskToolBrokerAdapter.readContract",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.readContract from invalid initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "read-contract.scoped",
+				"state": "scoped",
+				"subject": "ModuleTaskToolBrokerAdapter.readContract",
+				"fixture": "test/adapters/agents-providers/module-task-tool-broker.sealed.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.readContract from scoped initialization"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"contractMatches": true,
+						"catalogContainsContract": true
+					}
+				}
+			},
+			{
+				"id": "read-contract.scoped-named",
+				"state": "scoped-named",
+				"subject": "ModuleTaskToolBrokerAdapter.readContract",
+				"fixture": "test/adapters/agents-providers/module-task-tool-broker.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.readContract projects metadata through fixed sealed CLI arguments"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"id": "service.orders",
+						"kind": "service",
+						"title": "Orders",
+						"responsibility": "Validate orders",
+						"contract": {
+							"inputs": [],
+							"outputs": [
+								{
+									"name": "valid",
+									"type": "boolean"
+								}
+							],
+							"errors": []
+						},
+						"dependencies": [
+							{
+								"unit": "model.orders",
+								"via": "import"
+							}
+						],
+						"consumers": ["page.orders"]
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "list-contracts.default",
+				"state": "default",
+				"subject": "ModuleTaskToolBrokerAdapter.listContracts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.listContracts from default initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "list-contracts.named",
+				"state": "named",
+				"subject": "ModuleTaskToolBrokerAdapter.listContracts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.listContracts from named initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "list-contracts.invalid",
+				"state": "invalid",
+				"subject": "ModuleTaskToolBrokerAdapter.listContracts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.listContracts from invalid initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "list-contracts.scoped",
+				"state": "scoped",
+				"subject": "ModuleTaskToolBrokerAdapter.listContracts",
+				"fixture": "test/adapters/agents-providers/module-task-tool-broker.sealed.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.listContracts from scoped initialization"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"contractMatches": true,
+						"catalogContainsContract": true
+					}
+				}
+			},
+			{
+				"id": "list-contracts.scoped-named",
+				"state": "scoped-named",
+				"subject": "ModuleTaskToolBrokerAdapter.listContracts",
+				"fixture": "test/adapters/agents-providers/module-task-tool-broker.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.listContracts exposes only contract index metadata"
+				},
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "service.orders",
+							"kind": "service",
+							"responsibility": "Validate orders"
+						}
+					]
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "read-assigned.default",
+				"state": "default",
+				"subject": "ModuleTaskToolBrokerAdapter.readAssigned",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.readAssigned from default initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "read-assigned.named",
+				"state": "named",
+				"subject": "ModuleTaskToolBrokerAdapter.readAssigned",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.readAssigned from named initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "read-assigned.invalid",
+				"state": "invalid",
+				"subject": "ModuleTaskToolBrokerAdapter.readAssigned",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.readAssigned from invalid initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "read-assigned.scoped",
+				"state": "scoped",
+				"subject": "ModuleTaskToolBrokerAdapter.readAssigned",
+				"fixture": "test/adapters/agents-providers/module-task-tool-broker.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.readAssigned from scoped initialization"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"text": "original\n",
+						"sha256": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218"
+					}
+				}
+			},
+			{
+				"id": "read-assigned.scoped-named",
+				"state": "scoped-named",
+				"subject": "ModuleTaskToolBrokerAdapter.readAssigned",
+				"fixture": "test/adapters/agents-providers/module-task-tool-broker.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.readAssigned limits access to exact safe UTF-8 files"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"text": "original\n",
+						"sha256": "25718360e05d3c2d0963d1381e9dd4dae5fca789244ee4b9f861adcc0cc96218"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "write-assigned.default",
+				"state": "default",
+				"subject": "ModuleTaskToolBrokerAdapter.writeAssigned",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.writeAssigned from default initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "write-assigned.named",
+				"state": "named",
+				"subject": "ModuleTaskToolBrokerAdapter.writeAssigned",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.writeAssigned from named initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "write-assigned.invalid",
+				"state": "invalid",
+				"subject": "ModuleTaskToolBrokerAdapter.writeAssigned",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.writeAssigned from invalid initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Trusted task scope required"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			},
+			{
+				"id": "write-assigned.scoped",
+				"state": "scoped",
+				"subject": "ModuleTaskToolBrokerAdapter.writeAssigned",
+				"fixture": "test/adapters/agents-providers/module-task-tool-broker.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.writeAssigned from scoped initialization"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"sha256": "2fb19adf4fa4bdedef4113ae270ac11cc179b0944d27a01ad8f88adc7c2a6277"
+					}
+				}
+			},
+			{
+				"id": "write-assigned.scoped-named",
+				"state": "scoped-named",
+				"subject": "ModuleTaskToolBrokerAdapter.writeAssigned",
+				"fixture": "test/adapters/agents-providers/module-task-tool-broker.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-tool-broker.test.ts",
+					"title": "ModuleTaskToolBrokerAdapter.writeAssigned enforces hashes and atomic bounded edits"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"sha256": "f09174b501fc23341df3455a669e479aad297a973a25e6a38b57364785611ff4"
+					}
+				},
+				"errors": ["untrusted scope, invalid input, stale hash, unsafe path or CLI failure"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

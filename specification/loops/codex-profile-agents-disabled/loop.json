@@ -1,0 +1,62 @@
+{
+	"name": "codex-profile-agents-disabled",
+	"goal": "Enforce disabled nested agents in native Codex task profiles.",
+	"createdAt": "2026-10-27T14:34:35.565Z",
+	"updatedAt": "2026-10-27T14:37:47.163Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T14:34:39.070Z",
+			"evidence": "The official Codex client exposed collaboration with features.multi_agent=false. With agents.enabled=false and both multi-agent flags disabled its reported tool inventory excluded collaboration."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T14:34:42.688Z",
+			"evidence": "The existing prepare method cases asserted features.multi_agent=false but did not assert the client agent enablement or v2 override. Strengthen those cases without adding titles."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T14:36:22.843Z",
+			"evidence": "At b853f8a69f both existing prepare cases failed because their authored agent-disable expectations were false; the unchanged failing run is recorded."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T14:37:34.308Z",
+			"evidence": "Commit 1f1e95bab5 explicitly disables agents.enabled and features.multi_agent_v2 alongside the existing multi-agent flag."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T14:37:47.163Z",
+			"evidence": "The unchanged four-case matrix passed at 1f1e95bab5 using the recorded red command and the same sanitized environment profile."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

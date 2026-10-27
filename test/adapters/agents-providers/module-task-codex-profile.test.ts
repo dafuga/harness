@@ -1,91 +1,15 @@
 import { expect, test, vi } from 'vitest';
-import { chmod, link, mkdir, mkdtemp, realpath, rm, symlink, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ModuleTaskCodexProfileAdapter } from '../../../src/adapters/agents-providers/ModuleTaskCodexProfileAdapter';
-
-test('ModuleTaskCodexProfileAdapter.connect from default initialization returns the file name', () => {
-	// => 'module-task-codex-profile'
-	expect(new ModuleTaskCodexProfileAdapter().connect()).toBe('module-task-codex-profile');
-});
-
-test('ModuleTaskCodexProfileAdapter.connect from custom initialization returns the configured name', () => {
-	// => 'custom'
-	expect(new ModuleTaskCodexProfileAdapter({ name: 'custom' }).connect()).toBe('custom');
-});
-
-test('ModuleTaskCodexProfileAdapter.connect with invalid config throws TypeError', () => {
-	const adapter = new ModuleTaskCodexProfileAdapter(null as never);
-	// throws TypeError
-	expect(() => adapter.connect()).toThrow(TypeError);
-});
-
-async function profileFiles() {
-	const root = await realpath(await mkdtemp(join(tmpdir(), 'codex-profile-test-')));
-	const cwd = join(root, 'workspace'),
-		scratch = join(root, 'scratch');
-	const runtime = join(root, 'runtime'),
-		binDirectory = join(root, 'sealed-cli');
-	const credential = join(root, 'private', 'auth.json'),
-		snapshot = join(root, 'snapshot.json');
-	for (const directory of [
-		join(cwd, 'src'),
-		scratch,
-		runtime,
-		binDirectory,
-		join(root, 'private')
-	]) {
-		await mkdir(directory, { recursive: true });
-	}
-	const executable = join(runtime, 'codex');
-	for (const [path, content] of [
-		[join(cwd, 'src/assigned.ts'), 'export const assigned = true;'],
-		[join(cwd, 'src/unassigned.ts'), 'synthetic unassigned source'],
-		[credential, 'synthetic credential sentinel'],
-		[snapshot, '{}'],
-		[executable, '#!/bin/sh\nexit 99\n'],
-		[join(binDirectory, 'harness'), '#!/bin/sh\nexit 99\n']
-	])
-		await writeFile(path, content);
-	await chmod(executable, 0o755);
-	return { root, cwd, scratch, runtime, binDirectory, credential, snapshot, executable };
-}
-
-async function profileFixture() {
-	const { root, cwd, scratch, runtime, binDirectory, credential, snapshot, executable } =
-		await profileFiles();
-	const input = {
-		cwd,
-		scratch,
-		snapshot,
-		binDirectory,
-		files: ['src/assigned.ts'],
-		readPaths: [runtime, binDirectory],
-		protectedPaths: [credential],
-		argv: [
-			'codex',
-			'exec',
-			'--model',
-			'gpt-6-luna',
-			'-c',
-			'model_reasoning_effort="max"',
-			'--json',
-			'prompt'
-		]
-	};
-	const adapter = new ModuleTaskCodexProfileAdapter({
-		resolveExecutable: async () => executable,
-		platform: 'darwin'
-	});
-	return {
-		root,
-		executable,
-		credential,
-		input,
-		adapter,
-		dispose: () => rm(root, { recursive: true, force: true })
-	};
-}
+import { TestExpectationService } from '../../../src/services/verification-evidence/TestExpectationService';
+import type { ComponentManifest } from '../../../src/core/development-tooling/unitTypes';
+import manifest from '../../../specification/units/adapter.agents-providers-module-task-codex-profile.json' with { type: 'json' };
+import { measureWorkload } from '../../support/measureWorkload';
+import {
+	assertUnsafeProfiles,
+	defaultProfileFixture,
+	profileFixture
+} from './module-task-codex-profile.test.fixtures';
 
 function configOverrides(args: string[]) {
 	return args.flatMap((arg, index) =>
@@ -118,7 +42,15 @@ function assertNativeArgs(args: string[]) {
 	expect(config).toMatch(/network[^\n]*enabled\s*=\s*false/);
 }
 
-function assertExactGrants(config: string, f: Awaited<ReturnType<typeof profileFixture>>) {
+function agentSettings(args: string[]) {
+	const settings = configOverrides(args);
+	return {
+		agentsDisabled: settings.includes('agents.enabled=false'),
+		agentV2Disabled: settings.includes('features.multi_agent_v2=false')
+	};
+}
+
+function assertRequestedGrants(config: string, f: Awaited<ReturnType<typeof profileFixture>>) {
 	const grants = new Map(
 		[...config.matchAll(/(["'])(.*?)\1\s*=\s*(["'])(read|write|deny)\3/g)].map((match) => [
 			match[2],
@@ -156,13 +88,14 @@ async function assertNativeProfile() {
 		prepared = await f.adapter.prepare(f.input);
 		expect(prepared.command).toBe(f.executable);
 		assertNativeArgs(prepared.args);
-		assertExactGrants(configOverrides(prepared.args).join('\n'), f);
+		assertRequestedGrants(configOverrides(prepared.args).join('\n'), f);
 		expect(JSON.stringify(prepared.env)).not.toMatch(
 			/synthetic-openai-secret|synthetic-github-secret/
 		);
 		expect(prepared.env.OPENAI_API_KEY).toBeUndefined();
 		expect(prepared.env.GITHUB_TOKEN).toBeUndefined();
 		expect(f.input).toEqual(before);
+		return agentSettings(prepared.args);
 	} finally {
 		await prepared?.cleanup();
 		vi.unstubAllEnvs();
@@ -170,39 +103,49 @@ async function assertNativeProfile() {
 	}
 }
 
-async function assertUnsafeProfiles() {
-	for (const kind of [
-		'missing',
-		'parent',
-		'symlink',
-		'hardlink',
-		'runtime-credential',
-		'runtime-source',
-		'non-codex',
-		'scratch-link'
-	]) {
-		const f = await profileFixture();
-		try {
-			if (kind === 'missing') f.input.files = ['src/missing.ts'];
-			if (kind === 'parent') f.input.files = ['../private/auth.json'];
-			if (['symlink', 'hardlink'].includes(kind)) {
-				const alias = join(f.input.cwd, 'src/alias.ts');
-				if (kind === 'symlink') await symlink(f.credential, alias);
-				else await link(f.credential, alias);
-				f.input.files = ['src/alias.ts'];
-			}
-			if (kind === 'runtime-credential') f.input.readPaths.push(f.credential);
-			if (kind === 'runtime-source') f.input.readPaths.push(f.input.cwd);
-			if (kind === 'non-codex') f.input.argv[0] = 'sh';
-			if (kind === 'scratch-link') await symlink(f.credential, join(f.input.scratch, 'escape'));
-			await expect(f.adapter.prepare(f.input)).rejects.toThrow();
-		} finally {
-			await f.dispose();
-		}
+async function assertDefaultProfile() {
+	const f = await defaultProfileFixture();
+	const platform = Object.getOwnPropertyDescriptor(process, 'platform')!;
+	vi.stubGlobal('Bun', { which: () => f.pinnedExecutable });
+	Object.defineProperty(process, 'platform', { value: 'darwin', configurable: true });
+	let prepared: Awaited<ReturnType<ModuleTaskCodexProfileAdapter['prepare']>> | undefined;
+	try {
+		const adapter = new ModuleTaskCodexProfileAdapter();
+		prepared = await adapter.prepare(f.input);
+		expect(prepared.command).toBe(f.pinnedExecutable);
+		assertNativeArgs(prepared.args);
+		assertRequestedGrants(configOverrides(prepared.args).join('\n'), f);
+		await expect(adapter.prepare({ ...f.input, argv: ['sh', 'exec'] })).rejects.toThrow(
+			'Expected explicit Codex exec arguments.'
+		);
+		return { profilePrepared: true, unsafeArgRejected: true, ...agentSettings(prepared.args) };
+	} finally {
+		await prepared?.cleanup();
+		Object.defineProperty(process, 'platform', platform);
+		vi.unstubAllGlobals();
+		await f.dispose();
 	}
 }
 
-test('ModuleTaskCodexProfileAdapter.prepare admits exact native permissions and rejects unsafe scopes', async () => {
-	await assertNativeProfile();
-	await assertUnsafeProfiles();
-});
+new TestExpectationService().registerCases(
+	test,
+	manifest as ComponentManifest,
+	'test/adapters/agents-providers/module-task-codex-profile.test.ts',
+	{
+		'connect.default': () => {
+			expect(() => new ModuleTaskCodexProfileAdapter(null as never).connect()).toThrow(TypeError);
+			return new ModuleTaskCodexProfileAdapter().connect();
+		},
+		'connect.named': () => new ModuleTaskCodexProfileAdapter({ name: 'custom' }).connect(),
+		'prepare.default': () => assertDefaultProfile(),
+		'prepare.named': async () => {
+			const settings = await measureWorkload(
+				'adapter.agents-providers-module-task-codex-profile',
+				'native-profile-permission-scope',
+				assertNativeProfile
+			);
+			await assertUnsafeProfiles();
+			return { requestedGrantsVerified: true, aliasesRejected: true, ...settings };
+		}
+	}
+);

@@ -1,0 +1,45 @@
+{
+	"name": "broker-class-method-matrix",
+	"goal": "Register broker method cases for every declared initialization state while retaining sealed CLI and file-boundary assertions.",
+	"createdAt": "2026-10-27T14:56:48.934Z",
+	"updatedAt": "2026-10-27T15:12:05.748Z",
+	"template": "refactor",
+	"templateLineage": ["feature", "refactor"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Name the responsibility boundary and unchanged behavior.",
+			"status": "complete",
+			"completedAt": "2026-10-27T15:11:31.048Z",
+			"evidence": "The broker retains sealed contract access and exact assigned-file boundaries. Its class contract declares five initialization states across five public methods; existing integration and failure assertions remain in those cases."
+		},
+		{
+			"id": "implement",
+			"title": "Extract or reorganize one responsibility at a time.",
+			"status": "complete",
+			"completedAt": "2026-10-27T15:11:35.315Z",
+			"evidence": "The manifest registers five method-by-state rows per method. The existing suite keeps its seven titles and moves shared disposable setup into the existing fixture."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-27T15:12:05.748Z",
+			"evidence": "On harbor-mbp-2 the revised working-tree suite passed 25 cases on one Vitest worker. Static discovery and contract validation found exactly 25 cases with no errors."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

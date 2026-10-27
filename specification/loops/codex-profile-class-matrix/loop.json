@@ -1,0 +1,47 @@
+{
+	"name": "codex-profile-class-matrix",
+	"goal": "Register the existing Codex profile adapter method and initialization cases as one stable class matrix.",
+	"createdAt": "2026-10-27T14:06:04.513Z",
+	"updatedAt": "2026-10-27T14:09:17.623Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T14:08:15.707Z",
+			"evidence": "Declare connect and prepare across default and named initialization, include invalid inputs, keep the existing four-case count, and source expectations from the unit contract."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-27T14:09:10.787Z",
+			"evidence": "Commit 141d047c32 declares two methods across default and named initialization and binds each to its authored result and existing suite."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-27T14:09:17.623Z",
+			"evidence": "The committed focused capture passed 30 cases including four registered profile cases and 16 registry guards. Discovery and contract admission found exactly four cases; units check, targeted typecheck, lint and formatting passed."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

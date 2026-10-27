@@ -1,73 +1,19 @@
-import { assertSealedBroker } from './module-task-tool-broker.test.fixtures';
-import { expect, test, vi } from 'vitest';
-import { createHash } from 'node:crypto';
 import {
-	link,
-	mkdir,
-	mkdtemp,
-	readFile,
-	realpath,
-	rename,
-	rm,
-	symlink,
-	writeFile
-} from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+	assertUnsafeFiles,
+	brokerFixture,
+	safeContract,
+	sha,
+	unscoped
+} from './module-task-tool-broker.test.fixtures';
+import { assertSealedBroker } from './module-task-tool-broker.sealed.fixtures';
+import { afterAll, expect, test, vi } from 'vitest';
+import { readFile, writeFile } from 'node:fs/promises';
 import { ModuleTaskToolBrokerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskToolBrokerAdapter';
-test('ModuleTaskToolBrokerAdapter.connect from default initialization returns the file name', () => {
-	// => 'module-task-tool-broker'
-	expect(new ModuleTaskToolBrokerAdapter().connect()).toBe('module-task-tool-broker');
-});
-test('ModuleTaskToolBrokerAdapter.connect from custom initialization returns the configured name', () => {
-	// => 'custom'
-	expect(new ModuleTaskToolBrokerAdapter({ name: 'custom' }).connect()).toBe('custom');
-});
-test('ModuleTaskToolBrokerAdapter.connect with invalid config throws TypeError', () => {
-	const adapter = new ModuleTaskToolBrokerAdapter(null);
-	// throws TypeError
-	expect(() => adapter.connect()).toThrow(TypeError);
-});
-const sha = (text: string | Uint8Array) => createHash('sha256').update(text).digest('hex');
-async function brokerFixture() {
-	const base = await realpath(await mkdtemp(join(tmpdir(), 'tool-broker-test-')));
-	const root = join(base, 'worktree'),
-		binDirectory = join(base, 'bin'),
-		scratch = join(base, 'scratch');
-	for (const path of [join(root, 'src'), binDirectory, scratch])
-		await mkdir(path, { recursive: true });
-	const assigned = join(root, 'src/assigned.ts'),
-		foreign = join(root, 'src/foreign.ts');
-	await writeFile(assigned, 'original\n');
-	await writeFile(foreign, 'synthetic credential sentinel');
-	const snapshot = join(base, 'snapshot.json');
-	await writeFile(snapshot, '{}');
-	const scope = { root, files: ['src/assigned.ts'], snapshot, binDirectory, scratch };
-	const invokeCli = vi.fn(async (_argv: string[]): Promise<unknown> => ({}));
-	return {
-		base,
-		root,
-		assigned,
-		foreign,
-		scope,
-		invokeCli,
-		broker: new ModuleTaskToolBrokerAdapter(scope, { invokeCli }),
-		dispose: () => rm(base, { recursive: true, force: true })
-	};
-}
-function safeContract() {
-	return {
-		id: 'service.orders',
-		kind: 'service',
-		title: 'Orders',
-		responsibility: 'Validate orders',
-		contract: { inputs: [], outputs: [{ name: 'valid', type: 'boolean' }], errors: [] },
-		dependencies: [{ unit: 'model.orders', via: 'import' }],
-		consumers: ['page.orders']
-	};
-}
-test('ModuleTaskToolBrokerAdapter.readContract projects metadata through fixed sealed CLI arguments', async () => {
-	await assertSealedBroker();
+import { TestExpectationService } from '../../../src/services/verification-evidence/TestExpectationService';
+import type { ComponentManifest } from '../../../src/core/development-tooling/unitTypes';
+import manifest from '../../../specification/units/adapter.agents-providers-module-task-tool-broker.json' with { type: 'json' };
+import { measureWorkload } from '../../support/measureWorkload';
+async function readContractScopedNamed() {
 	const f = await brokerFixture();
 	try {
 		const expected = safeContract();
@@ -78,7 +24,8 @@ test('ModuleTaskToolBrokerAdapter.readContract projects metadata through fixed s
 			source: 'private source sentinel',
 			unknown: 'private sentinel'
 		});
-		expect(await f.broker.readContract({ unitId: expected.id })).toEqual(expected);
+		const actual = await f.broker.readContract({ unitId: expected.id });
+		expect(actual).toEqual(expected);
 		expect(f.invokeCli).toHaveBeenCalledExactlyOnceWith(['units', 'show', expected.id, '--json']);
 		for (const unitId of [
 			'../secret',
@@ -93,11 +40,12 @@ test('ModuleTaskToolBrokerAdapter.readContract projects metadata through fixed s
 		const failure = new Error('Synthetic CLI unavailable');
 		f.invokeCli.mockRejectedValueOnce(failure);
 		await expect(f.broker.readContract({ unitId: expected.id })).rejects.toThrow();
+		return actual;
 	} finally {
 		await f.dispose();
 	}
-}, 60000);
-test('ModuleTaskToolBrokerAdapter.listContracts exposes only contract index metadata', async () => {
+}
+async function listContractsScopedNamed() {
 	const f = await brokerFixture();
 	try {
 		const expected = [{ id: 'service.orders', kind: 'service', responsibility: 'Validate orders' }];
@@ -113,43 +61,17 @@ test('ModuleTaskToolBrokerAdapter.listContracts exposes only contract index meta
 		for (const kind of ['--help', 'service;cat secret', '../secret'])
 			await expect(f.broker.listContracts({ kind })).rejects.toThrow();
 		expect(f.invokeCli).toHaveBeenCalledTimes(2);
+		return expected;
 	} finally {
 		await f.dispose();
 	}
-});
-async function assertUnsafeFiles() {
-	for (const kind of ['symlink', 'hardlink', 'directory', 'parent-symlink']) {
-		const f = await brokerFixture();
-		try {
-			await f.broker.readAssigned({ path: 'src/assigned.ts' });
-			if (kind === 'parent-symlink') {
-				await rename(join(f.root, 'src'), join(f.base, 'foreign-dir'));
-				await symlink(join(f.base, 'foreign-dir'), join(f.root, 'src'));
-			} else {
-				await rm(f.assigned);
-				if (kind === 'symlink') await symlink(f.foreign, f.assigned);
-				if (kind === 'hardlink') await link(f.foreign, f.assigned);
-				if (kind === 'directory') await mkdir(f.assigned);
-			}
-			await expect(f.broker.readAssigned({ path: 'src/assigned.ts' })).rejects.toThrow();
-			await expect(
-				f.broker.writeAssigned({
-					path: 'src/assigned.ts',
-					expectedSha256: sha('synthetic credential sentinel'),
-					text: 'overwrite'
-				})
-			).rejects.toThrow();
-			expect(await readFile(f.foreign, 'utf8')).toBe('synthetic credential sentinel');
-			expect(f.invokeCli).not.toHaveBeenCalled();
-		} finally {
-			await f.dispose();
-		}
-	}
 }
-test('ModuleTaskToolBrokerAdapter.readAssigned limits access to exact safe UTF-8 files', async () => {
+async function readAssignedScopedNamed() {
 	const f = await brokerFixture();
+	let actual: Awaited<ReturnType<ModuleTaskToolBrokerAdapter['readAssigned']>>;
 	try {
-		expect(await f.broker.readAssigned({ path: 'src/assigned.ts' })).toEqual({
+		actual = await f.broker.readAssigned({ path: 'src/assigned.ts' });
+		expect(actual).toEqual({
 			text: 'original\n',
 			sha256: sha('original\n')
 		});
@@ -179,8 +101,9 @@ test('ModuleTaskToolBrokerAdapter.readAssigned limits access to exact safe UTF-8
 		await f.dispose();
 	}
 	await assertUnsafeFiles();
-});
-test('ModuleTaskToolBrokerAdapter.writeAssigned enforces hashes and atomic bounded edits', async () => {
+	return actual;
+}
+async function writeAssignedScopedNamed() {
 	const f = await brokerFixture();
 	try {
 		const path = 'src/assigned.ts',
@@ -205,13 +128,79 @@ test('ModuleTaskToolBrokerAdapter.writeAssigned enforces hashes and atomic bound
 		const saved = await f.broker.readAssigned({ path });
 		expect(['first edit', 'second edit']).toContain(saved.text);
 		const large = 'é'.repeat(524288);
-		expect(
-			await f.broker.writeAssigned({ path, expectedSha256: saved.sha256, text: large })
-		).toEqual({ sha256: sha(large) });
+		const actual = await f.broker.writeAssigned({
+			path,
+			expectedSha256: saved.sha256,
+			text: large
+		});
+		expect(actual).toEqual({ sha256: sha(large) });
 		expect(await f.broker.readAssigned({ path })).toEqual({ text: large, sha256: sha(large) });
 		expect(await readFile(f.foreign, 'utf8')).toBe('synthetic credential sentinel');
 		expect(f.invokeCli).not.toHaveBeenCalled();
+		return actual;
 	} finally {
 		await f.dispose();
 	}
-});
+}
+
+async function scoped(method: 'connect' | 'readAssigned' | 'writeAssigned', named = false) {
+	const f = await brokerFixture();
+	try {
+		const adapter = named ? f.broker : new ModuleTaskToolBrokerAdapter(f.scope);
+		if (method === 'connect') return adapter.connect();
+		if (method === 'readAssigned') return await adapter.readAssigned({ path: 'src/assigned.ts' });
+		const result = await adapter.writeAssigned({
+			path: 'src/assigned.ts',
+			expectedSha256: sha('original\n'),
+			text: 'default edit'
+		});
+		expect(await readFile(f.assigned, 'utf8')).toBe('default edit');
+		expect(await readFile(f.foreign, 'utf8')).toBe('synthetic credential sentinel');
+		return result;
+	} finally {
+		await f.dispose();
+	}
+}
+
+vi.setConfig({ testTimeout: 120_000 });
+afterAll(() => vi.resetConfig());
+new TestExpectationService().registerCases(
+	test,
+	manifest as ComponentManifest,
+	'test/adapters/agents-providers/module-task-tool-broker.test.ts',
+	{
+		'connect.default': () => new ModuleTaskToolBrokerAdapter().connect(),
+		'connect.named': () => new ModuleTaskToolBrokerAdapter({ name: 'custom' }).connect(),
+		'connect.invalid': () => {
+			expect(() => new ModuleTaskToolBrokerAdapter(3 as never)).toThrow(TypeError);
+			return new ModuleTaskToolBrokerAdapter(null).connect();
+		},
+		'connect.scoped': () => scoped('connect'),
+		'connect.scoped-named': () => scoped('connect', true),
+		'read-contract.default': () => unscoped('default', 'readContract'),
+		'read-contract.named': () => unscoped('named', 'readContract'),
+		'read-contract.invalid': () => unscoped('invalid', 'readContract'),
+		'read-contract.scoped': () => assertSealedBroker(),
+		'read-contract.scoped-named': readContractScopedNamed,
+		'list-contracts.default': () => unscoped('default', 'listContracts'),
+		'list-contracts.named': () => unscoped('named', 'listContracts'),
+		'list-contracts.invalid': () => unscoped('invalid', 'listContracts'),
+		'list-contracts.scoped': () => assertSealedBroker(),
+		'list-contracts.scoped-named': listContractsScopedNamed,
+		'read-assigned.default': () => unscoped('default', 'readAssigned'),
+		'read-assigned.named': () => unscoped('named', 'readAssigned'),
+		'read-assigned.invalid': () => unscoped('invalid', 'readAssigned'),
+		'read-assigned.scoped': () => scoped('readAssigned'),
+		'read-assigned.scoped-named': () =>
+			measureWorkload(
+				'adapter.agents-providers-module-task-tool-broker',
+				'assigned-file-read-and-rejections',
+				readAssignedScopedNamed
+			),
+		'write-assigned.default': () => unscoped('default', 'writeAssigned'),
+		'write-assigned.named': () => unscoped('named', 'writeAssigned'),
+		'write-assigned.invalid': () => unscoped('invalid', 'writeAssigned'),
+		'write-assigned.scoped': () => scoped('writeAssigned'),
+		'write-assigned.scoped-named': writeAssignedScopedNamed
+	}
+);

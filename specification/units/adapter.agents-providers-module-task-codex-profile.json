@@ -33,7 +33,7 @@
 			{
 				"name": "prepare",
 				"type": "Promise<SandboxProcess>",
-				"description": "Resolved trusted Codex executable with a strict native profile: only exact assigned source files writable, scratch writable, snapshot/sealed CLI/trusted runtime readonly, all other paths including credentials denied. No tool network, inherited token env, plugins, apps, multi-agent or user approvals. Preserve user/project rules and exact model/intelligence. Run host outside the outer sandbox, never expose provider credential paths to tools. Construction is not a live-launch authorization: inherited descriptors, real-model tool inventory, apply_patch, runtime hardlinks and login shells require qualification. Reject project config or rules that neutral cwd cannot honor; default runtime is pinned to the tested macOS Apple Silicon Codex 0.154.0."
+				"description": "Resolved trusted Codex executable with requested exact-file, scratch and read-only runtime grants, denied tool network and inherited token environment, and disabled plugins, apps, agents and approvals. Native runtime defaults may grant more access than those requested rules: the pinned macOS Codex 0.154.0 permits shared temporary paths despite explicit denial, and a 0.164.0 probe also permitted application-directory reads. Profile construction does not authorize a launch or prove credential isolation. A trusted host must independently qualify the complete tool and filesystem boundary; reject project config or rules that neutral cwd cannot honor."
 			},
 			{
 				"name": "connect",
@@ -46,12 +46,22 @@
 				"name": "unsafe or unverifiable isolation",
 				"type": "Error before launch",
 				"description": "Reject non-Codex argv, unsupported host/runtime, unsafe paths, secret-bearing grants or untrusted/symlink/hardlink scopes; never fall back unrestricted."
+			},
+			{
+				"name": "invalid configuration",
+				"type": "TypeError",
+				"description": "A null constructor configuration cannot supply the fields read by instance methods."
 			}
 		]
 	},
 	"dependencies": [
 		{
 			"unit": "adapter.agents-providers-module-task-sandbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-sandbox-process",
 			"via": "import",
 			"origin": "derived"
 		}
@@ -67,6 +77,80 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["default", "named"],
+		"cases": [
+			{
+				"id": "connect.default",
+				"state": "default",
+				"subject": "ModuleTaskCodexProfileAdapter.connect",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-codex-profile.test.ts",
+					"title": "ModuleTaskCodexProfileAdapter.connect from default initialization returns the file name"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "module-task-codex-profile"
+				},
+				"errors": ["invalid configuration"]
+			},
+			{
+				"id": "connect.named",
+				"state": "named",
+				"subject": "ModuleTaskCodexProfileAdapter.connect",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-codex-profile.test.ts",
+					"title": "ModuleTaskCodexProfileAdapter.connect from custom initialization returns the configured name"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "custom"
+				}
+			},
+			{
+				"id": "prepare.default",
+				"state": "default",
+				"subject": "ModuleTaskCodexProfileAdapter.prepare",
+				"fixture": "test/adapters/agents-providers/module-task-codex-profile.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-codex-profile.test.ts",
+					"title": "ModuleTaskCodexProfileAdapter.prepare from default initialization validates a native profile"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"profilePrepared": true,
+						"unsafeArgRejected": true,
+						"agentsDisabled": true,
+						"agentV2Disabled": true
+					}
+				},
+				"errors": ["unsafe or unverifiable isolation"]
+			},
+			{
+				"id": "prepare.named",
+				"state": "named",
+				"subject": "ModuleTaskCodexProfileAdapter.prepare",
+				"fixture": "test/adapters/agents-providers/module-task-codex-profile.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-codex-profile.test.ts",
+					"title": "ModuleTaskCodexProfileAdapter.prepare admits exact native permissions and rejects unsafe scopes"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"requestedGrantsVerified": true,
+						"aliasesRejected": true,
+						"agentsDisabled": true,
+						"agentV2Disabled": true
+					}
+				},
+				"errors": ["unsafe or unverifiable isolation"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

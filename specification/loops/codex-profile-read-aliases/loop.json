@@ -1,0 +1,62 @@
+{
+	"name": "codex-profile-read-aliases",
+	"goal": "Reject hard-linked aliases within native Codex read grants before provider launch.",
+	"createdAt": "2026-10-27T13:47:34.915Z",
+	"updatedAt": "2026-10-27T13:52:54.991Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T13:47:42.515Z",
+			"evidence": "A native sandbox allowed reading a synthetic hard link under a granted runtime directory while denying the original secret path; the profile must reject unsafe aliases before launch."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T13:47:45.711Z",
+			"evidence": "The existing prepare method case checks assigned-file and scratch aliases but not aliases inside admitted runtime or sealed CLI directories, nor a linked snapshot. Strengthen that same case."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T13:52:44.066Z",
+			"evidence": "At b80443b14f the existing prepare case failed because five unsafe read-grant alias variants were accepted; the recorded failing command and profile are retained."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T13:52:50.847Z",
+			"evidence": "Commit 35f1defac1 validates canonical read grants and reuses the bounded alias walk before constructing the native profile."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T13:52:54.991Z",
+			"evidence": "The unchanged four-case suite passed at 35f1defac1 using the same command and sanitized environment as the failing record."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
