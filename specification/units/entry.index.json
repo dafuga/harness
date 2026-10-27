@@ -202,7 +202,8 @@
 			"moduleTaskBrokerContracts",
 			"FeatureWorkService",
 			"FeaturePlanPreparationService",
-			"featureSpecStructure"
+			"featureSpecStructure",
+			"featurePlanImage"
 		]
 	},
 	"contract": {
@@ -385,6 +386,11 @@
 		{
 			"unit": "entry.program",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-feature-plan-image",
+			"via": "reexport",
 			"origin": "derived"
 		},
 		{

@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-27T10:04:20.267Z","name":"feature-plan-cli-image","goal":"Retrieve an exact committed design option from a feature plan for CLI review before approval.","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-10-27T10:04:37.527Z","loop":"feature-plan-cli-image","step":"spec","evidence":"Use the latest committed feature plan and exact page, option, revision and hash; never overwrite a destination or start a provider. Verify bytes and refusal paths."}
