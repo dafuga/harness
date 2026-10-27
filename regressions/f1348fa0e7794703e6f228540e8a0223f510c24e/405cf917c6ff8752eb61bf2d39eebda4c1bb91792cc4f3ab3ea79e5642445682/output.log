@@ -1,0 +1,62 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pnlB64
+
+ ❯ test/utils/comparison-differences.test.ts (8 tests | 1 failed) 10ms
+   × comparisonDifferences: Identical definitions are comparable 6ms
+     → Example output differs from its comment
++ actual - expected
+
+  {
+    differences: [],
++   status: 'comparable'
+-   status: 'incompatible'
+  }
+
+   ✓ comparisonDifferences: Missing metadata is incomplete before any difference is considered 1ms
+   ✓ comparisonDifferences: An invalid comparison context is incomplete 0ms
+   ✓ comparisonDifferences: Every difference is named, in a fixed order 0ms
+   ✓ comparisonDifferences: A custom metric with matching units is comparable 0ms
+   ✓ comparisonDifferences: A known metric rejects a unit other than its expected unit 0ms
+   ✓ comparisonDifferences: A null comparison context counts as missing 0ms
+   ✓ comparisonDifferences: A truncated request digest is an invalid comparison context 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/comparison-differences.test.ts > comparisonDifferences: Identical definitions are comparable
+AssertionError: Example output differs from its comment
++ actual - expected
+
+  {
+    differences: [],
++   status: 'comparable'
+-   status: 'incompatible'
+  }
+
+
+- Expected
++ Received
+
+  {
+    "differences": [],
+-   "status": "incompatible",
++   "status": "comparable",
+  }
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:99:4
+     97|    deepStrictEqual(
+     98|     observation.output,
+     99|     example.output,
+       |    ^
+    100|     'Example output differs from its comment'
+    101|    );
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ src/services/verification-evidence/TestExpectationService.ts:60:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  01:53:40
+   Duration  2.53s (transform 99ms, setup 104ms, collect 47ms, tests 10ms, environment 0ms, prepare 24ms)
+
