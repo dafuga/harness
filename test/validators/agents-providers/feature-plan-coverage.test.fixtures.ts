@@ -50,7 +50,14 @@ function referenceNode(kind: string) {
 }
 
 function addDanglingCases(metadata: ReturnType<typeof scopedGraph>, kind: string) {
-	if (['dangling-test', 'reachable-dangling-test'].includes(kind)) {
+	if (
+		[
+			'dangling-test',
+			'reachable-dangling-test',
+			'missing-page-ownership',
+			'missing-page-node'
+		].includes(kind)
+	) {
 		metadata.sourceGraph.edges.push({
 			from: 'file:test/unrelated.test.ts',
 			to: 'file:test/missing-fixture.json',
@@ -75,6 +82,21 @@ function addDanglingCases(metadata: ReturnType<typeof scopedGraph>, kind: string
 			to: 'file:src/missing-page-dependency.ts',
 			via: 'import'
 		});
+}
+
+function removePageAnchor(metadata: ReturnType<typeof scopedGraph>, kind: string) {
+	if (kind === 'missing-page-ownership')
+		metadata.sourceGraph.edges = metadata.sourceGraph.edges.filter(
+			(edge) => !(edge.from === 'unit:page.alpha' && edge.via === 'owns')
+		);
+	if (kind === 'missing-page-node') {
+		metadata.sourceGraph.nodes = metadata.sourceGraph.nodes.filter(
+			(node) => node.id !== 'unit:page.alpha'
+		);
+		metadata.sourceGraph.edges = metadata.sourceGraph.edges.filter(
+			(edge) => edge.from !== 'unit:page.alpha' && edge.to !== 'unit:page.alpha'
+		);
+	}
 }
 
 function scopedReference(kind: string) {
@@ -102,6 +124,7 @@ function scopedReference(kind: string) {
 	if (kind === 'dangling')
 		metadata.sourceGraph.edges.push({ from: 'file:src/missing.ts', to: node, via: 'import' });
 	addDanglingCases(metadata, kind);
+	removePageAnchor(metadata, kind);
 	if (kind === 'ambiguous')
 		metadata.sourceGraph.nodes.push({ id: node, kind: 'source', unit: 'page.alpha' });
 	if (kind === 'unowned') {
@@ -128,6 +151,8 @@ export function assertScopedUncertainty() {
 		'dangling-scenario',
 		'reachable-dangling-test',
 		'page-dangling',
+		'missing-page-ownership',
+		'missing-page-node',
 		'ambiguous',
 		'unowned',
 		'absent-graph'
