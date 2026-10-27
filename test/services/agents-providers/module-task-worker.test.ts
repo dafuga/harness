@@ -154,6 +154,16 @@ test('context rejection is safe and an aborted preclaim does not write the queue
 	const contexts = mockContexts(true);
 	let runs = 0;
 	try {
+		const beforeQualification = await service.repository.read();
+		const unqualifiedContexts = mockContexts();
+		const unqualified = new ModuleTaskWorkerService(
+			f.root,
+			undefined,
+			unqualifiedContexts.contexts
+		);
+		await expect(unqualified.once('owner')).rejects.toMatchObject({ quotaRejected: false });
+		expect(await service.repository.read()).toEqual(beforeQualification);
+		expect(unqualifiedContexts.calls).toHaveLength(0);
 		const worker = new ModuleTaskWorkerService(
 			f.root,
 			{

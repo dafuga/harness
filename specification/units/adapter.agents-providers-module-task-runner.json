@@ -73,6 +73,11 @@
 				"name": "command",
 				"type": "string[]",
 				"description": "Preserves exact requested model/intelligence and never-approval policy. Codex uses --sandbox danger-full-access only within the already-applied Harness OS boundary, avoiding nested Seatbelt; run still rejects missing scope or unavailable isolation before process launch. Claude argv unchanged."
+			},
+			{
+				"name": "ready",
+				"type": "Promise<void>",
+				"description": "Check the same trusted launch qualification used by run, without preparing a sandbox or launching a provider. run rechecks before launch."
 			}
 		],
 		"errors": [
