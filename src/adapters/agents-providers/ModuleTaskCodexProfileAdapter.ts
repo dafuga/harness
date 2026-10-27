@@ -200,7 +200,9 @@ function configuration(input: ModuleTaskSandboxInput, reads: string[]): Record<s
 		'shell_environment_policy.set': environment,
 		'features.apps': false,
 		'features.plugins': false,
+		'agents.enabled': false,
 		'features.multi_agent': false,
+		'features.multi_agent_v2': false,
 		web_search: 'disabled'
 	};
 }
