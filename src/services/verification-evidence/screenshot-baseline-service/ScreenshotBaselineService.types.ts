@@ -31,7 +31,6 @@ export interface ScreenshotCandidate {
 	record: VerificationRecord;
 	capture: Capture;
 	caseStatus: 'passed' | 'failed';
-	captureRetry?: number;
 	contract: ScreenshotContract;
 	bytes: Buffer;
 }
