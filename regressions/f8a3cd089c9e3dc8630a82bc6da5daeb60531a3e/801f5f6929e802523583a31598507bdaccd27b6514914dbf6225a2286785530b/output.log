@@ -1,0 +1,32 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-kgtrry
+
+ ❯ test/project-template.test.ts (5 tests | 1 failed | 4 skipped) 22ms
+   ↓ generated element atoms preserve native compilation and emitted runtime source
+   × app projects include SvelteKit and specification files 19ms
+     → The initial page must declare its standard screenshot cases: expected [ 'package.json', 'README.md', …(219) ] to include 'specification/units/page.root.json'
+   ↓ library projects include Bun TypeScript test structure
+   ↓ generated app code and configuration obey their formatter settings
+   ↓ generated lib code and configuration obey their formatter settings
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-template.test.ts > app projects include SvelteKit and specification files
+AssertionError: The initial page must declare its standard screenshot cases: expected [ 'package.json', 'README.md', …(219) ] to include 'specification/units/page.root.json'
+ ❯ test/project-template.test.ts:33:80
+     31|   expect(paths).toContain('playwright.config.ts');
+     32|   expect(paths).toContain('tests/e2e/app.spec.ts');
+     33|   expect(paths, 'The initial page must declare its standard screenshot…
+       |                                                                                ^
+     34|    'specification/units/page.root.json'
+     35|   );
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  04:09:06
+   Duration  2.96s (transform 320ms, setup 90ms, collect 643ms, tests 22ms, environment 0ms, prepare 21ms)
+
