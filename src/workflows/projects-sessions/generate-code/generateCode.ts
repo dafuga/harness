@@ -1,6 +1,6 @@
 import type { GenerateModelInput, GenerateResult, GeneratePieceInput } from './generateCode.types';
 import { applyExports } from './exports';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { ExportPlan } from '../../../core/projects-sessions/exports';
 import { fail } from '../../../core/development-tooling/errors';
@@ -28,6 +28,9 @@ import { ModelDependencyService } from '../../../services/development-tooling/Mo
 import { separateTypeDeclarations } from '../../../templates/development-tooling/separateTypeDeclarations';
 import { atomicComponentFiles } from '../../../templates/development-tooling/atomicComponents';
 import { atomLibrary, useAtomLibrary } from './atomLibrary';
+import { unitsConfigFile, unitsConfigSchema } from '../../../core/development-tooling/unitsConfig';
+import type { PlannedFile } from '../../../core/development-tooling/files';
+import { componentContractFiles } from '../../../templates/development-tooling/app-pieces/appContractTests';
 
 export { scaffoldKinds };
 
@@ -78,7 +81,8 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const pieces = useAtomLibrary(planned, library);
 	const grouped = groupedFiles(pieces, selection?.group.id);
 	const atoms = missingAtoms(root, input.kind, library);
-	const files = separateTypeDeclarations([...grouped.files, ...support, ...atoms]);
+	const registry = newComponentRegistry(root, input.kind, name, grouped.files);
+	const files = separateTypeDeclarations([...grouped.files, ...support, ...atoms, ...registry]);
 	assertUniqueGroupedNames(root, selection?.group.id, files);
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });
@@ -135,4 +139,19 @@ function missingAtoms(root: string, kind: PieceKind, library: string) {
 	if (library !== 'src/components/atoms') return [];
 	if (!['component', 'view', 'layout', 'partial', 'resource'].includes(kind)) return [];
 	return atomicComponentFiles().filter((file) => !existsSync(join(root, file.path)));
+}
+
+/** Preserve authored contracts when regenerating an existing component. */
+function newComponentRegistry(root: string, kind: PieceKind, name: string, files: PlannedFile[]) {
+	if (kind !== 'component' || !existsSync(join(root, unitsConfigFile))) return [];
+	const config = unitsConfigSchema.parse(
+		JSON.parse(readFileSync(join(root, unitsConfigFile), 'utf8'))
+	);
+	const workspace = config.workspaces.find((item) => item.root === '.');
+	const source = files.find(
+		(item) => item.path.startsWith('src/components/') && item.path.endsWith('.svelte')
+	);
+	if (!workspace || !source || existsSync(join(root, source.path))) return [];
+	const registry = componentContractFiles(name, source.path, workspace.name);
+	return registry.some((item) => existsSync(join(root, item.path))) ? [] : registry;
 }

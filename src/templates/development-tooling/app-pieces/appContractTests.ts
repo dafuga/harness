@@ -1,3 +1,124 @@
+import type { PlannedFile } from '../../../core/development-tooling/files';
+import type {
+	ComponentManifest,
+	ScenarioManifest
+} from '../../../core/development-tooling/unitTypes';
+import { toKebabCase, toPascalCase } from '../../../helpers/strings/case';
+import { unitIdentity } from '../../../utils/accounts-access/classify-path/unitIdentity';
+import { stableJson } from '../../../utils/development-tooling/stableJson';
+
+const componentStates = ['rest', 'label-prop', 'error-prop'] as const;
+const componentViewports = [
+	{ id: 'desktop', width: 1440, height: 900 },
+	{ id: 'tablet', width: 920, height: 800 },
+	{ id: 'mobile', width: 390, height: 844 }
+] as const;
+
+/** Register the screenshot cases emitted for a newly generated component. */
+export function componentContractFiles(
+	name: string,
+	source: string,
+	workspace: string
+): PlannedFile[] {
+	const identity = unitIdentity(source, workspace);
+	if (identity?.kind !== 'component') throw new Error(`Invalid component source: ${source}`);
+	const symbol = toPascalCase(name);
+	const file = toKebabCase(name);
+	const scenario = identity.id.replace('.', '-');
+	const cases = componentCases(symbol, file);
+	const unit: ComponentManifest = {
+		schemaVersion: 1,
+		id: identity.id,
+		kind: 'component',
+		title: symbol,
+		responsibility: `Owns the ${symbol} Svelte component.`,
+		responsibilityOrigin: 'derived',
+		status: 'active',
+		owns: { source: [source], symbols: [symbol] },
+		contract: { origin: 'derived', inputs: [], outputs: [], errors: [] },
+		dependencies: [],
+		runtime: { kind: 'module', entry: source, targets: [{ kind: 'module', entry: source }] },
+		scenarios: [scenario],
+		testing: {
+			version: 1,
+			shape: 'component',
+			states: [...componentStates],
+			props: ['label', 'error'],
+			cases
+		},
+		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
+	};
+	return [
+		{ path: `specification/units/${identity.id}.json`, contents: stableJson(unit) },
+		{
+			path: `specification/scenarios/${scenario}.json`,
+			contents: stableJson(componentScenario(unit, file))
+		}
+	];
+}
+
+function componentCases(
+	symbol: string,
+	file: string
+): NonNullable<ComponentManifest['testing']>['cases'] {
+	const input: Record<string, string>[] = [
+		{},
+		{ label: 'Ready' },
+		{ label: 'Ready', error: 'Invalid label' }
+	];
+	const props = [[], ['label'], ['label', 'error']];
+	return componentViewports.flatMap(({ id: viewport }) =>
+		componentStates.map((state, index) => ({
+			id: `${state}.${viewport}`,
+			state,
+			input: input[index],
+			props: props[index],
+			viewports: [viewport],
+			test: {
+				file: `tests/e2e/${file}-component.spec.ts`,
+				title: `${symbol}.svelte states > ${viewport} viewport > ${state}`
+			},
+			expected: {
+				kind: 'screenshot' as const,
+				file: `.cache/harness/visual-baselines/${file}-component.spec.ts/${file}-${state}-${viewport}.png`
+			}
+		}))
+	);
+}
+
+function componentScenario(unit: ComponentManifest, file: string): ScenarioManifest {
+	return {
+		schemaVersion: 1,
+		id: unit.scenarios[0],
+		title: `${unit.title} component states`,
+		kind: 'ui',
+		units: [unit.id],
+		states: componentStates.map((id) => ({ id, title: id, coverage: 'required' })),
+		viewports: componentViewports.map((viewport) => ({ ...viewport })),
+		tests: [
+			{
+				id: 'component',
+				kind: 'e2e',
+				runner: 'playwright',
+				target: `tests/e2e/${file}-component.spec.ts`,
+				cases: unit.testing!.cases.map(({ id }) => ({ unit: unit.id, case: id }))
+			}
+		],
+		evidence: [
+			{
+				id: 'screens',
+				kind: 'screenshot',
+				states: [...componentStates],
+				viewports: componentViewports.map(({ id }) => id),
+				provenance: 'actual-capture',
+				build: 'app',
+				capture: 'element',
+				required: true
+			}
+		]
+	};
+}
+
 export function componentContractTest(componentName: string, marker: string): string {
 	const states = `const states = [\n\t{\n\t\tid: 'rest',\n\t\tpath: '/__harness/components/${marker}',\n\t\tlabel: undefined,\n\t\terror: undefined,\n\t\tscreenshot: ${screenshotSet(`${marker}-rest`)}\n\t},\n\t{\n\t\tid: 'label-prop',\n\t\tpath: '/__harness/components/${marker}?label=Ready',\n\t\tlabel: 'Ready',\n\t\terror: undefined,\n\t\tscreenshot: ${screenshotSet(`${marker}-label-prop`)}\n\t},\n\t{\n\t\tid: 'error-prop',\n\t\tpath: '/__harness/components/${marker}?label=Ready&error=Invalid%20label',\n\t\tlabel: 'Ready',\n\t\terror: 'Invalid label',\n\t\tscreenshot: ${screenshotSet(`${marker}-error-prop`)}\n\t}\n] as const;`;
 	return screenshotContractTest(`${componentName}.svelte states`, states, 'component', {
@@ -58,7 +179,7 @@ function screenshotContractTest(
 function visualGroups(target: 'page' | 'component' | 'layout' | 'partial'): string {
 	const states = {
 		page: ['default', 'error-state'],
-		component: ['rest', 'label-prop', 'error-prop'],
+		component: componentStates,
 		layout: ['default'],
 		partial: ['rest', 'label-prop']
 	}[target];

@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { generateModel, generatePiece } from '../src/workflows/generate-code/generateCode';
 import { scaffoldDetails, scaffoldKinds } from '../src/templates/scaffoldTypes';
+import { assertGeneratedComponentRegistry } from './support/generatedComponentRegistry';
 
 test('lib generation auto-exports package-safe scaffolds', async () => {
 	const root = await libProject();
@@ -61,6 +62,7 @@ test('app generation allows app-only scaffolds without package exports', async (
 	const input = await readFile(join(root, 'src/components/atoms/HtmlInput.svelte'), 'utf8');
 	expect(input).toContain('@harness-element input');
 	await rm(root, { recursive: true, force: true });
+	await assertGeneratedComponentRegistry();
 });
 
 async function libProject(): Promise<string> {
