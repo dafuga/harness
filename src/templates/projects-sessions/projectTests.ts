@@ -122,7 +122,7 @@ function initialPageScenario() {
 function appVerifyConfig() {
 	return {
 		...defaultVerifyConfig,
-		setup: [{ command: 'bun run build' }],
+		setup: [{ command: 'bun run build' }, { command: 'harness verify stamp .svelte-kit/output' }],
 		link: ['node_modules'],
 		outputs: [
 			'.cache/',
