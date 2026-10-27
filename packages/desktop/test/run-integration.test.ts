@@ -8,7 +8,6 @@ import { ModuleDataRepository } from '../../../src/repositories/git-source-histo
 import { fixture, settled, approve, records, git, bytes } from './run-fixture';
 test('Plan uses read-only CLI and saves a committed immutable version without claiming verification', async () => {
 	const f = await fixture();
-	// A case of one design: it asks for a single design option.
 	await settled(f, { ...f.request, designOptions: 1 });
 	const metadata = new ModuleDataRepository(f.root);
 	expect((await metadata.read(await metadata.identity('HEAD')))?.data.commit).toBe(
@@ -135,8 +134,7 @@ test('observed host writes retain actual absolute path and hashes in committed c
 			await writeFile(path, 'after');
 		});
 		await settled(f, await approve(f));
-		const changes = await records(f);
-		const host = changes.flatMap((c) => c.hostChanges ?? []);
+		const host = (await records(f)).flatMap((c) => c.hostChanges ?? []);
 		expect(host).toEqual([
 			expect.objectContaining({
 				path,
@@ -169,16 +167,15 @@ test('visual provenance stores actual image orchestration model and exact full g
 			]
 		};
 	};
-	// A case of one design: it asks for a single design option.
 	await settled(f, { ...f.request, provider: 'claude', model: 'director', designOptions: 1 });
 	const imageCall = vi.mocked(f.generator.generateImage).mock.calls[0][0];
-	const plan = (await f.planning.plans(git(f.root, 'rev-parse', 'HEAD')))[0];
-	const version = plan.versions[0];
+	const version = (await f.planning.plans(git(f.root, 'rev-parse', 'HEAD')))[0].versions[0];
 	expect(f.run.mock.calls[0][0].model).toBe('director');
 	expect(imageCall.model).toBe('selected');
 	expect(version.generator).toBe('codex · selected');
 	expect(version.prompt).toBe(imageCall.prompt);
 	expect(version.prompt).toContain('Entity: Target');
+	expect(version.prompt).toContain('Original user request (authoritative for the edit scope):');
 	expect(version.prompt).toContain('Precise design direction');
 	expect(version.notes).toContain('claude / director');
 }, 60000);
