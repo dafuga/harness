@@ -1092,3 +1092,31 @@ dependencies, with no separate emitted module artifact. The source-change
 reasons are retained in Git notes. The bug loop's full verification step remains
 pending because the requested aggregate run and current-main Explorer proof are
 still open.
+
+## Continuation: bounded history aggregation
+
+The existing HistoryIndexService build case checked archived source, media and
+source gaps but did not check that written record payloads were released. The
+same case was strengthened in test-only `c3c32fbf69` and failed red record
+`f221424055c7` on retained payloads. Source-only `8ee38965ae` keeps the full
+revision files on disk while retaining only the summaries and measurements used
+by aggregation. The unchanged case passed green record `9c285c2e4bca` under the
+same profile. No test title was added.
+
+An independent mutation at `e04c001b17` failed capture `dd23c611210d` on the
+same assertion; restored `84375e10ab` passed `0701d07b55ac` with the identical
+tree to `66900124e3`. Focused capture `1c24af7e4558` passed 22 tests, registry,
+formatting, lint, root typecheck and audit. The source ownership review pack was
+rebuilt, read in an empty bare repository and checked by the unchanged guards.
+The source and manifest reasons are retained in Git notes. The bug loop keeps
+full verification pending.
+
+A synthetic 384-revision probe with 256 KiB payloads per revision observed
+151,863,296 bytes of whole-process RSS after collection before the repair and
+59,359,232 bytes after it. It does not establish a full-history memory bound.
+At `66900124e3`, the service owns 14,122 bytes, 334 lines, complexity 40 and
+25 dependencies; the history-series functions own 6,926 bytes, 157 lines,
+complexity 35 and seven dependencies. Neither module emits a separate artifact.
+A three-commit build workload observed 371.69 ms and 231,604,224 bytes of whole
+Vitest-process RSS. The full preserved-ref rebuild and its media verification
+remain open, as do the other migration, provider, laptop and preview gates.
