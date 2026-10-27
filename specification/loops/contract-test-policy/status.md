@@ -896,3 +896,25 @@ declarations, 52 standardized units, 714 registered cases and 6,090 remaining
 gaps. The comparability unit has eight discovered cases and no reported gap.
 The historical Haiku result does not qualify the current trusted worker boundary;
 the complete migration and full verification remain open.
+
+## Continuation: history reference examples
+
+`b9c6b337e9` maps the nine assertions in the existing two history-reference
+tests to nine authored examples and declares four additional boundary examples:
+unknown refs, invalid refs, an empty unvalidated archive id and the history
+selection itself. Each has one registered case. The invalid case asserts null
+and non-string error types and checks propagation of a deterministic TypeError;
+native engine error messages were not treated as portable. All 13 displayed
+calls were executed against their authored results.
+
+Capture `424b889eb541` passed 37 focused cases, registry validation, formatting,
+lint, typecheck and audit. Twelve successful example workloads observed
+0.004–0.051 ms and 91,701,248–92,061,696 bytes whole-worker RSS; the error
+case intentionally throws and has no successful timing. The unit has 1,870
+source bytes, 58 lines, complexity six and one dependency, with no separate
+emitted artifact. Its manifest reason is retained in Git notes.
+
+The committed-tree inventory at `b9c6b337e9` reports 1,118 suite files,
+4,626 declarations, 53 standardized units, 727 registered cases and 6,087
+remaining gaps. The history-reference unit has 13 discovered cases and no
+reported gap. Full migration and aggregate verification remain pending.
