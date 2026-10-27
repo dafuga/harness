@@ -1498,5 +1498,9 @@ Generating from a nested app workspace still misses the repository registry.
 Test-only commit `41822ff57b` extends the existing generator case to cover
 workspace-relative execution, repository-relative cases, the declared build,
 and missing, ambiguous or undeclared workspace errors. The red run has not
-started because the other laptop's concurrent workload exceeds the memory
-guard; no workspace product repair has been made.
+started: an initial conservative memory guard deferred it, and a later run
+that separated the other project's processes timed out in Harness resource
+admission because the CPU reserve was exhausted. At that admission attempt,
+task RSS peaked at 243 MB, shared or unattributed RSS at 4.56 GB, identified
+other-project RSS at 14.84 GB and system free memory was at least 67%. No
+workspace product repair has been made.
