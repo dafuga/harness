@@ -40,6 +40,8 @@ test('folders, hosted credentials and the control port are not device methods', 
 		expect(await outcome(client, method, { projectId: f.project.id })).toBe('method-denied');
 	}
 	expect(await outcome(client, 'projectWork', { projectId: f.project.id })).toBe('method-denied');
+	for (const method of ['selectFeaturePlan', 'approveFeaturePlan'])
+		expect(await outcome(client, method, { projectId: f.project.id })).toBe('method-denied');
 	expect(await outcome(client, 'shell.run', { command: 'id' })).toBe('unknown-method');
 	expect(attachment).toMatchObject({
 		role: 'device',

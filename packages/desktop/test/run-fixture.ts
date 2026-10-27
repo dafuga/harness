@@ -1,3 +1,8 @@
+import type { localFixture } from './local-transport-fixture';
+import { FeaturePlanService } from '../../../src/services/agents-providers/FeaturePlanService';
+import { FeaturePlanRepository } from '../../../src/repositories/agents-providers/FeaturePlanRepository';
+import { ModuleTaskServerService } from '../../../src/services/agents-providers/ModuleTaskServerService';
+import type { FeaturePlan } from '../../../src/repositories/agents-providers/ModuleTaskRepository.types';
 import { fixtureGit as git, seedOwnedFixture } from '../scripts/committed-fixture';
 import { expect } from '../../../test/verificationExpect';
 import { afterEach, vi } from 'vitest';
@@ -133,4 +138,81 @@ export async function approve(f: Awaited<ReturnType<typeof fixture>>) {
 export async function records(f: Awaited<ReturnType<typeof fixture>>) {
 	const plan = await (await createPlanning(f.root)).readPlan({ unitId: f.request.entityId });
 	return plan.threads[0].messages.filter((m) => m.change).map((m) => m.change!);
+}
+
+/** A local plan action carries its selected project and exact digest to trusted services. */
+function featureActionMocks(f: Awaited<ReturnType<typeof localFixture>>) {
+	const digest = 'a'.repeat(64),
+		selected = {
+			feature: 'feature',
+			digest,
+			sourceCommit: git(f.root, 'rev-parse', 'HEAD'),
+			revision: 2,
+			goal: 'Goal',
+			tldr: 'Summary',
+			pages: [],
+			changes: [],
+			tasks: []
+		} satisfies FeaturePlan,
+		approved = {
+			...selected,
+			approval: { digest, reviewer: 'Daniel', approvedAt: '2026-10-27T00:00:00.000Z' }
+		};
+	const select = vi.spyOn(FeaturePlanService.prototype, 'select').mockResolvedValue(selected);
+	const read = vi
+		.spyOn(FeaturePlanRepository.prototype, 'read')
+		.mockResolvedValue({ commit: undefined, plans: [selected] });
+	const approve = vi.spyOn(FeaturePlanService.prototype, 'approve').mockResolvedValue(approved);
+	const submit = vi
+		.spyOn(ModuleTaskServerService.prototype, 'submitApproved')
+		.mockResolvedValue({ created: ['feature.task'], reused: [], commit: undefined });
+	const selection = {
+			projectId: f.project.id,
+			feature: 'feature',
+			page: 'page',
+			option: 'o1',
+			expectedDigest: digest
+		},
+		approval = {
+			projectId: f.project.id,
+			feature: 'feature',
+			reviewer: 'Daniel',
+			expectedDigest: digest
+		};
+	return { digest, selected, approved, select, read, approve, submit, selection, approval };
+}
+
+export async function featureActions(
+	f: Awaited<ReturnType<typeof localFixture>>,
+	client: ReturnType<typeof f.connect>
+) {
+	const { digest, selected, approved, select, read, approve, submit, selection, approval } =
+		featureActionMocks(f);
+	expect(await client.request('selectFeaturePlan' as never, selection)).toEqual(selected);
+	const { projectId, ...expectedSelection } = selection;
+	expect(projectId).toBe(f.project.id);
+	expect(select).toHaveBeenCalledWith(expectedSelection);
+	await expect(
+		client.request('selectFeaturePlan' as never, { ...selection, expectedDigest: 'b'.repeat(64) })
+	).rejects.toThrow();
+	await expect(
+		client.request('selectFeaturePlan' as never, { ...selection, projectId: 'another-project' })
+	).rejects.toThrow();
+	read.mockResolvedValueOnce({
+		commit: undefined,
+		plans: [{ ...selected, sourceCommit: 'f'.repeat(40) }]
+	});
+	await expect(client.request('selectFeaturePlan' as never, selection)).rejects.toThrow();
+	await expect(
+		client.request('approveFeaturePlan' as never, { ...approval, expectedDigest: 'bad' })
+	).rejects.toThrow();
+	expect(approve).not.toHaveBeenCalled();
+	expect(await client.request('approveFeaturePlan' as never, approval)).toEqual(approved);
+	expect(approve).toHaveBeenCalledWith({
+		feature: 'feature',
+		reviewer: 'Daniel',
+		expectedDigest: digest
+	});
+	expect(submit).toHaveBeenCalledWith({ feature: 'feature', expectedDigest: digest });
+	expect(f.run).not.toHaveBeenCalled();
 }

@@ -4,7 +4,7 @@
 	"kind": "model",
 	"title": "Remote",
 	"responsibility": "Owns the Remote data model.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -78,7 +78,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "RemoteFailure.constructor.code",
@@ -116,7 +116,8 @@
 			},
 			{
 				"name": "localMethods",
-				"type": "unknown"
+				"type": "readonly RemoteMethod[]",
+				"description": "Methods restricted to the local connection, including feature-plan selection and approval; devices are denied these methods."
 			},
 			{
 				"name": "controlMethods",
@@ -136,7 +137,8 @@
 			},
 			{
 				"name": "mutationMethods",
-				"type": "readonly RemoteMethod[]"
+				"type": "readonly RemoteMethod[]",
+				"description": "Methods whose replies are remembered by request ID; includes local feature-plan selection and approval."
 			},
 			{
 				"name": "remoteErrorMessages",

@@ -31,7 +31,7 @@
 			{
 				"name": "IpcRequestValidator.parse",
 				"type": "unknown",
-				"description": "Channel-specific validated payload. project:work requires a nonblank string projectId, retains its exact spelling and strips other fields."
+				"description": "Channel-specific validated payload. project:work and feature-plan actions require a nonblank projectId; feature-plan actions retain only the declared project, feature, digest and selected option or reviewer fields."
 			}
 		],
 		"errors": [

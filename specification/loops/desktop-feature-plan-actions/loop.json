@@ -1,0 +1,45 @@
+{
+	"name": "desktop-feature-plan-actions",
+	"goal": "Allow the selected local desktop project to select and approve an exact feature plan and queue its tasks.",
+	"createdAt": "2026-10-27T09:10:16.851Z",
+	"updatedAt": "2026-10-27T09:27:04.257Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T09:10:17.469Z",
+			"evidence": "Use local-only transport, exact project and source revision, current plan digest, readiness validation and idempotent task admission. Keep per-design approval separate and never start an unqualified provider. Verify valid, stale, foreign and remote-device cases."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-27T09:27:03.686Z",
+			"evidence": "Added local-only project-bound plan selection and approval with readiness-checked exact task admission. Chat controls and automatic worker scheduling remain outside this slice."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-27T09:27:04.257Z",
+			"evidence": "Desktop socket, preload, remote-denial and guarded action tests passed with synthetic collaborators; plan/server tests and 200 remote protocol unit tests passed. Live provider execution and full-check verification remain pending."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

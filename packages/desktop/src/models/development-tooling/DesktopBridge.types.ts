@@ -1,5 +1,6 @@
 import type { LiveActivity } from '../../../../../src/core/activityTypes';
 import type { FeatureWorkSnapshot } from '../../../../../src/services/agents-providers/FeatureWorkService.types';
+import type { FeaturePlan } from '../../../../../src/repositories/agents-providers/ModuleTaskRepository.types';
 import type { ProjectContext } from '../projects-sessions/ProjectContext.types';
 import type { CacheStatus } from '../projects-sessions/ProjectContext.types';
 import type { NativeHostedStatus } from '../projects-sessions/ProjectContext.types';
@@ -96,6 +97,21 @@ export interface ApprovalDraft extends ProjectContext {
 	option?: string;
 }
 
+/** A feature-plan action always names the project and the exact plan shown to its reviewer. */
+export interface FeaturePlanSelection {
+	projectId: string;
+	feature: string;
+	page: string;
+	option: string;
+	expectedDigest: string;
+}
+export interface FeaturePlanApproval {
+	projectId: string;
+	feature: string;
+	reviewer: string;
+	expectedDigest: string;
+}
+
 export interface RunRequest extends ProjectContext {
 	environment?: DeploymentEnvironment;
 	mode: RunMode;
@@ -136,6 +152,8 @@ export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
 	agentActivity?(input: ProjectContext): Promise<Pick<LiveActivity, 'sampledAt' | 'agents'>>;
 	/** Committed feature work for the selected project; absent on unsupported hosts. */
 	projectWork?(input: { projectId: string }): Promise<FeatureWorkSnapshot>;
+	selectFeaturePlan?(input: FeaturePlanSelection): Promise<FeaturePlan>;
+	approveFeaturePlan?(input: FeaturePlanApproval): Promise<FeaturePlan>;
 	onCacheStatus?(listener: (event: CacheStatus) => void): () => void;
 	history?(
 		input: EntityQuery & { page: number; branch?: string }

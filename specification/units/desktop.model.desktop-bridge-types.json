@@ -27,6 +27,8 @@
 			"ThreadDraft",
 			"ThreadQuery",
 			"ApprovalDraft",
+			"FeaturePlanSelection",
+			"FeaturePlanApproval",
 			"RunRequest",
 			"ProjectRunRequest",
 			"DesktopBridge",
@@ -63,6 +65,16 @@
 				"name": "ImageQuery",
 				"type": "EntityQuery & {version:string,sha256:string}",
 				"description": "EntityQuery binds entityId and commit; ImageQuery has no option field."
+			},
+			{
+				"name": "FeaturePlanSelection",
+				"type": "{projectId:string,feature:string,page:string,option:string,expectedDigest:string}",
+				"description": "Names the selected project, page option and exact current feature-plan digest."
+			},
+			{
+				"name": "FeaturePlanApproval",
+				"type": "{projectId:string,feature:string,reviewer:string,expectedDigest:string}",
+				"description": "Names the selected project, reviewer and exact current feature-plan digest."
 			}
 		],
 		"outputs": [
@@ -95,6 +107,16 @@
 				"name": "projectWork",
 				"type": "optional (input:{projectId:string})=>Promise<FeatureWorkSnapshot>",
 				"description": "Reads one project-scoped committed feature-work snapshot when supported by the host."
+			},
+			{
+				"name": "selectFeaturePlan",
+				"type": "optional (input:FeaturePlanSelection)=>Promise<FeaturePlan>",
+				"description": "Local desktop feature-plan selection; absent on unsupported hosts."
+			},
+			{
+				"name": "approveFeaturePlan",
+				"type": "optional (input:FeaturePlanApproval)=>Promise<FeaturePlan>",
+				"description": "Local desktop feature-plan approval and task admission; absent on unsupported hosts."
 			}
 		],
 		"errors": []
@@ -137,6 +159,11 @@
 		},
 		{
 			"unit": "function.activity-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -101,7 +101,7 @@
 			{
 				"name": "ipcPayload",
 				"type": "unknown",
-				"description": "The validated operation-specific payload, retaining only selected fields. History pages must be integers 1–10,000; revision and image identifiers follow the shared patterns. No operation is executed."
+				"description": "The validated operation-specific payload, retaining only selected fields. History pages must be integers 1–10,000; revision and image identifiers follow the shared patterns. No operation is executed. Feature-plan selection retains feature, page, option and a 64-character hash; approval retains feature, reviewer and hash. Project identity is admitted by the caller."
 			}
 		],
 		"errors": [

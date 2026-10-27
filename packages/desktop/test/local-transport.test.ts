@@ -1,6 +1,5 @@
-import type { Fixture } from './local-transport.test.types';
 import { expect } from '../../../test/verificationExpect';
-import { test } from 'vitest';
+import { afterEach, test, vi } from 'vitest';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { exampleDocument } from '../../game/src/utils/game-authoring/keyDoor';
@@ -9,31 +8,14 @@ import type { RemoteBinary, WirePart } from '../../remote/src/index';
 import type { EntityDetail, ProjectSnapshot } from '../src/models/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
 import { remoteBinary } from '../src/utils/remoteBinary';
-import { largeGame, largeImage, localFixture } from './local-transport-fixture';
+import { committed, largeGame, localFixture } from './local-transport-fixture';
 import { deferred } from './remote-fixture';
-import { git } from './run-fixture';
+import { featureActions } from './run-fixture';
 const settle = { timeout: 15000 },
 	view = { branch: null, commit: null },
 	pause = () => new Promise((resolve) => setTimeout(resolve, 0)),
 	parts = (frames: string[]) => frames.map((frame) => JSON.parse(frame) as WirePart);
-/** A committed design image of more than a mebibyte, and the query that reads it. */
-async function committed(f: Fixture) {
-	const bytes = largeImage(),
-		entityId = f.request.entityId;
-	const design = await f.planning.addDesign({
-		entityId,
-		prompt: 'Large fixture image',
-		generator: { provider: 'codex', model: 'selected' },
-		baseRevision: git(f.root, 'rev-parse', 'HEAD'),
-		state: 'default',
-		viewport: 'desktop',
-		bytes
-	});
-	const commit = git(f.root, 'rev-parse', 'HEAD'),
-		{ sha256 } = design.images[0];
-	return { bytes, query: { entityId, commit, version: design.version, sha256 } };
-}
-
+afterEach(() => vi.restoreAllMocks());
 test('the bridge works over a socket that only this machine can reach', async () => {
 	const f = await localFixture(),
 		client = f.connect(f.window());
@@ -49,6 +31,7 @@ test('the bridge works over a socket that only this machine can reach', async ()
 	await expect(
 		client.request('projectWork' as never, { projectId: 'another-project' })
 	).rejects.toThrow();
+	await featureActions(f, client);
 	expect(await client.request('listProjects')).toMatchObject([{ id: f.project.id, kind: 'local' }]);
 	expect((await client.request<ProjectSnapshot>('snapshot', view)).writable).toBe(true);
 	expect(await client.request('deploymentStatus')).toEqual(

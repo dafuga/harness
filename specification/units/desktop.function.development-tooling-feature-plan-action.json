@@ -3,30 +3,89 @@
 	"id": "desktop.function.development-tooling-feature-plan-action",
 	"kind": "function",
 	"title": "featurePlanAction",
-	"responsibility": "Owns the featurePlanAction shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Bind local feature-plan selection and approval to the selected project and reviewed source, then admit only approved tasks.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/utils/development-tooling/featurePlanAction.ts"],
 		"symbols": ["featurePlanAction"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "featurePlanAction.value",
-				"type": "string"
+				"name": "featurePlanAction.context",
+				"type": "BridgeContext",
+				"description": "Trusted selected project session; the caller holds the project repository lease."
+			},
+			{
+				"name": "featurePlanAction.input",
+				"type": "FeaturePlanSelection | FeaturePlanApproval",
+				"description": "Explicit project ID, feature and expected plan digest; selection names a page and option, while approval names a reviewer."
+			},
+			{
+				"name": "featurePlanAction.writable",
+				"type": "() => Promise<mutable project>",
+				"description": "Trusted caller check for a live client and a writable selected project revision."
 			}
 		],
 		"outputs": [
 			{
 				"name": "featurePlanAction",
-				"type": "string"
+				"type": "Promise<FeaturePlan>",
+				"description": "Checks project identity, the latest plan digest and its source against the writable revision, then rechecks context. Selection commits a new unapproved plan revision. Approval uses the real readiness verifier, rechecks context, and submits the exact approved tasks without starting a worker. Repository and revision checks are repeated but do not lock external Git operations."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Invalid or stale context",
+				"type": "Error",
+				"description": "Rejects missing or foreign project, stale digest, mismatched source, changed writable revision, ended client, or underlying service failures."
+			},
+			{
+				"name": "Approval or submission failure",
+				"type": "Error",
+				"description": "Readiness and queue errors propagate. Approval can already be committed if context changes or submission fails afterward; the approved plan can be retried with the CLI task plan start command."
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-feature-plan-readiness",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.function.desktop-bridge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-module-task-server",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/utils/development-tooling/featurePlanAction.ts",

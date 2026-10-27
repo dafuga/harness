@@ -16,6 +16,7 @@ import type { LocalSocketPort } from '../src/services/LocalTransportClientServic
 import { LocalTransportService } from '../src/services/LocalTransportService';
 import type { LocalTransportOptions } from '../src/services/LocalTransportService';
 import { remoteFixture } from './remote-fixture';
+import { git } from './run-fixture';
 
 const closing: (() => unknown)[] = [];
 /**
@@ -57,6 +58,23 @@ export function largeImage(): Uint8Array {
 	const png = new PNG({ width: 640, height: 640 });
 	randomFillSync(png.data);
 	return PNG.sync.write(png);
+}
+/** A committed design image of more than a mebibyte, and the query that reads it. */
+export async function committed(f: Awaited<ReturnType<typeof localFixture>>) {
+	const bytes = largeImage(),
+		entityId = f.request.entityId;
+	const design = await f.planning.addDesign({
+		entityId,
+		prompt: 'Large fixture image',
+		generator: { provider: 'codex', model: 'selected' },
+		baseRevision: git(f.root, 'rev-parse', 'HEAD'),
+		state: 'default',
+		viewport: 'desktop',
+		bytes
+	});
+	const commit = git(f.root, 'rev-parse', 'HEAD'),
+		{ sha256 } = design.images[0];
+	return { bytes, query: { entityId, commit, version: design.version, sha256 } };
 }
 /** A valid game just under its 1 MiB file cap: two views of 117 long checkpoints each. */
 export function largeGame(): GameDocument {

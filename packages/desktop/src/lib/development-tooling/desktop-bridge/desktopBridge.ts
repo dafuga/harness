@@ -9,10 +9,15 @@ import { GameProjectService } from './GameProjectService';
 import { GameRenderService } from './GameRenderService';
 import { DeploymentService } from '../../../services/DeploymentService';
 import { repositoryLease } from '../../../utils/development-tooling/repositoryLease';
+import { featurePlanAction } from '../../../utils/development-tooling/featurePlanAction';
 import { ProjectImageCacheService } from './ProjectImageCacheService';
 import { ProjectOperationsService } from './ProjectOperationsService';
 import { RecordedEvidenceService } from './RecordedEvidenceService';
 import type { DesktopBridge } from '../../../models/development-tooling/DesktopBridge.types';
+import type {
+	FeaturePlanSelection,
+	FeaturePlanApproval
+} from '../../../models/development-tooling/DesktopBridge.types';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
 import type { DeploymentBridge } from '../../../models/Deployment.types';
 import type { GameDesktopBridge } from '../../../models/game-authoring/GameDesktopBridge.types';
@@ -100,6 +105,14 @@ async function projectWork(context: BridgeContext, input: { projectId: string })
 	if (session.requireProject().root !== root) throw new Error('The selected project has changed.');
 	return snapshot;
 }
+function featurePlanOperations(context: BridgeContext) {
+	return {
+		selectFeaturePlan: (input: FeaturePlanSelection) =>
+			exclusive(context.session, () => featurePlanAction(context, input, () => writable(context))),
+		approveFeaturePlan: (input: FeaturePlanApproval) =>
+			exclusive(context.session, () => featurePlanAction(context, input, () => writable(context)))
+	};
+}
 export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRunEvent'> {
 	const { session, providers, runs, choose } = context;
 	const operations = new ProjectOperationsService(session);
@@ -108,6 +121,7 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		...deploymentOperations(session),
 		...gameOperations(context),
 		...authentication(session),
+		...featurePlanOperations(context),
 		listProjects: () => operations.listProjects(),
 		selectProject: (input) => operations.selectProject(input),
 		capabilities: (input) => operations.capabilities(input),

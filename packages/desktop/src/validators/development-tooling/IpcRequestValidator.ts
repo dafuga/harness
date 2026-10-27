@@ -7,6 +7,8 @@ export class IpcRequestValidator {
 		if (!(Object.values(channels) as string[]).includes(channel))
 			throw new Error('Unknown desktop operation.');
 		if (channel === channels.projectWork) return projectWorkPayload(input);
+		if (channel === channels.selectFeaturePlan || channel === channels.approveFeaturePlan)
+			return { ...(ipcPayload(channel, input) as object), ...projectWorkPayload(input) };
 		if (channel.startsWith('game:')) return gamePayload(channel, input);
 		const context = new ProjectContextValidator();
 		const extended = context.operation(channel, input);

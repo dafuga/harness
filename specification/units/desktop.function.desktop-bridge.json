@@ -34,6 +34,16 @@
 				"name": "projectWork",
 				"type": "(input:{projectId:string})=>Promise<FeatureWorkSnapshot>",
 				"description": "Reads one committed task-queue snapshot for the exact selected local project; rechecks project identity, root and client liveness before returning."
+			},
+			{
+				"name": "selectFeaturePlan",
+				"type": "(input:FeaturePlanSelection)=>Promise<FeaturePlan>",
+				"description": "For the selected local project, serialize the action under the repository lease and select an option only for the current writable source and exact latest plan digest."
+			},
+			{
+				"name": "approveFeaturePlan",
+				"type": "(input:FeaturePlanApproval)=>Promise<FeaturePlan>",
+				"description": "For the selected local project, serialize readiness-checked approval and submission of the exact approved task records. Does not start a provider."
 			}
 		],
 		"errors": [
@@ -46,10 +56,20 @@
 				"name": "foreign, changed or unavailable project",
 				"type": "Error",
 				"description": "Rejects without returning work from another project."
+			},
+			{
+				"name": "feature plan action failure",
+				"type": "Error",
+				"description": "Rejects stale, foreign, read-only or unavailable context and propagates readiness or admission errors. An approval may already be committed if task submission later fails."
 			}
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.function.development-tooling-feature-plan-action",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.function.repository-lease",
 			"via": "import",

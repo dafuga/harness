@@ -151,11 +151,27 @@ export function ipcPayload(channel: string, input: unknown): unknown {
 	if (channel === 'project:snapshot')
 		return { branch: nullableText(x.branch), commit: nullableText(x.commit, commitPattern) };
 	if (channel.startsWith('deployment:')) return deploymentPayload(channel, x);
-	if (channel === 'plan:create') return planPayload(x);
+	if (['plan:create', 'feature-plan:select', 'feature-plan:approve'].includes(channel))
+		return planningPayload(channel, x);
 	if (channel === 'thread:open') return threadPayload(x);
 	if (channel === 'run:start') return runPayload(x);
 	if (channel === 'run:cancel') return { runId: textField(x.runId, 80) };
 	return channel.startsWith('evidence:') ? evidencePayload(channel, x) : entityPayload(channel, x);
+}
+
+function planningPayload(channel: string, x: Record<string, unknown>) {
+	if (channel === 'plan:create') return planPayload(x);
+	const base = {
+		feature: textField(x.feature, 150, idPattern),
+		expectedDigest: textField(x.expectedDigest, 64, hashPattern)
+	};
+	return channel === 'feature-plan:select'
+		? {
+				...base,
+				page: textField(x.page, 150, idPattern),
+				option: textField(x.option, 150, idPattern)
+			}
+		: { ...base, reviewer: textField(x.reviewer, 200) };
 }
 
 function entityPayload(channel: string, x: Record<string, unknown>) {
