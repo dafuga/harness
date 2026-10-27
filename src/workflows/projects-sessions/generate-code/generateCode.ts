@@ -154,7 +154,7 @@ function newVisualRegistry(root: string, kind: PieceKind, name: string, files: P
 	);
 	if (!source || existsSync(join(root, source.path))) return undefined;
 	const workspace = visualWorkspace(root);
-	if (!workspace) return undefined;
+	if (!workspace || workspace.root !== '.') return undefined;
 	const location = { root: workspace.root, build: workspace.build };
 	const registry =
 		kind === 'component'
