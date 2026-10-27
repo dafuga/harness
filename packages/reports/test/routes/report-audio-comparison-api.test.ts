@@ -1,7 +1,9 @@
-import { expect, test, vi } from 'vitest';
-import type { ComponentManifest } from '../../../../src/core/unitTypes';
+import { test, vi } from 'vitest';
+import type { ComponentManifest } from '../../../../src/core/development-tooling/unitTypes';
 import { TestExpectationService } from '../../../../src/services/verification-evidence/TestExpectationService';
-import manifest from '../../../../specification/units/reports.endpoint.api-report-audio-comparison.json';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
+import manifest from '../../../../specification/units/reports.endpoint.api-report-audio-comparison.json' with { type: 'json' };
+
 const upload = vi.hoisted(() => vi.fn());
 vi.mock('../../src/services/reports-media/AudioUploadService', () => ({
 	AudioUploadService: class {
@@ -9,71 +11,79 @@ vi.mock('../../src/services/reports-media/AudioUploadService', () => ({
 	}
 }));
 import { POST } from '../../src/routes/api/report-audio-comparison/+server';
-const contract = (manifest as ComponentManifest).testing!.cases[0];
+
+const contract = manifest.testing.cases[0];
 const check = new TestExpectationService();
 const origin = 'http://127.0.0.1:5588';
-function attempt(headers: Record<string, string>, body?: FormData) {
+
+async function attempt(row: {
+	name: string;
+	headers: Record<string, string>;
+	form?: Record<string, string | { name: string; type: string; text: string }>;
+	service?: { report?: unknown; error?: string };
+	rawBody?: string;
+}) {
+	upload.mockReset();
+	if (row.service?.error) upload.mockRejectedValue(new Error(row.service.error));
+	else if (row.service && 'report' in row.service) upload.mockResolvedValue(row.service.report);
+	let body: FormData | string | undefined = row.rawBody;
+	if (row.form) {
+		const form = new FormData();
+		for (const [key, value] of Object.entries(row.form))
+			form.set(key, typeof value === 'string' ? value : new File([value.text], value.name, value));
+		body = form;
+	}
 	const request = new Request(origin + '/api/report-audio-comparison', {
 		method: 'POST',
-		headers,
+		headers: row.headers,
 		body
 	});
-	return POST({ request, url: new URL(request.url) } as Parameters<typeof POST>[0]);
-}
-test('paired audio uploads reject cross-origin, invalid content type and oversized requests', async () => {
-	const outputs = [];
-	for (const headers of contract.input as Array<Record<string, string>>) {
-		const response = await attempt(headers);
-		outputs.push({ status: response.status, body: await response.json() });
-	}
-	check.json(outputs, contract.expected!.kind === 'json' ? contract.expected!.value : null);
-	const form = await successfulUpload();
-	const missing = await attempt({ Origin: origin }, new FormData());
-	expect(missing.status).toBe(400);
-	check.json(await missing.json(), { error: 'Choose Before and After audio files' });
-	for (const [message, status, error] of [
-		['Report finalized', 409, 'Report finalized'],
-		['ENOENT', 404, 'Report not found'],
-		['Invalid audio format', 400, 'Invalid audio format'],
-		['Storage unavailable', 500, 'Audio comparison upload failed; no evidence was added']
-	] as const) {
-		upload.mockRejectedValueOnce(new Error(message));
-		const response = await attempt({ Origin: origin }, form);
-		expect(response.status).toBe(status);
-		check.json(await response.json(), { error });
-	}
-});
-
-async function successfulUpload(): Promise<FormData> {
-	const form = new FormData();
-	for (const [name, value] of Object.entries({
-		reportId: 'run-1',
-		title: 'A clip',
-		note: 'Fixture',
-		source: 'Unit fixture'
-	}))
-		form.set(name, value);
-	const files = ['before', 'after'];
-	for (const name of files)
-		form.set(name, new File(['fixture'], name + '.wav', { type: 'audio/wav' }));
-	const report = { id: 'run-1', evidence: [{ id: 'clip-1', title: 'A clip' }] };
-	upload.mockResolvedValue(report);
-	const success = await attempt({ Origin: origin }, form);
-	expect(success.status).toBe(201);
-	expect(success.headers.get('cache-control')).toBe('no-store');
-	check.json(await success.json(), report);
-	const [reportId, received] = upload.mock.calls.at(-1)! as [string, Record<string, unknown>];
-	const payload = { ...received };
-	const expectedPayload: Record<string, unknown> = {
-		title: 'A clip',
-		note: 'Fixture',
-		source: 'Unit fixture'
+	const response = await POST({ request, url: new URL(request.url) } as Parameters<typeof POST>[0]);
+	return {
+		name: row.name,
+		status: response.status,
+		contentType: response.headers.get('content-type'),
+		cacheControl: response.headers.get('cache-control'),
+		body: await response.json(),
+		calls: await uploadCalls()
 	};
-	for (const name of files) {
-		const file = received[name] as File;
-		payload[name] = { name: file.name, type: file.type, size: file.size, text: await file.text() };
-		expectedPayload[name] = { name: name + '.wav', type: 'audio/wav', size: 7, text: 'fixture' };
-	}
-	check.json({ reportId, payload }, { reportId: 'run-1', payload: expectedPayload });
-	return form;
 }
+
+async function uploadCalls() {
+	return Promise.all(
+		upload.mock.calls.map(async (call) => {
+			const [reportId, received] = call as [string, Record<string, unknown>];
+			const payload: Record<string, unknown> = { ...received };
+			for (const name of ['before', 'after']) {
+				const file = received[name] as File;
+				payload[name] = {
+					name: file.name,
+					type: file.type,
+					size: file.size,
+					text: await file.text()
+				};
+			}
+			return { reportId, payload };
+		})
+	);
+}
+
+check.registerCases(
+	test,
+	manifest as unknown as ComponentManifest,
+	'packages/reports/test/routes/report-audio-comparison-api.test.ts',
+	{
+		'request-matrix': () =>
+			measureWorkload(
+				'reports.endpoint.api-report-audio-comparison',
+				'paired-audio-response-matrix',
+				async () => {
+					const observed = [];
+					for (const row of contract.input as unknown as Parameters<typeof attempt>[0][])
+						observed.push(await attempt(row));
+					check.json(observed, contract.expected.value);
+					return observed;
+				}
+			)
+	}
+);

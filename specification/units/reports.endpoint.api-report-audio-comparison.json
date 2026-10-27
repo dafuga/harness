@@ -3,31 +3,109 @@
 	"id": "reports.endpoint.api-report-audio-comparison",
 	"kind": "endpoint",
 	"title": "/api/report-audio-comparison",
-	"responsibility": "Owns the /api/report-audio-comparison HTTP endpoint.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Accepts same-origin paired audio uploads and returns complete success or error responses.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/routes/api/report-audio-comparison/+server.ts"],
 		"symbols": ["POST"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "POST.input",
-				"type": "RequestEvent"
+				"name": "Origin",
+				"type": "string",
+				"description": "Must equal the request URL origin."
+			},
+			{
+				"name": "Content-Type",
+				"type": "string",
+				"description": "Must identify multipart form data."
+			},
+			{
+				"name": "Content-Length",
+				"type": "string | undefined",
+				"description": "Requests over 101,000,000 bytes are refused before parsing."
+			},
+			{
+				"name": "reportId",
+				"type": "string",
+				"description": "Report identity passed to the upload service; missing values become an empty string."
+			},
+			{
+				"name": "title",
+				"type": "string",
+				"description": "Comparison title passed to the upload service."
+			},
+			{
+				"name": "note",
+				"type": "string",
+				"description": "Optional note passed to the upload service; missing values become an empty string."
+			},
+			{
+				"name": "source",
+				"type": "string",
+				"description": "Optional source passed to the upload service; missing values become an empty string."
+			},
+			{
+				"name": "before",
+				"type": "File",
+				"description": "Required before audio file passed unchanged to the upload service."
+			},
+			{
+				"name": "after",
+				"type": "File",
+				"description": "Required after audio file passed unchanged to the upload service."
 			}
 		],
 		"outputs": [
 			{
 				"name": "POST",
-				"type": "unknown"
+				"type": "Promise<Response>",
+				"description": "JSON report with status 201 and no-store after success, or an error JSON object with the relevant status."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "same-origin",
+				"type": "HTTP 403",
+				"description": "Missing or mismatched Origin is refused."
+			},
+			{
+				"name": "multipart",
+				"type": "HTTP 415",
+				"description": "A non-multipart content type is refused."
+			},
+			{
+				"name": "oversized",
+				"type": "HTTP 413",
+				"description": "A declared length over 101,000,000 bytes is refused."
+			},
+			{
+				"name": "missing-file",
+				"type": "HTTP 400",
+				"description": "Both before and after must be files."
+			},
+			{
+				"name": "finalized",
+				"type": "HTTP 409",
+				"description": "A finalized report error is returned."
+			},
+			{
+				"name": "missing-report",
+				"type": "HTTP 404",
+				"description": "A missing report is reported without its internal message."
+			},
+			{
+				"name": "invalid-audio",
+				"type": "HTTP 400",
+				"description": "Audio, format, WAV, title and size validation errors are returned."
+			},
+			{
+				"name": "storage-failure",
+				"type": "HTTP 500",
+				"description": "Other service or form parsing failures return a generic error."
 			}
 		]
 	},
@@ -76,17 +154,475 @@
 				"subject": "POST",
 				"input": [
 					{
-						"Origin": "https://other.example",
-						"Content-Type": "multipart/form-data"
+						"name": "mismatched origin",
+						"headers": {
+							"Origin": "https://other.example",
+							"Content-Type": "multipart/form-data"
+						}
 					},
 					{
-						"Origin": "http://127.0.0.1:5588",
-						"Content-Type": "application/json"
+						"name": "missing origin",
+						"headers": {
+							"Content-Type": "multipart/form-data"
+						}
 					},
 					{
-						"Origin": "http://127.0.0.1:5588",
-						"Content-Type": "multipart/form-data",
-						"Content-Length": "101000001"
+						"name": "wrong content type",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588",
+							"Content-Type": "application/json"
+						}
+					},
+					{
+						"name": "over size limit",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588",
+							"Content-Type": "multipart/form-data",
+							"Content-Length": "101000001"
+						}
+					},
+					{
+						"name": "complete upload",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {
+							"reportId": "run-1",
+							"title": "A clip",
+							"note": "Fixture",
+							"source": "Unit fixture",
+							"before": {
+								"name": "before.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							},
+							"after": {
+								"name": "after.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							}
+						},
+						"service": {
+							"report": {
+								"schemaVersion": 1,
+								"id": "run-1",
+								"project": {
+									"id": "project-1",
+									"name": "Fixture project",
+									"path": "/fixtures/project"
+								},
+								"title": "Audio comparison",
+								"mode": "feature",
+								"environment": "fixture",
+								"revision": "abc123",
+								"historical": false,
+								"startedAt": "2026-01-01T00:00:00.000Z",
+								"updatedAt": "2026-01-01T00:01:00.000Z",
+								"summary": "Paired audio evidence",
+								"status": "running",
+								"state": "active",
+								"checks": [
+									{
+										"id": "check-1",
+										"title": "Record sound",
+										"status": "passed",
+										"command": "capture",
+										"output": "complete",
+										"durationMs": 42,
+										"group": "audio",
+										"counts": {
+											"clips": 2
+										}
+									}
+								],
+								"evidence": [
+									{
+										"id": "before-1",
+										"title": "A clip",
+										"category": "Uploaded audio",
+										"file": "before.wav",
+										"status": "not-proven",
+										"source": "Unit fixture",
+										"capturedAt": "2026-01-01T00:00:30.000Z",
+										"phase": "before",
+										"comparison": "comparison-1",
+										"checkId": "check-1",
+										"order": 1,
+										"note": "Fixture",
+										"mediaType": "audio",
+										"mimeType": "audio/wav",
+										"durationSeconds": 3,
+										"transcript": "Before sound"
+									},
+									{
+										"id": "after-1",
+										"title": "A clip",
+										"category": "Uploaded audio",
+										"file": "after.wav",
+										"status": "not-proven",
+										"source": "Unit fixture",
+										"phase": "after",
+										"comparison": "comparison-1",
+										"order": 2,
+										"mediaType": "audio",
+										"mimeType": "audio/wav",
+										"durationSeconds": 3
+									}
+								],
+								"findings": [
+									{
+										"id": "finding-1",
+										"title": "Listen",
+										"detail": "Compare the recordings",
+										"status": "not-proven",
+										"evidenceIds": ["before-1", "after-1"]
+									}
+								],
+								"coverage": [
+									{
+										"id": "coverage-1",
+										"title": "Sound",
+										"status": "not-proven",
+										"detail": "Pair captured"
+									}
+								],
+								"acceptance": ["Record both phases"]
+							}
+						}
+					},
+					{
+						"name": "at size limit with optional fields omitted",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588",
+							"Content-Length": "101000000"
+						},
+						"form": {
+							"reportId": "run-1",
+							"title": "A clip",
+							"before": {
+								"name": "before.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							},
+							"after": {
+								"name": "after.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							}
+						},
+						"service": {
+							"report": {
+								"schemaVersion": 1,
+								"id": "run-1",
+								"project": {
+									"id": "project-1",
+									"name": "Fixture project",
+									"path": "/fixtures/project"
+								},
+								"title": "Audio comparison",
+								"mode": "feature",
+								"environment": "fixture",
+								"revision": "abc123",
+								"historical": false,
+								"startedAt": "2026-01-01T00:00:00.000Z",
+								"updatedAt": "2026-01-01T00:01:00.000Z",
+								"summary": "Paired audio evidence",
+								"status": "running",
+								"state": "active",
+								"checks": [
+									{
+										"id": "check-1",
+										"title": "Record sound",
+										"status": "passed",
+										"command": "capture",
+										"output": "complete",
+										"durationMs": 42,
+										"group": "audio",
+										"counts": {
+											"clips": 2
+										}
+									}
+								],
+								"evidence": [
+									{
+										"id": "before-1",
+										"title": "A clip",
+										"category": "Uploaded audio",
+										"file": "before.wav",
+										"status": "not-proven",
+										"source": "Unit fixture",
+										"capturedAt": "2026-01-01T00:00:30.000Z",
+										"phase": "before",
+										"comparison": "comparison-1",
+										"checkId": "check-1",
+										"order": 1,
+										"note": "Fixture",
+										"mediaType": "audio",
+										"mimeType": "audio/wav",
+										"durationSeconds": 3,
+										"transcript": "Before sound"
+									},
+									{
+										"id": "after-1",
+										"title": "A clip",
+										"category": "Uploaded audio",
+										"file": "after.wav",
+										"status": "not-proven",
+										"source": "Unit fixture",
+										"phase": "after",
+										"comparison": "comparison-1",
+										"order": 2,
+										"mediaType": "audio",
+										"mimeType": "audio/wav",
+										"durationSeconds": 3
+									}
+								],
+								"findings": [
+									{
+										"id": "finding-1",
+										"title": "Listen",
+										"detail": "Compare the recordings",
+										"status": "not-proven",
+										"evidenceIds": ["before-1", "after-1"]
+									}
+								],
+								"coverage": [
+									{
+										"id": "coverage-1",
+										"title": "Sound",
+										"status": "not-proven",
+										"detail": "Pair captured"
+									}
+								],
+								"acceptance": ["Record both phases"]
+							}
+						}
+					},
+					{
+						"name": "missing both files",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {}
+					},
+					{
+						"name": "missing after file",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {
+							"before": {
+								"name": "before.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							}
+						}
+					},
+					{
+						"name": "missing before file",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {
+							"after": {
+								"name": "after.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							}
+						}
+					},
+					{
+						"name": "finalized report",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {
+							"reportId": "run-1",
+							"title": "A clip",
+							"note": "Fixture",
+							"source": "Unit fixture",
+							"before": {
+								"name": "before.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							},
+							"after": {
+								"name": "after.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							}
+						},
+						"service": {
+							"error": "Report finalized"
+						}
+					},
+					{
+						"name": "missing report",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {
+							"reportId": "run-1",
+							"title": "A clip",
+							"note": "Fixture",
+							"source": "Unit fixture",
+							"before": {
+								"name": "before.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							},
+							"after": {
+								"name": "after.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							}
+						},
+						"service": {
+							"error": "ENOENT"
+						}
+					},
+					{
+						"name": "invalid audio",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {
+							"reportId": "run-1",
+							"title": "A clip",
+							"note": "Fixture",
+							"source": "Unit fixture",
+							"before": {
+								"name": "before.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							},
+							"after": {
+								"name": "after.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							}
+						},
+						"service": {
+							"error": "Invalid audio format"
+						}
+					},
+					{
+						"name": "invalid title",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {
+							"reportId": "run-1",
+							"title": "",
+							"note": "Fixture",
+							"source": "Unit fixture",
+							"before": {
+								"name": "before.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							},
+							"after": {
+								"name": "after.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							}
+						},
+						"service": {
+							"error": "Audio title must be 1–120 characters"
+						}
+					},
+					{
+						"name": "storage failure",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {
+							"reportId": "run-1",
+							"title": "A clip",
+							"note": "Fixture",
+							"source": "Unit fixture",
+							"before": {
+								"name": "before.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							},
+							"after": {
+								"name": "after.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							}
+						},
+						"service": {
+							"error": "Storage unavailable"
+						}
+					},
+					{
+						"name": "malformed multipart",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588",
+							"Content-Type": "multipart/form-data; boundary=fixture"
+						},
+						"rawBody": "broken"
+					},
+					{
+						"name": "missing report ID",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {
+							"title": "A clip",
+							"note": "Fixture",
+							"source": "Unit fixture",
+							"before": {
+								"name": "before.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							},
+							"after": {
+								"name": "after.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							}
+						},
+						"service": {
+							"error": "ENOENT"
+						}
+					},
+					{
+						"name": "non-file before",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {
+							"reportId": "run-1",
+							"title": "A clip",
+							"note": "Fixture",
+							"source": "Unit fixture",
+							"before": "not a file",
+							"after": {
+								"name": "after.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							}
+						}
+					},
+					{
+						"name": "non-file after",
+						"headers": {
+							"Origin": "http://127.0.0.1:5588"
+						},
+						"form": {
+							"reportId": "run-1",
+							"title": "A clip",
+							"note": "Fixture",
+							"source": "Unit fixture",
+							"before": {
+								"name": "before.wav",
+								"type": "audio/wav",
+								"text": "fixture"
+							},
+							"after": "not a file"
+						}
 					}
 				],
 				"test": {
@@ -98,21 +634,515 @@
 					"value": [
 						{
 							"status": 403,
+							"contentType": "application/json",
+							"cacheControl": null,
 							"body": {
 								"error": "Same-origin upload required"
-							}
+							},
+							"calls": [],
+							"name": "mismatched origin"
+						},
+						{
+							"status": 403,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Same-origin upload required"
+							},
+							"calls": [],
+							"name": "missing origin"
 						},
 						{
 							"status": 415,
+							"contentType": "application/json",
+							"cacheControl": null,
 							"body": {
 								"error": "Multipart form required"
-							}
+							},
+							"calls": [],
+							"name": "wrong content type"
 						},
 						{
 							"status": 413,
+							"contentType": "application/json",
+							"cacheControl": null,
 							"body": {
 								"error": "Upload exceeds size limit"
-							}
+							},
+							"calls": [],
+							"name": "over size limit"
+						},
+						{
+							"status": 201,
+							"contentType": "application/json",
+							"cacheControl": "no-store",
+							"body": {
+								"schemaVersion": 1,
+								"id": "run-1",
+								"project": {
+									"id": "project-1",
+									"name": "Fixture project",
+									"path": "/fixtures/project"
+								},
+								"title": "Audio comparison",
+								"mode": "feature",
+								"environment": "fixture",
+								"revision": "abc123",
+								"historical": false,
+								"startedAt": "2026-01-01T00:00:00.000Z",
+								"updatedAt": "2026-01-01T00:01:00.000Z",
+								"summary": "Paired audio evidence",
+								"status": "running",
+								"state": "active",
+								"checks": [
+									{
+										"id": "check-1",
+										"title": "Record sound",
+										"status": "passed",
+										"command": "capture",
+										"output": "complete",
+										"durationMs": 42,
+										"group": "audio",
+										"counts": {
+											"clips": 2
+										}
+									}
+								],
+								"evidence": [
+									{
+										"id": "before-1",
+										"title": "A clip",
+										"category": "Uploaded audio",
+										"file": "before.wav",
+										"status": "not-proven",
+										"source": "Unit fixture",
+										"capturedAt": "2026-01-01T00:00:30.000Z",
+										"phase": "before",
+										"comparison": "comparison-1",
+										"checkId": "check-1",
+										"order": 1,
+										"note": "Fixture",
+										"mediaType": "audio",
+										"mimeType": "audio/wav",
+										"durationSeconds": 3,
+										"transcript": "Before sound"
+									},
+									{
+										"id": "after-1",
+										"title": "A clip",
+										"category": "Uploaded audio",
+										"file": "after.wav",
+										"status": "not-proven",
+										"source": "Unit fixture",
+										"phase": "after",
+										"comparison": "comparison-1",
+										"order": 2,
+										"mediaType": "audio",
+										"mimeType": "audio/wav",
+										"durationSeconds": 3
+									}
+								],
+								"findings": [
+									{
+										"id": "finding-1",
+										"title": "Listen",
+										"detail": "Compare the recordings",
+										"status": "not-proven",
+										"evidenceIds": ["before-1", "after-1"]
+									}
+								],
+								"coverage": [
+									{
+										"id": "coverage-1",
+										"title": "Sound",
+										"status": "not-proven",
+										"detail": "Pair captured"
+									}
+								],
+								"acceptance": ["Record both phases"]
+							},
+							"calls": [
+								{
+									"reportId": "run-1",
+									"payload": {
+										"title": "A clip",
+										"note": "Fixture",
+										"source": "Unit fixture",
+										"before": {
+											"name": "before.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										},
+										"after": {
+											"name": "after.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										}
+									}
+								}
+							],
+							"name": "complete upload"
+						},
+						{
+							"status": 201,
+							"contentType": "application/json",
+							"cacheControl": "no-store",
+							"body": {
+								"schemaVersion": 1,
+								"id": "run-1",
+								"project": {
+									"id": "project-1",
+									"name": "Fixture project",
+									"path": "/fixtures/project"
+								},
+								"title": "Audio comparison",
+								"mode": "feature",
+								"environment": "fixture",
+								"revision": "abc123",
+								"historical": false,
+								"startedAt": "2026-01-01T00:00:00.000Z",
+								"updatedAt": "2026-01-01T00:01:00.000Z",
+								"summary": "Paired audio evidence",
+								"status": "running",
+								"state": "active",
+								"checks": [
+									{
+										"id": "check-1",
+										"title": "Record sound",
+										"status": "passed",
+										"command": "capture",
+										"output": "complete",
+										"durationMs": 42,
+										"group": "audio",
+										"counts": {
+											"clips": 2
+										}
+									}
+								],
+								"evidence": [
+									{
+										"id": "before-1",
+										"title": "A clip",
+										"category": "Uploaded audio",
+										"file": "before.wav",
+										"status": "not-proven",
+										"source": "Unit fixture",
+										"capturedAt": "2026-01-01T00:00:30.000Z",
+										"phase": "before",
+										"comparison": "comparison-1",
+										"checkId": "check-1",
+										"order": 1,
+										"note": "Fixture",
+										"mediaType": "audio",
+										"mimeType": "audio/wav",
+										"durationSeconds": 3,
+										"transcript": "Before sound"
+									},
+									{
+										"id": "after-1",
+										"title": "A clip",
+										"category": "Uploaded audio",
+										"file": "after.wav",
+										"status": "not-proven",
+										"source": "Unit fixture",
+										"phase": "after",
+										"comparison": "comparison-1",
+										"order": 2,
+										"mediaType": "audio",
+										"mimeType": "audio/wav",
+										"durationSeconds": 3
+									}
+								],
+								"findings": [
+									{
+										"id": "finding-1",
+										"title": "Listen",
+										"detail": "Compare the recordings",
+										"status": "not-proven",
+										"evidenceIds": ["before-1", "after-1"]
+									}
+								],
+								"coverage": [
+									{
+										"id": "coverage-1",
+										"title": "Sound",
+										"status": "not-proven",
+										"detail": "Pair captured"
+									}
+								],
+								"acceptance": ["Record both phases"]
+							},
+							"calls": [
+								{
+									"reportId": "run-1",
+									"payload": {
+										"title": "A clip",
+										"note": "",
+										"source": "",
+										"before": {
+											"name": "before.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										},
+										"after": {
+											"name": "after.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										}
+									}
+								}
+							],
+							"name": "at size limit with optional fields omitted"
+						},
+						{
+							"status": 400,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Choose Before and After audio files"
+							},
+							"calls": [],
+							"name": "missing both files"
+						},
+						{
+							"status": 400,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Choose Before and After audio files"
+							},
+							"calls": [],
+							"name": "missing after file"
+						},
+						{
+							"status": 400,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Choose Before and After audio files"
+							},
+							"calls": [],
+							"name": "missing before file"
+						},
+						{
+							"status": 409,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Report finalized"
+							},
+							"calls": [
+								{
+									"reportId": "run-1",
+									"payload": {
+										"title": "A clip",
+										"note": "Fixture",
+										"source": "Unit fixture",
+										"before": {
+											"name": "before.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										},
+										"after": {
+											"name": "after.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										}
+									}
+								}
+							],
+							"name": "finalized report"
+						},
+						{
+							"status": 404,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Report not found"
+							},
+							"calls": [
+								{
+									"reportId": "run-1",
+									"payload": {
+										"title": "A clip",
+										"note": "Fixture",
+										"source": "Unit fixture",
+										"before": {
+											"name": "before.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										},
+										"after": {
+											"name": "after.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										}
+									}
+								}
+							],
+							"name": "missing report"
+						},
+						{
+							"status": 400,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Invalid audio format"
+							},
+							"calls": [
+								{
+									"reportId": "run-1",
+									"payload": {
+										"title": "A clip",
+										"note": "Fixture",
+										"source": "Unit fixture",
+										"before": {
+											"name": "before.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										},
+										"after": {
+											"name": "after.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										}
+									}
+								}
+							],
+							"name": "invalid audio"
+						},
+						{
+							"status": 400,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Audio title must be 1–120 characters"
+							},
+							"calls": [
+								{
+									"reportId": "run-1",
+									"payload": {
+										"title": "",
+										"note": "Fixture",
+										"source": "Unit fixture",
+										"before": {
+											"name": "before.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										},
+										"after": {
+											"name": "after.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										}
+									}
+								}
+							],
+							"name": "invalid title"
+						},
+						{
+							"status": 500,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Audio comparison upload failed; no evidence was added"
+							},
+							"calls": [
+								{
+									"reportId": "run-1",
+									"payload": {
+										"title": "A clip",
+										"note": "Fixture",
+										"source": "Unit fixture",
+										"before": {
+											"name": "before.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										},
+										"after": {
+											"name": "after.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										}
+									}
+								}
+							],
+							"name": "storage failure"
+						},
+						{
+							"status": 500,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Audio comparison upload failed; no evidence was added"
+							},
+							"calls": [],
+							"name": "malformed multipart"
+						},
+						{
+							"status": 404,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Report not found"
+							},
+							"calls": [
+								{
+									"reportId": "",
+									"payload": {
+										"title": "A clip",
+										"note": "Fixture",
+										"source": "Unit fixture",
+										"before": {
+											"name": "before.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										},
+										"after": {
+											"name": "after.wav",
+											"type": "audio/wav",
+											"size": 7,
+											"text": "fixture"
+										}
+									}
+								}
+							],
+							"name": "missing report ID"
+						},
+						{
+							"status": 400,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Choose Before and After audio files"
+							},
+							"calls": [],
+							"name": "non-file before"
+						},
+						{
+							"status": 400,
+							"contentType": "application/json",
+							"cacheControl": null,
+							"body": {
+								"error": "Choose Before and After audio files"
+							},
+							"calls": [],
+							"name": "non-file after"
 						}
 					]
 				},
@@ -135,8 +1165,7 @@
 					"finalized",
 					"missing-report",
 					"invalid-audio",
-					"storage-failure",
-					"Error"
+					"storage-failure"
 				]
 			}
 		]
