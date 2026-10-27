@@ -3,20 +3,52 @@
 	"id": "reports.endpoint.api-health",
 	"kind": "endpoint",
 	"title": "/api/health",
-	"responsibility": "Owns the /api/health HTTP endpoint.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Returns the Reports server build, revision and repository-root identities.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/routes/api/health/+server.ts"],
 		"symbols": ["GET"]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HARNESS_VERIFY_REVISION",
+				"type": "string | undefined",
+				"description": "Optional server environment value reported as the tested revision; it is returned as supplied."
+			}
+		],
 		"outputs": [
 			{
 				"name": "GET",
-				"type": "unknown"
+				"type": "Response",
+				"description": "Successful JSON response identifying the Reports app, build, revision and repository root."
+			},
+			{
+				"name": "app",
+				"type": "string",
+				"description": "The fixed project-reports application identifier."
+			},
+			{
+				"name": "version",
+				"type": "number",
+				"description": "The health response schema version, currently 1."
+			},
+			{
+				"name": "buildId",
+				"type": "string",
+				"description": "Identity of the compiled server, or the development identifier when running from source."
+			},
+			{
+				"name": "revision",
+				"type": "string | null",
+				"description": "The supplied verification revision, or null when no value is supplied."
+			},
+			{
+				"name": "root",
+				"type": "string",
+				"description": "SHA-256 hex digest of the configured report repository root."
 			}
 		],
 		"errors": []
@@ -39,6 +71,101 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "api",
+		"states": ["revision-absent", "revision-present", "revision-unvalidated"],
+		"props": ["revision", "app", "version", "buildId", "root"],
+		"cases": [
+			{
+				"id": "revision.absent",
+				"state": "revision-absent",
+				"subject": "GET",
+				"input": {
+					"revision": null
+				},
+				"test": {
+					"file": "packages/reports/test/routes/health-api.test.ts",
+					"title": "GET Reports health: revision-absent"
+				},
+				"expected": {
+					"kind": "json",
+					"value": {
+						"statusCode": 200,
+						"contentType": "application/json",
+						"cacheControl": null,
+						"body": {
+							"app": "project-reports",
+							"version": 1,
+							"buildId": "harness-reports-development",
+							"revision": null,
+							"root": "0000000000000000000000000000000000000000000000000000000000000000"
+						}
+					},
+					"normalize": ["body.root"]
+				},
+				"props": ["revision", "app", "version", "buildId", "root"]
+			},
+			{
+				"id": "revision.present",
+				"state": "revision-present",
+				"subject": "GET",
+				"input": {
+					"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				},
+				"test": {
+					"file": "packages/reports/test/routes/health-api.test.ts",
+					"title": "GET Reports health: revision-present"
+				},
+				"expected": {
+					"kind": "json",
+					"value": {
+						"statusCode": 200,
+						"contentType": "application/json",
+						"cacheControl": null,
+						"body": {
+							"app": "project-reports",
+							"version": 1,
+							"buildId": "harness-reports-development",
+							"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+							"root": "0000000000000000000000000000000000000000000000000000000000000000"
+						}
+					},
+					"normalize": ["body.root"]
+				},
+				"props": ["revision", "app", "version", "buildId", "root"]
+			},
+			{
+				"id": "revision.unvalidated",
+				"state": "revision-unvalidated",
+				"subject": "GET",
+				"input": {
+					"revision": "not-a-commit"
+				},
+				"test": {
+					"file": "packages/reports/test/routes/health-api.test.ts",
+					"title": "GET Reports health: revision-unvalidated"
+				},
+				"expected": {
+					"kind": "json",
+					"value": {
+						"statusCode": 200,
+						"contentType": "application/json",
+						"cacheControl": null,
+						"body": {
+							"app": "project-reports",
+							"version": 1,
+							"buildId": "harness-reports-development",
+							"revision": "not-a-commit",
+							"root": "0000000000000000000000000000000000000000000000000000000000000000"
+						}
+					},
+					"normalize": ["body.root"]
+				},
+				"props": ["revision", "app", "version", "buildId", "root"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
