@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-27T14:06:04.513Z","name":"codex-profile-class-matrix","goal":"Register the existing Codex profile adapter method and initialization cases as one stable class matrix.","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-10-27T14:08:15.707Z","loop":"codex-profile-class-matrix","step":"spec","evidence":"Declare connect and prepare across default and named initialization, include invalid inputs, keep the existing four-case count, and source expectations from the unit contract."}

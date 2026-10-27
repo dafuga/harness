@@ -46,6 +46,11 @@
 				"name": "unsafe or unverifiable isolation",
 				"type": "Error before launch",
 				"description": "Reject non-Codex argv, unsupported host/runtime, unsafe paths, secret-bearing grants or untrusted/symlink/hardlink scopes; never fall back unrestricted."
+			},
+			{
+				"name": "invalid configuration",
+				"type": "TypeError",
+				"description": "A null constructor configuration cannot supply the fields read by instance methods."
 			}
 		]
 	},
@@ -72,6 +77,76 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["default", "named"],
+		"cases": [
+			{
+				"id": "connect.default",
+				"state": "default",
+				"subject": "ModuleTaskCodexProfileAdapter.connect",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-codex-profile.test.ts",
+					"title": "ModuleTaskCodexProfileAdapter.connect from default initialization returns the file name"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "module-task-codex-profile"
+				},
+				"errors": ["invalid configuration"]
+			},
+			{
+				"id": "connect.named",
+				"state": "named",
+				"subject": "ModuleTaskCodexProfileAdapter.connect",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-codex-profile.test.ts",
+					"title": "ModuleTaskCodexProfileAdapter.connect from custom initialization returns the configured name"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "custom"
+				}
+			},
+			{
+				"id": "prepare.default",
+				"state": "default",
+				"subject": "ModuleTaskCodexProfileAdapter.prepare",
+				"fixture": "test/adapters/agents-providers/module-task-codex-profile.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-codex-profile.test.ts",
+					"title": "ModuleTaskCodexProfileAdapter.prepare from default initialization validates a native profile"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"profilePrepared": true,
+						"unsafeArgRejected": true
+					}
+				},
+				"errors": ["unsafe or unverifiable isolation"]
+			},
+			{
+				"id": "prepare.named",
+				"state": "named",
+				"subject": "ModuleTaskCodexProfileAdapter.prepare",
+				"fixture": "test/adapters/agents-providers/module-task-codex-profile.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-codex-profile.test.ts",
+					"title": "ModuleTaskCodexProfileAdapter.prepare admits exact native permissions and rejects unsafe scopes"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"permissionsVerified": true,
+						"aliasesRejected": true
+					}
+				},
+				"errors": ["unsafe or unverifiable isolation"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -1,24 +1,15 @@
 import { expect, test, vi } from 'vitest';
 import { join } from 'node:path';
 import { ModuleTaskCodexProfileAdapter } from '../../../src/adapters/agents-providers/ModuleTaskCodexProfileAdapter';
+import { TestExpectationService } from '../../../src/services/verification-evidence/TestExpectationService';
+import type { ComponentManifest } from '../../../src/core/development-tooling/unitTypes';
+import manifest from '../../../specification/units/adapter.agents-providers-module-task-codex-profile.json' with { type: 'json' };
 import { measureWorkload } from '../../support/measureWorkload';
-import { assertUnsafeProfiles, profileFixture } from './module-task-codex-profile.test.fixtures';
-
-test('ModuleTaskCodexProfileAdapter.connect from default initialization returns the file name', () => {
-	// => 'module-task-codex-profile'
-	expect(new ModuleTaskCodexProfileAdapter().connect()).toBe('module-task-codex-profile');
-});
-
-test('ModuleTaskCodexProfileAdapter.connect from custom initialization returns the configured name', () => {
-	// => 'custom'
-	expect(new ModuleTaskCodexProfileAdapter({ name: 'custom' }).connect()).toBe('custom');
-});
-
-test('ModuleTaskCodexProfileAdapter.connect with invalid config throws TypeError', () => {
-	const adapter = new ModuleTaskCodexProfileAdapter(null as never);
-	// throws TypeError
-	expect(() => adapter.connect()).toThrow(TypeError);
-});
+import {
+	assertUnsafeProfiles,
+	defaultProfileFixture,
+	profileFixture
+} from './module-task-codex-profile.test.fixtures';
 
 function configOverrides(args: string[]) {
 	return args.flatMap((arg, index) =>
@@ -103,11 +94,49 @@ async function assertNativeProfile() {
 	}
 }
 
-test('ModuleTaskCodexProfileAdapter.prepare admits exact native permissions and rejects unsafe scopes', async () => {
-	await measureWorkload(
-		'adapter.agents-providers-module-task-codex-profile',
-		'native-profile-permission-scope',
-		assertNativeProfile
-	);
-	await assertUnsafeProfiles();
-});
+async function assertDefaultProfile() {
+	const f = await defaultProfileFixture();
+	const platform = Object.getOwnPropertyDescriptor(process, 'platform')!;
+	vi.stubGlobal('Bun', { which: () => f.pinnedExecutable });
+	Object.defineProperty(process, 'platform', { value: 'darwin', configurable: true });
+	let prepared: Awaited<ReturnType<ModuleTaskCodexProfileAdapter['prepare']>> | undefined;
+	try {
+		const adapter = new ModuleTaskCodexProfileAdapter();
+		prepared = await adapter.prepare(f.input);
+		expect(prepared.command).toBe(f.pinnedExecutable);
+		assertNativeArgs(prepared.args);
+		assertExactGrants(configOverrides(prepared.args).join('\n'), f);
+		await expect(adapter.prepare({ ...f.input, argv: ['sh', 'exec'] })).rejects.toThrow(
+			'Expected explicit Codex exec arguments.'
+		);
+		return { profilePrepared: true, unsafeArgRejected: true };
+	} finally {
+		await prepared?.cleanup();
+		Object.defineProperty(process, 'platform', platform);
+		vi.unstubAllGlobals();
+		await f.dispose();
+	}
+}
+
+new TestExpectationService().registerCases(
+	test,
+	manifest as ComponentManifest,
+	'test/adapters/agents-providers/module-task-codex-profile.test.ts',
+	{
+		'connect.default': () => {
+			expect(() => new ModuleTaskCodexProfileAdapter(null as never).connect()).toThrow(TypeError);
+			return new ModuleTaskCodexProfileAdapter().connect();
+		},
+		'connect.named': () => new ModuleTaskCodexProfileAdapter({ name: 'custom' }).connect(),
+		'prepare.default': () => assertDefaultProfile(),
+		'prepare.named': async () => {
+			await measureWorkload(
+				'adapter.agents-providers-module-task-codex-profile',
+				'native-profile-permission-scope',
+				assertNativeProfile
+			);
+			await assertUnsafeProfiles();
+			return { permissionsVerified: true, aliasesRejected: true };
+		}
+	}
+);

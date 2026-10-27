@@ -1,7 +1,17 @@
 import { expect } from 'vitest';
-import { chmod, link, mkdir, mkdtemp, realpath, rm, symlink, writeFile } from 'node:fs/promises';
+import {
+	chmod,
+	copyFile,
+	link,
+	mkdir,
+	mkdtemp,
+	realpath,
+	rm,
+	symlink,
+	writeFile
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { ModuleTaskCodexProfileAdapter } from '../../../src/adapters/agents-providers/ModuleTaskCodexProfileAdapter';
 
 async function profileFiles() {
@@ -58,6 +68,7 @@ export async function profileFixture() {
 		]
 	};
 	const adapter = new ModuleTaskCodexProfileAdapter({
+		name: 'custom',
 		resolveExecutable: async () => executable,
 		platform: 'darwin'
 	});
@@ -69,6 +80,18 @@ export async function profileFixture() {
 		adapter,
 		dispose: () => rm(root, { recursive: true, force: true })
 	};
+}
+
+export async function defaultProfileFixture() {
+	const fixture = await profileFixture();
+	const executable = join(
+		fixture.root,
+		'.codex/packages/standalone/releases/0.154.0-aarch64-apple-darwin/bin/codex'
+	);
+	await mkdir(dirname(executable), { recursive: true });
+	await copyFile(fixture.executable, executable);
+	await chmod(executable, 0o755);
+	return { ...fixture, pinnedExecutable: executable };
 }
 
 async function configureScope(f: Awaited<ReturnType<typeof profileFixture>>, kind: string) {
