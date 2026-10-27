@@ -1,5 +1,7 @@
 import type { Revision } from './entity-screens.test.types';
+import type { ExplorerEvidence } from '../../src/models/Explorer.types';
 import { expect, test } from 'vitest';
+import unit from '../../../../specification/units/reports.function.entity-screens.json';
 import {
 	catalogShot,
 	entityScreens,
@@ -13,7 +15,7 @@ import { withInherited } from '../entityPreviewData';
 import { scope } from '../entityPlaces';
 import { commits, ids, scenarios, units } from '../entityUnits';
 import { withFocused } from '../entityStates';
-import { expectClassAudioMatrix } from '../focusedAudioExamples';
+import { expectClassAudioMatrix, focusedAudioFixture } from '../focusedAudioExamples';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { withoutViewportSuffix } from '../../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
 const page = units.find((unit) => unit.id === ids.page)!;
@@ -160,7 +162,7 @@ test('an inherited capture is never the screenshot of the tip: it is a gap that 
 	});
 	expect(shown.after.note).toContain('inherited from aaaaaaa');
 });
-test('the gallery gets every screenshot of both sides, each side marked as what it is', () => {
+test('galleryItems: distinct class audio cases retain tested provenance', async () => {
 	const items = galleryItems(evidence(page, head, base));
 	expect(items.filter((item) => item.phase === 'after')).toHaveLength(4);
 	expect(items.filter((item) => item.phase === 'before')).toHaveLength(2);
@@ -170,6 +172,25 @@ test('the gallery gets every screenshot of both sides, each side marked as what 
 	// A revision shown as the tip that is not the tip has nothing of its own to show as current.
 	expect(galleryItems(evidence(page, head))).toEqual([]);
 	expect(new Set(items.map((item) => item.id)).size).toBe(items.length);
+	const example = unit.testing.examples[0];
+	const projected = await measureWorkload(
+		'reports.function.entity-screens',
+		'audio-case-gallery',
+		() => galleryItems(example.input[0] as unknown as ExplorerEvidence)
+	);
+	expect(projected, 'class audio cases must stay distinct and retain tested provenance').toEqual(
+		example.expected.value
+	);
+	const fixture = focusedAudioFixture(tip, [
+		{ evidence: 'generated-clip', caseId: 'generate.initialized' },
+		{ evidence: 'generated-clip', caseId: 'generate.cancelled' }
+	]);
+	const audio = galleryItems(
+		explorerEvidence(scope('current'), { head: fixture.detail, parent: null }, fixture.unit)
+	);
+	expect(audio).toHaveLength(2);
+	expect(new Set(audio.map((item) => item.comparison)).size).toBe(2);
+	expect(new Set(audio.map((item) => item.id)).size).toBe(2);
 });
 test('a declared catalog preview selects its exact state and viewport without a fallback', () => {
 	const shown = evidence(page, tip);
