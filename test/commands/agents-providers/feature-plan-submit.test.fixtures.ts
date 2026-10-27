@@ -76,7 +76,6 @@ export function commandFixture() {
 	const run = (args: string[]) => task.parseAsync(['plan', ...args], { from: 'user' });
 	return { plan, output, service, repository, readInput, task, run, server };
 }
-
 async function assertApprovalWaitsForSubmission() {
 	const f = commandFixture();
 	let approve!: () => void;
@@ -125,7 +124,6 @@ async function assertApprovalWaitsForSubmission() {
 	await run;
 	expect(f.output.mock.calls.map(([text]) => JSON.parse(text))).toEqual([f.plan]);
 }
-
 async function assertSubmissionFailureAndRetry() {
 	const f = commandFixture();
 	const failure = new Error('Approved submission rejected');
@@ -152,7 +150,6 @@ async function assertSubmissionFailureAndRetry() {
 	expect(f.output).not.toHaveBeenCalled();
 	expect(f.service.approve).toHaveBeenCalledTimes(1);
 }
-
 async function assertScopedDispatch() {
 	const f = commandFixture();
 	const result = {
@@ -199,7 +196,6 @@ async function assertScopedDispatch() {
 	expect(single.server.submitApproved).not.toHaveBeenCalled();
 	await assertInvalidDispatch(f.plan.digest);
 }
-
 async function assertInvalidDispatch(digest: string) {
 	for (const args of [
 		['--parallelism', '2'],
