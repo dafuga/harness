@@ -156,16 +156,23 @@ async function assertRegistrationContexts(
 			{ read: (path) => (path === file ? Promise.resolve(row.source) : read(path)) },
 			[file]
 		);
-		expect(
-			found.tests.map((item) => item.dynamic),
-			row.source
-		).toEqual([row.dynamic]);
-		if (row.computed)
-			expect(found.tests[0].title, row.source).toBe('<computed registration manifest>');
-		if (row.disabled) expect(found.tests[0].disabled, row.source).toBe(true);
-		if (row.dynamic) expect(found.errors.join(' '), row.source).toContain('computed case');
-		else expect(found.errors, row.source).toEqual([]);
+		assertRegistrarSource(found, row);
 	}
+}
+
+function assertRegistrarSource(
+	found: Awaited<ReturnType<TestDiscoveryService['discover']>>,
+	row: ReturnType<typeof registrarSources>[number]
+) {
+	expect(
+		found.tests.map((item) => item.dynamic),
+		row.source
+	).toEqual([row.dynamic]);
+	if (row.computed)
+		expect(found.tests[0].title, row.source).toBe('<computed registration manifest>');
+	if (row.disabled) expect(found.tests[0].disabled, row.source).toBe(true);
+	if (row.dynamic) expect(found.errors.join(' '), row.source).toContain('computed case');
+	else expect(found.errors, row.source).toEqual([]);
 }
 
 async function discoveryManifest() {

@@ -2,7 +2,7 @@
 	"name": "contract-discovery-computed-manifest",
 	"goal": "Report generated registrations whose manifest cannot be resolved statically",
 	"createdAt": "2026-10-27T13:17:17.752Z",
-	"updatedAt": "2026-10-27T13:17:18.918Z",
+	"updatedAt": "2026-10-27T13:20:06.890Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T13:18:22.493Z",
+			"evidence": "At 9c12f78353, checkpoint d26af55c71ef shows the computed registration disappearing from discovery."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T13:19:36.230Z",
+			"evidence": "Generated registrations with an imported runner and unresolved manifest are retained as explicit discovery gaps."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T13:20:06.890Z",
+			"evidence": "The unchanged method case passed at 94a88ea6eb in checkpoint 1492f22f48b3 on the red environment profile."
 		},
 		{
 			"id": "verify",
