@@ -1,0 +1,38 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ImyN1b
+
+ ❯ test/services/verification-evidence/test-expectation.test.ts (4 tests | 1 failed) 37ms
+   × json checks complete responses, type-preserving scalar normalization and errors 10ms
+     → matching null fields must remain comparable: expected [Function] to not throw an error but 'Error: Normalization must name a scal…' was thrown
+   ✓ example asserts authored comments for successful and error inputs 1ms
+   ✓ registerExamples registers exactly the authored examples and rejects absent implementations 18ms
+   ✓ registerCases binds complete method matrices and API results to canonical file identities 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-expectation.test.ts > json checks complete responses, type-preserving scalar normalization and errors
+AssertionError: matching null fields must remain comparable: expected [Function] to not throw an error but 'Error: Normalization must name a scal…' was thrown
+
+- Expected: 
+undefined
+
++ Received: 
+"Error: Normalization must name a scalar field: request.nonce"
+
+ ❯ assertCompleteJsonFields test/support/testExpectationJsonCases.ts:21:8
+     19|   () => service.json(nullable, nullable, ['request.nonce', 'items.0.to…
+     20|   'matching null fields must remain comparable'
+     21|  ).not.toThrow();
+       |        ^
+     22|  for (const changed of [
+     23|   { request: { nonce: 'present' }, items: [{ token: null }] },
+ ❯ test/services/verification-evidence/test-expectation.test.ts:32:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  01:16:38
+   Duration  3.05s (transform 330ms, setup 103ms, collect 600ms, tests 37ms, environment 0ms, prepare 23ms)
+
