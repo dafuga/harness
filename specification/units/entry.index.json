@@ -170,7 +170,8 @@
 			"rustBackendModule",
 			"moduleResourceLocation",
 			"PermissionCatalogService",
-			"PermissionsCommand"
+			"PermissionsCommand",
+			"ScreenshotBaselineService"
 		]
 	},
 	"contract": {
@@ -802,6 +803,11 @@
 		},
 		{
 			"unit": "service.task-completion",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-screenshot-baseline",
 			"via": "reexport",
 			"origin": "derived"
 		},

@@ -22,6 +22,11 @@ const historyGuide: Guide = {
 			'budget ledger cites, are attached with it.',
 		'Screenshots and audio are stored through Git LFS with the hash and size of the original ' +
 			'bytes. No LFS filter has to be installed.',
+		'Inspect a captured image before explicitly recording its reviewer and reason with ' +
+			'history screenshot review. A review retains the original case, build, revision and ' +
+			'run outcome; it does not change a failed run to passed.',
+		'history screenshot read validates the review and original evidence again and writes only ' +
+			'to a new file. A missing, altered or wrong-case baseline is an error.',
 		'Records are only added. Several runs of one commit, writers in one repository or in ' +
 			'worktrees sharing it, and clones that diverged are all kept; sync merges and never forces.',
 		'The sealed record states the outcome. A note is an index: a line written for another ' +
@@ -39,13 +44,18 @@ const historyGuide: Guide = {
 	antiPatterns: [
 		'Do not force-push the evidence branch or notes.',
 		'Do not copy notes to a rewritten commit; verify the new commit.',
-		'Do not edit a note to change an outcome.'
+		'Do not edit a note to change an outcome.',
+		'Do not automatically approve a missing or changed screenshot.'
 	],
 	exampleCommands: [
 		'harness history attach',
 		'harness history attach --commit HEAD~1 --record <id>',
 		'harness history reasons --base <rev> --commit <rev>',
 		'harness history status --commit HEAD --json',
+		'harness history screenshot review --commit <hash> --record <id> --unit <id> --case <id> ' +
+			'--scenario <id> --evidence <id> --viewport <id> --reviewer <name> --reason <text>',
+		'harness history screenshot read --id <id> --unit <id> --case <id> --viewport <id> ' +
+			'--file <authored-path> --out <new-path>',
 		'harness history fetch origin',
 		'harness history sync origin',
 		'harness history build --out .cache/harness/history --strict',

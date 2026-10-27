@@ -88,6 +88,8 @@ const benchmarkRunUnits = [
 ];
 
 const measuredWorkloads: Record<string, string[]> = {
+	'history:screenshot': ['command.history', 'entry.program', 'entry.index'],
+	'info:history': ['guide.history', 'guide.guide', 'entry.program', 'entry.index'],
 	'info:modules': ['guide.module-system-modules', 'guide.guide', 'entry.program', 'entry.index'],
 	'info:resources': ['guide.resources', 'guide.guide', 'entry.program', 'entry.index'],
 	'resources:status': [
