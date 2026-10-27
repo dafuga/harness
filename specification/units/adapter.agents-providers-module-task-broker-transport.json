@@ -3,7 +3,7 @@
 	"id": "adapter.agents-providers-module-task-broker-transport",
 	"kind": "adapter",
 	"title": "ModuleTaskBrokerTransportAdapter",
-	"responsibility": "Scaffold boundary reserved for the qualified task broker transport; provider execution is not implemented in this checkpoint.",
+	"responsibility": "Host qualified Codex execution through exact-file broker operations with owned lifecycle, cancellation and output boundaries.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -24,18 +24,49 @@
 		"inputs": [
 			{
 				"name": "ModuleTaskBrokerTransportAdapter.constructor.config",
-				"type": "ModuleTaskBrokerTransportAdapterConfig",
-				"description": "Generated adapter configuration for the current scaffold only."
+				"type": "ModuleTaskBrokerTransportAdapterConfig | undefined",
+				"description": "Trusted host-only bindings. Config has client.ready():Promise<void>, client.run(request:BrokerClientRequest):Promise<BrokerClientResult>, and openBroker(input:TaskRunInput):Promise<BrokerSession>. Missing/incomplete bindings are unqualified. No task field, public flag or environment setting can establish qualification. {\"BrokerSession\": {\"tools\": \"Object containing callable readContract(unitId), listContracts(kind?), readAssigned(path), writeAssigned({path,expectedSha256,text}) with the existing broker contracts.\", \"close\": \"()=>Promise<void>; transport awaits it exactly once after a created session, including failed/cancelled runs.\"}, \"BrokerClientRequest\": \"TaskSelection & {cwd:string;prompt:string;signal:AbortSignal;tools:BrokerTools}. cwd is the pinned TaskRunScope.scratch, never the editable source cwd. tools is an immutable projection with exactly the four approved own enumerable operation names, preserving method receiver binding. No raw scope, snapshot path, credential path, close handle or config object is exposed in this request.\", \"BrokerClientResult\": \"{text:string;reportedModel?:string|null;usage?:TaskUsage}. Missing/null identity becomes null. A nonempty reported identity is preserved without relabeling it as the request. Usage is copied only when observed; unknown fields/cost are not invented.\", \"productionBoundary\": \"Synthetic trusted client/factory injection establishes unit behavior only. The real supported Codex client/MCP host and normal runner/app-server wiring require later implementation, qualification and normal-dispatch proof. No native tool or qualification-bypass flag is introduced.\"}"
+			},
+			{
+				"name": "ModuleTaskBrokerTransportAdapter.run.input",
+				"type": "TaskRunInput",
+				"description": "Existing TaskSelection plus cwd, prompt, AbortSignal and optional TaskRunScope. Codex-only; requires an absolute scope.scratch outside the editable cwd. Pin selection, scope primitives and path arrays before awaits."
 			}
 		],
 		"outputs": [
 			{
-				"name": "ModuleTaskBrokerTransportAdapter.connect",
-				"type": "string",
-				"description": "Generated scaffold return value; this checkpoint does not dispatch a provider or establish transport qualification."
+				"name": "ModuleTaskBrokerTransportAdapter.ready",
+				"type": "Promise<void>",
+				"description": "ready():Promise<void>. Reject absent/incomplete client/openBroker bindings with Error(\"Broker transport is unqualified\"); otherwise await client.ready() and propagate its safe failure. ready never creates a broker or executes a provider."
+			},
+			{
+				"name": "ModuleTaskBrokerTransportAdapter.run",
+				"type": "Promise<TaskRunResult>",
+				"description": "run(input:TaskRunInput):Promise<TaskRunResult>. Accepts Codex only, requires scope and an absolute scratch path outside the editable cwd, snapshots selection/scope primitives and scope path arrays before awaits, checks cancellation, awaits ready(), rechecks cancellation, awaits openBroker(), verifies/projects the four tools, rechecks cancellation, then awaits client.run(). It returns the input selection plus the client text, nullable reported model and observed usage. It always awaits close for a created session. A client failure remains the primary error if close also fails. During client execution it forwards the original signal and waits for client settlement; the client contract owns aborting its process and settling only after exit."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Unqualified binding",
+				"type": "Error",
+				"description": "Broker transport is unqualified; reject before opening a broker or executing a provider."
+			},
+			{
+				"name": "Invalid task input or session",
+				"type": "Error",
+				"description": "Reject invalid scope/provider/scratch with Invalid broker task input, or missing approved callable tools with Invalid broker session; never expose another capability."
+			},
+			{
+				"name": "Client or broker failure",
+				"type": "safe Error or preserved AbortError",
+				"description": "Propagate safe trusted-client/factory failures, await owned settlement, close a returned session once, and preserve a primary client failure if close also fails."
+			},
+			{
+				"name": "Cancellation",
+				"type": "AbortError",
+				"description": "Before launch or while opening, reject with Broker task cancelled and close a returned session. During client execution forward the original signal and wait for client settlement before closing."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
