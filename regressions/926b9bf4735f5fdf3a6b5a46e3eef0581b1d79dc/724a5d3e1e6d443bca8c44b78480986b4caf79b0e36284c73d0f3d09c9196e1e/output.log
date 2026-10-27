@@ -1,0 +1,46 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run sync:shared && vitest run "$@"' -- test/recorded-artifact-limits.test.ts "--maxWorkers=1"
+$ bun run --cwd ../reports svelte-kit sync
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/tmp/harness-identity-proof.a7HYcu/harness-snapshot-tWBZEA/packages/desktop
+
+ ❯ test/recorded-artifact-limits.test.ts (4 tests | 4 skipped) 24429ms
+   ↓ a capture of exactly 11 MiB is read, and one byte more is refused and stays listed
+   ↓ markup recorded as a screenshot is listed as rejected and never served
+   ↓ tampered capture bytes are never returned as verified
+   ↓ a corrupted record is never returned as verified
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/recorded-artifact-limits.test.ts [ test/recorded-artifact-limits.test.ts ]
+Error: benchmarked unit service.title must retain its committed source hash
+ ❯ limitRecords test/recorded-evidence-extras.ts:39:9
+     37|  const title = verified.record.components.find((unit) => unit.unit ===…
+     38|  if (title?.files.find((file) => file.path === path)?.hash !== expecte…
+     39|   throw new Error('benchmarked unit service.title must retain its comm…
+       |         ^
+     40|  await attach(repo);
+     41|  const over = await repo.change('src/utils/clock.ts', (source) =>
+ ❯ test/recorded-artifact-limits.test.ts:29:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 skipped (4)
+   Start at  11:24:38
+   Duration  26.87s (transform 1.28s, setup 111ms, collect 2.17s, tests 24.43s, environment 0ms, prepare 42ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1
