@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
 import { TestDiscoveryService } from '../../../src/services/verification-evidence/TestDiscoveryService';
 import { measureWorkload } from '../../support/measureWorkload';
+import { registrationRows } from '../../support/testDiscoveryRegistrationRows';
 
 const service = new TestDiscoveryService();
 test('scan initialized source finds imported cases, aliases and computed registration', async () => {
@@ -91,10 +92,10 @@ test('discover initialized and unreadable sources retain explicit discovery gaps
 					}
 				});
 			if (file === 'test/methods.test.ts')
-				return `import { test } from 'vitest'; import unit from './method-unit.json'; new TestExpectationService().registerCases(test, unit, 'test/methods.test.ts', {});`;
+				return `import { test } from 'vitest'; import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; import unit from './method-unit.json'; new TestExpectationService().registerCases(test, unit, 'test/methods.test.ts', {});`;
 			if (file === 'test/unit.json') return JSON.stringify(manifest);
 			if (file === 'test/examples.test.ts')
-				return `import { test } from 'vitest'; import unit from './unit.json'; new TestExpectationService().registerExamples(test, unit, { finish: () => undefined });`;
+				return `import { test } from 'vitest'; import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; import unit from './unit.json'; new TestExpectationService().registerExamples(test, unit, { finish: () => undefined });`;
 			return `import { test } from 'vitest'; test.each([1])('row %i', () => {});`;
 		}
 	};
@@ -134,7 +135,7 @@ async function assertRegistrationContexts(
 		const file = row.method ? 'test/methods.test.ts' : 'test/examples.test.ts';
 		const manifest = row.method ? './method-unit.json' : './unit.json';
 		const registration = row.suite ? row.code : `service.${row.code};`;
-		const source = `import { test, describe } from 'vitest'; import unit from '${manifest}'; ${registration}`;
+		const source = `import { test, describe } from 'vitest'; import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; import unit from '${manifest}'; const service = new TestExpectationService(); const fake = { registerExamples() {} }; ${registration}`;
 		const found = await subject.discover(
 			{ read: (path) => (path === file ? Promise.resolve(source) : read(path)) },
 			[file]
@@ -149,43 +150,6 @@ async function assertRegistrationContexts(
 		else if (row.dynamic) expect(found.errors.join(' '), row.code).toContain('computed case');
 		else expect(found.errors, row.code).toEqual([]);
 	}
-}
-
-function registrationRows() {
-	return [
-		{ code: 'registerExamples(test.skip, unit, {})', title: 'finish: Finish', disabled: true },
-		{ code: "registerExamples(test['only'], unit, {})", title: 'finish: Finish', disabled: true },
-		{
-			code: "registerCases(test.skip, unit, 'test/methods.test.ts', {})",
-			title: 'Runner.finish initialized',
-			disabled: true,
-			method: true
-		},
-		{
-			code: "describe.skip('disabled', () => { service.registerExamples(test, unit, {}); })",
-			title: 'disabled > finish: Finish',
-			disabled: true,
-			suite: true
-		},
-		{
-			code: "describe('active', () => { service.registerExamples(test, unit, {}); })",
-			title: 'active > finish: Finish',
-			suite: true
-		},
-		{ code: 'registerExamples(test[modifier], unit, {})', title: 'finish: Finish', dynamic: true },
-		{
-			code: 'if (condition) service.registerExamples(test, unit, {})',
-			title: 'finish: Finish',
-			dynamic: true,
-			suite: true
-		},
-		{
-			code: 'function later() { service.registerExamples(test, unit, {}); }',
-			title: 'finish: Finish',
-			dynamic: true,
-			suite: true
-		}
-	];
 }
 
 async function discoveryManifest() {

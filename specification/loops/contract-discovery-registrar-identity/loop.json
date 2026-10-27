@@ -1,0 +1,56 @@
+{
+	"name": "contract-discovery-registrar-identity",
+	"goal": "Reject generated case registrations with an unverified registrar",
+	"createdAt": "2026-10-27T13:11:42.927Z",
+	"updatedAt": "2026-10-27T13:11:44.060Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T13:11:43.519Z",
+			"evidence": "Static discovery must not accept an arbitrary object as the Harness case registrar."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T13:11:44.060Z",
+			"evidence": "The existing discover method case assumes the receiver is TestExpectationService and misses a look-alike object that registers no cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
