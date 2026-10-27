@@ -1406,3 +1406,27 @@ usage. The response did not independently report effort, and this was not an
 editing worker. A fresh `gpt-6-luna/max` probe reached the provider and returned
 `model_not_found` for this ChatGPT account. No fallback model was used. Safe
 editing-worker qualification remains open.
+
+Visual admission previously accepted a passing case without a screenshot bound
+to that case and attempt. Test commit `7c9c8a7d0d` failed in red `76764e02295f`;
+fix `66419b84a0` passed in green `cec2d7941b37`. The final-test mutant
+`7884818a42` failed in `e93d4e12ed4d` and restored tree `807ad8cade` passed in
+`9723f18ebda2`. The guard checks unit, case, viewport, revision, byte hash,
+scenario, server provenance and retry. It does not itself prove that a browser
+matched a reviewed baseline or that the shared browser fixture emits captures.
+
+Review then found that separate scenario checks sharing a file incorrectly
+required each other's screenshots. The same class case was strengthened without
+adding a test: `4ace444105` failed on harbor-mbp-2 in red `b479fcddfddb` and
+fix `31dda56c8f` passed in green `9a700f1b111b` with the same command and
+environment fingerprint. Isolated mutant `0820fbac90` failed in `d33524521227`;
+restored tree `d77ae48360` passed in `ae6b648ac5a7`. The first remote green
+attempt was rejected for an SSH environment change; the matched pair used one
+session. A combined local focused snapshot was stopped by the 10 GB memory guard,
+so it is not a passing check. The existing unit-index, readable-contract and
+class suites passed 18 cases after the review pack was rebuilt; target lint and
+formatting passed. At `a982bae869`, record assembly had 12,390 bytes, 303 lines,
+complexity 37 and 19 dependencies; test contract had 19,842 bytes, 546 lines,
+complexity 178 and five dependencies. Neither emits a separate module artifact.
+Focused workload records retain timing and whole-worker RSS, not isolated memory.
+The full laptop gate and real screenshot matching remain open.
