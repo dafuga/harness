@@ -1,0 +1,40 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wtOEUn
+
+ ❯ test/utils/scenario-coverage.test.ts (5 tests | 1 failed) 9ms
+   ✓ scenarioCoverage: accepts a stamped flow 2ms
+   ✓ problem: accepts a fixture flow 0ms
+   × scenarioCoverage: accepts an element screenshot 5ms
+     → expected [] to deeply equal [ Array(1) ]
+   ✓ scenarioCoverage: rejects a capture of the wrong kind 1ms
+   ✓ scenarioCoverage: accepts a viewport screenshot 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/scenario-coverage.test.ts > scenarioCoverage: accepts an element screenshot
+AssertionError: expected [] to deeply equal [ Array(1) ]
+
+- Expected
++ Received
+
+- [
+-   "explorer-flow: capture pages-flow.json has provenance fixture but evidence flow requires actual-capture",
+- ]
++ []
+
+ ❯ test/utils/scenario-coverage.test.ts:136:48
+    134|   [undefined, 'none']
+    135|  ] as const)
+    136|   expect(imageFailures(image({ provenance }))).toEqual([
+       |                                                ^
+    137|    `explorer-flow: capture pages-flow.json has provenance ${stated} bu…
+    138|   ]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  05:19:30
+   Duration  2.35s (transform 76ms, setup 89ms, collect 26ms, tests 9ms, environment 0ms, prepare 21ms)
+
