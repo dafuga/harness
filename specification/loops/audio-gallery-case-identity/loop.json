@@ -2,11 +2,9 @@
 	"name": "audio-gallery-case-identity",
 	"goal": "Keep each focused class audio case distinct and describe its true tested provenance.",
 	"createdAt": "2026-10-27T02:13:12.011Z",
-	"updatedAt": "2026-10-27T02:13:13.209Z",
+	"updatedAt": "2026-10-27T02:21:42.327Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T02:21:39.129Z",
+			"evidence": "Existing gallery case fails on distinct case identity and tested provenance; red 730d9bbc59ad records the assertion."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T02:21:40.363Z",
+			"evidence": "Include sealed case identity in audio gallery keys and report the actual tested revision and origin."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T02:21:42.327Z",
+			"evidence": "The unchanged case passed green 09a40ae321be at 92e0fd3a86 with the same command and profile."
 		},
 		{
 			"id": "verify",
