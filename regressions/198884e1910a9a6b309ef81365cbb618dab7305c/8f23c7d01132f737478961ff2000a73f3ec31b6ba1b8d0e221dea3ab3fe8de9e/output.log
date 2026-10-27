@@ -1,0 +1,33 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-sqNIZP
+
+ ❯ test/generate-workflow.test.ts (5 tests | 1 failed | 4 skipped) 29ms
+   ↓ lib generation auto-exports package-safe scaffolds
+   ↓ app-only scaffolds fail in lib projects
+   × app generation allows app-only scaffolds without package exports 23ms
+     → component is not defined
+   ↓ generation keeps category folders, imports and package exports in agreement
+   ↓ the same category works for every source scaffold and can be extended
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/generate-workflow.test.ts > app generation allows app-only scaffolds without package exports
+ReferenceError: component is not defined
+ ❯ generatePiece src/workflows/projects-sessions/generate-code/generateCode.ts:88:34
+     86|  const files = separateTypeDeclarations([...grouped.files, ...support,…
+     87|  assertUniqueGroupedNames(root, selection?.group.id, files);
+     88|  await ensureParents(root, files);
+       |                                  ^
+     89|  const writes = await writePlannedFiles(root, files, { force: input.fo…
+     90|  writes.push(...(await saveGenerationGroup(root, selection)));
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ test/generate-workflow.test.ts:50:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  06:29:14
+   Duration  4.16s (transform 303ms, setup 146ms, collect 706ms, tests 29ms, environment 0ms, prepare 33ms)
+
