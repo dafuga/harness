@@ -1,0 +1,44 @@
+{
+	"name": "gateway-prompt-examples",
+	"goal": "Register gateway prompt examples with authored results and error coverage",
+	"createdAt": "2026-10-27T12:30:14.580Z",
+	"updatedAt": "2026-10-27T12:30:17.773Z",
+	"template": "refactor",
+	"templateLineage": [
+		"feature",
+		"refactor"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Name the responsibility boundary and unchanged behavior.",
+			"status": "complete",
+			"completedAt": "2026-10-27T12:30:17.773Z",
+			"evidence": "The existing function preserves ordered role and tool history in one serialized prompt. Its single unregistered case checks only a substring; authored examples will assert complete values and invalid inputs."
+		},
+		{
+			"id": "implement",
+			"title": "Extract or reorganize one responsibility at a time.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

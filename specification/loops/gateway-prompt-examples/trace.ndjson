@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-27T12:30:14.580Z","name":"gateway-prompt-examples","goal":"Register gateway prompt examples with authored results and error coverage","template":"refactor","templateLineage":["feature","refactor"]}
+{"event":"step.completed","timestamp":"2026-10-27T12:30:17.773Z","loop":"gateway-prompt-examples","step":"spec","evidence":"The existing function preserves ordered role and tool history in one serialized prompt. Its single unregistered case checks only a substring; authored examples will assert complete values and invalid inputs."}

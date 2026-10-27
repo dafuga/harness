@@ -1,10 +1,50 @@
 import { expect, test } from 'vitest';
+import type { ComponentManifest } from '../../src/core/development-tooling/unitTypes';
 import { gatewayPrompt } from '../../src/services/claude-query-service/gatewayPrompt';
-test('replayed history retains role labels and tool call correlation', () => {
-	const input = [
-		{ role: 'user', content: 'remember alpha' },
-		{ type: 'function_call_output', call_id: 'call-a', output: 'alpha' }
-	];
-	const prompt = gatewayPrompt({ model: 'claude-opus-5-5', stream: true, tools: [], input });
-	expect(prompt).toContain(JSON.stringify(input));
+import { TestExpectationService } from '../../src/services/verification-evidence/TestExpectationService';
+import type { GatewayRequest } from '../../src/utils/gatewayTypes';
+import unit from '../../specification/units/function.gateway-prompt.json' with { type: 'json' };
+import { measureWorkload } from '../support/measureWorkload';
+
+function checked(
+	request: GatewayRequest | { $fixture: 'throwing-history'; message: string }
+): string {
+	const example = unit.testing.examples.find(
+		(item) => JSON.stringify(item.input) === JSON.stringify([request])
+	);
+	const call =
+		'$fixture' in request
+			? `gatewayPrompt({ get input() { throw new Error(${JSON.stringify(request.message)}); } })`
+			: `gatewayPrompt(${JSON.stringify(request)})`;
+	expect(example?.call, 'the displayed call uses the tested input').toBe(call);
+	if ('$fixture' in request) return throwingHistory(request.message);
+	const result = measureWorkload('function.gateway-prompt', 'authored-conversation-example', () =>
+		gatewayPrompt(request)
+	);
+	expect(result).toContain(JSON.stringify(request.input));
+	return result;
+}
+
+function throwingHistory(message: string): string {
+	const base = { model: 'fixture', stream: true as const, tools: [] };
+	const cycle: Record<string, unknown> = {};
+	cycle.self = cycle;
+	for (const invalid of [
+		null,
+		undefined,
+		{ ...base, input: [cycle] },
+		{ ...base, input: [{ value: 1n }] }
+	]) {
+		expect(() => gatewayPrompt(invalid as GatewayRequest)).toThrow(TypeError);
+	}
+	return gatewayPrompt({
+		...base,
+		get input(): never {
+			throw new Error(message);
+		}
+	});
+}
+
+new TestExpectationService().registerExamples(test, unit as ComponentManifest, {
+	gatewayPrompt: checked
 });
