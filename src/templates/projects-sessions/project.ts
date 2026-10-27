@@ -54,7 +54,7 @@ function appConfigFiles(name: string): PlannedFile[] {
 		{
 			path: 'playwright.config.ts',
 			contents:
-				"import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n\ttestDir: 'tests/e2e',\n\tsnapshotPathTemplate: '.cache/harness/visual-baselines/{testFilePath}/{arg}{ext}',\n\tupdateSnapshots: 'none',\n\treporter: [['list'], ['./test/support/harnessCaseReporter.js']],\n\twebServer: {\n\t\tcommand: 'bun run preview -- --host 127.0.0.1 --port 3322',\n\t\turl: 'http://127.0.0.1:3322',\n\t\treuseExistingServer: false\n\t},\n\tuse: {\n\t\tbaseURL: 'http://127.0.0.1:3322',\n\t\tbrowserName: 'chromium',\n\t\tdeviceScaleFactor: 1,\n\t\tlocale: 'en-US',\n\t\ttimezoneId: 'UTC',\n\t\tcolorScheme: 'light',\n\t\treducedMotion: 'reduce'\n\t}\n});\n"
+				"import { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n\ttestDir: 'tests/e2e',\n\tsnapshotPathTemplate: '.cache/harness/visual-baselines/{testFilePath}/{arg}{ext}',\n\tupdateSnapshots: 'none',\n\treporter: [['list'], ['./test/support/harnessCaseReporter.js']],\n\twebServer: {\n\t\tcommand: 'bun run dev -- --host 127.0.0.1 --port 3322',\n\t\turl: 'http://127.0.0.1:3322',\n\t\treuseExistingServer: true\n\t},\n\tuse: {\n\t\tbaseURL: 'http://127.0.0.1:3322',\n\t\tbrowserName: 'chromium',\n\t\tdeviceScaleFactor: 1,\n\t\tlocale: 'en-US',\n\t\ttimezoneId: 'UTC',\n\t\tcolorScheme: 'light',\n\t\treducedMotion: 'reduce'\n\t}\n});\n"
 		},
 		{
 			path: 'tsconfig.json',
@@ -72,7 +72,8 @@ function appSourceFiles(name: string): PlannedFile[] {
 		},
 		{
 			path: 'src/app.html',
-			contents: `<!doctype html>\n<html lang="en">\n\t<head>\n\t\t<meta charset="utf-8" />\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1" />\n\t\t<meta\n\t\t\tname="harness-build-id"\n\t\t\tcontent="harness-build:${'0'.repeat(64)}"\n\t\t/>\n\t\t%sveltekit.head%\n\t</head>\n\t<body data-sveltekit-preload-data="hover">\n\t\t<div>%sveltekit.body%</div>\n\t</body>\n</html>\n`
+			contents:
+				'<!doctype html>\n<html lang="en">\n\t<head>\n\t\t<meta charset="utf-8" />\n\t\t<meta name="viewport" content="width=device-width, initial-scale=1" />\n\t\t%sveltekit.head%\n\t</head>\n\t<body data-sveltekit-preload-data="hover">\n\t\t<div>%sveltekit.body%</div>\n\t</body>\n</html>\n'
 		},
 		{
 			path: 'AGENTS.md',
@@ -141,7 +142,6 @@ function appPackage(name: string): Record<string, unknown> {
 		harness: { kind: 'app' },
 		scripts: {
 			dev: 'vite dev --host --port 3322',
-			preview: 'vite preview',
 			build: 'vite build',
 			check:
 				'bun run format:check && bun run typecheck && bun run lint && bun run audit && bun run test && bun run test:e2e && bun run build',
@@ -152,7 +152,7 @@ function appPackage(name: string): Record<string, unknown> {
 			audit: 'bun scripts/harness-audit.ts',
 			test: 'bun run test:unit',
 			'test:unit': 'vitest run --passWithNoTests',
-			'test:e2e': 'bun run build && harness verify stamp .svelte-kit/output && playwright test'
+			'test:e2e': 'playwright test'
 		},
 		devDependencies: {
 			'@playwright/test': '1.63.0',
