@@ -6,9 +6,9 @@ import type { GatewayRequest } from '../../src/utils/gatewayTypes';
 import unit from '../../specification/units/function.gateway-prompt.json' with { type: 'json' };
 import { measureWorkload } from '../support/measureWorkload';
 
-function checked(
+async function checked(
 	request: GatewayRequest | { $fixture: 'throwing-history'; message: string }
-): string {
+): Promise<string> {
 	const example = unit.testing.examples.find(
 		(item) => JSON.stringify(item.input) === JSON.stringify([request])
 	);
@@ -18,8 +18,10 @@ function checked(
 			: `gatewayPrompt(${JSON.stringify(request)})`;
 	expect(example?.call, 'the displayed call uses the tested input').toBe(call);
 	if ('$fixture' in request) return throwingHistory(request.message);
-	const result = measureWorkload('function.gateway-prompt', 'authored-conversation-example', () =>
-		gatewayPrompt(request)
+	const result = await measureWorkload(
+		'function.gateway-prompt',
+		'authored-conversation-example',
+		() => gatewayPrompt(request)
 	);
 	expect(result).toContain(JSON.stringify(request.input));
 	return result;
