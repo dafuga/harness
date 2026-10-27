@@ -16,7 +16,10 @@ export function createMatchScreenshot(testInfo: TestInfo): MatchScreenshot {
 		let captured: Buffer | undefined;
 		if (screenshotEvidenceRequested()) {
 			captured = await attachScreenshot(testInfo, target, name, options);
-			void recordCaseScreenshot;
+			await recordCaseScreenshot(testInfo, target, name, {
+				bytes: captured,
+				fullPage: options?.fullPage === true
+			});
 		}
 		await expect(target).toHaveScreenshot(name, {
 			animations: 'disabled',
