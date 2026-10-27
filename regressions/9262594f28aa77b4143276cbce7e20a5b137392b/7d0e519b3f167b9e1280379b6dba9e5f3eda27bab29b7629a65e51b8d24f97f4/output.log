@@ -1,0 +1,351 @@
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run "$@"' -- test/routes/analytics-cpu-api.test.ts "--maxWorkers=1" "--minWorkers=1"
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-EathmI/packages/reports
+
+ ❯ test/routes/analytics-cpu-api.test.ts (7 tests | 6 failed) 15ms
+   ✓ GET CPU telemetry: remote 4ms
+   × GET CPU telemetry: ipv4-available 5ms
+     → API JSON differs from its authored response
++ actual - expected
+... Skipped lines
+
+  {
+    body: {
+      agents: [],
+      groups: [
+        {
+...
+      logicalCores: 8,
++     machinePercent: 999,
+-     machinePercent: 40,
+      sampledAt: '2026-10-10T20:00:00.000Z',
+      status: 'available',
+      trackedPercent: 7
+    },
+    cacheControl: 'no-store',
+
+   × GET CPU telemetry: localhost-available 1ms
+     → API JSON differs from its authored response
++ actual - expected
+... Skipped lines
+
+  {
+    body: {
+      agents: [],
+      groups: [
+        {
+...
+      logicalCores: 8,
++     machinePercent: 999,
+-     machinePercent: 0,
+      sampledAt: '2026-10-10T20:00:00.000Z',
+      status: 'available',
+      trackedPercent: 7
+    },
+    cacheControl: 'no-store',
+
+   × GET CPU telemetry: ipv6-available 1ms
+     → API JSON differs from its authored response
++ actual - expected
+... Skipped lines
+
+  {
+    body: {
+      agents: [],
+      groups: [
+        {
+...
+      logicalCores: 8,
++     machinePercent: 999,
+-     machinePercent: 100,
+      sampledAt: '2026-10-10T20:00:00.000Z',
+      status: 'available',
+      trackedPercent: 7
+    },
+    cacheControl: 'no-store',
+
+   × GET CPU telemetry: ipv4-unavailable 1ms
+     → API JSON differs from its authored response
++ actual - expected
+
+  {
+    body: {
+      agents: [],
+      groups: [],
+      intervalMs: 0,
+      logicalCores: 0,
++     machinePercent: 999,
+-     machinePercent: null,
+      sampledAt: '2026-10-10T20:00:00.000Z',
+      status: 'unavailable',
+      trackedPercent: null
+    },
+    cacheControl: 'no-store',
+
+   × GET CPU telemetry: localhost-unavailable 1ms
+     → API JSON differs from its authored response
++ actual - expected
+
+  {
+    body: {
+      agents: [],
+      groups: [],
+      intervalMs: 0,
+      logicalCores: 0,
++     machinePercent: 999,
+-     machinePercent: null,
+      sampledAt: '2026-10-10T20:00:00.000Z',
+      status: 'unavailable',
+      trackedPercent: null
+    },
+    cacheControl: 'no-store',
+
+   × GET CPU telemetry: ipv6-unavailable 1ms
+     → API JSON differs from its authored response
++ actual - expected
+
+  {
+    body: {
+      agents: [],
+      groups: [],
+      intervalMs: 0,
+      logicalCores: 0,
++     machinePercent: 999,
+-     machinePercent: null,
+      sampledAt: '2026-10-10T20:00:00.000Z',
+      status: 'unavailable',
+      trackedPercent: null
+    },
+    cacheControl: 'no-store',
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/routes/analytics-cpu-api.test.ts > GET CPU telemetry: ipv4-available
+AssertionError: API JSON differs from its authored response
++ actual - expected
+... Skipped lines
+
+  {
+    body: {
+      agents: [],
+      groups: [
+        {
+...
+      logicalCores: 8,
++     machinePercent: 999,
+-     machinePercent: 40,
+      sampledAt: '2026-10-10T20:00:00.000Z',
+      status: 'available',
+      trackedPercent: 7
+    },
+    cacheControl: 'no-store',
+
+
+- Expected
++ Received
+
+@@ -24,11 +24,11 @@
+          "processes": 0,
+        },
+      ],
+      "intervalMs": 250,
+      "logicalCores": 8,
+-     "machinePercent": 40,
++     "machinePercent": 999,
+      "sampledAt": "2026-10-10T20:00:00.000Z",
+      "status": "available",
+      "trackedPercent": 7,
+    },
+    "cacheControl": "no-store",
+
+ ❯ TestExpectationService.json ../../src/services/verification-evidence/TestExpectationService.ts:74:3
+     72|   deepStrictEqual(left, right, 'API JSON differs from its authored res…
+     73|  }
+     74|  async example(invoke: ExampleInvocation, example: UsageExample): Prom…
+       |   ^
+     75|   let observation: ExampleObservation;
+     76|   try {
+ ❯ call ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:36:31
+ ❯ PerformanceProfileService.observe ../../src/services/verification-evidence/PerformanceProfileService.ts:58:18
+ ❯ Object.apply ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:51:29
+ ❯ ../../src/services/verification-evidence/TestExpectationService.ts:36:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  test/routes/analytics-cpu-api.test.ts > GET CPU telemetry: localhost-available
+AssertionError: API JSON differs from its authored response
++ actual - expected
+... Skipped lines
+
+  {
+    body: {
+      agents: [],
+      groups: [
+        {
+...
+      logicalCores: 8,
++     machinePercent: 999,
+-     machinePercent: 0,
+      sampledAt: '2026-10-10T20:00:00.000Z',
+      status: 'available',
+      trackedPercent: 7
+    },
+    cacheControl: 'no-store',
+
+
+- Expected
++ Received
+
+@@ -24,11 +24,11 @@
+          "processes": 0,
+        },
+      ],
+      "intervalMs": 250,
+      "logicalCores": 8,
+-     "machinePercent": 0,
++     "machinePercent": 999,
+      "sampledAt": "2026-10-10T20:00:00.000Z",
+      "status": "available",
+      "trackedPercent": 7,
+    },
+    "cacheControl": "no-store",
+
+ ❯ TestExpectationService.json ../../src/services/verification-evidence/TestExpectationService.ts:74:3
+     72|   deepStrictEqual(left, right, 'API JSON differs from its authored res…
+     73|  }
+     74|  async example(invoke: ExampleInvocation, example: UsageExample): Prom…
+       |   ^
+     75|   let observation: ExampleObservation;
+     76|   try {
+ ❯ call ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:36:31
+ ❯ PerformanceProfileService.observe ../../src/services/verification-evidence/PerformanceProfileService.ts:58:18
+ ❯ Object.apply ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:51:29
+ ❯ ../../src/services/verification-evidence/TestExpectationService.ts:36:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  test/routes/analytics-cpu-api.test.ts > GET CPU telemetry: ipv6-available
+AssertionError: API JSON differs from its authored response
++ actual - expected
+... Skipped lines
+
+  {
+    body: {
+      agents: [],
+      groups: [
+        {
+...
+      logicalCores: 8,
++     machinePercent: 999,
+-     machinePercent: 100,
+      sampledAt: '2026-10-10T20:00:00.000Z',
+      status: 'available',
+      trackedPercent: 7
+    },
+    cacheControl: 'no-store',
+
+
+- Expected
++ Received
+
+@@ -24,11 +24,11 @@
+          "processes": 0,
+        },
+      ],
+      "intervalMs": 250,
+      "logicalCores": 8,
+-     "machinePercent": 100,
++     "machinePercent": 999,
+      "sampledAt": "2026-10-10T20:00:00.000Z",
+      "status": "available",
+      "trackedPercent": 7,
+    },
+    "cacheControl": "no-store",
+
+ ❯ TestExpectationService.json ../../src/services/verification-evidence/TestExpectationService.ts:74:3
+     72|   deepStrictEqual(left, right, 'API JSON differs from its authored res…
+     73|  }
+     74|  async example(invoke: ExampleInvocation, example: UsageExample): Prom…
+       |   ^
+     75|   let observation: ExampleObservation;
+     76|   try {
+ ❯ call ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:36:31
+ ❯ PerformanceProfileService.observe ../../src/services/verification-evidence/PerformanceProfileService.ts:58:18
+ ❯ Object.apply ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:51:29
+ ❯ ../../src/services/verification-evidence/TestExpectationService.ts:36:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  test/routes/analytics-cpu-api.test.ts > GET CPU telemetry: ipv4-unavailable
+ FAIL  test/routes/analytics-cpu-api.test.ts > GET CPU telemetry: localhost-unavailable
+ FAIL  test/routes/analytics-cpu-api.test.ts > GET CPU telemetry: ipv6-unavailable
+AssertionError: API JSON differs from its authored response
++ actual - expected
+
+  {
+    body: {
+      agents: [],
+      groups: [],
+      intervalMs: 0,
+      logicalCores: 0,
++     machinePercent: 999,
+-     machinePercent: null,
+      sampledAt: '2026-10-10T20:00:00.000Z',
+      status: 'unavailable',
+      trackedPercent: null
+    },
+    cacheControl: 'no-store',
+
+
+- Expected
++ Received
+
+@@ -2,11 +2,11 @@
+    "body": {
+      "agents": [],
+      "groups": [],
+      "intervalMs": 0,
+      "logicalCores": 0,
+-     "machinePercent": null,
++     "machinePercent": 999,
+      "sampledAt": "2026-10-10T20:00:00.000Z",
+      "status": "unavailable",
+      "trackedPercent": null,
+    },
+    "cacheControl": "no-store",
+
+ ❯ TestExpectationService.json ../../src/services/verification-evidence/TestExpectationService.ts:74:3
+     72|   deepStrictEqual(left, right, 'API JSON differs from its authored res…
+     73|  }
+     74|  async example(invoke: ExampleInvocation, example: UsageExample): Prom…
+       |   ^
+     75|   let observation: ExampleObservation;
+     76|   try {
+ ❯ call ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:36:31
+ ❯ PerformanceProfileService.observe ../../src/services/verification-evidence/PerformanceProfileService.ts:58:18
+ ❯ Object.apply ../../src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:51:29
+ ❯ ../../src/services/verification-evidence/TestExpectationService.ts:36:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 1 passed (7)
+   Start at  02:08:27
+   Duration  297ms (transform 93ms, setup 89ms, collect 59ms, tests 15ms, environment 0ms, prepare 25ms)
+
+[harness resources] Managed command failed; exit 1, remaining processes 0, cleanup unknown false
+error: script "test:unit" exited with code 1
