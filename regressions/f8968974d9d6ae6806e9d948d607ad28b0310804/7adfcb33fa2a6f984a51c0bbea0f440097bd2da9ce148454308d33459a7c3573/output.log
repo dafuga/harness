@@ -1,0 +1,44 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-aYIAy3
+
+ ✓ test/services/unit-index.test.ts (14 tests) 3263ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  3090ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 82ms
+
+ Test Files  2 passed (2)
+      Tests  16 passed (16)
+   Start at  02:07:41
+   Duration  6.56s (transform 244ms, setup 132ms, collect 485ms, tests 3.35s, environment 0ms, prepare 46ms)
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run "$@"' -- test/routes/analytics-cpu-api.test.ts test/utils/site-processes.test.ts test/utils/analytics-cpu-client.test.ts "--maxWorkers=1" "--minWorkers=1"
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-aYIAy3/packages/reports
+
+ ✓ test/utils/site-processes.test.ts (1 test) 118ms
+ ✓ test/routes/analytics-cpu-api.test.ts (7 tests) 7ms
+ ✓ test/utils/analytics-cpu-client.test.ts (1 test) 4ms
+
+ Test Files  3 passed (3)
+      Tests  9 passed (9)
+   Start at  02:07:49
+   Duration  717ms (transform 105ms, setup 152ms, collect 64ms, tests 129ms, environment 0ms, prepare 70ms)
+
+Units registry is valid: 1827 units, 166 uncertain references.
+Checking formatting...
+All matched files use Prettier code style!
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && svelte-check --tsconfig ./tsconfig.previews.json "$@"' --
+
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+warn - Configure your content sources or your generated CSS will be missing styles.
+warn - https://tailwindcss.com/docs/content-configuration
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-aYIAy3/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-aYIAy3/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+Harness audit passed. Files and functions are staying small.
