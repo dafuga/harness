@@ -1,0 +1,51 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-UJtKtx
+
+ ❯ test/history-reason-steps.e2e.test.ts (4 tests | 1 failed | 3 skipped) 147420ms
+   ↓ the reasons of every explained step are kept, and a fresh clone with the notes explains the range
+   × reason history loaders retain compact facts across a 32-revision walk 130269ms
+     → expected [ 'budgets', 'contract', …(11) ] to deeply equal [ 'declarationHash', 'id', …(2) ]
+   ↓ a step keeps the writing limits of its own revision when a later one declares limits
+   ↓ a step without a reason keeps the range open: nothing is kept for it and the failure is said
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/history-reason-steps.e2e.test.ts > reason history loaders retain compact facts across a 32-revision walk
+AssertionError: expected [ 'budgets', 'contract', …(11) ] to deeply equal [ 'declarationHash', 'id', …(2) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   "declarationHash",[39m
+[31m+   "budgets",[39m
+[31m+   "contract",[39m
+[31m+   "dependencies",[39m
+[2m    "id",[22m
+[31m+   "kind",[39m
+[2m    "owns",[22m
+[31m+   "responsibility",[39m
+[31m+   "responsibilityOrigin",[39m
+[31m+   "runtime",[39m
+[31m+   "scenarios",[39m
+[31m+   "schemaVersion",[39m
+[2m    "status",[22m
+[31m+   "title",[39m
+[2m  ][22m
+
+ ❯ test/history-reason-steps.e2e.test.ts:105:37
+    103|   expect(Object.keys(side).sort()).toEqual(['index', 'manifests', 'wri…
+    104|   for (const unit of side.manifests) {
+    105|    expect(Object.keys(unit).sort()).toEqual(['declarationHash', 'id', …
+       |                                     ^
+    106|    expect(Object.keys(unit.owns).sort()).toEqual(['source']);
+    107|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  09:29:47
+   Duration  152.48s (transform 527ms, setup 158ms, collect 1.06s, tests 147.42s, environment 0ms, prepare 54ms)
+
