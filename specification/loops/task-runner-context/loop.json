@@ -2,7 +2,7 @@
 	"name": "task-runner-context",
 	"goal": "Preserve trusted sandbox context through the task process without exposing provider keys",
 	"createdAt": "2026-10-27T11:52:38.965Z",
-	"updatedAt": "2026-10-27T11:55:10.763Z",
+	"updatedAt": "2026-10-27T12:01:25.728Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:01:18.038Z",
+			"evidence": "Commit 64c1bf876d adds only the three trusted context names to the existing environment allowlist; API key and token names remain excluded."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:01:25.728Z",
+			"evidence": "Green b4544479e97d passes the unchanged case on the red profile. Mutant 1118f1255e9f fails the same assertion; restored identical tree passes d9fb8a4bbe68."
 		},
 		{
 			"id": "verify",
