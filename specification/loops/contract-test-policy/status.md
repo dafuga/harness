@@ -1535,3 +1535,18 @@ the unchanged case in capture `f5a688e52a77` with the same environment profile.
 The source commits and both records are retained in Git evidence. Reviewed browser
 baselines, case-bound captures, full verification, and final delivery remain open.
 The unrelated unfinished verification fixture diff is unchanged.
+
+The same workspace case also exposed a generator collision: when only an
+orphaned unit or scenario file existed, generation silently skipped the visual
+registry and wrote new source. Test-only commit `c2d4586cbc` failed at that
+assertion in red `ef9cd6bd53d6`; repair `3a7efd7f07` passed the unchanged case
+in green `587e461b417a` with the same primary-Mac unit-test profile. The five
+focused files passed 34 cases; typecheck, targeted lint and formatting, unit
+registry validation and the unchanged registry guards passed. The test file
+still has five cases. Mutation `cd965bdac6` failed in capture `c32b4ae8eab9`;
+restored tree `dc508e3564` passed in `5507843aed56`, matching the fix tree and
+profile. Source and evidence were retained. The repair was integrated at
+`0f9c5c9d1d`. At its fix tree, the generator measured 22,035 source bytes,
+536 lines, complexity 125 and 28 dependencies; it emits no separate artifact.
+The green record contains focused runtime and whole-process memory samples.
+The visual and full-check gates remain open.
