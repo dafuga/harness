@@ -12,6 +12,11 @@ export async function assertComponentCapture(
 ) {
 	assertCaptureSlot(id, viewport, variant);
 	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
+	if (id === 'desktop.component.project-agent')
+		await expect(
+			page.locator('[data-preview-unit="desktop.component.project-agent"] .floating-chat-panel'),
+			'ProjectAgent capture shows the open chat panel'
+		).toBeVisible();
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
 	if (!directory) return;
 	const selector: Record<string, string> = {
@@ -19,7 +24,8 @@ export async function assertComponentCapture(
 		'desktop.component.deployment-route': '.deployment-route',
 		'reports.component.harness-harness-icon': 'svg',
 		'hub.component.account-menu': ':scope > *',
-		'desktop.component.deployment-dialog': 'dialog[open]'
+		'desktop.component.deployment-dialog': 'dialog[open]',
+		'desktop.component.project-agent': '.floating-chat-panel'
 	};
 	if (!selector[id]) return;
 	const content = page.locator(`[data-preview-unit="${id}"]`);
