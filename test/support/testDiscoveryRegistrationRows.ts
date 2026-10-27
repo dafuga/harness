@@ -41,3 +41,30 @@ export function registrationRows() {
 		}
 	];
 }
+
+/** Import and binding variations for the same generated-registration case. */
+export function registrarSources() {
+	const prefix = "import { test } from 'vitest'; import unit from './unit.json'; ";
+	return [
+		{
+			source: `${prefix}import { TestExpectationService as Check } from '@dafuga01/harness/verification'; new Check().registerExamples(test, unit, {});`,
+			dynamic: false
+		},
+		{
+			source: `${prefix}import { TestExpectationService } from './fake'; new TestExpectationService().registerExamples(test, unit, {});`,
+			dynamic: true
+		},
+		{
+			source: `${prefix}import type { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; new TestExpectationService().registerExamples(test, unit, {});`,
+			dynamic: true
+		},
+		{
+			source: `${prefix}import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; let checker = new TestExpectationService(); checker.registerExamples(test, unit, {});`,
+			dynamic: true
+		},
+		{
+			source: `${prefix}import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; const checker = new TestExpectationService(); checker.registerExamples(test, unit, {});`,
+			dynamic: false
+		}
+	];
+}

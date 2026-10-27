@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { TestDiscoveryService } from '../../../src/services/verification-evidence/TestDiscoveryService';
 import { measureWorkload } from '../../support/measureWorkload';
-import { registrationRows } from '../../support/testDiscoveryRegistrationRows';
+import { registrarSources, registrationRows } from '../../support/testDiscoveryRegistrationRows';
 
 const service = new TestDiscoveryService();
 test('scan initialized source finds imported cases, aliases and computed registration', async () => {
@@ -149,6 +149,19 @@ async function assertRegistrationContexts(
 		if (row.disabled) expect(found.errors.join(' '), row.code).toContain('skipped, exclusive');
 		else if (row.dynamic) expect(found.errors.join(' '), row.code).toContain('computed case');
 		else expect(found.errors, row.code).toEqual([]);
+	}
+	for (const row of registrarSources()) {
+		const file = 'test/examples.test.ts';
+		const found = await subject.discover(
+			{ read: (path) => (path === file ? Promise.resolve(row.source) : read(path)) },
+			[file]
+		);
+		expect(
+			found.tests.map((item) => item.dynamic),
+			row.source
+		).toEqual([row.dynamic]);
+		if (row.dynamic) expect(found.errors.join(' '), row.source).toContain('computed case');
+		else expect(found.errors, row.source).toEqual([]);
 	}
 }
 
