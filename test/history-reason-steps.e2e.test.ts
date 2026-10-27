@@ -101,6 +101,10 @@ test('reason history loaders retain compact facts across a 32-revision walk', as
 	expect(sides).toHaveLength(32);
 	for (const side of sides) {
 		expect(Object.keys(side).sort()).toEqual(['index', 'manifests', 'writing']);
+		for (const unit of side.manifests) {
+			expect(Object.keys(unit).sort()).toEqual(['declarationHash', 'id', 'owns', 'status']);
+			expect(Object.keys(unit.owns).sort()).toEqual(['source']);
+		}
 		for (const file of side.index.files.values()) {
 			expect(Object.keys(file).sort()).toEqual(['blocks', 'hash']);
 			for (const block of file.blocks) expect(Object.keys(block).sort()).toEqual(['hash', 'name']);
