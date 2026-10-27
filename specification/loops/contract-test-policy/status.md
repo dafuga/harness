@@ -1946,3 +1946,22 @@ passed. At `80cd68fb75`, the broker measured 3,014 source bytes, 105 lines,
 complexity 22 and two dependencies; a module emits no separate artifact. The
 focused case took 148.4 ms with 874,479,616 bytes whole-worker RSS, including
 shared runtime and earlier work. Full verification and integration remain open.
+
+## Continuation: synthetic broker-only routing probe
+
+A task-owned loopback Responses stub and isolated empty Codex configuration
+exercised official Codex 0.164.0 with a copy of Luna metadata restricted to
+`direct` tools. Shell, patch, image, web, apps, plugins, goals, user-input and
+nested-agent tools were disabled. The synthetic request named `gpt-6-luna` at
+`max` and exposed only `probe_assigned_file`. The host received that dynamic
+call and returned a synthetic result. Forged `exec_command` and `apply_patch`
+calls returned unsupported-tool errors and created no sentinel file. This is a
+synthetic provider and modified client metadata, not model execution or a real
+Harness worker. The three sanitized result hashes are `c27dec9d4de8d28d`,
+`f25405214291bf16` and `9e4e85dee392518d`; the probe files are temporary.
+
+An isolated empty Codex home is not signed in, while the app-server lacks the
+CLI's `--ignore-user-config` option. The real user configuration has MCP and
+hook settings, so the synthetic tool surface cannot qualify the signed-in
+session. Claude remains signed out. The trusted prelaunch gate stays closed;
+no credential was copied and no real worker was dispatched.
