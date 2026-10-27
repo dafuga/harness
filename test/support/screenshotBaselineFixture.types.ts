@@ -1,5 +1,12 @@
 export interface ScreenshotFixtureOptions {
-	attempts?: 'bound' | 'legacy' | 'missing' | 'duplicate';
+	attempts?:
+		| 'bound'
+		| 'legacy'
+		| 'missing'
+		| 'duplicate'
+		| 'unreported'
+		| 'duplicate-outcome'
+		| 'skipped';
 	bindingCase?: string;
 	corruptImage?: boolean;
 	duplicate?: boolean;

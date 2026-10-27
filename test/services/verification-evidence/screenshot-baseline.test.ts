@@ -105,6 +105,9 @@ test('ScreenshotBaselineService.review rejects damaged source evidence', async (
 		[{ attempts: 'legacy' as const }, 'attempt binding'],
 		[{ attempts: 'missing' as const }, 'screenshot is missing or ambiguous'],
 		[{ attempts: 'duplicate' as const }, 'screenshot is missing or ambiguous'],
+		[{ attempts: 'unreported' as const }, 'references an unexecuted attempt'],
+		[{ attempts: 'duplicate-outcome' as const }, 'case attempts are ambiguous'],
+		[{ attempts: 'skipped' as const }, 'case did not execute'],
 		[{ provenance: 'fixture' as const }, 'matching served build and revision']
 	] as const) {
 		const fixture = await screenshotBaselineFixture(options);

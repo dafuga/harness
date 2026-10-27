@@ -82,26 +82,37 @@ function siblingCapture(
 	sha256: string,
 	outcome: ScreenshotFixtureSeed['outcome']
 ): ScreenshotFixtureSeed['sibling'] {
-	if (options.attempts) {
-		return {
-			path: `evidence/${commit}/visual/page/retry-1.png`,
-			note: JSON.stringify({
-				unit: 'page.fixture',
-				case: 'default.desktop',
-				revision: commit,
-				sha256,
-				...(options.attempts === 'legacy' ? {} : { retry: 1 })
-			}),
-			outcome: { ...outcome, status: 'passed', retry: 1 },
-			...(['legacy', 'missing'].includes(options.attempts) ? { omitCapture: true } : {})
-		};
-	}
+	if (options.attempts) return attemptedSibling(options.attempts, commit, sha256, outcome);
 	if (!options.sibling && !options.duplicate) return undefined;
 	const caseId = options.sibling ? 'default.secondary' : 'default.desktop';
 	return {
 		path: `evidence/${commit}/visual/page/secondary.png`,
 		note: JSON.stringify({ unit: 'page.fixture', case: caseId, revision: commit, sha256 }),
 		...(options.sibling ? { outcome: { ...outcome, title: 'fixture secondary desktop' } } : {})
+	};
+}
+
+function attemptedSibling(
+	attempts: NonNullable<ScreenshotFixtureOptions['attempts']>,
+	commit: string,
+	sha256: string,
+	outcome: ScreenshotFixtureSeed['outcome']
+): NonNullable<ScreenshotFixtureSeed['sibling']> {
+	return {
+		path: `evidence/${commit}/visual/page/retry-1.png`,
+		note: JSON.stringify({
+			unit: 'page.fixture',
+			case: 'default.desktop',
+			revision: commit,
+			sha256,
+			...(attempts === 'legacy' ? {} : { retry: attempts === 'unreported' ? 2 : 1 })
+		}),
+		outcome: {
+			...outcome,
+			status: attempts === 'skipped' ? 'skipped' : 'passed',
+			retry: attempts === 'duplicate-outcome' ? 0 : 1
+		},
+		...(['legacy', 'missing'].includes(attempts) ? { omitCapture: true } : {})
 	};
 }
 
