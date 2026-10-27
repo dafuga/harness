@@ -8,7 +8,7 @@ import { unitIdentity } from '../../../utils/accounts-access/classify-path/unitI
 import { stableJson } from '../../../utils/development-tooling/stableJson';
 
 const componentStates = ['rest', 'label-prop', 'error-prop'] as const;
-const componentViewports = [
+export const appVisualViewports = [
 	{ id: 'desktop', width: 1440, height: 900 },
 	{ id: 'tablet', width: 920, height: 800 },
 	{ id: 'mobile', width: 390, height: 844 }
@@ -67,7 +67,7 @@ function componentCases(
 		{ label: 'Ready', error: 'Invalid label' }
 	];
 	const props = [[], ['label'], ['label', 'error']];
-	return componentViewports.flatMap(({ id: viewport }) =>
+	return appVisualViewports.flatMap(({ id: viewport }) =>
 		componentStates.map((state, index) => ({
 			id: `${state}.${viewport}`,
 			state,
@@ -94,7 +94,7 @@ function componentScenario(unit: ComponentManifest, file: string): ScenarioManif
 		kind: 'ui',
 		units: [unit.id],
 		states: componentStates.map((id) => ({ id, title: id, coverage: 'required' })),
-		viewports: componentViewports.map((viewport) => ({ ...viewport })),
+		viewports: appVisualViewports.map((viewport) => ({ ...viewport })),
 		tests: [
 			{
 				id: 'component',
@@ -109,7 +109,7 @@ function componentScenario(unit: ComponentManifest, file: string): ScenarioManif
 				id: 'screens',
 				kind: 'screenshot',
 				states: [...componentStates],
-				viewports: componentViewports.map(({ id }) => id),
+				viewports: appVisualViewports.map(({ id }) => id),
 				provenance: 'actual-capture',
 				build: 'app',
 				capture: 'element',
@@ -173,7 +173,12 @@ function screenshotContractTest(
 		blocks.postCapture ?? '// Screenshot baselines are comparison-only; update them deliberately.'
 	);
 	const groups = visualGroups(target);
-	return `import type { Page } from '@playwright/test';\nimport { expect, test } from './support/browserTest';\nimport type { MatchScreenshot } from './support/browserTest.types';\n\n${states}\n\nconst viewports = [\n\t{ id: 'desktop', size: { width: 1440, height: 900 } },\n\t{ id: 'tablet', size: { width: 920, height: 800 } },\n\t{ id: 'mobile', size: { width: 390, height: 844 } }\n] as const;\n\ntest.describe('${suite}', () => {\n${groups}\n});\n\nasync function runState(\n\tpage: Page,\n\tmatchScreenshot: MatchScreenshot,\n\tstate: (typeof states)[number],\n\tviewport: (typeof viewports)[number]\n): Promise<void> {\n\tawait page.goto(state.path);\n\t${assertions}\n\t${capture}\n\t${postCapture}\n}\n`;
+	const viewports = appVisualViewports
+		.map(
+			({ id, width, height }) => `\t{ id: '${id}', size: { width: ${width}, height: ${height} } }`
+		)
+		.join(',\n');
+	return `import type { Page } from '@playwright/test';\nimport { expect, test } from './support/browserTest';\nimport type { MatchScreenshot } from './support/browserTest.types';\n\n${states}\n\nconst viewports = [\n${viewports}\n] as const;\n\ntest.describe('${suite}', () => {\n${groups}\n});\n\nasync function runState(\n\tpage: Page,\n\tmatchScreenshot: MatchScreenshot,\n\tstate: (typeof states)[number],\n\tviewport: (typeof viewports)[number]\n): Promise<void> {\n\tawait page.goto(state.path);\n\t${assertions}\n\t${capture}\n\t${postCapture}\n}\n`;
 }
 
 function visualGroups(target: 'page' | 'component' | 'layout' | 'partial'): string {
@@ -183,8 +188,8 @@ function visualGroups(target: 'page' | 'component' | 'layout' | 'partial'): stri
 		layout: ['default'],
 		partial: ['rest', 'label-prop']
 	}[target];
-	return ['desktop', 'tablet', 'mobile']
-		.map((name, index) => {
+	return appVisualViewports
+		.map(({ id: name }, index) => {
 			const cases = states
 				.map(
 					(state, row) =>

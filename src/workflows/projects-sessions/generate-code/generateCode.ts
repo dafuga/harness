@@ -31,6 +31,7 @@ import { atomLibrary, useAtomLibrary } from './atomLibrary';
 import { unitsConfigFile, unitsConfigSchema } from '../../../core/development-tooling/unitsConfig';
 import type { PlannedFile } from '../../../core/development-tooling/files';
 import { componentContractFiles } from '../../../templates/development-tooling/app-pieces/appContractTests';
+import { pageContractFiles } from '../../../templates/development-tooling/app-pieces/pageContracts';
 
 export { scaffoldKinds };
 
@@ -81,7 +82,7 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const pieces = useAtomLibrary(planned, library);
 	const grouped = groupedFiles(pieces, selection?.group.id);
 	const atoms = missingAtoms(root, input.kind, library);
-	const registry = newComponentRegistry(root, input.kind, name, grouped.files);
+	const registry = newVisualRegistry(root, input.kind, name, grouped.files);
 	const files = separateTypeDeclarations([...grouped.files, ...support, ...atoms, ...registry]);
 	assertUniqueGroupedNames(root, selection?.group.id, files);
 	await ensureParents(root, files);
@@ -141,17 +142,24 @@ function missingAtoms(root: string, kind: PieceKind, library: string) {
 	return atomicComponentFiles().filter((file) => !existsSync(join(root, file.path)));
 }
 
-/** Preserve authored contracts when regenerating an existing component. */
-function newComponentRegistry(root: string, kind: PieceKind, name: string, files: PlannedFile[]) {
-	if (kind !== 'component' || !existsSync(join(root, unitsConfigFile))) return [];
+/** Preserve authored contracts when regenerating an existing visual unit. */
+function newVisualRegistry(root: string, kind: PieceKind, name: string, files: PlannedFile[]) {
+	if (!['component', 'view', 'layout'].includes(kind) || !existsSync(join(root, unitsConfigFile)))
+		return [];
 	const config = unitsConfigSchema.parse(
 		JSON.parse(readFileSync(join(root, unitsConfigFile), 'utf8'))
 	);
 	const workspace = config.workspaces.find((item) => item.root === '.');
-	const source = files.find(
-		(item) => item.path.startsWith('src/components/') && item.path.endsWith('.svelte')
+	const source = files.find((item) =>
+		kind === 'component'
+			? item.path.startsWith('src/components/') && item.path.endsWith('.svelte')
+			: item.path.startsWith('src/routes/') &&
+				item.path.endsWith(kind === 'layout' ? '/+layout.svelte' : '/+page.svelte')
 	);
 	if (!workspace || !source || existsSync(join(root, source.path))) return [];
-	const registry = componentContractFiles(name, source.path, workspace.name);
+	const registry =
+		kind === 'component'
+			? componentContractFiles(name, source.path, workspace.name)
+			: pageContractFiles(name, source.path, workspace.name);
 	return registry.some((item) => existsSync(join(root, item.path))) ? [] : registry;
 }

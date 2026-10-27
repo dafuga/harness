@@ -3,17 +3,22 @@
 	"id": "template.development-tooling-app-pieces-app-contract-tests",
 	"kind": "template",
 	"title": "appContractTests",
-	"responsibility": "Emits screenshot suites and component case registries for generated SvelteKit entities.",
+	"responsibility": "Emits screenshot suites and case registries for generated SvelteKit entities.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/templates/development-tooling/app-pieces/appContractTests.ts"],
+		"source": [
+			"src/templates/development-tooling/app-pieces/appContractTests.ts",
+			"src/templates/development-tooling/app-pieces/pageContracts.ts"
+		],
 		"symbols": [
+			"appVisualViewports",
 			"componentContractFiles",
 			"componentContractTest",
 			"pageContractTest",
 			"layoutContractTest",
-			"partialContractTest"
+			"partialContractTest",
+			"pageContractFiles"
 		]
 	},
 	"contract": {
@@ -66,9 +71,25 @@
 			{
 				"name": "partialContractTest.label",
 				"type": "string"
+			},
+			{
+				"name": "pageContractFiles.name",
+				"type": "string"
+			},
+			{
+				"name": "pageContractFiles.source",
+				"type": "string"
+			},
+			{
+				"name": "pageContractFiles.workspace",
+				"type": "string"
 			}
 		],
 		"outputs": [
+			{
+				"name": "appVisualViewports",
+				"type": "unknown"
+			},
 			{
 				"name": "componentContractFiles",
 				"type": "PlannedFile[]"
@@ -88,6 +109,10 @@
 			{
 				"name": "partialContractTest",
 				"type": "string"
+			},
+			{
+				"name": "pageContractFiles",
+				"type": "PlannedFile[]"
 			}
 		],
 		"errors": [
