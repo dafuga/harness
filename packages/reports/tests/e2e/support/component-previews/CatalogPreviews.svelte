@@ -8,6 +8,7 @@
 	import { previewFixture } from './fixtures.svelte';
 	import { routePreview } from './visualUnits';
 	import NativeAtomPreview from './NativeAtomPreview.svelte';
+	import '../../../../../desktop/src/lib/styles/agents-providers/projectWork.css';
 	let { id: requested }: { id: string } = $props();
 	const id = untrack(() => requested);
 	const unit = previewUnits.find((unit) => unit.id === id);
@@ -103,6 +104,10 @@
 							</Controls>
 						</SvelteFlow>
 					</div>
+				{:else if id === 'desktop.component.agents-providers-project-work-feature'}
+					<section data-harness-component="project-work">
+						<ul><Component {...fixture.props} /></ul>
+					</section>
 				{:else if unit.source?.includes('/atoms/')}
 					<NativeAtomPreview {Component} source={unit.source} />
 				{:else}

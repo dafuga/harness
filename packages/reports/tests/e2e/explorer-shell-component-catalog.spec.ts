@@ -99,6 +99,8 @@ for (const viewport of catalogViewports) {
 				unit.id === 'desktop.component.agents-providers-project-work' ||
 				unit.id === 'desktop.component.agents-providers-project-work-feature'
 			) {
+				const work = component.locator('[data-harness-component="project-work"]');
+				await expect(work.locator('summary').first()).toHaveCSS('display', 'flex');
 				await expect(component.getByText('Plan revision 1', { exact: false })).toBeVisible();
 				await expect(component.getByText('Selected option-a', { exact: true })).toBeVisible();
 				for (const status of ['To do', 'In progress', 'Accepted'])
