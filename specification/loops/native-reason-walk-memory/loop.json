@@ -2,7 +2,7 @@
 	"name": "native-reason-walk-memory",
 	"goal": "Bound memory retained by long reason-history walks while preserving every explanation result",
 	"createdAt": "2026-10-27T00:33:58.584Z",
-	"updatedAt": "2026-10-27T00:35:38.601Z",
+	"updatedAt": "2026-10-27T00:41:34.117Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:41:34.117Z",
+			"evidence": "Harness loop record preserved failing assertion at exact test commit 7c7a11f2d3412588a8c250f834c1dc02a3d1f2c5 on harbor-mbp-2."
 		},
 		{
 			"id": "implement",
