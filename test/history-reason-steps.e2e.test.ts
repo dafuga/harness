@@ -3,6 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { explanationsFile } from '../src/core/explanationTypes';
+import { commitLoader } from '../src/workflows/development-tooling/loadRevisions';
 import { freshClone, noteLines, removeRemote, withRemote } from './support/historyRepo';
 import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
 let baseline: VerifyRepo;
@@ -79,6 +80,19 @@ test('the reasons of every explained step are kept, and a fresh clone with the n
 	const after = await clone.run(['explain', 'check', ...range]);
 	expect([after.exitCode, after.stdout.trim()]).toEqual([0, check.stdout.trim()]);
 	await Promise.all([repo.dispose(), clone.dispose(), removeRemote(remote)]);
+}, 180_000);
+
+test('reason history loaders keep only hashes and symbol blocks for loaded revisions', async () => {
+	const repo = await cloneRepo(baseline);
+	const commit = await repo.git(['rev-parse', 'HEAD']);
+	const side = await commitLoader(repo.root)(commit);
+
+	expect(Object.keys(side).sort()).toEqual(['index', 'manifests', 'writing']);
+	for (const file of side.index.files.values()) {
+		expect(Object.keys(file).sort()).toEqual(['blocks', 'hash']);
+		for (const block of file.blocks) expect(Object.keys(block).sort()).toEqual(['hash', 'name']);
+	}
+	await repo.dispose();
 }, 180_000);
 
 test('a step keeps the writing limits of its own revision when a later one declares limits', async () => {
