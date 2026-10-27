@@ -69,8 +69,10 @@ test('assign routes the task and required worker to the service without running 
 		expect(service.assign).toHaveBeenCalledExactlyOnceWith('task.alpha', 'worker-a');
 		expect(output).toHaveBeenCalledWith(JSON.stringify(result, null, 2));
 		expect(worker.once).not.toHaveBeenCalled();
+		const missing = new Command().exitOverride().configureOutput({ writeErr: () => {} });
+		new ModuleTaskCommand(service as never, {} as never, worker).register(missing.command('task'));
 		await expect(
-			program.parseAsync(['node', 'harness', 'task', 'assign', 'task.alpha'])
+			missing.parseAsync(['node', 'harness', 'task', 'assign', 'task.alpha'])
 		).rejects.toThrow();
 		expect(service.assign).toHaveBeenCalledTimes(1);
 	} finally {
