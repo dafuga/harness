@@ -1,0 +1,81 @@
+{
+	"name": "generated-visual-build",
+	"goal": "Run generated visual verification against the stamped built app.",
+	"createdAt": "2026-10-27T03:37:54.446Z",
+	"updatedAt": "2026-10-27T03:42:43.043Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:37:55.017Z",
+			"evidence": "The generated visual scenario declares build app but Playwright serves an unstamped development server and can reuse a foreign process."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:37:55.570Z",
+			"evidence": "The existing app generator case checks screenshot paths but not built-server provenance. Strengthen that same case to require a stamp slot, setup, owned preview and normal E2E build order."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:39:19.996Z",
+			"evidence": "The existing generator case failed on the missing build stamp slot before the product change."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:40:11.572Z",
+			"evidence": "Generate a build stamp slot and owned preview server; normal and Harness visual runs build and stamp before Playwright."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:40:39.852Z",
+			"evidence": "The unchanged generator case passed at a5543047c3 after the test-only failure in the same environment."
+		},
+		{
+			"id": "guard",
+			"title": "Reject the old unstamped visual setup using the existing generator case.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:42:10.346Z",
+			"evidence": "Mutant e65d8f062a failed capture 0578fdd813e5; restored 109e9635fb passed b7dc581ff5e4 with the same tree as 057936fce5."
+		},
+		{
+			"id": "source-measurements",
+			"title": "Measure changed templates and retain their normal workloads.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:42:41.755Z",
+			"evidence": "At 057936fce5, source bytes/lines/complexity/dependencies: project 8459/223/10/11, project tests 9315/218/12/5, guidance 18477/146/9/3. Capture 9aa6c9d691dd retains normal workloads and whole-worker RSS; modules emit no separate artifacts."
+		},
+		{
+			"id": "generated-build",
+			"title": "Build and stamp a fresh generated app without starting a server.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:42:43.043Z",
+			"evidence": "A fresh CLI app passed format, typecheck, lint, audit and build; verify stamp and identity agreed on 774fbcfd8eb73cf869414476fa81bbb7443b47d618cad565dbbebfb15d4536c6 across 33 files. No browser ran."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
