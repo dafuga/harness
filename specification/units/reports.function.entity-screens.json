@@ -10,7 +10,8 @@
 		"source": [
 			"packages/reports/src/utils/entityScreens.ts",
 			"packages/reports/src/utils/explorer-ui/entityScreens.ts",
-			"packages/reports/src/utils/explorer-ui/entityScreens.types.ts"
+			"packages/reports/src/utils/explorer-ui/entityScreens.types.ts",
+			"packages/reports/src/utils/explorer-ui/focusedAudioIdentity.ts"
 		],
 		"symbols": [
 			"screenOptions",
@@ -30,7 +31,8 @@
 			"ScreenPick",
 			"EntityScreens",
 			"Phase",
-			"Pane"
+			"Pane",
+			"focusedAudioIdentity"
 		]
 	},
 	"contract": {
@@ -103,7 +105,7 @@
 			{
 				"name": "galleryItems",
 				"type": "Evidence[]",
-				"description": "Before media then after media in commit mode, or current media alone, with sequence order, status, provenance and media details. Includes recorded screenshot/audio items even when unusable or inherited, retaining their labels. Source identifies the capture build revision, never the target of inherited proof."
+				"description": "Before media then after media in commit mode, or current media alone, with sequence order, status, provenance and media details. Includes unusable or inherited captures. Focused audio retains its bound case and tested revision; screenshot source identifies its served build revision, never the target of inherited proof."
 			},
 			{
 				"name": "catalogShot",
@@ -151,6 +153,169 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "galleryItems",
+				"name": "distinct class audio cases retain tested provenance",
+				"call": "galleryItems({\"mode\":\"current\",\"scenarios\":[],\"after\":{\"commit\":\"cccccccccccccccccccccccccccccccccccccccc\",\"detail\":null,\"record\":null,\"captures\":[{\"scenario\":\"focused\",\"state\":\"active\",\"capture\":{\"evidence\":\"clip\",\"kind\":\"audio\",\"state\":\"active\",\"status\":\"passed\",\"path\":\"media/first.wav\",\"sha256\":\"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\"bytes\":1,\"mediaType\":\"audio/wav\",\"capturedAt\":\"2026-10-27T00:00:00Z\",\"provenance\":\"fixture\",\"transcript\":\"Synthetic tone. No speech.\",\"durationSeconds\":1,\"media\":\"media/first.wav\",\"note\":\"{\\\"unit\\\":\\\"app.service.clip\\\",\\\"case\\\":\\\"generate.initialized\\\",\\\"revision\\\":\\\"cccccccccccccccccccccccccccccccccccccccc\\\",\\\"sha256\\\":\\\"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\\\"}\"},\"standing\":\"unvalidated\",\"focused\":{\"loop\":\"upload-cases\",\"status\":\"passed\",\"record\":\"fixture-record\"},\"usable\":true,\"current\":true,\"inheritedFrom\":null},{\"scenario\":\"focused\",\"state\":\"active\",\"capture\":{\"evidence\":\"clip\",\"kind\":\"audio\",\"state\":\"active\",\"status\":\"passed\",\"path\":\"media/second.wav\",\"sha256\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"bytes\":1,\"mediaType\":\"audio/wav\",\"capturedAt\":\"2026-10-27T00:00:00Z\",\"provenance\":\"actual-capture\",\"transcript\":\"Recorded speech.\",\"durationSeconds\":1,\"media\":\"media/second.wav\",\"note\":\"{\\\"unit\\\":\\\"app.service.clip\\\",\\\"case\\\":\\\"generate.cancelled\\\",\\\"revision\\\":\\\"cccccccccccccccccccccccccccccccccccccccc\\\",\\\"sha256\\\":\\\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\\\"}\"},\"standing\":\"unvalidated\",\"focused\":{\"loop\":\"upload-cases\",\"status\":\"passed\",\"record\":\"fixture-record\"},\"usable\":true,\"current\":true,\"inheritedFrom\":null}],\"coverage\":[],\"gap\":null},\"before\":null,\"initial\":null,\"incomparable\":[]})",
+				"input": [
+					{
+						"mode": "current",
+						"scenarios": [],
+						"after": {
+							"commit": "cccccccccccccccccccccccccccccccccccccccc",
+							"detail": null,
+							"record": null,
+							"captures": [
+								{
+									"scenario": "focused",
+									"state": "active",
+									"capture": {
+										"evidence": "clip",
+										"kind": "audio",
+										"state": "active",
+										"status": "passed",
+										"path": "media/first.wav",
+										"sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+										"bytes": 1,
+										"mediaType": "audio/wav",
+										"capturedAt": "2026-10-27T00:00:00Z",
+										"provenance": "fixture",
+										"transcript": "Synthetic tone. No speech.",
+										"durationSeconds": 1,
+										"media": "media/first.wav",
+										"note": "{\"unit\":\"app.service.clip\",\"case\":\"generate.initialized\",\"revision\":\"cccccccccccccccccccccccccccccccccccccccc\",\"sha256\":\"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\"}"
+									},
+									"standing": "unvalidated",
+									"focused": {
+										"loop": "upload-cases",
+										"status": "passed",
+										"record": "fixture-record"
+									},
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								},
+								{
+									"scenario": "focused",
+									"state": "active",
+									"capture": {
+										"evidence": "clip",
+										"kind": "audio",
+										"state": "active",
+										"status": "passed",
+										"path": "media/second.wav",
+										"sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+										"bytes": 1,
+										"mediaType": "audio/wav",
+										"capturedAt": "2026-10-27T00:00:00Z",
+										"provenance": "actual-capture",
+										"transcript": "Recorded speech.",
+										"durationSeconds": 1,
+										"media": "media/second.wav",
+										"note": "{\"unit\":\"app.service.clip\",\"case\":\"generate.cancelled\",\"revision\":\"cccccccccccccccccccccccccccccccccccccccc\",\"sha256\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"}"
+									},
+									"standing": "unvalidated",
+									"focused": {
+										"loop": "upload-cases",
+										"status": "passed",
+										"record": "fixture-record"
+									},
+									"usable": true,
+									"current": true,
+									"inheritedFrom": null
+								}
+							],
+							"coverage": [],
+							"gap": null
+						},
+						"before": null,
+						"initial": null,
+						"incomparable": []
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						{
+							"id": "current-ccccccc-focused-active-clip-audio-generate.initialized",
+							"title": "focused · active · generate.initialized",
+							"category": "focused",
+							"file": "first.wav",
+							"status": "not-proven",
+							"source": "cccccccccccccccccccccccccccccccccccccccc",
+							"capturedAt": "2026-10-27T00:00:00Z",
+							"phase": "current",
+							"comparison": "focused|active|clip|audio|generate.initialized",
+							"standing": "Focused capture",
+							"provenance": [
+								{
+									"label": "Focused run",
+									"value": "upload-cases · passed"
+								},
+								{
+									"label": "Audio origin",
+									"value": "Generated fixture"
+								}
+							],
+							"note": "Captured at the tested revision; this focused run grants no full verification verdict.",
+							"missing": false,
+							"mediaType": "audio",
+							"mimeType": "audio/wav",
+							"durationSeconds": 1,
+							"transcript": "Synthetic tone. No speech.",
+							"order": 0
+						},
+						{
+							"id": "current-ccccccc-focused-active-clip-audio-generate.cancelled",
+							"title": "focused · active · generate.cancelled",
+							"category": "focused",
+							"file": "second.wav",
+							"status": "not-proven",
+							"source": "cccccccccccccccccccccccccccccccccccccccc",
+							"capturedAt": "2026-10-27T00:00:00Z",
+							"phase": "current",
+							"comparison": "focused|active|clip|audio|generate.cancelled",
+							"standing": "Focused capture",
+							"provenance": [
+								{
+									"label": "Focused run",
+									"value": "upload-cases · passed"
+								},
+								{
+									"label": "Audio origin",
+									"value": "Actual capture"
+								}
+							],
+							"note": "Captured at the tested revision; this focused run grants no full verification verdict.",
+							"missing": false,
+							"mediaType": "audio",
+							"mimeType": "audio/wav",
+							"durationSeconds": 1,
+							"transcript": "Recorded speech.",
+							"order": 1
+						}
+					]
+				}
+			}
+		],
+		"states": ["default"],
+		"cases": [
+			{
+				"id": "gallery.audio-cases",
+				"state": "default",
+				"subject": "galleryItems",
+				"example": "distinct class audio cases retain tested provenance",
+				"test": {
+					"file": "packages/reports/test/utils/entity-screens.test.ts",
+					"title": "galleryItems: distinct class audio cases retain tested provenance"
+				}
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
