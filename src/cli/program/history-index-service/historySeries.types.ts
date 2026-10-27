@@ -8,3 +8,15 @@ export type Point = Growth[number]['growth'][number];
 export type Line = BenchmarkSeries['series'][number];
 
 export type Head = Pick<BenchmarkSeries, 'unit' | 'workload' | 'metric' | 'target'>;
+
+import type {
+	RegressionPoint,
+	RegressionView
+} from '../../../core/verification-evidence/regressionTypes';
+
+/** Index aggregation needs only a focused run's identity, gap and measurements. */
+export type FocusedPoint = Pick<RegressionPoint, 'id' | 'commit' | 'measurements'>;
+export type FocusedRun = Pick<RegressionView, 'loop' | 'gap'> & {
+	red: FocusedPoint | null;
+	green?: FocusedPoint;
+};
