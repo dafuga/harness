@@ -10,6 +10,7 @@ import { TestContractService } from '../../../src/services/verification-evidence
 import { indexFiles } from '../../support/memoryTree';
 import { measureWorkload } from '../../support/measureWorkload';
 import { assertCaseAdmissionInputs } from '../../support/testCaseAdmissionCases';
+import { assertVisualCaseBinding } from '../../support/visualCaseBinding';
 import {
 	assertDeclaredInputCapabilities,
 	assertVisualScenarioEvidence
@@ -81,6 +82,9 @@ test('validate initialized and invalid registries against declared cases', async
 		'service.verification-evidence-test-contract',
 		'visual-scenario-evidence',
 		() => assertVisualScenarioEvidence(unit, service)
+	);
+	await measureWorkload('service.verification-evidence-test-contract', 'visual-case-binding', () =>
+		assertVisualCaseBinding(unit, service)
 	);
 	await measureWorkload('validator.verification-evidence-test-case', 'matrix-row-admission', () =>
 		assertMatrixRows(unit, service, 'validate')

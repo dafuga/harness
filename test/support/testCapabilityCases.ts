@@ -95,7 +95,7 @@ export function assertVisualScenarioEvidence(unit: ContractUnit, service: TestCo
 	}
 }
 
-function visualScenarioFixture(unit: ContractUnit, shape: 'page' | 'component') {
+export function visualScenarioFixture(unit: ContractUnit, shape: 'page' | 'component') {
 	const { item, before } = fixture(unit, shape);
 	const viewports = item.viewports ?? [];
 	const evidence: ScenarioManifest['evidence'][number] = {
