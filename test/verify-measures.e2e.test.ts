@@ -6,7 +6,7 @@ import {
 	profileMissingMeasurements,
 	taskProfile
 } from './support/taskProfiles';
-import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
+import { baselineRepo, cloneRepo, reviewer, type VerifyRepo } from './support/verifyRepo';
 
 let baseline: VerifyRepo;
 beforeAll(async () => {
@@ -72,9 +72,11 @@ test('measures that do not apply or were not taken are stated, never left out', 
 test('a benchmarked unit outside impact keeps its committed source identity', async () => {
 	const repo = await cloneRepo(baseline);
 	try {
-		await repo.change(
-			'scripts/fixture.mjs',
-			(source) => `${source}\n// Exercise measurement identity.\n`
+		await repo.change('scripts/fixture.mjs', (source) =>
+			source.replace(
+				"if (media === 'corrupt')",
+				"if (media === 'extra') return Buffer.from('unused');\n\tif (media === 'corrupt')"
+			)
 		);
 		const hash = await repo.git(['rev-parse', 'HEAD:src/services/TitleService.ts']);
 		const { record } = await repo.verify();
@@ -97,8 +99,19 @@ test('a removed unit keeps its base source identity in the verification record',
 		await repo.write(path, 'export function retired(): number { return 1; }\n');
 		await repo.harness(['units', 'index', '--write']);
 		await repo.explainAll();
-		const base = await repo.commit('feat: add retirement fixture');
-		await repo.verify();
+		await repo.commit('feat: add retirement fixture');
+		const initial = await repo.verify();
+		await repo.harness([
+			'budget',
+			'establish',
+			'function.retired',
+			'--record',
+			initial.record.id,
+			...reviewer
+		]);
+		const base = await repo.commit('chore: establish retirement baseline');
+		const added = await repo.verify();
+		expect(added.record.status, added.record.failures.join('; ')).toBe('passed');
 		await attach(repo);
 		const hash = await repo.git(['rev-parse', `${base}:${path}`]);
 		await repo.git(['rm', '-q', path]);
@@ -107,6 +120,8 @@ test('a removed unit keeps its base source identity in the verification record',
 		await repo.explainAll();
 		await repo.commit('feat: retire fixture');
 		const { record } = await repo.verify();
+		expect(record.source.base).toBe(base);
+		expect(record.impact.units.removed).toContain('function.retired');
 		const removed = record.components.find((item) => item.unit === 'function.retired');
 		expect(removed).toMatchObject({ change: 'removed', files: [{ path, hash }] });
 	} finally {
