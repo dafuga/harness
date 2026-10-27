@@ -158,11 +158,8 @@ function assertExampleImplementations(
 
 /** Unexpected invocation failures keep their original value and actionable message. */
 function unexpectedExampleFailure(error: unknown): Error {
-	const detail =
-		error instanceof Error
-			? error.message
-			: typeof error === 'string'
-				? error
-				: 'non-Error value thrown';
+	let detail = 'non-Error value thrown';
+	if (error instanceof Error) detail = error.message;
+	else if (typeof error === 'string') detail = error;
 	return new Error(`Example unexpectedly failed: ${detail}`, { cause: error });
 }
