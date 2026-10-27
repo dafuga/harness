@@ -61,7 +61,7 @@
 			{
 				"name": "TypeError",
 				"type": "thrown",
-				"description": "A null sampling value cannot supply rounds or iterations."
+				"description": "A request without JSON text or a null sampling value throws TypeError."
 			}
 		]
 	},
@@ -345,7 +345,7 @@
 					"title": "requestDigest: Propagate a request getter error"
 				},
 				"props": ["request"],
-				"errors": ["Error"]
+				"errors": ["Error", "TypeError"]
 			},
 			{
 				"id": "context.standard",

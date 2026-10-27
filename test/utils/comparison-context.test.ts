@@ -71,6 +71,8 @@ function checkContext(value: ReturnType<typeof comparisonContext>): void {
 new TestExpectationService().registerExamples(test, manifest as ComponentManifest, {
 	requestDigest: (value: unknown) =>
 		checked('requestDigest', [value], () => {
+			if (fixture(value, 'throwing-request'))
+				expect(() => requestDigest(undefined)).toThrow(TypeError);
 			const result = requestDigest(request(value));
 			expect(result).toMatch(/^[0-9a-f]{64}$/);
 			return result;
