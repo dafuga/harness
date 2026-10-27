@@ -2,11 +2,9 @@
 	"name": "scenario-capture-kind",
 	"goal": "Required scenario evidence must match its declared capture kind without inflating existing cases",
 	"createdAt": "2026-10-27T04:07:44.124Z",
-	"updatedAt": "2026-10-27T04:07:48.853Z",
+	"updatedAt": "2026-10-27T04:16:17.555Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T04:15:57.463Z",
+			"evidence": "Test commit 815179326c exposes an output satisfying a screenshot slot; immutable red 92e3a03142e3 retains the actual assertion."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T04:16:15.653Z",
+			"evidence": "Fix 9bd3c0d300 requires the declared evidence kind and marks mismatched captures failed."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T04:16:17.555Z",
+			"evidence": "Unchanged suite passes in paired green d087d4fe827a; final-test mutant 07cd534a8a15 fails and restored 159e51da5747 passes."
 		},
 		{
 			"id": "verify",
