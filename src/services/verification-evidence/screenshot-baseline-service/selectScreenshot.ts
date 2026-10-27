@@ -27,11 +27,8 @@ export function selectScreenshot(
 		.filter(
 			(capture) => capture.evidence === input.evidence && capture.viewport === input.viewport
 		);
-	const matches = captures.filter((capture) => captureHasBinding(capture, input));
-	if (!matches.length && captures.length === 1)
-		return fail('Baseline screenshot has no valid case binding.');
-	if (matches.length !== 1) return fail('Baseline screenshot is missing or ambiguous.');
-	const capture = matches[0];
+	if (captures.length !== 1) return fail('Baseline screenshot is missing or ambiguous.');
+	const capture = captures[0];
 	const caseStatus = completedCase(input, contract, record, capture);
 	assertCapture(input, contract, record, capture);
 	const bytes = files.get(capture.path);
@@ -101,14 +98,6 @@ function matchingBinding(value: unknown, input: ScreenshotReviewInput, sha256: s
 		note.revision === input.commit &&
 		note.sha256 === sha256
 	);
-}
-
-function captureHasBinding(capture: Capture, input: ScreenshotReviewInput): boolean {
-	try {
-		return matchingBinding(JSON.parse(capture.note ?? 'null'), input, capture.sha256);
-	} catch {
-		return false;
-	}
 }
 
 function assertDimensions(bytes: Buffer, capture: Capture, contract: ScreenshotContract): void {
