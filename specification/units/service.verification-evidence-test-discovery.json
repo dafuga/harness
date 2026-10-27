@@ -20,7 +20,8 @@
 			"TestDiscovery",
 			"DiscoveredTest",
 			"TestDiscovery",
-			"runnerDeclarations"
+			"runnerDeclarations",
+			"registrationScope"
 		]
 	},
 	"contract": {
@@ -49,6 +50,14 @@
 			{
 				"name": "runnerDeclarations.file",
 				"type": "string"
+			},
+			{
+				"name": "registrationScope.source",
+				"type": "ts.SourceFile"
+			},
+			{
+				"name": "registrationScope.call",
+				"type": "ts.CallExpression"
 			}
 		],
 		"outputs": [
@@ -63,6 +72,10 @@
 			{
 				"name": "runnerDeclarations",
 				"type": "DiscoveredTest[]"
+			},
+			{
+				"name": "registrationScope",
+				"type": "{ titles: string[]; dynamic: boolean; disabled: boolean }"
 			}
 		],
 		"errors": []

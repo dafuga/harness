@@ -48,7 +48,10 @@ export function runnerDeclarations(text: string, file: string): DiscoveredTest[]
 }
 
 /** Generated registrations inherit the same suite identities and runner modifiers as literal tests. */
-export function registrationScope(source: ts.SourceFile, call: ts.CallExpression) {
+export function registrationScope(
+	source: ts.SourceFile,
+	call: ts.CallExpression
+): { titles: string[]; dynamic: boolean; disabled: boolean } {
 	const aliases = runnerImports(source);
 	const scope = enclosingContext(source, call, aliases);
 	const registrar = registrarContext(source, call.arguments[0], aliases);
