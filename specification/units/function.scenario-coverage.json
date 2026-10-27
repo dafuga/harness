@@ -92,6 +92,156 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "scenarioCoverage",
+				"name": "accepts a stamped flow",
+				"call": "scenarioCoverage(coverageFixture({\"fixture\":\"flow\",\"capture\":{\"provenance\":\"actual-capture\",\"server\":{\"buildId\":\"build-1\",\"revision\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}}})).failures",
+				"input": [
+					{
+						"fixture": "flow",
+						"capture": {
+							"provenance": "actual-capture",
+							"server": {
+								"buildId": "build-1",
+								"revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+							}
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": []
+				}
+			},
+			{
+				"subject": "problem",
+				"name": "accepts a fixture flow",
+				"call": "((input) => problem(input, input.gathered[0]))(coverageFixture({\"fixture\":\"flow\",\"capture\":{}}))",
+				"input": [
+					{
+						"fixture": "flow",
+						"capture": {}
+					}
+				],
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"subject": "scenarioCoverage",
+				"name": "accepts an element screenshot",
+				"call": "scenarioCoverage(coverageFixture({\"fixture\":\"image\",\"capture\":{},\"mode\":\"element\"})).failures",
+				"input": [
+					{
+						"fixture": "image",
+						"capture": {},
+						"mode": "element"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": []
+				}
+			},
+			{
+				"subject": "scenarioCoverage",
+				"name": "rejects a capture of the wrong kind",
+				"call": "scenarioCoverage(coverageFixture({\"fixture\":\"image\",\"capture\":{\"kind\":\"output\",\"mediaType\":\"text/plain\"},\"mode\":\"element\"})).failures",
+				"input": [
+					{
+						"fixture": "image",
+						"capture": {
+							"kind": "output",
+							"mediaType": "text/plain"
+						},
+						"mode": "element"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": [
+						"explorer-flow: missing screenshot for state pages at viewport desktop",
+						"explorer-flow: capture pages-flow.json has kind output but evidence flow requires screenshot"
+					]
+				}
+			},
+			{
+				"subject": "scenarioCoverage",
+				"name": "accepts a viewport screenshot",
+				"call": "scenarioCoverage(coverageFixture({\"fixture\":\"image\",\"capture\":{},\"mode\":\"viewport\",\"width\":920,\"height\":700})).failures",
+				"input": [
+					{
+						"fixture": "image",
+						"capture": {},
+						"mode": "viewport",
+						"width": 920,
+						"height": 700
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": []
+				}
+			}
+		],
+		"states": ["default"],
+		"cases": [
+			{
+				"id": "example.1",
+				"state": "default",
+				"subject": "scenarioCoverage",
+				"example": "accepts a stamped flow",
+				"test": {
+					"file": "test/utils/scenario-coverage.test.ts",
+					"title": "scenarioCoverage: accepts a stamped flow"
+				}
+			},
+			{
+				"id": "example.2",
+				"state": "default",
+				"subject": "problem",
+				"example": "accepts a fixture flow",
+				"test": {
+					"file": "test/utils/scenario-coverage.test.ts",
+					"title": "problem: accepts a fixture flow"
+				}
+			},
+			{
+				"id": "example.3",
+				"state": "default",
+				"subject": "scenarioCoverage",
+				"example": "accepts an element screenshot",
+				"test": {
+					"file": "test/utils/scenario-coverage.test.ts",
+					"title": "scenarioCoverage: accepts an element screenshot"
+				}
+			},
+			{
+				"id": "example.4",
+				"state": "default",
+				"subject": "scenarioCoverage",
+				"example": "rejects a capture of the wrong kind",
+				"test": {
+					"file": "test/utils/scenario-coverage.test.ts",
+					"title": "scenarioCoverage: rejects a capture of the wrong kind"
+				}
+			},
+			{
+				"id": "example.5",
+				"state": "default",
+				"subject": "scenarioCoverage",
+				"example": "accepts a viewport screenshot",
+				"test": {
+					"file": "test/utils/scenario-coverage.test.ts",
+					"title": "scenarioCoverage: accepts a viewport screenshot"
+				}
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
