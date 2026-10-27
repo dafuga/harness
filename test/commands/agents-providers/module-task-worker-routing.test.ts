@@ -15,9 +15,7 @@ test('worker command uses only the trusted in-process collaborator when supplied
 			.mockResolvedValueOnce({ status: 'failed' })
 	};
 	const program = new Command().exitOverride();
-	new ModuleTaskCommand({} as never, {} as never, worker).register(
-		program.command('task')
-	);
+	new ModuleTaskCommand({} as never, {} as never, worker).register(program.command('task'));
 	const previous = process.exitCode;
 	process.exitCode = 0;
 	try {
