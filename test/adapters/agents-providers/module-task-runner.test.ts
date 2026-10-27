@@ -3,7 +3,11 @@ import { expect } from '../../verificationExpect';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { assertTaskModelIdentity } from '../../support/taskModelIdentity';
 import { observedTaskOperation } from '../../support/taskProfiles';
-import { isolateRunnerEnvironment } from './module-task-runner-environment.test.fixtures';
+import {
+	expectedSandboxEnvironment,
+	isolateRunnerEnvironment,
+	runTrustedEnvironmentProbe
+} from './module-task-runner-environment.test.fixtures';
 import {
 	claudeCompletion,
 	claudeOtherModelCompletion,
@@ -195,6 +199,7 @@ test('provider execution forwards exact sandbox argv, cwd and environment', asyn
 	expect(probe.execute.mock.calls[0]?.[1]?.env).toEqual(probe.wrapper.env);
 	expect(probe.input).toEqual(probe.before);
 	expect(probe.cleanup).toHaveBeenCalledTimes(1);
+	expect(await runTrustedEnvironmentProbe()).toEqual(expectedSandboxEnvironment);
 });
 
 test.each(['resolve', 'reject', 'cancel'] as const)(
