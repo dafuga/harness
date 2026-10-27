@@ -752,3 +752,23 @@ RSS was 1,744,076,800 bytes. The evidence was fetched and read back locally.
 Targeted lint, formatting, root typecheck, the 1,827-unit registry check and
 audit also passed. The general verification fixture remains uncommitted and
 still needs real reviewed page screenshots and scenario case references.
+
+## Continuation: nullable API response fields
+
+The existing JSON comparison case did not cover a nullable field listed for
+normalization. Test-only `545e4d70d8` failed red `3049aa4a2e96`; source-only
+`25199c7195` passed green `91cffb5b6a56` with the same case. Null remains null,
+so matching nulls pass and null versus a present scalar still differs in either
+direction. The registered case count is unchanged.
+
+Initial capture `055fd85973f0` passed its eight tests and registry check but
+failed audit because the test file reached 227 lines. `f01c872f48` moved the
+same assertions into the existing support helper; capture `0b9d49d2164d` then
+passed eight focused tests, registry validation, targeted lint, root typecheck
+and audit. In a disposable worktree, mutant `acda9dc0e2` failed capture
+`f0ae15fea6db`, and restored `1639316438` passed `ed46bd9c8904`; the restored
+tree equals `f01c872f48`. The unit has 7,817 source bytes, 189 lines, complexity
+58 and six dependencies, with no separate module artifact. Its source profiler
+recorded successful synchronous calls with whole-process peak RSS; those
+observations include the runner and are not isolated service memory. Full
+verification remains pending.
