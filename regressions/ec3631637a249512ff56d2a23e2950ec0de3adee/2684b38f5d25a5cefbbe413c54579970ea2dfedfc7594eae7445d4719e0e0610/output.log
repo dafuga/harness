@@ -1,0 +1,22 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-3sF943
+
+ ✓ test/services/unit-index.test.ts (14 tests) 3150ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2985ms
+ ✓ test/source-profile-runners.test.ts (14 tests) 2679ms
+   ✓ normal Vitest imports and its Bun commands capture their own real operations  786ms
+   ✓ Bun runtime profiling leaves actual build artifacts uninstrumented  388ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 81ms
+ ✓ test/adapters/verification-evidence/case-result.test.ts (4 tests) 10ms
+
+ Test Files  4 passed (4)
+      Tests  34 passed (34)
+   Start at  04:24:52
+   Duration  9.15s (transform 250ms, setup 189ms, collect 494ms, tests 5.92s, environment 0ms, prepare 85ms)
+
+$ bun run src/index.ts units check
+Units registry is valid: 1828 units, 167 uncertain references.
+$ bun run src/index.ts audit .
+test/adapters/verification-evidence/case-result.test.ts [small-file]
+  File has 225 lines. Limit is 220. Split it by responsibility.
+error: script "dev" exited with code 1
