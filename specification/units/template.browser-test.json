@@ -9,6 +9,9 @@
 	"owns": {
 		"source": [
 			"src/templates/browserTest.ts",
+			"src/templates/development-tooling/browser-fixture/browserCaseBinding.ts",
+			"src/templates/development-tooling/browser-fixture/browserCaseCapture.ts",
+			"src/templates/development-tooling/browser-fixture/browserCaseCapture.types.ts",
 			"src/templates/development-tooling/browser-fixture/browserScreenshot.ts",
 			"src/templates/development-tooling/browser-fixture/browserScreenshot.types.ts",
 			"src/templates/development-tooling/browser-fixture/browserTest.types.ts",
@@ -16,6 +19,13 @@
 		],
 		"symbols": [
 			"browserTestFiles",
+			"findVisualBinding",
+			"recordCaseScreenshot",
+			"VisualCase",
+			"VisualScenario",
+			"VisualBinding",
+			"VisualBindingRequest",
+			"VisualBindingContext",
 			"createMatchScreenshot",
 			"MatchScreenshot",
 			"MatchScreenshotOptions",
@@ -35,11 +45,39 @@
 		"origin": "derived",
 		"inputs": [
 			{
+				"name": "findVisualBinding.request",
+				"type": "VisualBindingRequest"
+			},
+			{
+				"name": "recordCaseScreenshot.info",
+				"type": "TestInfo"
+			},
+			{
+				"name": "recordCaseScreenshot.target",
+				"type": "ScreenshotTarget"
+			},
+			{
+				"name": "recordCaseScreenshot.name",
+				"type": "ScreenshotName"
+			},
+			{
+				"name": "recordCaseScreenshot.capture",
+				"type": "{ bytes: Buffer; fullPage: boolean }"
+			},
+			{
 				"name": "createMatchScreenshot.testInfo",
 				"type": "TestInfo"
 			}
 		],
 		"outputs": [
+			{
+				"name": "findVisualBinding",
+				"type": "VisualBinding"
+			},
+			{
+				"name": "recordCaseScreenshot",
+				"type": "Promise<void>"
+			},
 			{
 				"name": "createMatchScreenshot",
 				"type": "MatchScreenshot"

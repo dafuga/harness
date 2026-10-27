@@ -6,18 +6,32 @@ import type {
 	ScreenshotName,
 	ScreenshotTarget
 } from './browserScreenshot.types';
+import { recordCaseScreenshot } from './browserCaseCapture';
 
 export function createMatchScreenshot(testInfo: TestInfo): MatchScreenshot {
 	return async (target, name, options) => {
 		assertReviewedSnapshots(testInfo);
 		validateScreenshotName(name);
 		await settleScreenshot(target, options);
-		if (screenshotEvidenceRequested()) await attachScreenshot(testInfo, target, name, options);
+		let captured: Buffer | undefined;
+		if (screenshotEvidenceRequested()) {
+			captured = await attachScreenshot(testInfo, target, name, options);
+			await recordCaseScreenshot(testInfo, target, name, {
+				bytes: captured,
+				fullPage: options?.fullPage === true
+			});
+		}
 		await expect(target).toHaveScreenshot(name, {
 			animations: 'disabled',
 			caret: 'hide',
 			...options
 		});
+		if (captured && process.env.HARNESS_VERIFY === '1')
+			expect(captured).toMatchSnapshot(name, {
+				threshold: options?.threshold,
+				maxDiffPixels: options?.maxDiffPixels,
+				maxDiffPixelRatio: options?.maxDiffPixelRatio
+			});
 	};
 }
 
@@ -67,17 +81,27 @@ async function attachScreenshot(
 	target: ScreenshotTarget,
 	name: ScreenshotName,
 	options?: MatchScreenshotOptions
-): Promise<void> {
-	await testInfo.attach(`screenshot-${screenshotLabel(name)}`, {
-		body: isLocator(target)
-			? await target.screenshot({ animations: 'disabled', caret: 'hide' })
-			: await target.screenshot({
-					animations: 'disabled',
-					caret: 'hide',
-					fullPage: options?.fullPage
-				}),
-		contentType: 'image/png'
-	});
+): Promise<Buffer> {
+	const shared = imageOptions(options);
+	const body = isLocator(target)
+		? await target.screenshot(shared)
+		: await target.screenshot({
+				...shared,
+				fullPage: options?.fullPage
+			});
+	await testInfo.attach(`screenshot-${screenshotLabel(name)}`, { body, contentType: 'image/png' });
+	return body;
+}
+
+function imageOptions(options?: MatchScreenshotOptions) {
+	return {
+		animations: options?.animations ?? 'disabled',
+		caret: options?.caret ?? 'hide',
+		mask: options?.mask,
+		maskColor: options?.maskColor,
+		omitBackground: options?.omitBackground,
+		scale: options?.scale ?? 'css'
+	} as const;
 }
 
 function screenshotLabel(name: ScreenshotName): string {
