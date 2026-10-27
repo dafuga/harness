@@ -1,0 +1,39 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-hvyNNe[39m
+
+[90mstdout[2m | test/cli.e2e.test.ts[2m > [22m[2mCLI scaffolds and checks an app project with routes
+[22m[39mGenerated browser baseline gate: Running 33 tests using 5 workers; every failure is a missing baseline.
+
+[90mstdout[2m | test/cli.e2e.test.ts[2m > [22m[2mCLI scaffolds and checks an app project with routes
+[22m[39mGenerated browser baseline gate: Running 3 tests using 1 worker; every failure is a missing baseline.
+
+ [31m❯[39m test/cli.e2e.test.ts [2m([22m[2m5 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m4 skipped[39m[2m)[22m[33m 118470[2mms[22m[39m
+   [2m[90m↓[39m[22m CLI scaffolds and checks a lib project
+[31m   [31m×[31m CLI scaffolds and checks an app project with routes[39m[33m 118467[2mms[22m[39m
+[31m     → Generated visual cases register case-bound screenshots: expected '' not to be '' // Object.is equality[39m
+   [2m[90m↓[39m[22m CLI reports edge errors cleanly
+   [2m[90m↓[39m[22m CLI supports force overwrites and generated lint failures
+   [2m[90m↓[39m[22m CLI installs module foundations and generates their declared resources
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/cli.e2e.test.ts[2m > [22mCLI scaffolds and checks an app project with routes
+[31m[1mAssertionError[22m: Generated visual cases register case-bound screenshots: expected '' not to be '' // Object.is equality[39m
+[36m [2m❯[22m assertScenario test/support/generatedVisualEvidence.ts:[2m76:78[22m[39m
+    [90m 74| [39m  }
+    [90m 75| [39m )[33m;[39m
+    [90m 76| [39m expect(index, 'Generated visual cases register case-bound screenshots…
+    [90m   | [39m                                                                             [31m^[39m
+    [90m 77| [39m [35mconst[39m captures [33m=[39m index
+    [90m 78| [39m  [33m.[39m[34mtrim[39m()
+[90m [2m❯[22m assertGeneratedVisualEvidence test/support/generatedVisualEvidence.ts:[2m39:3[22m[39m
+[90m [2m❯[22m test/cli.e2e.test.ts:[2m68:3[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m4 skipped[39m[90m (5)[39m
+[2m   Start at [22m 10:31:40
+[2m   Duration [22m 122.50s[2m (transform 192ms, setup 146ms, collect 423ms, tests 118.47s, environment 0ms, prepare 37ms)[22m
+
