@@ -1,0 +1,43 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-nqZuFt
+
+ ❯ test/services/verification-evidence/test-discovery.test.ts (2 tests | 1 failed | 1 skipped) 20ms
+   ↓ scan initialized source finds imported cases, aliases and computed registration
+   × discover initialized and unreadable sources retain explicit discovery gaps 18ms
+     → fake.registerExamples(test, unit, {}): expected [ { title: 'finish: Finish', …(2) } ] to deeply equal [ { title: 'finish: Finish', …(2) } ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-discovery.test.ts > discover initialized and unreadable sources retain explicit discovery gaps
+AssertionError: fake.registerExamples(test, unit, {}): expected [ { title: 'finish: Finish', …(2) } ] to deeply equal [ { title: 'finish: Finish', …(2) } ]
+
+- Expected
++ Received
+
+  [
+    {
+      "disabled": false,
+-     "dynamic": true,
++     "dynamic": false,
+      "title": "finish: Finish",
+    },
+  ]
+
+ ❯ assertRegistrationContexts test/services/verification-evidence/test-discovery.test.ts:146:5
+    144|    found.tests.map(({ title, disabled, dynamic }) => ({ title, disable…
+    145|    row.code
+    146|   ).toEqual([
+       |     ^
+    147|    { title: row.title, disabled: Boolean(row.disabled), dynamic: Boole…
+    148|   ]);
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+ ❯ test/services/verification-evidence/test-discovery.test.ts:123:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 skipped (2)
+   Start at  14:15:22
+   Duration  2.45s (transform 77ms, setup 82ms, collect 159ms, tests 20ms, environment 0ms, prepare 24ms)
+
