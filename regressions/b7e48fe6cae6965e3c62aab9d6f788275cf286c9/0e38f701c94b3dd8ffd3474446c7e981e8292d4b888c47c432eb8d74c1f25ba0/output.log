@@ -1,0 +1,27 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-8WXTJr
+
+ ✓ test/services/unit-index.test.ts (14 tests) 2796ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2635ms
+ ✓ test/repositories/explanation-notes-order.test.ts (4 tests) 3918ms
+   ✓ notes alone hold the latest recorded reason for an exact change, wherever each is noted  1465ms
+   ✓ a step of a chain noted again is held by its latest reason, wherever each is noted  788ms
+   ✓ a later long reason in the notes still fails, however the notes list it  871ms
+   ✓ a date that cannot be read is never later than one that can; equal ones agree everywhere  701ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 85ms
+ ✓ test/utils/note-lines.test.ts (2 tests) 4ms
+
+ Test Files  4 passed (4)
+      Tests  22 passed (22)
+   Start at  01:39:10
+   Duration  10.13s (transform 266ms, setup 208ms, collect 519ms, tests 6.80s, environment 0ms, prepare 90ms)
+
+Units registry is valid: 1827 units, 166 uncertain references.
+Checking formatting...
+All matched files use Prettier code style!
+
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-8WXTJr/test/support/historyNoteBatchCases.ts
+  70:25  error  Do not nest ternary expressions  no-nested-ternary
+
+✖ 1 problem (1 error, 0 warnings)
+
