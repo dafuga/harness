@@ -1642,3 +1642,24 @@ The coordinated integration branch and this policy branch have conflicting
 changes; no merge has been started. Full verification, browser screenshot
 proof, runnable exact-model workers, complete history reconstruction, and the
 shared Explorer Tests, Examples and History inspection remain open.
+
+The process launcher also discarded three trusted sandbox context paths. The
+existing runner forwarding case had mocked execution and missed the real child
+environment. Test-only `5144203311` failed in red `35c29c53133b`; fix
+`64c1bf876d` passed the unchanged case in green `b4544479e97d`, with synthetic
+API keys and tokens still excluded. Mutant `1118f1255e9f` failed, and restored
+identical-tree capture `d9fb8a4bbe68` passed. All 21 runner cases passed in
+focused capture `e02e8ece1d2e` at `46e01bf998`; targeted lint and formatting
+passed. The runner measured 14,098 source bytes, 431 lines, complexity 81 and
+seven dependencies at the fix; its green capture retains workload timing and
+whole-process RSS. Its source reason is preserved in Git notes. These commits
+remain on the isolated sandbox branch pending integration and full checks.
+
+One current relay scenario still referenced retired `remote.function.pairing-link`.
+Both scenario and registry checks missed it. The existing manifest-check case
+was strengthened without a new title; red `6db9280462e1` at `efbaa7af55` shows
+both missing errors. Fix `c23a612233` is isolated and removes only the obsolete
+current association; it does not claim the replacement offer's scan coverage.
+The first green attempt timed out before resource admission with stale telemetry.
+No test ran, so that attempt proves neither failure nor success. The unchanged
+green, mutation guard, lint repair and broader verification remain open.
