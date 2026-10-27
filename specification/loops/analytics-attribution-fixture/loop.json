@@ -2,7 +2,7 @@
 	"name": "analytics-attribution-fixture",
 	"goal": "Exercise task analytics attribution with the qualified synthetic test fixture",
 	"createdAt": "2026-10-27T11:23:42.451Z",
-	"updatedAt": "2026-10-27T11:23:43.058Z",
+	"updatedAt": "2026-10-27T11:27:30.142Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,12 +17,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:27:29.435Z",
+			"evidence": "At 320db01472 the existing case validates committed fixture metadata, uses the in-process synthetic worker for both attempts, and shares its disposable analytics directory."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:27:30.142Z",
+			"evidence": "On harbor-mbp-2 the attribution file passed all three cases at 320db01472, including two submissions, a 0.5 review-derived bounce rate, reported token and cost totals, and idempotent reconciliation. The prior b808a310 run failed before provider launch; the fixture changed between runs."
 		},
 		{
 			"id": "verify",
