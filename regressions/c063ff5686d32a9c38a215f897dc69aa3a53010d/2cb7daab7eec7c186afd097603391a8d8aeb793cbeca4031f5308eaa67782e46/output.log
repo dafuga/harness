@@ -1,0 +1,38 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hJgKlV
+
+ ❯ test/regression-loops.test.ts (8 tests | 1 failed | 7 skipped) 8ms
+   × regression profiles ignore volatile macOS launcher identity while retaining workload settings 5ms
+     → per-call identity is not workload configuration: expected 'darwin/arm64/v25.9.0/c253a6fd30ab6c9b…' to be 'darwin/arm64/v25.9.0/f876d36fe494ffd4…' // Object.is equality
+   ↓ bug-fix exposes ordered proof and project checks
+   ↓ fix exposes ordered proof and project checks
+   ↓ regression-prevention exposes ordered proof and project checks
+   ↓ project templates can extend regression prevention and override its guard
+   ↓ generated app guidance selects loops and explains retries
+   ↓ generated lib guidance selects loops and explains retries
+   ↓ loop guide explains red-green evidence, prevention guards, and agent retries
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/regression-loops.test.ts > regression profiles ignore volatile macOS launcher identity while retaining workload settings
+AssertionError: per-call identity is not workload configuration: expected 'darwin/arm64/v25.9.0/c253a6fd30ab6c9b…' to be 'darwin/arm64/v25.9.0/f876d36fe494ffd4…' // Object.is equality
+
+Expected: "darwin/arm64/v25.9.0/f876d36fe494ffd467457597e603681442e63a06b989b11bf4b70fff62adb6f8"
+Received: "darwin/arm64/v25.9.0/c253a6fd30ab6c9b30b17d842f6d2ac63cb94fd4616eec42560fbd07c9be4033"
+
+ ❯ test/regression-loops.test.ts:30:4
+     28|   environmentProfile({ ...source, CODEX_TOOL_CALL_ID: 'call-two' }),
+     29|   'per-call identity is not workload configuration'
+     30|  ).toBe(first);
+       |    ^
+     31|  expect(environmentProfile({ ...source, CODEX_SESSION_ID: 'another-ses…
+     32|  expect(environmentProfile({ ...source, PATH: '/another/runtime' })).n…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 skipped (8)
+   Start at  01:47:56
+   Duration  2.85s (transform 267ms, setup 96ms, collect 505ms, tests 8ms, environment 0ms, prepare 22ms)
+
