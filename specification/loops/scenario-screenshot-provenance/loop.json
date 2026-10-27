@@ -2,7 +2,7 @@
 	"name": "scenario-screenshot-provenance",
 	"goal": "Require screenshots to match their declared capture provenance",
 	"createdAt": "2026-10-27T04:17:33.782Z",
-	"updatedAt": "2026-10-27T04:17:42.160Z",
+	"updatedAt": "2026-10-27T04:18:42.886Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T04:18:42.886Z",
+			"evidence": "Existing element screenshot case fails at 7d0f49a0ba: fixture provenance is accepted for actual-capture evidence."
 		},
 		{
 			"id": "implement",
