@@ -1,6 +1,10 @@
 import { measureWorkload } from './support/measureWorkload';
 import { check } from 'prettier';
-import { assertAppPieceContracts, assertClassMatrices } from './support/generatedContracts';
+import {
+	assertAppPieceContracts,
+	assertClassMatrices,
+	assertVisualCases
+} from './support/generatedContracts';
 import { formatConfigFiles } from '../src/templates/development-tooling/formatConfig';
 import { pieceExportPlans } from '../src/workflows/projects-sessions/generate-code/exportPlans';
 import { posix } from 'node:path';
@@ -52,7 +56,13 @@ test('view, layout, and api scaffolds use SvelteKit route files', () =>
 		measureWorkload(
 			'template.development-tooling-app-pieces-app-contract-tests',
 			'layout-page-screenshot-generation',
-			assertAppPieceContracts
+			() => {
+				assertAppPieceContracts();
+				const layout = pieceFiles('layout', 'BlogPost').find((file) =>
+					file.path.endsWith('-layout.spec.ts')
+				);
+				assertVisualCases(layout?.contents, 'blog-post layout frame', ['default']);
+			}
 		)
 	));
 

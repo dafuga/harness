@@ -9,6 +9,7 @@ import { hydrateUnitDocumentation } from '../../../src/services/revision-detail-
 import { usageExamples } from '../../../packages/reports/src/components/usage-examples/usageExamples';
 import { loadUnits } from '../../../src/workflows/development-tooling/load-units/loadUnits';
 import { registryErrors } from '../../../src/cli/program/manageUnits';
+import { TestDiscoveryService } from '../../../src/services/verification-evidence/TestDiscoveryService';
 import { memoryTree } from '../memoryTree';
 
 /** One generated library case and its rendered comment use the same registered Example. */
@@ -153,8 +154,16 @@ export async function expectInitialPageViewports(files: ReturnType<typeof projec
 		"{ id: 'mobile', size: { width: 390, height: 844 } }"
 	])
 		expect(source, 'Every initial-page viewport is explicitly declared').toContain(row);
-	expect(source).toContain('for (const viewport of viewports)');
-	expect(source).toContain("test.describe(viewport.id + ' viewport'");
+	const found = new TestDiscoveryService().scan(source, 'tests/e2e/app.spec.ts');
+	expect(
+		found.map(({ title, dynamic }) => ({ title, dynamic })),
+		'Generated initial page case identities must be statically discoverable'
+	).toEqual(
+		['desktop', 'tablet', 'mobile'].map((viewport) => ({
+			title: `${viewport} viewport > app page initial state`,
+			dynamic: false
+		}))
+	);
 	expect(source).toContain('test.use({ viewport: viewport.size })');
 	expect(source).toContain("test('app page initial state'");
 	expect(source).toContain(
