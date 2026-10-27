@@ -160,7 +160,7 @@ test('CaseResultAdapter.onTestEnd configured retains browser status and suite id
 		const adapter = new CaseResultAdapter(config);
 		const sample = {
 			location: { file: config.file },
-			titlePath: () => ['chromium', 'sample.test.ts', 'orders', 'ready']
+			titlePath: () => ['', 'chromium', 'sample.test.ts', 'orders', 'ready']
 		};
 		for (const status of ['passed', 'failed', 'timedOut', 'interrupted', 'skipped'])
 			adapter.onTestEnd(sample, { status, retry: 0 });
@@ -185,6 +185,17 @@ test('CaseResultAdapter.onTestEnd configured retains browser status and suite id
 		expect(read(aliasDirectory)).toEqual([read(config.directory)[0]]);
 		expect(() => adapter.onTestEnd(sample, { status: 'passed', retry: -1 })).toThrow();
 		expect(read(config.directory)).toHaveLength(5);
+		adapter.onTestEnd(
+			{ location: { file: config.file }, titlePath: () => ['', '', 'sample.test.ts', 'ready'] },
+			{ status: 'passed', retry: 1 }
+		);
+		expect(read(config.directory)[5]).toEqual({
+			file: 'test/sample.test.ts',
+			title: 'ready',
+			revision,
+			retry: 1,
+			status: 'passed'
+		});
 	} finally {
 		rmSync(config.root, { recursive: true, force: true });
 	}
