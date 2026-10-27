@@ -27,6 +27,7 @@ export class ModuleTaskLaunchAdapter {
 	}
 
 	async qualify(): Promise<void> {
+		// TODO: Qualify real Haiku credential access inside the task file sandbox.
 		try {
 			if (!this.config.qualification) throw prelaunchFailure();
 			await this.config.qualification();

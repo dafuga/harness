@@ -113,6 +113,16 @@ export class ModuleTaskService {
 			return task;
 		});
 	}
+	async prioritize(id: string) {
+		return this.repository.update((queue) => {
+			const index = queue.tasks.findIndex((task) => task.id === id);
+			if (index < 0 || queue.tasks[index].status !== 'queued')
+				throw new Error('Only queued tasks can be prioritized.');
+			const [task] = queue.tasks.splice(index, 1);
+			queue.tasks.unshift(task);
+			return task;
+		});
+	}
 	async retry(id: string) {
 		const owner = await this.repository.owner();
 		return this.repository.update((queue) => {

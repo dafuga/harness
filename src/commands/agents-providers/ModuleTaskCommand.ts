@@ -84,6 +84,11 @@ export class ModuleTaskCommand {
 	}
 	private operations(task: Command): void {
 		task
+			.command('priority <id>')
+			.option('--json')
+			.description('Move a queued task to the front without changing its eligibility.')
+			.action(async (id) => print(await this.service.prioritize(id)));
+		task
 			.command('assign <id>')
 			.requiredOption('--worker <id>')
 			.option('--json')
