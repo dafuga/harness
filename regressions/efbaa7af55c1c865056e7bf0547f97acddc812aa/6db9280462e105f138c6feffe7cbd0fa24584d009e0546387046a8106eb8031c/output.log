@@ -1,0 +1,41 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-joH8Vq[39m
+
+ [31m❯[39m test/units.e2e.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m3 skipped[39m[2m)[22m[33m 13496[2mms[22m[39m
+   [2m[90m↓[39m[22m generic unit generator coexists with the Svelte component generator
+   [2m[90m↓[39m[22m index derives contracts and keeps identity stable across re-index, moves and recreation
+[31m   [31m×[31m check rejects invalid manifests and schemas are exposed[39m[33m 13494[2mms[22m[39m
+[31m     → unit-lifecycle covers retired unit function.slugify: expected [ false, false ] to deeply equal [ true, true ][39m
+   [2m[90m↓[39m[22m index records reviewed shared helper contracts for clients without source rescans
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/units.e2e.test.ts[2m > [22mcheck rejects invalid manifests and schemas are exposed
+[31m[1mAssertionError[22m: unit-lifecycle covers retired unit function.slugify: expected [ false, false ] to deeply equal [ true, true ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   true,[39m
+[32m-   true,[39m
+[31m+   false,[39m
+[31m+   false,[39m
+[2m  ][22m
+
+[36m [2m❯[22m test/units.e2e.test.ts:[2m163:90[22m[39m
+    [90m161| [39m  [35mconst[39m registry [33m=[39m [35mawait[39m project[33m.[39m[34mharness[39m([[32m'units'[39m[33m,[39m [32m'check'[39m][33m,[39m [35mfalse[39m)[33m;[39m
+    [90m162| [39m  const message = 'unit-lifecycle covers retired unit function.slugify…
+    [90m163| [39m  expect([retired.stderr.includes(message), registry.stderr.includes(m…
+    [90m   | [39m                                                                                         [31m^[39m
+    [90m164| [39m   [35mtrue[39m[33m,[39m
+    [90m165| [39m   [35mtrue[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m3 skipped[39m[90m (4)[39m
+[2m   Start at [22m 12:10:07
+[2m   Duration [22m 16.81s[2m (transform 104ms, setup 133ms, collect 24ms, tests 13.50s, environment 0ms, prepare 31ms)[22m
+
