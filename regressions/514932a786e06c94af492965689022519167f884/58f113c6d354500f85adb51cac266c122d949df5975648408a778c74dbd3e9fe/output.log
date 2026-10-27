@@ -1,0 +1,22 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-M1O8mV
+
+ ✓ test/repositories/explanation-notes-order.test.ts (4 tests) 4235ms
+   ✓ notes alone hold the latest recorded reason for an exact change, wherever each is noted  1452ms
+   ✓ a step of a chain noted again is held by its latest reason, wherever each is noted  790ms
+   ✓ a later long reason in the notes still fails, however the notes list it  864ms
+   ✓ a date that cannot be read is never later than one that can; equal ones agree everywhere  1013ms
+ ✓ test/services/unit-index.test.ts (14 tests) 4015ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  3797ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 123ms
+ ✓ test/utils/note-lines.test.ts (2 tests) 5ms
+
+ Test Files  4 passed (4)
+      Tests  22 passed (22)
+   Start at  01:40:03
+   Duration  12.04s (transform 340ms, setup 250ms, collect 668ms, tests 8.38s, environment 0ms, prepare 110ms)
+
+Units registry is valid: 1827 units, 166 uncertain references.
+Checking formatting...
+All matched files use Prettier code style!
+Harness audit passed. Files and functions are staying small.
