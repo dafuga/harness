@@ -10,6 +10,7 @@ import { projectFiles } from '../src/templates/project';
 import { pieceFiles } from '../src/templates/pieces';
 import { findGuide } from '../src/guides/guide';
 import { generatePiece } from '../src/workflows/generate-code/generateCode';
+import { assertScreenshotEvidenceBinding } from './support/generatedVisualUnitEvidence';
 
 for (const kind of ['console', 'pageerror'] as const) {
 	test(`${kind} diagnostics cover early and available pages once`, async () => {
@@ -56,7 +57,7 @@ for (const kind of ['console', 'pageerror'] as const) {
 	});
 }
 
-test('new apps and browser scaffolds use the automatic browser error fixture', () => {
+test('new apps and browser scaffolds use the automatic browser error fixture', async () => {
 	const files = projectFiles({ kind: 'app', name: 'console-proof' });
 	for (const name of ['browserTest.ts', 'browserTest.types.ts', 'browserScreenshot.ts']) {
 		expect(files.find((file) => file.path === `tests/e2e/support/${name}`)?.contents).toBe(
@@ -67,6 +68,7 @@ test('new apps and browser scaffolds use the automatic browser error fixture', (
 		const spec = pieceFiles(kind, 'Dashboard').find((file) => file.path.endsWith('.spec.ts'));
 		expect(spec?.contents).toContain("from './support/browserTest'");
 	}
+	await assertScreenshotEvidenceBinding();
 });
 
 test('agent and loop guidance requires clean normal flows and regression proof for errors', () => {
