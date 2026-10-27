@@ -140,6 +140,7 @@ test('game build scripts retain engine bytes and audit through the project CLI',
 			['bun', resolve('packages/desktop/scripts/build-main.ts')],
 			desktop
 		);
+		assertAnalyticsBundle(desktop);
 		for (const observed of [sync, audit, build])
 			expect(observed.peakRssBytes).toBeGreaterThanOrEqual(minimumBunProcessBytes);
 	} finally {
@@ -149,6 +150,34 @@ test('game build scripts retain engine bytes and audit through the project CLI',
 		expect(bunMaxRssBytes(reported, platform), platform).toBe(bytes);
 	expect(() => bunMaxRssBytes(52_428_800, 'freebsd')).toThrow('not established for freebsd');
 }, 30_000);
+
+function assertAnalyticsBundle(desktop: string) {
+	const build = `import {pathToFileURL} from 'node:url';
+const {desktopNodeOptions}=await import(pathToFileURL(process.argv[1]).href);
+const result=await Bun.build({...desktopNodeOptions,entrypoints:[process.argv[2]],outdir:process.argv[3],naming:'analytics.cjs'});
+if(!result.success)throw new Error(result.logs.map(String).join(', '));`;
+	const output = join(desktop, 'dist', 'analytics.cjs');
+	execFileSync('bun', [
+		'-e',
+		build,
+		resolve('packages/desktop/scripts/build-main.ts'),
+		resolve('src/repositories/AnalyticsRepository.ts'),
+		join(desktop, 'dist')
+	]);
+	const coldImport = `console.log(typeof require(process.argv[1]).AnalyticsRepository)`;
+	expect(execFileSync('node', ['-e', coldImport, output], { encoding: 'utf8' }).trim()).toBe(
+		'function'
+	);
+	const persist = `const {AnalyticsRepository}=require(process.argv[1]);
+const event={id:'fixture',timestamp:'2026-10-27T00:00:00.000Z'};
+let db=new AnalyticsRepository(process.argv[2]);db.record(event);db.close();
+db=new AnalyticsRepository(process.argv[2]);console.log(db.events()[0].id);db.close();`;
+	expect(
+		execFileSync('bun', ['-e', persist, output, join(desktop, 'analytics')], {
+			encoding: 'utf8'
+		}).trim()
+	).toBe('fixture');
+}
 
 /** Run the actual build script; Bun's OS resource usage describes that launched process. */
 function observeScript(unit: string, command: string[], cwd: string) {
