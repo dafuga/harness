@@ -35,6 +35,11 @@
 				"name": "serve",
 				"type": "--input <JSON plan file> --worker <id> [--module <id> repeated] [--once] [--json]",
 				"description": "Uses full plan, worker, exact module filter and owned AbortSignal. once invokes exactly one attempt; default watch until interrupted. No separatemanualadd/worker call."
+			},
+			{
+				"name": "constructor.workerService",
+				"type": "optional Pick<ModuleTaskWorkerService,once>",
+				"description": "Trusted in-process collaborator for worker routing. Omission constructs the real worker when invoked; no CLI, task or environment input controls this collaborator."
 			}
 		],
 		"outputs": [
@@ -42,6 +47,11 @@
 				"name": "register",
 				"type": "void",
 				"description": "Registers serve along with existingcommands. Delegates server.run(plan,{worker,modules,once,signal}); serializes actual one-shot result. SIGINT/SIGTERM abort owned signal, awaits server settlement then removes only own listeners. Also registers FeaturePlanCommand under task plan for draft, show, select, approve and start."
+			},
+			{
+				"name": "worker",
+				"type": "Promise<void>",
+				"description": "Routes parsed worker ID and module filters to the supplied collaborator or the real guarded worker. A failed result sets process exit code 1; owned signal listeners are removed."
 			}
 		],
 		"errors": [

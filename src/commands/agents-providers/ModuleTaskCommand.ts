@@ -12,7 +12,8 @@ export class ModuleTaskCommand {
 		private readonly service = new ModuleTaskService(),
 		private readonly server: Pick<ModuleTaskServerService, 'run'> = new ModuleTaskServerService(
 			process.cwd()
-		)
+		),
+		private readonly workerService?: Pick<ModuleTaskWorkerService, 'once'>
 	) {}
 	register(task: Command): void {
 		this.authoring(task);
@@ -104,7 +105,7 @@ export class ModuleTaskCommand {
 			.description(
 				'Pick up matching assignments in isolated worktrees; watch polls until interrupted.'
 			)
-			.action(worker);
+			.action((flags: WorkerFlags) => worker(flags, this.workerService));
 	}
 }
 function serverCommands(task: Command, server: TaskServer): void {
@@ -148,14 +149,17 @@ async function runServerPlan(server: TaskServer, flags: ServeFlags): Promise<voi
 function print(value: unknown): void {
 	console.log(JSON.stringify(value, null, 2));
 }
-async function worker(flags: WorkerFlags): Promise<void> {
+async function worker(
+	flags: WorkerFlags,
+	injected?: Pick<ModuleTaskWorkerService, 'once'>
+): Promise<void> {
 	if (flags.once && flags.watch) throw new Error('Choose --once or --watch.');
 	const controller = new AbortController(),
 		stop = () => controller.abort(new Error('Task worker interrupted.'));
 	process.once('SIGINT', stop);
 	process.once('SIGTERM', stop);
 	try {
-		const service = new ModuleTaskWorkerService();
+		const service = injected ?? new ModuleTaskWorkerService();
 		do {
 			const result = await service.once(
 				flags.worker,

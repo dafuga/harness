@@ -74,17 +74,17 @@ test.each([
 	['claude-haiku-5-5', 'high', 'claude'],
 	['gpt-6-luna', 'max', 'codex']
 ])(
-	'assigned worker preserves explicit %s intelligence %s',
+	'synthetic worker preserves explicit %s intelligence %s',
 	async (model, intelligence, provider) => {
 		const f = await validatedWorkerFixture();
 		try {
 			await f.feature();
 			await f.cli(['add', '--input', await f.input({ model, intelligence, assignee: 'owner' })]);
-			await f.cli(['worker', '--worker', 'someone-else', '--once']);
+			await f.syntheticWorker(['worker', '--worker', 'someone-else', '--once']);
 			expect(
 				JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task.status
 			).toBe('queued');
-			await f.cli(['worker', '--worker', 'owner', '--once', '--json']);
+			await f.syntheticWorker(['worker', '--worker', 'owner', '--once', '--json']);
 			const shown = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 			expect(shown.status).toBe('review');
 			expect(shown.result).toMatchObject({ provider, model, intelligence });
@@ -108,14 +108,17 @@ test.each([
 );
 
 test.each(['quota', 'auth'])(
-	'auto falls back to Luna 6 max only for confirmed Claude quota (%s)',
+	'synthetic auto falls back to Luna 6 max only for confirmed Claude quota (%s)',
 	async (mode) => {
 		const f = await validatedWorkerFixture();
 		try {
 			await f.feature();
 			await f.cli(['add', '--input', await f.input()]);
 			await writeFile(join(f.root, 'mode'), mode);
-			await f.cli(['worker', '--worker', 'owner', '--once', '--json'], mode === 'quota');
+			await f.syntheticWorker(
+				['worker', '--worker', 'owner', '--once', '--json'],
+				mode === 'quota'
+			);
 			const task = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 			const calls = (await readFile(join(f.root, 'calls.ndjson'), 'utf8'))
 				.trim()
@@ -141,7 +144,7 @@ test.each(['quota', 'auth'])(
 	30000
 );
 
-test('explicit Claude quota failure never silently substitutes another model', async () => {
+test('synthetic explicit Claude quota failure never silently substitutes another model', async () => {
 	const f = await validatedWorkerFixture();
 	try {
 		await f.feature();
@@ -151,7 +154,7 @@ test('explicit Claude quota failure never silently substitutes another model', a
 			await f.input({ model: 'claude-haiku-5-5', intelligence: 'high' })
 		]);
 		await writeFile(join(f.root, 'mode'), 'quota');
-		const result = await f.cli(['worker', '--worker', 'owner', '--once'], false);
+		const result = await f.syntheticWorker(['worker', '--worker', 'owner', '--once'], false);
 		expect(result.exitCode).toBe(1);
 		expect((await readFile(join(f.root, 'calls.ndjson'), 'utf8')).trim().split('\n')).toHaveLength(
 			1
@@ -161,15 +164,15 @@ test('explicit Claude quota failure never silently substitutes another model', a
 	}
 }, 30000);
 
-test('competing workers claim once and writes outside the module require review as failed', async () => {
+test('synthetic competing workers claim once and outside writes fail review', async () => {
 	const f = await validatedWorkerFixture();
 	try {
 		await f.feature();
 		await f.cli(['add', '--input', await f.input()]);
 		await writeFile(join(f.root, 'mode'), 'outside');
 		await Promise.all([
-			f.cli(['worker', '--worker', 'one', '--once'], false),
-			f.cli(['worker', '--worker', 'two', '--once'], false)
+			f.syntheticWorker(['worker', '--worker', 'one', '--once'], false),
+			f.syntheticWorker(['worker', '--worker', 'two', '--once'], false)
 		]);
 		expect((await readFile(join(f.root, 'calls.ndjson'), 'utf8')).trim().split('\n')).toHaveLength(
 			1
@@ -177,6 +180,24 @@ test('competing workers claim once and writes outside the module require review 
 		const task = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 		expect(task.status).toBe('failed');
 		expect(task.result.error).toContain('outside');
+	} finally {
+		await f.dispose();
+	}
+}, 30000);
+
+test('the production worker refuses unqualified execution before a provider runs', async () => {
+	const f = await validatedWorkerFixture();
+	try {
+		await f.feature();
+		await f.cli(['add', '--input', await f.input()]);
+		const result = await f.cli(['worker', '--worker', 'owner', '--once', '--json'], false);
+		expect(result.exitCode).toBe(1);
+		const task = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
+		expect(task.status).toBe('failed');
+		expect(task.result.error).toMatch(/qualif|isolat|security/i);
+		await expect(readFile(join(f.root, 'calls.ndjson'), 'utf8')).rejects.toMatchObject({
+			code: 'ENOENT'
+		});
 	} finally {
 		await f.dispose();
 	}
