@@ -29,7 +29,7 @@ export async function assertGeneratedComponentRegistry(): Promise<void> {
 			const scenario = await project.json<ScenarioManifest>(
 				`specification/scenarios/${scenarioId}.json`
 			);
-			await assertMatrix(project.read, unit, scenario, symbol, file);
+			await assertMatrix(project.read, unit, scenario, { symbol, file });
 		}
 	} finally {
 		await rm(dirname(project.root), { recursive: true, force: true });
@@ -40,8 +40,7 @@ async function assertMatrix(
 	read: (path: string) => Promise<string>,
 	unit: ComponentManifest,
 	scenario: ScenarioManifest,
-	symbol: string,
-	file: string
+	{ symbol, file }: { symbol: string; file: string }
 ) {
 	const testFile = `tests/e2e/${file}-component.spec.ts`;
 	const found = await new TestDiscoveryService().discover({ read }, [testFile]);
