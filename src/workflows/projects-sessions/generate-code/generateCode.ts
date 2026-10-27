@@ -82,7 +82,7 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const pieces = useAtomLibrary(planned, library);
 	const grouped = groupedFiles(pieces, selection?.group.id);
 	const atoms = missingAtoms(root, input.kind, library);
-	const registry = newVisualRegistry(root, input.kind, name, grouped.files);
+	const registry = input.kind === component ? [] : newVisualRegistry(root, input.kind, name, grouped.files);
 	const files = separateTypeDeclarations([...grouped.files, ...support, ...atoms, ...registry]);
 	assertUniqueGroupedNames(root, selection?.group.id, files);
 	await ensureParents(root, files);
