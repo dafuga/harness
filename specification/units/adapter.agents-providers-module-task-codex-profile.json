@@ -54,6 +54,11 @@
 			"unit": "adapter.agents-providers-module-task-sandbox",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-module-task-sandbox-process",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

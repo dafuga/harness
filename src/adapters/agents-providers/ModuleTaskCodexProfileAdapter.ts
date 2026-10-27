@@ -2,6 +2,7 @@ import { lstat, realpath } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { basename, dirname, isAbsolute, join, resolve, sep } from 'node:path';
 import { ModuleTaskSandboxAdapter } from './ModuleTaskSandboxAdapter';
+import { ModuleTaskSandboxProcessAdapter } from './ModuleTaskSandboxProcessAdapter';
 import type { ModuleTaskSandboxInput, SandboxProcess } from './ModuleTaskSandboxAdapter.types';
 import type { ModuleTaskCodexProfileAdapterConfig } from './ModuleTaskCodexProfileAdapter.types';
 
@@ -23,6 +24,7 @@ export class ModuleTaskCodexProfileAdapter {
 			: dirname(executable);
 		const readPaths = [...new Set([...input.readPaths, runtime])];
 		assertGrants(input, readPaths, runtime);
+		await validateReadGrants([...readPaths, input.snapshot]);
 		const validated = await new ModuleTaskSandboxAdapter().prepare({
 			...input,
 			argv: [executable, 'exec', ...args],
@@ -170,6 +172,14 @@ function assertGrants(input: ModuleTaskSandboxInput, reads: string[], runtime: s
 	}
 	if (input.exactReadDirectories?.length)
 		throw new Error('Exact-directory-only native Codex grants have not been verified.');
+}
+
+async function validateReadGrants(paths: string[]): Promise<void> {
+	const guard = new ModuleTaskSandboxProcessAdapter();
+	for (const path of paths) {
+		if ((await realpath(path)) !== path) throw new Error('Noncanonical Codex read grant.');
+		await guard.validateScratch(path);
+	}
 }
 
 function configuration(input: ModuleTaskSandboxInput, reads: string[]): Record<string, unknown> {
