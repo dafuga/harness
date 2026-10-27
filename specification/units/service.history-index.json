@@ -28,68 +28,88 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HistoryIndexService.constructor.root",
-				"type": "string"
+				"type": "string",
+				"description": "Git repository whose source refs and evidence are read."
 			},
 			{
 				"name": "HistoryIndexService.build.out",
-				"type": "string"
+				"type": "string",
+				"description": "Output directory for the portable index, revision files, media and catalog."
 			},
 			{
 				"name": "HistoryIndexService.build.limit",
-				"type": "number"
+				"type": "number",
+				"description": "Maximum number of source revisions to include."
 			},
 			{
 				"name": "HistoryIndexService.build.legacy",
-				"type": "LegacyReader"
+				"type": "LegacyReader",
+				"description": "Reader that returns legacy report entries using the history media writer."
 			},
 			{
 				"name": "compactRevision.result",
-				"type": "BuiltRevision"
+				"type": "BuiltRevision",
+				"description": "Built revision whose complete detail has already been written."
 			},
 			{
 				"name": "compactRevision.events",
-				"type": "Map<string, BudgetEvent>"
+				"type": "Map<string, BudgetEvent>",
+				"description": "Shared map used to reuse identical budget events."
 			},
 			{
 				"name": "storedSnapshots.out",
-				"type": "string"
+				"type": "string",
+				"description": "History output directory containing saved revision details."
 			},
 			{
 				"name": "storedSnapshots.built",
-				"type": "Built"
+				"type": "Built",
+				"description": "Revision summaries identifying the saved details to read."
 			},
 			{
 				"name": "activityDetails.out",
-				"type": "string"
+				"type": "string",
+				"description": "History output directory containing saved revision details."
 			},
 			{
 				"name": "activityDetails.built",
-				"type": "Built"
+				"type": "Built",
+				"description": "Revision summaries used to construct activity data."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HistoryIndexService.build",
-				"type": "Promise<BuiltHistory>"
+				"type": "Promise<BuiltHistory>",
+				"description": "Writes a deterministic history index, per-revision details, media and catalog; returns output metadata and the index."
 			},
 			{
 				"name": "compactRevision",
-				"type": "CompactRevision"
+				"type": "CompactRevision",
+				"description": "Projects a built revision for subsequent index aggregation and reuses equal budget events."
 			},
 			{
 				"name": "storedSnapshots",
-				"type": "Generator<CatalogSnapshot>"
+				"type": "Generator<CatalogSnapshot>",
+				"description": "Yields saved registries in revision order for catalog indexing."
 			},
 			{
 				"name": "activityDetails",
-				"type": "ReadonlyMap<string, RecordedDetail>"
+				"type": "ReadonlyMap<string, RecordedDetail>",
+				"description": "Returns per-revision explanation and impact data plus the newest registry owners."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Propagates Git, filesystem, parsing and legacy-reader failures."
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -199,6 +219,26 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["source-only"],
+		"cases": [
+			{
+				"id": "build-source-only",
+				"state": "source-only",
+				"subject": "HistoryIndexService.build",
+				"test": {
+					"file": "test/history-source.test.ts",
+					"title": "history archives owned text from each commit, deduplicates it and states source gaps"
+				},
+				"expected": {
+					"kind": "void"
+				},
+				"errors": ["Error"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

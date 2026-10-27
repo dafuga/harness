@@ -121,6 +121,15 @@ test('history archives owned text from each commit, deduplicates it and states s
 		expect((await readdir(join(out, 'media'))).map((name) => `media/${name}`).sort()).toEqual(
 			[...media].sort()
 		);
+		await expect(
+			new HistoryIndexService(repo.root).build(
+				join(dirname(repo.root), 'failed-history'),
+				10,
+				async () => {
+					throw new Error('legacy fixture failure');
+				}
+			)
+		).rejects.toThrow('legacy fixture failure');
 	} finally {
 		await repo.dispose();
 	}
