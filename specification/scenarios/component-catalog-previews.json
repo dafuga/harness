@@ -695,6 +695,126 @@
 			"units": ["desktop.component.project-agent"]
 		},
 		{
+			"id": "desktop-component-project-agent-closed",
+			"title": "Closed launcher: Panel hidden; one accessible launcher remains. Open, close and Escape preserve the conversation and draft; focus returns safely.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-read-only",
+			"title": "Read-only conversation: Read permission can browse messages and references; no comment or agent submission is available.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-local-comment",
+			"title": "Pending local comment: Disconnected comment-capable context explains local pending drafts. Blank text cannot submit; typed comment is human-only.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-hosted-comment",
+			"title": "Connected human comment: Connected comment-only context saves a trimmed human comment without launching an agent and clears it on success.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-comment-retry",
+			"title": "Failed comment preserves draft: A synthetic comment-save refusal is visible and preserves entered text for retry; no agent launches.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-conversation",
+			"title": "Conversation and references: Human and assistant messages, long wrapped text, known unit history links and unknown/plain references render safely.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-historical",
+			"title": "Historical revision: Pinned or historical selection keeps its revision on links and blocks write-mode agent requests.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-ask",
+			"title": "Ask request: Writable agent-capable context selects Ask with discovered model and effort; trimmed request has the exact chosen identity.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-plan",
+			"title": "Plan request: Writable nonvisual context selects Plan; requires a provider/model and sends a plan request.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-visual-plan",
+			"title": "Visual Plan request: Visual context uses the saved valid design-option count for Plan; mode controls remain compact and usable.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-change",
+			"title": "Change request: Writable authorized context selects Change and submits only with its prerequisites; no real agent/provider is contacted.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-no-provider",
+			"title": "No available agent model: Agent-capable context without a usable provider/model cannot submit an agent request; comments remain usable if allowed.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-running",
+			"title": "Agent running: Matching synthetic public progress is visible while message entry and duplicate submission are disabled; terminal completion unlocks it.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-saved-plan",
+			"title": "Saved plan retained: A completed plan retains its public saved-plan response and associated registered-unit references in the conversation.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-failure",
+			"title": "Agent failure: Synthetic terminal failure is visible in the owning conversation and leaves the composer usable for a deliberate retry.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-agents-empty",
+			"title": "Agents tracked and empty: Agents tab distinguishes a successful empty roster from unknown tracking and preserves the Chat draft on return.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-agents-active",
+			"title": "Active agents and ownership: Agents tab shows current sessions, tasks and module assignments with resolved module history links.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-agents-unknown",
+			"title": "Unknown agent tracking: Unavailable or unsupported activity tracking is explicitly unknown; it does not claim an empty or current roster.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-agents-stale",
+			"title": "Stale agent tracking: Stale activity data is visibly stale and carries no current module ownership claim.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
+			"id": "desktop-component-project-agent-agents-many",
+			"title": "Long agents roster: A deterministic long roster scrolls within the component while task and module labels remain readable and navigation stays usable.",
+			"coverage": "required",
+			"units": ["desktop.component.project-agent"]
+		},
+		{
 			"id": "desktop-component-project-gate",
 			"title": "Project gate",
 			"coverage": "required",
@@ -2739,126 +2859,6 @@
 			"title": "/harness/branch/[branch]/[...at]/types/[entity]/history",
 			"coverage": "required",
 			"units": ["reports.page.harness-branch-branch-at-types-entity-history"]
-		},
-		{
-			"id": "desktop-component-project-agent-closed",
-			"title": "Closed launcher: Panel hidden; one accessible launcher remains. Open, close and Escape preserve the conversation and draft; focus returns safely.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-read-only",
-			"title": "Read-only conversation: Read permission can browse messages and references; no comment or agent submission is available.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-local-comment",
-			"title": "Pending local comment: Disconnected comment-capable context explains local pending drafts. Blank text cannot submit; typed comment is human-only.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-hosted-comment",
-			"title": "Connected human comment: Connected comment-only context saves a trimmed human comment without launching an agent and clears it on success.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-comment-retry",
-			"title": "Failed comment preserves draft: A synthetic comment-save refusal is visible and preserves entered text for retry; no agent launches.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-conversation",
-			"title": "Conversation and references: Human and assistant messages, long wrapped text, known unit history links and unknown/plain references render safely.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-historical",
-			"title": "Historical revision: Pinned or historical selection keeps its revision on links and blocks write-mode agent requests.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-ask",
-			"title": "Ask request: Writable agent-capable context selects Ask with discovered model and effort; trimmed request has the exact chosen identity.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-plan",
-			"title": "Plan request: Writable nonvisual context selects Plan; requires a provider/model and sends a plan request.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-visual-plan",
-			"title": "Visual Plan request: Visual context uses the saved valid design-option count for Plan; mode controls remain compact and usable.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-change",
-			"title": "Change request: Writable authorized context selects Change and submits only with its prerequisites; no real agent/provider is contacted.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-no-provider",
-			"title": "No available agent model: Agent-capable context without a usable provider/model cannot submit an agent request; comments remain usable if allowed.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-running",
-			"title": "Agent running: Matching synthetic public progress is visible while message entry and duplicate submission are disabled; terminal completion unlocks it.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-saved-plan",
-			"title": "Saved plan retained: A completed plan retains its public saved-plan response and associated registered-unit references in the conversation.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-failure",
-			"title": "Agent failure: Synthetic terminal failure is visible in the owning conversation and leaves the composer usable for a deliberate retry.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-agents-empty",
-			"title": "Agents tracked and empty: Agents tab distinguishes a successful empty roster from unknown tracking and preserves the Chat draft on return.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-agents-active",
-			"title": "Active agents and ownership: Agents tab shows current sessions, tasks and module assignments with resolved module history links.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-agents-unknown",
-			"title": "Unknown agent tracking: Unavailable or unsupported activity tracking is explicitly unknown; it does not claim an empty or current roster.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-agents-stale",
-			"title": "Stale agent tracking: Stale activity data is visibly stale and carries no current module ownership claim.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
-		},
-		{
-			"id": "desktop-component-project-agent-agents-many",
-			"title": "Long agents roster: A deterministic long roster scrolls within the component while task and module labels remain readable and navigation stays usable.",
-			"coverage": "required",
-			"units": ["desktop.component.project-agent"]
 		}
 	],
 	"viewports": [
