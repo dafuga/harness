@@ -1,0 +1,43 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-JSQQkE
+
+ ❯ test/adapters/git-source-history/commit-tree.test.ts (6 tests | 1 failed) 1000ms
+   ✓ CommitTreeAdapter.open empty resolves the exact commit and refuses absent revisions 51ms
+   ✓ CommitTreeAdapter.open populated establishes the object format before caching 55ms
+   ✓ CommitTreeAdapter.list empty returns no source entries 45ms
+   ✓ CommitTreeAdapter.list populated retains blob identities and paths 55ms
+   ✓ CommitTreeAdapter.read empty rejects missing paths 43ms
+   × CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths 749ms
+     → overlapping reads must serialize Git payload batches: expected 2 to be 1 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/git-source-history/commit-tree.test.ts > CommitTreeAdapter.read populated reuses immutable blobs across revisions without stale paths
+AssertionError: overlapping reads must serialize Git payload batches: expected 2 to be 1 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1[39m
+[31m+ 2[39m
+
+ ❯ assertBoundedCommittedReads test/support/commitTreeBatchCases.ts:23:85
+     21|   .slice(before)
+     22|   .map((input) => input.trim().split('\n'));
+     23|  expect(observed.maxActive, 'overlapping reads must serialize Git payl…
+       |                                                                                     ^
+     24|  expect(requests.length).toBeGreaterThan(1);
+     25|  for (const group of requests) {
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:122:6
+ ❯ fixture test/adapters/git-source-history/commit-tree.test.ts:28:3
+ ❯ test/adapters/git-source-history/commit-tree.test.ts:85:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  01:26:38
+   Duration  3.27s (transform 78ms, setup 95ms, collect 24ms, tests 1.00s, environment 0ms, prepare 21ms)
+
