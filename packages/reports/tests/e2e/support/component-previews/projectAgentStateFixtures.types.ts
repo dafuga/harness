@@ -26,3 +26,9 @@ export type ProjectAgentState =
 export interface ProjectAgentStateFixtureOptions {
 	state: ProjectAgentState;
 }
+
+/** A declared row that cannot be represented through the committed typed fixture seams. */
+export interface ProjectAgentStateFixtureGap {
+	state: ProjectAgentState;
+	missingPublicSeam: string;
+}

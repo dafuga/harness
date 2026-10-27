@@ -22,6 +22,8 @@ import {
 	assertModulePreview,
 	assertTranslationControls
 } from './support/component-previews/previewCaptureAssertions';
+import { assertProjectAgentState } from './support/component-previews/projectAgentStateFixtures';
+import type { ProjectAgentState } from './support/component-previews/projectAgentStateFixtures.types';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 let home = '';
 function assertCatalogRegistry() {
@@ -88,13 +90,31 @@ for (const viewport of catalogViewports) {
 }
 for (const viewport of catalogViewports) {
 	for (const { unit, variant } of catalogCases) {
-		test(`${unit.id}${variant ? `:${variant}` : ''} at ${viewport.id}`, async ({ page }) => {
+		const isProjectAgent = unit.id === 'desktop.component.project-agent';
+		const title =
+			isProjectAgent && variant
+				? `desktop-component-project-agent-${variant} at ${viewport.id}`
+				: `${unit.id}${variant ? `:${variant}` : ''} at ${viewport.id}`;
+		test(title, async ({ page }) => {
+			const browserErrors: string[] = [];
+			if (isProjectAgent) {
+				page.on('pageerror', (error) => browserErrors.push(error.message));
+				page.on('console', (message) => {
+					if (message.type() === 'error') browserErrors.push(message.text());
+				});
+			}
 			await page.setViewportSize(viewport);
 			await openPreview(page, home, unit.id, variant);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
-			if (unit.id === 'desktop.component.project-agent')
-				await expect(component.locator('.floating-chat-panel')).toBeVisible();
+			if (isProjectAgent) {
+				const panel = component.locator('.floating-chat-panel');
+				if (variant === 'closed') {
+					await expect(component.locator('.floating-chat-bubble')).toBeVisible();
+					await expect(panel).toBeHidden();
+				} else await expect(panel).toBeVisible();
+				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
+			}
 			await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
 			if (unit.id === 'reports.component.module-system-explorer-modules-screen' && !variant) {
@@ -215,6 +235,8 @@ for (const viewport of catalogViewports) {
 				.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
 				.toBeLessThanOrEqual(viewport.width);
 			if (viewport.id === 'desktop') await profilePreview(page, unit.id, variant);
+			if (isProjectAgent)
+				expect(browserErrors, 'ProjectAgent produces no unexpected browser errors').toEqual([]);
 		});
 	}
 }
