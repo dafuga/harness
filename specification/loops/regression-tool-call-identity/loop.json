@@ -2,7 +2,7 @@
 	"name": "regression-tool-call-identity",
 	"goal": "Pair unchanged regression runs across separate Codex tool calls while retaining meaningful environment settings.",
 	"createdAt": "2026-10-27T00:45:28.823Z",
-	"updatedAt": "2026-10-27T00:45:29.909Z",
+	"updatedAt": "2026-10-27T00:46:25.034Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:46:00.073Z",
+			"evidence": "Test-only 620840da8d failed record 785ad7b459e5 because differing per-call identifiers changed an otherwise identical profile."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:46:11.645Z",
+			"evidence": "1fee21a175 excludes only CODEX_TOOL_CALL_ID from the comparison while retaining runtime and other environment values."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:46:25.034Z",
+			"evidence": "Red 785ad7b459e5 and green 66b8bc345abf used the same committed test and environment; workload settings remain in the profile."
 		},
 		{
 			"id": "verify",

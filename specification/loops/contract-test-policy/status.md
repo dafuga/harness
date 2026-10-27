@@ -836,3 +836,33 @@ tree as `514932a786`. Two source-change reasons are retained in Git notes.
 Each request now has at most 64 blobs, but a single oversized note is not
 byte-bounded. Full reconstruction, integration and aggregate verification
 remain pending.
+
+The preserved-ref checkout was then advanced to task head `72196e9a67` and
+fetched the newer notes and evidence through Harness. An instrumented,
+one-revision `--smol` history build stopped at the combined RSS guard before
+writing a revision: 1,048,100,864 bytes task-process RSS and 9,403,351,040
+bytes as a summed upper estimate including shared processes. It reached source
+indexing. The selected revision and evidence differ from the earlier probe, so
+their stage measurements are not a controlled comparison. Temporary markers
+were removed. Another session's history validation was still running on
+`harbor-mbp-2`; it was not interrupted or overlapped with another broad build.
+
+## Continuation: regression tool-call identity
+
+Two otherwise identical Codex tool calls produced different regression profiles
+solely because `CODEX_TOOL_CALL_ID` changed. The existing profile case covered
+launcher and lease identities but not this one. Test-only `620840da8d` failed
+red `785ad7b459e5`; source-only `1fee21a175` passed unchanged green
+`66b8bc345abf`. Other environment settings remain part of the profile. Two
+separate tool calls now return the same profile for the same workload settings.
+
+`9430853e0c` retains the new committed source review and every earlier review
+in the shared service ownership ledger. Its regenerated object pack indexed
+in an empty bare Git repository. Capture `1356e7dacdb1` passed 24 focused
+tests, registry validation, formatting, lint, typecheck and audit. The profile
+case took 0.183 ms and observed 197,591,040 bytes whole-worker RSS. Static
+observations on that committed tree are 15,145 source bytes, 394 lines,
+complexity 103 and 19 dependencies; the module has no separate emitted target.
+Mutant `c063ff5686` failed capture `2cb7daab7eec` at the original assertion;
+restored `fbf86ef3ff` passed `83860ee834af` with the same tree as `9430853e0c`.
+The source reason is retained in Git notes. Full verification remains pending.
