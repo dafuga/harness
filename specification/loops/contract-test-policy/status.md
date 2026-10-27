@@ -1346,3 +1346,21 @@ and attempt provenance in existing screenshot evidence cases.
 
 These tests use synthetic image bytes solely to test evidence integrity. Real
 browser capture, reviewed baseline loading and full verification remain open.
+
+Scenario coverage previously let an output capture satisfy a required screenshot
+slot when evidence, state and viewport matched. The existing five coverage cases
+lacked a wrong-kind input. Test commit `815179326c` registers those same cases
+as authored examples and fails with red `92e3a03142e3`; fix `9bd3c0d300`
+requires matching kinds and marks a mismatched capture failed even alongside a
+valid one. The unchanged case passes in green `d087d4fe827a`. After an
+assertion-neutral lint cleanup, the final-test mutant `f66e8b4c63` fails in
+`07cd534a8a15`; restored tree `ffa8595854` passes in `159e51da5747`.
+
+Focused snapshot `1e4b3cb26fd9` at `9ccbe122bd` passed 26 existing cases,
+registry validation, root typecheck and audit; target lint and formatting also
+passed. The source unit had 10,385 bytes, 245 lines, complexity 66 and six
+dependencies at that commit; it has no separate emitted module artifact. The
+record retains sampled execution timing and whole-process peak RSS. The local
+helper and shared service ledgers preserve the original relocation and now name
+the reviewed fix. This is focused unit proof; the full laptop check, real browser
+captures and remaining screenshot-case bindings are still pending.
