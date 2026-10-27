@@ -92,14 +92,20 @@ export class PreparationFailed extends Error {
  * commit.
  */
 export async function baselineRepo(
-	extend: (repo: VerifyRepo) => Promise<void> = () => Promise.resolve()
+	extend: (repo: VerifyRepo) => Promise<void> = () => Promise.resolve(),
+	options: {
+		sources?: Record<string, string>;
+		omitScenarios?: boolean;
+		prepare?: (repo: VerifyRepo) => Promise<void>;
+	} = {}
 ): Promise<VerifyRepo> {
 	const project = await unitProject('lib');
 	const repo = repoAt(project.root);
-	for (const [path, contents] of Object.entries(fixtureSources)) await repo.write(path, contents);
-	for (const scenario of fixtureScenarios) {
-		await repo.write(`specification/scenarios/${scenario.id}.json`, JSON.stringify(scenario));
-	}
+	for (const [path, contents] of Object.entries(options.sources ?? fixtureSources))
+		await repo.write(path, contents);
+	if (!options.omitScenarios)
+		for (const scenario of fixtureScenarios)
+			await repo.write(`specification/scenarios/${scenario.id}.json`, JSON.stringify(scenario));
 	await repo.harness(['units', 'index', '--write']);
 	const title = 'specification/units/service.title.json';
 	const manifest = await repo.json<{ budgets: object }>(title);
@@ -110,6 +116,7 @@ export async function baselineRepo(
 	);
 	await repo.harness(['units', 'index', '--write']);
 	await extend(repo);
+	await options.prepare?.(repo);
 	await repo.git(['init', '-q', '-b', 'main']);
 	await repo.commit('feat: fixture');
 	await repo.explainAll(['--base', 'none', '--head', 'HEAD']);
