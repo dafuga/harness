@@ -1,3 +1,5 @@
+import type { DesktopBridge } from '../../../../../desktop/src/models/DesktopBridge.types';
+
 /** Orchestrator-declared standard ProjectAgent fixture states. */
 export type ProjectAgentState =
 	| 'rest'
@@ -32,3 +34,10 @@ export interface ProjectAgentStateFixtureGap {
 	state: ProjectAgentState;
 	missingPublicSeam: string;
 }
+
+export type ProjectAgentFixtureMessage = Awaited<
+	ReturnType<NonNullable<DesktopBridge['messages']>>
+>[number];
+export type ProjectAgentFixtureProjectMessage = Awaited<
+	ReturnType<NonNullable<DesktopBridge['projectMessages']>>
+>[number];

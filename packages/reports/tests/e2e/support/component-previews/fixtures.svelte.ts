@@ -17,10 +17,8 @@ import { desktopRoute } from './routeDesktop.svelte';
 import { hubRoute } from './routeHub';
 import type { PreviewCases } from './shared';
 import { nativeAtomFixture } from './nativeAtomProps';
-import {
-	projectAgentStateFixture,
-	type ProjectAgentState
-} from './projectAgentStateFixtures';
+import { projectAgentStateFixture } from './projectAgentStateFixtures';
+import type { ProjectAgentState } from './projectAgentStateFixtures.types';
 export function previewFixture(id: string, variant = '') {
 	const desktop = createDesktopData(id);
 	// The shell opens at Pages, where its store starts and where the web workspace opens too.

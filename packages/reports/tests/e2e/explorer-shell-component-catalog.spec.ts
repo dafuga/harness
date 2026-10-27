@@ -22,7 +22,7 @@ import {
 	assertModulePreview,
 	assertTranslationControls
 } from './support/component-previews/previewCaptureAssertions';
-import { assertProjectAgentState } from './support/component-previews/projectAgentStateFixtures';
+import { assertProjectAgentState } from './support/component-previews/projectAgentStateAssertions';
 import type { ProjectAgentState } from './support/component-previews/projectAgentStateFixtures.types';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 let home = '';

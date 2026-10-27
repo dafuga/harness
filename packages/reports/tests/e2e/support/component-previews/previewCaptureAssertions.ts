@@ -22,12 +22,9 @@ export async function assertComponentCapture(
 		'desktop.component.deployment-dialog': 'dialog[open]',
 		'desktop.component.project-agent': '.floating-chat-panel'
 	};
-	const selector =
-		id === 'desktop.component.project-agent'
-			? variant === 'closed'
-				? '.floating-chat-bubble'
-				: '.floating-chat-panel'
-			: selectors[id];
+	let selector = selectors[id];
+	if (id === 'desktop.component.project-agent')
+		selector = variant === 'closed' ? '.floating-chat-bubble' : '.floating-chat-panel';
 	if (!selector) return;
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	const boxes = await content
