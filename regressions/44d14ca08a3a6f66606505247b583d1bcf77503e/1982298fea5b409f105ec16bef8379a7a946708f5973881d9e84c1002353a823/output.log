@@ -1,0 +1,81 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-t63D8O
+
+ ❯ test/services/verification-evidence/test-discovery.test.ts (2 tests | 1 failed | 1 skipped) 11ms
+   × scan initialized source finds imported cases, aliases and computed registration 10ms
+     → runner context controls whether cases are statically known: expected [ [ 'data-only', true, false ], …(14) ] to deeply equal [ [ 'data-only', true, false ], …(12) ]
+   ↓ discover initialized and unreadable sources retain explicit discovery gaps
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-discovery.test.ts > scan initialized source finds imported cases, aliases and computed registration
+AssertionError: runner context controls whether cases are statically known: expected [ [ 'data-only', true, false ], …(14) ] to deeply equal [ [ 'data-only', true, false ], …(12) ]
+
+- Expected
++ Received
+
+@@ -34,31 +34,41 @@
+      true,
+      false,
+    ],
+    [
+      "conditional-skip",
++     false,
++     false,
++   ],
++   [
++     "condition",
+      true,
+      false,
+    ],
+    [
+      "conditional-run",
++     false,
++     false,
++   ],
++   [
++     "condition",
+      true,
+      false,
+    ],
+    [
+      "conditional-branch",
+-     true,
++     false,
+      false,
+    ],
+    [
+      "dormant",
+-     true,
++     false,
+      false,
+    ],
+    [
+      "nested > conditional",
+-     true,
++     false,
+      false,
+    ],
+    [
+      "nested > active",
+      false,
+
+ ❯ assertParameterizedCases test/services/verification-evidence/test-discovery.test.ts:57:4
+     55|   found.map(({ title, dynamic, disabled }) => [title, dynamic, disable…
+     56|   'runner context controls whether cases are statically known'
+     57|  ).toEqual([
+       |    ^
+     58|   ['data-only', true, false],
+     59|   ['data-describe', true, false],
+ ❯ test/services/verification-evidence/test-discovery.test.ts:35:9
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-discovery.test.ts:32:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 skipped (2)
+   Start at  14:06:06
+   Duration  2.45s (transform 75ms, setup 81ms, collect 158ms, tests 11ms, environment 0ms, prepare 26ms)
+
