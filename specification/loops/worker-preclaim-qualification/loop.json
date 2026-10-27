@@ -2,7 +2,7 @@
 	"name": "worker-preclaim-qualification",
 	"goal": "Leave tasks queued when provider isolation is unqualified and retain the launch-time qualification check.",
 	"createdAt": "2026-10-27T12:48:00.974Z",
-	"updatedAt": "2026-10-27T12:57:42.847Z",
+	"updatedAt": "2026-10-27T12:59:54.547Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:59:49.333Z",
+			"evidence": "At 36075e5b14 the worker awaits trusted runner readiness before owner lookup and task claim; the launch adapter still rechecks qualification before sandbox preparation or provider execution."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:59:54.547Z",
+			"evidence": "The unchanged focused case passed on harbor-mbp-2 at 36075e5b14 under the same sanitized runtime and environment; green proof 1eb920eae22150b32c9774c062daa7e70e5091f54f8450312d5040570114228b, red proof da800b9424a834af6a31c60051da64bbc7e4f1ac37811c3630e474653b56ba5e."
 		},
 		{
 			"id": "verify",
