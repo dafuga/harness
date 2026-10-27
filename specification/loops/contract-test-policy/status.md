@@ -1464,8 +1464,8 @@ in red `fd30558ceff0`; fix `c82cd6e83f` passed in green `130785fb017f` on
 harbor-mbp-2 with the same profile. It preserves existing authored metadata.
 The focused generator, registry and readable-contract checks passed 27 cases;
 root typecheck, targeted lint and formatting passed. The source was integrated
-at `1009599c93`; the unchanged-case mutation guard and fresh workloads remain
-open.
+at `1009599c93`; the unchanged-case mutation guard and final-tree verification
+remain open.
 
 Generated pages and layouts had the same registration gap. The existing case
 now checks page states and a categorized layout with a labelled child-slot
@@ -1473,5 +1473,11 @@ placeholder. Test commit `f033ad5290` failed in red `cb457ed37b80`; fix
 `e4efd0ea5f` passed in green `02a2fa33f9f4` on harbor-mbp-2 with the same
 profile. The same 27 focused checks and root typecheck passed on the draft;
 targeted lint and formatting passed. The source was integrated at `a95c449ae5`.
-Mutation proof, source and runtime measurements, reviewed browser baselines,
-case-bound browser evidence and the full verification gate remain open.
+The green record also retained normal generator source observations at
+`e4efd0ea5f`: `generatePiece` averaged 23.258 ms across six successful calls;
+component and page contract generation averaged 0.626 ms and 0.340 ms across
+two calls each. Peak RSS observations were for whole processes, approximately
+184–187 MB, including shared runtime and earlier work. These focused samples
+do not approve a performance baseline. Source-size measurements, mutation
+proof, reviewed browser baselines, case-bound browser evidence and the full
+verification gate remain open.
