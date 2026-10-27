@@ -2,7 +2,7 @@
 	"name": "generated-workspace-visual-contract",
 	"goal": "Register visual cases from nested workspaces at the repository registry",
 	"createdAt": "2026-10-27T09:10:18.131Z",
-	"updatedAt": "2026-10-27T09:10:29.457Z",
+	"updatedAt": "2026-10-27T09:42:58.668Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:42:58.668Z",
+			"evidence": "The existing generator case fails at 41822ff57b on harbor-mbp-2 because portal.component.workspace-card lacks its contract. Harness record b93a4c173fef4ff8959085d23fcd8edd1ed9d7246a67f5e45e52c2c35e0e32eb."
 		},
 		{
 			"id": "implement",
