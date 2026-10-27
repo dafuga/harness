@@ -1,0 +1,16 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-qk9ApK
+
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 69ms
+ ✓ test/services/verification-evidence/test-expectation.test.ts (4 tests) 38ms
+ ✓ test/services/verification-evidence/test-contract.test.ts (2 tests) 22ms
+
+ Test Files  3 passed (3)
+      Tests  8 passed (8)
+   Start at  01:15:22
+   Duration  3.72s (transform 342ms, setup 160ms, collect 814ms, tests 129ms, environment 0ms, prepare 67ms)
+
+Units registry is valid: 1827 units, 166 uncertain references.
+$ bun src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'tsc --noEmit "$@"' --
+test/services/verification-evidence/test-expectation.test.ts [small-file]
+  File has 227 lines. Limit is 220. Split it by responsibility.
