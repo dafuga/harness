@@ -30,7 +30,10 @@ export function runnerDeclarations(text: string, file: string): DiscoveredTest[]
 				file,
 				title: [...scope.titles, call.title].join(' > '),
 				line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
-				dynamic: scope.dynamic || call.dynamic,
+				dynamic:
+					scope.dynamic ||
+					call.dynamic ||
+					enclosingContext(source, node as ts.CallExpression, aliases).dynamic,
 				disabled: scope.disabled || call.disabled
 			});
 		const next =
@@ -178,12 +181,12 @@ function registration(
 function isFactory(node: ts.Expression, expression: string): boolean {
 	return (
 		(ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) &&
-		/\.(?:each|for)$/.test(expression)
+		/\.(?:each|for|skipIf|runIf)$/.test(expression)
 	);
 }
 
 function isDynamic(title: ts.Expression, expression: string): boolean {
-	return !ts.isStringLiteralLike(title) || /\.each\b|\.for\b/.test(expression);
+	return !ts.isStringLiteralLike(title) || /\.(?:each|for|skipIf|runIf)\b/.test(expression);
 }
 
 /** Follow the runner chain without interpreting call arguments as modifiers. */
