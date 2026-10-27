@@ -2,7 +2,7 @@
 	"name": "generated-page-layout-contract",
 	"goal": "Register generated page and layout screenshot cases including child-slot placeholders",
 	"createdAt": "2026-10-27T06:01:42.482Z",
-	"updatedAt": "2026-10-27T06:12:54.558Z",
+	"updatedAt": "2026-10-27T06:22:39.254Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T06:22:33.039Z",
+			"evidence": "Commit e4efd0ea5f registers generated page and layout screenshot cases and the labelled child placeholder."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T06:22:39.254Z",
+			"evidence": "The unchanged case passed on harbor-mbp-2 at e4efd0ea5f; green 02a2fa33f9f4 matches red cb457ed37b80 and its runtime profile."
 		},
 		{
 			"id": "verify",
