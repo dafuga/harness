@@ -1,0 +1,60 @@
+{
+	"name": "native-note-capacity",
+	"goal": "Preserve every valid verification entry in large Git notes across runtimes",
+	"createdAt": "2026-10-26T21:53:52.719Z",
+	"updatedAt": "2026-10-26T21:56:07.402Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:53:53.309Z",
+			"evidence": "The new batched note reader uses a variadic push for every verification in one note; Node rejects sufficiently large argument lists, so a valid large note can stop restoration."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:53:53.844Z",
+			"evidence": "The standard explanation-notes-order matrix covers many reason notes but only two verification entries. Extend it with a large valid repeated-verification note and verify the full count and order through the repository entry."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:54:56.726Z",
+			"evidence": "Committed test fac9153d failed with the actual Node stack overflow; record 3bcc37e0 preserves the command and assertion."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:56:06.148Z",
+			"evidence": "Commit f7e31e8c appends verification entries individually and moves batch orchestration outside the class limit."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:56:07.402Z",
+			"evidence": "The unchanged 150000-entry test passed at f7e31e8c; record 60f069f3 pairs with red 7be4d5c6."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

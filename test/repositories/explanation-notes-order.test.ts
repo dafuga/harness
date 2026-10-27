@@ -12,6 +12,8 @@ import {
 import { ExplanationRepository } from '../../src/repositories/ExplanationRepository';
 import { HistoryNoteRepository } from '../../src/repositories/history-note-repository/HistoryNoteRepository';
 import { ExplanationService } from '../../src/services/ExplanationService';
+import { HistoryStatusService } from '../../src/services/history-status-service/HistoryStatusService';
+import { noteHistoryFixture, noteHistoryMemory } from '../support/noteHistoryFixture';
 
 const root = mkdtempSync(join(tmpdir(), 'harness-notes-order-'));
 afterAll(() => rmSync(root, { recursive: true, force: true }));
@@ -144,3 +146,48 @@ test('a date that cannot be read is never later than one that can; equal ones ag
 	const answers = await Promise.all(across(2).map((places) => held([twin, other], places)));
 	expect(new Set(answers.map((answer) => JSON.stringify(answer))).size).toBe(1);
 }, 20_000);
+
+test('restoration keeps a large note history bounded and still refuses missing evidence', async () => {
+	const { dir, commits } = repository();
+	await noteHistoryFixture(dir, commits, (args) => git(dir, args), reason(2, earlier, 'A change.'));
+	const raw = await noteHistoryMemory(dir, 'raw');
+	const restored = await noteHistoryMemory(dir, 'restore');
+	expect(raw.value).toBeGreaterThan(30_000_000);
+	expect(restored.value).toEqual({
+		restored: [],
+		skipped: [
+			{
+				record: 'missing-verification',
+				problems: [expect.stringContaining('is not available')]
+			}
+		]
+	});
+	console.log(`Note history RSS: restore ${restored.rss}; raw ${raw.rss}`);
+	expect(restored.rss).toBeLessThan(raw.rss + 300 * 1024 * 1024);
+	const expected = await new HistoryStatusService(dir).verifications();
+	const actual = await new HistoryNoteRepository(dir).verifications();
+	expect(expected).toHaveLength(2);
+	expect(actual).toEqual(expected);
+}, 120_000);
+
+test('a large note retains every valid verification entry in order', async () => {
+	const { dir, commits } = repository();
+	const [commit] = commits;
+	const note = {
+		schemaVersion: 1,
+		kind: 'verification',
+		record: 'record-1',
+		status: 'passed',
+		profile: 'profile-1',
+		finishedAt: earlier,
+		source: { commit, tree: git(dir, ['rev-parse', `${commit}^{tree}`]), base: null },
+		evidence: { commit, path: 'records/one', manifest: 'a'.repeat(64) }
+	};
+	const file = join(root, 'large-verification-note.txt');
+	writeFileSync(file, `${JSON.stringify(note)}\n`.repeat(150_000));
+	git(dir, ['notes', '--ref=harness', 'add', '-F', file, commit]);
+	const found = await new HistoryNoteRepository(dir).verifications();
+	expect(found).toHaveLength(150_000);
+	expect(found[0]).toEqual(note);
+	expect(found.at(-1)).toEqual(note);
+}, 120_000);

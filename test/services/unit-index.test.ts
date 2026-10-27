@@ -1,6 +1,7 @@
 import { assertCompanionOwnership } from './unit-index/ownership';
-import { assertCompositionRegistry } from './unit-index/composition';
+import './unit-index/composition';
 import './unit-index/http';
+import './unit-index/sourceIndex';
 import { execFileSync } from 'node:child_process';
 import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
@@ -15,8 +16,6 @@ import migration from '../../specification/loops/local-helper-ownership/migratio
 
 const slugify = 'export function slugify(input: string): string {\n\treturn input.trim();\n}\n';
 const other = 'export function slugifyTitle(input: string): string {\n\treturn input;\n}\n';
-test('atomic levels follow runtime calls and survive projections', assertCompositionRegistry);
-
 test('recorded source moves retain definitions, owner-local placement and registered identity', () => {
 	const root = import.meta.dirname + '/../..';
 	const gaps = helperMoveGaps(root, migration.helpers, migration.followUps);

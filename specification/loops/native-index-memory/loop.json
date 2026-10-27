@@ -1,0 +1,60 @@
+{
+	"name": "native-index-memory",
+	"goal": "Bound source indexing memory while preserving complete revision data and resource admission safeguards",
+	"createdAt": "2026-10-26T20:50:58.466Z",
+	"updatedAt": "2026-10-26T20:54:31.174Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-26T20:51:12.995Z",
+			"evidence": "On hosted macOS verification timed out at 1721 MiB available below the 2048 MiB reserve; local full-revision indexing retains 1.7 GB RSS and bounded 256-read experiment retains 1.0 GB with equal output counts."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-26T20:51:16.414Z",
+			"evidence": "The standard unit-index source tests cover metadata and HTTP dependencies with small synchronous trees but never exercise many pending reads, their order, completion or rejection. Extend that matrix through SourceIndexService.index with a delayed SourceTree."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-26T20:54:21.983Z",
+			"evidence": "Committed source-index test failed because 300 reads ran at once; regression record 0eaa38c1 retains the assertion and measured workload."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-26T20:54:26.946Z",
+			"evidence": "SourceIndexService admits at most 256 reads and releases each slot on success or failure while preserving Promise.all result order."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-26T20:54:31.174Z",
+			"evidence": "The unchanged regression passed at 3a53e0d; record 4f79ab6d pairs it with red 0eaa38c1 under the same environment."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -1,0 +1,60 @@
+{
+	"name": "native-restore-memory",
+	"goal": "Bound evidence restoration memory while preserving note selection and missing evidence checks",
+	"createdAt": "2026-10-26T21:46:04.637Z",
+	"updatedAt": "2026-10-26T21:50:28.533Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:46:05.395Z",
+			"evidence": "The hosted macOS verifier exhausted its reserve. On restored real history, existing restore, trust and impact retained 2.48 GB RSS; a batched verification-note and streamed-record prototype retained 1.40 GB and selected the same records."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:46:05.952Z",
+			"evidence": "test/repositories/explanation-notes-order.test.ts uses only two small note-bearing commits and does not exercise restoration with many large notes or corrupt entries. Extend that existing note fixture with realistic large Git notes, a cached verification and missing or mismatched evidence."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:47:37.163Z",
+			"evidence": "Committed note-history test c9265cf3 failed its bounded RSS assertion; record cfd4963e keeps the command, expected missing evidence and workload observation."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:50:27.290Z",
+			"evidence": "Commit 8a0a0c3d reads verification notes in batches and scans cached record ids without retaining unrelated records."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:50:28.533Z",
+			"evidence": "Unchanged note-history test passed at 8a0a0c3d; green record 72e4f5b3 pairs with red 59d7b6af in the same environment."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

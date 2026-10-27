@@ -1,0 +1,60 @@
+{
+	"name": "native-reason-manifest-memory",
+	"goal": "Retain only reason-relevant manifest declarations across source history",
+	"createdAt": "2026-10-27T01:15:37.490Z",
+	"updatedAt": "2026-10-27T09:58:03.582Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T01:15:38.127Z",
+			"evidence": "Historical reason sides still retain every active full ComponentManifest although requiredReasons uses only unit identity, status, source paths and declared configuration digest."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T01:15:38.659Z",
+			"evidence": "test/history-reason-steps.e2e.test.ts asserts compact side and source-file facts but does not inspect manifest shape; extend its 32-revision scenario to require compact reason manifests."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T09:32:39.241Z",
+			"evidence": "The 32-revision scenario failed on cf81ce11b0c193a9e966774edcd29e08147ca0c5 because historical manifests retain fields beyond declarationHash, id, owns and status."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T09:42:35.634Z",
+			"evidence": "65ff00fe35 keeps only unit identity, owned paths and declared configuration fingerprints in historical reason sides."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T09:58:03.582Z",
+			"evidence": "The unchanged history and in-memory compatibility tests passed 5 of 5 on 65ff00fe35eb6e3887461ff2bc244f1b01e67008 on harbor-mbp-2."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

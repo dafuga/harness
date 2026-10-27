@@ -1,7 +1,12 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { verifyRun } from '../src/workflows/verification-evidence/run-verify/runVerify';
-import { profileMissingMeasurements, taskProfile } from './support/taskProfiles';
-import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
+import { attach } from './support/historyRepo';
+import {
+	observedTaskOperation,
+	profileMissingMeasurements,
+	taskProfile
+} from './support/taskProfiles';
+import { baselineRepo, cloneRepo, reviewer, type VerifyRepo } from './support/verifyRepo';
 
 let baseline: VerifyRepo;
 beforeAll(async () => {
@@ -16,7 +21,11 @@ test('task verification rejects missing profiling even without performance budge
 	try {
 		await repo.change('src/utils/slugify.ts', upper);
 		const request = { root: repo.root, requirePerformance: true };
-		const { record } = await verifyRun(request);
+		const { record } = await observedTaskOperation(
+			'workflow.run-verify',
+			'single-unit-change',
+			() => verifyRun(request)
+		);
 		await taskProfile('workflow.run-verify', 'reject-unprofiled-change', () => verifyRun(request));
 		expect(record.gates?.performance, 'task profiling is mandatory without a budget').toBe(
 			'failed'
@@ -59,6 +68,66 @@ test('measures that do not apply or were not taken are stated, never left out', 
 	expect(record.failures).toEqual([]);
 	await repo.dispose();
 }, 120_000);
+
+test('a benchmarked unit outside impact keeps its committed source identity', async () => {
+	const repo = await cloneRepo(baseline);
+	try {
+		await repo.change('scripts/fixture.mjs', (source) =>
+			source.replace(
+				"if (media === 'corrupt')",
+				"if (media === 'extra') return Buffer.from('unused');\n\tif (media === 'corrupt')"
+			)
+		);
+		const hash = await repo.git(['rev-parse', 'HEAD:src/services/TitleService.ts']);
+		const { record } = await repo.verify();
+		expect([...record.impact.units.direct, ...record.impact.units.indirect]).not.toContain(
+			'service.title'
+		);
+		expect(record.measurements.some((item) => item.unit === 'service.title')).toBe(true);
+		const title = record.components.find((item) => item.unit === 'service.title');
+		expect(title?.files).toContainEqual({ path: 'src/services/TitleService.ts', hash });
+		await attach(repo);
+	} finally {
+		await repo.dispose();
+	}
+}, 180_000);
+
+test('a removed unit keeps its base source identity in the verification record', async () => {
+	const repo = await cloneRepo(baseline);
+	try {
+		const path = 'src/utils/retired.ts';
+		await repo.write(path, 'export function retired(): number { return 1; }\n');
+		await repo.harness(['units', 'index', '--write']);
+		await repo.explainAll();
+		await repo.commit('feat: add retirement fixture');
+		const initial = await repo.verify();
+		await repo.harness([
+			'budget',
+			'establish',
+			'function.retired',
+			'--record',
+			initial.record.id,
+			...reviewer
+		]);
+		const base = await repo.commit('chore: establish retirement baseline');
+		const added = await repo.verify();
+		expect(added.record.status, added.record.failures.join('; ')).toBe('passed');
+		await attach(repo);
+		const hash = await repo.git(['rev-parse', `${base}:${path}`]);
+		await repo.git(['rm', '-q', path]);
+		await repo.harness(['units', 'retire', 'function.retired', '--reason', 'Unused']);
+		await repo.harness(['units', 'index', '--write']);
+		await repo.explainAll();
+		await repo.commit('feat: retire fixture');
+		const { record } = await repo.verify();
+		expect(record.source.base).toBe(base);
+		expect(record.impact.units.removed).toContain('function.retired');
+		const removed = record.components.find((item) => item.unit === 'function.retired');
+		expect(removed).toMatchObject({ change: 'removed', files: [{ path, hash }] });
+	} finally {
+		await repo.dispose();
+	}
+}, 180_000);
 
 test('an artifact built in the snapshot is measured with its hash, and a missing one is stated', async () => {
 	const repo = await cloneRepo(baseline);

@@ -68,6 +68,15 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 	const impact = await new ImpactService(runtime)
 		.compute(base, head)
 		.finally(() => runtime.close());
+	const reasons = await new CommitMessageService(root).reported(
+		await new ReasonPathService(root, commitLoader(root)).report(
+			{ base, head, baseCommit, headCommit: commit },
+			await new ExplanationRepository(root).all()
+		),
+		baseCommit,
+		commit
+	);
+	const sourceHashes = retainVerificationIndexes(base, head, impact.units);
 	return new VerificationService({
 		root,
 		commit,
@@ -77,6 +86,7 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		requestedBase,
 		base,
 		head,
+		sourceHashes,
 		impact,
 		config,
 		requirePerformance: requiresPerformance(options, config),
@@ -87,16 +97,37 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		},
 		// What was written about the range is held to the writing limits: its reasons, and the
 		// stored messages of its commits, so a commit made past the hook does not pass.
-		explained: async () =>
-			new CommitMessageService(root).reported(
-				await new ReasonPathService(root, commitLoader(root)).report(
-					{ base, head, baseCommit, headCommit: commit },
-					await new ExplanationRepository(root).all()
-				),
-				baseCommit,
-				commit
-			)
+		explained: async () => reasons
 	}).run();
+}
+
+/** Keep hashes for all unit versions and full source facts only for impacted units. */
+function retainVerificationIndexes(
+	base: RevisionSide,
+	head: RevisionSide,
+	units: { direct: string[]; added: string[]; indirect: string[] }
+) {
+	const sourceHashes = { base: unitSourceHashes(base), head: unitSourceHashes(head) };
+	const measured = new Set([...units.direct, ...units.added, ...units.indirect]);
+	const paths = new Set(
+		head.manifests.filter((unit) => measured.has(unit.id)).flatMap((unit) => unit.owns.source)
+	);
+	for (const path of head.index.files.keys()) {
+		if (!paths.has(path)) head.index.files.delete(path);
+	}
+	base.index.files.clear();
+	return sourceHashes;
+}
+
+function unitSourceHashes(side: RevisionSide): Map<string, { hash: string }> {
+	const hashes = new Map<string, { hash: string }>();
+	for (const unit of side.manifests) {
+		for (const path of unit.owns.source) {
+			const file = side.index.files.get(path);
+			if (file) hashes.set(path, { hash: file.hash });
+		}
+	}
+	return hashes;
 }
 
 async function verifyConfig(head: RevisionSide): Promise<VerifyConfig> {

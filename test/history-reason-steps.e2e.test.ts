@@ -3,8 +3,10 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { explanationsFile } from '../src/core/explanationTypes';
+import { commitLoader } from '../src/workflows/development-tooling/loadRevisions';
 import { freshClone, noteLines, removeRemote, withRemote } from './support/historyRepo';
 import { baselineRepo, cloneRepo, type VerifyRepo } from './support/verifyRepo';
+import { observedTaskOperation } from './support/taskProfiles';
 let baseline: VerifyRepo;
 beforeAll(async () => {
 	baseline = await baselineRepo();
@@ -79,6 +81,36 @@ test('the reasons of every explained step are kept, and a fresh clone with the n
 	const after = await clone.run(['explain', 'check', ...range]);
 	expect([after.exitCode, after.stdout.trim()]).toEqual([0, check.stdout.trim()]);
 	await Promise.all([repo.dispose(), clone.dispose(), removeRemote(remote)]);
+}, 180_000);
+
+test('reason history loaders retain compact facts across a 32-revision walk', async () => {
+	const repo = await cloneRepo(baseline);
+	const commits = [await added(repo, () => repo.explainAll())];
+	for (let revision = 2; revision <= 32; revision++) commits.push(await changed(repo, revision));
+	const loader = commitLoader(repo.root);
+	const sides = await observedTaskOperation(
+		'workflow.load-revisions',
+		'reason-history-32-revisions',
+		async () => {
+			const loaded = [];
+			for (const commit of commits) loaded.push(await loader(commit));
+			return loaded;
+		}
+	);
+
+	expect(sides).toHaveLength(32);
+	for (const side of sides) {
+		expect(Object.keys(side).sort()).toEqual(['index', 'manifests', 'writing']);
+		for (const unit of side.manifests) {
+			expect(Object.keys(unit).sort()).toEqual(['declarationHash', 'id', 'owns', 'status']);
+			expect(Object.keys(unit.owns).sort()).toEqual(['source']);
+		}
+		for (const file of side.index.files.values()) {
+			expect(Object.keys(file).sort()).toEqual(['blocks', 'hash']);
+			for (const block of file.blocks) expect(Object.keys(block).sort()).toEqual(['hash', 'name']);
+		}
+	}
+	await repo.dispose();
 }, 180_000);
 
 test('a step keeps the writing limits of its own revision when a later one declares limits', async () => {

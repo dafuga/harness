@@ -1,0 +1,60 @@
+{
+	"name": "native-source-index-cache",
+	"goal": "Bound parsed source blobs to the indexed revision while reusing current blobs",
+	"createdAt": "2026-10-27T00:52:12.708Z",
+	"updatedAt": "2026-10-27T00:58:34.156Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T00:52:13.260Z",
+			"evidence": "A shared SourceIndexService retains every parsed blob in its map after successive revision indexes; the reusable unit-index coverage needs a many-revision cache-size assertion."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T00:52:13.818Z",
+			"evidence": "test/services/unit-index.test.ts exercises source indexing but currently covers one tree per service and does not assert cache retention across revisions; extend its sourceIndex scenario to index 32 revisions and assert only current blobs remain."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T00:55:13.493Z",
+			"evidence": "test/services/unit-index/sourceIndex.ts failed at 3c29eb7f4defb22ecd9410e89b5accd24a9a1edc: after successive indexing, parsed cache size was 2 instead of 1 on harbor-mbp-2"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T00:56:45.420Z",
+			"evidence": "272129f592 prunes SourceIndexService parsed blobs to the indexed tree and returns compact reason-walk facts"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T00:58:34.156Z",
+			"evidence": "Regression passed unchanged at 272129f5925c6017ef3931374c1ca0145b41e3db with a bounded one-blob cache across 32 revisions"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

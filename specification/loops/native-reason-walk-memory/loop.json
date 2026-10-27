@@ -1,0 +1,60 @@
+{
+	"name": "native-reason-walk-memory",
+	"goal": "Bound memory retained by long reason-history walks while preserving every explanation result",
+	"createdAt": "2026-10-27T00:33:58.584Z",
+	"updatedAt": "2026-10-27T10:04:48.399Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T00:35:38.012Z",
+			"evidence": "Run 40421510002 on commit 604b8f9 reproduced the native reserve timeout at 1742 MiB available against the 2048 MiB minimum; reason history keeps intermediate revisions until traversal ends."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T00:35:38.601Z",
+			"evidence": "test/history-reason-steps.e2e.test.ts covers only a two-commit chain and asserts reason correctness, but not the shape of loaded historical sides or retained facts. Extend that standardized scenario to verify history loaders return only hashes and symbol blocks needed by requiredReasons."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T00:41:34.117Z",
+			"evidence": "Harness loop record preserved failing assertion at exact test commit 7c7a11f2d3412588a8c250f834c1dc02a3d1f2c5 on harbor-mbp-2."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T09:42:36.959Z",
+			"evidence": "65ff00fe35 compacts historical reason facts while retaining the shared parser cache bound."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T10:04:48.399Z",
+			"evidence": "The unchanged history and in-memory compatibility tests passed on 65ff00fe35eb6e3887461ff2bc244f1b01e67008 on harbor-mbp-2."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

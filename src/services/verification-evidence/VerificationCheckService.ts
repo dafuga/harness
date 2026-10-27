@@ -1,7 +1,7 @@
 import type { CheckReport } from './VerificationCheckService.types';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { CommitTreeAdapter } from '../../adapters/git-source-history/CommitTreeAdapter';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
 import {
@@ -67,11 +67,22 @@ export class VerificationCheckService {
 	 */
 	private lineage(record: VerificationRecord): string[] {
 		const store = new VerificationStoreRepository(this.root);
-		const stored = new Map(store.all().map((item) => [item.record.id, item]));
+		const paths = new Map<string, string>();
+		for (const item of store.records())
+			paths.set(item.record.id, resolve(item.directory, 'record.json'));
+		const loaded = new Map<string, StoredRecord | undefined>();
+		const find = (id: string): StoredRecord | undefined => {
+			if (!loaded.has(id)) {
+				const path = paths.get(id);
+				const found = path ? store.read(path) : undefined;
+				loaded.set(id, found?.record.id === id ? found : undefined);
+			}
+			return loaded.get(id);
+		};
 		return recordLineage(record, {
-			find: (id) => stored.get(id)?.record,
+			find: (id) => find(id)?.record,
 			problems: (dependency) => {
-				const found = stored.get(dependency.id);
+				const found = find(dependency.id);
 				if (!found) return ['its files are not stored'];
 				const sealed = recordIntact(dependency) ? [] : ['record content does not match its id'];
 				return [...sealed, ...this.evidence(dependency, found.directory)];

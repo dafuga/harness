@@ -1,0 +1,60 @@
+{
+	"name": "native-history-memory",
+	"goal": "Keep verification history lookup bounded while preserving trusted ancestry and evidence checks",
+	"createdAt": "2026-10-26T21:33:33.269Z",
+	"updatedAt": "2026-10-26T21:40:38.061Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:33:40.061Z",
+			"evidence": "Hosted macOS admission timed out at 1742 MiB available; selecting and checking trusted records materializes 46 records twice. A streamed prototype selected the same ancestor and used 1.29 GB RSS instead of 1.70 GB on the same restored history."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:33:40.651Z",
+			"evidence": "test/services/trusted-base.test.ts uses four tiny records; history-fixture-integrity checks lineage only on small histories. Neither checks memory with many large valid records or inherited evidence. Extend the standard trusted-base matrix with a bounded-history workload and intact and damaged ancestry."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:35:58.586Z",
+			"evidence": "Committed test 20b331ce failed the bounded-memory assertion; focused record 1d28fc3d retains the exact command and workload evidence."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:40:36.740Z",
+			"evidence": "Commit 802badfc scans valid record metadata one at a time and reloads only records needed for trust and lineage, failing closed on replacement."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-26T21:40:38.061Z",
+			"evidence": "Unchanged test passed at 802badfc; record ff90e147 pairs with red 1515ba16 in the same environment."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
