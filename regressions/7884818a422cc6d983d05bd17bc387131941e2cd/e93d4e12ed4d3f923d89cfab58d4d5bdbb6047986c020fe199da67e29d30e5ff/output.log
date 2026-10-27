@@ -1,0 +1,39 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-hpnrZc
+
+ ❯ test/services/verification-evidence/test-contract.test.ts (2 tests | 1 failed) 23ms
+   × validate initialized and invalid registries against declared cases 15ms
+     → expected '' to contain 'missing case-bound screenshot'
+   ✓ compare initialized contracts preserves identities unless capabilities change 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-contract.test.ts > validate initialized and invalid registries against declared cases
+AssertionError: expected '' to contain 'missing case-bound screenshot'
+
+- Expected
++ Received
+
+- missing case-bound screenshot
+
+ ❯ assertVisualCaseBinding test/support/visualCaseBinding.ts:29:36
+     27|     TestContractService['validate']
+     28|    >[0]);
+     29|   expect(run(execution).join(' ')).toContain('missing case-bound scree…
+       |                                    ^
+     30|   expect(run({ ...execution, visual })).toEqual([]);
+     31|   assertDamagedCaptures(run, execution, visual);
+ ❯ test/services/verification-evidence/test-contract.test.ts:88:4
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-contract.test.ts:87:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-contract.test.ts:86:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  05:54:38
+   Duration  2.69s (transform 166ms, setup 91ms, collect 358ms, tests 23ms, environment 0ms, prepare 21ms)
+
