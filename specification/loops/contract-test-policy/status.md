@@ -1577,3 +1577,18 @@ suite files, 4,656 declarations, 61 standardized units, 771 registered cases
 and 6,066 gaps. The repository-wide `testing: 1` gate is not declared. This is
 an inventory of unfinished migration, not a passing compliance check; the JSON
 snapshot has SHA-256 `1650d79297692f72bf61e460e690f5467775da6dc9eca740eeca15b5f4efb5c1`.
+
+The internal `moduleResourceLocation` helper was migrated at `81dfa06758`.
+Its one previously unregistered test combined service and fallback behavior;
+14 newly declared Examples now cover all 12 supported catalogs, the fallback,
+and a propagated accessor error, retaining the original scope assertions.
+The former test title was not registered; the new cases use the canonical
+Example titles and remain stable. Nullish arguments are checked in the error
+case without relying on engine-specific error messages. All normal example
+resources pass the module schema. Static discovery found exactly 14 registered
+cases and no gaps for this unit. Fourteen helper cases and 16 unchanged registry
+guards passed, as did root typecheck, targeted lint and formatting, and units
+check. Capture `167b40831c30` retains the focused run and observations at the
+committed tree. Source measurements are 973 bytes, 28 lines, complexity seven
+and two dependencies; the module has no separate emitted artifact. Full project
+verification and the remaining repository migration are still open.
