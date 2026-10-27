@@ -2016,3 +2016,40 @@ durable Harness history evidence. A later conservative process snapshot found
 2.90 GiB of primary-Mac agent and Harness process RSS plus shared app processes
 that cannot be attributed to this task. A larger run is deferred while that
 shared headroom is uncertain. Full history reconstruction remains open.
+
+## Continuation: fixture and preview diagnosis
+
+The unchanged checker case `test/verification-check-shared.test.ts` ran against
+an isolated copy of the saved fixture edits on `harbor-mbp-2`. Its one test
+failed during baseline preparation because the first verification's registry
+and case checks did not pass. Record `83254e1442642bc103304de07943bca04cd0cfe1c6c1e62833865e0094e944fc`
+identifies the cause: `page.titles` has no standardized test contract,
+`titles-page` names no declared cases, and six synthetic screenshot captures
+are unbound. The later missing-budget messages are consequences of the failed
+first record. This is a fixture migration gap, not a product regression proof.
+The diagnostic used the uncommitted fixture bytes on source `9076aa7a92`; it
+reached the actual assertion path, used one Vitest worker, and peaked at
+1,680,539,648 bytes task RSS plus 1,210,335,232 bytes laptop shared RSS upper
+estimate. Its log SHA-256 is `e90b71ebe0aab6d4fc80ffcd208aab87eb981b351517ef9976db328a53879f13`.
+
+Harness attached that failed record to its disposable fixture commit
+`04479d67e4e20ad344f6a2f7c3173a9d2b0258d6`; status reports it valid but failed,
+not verified. Its original record SHA-256 is
+`a88f2bf60c96af1e41e932ab0ed653bf3ba28d1cc1a2a0043742af6f18cb3a14` and matches
+the Git evidence bytes. A separate fixture-only Git bundle on the laptop has
+SHA-256 `c94057068459a74864deeee2393b56fcb2cd087fe87fad3f5ff12997a3b4d587`.
+It does not add the synthetic fixture commit to this repository's source history.
+The original policy worktree edits remain unchanged.
+
+At shared task-queue commit `8ee7ce472c`, a separate task
+`project-agent-capture.cli-evidence-luna-01a17d06` was in review with a successful
+execution requesting `gpt-6-luna` at `max`, no fallback, and a null reported
+model. Its checkpoint is `6b14c5a2ad`; review and independent model identity
+remain open. The older policy CLI rejected the shared queue's newer `role` and
+`assignedFiles` fields, so the task facts were read from the queue's Git blob.
+This is not qualification of the generic worker launch gate.
+
+The shared preview owner at port 47840 remains alive, while port 5690 refuses
+connections. Its log repeatedly reports a failed Node spawn; Node exists, but
+the owner's working directory has been removed. The owner was left untouched.
+Explorer Tests, Examples, History and audio playback remain unverified.
