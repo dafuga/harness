@@ -4,6 +4,7 @@ import {
 } from './support/browserBaselineResults';
 import { assertModuleProject } from './support/moduleScenario';
 import { assertAuthoredLibraryResult } from './support/project-template/foundations';
+import { assertGeneratedVisualEvidence } from './support/generatedVisualEvidence';
 import { spawn } from 'node:child_process';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -63,8 +64,12 @@ test('CLI scaffolds and checks an app project with routes', async () => {
 	const audit = await runCommand(['bun', 'run', 'audit'], project);
 	expect(audit.stdout).toContain('Harness audit passed');
 	await assertAppRoutes(project);
-	await rm(root, { recursive: true, force: true });
-}, 180_000);
+	try {
+		await assertGeneratedVisualEvidence(project);
+	} finally {
+		await rm(root, { recursive: true, force: true });
+	}
+}, 300_000);
 test('CLI reports edge errors cleanly', async () => {
 	const root = await mkdtemp(join(tmpdir(), 'harness-cli-errors-'));
 	await runHarness(['new', 'lib', 'demo-lib'], root);
