@@ -25,7 +25,7 @@ export class TestArtifactService {
 			kind: 'audio',
 			file: artifact.file,
 			mediaType: 'audio/wav',
-			provenance: artifact.provenance,
+			provenance: input.provenance,
 			transcript: artifact.transcript,
 			durationSeconds: facts.durationSeconds,
 			note: JSON.stringify({
