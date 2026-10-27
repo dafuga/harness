@@ -1025,6 +1025,7 @@ paired-audio endpoint has its one discovered case and no reported gap. Its
 existing audio-service tests remain to be migrated to their declared class
 matrix and artifact evidence. The broader fixture, history, worker, E2E and
 current-main preview blockers remain open.
+
 ## Continuation: audio upload method and artifact cases
 
 `aedb9e8b0d` declares the two audio-upload methods across active, invalid-input,
@@ -1061,6 +1062,7 @@ inventory at `75d26d700a` reports 1,119 suite files, 4,650 test declarations,
 service has 12 discovered cases and no reported gap. The current-main preview
 still shows missing committed module data, so Tests, Examples, History and
 in-Explorer playback remain unverified.
+
 ## Continuation: unexpected example failure diagnostics
 
 The existing `TestExpectationService.example` case checked only the generic
