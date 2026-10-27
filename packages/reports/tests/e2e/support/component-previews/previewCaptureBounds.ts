@@ -7,11 +7,8 @@ export async function previewCaptureBounds(page: Page, id: string) {
 	const modal =
 		(await content.getAttribute('data-preview-frame')) !== 'full' && (await dialog.count());
 	const projectAgentPanel = id === 'desktop.component.project-agent';
-	const target = projectAgentPanel
-		? content.locator('.floating-chat-panel')
-		: modal
-			? dialog
-			: content;
+	let target = modal ? dialog : content;
+	if (projectAgentPanel) target = content.locator('.floating-chat-panel');
 	return target.evaluate(
 		(node, captureElement) => {
 			const boxes: DOMRect[] = [];
