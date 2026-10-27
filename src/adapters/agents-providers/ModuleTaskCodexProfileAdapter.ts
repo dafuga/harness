@@ -68,31 +68,34 @@ function admittedArguments(argv: string[]): string[] {
 		throw new Error('Expected explicit Codex exec arguments.');
 	const result: string[] = [];
 	for (let index = 2; index < argv.length; index++) {
-		const argument = argv[index];
-		if (['--json', '--ephemeral', '--skip-git-repo-check'].includes(argument)) {
-			result.push(argument);
-			continue;
-		}
-		if (['-m', '--model', '-c', '--config'].includes(argument)) {
-			const value = argv[++index];
-			if (!value || value.startsWith('-')) throw new Error('Missing Codex option value.');
-			if (
-				(argument === '-c' || argument === '--config') &&
-				!/^\s*(model_reasoning_effort\s*=\s*"(?:low|medium|high|xhigh|max|ultra)"|approval_policy\s*=\s*"never")\s*$/.test(
-					value
-				)
-			)
-				throw new Error('Untrusted Codex configuration override.');
-			result.push(argument, value);
-			continue;
-		}
-		if (index === argv.length - 1 && (argument === '-' || !argument.startsWith('-'))) {
-			result.push(argument);
-			continue;
-		}
-		throw new Error('Unsupported Codex task argument.');
+		const admitted = admittedArgument(argv, index);
+		result.push(...admitted.values);
+		index = admitted.index;
 	}
 	return result;
+}
+
+function admittedArgument(argv: string[], index: number): { values: string[]; index: number } {
+	const argument = argv[index];
+	if (['--json', '--ephemeral', '--skip-git-repo-check'].includes(argument))
+		return { values: [argument], index };
+	if (['-m', '--model', '-c', '--config'].includes(argument))
+		return { values: [argument, admittedValue(argument, argv[index + 1])], index: index + 1 };
+	if (index === argv.length - 1 && (argument === '-' || !argument.startsWith('-')))
+		return { values: [argument], index };
+	throw new Error('Unsupported Codex task argument.');
+}
+
+function admittedValue(argument: string, value: string | undefined): string {
+	if (!value || value.startsWith('-')) throw new Error('Missing Codex option value.');
+	if (
+		(argument === '-c' || argument === '--config') &&
+		!/^\s*(model_reasoning_effort\s*=\s*"(?:low|medium|high|xhigh|max|ultra)"|approval_policy\s*=\s*"never")\s*$/.test(
+			value
+		)
+	)
+		throw new Error('Untrusted Codex configuration override.');
+	return value;
 }
 
 async function trustedExecutable(
@@ -110,7 +113,8 @@ async function trustedExecutable(
 	)
 		throw new Error('Codex runtime has not been qualified for native task profiles.');
 	const info = await lstat(executable);
-	if (!info.isFile() || info.nlink !== 1 || !(info.mode & 0o111) || info.mode & 0o022)
+	const safe = [info.isFile(), info.nlink === 1, Boolean(info.mode & 0o111), !(info.mode & 0o022)];
+	if (!safe.every(Boolean))
 		throw new Error('Codex executable is not a trusted regular executable.');
 	if (basename(executable) !== 'codex') throw new Error('Unexpected Codex executable.');
 	return executable;
