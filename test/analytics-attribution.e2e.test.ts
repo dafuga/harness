@@ -106,6 +106,7 @@ test('module task CLI reviews preserve one bounce and reconcile token costs idem
 }, 60000);
 
 async function reviewedTask(f: Awaited<ReturnType<typeof moduleTaskFixture>>) {
+	await runHarness(['validate', '--write', '--json'], f.root);
 	await f.feature();
 	await f.cli([
 		'add',
