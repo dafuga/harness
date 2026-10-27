@@ -2,7 +2,7 @@ import { mkdtemp, mkdir, writeFile, rm, chmod } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { GitAdapter } from '../../src/adapters/git-source-history/GitAdapter';
-import { runHarness } from './cli';
+import { runCommand, runHarness } from './cli';
 
 export async function moduleTaskFixture() {
 	const root = await mkdtemp(join(tmpdir(), 'harness-module-tasks-'));
@@ -21,8 +21,14 @@ export async function moduleTaskFixture() {
 		await writeFile(file, fakeRunner(root, provider));
 		await chmod(file, 0o755);
 	}
+	const syntheticScript = join(root, 'synthetic-worker.ts');
+	await writeFile(syntheticScript, syntheticWorkerScript());
 	const cli = (args: string[], success = true) =>
 		runHarness(['task', ...args], root, success, { PATH: `${bin}:${process.env.PATH}` });
+	const syntheticWorker = (args: string[], success = true) =>
+		runCommand(['bun', syntheticScript, ...args], root, success, {
+			PATH: `${bin}:${process.env.PATH}`
+		});
 	const input = (extra: Record<string, unknown> = {}) => taskInput(root, extra);
 	const feature = (success = true) =>
 		cli(
@@ -41,10 +47,44 @@ export async function moduleTaskFixture() {
 		git,
 		source,
 		cli,
+		syntheticWorker,
 		input,
 		feature,
 		dispose: () => rm(root, { recursive: true, force: true })
 	};
+}
+
+/** Test-only in-process collaborators; the production CLI never reads this qualification. */
+function syntheticWorkerScript(): string {
+	return `import {createRequire} from 'node:module';
+import {dirname,join} from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {appendFileSync,existsSync,readFileSync,writeFileSync} from 'node:fs';
+const cli=process.env.HARNESS_CLI_PATH, source=dirname(dirname(cli)), root=process.cwd();
+const load=path=>import(pathToFileURL(join(source,path)).href);
+const {Command}=createRequire(cli)('commander');
+const {ModuleTaskCommand}=await load('src/commands/agents-providers/ModuleTaskCommand.ts');
+const {ModuleTaskWorkerService}=await load('src/services/agents-providers/ModuleTaskWorkerService.ts');
+const {ModuleTaskRunnerAdapter}=await load('src/adapters/agents-providers/ModuleTaskRunnerAdapter.ts');
+const sandbox={prepare:async input=>({command:input.argv[0],args:input.argv.slice(1),cwd:input.cwd,env:{},cleanup:async()=>{}})};
+const execute=async (argv,input)=>{
+  const provider=input.provider, args=argv.slice(1), model=input.model;
+  appendFileSync(join(root,'calls.ndjson'),JSON.stringify({provider,args,prompt:input.prompt,cwd:input.cwd})+'\\n');
+  const mode=existsSync(join(root,'mode'))?readFileSync(join(root,'mode'),'utf8'):'';
+  if(provider==='claude'&&mode==='quota')return {code:1,stdout:JSON.stringify({type:'rate_limit_event',rate_limit_info:{status:'rejected'}})+'\\n'+JSON.stringify({type:'result',is_error:true,result:'Quota exhausted'})};
+  if(provider==='claude'&&mode==='auth')return {code:1,stdout:JSON.stringify({type:'result',is_error:true,result:'Authentication required'})};
+  if(mode==='outside')writeFileSync(join(input.cwd,'outside.txt'),'outside requested module');
+  else writeFileSync(join(input.cwd,'src/orders.ts'),'export const orders = 2;\\n');
+  const events=provider==='claude'
+    ?[{type:'system',subtype:'init',model},{type:'result',subtype:'success',is_error:false,result:'Implemented order validation.',usage:{input_tokens:70,output_tokens:20,cache_read_input_tokens:30,cache_creation_input_tokens:0},total_cost_usd:0.002,modelUsage:{[model]:{}}}]
+    :[{type:'thread.started',thread_id:'fixture-session'},{type:'item.completed',item:{type:'agent_message',text:'Implemented order validation.'}},{type:'turn.completed',model,usage:{input_tokens:100,output_tokens:20,cached_input_tokens:30}}];
+  return {code:0,stdout:events.map(event=>JSON.stringify(event)).join('\\n')};
+};
+const runner=new ModuleTaskRunnerAdapter(execute,sandbox,async()=>{});
+const worker=new ModuleTaskWorkerService(root,runner);
+const program=new Command().exitOverride();
+new ModuleTaskCommand(undefined,undefined,worker).register(program);
+await program.parseAsync(process.argv.slice(2),{from:'user'});`;
 }
 
 function fakeRunner(root: string, provider: string): string {
