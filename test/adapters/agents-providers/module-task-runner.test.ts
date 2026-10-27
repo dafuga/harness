@@ -1,4 +1,6 @@
 import { test } from 'vitest';
+import { realpath } from 'node:fs/promises';
+import { delimiter, join } from 'node:path';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskRunnerAdapter } from '../../../src/adapters/agents-providers/ModuleTaskRunnerAdapter';
 import { assertTaskModelIdentity } from '../../support/taskModelIdentity';
@@ -198,7 +200,9 @@ test('provider execution forwards exact sandbox argv, cwd and environment', asyn
 	const probe = makeWrapperProbe();
 	await probe.run;
 	expect(probe.qualification).toHaveBeenCalledTimes(1);
-	expect(probe.providerArgv()).toEqual(new ModuleTaskRunnerAdapter().command(probe.input));
+	const expected = new ModuleTaskRunnerAdapter().command(probe.input);
+	expected[0] = await realpath(join(process.env.PATH!.split(delimiter)[0], 'codex'));
+	expect(probe.providerArgv()).toEqual(expected);
 	expect(probe.execute.mock.calls[0]?.[0]).toEqual([probe.wrapper.command, ...probe.wrapper.args]);
 	expect(probe.execute.mock.calls[0]?.[1]).toMatchObject({
 		cwd: probe.wrapper.cwd,
