@@ -1,24 +1,14 @@
 import { isAbsolute, relative, resolve, sep } from 'node:path';
 import type {
-	BrokerClientRequest,
-	BrokerClientResult,
-	BrokerSession,
 	BrokerTools,
+	BrokerTransportBindings,
 	ModuleTaskBrokerTransportAdapterConfig,
+	TaskRunInput,
+	TaskRunResult,
+	TaskRunScope,
+	TaskRunSnapshot,
 	TaskUsage
 } from './ModuleTaskBrokerTransportAdapter.types';
-import type {
-	TaskRunInput,
-	TaskRunResult
-} from '../../repositories/agents-providers/ModuleTaskRepository.types';
-
-type TaskRunScope = NonNullable<TaskRunInput['scope']>;
-
-interface QualifiedBindings {
-	ready(): Promise<void>;
-	run(request: BrokerClientRequest): Promise<BrokerClientResult>;
-	openBroker(input: TaskRunInput): Promise<BrokerSession>;
-}
 
 export class ModuleTaskBrokerTransportAdapter {
 	constructor(private readonly config: ModuleTaskBrokerTransportAdapterConfig = {}) {}
@@ -41,11 +31,10 @@ export class ModuleTaskBrokerTransportAdapter {
 
 function qualifiedBindings(
 	config: ModuleTaskBrokerTransportAdapterConfig
-): QualifiedBindings | undefined {
-	const client = config.client;
+): BrokerTransportBindings | undefined {
+	const { client, openBroker } = config;
 	const ready = client?.ready;
 	const run = client?.run;
-	const openBroker = config.openBroker;
 	if (
 		!client || typeof ready !== 'function' || typeof run !== 'function' ||
 		typeof openBroker !== 'function'
@@ -57,19 +46,17 @@ function qualifiedBindings(
 	};
 }
 
-function snapshotTaskInput(input: TaskRunInput): TaskRunInput | undefined {
-	if (!isRecord(input) || !isValidTaskInput(input)) return undefined;
-	const { provider, model, intelligence, cwd, prompt, signal } = input;
-	const scope = snapshotScope(input.scope, cwd);
-	if (!scope) return undefined;
-	return Object.freeze({ provider, model, intelligence, cwd, prompt, signal, scope });
-}
-
-function isValidTaskInput(input: TaskRunInput): boolean {
-	const { provider, model, intelligence, cwd, prompt, signal } = input;
-	return provider === 'codex' && typeof model === 'string' &&
-		typeof intelligence === 'string' && typeof cwd === 'string' && cwd.length > 0 &&
-		typeof prompt === 'string' && Boolean(signal) && typeof signal.aborted === 'boolean';
+function snapshotTaskInput(input: TaskRunInput): TaskRunSnapshot | undefined {
+	if (!isRecord(input)) return undefined;
+	const { provider, model, intelligence, cwd, prompt, signal, scope } = input;
+	if (
+		provider !== 'codex' || typeof model !== 'string' ||
+		typeof intelligence !== 'string' || typeof cwd !== 'string' || cwd.length === 0 ||
+		typeof prompt !== 'string' || typeof signal?.aborted !== 'boolean'
+	) return undefined;
+	const scopeSnapshot = snapshotScope(scope, cwd);
+	if (!scopeSnapshot) return undefined;
+	return Object.freeze({ provider, model, intelligence, cwd, prompt, signal, scope: scopeSnapshot });
 }
 
 function snapshotScope(value: unknown, cwd: string): TaskRunScope | undefined {
@@ -88,7 +75,7 @@ function snapshotScope(value: unknown, cwd: string): TaskRunScope | undefined {
 		readPaths: freezeStrings(readPaths as string[]),
 		protectedPaths: freezeStrings(protectedPaths as string[]),
 		...(binDirectory === undefined ? {} : { binDirectory })
-	}) as TaskRunScope;
+	});
 }
 
 const hasValidScopePaths = (paths: unknown[]): boolean => paths.every(isStringArray);
@@ -113,8 +100,9 @@ function freezeStrings(values: string[]): string[] {
 }
 
 function projectSessionTools(session: unknown): BrokerTools {
-	if (!isRecord(session) || !isRecord(session.tools)) throw new Error('Invalid broker session');
+	if (!isRecord(session)) throw new Error('Invalid broker session');
 	const source = session.tools;
+	if (!isRecord(source)) throw new Error('Invalid broker session');
 	const { readContract, listContracts, readAssigned, writeAssigned } = source;
 	if (
 		typeof readContract !== 'function' || typeof listContracts !== 'function' ||
@@ -128,16 +116,9 @@ function projectSessionTools(session: unknown): BrokerTools {
 	});
 }
 
-function sessionCloser(session: unknown): (() => Promise<void>) | undefined {
-	if (!isRecord(session)) return undefined;
-	const close = session.close;
-	if (typeof close !== 'function') return undefined;
-	return close.bind(session) as () => Promise<void>;
-}
-
 async function executeBrokerTask(
-	input: TaskRunInput,
-	bindings: QualifiedBindings
+	input: TaskRunSnapshot,
+	bindings: BrokerTransportBindings
 ): Promise<TaskRunResult> {
 	let close: (() => Promise<void>) | undefined;
 	let hasFailure = false;
@@ -148,13 +129,30 @@ async function executeBrokerTask(
 		await bindings.ready();
 		throwIfCancelled(input.signal);
 		const session = await bindings.openBroker(input);
-		close = sessionCloser(session);
+		const closeMethod = isRecord(session) ? session.close : undefined;
+		if (typeof closeMethod === 'function') close = closeMethod.bind(session);
 		const tools = projectSessionTools(session);
 		throwIfCancelled(input.signal);
 		clientStarted = true;
-		const response = await bindings.run(clientRequest(input, tools));
+		const response = await bindings.run({
+			provider: input.provider,
+			model: input.model,
+			intelligence: input.intelligence,
+			cwd: input.scope.scratch,
+			prompt: input.prompt,
+			signal: input.signal,
+			tools
+		});
 		throwIfCancelled(input.signal);
-		result = taskResult(input, response);
+		const { reportedModel, usage } = response;
+		result = {
+			provider: input.provider,
+			model: input.model,
+			intelligence: input.intelligence,
+			text: response.text,
+			reportedModel: typeof reportedModel === 'string' ? reportedModel || null : null
+		};
+		if (usage !== undefined) result.usage = copyUsage(usage);
 	} catch (error) {
 		hasFailure = true;
 		failure = clientStarted && input.signal.aborted ? cancelledError() : error;
@@ -171,31 +169,6 @@ async function executeBrokerTask(
 	}
 	if (hasFailure) throw failure;
 	return result as TaskRunResult;
-}
-
-function clientRequest(input: TaskRunInput, tools: BrokerTools): BrokerClientRequest {
-	return {
-		provider: input.provider,
-		model: input.model,
-		intelligence: input.intelligence,
-		cwd: input.scope!.scratch,
-		prompt: input.prompt,
-		signal: input.signal,
-		tools
-	};
-}
-
-function taskResult(input: TaskRunInput, response: BrokerClientResult): TaskRunResult {
-	const { reportedModel, usage } = response;
-	const result: TaskRunResult = {
-		provider: input.provider,
-		model: input.model,
-		intelligence: input.intelligence,
-		text: response.text,
-		reportedModel: typeof reportedModel === 'string' ? reportedModel || null : null
-	};
-	if (usage !== undefined) result.usage = copyUsage(usage);
-	return result;
 }
 
 function copyUsage(usage: TaskUsage): TaskUsage {

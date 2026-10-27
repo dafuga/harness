@@ -46,4 +46,13 @@ export interface ModuleTaskBrokerTransportAdapterConfig {
 	openBroker?: (input: TaskRunInput) => Promise<BrokerSession>;
 }
 
+export type TaskRunScope = NonNullable<TaskRunInput['scope']>;
+export type TaskRunSnapshot = Omit<TaskRunInput, 'scope'> & { scope: TaskRunScope };
+
+export interface BrokerTransportBindings {
+	ready(): Promise<void>;
+	run(request: BrokerClientRequest): Promise<BrokerClientResult>;
+	openBroker(input: TaskRunInput): Promise<BrokerSession>;
+}
+
 export type { TaskRunInput, TaskRunResult, TaskSelection, TaskUsage };
