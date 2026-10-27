@@ -1920,3 +1920,29 @@ unchanged. With those edits present, the focused non-browser
 `test/history-source.test.ts` case passed on the primary Mac against a disposable
 three-revision history. This is working-tree fixture evidence only; it does not
 replace committed verification, reviewed screenshots or the full history build.
+
+## Continuation: broker method-state cases
+
+`d8fb5b6ae4` registered 25 broker cases for five public methods across five
+previously undeclared initialization states. All seven earlier test titles and
+the sealed-CLI, unsafe-path, stale-hash and concurrent-write assertions remain.
+The added cases declare missing state coverage rather than standalone regressions.
+
+The first committed capture, `a93a630a9d6e`, failed because its disposable
+sealed-CLI fixture tried to clone Harness's archive snapshot as a Git checkout.
+The actual Git error was reproduced separately. Fixture correction `80cd68fb75`
+creates a disposable synthetic repository from an archive and checks its tree
+against the supplied verified tree; it does not claim the synthetic commit is the
+tested revision. Generated ignored `.svelte-kit` files are excluded. Capture
+`946578f972a1` passed all 25 cases at that exact commit on `harbor-mbp-2`.
+Both records and their original log hashes were merged into local Git evidence;
+the failed record remains failed. This is fixture repair, not product red/green.
+
+The registry validated 1,887 units with 166 uncertain references. Discovery found
+exactly 25 cases with no contract errors. The unchanged readability and unit
+index guards passed 16 cases with a 30-second timeout; an earlier five-second
+run timed out under laptop load. Root typecheck, targeted lint and formatting
+passed. At `80cd68fb75`, the broker measured 3,014 source bytes, 105 lines,
+complexity 22 and two dependencies; a module emits no separate artifact. The
+focused case took 148.4 ms with 874,479,616 bytes whole-worker RSS, including
+shared runtime and earlier work. Full verification and integration remain open.
