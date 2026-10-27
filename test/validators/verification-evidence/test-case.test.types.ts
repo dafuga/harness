@@ -11,10 +11,7 @@ export interface TestCaseFixtureContract {
 }
 
 export interface MethodLifecycleValidator {
-	validate(
-		unit: ComponentManifest,
-		input: unknown
-	): { valid: boolean; errors: string[] };
+	validate(unit: ComponentManifest, input: unknown): { valid: boolean; errors: string[] };
 }
 
 export interface SyntheticMethodLifecycleContract {

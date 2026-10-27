@@ -9,9 +9,7 @@ import {
 	observedAuthoredCases,
 	assertExampleAdmissionInputs
 } from '../../support/testCaseAdmissionCases';
-import {
-	assertMethodSpecificLifecycleCases
-} from './test-case.test.fixtures';
+import { assertMethodSpecificLifecycleCases } from './test-case.test.fixtures';
 import type { TestCaseFixtureContract } from './test-case.test.types';
 
 const validator = new TestCaseValidator();
@@ -53,9 +51,9 @@ function assertStandardShapeCases(
 	expect(validator.validate(unit, contract).errors).toEqual([]);
 	expect(validator.validate(unit, { ...contract, shape: 'smoke' }).valid).toBe(false);
 	expect(validator.validate(unit, { ...contract, cases: [] }).valid).toBe(false);
-	expect(
-		validator.validate(unit, { ...contract, states: ['missing'] }).errors.join(' ')
-	).toContain('missing state');
+	expect(validator.validate(unit, { ...contract, states: ['missing'] }).errors.join(' ')).toContain(
+		'missing state'
+	);
 	expect(validator.validate(unit, { ...contract, shape: 'component' }).errors.join(' ')).toContain(
 		'screenshot matching'
 	);
