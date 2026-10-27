@@ -1,0 +1,180 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IB72MD
+
+1 | 
+2 | const {command,cwd,expectedExitCode}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==expectedExitCode)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                                ^
+error: (node:85856) Warning: Failed to load the ES module: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-build-fGy4Ah/desktop/dist/main.cjs. Make sure to set "type": "module" in the nearest package.json file or use the .mjs extension.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-build-fGy4Ah/desktop/dist/main.cjs:246753
+var require2 = import_node_module.createRequire(import.meta.url);
+                                                       ^^^^
+
+SyntaxError: Cannot use 'import.meta' outside a module
+    at wrapSafe (node:internal/modules/cjs/loader:1804:18)
+    at checkSyntax (node:internal/main/check_syntax:76:3)
+
+Node.js v24.19.0
+24 | 		['src/initializers/initializePreload.ts', 'preload.cjs']
+25 | 	]) {
+26 | 		const result = await Bun.build({ ...desktopNodeOptions, entrypoints: [entry], naming: out });
+27 | 		if (!result.success) throw new Error(result.logs.map(String).join('\n'));
+28 | 		execFileSync('node', ['--check', 'dist/' + out], { stdio: 'inherit' });
+29 | 	}
+         ^
+error: Command failed: node --check dist/main.cjs
+ signal: null,
+ status: 1,
+ output: [ null, null, null ],
+    pid: 85856,
+ stdout: null,
+ stderr: null,
+
+      at genericNodeError (node:child_process:959:13)
+      at checkExecSyncError (node:child_process:458:27)
+      at execFileSync (node:child_process:269:31)
+      at buildDesktopMain (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IB72MD/packages/desktop/scripts/build-main.ts:29:5)
+
+Bun v1.2.18 (macOS arm64)
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IB72MD/[eval]:6:45
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+ ❯ test/game-project.test.ts (4 tests | 1 failed | 3 skipped) 2326ms
+   ↓ game project retains app scaffolds with 2d engine
+   ↓ game project retains app scaffolds with 3d engine
+   ↓ embedded engine sources match the reusable engine exactly
+   × game build scripts retain engine bytes and audit through the project CLI 2324ms
+     → Command failed: bun -e 
+const {command,cwd,expectedExitCode}=JSON.parse(process.argv[1]);
+const started=performance.now();
+const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+const elapsedMs=performance.now()-started;
+if(result.exitCode!==expectedExitCode)throw new Error(result.stdout.toString()+result.stderr.toString());
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString(),stderr:result.stderr.toString(),exitCode:result.exitCode})); {"command":["bun","/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IB72MD/packages/desktop/scripts/build-main.ts"],"cwd":"/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-build-fGy4Ah/desktop","expectedExitCode":0}
+1 | 
+2 | const {command,cwd,expectedExitCode}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==expectedExitCode)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                                ^
+error: (node:85856) Warning: Failed to load the ES module: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-build-fGy4Ah/desktop/dist/main.cjs. Make sure to set "type": "module" in the nearest package.json file or use the .mjs extension.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-build-fGy4Ah/desktop/dist/main.cjs:246753
+var require2 = import_node_module.createRequire(import.meta.url);
+                                                       ^^^^
+
+SyntaxError: Cannot use 'import.meta' outside a module
+    at wrapSafe (node:internal/modules/cjs/loader:1804:18)
+    at checkSyntax (node:internal/main/check_syntax:76:3)
+
+Node.js v24.19.0
+24 | 		['src/initializers/initializePreload.ts', 'preload.cjs']
+25 | 	]) {
+26 | 		const result = await Bun.build({ ...desktopNodeOptions, entrypoints: [entry], naming: out });
+27 | 		if (!result.success) throw new Error(result.logs.map(String).join('\n'));
+28 | 		execFileSync('node', ['--check', 'dist/' + out], { stdio: 'inherit' });
+29 | 	}
+         ^
+error: Command failed: node --check dist/main.cjs
+ signal: null,
+ status: 1,
+ output: [ null, null, null ],
+    pid: 85856,
+ stdout: null,
+ stderr: null,
+
+      at genericNodeError (node:child_process:959:13)
+      at checkExecSyncError (node:child_process:458:27)
+      at execFileSync (node:child_process:269:31)
+      at buildDesktopMain (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IB72MD/packages/desktop/scripts/build-main.ts:29:5)
+
+Bun v1.2.18 (macOS arm64)
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IB72MD/[eval]:6:45
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/game-project.test.ts > game build scripts retain engine bytes and audit through the project CLI
+Error: Command failed: bun -e 
+const {command,cwd,expectedExitCode}=JSON.parse(process.argv[1]);
+const started=performance.now();
+const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+const elapsedMs=performance.now()-started;
+if(result.exitCode!==expectedExitCode)throw new Error(result.stdout.toString()+result.stderr.toString());
+console.log(JSON.stringify({elapsedMs,maxRSS:result.resourceUsage.maxRSS,platform:process.platform,stdout:result.stdout.toString(),stderr:result.stderr.toString(),exitCode:result.exitCode})); {"command":["bun","/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IB72MD/packages/desktop/scripts/build-main.ts"],"cwd":"/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-build-fGy4Ah/desktop","expectedExitCode":0}
+1 | 
+2 | const {command,cwd,expectedExitCode}=JSON.parse(process.argv[1]);
+3 | const started=performance.now();
+4 | const result=Bun.spawnSync(command,{cwd,env:process.env,stdout:'pipe',stderr:'pipe'});
+5 | const elapsedMs=performance.now()-started;
+6 | if(result.exitCode!==expectedExitCode)throw new Error(result.stdout.toString()+result.stderr.toString());
+                                                ^
+error: (node:85856) Warning: Failed to load the ES module: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-build-fGy4Ah/desktop/dist/main.cjs. Make sure to set "type": "module" in the nearest package.json file or use the .mjs extension.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-game-build-fGy4Ah/desktop/dist/main.cjs:246753
+var require2 = import_node_module.createRequire(import.meta.url);
+                                                       ^^^^
+
+SyntaxError: Cannot use 'import.meta' outside a module
+    at wrapSafe (node:internal/modules/cjs/loader:1804:18)
+    at checkSyntax (node:internal/main/check_syntax:76:3)
+
+Node.js v24.19.0
+24 | 		['src/initializers/initializePreload.ts', 'preload.cjs']
+25 | 	]) {
+26 | 		const result = await Bun.build({ ...desktopNodeOptions, entrypoints: [entry], naming: out });
+27 | 		if (!result.success) throw new Error(result.logs.map(String).join('\n'));
+28 | 		execFileSync('node', ['--check', 'dist/' + out], { stdio: 'inherit' });
+29 | 	}
+         ^
+error: Command failed: node --check dist/main.cjs
+ signal: null,
+ status: 1,
+ output: [ null, null, null ],
+    pid: 85856,
+ stdout: null,
+ stderr: null,
+
+      at genericNodeError (node:child_process:959:13)
+      at checkExecSyncError (node:child_process:458:27)
+      at execFileSync (node:child_process:269:31)
+      at buildDesktopMain (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IB72MD/packages/desktop/scripts/build-main.ts:29:5)
+
+Bun v1.2.18 (macOS arm64)
+
+      at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-IB72MD/[eval]:6:45
+      at loadAndEvaluateModule (2:1)
+
+Bun v1.2.18 (macOS arm64)
+
+ ❯ buildDesktopMain packages/desktop/scripts/build-main.ts:29:5
+ ❯ [eval]:6:45
+ ❯ gameCommand test/support/gameCommand.ts:29:3
+     27| export function gameCommand(command: string[], cwd: string, scope: Sco…
+     28|  const reported: Reported = JSON.parse(
+     29|   execFileSync(
+       |   ^
+     30|    'bun',
+     31|    [
+ ❯ observeScript test/game-project.test.ts:184:9
+ ❯ test/game-project.test.ts:138:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  11:31:33
+   Duration  5.42s (transform 164ms, setup 133ms, collect 369ms, tests 2.33s, environment 0ms, prepare 34ms)
+
