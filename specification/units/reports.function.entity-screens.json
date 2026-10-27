@@ -10,7 +10,8 @@
 		"source": [
 			"packages/reports/src/utils/entityScreens.ts",
 			"packages/reports/src/utils/explorer-ui/entityScreens.ts",
-			"packages/reports/src/utils/explorer-ui/entityScreens.types.ts"
+			"packages/reports/src/utils/explorer-ui/entityScreens.types.ts",
+			"packages/reports/src/utils/explorer-ui/focusedAudioIdentity.ts"
 		],
 		"symbols": [
 			"screenOptions",
@@ -30,7 +31,8 @@
 			"ScreenPick",
 			"EntityScreens",
 			"Phase",
-			"Pane"
+			"Pane",
+			"focusedAudioIdentity"
 		]
 	},
 	"contract": {
@@ -103,7 +105,7 @@
 			{
 				"name": "galleryItems",
 				"type": "Evidence[]",
-				"description": "Before media then after media in commit mode, or current media alone, with sequence order, status, provenance and media details. Includes recorded screenshot/audio items even when unusable or inherited, retaining their labels. Source identifies the capture build revision, never the target of inherited proof."
+				"description": "Before media then after media in commit mode, or current media alone, with sequence order, status, provenance and media details. Includes unusable or inherited captures. Focused audio retains its bound case and tested revision; screenshot source identifies its served build revision, never the target of inherited proof."
 			},
 			{
 				"name": "catalogShot",

@@ -8,6 +8,7 @@ import type { HarnessScenario } from '../../models/explorer-ui/Harness.types';
 import type { Evidence } from '../../models/reports-media/Report.types';
 import { captureProvenance } from '../reports-media/captureProvenance';
 import { mediaFile } from './harnessEvidence';
+import { focusedAudioIdentity } from './focusedAudioIdentity';
 const media = ['screenshot', 'audio'];
 const title = (id: string) => id.charAt(0).toUpperCase() + id.slice(1);
 const short = (commit: string) => commit.slice(0, 7);
@@ -94,30 +95,6 @@ function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidenc
 		durationSeconds: capture.durationSeconds,
 		transcript: capture.transcript
 	};
-}
-/** A focused audio key comes only from its sealed case and original revision binding. */
-function focusedAudioIdentity(side: ExplorerSide, found: ExplorerCapture) {
-	const { capture } = found;
-	if (!found.focused || capture.kind !== 'audio') return undefined;
-	try {
-		const binding = JSON.parse(capture.note ?? 'null') as Record<string, unknown> | null;
-		if (!binding || Object.keys(binding).sort().join(',') !== 'case,revision,sha256,unit')
-			return undefined;
-		const { unit, revision, sha256 } = binding;
-		const caseId = binding.case;
-		if (
-			typeof unit !== 'string' ||
-			typeof caseId !== 'string' ||
-			!/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(caseId) ||
-			typeof revision !== 'string' ||
-			revision !== (found.inheritedFrom ?? side.commit) ||
-			sha256 !== capture.sha256
-		)
-			return undefined;
-		return { case: caseId, revision };
-	} catch {
-		return undefined;
-	}
 }
 /** What a gap is named by: the picked state, or that no visual scenario names the entity. */
 function gapOf(pick: ScreenPick | null, at: string) {

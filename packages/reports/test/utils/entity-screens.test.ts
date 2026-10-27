@@ -15,7 +15,8 @@ import { withInherited } from '../entityPreviewData';
 import { scope } from '../entityPlaces';
 import { commits, ids, scenarios, units } from '../entityUnits';
 import { withFocused } from '../entityStates';
-import { expectClassAudioMatrix, focusedAudioFixture } from '../focusedAudioExamples';
+import { focusedAudioFixture } from '../focusedAudioExamples';
+import { expectSourceIdenticalPreview } from '../sourceIdenticalPreview';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { withoutViewportSuffix } from '../../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
 const page = units.find((unit) => unit.id === ids.page)!;
@@ -23,29 +24,7 @@ const head = revision(commits.middle, [record(commits.middle)]);
 const base = revision(commits.first, [record(commits.first, false)]);
 const tip = revision(commits.tip, [record(commits.tip)]);
 test('source-identical squash previews retain origin and reject a changed source tree', async () => {
-	const captured = withFocused(head, ids.page);
-	const sourceTree = 'e'.repeat(40);
-	const point = { ...captured.regressions![0].green!, sourceTree };
-	const squashed = {
-		...captured,
-		commit: commits.tip,
-		side: `sides/${sourceTree}.json`,
-		regressions: [{ ...captured.regressions![0], green: point }]
-	};
-	const found = evidence(page, squashed);
-	expect(catalogShot(found), 'source-identical squash displays original screenshot').not.toBeNull();
-	expect(catalogShot(found)?.source).toBe(commits.middle);
-	expect(
-		found.after.captures.every((item) => !item.current && item.inheritedFrom === commits.middle)
-	).toBe(true);
-	expect(
-		catalogShot(evidence(page, { ...squashed, side: `sides/${'f'.repeat(40)}.json` }))
-	).toBeNull();
-	await measureWorkload(
-		'reports.function.explorer-evidence-focused-captures',
-		'focused-audio-binding-matrix',
-		() => expectClassAudioMatrix(head, tip, sourceTree)
-	);
+	await expectSourceIdenticalPreview(head, tip, page);
 });
 test('device states share a picker while original metadata and missing-device gaps remain intact', () => {
 	expect(withoutViewportSuffix('choose-mobile', 'desktop')).toBe('choose-mobile');
