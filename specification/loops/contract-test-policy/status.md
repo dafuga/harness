@@ -1965,3 +1965,22 @@ CLI's `--ignore-user-config` option. The real user configuration has MCP and
 hook settings, so the synthetic tool surface cannot qualify the signed-in
 session. Claude remains signed out. The trusted prelaunch gate stays closed;
 no credential was copied and no real worker was dispatched.
+
+## Continuation: isolated Codex exec probe
+
+Official Codex 0.164.0 `exec --ignore-user-config` retains its saved sign-in.
+A loopback fake provider with an isolated Codex home exposed only one synthetic
+MCP tool and MCP resource helpers. The tool returned its fixed fixture; forged
+shell and patch calls were unsupported, and a resource read returned an
+unsupported-method error without revealing a synthetic sentinel. A deliberately
+configured extra MCP server started in the positive control without the ignore
+flag and did not start with it. These checks use modified Luna metadata and do
+not prove every bypass or the actual Harness broker integration.
+
+A live read-only request with the saved Codex sign-in completed with
+`gpt-6-luna` and `max` requested and invoked the synthetic MCP tool. It made no
+Harness task edits and copied no credential. The completion event contained no
+model field; Codex 0.164.0's `turn.completed` schema exposes usage only. The
+existing Harness runner requires a reported model and has no brokered MCP
+transport, so this is provider access evidence, not a qualified worker or
+independent backend model attestation. The trusted launch gate remains closed.
