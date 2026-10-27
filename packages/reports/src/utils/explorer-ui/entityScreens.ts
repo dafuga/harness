@@ -8,6 +8,7 @@ import type { HarnessScenario } from '../../models/explorer-ui/Harness.types';
 import type { Evidence } from '../../models/reports-media/Report.types';
 import { captureProvenance } from '../reports-media/captureProvenance';
 import { mediaFile } from './harnessEvidence';
+import { focusedAudioIdentity } from './focusedAudioIdentity';
 const media = ['screenshot', 'audio'];
 const title = (id: string) => id.charAt(0).toUpperCase() + id.slice(1);
 const short = (commit: string) => commit.slice(0, 7);
@@ -46,13 +47,24 @@ export function screenPick(
 }
 const unrecorded = { standing: null, label: undefined, facts: undefined, note: undefined };
 function told(side: ExplorerSide, found: ExplorerCapture) {
-	if (found.focused)
+	if (found.focused) {
+		const audio = found.capture.kind === 'audio';
+		const facts = [
+			{ label: 'Focused run', value: found.focused.loop + ' · ' + found.focused.status }
+		];
+		if (audio && found.capture.provenance === 'fixture')
+			facts.push({ label: 'Audio origin', value: 'Generated fixture' });
+		if (audio && found.capture.provenance === 'actual-capture')
+			facts.push({ label: 'Audio origin', value: 'Actual capture' });
 		return {
 			standing: 'unvalidated' as const,
 			label: 'Focused capture',
-			facts: [{ label: 'Focused run', value: found.focused.loop + ' · ' + found.focused.status }],
-			note: 'Captured from the exact served revision; this focused run grants no full verification verdict.'
+			facts,
+			note: audio
+				? 'Captured at the tested revision; this focused run grants no full verification verdict.'
+				: 'Captured from the exact served revision; this focused run grants no full verification verdict.'
 		};
+	}
 	const tested = side.record?.scenarios.find((entry) => entry.id === found.scenario);
 	if (!side.record || !tested) return unrecorded;
 	return captureProvenance(side.record, tested, found.capture);
@@ -61,17 +73,19 @@ function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidenc
 	const { capture, scenario, state } = found;
 	const origin = told(side, found);
 	const where = capture.viewport ?? capture.kind;
+	const audio = focusedAudioIdentity(side, found);
+	const suffix = audio ? `-${audio.case}` : '';
 	return {
-		id: `${phase}-${short(side.commit)}-${scenario}-${state}-${capture.evidence}-${where}`,
-		title: `${scenario} · ${state}`,
+		id: `${phase}-${short(side.commit)}-${scenario}-${state}-${capture.evidence}-${where}${suffix}`,
+		title: `${scenario} · ${state}${audio ? ` · ${audio.case}` : ''}`,
 		category: scenario,
 		file: mediaFile(capture),
 		status: origin.standing === 'unvalidated' ? 'not-proven' : capture.status,
-		source: capture.server?.revision,
+		source: audio?.revision ?? capture.server?.revision,
 		capturedAt: capture.capturedAt,
 		viewport: capture.viewport,
 		phase,
-		comparison: `${scenario}|${state}|${capture.evidence}|${where}`,
+		comparison: `${scenario}|${state}|${capture.evidence}|${where}${audio ? `|${audio.case}` : ''}`,
 		standing: origin.label,
 		provenance: origin.facts,
 		note: origin.note,
