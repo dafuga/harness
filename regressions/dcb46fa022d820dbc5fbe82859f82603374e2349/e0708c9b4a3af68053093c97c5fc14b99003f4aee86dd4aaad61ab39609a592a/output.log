@@ -1,0 +1,45 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wruaeQ
+
+ ✓ test/services/unit-index.test.ts (14 tests) 2756ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2598ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 81ms
+
+ Test Files  2 passed (2)
+      Tests  16 passed (16)
+   Start at  02:20:41
+   Duration  5.75s (transform 215ms, setup 121ms, collect 439ms, tests 2.84s, environment 0ms, prepare 44ms)
+
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'vitest run "$@"' -- test/routes/report-audio-comparison-api.test.ts test/services/audio-upload.test.ts "--maxWorkers=1" "--minWorkers=1"
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wruaeQ/packages/reports
+
+ ✓ test/services/audio-upload.test.ts (4 tests) 261ms
+ ✓ test/routes/report-audio-comparison-api.test.ts (1 test) 13ms
+
+ Test Files  2 passed (2)
+      Tests  5 passed (5)
+   Start at  02:20:48
+   Duration  842ms (transform 154ms, setup 119ms, collect 195ms, tests 274ms, environment 0ms, prepare 45ms)
+
+Units registry is valid: 1827 units, 166 uncertain references.
+Checking formatting...
+All matched files use Prettier code style!
+$ bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && svelte-check --tsconfig ./tsconfig.previews.json "$@"' --
+
+warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+warn - Configure your content sources or your generated CSS will be missing styles.
+warn - https://tailwindcss.com/docs/content-configuration
+The following Vite config options will be overridden by SvelteKit:
+  - root
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wruaeQ/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+Loading svelte-check in workspace: /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-wruaeQ/packages/reports
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+$ bun ../../src/index.ts audit . --profile app
+Harness audit passed. Files and functions are staying small.
+Harness audit passed. Files and functions are staying small.
