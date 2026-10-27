@@ -1670,3 +1670,19 @@ passed on the same profile. Current checks passed for 49 scenarios and 1,828
 units, with 168 uncertain references. Targeted lint and formatting passed.
 Source reasons are stored in Git notes. The branch is isolated; integration and
 the user's deferred full verification remain open.
+
+The gateway prompt function now has four authored Examples on isolated branch
+`dafuga/gateway-prompt-examples-20261027`: ordered user and tool history, an
+empty conversation, escaped Unicode content, and a propagated accessor error.
+Nullish and unserializable requests are checked inside the error case. The old
+unregistered history assertion remains in its corresponding Example. The count
+grew from one unregistered case to four because these previously undeclared
+examples and error behaviors were added to the contract. Capture `ef00e770248a`
+at `d7e6e778f6` passed all four; discovery found the same four titles. Registry
+validation passed for 1,828 units with 168 uncertain references, the 16 unchanged
+contract guards passed in `4cc4f7bfe5c3`, and focused typecheck, lint and format
+passed. The first capture failed because the measurement wrapper was not awaited;
+that fixture was corrected and the failure remains recorded. Source measurement
+at the tested tree was 679 bytes, seven lines, complexity one and one dependency;
+the capture retains workload timing and whole-worker RSS. The authored reason is
+in Git notes. Integration, Explorer display and full verification remain open.
