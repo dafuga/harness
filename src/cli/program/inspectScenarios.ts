@@ -14,7 +14,13 @@ async function load(root = process.cwd()) {
 	const tree = new WorkingTreeAdapter(absolute);
 	const scenarios = await new ScenarioRepository(absolute).read(tree);
 	const units = await new UnitRegistryRepository(absolute).read(tree);
-	return { scenarios, units: new Set(units.manifests.map((unit) => unit.id)) };
+	return {
+		scenarios,
+		units: new Set(units.manifests.map((unit) => unit.id)),
+		retired: new Set(
+			units.manifests.filter((unit) => unit.status === 'retired').map((unit) => unit.id)
+		)
+	};
 }
 
 export async function listScenarios(root?: string) {
@@ -48,15 +54,23 @@ export async function showScenario(
 	return { scenario, ...scenarioRequirements(scenario) };
 }
 
-/** Schema and honesty problems in scenario contracts, plus references to unknown units. */
+/** Check scenario contracts and reject references to unknown or retired units. */
 export async function checkScenarios(
 	root?: string
 ): Promise<{ scenarios: number; errors: string[] }> {
-	const { scenarios, units } = await load(root);
+	const { scenarios, units, retired } = await load(root);
 	const unknown = scenarios.manifests.flatMap((scenario) =>
 		scenario.units
 			.filter((unit) => !units.has(unit))
 			.map((unit) => `${scenario.id} covers unknown unit ${unit}`)
 	);
-	return { scenarios: scenarios.manifests.length, errors: [...scenarios.errors, ...unknown] };
+	const inactive = scenarios.manifests.flatMap((scenario) =>
+		scenario.units
+			.filter((unit) => retired.has(unit))
+			.map((unit) => `${scenario.id} covers retired unit ${unit}`)
+	);
+	return {
+		scenarios: scenarios.manifests.length,
+		errors: [...scenarios.errors, ...unknown, ...inactive]
+	};
 }
