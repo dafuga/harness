@@ -80,6 +80,254 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": [
+			"qualified",
+			"unconfigured",
+			"qualification-rejected",
+			"invalid-input",
+			"open-failed",
+			"invalid-session",
+			"client-failed",
+			"cancelled-before",
+			"cancelled-opening",
+			"cancelled-running",
+			"cleanup-failed"
+		],
+		"cases": [
+			{
+				"id": "ready.qualified",
+				"state": "qualified",
+				"subject": "ModuleTaskBrokerTransportAdapter.ready",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.ready from qualified initialization"
+				},
+				"expected": {
+					"kind": "void"
+				}
+			},
+			{
+				"id": "ready.unconfigured",
+				"state": "unconfigured",
+				"subject": "ModuleTaskBrokerTransportAdapter.ready",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.ready from unconfigured initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Broker transport is unqualified"
+					}
+				}
+			},
+			{
+				"id": "ready.rejected",
+				"state": "qualification-rejected",
+				"subject": "ModuleTaskBrokerTransportAdapter.ready",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.ready from qualification-rejected initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Synthetic qualification rejected"
+					}
+				}
+			},
+			{
+				"id": "run.invalid",
+				"state": "invalid-input",
+				"subject": "ModuleTaskBrokerTransportAdapter.run",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.run from invalid-input initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Invalid broker task input"
+					}
+				}
+			},
+			{
+				"id": "run.unqualified",
+				"state": "qualification-rejected",
+				"subject": "ModuleTaskBrokerTransportAdapter.run",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.run from qualification-rejected initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Synthetic qualification rejected"
+					}
+				}
+			},
+			{
+				"id": "run.open-failed",
+				"state": "open-failed",
+				"subject": "ModuleTaskBrokerTransportAdapter.run",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.run from open-failed initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Synthetic broker open failed"
+					}
+				}
+			},
+			{
+				"id": "run.invalid-session",
+				"state": "invalid-session",
+				"subject": "ModuleTaskBrokerTransportAdapter.run",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.run from invalid-session initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Invalid broker session"
+					}
+				}
+			},
+			{
+				"id": "run.success",
+				"state": "qualified",
+				"subject": "ModuleTaskBrokerTransportAdapter.run",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.run from qualified initialization"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"provider": "codex",
+						"model": "gpt-6-luna",
+						"intelligence": "max",
+						"text": "Synthetic completion",
+						"reportedModel": null,
+						"usage": {
+							"inputTokens": 7,
+							"outputTokens": 3,
+							"cacheReadTokens": null,
+							"cacheWriteTokens": null,
+							"cacheWriteLongTokens": null,
+							"reportedCostUsd": null,
+							"reasoningTokens": null
+						}
+					}
+				}
+			},
+			{
+				"id": "run.client-failed",
+				"state": "client-failed",
+				"subject": "ModuleTaskBrokerTransportAdapter.run",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.run from client-failed initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Synthetic client failed"
+					}
+				}
+			},
+			{
+				"id": "run.cancelled-before",
+				"state": "cancelled-before",
+				"subject": "ModuleTaskBrokerTransportAdapter.run",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.run from cancelled-before initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "AbortError",
+						"message": "Broker task cancelled"
+					}
+				}
+			},
+			{
+				"id": "run.cancelled-opening",
+				"state": "cancelled-opening",
+				"subject": "ModuleTaskBrokerTransportAdapter.run",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.run from cancelled-opening initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "AbortError",
+						"message": "Broker task cancelled"
+					}
+				}
+			},
+			{
+				"id": "run.cancelled-running",
+				"state": "cancelled-running",
+				"subject": "ModuleTaskBrokerTransportAdapter.run",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.run from cancelled-running initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "AbortError",
+						"message": "Broker task cancelled"
+					}
+				}
+			},
+			{
+				"id": "run.cleanup-failed",
+				"state": "cleanup-failed",
+				"subject": "ModuleTaskBrokerTransportAdapter.run",
+				"fixture": "test/adapters/agents-providers/module-task-broker-transport.test.fixtures.ts",
+				"test": {
+					"file": "test/adapters/agents-providers/module-task-broker-transport.test.ts",
+					"title": "ModuleTaskBrokerTransportAdapter.run from cleanup-failed initialization"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Synthetic broker cleanup failed"
+					}
+				}
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
