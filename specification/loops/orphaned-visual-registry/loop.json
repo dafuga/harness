@@ -2,7 +2,7 @@
 	"name": "orphaned-visual-registry",
 	"goal": "Visual generation refuses orphaned existing registry entries before creating source",
 	"createdAt": "2026-10-27T10:08:47.338Z",
-	"updatedAt": "2026-10-27T10:09:54.331Z",
+	"updatedAt": "2026-10-27T10:10:56.145Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:10:54.440Z",
+			"evidence": "Commit 3a7efd7f07 refuses pre-existing visual registry files when the generated source is absent."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:10:56.145Z",
+			"evidence": "Harness green record 587e461b417af988ba7a8e9c0462078e16e9ba30df4b141a761bcc344c06bb7c passed the unchanged case at 3a7efd7f07 with the red profile."
 		},
 		{
 			"id": "verify",
