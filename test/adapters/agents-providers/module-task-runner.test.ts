@@ -155,6 +155,14 @@ test('Codex execute rejection remains distinct from a provider failure', async (
 });
 
 test('missing trusted scope fails before sandbox or process launch', async () => {
+	await expect(new ModuleTaskRunnerAdapter().ready()).rejects.toMatchObject({
+		quotaRejected: false
+	});
+	let qualified = 0;
+	await new ModuleTaskRunnerAdapter(undefined, undefined, async () => {
+		qualified++;
+	}).ready();
+	expect(qualified).toBe(1);
 	const { run, prepare, execute } = makeMissingScopeProbe();
 	const failure = await run.catch((error: unknown) => error);
 	expect(failure).toMatchObject({ quotaRejected: false });
