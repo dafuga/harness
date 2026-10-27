@@ -997,3 +997,31 @@ gaps. The health API has three discovered cases and no reported gap. The shared
 preview still reports missing committed module data for remote main `395e517bd7`;
 the requested Explorer and audio inspection is not yet proved.
 
+## Continuation: paired-audio API response matrix
+
+`dcb46fa022` retains the paired-audio endpoint's single registered case and
+its title while moving its request and expected response matrix into the unit
+contract. Its 18 rows cover complete and optional-field uploads, same-origin
+and multipart failures, the size boundary, missing or non-file inputs, service
+errors and malformed form data. The success fixture contains a complete report
+with paired audio evidence. The case also compares every forwarded service
+argument and file's original name, type, size and bytes. The service is mocked
+at the API boundary; its separate existing tests exercise real disposable
+repository uploads and compare stored file bytes.
+
+Capture `e0708c9b4a3a` passed 21 focused tests, registry validation,
+formatting, lint, root and Reports typechecks and both audits on the committed
+snapshot. Svelte reported zero errors and warnings; Tailwind emitted its
+missing-content configuration warning. The 18-row route workload took 9.50 ms
+and observed 106,971,136 bytes of whole-worker RSS, including the fixture and
+runner. The route has 1,986 source bytes, 44 lines, complexity 19 and three
+dependencies, with no separate module artifact. Its manifest reason is retained
+in Git notes. This is focused evidence, not an Explorer playback or full
+verification verdict.
+
+The committed-tree inventory still reports 1,119 suite files, 4,642 test
+declarations, 56 standardized units, 746 registered cases and 6,081 gaps. The
+paired-audio endpoint has its one discovered case and no reported gap. Its
+existing audio-service tests remain to be migrated to their declared class
+matrix and artifact evidence. The broader fixture, history, worker, E2E and
+current-main preview blockers remain open.
