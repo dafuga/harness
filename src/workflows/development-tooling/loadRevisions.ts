@@ -13,6 +13,7 @@ import type { SourceTree } from '../../core/development-tooling/sourceTypes';
 import { defaultUnitsConfig } from '../../core/development-tooling/unitsConfig';
 import { verifyConfigFile } from '../../core/verification-evidence/verifyTypes';
 import { SourceIndexService } from '../../services/development-tooling/source-index-service/SourceIndexService';
+import { reasonDeclarationHash } from '../../utils/development-tooling/required-reasons/requiredReasons';
 import { writingHeld } from '../../utils/git-source-history/writing-limits/writingLimits';
 import { graphOf, loadUnits } from './load-units/loadUnits';
 
@@ -85,20 +86,27 @@ export function commitLoader(root: string): (commit: string) => Promise<ReasonSi
 
 function compactReasonSide(side: RevisionSide): ReasonSide {
 	const files = new Map<string, ReasonFile>();
-	const manifests = side.manifests.filter((unit) => {
-		if (unit.status !== 'active') return false;
-		let present = false;
-		for (const path of unit.owns.source) {
-			const file = side.index.files.get(path);
-			if (!file) continue;
-			files.set(path, {
-				hash: file.hash,
-				blocks: file.blocks.map(({ name, hash }) => ({ name, hash }))
-			});
-			present = true;
-		}
-		return present;
-	});
+	const manifests = side.manifests
+		.filter((unit) => {
+			if (unit.status !== 'active') return false;
+			let present = false;
+			for (const path of unit.owns.source) {
+				const file = side.index.files.get(path);
+				if (!file) continue;
+				files.set(path, {
+					hash: file.hash,
+					blocks: file.blocks.map(({ name, hash }) => ({ name, hash }))
+				});
+				present = true;
+			}
+			return present;
+		})
+		.map((unit) => ({
+			id: unit.id,
+			status: unit.status,
+			owns: { source: unit.owns.source },
+			declarationHash: reasonDeclarationHash(unit)
+		}));
 	return { index: { files }, manifests, writing: side.writing };
 }
 

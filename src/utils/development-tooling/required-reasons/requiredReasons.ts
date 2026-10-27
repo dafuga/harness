@@ -1,12 +1,16 @@
-import type { ReasonSide, Symbol } from './requiredReasons.types';
+import type {
+	CompactReasonManifest,
+	ReasonManifest,
+	ReasonSide,
+	Symbol
+} from './requiredReasons.types';
 import { createHash } from 'node:crypto';
 import type { RequiredReason } from '../../../core/development-tooling/explanationTypes';
-import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
 import { componentVersion } from '../componentVersion';
 import { stableJson } from '../stableJson';
 
 /** Units that exist at a revision: active and with at least one source file present. */
-export function presentUnits(side: ReasonSide): Map<string, ComponentManifest> {
+export function presentUnits(side: ReasonSide): Map<string, ReasonManifest> {
 	const present = side.manifests.filter(
 		(unit) =>
 			unit.status === 'active' && unit.owns.source.some((path) => side.index.files.has(path))
@@ -18,8 +22,7 @@ export function presentUnits(side: ReasonSide): Map<string, ComponentManifest> {
 export function requiredReasons(base: ReasonSide, head: ReasonSide): RequiredReason[] {
 	const before = presentUnits(base);
 	const after = presentUnits(head);
-	const whole = (unit: ComponentManifest, side: ReasonSide) =>
-		componentVersion(unit, side.index.files).source;
+	const whole = (unit: ReasonManifest, side: ReasonSide) => sourceVersion(unit, side);
 	const reasons: RequiredReason[] = [];
 	for (const [id, unit] of after) {
 		const previous = before.get(id);
@@ -36,7 +39,7 @@ export function requiredReasons(base: ReasonSide, head: ReasonSide): RequiredRea
 	);
 }
 
-function symbols(unit: ComponentManifest, side: ReasonSide): Symbol[] {
+function symbols(unit: ReasonManifest, side: ReasonSide): Symbol[] {
 	return unit.owns.source.flatMap((file) =>
 		(side.index.files.get(file)?.blocks ?? []).map((block) => ({
 			file,
@@ -49,8 +52,8 @@ function symbols(unit: ComponentManifest, side: ReasonSide): Symbol[] {
 /** A symbol with the same name and content is unchanged, wherever its file moved. */
 function changedSymbols(
 	sides: { base: ReasonSide; head: ReasonSide },
-	previous: ComponentManifest,
-	unit: ComponentManifest
+	previous: ReasonManifest,
+	unit: ReasonManifest
 ): RequiredReason[] {
 	const remaining = symbols(previous, sides.base);
 	const take = (match: (item: Symbol) => boolean) => {
@@ -75,7 +78,7 @@ function changedSymbols(
 		from: item.hash,
 		to: null
 	}));
-	const declared = [declaredHash(previous), declaredHash(unit)];
+	const declared = [reasonDeclarationHash(previous), reasonDeclarationHash(unit)];
 	if (reasons.length + removed.length > 0 || declared[0] === declared[1])
 		return [...reasons, ...removed];
 	return [
@@ -83,8 +86,9 @@ function changedSymbols(
 	];
 }
 
-/** The parts of a manifest a person declares, as opposed to what the index derives. */
-function declaredHash(unit: ComponentManifest): string {
+/** @pure Hashes the parts of a manifest a person declares, rather than derived index facts. */
+export function reasonDeclarationHash(unit: ReasonManifest): string {
+	if (isCompact(unit)) return unit.declarationHash;
 	const declared = {
 		kind: unit.kind,
 		responsibility: unit.responsibilityOrigin === 'declared' ? unit.responsibility : null,
@@ -99,6 +103,21 @@ function declaredHash(unit: ComponentManifest): string {
 		lineage: unit.lineage ?? null
 	};
 	return createHash('sha256').update(stableJson(declared)).digest('hex').slice(0, 16);
+}
+
+function sourceVersion(unit: ReasonManifest, side: ReasonSide): string {
+	if (!isCompact(unit)) return componentVersion(unit, side.index.files).source;
+	const owned = [...unit.owns.source].sort().flatMap((path) => {
+		const hash = side.index.files.get(path)?.hash;
+		return hash ? [{ path, hash }] : [];
+	});
+	return createHash('sha256')
+		.update(owned.map((file) => `${file.path}\0${file.hash}\n`).join(''))
+		.digest('hex');
+}
+
+function isCompact(unit: ReasonManifest): unit is CompactReasonManifest {
+	return 'declarationHash' in unit && !('schemaVersion' in unit);
 }
 
 function compare(left: string, right: string): number {

@@ -7,9 +7,18 @@ export interface ReasonFile {
 	blocks: Array<Pick<SourceBlock, 'name' | 'hash'>>;
 }
 
+export interface CompactReasonManifest {
+	id: ComponentManifest['id'];
+	status: ComponentManifest['status'];
+	owns: Pick<ComponentManifest['owns'], 'source'>;
+	declarationHash: string;
+}
+
+export type ReasonManifest = ComponentManifest | CompactReasonManifest;
+
 export interface ReasonSide {
 	index: { files: ReadonlyMap<string, ReasonFile> };
-	manifests: ComponentManifest[];
+	manifests: ReasonManifest[];
 	/** The version of the writing limits the revision declares; its reasons are held to that one. */
 	writing?: WritingVersion | null;
 }
