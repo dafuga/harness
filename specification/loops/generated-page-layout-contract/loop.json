@@ -1,0 +1,62 @@
+{
+	"name": "generated-page-layout-contract",
+	"goal": "Register generated page and layout screenshot cases including child-slot placeholders",
+	"createdAt": "2026-10-27T06:01:42.482Z",
+	"updatedAt": "2026-10-27T06:22:39.254Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T06:01:49.947Z",
+			"evidence": "Generated page and layout screenshot suites lack registered page-form cases and scenarios after indexing."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T06:01:59.514Z",
+			"evidence": "The existing generator case checks emitted page markup but never indexes page or layout contracts, screenshot cases, scenarios, or the real child-slot placeholder."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T06:12:54.558Z",
+			"evidence": "The existing case fails at f033ad5290 on harbor-mbp-2 because page.dashboard has no generated contract. Harness record cb457ed37b800fe5d21c2c3460bf0440f1fc1ecf4ba183e579751c0c5c68530d."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T06:22:33.039Z",
+			"evidence": "Commit e4efd0ea5f registers generated page and layout screenshot cases and the labelled child placeholder."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T06:22:39.254Z",
+			"evidence": "The unchanged case passed on harbor-mbp-2 at e4efd0ea5f; green 02a2fa33f9f4 matches red cb457ed37b80 and its runtime profile."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

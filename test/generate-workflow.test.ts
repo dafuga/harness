@@ -6,6 +6,7 @@ import { expect, test } from 'vitest';
 import { generateModel, generatePiece } from '../src/workflows/generate-code/generateCode';
 import { scaffoldDetails, scaffoldKinds } from '../src/templates/scaffoldTypes';
 import { assertGeneratedComponentRegistry } from './support/generatedComponentRegistry';
+import { assertGeneratedPageLayoutRegistry } from './support/generatedPageLayoutRegistry';
 
 test('lib generation auto-exports package-safe scaffolds', async () => {
 	const root = await libProject();
@@ -63,7 +64,8 @@ test('app generation allows app-only scaffolds without package exports', async (
 	expect(input).toContain('@harness-element input');
 	await rm(root, { recursive: true, force: true });
 	await assertGeneratedComponentRegistry();
-});
+	await assertGeneratedPageLayoutRegistry();
+}, 30_000);
 
 async function libProject(): Promise<string> {
 	const root = await mkdtemp(join(tmpdir(), 'harness-generate-'));
