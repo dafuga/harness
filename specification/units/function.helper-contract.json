@@ -44,7 +44,18 @@
 				"examples": [true, false]
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "An exception raised by a consumer accessor is propagated."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A null helper or malformed consumer collection cannot be read."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
@@ -58,6 +69,211 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "helperContract",
+				"name": "Accept two distinct consumers",
+				"call": "helperContract({\"pure\":true,\"consumers\":[{\"unit\":\"component.summary\"},{\"unit\":\"service.export\"}]})",
+				"input": [
+					{
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "component.summary"
+							},
+							{
+								"unit": "service.export"
+							}
+						]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "helperContract",
+				"name": "Reject repeated references to one consumer",
+				"call": "helperContract({\"pure\":true,\"consumers\":[{\"unit\":\"component.summary\"},{\"unit\":\"component.summary\"}]})",
+				"input": [
+					{
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "component.summary"
+							},
+							{
+								"unit": "component.summary"
+							}
+						]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "helperContract",
+				"name": "Accept distinct named functions in one unit",
+				"call": "helperContract({\"pure\":true,\"consumers\":[{\"unit\":\"service.export\",\"symbol\":\"read\"},{\"unit\":\"service.export\",\"symbol\":\"write\"}]})",
+				"input": [
+					{
+						"pure": true,
+						"consumers": [
+							{
+								"unit": "service.export",
+								"symbol": "read"
+							},
+							{
+								"unit": "service.export",
+								"symbol": "write"
+							}
+						]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": true
+				}
+			},
+			{
+				"subject": "helperContract",
+				"name": "Reject a helper without a pure declaration",
+				"call": "helperContract({\"pure\":false,\"consumers\":[{\"unit\":\"component.summary\"},{\"unit\":\"service.export\"}]})",
+				"input": [
+					{
+						"pure": false,
+						"consumers": [
+							{
+								"unit": "component.summary"
+							},
+							{
+								"unit": "service.export"
+							}
+						]
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "helperContract",
+				"name": "Reject a helper without consumers",
+				"call": "helperContract({\"pure\":true})",
+				"input": [
+					{
+						"pure": true
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": false
+				}
+			},
+			{
+				"subject": "helperContract",
+				"name": "Propagate a consumer accessor error",
+				"call": "helperContract({ pure: true, get consumers() { throw new Error(\"Consumers unavailable\"); } })",
+				"input": [
+					{
+						"$fixture": "throwing-consumers",
+						"message": "Consumers unavailable"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Consumers unavailable"
+					}
+				}
+			}
+		],
+		"states": ["shared", "duplicate", "named", "impure", "missing", "error"],
+		"props": ["helper"],
+		"cases": [
+			{
+				"id": "helper-contract.shared",
+				"state": "shared",
+				"subject": "helperContract",
+				"example": "Accept two distinct consumers",
+				"fixture": "specification/units/function.helper-contract.json",
+				"test": {
+					"file": "test/utils/helper-contract.test.ts",
+					"title": "helperContract: Accept two distinct consumers"
+				},
+				"props": ["helper"]
+			},
+			{
+				"id": "helper-contract.duplicate",
+				"state": "duplicate",
+				"subject": "helperContract",
+				"example": "Reject repeated references to one consumer",
+				"fixture": "specification/units/function.helper-contract.json",
+				"test": {
+					"file": "test/utils/helper-contract.test.ts",
+					"title": "helperContract: Reject repeated references to one consumer"
+				},
+				"props": ["helper"]
+			},
+			{
+				"id": "helper-contract.named",
+				"state": "named",
+				"subject": "helperContract",
+				"example": "Accept distinct named functions in one unit",
+				"fixture": "specification/units/function.helper-contract.json",
+				"test": {
+					"file": "test/utils/helper-contract.test.ts",
+					"title": "helperContract: Accept distinct named functions in one unit"
+				},
+				"props": ["helper"]
+			},
+			{
+				"id": "helper-contract.impure",
+				"state": "impure",
+				"subject": "helperContract",
+				"example": "Reject a helper without a pure declaration",
+				"fixture": "specification/units/function.helper-contract.json",
+				"test": {
+					"file": "test/utils/helper-contract.test.ts",
+					"title": "helperContract: Reject a helper without a pure declaration"
+				},
+				"props": ["helper"]
+			},
+			{
+				"id": "helper-contract.missing",
+				"state": "missing",
+				"subject": "helperContract",
+				"example": "Reject a helper without consumers",
+				"fixture": "specification/units/function.helper-contract.json",
+				"test": {
+					"file": "test/utils/helper-contract.test.ts",
+					"title": "helperContract: Reject a helper without consumers"
+				},
+				"props": ["helper"]
+			},
+			{
+				"id": "helper-contract.error",
+				"state": "error",
+				"subject": "helperContract",
+				"example": "Propagate a consumer accessor error",
+				"fixture": "specification/units/function.helper-contract.json",
+				"test": {
+					"file": "test/utils/helper-contract.test.ts",
+					"title": "helperContract: Propagate a consumer accessor error"
+				},
+				"props": ["helper"],
+				"errors": ["Error", "TypeError"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

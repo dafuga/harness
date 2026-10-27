@@ -1,0 +1,45 @@
+{
+	"name": "helper-eligibility-examples",
+	"goal": "Make helper eligibility examples executable and revision-bound",
+	"createdAt": "2026-10-27T13:23:37.644Z",
+	"updatedAt": "2026-10-27T13:25:51.417Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T13:23:59.403Z",
+			"evidence": "Declare one executable case for each eligibility example, including duplicate consumers, impurity and failure inputs."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-27T13:25:51.417Z",
+			"evidence": "The unit declares six executable examples and documented errors; implementation behavior is unchanged."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

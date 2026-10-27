@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-27T13:23:37.644Z","name":"helper-eligibility-examples","goal":"Make helper eligibility examples executable and revision-bound","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-10-27T13:23:59.403Z","loop":"helper-eligibility-examples","step":"spec","evidence":"Declare one executable case for each eligibility example, including duplicate consumers, impurity and failure inputs."}
+{"event":"step.completed","timestamp":"2026-10-27T13:25:51.417Z","loop":"helper-eligibility-examples","step":"implement","evidence":"The unit declares six executable examples and documented errors; implementation behavior is unchanged."}
