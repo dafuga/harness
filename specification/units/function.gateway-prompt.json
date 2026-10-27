@@ -20,7 +20,7 @@
 			{
 				"name": "gatewayPrompt.request",
 				"type": "GatewayRequest",
-				"description": "Request whose input array contains the complete ordered conversation history."
+				"description": "Request whose input array contains the complete ordered conversation history; model, stream, tools and instructions do not change the prompt."
 			}
 		],
 		"outputs": [

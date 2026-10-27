@@ -24,6 +24,15 @@ async function checked(
 		() => gatewayPrompt(request)
 	);
 	expect(result).toContain(JSON.stringify(request.input));
+	expect(
+		gatewayPrompt({
+			...request,
+			model: 'other-model',
+			stream: false as unknown as true,
+			tools: [{ name: 'other' }],
+			instructions: 'ignored'
+		})
+	).toBe(result);
 	return result;
 }
 
