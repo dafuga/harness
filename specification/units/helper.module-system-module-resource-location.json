@@ -39,7 +39,13 @@
 				"description": "A fresh catalog or module-resource location in the supplied branch and commit."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A nullish scope or resource throws TypeError; errors raised by a catalog accessor propagate unchanged."
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -64,6 +70,644 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the apis catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"apis\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "apis"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "apis"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the permissions catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"permissions\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "permissions"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "pages",
+						"screen": "permissions"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the module-library catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"module-library\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "module-library"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "pages",
+						"screen": "modules"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the layouts catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"layouts\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "layouts"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "layouts"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the components catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"components\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "components"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "components"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the models catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"models\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "models"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "models"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the services catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"services\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "services"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "services"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the functions catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"functions\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "functions"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "functions"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the types catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"types\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "types"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "types"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the configs catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"configs\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "configs"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "configs"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the styles catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"styles\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "styles"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "pages",
+						"screen": "styles"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve the dependencies catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", {\"id\":\"service\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"},\"catalog\":\"dependencies\"})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"id": "service",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						},
+						"catalog": "dependencies"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "pages",
+						"screen": "dependencies"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Resolve a resource without a catalog",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"rust-wasm\", {\"id\":\"kernel\",\"title\":\"Services\",\"singular\":\"Service\",\"kind\":\"service\",\"instructions\":[\"Generate\"],\"files\":[],\"generator\":{\"kind\":\"dependency\"}})",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"rust-wasm",
+					{
+						"id": "kernel",
+						"title": "Services",
+						"singular": "Service",
+						"kind": "service",
+						"instructions": ["Generate"],
+						"files": [],
+						"generator": {
+							"kind": "dependency"
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"category": "pages",
+						"screen": "module-resources",
+						"entity": "rust-wasm.kernel"
+					}
+				}
+			},
+			{
+				"subject": "moduleResourceLocation",
+				"name": "Propagate a catalog access error",
+				"call": "moduleResourceLocation({\"branch\":\"feature/modules\",\"commit\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"entity\":\"unrelated\"}, \"services\", { get catalog() { throw new TypeError(\"catalog unavailable\"); } })",
+				"input": [
+					{
+						"branch": "feature/modules",
+						"commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+						"entity": "unrelated"
+					},
+					"services",
+					{
+						"$fixture": "throwing-catalog",
+						"message": "catalog unavailable"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "TypeError",
+						"message": "catalog unavailable"
+					}
+				}
+			}
+		],
+		"states": [
+			"catalog.apis",
+			"catalog.permissions",
+			"catalog.module-library",
+			"catalog.layouts",
+			"catalog.components",
+			"catalog.models",
+			"catalog.services",
+			"catalog.functions",
+			"catalog.types",
+			"catalog.configs",
+			"catalog.styles",
+			"catalog.dependencies",
+			"resource.fallback",
+			"resource.error"
+		],
+		"props": ["scope", "module", "resource", "catalog"],
+		"cases": [
+			{
+				"id": "catalog.apis",
+				"state": "catalog.apis",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the apis catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the apis catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "catalog.permissions",
+				"state": "catalog.permissions",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the permissions catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the permissions catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "catalog.module-library",
+				"state": "catalog.module-library",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the module-library catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the module-library catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "catalog.layouts",
+				"state": "catalog.layouts",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the layouts catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the layouts catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "catalog.components",
+				"state": "catalog.components",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the components catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the components catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "catalog.models",
+				"state": "catalog.models",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the models catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the models catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "catalog.services",
+				"state": "catalog.services",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the services catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the services catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "catalog.functions",
+				"state": "catalog.functions",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the functions catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the functions catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "catalog.types",
+				"state": "catalog.types",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the types catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the types catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "catalog.configs",
+				"state": "catalog.configs",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the configs catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the configs catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "catalog.styles",
+				"state": "catalog.styles",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the styles catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the styles catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "catalog.dependencies",
+				"state": "catalog.dependencies",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve the dependencies catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve the dependencies catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "resource.fallback",
+				"state": "resource.fallback",
+				"subject": "moduleResourceLocation",
+				"example": "Resolve a resource without a catalog",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Resolve a resource without a catalog"
+				},
+				"props": ["scope", "module", "resource", "catalog"]
+			},
+			{
+				"id": "resource.error",
+				"state": "resource.error",
+				"subject": "moduleResourceLocation",
+				"example": "Propagate a catalog access error",
+				"test": {
+					"file": "test/helpers/module-system/module-resource-location.test.ts",
+					"title": "moduleResourceLocation: Propagate a catalog access error"
+				},
+				"props": ["scope", "module", "resource", "catalog"],
+				"errors": ["TypeError"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

@@ -1,0 +1,47 @@
+{
+	"name": "module-resource-location-examples",
+	"goal": "Declare and execute each supported module resource location as an authored example",
+	"createdAt": "2026-10-27T10:42:10.722Z",
+	"updatedAt": "2026-10-27T10:45:23.456Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T10:42:49.606Z",
+			"evidence": "Existing unregistered case covers scoped service and fallback paths; declare each supported catalog plus propagated errors as authored examples without changing implementation."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-10-27T10:45:22.843Z",
+			"evidence": "Declared 12 catalog destinations, the resource fallback and one propagated error as authored examples; implementation remains unchanged."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-10-27T10:45:23.456Z",
+			"evidence": "14 example-driven cases passed with existing scope and fallback assertions retained; discovery found 14 declared cases and no errors."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
