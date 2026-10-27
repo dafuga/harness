@@ -1025,3 +1025,39 @@ paired-audio endpoint has its one discovered case and no reported gap. Its
 existing audio-service tests remain to be migrated to their declared class
 matrix and artifact evidence. The broader fixture, history, worker, E2E and
 current-main preview blockers remain open.
+## Continuation: audio upload method and artifact cases
+
+`aedb9e8b0d` declares the two audio-upload methods across active, invalid-input,
+finalizing, finalized, missing-report and storage-failure states. The four
+existing titles remain; eight additional cases represent newly declared
+method/state combinations. The cases retain the original disposable repository,
+file-byte, shared-comparison and no-evidence-on-error assertions, and cover text
+limits, invalid formats and report failures. The oversized-file boundary uses a
+size-only File fixture because the method rejects it before reading bytes.
+
+Each case captures its generated synthetic input tone before the operation. The
+scenario declares 18 case/state audio slots, including failure-state inputs. The
+first capture attempt at `aedb9e8b0d` ran the cases but failed to seal: 12
+benchmark capture lines used uppercase class names in identifiers. A separate
+run confirmed 18 valid audio lines and those 12 malformed benchmark lines.
+`75d26d700a` changes only the workload names to valid stable identifiers.
+
+Capture `f516c23f2406` at `75d26d700a` passed 29 focused tests, unit and scenario
+registry checks, formatting, lint, root and Reports typechecks and both audits.
+Svelte reported zero errors and warnings; Tailwind emitted its missing-content
+warning. All 18 retained audio files were read from the evidence commit and
+matched their recorded SHA-256 and byte counts. The two three-second 16 kHz mono
+fixture tones have SHA-256 `991131b57aebe79ad50a871ffe737f0b65807bf63d7690a0e41c06472db571ee`
+(220 Hz) and `b95e613592e4dbff412374e5711fd56ceddaed413cca39bd875446947a75c0c0`
+(440 Hz). The active single-upload WAV was decoded with `afinfo`. These are
+fixture inputs, not recordings of real speech or Explorer playback proof.
+
+The 12 case workloads observed 2.10–11.34 ms and 109,985,792–132,628,480 bytes
+whole-worker RSS, including fixtures and runner. The service owns 3,169 source
+bytes, 87 lines, complexity 13 and five dependencies; it has no separate module
+artifact. Its manifest reason is retained in Git notes. The committed-tree
+inventory at `75d26d700a` reports 1,119 suite files, 4,650 test declarations,
+57 standardized units, 758 registered cases and 6,076 remaining gaps. This
+service has 12 discovered cases and no reported gap. The current-main preview
+still shows missing committed module data, so Tests, Examples, History and
+in-Explorer playback remain unverified.
