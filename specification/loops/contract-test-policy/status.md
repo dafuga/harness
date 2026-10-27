@@ -1698,3 +1698,25 @@ branch. The shared preview still selects `395e517bd7` and reports missing
 committed module data. No branch was merged or preview owner changed. Any later
 integration must refresh all source heads, incorporate current main safely, and
 rerun the deferred gates before claiming current-main delivery.
+
+Generated case discovery missed disabled registrars and enclosing suites: the
+existing `TestDiscoveryService.discover` case covered only top-level registration.
+Its two-case suite count stayed unchanged. Test-only commit `7ffa041d12` failed
+in red `ec10cb1f1fff` because `test.skip` was marked enabled. The source fix
+`8ab8e3be39` passed the unchanged case in green `1961a0a3f2a5`, on the same
+command and environment profile. The reader now retains suite titles and skipped
+modifiers and reports conditional or unknown registrars as unresolved. The
+indexed return contract and fixture-only lint cleanup followed at `a9753b2471`
+and `8e0140cf10`. Focused capture `0c606509f3bd` passed 18 discovery and unchanged
+registry-guard cases; units check passed for 1,828 units with 168 uncertain
+references, and targeted typecheck, lint and formatting passed. Reintroducing
+the old reader failed the same case in capture `e7c0902d0ebc`; restoring the
+identical complete tree passed `7dfcb5967ae7` on the same mutation profile.
+Source reasons are stored in Git notes. At the tested tree, the discovery unit
+measured 8,764 bytes, 251 lines, complexity 75 and three dependencies; the
+example reader measured 3,627 bytes, 115 lines, complexity 28 and five
+dependencies. Neither module has a separate emitted artifact. Focused timing and
+whole-process memory observations remain in capture evidence. The branch
+`dafuga/contract-discovery-skipped-20261027` remains isolated, and its new
+internal callable still needs its own declared example contract as the broader
+migration proceeds. Full verification, integration and Explorer proof are open.
