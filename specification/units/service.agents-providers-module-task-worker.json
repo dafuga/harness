@@ -137,13 +137,18 @@
 				"name": "ModuleTaskWorkerService.onceApproved.signal",
 				"type": "AbortSignal",
 				"description": "Optional cancellation signal with the same behavior as once."
+			},
+			{
+				"name": "TaskRunner.ready",
+				"type": "optional () => Promise<void>",
+				"description": "Trusted in-process runner readiness callback. The default runner checks isolation qualification. Injected host or test runners may omit it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ModuleTaskWorkerService.once",
 				"type": "Promise<{status: 'idle'} | {status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']>}>",
-				"description": "Uses ModuleTaskService.prepare(task).files/role, creates detached worktree from selected repairCommit??sourceCommit, obtains contexts.create(task with selected sourceCommit,worktree,exact prepared files), passes scope to every run including quota-only fallback. Waits owned runner settlement before context.cleanup; cleanup awaited on success/failure/cancel/context-safe errors. No scope/snapshot/bin paths leaked into committed result. Post-diff/checkpoint uses prepared exact files, never broader legacy module.files. Existing claim/finish CAS and actual usage/analytics retained; no self-acceptance. Dependent tasks compose accepted checkpoints and optional repair revision; the effective source is used for prompt, context, worktree, snapshot and result while the original queued task identity remains unchanged."
+				"description": "Checks optional runner readiness before owner lookup or task claim and rechecks cancellation after it resolves. The default unqualified runner rejects without a queue update. Uses ModuleTaskService.prepare(task).files/role, creates detached worktree from selected repairCommit??sourceCommit, obtains contexts.create(task with selected sourceCommit,worktree,exact prepared files), passes scope to every run including quota-only fallback. Waits owned runner settlement before context.cleanup; cleanup awaited on success/failure/cancel/context-safe errors. No scope/snapshot/bin paths leaked into committed result. Post-diff/checkpoint uses prepared exact files, never broader legacy module.files. Existing claim/finish CAS and actual usage/analytics retained; no self-acceptance. Dependent tasks compose accepted checkpoints and optional repair revision; the effective source is used for prompt, context, worktree, snapshot and result while the original queued task identity remains unchanged."
 			},
 			{
 				"name": "pendingTaskResult",
@@ -173,7 +178,7 @@
 			{
 				"name": "ModuleTaskWorkerService.onceApproved",
 				"type": "Promise<{status: 'idle'} | {status: 'failed' | 'review'; task: string; result: NonNullable<ModuleTask['result']>}>",
-				"description": "Atomically verify the latest matching approval and exact prepared task definitions before claiming only a task from that approved plan, while retaining all running tasks for file and module contention and accepted tasks for dependency checks. Then use the existing execution and finalization path."
+				"description": "Checks optional runner readiness before owner lookup or task claim and rechecks cancellation after it resolves. The default unqualified runner rejects without a queue update. Atomically verify the latest matching approval and exact prepared task definitions before claiming only a task from that approved plan, while retaining all running tasks for file and module contention and accepted tasks for dependency checks. Then use the existing execution and finalization path."
 			}
 		],
 		"errors": [
@@ -218,6 +223,11 @@
 				"name": "Approval scope changed",
 				"type": "Error",
 				"description": "Reject before queue mutation or provider execution if the plan, approval, feature or admitted task definitions no longer match the committed queue."
+			},
+			{
+				"name": "Unqualified runner",
+				"type": "safe prelaunch Error before queue mutation or provider launch",
+				"description": "A rejected readiness check leaves queued work and its attempt history unchanged; no provider is called."
 			}
 		]
 	},

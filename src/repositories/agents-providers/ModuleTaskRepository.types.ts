@@ -47,5 +47,6 @@ export interface TaskRunResult extends TaskSelection {
 	usage?: TaskUsage;
 }
 export interface TaskRunner {
+	ready?(): Promise<void>;
 	run(input: TaskRunInput): Promise<TaskRunResult>;
 }

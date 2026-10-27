@@ -221,8 +221,8 @@
 			},
 			{
 				"name": "TaskRunner",
-				"type": "{run(input: TaskRunInput): Promise<TaskRunResult>}",
-				"description": "Provider execution interface."
+				"type": "{run(input: TaskRunInput): Promise<TaskRunResult>; ready?(): Promise<void>}",
+				"description": "Trusted in-process execution interface. Optional readiness is checked by workers before claiming; the real runner still rechecks qualification immediately before launch."
 			},
 			{
 				"name": "TaskRunScope",
