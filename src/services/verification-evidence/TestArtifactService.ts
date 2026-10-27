@@ -31,7 +31,7 @@ export class TestArtifactService {
 			note: JSON.stringify({
 				unit: artifact.unit,
 				case: artifact.case,
-				revision: this.env.HARNESS_VERIFY_REVISION ?? null,
+				revision: revision ?? null,
 				sha256
 			})
 		});
