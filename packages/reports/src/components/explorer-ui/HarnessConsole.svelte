@@ -99,7 +99,6 @@
 			? consoleView({ index, scope, loaded, entities, relations, answers, href })
 			: null
 	);
-
 	let contentKey = $derived(consoleContentKey(shown?.scope.location));
 
 	// The search of the bar holds the entities of exactly the revision shown; none while it is read.

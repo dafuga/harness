@@ -79,7 +79,6 @@ export function focusedAudioFixture(
 		}
 	};
 }
-
 function syntheticAudioCapture(
 	commit: string,
 	unit: string,

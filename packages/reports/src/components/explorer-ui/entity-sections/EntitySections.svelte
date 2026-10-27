@@ -65,7 +65,6 @@
 	let gaps = $derived(tableView.gaps);
 	let schemaTitle = $derived(entity.lastAt ? `Last table · ${entity.lastAt.slice(0, 7)}` : 'Table');
 </script>
-
 <hx-div class="ex-sections" data-harness-component="harness-entity-sections">
 	<!-- The tab of the address decides what an entity screen shows; any other shows its overview. -->
 	{#if entity.category === 'apis' && host.route.tab === 'permissions'}
@@ -187,7 +186,6 @@
 		</EntityOverview>
 	{/if}
 </hx-div>
-
 {#snippet verificationPanel()}
 	<EntityTests
 		{entity}
@@ -199,7 +197,6 @@
 		exportHref={host.exportHref}
 	/>
 {/snippet}
-
 <style>
 	.ex-sections {
 		display: contents;

@@ -104,7 +104,6 @@ test('the branch tip shows exactly one screenshot, the one of the picked state a
 	expect(shown.after.phase).toBe('current');
 	expect(shown.fresh).toBe(true);
 });
-
 test('a selected commit pairs the parent and the commit for the same state and viewport', () => {
 	const shown = entityScreens(evidence(page, head, base), screenPick(options, {})!);
 	expect(shown.before?.file).toBe('aaaaaaa-default-desktop.png');
