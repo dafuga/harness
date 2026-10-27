@@ -25,22 +25,6 @@ test('json checks complete responses, type-preserving scalar normalization and e
 	expect(() =>
 		service.json(response, { ...expected, request: { nonce: 1 } }, ['request.nonce'])
 	).toThrow('API JSON differs');
-	const nullable = { request: { nonce: null }, items: [{ token: null }] };
-	expect(
-		() => service.json(nullable, nullable, ['request.nonce', 'items.0.token']),
-		'matching null fields must remain comparable'
-	).not.toThrow();
-	for (const changed of [
-		{ request: { nonce: 'present' }, items: [{ token: null }] },
-		{ request: { nonce: null }, items: [{ token: 'present' }] }
-	]) {
-		expect(() => service.json(nullable, changed, ['request.nonce', 'items.0.token'])).toThrow(
-			'API JSON differs'
-		);
-		expect(() => service.json(changed, nullable, ['request.nonce', 'items.0.token'])).toThrow(
-			'API JSON differs'
-		);
-	}
 	for (const path of ['missing', 'request', 'request.*', '__proto__.polluted'])
 		expect(() => service.json(response, expected, [path])).toThrow();
 	expect(response.request.nonce).toBe('actual');

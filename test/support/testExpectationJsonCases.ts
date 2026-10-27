@@ -14,6 +14,22 @@ export function assertCompleteJsonFields(service: TestExpectationService) {
 			() => service.json(JSON.parse(after), JSON.parse(before)),
 			'API JSON comparison must retain every wire field'
 		).toThrow('API JSON differs');
+	const nullable = { request: { nonce: null }, items: [{ token: null }] };
+	expect(
+		() => service.json(nullable, nullable, ['request.nonce', 'items.0.token']),
+		'matching null fields must remain comparable'
+	).not.toThrow();
+	for (const changed of [
+		{ request: { nonce: 'present' }, items: [{ token: null }] },
+		{ request: { nonce: null }, items: [{ token: 'present' }] }
+	]) {
+		expect(() => service.json(nullable, changed, ['request.nonce', 'items.0.token'])).toThrow(
+			'API JSON differs'
+		);
+		expect(() => service.json(changed, nullable, ['request.nonce', 'items.0.token'])).toThrow(
+			'API JSON differs'
+		);
+	}
 }
 
 /** Characterize admitted in-memory values directly; do not JSON-normalize these fixtures. */

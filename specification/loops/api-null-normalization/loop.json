@@ -2,7 +2,7 @@
 	"name": "api-null-normalization",
 	"goal": "Compare nullable nondeterministic API fields without hiding type differences.",
 	"createdAt": "2026-10-27T00:14:12.534Z",
-	"updatedAt": "2026-10-27T00:14:16.075Z",
+	"updatedAt": "2026-10-27T00:15:06.565Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:14:43.638Z",
+			"evidence": "Committed case 545e4d70d8 rejected matching null fields; record 3049aa4a2e96."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:14:55.727Z",
+			"evidence": "Commit 25199c7195 leaves null intact and still rejects objects or mismatched JSON types."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:15:06.565Z",
+			"evidence": "Unchanged JSON case passed at 25199c7195 with paired record 91cffb5b6a56."
 		},
 		{
 			"id": "verify",
