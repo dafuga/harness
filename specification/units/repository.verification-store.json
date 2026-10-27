@@ -21,6 +21,8 @@
 			"VerificationStoreRepository.load",
 			"VerificationStoreRepository.latest",
 			"VerificationStoreRepository.all",
+			"VerificationStoreRepository.records",
+			"VerificationStoreRepository.read",
 			"StoredRecord",
 			"StoredRecord"
 		]
@@ -55,6 +57,10 @@
 			{
 				"name": "VerificationStoreRepository.latest.commit",
 				"type": "string"
+			},
+			{
+				"name": "VerificationStoreRepository.read.path",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -77,6 +83,14 @@
 			{
 				"name": "VerificationStoreRepository.all",
 				"type": "StoredRecord[]"
+			},
+			{
+				"name": "VerificationStoreRepository.records",
+				"type": "IterableIterator<StoredRecord>"
+			},
+			{
+				"name": "VerificationStoreRepository.read",
+				"type": "StoredRecord | undefined"
 			}
 		],
 		"errors": []

@@ -1,11 +1,13 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import type { VerificationRecord } from '../../src/core/verificationTypes';
+import { VerificationStoreRepository } from '../../src/repositories/VerificationStoreRepository';
 import { TrustedBaseService } from '../../src/services/TrustedBaseService';
 import { sealRecord } from '../../src/utils/sealRecord';
 import { runCommand } from '../support/cli';
+import { measureProcess } from '../support/cli-measurement/measureProcess';
 import { verificationSample } from '../support/verificationSample';
 
 let root: string;
@@ -86,3 +88,101 @@ test('a later failure, a forged outcome and a record for another tree are not tr
 	await store(four, 'passed', '2026-10-10T00:00:06.000Z', elsewhere);
 	expect(await service.nearest(four)).toBe(one);
 }, 60_000);
+
+test('a large history keeps ancestry checks bounded and still rejects damaged lineage', async () => {
+	const [one, , , four] = commits;
+	const store = new VerificationStoreRepository(root);
+	const parent = store.latest(one)!;
+	const sample: Partial<VerificationRecord> = verificationSample();
+	delete sample.id;
+	const child = sealRecord({
+		...(sample as Omit<VerificationRecord, 'id'>),
+		source: {
+			commit: four,
+			tree: await git(['rev-parse', `${four}^{tree}`]),
+			base: one,
+			baseRecord: parent.record.id
+		},
+		startedAt: '2026-10-10T00:00:07.000Z',
+		components: [],
+		measurements: []
+	});
+	await store.save(child, store.directoryFor(four, child.startedAt));
+	const extra = await largeHistory(store);
+	try {
+		const baseline = await historyMemory('all', four);
+		const verified = await historyMemory('trusted', four);
+		expect(verified.found).toEqual({ commit: four, record: child.id });
+		console.log(`History RSS: trusted ${verified.rss}; one full read ${baseline.rss}`);
+		expect(verified.rss).toBeLessThan(baseline.rss * 1.5);
+	} finally {
+		await Promise.all(extra.map((directory) => rm(directory, { recursive: true, force: true })));
+	}
+	const parentFile = join(parent.directory, 'record.json');
+	const original = await readFile(parentFile, 'utf8');
+	try {
+		const damaged = { ...JSON.parse(original), status: 'failed' };
+		await writeFile(parentFile, JSON.stringify(damaged));
+		expect(await new TrustedBaseService(root).nearest(four)).toBeNull();
+	} finally {
+		await writeFile(parentFile, original);
+	}
+}, 120_000);
+
+async function largeHistory(store: VerificationStoreRepository): Promise<string[]> {
+	const sample: Partial<VerificationRecord> = verificationSample();
+	delete sample.id;
+	const draft = sample as Omit<VerificationRecord, 'id'>;
+	const components = Array.from({ length: 6500 }, (_, index) => ({
+		...draft.components[0],
+		unit: `function.history-${index}`,
+		files: [{ path: `src/history/${index}.ts`, hash: 'a'.repeat(40) }]
+	}));
+	const directories: string[] = [];
+	for (let index = 1; index <= 46; index++) {
+		const commit = index.toString(16).padStart(40, '0');
+		const startedAt = new Date(Date.UTC(2026, 8, 1, 0, 0, index)).toISOString();
+		const record = sealRecord({
+			...draft,
+			source: { commit, tree: 'd'.repeat(40), base: null },
+			startedAt,
+			status: 'failed',
+			failures: ['a check failed'],
+			components,
+			measurements: []
+		});
+		const directory = store.directoryFor(commit, startedAt);
+		await store.save(record, directory);
+		directories.push(join(root, '.cache/harness/verifications', commit));
+	}
+	return directories;
+}
+
+async function historyMemory(kind: 'all' | 'trusted', commit: string) {
+	const source =
+		kind === 'all'
+			? resolve('src/repositories/verification-evidence/VerificationStoreRepository.ts')
+			: resolve('src/workflows/verification-evidence/run-verify/TrustedBaseService.ts');
+	const operation =
+		kind === 'all'
+			? 'new api.VerificationStoreRepository(root).all()'
+			: 'await new api.TrustedBaseService(root).nearestRecord(commit)';
+	const program = `const api = await import(${JSON.stringify(source)});
+const [root, commit] = process.argv.slice(1);
+const found = ${operation};
+console.log(JSON.stringify({ found: Array.isArray(found) ? found.length : found, rss: process.memoryUsage().rss }));`;
+	const result = await measureProcess(
+		{
+			units:
+				kind === 'all'
+					? ['repository.verification-store']
+					: ['repository.verification-store', 'service.trusted-base', 'service.verification-check'],
+			workload: kind === 'all' ? 'read-large-history' : 'trusted-large-history',
+			target: 'module',
+			command: ['bun', '--eval', program, root, commit],
+			cwd: process.cwd()
+		},
+		runCommand
+	);
+	return JSON.parse(result.stdout) as { found: unknown; rss: number };
+}

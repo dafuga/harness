@@ -4760,6 +4760,13 @@
 	],
 	"followUps": [
 		{
+			"unit": "function.required-reasons",
+			"name": "presentUnits",
+			"commit": "65ff00fe35eb6e3887461ff2bc244f1b01e67008",
+			"reason": "Filter both full and compact manifests while retaining the original owner.",
+			"definition": "23fc40961adbceedacafd1e01d4d4434668c2bfef654e1b2ea3aab67e66f7efd"
+		},
+		{
 			"unit": "desktop.function.workspace-search",
 			"name": "workspaceSearch",
 			"commit": "1234e2c07",

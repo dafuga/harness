@@ -16,7 +16,11 @@
 		"symbols": [
 			"presentUnits",
 			"requiredReasons",
+			"reasonDeclarationHash",
 			"ReasonSide",
+			"ReasonFile",
+			"CompactReasonManifest",
+			"ReasonManifest",
 			"ReasonSide",
 			"Symbol",
 			"presentUnits",
@@ -43,18 +47,28 @@
 				"name": "requiredReasons.head",
 				"type": "ReasonSide",
 				"description": "Later revision’s source blocks and manifests."
+			},
+			{
+				"name": "reasonDeclarationHash.unit",
+				"type": "ReasonManifest",
+				"description": "Full or compact manifest whose declared facts need a fingerprint."
 			}
 		],
 		"outputs": [
 			{
 				"name": "presentUnits",
-				"type": "Map<string, ComponentManifest>",
+				"type": "Map<string, ReasonManifest>",
 				"description": "Map of active manifests with at least one owned path present in the source index."
 			},
 			{
 				"name": "requiredReasons",
 				"type": "RequiredReason[]",
 				"description": "Sorted required reasons with unit/symbol, change kind and before/after fingerprints. Identical named blocks can move files unchanged; whole-unit changes use *, and declared-manifest changes use <manifest> only when no symbol changes already require reasons."
+			},
+			{
+				"name": "reasonDeclarationHash",
+				"type": "string",
+				"description": "Sixteen-character SHA-256 prefix for declared fields, or the stored fingerprint of a compact manifest."
 			}
 		],
 		"errors": []
@@ -71,7 +85,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.source-types",
+			"unit": "function.source-blocks",
 			"via": "import",
 			"origin": "derived"
 		},

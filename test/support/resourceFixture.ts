@@ -1,5 +1,8 @@
 import { evidenceRequested, recordCapture } from '../../src/utils/record-capture/recordCapture';
 import { randomUUID } from 'node:crypto';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import {
 	mib,
 	resourceConfigSchema,
@@ -7,6 +10,8 @@ import {
 	type ResourceJob,
 	type ResourceSnapshot
 } from '../../src/core/execution-runtimes/resourceTypes';
+import { ResourceQueueService } from '../../src/services/execution-runtimes/ResourceQueueService';
+import { saveResourceConfig } from '../../src/utils/execution-runtimes/resourceConfig';
 export const config = resourceConfigSchema.parse({ pollMs: 250 });
 export function snapshot(changes: Partial<ResourceSnapshot> = {}): ResourceSnapshot {
 	return {
@@ -34,6 +39,28 @@ export function job(changes: Partial<ResourceJob> = {}): ResourceJob {
 		heartbeatAt: Date.now(),
 		notice: null,
 		...changes
+	};
+}
+
+export function resourceQueueFixture(cleanup: Array<() => void>) {
+	const home = mkdtempSync(join(tmpdir(), 'resource-service-'));
+	saveResourceConfig(config, home);
+	let pressure = false;
+	const service = new ResourceQueueService({
+		home,
+		env: {},
+		monitor: { sample: async () => snapshot({ memoryPressure: pressure ? 'critical' : 'normal' }) }
+	});
+	cleanup.push(() => {
+		service.close();
+		rmSync(home, { recursive: true, force: true });
+	});
+	return {
+		home,
+		service,
+		pressure: (value: boolean) => {
+			pressure = value;
+		}
 	};
 }
 

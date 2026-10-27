@@ -1,0 +1,60 @@
+{
+	"name": "native-ci-admission",
+	"goal": "Expose admission timeouts so native CI can identify and resolve its blocking condition",
+	"createdAt": "2026-10-26T20:06:50.702Z",
+	"updatedAt": "2026-10-26T20:15:53.881Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-26T20:06:56.649Z",
+			"evidence": "Hosted native jobs time out without a waiting reason. A critical-pressure fixture reproduced a generic timeout while onWaiting reported the cause; hosted cause remains unknown."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-26T20:06:58.973Z",
+			"evidence": "test/services/resource-queue.test.ts covers pressure and cancellation but never expires that waiter or asserts its error. Extend its existing lifecycle to verify timeout detail and lease cleanup."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-26T20:08:51.013Z",
+			"evidence": "Committed 37cfeb9c; the unchanged standard resource queue test failed twice because timeout messages omitted the reservation and pressure reasons. Harness red record 2dfad99b retained the run."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-26T20:15:15.555Z",
+			"evidence": "Timeouts retain the last admission reason, host capacity, requested resources and root reservations; resource policy is unchanged."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-26T20:15:53.881Z",
+			"evidence": "At d8bdf3b4, unchanged queue scenarios passed with paired red record b473674d and green record b09fb9c3 in the same environment."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

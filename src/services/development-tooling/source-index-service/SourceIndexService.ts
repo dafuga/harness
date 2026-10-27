@@ -46,22 +46,25 @@ export class SourceIndexService {
 	async index(tree: SourceTree, config: UnitsConfig): Promise<SourceIndex> {
 		const entries = await tree.list();
 		const paths = new Set(entries.map((entry) => entry.path));
+		const read = boundedRead(tree);
 		const files = await Promise.all(
-			entries.map((entry) => this.file(tree, entry, { config, paths }))
+			entries.map((entry) => this.file(entry, { config, paths }, read))
 		);
 		const kept = files.filter((file): file is SourceFile => file !== undefined);
+		const current = new Set(kept.map((file) => cacheKey(file.hash, file.language, file.path)));
+		for (const key of this.parsed.keys()) if (!current.has(key)) this.parsed.delete(key);
 		return { revision: tree.revision, files: new Map(kept.map((file) => [file.path, file])) };
 	}
 
 	private async file(
-		tree: SourceTree,
 		entry: TreeEntry,
-		context: { config: UnitsConfig; paths: Set<string> }
+		context: { config: UnitsConfig; paths: Set<string> },
+		read: SourceTree['read']
 	): Promise<SourceFile | undefined> {
 		const placed = classifyPath(entry.path, context.config);
 		if (placed.classification === 'ignored') return undefined;
 		const language = languages[extname(entry.path).toLowerCase()] ?? 'other';
-		const parsed = await this.parse(tree, entry, language);
+		const parsed = await this.parse(read, entry, language);
 		return {
 			path: entry.path,
 			hash: entry.hash,
@@ -85,19 +88,40 @@ export class SourceIndexService {
 	}
 
 	private async parse(
-		tree: SourceTree,
+		read: SourceTree['read'],
 		entry: TreeEntry,
 		language: SourceLanguage
 	): Promise<Parsed> {
-		const key = `${entry.hash}:${language}:${componentName(entry.path)}`;
+		const key = cacheKey(entry.hash, language, entry.path);
 		const cached = this.parsed.get(key);
 		if (cached) return cached;
 		const readable = language !== 'other' || textExtensions.has(extname(entry.path).toLowerCase());
-		const parsed = readable ? parseText(await tree.read(entry.path), language, entry.path) : empty;
+		const parsed = readable ? parseText(await read(entry.path), language, entry.path) : empty;
 		this.parsed.set(key, parsed);
 		if (this.parsed.size > 16_384) this.parsed.delete(this.parsed.keys().next().value!);
 		return parsed;
 	}
+}
+
+/** Bound in-flight source reads while keeping Git batch reads and source-order results. */
+function boundedRead(tree: SourceTree): SourceTree['read'] {
+	let active = 0;
+	const waiting: Array<() => void> = [];
+	return async (path) => {
+		if (active >= 256) await new Promise<void>((resolve) => waiting.push(resolve));
+		else active++;
+		try {
+			return await tree.read(path);
+		} finally {
+			const next = waiting.shift();
+			if (next) next();
+			else active--;
+		}
+	};
+}
+
+function cacheKey(hash: string, language: SourceLanguage, path: string): string {
+	return `${hash}:${language}:${componentName(path)}`;
 }
 
 const empty: Parsed = {

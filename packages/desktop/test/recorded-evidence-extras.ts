@@ -29,7 +29,15 @@ function patched(source: string): string {
  */
 export async function limitRecords(repo: VerifyRepo): Promise<{ exact: string; over: string }> {
 	const exact = await repo.change('scripts/fixture.mjs', patched);
-	await repo.verify([], { FIXTURE_OUTPUT_BYTES: String(limit), FIXTURE_MEDIA: 'html' });
+	const verified = await repo.verify([], {
+		FIXTURE_OUTPUT_BYTES: String(limit),
+		FIXTURE_MEDIA: 'html'
+	});
+	const path = 'src/services/TitleService.ts';
+	const expected = await repo.git(['rev-parse', `HEAD:${path}`]);
+	const title = verified.record.components.find((unit) => unit.unit === 'service.title');
+	if (title?.files.find((file) => file.path === path)?.hash !== expected)
+		throw new Error('benchmarked unit service.title must retain its committed source hash');
 	await attach(repo);
 	publishFixture(repo.root, exact);
 	const over = await repo.change('src/utils/clock.ts', (source) =>

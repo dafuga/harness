@@ -50,7 +50,7 @@ export class RecordAssemblyService {
 			status: outcome(failures),
 			components: recordComponents(
 				context.impact,
-				context,
+				recordSides(context),
 				measurements.map((item) => item.unit)
 			),
 			measurements,
@@ -142,6 +142,15 @@ export class RecordAssemblyService {
 		});
 		return { report, ledger: ledgerGate(ledger, context.store) };
 	}
+}
+
+function recordSides(context: AssemblyContext) {
+	const { base, head, sourceHashes } = context;
+	if (!sourceHashes) return { base, head };
+	return {
+		base: { manifests: base.manifests, index: { files: sourceHashes.base } },
+		head: { manifests: head.manifests, index: { files: sourceHashes.head } }
+	};
 }
 
 /** The snapshot must stay the exact commit: nothing changed, nothing removed, nothing added. */
