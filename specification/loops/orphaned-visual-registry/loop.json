@@ -2,7 +2,7 @@
 	"name": "orphaned-visual-registry",
 	"goal": "Visual generation refuses orphaned existing registry entries before creating source",
 	"createdAt": "2026-10-27T10:08:47.338Z",
-	"updatedAt": "2026-10-27T10:08:48.486Z",
+	"updatedAt": "2026-10-27T10:09:54.331Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:09:54.331Z",
+			"evidence": "At c2d4586cbc the existing case failed because orphaned component metadata did not block generation. Harness red record ef9cd6bd53d656f705f74f615abc156233662b7665c98a93a4efbec42551b051."
 		},
 		{
 			"id": "implement",
