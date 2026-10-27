@@ -67,7 +67,7 @@ test('analytics write failures do not change the dry-run result', async () => {
 test('module task CLI reviews preserve one bounce and reconcile token costs idempotently', async () => {
 	const f = await moduleTaskFixture(),
 		previous = process.env.HARNESS_ANALYTICS_HOME;
-	process.env.HARNESS_ANALYTICS_HOME = join(f.root, '.cache', 'analytics');
+	process.env.HARNESS_ANALYTICS_HOME = join(f.root, 'analytics');
 	try {
 		await reviewedTask(f);
 		const query = ['analytics', 'tasks', '--project', f.root, '--json'];
@@ -112,7 +112,7 @@ async function reviewedTask(f: Awaited<ReturnType<typeof moduleTaskFixture>>) {
 		'--input',
 		await f.input({ model: 'claude-haiku-5-5', intelligence: 'medium' })
 	]);
-	await f.cli(['worker', '--worker', 'owner', '--once']);
+	await f.syntheticWorker(['worker', '--worker', 'owner', '--once']);
 	let task = JSON.parse((await f.cli(['show', 'orders-validation'])).stdout).task;
 	const reject = [
 		'review',
@@ -126,7 +126,7 @@ async function reviewedTask(f: Awaited<ReturnType<typeof moduleTaskFixture>>) {
 	];
 	await f.cli(reject);
 	await f.cli(reject, false);
-	await f.cli(['worker', '--worker', 'owner', '--once']);
+	await f.syntheticWorker(['worker', '--worker', 'owner', '--once']);
 	task = JSON.parse((await f.cli(['show', 'orders-validation'])).stdout).task;
 	await f.cli(['review', task.id, '--attempt', task.claim.token, '--verdict', 'accepted']);
 }
