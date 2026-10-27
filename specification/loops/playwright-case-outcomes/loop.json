@@ -2,11 +2,9 @@
 	"name": "playwright-case-outcomes",
 	"goal": "Record Playwright outcomes under their declared test case titles.",
 	"createdAt": "2026-10-27T03:22:15.441Z",
-	"updatedAt": "2026-10-27T03:22:16.591Z",
+	"updatedAt": "2026-10-27T03:27:07.031Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,37 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T03:22:54.588Z",
+			"evidence": "Capture confirmed the unchanged adapter emitted sample.test.ts > orders > ready in place of the declared orders > ready title."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T03:23:46.654Z",
+			"evidence": "Discard the Playwright root, project and file suite titles while keeping the declared nested test title."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T03:24:09.888Z",
+			"evidence": "The unchanged method case passed at ec3631637a, paired with the failing measured test at 3f7cbe8f0a in the same environment."
+		},
+		{
+			"id": "guard",
+			"title": "Reintroduce and restore the title defect using the existing cases.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:24:57.171Z",
+			"evidence": "Mutant 1418ba78a1 failed capture 053abf92edd7; restored 2435e9ea8b passed with the same tree as ec3631637a."
+		},
+		{
+			"id": "source-measurements",
+			"title": "Measure the changed adapter and its normal recording workload.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:27:07.031Z",
+			"evidence": "At 5d7e34832d, source bytes/lines/complexity/dependencies are 3311/99/31/3; module has no separate artifact. Capture a47d30d9c599 retains the 0.199 ms recording workload and 91406336 bytes whole-worker RSS."
 		},
 		{
 			"id": "verify",
