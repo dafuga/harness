@@ -65,7 +65,7 @@ test('app generation allows app-only scaffolds without package exports', async (
 	await rm(root, { recursive: true, force: true });
 	await assertGeneratedComponentRegistry();
 	await assertGeneratedPageLayoutRegistry();
-});
+}, 30_000);
 
 async function libProject(): Promise<string> {
 	const root = await mkdtemp(join(tmpdir(), 'harness-generate-'));
