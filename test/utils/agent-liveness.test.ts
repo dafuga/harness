@@ -67,16 +67,21 @@ function checkBoundaries(agent: AgentFacts, now: number, process: ProcessFacts, 
 			processStartedAt: process.startedAt
 		};
 		expect(agentLiveness(idle, now, () => process).state).toBe('stale');
+		const singular = { ...agent, heartbeatAt: ago(now, 2), ttlSeconds: 1, pid: null };
+		expect(agentLiveness(singular, now, () => process)).toEqual({
+			state: 'stale',
+			detail: `No heartbeat since ${singular.heartbeatAt}; it allowed 1 second between heartbeats`
+		});
 	}
-	if (state === 'completed') {
+	if (state === 'completed' || state === 'failed') {
 		expect(agentLiveness({ ...agent, heartbeatAt: ago(now, 1) }, now, () => process).state).toBe(
-			'completed'
+			state
 		);
 		expect(
 			agentLiveness({ ...agent, pid: 4242 }, now, () => {
 				throw new Error('Finished agents must not inspect processes');
 			}).state
-		).toBe('completed');
+		).toBe(state);
 	}
 }
 
@@ -99,6 +104,9 @@ async function checked(
 				}))
 			).toThrow(TypeError);
 		expect(() => agentLiveness(agent, now, undefined as unknown as () => ProcessFacts)).toThrow(
+			TypeError
+		);
+		expect(() => agentLiveness(agent, now, () => null as unknown as ProcessFacts)).toThrow(
 			TypeError
 		);
 		return invoke();

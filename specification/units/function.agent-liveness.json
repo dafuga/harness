@@ -63,6 +63,11 @@
 				"name": "Invalid process lookup",
 				"type": "TypeError",
 				"description": "A non-callable process lookup fails when an unfinished agent has a process ID."
+			},
+			{
+				"name": "Invalid process result",
+				"type": "TypeError",
+				"description": "A null process lookup result cannot supply the required process facts."
 			}
 		]
 	},
@@ -370,7 +375,12 @@
 					"title": "agentLiveness: Process lookup error"
 				},
 				"props": ["agent", "now", "processOf"],
-				"errors": ["Process lookup error", "Invalid agent", "Invalid process lookup"]
+				"errors": [
+					"Process lookup error",
+					"Invalid agent",
+					"Invalid process lookup",
+					"Invalid process result"
+				]
 			}
 		]
 	},
