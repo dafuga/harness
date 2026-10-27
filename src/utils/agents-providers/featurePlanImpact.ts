@@ -35,7 +35,7 @@ export function registerFeaturePlanImpact(
 	plan
 		.command('impact')
 		.description('Discover affected pages from committed relationships.')
-		.requiredOption('--input <file>')
+		.requiredOption('--input <file>', 'JSON proposal containing sourceCommit and changes.')
 		.option('--json')
 		.action(async (options: { input: string; json?: boolean }) => {
 			const result = await impact(await readInput(options.input));
