@@ -35,6 +35,44 @@ export async function assertBoundedCommittedReads(
 	expect(observed.values.map((value) => value.length)).toEqual([...sizes.values()]);
 	expect(observed.values.at(-2)?.[0]).toBe('A');
 	expect(observed.values.at(-1)?.[0]).toBe('B');
+	await assertMetadataFailures(root, git);
+}
+
+async function assertMetadataFailures(root: string, git: GitAdapter): Promise<void> {
+	for (const mode of ['malformed', 'failed'] as const) {
+		const files = ['first', 'second'].map((name) => `metadata-${mode}-${name}.txt`);
+		const values = files.map((file) => `${root}: ${file}`);
+		for (let index = 0; index < files.length; index++)
+			await writeFile(join(root, files[index]), values[index]);
+		await git.run(['add', '.']);
+		await git.run(['commit', '-m', `feat: add ${mode} metadata fixture`]);
+		const tree = await CommitTreeAdapter.open(root, 'HEAD');
+		const original = GitAdapter.prototype.exec;
+		let injected = false;
+		const observer = vi.spyOn(GitAdapter.prototype, 'exec').mockImplementation(async function (
+			this: GitAdapter,
+			args,
+			options
+		) {
+			if (!injected && args[0] === 'cat-file' && args[1]?.startsWith('--batch-check')) {
+				injected = true;
+				return mode === 'malformed'
+					? { code: 0, stdout: Buffer.from('invalid metadata\n'), stderr: '' }
+					: { code: 1, stdout: Buffer.alloc(0), stderr: 'synthetic metadata failure' };
+			}
+			return original.call(this, args, options);
+		});
+		try {
+			const failed = await Promise.allSettled(files.map((file) => tree.read(file)));
+			expect(
+				failed.map((item) => item.status),
+				`${mode} metadata must reject the batch`
+			).toEqual(['rejected', 'rejected']);
+		} finally {
+			observer.mockRestore();
+		}
+		expect(await Promise.all(files.map((file) => tree.read(file)))).toEqual(values);
+	}
 }
 
 async function writeBatchFixture(root: string, git: GitAdapter): Promise<Map<string, number>> {

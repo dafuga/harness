@@ -119,10 +119,12 @@ test('CommitTreeAdapter.read populated reuses immutable blobs across revisions w
 						() => void bytes.mockRejectedValueOnce(new Error('synthetic Git failure')),
 						(response) => void bytes.mockResolvedValueOnce(response)
 					);
-					await assertBoundedCommittedReads(root, git, () =>
-						bytes.mock.calls
-							.filter(([args]) => args[0] === 'cat-file' && args[1] === '--batch')
-							.map(([, options]) => String(options?.input ?? ''))
+					await measureWorkload('adapter.commit-tree', 'bounded-committed-reads', () =>
+						assertBoundedCommittedReads(root, git, () =>
+							bytes.mock.calls
+								.filter(([args]) => args[0] === 'cat-file' && args[1] === '--batch')
+								.map(([, options]) => String(options?.input ?? ''))
+						)
 					);
 				}
 			},
