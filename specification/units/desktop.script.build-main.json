@@ -3,26 +3,44 @@
 	"id": "desktop.script.build-main",
 	"kind": "script",
 	"title": "build-main",
-	"responsibility": "Owns the build-main build or maintenance script.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Build and syntax-check desktop main and preload CommonJS artifacts.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/scripts/build-main.ts"],
 		"symbols": ["desktopNodeOptions"]
 	},
 	"contract": {
-		"origin": "derived",
-		"inputs": [],
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "working directory",
+				"type": "desktop project root",
+				"description": "Contains src/initializers/initializeDesktop.ts and initializePreload.ts; Bun and Node are available."
+			},
+			{
+				"name": "sandbox adapter source",
+				"type": "TypeScript source",
+				"description": "When present in a bundle, its exact module-relative sandbox runtime resolver is translated for the CommonJS artifact."
+			}
+		],
 		"outputs": [
 			{
 				"name": "desktopNodeOptions",
-				"type": "unknown"
+				"type": "Bun build options",
+				"description": "Node target, CommonJS format, external Electron, external source maps and plugins for JSONC resolution and sandbox runtime resolution. The sandbox plugin substitutes the emitted bundle filename for the source import.meta URL only in the matching adapter."
+			},
+			{
+				"name": "build script",
+				"type": "dist/main.cjs and dist/preload.cjs",
+				"description": "Builds both entrypoints and runs node --check on each. Source execution of the sandbox adapter is unchanged; bundled SDK resolution begins at the emitted bundle."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "build or syntax failure",
+				"type": "Error",
+				"description": "Build errors, an unexpected matching sandbox resolver or a failed Node syntax check reject; the script never disables sandbox policy or provider qualification."
 			}
 		]
 	},

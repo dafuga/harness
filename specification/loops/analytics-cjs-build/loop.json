@@ -2,7 +2,7 @@
 	"name": "analytics-cjs-build",
 	"goal": "Keep analytics persistence available to Bun while its desktop CommonJS bundle passes the existing Node syntax check.",
 	"createdAt": "2026-10-27T10:19:53.937Z",
-	"updatedAt": "2026-10-27T10:21:40.039Z",
+	"updatedAt": "2026-10-27T10:30:17.180Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:30:16.176Z",
+			"evidence": "Clean snapshot 27ff791f failed the unchanged game build case with Node 24 rejecting import.meta in main.cjs; red record 7771f3fa8a0c4628f5e54f48d5f2857dac5a605bd82bbf6fb9d19bfa4a56bb83."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:30:17.180Z",
+			"evidence": "Use an executable-based require base for Bun builtins and translate only the sandbox resolver in desktop CommonJS builds. Native source and packaged synthetic sandbox checks passed; real providers remain unqualified."
 		},
 		{
 			"id": "green",

@@ -3,8 +3,8 @@
 	"id": "repository.analytics",
 	"kind": "repository",
 	"title": "AnalyticsRepository",
-	"responsibility": "Owns the AnalyticsRepository persistence boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Persist analytics events in a private Bun SQLite database.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -23,55 +23,61 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AnalyticsRepository.constructor.home",
-				"type": "unknown"
+				"type": "string",
+				"description": "Optional database directory; defaults to HARNESS_ANALYTICS_HOME or the user's .codex/harness directory."
 			},
 			{
-				"name": "AnalyticsRepository.reconcileHistorical.root",
-				"type": "string"
+				"name": "record and recordImported.event",
+				"type": "AnalyticsEvent",
+				"description": "Event ID, timestamp and serialized data to persist."
 			},
 			{
-				"name": "AnalyticsRepository.reconcileHistorical.project",
-				"type": "string"
-			},
-			{
-				"name": "AnalyticsRepository.record.event",
-				"type": "AnalyticsEvent"
-			},
-			{
-				"name": "AnalyticsRepository.recordImported.event",
-				"type": "AnalyticsEvent"
+				"name": "reconcileHistorical.root and project",
+				"type": "string",
+				"description": "Source path and canonical project identity for removing stale historical rows."
 			}
 		],
 		"outputs": [
 			{
-				"name": "AnalyticsRepository.reconcileHistorical",
-				"type": "Promise<void>"
+				"name": "constructor",
+				"type": "AnalyticsRepository",
+				"description": "Creates a private directory and database, loads the Bun SQLite builtin lazily, sets busy timeout and WAL, and initializes schema version 1. Loading the module does not open a database; Node does not provide bun:sqlite."
 			},
 			{
-				"name": "AnalyticsRepository.record",
-				"type": "void"
+				"name": "record",
+				"type": "void",
+				"description": "Inserts an event if its ID is not already present."
 			},
 			{
-				"name": "AnalyticsRepository.recordImported",
-				"type": "void"
+				"name": "recordImported",
+				"type": "void",
+				"description": "Upserts imported event data and preserves a previously non-historical classification."
 			},
 			{
-				"name": "AnalyticsRepository.events",
-				"type": "AnalyticsEvent[]"
+				"name": "events",
+				"type": "AnalyticsEvent[]",
+				"description": "Returns stored JSON events ordered by timestamp and insertion order."
 			},
 			{
-				"name": "AnalyticsRepository.close",
-				"type": "void"
+				"name": "reconcileHistorical",
+				"type": "Promise<void>",
+				"description": "Removes historical rows for a resolved previous root when it differs from the canonical project."
+			},
+			{
+				"name": "close",
+				"type": "void",
+				"description": "Closes the database."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "SQLite or filesystem failure",
+				"type": "Error",
+				"description": "Propagates missing Bun SQLite, unsupported newer schema, filesystem and database failures; WAL setup is retried up to its existing limit."
 			}
 		]
 	},

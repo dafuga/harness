@@ -1,6 +1,7 @@
 import type { Database } from 'bun:sqlite';
 import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
+// bun:sqlite is a runtime builtin, so it does not depend on the caller's directory.
+const require = createRequire(process.execPath);
 import { mkdirSync, chmodSync } from 'node:fs';
 import { join } from 'node:path';
 import { realpath } from 'node:fs/promises';

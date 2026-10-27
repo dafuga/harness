@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readFile } from 'node:fs/promises';
 const jsoncParser: Bun.BunPlugin = {
 	name: 'bundle-jsonc-parser-module',
 	setup(build) {
@@ -8,11 +8,25 @@ const jsoncParser: Bun.BunPlugin = {
 		}));
 	}
 };
+const sandboxResolver: Bun.BunPlugin = {
+	name: 'bundle-sandbox-runtime-resolver',
+	setup(build) {
+		build.onLoad(
+			{ filter: /[\\/]src[\\/]adapters[\\/]agents-providers[\\/]ModuleTaskSandboxAdapter\.ts$/ },
+			async ({ path }) => {
+				const source = await readFile(path, 'utf8');
+				const parts = source.split('createRequire(import.meta.url)');
+				if (parts.length !== 2) throw new Error('Unexpected sandbox runtime resolver.');
+				return { contents: parts.join('createRequire(__filename)'), loader: 'ts' };
+			}
+		);
+	}
+};
 export const desktopNodeOptions = {
 	target: 'node' as const,
 	format: 'cjs' as const,
 	external: ['electron'],
-	plugins: [jsoncParser],
+	plugins: [jsoncParser, sandboxResolver],
 	outdir: 'dist',
 	sourcemap: 'external' as const
 };
