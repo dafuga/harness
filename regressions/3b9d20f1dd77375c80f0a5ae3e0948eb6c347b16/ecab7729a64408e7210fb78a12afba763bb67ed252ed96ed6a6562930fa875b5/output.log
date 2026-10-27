@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-J9iqvn
+
+ ✓ test/services/verification-evidence/screenshot-baseline.test.ts (6 tests) 7974ms
+   ✓ ScreenshotBaselineService.review from empty accepts a reviewed candidate  2087ms
+   ✓ ScreenshotBaselineService.review after review validates each new request  899ms
+   ✓ ScreenshotBaselineService.review rejects damaged source evidence  2039ms
+   ✓ ScreenshotBaselineService.load from reviewed returns the original bytes  2213ms
+   ✓ ScreenshotBaselineService.load rejects damaged original evidence  482ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  04:17:34
+   Duration  10.84s (transform 320ms, setup 89ms, collect 586ms, tests 7.97s, environment 0ms, prepare 22ms)
+
