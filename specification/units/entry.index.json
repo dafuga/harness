@@ -203,7 +203,8 @@
 			"FeatureWorkService",
 			"FeaturePlanPreparationService",
 			"featureSpecStructure",
-			"featurePlanImage"
+			"featurePlanImage",
+			"featurePlanImpact"
 		]
 	},
 	"contract": {
@@ -390,6 +391,11 @@
 		},
 		{
 			"unit": "function.agents-providers-feature-plan-image",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-feature-plan-impact",
 			"via": "reexport",
 			"origin": "derived"
 		},

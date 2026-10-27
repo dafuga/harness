@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-27T11:34:41.710Z","name":"feature-plan-impact-cli","goal":"Expose the committed affected pages and blockers for a proposed feature plan before image generation","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-10-27T11:34:42.448Z","loop":"feature-plan-impact-cli","step":"spec","evidence":"The existing coverage validator discovers direct, relationship and hierarchy page impacts, but task plan offers no pre-design command. Expose it without source scans, writes or provider calls."}

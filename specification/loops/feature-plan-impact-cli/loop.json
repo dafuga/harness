@@ -1,0 +1,41 @@
+{
+	"name": "feature-plan-impact-cli",
+	"goal": "Expose the committed affected pages and blockers for a proposed feature plan before image generation",
+	"createdAt": "2026-10-27T11:34:41.710Z",
+	"updatedAt": "2026-10-27T11:34:42.448Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T11:34:42.448Z",
+			"evidence": "The existing coverage validator discovers direct, relationship and hierarchy page impacts, but task plan offers no pre-design command. Expose it without source scans, writes or provider calls."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

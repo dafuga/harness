@@ -216,3 +216,4 @@ export { FeatureWorkService } from './services/agents-providers/FeatureWorkServi
 export { FeaturePlanPreparationService } from './services/agents-providers/FeaturePlanPreparationService';
 export { featureSpecStructure } from './helpers/development-tooling/featureSpecStructure';
 export { featurePlanImage } from './utils/agents-providers/featurePlanImage';
+export { featurePlanImpact } from './utils/agents-providers/featurePlanImpact';
