@@ -6,6 +6,10 @@ import { FeaturePlanService } from '../../services/agents-providers/FeaturePlanS
 import { ModuleTaskServerService } from '../../services/agents-providers/ModuleTaskServerService';
 import { FeaturePlanValidator } from '../../validators/agents-providers/FeaturePlanValidator';
 import { FeaturePlanReadinessAdapter } from '../../adapters/agents-providers/FeaturePlanReadinessAdapter';
+import {
+	featurePlanImage,
+	registerFeaturePlanImage
+} from '../../utils/agents-providers/featurePlanImage';
 import { startFeaturePlan } from './feature-plan-command/startFeaturePlan';
 
 function defaultDependencies() {
@@ -80,6 +84,10 @@ function designOptionLine(
 	return `    ${option.id}${flags.length ? ` (${flags.join(', ')})` : ''} ${option.version} ${option.path}`;
 }
 
+function printPlan(plan: FeaturePlan, json = false, output = console.log) {
+	output(json ? JSON.stringify(plan, null, 2) : renderPlan(plan));
+}
+
 export class FeaturePlanCommand {
 	constructor(
 		private readonly dependencies: {
@@ -89,6 +97,7 @@ export class FeaturePlanCommand {
 				Partial<Pick<ModuleTaskServerService, 'runApproved'>>;
 			output?: (text: string) => void;
 			readInput?: (file: string) => Promise<unknown>;
+			image?: typeof featurePlanImage;
 		} = defaultDependencies()
 	) {}
 
@@ -110,7 +119,7 @@ export class FeaturePlanCommand {
 				const draft = await this.dependencies.service.draft(
 					input as Parameters<FeaturePlanService['draft']>[0]
 				);
-				this.print(draft, options.json);
+				printPlan(draft, options.json, this.dependencies.output);
 			});
 		plan
 			.command('show <feature>')
@@ -119,9 +128,14 @@ export class FeaturePlanCommand {
 				const { plans } = await this.dependencies.repository.read(feature);
 				const latest = plans.at(-1);
 				if (!latest) throw new Error(`No feature plan found for ${feature}.`);
-				this.print(latest, options.json);
+				printPlan(latest, options.json, this.dependencies.output);
 			});
 		this.registerSelection(plan);
+		registerFeaturePlanImage(
+			plan,
+			this.dependencies.image ?? featurePlanImage,
+			this.dependencies.output ?? console.log
+		);
 		this.registerApproval(plan);
 		this.registerStart(plan);
 	}
@@ -139,8 +153,9 @@ export class FeaturePlanCommand {
 						expectedDigest: options.digest,
 						reviewer: options.reviewer
 					});
-					await this.submitApproved(feature, options.digest);
-					this.print(approved, options.json);
+					const server = this.dependencies.server ?? new ModuleTaskServerService(process.cwd());
+					await server.submitApproved({ feature, expectedDigest: options.digest });
+					printPlan(approved, options.json, this.dependencies.output);
 				}
 			);
 	}
@@ -166,11 +181,6 @@ export class FeaturePlanCommand {
 			);
 	}
 
-	private submitApproved(feature: string, expectedDigest: string) {
-		const server = this.dependencies.server ?? new ModuleTaskServerService(process.cwd());
-		return server.submitApproved({ feature, expectedDigest });
-	}
-
 	private registerSelection(plan: Command) {
 		plan
 			.command('select <feature>')
@@ -189,14 +199,8 @@ export class FeaturePlanCommand {
 						option: options.option,
 						expectedDigest: options.digest
 					});
-					this.print(selected, options.json);
+					printPlan(selected, options.json, this.dependencies.output);
 				}
 			);
-	}
-
-	private print(plan: FeaturePlan, json = false) {
-		(this.dependencies.output ?? console.log)(
-			json ? JSON.stringify(plan, null, 2) : renderPlan(plan)
-		);
 	}
 }

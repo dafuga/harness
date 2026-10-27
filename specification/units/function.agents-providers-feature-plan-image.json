@@ -3,30 +3,69 @@
 	"id": "function.agents-providers-feature-plan-image",
 	"kind": "function",
 	"title": "featurePlanImage",
-	"responsibility": "Owns the featurePlanImage shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Read a specific committed feature-plan option image for CLI review and register its command.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/agents-providers/featurePlanImage.ts"],
-		"symbols": ["featurePlanImage"]
+		"symbols": ["featurePlanImage", "registerFeaturePlanImage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "featurePlanImage.value",
-				"type": "string"
+				"name": "featurePlanImage.input",
+				"type": "{feature:string,page:string,option:string,digest:string,output:string}",
+				"description": "Selects the latest plan matching the reviewed digest, an exact page and option, and a new destination file."
+			},
+			{
+				"name": "featurePlanImage.dependencies",
+				"type": "optional {repository,readImage}",
+				"description": "Trusted plan reader and planning image reader; defaults use the current project and real planning API."
+			},
+			{
+				"name": "registerFeaturePlanImage",
+				"type": "(plan:Command,image:typeof featurePlanImage,output:(text:string)=>void)",
+				"description": "Registers the CLI action with an injected image operation and output callback."
 			}
 		],
 		"outputs": [
 			{
 				"name": "featurePlanImage",
-				"type": "string"
+				"type": "Promise<void>",
+				"description": "Reads the latest plan once; requires the supplied digest and page/option to match. Requests the option's exact unit, version, file, committed revision, hash and option from the planning reader, then atomically links its returned bytes to a new output file and removes its temporary directory. The real planning reader verifies image content and ownership. A later plan change during the read is not rechecked."
+			},
+			{
+				"name": "registerFeaturePlanImage",
+				"type": "void",
+				"description": "Registers image <feature> with required --page, --option, --digest and --output. Prints the saved path only after the image operation succeeds."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "invalid, stale or unavailable image",
+				"type": "Error",
+				"description": "Missing plan/page/option, stale digest, missing output, planning reader failure, existing destination or filesystem errors reject. An existing destination is never overwritten; temporary files are cleaned after a completed attempt."
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "planning.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/agents-providers/featurePlanImage.ts",

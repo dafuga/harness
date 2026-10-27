@@ -13,6 +13,7 @@ async function assertJsonCommands() {
 	expect(f.task.commands[0].commands.map((command) => command.name()).sort()).toEqual([
 		'approve',
 		'draft',
+		'image',
 		'select',
 		'show',
 		'start'
@@ -21,6 +22,13 @@ async function assertJsonCommands() {
 	expect(start?.options.map((option) => option.long)).toEqual(
 		expect.arrayContaining(['--worker', '--parallelism'])
 	);
+	const image = f.task.commands[0].commands.find((command) => command.name() === 'image');
+	expect(image?.options.map((option) => option.long)).toEqual([
+		'--page',
+		'--option',
+		'--digest',
+		'--output'
+	]);
 	await f.run(['draft', '--input', 'synthetic.json', '--json']);
 	expect(f.readInput).toHaveBeenCalledExactlyOnceWith('synthetic.json');
 	expect(f.service.draft).toHaveBeenCalledExactlyOnceWith({

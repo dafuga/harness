@@ -42,6 +42,11 @@
 				"name": "start",
 				"type": "<feature> --digest <sha> [--worker <id> [--parallelism <1..8>]] [--json]",
 				"description": "Without --worker, retry task submission. With --worker, run a single bounded batch scoped to the exact approved feature plan; parallelism defaults to one and requires a worker."
+			},
+			{
+				"name": "image",
+				"type": "<feature> --page <id> --option <id> --digest <sha> --output <file>",
+				"description": "Read the exact page option from the latest plan matching the reviewed digest and save its verified committed image to a new file."
 			}
 		],
 		"outputs": [
@@ -64,6 +69,11 @@
 				"name": "start",
 				"type": "{created:string[],reused:string[],commit:string|undefined} | {submission:object,results:unknown[]}",
 				"description": "Without --worker, idempotently submit an approved plan. With --worker, await and report the approval-scoped server batch, including actual worker outcomes. A returned failed worker outcome sets the CLI process exit code to 1 after the actual outcome is printed."
+			},
+			{
+				"name": "image",
+				"type": "Promise<void>",
+				"description": "Uses the revision- and option-bound planning image reader and prints the destination only after a successful write; never starts a provider."
 			}
 		],
 		"errors": [
@@ -81,6 +91,11 @@
 				"name": "invalid or unavailable worker dispatch",
 				"type": "Error",
 				"description": "Reject parallelism without a worker, non-integer or out-of-range parallelism, unavailable scoped dispatch, or server failures without printing a successful result."
+			},
+			{
+				"name": "invalid plan image",
+				"type": "Error",
+				"description": "Missing plan, stale digest, unknown page or option, invalid image, existing output or filesystem failures reject without a success message."
 			}
 		]
 	},
@@ -92,6 +107,11 @@
 		},
 		{
 			"unit": "command.agents-providers-feature-plan-command-start-feature-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-feature-plan-image",
 			"via": "import",
 			"origin": "derived"
 		},
