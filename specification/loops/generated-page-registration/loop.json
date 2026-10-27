@@ -2,11 +2,9 @@
 	"name": "generated-page-registration",
 	"goal": "Register the generated initial page screenshot cases and scenario without inventing reviewed evidence.",
 	"createdAt": "2026-10-27T03:05:27.950Z",
-	"updatedAt": "2026-10-27T03:05:29.060Z",
+	"updatedAt": "2026-10-27T03:10:22.667Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,37 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T03:06:53.090Z",
+			"evidence": "Test-only 7a0914c4d3 strengthened the existing app template case; Harness red records its missing page contract as an actual product failure."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T03:08:55.054Z",
+			"evidence": "Source-only 5bd1842794 registers the three existing page cases, their scenario and strict unit policy, and declares the build and cache paths without adding screenshot bytes."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T03:08:56.883Z",
+			"evidence": "Unchanged app template case passed Harness green 5bd0d4ff6384 at 5bd1842794 under the red command and environment."
+		},
+		{
+			"id": "guard",
+			"title": "Reject and restore missing generated page registration.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:10:22.113Z",
+			"evidence": "Original generator mutant f8a3cd089c failed capture 801f5f6929e8 on the missing contract; restored aade78d515 passed daf51a18ab74 with the same complete tree as 5bd1842794."
+		},
+		{
+			"id": "source-measurements",
+			"title": "Retain source and focused workload observations.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:10:22.667Z",
+			"evidence": "At 5bd1842794, project template bytes/lines/complexity/dependencies were 8203/223/10/11 and project tests 9003/217/12/5; both are modules without separate artifacts. Focused capture 4517c32403e1 retains timing and whole-worker RSS."
 		},
 		{
 			"id": "verify",
