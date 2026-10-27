@@ -1,0 +1,51 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-n4jUEe
+
+ ❯ test/project-template.test.ts (5 tests | 1 failed | 4 skipped) 37ms
+   ↓ generated element atoms preserve native compilation and emitted runtime source
+   × app projects include SvelteKit and specification files 32ms
+     → Generated visual builds need a stamp slot: expected '<!doctype html>\n<html lang="en">\n\t…' to contain 'harness-build:00000000000000000000000…'
+   ↓ library projects include Bun TypeScript test structure
+   ↓ generated app code and configuration obey their formatter settings
+   ↓ generated lib code and configuration obey their formatter settings
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/project-template.test.ts > app projects include SvelteKit and specification files
+AssertionError: Generated visual builds need a stamp slot: expected '<!doctype html>\n<html lang="en">\n\t…' to contain 'harness-build:00000000000000000000000…'
+
+- Expected
++ Received
+
+- harness-build:0000000000000000000000000000000000000000000000000000000000000000
++ <!doctype html>
++ <html lang="en">
++ 	<head>
++ 		<meta charset="utf-8" />
++ 		<meta name="viewport" content="width=device-width, initial-scale=1" />
++ 		%sveltekit.head%
++ 	</head>
++ 	<body data-sveltekit-preload-data="hover">
++ 		<div>%sveltekit.body%</div>
++ 	</body>
++ </html>
++
+
+ ❯ expectAppEnvironment test/project-template.test.ts:156:4
+    154|   fileContents(files, 'src/app.html'),
+    155|   'Generated visual builds need a stamp slot'
+    156|  ).toContain(`harness-build:${'0'.repeat(64)}`);
+       |    ^
+    157|  const config = fileContents(files, 'playwright.config.ts');
+    158|  expect(config).toContain("command: 'bun run preview -- --host 127.0.0…
+ ❯ test/project-template.test.ts:57:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  04:38:26
+   Duration  2.95s (transform 326ms, setup 90ms, collect 644ms, tests 37ms, environment 0ms, prepare 21ms)
+
