@@ -181,6 +181,26 @@ async function assertScopedDispatch() {
 	expect(f.output.mock.calls.map(([text]) => JSON.parse(text))).toEqual([result]);
 	expect(process.listeners('SIGINT')).toEqual(before.int);
 	expect(process.listeners('SIGTERM')).toEqual(before.term);
+	const single = commandFixture();
+	single.server.runApproved.mockResolvedValue(result);
+	await single.run([
+		'start',
+		'checkout',
+		'--digest',
+		f.plan.digest,
+		'--worker',
+		'worker-one',
+		'--json'
+	]);
+	expect(single.server.runApproved).toHaveBeenCalledExactlyOnceWith(
+		{ feature: 'checkout', expectedDigest: f.plan.digest },
+		{ worker: 'worker-one', parallelism: 1, signal: expect.any(AbortSignal) }
+	);
+	expect(single.server.submitApproved).not.toHaveBeenCalled();
+	await assertInvalidDispatch(f.plan.digest);
+}
+
+async function assertInvalidDispatch(digest: string) {
 	for (const args of [
 		['--parallelism', '2'],
 		['--worker', 'worker-one', '--parallelism', '0'],
@@ -189,9 +209,7 @@ async function assertScopedDispatch() {
 		['--worker', 'worker-one', '--parallelism', 'invalid']
 	]) {
 		const invalid = commandFixture();
-		await expect(
-			invalid.run(['start', 'checkout', '--digest', f.plan.digest, ...args])
-		).rejects.toThrow();
+		await expect(invalid.run(['start', 'checkout', '--digest', digest, ...args])).rejects.toThrow();
 		expect(invalid.server.runApproved).not.toHaveBeenCalled();
 		expect(invalid.server.submitApproved).not.toHaveBeenCalled();
 		expect(invalid.output).not.toHaveBeenCalled();
