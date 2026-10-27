@@ -6,6 +6,7 @@ import {
 	slugifySource,
 	titleServiceSource,
 	unitProject,
+	unitLifecycleScenario,
 	sharedDateHelperProject,
 	utcDateExamples
 } from './support/unitProject';
@@ -139,7 +140,31 @@ test('check rejects invalid manifests and schemas are exposed', async () => {
 	expect(unknown.stderr).toContain('Unknown schema "Nope"');
 	const info = await project.harness(['info', 'unit']);
 	expect(info.stdout).toContain('harness generate unit');
-	await rm(join(project.root, '..'), { recursive: true, force: true });
+	try {
+		await project.write(path, JSON.stringify(manifest));
+		await project.write(
+			'test/slugify.test.ts',
+			"import { expect, test } from 'vitest'; import { slugify } from '../src/utils/slugify'; test('slugify: lowercases a title', () => expect(slugify('A B')).toBe('a-b'));\n"
+		);
+		await project.write(
+			'specification/scenarios/unit-lifecycle.json',
+			JSON.stringify(unitLifecycleScenario)
+		);
+		expect((await project.harness(['scenarios', 'check'], false)).exitCode).toBe(0);
+		await project.write(
+			path,
+			JSON.stringify({
+				...manifest,
+				status: 'retired',
+				retired: { reason: 'Fixture retired', at: '2026-01-01T00:00:00.000Z' }
+			})
+		);
+		const retired = await project.harness(['scenarios', 'check'], false);
+		expect(retired.stderr).toContain('unit-lifecycle covers retired unit function.slugify');
+		expect(retired.exitCode).toBe(1);
+	} finally {
+		await rm(join(project.root, '..'), { recursive: true, force: true });
+	}
 }, 60_000);
 
 test('index records reviewed shared helper contracts for clients without source rescans', async () => {

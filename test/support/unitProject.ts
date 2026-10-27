@@ -65,6 +65,18 @@ export const titleServiceSource = [
 	''
 ].join('\n');
 
+export const unitLifecycleScenario = {
+	schemaVersion: 1,
+	id: 'unit-lifecycle',
+	title: 'Unit lifecycle',
+	kind: 'headless',
+	units: ['function.slugify'],
+	states: [{ id: 'ready', title: 'Ready', coverage: 'required' }],
+	viewports: [],
+	tests: [{ id: 'unit', kind: 'unit', runner: 'vitest', target: 'test/slugify.test.ts' }],
+	evidence: [{ id: 'output', kind: 'output', states: ['ready'], viewports: [], required: true }]
+};
+
 export const utcDateExamples = [
 	{
 		name: 'UTC date',
