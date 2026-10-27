@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+  ✘  1 tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › desktop.component.project-agent at desktop (500ms)
+
+
+  1) tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › desktop.component.project-agent at desktop 
+
+    Error: desktop.component.project-agent excludes the preview title and empty canvas
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 328
+    Received:    392
+
+       at support/component-previews/previewCaptureAssertions.ts:50
+
+      48 | 			captured[dimension as keyof typeof captured],
+      49 | 			`${id} excludes the preview title and empty canvas`
+    > 50 | 		).toBeLessThanOrEqual(Math.ceil(actual) + 18);
+         | 		  ^
+      51 | 	}
+      52 | }
+      53 |
+        at assertComponentCapture (/private/tmp/harness-snapshot-vHHi6t/packages/reports/tests/e2e/support/component-previews/previewCaptureAssertions.ts:50:5)
+        at /private/tmp/harness-snapshot-vHHi6t/packages/reports/tests/e2e/explorer-shell-component-catalog.spec.ts:99:4
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/explorer-shell/explorer-shell-component-c-56772-nt-project-agent-at-desktop/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-56772-nt-project-agent-at-desktop/error-context.md
+
+    Error Context: test-results/explorer-shell/explorer-shell-component-c-56772-nt-project-agent-at-desktop/error-context.md
+
+  1 failed
+    tests/e2e/explorer-shell-component-catalog.spec.ts:91:3 › desktop.component.project-agent at desktop 
