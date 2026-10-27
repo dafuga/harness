@@ -9,6 +9,8 @@
 		"desktop.component.agent-model-picker",
 		"desktop.component.agent-settings",
 		"desktop.component.agents-providers-chat-agents",
+		"desktop.component.agents-providers-project-work",
+		"desktop.component.agents-providers-project-work-feature",
 		"desktop.component.annotated-image",
 		"desktop.component.approval-button",
 		"desktop.component.catalog-view",
@@ -423,6 +425,18 @@
 			"title": "Agents panel",
 			"coverage": "required",
 			"units": ["desktop.component.agents-providers-chat-agents"]
+		},
+		{
+			"id": "desktop-component-agents-providers-project-work",
+			"title": "Project work",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-project-work"]
+		},
+		{
+			"id": "desktop-component-agents-providers-project-work-feature",
+			"title": "Project work feature",
+			"coverage": "required",
+			"units": ["desktop.component.agents-providers-project-work-feature"]
 		},
 		{
 			"id": "desktop-component-annotated-image",
@@ -2778,6 +2792,8 @@
 				"desktop-component-agent-model-picker",
 				"desktop-component-agent-settings",
 				"desktop-component-agents-providers-chat-agents",
+				"desktop-component-agents-providers-project-work",
+				"desktop-component-agents-providers-project-work-feature",
 				"desktop-component-annotated-image",
 				"desktop-component-approval-button",
 				"desktop-component-catalog-view",

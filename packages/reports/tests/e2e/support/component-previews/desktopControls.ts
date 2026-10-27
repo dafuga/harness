@@ -4,6 +4,7 @@ import { children, done, noop, text, image } from './shared';
 import { routeIds } from './routeUnits';
 import { live } from './activity';
 import { ids } from './explorerData';
+import { workFeature, workSnapshot } from './workPreview';
 export const desktopControls: Record<string, DesktopCase> = {
 	'desktop.component.agent-controls': () => ({
 		providers,
@@ -33,6 +34,15 @@ export const desktopControls: Record<string, DesktopCase> = {
 		});
 		return { workspace: d.workspace };
 	},
+	'desktop.component.agents-providers-project-work': () => ({
+		snapshot: workSnapshot,
+		loading: false,
+		error: null
+	}),
+	'desktop.component.agents-providers-project-work-feature': () => ({
+		feature: workFeature,
+		initiallyOpen: true
+	}),
 	'desktop.component.annotated-image': (d) => ({
 		src: image,
 		title: 'Activity list',
