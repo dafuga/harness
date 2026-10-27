@@ -15,18 +15,19 @@ export async function prepareBrowserBaselineReport(project: string): Promise<voi
 	const path = join(project, 'playwright.config.ts');
 	const original = await readFile(path, 'utf8');
 	const marker = "testDir: 'tests/e2e',";
+	const reporter = "reporter: [['list'], ['./test/support/harnessCaseReporter.js']],";
 	const workers = Number(process.env.PLAYWRIGHT_WORKERS ?? 5);
 	if (!Number.isInteger(workers) || workers < 1)
 		throw new Error('Generated fixture browser workers must be a positive integer.');
 	expect(original).toContain(marker);
+	expect(original).toContain(reporter);
 	const next = original
 		.replaceAll('3322', String(await freePort()))
 		.replace('reuseExistingServer: true', 'reuseExistingServer: false')
+		.replace(marker, marker + `\nworkers: ${workers},`)
 		.replace(
-			marker,
-			marker +
-				`\nworkers: ${workers},` +
-				"\nreporter: [['list'], ['json', { outputFile: '.cache/harness/browser-results.json' }]],"
+			reporter,
+			"reporter: [['list'], ['./test/support/harnessCaseReporter.js'], ['json', { outputFile: '.cache/harness/browser-results.json' }]],"
 		);
 	await writeFile(path, await format(next, { ...(await resolveConfig(path)), filepath: path }));
 }

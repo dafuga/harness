@@ -64,6 +64,7 @@ const standardTestForms = [
 	'- Retain reviewed baselines through Harness evidence with source revision, media hash and review provenance. Never automatically accept a missing or changed image.',
 	'- Keep compiler, lint and audit checks before browser screenshot gates in generated apps. Verify this order in the owning generator cases and real CLI static-violation matrix.',
 	'- When generating or changing a test runner, verify its reporter records declared files, titles and revisions for passed, failed, skipped and retried cases in the existing generator cases. Also exercise the real runner on the designated test host.',
+	'- Keep one Playwright reporter declaration with both Harness and JSON reporters when a fixture needs both. Check the existing generator case and the actual JSON output on the designated test host.',
 	'- When generating visual scenarios, verify in the existing generator case that the declared build is stamped and the test owns its preview server. Check the generated build identity before browser capture.',
 	'- Matrices include boundaries, invalid inputs and prop combinations that change behavior. Static types and configuration use compiler, lint, build and audit checks.',
 	'- Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.',
@@ -115,6 +116,7 @@ function screenshotRules(): string {
 - Full-frame previews own their content boundaries. Apply content-container styling inside the frame, never around its navigation. When changing fixture context, extend the existing standard acceptance assertions for affected controls and inspect retained pixels before accepting the UI.
 - Resolve a scenario screenshot slot to its declared units. A slot name is not a page identity; never fill a missing preview with another page's image.
 - When capturing, projecting or retrieving screenshot evidence, exercise distinct declared case bindings sharing a state, viewport and evidence slot, retries with differing outcomes, plus wrong and duplicate bindings, in the existing standard cases. Preserve the unit, case, tested revision, attempt, original hash and outcome.
+- Scope screenshots to each scenario check when cases share a test file; exercise both checks in the existing validation case.
 - Rebuild or reopen the delivered history from its Git evidence, decode every required image, and inspect fresh screenshots before reporting completion. Both comparison sides need their own images; never substitute another unit, state or revision.
 - After squash landing, check the actual remote base commit's prepared history and decode its visible previews. Identical complete Git trees may retain focused captures with their original revision and status; a different tree requires new captures. Feature-branch screenshots alone do not prove merged delivery.
 - Complete and format tracked loop metadata before the final capture run. Keep that captured tree unchanged through landing; further tracked changes require fresh captures.
