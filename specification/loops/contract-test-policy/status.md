@@ -1528,6 +1528,10 @@ for the template. Neither module emits a separate artifact. The green record
 retains focused timing and whole-process RSS samples, not an approved budget.
 
 The first isolated mutation attempt timed out in resource admission; it did not
-run the test and is not defect evidence. A guarded retry remains queued. Reviewed
-browser baselines, case-bound captures, full verification, and final delivery
-remain open. The unrelated unfinished verification fixture diff is unchanged.
+run the test and is not defect evidence. A guarded retry at mutant `3e806d0848`
+failed the same case at the missing workspace contract in capture `5c16d785d5c9`.
+Restored commit `53e2b6bb62`, whose complete tree equals `23d96efe42`, passed
+the unchanged case in capture `f5a688e52a77` with the same environment profile.
+The source commits and both records are retained in Git evidence. Reviewed browser
+baselines, case-bound captures, full verification, and final delivery remain open.
+The unrelated unfinished verification fixture diff is unchanged.
