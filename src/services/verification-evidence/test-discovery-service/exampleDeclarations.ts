@@ -15,13 +15,18 @@ export async function exampleDeclarations(
 	const calls = registeredCalls(source, manifestImports(source, file), file);
 	const tests: DiscoveredTest[] = [];
 	for (const call of calls) {
-		const unresolved = unresolvedRegistration(call, file);
-		if (unresolved) {
-			tests.push(unresolved);
-			continue;
-		}
-		const unit = componentManifestSchema.parse(JSON.parse(await tree.read(call.path!)));
+		const unit = componentManifestSchema.parse(JSON.parse(await tree.read(call.path)));
 		if (call.method === 'registerCases') {
+			if (!call.file) {
+				tests.push({
+					file,
+					title: [...call.titles, '<computed registration file>'].join(' > '),
+					line: call.line,
+					dynamic: true,
+					disabled: call.disabled
+				});
+				continue;
+			}
 			tests.push(
 				...(unit.testing?.cases ?? [])
 					.filter((item) => item.test.file === call.file)
@@ -52,19 +57,6 @@ export async function exampleDeclarations(
 	}
 	return tests;
 }
-function unresolvedRegistration(call: ReturnType<typeof registeredCalls>[number], file: string) {
-	let part: string;
-	if (!call.path) part = 'manifest';
-	else if (call.method === 'registerCases' && !call.file) part = 'file';
-	else return undefined;
-	return {
-		file,
-		title: [...call.titles, `<computed registration ${part}>`].join(' > '),
-		line: call.line,
-		dynamic: true,
-		disabled: call.disabled
-	};
-}
 function manifestImports(source: ts.SourceFile, file: string): Map<string, string> {
 	const manifests = new Map<string, string>();
 	for (const node of source.statements) {
@@ -84,7 +76,7 @@ function manifestImports(source: ts.SourceFile, file: string): Map<string, strin
 }
 function registeredCalls(source: ts.SourceFile, manifests: Map<string, string>, file: string) {
 	const calls: Array<{
-		path?: string;
+		path: string;
 		line: number;
 		method: string;
 		file?: string;
@@ -103,18 +95,16 @@ function registeredCalls(source: ts.SourceFile, manifests: Map<string, string>, 
 			while (input && (ts.isAsExpression(input) || ts.isParenthesizedExpression(input)))
 				input = input.expression;
 			const path = input && ts.isIdentifier(input) ? manifests.get(input.text) : undefined;
-			if ([Boolean(path), importedRunner(source, node.arguments[0])].includes(true)) {
+			if (path) {
 				const scope = registrationScope(source, node);
 				calls.push({
 					path,
 					line: source.getLineAndCharacterOfPosition(node.getStart()).line + 1,
 					method: node.expression.name.text,
 					...scope,
-					dynamic: [
-						scope.dynamic,
-						!path,
-						!trustedReceiver(node.expression.expression, bindings)
-					].includes(true),
+					dynamic: [scope.dynamic, !trustedReceiver(node.expression.expression, bindings)].includes(
+						true
+					),
 					...registrationFile(node)
 				});
 			}
@@ -123,29 +113,6 @@ function registeredCalls(source: ts.SourceFile, manifests: Map<string, string>, 
 	};
 	visit(source);
 	return calls;
-}
-
-function importedRunner(source: ts.SourceFile, expression: ts.Expression | undefined): boolean {
-	while (
-		expression &&
-		(ts.isPropertyAccessExpression(expression) ||
-			ts.isElementAccessExpression(expression) ||
-			ts.isCallExpression(expression))
-	)
-		expression = expression.expression;
-	if (!expression || !ts.isIdentifier(expression)) return false;
-	const name = expression.text;
-	return source.statements.some((node) => {
-		if (!ts.isImportDeclaration(node) || node.importClause?.isTypeOnly) return false;
-		const bindings = node.importClause?.namedBindings;
-		if (!bindings || !ts.isNamedImports(bindings)) return false;
-		return bindings.elements.some(
-			(item) =>
-				!item.isTypeOnly &&
-				item.name.text === name &&
-				['test', 'it'].includes(item.propertyName?.text ?? item.name.text)
-		);
-	});
 }
 
 function registrarBindings(source: ts.SourceFile, file: string) {
@@ -160,6 +127,7 @@ function registrarBindings(source: ts.SourceFile, file: string) {
 	}
 	return { constructors, instances };
 }
+
 function registrarImports(source: ts.SourceFile, file: string): Set<string> {
 	const names = new Set<string>();
 	for (const node of source.statements) {
@@ -205,6 +173,7 @@ function trustedReceiver(
 		? bindings.instances.has(receiver.text)
 		: constructedRegistrar(receiver, bindings.constructors);
 }
+
 function constructedRegistrar(node: ts.Expression | undefined, constructors: Set<string>): boolean {
 	return Boolean(
 		node &&
