@@ -1,0 +1,38 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-6X2caP
+
+ ❯ test/adapters/verification-evidence/case-result.test.ts (4 tests | 1 failed | 3 skipped) 1692ms
+   × CaseResultAdapter.onFinished configured retains nested results, retries and failures 1690ms
+     → Scenario runner must record revision-bound case outcomes: expected false to be true // Object.is equality
+   ↓ CaseResultAdapter.onFinished disabled writes no evidence
+   ↓ CaseResultAdapter.onTestEnd configured retains browser status and suite identity
+   ↓ CaseResultAdapter.onTestEnd disabled writes no evidence
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/verification-evidence/case-result.test.ts > CaseResultAdapter.onFinished configured retains nested results, retries and failures
+AssertionError: Scenario runner must record revision-bound case outcomes: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ assertScenarioCaseResults test/adapters/verification-evidence/case-result.scenario.fixtures.ts:37:88
+     35|   expect(output.error, output.stdout + output.stderr).toBeNull();
+     36|   const path = join(directory, 'case-results.ndjson');
+     37|   expect(existsSync(path), 'Scenario runner must record revision-bound…
+       |                                                                                        ^
+     38|   const rows = readFileSync(path, 'utf8')
+     39|    .trim()
+ ❯ test/adapters/verification-evidence/case-result.test.ts:131:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  16:37:12
+   Duration  5.33s (transform 108ms, setup 145ms, collect 21ms, tests 1.69s, environment 0ms, prepare 34ms)
+
