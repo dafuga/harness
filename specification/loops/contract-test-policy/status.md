@@ -1485,9 +1485,14 @@ The green record also retained normal generator source observations at
 component and page contract generation averaged 0.626 ms and 0.340 ms across
 two calls each. Peak RSS observations were for whole processes, approximately
 184–187 MB, including shared runtime and earlier work. These focused samples
-do not approve a performance baseline. Source-size measurements, mutation
+do not approve a performance baseline. Complete source metrics, mutation
 proof, reviewed browser baselines, case-bound browser evidence and the full
 verification gate remain open.
+
+Reading the exact `e4efd0ea5f` Git tree gives 14,609 source bytes and 320 lines
+for the screenshot template unit, and 18,635 bytes and 456 lines for the
+generator workflow. These totals include each unit's owned companion files.
+Complexity and complete dependency counts have not yet been collected.
 
 Generating from a nested app workspace still misses the repository registry.
 Test-only commit `41822ff57b` extends the existing generator case to cover
