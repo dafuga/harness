@@ -66,3 +66,5 @@ Benchmark analytics retains implementation commit `9425223b3` for the additive q
 Resource admission retains implementation commit `43dacd370` for evaluator, verification and priority changes. Original relocation proofs and prior behavior reviews remain present.
 
 Scoped screenshot admission retains implementation commit `b0fc91c01` for selected-revision registry validation. The original service move and every earlier implementation review remain included.
+
+Regression profile review retains `1fee21a175` for transient tool-call identity while preserving the earlier proof pipeline reviews.
