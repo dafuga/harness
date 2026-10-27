@@ -2322,14 +2322,22 @@
 			"unit": "command.history",
 			"from": "src/commands/HistoryCommand.ts",
 			"to": "src/cli/program/HistoryCommand.ts",
-			"definition": "37aa8fae19bda219be9104ffce5c5cd9519584be6eabc469c729ba989faf107d",
+			"definition": "b3f0d012121e27d32bc35f0d14c6fd7dec006bb2b9566b59e2d704073e88b927",
 			"relocationDefinition": "4fd4f25488fa98509dc9442a3850a8916c9ffd1a7955e85b0010de13e11d9699",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "7d1da532fe753c6c346118fa55f817f7d6e33b90",
 				"path": "src/cli/program/HistoryCommand.ts",
-				"definition": "37aa8fae19bda219be9104ffce5c5cd9519584be6eabc469c729ba989faf107d",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "b3f0d012121e27d32bc35f0d14c6fd7dec006bb2b9566b59e2d704073e88b927",
+				"reason": "Register explicit screenshot review and retrieval while preserving Git evidence history."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/HistoryCommand.ts",
+					"definition": "37aa8fae19bda219be9104ffce5c5cd9519584be6eabc469c729ba989faf107d",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.import-reports",
