@@ -1,0 +1,38 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-cbYDAi
+
+ ❯ test/adapters/agents-providers/module-task-launch.test.ts (2 tests | 1 failed) 427ms
+   × Codex launch passes only synthetic rules grants with the assigned scope 426ms
+     → synthetic symlink provider should launch in the sandbox: expected 127 to be +0 // Object.is equality
+   ✓ ModuleTaskLaunchAdapter connects 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/adapters/agents-providers/module-task-launch.test.ts > Codex launch passes only synthetic rules grants with the assigned scope
+AssertionError: synthetic symlink provider should launch in the sandbox: expected 127 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 127[39m
+
+ ❯ assertNativeProviderLaunch test/adapters/agents-providers/module-task-launch.test.ts:181:82
+    179|  await fs.symlink(target, link);
+    180|  const symlink = await launch();
+    181|  expect(symlink.code, 'synthetic symlink provider should launch in the…
+       |                                                                                  ^
+    182| }
+    183| 
+ ❯ verifyCodexLaunch test/adapters/agents-providers/module-task-launch.test.ts:133:37
+ ❯ test/adapters/agents-providers/module-task-launch.test.ts:192:5
+ ❯ measureWorkload test/support/measureWorkload.ts:13:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  15:02:40
+   Duration  2.57s (transform 76ms, setup 82ms, collect 25ms, tests 427ms, environment 0ms, prepare 24ms)
+
