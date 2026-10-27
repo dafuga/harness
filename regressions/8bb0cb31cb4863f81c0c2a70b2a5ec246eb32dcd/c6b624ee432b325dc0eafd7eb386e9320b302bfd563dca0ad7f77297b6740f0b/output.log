@@ -1,0 +1,41 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-HHbgrz[39m
+
+ [32m✓[39m test/services/unit-index.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 4811[2mms[22m[39m
+   [33m[2m✓[22m[39m recorded service moves preserve implementations and registered owner-local placement [33m 4517[2mms[22m[39m
+ [32m✓[39m test/adapters/agents-providers/module-task-sandbox-process.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 779[2mms[22m[39m
+   [33m[2m✓[22m[39m ModuleTaskSandboxProcessAdapter.validateScratch in default state [33m 628[2mms[22m[39m
+ [31m❯[39m test/adapters/agents-providers/module-task-sandbox.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m1 skipped[39m[2m)[22m[32m 37[2mms[22m[39m
+[31m   [31m×[31m enforces exact reads and writes in a real child[39m[32m 13[2mms[22m[39m
+[31m     → Cannot find module '@anthropic-ai/sandbox-runtime'
+Require stack:
+- /private/tmp/harness-snapshot-HHbgrz/src/adapters/agents-providers/ModuleTaskSandboxAdapter.ts[39m
+   [32m✓[39m rejects unsafe grant paths before returning a process[32m 22[2mms[22m[39m
+   [2m[90m↓[39m[22m fails closed with a platform diagnostic
+   [32m✓[39m ModuleTaskSandboxAdapter connects[32m 0[2mms[22m[39m
+ [32m✓[39m test/readable-unit-contracts.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 144[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/adapters/agents-providers/module-task-sandbox.test.ts[2m > [22menforces exact reads and writes in a real child
+[31m[1mError[22m: Cannot find module '@anthropic-ai/sandbox-runtime'
+Require stack:
+- /private/tmp/harness-snapshot-HHbgrz/src/adapters/agents-providers/ModuleTaskSandboxAdapter.ts[39m
+[36m [2m❯[22m ModuleTaskSandboxAdapter.prepare src/adapters/agents-providers/ModuleTaskSandboxAdapter.ts:[2m28:46[22m[39m
+    [90m 26| [39m  const cli = createRequire(import.meta.url).resolve('@anthropic-ai/sa…
+    [90m 27| [39m  [35mconst[39m runtime [33m=[39m [35mawait[39m [34mrealpath[39m(cli)[33m;[39m
+    [90m 28| [39m  [35mconst[39m directory [33m=[39m [35mawait[39m [34mmkdtemp[39m([32m'/tmp/harness-task-policy-'[39m)[33m;[39m
+    [90m   | [39m                                             [31m^[39m
+    [90m 29| [39m  [35mtry[39m {
+    [90m 30| [39m   [35mconst[39m settings [33m=[39m [34mjoin[39m(directory[33m,[39m [32m'settings.json'[39m)[33m;[39m
+[90m [2m❯[22m PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:[2m69:18[22m[39m
+[90m [2m❯[22m test/adapters/agents-providers/module-task-sandbox.test.ts:[2m20:12[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m28 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (30)[39m
+[2m   Start at [22m 11:27:23
+[2m   Duration [22m 11.10s[2m (transform 345ms, setup 309ms, collect 801ms, tests 5.77s, environment 0ms, prepare 143ms)[22m
+
