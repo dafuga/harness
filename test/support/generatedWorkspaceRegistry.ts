@@ -57,9 +57,44 @@ export async function assertGeneratedWorkspaceRegistry(): Promise<void> {
 			await assertWorkspaceMatrix(project.read, unit, scenario, { ...entry, workspace });
 		}
 		await assertMissingWorkspaceBuild(project, config);
+		await assertAmbiguousWorkspaceBuild(project, config, verify);
+		await assertUndeclaredWorkspace(project);
 	} finally {
 		await rm(dirname(project.root), { recursive: true, force: true });
 	}
+}
+
+async function assertAmbiguousWorkspaceBuild(
+	project: UnitProject,
+	config: { workspaces: { name: string; root: string }[] },
+	verify: { builds: { id: string; directory: string }[] }
+) {
+	const root = 'packages/ambiguous';
+	config.workspaces.push({ name: 'ambiguous', root });
+	verify.builds.push(
+		{ id: 'first', directory: `${root}/output-one` },
+		{ id: 'second', directory: `${root}/output-two` }
+	);
+	await project.write('harness.units.json', JSON.stringify(config));
+	await project.write('harness.verify.json', JSON.stringify(verify));
+	await project.write(`${root}/package.json`, JSON.stringify({ harness: { kind: 'app' } }));
+	await expect(
+		generatePiece({ root: join(project.root, root), kind: 'view', name: 'AmbiguousPage' })
+	).rejects.toThrow('Multiple screenshot builds for workspace packages/ambiguous');
+	await expect(
+		project.read(`${root}/src/routes/ambiguous-page/+page.svelte`)
+	).rejects.toMatchObject({ code: 'ENOENT' });
+}
+
+async function assertUndeclaredWorkspace(project: UnitProject) {
+	const root = 'packages/unregistered';
+	await project.write(`${root}/package.json`, JSON.stringify({ harness: { kind: 'app' } }));
+	await expect(
+		generatePiece({ root: join(project.root, root), kind: 'layout', name: 'UnknownLayout' })
+	).rejects.toThrow('Workspace packages/unregistered is not declared in harness.units.json');
+	await expect(
+		project.read(`${root}/src/routes/unknown-layout/+layout.svelte`)
+	).rejects.toMatchObject({ code: 'ENOENT' });
 }
 
 async function assertMissingWorkspaceBuild(
