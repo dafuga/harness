@@ -19,11 +19,13 @@
 		"inputs": [
 			{
 				"name": "ProjectWorkFeature.feature",
-				"type": "FeatureWorkSnapshot feature"
+				"type": "FeatureWorkSnapshot feature",
+				"description": "The selected feature, its plan and projected task progress from the project queue."
 			},
 			{
 				"name": "ProjectWorkFeature.initiallyOpen",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the feature row is expanded when first rendered; later refreshes preserve the user selection."
 			}
 		],
 		"outputs": [

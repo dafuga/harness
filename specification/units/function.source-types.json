@@ -28,7 +28,8 @@
 		"outputs": [
 			{
 				"name": "SourceGraph",
-				"type": "{nodes:GraphNode[],edges:GraphEdge[],uncertain:UncertainNode[]}"
+				"type": "{nodes:GraphNode[],edges:GraphEdge[],uncertain:UncertainNode[]}",
+				"description": "A source graph containing nodes, edges and uncertain references."
 			},
 			{
 				"name": "UncertainNode",
@@ -57,7 +58,8 @@
 			},
 			{
 				"name": "TreeEntry",
-				"type": "{path:string,hash:string}"
+				"type": "{path:string,hash:string}",
+				"description": "A source tree listing entry containing its path and hash."
 			}
 		],
 		"errors": []

@@ -61,7 +61,8 @@
 			},
 			{
 				"name": "CaptureStanding",
-				"type": "\"fresh\"|\"inherited\"|\"rejected\"|\"unvalidated\""
+				"type": "\"fresh\"|\"inherited\"|\"rejected\"|\"unvalidated\"",
+				"description": "The fresh, inherited, rejected or unvalidated classification of a capture."
 			}
 		],
 		"errors": []

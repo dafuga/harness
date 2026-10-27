@@ -29,7 +29,8 @@
 			},
 			{
 				"name": "ProjectWork.loading",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Whether the feature work snapshot is currently loading."
 			},
 			{
 				"name": "ProjectWork.error",
