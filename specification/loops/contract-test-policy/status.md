@@ -1219,3 +1219,26 @@ module has a separate emitted artifact. The normal generation workloads took
 2.74 ms and 0.15 ms, with 261,423,104 and 261,472,256 bytes whole-worker RSS.
 The source reasons are retained in Git notes. Browser and aggregate checks stay
 pending.
+
+## Continuation: screenshot case bindings
+
+The reviewed screenshot selector rejected distinct declared cases sharing a
+state, viewport and evidence slot because it checked slot uniqueness before
+reading case bindings. Test-only `fe08320897` strengthened the existing class
+cases without adding titles. Paired Harness red `c6e2d71e38c4` failed on the
+product error, and unchanged green `b6fd363bf099` passed at source fix
+`72ec404ccf`. The original selector mutant `756ecad5c1` failed capture
+`fa6f5a5f4755`; restored `3b9d20f1dd` passed `ecab7729a644` with the same
+complete tree as the fix.
+
+The missing control was the single-capture fixture. The repository skill and
+generated instructions now require shared-slot, wrong-binding and duplicate
+coverage in existing cases, with unit, case, revision, hash and outcome retained.
+Commit `0fee45787b` adds that guidance and its existing-case assertion.
+Focused capture `04ba6aa7c6f5` passed 27 cases, registry, typecheck and audit.
+At that revision, service source bytes/lines/complexity/dependencies were
+17905/465/109/11 and project guidance values were 18015/144/9/3. The review
+and load workloads took 143.32 and 77.79 ms with 204,816,384 and 226,951,168
+bytes of whole-worker RSS; guidance took 9.01 ms with 263,323,648 bytes.
+Neither module emits a separate artifact. Source reasons are in Git notes.
+Full verification and real browser evidence remain pending.
