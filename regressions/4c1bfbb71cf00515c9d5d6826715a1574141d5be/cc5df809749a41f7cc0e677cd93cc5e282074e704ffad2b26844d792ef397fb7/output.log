@@ -1,0 +1,61 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-sKDNli
+
+ ❯ test/utils/agent-liveness.test.ts (7 tests | 1 failed) 9ms
+   × agentLiveness: Fresh heartbeat 6ms
+     → Example output differs from its comment
++ actual - expected
+
+  {
+    detail: 'Last heartbeat at 2026-10-11T11:59:30.000Z',
++   state: 'working'
+-   state: 'stale'
+  }
+
+   ✓ agentLiveness: Overdue heartbeat 0ms
+   ✓ agentLiveness: Completed registration 0ms
+   ✓ agentLiveness: Failed registration 0ms
+   ✓ agentLiveness: Reused process ID 0ms
+   ✓ agentLiveness: Missing process 0ms
+   ✓ agentLiveness: Process lookup error 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/utils/agent-liveness.test.ts > agentLiveness: Fresh heartbeat
+AssertionError: Example output differs from its comment
++ actual - expected
+
+  {
+    detail: 'Last heartbeat at 2026-10-11T11:59:30.000Z',
++   state: 'working'
+-   state: 'stale'
+  }
+
+
+- Expected
++ Received
+
+  {
+    "detail": "Last heartbeat at 2026-10-11T11:59:30.000Z",
+-   "state": "stale",
++   "state": "working",
+  }
+
+ ❯ TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:100:4
+     98|    deepStrictEqual(
+     99|     observation.output,
+    100|     example.output,
+       |    ^
+    101|     'Example output differs from its comment'
+    102|    );
+ ❯ PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:69:18
+ ❯ src/services/verification-evidence/TestExpectationService.ts:60:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  15:21:33
+   Duration  2.28s (transform 82ms, setup 83ms, collect 40ms, tests 9ms, environment 0ms, prepare 20ms)
+
