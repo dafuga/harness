@@ -9,14 +9,28 @@
 	"owns": {
 		"source": [
 			"src/adapters/agents-providers/ModuleTaskBrokerTransportAdapter.ts",
-			"src/adapters/agents-providers/ModuleTaskBrokerTransportAdapter.types.ts"
+			"src/adapters/agents-providers/ModuleTaskBrokerTransportAdapter.types.ts",
+			"src/adapters/agents-providers/module-task-broker-transport-adapter/brokerTaskExecution.ts"
 		],
 		"symbols": [
 			"ModuleTaskBrokerTransportAdapter",
 			"ModuleTaskBrokerTransportAdapter.constructor",
-			"ModuleTaskBrokerTransportAdapter.connect",
+			"ModuleTaskBrokerTransportAdapter.ready",
+			"ModuleTaskBrokerTransportAdapter.run",
+			"BrokerFileWrite",
+			"BrokerTools",
+			"BrokerSession",
+			"BrokerClientRequest",
+			"BrokerClientResult",
+			"BrokerClient",
 			"ModuleTaskBrokerTransportAdapterConfig",
-			"ModuleTaskBrokerTransportAdapterConfig"
+			"TaskRunScope",
+			"TaskRunSnapshot",
+			"BrokerTransportBindings",
+			"TaskRunInput",
+			"TaskRunResult",
+			"TaskSelection",
+			"TaskUsage"
 		]
 	},
 	"contract": {
@@ -68,7 +82,13 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/adapters/agents-providers/ModuleTaskBrokerTransportAdapter.ts",
