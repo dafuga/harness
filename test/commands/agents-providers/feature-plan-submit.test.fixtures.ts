@@ -67,7 +67,8 @@ export function commandFixture() {
 	const server = {
 		submitApproved: vi
 			.fn()
-			.mockResolvedValue({ created: ['checkout.task'], reused: [], commit: 'f'.repeat(40) })
+			.mockResolvedValue({ created: ['checkout.task'], reused: [], commit: 'f'.repeat(40) }),
+		runApproved: vi.fn()
 	};
 	const task = new Command('task').exitOverride();
 	const dependencies = { service, repository, output, readInput, server };
@@ -152,7 +153,53 @@ async function assertSubmissionFailureAndRetry() {
 	expect(f.service.approve).toHaveBeenCalledTimes(1);
 }
 
+async function assertScopedDispatch() {
+	const f = commandFixture();
+	const result = {
+		submission: { created: ['checkout.task'], reused: [], commit: 'f'.repeat(40) },
+		results: [{ status: 'review', task: 'checkout.task' }, { status: 'idle' }]
+	};
+	f.server.runApproved.mockResolvedValue(result);
+	const before = { int: process.listeners('SIGINT'), term: process.listeners('SIGTERM') };
+	await f.run([
+		'start',
+		'checkout',
+		'--digest',
+		f.plan.digest,
+		'--worker',
+		'worker-one',
+		'--parallelism',
+		'2',
+		'--json'
+	]);
+	expect(f.server.runApproved).toHaveBeenCalledExactlyOnceWith(
+		{ feature: 'checkout', expectedDigest: f.plan.digest },
+		{ worker: 'worker-one', parallelism: 2, signal: expect.any(AbortSignal) }
+	);
+	expect(f.server.submitApproved).not.toHaveBeenCalled();
+	expect(f.service.approve).not.toHaveBeenCalled();
+	expect(f.output.mock.calls.map(([text]) => JSON.parse(text))).toEqual([result]);
+	expect(process.listeners('SIGINT')).toEqual(before.int);
+	expect(process.listeners('SIGTERM')).toEqual(before.term);
+	for (const args of [
+		['--parallelism', '2'],
+		['--worker', 'worker-one', '--parallelism', '0'],
+		['--worker', 'worker-one', '--parallelism', '9'],
+		['--worker', 'worker-one', '--parallelism', '1.5'],
+		['--worker', 'worker-one', '--parallelism', 'invalid']
+	]) {
+		const invalid = commandFixture();
+		await expect(
+			invalid.run(['start', 'checkout', '--digest', f.plan.digest, ...args])
+		).rejects.toThrow();
+		expect(invalid.server.runApproved).not.toHaveBeenCalled();
+		expect(invalid.server.submitApproved).not.toHaveBeenCalled();
+		expect(invalid.output).not.toHaveBeenCalled();
+	}
+}
+
 export async function assertApprovedSubmission() {
 	await assertApprovalWaitsForSubmission();
 	await assertSubmissionFailureAndRetry();
+	await assertScopedDispatch();
 }

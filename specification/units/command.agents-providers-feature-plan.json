@@ -35,13 +35,13 @@
 			},
 			{
 				"name": "constructor.dependencies.server",
-				"type": "optional Pick<ModuleTaskServerService,\"submitApproved\">",
-				"description": "Defaults to the real server; trusted tests can inject a collaborator."
+				"type": "optional Pick<ModuleTaskServerService,\"submitApproved\"> & Partial<Pick<ModuleTaskServerService,\"runApproved\">>",
+				"description": "Defaults to the real server; an injected collaborator must provide runApproved for worker dispatch."
 			},
 			{
 				"name": "start",
-				"type": "<feature> --digest <sha> [--json]",
-				"description": "Retry exact approved task submission without reapproving."
+				"type": "<feature> --digest <sha> [--worker <id> [--parallelism <1..8>]] [--json]",
+				"description": "Without --worker, retry task submission. With --worker, run a single bounded batch scoped to the exact approved feature plan; parallelism defaults to one and requires a worker."
 			}
 		],
 		"outputs": [
@@ -62,8 +62,8 @@
 			},
 			{
 				"name": "start",
-				"type": "{created:string[],reused:string[],commit:string|undefined}",
-				"description": "Idempotently submit an already approved plan and report created/reused tasks."
+				"type": "{created:string[],reused:string[],commit:string|undefined} | {submission:object,results:unknown[]}",
+				"description": "Without --worker, idempotently submit an approved plan. With --worker, await and report the approval-scoped server batch, including actual worker outcomes."
 			}
 		],
 		"errors": [
@@ -76,6 +76,11 @@
 				"name": "submission failure",
 				"type": "Error",
 				"description": "Propagates without success output; an already committed approval remains available for start retry."
+			},
+			{
+				"name": "invalid or unavailable worker dispatch",
+				"type": "Error",
+				"description": "Reject parallelism without a worker, non-integer or out-of-range parallelism, unavailable scoped dispatch, or server failures without printing a successful result."
 			}
 		]
 	},
