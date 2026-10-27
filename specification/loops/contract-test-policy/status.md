@@ -1430,3 +1430,21 @@ complexity 37 and 19 dependencies; test contract had 19,842 bytes, 546 lines,
 complexity 178 and five dependencies. Neither emits a separate module artifact.
 Focused workload records retain timing and whole-worker RSS, not isolated memory.
 The full laptop gate and real screenshot matching remain open.
+
+The generated app browser fixture inserted a second Playwright reporter key,
+so the later Harness case reporter hid the JSON report. The laptop run at
+`0617286c5b` reached the browser but failed reading that missing report; it did
+not establish screenshot coverage. The existing generator case now checks one
+configuration containing both reporters. Its fixture failure at `284bddfb58`
+is retained in capture `6ec76ce43614`; test-support fix `a2cc61ebbf` preserves
+both reporters. This is a fixture correction, not a product red/green pair.
+The repository skill and generated guidance now require this composition and the
+shared-file scenario boundary in their existing generator case.
+
+Focused laptop capture `3306ce1a27cd` at `c45c3faccb` passed all five generator
+cases; target lint and formatting passed. The guidance unit measured 18,847
+source bytes, 148 lines, complexity 9 and three dependencies, with no separate
+module artifact. Its recorded case took 65.688 ms and the whole worker reported
+216,760,320 bytes RSS. The laptop browser rerun is pending while another
+project's Playwright suite runs; missing baselines must still fail without being
+accepted automatically.
