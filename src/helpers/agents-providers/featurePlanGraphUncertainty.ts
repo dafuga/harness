@@ -18,18 +18,48 @@ function classified(node: ModuleData['sourceGraph']['nodes'][number], data: Modu
 	}
 	if (!node.id.startsWith('file:')) return false;
 	const owners = units.filter((unit) => unit.owns.source.includes(node.id.slice('file:'.length)));
-	if (owners.length > 1) return false;
-	if (
-		node.unit &&
-		(units.filter((unit) => unit.id === node.unit).length !== 1 ||
-			(owners.length === 1 && owners[0].id !== node.unit))
-	)
-		return false;
+	if (owners.length > 1 || !consistentOwner(node, units, owners)) return false;
+	return allowedFile(node, units);
+}
+function consistentOwner(
+	node: ModuleData['sourceGraph']['nodes'][number],
+	units: ModuleData['registry']['units'],
+	owners: ModuleData['registry']['units']
+): boolean {
+	if (!node.unit) return true;
+	return (
+		units.filter((unit) => unit.id === node.unit).length === 1 &&
+		(owners.length !== 1 || owners[0].id === node.unit)
+	);
+}
+function allowedFile(
+	node: ModuleData['sourceGraph']['nodes'][number],
+	units: ModuleData['registry']['units']
+): boolean {
 	if (node.kind === 'test' || (node.kind as string) === 'ignored') return true;
 	if (!node.unit) return false;
 	return (
 		node.kind === 'source' || units.some((unit) => unit.id === node.unit && unit.kind === 'script')
 	);
+}
+
+function referenceNode(reference: unknown): string | undefined {
+	if (!reference || typeof reference !== 'object') return undefined;
+	if (!('node' in reference) || typeof reference.node !== 'string') return undefined;
+	if (!('reason' in reference) || typeof reference.reason !== 'string') return undefined;
+	if (!('detail' in reference) || typeof reference.detail !== 'string') return undefined;
+	return reference.node;
+}
+
+function reverseGraph(data: ModuleData): Map<string, string[]> {
+	const nodes = new Map(data.sourceGraph.nodes.map((node) => [node.id, node]));
+	const reverse = new Map<string, string[]>();
+	for (const edge of data.sourceGraph.edges) {
+		if (nodes.get(edge.from)?.kind === 'scenario' || nodes.get(edge.to)?.kind === 'scenario')
+			continue;
+		reverse.set(edge.to, [...(reverse.get(edge.to) ?? []), edge.from]);
+	}
+	return reverse;
 }
 function relevant(origin: string, data: ModuleData, reverse: Map<string, string[]>): boolean {
 	const nodes = new Map(data.sourceGraph.nodes.map((node) => [node.id, node]));
@@ -78,26 +108,10 @@ export function featurePlanGraphUncertainty(
 		throw new TypeError('featurePlanGraphUncertainty expects text or committed graph data');
 	const errors = graphErrors(input);
 	if (errors.length) return [...new Set([...errors, ...references.map(diagnostic)])].sort();
-	const nodes = new Map(input.sourceGraph.nodes.map((node) => [node.id, node]));
-	const reverse = new Map<string, string[]>();
-	for (const edge of input.sourceGraph.edges) {
-		if (nodes.get(edge.from)?.kind === 'scenario' || nodes.get(edge.to)?.kind === 'scenario')
-			continue;
-		reverse.set(edge.to, [...(reverse.get(edge.to) ?? []), edge.from]);
-	}
+	const reverse = reverseGraph(input);
 	for (const reference of references) {
-		if (
-			!reference ||
-			typeof reference !== 'object' ||
-			!('node' in reference) ||
-			typeof reference.node !== 'string' ||
-			!('reason' in reference) ||
-			typeof reference.reason !== 'string' ||
-			!('detail' in reference) ||
-			typeof reference.detail !== 'string' ||
-			relevant(reference.node, input, reverse)
-		)
-			errors.push(diagnostic(reference));
+		const node = referenceNode(reference);
+		if (node === undefined || relevant(node, input, reverse)) errors.push(diagnostic(reference));
 	}
 	return [...new Set(errors)].sort();
 }

@@ -70,25 +70,8 @@ export class FeaturePlanValidator {
 			if (change.kind !== 'reuse' && !change.wantedContract)
 				errors.push(`Change ${change.unit} requires a wanted contract`);
 		}
-		for (const task of plan.tasks) {
-			if (task.feature !== plan.feature) errors.push(`Task ${task.id} belongs to another feature`);
-			const change = changes.get(task.module);
-			if (!change) {
-				errors.push(`Task ${task.id} module is not planned`);
-				continue;
-			}
-			if (
-				task.role === 'implementation' &&
-				!isDeepStrictEqual(task.wantedContract, change.wantedContract)
-			)
-				errors.push(`Task ${task.id} wanted contract does not match its planned module`);
-			const allowed = new Set([
-				...change.assignedFiles,
-				...(task.role === 'verification' ? (task.verificationFiles ?? []) : [])
-			]);
-			if (!task.assignedFiles?.length || task.assignedFiles.some((file) => !allowed.has(file)))
-				errors.push(`Task ${task.id} assigned files exceed or omit its planned scope`);
-		}
+		for (const task of plan.tasks)
+			validateTask(task, plan.feature, changes.get(task.module), errors);
 	}
 
 	private graph(edges: Map<string, string[]>, kind: string, errors: string[]): void {
@@ -117,6 +100,30 @@ export class FeaturePlanValidator {
 		}
 		if (ready.length !== edges.size) errors.push(`Cyclic ${kind} graph`);
 	}
+}
+
+function validateTask(
+	task: FeaturePlan['tasks'][number],
+	feature: string,
+	change: FeaturePlan['changes'][number] | undefined,
+	errors: string[]
+): void {
+	if (task.feature !== feature) errors.push(`Task ${task.id} belongs to another feature`);
+	if (!change) {
+		errors.push(`Task ${task.id} module is not planned`);
+		return;
+	}
+	if (
+		task.role === 'implementation' &&
+		!isDeepStrictEqual(task.wantedContract, change.wantedContract)
+	)
+		errors.push(`Task ${task.id} wanted contract does not match its planned module`);
+	const allowed = new Set([
+		...change.assignedFiles,
+		...(task.role === 'verification' ? (task.verificationFiles ?? []) : [])
+	]);
+	if (!task.assignedFiles?.length || task.assignedFiles.some((file) => !allowed.has(file)))
+		errors.push(`Task ${task.id} assigned files exceed or omit its planned scope`);
 }
 
 export type {

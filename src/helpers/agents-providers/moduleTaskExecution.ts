@@ -22,11 +22,10 @@ async function runTaskAttempts(
 	runner: TaskRunner,
 	task: ModuleTask,
 	input: TaskRunInput & { scope: TaskRunScope },
-	onFallback: (selection: TaskSelection) => void,
-	executions: TaskExecution[]
+	tracking: { onFallback: (selection: TaskSelection) => void; executions: TaskExecution[] }
 ) {
 	try {
-		return { ...(await dispatchTaskAttempt(runner, input, executions)), fallback: false };
+		return { ...(await dispatchTaskAttempt(runner, input, tracking.executions)), fallback: false };
 	} catch (error) {
 		if (
 			task.model !== 'auto' ||
@@ -38,9 +37,9 @@ async function runTaskAttempts(
 			throw error;
 		input.signal.throwIfAborted();
 		const choice: TaskSelection = { provider: 'codex', model: 'gpt-6-luna', intelligence: 'max' };
-		onFallback(choice);
+		tracking.onFallback(choice);
 		return {
-			...(await dispatchTaskAttempt(runner, { ...input, ...choice }, executions)),
+			...(await dispatchTaskAttempt(runner, { ...input, ...choice }, tracking.executions)),
 			fallback: true
 		};
 	}
@@ -49,10 +48,13 @@ async function executeScopedTask(
 	runner: TaskRunner,
 	task: ModuleTask,
 	prepared: ReturnType<ModuleTaskService['prepare']>,
-	result: Awaited<ReturnType<typeof taskWorkspace>>,
-	signal: AbortSignal,
-	scope: TaskRunScope
+	context: {
+		result: Awaited<ReturnType<typeof taskWorkspace>>;
+		signal: AbortSignal;
+		scope: TaskRunScope;
+	}
 ) {
+	const { result, signal, scope } = context;
 	let current = result;
 	try {
 		const execution = await runTaskAttempts(
@@ -65,10 +67,12 @@ async function executeScopedTask(
 				signal,
 				scope
 			},
-			(choice) => {
-				current = { ...current, ...choice, fallback: true };
-			},
-			result.executions
+			{
+				onFallback: (choice) => {
+					current = { ...current, ...choice, fallback: true };
+				},
+				executions: result.executions
+			}
 		);
 		return { ...current, ...execution };
 	} catch (error) {
@@ -111,11 +115,14 @@ async function runWithContractContext(
 	root: string,
 	runner: TaskRunner,
 	contexts: Pick<ModuleTaskContractContextService, 'create'>,
-	task: ModuleTask,
-	prepared: ReturnType<ModuleTaskService['prepare']>,
-	result: Awaited<ReturnType<typeof taskWorkspace>>,
-	signal: AbortSignal
+	execution: {
+		task: ModuleTask;
+		prepared: ReturnType<ModuleTaskService['prepare']>;
+		result: Awaited<ReturnType<typeof taskWorkspace>>;
+		signal: AbortSignal;
+	}
 ) {
+	const { task, prepared, result, signal } = execution;
 	let context: Awaited<ReturnType<ModuleTaskContractContextService['create']>>;
 	try {
 		context = await contexts.create(
@@ -127,8 +134,12 @@ async function runWithContractContext(
 		result.error = 'Harness contract context unavailable.';
 		return result;
 	}
-	const execution = await executeScopedTask(runner, task, prepared, result, signal, context.scope);
-	const cleaned = await cleanupTaskContext(context, execution);
+	const completed = await executeScopedTask(runner, task, prepared, {
+		result,
+		signal,
+		scope: context.scope
+	});
+	const cleaned = await cleanupTaskContext(context, completed);
 	return snapshotPreparedTask(root, task, prepared, cleaned);
 }
 export async function executeClaimedTask(input: ClaimedTaskExecution): Promise<ExecutionResult> {
@@ -159,26 +170,24 @@ export async function executeClaimedTask(input: ClaimedTaskExecution): Promise<E
 		result.sourceCommit = sourceCommit;
 		result = await taskWorkspace(root, effective, prepared.selection);
 		await new GitAdapter(root).run(['worktree', 'add', '--detach', result.worktree, sourceCommit]);
-		result = await runWithContractContext(
-			root,
-			input.runner,
-			input.contexts,
-			effective,
+		result = await runWithContractContext(root, input.runner, input.contexts, {
+			task: effective,
 			prepared,
 			result,
 			signal
-		);
+		});
 	} catch (error) {
-		result.error = composing
-			? 'Task dependency composition failed.'
-			: !result.worktree
-				? 'Task workspace preparation failed.'
-				: error instanceof Error && error.message
-					? error.message
-					: 'Task worker failed.';
+		result.error = executionError(error, composing, result.worktree);
 	}
 	result.finishedAt = new Date().toISOString();
 	return result;
+}
+
+function executionError(error: unknown, composing: boolean, worktree: string): string {
+	if (composing) return 'Task dependency composition failed.';
+	if (!worktree) return 'Task workspace preparation failed.';
+	if (error instanceof Error && error.message) return error.message;
+	return 'Task worker failed.';
 }
 /** @pure */
 export function moduleTaskExecution(textToFormat: string): string {

@@ -46,10 +46,11 @@ export class FeaturePlanCoverageValidator {
 		if (units.size !== data.registry.units.length)
 			errors.push('Duplicate committed registry units.');
 		if (changes.size !== plan.changes.length) errors.push('Duplicate planned module changes.');
+		const context = { data, units, changes, pages: affected, errors };
 		for (const change of plan.changes) {
 			if (change.kind === 'reuse') continue;
-			collectPages(change.unit, data, units, affected, errors);
-			collectAncestors(change.unit, changes, units, affected, errors);
+			collectPages(change.unit, context);
+			collectAncestors(change.unit, context);
 		}
 		return impactResult(affected, errors);
 	}
@@ -114,12 +115,20 @@ function validateMetadata(
 	if (data.commit !== plan.sourceCommit)
 		errors.push('Committed metadata does not match plan sourceCommit.');
 	if (!hasChanges) return;
+	validateReferences(data, errors);
+	validateGraph(data, errors);
+}
+
+function validateReferences(data: ModuleData, errors: string[]): void {
 	if (!Array.isArray(data.references) || !Array.isArray(data.sourceGraph?.uncertain))
 		errors.push('Committed graph reference metadata is missing.');
 	else
 		errors.push(
 			...featurePlanGraphUncertainty(data, [...data.references, ...data.sourceGraph.uncertain])
 		);
+}
+
+function validateGraph(data: ModuleData, errors: string[]): void {
 	const graph = data.registry.graph;
 	if (!graph || !Array.isArray(graph.nodes) || !Array.isArray(graph.edges)) {
 		errors.push('Committed registry graph is missing.');
@@ -142,11 +151,9 @@ function activeUnit(id: string, units: Map<string, Unit>, errors: string[]): Uni
 
 function collectPages(
 	id: string,
-	data: ModuleData,
-	units: Map<string, Unit>,
-	pages: Set<string>,
-	errors: string[]
+	context: { data: ModuleData; units: Map<string, Unit>; pages: Set<string>; errors: string[] }
 ): void {
+	const { data, units, pages, errors } = context;
 	const unit = activeUnit(id, units, errors);
 	if (unit?.kind === 'page') pages.add(id);
 	const relations = Object.hasOwn(data.relationships, id) ? data.relationships[id] : undefined;
@@ -163,11 +170,14 @@ function collectPages(
 
 function collectAncestors(
 	id: string,
-	changes: Map<string, Change>,
-	units: Map<string, Unit>,
-	pages: Set<string>,
-	errors: string[]
+	context: {
+		changes: Map<string, Change>;
+		units: Map<string, Unit>;
+		pages: Set<string>;
+		errors: string[];
+	}
 ): void {
+	const { changes, units, pages, errors } = context;
 	const seen = new Set([id]);
 	let parent = changes.get(id)?.parent;
 	while (parent) {
