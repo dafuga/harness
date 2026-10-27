@@ -15,27 +15,7 @@ test('reason comparisons preserve admitted in-memory manifest inputs', async () 
 		responsibility: 'Ranks values.'
 	};
 	const reads = { iterator: 0, species: 0, path: 0, contract: 0, runtime: 0 };
-	class SourcePaths extends Array<string> {
-		static get [Symbol.species]() {
-			reads.species++;
-			return Array;
-		}
-	}
-	const source = new SourcePaths(path);
-	Object.defineProperty(source, '0', {
-		configurable: true,
-		enumerable: true,
-		get: () => {
-			reads.path++;
-			return path;
-		}
-	});
-	Object.defineProperty(source, Symbol.iterator, {
-		value(this: string[]) {
-			reads.iterator++;
-			return Array.prototype[Symbol.iterator].call(this);
-		}
-	});
+	const source = observedSourcePaths(path, reads);
 	const observed = {
 		...plain,
 		owns: { ...plain.owns, source },
@@ -60,3 +40,31 @@ test('reason comparisons preserve admitted in-memory manifest inputs', async () 
 	expect(actual).toEqual(expected);
 	for (const count of Object.values(reads)) expect(count).toBeGreaterThan(0);
 });
+
+function observedSourcePaths(
+	path: string,
+	reads: { iterator: number; species: number; path: number }
+) {
+	class SourcePaths extends Array<string> {
+		static get [Symbol.species]() {
+			reads.species++;
+			return Array;
+		}
+	}
+	const source = new SourcePaths(path);
+	Object.defineProperty(source, '0', {
+		configurable: true,
+		enumerable: true,
+		get: () => {
+			reads.path++;
+			return path;
+		}
+	});
+	Object.defineProperty(source, Symbol.iterator, {
+		value(this: string[]) {
+			reads.iterator++;
+			return Array.prototype[Symbol.iterator].call(this);
+		}
+	});
+	return source;
+}
