@@ -4,7 +4,7 @@
 	"kind": "service",
 	"title": "ProjectImageCacheService",
 	"responsibility": "Owns the ProjectImageCacheService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -21,7 +21,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ProjectImageCacheService.constructor.session",
@@ -29,13 +29,15 @@
 			},
 			{
 				"name": "ProjectImageCacheService.read.input",
-				"type": "ImageQuery"
+				"type": "ImageQuery",
+				"description": "Optional project identity and required entityId, commit, version and sha256; an optional option binds the image to that exact design choice."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectImageCacheService.read",
-				"type": "Promise<Uint8Array>"
+				"type": "Promise<Uint8Array>",
+				"description": "Checks the selected project and finds the requested version, image hash and supplied option in the entity at the requested commit before using cached bytes. A cached value is returned when its length matches the declared image size. On a cache miss, reads through the planning port at the requested revision with the optional option, checks byte length and SHA-256, caches the result and returns it. This service does not explicitly recheck project identity after asynchronous reads."
 			}
 		],
 		"errors": [

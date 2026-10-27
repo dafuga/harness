@@ -63,8 +63,8 @@
 			},
 			{
 				"name": "ImageQuery",
-				"type": "EntityQuery & {version:string,sha256:string}",
-				"description": "EntityQuery binds entityId and commit; ImageQuery has no option field."
+				"type": "EntityQuery & {version:string,sha256:string,option?:string}",
+				"description": "EntityQuery binds entityId and commit; the optional option names the exact design choice."
 			},
 			{
 				"name": "FeaturePlanSelection",

@@ -65,6 +65,13 @@ test('an image of more than a mebibyte crosses the socket in bounded frames and 
 	const before = f.frames.length,
 		received = await remoteBinary(await client.request<RemoteBinary>('image', query)),
 		frames = f.frames.slice(before);
+	for (const option of ['o99', 'o1']) {
+		const outcome = await client.request('image', { ...query, option } as never).then(
+			() => 'accepted',
+			() => 'rejected'
+		);
+		expect(outcome).toBe('rejected');
+	}
 	expect(bytes.length).toBeGreaterThan(1048576);
 	expect(Buffer.compare(Buffer.from(received), Buffer.from(bytes))).toBe(0);
 	expect(frames.length).toBeGreaterThan(8);

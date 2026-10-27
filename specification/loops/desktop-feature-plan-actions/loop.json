@@ -2,7 +2,7 @@
 	"name": "desktop-feature-plan-actions",
 	"goal": "Allow the selected local desktop project to select and approve an exact feature plan and queue its tasks.",
 	"createdAt": "2026-10-27T09:10:16.851Z",
-	"updatedAt": "2026-10-27T09:31:33.044Z",
+	"updatedAt": "2026-10-27T09:56:53.095Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -39,6 +39,13 @@
 			"status": "complete",
 			"completedAt": "2026-10-27T09:31:33.044Z",
 			"evidence": "The assigned feature-plan-action test uses a disposable project, Harness CLI metadata validation and real plan services; it commits a valid source contract, approves the plan and observes exactly one queued assigned task without starting the fixture provider. 4 tests passed."
+		},
+		{
+			"id": "option-image",
+			"title": "Bind design preview image reads to an exact option when supplied.",
+			"status": "complete",
+			"completedAt": "2026-10-27T09:56:53.095Z",
+			"evidence": "Existing image read cases now cover two real committed options, cache hits, mismatched options, invalid socket requests and legacy no-option reads. Focused red reproduced the ignored option and focused green passed after binding it."
 		}
 	],
 	"evaluators": [

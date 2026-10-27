@@ -12,7 +12,11 @@ export class ProjectImageCacheService {
 		const entity = await project.catalog.entity(input.entityId, input.commit);
 		const image = entity.versions
 			.find((version) => version.version === input.version)
-			?.images.find((image) => image.sha256 === input.sha256);
+			?.images.find(
+				(image) =>
+					image.sha256 === input.sha256 &&
+					(input.option === undefined || image.option === input.option)
+			);
 		if (!image) throw new Error('Unknown project image.');
 		const identity = await this.identity(input);
 		const cached = await this.session.cache?.get(identity, input.sha256);

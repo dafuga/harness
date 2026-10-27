@@ -193,7 +193,8 @@ function entityPayload(channel: string, x: Record<string, unknown>) {
 		return {
 			...base,
 			version: textField(x.version, 20, versionPattern),
-			sha256: textField(x.sha256, 64, hashPattern)
+			sha256: textField(x.sha256, 64, hashPattern),
+			...optionField(x.option)
 		};
 	if (channel === 'thread:messages') return { ...base, threadId: textField(x.threadId) };
 	return base;

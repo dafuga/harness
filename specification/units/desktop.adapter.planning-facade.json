@@ -4,7 +4,7 @@
 	"kind": "adapter",
 	"title": "PlanningFacadeAdapter",
 	"responsibility": "Owns the PlanningFacadeAdapter integration boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -30,7 +30,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PlanningFacadeAdapter.open.root",
@@ -78,7 +78,8 @@
 			},
 			{
 				"name": "PlanningFacadeAdapter.image.query",
-				"type": "PlanImageQuery"
+				"type": "PlanImageQuery",
+				"description": "PlanImageQuery names entityId, version, revision, hash and optional option; delegated unchanged to readPlanImage."
 			},
 			{
 				"name": "PlanningFacadeAdapter.history.entityId",
@@ -128,14 +129,21 @@
 			},
 			{
 				"name": "PlanningFacadeAdapter.image",
-				"type": "unknown"
+				"type": "Promise<Uint8Array>",
+				"description": "Delegates to readPlanImage, whose contract checks image membership and passes the optional option to the planning API."
 			},
 			{
 				"name": "PlanningFacadeAdapter.history",
 				"type": "unknown"
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Planning image read failure",
+				"type": "Error",
+				"description": "Delegated readPlanImage errors propagate, including missing entity/version/image and underlying planning or Git failures."
+			}
+		]
 	},
 	"dependencies": [
 		{

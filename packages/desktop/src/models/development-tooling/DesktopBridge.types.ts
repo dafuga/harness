@@ -55,6 +55,8 @@ export interface SourceFile {
 export interface ImageQuery extends EntityQuery {
 	version: string;
 	sha256: string;
+	/** When present, the image must belong to this exact design option. */
+	option?: string;
 }
 
 /** What a new plan is proposed to take, give and refuse; states and viewports are not proposed. */
