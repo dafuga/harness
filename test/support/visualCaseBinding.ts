@@ -31,6 +31,7 @@ export function assertVisualCaseBinding(unit: ContractUnit, service: TestContrac
 		assertDamagedCaptures(run, execution, visual);
 		assertRetriedCaptures(run, execution, visual);
 		assertCaseGateForwarding(fixture, execution, visual);
+		assertSiblingScenarioCheck(fixture, service, execution, visual);
 	}
 }
 
@@ -160,4 +161,48 @@ function assertCaseGateForwarding(
 		caseGate(head, revision, [input as Parameters<typeof caseGate>[2][number]]);
 	expect(run(outcome)).toEqual([]);
 	expect(run({ ...outcome, gathered: [] }).join(' ')).toContain('missing case-bound screenshot');
+}
+
+function assertSiblingScenarioCheck(
+	fixture: ReturnType<typeof visualScenarioFixture>,
+	service: TestContractService,
+	execution: { revision: string; files: string[]; outcomes: object[] },
+	visual: { scenario: string; check: string; captures: ReturnType<typeof visualCapture>[] }
+) {
+	const unit = fixture.registry.units[0];
+	const first = unit.testing.cases[0];
+	const sibling = {
+		...first,
+		id: 'sibling',
+		state: 'other',
+		test: { ...first.test, title: 'other' }
+	};
+	const expanded = {
+		...unit,
+		testing: { ...unit.testing, states: [...unit.testing.states, 'other'], cases: [first, sibling] }
+	};
+	const scenario = {
+		...fixture.scenario,
+		states: [
+			...fixture.scenario.states,
+			{ id: 'other', title: 'Other', coverage: 'required' as const }
+		],
+		evidence: [{ ...fixture.evidence, states: [...fixture.evidence.states, 'other'] }],
+		tests: [
+			...fixture.scenario.tests,
+			{ ...fixture.scenario.tests[0], id: 'sibling', cases: [{ unit: unit.id, case: sibling.id }] }
+		]
+	};
+	const registry = {
+		...fixture.registry,
+		units: [expanded],
+		scenarios: [scenario],
+		tests: [first.test, sibling.test],
+		execution: {
+			...execution,
+			outcomes: [...execution.outcomes, { ...sibling.test, revision, retry: 0, status: 'passed' }],
+			visual
+		}
+	};
+	expect(service.validate(registry as Parameters<TestContractService['validate']>[0])).toEqual([]);
 }
