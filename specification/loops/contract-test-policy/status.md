@@ -1686,3 +1686,9 @@ that fixture was corrected and the failure remains recorded. Source measurement
 at the tested tree was 679 bytes, seven lines, complexity one and one dependency;
 the capture retains workload timing and whole-worker RSS. The authored reason is
 in Git notes. Integration, Explorer display and full verification remain open.
+At `8cd921f91e`, the same four cases also assert that changing model, stream,
+tools and instructions does not alter the prompt. Case comparison reports four
+before and after with no identity changes. Capture `188b48476e1b` passed all
+four, and `76095b809706` passed the 16 unchanged registry guards. Registry,
+focused typecheck, lint and formatting passed again; the new reason is in Git
+notes. This remains isolated pending integration.
