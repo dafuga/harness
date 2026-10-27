@@ -1,0 +1,20 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Sii8wL
+
+ ✓ test/project-template.test.ts (5 tests) 1546ms
+   ✓ generated app code and configuration obey their formatter settings  864ms
+   ✓ generated lib code and configuration obey their formatter settings  483ms
+ ✓ test/pieces.test.ts (6 tests) 487ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 81ms
+ ✓ test/services/verification-evidence/test-contract.test.ts (2 tests) 22ms
+ ✓ test/validators/verification-evidence/test-case.test.ts (1 test) 18ms
+
+ Test Files  5 passed (5)
+      Tests  16 passed (16)
+   Start at  05:32:25
+   Duration  6.35s (transform 373ms, setup 211ms, collect 1.28s, tests 2.16s, environment 0ms, prepare 105ms)
+
+$ bun run src/index.ts units check
+Units registry is valid: 1828 units, 168 uncertain references.
+$ bun run src/index.ts audit
+Harness audit passed. Files and functions are staying small.
