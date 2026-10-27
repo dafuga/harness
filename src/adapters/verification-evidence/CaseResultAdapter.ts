@@ -26,7 +26,7 @@ export class CaseResultAdapter {
 	onTestEnd(test: BrowserCase, result: BrowserResult): void {
 		this.write(
 			test.location.file,
-			test.titlePath().slice(3).join(' > '),
+			test.titlePath().slice(2).join(' > '),
 			result.status,
 			result.retry
 		);
