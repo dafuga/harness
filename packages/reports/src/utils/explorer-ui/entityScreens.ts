@@ -46,13 +46,24 @@ export function screenPick(
 }
 const unrecorded = { standing: null, label: undefined, facts: undefined, note: undefined };
 function told(side: ExplorerSide, found: ExplorerCapture) {
-	if (found.focused)
+	if (found.focused) {
+		const audio = found.capture.kind === 'audio';
+		const facts = [
+			{ label: 'Focused run', value: found.focused.loop + ' · ' + found.focused.status }
+		];
+		if (audio && found.capture.provenance === 'fixture')
+			facts.push({ label: 'Audio origin', value: 'Generated fixture' });
+		if (audio && found.capture.provenance === 'actual-capture')
+			facts.push({ label: 'Audio origin', value: 'Actual capture' });
 		return {
 			standing: 'unvalidated' as const,
 			label: 'Focused capture',
-			facts: [{ label: 'Focused run', value: found.focused.loop + ' · ' + found.focused.status }],
-			note: 'Captured from the exact served revision; this focused run grants no full verification verdict.'
+			facts,
+			note: audio
+				? 'Captured at the tested revision; this focused run grants no full verification verdict.'
+				: 'Captured from the exact served revision; this focused run grants no full verification verdict.'
 		};
+	}
 	const tested = side.record?.scenarios.find((entry) => entry.id === found.scenario);
 	if (!side.record || !tested) return unrecorded;
 	return captureProvenance(side.record, tested, found.capture);
@@ -61,17 +72,19 @@ function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidenc
 	const { capture, scenario, state } = found;
 	const origin = told(side, found);
 	const where = capture.viewport ?? capture.kind;
+	const audio = focusedAudioIdentity(side, found);
+	const suffix = audio ? `-${audio.case}` : '';
 	return {
-		id: `${phase}-${short(side.commit)}-${scenario}-${state}-${capture.evidence}-${where}`,
-		title: `${scenario} · ${state}`,
+		id: `${phase}-${short(side.commit)}-${scenario}-${state}-${capture.evidence}-${where}${suffix}`,
+		title: `${scenario} · ${state}${audio ? ` · ${audio.case}` : ''}`,
 		category: scenario,
 		file: mediaFile(capture),
 		status: origin.standing === 'unvalidated' ? 'not-proven' : capture.status,
-		source: capture.server?.revision,
+		source: audio?.revision ?? capture.server?.revision,
 		capturedAt: capture.capturedAt,
 		viewport: capture.viewport,
 		phase,
-		comparison: `${scenario}|${state}|${capture.evidence}|${where}`,
+		comparison: `${scenario}|${state}|${capture.evidence}|${where}${audio ? `|${audio.case}` : ''}`,
 		standing: origin.label,
 		provenance: origin.facts,
 		note: origin.note,
@@ -81,6 +94,30 @@ function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidenc
 		durationSeconds: capture.durationSeconds,
 		transcript: capture.transcript
 	};
+}
+/** A focused audio key comes only from its sealed case and original revision binding. */
+function focusedAudioIdentity(side: ExplorerSide, found: ExplorerCapture) {
+	const { capture } = found;
+	if (!found.focused || capture.kind !== 'audio') return undefined;
+	try {
+		const binding = JSON.parse(capture.note ?? 'null') as Record<string, unknown> | null;
+		if (!binding || Object.keys(binding).sort().join(',') !== 'case,revision,sha256,unit')
+			return undefined;
+		const { unit, revision, sha256 } = binding;
+		const caseId = binding.case;
+		if (
+			typeof unit !== 'string' ||
+			typeof caseId !== 'string' ||
+			!/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(caseId) ||
+			typeof revision !== 'string' ||
+			revision !== (found.inheritedFrom ?? side.commit) ||
+			sha256 !== capture.sha256
+		)
+			return undefined;
+		return { case: caseId, revision };
+	} catch {
+		return undefined;
+	}
 }
 /** What a gap is named by: the picked state, or that no visual scenario names the entity. */
 function gapOf(pick: ScreenPick | null, at: string) {
