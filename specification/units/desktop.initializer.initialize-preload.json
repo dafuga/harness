@@ -3,8 +3,8 @@
 	"id": "desktop.initializer.initialize-preload",
 	"kind": "initializer",
 	"title": "initializePreload",
-	"responsibility": "Owns the initializePreload initializer unit.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Expose the authenticated local desktop bridge to its renderer.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -16,12 +16,13 @@
 		"symbols": ["initializePreload", "initializePreload", "Input", "initializePreload"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "initializePreload",
-				"type": "void"
+				"type": "void",
+				"description": "Exposes desktop bridge operations, including projectWork for the selected project, over the local transport."
 			}
 		],
 		"errors": []
