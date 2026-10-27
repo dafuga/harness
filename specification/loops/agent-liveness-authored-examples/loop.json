@@ -1,0 +1,43 @@
+{
+	"name": "agent-liveness-authored-examples",
+	"goal": "Bind agent liveness outcomes and failures to the same authored Examples used by their unit cases.",
+	"createdAt": "2026-10-27T14:15:26.426Z",
+	"updatedAt": "2026-10-27T14:20:14.029Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T14:20:14.029Z",
+			"evidence": "Declare the meaningful heartbeat, final-status, process-loss and error outcomes; preserve existing boundary assertions and execute the same authored calls displayed with expected comments."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

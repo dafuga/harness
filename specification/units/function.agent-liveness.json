@@ -48,7 +48,23 @@
 				"description": "State and explanation: a final status wins, an absent or reused process is gone, an overdue heartbeat is stale, and otherwise the agent is working."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Process lookup error",
+				"type": "Error",
+				"description": "Exceptions from a requested process lookup propagate."
+			},
+			{
+				"name": "Invalid agent",
+				"type": "TypeError",
+				"description": "A null or undefined agent cannot supply the required registration fields."
+			},
+			{
+				"name": "Invalid process lookup",
+				"type": "TypeError",
+				"description": "A non-callable process lookup fails when an unfinished agent has a process ID."
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -68,6 +84,296 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "agentLiveness",
+				"name": "Fresh heartbeat",
+				"call": "agentLiveness({\"registeredAt\":\"2026-10-11T11:00:00.000Z\",\"heartbeatAt\":\"2026-10-11T11:59:30.000Z\",\"ttlSeconds\":900,\"pid\":null,\"processStartedAt\":null,\"finished\":null}, 1791720000000, () => ({\"exists\":true,\"startedAt\":\"Sun Oct 11 10:07:29 2026\"}))",
+				"input": [
+					{
+						"registeredAt": "2026-10-11T11:00:00.000Z",
+						"heartbeatAt": "2026-10-11T11:59:30.000Z",
+						"ttlSeconds": 900,
+						"pid": null,
+						"processStartedAt": null,
+						"finished": null
+					},
+					1791720000000,
+					{
+						"exists": true,
+						"startedAt": "Sun Oct 11 10:07:29 2026"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "working",
+						"detail": "Last heartbeat at 2026-10-11T11:59:30.000Z"
+					}
+				}
+			},
+			{
+				"subject": "agentLiveness",
+				"name": "Overdue heartbeat",
+				"call": "agentLiveness({\"registeredAt\":\"2026-10-11T11:00:00.000Z\",\"heartbeatAt\":\"2026-10-11T11:44:59.000Z\",\"ttlSeconds\":900,\"pid\":null,\"processStartedAt\":null,\"finished\":null}, 1791720000000, () => ({\"exists\":true,\"startedAt\":\"Sun Oct 11 10:07:29 2026\"}))",
+				"input": [
+					{
+						"registeredAt": "2026-10-11T11:00:00.000Z",
+						"heartbeatAt": "2026-10-11T11:44:59.000Z",
+						"ttlSeconds": 900,
+						"pid": null,
+						"processStartedAt": null,
+						"finished": null
+					},
+					1791720000000,
+					{
+						"exists": true,
+						"startedAt": "Sun Oct 11 10:07:29 2026"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "stale",
+						"detail": "No heartbeat since 2026-10-11T11:44:59.000Z; it allowed 900 seconds between heartbeats"
+					}
+				}
+			},
+			{
+				"subject": "agentLiveness",
+				"name": "Completed registration",
+				"call": "agentLiveness({\"registeredAt\":\"2026-10-11T11:00:00.000Z\",\"heartbeatAt\":\"2026-10-11T11:59:30.000Z\",\"ttlSeconds\":900,\"pid\":null,\"processStartedAt\":null,\"finished\":{\"status\":\"completed\",\"at\":\"2026-10-11T11:59:00.000Z\"}}, 1791720000000, () => ({\"exists\":true,\"startedAt\":\"Sun Oct 11 10:07:29 2026\"}))",
+				"input": [
+					{
+						"registeredAt": "2026-10-11T11:00:00.000Z",
+						"heartbeatAt": "2026-10-11T11:59:30.000Z",
+						"ttlSeconds": 900,
+						"pid": null,
+						"processStartedAt": null,
+						"finished": {
+							"status": "completed",
+							"at": "2026-10-11T11:59:00.000Z"
+						}
+					},
+					1791720000000,
+					{
+						"exists": true,
+						"startedAt": "Sun Oct 11 10:07:29 2026"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "completed",
+						"detail": "Finished at 2026-10-11T11:59:00.000Z"
+					}
+				}
+			},
+			{
+				"subject": "agentLiveness",
+				"name": "Failed registration",
+				"call": "agentLiveness({\"registeredAt\":\"2026-10-11T11:00:00.000Z\",\"heartbeatAt\":\"2026-10-11T11:59:30.000Z\",\"ttlSeconds\":900,\"pid\":null,\"processStartedAt\":null,\"finished\":{\"status\":\"failed\",\"at\":\"2026-10-11T11:59:00.000Z\"}}, 1791720000000, () => ({\"exists\":true,\"startedAt\":\"Sun Oct 11 10:07:29 2026\"}))",
+				"input": [
+					{
+						"registeredAt": "2026-10-11T11:00:00.000Z",
+						"heartbeatAt": "2026-10-11T11:59:30.000Z",
+						"ttlSeconds": 900,
+						"pid": null,
+						"processStartedAt": null,
+						"finished": {
+							"status": "failed",
+							"at": "2026-10-11T11:59:00.000Z"
+						}
+					},
+					1791720000000,
+					{
+						"exists": true,
+						"startedAt": "Sun Oct 11 10:07:29 2026"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "failed",
+						"detail": "Failed at 2026-10-11T11:59:00.000Z"
+					}
+				}
+			},
+			{
+				"subject": "agentLiveness",
+				"name": "Reused process ID",
+				"call": "agentLiveness({\"registeredAt\":\"2026-10-11T11:00:00.000Z\",\"heartbeatAt\":\"2026-10-11T11:59:30.000Z\",\"ttlSeconds\":900,\"pid\":4242,\"processStartedAt\":\"Sun Oct 11 10:07:29 2026\",\"finished\":null}, 1791720000000, () => ({\"exists\":true,\"startedAt\":\"Sun Oct 11 11:30:00 2026\"}))",
+				"input": [
+					{
+						"registeredAt": "2026-10-11T11:00:00.000Z",
+						"heartbeatAt": "2026-10-11T11:59:30.000Z",
+						"ttlSeconds": 900,
+						"pid": 4242,
+						"processStartedAt": "Sun Oct 11 10:07:29 2026",
+						"finished": null
+					},
+					1791720000000,
+					{
+						"exists": true,
+						"startedAt": "Sun Oct 11 11:30:00 2026"
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "gone",
+						"detail": "Process 4242 is another process now; the one that registered has ended"
+					}
+				}
+			},
+			{
+				"subject": "agentLiveness",
+				"name": "Missing process",
+				"call": "agentLiveness({\"registeredAt\":\"2026-10-11T11:00:00.000Z\",\"heartbeatAt\":\"2026-10-11T11:59:30.000Z\",\"ttlSeconds\":900,\"pid\":4242,\"processStartedAt\":\"Sun Oct 11 10:07:29 2026\",\"finished\":null}, 1791720000000, () => ({\"exists\":false,\"startedAt\":null}))",
+				"input": [
+					{
+						"registeredAt": "2026-10-11T11:00:00.000Z",
+						"heartbeatAt": "2026-10-11T11:59:30.000Z",
+						"ttlSeconds": 900,
+						"pid": 4242,
+						"processStartedAt": "Sun Oct 11 10:07:29 2026",
+						"finished": null
+					},
+					1791720000000,
+					{
+						"exists": false,
+						"startedAt": null
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"state": "gone",
+						"detail": "Its process 4242 ended without saying it finished"
+					}
+				}
+			},
+			{
+				"subject": "agentLiveness",
+				"name": "Process lookup error",
+				"call": "agentLiveness({\"registeredAt\":\"2026-10-11T11:00:00.000Z\",\"heartbeatAt\":\"2026-10-11T11:59:30.000Z\",\"ttlSeconds\":900,\"pid\":4242,\"processStartedAt\":\"Sun Oct 11 10:07:29 2026\",\"finished\":null}, 1791720000000, () => { throw new Error(\"Process lookup unavailable\"); })",
+				"input": [
+					{
+						"registeredAt": "2026-10-11T11:00:00.000Z",
+						"heartbeatAt": "2026-10-11T11:59:30.000Z",
+						"ttlSeconds": 900,
+						"pid": 4242,
+						"processStartedAt": "Sun Oct 11 10:07:29 2026",
+						"finished": null
+					},
+					1791720000000,
+					{
+						"$fixture": "throwing-process",
+						"message": "Process lookup unavailable"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"message": "Process lookup unavailable"
+					}
+				}
+			}
+		],
+		"states": ["working", "stale", "completed", "failed", "reused", "missing", "error"],
+		"props": ["agent", "now", "processOf"],
+		"cases": [
+			{
+				"id": "agent-liveness.working",
+				"state": "working",
+				"subject": "agentLiveness",
+				"example": "Fresh heartbeat",
+				"fixture": "specification/units/function.agent-liveness.json",
+				"test": {
+					"file": "test/utils/agent-liveness.test.ts",
+					"title": "agentLiveness: Fresh heartbeat"
+				},
+				"props": ["agent", "now", "processOf"]
+			},
+			{
+				"id": "agent-liveness.stale",
+				"state": "stale",
+				"subject": "agentLiveness",
+				"example": "Overdue heartbeat",
+				"fixture": "specification/units/function.agent-liveness.json",
+				"test": {
+					"file": "test/utils/agent-liveness.test.ts",
+					"title": "agentLiveness: Overdue heartbeat"
+				},
+				"props": ["agent", "now", "processOf"]
+			},
+			{
+				"id": "agent-liveness.completed",
+				"state": "completed",
+				"subject": "agentLiveness",
+				"example": "Completed registration",
+				"fixture": "specification/units/function.agent-liveness.json",
+				"test": {
+					"file": "test/utils/agent-liveness.test.ts",
+					"title": "agentLiveness: Completed registration"
+				},
+				"props": ["agent", "now", "processOf"]
+			},
+			{
+				"id": "agent-liveness.failed",
+				"state": "failed",
+				"subject": "agentLiveness",
+				"example": "Failed registration",
+				"fixture": "specification/units/function.agent-liveness.json",
+				"test": {
+					"file": "test/utils/agent-liveness.test.ts",
+					"title": "agentLiveness: Failed registration"
+				},
+				"props": ["agent", "now", "processOf"]
+			},
+			{
+				"id": "agent-liveness.reused",
+				"state": "reused",
+				"subject": "agentLiveness",
+				"example": "Reused process ID",
+				"fixture": "specification/units/function.agent-liveness.json",
+				"test": {
+					"file": "test/utils/agent-liveness.test.ts",
+					"title": "agentLiveness: Reused process ID"
+				},
+				"props": ["agent", "now", "processOf"]
+			},
+			{
+				"id": "agent-liveness.missing",
+				"state": "missing",
+				"subject": "agentLiveness",
+				"example": "Missing process",
+				"fixture": "specification/units/function.agent-liveness.json",
+				"test": {
+					"file": "test/utils/agent-liveness.test.ts",
+					"title": "agentLiveness: Missing process"
+				},
+				"props": ["agent", "now", "processOf"]
+			},
+			{
+				"id": "agent-liveness.error",
+				"state": "error",
+				"subject": "agentLiveness",
+				"example": "Process lookup error",
+				"fixture": "specification/units/function.agent-liveness.json",
+				"test": {
+					"file": "test/utils/agent-liveness.test.ts",
+					"title": "agentLiveness: Process lookup error"
+				},
+				"props": ["agent", "now", "processOf"],
+				"errors": ["Process lookup error", "Invalid agent", "Invalid process lookup"]
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

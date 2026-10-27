@@ -1,59 +1,124 @@
 import { expect, test } from 'vitest';
+import type { ComponentManifest } from '../../src/core/development-tooling/unitTypes';
 import { agentLiveness } from '../../src/services/agent-activity-service/agentLiveness';
 import { type AgentFacts, type ProcessFacts } from '../../src/utils/agentLiveness';
+import { TestExpectationService } from '../../src/services/verification-evidence/TestExpectationService';
+import { usageExamples } from '../../packages/reports/src/components/shared-primitives/usage-examples/usageExamples';
+import unit from '../../specification/units/function.agent-liveness.json' with { type: 'json' };
+import { measureWorkload } from '../support/measureWorkload';
 
-const now = Date.parse('2026-10-11T12:00:00.000Z');
-const ago = (seconds: number) => new Date(now - seconds * 1000).toISOString();
-const started = 'Sun Oct 11 10:07:29 2026';
-const agent = (changes: Partial<AgentFacts> = {}): AgentFacts => ({
-	registeredAt: ago(3600),
-	heartbeatAt: ago(30),
-	ttlSeconds: 900,
-	pid: null,
-	processStartedAt: null,
-	finished: null,
-	...changes
-});
-const running: ProcessFacts = { exists: true, startedAt: started };
-const state = (facts: AgentFacts, found: ProcessFacts = running) =>
-	agentLiveness(facts, now, () => found).state;
+const ago = (now: number, seconds: number) => new Date(now - seconds * 1000).toISOString();
 
-test('an agent is working only while its own heartbeat is fresh', () => {
-	expect(state(agent())).toBe('working');
-	expect(state(agent({ heartbeatAt: ago(900) }))).toBe('working');
-	const quiet = agentLiveness(agent({ heartbeatAt: ago(901) }), now, () => running);
-	expect(quiet.state).toBe('stale');
-	expect(quiet.detail).toContain('2026-10-11T11:44:59');
-	// A process that is still there proves nothing about work: the heartbeat decides.
-	const idle = agent({ heartbeatAt: ago(7200), pid: 4242, processStartedAt: started });
-	expect(state(idle)).toBe('stale');
-});
+function checkDisplay(
+	agent: AgentFacts,
+	now: number,
+	process: ProcessFacts | { $fixture: 'throwing-process'; message: string }
+) {
+	const example = unit.testing.examples.find(
+		(item) => JSON.stringify(item.input) === JSON.stringify([agent, now, process])
+	);
+	if (!example) throw new Error('Missing authored liveness example');
+	const callback =
+		'$fixture' in process
+			? `() => { throw new Error(${JSON.stringify(process.message)}); }`
+			: `() => (${JSON.stringify(process)})`;
+	const call = `agentLiveness(${JSON.stringify(agent)}, ${now}, ${callback})`;
+	expect(example.call, 'the displayed call uses the tested input').toBe(call);
+	const failed = example.expected.kind === 'error';
+	const expected = example.expected.value;
+	const base = { name: example.name, call, input: example.input };
+	const shown = failed ? { ...base, error: expected } : { ...base, output: expected };
+	const comment = failed
+		? `// throws { "name": ${JSON.stringify(expected.name)}, "message": ${JSON.stringify(expected.message)} }`
+		: `// => { "state": ${JSON.stringify(expected.state)}, "detail": ${JSON.stringify(expected.detail)} }`;
+	expect(usageExamples([shown])).toEqual([`${call}\n${comment}`]);
+	return example.call;
+}
 
-test('a finished or failed owner stays finished, whatever arrives after', () => {
-	const done = { status: 'completed' as const, at: ago(60) };
-	expect(state(agent({ finished: done }))).toBe('completed');
-	expect(state(agent({ finished: done, heartbeatAt: ago(1) }))).toBe('completed');
-	expect(state(agent({ finished: { status: 'failed', at: ago(60) } }))).toBe('failed');
-});
-
-test('a process that ended, or a number that now belongs to another process, is not the agent', () => {
-	const owned = agent({ pid: 4242, processStartedAt: started });
+function checkWorking(agent: AgentFacts, now: number, running: ProcessFacts) {
+	const state = (facts: AgentFacts, found: ProcessFacts = running) =>
+		agentLiveness(facts, now, () => found).state;
+	expect(state({ ...agent, heartbeatAt: ago(now, 900) })).toBe('working');
+	const owned = { ...agent, pid: 4242, processStartedAt: running.startedAt };
 	expect(state(owned)).toBe('working');
-	expect(state(owned, { exists: false, startedAt: null })).toBe('gone');
-	const reused = agentLiveness(owned, now, () => ({
-		exists: true,
-		startedAt: 'Sun Oct 11 11:30:00 2026'
-	}));
-	expect(reused.state).toBe('gone');
-	expect(reused.detail).toMatch(/another process/);
-	// Where the start of a process cannot be read, only its absence is evidence.
-	expect(state(agent({ pid: 4242 }), { exists: true, startedAt: null })).toBe('working');
+	expect(state({ ...owned, processStartedAt: null }, { exists: true, startedAt: null })).toBe(
+		'working'
+	);
 	expect(state(owned, { exists: undefined, startedAt: null })).toBe('working');
-	// A registration without a process is judged by its heartbeat alone, and nothing is asked.
 	let asked = 0;
-	agentLiveness(agent(), now, () => {
+	agentLiveness(agent, now, () => {
 		asked += 1;
 		return running;
 	});
 	expect(asked).toBe(0);
+	expect(agentLiveness(agent, now, undefined as unknown as () => ProcessFacts).state).toBe(
+		'working'
+	);
+}
+
+function checkBoundaries(agent: AgentFacts, now: number, process: ProcessFacts, state: string) {
+	if (state === 'working' && agent.pid === null && !agent.finished)
+		checkWorking(agent, now, process);
+	if (state === 'stale') {
+		const idle = {
+			...agent,
+			heartbeatAt: ago(now, 7200),
+			pid: 4242,
+			processStartedAt: process.startedAt
+		};
+		expect(agentLiveness(idle, now, () => process).state).toBe('stale');
+	}
+	if (state === 'completed') {
+		expect(agentLiveness({ ...agent, heartbeatAt: ago(now, 1) }, now, () => process).state).toBe(
+			'completed'
+		);
+		expect(
+			agentLiveness({ ...agent, pid: 4242 }, now, () => {
+				throw new Error('Finished agents must not inspect processes');
+			}).state
+		).toBe('completed');
+	}
+}
+
+async function checked(
+	agent: AgentFacts,
+	now: number,
+	process: ProcessFacts | { $fixture: 'throwing-process'; message: string }
+) {
+	const call = checkDisplay(agent, now, process);
+	const invoke = () =>
+		new Function('agentLiveness', `return (${call});`)(agentLiveness) as ReturnType<
+			typeof agentLiveness
+		>;
+	if ('$fixture' in process) {
+		for (const invalid of [null, undefined])
+			expect(() =>
+				agentLiveness(invalid as unknown as AgentFacts, now, () => ({
+					exists: true,
+					startedAt: null
+				}))
+			).toThrow(TypeError);
+		expect(() => agentLiveness(agent, now, undefined as unknown as () => ProcessFacts)).toThrow(
+			TypeError
+		);
+		return invoke();
+	}
+	const result = await measureWorkload(
+		'function.agent-liveness',
+		'authored-liveness-example',
+		invoke
+	);
+	let asked: number | null = null;
+	const observed = agentLiveness(agent, now, (pid) => {
+		asked = pid;
+		return process;
+	});
+	expect(asked).toBe(agent.pid !== null && !agent.finished ? agent.pid : null);
+	expect(observed).toEqual(result);
+	checkBoundaries(agent, now, process, result.state);
+	return result;
+}
+
+new TestExpectationService().registerExamples(test, unit as ComponentManifest, {
+	agentLiveness: checked
 });
