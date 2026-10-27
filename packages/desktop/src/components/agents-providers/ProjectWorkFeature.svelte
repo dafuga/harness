@@ -11,7 +11,6 @@
 		FeaturePlanChange as Change,
 		FeaturePlanPage as Page
 	} from '../../../../../src/repositories/agents-providers/ModuleTaskRepository.types';
-	type Feature = FeatureWorkSnapshot['features'][number];
 
 	let {
 		feature: f,
@@ -37,14 +36,14 @@
 	const FIELDS = ['inputs', 'outputs', 'errors'] as const;
 	const statusOf = (t: Task) => STATUS[t.status] ?? { label: `Status ${t.status}`, tone: 'gray' };
 	const short = (commit: string) => commit.slice(0, 7);
-	const nameOf = (f: Feature, id: string) =>
+	const nameOf = (f: FeatureWorkSnapshot['features'][number], id: string) =>
 		f.tasks.find((t) => t.id === id)?.title ?? `missing task ${id}`;
-	const plannedOnly = (f: Feature) =>
+	const plannedOnly = (f: FeatureWorkSnapshot['features'][number]) =>
 		(f.plan?.tasks ?? []).filter((p) => !f.tasks.some((t) => t.id === p.id));
 	const selection = (page: Page) =>
 		page.selected ? `Selected ${page.selected}` : 'No option selected';
 
-	function progress(f: Feature) {
+	function progress(f: FeatureWorkSnapshot['features'][number]) {
 		const accepted = f.tasks.filter((t) => t.status === 'accepted').length;
 		const stored = f.tasks.length
 			? `${accepted} of ${f.tasks.length} stored tasks accepted`
@@ -70,7 +69,7 @@
 		return { roots, kids };
 	}
 
-	function otherModules(f: Feature) {
+	function otherModules(f: FeatureWorkSnapshot['features'][number]) {
 		const units = new Set(f.plan?.changes.map((c) => c.unit));
 		return [...new Set([...f.tasks, ...plannedOnly(f)].map((t) => t.module))].filter(
 			(m) => !units.has(m)
@@ -78,131 +77,137 @@
 	}
 </script>
 
-<li>
-	<details bind:open={expanded}>
-		<summary>
-			<strong class="grow">{f.goal || f.id}</strong>
-			<small class="full">{f.id} · {progress(f)}</small>
-		</summary>
-		{#if f.tldr}<p class="meta">{f.tldr}</p>{/if}
+<hx-li>
+	<hx-details bind:open={expanded}>
+		<hx-summary>
+			<hx-strong class="grow">{f.goal || f.id}</hx-strong>
+			<hx-small class="full">{f.id} · {progress(f)}</hx-small>
+		</hx-summary>
+		{#if f.tldr}<hx-p class="meta">{f.tldr}</hx-p>{/if}
 		{#if f.plan}
 			{@render planView(f, f.plan)}
 		{:else}
-			<p class="meta">No committed plan for this feature.</p>
+			<hx-p class="meta">No committed plan for this feature.</hx-p>
 		{/if}
 		{#each otherModules(f) as m (m)}
-			<p class="meta">
-				<code>{m}</code>{f.plan ? ' · not among this plan’s changes' : ''}
-			</p>
+			<hx-p class="meta">
+				<hx-code>{m}</hx-code>{f.plan ? ' · not among this plan’s changes' : ''}
+			</hx-p>
 			{@render moduleTasks(f, m)}
 		{/each}
-	</details>
-</li>
+	</hx-details>
+</hx-li>
 
-{#snippet planView(f: Feature, p: Plan)}
+{#snippet planView(f: FeatureWorkSnapshot['features'][number], p: Plan)}
 	{@const tree = changeTree(p.changes)}
-	<p class="meta">
-		Plan revision {p.revision} from <code title={p.sourceCommit}>{short(p.sourceCommit)}</code> ·
+	<hx-p class="meta">
+		Plan revision {p.revision} from
+		<hx-code title={p.sourceCommit}>{short(p.sourceCommit)}</hx-code>
+		·
 		{#if !p.approval}not approved{:else if p.approval.digest !== p.digest}approval is for a
 			different digest{:else}approved by {p.approval.reviewer} at
-			<time datetime={p.approval.approvedAt}>{p.approval.approvedAt}</time>{/if}
-	</p>
-	<p class="meta">Design previews and approval controls are not available in this panel.</p>
+			<hx-time datetime={p.approval.approvedAt}>{p.approval.approvedAt}</hx-time>{/if}
+	</hx-p>
+	<hx-p class="meta">Design previews and approval controls are not available in this panel.</hx-p>
 	{#each p.pages as page (page.module)}
-		<details>
-			<summary
-				><span class="grow">Design <code>{page.module}</code></span><span class="tag"
-					>{selection(page)}</span
-				></summary
+		<hx-details>
+			<hx-summary
+				><hx-span class="grow">Design <hx-code>{page.module}</hx-code></hx-span><hx-span class="tag"
+					>{selection(page)}</hx-span
+				></hx-summary
 			>
-			<ul class="tree">
+			<hx-ul class="tree">
 				{#each page.options as o (o.id)}
-					<li class="row">
-						<span class="grow">{o.id} · {o.version}</span>
-						{#if o.id === page.selected}<span class="tag amber">Selected</span>{/if}
-						{#if o.preferred}<span class="tag amber">Preferred</span>{/if}
-						<code class="full" title="sha256 {o.sha256}">{o.path} @ {short(o.commit)}</code>
-					</li>
+					<hx-li class="row">
+						<hx-span class="grow">{o.id} · {o.version}</hx-span>
+						{#if o.id === page.selected}<hx-span class="tag amber">Selected</hx-span>{/if}
+						{#if o.preferred}<hx-span class="tag amber">Preferred</hx-span>{/if}
+						<hx-code class="full" title="sha256 {o.sha256}">{o.path} @ {short(o.commit)}</hx-code>
+					</hx-li>
 				{/each}
-			</ul>
-		</details>
+			</hx-ul>
+		</hx-details>
 	{/each}
 	{#if tree.roots.length}
-		<ul class="tree">
+		<hx-ul class="tree">
 			{#each tree.roots as c (c.unit)}{@render changeNode(f, c, tree.kids)}{/each}
-		</ul>
+		</hx-ul>
 	{:else}
-		<p class="meta">This plan lists no module changes.</p>
+		<hx-p class="meta">This plan lists no module changes.</hx-p>
 	{/if}
 {/snippet}
 
-{#snippet changeNode(f: Feature, c: Change, kids: Map<Change, Change[]>)}
-	<li>
-		<details open>
-			<summary
-				><code class="grow">{c.unit}</code><span class="tag">{KIND[c.kind] ?? c.kind}</span
-				></summary
+{#snippet changeNode(
+	f: FeatureWorkSnapshot['features'][number],
+	c: Change,
+	kids: Map<Change, Change[]>
+)}
+	<hx-li>
+		<hx-details open>
+			<hx-summary
+				><hx-code class="grow">{c.unit}</hx-code><hx-span class="tag"
+					>{KIND[c.kind] ?? c.kind}</hx-span
+				></hx-summary
 			>
 			{#if c.wantedContract}
 				{@const w = c.wantedContract}
-				<details>
-					<summary>Wanted contract</summary>
-					<p class="meta">{w.responsibility}</p>
+				<hx-details>
+					<hx-summary>Wanted contract</hx-summary>
+					<hx-p class="meta">{w.responsibility}</hx-p>
 					{#each FIELDS as field (field)}
 						{@const entries = w[field] ?? []}
-						<p class="meta label">{field}{entries.length ? '' : ': none declared'}</p>
+						<hx-p class="meta label">{field}{entries.length ? '' : ': none declared'}</hx-p>
 						{#each entries as e, index (index)}
-							<p class="meta">
-								<code>{e.name}</code>{e.type ? `: ${e.type}` : ''}{e.description
+							<hx-p class="meta">
+								<hx-code>{e.name}</hx-code>{e.type ? `: ${e.type}` : ''}{e.description
 									? ` — ${e.description}`
 									: ''}
-							</p>
+							</hx-p>
 						{/each}
 					{/each}
-				</details>
+				</hx-details>
 			{/if}
-			{#if c.assignedFiles.length}<p class="meta">Files: {c.assignedFiles.join(', ')}</p>{/if}
+			{#if c.assignedFiles.length}<hx-p class="meta">Files: {c.assignedFiles.join(', ')}</hx-p>{/if}
 			{@render moduleTasks(f, c.unit)}
-			{#if kids.get(c)?.length}<ul class="tree">
+			{#if kids.get(c)?.length}<hx-ul class="tree">
 					{#each kids.get(c) ?? [] as k (k.unit)}{@render changeNode(f, k, kids)}{/each}
-				</ul>{/if}
-		</details>
-	</li>
+				</hx-ul>{/if}
+		</hx-details>
+	</hx-li>
 {/snippet}
 
-{#snippet moduleTasks(f: Feature, module: string)}
+{#snippet moduleTasks(f: FeatureWorkSnapshot['features'][number], module: string)}
 	{@const stored = f.tasks.filter((t) => t.module === module)}
 	{@const planned = plannedOnly(f).filter((t) => t.module === module)}
 	{#if stored.length || planned.length}
-		<ul class="tree">
+		<hx-ul class="tree">
 			{#each stored as t (t.id)}
 				{@const s = statusOf(t)}
-				<li>
-					<details>
-						<summary>
-							<span class="dot {s.tone}" aria-hidden="true"></span>
-							<span class="grow">{t.title}</span>
-							<span class="status {s.tone}">{s.label}</span>
-							{#if t.blockedBy.length}<small class="full end"
-									>Waiting on {t.blockedBy.map((id) => nameOf(f, id)).join(', ')}</small
+				<hx-li>
+					<hx-details>
+						<hx-summary>
+							<hx-span class="dot {s.tone}" aria-hidden="true"></hx-span>
+							<hx-span class="grow">{t.title}</hx-span>
+							<hx-span class="status {s.tone}">{s.label}</hx-span>
+							{#if t.blockedBy.length}<hx-small class="full end"
+									>Waiting on {t.blockedBy.map((id) => nameOf(f, id)).join(', ')}</hx-small
 								>{/if}
-						</summary>
-						<p class="meta">
-							Task <code>{t.id}</code>{t.belongsToPlan ? '' : ' · not in the current plan'}
-						</p>
-						<p class="meta">
+						</hx-summary>
+						<hx-p class="meta">
+							Task <hx-code>{t.id}</hx-code>{t.belongsToPlan ? '' : ' · not in the current plan'}
+						</hx-p>
+						<hx-p class="meta">
 							Depends on {t.dependsOn.map((id) => nameOf(f, id)).join(', ') || 'no tasks'}
-						</p>
-					</details>
-				</li>
+						</hx-p>
+					</hx-details>
+				</hx-li>
 			{/each}
 			{#each planned as t (t.id)}
-				<li class="row planned">
-					<span class="dot" aria-hidden="true"></span><span class="grow">{t.title}</span><span
-						>Planned, not stored</span
-					>
-				</li>
+				<hx-li class="row planned">
+					<hx-span class="dot" aria-hidden="true"></hx-span><hx-span class="grow">{t.title}</hx-span
+					><hx-span>Planned, not stored</hx-span>
+				</hx-li>
 			{/each}
-		</ul>
+		</hx-ul>
 	{/if}
 {/snippet}

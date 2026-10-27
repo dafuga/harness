@@ -14,9 +14,9 @@
 
 <hx-section data-harness-component="project-work" aria-label="Project work" aria-busy={loading}>
 	<hx-h2>Work</hx-h2>
-	<p class="meta" role="status">
+	<hx-p class="meta" role="status">
 		{#if loading}{snapshot ? 'Refreshing committed work…' : 'Loading committed work…'}{/if}
-	</p>
+	</hx-p>
 	{#if error}
 		<hx-p class="alert" role="alert"
 			>{snapshot ? 'Showing the last read; it may be stale.' : 'Work could not be read.'}
@@ -26,19 +26,19 @@
 	{#if !snapshot}
 		{#if !loading && !error}<hx-p>Feature work is unavailable for this project.</hx-p>{/if}
 	{:else}
-		<p class="meta" title={snapshot.queueCommit}>
+		<hx-p class="meta" title={snapshot.queueCommit}>
 			{snapshot.queueCommit
 				? `Queue commit ${short(snapshot.queueCommit)}`
 				: 'The queue has no commit yet.'}
-		</p>
+		</hx-p>
 		{#if !snapshot.features.length}
 			<hx-p>No features are committed to this queue.</hx-p>
 		{:else}
-			<ul>
+			<hx-ul>
 				{#each snapshot.features as f, i (f.id)}
 					<ProjectWorkFeature feature={f} initiallyOpen={i === 0} />
 				{/each}
-			</ul>
+			</hx-ul>
 		{/if}
 	{/if}
 </hx-section>

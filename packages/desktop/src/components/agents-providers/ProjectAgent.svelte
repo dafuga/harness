@@ -19,13 +19,12 @@
 	const work = createProjectWorkStore(workspace);
 	const kind = $derived(workspace.category.slice(0, -1));
 	const label = $derived(agent.allowed ? 'Work with agent' : 'Open project chat');
-	type View = 'chat' | 'work' | 'agents';
-	let view = $state<View>('chat');
+	let view = $state<'chat' | 'work' | 'agents'>('chat');
 	/** Svelte keeps these identifiers stable between server rendering and hydration. */
 	const id = $props.id();
 	/** The tabs are one tab stop; arrows, Home and End move between them. */
 	function step(event: KeyboardEvent) {
-		const keys: Record<string, View> = {
+		const keys: Record<string, 'chat' | 'work' | 'agents'> = {
 			ArrowLeft: view === 'chat' ? 'agents' : view === 'work' ? 'chat' : 'work',
 			ArrowRight: view === 'chat' ? 'work' : view === 'work' ? 'agents' : 'chat',
 			Home: 'chat',
@@ -66,7 +65,7 @@
 		/>
 	</hx-li>{/snippet}
 
-{#snippet tab(name: View, text: string)}
+{#snippet tab(name: 'chat' | 'work' | 'agents', text: string)}
 	<hx-button
 		type="button"
 		role="tab"

@@ -2,7 +2,7 @@
 	"name": "design-prompt-provenance",
 	"goal": "Preserve entity provenance and requested-area boundaries in reference-aware image prompts.",
 	"createdAt": "2026-10-27T09:35:57.013Z",
-	"updatedAt": "2026-10-27T09:41:04.005Z",
+	"updatedAt": "2026-10-27T09:43:26.893Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:42:57.443Z",
+			"evidence": "a750ce55df4c907ef1ca3834f508657eaf618a46db4ced3257b2c6a13f67d799 passes the unchanged committed provenance case at 127e571d2b in the same runtime and environment as red dc154074f22bb70b19a52d351b0457797964682a82c438aa13d1db938521e04d."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:43:26.893Z",
+			"evidence": "In an isolated export of 127e571d2b, restoring the original missing-label line made the identical case fail on Entity: Target; restoring the repair made it pass. Both runs used the same snapshot, dependencies, runtime and command."
 		},
 		{
 			"id": "verify",

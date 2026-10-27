@@ -12,7 +12,8 @@
 			"desktop.component.agents-providers-project-work-feature",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-section"
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-ul"
 		]
 	},
 	"owns": {
@@ -70,6 +71,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
 			"via": "import",
 			"origin": "derived"
 		},

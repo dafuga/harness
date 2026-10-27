@@ -57,7 +57,6 @@ test('a failed option leaves no version and no design commit', async () => {
 	expect(f.generator.generateImage).toHaveBeenCalledTimes(2);
 	expect([await versions(f), designCommits(f, head)]).toEqual([[], []]);
 }, 60000);
-
 test('a Plan cancelled during an option leaves no version and no design commit', async () => {
 	const f = await fixture();
 	let runId = '';
@@ -70,7 +69,6 @@ test('a Plan cancelled during an option leaves no version and no design commit',
 	expect(f.generator.generateImage).toHaveBeenCalledTimes(2);
 	expect([await versions(f), designCommits(f, head)]).toEqual([[], []]);
 }, 60000);
-
 test('a headless Plan keeps notes and generates no image, whatever count it is given', async () => {
 	const f = await fixture();
 	const entity = await f.planning.createPlan({

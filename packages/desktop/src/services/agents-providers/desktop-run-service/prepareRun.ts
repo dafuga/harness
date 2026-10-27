@@ -56,9 +56,7 @@ function currentImage(preparation: Preparation, context: RunContext) {
 		commit: context.revision.commit,
 		mode: 'commit' as const
 	};
-	const thread = context.entity.threads.find((item) => item.id === context.request.threadId);
-	const state = thread?.state ?? 'default',
-		viewport = thread?.viewport ?? 'desktop';
+	const { state, viewport } = threadView(context);
 	return async (): Promise<Uint8Array | null> => {
 		if (!projectId)
 			throw new Error('A selected project is required for current screenshot evidence.');
@@ -89,6 +87,11 @@ function currentImage(preparation: Preparation, context: RunContext) {
 		if (context.signal.aborted) throw new RunCancelled();
 		return verifiedArtifact(artifact, capture);
 	};
+}
+
+function threadView(context: RunContext) {
+	const thread = context.entity.threads.find((item) => item.id === context.request.threadId);
+	return { state: thread?.state ?? 'default', viewport: thread?.viewport ?? 'desktop' };
 }
 
 function verifiedArtifact(
