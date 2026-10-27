@@ -772,3 +772,32 @@ tree equals `f01c872f48`. The unit has 7,817 source bytes, 189 lines, complexity
 recorded successful synchronous calls with whole-process peak RSS; those
 observations include the runner and are not isolated service memory. Full
 verification remains pending.
+
+## Continuation: bounded Git reads during history reconstruction
+
+A source-only read of 40 revisions completed with 457 branch names in 4.2 s
+and 483,442,688 bytes peak task-process RSS. An isolated `--smol` history build
+then hit its memory guard before writing a revision. Temporary stage markers
+showed the first source index starting 9,497 file reads together. A diagnostic
+64-object batch completed that index but reached the next guard during registry
+work; this was not a completed history reconstruction.
+
+The existing populated CommitTreeAdapter read case now exercises many real Git
+blobs, overlapping requests, malformed and failed metadata, and retry. Test-only
+`cb888b26de` failed red `4df7fbbb1aff`; source-only `4528125944` passed green
+`07d36ac218bf` unchanged. The adapter serializes its own payload batches and
+limits them to 64 objects and 32 MiB of declared uncompressed data, except that
+one larger blob remains readable alone. Mutation `269153d4b9` failed capture
+`aaa5ba376075`; restored `fc3124bd16` passed `4f8d4da03b26` and has the same
+tree as the repair. Capture `12e7437dbf6d` passed 29 focused cases, registry
+validation, targeted lint, root typecheck and audit. The bounded-read workload
+took 431.15 ms and observed 574,455,808 bytes whole-worker RSS. The adapter has
+7,185 source bytes, 187 lines, complexity 53 and four dependencies, with no
+separate module artifact. Five change reasons are retained in Git notes.
+
+An instrumented isolated probe using the actual repair completed the first
+source index and contract metadata, then stopped at the 2 GiB task guard before
+writing a revision. Sampling observed 2,185,576,448 bytes task-process peak and
+9,018,572,800 bytes as an upper estimate including shared processes. This
+demonstrates progress within one stage, not full memory-safe history coverage.
+No old revision was retested and historical missing proof remains missing.

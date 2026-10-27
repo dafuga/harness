@@ -2,7 +2,7 @@
 	"name": "history-bounded-blob-batches",
 	"goal": "Bound Git blob batch memory while preserving committed reads.",
 	"createdAt": "2026-10-27T00:24:29.415Z",
-	"updatedAt": "2026-10-27T00:24:33.815Z",
+	"updatedAt": "2026-10-27T00:27:39.046Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:25:51.081Z",
+			"evidence": "Committed case 264233787b observed two simultaneous Git payload batches; record eb92dc67dbd4."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:27:25.114Z",
+			"evidence": "Commit 4528125944 serializes Git payload batches and bounds their count and declared bytes."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:27:39.046Z",
+			"evidence": "Unchanged case passed at 4528125944; paired red 4df7fbbb1aff and green 07d36ac218bf."
 		},
 		{
 			"id": "verify",
