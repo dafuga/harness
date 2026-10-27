@@ -2,7 +2,7 @@
 	"name": "verification-check-method-states",
 	"goal": "Migrate verification checker behavior to declared method and initialization cases while preserving integrity evidence.",
 	"createdAt": "2026-10-27T16:09:35.591Z",
-	"updatedAt": "2026-10-27T16:09:39.809Z",
+	"updatedAt": "2026-10-27T16:44:36.565Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -19,12 +19,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T16:44:35.733Z",
+			"evidence": "Registered four method and initialization cases, retaining the existing shared-versus-fresh integrity title and corrupted-log assertion."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T16:44:36.565Z",
+			"evidence": "Four checker cases, the scenario wrapper and 29 focused adapter, wrapper and registry guards passed on harbor-mbp-2; final-revision capture remains pending."
 		},
 		{
 			"id": "verify",
