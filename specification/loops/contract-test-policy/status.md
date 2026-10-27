@@ -1399,3 +1399,10 @@ had 13,822 source bytes, 376 lines, complexity 116 and five dependencies; no
 separate module artifact applies. Its visual admission workload took 0.909 ms
 and the whole test worker reported 192,299,008 bytes RSS. The capture-binding
 and actual screenshot comparison gates remain open.
+
+A fresh Harness resource probe requested `claude-haiku-5-5` with `max` effort
+and no tools; the CLI completed and reported `claude-haiku-5-5` in both init and
+usage. The response did not independently report effort, and this was not an
+editing worker. A fresh `gpt-6-luna/max` probe reached the provider and returned
+`model_not_found` for this ChatGPT account. No fallback model was used. Safe
+editing-worker qualification remains open.
