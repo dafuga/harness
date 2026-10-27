@@ -2,7 +2,7 @@
 	"name": "claude-sandbox-scratch",
 	"goal": "Keep Claude temporary files within the task scratch directory",
 	"createdAt": "2026-10-27T11:07:34.717Z",
-	"updatedAt": "2026-10-27T11:08:12.222Z",
+	"updatedAt": "2026-10-27T11:20:21.656Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:20:21.656Z",
+			"evidence": "At 3cc1cb4a3c, the two arguments state cases failed for both missing Claude scratch variables; eight other cases passed. Red de52006ab858 retained on harbor-mbp-2."
 		},
 		{
 			"id": "implement",
