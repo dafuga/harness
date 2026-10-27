@@ -1,0 +1,45 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ueYami
+
+ ❯ test/services/verification-evidence/test-contract.test.ts (2 tests | 1 failed) 47ms
+   × validate initialized and invalid registries against declared cases 33ms
+     → expected [ …(3) ] to deeply equal []
+   ✓ compare initialized contracts preserves identities unless capabilities change 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/test-contract.test.ts > validate initialized and invalid registries against declared cases
+AssertionError: expected [ …(3) ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "page.rank/sibling: missing case-bound screenshot at desktop",[39m
+[31m+   "page.rank/sibling: missing case-bound screenshot at tablet",[39m
+[31m+   "page.rank/sibling: missing case-bound screenshot at mobile",[39m
+[31m+ ][39m
+
+ ❯ assertSiblingScenarioCheck test/support/visualCaseBinding.ts:207:87
+    205|   }
+    206|  };
+    207|  expect(service.validate(registry as Parameters<TestContractService['v…
+       |                                                                                       ^
+    208| }
+    209| 
+ ❯ assertVisualCaseBinding test/support/visualCaseBinding.ts:34:3
+ ❯ test/services/verification-evidence/test-contract.test.ts:88:4
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-contract.test.ts:87:3
+ ❯ measureWorkload test/support/measureWorkload.ts:13:23
+ ❯ test/services/verification-evidence/test-contract.test.ts:86:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  05:06:46
+   Duration  4.09s (transform 235ms, setup 135ms, collect 597ms, tests 47ms, environment 0ms, prepare 33ms)
+
