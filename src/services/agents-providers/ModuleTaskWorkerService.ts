@@ -50,6 +50,8 @@ export class ModuleTaskWorkerService {
 		if (!/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(worker))
 			throw new Error('Worker must be a lowercase dotted or dashed identifier.');
 		signal.throwIfAborted();
+		await this.runner.ready?.();
+		signal.throwIfAborted();
 		const owner = await this.repository.owner();
 		signal.throwIfAborted();
 		const service = new ModuleTaskService(this.root);

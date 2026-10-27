@@ -28,6 +28,9 @@ export class ModuleTaskRunnerAdapter implements TaskRunner {
 		> = new ModuleTaskSandboxAdapter(),
 		private readonly qualification?: () => Promise<void>
 	) {}
+	ready(): Promise<void> {
+		return new ModuleTaskLaunchAdapter({ qualification: this.qualification }).qualify();
+	}
 	command(selection: TaskSelection): string[] {
 		if (selection.provider === 'claude') return claudeTaskCommand(selection);
 		// prettier-ignore

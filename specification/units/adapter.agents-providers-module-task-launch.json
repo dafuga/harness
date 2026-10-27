@@ -15,6 +15,7 @@
 			"ModuleTaskLaunchAdapter",
 			"ModuleTaskLaunchAdapter.constructor",
 			"ModuleTaskLaunchAdapter.connect",
+			"ModuleTaskLaunchAdapter.qualify",
 			"ModuleTaskLaunchAdapter.run",
 			"ModuleTaskLaunchAdapterConfig",
 			"ModuleTaskLaunchAdapterConfig",
@@ -64,6 +65,11 @@
 				"name": "run",
 				"type": "Promise<TaskProcessResult>",
 				"description": "Before provider config discovery or sandbox preparation, require the trusted qualification callback to succeed; the production default rejects. Qualified synthetic or trusted-host execution retains exact argv, scope validation, runtime/config discovery and cleanup semantics. No unqualified provider is launched."
+			},
+			{
+				"name": "qualify",
+				"type": "Promise<void>",
+				"description": "Await the trusted in-process qualification callback; absent or failing qualification rejects with the existing safe prelaunch diagnostic. run independently calls qualify again immediately before provider preparation."
 			}
 		],
 		"errors": [

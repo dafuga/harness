@@ -26,18 +26,22 @@ export class ModuleTaskLaunchAdapter {
 		return this.config.name ?? 'module-task-launch';
 	}
 
-	async run(
-		argv: string[],
-		input: ModuleTaskLaunchInput,
-		execute: ModuleTaskLaunchExecute,
-		sandbox: ModuleTaskLaunchSandbox
-	): Promise<TaskProcessResult> {
+	async qualify(): Promise<void> {
 		try {
 			if (!this.config.qualification) throw prelaunchFailure();
 			await this.config.qualification();
 		} catch {
 			throw prelaunchFailure();
 		}
+	}
+
+	async run(
+		argv: string[],
+		input: ModuleTaskLaunchInput,
+		execute: ModuleTaskLaunchExecute,
+		sandbox: ModuleTaskLaunchSandbox
+	): Promise<TaskProcessResult> {
+		await this.qualify();
 		return runProvider(argv, input, execute, sandbox);
 	}
 }
