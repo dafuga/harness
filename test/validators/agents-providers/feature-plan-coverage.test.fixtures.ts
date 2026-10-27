@@ -1,103 +1,7 @@
 import { expect } from 'vitest';
 import { FeaturePlanCoverageValidator } from '../../../src/validators/agents-providers/FeaturePlanCoverageValidator';
-const sourceCommit = 'a'.repeat(40);
-const contract = { inputs: [], outputs: [], errors: [] };
-export function unit(id: string, kind = 'component', status = 'active') {
-	const file = kind === 'page' ? `src/routes/${id}/+page.svelte` : `src/${id}.ts`;
-	return {
-		id,
-		kind,
-		status,
-		title: id,
-		responsibility: id,
-		dependencies: [],
-		scenarios: [],
-		owns: { source: [file], symbols: [] },
-		contract,
-		runtime: { kind: 'module', targets: [] },
-		budgets: {},
-		version: 'a'.repeat(16)
-	};
-}
-export function relationships(pages: string[] = []) {
-	return {
-		pages,
-		layouts: [],
-		components: [],
-		functions: [],
-		configs: [],
-		services: [],
-		types: [],
-		apis: [],
-		models: [],
-		usedBy: [],
-		support: []
-	};
-}
-export function data() {
-	const units = [
-		unit('component.shared'),
-		unit('component.other'),
-		unit('page.alpha', 'page'),
-		unit('page.beta', 'page'),
-		unit('page.direct', 'page')
-	];
-	return {
-		schemaVersion: 1,
-		producer: 'test',
-		commit: sourceCommit,
-		tree: sourceCommit,
-		digest: 'b'.repeat(64),
-		inputs: { notes: null, evidence: null },
-		declarations: [],
-		versions: {},
-		sourceGraph: { nodes: [], edges: [], uncertain: [] },
-		sourceIssues: [],
-		references: [] as unknown[],
-		modules: [],
-		issues: [],
-		registry: { available: true, units, scenarios: [], graph: { nodes: [], edges: [] } },
-		relationships: Object.fromEntries(units.map((item) => [item.id, relationships()]))
-	};
-}
-export function change(
-	id: string,
-	kind: 'modify' | 'reuse' | 'add' | 'remove' = 'modify',
-	parent?: string
-) {
-	return {
-		unit: id,
-		kind,
-		...(parent ? { parent } : {}),
-		wantedContract: contract,
-		assignedFiles: [`src/${id}.ts`]
-	};
-}
-export function plan(changes = [change('component.shared')], pages: string[] = []) {
-	return {
-		feature: 'coverage',
-		sourceCommit,
-		revision: 1,
-		goal: 'Cover affected pages',
-		tldr: 'Review each affected page',
-		digest: 'c'.repeat(64),
-		changes,
-		tasks: [],
-		pages: pages.map((module) => ({
-			module,
-			options: [
-				{
-					id: 'option-a',
-					version: 'v1',
-					commit: sourceCommit,
-					path: 'design.png',
-					sha256: 'd'.repeat(64),
-					preferred: true
-				}
-			]
-		}))
-	};
-}
+import { unit, relationships, data, change, plan } from './feature-plan-coverage-base.fixtures';
+export { unit, relationships, data, change, plan } from './feature-plan-coverage-base.fixtures';
 
 function scopedGraph() {
 	const metadata = data();
@@ -145,9 +49,44 @@ function referenceNode(kind: string) {
 	);
 }
 
+function addDanglingCases(metadata: ReturnType<typeof scopedGraph>, kind: string) {
+	if (['dangling-test', 'reachable-dangling-test'].includes(kind)) {
+		metadata.sourceGraph.edges.push({
+			from: 'file:test/unrelated.test.ts',
+			to: 'file:test/missing-fixture.json',
+			via: 'import'
+		});
+	}
+	if (kind === 'reachable-dangling-test')
+		metadata.sourceGraph.edges.push({
+			from: 'file:src/routes/page.alpha/+page.svelte',
+			to: 'file:test/unrelated.test.ts',
+			via: 'import'
+		});
+	if (kind === 'dangling-scenario')
+		metadata.sourceGraph.edges.push({
+			from: 'scenario:coverage',
+			to: 'unit:retired.module',
+			via: 'covers'
+		});
+	if (kind === 'page-dangling')
+		metadata.sourceGraph.edges.push({
+			from: 'file:src/routes/page.alpha/+page.svelte',
+			to: 'file:src/missing-page-dependency.ts',
+			via: 'import'
+		});
+}
+
 function scopedReference(kind: string) {
 	const metadata = scopedGraph();
-	const benign = ['test', 'script', 'forward-only', 'inactive-consumer'].includes(kind);
+	const benign = [
+		'test',
+		'script',
+		'forward-only',
+		'inactive-consumer',
+		'dangling-test',
+		'dangling-scenario'
+	].includes(kind);
 	const node = referenceNode(kind);
 	if (kind === 'forward-only')
 		metadata.sourceGraph.edges.push({ from: node, to: 'unit:page.alpha', via: 'import' });
@@ -162,6 +101,7 @@ function scopedReference(kind: string) {
 	}
 	if (kind === 'dangling')
 		metadata.sourceGraph.edges.push({ from: 'file:src/missing.ts', to: node, via: 'import' });
+	addDanglingCases(metadata, kind);
 	if (kind === 'ambiguous')
 		metadata.sourceGraph.nodes.push({ id: node, kind: 'source', unit: 'page.alpha' });
 	if (kind === 'unowned') {
@@ -184,6 +124,10 @@ export function assertScopedUncertainty() {
 		'page',
 		'missing-node',
 		'dangling',
+		'dangling-test',
+		'dangling-scenario',
+		'reachable-dangling-test',
+		'page-dangling',
 		'ambiguous',
 		'unowned',
 		'absent-graph'
