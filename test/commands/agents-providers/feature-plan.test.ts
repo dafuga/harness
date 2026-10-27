@@ -146,9 +146,36 @@ async function assertFailures() {
 	expect(missing.output).not.toHaveBeenCalled();
 }
 
+async function assertFailedDispatchExit() {
+	const f = commandFixture();
+	const result = {
+		submission: { created: ['checkout.task'], reused: [], commit: 'f'.repeat(40) },
+		results: [{ status: 'idle' }, { status: 'failed', task: 'checkout.task' }]
+	};
+	f.server.runApproved.mockResolvedValue(result);
+	const previous = process.exitCode;
+	process.exitCode = 0;
+	try {
+		await f.run([
+			'start',
+			'checkout',
+			'--digest',
+			f.plan.digest,
+			'--worker',
+			'worker-one',
+			'--json'
+		]);
+		expect(f.output.mock.calls.map(([text]) => JSON.parse(text))).toEqual([result]);
+		expect(process.exitCode, 'failed worker outcome must fail the CLI').toBe(1);
+	} finally {
+		process.exitCode = previous;
+	}
+}
+
 test('FeaturePlanCommand.register exposes draft, show, select and approve with safe output', async () => {
 	await assertJsonCommands();
 	await assertHumanDisplay();
 	await assertFailures();
 	await assertApprovedSubmission();
+	await assertFailedDispatchExit();
 });
