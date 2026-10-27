@@ -160,9 +160,9 @@ function newVisualRegistry(root: string, kind: PieceKind, name: string, files: P
 		kind === 'component'
 			? componentContractFiles(name, source.path, workspace.name, location)
 			: pageContractFiles(name, source.path, workspace.name, location);
-	if (registry.some((item) => existsSync(join(workspace.registryRoot, item.path))))
-		return fail(`Visual registry exists without its generated source: ${source.path}`);
-	return { root: workspace.registryRoot, files: registry };
+	return registry.some((item) => existsSync(join(workspace.registryRoot, item.path)))
+		? undefined
+		: { root: workspace.registryRoot, files: registry };
 }
 
 async function writeVisualRegistry(root: string, registry: ReturnType<typeof newVisualRegistry>) {
