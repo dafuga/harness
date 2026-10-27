@@ -2,7 +2,7 @@
 	"name": "native-measured-unit-identity",
 	"goal": "Preserve source identities for every measured or removed unit after verification releases indexes",
 	"createdAt": "2026-10-27T09:53:21.619Z",
-	"updatedAt": "2026-10-27T10:02:52.546Z",
+	"updatedAt": "2026-10-27T10:07:28.622Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:05:44.025Z",
+			"evidence": "e2851bc0f1946cff58cc105f1eb9966d575fa6bf retains hash-only unit source facts for record assembly while releasing full unneeded index entries."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:07:28.622Z",
+			"evidence": "The unchanged Desktop recorded-artifact suite passed 4 of 4 at e2851bc0f1946cff58cc105f1eb9966d575fa6bf with the committed source identity intact."
 		},
 		{
 			"id": "verify",
