@@ -74,3 +74,5 @@ Work-panel integration retains `2df73acde4` for project-scoped queue snapshots i
 Local Work access retains `0109831d9f` for exposing the selected-project reader through the isolated desktop preload. The preceding preload reviews remain present.
 
 Feature-plan actions retain `2a174efe27` for the local bridge and preload. Earlier reviews and the original relocation proofs remain present.
+
+Option-bound image reads retain `075cde02d5` for the desktop image cache, alongside its original relocation proof.
