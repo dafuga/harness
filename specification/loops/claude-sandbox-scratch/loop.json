@@ -2,7 +2,7 @@
 	"name": "claude-sandbox-scratch",
 	"goal": "Keep Claude temporary files within the task scratch directory",
 	"createdAt": "2026-10-27T11:07:34.717Z",
-	"updatedAt": "2026-10-27T11:20:21.656Z",
+	"updatedAt": "2026-10-27T11:25:38.599Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:25:37.133Z",
+			"evidence": "Commit 8bb0cb31cb passes both Claude temporary variables to the provider inside the existing task scratch directory."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:25:38.599Z",
+			"evidence": "Green dffd48add2c9 passes all 10 unchanged cases on the red profile. Mutant 86f2f16066c7 fails the same cases; identical restored tree passes 261cb11b4081."
 		},
 		{
 			"id": "verify",
