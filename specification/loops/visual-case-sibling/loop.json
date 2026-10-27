@@ -2,7 +2,7 @@
 	"name": "visual-case-sibling",
 	"goal": "Match visual evidence to cases selected by each scenario check",
 	"createdAt": "2026-10-27T04:57:58.970Z",
-	"updatedAt": "2026-10-27T04:58:05.113Z",
+	"updatedAt": "2026-10-27T05:01:00.165Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T05:01:00.165Z",
+			"evidence": "Record 3ab93c51c3ec at 4ace444105 failed because sibling screenshots were requested by the wrong scenario check on harbor-mbp-2."
 		},
 		{
 			"id": "implement",
