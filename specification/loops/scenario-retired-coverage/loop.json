@@ -2,7 +2,7 @@
 	"name": "scenario-retired-coverage",
 	"goal": "Reject scenario coverage that names a retired unit without inventing replacement proof",
 	"createdAt": "2026-10-27T12:05:21.062Z",
-	"updatedAt": "2026-10-27T12:05:27.795Z",
+	"updatedAt": "2026-10-27T12:15:43.798Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T12:15:43.798Z",
+			"evidence": "At efbaa7af55 both scenario and registry checks omitted the retired-unit error in the existing case; red 6db9280462e1 was recorded on harbor-mbp-2."
 		},
 		{
 			"id": "implement",
