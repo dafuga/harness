@@ -1772,3 +1772,18 @@ reader measured 7,424 bytes, 220 lines, complexity 76 and five dependencies;
 it has no separate emitted artifact. Timing, whole-process memory and reasons
 remain in Harness evidence and Git notes. The branch is still isolated and
 does not establish full migration, execution coverage or current-main delivery.
+
+The existing `helperContract` function now has six explicitly declared
+Examples on isolated branch `dafuga/contract-helper-eligibility-examples-20261027`.
+They cover distinct and repeated consumers, named functions, an impure helper,
+missing consumers and an accessor error. Invalid inputs are checked within the
+error case. This adds six cases because the unit previously had no declared
+examples or standard cases; it does not add a standalone regression test.
+Every test checks its input against the displayed call and its authored result
+against the generated comment. Capture `103e7cbd7a1e` at `1953a98463` passed
+six cases and 16 unchanged registry guards. Static discovery found the same six
+titles, contract admission and units check passed, and targeted typecheck,
+lint and formatting passed. The unchanged implementation measured 605 bytes,
+16 lines, complexity three and zero dependencies; its focused capture retains
+timing and whole-worker RSS. The manifest reason is in Git notes. The Examples
+UI, integration and deferred full verification remain open.
