@@ -1,6 +1,9 @@
 import { assertPersistedDependencies } from './module-task-dependency.test.fixtures';
-import { quotedWorker } from './module-task.test.fixtures';
-import { taskInputSchema } from '../../../src/repositories/agents-providers/ModuleTaskRepository';
+import {
+	assertSafeTaskAssignment,
+	expectSchemaGrants,
+	quotedWorker
+} from './module-task.test.fixtures';
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
@@ -46,6 +49,22 @@ test('admission rejects missing contracts, unknown modules and mutable task iden
 		expect(await service.prompt(input.id)).toContain(
 			'Use exactly these five contract-driven test forms'
 		);
+	} finally {
+		await f.dispose();
+	}
+});
+test('assign preserves untouched grants and rejects plan-bound or previously used tasks', async () => {
+	const f = await moduleTaskFixture();
+	try {
+		const service = new ModuleTaskService(f.root);
+		await service.feature({
+			id: 'checkout',
+			goal: 'Reliable checkout',
+			tldr: 'Build validated orders.'
+		});
+		const input = JSON.parse(await readFile(await f.input(), 'utf8'));
+		await service.add(input);
+		await assertSafeTaskAssignment(service, f.root, input);
 	} finally {
 		await f.dispose();
 	}
@@ -146,17 +165,6 @@ test.each([
 	}
 );
 
-function expectSchemaGrants(input: Record<string, unknown>): void {
-	const exactPath = 'src/routes/projects/[branch]/+page.svelte';
-	const files = [exactPath, ...Array.from({ length: 63 }, (_, i) => 'src/exact/file-' + i + '.ts')];
-	const grant = (id: string, assignedFiles: string[], role: string) =>
-		taskInputSchema.parse({ ...input, id, assignedFiles, role });
-	const implementation = grant('implementation-grant', files, 'implementation');
-	const verification = grant('verification-grant', [exactPath], 'verification');
-	expect(implementation.assignedFiles).toEqual(files);
-	expect(implementation.role).toBe('implementation');
-	expect(verification.role).toBe('verification');
-}
 test('assignment schemas preserve exact grants and reject unsafe inputs without queue mutation', async () => {
 	const f = await moduleTaskFixture();
 	try {

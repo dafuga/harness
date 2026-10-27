@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-27T12:13:56.374Z","name":"safe-task-assignment","goal":"Assign untouched ad hoc tasks atomically to a named worker while preserving plan-bound definitions and execution history.","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-10-27T12:14:49.352Z","loop":"safe-task-assignment","step":"spec","evidence":"Guard untouched queued ad hoc tasks with existing worker-id schema and atomic plan/history checks; preserve wanted contracts and grants, with no provider launch."}

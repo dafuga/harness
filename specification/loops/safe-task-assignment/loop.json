@@ -1,0 +1,43 @@
+{
+	"name": "safe-task-assignment",
+	"goal": "Assign untouched ad hoc tasks atomically to a named worker while preserving plan-bound definitions and execution history.",
+	"createdAt": "2026-10-27T12:13:56.374Z",
+	"updatedAt": "2026-10-27T12:14:49.352Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T12:14:49.352Z",
+			"evidence": "Guard untouched queued ad hoc tasks with existing worker-id schema and atomic plan/history checks; preserve wanted contracts and grants, with no provider launch."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

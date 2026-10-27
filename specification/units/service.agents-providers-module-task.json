@@ -3,7 +3,7 @@
 	"id": "service.agents-providers-module-task",
 	"kind": "service",
 	"title": "ModuleTaskService",
-	"responsibility": "Admit immutable role-specific exact file grants against the selected committed HEAD registry; persist shared feature context and wanted-contract hashes; format contract-checked, feature-first worker prompts with contract-only app-wide discovery; and requeue only failed tasks or confirmed abandoned claims. This service exposes no task-cancellation operation.",
+	"responsibility": "Admit immutable role-specific exact file grants against the selected committed HEAD registry; persist shared feature context and wanted-contract hashes; format contract-checked, feature-first worker prompts with contract-only app-wide discovery; and requeue only failed tasks or confirmed abandoned claims. This service exposes no task-cancellation operation. Assign untouched ad hoc queued tasks to a named worker without changing plan-bound task definitions or execution history.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -186,6 +186,16 @@
 				"name": "taskSelection.task",
 				"type": "Pick<ModuleTaskInput, 'model' | 'provider' | 'intelligence'>",
 				"description": "The requested model selection fields; auto selection forbids an explicit provider or intelligence level."
+			},
+			{
+				"name": "ModuleTaskService.assign.id",
+				"type": "string",
+				"description": "Exact stored task id."
+			},
+			{
+				"name": "ModuleTaskService.assign.worker",
+				"type": "string",
+				"description": "Required worker id parsed with the same lowercase unit-style, maximum-150-character assignee schema used by task admission."
 			}
 		],
 		"outputs": [
@@ -278,6 +288,11 @@
 				"name": "ModuleTask",
 				"type": "Omit<ModuleTaskInput, 'module' | 'feature'> & {feature: TaskFeature; module: {id: string; goal: string; files: string[]}; sourceCommit: string; contractHash: string; status: 'queued' | 'running' | 'review' | 'failed' | 'accepted'; repairCommit?: string; reviews: TaskReview[]; createdAt: string; claim?: TaskClaim; claimHistory: TaskClaim[]; result?: StoredTaskResult; attempts: StoredTaskResult[]}",
 				"description": "Committed repository task record with module.files as the immutable selected role-specific file list. ModuleTaskInput fields assignedFiles?: string[] and role are retained; parsed role defaults to implementation. assignedFiles is optional and, when present, is a nonempty list of at most 64 canonical exact relative file names. Stored sourceCommit is a 40-character lowercase commit id, contractHash a 64-character lowercase digest, and createdAt ISO text. Array defaults are empty. TaskClaim contains worker id, UUID token, ISO startedAt and owner {workspace UUID, positive pid, startedAt text}. TaskReview and StoredTaskResult fields, including usage/execution/cost, remain as described by the existing task-usage dependency contract."
+			},
+			{
+				"name": "ModuleTaskService.assign",
+				"type": "Promise<{value: ModuleTask; commit: string | undefined}>",
+				"description": "Atomically changes only the assignee of an untouched queued ad hoc task using the replay-safe repository update. Rejects any task named by any stored plan revision, with a claim, result, repair revision, claim history, attempt or review. Existing source commit, wanted contract, hash, file grants and all other fields remain unchanged. Repeating the same assignment is a no-op. It does not launch a worker or provider."
 			}
 		],
 		"errors": [
@@ -310,6 +325,11 @@
 				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "May propagate from committed source tree or registry reads; exact validation conditions are owned by the CommitTreeAdapter and UnitRegistryRepository contracts."
+			},
+			{
+				"name": "Invalid or ineligible assignment",
+				"type": "ZodError or Error",
+				"description": "An invalid worker id, missing task, non-queued task, task with execution history or a task referenced by any stored feature plan rejects without changing the queue."
 			}
 		]
 	},
