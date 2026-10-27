@@ -1,0 +1,62 @@
+{
+	"name": "visual-case-sibling",
+	"goal": "Match visual evidence to cases selected by each scenario check",
+	"createdAt": "2026-10-27T04:57:58.970Z",
+	"updatedAt": "2026-10-27T05:05:26.842Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T04:58:02.562Z",
+			"evidence": "A scenario check requires screenshots for sibling cases from another check whenever their test file is shared."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T04:58:05.113Z",
+			"evidence": "The existing validation case used one case per file. It now exercises two declared cases and separate checks sharing the same file without increasing test count."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T05:01:00.165Z",
+			"evidence": "Record 3ab93c51c3ec at 4ace444105 failed because sibling screenshots were requested by the wrong scenario check on harbor-mbp-2."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T05:01:48.261Z",
+			"evidence": "Limit visual requirements to the current scenario check references while retaining failures for unbound captures."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T05:05:26.842Z",
+			"evidence": "Record 9a700f1b111b at 31dda56c8f passed the unchanged case against red b479fcddfddb in the same laptop environment."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -2758,12 +2758,30 @@
 			"definition": "2b843459cf709115f85547642f177bb4a7e2560b5ca27e760f11b62b8e4c4841",
 			"relocationDefinition": "cf89f78b86c140f16a7bc001d974c7f60504d60cea4223b556f1521081274936",
 			"review": {
-				"commit": "96a034905fd30aa4f0d95385266f39e831f8d152",
+				"commit": "31dda56c8f7e24a8821e87c537affec97605db49",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
 				"definition": "2b843459cf709115f85547642f177bb4a7e2560b5ca27e760f11b62b8e4c4841",
-				"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+				"reason": "Scope visual case evidence to each scenario check."
 			},
 			"previousReviews": [
+				{
+					"commit": "e7fbf522ad7c865b69ffa5b9ec316864cbc3c7aa",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "2b843459cf709115f85547642f177bb4a7e2560b5ca27e760f11b62b8e4c4841",
+					"reason": "Retain the formatted visual case binding implementation."
+				},
+				{
+					"commit": "66419b84a0f32adca6800530532f35ff3cfc3af4",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "2b843459cf709115f85547642f177bb4a7e2560b5ca27e760f11b62b8e4c4841",
+					"reason": "Bind scenario screenshots to executed cases and their retries."
+				},
+				{
+					"commit": "96a034905fd30aa4f0d95385266f39e831f8d152",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
+					"definition": "2b843459cf709115f85547642f177bb4a7e2560b5ca27e760f11b62b8e4c4841",
+					"reason": "Preserve and validate standardized test contracts, discovery and revision-bound case identities."
+				},
 				{
 					"commit": "48e4a8b9b892e15735c51c20710bafcf0304f4bb",
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/RecordAssemblyService.ts",
