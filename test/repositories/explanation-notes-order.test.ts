@@ -12,6 +12,7 @@ import {
 import { ExplanationRepository } from '../../src/repositories/ExplanationRepository';
 import { HistoryNoteRepository } from '../../src/repositories/history-note-repository/HistoryNoteRepository';
 import { ExplanationService } from '../../src/services/ExplanationService';
+import { assertHistoryNoteBatches } from '../support/historyNoteBatchCases';
 
 const root = mkdtempSync(join(tmpdir(), 'harness-notes-order-'));
 afterAll(() => rmSync(root, { recursive: true, force: true }));
@@ -98,6 +99,7 @@ test('notes alone hold the latest recorded reason for an exact change, wherever 
 			{ failures: [], overlong: [], entries: [short] }
 		]);
 	}
+	await assertHistoryNoteBatches(repository().dir, short);
 }, 20_000);
 
 test('a step of a chain noted again is held by its latest reason, wherever each is noted', async () => {
