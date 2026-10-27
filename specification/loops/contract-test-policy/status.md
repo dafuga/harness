@@ -1292,3 +1292,31 @@ With its own installed dependencies, formatting, Svelte typecheck, lint, audit
 and build passed; strict registry validation still failed on 195 atom and
 script coverage gaps. The disposable reporter fixture is not a Playwright run.
 Actual E2Es, reviewed screenshots and full verification remain pending.
+
+## Continuation: generated visual build provenance
+
+The generated page scenario declared a build while Playwright launched a dev
+server and could reuse another process. Test-only `3bd49ae0af` strengthened the
+existing app-generator case; paired red `7037c8d66d29` failed on the absent stamp
+slot. Source-only `a5543047c3` generates a build stamp, build-and-stamp setup,
+and an owned preview server with reuse disabled. Unchanged green
+`27b2623864cd` passed. Mutant `e65d8f062a` failed capture `0578fdd813e5`;
+restored `109e9635fb` passed `b7dc581ff5e4` with the same tree as `057936fce5`.
+No test titles were added.
+
+The earlier generator case omitted built-server provenance. The repository
+skill and generated guidance now require existing generator cases to check
+stamp and server ownership and to verify generated build identity. Focused
+capture `9aa6c9d691dd` passed 27 generator, registry and readable-contract cases,
+typecheck and audit. At `057936fce5`, project source bytes/lines/complexity/
+dependencies were 8459/223/10/11; project tests were 9315/218/12/5; guidance
+was 18477/146/9/3. The corresponding generation workloads took 2.732, 0.126
+and 13.055 ms, with 262,455,296, 262,504,448 and 262,864,896 bytes whole-worker
+RSS. None emits a separate artifact. Source reasons are in Git notes.
+
+A fresh CLI-generated app passed format, Svelte typecheck, lint, audit and
+build. Its 33-file build was stamped and independently identified as
+`774fbcfd8eb73cf869414476fa81bbb7443b47d618cad565dbbebfb15d4536c6`.
+The app still has 195 missing atom and script coverage contracts. No browser
+or server was started for this proof. Case-bound screenshot capture, reviewed
+baseline loading, remote E2Es and full verification remain pending.
