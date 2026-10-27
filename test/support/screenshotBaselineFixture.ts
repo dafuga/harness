@@ -18,8 +18,8 @@ export async function screenshotBaselineFixture(options: ScreenshotFixtureOption
 		await git(['init', '-q', '-b', 'main']);
 		await write('src/routes/fixture/+page.svelte', '<h1>Fixture</h1>\n');
 		await write('test/page.spec.ts', '// Synthetic case identity for repository unit testing.\n');
-		await write('specification/units/page.fixture.json', JSON.stringify(fixtureUnit()));
-		await write('specification/scenarios/visual.json', JSON.stringify(fixtureScenario()));
+		await write('specification/units/page.fixture.json', JSON.stringify(fixtureUnit(options)));
+		await write('specification/scenarios/visual.json', JSON.stringify(fixtureScenario(options)));
 		await git(['add', '-A']);
 		await git(['commit', '-q', '-m', 'feat: fixture']);
 		const commit = await git(['rev-parse', 'HEAD']);

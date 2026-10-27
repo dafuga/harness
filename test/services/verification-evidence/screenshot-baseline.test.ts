@@ -62,7 +62,7 @@ test('ScreenshotBaselineService.review from empty accepts a reviewed candidate',
 }, 60_000);
 
 test('ScreenshotBaselineService.review after review validates each new request', async () => {
-	const fixture = await screenshotBaselineFixture();
+	const fixture = await screenshotBaselineFixture({ sibling: true });
 	try {
 		const service = new ScreenshotBaselineService(fixture.root);
 		const first = await service.review(fixture.input);
@@ -72,6 +72,9 @@ test('ScreenshotBaselineService.review after review validates each new request',
 		});
 		expect(second.id).not.toBe(first.id);
 		expect(second).toMatchObject(expected('review.reviewed'));
+		const sibling = await service.review({ ...fixture.input, case: 'default.secondary' });
+		expect(sibling.file).toBe('test/baselines/secondary.png');
+		expect((await service.load(request(sibling))).bytes).toEqual(fixture.image);
 		await expect(service.review({ ...fixture.input, reviewer: '' })).rejects.toThrow();
 		await expect(service.review({ ...fixture.input, record: 'f'.repeat(64) })).rejects.toThrow(
 			'source verification is missing'
@@ -94,6 +97,7 @@ test('ScreenshotBaselineService.review rejects damaged source evidence', async (
 		[{ wrongBuild: true }, 'matching served build and revision'],
 		[{ bindingCase: 'default.mobile' }, 'valid case binding'],
 		[{ corruptImage: true }, 'PNG cannot be decoded'],
+		[{ duplicate: true }, 'screenshot is missing or ambiguous'],
 		[{ provenance: 'fixture' as const }, 'matching served build and revision']
 	] as const) {
 		const fixture = await screenshotBaselineFixture(options);

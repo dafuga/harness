@@ -26,6 +26,7 @@ export async function attachSyntheticScreenshot(
 	await mkdir(join(directory, dirname(seed.path)), { recursive: true });
 	await mkdir(join(directory, 'logs'), { recursive: true });
 	await writeFile(join(directory, seed.path), seed.image);
+	if (seed.sibling) await writeFile(join(directory, seed.sibling.path), seed.image);
 	await writeFile(join(directory, 'logs/visual.log'), seed.log);
 	await writeFile(join(directory, 'case-results.ndjson'), seed.caseBytes);
 	await store.save(record, directory);
@@ -53,6 +54,8 @@ function fixtureSeed(
 		status: options.skipped ? ('skipped' as const) : ('failed' as const),
 		retry: 0
 	};
+	const sibling = siblingCapture(options, commit, sha256, outcome);
+	const outcomes = sibling?.outcome ? [outcome, sibling.outcome] : [outcome];
 	return {
 		commit,
 		tree,
@@ -63,8 +66,24 @@ function fixtureSeed(
 		outcome,
 		buildId: 'b'.repeat(64),
 		path: `evidence/${commit}/visual/page/desktop.png`,
-		caseBytes: Buffer.from(JSON.stringify(outcome) + '\n'),
+		...(sibling ? { sibling } : {}),
+		caseBytes: Buffer.from(outcomes.map((item) => JSON.stringify(item)).join('\n') + '\n'),
 		log: Buffer.from('Synthetic missing baseline fixture.\n')
+	};
+}
+
+function siblingCapture(
+	options: ScreenshotFixtureOptions,
+	commit: string,
+	sha256: string,
+	outcome: ScreenshotFixtureSeed['outcome']
+): ScreenshotFixtureSeed['sibling'] {
+	if (!options.sibling && !options.duplicate) return undefined;
+	const caseId = options.sibling ? 'default.secondary' : 'default.desktop';
+	return {
+		path: `evidence/${commit}/visual/page/secondary.png`,
+		note: JSON.stringify({ unit: 'page.fixture', case: caseId, revision: commit, sha256 }),
+		...(options.sibling ? { outcome: { ...outcome, title: 'fixture secondary desktop' } } : {})
 	};
 }
 
@@ -100,7 +119,7 @@ function syntheticCheck(seed: ScreenshotFixtureSeed): VerificationRecord['tests'
 		durationMs: 1,
 		log: { path: 'logs/visual.log', bytes: seed.log.length, sha256: digest(seed.log) },
 		cases: {
-			outcomes: [seed.outcome],
+			outcomes: seed.sibling?.outcome ? [seed.outcome, seed.sibling.outcome] : [seed.outcome],
 			artifact: {
 				path: 'case-results.ndjson',
 				bytes: seed.caseBytes.length,
@@ -120,27 +139,35 @@ function syntheticScenario(seed: ScreenshotFixtureSeed): VerificationRecord['sce
 				id: 'default',
 				coverage: 'required',
 				captures: [
-					{
-						evidence: 'screens',
-						kind: 'screenshot',
-						state: 'default',
-						viewport: 'desktop',
-						status: 'failed',
-						path: seed.path,
-						sha256: seed.sha256,
-						bytes: seed.image.length,
-						mediaType: 'image/png',
-						capturedAt: '2026-01-01T00:00:00Z',
-						provenance: seed.options.provenance ?? 'actual-capture',
-						server: {
-							revision: seed.commit,
-							buildId: seed.options.wrongBuild ? 'c'.repeat(64) : seed.buildId
-						},
-						note: seed.note
-					}
+					syntheticCapture(seed),
+					...(seed.sibling ? [syntheticCapture(seed, seed.sibling)] : [])
 				]
 			}
 		]
+	};
+}
+
+function syntheticCapture(
+	seed: ScreenshotFixtureSeed,
+	sibling?: ScreenshotFixtureSeed['sibling']
+): VerificationRecord['scenarios'][number]['states'][number]['captures'][number] {
+	return {
+		evidence: 'screens',
+		kind: 'screenshot',
+		state: 'default',
+		viewport: 'desktop',
+		status: 'failed',
+		path: sibling?.path ?? seed.path,
+		sha256: seed.sha256,
+		bytes: seed.image.length,
+		mediaType: 'image/png',
+		capturedAt: '2026-01-01T00:00:00Z',
+		provenance: seed.options.provenance ?? 'actual-capture',
+		server: {
+			revision: seed.commit,
+			buildId: seed.options.wrongBuild ? 'c'.repeat(64) : seed.buildId
+		},
+		note: sibling?.note ?? seed.note
 	};
 }
 

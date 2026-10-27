@@ -1,0 +1,74 @@
+{
+	"name": "screenshot-case-slot",
+	"goal": "Select reviewed screenshots by their bound case even when state and viewport slots repeat.",
+	"createdAt": "2026-10-27T03:12:07.108Z",
+	"updatedAt": "2026-10-27T03:19:25.498Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:12:11.821Z",
+			"evidence": "ScreenshotBaselineService selects by scenario, state, evidence and viewport before reading the bound unit and case, so two legitimate cases in the same slot are rejected as ambiguous."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:12:12.392Z",
+			"evidence": "The existing review and load cases used only one capture in each slot. Extend that same class case with two declared case bindings in one slot and an actual duplicate binding; keep the six registered titles unchanged."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:15:29.204Z",
+			"evidence": "Capture 24b33afe5cadfc09037abaf51826dad9924a3e6f661c228eed73fccfe488c69a failed at fe083208974d40f6db04896325fd20e615bcb5da: distinct declared cases sharing a slot were rejected as ambiguous."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:15:48.327Z",
+			"evidence": "Selection uses the complete unit, case, revision and hash binding before rejecting duplicates; the existing six cases pass."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:16:50.098Z",
+			"evidence": "The unchanged review case passed at 72ec404ccf; paired red and green captures use the same command and environment."
+		},
+		{
+			"id": "guard",
+			"title": "Reintroduce the defect and restore the fix with the existing cases.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:18:10.977Z",
+			"evidence": "Mutant 756ecad5c1 failed capture fa6f5a5f4755; restored 3b9d20f1dd passed ecab7729a644 with the same tree as 72ec404ccf."
+		},
+		{
+			"id": "source-measurements",
+			"title": "Measure changed units and retain their representative workloads.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:19:25.498Z",
+			"evidence": "At 0fee45787b, source bytes/lines/complexity/dependencies: baseline service 17905/465/109/11; project guidance 18015/144/9/3. Focused capture 04ba6aa7c6f5 retains workload timing and whole-worker RSS; modules emit no separate artifacts."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
