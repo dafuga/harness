@@ -7,6 +7,7 @@ import type { VerificationStoreRepository } from '../../../../../repositories/ve
 import type { ReasonReport } from '../../../../../services/ExplanationService';
 import type { RevisionSide } from '../../../../loadRevisions';
 import type { Executed } from '../SnapshotRunService';
+import type { VerificationSourceHashes } from './sealRecord.types';
 
 export interface AssemblyContext {
 	requirePerformance?: boolean;
@@ -18,6 +19,7 @@ export interface AssemblyContext {
 	requestedBase: string | null;
 	base: RevisionSide;
 	head: RevisionSide;
+	sourceHashes?: VerificationSourceHashes;
 	impact: ImpactReport;
 	profile: VerificationProfile;
 	store: VerificationStoreRepository;

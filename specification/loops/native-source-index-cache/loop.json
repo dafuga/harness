@@ -2,7 +2,7 @@
 	"name": "native-source-index-cache",
 	"goal": "Bound parsed source blobs to the indexed revision while reusing current blobs",
 	"createdAt": "2026-10-27T00:52:12.708Z",
-	"updatedAt": "2026-10-27T00:55:13.493Z",
+	"updatedAt": "2026-10-27T00:58:34.156Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:56:45.420Z",
+			"evidence": "272129f592 prunes SourceIndexService parsed blobs to the indexed tree and returns compact reason-walk facts"
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:58:34.156Z",
+			"evidence": "Regression passed unchanged at 272129f5925c6017ef3931374c1ca0145b41e3db with a bounded one-blob cache across 32 revisions"
 		},
 		{
 			"id": "verify",
