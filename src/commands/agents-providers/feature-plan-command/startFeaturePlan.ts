@@ -1,5 +1,14 @@
 import type { ModuleTaskServerService } from '../../../services/agents-providers/ModuleTaskServerService';
 
+function markFailedResults(results: unknown[]) {
+	if (
+		results.some(
+			(item) =>
+				typeof item === 'object' && item !== null && 'status' in item && item.status === 'failed'
+		)
+	)
+		process.exitCode = 1;
+}
 /** Keep queue-only retries distinct from an explicitly requested, approval-scoped worker batch. */
 export async function startFeaturePlan(
 	feature: string,
@@ -37,6 +46,7 @@ export async function startFeaturePlan(
 				? JSON.stringify(result, null, 2)
 				: `Dispatched ${feature}: ${JSON.stringify(result.results)}`
 		);
+		markFailedResults(result.results);
 	} finally {
 		process.off('SIGINT', abort);
 		process.off('SIGTERM', abort);

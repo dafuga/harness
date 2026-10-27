@@ -2,7 +2,7 @@
 	"name": "cli-dispatch-failure-exit",
 	"goal": "Return a nonzero CLI status when an approved worker batch reports failure.",
 	"createdAt": "2026-10-27T00:38:10.411Z",
-	"updatedAt": "2026-10-27T00:38:11.515Z",
+	"updatedAt": "2026-10-27T00:38:58.685Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:38:58.685Z",
+			"evidence": "Record d46ff8eb6287 fails at 1aace31823 because a failed worker leaves exit status zero."
 		},
 		{
 			"id": "implement",
