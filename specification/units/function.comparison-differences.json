@@ -79,25 +79,9 @@
 		]
 	},
 	"scenarios": [],
-	"budgets": {
-		"size": "frozen",
-		"complexity": "frozen",
-		"performance": []
-	},
 	"testing": {
 		"version": 1,
 		"shape": "helper",
-		"states": ["comparable", "incomplete", "incompatible"],
-		"props": [
-			"metric",
-			"unitOfMeasure",
-			"method",
-			"comparison",
-			"comparison.request",
-			"comparison.boundary",
-			"comparison.protocol",
-			"comparison.sampling"
-		],
 		"examples": [
 			{
 				"subject": "comparisonDifferences",
@@ -422,6 +406,17 @@
 				}
 			}
 		],
+		"states": ["comparable", "incomplete", "incompatible"],
+		"props": [
+			"metric",
+			"unitOfMeasure",
+			"method",
+			"comparison",
+			"comparison.request",
+			"comparison.boundary",
+			"comparison.protocol",
+			"comparison.sampling"
+		],
 		"cases": [
 			{
 				"id": "comparable.identical",
@@ -535,5 +530,10 @@
 				"errors": ["incomplete metadata"]
 			}
 		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
 	}
 }
