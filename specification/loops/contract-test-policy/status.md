@@ -2028,7 +2028,8 @@ identifies the cause: `page.titles` has no standardized test contract,
 are unbound. The later missing-budget messages are consequences of the failed
 first record. This is a fixture migration gap, not a product regression proof.
 The diagnostic used the uncommitted fixture bytes on source `9076aa7a92`; it
-reached the actual assertion path, used one Vitest worker, and peaked at
+entered the test body but did not reach its integrity assertions. It used one
+Vitest worker and peaked at
 1,680,539,648 bytes task RSS plus 1,210,335,232 bytes laptop shared RSS upper
 estimate. Its log SHA-256 is `e90b71ebe0aab6d4fc80ffcd208aab87eb981b351517ef9976db328a53879f13`.
 
