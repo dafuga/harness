@@ -234,6 +234,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.units-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.validation",
 			"via": "import",
 			"origin": "derived"
@@ -255,6 +260,11 @@
 		},
 		{
 			"unit": "template.browser-test",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "template.development-tooling-app-pieces-app-contract-tests",
 			"via": "import",
 			"origin": "derived"
 		},
