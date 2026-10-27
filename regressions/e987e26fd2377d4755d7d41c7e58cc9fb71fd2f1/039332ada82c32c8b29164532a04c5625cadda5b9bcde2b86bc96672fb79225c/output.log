@@ -1,0 +1,41 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ofeVW8
+
+ ❯ test/commands/agents-providers/feature-plan.test.ts (2 tests | 1 failed) 8ms
+   ✓ FeaturePlanCommand.run from default initialization returns the file name 1ms
+   × FeaturePlanCommand.register exposes draft, show, select and approve with safe output 5ms
+     → expected [ '--digest', '--json' ] to deeply equal ArrayContaining{…}
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/commands/agents-providers/feature-plan.test.ts > FeaturePlanCommand.register exposes draft, show, select and approve with safe output
+AssertionError: expected [ '--digest', '--json' ] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   "--worker",
+-   "--parallelism",
++ [
++   "--digest",
++   "--json",
+  ]
+
+ ❯ assertJsonCommands test/commands/agents-providers/feature-plan.test.ts:21:54
+     19|  ]);
+     20|  const start = f.task.commands[0].commands.find((command) => command.n…
+     21|  expect(start?.options.map((option) => option.long)).toEqual(
+       |                                                      ^
+     22|   expect.arrayContaining(['--worker', '--parallelism'])
+     23|  );
+ ❯ test/commands/agents-providers/feature-plan.test.ts:150:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  01:25:57
+   Duration  3.62s (transform 677ms, setup 100ms, collect 1.13s, tests 8ms, environment 0ms, prepare 22ms)
+
