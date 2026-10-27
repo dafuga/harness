@@ -1467,6 +1467,13 @@ root typecheck, targeted lint and formatting passed. The source was integrated
 at `1009599c93`; the unchanged-case mutation guard and final-tree verification
 remain open.
 
+The component case also rejected reintroducing the missing registration in
+isolated mutant `87f8b336d7`: capture `55770bc7ca91` failed at the expected
+`component.post-card` assertion. The restored commit `3faab7740e` has the same
+complete tree as `e4efd0ea5f`, but its passing capture is pending after the
+memory guard stopped the run. An earlier malformed mutant produced a syntax
+error and is retained as invalid evidence, not counted as a guard result.
+
 Generated pages and layouts had the same registration gap. The existing case
 now checks page states and a categorized layout with a labelled child-slot
 placeholder. Test commit `f033ad5290` failed in red `cb457ed37b80`; fix
@@ -1481,3 +1488,10 @@ two calls each. Peak RSS observations were for whole processes, approximately
 do not approve a performance baseline. Source-size measurements, mutation
 proof, reviewed browser baselines, case-bound browser evidence and the full
 verification gate remain open.
+
+Generating from a nested app workspace still misses the repository registry.
+Test-only commit `41822ff57b` extends the existing generator case to cover
+workspace-relative execution, repository-relative cases, the declared build,
+and missing, ambiguous or undeclared workspace errors. The red run has not
+started because the other laptop's concurrent workload exceeds the memory
+guard; no workspace product repair has been made.
