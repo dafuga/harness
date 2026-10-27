@@ -59,8 +59,44 @@ export async function assertGeneratedWorkspaceRegistry(): Promise<void> {
 		await assertMissingWorkspaceBuild(project, config);
 		await assertAmbiguousWorkspaceBuild(project, config, verify);
 		await assertUndeclaredWorkspace(project);
+		await assertOrphanedVisualRegistry(project);
 	} finally {
 		await rm(dirname(project.root), { recursive: true, force: true });
+	}
+}
+
+async function assertOrphanedVisualRegistry(project: UnitProject) {
+	const root = 'packages/portal';
+	for (const entry of [
+		{
+			kind: 'component',
+			name: 'OrphanCard',
+			registry: 'specification/units/portal.component.orphan-card.json',
+			source: `${root}/src/components/OrphanCard.svelte`
+		},
+		{
+			kind: 'view',
+			name: 'OrphanPage',
+			registry: 'specification/scenarios/portal-page.orphan-page.json',
+			source: `${root}/src/routes/orphan-page/+page.svelte`
+		}
+	] as const) {
+		const authored = '{"authored":"preserve this orphan"}';
+		await project.write(entry.registry, authored);
+		const failure = await generatePiece({
+			root: join(project.root, root),
+			kind: entry.kind,
+			name: entry.name
+		}).then(
+			() => undefined,
+			(error: unknown) => error
+		);
+		expect(failure, 'Orphaned visual metadata blocks generation').toBeInstanceOf(Error);
+		expect((failure as Error).message).toContain(
+			'Visual registry exists without its generated source'
+		);
+		expect(await project.read(entry.registry)).toBe(authored);
+		await expect(project.read(entry.source)).rejects.toMatchObject({ code: 'ENOENT' });
 	}
 }
 
