@@ -2,7 +2,7 @@
 	"name": "feature-plan-impact-cli",
 	"goal": "Expose the committed affected pages and blockers for a proposed feature plan before image generation",
 	"createdAt": "2026-10-27T11:34:41.710Z",
-	"updatedAt": "2026-10-27T11:34:42.448Z",
+	"updatedAt": "2026-10-27T11:43:01.259Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,12 +17,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:43:00.646Z",
+			"evidence": "At 37d50974d4 the read-only plan impact command validates proposal fields, reads committed metadata for the selected source and invokes the existing page-coverage discovery without a provider."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:43:01.259Z",
+			"evidence": "Seven focused command/helper tests passed; at 8a5e2e5de9 a focused TypeScript check and real CLI smoke on harbor-mbp-2 passed. A reuse proposal returned no affected pages; a Work-component modification reported 34 pages and 172 graph blockers with exit 1."
 		},
 		{
 			"id": "verify",
