@@ -1,0 +1,40 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-gz5DQl
+
+ ❯ test/services/verification-evidence/screenshot-baseline.test.ts (6 tests | 1 failed | 5 skipped) 319ms
+   ↓ ScreenshotBaselineService.review from empty accepts a reviewed candidate
+   × ScreenshotBaselineService.review after review validates each new request 309ms
+     → Baseline screenshot is missing or ambiguous.
+   ↓ ScreenshotBaselineService.review rejects damaged source evidence
+   ↓ ScreenshotBaselineService.load from reviewed returns the original bytes
+   ↓ ScreenshotBaselineService.load from empty refuses a missing review
+   ↓ ScreenshotBaselineService.load rejects damaged original evidence
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/services/verification-evidence/screenshot-baseline.test.ts > ScreenshotBaselineService.review after review validates each new request
+ExpectedCliError: Baseline screenshot is missing or ambiguous.
+ ❯ fail src/core/development-tooling/errors.ts:8:8
+      7| }
+      8| 
+      9| export function isExpectedCliError(error: unknown): error is ExpectedC…
+       |       ^
+     10|  return error instanceof ExpectedCliError;
+     11| }
+ ❯ call src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:36:31
+ ❯ PerformanceProfileService.observe src/services/verification-evidence/PerformanceProfileService.ts:58:18
+ ❯ Object.apply src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:51:29
+ ❯ selectScreenshot src/services/verification-evidence/screenshot-baseline-service/selectScreenshot.ts:32:36
+ ❯ call src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:36:31
+ ❯ PerformanceProfileService.observe src/services/verification-evidence/PerformanceProfileService.ts:58:18
+ ❯ Object.apply src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:51:29
+ ❯ screenshotCandidate src/services/verification-evidence/screenshot-baseline-service/screenshotCandidate.ts:33:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  04:13:21
+   Duration  3.17s (transform 307ms, setup 88ms, collect 570ms, tests 319ms, environment 0ms, prepare 22ms)
+
