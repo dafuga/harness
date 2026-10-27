@@ -4,20 +4,12 @@ import { defaultUnitsConfig } from '../../core/development-tooling/unitsConfig';
 import { defaultVerifyConfig } from '../../core/verification-evidence/verifyTypes';
 import { stableJson } from '../../utils/development-tooling/stableJson';
 
-const appViewports = [
-	{ id: 'desktop', width: 1440, height: 900 },
-	{ id: 'tablet', width: 920, height: 800 },
-	{ id: 'mobile', width: 390, height: 844 }
-] as const;
-const viewportRows = appViewports
-	.map(({ id, width, height }) => `\t{ id: '${id}', size: { width: ${width}, height: ${height} } }`)
-	.join(',\n');
 const initialPageTest =
-	`import { test } from './support/browserTest';\n\nconst viewports = [\n${viewportRows}\n] as const;\n\n` +
-	appViewports
+	"import { test } from './support/browserTest';\n\nconst viewports = [\n\t{ id: 'desktop', size: { width: 1440, height: 900 } },\n\t{ id: 'tablet', size: { width: 920, height: 800 } },\n\t{ id: 'mobile', size: { width: 390, height: 844 } }\n] as const;\n\n" +
+	['desktop', 'tablet', 'mobile']
 		.map(
-			({ id }, index) =>
-				`test.describe('${id} viewport', () => {\n\tconst viewport = viewports[${index}];\n\ttest.use({ viewport: viewport.size });\n\ttest('app page initial state', async ({ page, matchScreenshot }) => {\n\t\tawait page.goto('/');\n\t\tawait matchScreenshot(page, 'initial-' + viewport.id + '.png', { fullPage: true });\n\t});\n});`
+			(name, index) =>
+				`test.describe('${name} viewport', () => {\n\tconst viewport = viewports[${index}];\n\ttest.use({ viewport: viewport.size });\n\ttest('app page initial state', async ({ page, matchScreenshot }) => {\n\t\tawait page.goto('/');\n\t\tawait matchScreenshot(page, 'initial-' + viewport.id + '.png', { fullPage: true });\n\t});\n});`
 		)
 		.join('\n\n') +
 	'\n';
@@ -29,110 +21,11 @@ const libraryVitestConfig =
 export function appTestFiles(): PlannedFile[] {
 	return [
 		...browserTestFiles(),
-		{ path: 'harness.units.json', contents: stableJson({ ...defaultUnitsConfig, testing: 1 }) },
-		{ path: 'harness.verify.json', contents: stableJson(appVerifyConfig()) },
-		{ path: 'specification/units/page.root.json', contents: stableJson(initialPageUnit()) },
-		{
-			path: 'specification/scenarios/initial-page.json',
-			contents: stableJson(initialPageScenario())
-		},
 		{
 			path: 'tests/e2e/app.spec.ts',
 			contents: initialPageTest
 		}
 	];
-}
-
-function initialPageCases() {
-	return appViewports.map(({ id }) => ({
-		id: `default.${id}`,
-		state: 'default',
-		viewports: [id],
-		test: { file: 'tests/e2e/app.spec.ts', title: `${id} viewport > app page initial state` },
-		expected: {
-			kind: 'screenshot',
-			file: `.cache/harness/visual-baselines/app.spec.ts/initial-${id}.png`
-		}
-	}));
-}
-
-function initialPageUnit() {
-	return {
-		schemaVersion: 1,
-		id: 'page.root',
-		kind: 'page',
-		title: '/',
-		responsibility: 'Owns the / route page.',
-		responsibilityOrigin: 'derived',
-		status: 'active',
-		composition: { level: 'page', uses: ['component.atoms-html-h1'] },
-		owns: { source: ['src/routes/+page.svelte'], symbols: ['+page'] },
-		contract: {
-			origin: 'derived',
-			inputs: [],
-			outputs: [{ name: '+page', type: 'markup' }],
-			errors: []
-		},
-		dependencies: [{ unit: 'component.atoms-html-h1', via: 'import', origin: 'derived' }],
-		runtime: {
-			kind: 'module',
-			entry: 'src/routes/+page.svelte',
-			targets: [{ kind: 'module', entry: 'src/routes/+page.svelte' }]
-		},
-		scenarios: ['initial-page'],
-		testing: { version: 1, shape: 'page', states: ['default'], cases: initialPageCases() },
-		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
-	};
-}
-
-function initialPageScenario() {
-	return {
-		schemaVersion: 1,
-		id: 'initial-page',
-		title: 'Initial page',
-		kind: 'ui',
-		units: ['page.root'],
-		states: [{ id: 'default', title: 'Default', coverage: 'required' }],
-		viewports: appViewports,
-		tests: [
-			{
-				id: 'page',
-				kind: 'e2e',
-				runner: 'playwright',
-				target: 'tests/e2e/app.spec.ts',
-				cases: initialPageCases().map(({ id }) => ({ unit: 'page.root', case: id }))
-			}
-		],
-		evidence: [
-			{
-				id: 'screens',
-				kind: 'screenshot',
-				states: ['default'],
-				viewports: appViewports.map(({ id }) => id),
-				provenance: 'actual-capture',
-				build: 'app',
-				capture: 'full-page',
-				required: true
-			}
-		]
-	};
-}
-
-function appVerifyConfig() {
-	return {
-		...defaultVerifyConfig,
-		setup: [{ command: 'bun run build' }],
-		link: ['node_modules'],
-		outputs: [
-			'.cache/',
-			'.svelte-kit/',
-			'build/',
-			'node_modules/',
-			'playwright-report/',
-			'test-results/'
-		],
-		builds: [{ id: 'app', directory: '.svelte-kit/output' }]
-	};
 }
 
 /** The initial library case reads the same authored expectation shown by entity documentation. */

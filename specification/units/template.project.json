@@ -34,7 +34,7 @@
 			{
 				"name": "projectFiles",
 				"type": "PlannedFile[]",
-				"description": "Relative paths and contents for the selected project, including framework ambient type references and companion types. Generated app screenshots use a deterministic cache path; static checks precede screenshot admission and unreviewed baselines fail."
+				"description": "Relative paths and contents for the selected project, including framework ambient type references and companion types. Static formatting, compiler, lint and audit checks precede browser screenshot admission; unreviewed baselines fail explicitly."
 			}
 		],
 		"errors": []
