@@ -7,6 +7,8 @@ import {
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { ModuleTaskService } from '../../../src/services/agents-providers/ModuleTaskService';
+import { ModuleTaskServerService } from '../../../src/services/agents-providers/ModuleTaskServerService';
+import type { ComponentManifest } from '../../../src/core/development-tooling/unitTypes';
 import { moduleTaskFixture } from '../../support/moduleTaskFixture';
 import { readFile } from 'node:fs/promises';
 import { taskSelection } from '../../../src/services/agents-providers/module-task-service/taskPrompt';
@@ -40,6 +42,39 @@ test('admission rejects missing contracts, unknown modules and mutable task iden
 			service.feature({ id: 'checkout', goal: 'Changed goal', tldr: 'Changed context' })
 		).rejects.toThrow('immutable');
 		expect((await service.show(input.id)).task.wantedContract).toEqual(input.wantedContract);
+		const moduleResponsibility = 'Keep the exact committed module responsibility in task context.';
+		const module = {
+			id: 'service.contract-source',
+			responsibility: moduleResponsibility,
+			responsibilityOrigin: 'declared',
+			status: 'active',
+			owns: { source: ['src/orders.ts'], symbols: [] },
+			contract: { inputs: [], outputs: [{ name: 'result', type: 'string' }], errors: [] }
+		} as unknown as ComponentManifest;
+		const serverInput = {
+			...input,
+			id: 'server-admission-responsibility',
+			feature: 'server-admission',
+			module: module.id
+		};
+		delete serverInput.moduleGoal;
+		const server = new ModuleTaskServerService(f.root, {
+			registry: { read: async () => ({ manifests: [module], errors: [] }) },
+			requireMetadata: async () => undefined,
+			grantFiles: async () => module.owns.source,
+			validateGrant: async () => undefined
+		});
+		await server.submit({
+			feature: {
+				id: 'server-admission',
+				goal: 'Admit a task with its committed module goal.',
+				tldr: 'Retain module responsibility before worker dispatch.'
+			},
+			tasks: [serverInput]
+		});
+		const admitted = (await service.show(serverInput.id)).task;
+		expect(admitted.moduleGoal).toBe(moduleResponsibility);
+		expect(admitted.module.goal).toBe(moduleResponsibility);
 		expect(
 			(await service.prompt(input.id)).startsWith(
 				'Overall goal: Reliable checkout\nFeature TLDR: Build validated orders.\n'
