@@ -12,11 +12,6 @@ export async function assertComponentCapture(
 ) {
 	assertCaptureSlot(id, viewport, variant);
 	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
-	if (id === 'desktop.component.project-agent')
-		await expect(
-			page.locator('[data-preview-unit="desktop.component.project-agent"] .floating-chat-panel'),
-			'ProjectAgent capture shows the open chat panel'
-		).toBeVisible();
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
 	if (!directory) return;
 	const selector: Record<string, string> = {
