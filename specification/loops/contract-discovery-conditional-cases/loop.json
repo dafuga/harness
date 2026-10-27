@@ -2,7 +2,7 @@
 	"name": "contract-discovery-conditional-cases",
 	"goal": "Reject conditional and unreachable literal case registrations",
 	"createdAt": "2026-10-27T13:05:07.239Z",
-	"updatedAt": "2026-10-27T13:05:08.355Z",
+	"updatedAt": "2026-10-27T13:07:06.384Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T13:06:28.627Z",
+			"evidence": "At 44d14ca08a, checkpoint 1982298fea5b shows conditional cases marked active and two invented condition-titled cases."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T13:06:44.773Z",
+			"evidence": "Literal cases inherit conditional context and conditional runner factories require runtime discovery."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T13:07:06.384Z",
+			"evidence": "The unchanged scan case passed at 6458362373 in checkpoint 8b0d336e6e92 on the red environment profile."
 		},
 		{
 			"id": "verify",
