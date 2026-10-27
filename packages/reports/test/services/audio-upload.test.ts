@@ -176,7 +176,7 @@ const implementations = Object.fromEntries(
 	manifest.testing.cases.map((row) => [
 		row.id,
 		() =>
-			measureWorkload(manifest.id, `${row.subject}-${row.state}`, async () => {
+			measureWorkload(manifest.id, `audio-${row.id}`, async () => {
 				const context = await fixture(row);
 				if (row.state === 'active') return active(row, context);
 				if (row.state === 'invalid-input') return invalid(row, context);
