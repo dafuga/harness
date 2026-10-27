@@ -1,0 +1,41 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-Lt6XX8[39m
+
+ [31m❯[39m test/units.e2e.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m3 skipped[39m[2m)[22m[33m 13440[2mms[22m[39m
+   [2m[90m↓[39m[22m generic unit generator coexists with the Svelte component generator
+   [2m[90m↓[39m[22m index derives contracts and keeps identity stable across re-index, moves and recreation
+[31m   [31m×[31m check rejects invalid manifests and schemas are exposed[39m[33m 13438[2mms[22m[39m
+[31m     → unit-lifecycle covers retired unit function.slugify: expected [ false, false ] to deeply equal [ true, true ][39m
+   [2m[90m↓[39m[22m index records reviewed shared helper contracts for clients without source rescans
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/units.e2e.test.ts[2m > [22mcheck rejects invalid manifests and schemas are exposed
+[31m[1mAssertionError[22m: unit-lifecycle covers retired unit function.slugify: expected [ false, false ] to deeply equal [ true, true ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   true,[39m
+[32m-   true,[39m
+[31m+   false,[39m
+[31m+   false,[39m
+[2m  ][22m
+
+[36m [2m❯[22m test/units.e2e.test.ts:[2m145:90[22m[39m
+    [90m143| [39m  [34mexpect[39m(active[33m.[39mexitCode)[33m.[39m[34mtoBe[39m([34m0[39m)[33m;[39m
+    [90m144| [39m  const message = 'unit-lifecycle covers retired unit function.slugify…
+    [90m145| [39m  expect([retired.stderr.includes(message), registry.stderr.includes(m…
+    [90m   | [39m                                                                                         [31m^[39m
+    [90m146| [39m   [35mtrue[39m[33m,[39m
+    [90m147| [39m   [35mtrue[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m3 skipped[39m[90m (4)[39m
+[2m   Start at [22m 12:23:35
+[2m   Duration [22m 16.81s[2m (transform 109ms, setup 138ms, collect 26ms, tests 13.44s, environment 0ms, prepare 33ms)[22m
+
