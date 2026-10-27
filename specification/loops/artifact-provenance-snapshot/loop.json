@@ -2,7 +2,7 @@
 	"name": "artifact-provenance-snapshot",
 	"goal": "Keep validated class audio metadata bound to the captured artifact.",
 	"createdAt": "2026-10-26T23:54:47.688Z",
-	"updatedAt": "2026-10-26T23:54:55.171Z",
+	"updatedAt": "2026-10-26T23:57:10.183Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:57:04.159Z",
+			"evidence": "Committed test 12f4c2f1b3 failed the retained provenance assertion; record c4d32988bc1a."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:57:08.318Z",
+			"evidence": "Commit 26340c7583 snapshots the bytes and authored metadata before validation and retention."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-26T23:57:10.183Z",
+			"evidence": "Unchanged test passed at 26340c7583 with paired record a5759c3b25d6."
 		},
 		{
 			"id": "verify",

@@ -703,3 +703,40 @@ typecheck and audit. Nine unit-specific reasons for `75c22c877a..ba7c3f22cb`
 are retained in Git notes. This is focused proof, not the required aggregate
 or other-laptop E2E verdict. The uncommitted baseline fixture still needs real
 reviewed screenshot cases and a durable baseline workflow.
+
+## Continuation: audio identity and laptop browser fixture
+
+The existing TestArtifactService capture case read bytes once but did not check
+changing provenance or revision accessors. Test-only `12f4c2f1b3` failed red
+`c4d32988bc1a`; source-only `26340c7583` passed green `a5759c3b25d6` with the
+same case. Test-only `ab1ddb922d` failed red `65a0c004045a`; source-only
+`2de536b414` passed green `1ffd4609797d` with the same case. Validated metadata
+and the tested revision now stay attached to the retained audio bytes. The
+registered test title and case count did not change.
+
+In a disposable worktree, provenance mutant `bc312090f3` failed capture
+`868b52568233` and restored `6c937205d1` passed `0db20496e637`. Revision mutant
+`7b6e5f1549` failed `b23b571b7bd8` and restored `05fe72ca43` passed
+`5dfa0b357f20`. The final restored tree equals `2de536b414`; Harness retained
+the source commits and their actual outcomes. Capture `5a3d8e2bf7ed` at that
+commit passed 17 focused tests, the 1,827-unit registry check, targeted lint,
+root typecheck and audit. Its retained fixture WAV decodes as 0.1 seconds of
+16 kHz mono PCM and hashes to `d62864e6ea737a2a02f3341d9c944f5d67dcc0c08be05a81fb0a1f0d5348a05b`.
+The audio workload averaged 1.15 ms over five successful calls and observed
+115,687,424 bytes peak whole-process RSS, including the runner. The service has
+4,779 source bytes, 115 lines, complexity 36 and eight dependencies; it has no
+separate module artifact. Both bug loops retain pending full verification.
+
+On `harbor-mbp-2`, the existing Homebrew Node 21 failed before test startup due
+to its missing ICU 73 library. A task-owned official Node 22.23.1 binary was
+installed under the project cache after its archive SHA-256 matched the official
+checksum; the machine's existing Node installation was not changed. Harness
+capture `fc19b3e1e3e1` ran the two generated browser-fixture files at source
+`975be42801`: three cases passed on two Vitest workers, each generated Playwright
+configuration reported one worker, and peak task-process RSS was 2,182,381,568
+bytes. The checks include deliberate screenshot mismatches and a browser-free API
+case. Their synthetic four-pixel baseline is fixture data, not reviewed product
+visual evidence. This earlier revision and focused run do not satisfy the full
+E2E or aggregate gate at the current task head. `harness history fetch` merged
+the laptop's notes and evidence locally; this record contains measurements and
+test logs, but no retained product screenshot captures.
