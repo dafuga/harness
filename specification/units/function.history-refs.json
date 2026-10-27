@@ -56,7 +56,13 @@
 				"description": "Evidence and notes refs plus the source archive wildcard used to select Harness history."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "A null or non-string reference without a prefix method throws TypeError; errors raised by that method propagate."
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -76,6 +82,314 @@
 		]
 	},
 	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "refKind",
+				"name": "Classify the main source branch",
+				"call": "refKind(\"refs/heads/main\")",
+				"input": ["refs/heads/main"],
+				"expected": {
+					"kind": "value",
+					"value": "source"
+				}
+			},
+			{
+				"subject": "refKind",
+				"name": "Keep an evidence-like feature branch as source",
+				"call": "refKind(\"refs/heads/feature/harness-evidence-ui\")",
+				"input": ["refs/heads/feature/harness-evidence-ui"],
+				"expected": {
+					"kind": "value",
+					"value": "source"
+				}
+			},
+			{
+				"subject": "refKind",
+				"name": "Recognize the exact evidence branch",
+				"call": "refKind(\"refs/heads/harness-evidence\")",
+				"input": ["refs/heads/harness-evidence"],
+				"expected": {
+					"kind": "value",
+					"value": "evidence"
+				}
+			},
+			{
+				"subject": "refKind",
+				"name": "Recognize the history notes ref",
+				"call": "refKind(\"refs/notes/harness\")",
+				"input": ["refs/notes/harness"],
+				"expected": {
+					"kind": "value",
+					"value": "notes"
+				}
+			},
+			{
+				"subject": "refKind",
+				"name": "Recognize a retained source archive",
+				"call": "refKind(\"refs/harness/source/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\")",
+				"input": ["refs/harness/source/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
+				"expected": {
+					"kind": "value",
+					"value": "archive"
+				}
+			},
+			{
+				"subject": "refKind",
+				"name": "Recognize a Harness remote tracking ref",
+				"call": "refKind(\"refs/harness/remotes/origin/evidence\")",
+				"input": ["refs/harness/remotes/origin/evidence"],
+				"expected": {
+					"kind": "value",
+					"value": "internal"
+				}
+			},
+			{
+				"subject": "refKind",
+				"name": "Recognize a Git tag",
+				"call": "refKind(\"refs/tags/v1.0.0\")",
+				"input": ["refs/tags/v1.0.0"],
+				"expected": {
+					"kind": "value",
+					"value": "tag"
+				}
+			},
+			{
+				"subject": "refKind",
+				"name": "Recognize a remote-tracking branch",
+				"call": "refKind(\"refs/remotes/origin/main\")",
+				"input": ["refs/remotes/origin/main"],
+				"expected": {
+					"kind": "value",
+					"value": "remote"
+				}
+			},
+			{
+				"subject": "refKind",
+				"name": "Leave an unknown reference as other",
+				"call": "refKind(\"refs/custom/topic\")",
+				"input": ["refs/custom/topic"],
+				"expected": {
+					"kind": "value",
+					"value": "other"
+				}
+			},
+			{
+				"subject": "refKind",
+				"name": "Propagate an invalid reference error",
+				"call": "refKind({ startsWith() { throw new TypeError(\"invalid reference\"); } })",
+				"input": [
+					{
+						"$fixture": "throwing-reference",
+						"message": "invalid reference"
+					}
+				],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "TypeError",
+						"message": "invalid reference"
+					}
+				}
+			},
+			{
+				"subject": "sourceArchiveRef",
+				"name": "Name a retained commit",
+				"call": "sourceArchiveRef(\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\")",
+				"input": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
+				"expected": {
+					"kind": "value",
+					"value": "refs/harness/source/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+				}
+			},
+			{
+				"subject": "sourceArchiveRef",
+				"name": "Preserve an empty unvalidated commit id",
+				"call": "sourceArchiveRef(\"\")",
+				"input": [""],
+				"expected": {
+					"kind": "value",
+					"value": "refs/harness/source/"
+				}
+			},
+			{
+				"subject": "historyRefs",
+				"name": "Select the evidence notes and source archive refs",
+				"call": "historyRefs()",
+				"input": [],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"evidence": "refs/heads/harness-evidence",
+						"notes": "refs/notes/harness",
+						"archives": "refs/harness/source/*"
+					}
+				}
+			}
+		],
+		"states": [
+			"source",
+			"evidence",
+			"notes",
+			"archive",
+			"internal",
+			"tag",
+			"remote",
+			"other",
+			"invalid",
+			"archive-name",
+			"empty-id",
+			"history-selection"
+		],
+		"props": ["ref", "commit"],
+		"cases": [
+			{
+				"id": "ref.main",
+				"state": "source",
+				"subject": "refKind",
+				"example": "Classify the main source branch",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "refKind: Classify the main source branch"
+				},
+				"props": ["ref"]
+			},
+			{
+				"id": "ref.feature",
+				"state": "source",
+				"subject": "refKind",
+				"example": "Keep an evidence-like feature branch as source",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "refKind: Keep an evidence-like feature branch as source"
+				},
+				"props": ["ref"]
+			},
+			{
+				"id": "ref.evidence",
+				"state": "evidence",
+				"subject": "refKind",
+				"example": "Recognize the exact evidence branch",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "refKind: Recognize the exact evidence branch"
+				},
+				"props": ["ref"]
+			},
+			{
+				"id": "ref.notes",
+				"state": "notes",
+				"subject": "refKind",
+				"example": "Recognize the history notes ref",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "refKind: Recognize the history notes ref"
+				},
+				"props": ["ref"]
+			},
+			{
+				"id": "ref.archive",
+				"state": "archive",
+				"subject": "refKind",
+				"example": "Recognize a retained source archive",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "refKind: Recognize a retained source archive"
+				},
+				"props": ["ref"]
+			},
+			{
+				"id": "ref.internal",
+				"state": "internal",
+				"subject": "refKind",
+				"example": "Recognize a Harness remote tracking ref",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "refKind: Recognize a Harness remote tracking ref"
+				},
+				"props": ["ref"]
+			},
+			{
+				"id": "ref.tag",
+				"state": "tag",
+				"subject": "refKind",
+				"example": "Recognize a Git tag",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "refKind: Recognize a Git tag"
+				},
+				"props": ["ref"]
+			},
+			{
+				"id": "ref.remote",
+				"state": "remote",
+				"subject": "refKind",
+				"example": "Recognize a remote-tracking branch",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "refKind: Recognize a remote-tracking branch"
+				},
+				"props": ["ref"]
+			},
+			{
+				"id": "ref.other",
+				"state": "other",
+				"subject": "refKind",
+				"example": "Leave an unknown reference as other",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "refKind: Leave an unknown reference as other"
+				},
+				"props": ["ref"]
+			},
+			{
+				"id": "ref.invalid",
+				"state": "invalid",
+				"subject": "refKind",
+				"example": "Propagate an invalid reference error",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "refKind: Propagate an invalid reference error"
+				},
+				"props": ["ref"],
+				"errors": ["TypeError"]
+			},
+			{
+				"id": "archive.commit",
+				"state": "archive-name",
+				"subject": "sourceArchiveRef",
+				"example": "Name a retained commit",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "sourceArchiveRef: Name a retained commit"
+				},
+				"props": ["commit"]
+			},
+			{
+				"id": "archive.empty",
+				"state": "empty-id",
+				"subject": "sourceArchiveRef",
+				"example": "Preserve an empty unvalidated commit id",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "sourceArchiveRef: Preserve an empty unvalidated commit id"
+				},
+				"props": ["commit"]
+			},
+			{
+				"id": "history.refs",
+				"state": "history-selection",
+				"subject": "historyRefs",
+				"example": "Select the evidence notes and source archive refs",
+				"test": {
+					"file": "test/utils/history-refs.test.ts",
+					"title": "historyRefs: Select the evidence notes and source archive refs"
+				}
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
