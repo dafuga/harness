@@ -83,7 +83,16 @@ function visualExecutionErrors(
 	const selected = cases.filter(
 		(item) => item.expected?.kind === 'screenshot' && run.files.includes(item.test.file)
 	);
-	const context = visualContext(registry, run, selected, groups);
+	const scoped = visualContext(registry, run, selected, groups);
+	const references = scoped.check?.cases;
+	const context = references?.length
+		? {
+				...scoped,
+				cases: selected.filter((item) =>
+					references.some((ref) => ref.unit === item.unit && ref.case === item.id)
+				)
+			}
+		: scoped;
 	const { counts, errors } = visualCounts(context);
 	return [...errors, ...missingVisuals(context, counts), ...duplicateVisuals(counts)];
 }
