@@ -2,7 +2,7 @@
 	"name": "native-measured-unit-identity",
 	"goal": "Preserve source identities for every measured or removed unit after verification releases indexes",
 	"createdAt": "2026-10-27T09:53:21.619Z",
-	"updatedAt": "2026-10-27T09:53:22.872Z",
+	"updatedAt": "2026-10-27T10:23:38.928Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:23:38.928Z",
+			"evidence": "At 926b9bf4735f5fdf3a6b5a46e3eef0581b1d79dc the Desktop fixture failed because service.title lacked its committed source hash; the same E2E fixture also exposed the removed-unit hash loss."
 		},
 		{
 			"id": "implement",
