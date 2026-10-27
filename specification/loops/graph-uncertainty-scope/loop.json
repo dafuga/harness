@@ -2,7 +2,7 @@
 	"name": "graph-uncertainty-scope",
 	"goal": "Ignore only graph gaps proven unrelated to every active page during feature impact discovery",
 	"createdAt": "2026-10-27T11:44:45.350Z",
-	"updatedAt": "2026-10-27T11:44:46.437Z",
+	"updatedAt": "2026-10-27T11:51:41.103Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:51:32.271Z",
+			"evidence": "At 48e8fd191d the existing coverage matrix rejected a dangling test-only edge despite complete unrelated page reachability. Matched red record cb342fe9eca311cdd47d5ca5b594a01d449ef77f14a8d5a367adad2208c6e958."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:51:39.461Z",
+			"evidence": "At 469d28c255 only scenario edges and test/source gaps proven unreachable from active pages are excluded; missing page anchors, unknown origins, ambiguous nodes and page-reachable gaps remain blockers."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:51:41.103Z",
+			"evidence": "The unchanged coverage case passed in the same clean-snapshot environment; green record 3600305b65af2c0582008c9e214a63734315486746514edac3f81389e0cf80cd. Isolated mutations removing reachability or ownership checks each failed the matching assertion, and the restored test passed."
 		},
 		{
 			"id": "verify",
