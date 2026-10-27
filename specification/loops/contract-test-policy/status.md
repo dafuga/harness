@@ -1264,3 +1264,31 @@ recording workload took 0.199 ms and observed 91,406,336 bytes of whole-worker
 RSS. It emits no separate artifact. Source reasons are in Git notes. The
 actual Playwright reporter is not yet installed in generated apps; browser,
 full verification and current-main delivery remain pending.
+
+## Continuation: generated Playwright outcomes
+
+New app page cases had no installed Playwright outcome reporter. The existing
+app-generator case checked case discovery but not the runner's output.
+Test-only `4ea834c298` extends that same case with a disposable reporter
+fixture; paired red `2bd7528d9ded` failed because the generated configuration
+had no reporter. Source-only `7a4aa4a35a` reuses the library reporter, adds its
+Playwright callback and installs it in new apps. Unchanged green `78bb5034520c`
+passed; no test titles were added. Mutant `9ad293cb34` failed `fc1e0d77c85c`;
+restored `7ce145771b` passed `ac90b2017747` with the same tree as `a037516b06`.
+
+The earlier generator change missed runner outcome verification. The Harness
+skill and generated guidance now require passed, failed, skipped and retried
+outcomes in existing generator cases, followed by a real runner check on the
+designated host. Focused capture `98aab9d9f393` passed 27 generator, registry
+and readable-contract cases, typecheck and audit. At `a037516b06`, source
+bytes/lines/complexity/dependencies were 9259/218/12/5 for project tests,
+8271/223/10/11 for the project template and 18267/145/9/3 for guidance.
+Representative generation workloads took 0.133, 2.812 and 12.869 ms, with
+264,273,920, 264,208,384 and 264,617,984 bytes whole-worker RSS respectively.
+These modules emit no separate artifacts; source reasons are in Git notes.
+
+A fresh CLI-generated app included the reporter and three declared page cases.
+With its own installed dependencies, formatting, Svelte typecheck, lint, audit
+and build passed; strict registry validation still failed on 195 atom and
+script coverage gaps. The disposable reporter fixture is not a Playwright run.
+Actual E2Es, reviewed screenshots and full verification remain pending.
