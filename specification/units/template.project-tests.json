@@ -17,7 +17,7 @@
 			{
 				"name": "appTestFiles",
 				"type": "PlannedFile[]",
-				"description": "Shared console and screenshot fixtures plus the initial page state at desktop 1440x900, tablet 920x800 and mobile 390x844. Each case navigates to / and matches the full page against its own reviewed baseline; missing or changed baselines fail."
+				"description": "Shared browser fixtures, a strict unit configuration, a declared build, and the initial page's registered scenario and desktop, tablet and mobile screenshot cases. Missing or changed baselines fail."
 			},
 			{
 				"name": "libTestFiles",
