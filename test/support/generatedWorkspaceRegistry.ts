@@ -6,6 +6,7 @@ import { TestContractService } from '../../src/services/verification-evidence/Te
 import { TestDiscoveryService } from '../../src/services/verification-evidence/TestDiscoveryService';
 import { generatePiece } from '../../src/workflows/generate-code/generateCode';
 import { unitProject } from './unitProject';
+import type { UnitProject } from './unitProject';
 
 /** Visual generation from a nested workspace registers repository-relative cases and its build. */
 export async function assertGeneratedWorkspaceRegistry(): Promise<void> {
@@ -55,9 +56,32 @@ export async function assertGeneratedWorkspaceRegistry(): Promise<void> {
 			);
 			await assertWorkspaceMatrix(project.read, unit, scenario, { ...entry, workspace });
 		}
+		await assertMissingWorkspaceBuild(project, config);
 	} finally {
 		await rm(dirname(project.root), { recursive: true, force: true });
 	}
+}
+
+async function assertMissingWorkspaceBuild(
+	project: UnitProject,
+	config: { workspaces: { name: string; root: string }[] }
+) {
+	config.workspaces.push({ name: 'unbuilt', root: 'packages/unbuilt' });
+	await project.write('harness.units.json', JSON.stringify(config));
+	await project.write(
+		'packages/unbuilt/package.json',
+		JSON.stringify({ harness: { kind: 'app' } })
+	);
+	await expect(
+		generatePiece({
+			root: join(project.root, 'packages/unbuilt'),
+			kind: 'component',
+			name: 'UnbuiltCard'
+		})
+	).rejects.toThrow('No declared screenshot build for workspace packages/unbuilt');
+	await expect(
+		project.read('packages/unbuilt/src/components/UnbuiltCard.svelte')
+	).rejects.toMatchObject({ code: 'ENOENT' });
 }
 
 async function assertWorkspaceMatrix(
