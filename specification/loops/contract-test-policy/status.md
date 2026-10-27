@@ -1550,3 +1550,24 @@ profile. Source and evidence were retained. The repair was integrated at
 536 lines, complexity 125 and 28 dependencies; it emits no separate artifact.
 The green record contains focused runtime and whole-process memory samples.
 The visual and full-check gates remain open.
+
+The shared screenshot fixture attached PNGs to Playwright but did not register
+case-bound evidence. A focused synthetic unit case recorded red `613f13c28a1f`
+at `483794ee1d` and green `7b7717233ee5` at `0d6e3eb2d4` with the same frozen
+tests and profile. Its mutant `60ad079f82` failed in `64d5d952f3f9`, and the
+restored identical tree passed in `bdfe634906d8`. The case count did not grow.
+The maintained implementation was first moved into `template.browser-test`,
+leaving the test-side forwarding file frozen. The earlier draft green was
+correctly rejected because it changed a frozen test fixture; it is not proof.
+
+The existing generated-app CLI case was also strengthened to inspect actual
+page, component and layout captures from a committed disposable app and
+stamped build, while preserving missing-baseline failures. On harbor-mbp-2,
+red `bd8c0a6c6814` at `483794ee1d` reached the missing case-bound screenshot
+assertion after the 33-case matrix ran with five workers. Its focused three-case
+run used one worker. Test-only `21754d7af2` enables parallel cases; its new red
+is waiting for the laptop's other full check and must be paired with a green
+using that same test and environment. The source changes remain in the isolated
+`dafuga/visual-evidence-source-20261027` branch pending that browser proof.
+Reviewed-baseline retrieval, the API-only browserless check, fresh Explorer
+screenshots, full verification and final delivery remain open.
