@@ -2,7 +2,7 @@
 	"name": "native-reason-manifest-memory",
 	"goal": "Retain only reason-relevant manifest declarations across source history",
 	"createdAt": "2026-10-27T01:15:37.490Z",
-	"updatedAt": "2026-10-27T01:15:38.659Z",
+	"updatedAt": "2026-10-27T09:32:39.241Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:32:39.241Z",
+			"evidence": "The 32-revision scenario failed on cf81ce11b0c193a9e966774edcd29e08147ca0c5 because historical manifests retain fields beyond declarationHash, id, owns and status."
 		},
 		{
 			"id": "implement",
