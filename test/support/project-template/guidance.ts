@@ -100,13 +100,13 @@ function expectStandardTestForms(files: ReturnType<typeof projectFiles>): void {
 		expect(text, path).toContain('Do not add a sixth shape');
 		expect(text, path).toContain('Projects without UI have no page or component cases');
 		expect(text, path).toContain('Do not auto-accept screenshot baselines');
-		expect(text, path).toContain(
-			'passed, failed, skipped and retried cases in the existing generator cases'
-		);
+		for (const rule of [
+			'passed, failed, skipped and retried cases in the existing generator cases',
+			'Keep one Playwright reporter declaration with both Harness and JSON reporters',
+			'Scope screenshots to each scenario check when cases share a test file'
+		])
+			expect(text, path).toContain(rule);
 		expect(text, path).toContain('exercise the real runner on the designated test host');
-		expect(text, path).toContain(
-			'Keep one Playwright reporter declaration with both Harness and JSON reporters'
-		);
 		expect(text, path).toContain(
 			'the declared build is stamped and the test owns its preview server'
 		);
@@ -115,9 +115,6 @@ function expectStandardTestForms(files: ReturnType<typeof projectFiles>): void {
 			'distinct declared case bindings sharing a state, viewport and evidence slot'
 		);
 		expect(text, path).toContain('plus wrong and duplicate bindings');
-		expect(text, path).toContain(
-			'Scope screenshots to each scenario check when cases share a test file'
-		);
 		expect(text, path).toContain('retries with differing outcomes');
 		expect(text, path).toContain(
 			'Preserve the unit, case, tested revision, attempt, original hash and outcome'
