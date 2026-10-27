@@ -56,8 +56,13 @@ export default [
 		},
 		rules: {
 			...eslint.configs.recommended.rules,
+			'no-redeclare': 'off',
 			'no-unused-vars': 'off',
-			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+			'@typescript-eslint/no-redeclare': 'error',
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{ argsIgnorePattern: '^_', ignoreRestSiblings: true }
+			],
 			'@typescript-eslint/await-thenable': 'error',
 			'@typescript-eslint/consistent-type-imports': 'error',
 			'@typescript-eslint/no-explicit-any': 'error',

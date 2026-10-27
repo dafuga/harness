@@ -2,7 +2,7 @@
 	"name": "lint-typescript-declarations",
 	"goal": "Lint valid TypeScript overloads and object-rest omissions without weakening duplicate or unused checks",
 	"createdAt": "2026-10-26T23:59:30.905Z",
-	"updatedAt": "2026-10-27T00:00:40.817Z",
+	"updatedAt": "2026-10-27T00:01:26.097Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:01:26.097Z",
+			"evidence": "Recorded invalid TypeScript lint errors in regression 0256b75b at 75756640a5."
 		},
 		{
 			"id": "implement",

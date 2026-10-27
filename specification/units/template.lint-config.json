@@ -4,19 +4,20 @@
 	"kind": "template",
 	"title": "lintConfig",
 	"responsibility": "Owns the lintConfig scaffold template.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/templates/development-tooling/lintConfig.ts", "src/templates/lintConfig.ts"],
 		"symbols": ["lintConfigFiles", "lintConfigFiles"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "lintConfigFiles",
-				"type": "PlannedFile[]"
+				"type": "PlannedFile[]",
+				"description": "Emit a TypeScript-aware ESLint configuration that permits valid overloads and intentionally omitted object-rest fields while rejecting real redeclarations and unused variables."
 			}
 		],
 		"errors": []
