@@ -866,3 +866,33 @@ complexity 103 and 19 dependencies; the module has no separate emitted target.
 Mutant `c063ff5686` failed capture `2cb7daab7eec` at the original assertion;
 restored `fbf86ef3ff` passed `83860ee834af` with the same tree as `9430853e0c`.
 The source reason is retained in Git notes. Full verification remains pending.
+
+## Continuation: measurement comparability examples
+
+A prior `claude-haiku-5-5/max` task reported that exact model and produced a
+draft of the comparability examples. Primary review found its displayed calls
+used undefined variables and its cases pointed to a draft fixture. `4923cffba2`
+integrates eight authored examples into `function.comparison-differences`,
+uses executable literal calls and checks that each displayed call matches its
+tested input. The original three tests contained five distinct comparison
+examples; the new contract declares those and three additional boundary
+examples. Each example has one registered case, including incomplete and
+incompatible results. All eight displayed calls were executed against their
+authored expected values.
+
+Capture `ab2937cf671b` passed 25 tests but found the registry's canonical field
+order stale. `965caab6d8` retains the indexer's ordering without changing the
+contract. Capture `4a32fafe9e03` passed 25 focused tests, registry validation,
+formatting, lint, typecheck and audit. Changing one authored expected result in
+`f1348fa0e7` failed its existing case in capture `405cf917c6ff`; restored
+`97f75468a7` passed `2cae865b4437` with the same tree as `965caab6d8`.
+The eight example workloads observed 0.015–0.424 ms wall time and
+91,553,792–91,947,008 bytes whole-worker RSS; those figures include the runner.
+The unit has 3,888 source bytes, 93 lines, complexity 12 and one dependency,
+with no separate emitted artifact. Its manifest reason is retained in Git notes.
+
+The committed-tree inventory now reports 1,118 suite files, 4,615 test
+declarations, 52 standardized units, 714 registered cases and 6,090 remaining
+gaps. The comparability unit has eight discovered cases and no reported gap.
+The historical Haiku result does not qualify the current trusted worker boundary;
+the complete migration and full verification remain open.
