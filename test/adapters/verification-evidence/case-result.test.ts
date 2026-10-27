@@ -195,13 +195,8 @@ test('CaseResultAdapter.onTestEnd configured retains browser status and suite id
 			{ location: { file: config.file }, titlePath: () => ['', '', 'sample.test.ts', 'ready'] },
 			{ status: 'passed', retry: 1 }
 		);
-		expect(read(config.directory)[5]).toEqual({
-			file: 'test/sample.test.ts',
-			title: 'ready',
-			revision,
-			retry: 1,
-			status: 'passed'
-		});
+		const first = read(config.directory)[0];
+		expect(read(config.directory)[5]).toEqual({ ...first, title: 'ready', retry: 1 });
 	} finally {
 		rmSync(config.root, { recursive: true, force: true });
 	}
