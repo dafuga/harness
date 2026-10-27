@@ -1382,3 +1382,20 @@ record. Prior ownership reviews and both changed source definitions are retained
 A legacy screenshot slot without a provenance declaration keeps its former
 behavior. Required declarations, case-to-capture binding, real browser evidence
 and the full laptop gate remain open.
+
+Strict visual scenario admission previously accepted a case reference without
+any screenshot slot, and allowed unproven provenance or an unnamed build. The
+existing class validation case now covers page and component state/viewport
+matrices, missing and optional slots, wrong kinds, missing or fixture provenance,
+missing builds and undeclared viewports. Test commit `2c7f3b57e6` failed in
+red `3d7cfa02528e`; fix `ccc6f73b0a` passed the unchanged case in green
+`012a7fe1ec9c`. After adding workload observation without changing case count,
+mutant `b82e9157f1` failed in `811f902455e1` and restored tree `5d174cf1c4`
+passed in `686c76fba9ad`. Legacy non-strict admission remains unchanged.
+
+Focused snapshot `8d55d9d9b00b` at `f36a24b669` passed 16 existing cases,
+registry validation, root typecheck and audit; target lint passed. The service
+had 13,822 source bytes, 376 lines, complexity 116 and five dependencies; no
+separate module artifact applies. Its visual admission workload took 0.909 ms
+and the whole test worker reported 192,299,008 bytes RSS. The capture-binding
+and actual screenshot comparison gates remain open.
