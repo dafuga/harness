@@ -122,7 +122,9 @@
 					"kind": "value",
 					"value": {
 						"profilePrepared": true,
-						"unsafeArgRejected": true
+						"unsafeArgRejected": true,
+						"agentsDisabled": true,
+						"agentV2Disabled": true
 					}
 				},
 				"errors": ["unsafe or unverifiable isolation"]
@@ -140,7 +142,9 @@
 					"kind": "value",
 					"value": {
 						"permissionsVerified": true,
-						"aliasesRejected": true
+						"aliasesRejected": true,
+						"agentsDisabled": true,
+						"agentV2Disabled": true
 					}
 				},
 				"errors": ["unsafe or unverifiable isolation"]

@@ -42,6 +42,14 @@ function assertNativeArgs(args: string[]) {
 	expect(config).toMatch(/network[^\n]*enabled\s*=\s*false/);
 }
 
+function agentSettings(args: string[]) {
+	const settings = configOverrides(args);
+	return {
+		agentsDisabled: settings.includes('agents.enabled=false'),
+		agentV2Disabled: settings.includes('features.multi_agent_v2=false')
+	};
+}
+
 function assertExactGrants(config: string, f: Awaited<ReturnType<typeof profileFixture>>) {
 	const grants = new Map(
 		[...config.matchAll(/(["'])(.*?)\1\s*=\s*(["'])(read|write|deny)\3/g)].map((match) => [
@@ -87,6 +95,7 @@ async function assertNativeProfile() {
 		expect(prepared.env.OPENAI_API_KEY).toBeUndefined();
 		expect(prepared.env.GITHUB_TOKEN).toBeUndefined();
 		expect(f.input).toEqual(before);
+		return agentSettings(prepared.args);
 	} finally {
 		await prepared?.cleanup();
 		vi.unstubAllEnvs();
@@ -109,7 +118,7 @@ async function assertDefaultProfile() {
 		await expect(adapter.prepare({ ...f.input, argv: ['sh', 'exec'] })).rejects.toThrow(
 			'Expected explicit Codex exec arguments.'
 		);
-		return { profilePrepared: true, unsafeArgRejected: true };
+		return { profilePrepared: true, unsafeArgRejected: true, ...agentSettings(prepared.args) };
 	} finally {
 		await prepared?.cleanup();
 		Object.defineProperty(process, 'platform', platform);
@@ -130,13 +139,13 @@ new TestExpectationService().registerCases(
 		'connect.named': () => new ModuleTaskCodexProfileAdapter({ name: 'custom' }).connect(),
 		'prepare.default': () => assertDefaultProfile(),
 		'prepare.named': async () => {
-			await measureWorkload(
+			const settings = await measureWorkload(
 				'adapter.agents-providers-module-task-codex-profile',
 				'native-profile-permission-scope',
 				assertNativeProfile
 			);
 			await assertUnsafeProfiles();
-			return { permissionsVerified: true, aliasesRejected: true };
+			return { permissionsVerified: true, aliasesRejected: true, ...settings };
 		}
 	}
 );
