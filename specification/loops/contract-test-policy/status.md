@@ -1605,12 +1605,37 @@ with `CLAUDE_CODE_TMPDIR` directed to scratch reached the requested model's
 initialization but then reported not logged in. `CLAUDE_TMPDIR` alone did not
 resolve the initial directory failure. A query for a nonexistent synthetic
 Keychain item returned the same missing-item status inside and outside the
-sandbox; it did not test or reveal a real credential. The cause of the sandboxed
-login failure is unproven. The provider launcher remains blocked pending real
-credential isolation and execution qualification. The existing provider branch
-also predates the current remote main and remains separate from this task branch.
+sandbox; it did not reveal a credential. A later metadata-only query found the
+real item outside but not inside the sandbox. Granting the Keychain database
+made its metadata visible in a disposable probe; that broad grant is not applied
+to worker tools. Credential isolation and real-worker qualification remain open.
+The sandbox repair branch starts from a newer CLI integration commit containing
+remote main and remains separate from this task branch.
 
 The guarded browser wait expired while another laptop full check was still
 running. No new parallel browser red record was created; the earlier one-worker
 red remains evidence only for its original configuration. A matching parallel
 red and green, reviewed-baseline retrieval, and the full check remain pending.
+The user subsequently deferred full suites and their dependent merge. The queued
+generated-app aggregate was canceled; no other session or server was stopped.
+
+The existing process-adapter test was expanded from one unregistered connect
+case to ten declared method and initialization-state cases, including errors.
+At test-only commit `3cc1cb4a3c`, red `de52006ab858` failed two arguments cases
+for missing Claude scratch variables. Source fix `8bb0cb31cb` passed the same
+ten cases in green `dffd48add2c9` on the same laptop profile. Mutant capture
+`86f2f16066c7` failed those cases; restored identical-tree capture `261cb11b4081`
+passed. Both source reasons were preserved in Git notes. A native sandbox case
+then failed because its fixture passed the `/tmp` alias while the real contract
+context supplies canonical paths. The case passed with `/private/tmp`; fixture
+commit `52e1e1eb59` canonicalizes its own temporary root and passes with `/tmp`.
+This is fixture evidence, not a product red/green claim. Focused capture
+`1101e9da0fe5` at that commit passed 13 cases with one platform-specific skip.
+The laptop used a private dependency overlay matching the lockfile for the
+sandbox runtime and its dependencies. Targeted formatting and lint passed.
+Registry validation reported one stale process-adapter manifest and is pending.
+
+The coordinated integration branch and this policy branch have conflicting
+changes; no merge has been started. Full verification, browser screenshot
+proof, runnable exact-model workers, complete history reconstruction, and the
+shared Explorer Tests, Examples and History inspection remain open.
