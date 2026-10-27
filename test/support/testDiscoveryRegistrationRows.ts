@@ -65,6 +65,24 @@ export function registrarSources() {
 		{
 			source: `${prefix}import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; const checker = new TestExpectationService(); checker.registerExamples(test, unit, {});`,
 			dynamic: false
+		},
+		{
+			source:
+				"import { test as check } from 'vitest'; import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; const unit = loadManifest(); new TestExpectationService().registerExamples(check, unit, {});",
+			dynamic: true,
+			computed: true
+		},
+		{
+			source:
+				"import { test } from 'vitest'; import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; const unit = loadManifest(); new TestExpectationService().registerCases(test.skip, unit, 'test/examples.test.ts', {});",
+			dynamic: true,
+			computed: true,
+			disabled: true
+		},
+		{
+			source:
+				"import { test } from 'vitest'; import { TestExpectationService } from '../src/services/verification-evidence/TestExpectationService'; test('case', () => new TestExpectationService().registerExamples(() => {}, loadManifest(), {}));",
+			dynamic: false
 		}
 	];
 }

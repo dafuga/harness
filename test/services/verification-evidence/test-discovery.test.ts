@@ -160,6 +160,9 @@ async function assertRegistrationContexts(
 			found.tests.map((item) => item.dynamic),
 			row.source
 		).toEqual([row.dynamic]);
+		if (row.computed)
+			expect(found.tests[0].title, row.source).toBe('<computed registration manifest>');
+		if (row.disabled) expect(found.tests[0].disabled, row.source).toBe(true);
 		if (row.dynamic) expect(found.errors.join(' '), row.source).toContain('computed case');
 		else expect(found.errors, row.source).toEqual([]);
 	}
