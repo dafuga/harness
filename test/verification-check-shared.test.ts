@@ -68,6 +68,12 @@ function expected(id: string): unknown {
 	if (item?.expected?.kind !== 'value') throw new Error(`Missing expected value for ${id}`);
 	return item.expected.value;
 }
+function assertLineage(results: Awaited<ReturnType<typeof reports>>) {
+	const log = records[1].record.tests[0].log.path;
+	const mismatch = `evidence ${log} does not match its recorded hash`;
+	expect(results[1].problems).toContain(mismatch);
+	expect(results[2].problems).toContainEqual(expect.stringContaining(mismatch));
+}
 function wrongCommit() {
 	const wrong = '0'.repeat(40);
 	return `record is for commit ${records[0].record.source.commit}, not ${wrong}`;
@@ -97,9 +103,9 @@ test('a checker shared by the records of a chain answers as a fresh checker for 
 
 test('VerificationCheckService.check from default initialization', async () => {
 	const checker = fresh();
-	expect((await reports(checker)).map((report) => report.status)).toEqual(
-		expected('check.default')
-	);
+	const result = await reports(checker);
+	expect(result.map((report) => report.status)).toEqual(expected('check.default'));
+	assertLineage(result);
 	const wrong = await checker.check('0'.repeat(40), records[0]);
 	expect(wrong.status).toBe('failed');
 	expect(wrong.problems).toEqual([wrongCommit()]);
@@ -112,6 +118,7 @@ test('VerificationCheckService.check with an injected indexer', async () => {
 		separate.push(await fresh().check(stored.record.source.commit, stored));
 	expect(shared).toEqual(separate);
 	expect(shared.map((report) => report.status)).toEqual(expected('check.indexer-parity'));
+	assertLineage(shared);
 	const wrong = await injected().check('0'.repeat(40), records[0]);
 	expect(wrong.status).toBe('failed');
 	expect(wrong.problems).toEqual([wrongCommit()]);
