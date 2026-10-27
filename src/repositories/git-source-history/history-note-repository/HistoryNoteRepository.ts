@@ -17,6 +17,7 @@ const absent = '0'.repeat(40);
 const attempts = 20;
 
 const commitId = /^[0-9a-f]{40}$/;
+const noteReadBatch = 64;
 
 /** The Harness note of a commit: lines are only ever added, and each names its commit. */
 export class HistoryNoteRepository {
@@ -91,8 +92,14 @@ export class HistoryNoteRepository {
 	 */
 	async all(at?: string | null): Promise<Map<string, ReadNote>> {
 		const pairs = at === undefined ? await this.listed() : await this.held(at);
-		const texts = await this.blobs(pairs.map(([blob]) => blob));
-		return new Map(pairs.map(([, commit], index) => [commit, readNoteLines(texts[index], commit)]));
+		const result = new Map<string, ReadNote>();
+		for (let start = 0; start < pairs.length; start += noteReadBatch) {
+			const batch = pairs.slice(start, start + noteReadBatch);
+			const texts = await this.blobs(batch.map(([blob]) => blob));
+			for (const [index, [, commit]] of batch.entries())
+				result.set(commit, readNoteLines(texts[index], commit));
+		}
+		return result;
 	}
 
 	/** The note blob of every noted commit, as the notes ref lists them now. */
