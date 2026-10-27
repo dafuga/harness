@@ -27,57 +27,19 @@ export function selectScreenshot(
 		.filter(
 			(capture) => capture.evidence === input.evidence && capture.viewport === input.viewport
 		);
-	const selected = selectAttempt(input, contract, record, captures);
-	const { capture } = selected;
+	const matches = captures.filter((capture) => captureHasBinding(capture, input));
+	if (!matches.length && captures.length === 1)
+		return fail('Baseline screenshot has no valid case binding.');
+	if (matches.length !== 1) return fail('Baseline screenshot is missing or ambiguous.');
+	const capture = matches[0];
+	const caseStatus = completedCase(input, contract, record, capture);
 	assertCapture(input, contract, record, capture);
 	const bytes = files.get(capture.path);
 	if (!bytes) return fail('Baseline screenshot bytes do not match their recorded hash.');
 	if (bytes.length !== capture.bytes || digest(bytes) !== capture.sha256)
 		return fail('Baseline screenshot bytes do not match their recorded hash.');
 	assertDimensions(bytes, capture, contract);
-	return { record, ...selected, contract, bytes };
-}
-
-function selectAttempt(
-	input: ScreenshotReviewInput,
-	contract: ScreenshotContract,
-	record: VerificationRecord,
-	captures: Capture[]
-) {
-	const matches = captures.flatMap((capture) => {
-		const retry = captureAttempt(capture, input);
-		return retry === undefined ? [] : [{ capture, retry }];
-	});
-	if (!matches.length && captures.length === 1)
-		return fail('Baseline screenshot has no valid case binding.');
-	const candidates = matches.map((match) => ({
-		...match,
-		outcome: completedCase(input, contract, record, match.capture)
-	}));
-	for (const { retry, outcome } of candidates) assertAttemptBinding(retry, outcome);
-	if (new Set(candidates.map(({ retry }) => retry)).size !== candidates.length)
-		return fail('Baseline screenshot is missing or ambiguous.');
-	const current = candidates.filter(
-		({ retry, outcome }) => retry === null || retry === outcome.retry
-	);
-	if (current.length !== 1) return fail('Baseline screenshot is missing or ambiguous.');
-	const { capture, retry, outcome } = current[0];
-	return {
-		capture,
-		caseStatus: outcome.status,
-		...(retry === null ? {} : { captureRetry: retry })
-	};
-}
-
-function assertAttemptBinding(
-	retry: number | null,
-	outcome: ReturnType<typeof completedCase>
-): void {
-	if (retry === null && (outcome.attempts.length !== 1 || outcome.retry !== 0))
-		fail('Baseline screenshot has no valid attempt binding.');
-	const observed = outcome.attempts.find((attempt) => attempt.retry === retry);
-	if (retry !== null && (!observed || observed.status === 'skipped'))
-		fail('Baseline screenshot references an unexecuted attempt.');
+	return { record, capture, caseStatus, contract, bytes };
 }
 
 function completedCase(
@@ -85,7 +47,7 @@ function completedCase(
 	contract: ScreenshotContract,
 	record: VerificationRecord,
 	capture: Capture
-) {
+): 'passed' | 'failed' {
 	const checks = contract.checks.filter((id) =>
 		capture.path.startsWith(`evidence/${input.commit}/${input.scenario}/${id}/`)
 	);
@@ -97,12 +59,10 @@ function completedCase(
 			item.title === contract.testTitle &&
 			item.revision === input.commit
 	);
-	if (new Set(attempts.map((attempt) => attempt.retry)).size !== attempts.length)
-		return fail('Baseline case attempts are ambiguous.');
 	const last = attempts.sort((a, b) => b.retry - a.retry)[0];
 	if (last?.status !== 'passed' && last?.status !== 'failed')
 		return fail('Baseline case did not execute.');
-	return { status: last.status, retry: last.retry, attempts };
+	return last.status;
 }
 
 function assertCapture(
@@ -121,46 +81,34 @@ function assertCapture(
 		capture.server?.buildId === build?.buildId
 	].every(Boolean);
 	if (!valid) fail('Baseline screenshot has no matching served build and revision.');
-}
-
-function captureAttempt(capture: Capture, input: ScreenshotReviewInput): number | null | undefined {
-	const note = parseNote(capture.note);
-	if (!note || !matchesNote(note, input, capture.sha256)) return undefined;
-	const keys = Object.keys(note).sort().join(',');
-	if (keys === 'case,revision,sha256,unit') return null;
-	const retry = note.retry;
-	if (
-		keys !== 'case,retry,revision,sha256,unit' ||
-		typeof retry !== 'number' ||
-		!Number.isSafeInteger(retry) ||
-		retry < 0
-	)
-		return undefined;
-	return retry;
-}
-
-function parseNote(value: string | undefined): Record<string, unknown> | undefined {
+	let note: unknown;
 	try {
-		const note: unknown = JSON.parse(value ?? 'null');
-		return note && typeof note === 'object' && !Array.isArray(note)
-			? (note as Record<string, unknown>)
-			: undefined;
+		note = JSON.parse(capture.note ?? 'null');
 	} catch {
-		return undefined;
+		fail('Baseline screenshot has no valid case binding.');
 	}
+	if (!matchingBinding(note, input, capture.sha256))
+		fail('Baseline screenshot has no valid case binding.');
 }
 
-function matchesNote(
-	note: Record<string, unknown>,
-	input: ScreenshotReviewInput,
-	sha256: string
-): boolean {
+function matchingBinding(value: unknown, input: ScreenshotReviewInput, sha256: string): boolean {
+	if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+	const note = value as Record<string, unknown>;
 	return (
+		Object.keys(note).sort().join(',') === 'case,revision,sha256,unit' &&
 		note.unit === input.unit &&
 		note.case === input.case &&
 		note.revision === input.commit &&
 		note.sha256 === sha256
 	);
+}
+
+function captureHasBinding(capture: Capture, input: ScreenshotReviewInput): boolean {
+	try {
+		return matchingBinding(JSON.parse(capture.note ?? 'null'), input, capture.sha256);
+	} catch {
+		return false;
+	}
 }
 
 function assertDimensions(bytes: Buffer, capture: Capture, contract: ScreenshotContract): void {

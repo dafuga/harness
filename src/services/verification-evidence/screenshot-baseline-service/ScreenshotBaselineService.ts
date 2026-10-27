@@ -108,7 +108,6 @@ function reviewBody(
 		testFile: contract.testFile,
 		testTitle: contract.testTitle,
 		caseStatus,
-		...(candidate.captureRetry === undefined ? {} : { captureRetry: candidate.captureRetry }),
 		captureStatus: capture.status,
 		capturePath: capture.path,
 		sha256: capture.sha256,
