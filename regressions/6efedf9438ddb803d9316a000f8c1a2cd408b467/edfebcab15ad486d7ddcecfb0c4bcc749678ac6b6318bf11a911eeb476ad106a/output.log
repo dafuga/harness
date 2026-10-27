@@ -1,0 +1,95 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90m/private/tmp/harness-snapshot-yGTrcZ[39m
+
+ [31m❯[39m test/utils/gateway-prompt.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[32m 12[2mms[22m[39m
+[31m   [31m×[31m gatewayPrompt: Preserve user and tool output order[39m[32m 7[2mms[22m[39m
+[31m     → Example unexpectedly failed: expected [] to include '[{"role":"user","content":"remember a…'[39m
+[31m   [31m×[31m gatewayPrompt: Render an empty conversation[39m[32m 1[2mms[22m[39m
+[31m     → Example unexpectedly failed: expected [] to include '[]'[39m
+[31m   [31m×[31m gatewayPrompt: Preserve escaped and Unicode history[39m[32m 1[2mms[22m[39m
+[31m     → Example unexpectedly failed: expected [] to include '[{"role":"assistant","content":"line\…'[39m
+   [32m✓[39m gatewayPrompt: Propagate an input accessor error[32m 1[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 3 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m test/utils/gateway-prompt.test.ts[2m > [22mgatewayPrompt: Preserve user and tool output order
+[31m[1mError[22m: Example unexpectedly failed: expected [] to include '[{"role":"user","content":"remember a…'[39m
+[36m [2m❯[22m unexpectedExampleFailure src/services/verification-evidence/TestExpectationService.ts:[2m170:9[22m[39m
+    [90m163| [39m [35melse[39m [35mif[39m ([35mtypeof[39m error [33m===[39m [32m'string'[39m) detail [33m=[39m error[33m;[39m
+    [90m164| [39m return new Error(`Example unexpectedly failed: ${detail}`, { cause: e…
+    [90m165| [39m}
+    [90m   | [39m [31m^[39m
+    [90m166| [39m
+[90m [2m❯[22m TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:[2m85:48[22m[39m
+[90m [2m❯[22m call src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m36:31[22m[39m
+[90m [2m❯[22m PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:[2m69:24[22m[39m
+[90m [2m❯[22m Object.apply src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m40:22[22m[39m
+[90m [2m❯[22m src/services/verification-evidence/TestExpectationService.ts:[2m60:17[22m[39m
+
+[31m[1mCaused by: AssertionError[22m: expected [] to include '[{"role":"user","content":"remember a…'[39m
+[36m [2m❯[22m checked test/utils/gateway-prompt.test.ts:[2m24:17[22m[39m
+[90m [2m❯[22m src/services/verification-evidence/TestExpectationService.ts:[2m61:18[22m[39m
+[90m [2m❯[22m TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:[2m82:19[22m[39m
+[90m [2m❯[22m call src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m36:31[22m[39m
+[90m [2m❯[22m PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:[2m69:24[22m[39m
+[90m [2m❯[22m Object.apply src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m40:22[22m[39m
+[90m [2m❯[22m src/services/verification-evidence/TestExpectationService.ts:[2m60:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/utils/gateway-prompt.test.ts[2m > [22mgatewayPrompt: Render an empty conversation
+[31m[1mError[22m: Example unexpectedly failed: expected [] to include '[]'[39m
+[36m [2m❯[22m unexpectedExampleFailure src/services/verification-evidence/TestExpectationService.ts:[2m170:9[22m[39m
+    [90m163| [39m [35melse[39m [35mif[39m ([35mtypeof[39m error [33m===[39m [32m'string'[39m) detail [33m=[39m error[33m;[39m
+    [90m164| [39m return new Error(`Example unexpectedly failed: ${detail}`, { cause: e…
+    [90m165| [39m}
+    [90m   | [39m [31m^[39m
+    [90m166| [39m
+[90m [2m❯[22m TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:[2m85:48[22m[39m
+[90m [2m❯[22m call src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m36:31[22m[39m
+[90m [2m❯[22m PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:[2m69:24[22m[39m
+[90m [2m❯[22m Object.apply src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m40:22[22m[39m
+[90m [2m❯[22m src/services/verification-evidence/TestExpectationService.ts:[2m60:17[22m[39m
+
+[31m[1mCaused by: AssertionError[22m: expected [] to include '[]'[39m
+[36m [2m❯[22m checked test/utils/gateway-prompt.test.ts:[2m24:17[22m[39m
+[90m [2m❯[22m src/services/verification-evidence/TestExpectationService.ts:[2m61:18[22m[39m
+[90m [2m❯[22m TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:[2m82:19[22m[39m
+[90m [2m❯[22m call src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m36:31[22m[39m
+[90m [2m❯[22m PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:[2m69:24[22m[39m
+[90m [2m❯[22m Object.apply src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m40:22[22m[39m
+[90m [2m❯[22m src/services/verification-evidence/TestExpectationService.ts:[2m60:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m test/utils/gateway-prompt.test.ts[2m > [22mgatewayPrompt: Preserve escaped and Unicode history
+[31m[1mError[22m: Example unexpectedly failed: expected [] to include '[{"role":"assistant","content":"line\…'[39m
+[36m [2m❯[22m unexpectedExampleFailure src/services/verification-evidence/TestExpectationService.ts:[2m170:9[22m[39m
+    [90m163| [39m [35melse[39m [35mif[39m ([35mtypeof[39m error [33m===[39m [32m'string'[39m) detail [33m=[39m error[33m;[39m
+    [90m164| [39m return new Error(`Example unexpectedly failed: ${detail}`, { cause: e…
+    [90m165| [39m}
+    [90m   | [39m [31m^[39m
+    [90m166| [39m
+[90m [2m❯[22m TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:[2m85:48[22m[39m
+[90m [2m❯[22m call src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m36:31[22m[39m
+[90m [2m❯[22m PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:[2m69:24[22m[39m
+[90m [2m❯[22m Object.apply src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m40:22[22m[39m
+[90m [2m❯[22m src/services/verification-evidence/TestExpectationService.ts:[2m60:17[22m[39m
+
+[31m[1mCaused by: AssertionError[22m: expected [] to include '[{"role":"assistant","content":"line\…'[39m
+[36m [2m❯[22m checked test/utils/gateway-prompt.test.ts:[2m24:17[22m[39m
+[90m [2m❯[22m src/services/verification-evidence/TestExpectationService.ts:[2m61:18[22m[39m
+[90m [2m❯[22m TestExpectationService.example src/services/verification-evidence/TestExpectationService.ts:[2m82:19[22m[39m
+[90m [2m❯[22m call src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m36:31[22m[39m
+[90m [2m❯[22m PerformanceProfileService.observeAsync src/services/verification-evidence/PerformanceProfileService.ts:[2m69:24[22m[39m
+[90m [2m❯[22m Object.apply src/adapters/verification-evidence/source-profile-adapter/profileRuntime.ts:[2m40:22[22m[39m
+[90m [2m❯[22m src/services/verification-evidence/TestExpectationService.ts:[2m60:17[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (4)[39m
+[2m   Start at [22m 12:33:10
+[2m   Duration [22m 3.44s[2m (transform 124ms, setup 134ms, collect 54ms, tests 12ms, environment 0ms, prepare 32ms)[22m
+
