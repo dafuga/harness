@@ -7,6 +7,62 @@ import { fixture, git } from '../project-fixture';
 import { ProjectSessionService } from '../../src/services/ProjectSessionService';
 import { ProjectionCacheService } from '../../src/services/projection-cache-service/ProjectionCacheService';
 import { ProjectImageCacheService } from '../../src/services/ProjectImageCacheService';
+function deferred<T>() {
+	let resolve!: (value: T) => void;
+	const promise = new Promise<T>((done) => (resolve = done));
+	return { promise, resolve };
+}
+async function switchedProjectReads(
+	f: Awaited<ReturnType<typeof fixture>>,
+	session: ProjectSessionService,
+	reader: ProjectImageCacheService,
+	{ query, bytes }: { query: Parameters<ProjectImageCacheService['read']>[0]; bytes: Buffer }
+) {
+	const other = await fixture();
+	const cache = session.cache!;
+	const get = vi.spyOn(cache, 'get');
+	const put = vi.spyOn(cache, 'put');
+	try {
+		const hitStarted = deferred<void>();
+		const hitRelease = deferred<Uint8Array>();
+		get.mockImplementationOnce(async () => {
+			hitStarted.resolve();
+			return hitRelease.promise;
+		});
+		const hit = reader.read(query).then(
+			() => 'returned',
+			() => 'rejected'
+		);
+		await hitStarted.promise;
+		await session.open(other.root);
+		hitRelease.resolve(new Uint8Array(bytes));
+		const hitResult = await hit;
+
+		await session.open(f.root);
+		const imageStarted = deferred<void>();
+		const imageRelease = deferred<void>();
+		get.mockResolvedValueOnce(null);
+		vi.spyOn(session.planning!, 'image').mockImplementationOnce(async () => {
+			imageStarted.resolve();
+			await imageRelease.promise;
+			return new Uint8Array(bytes);
+		});
+		const miss = reader.read(query).then(
+			() => 'returned',
+			() => 'rejected'
+		);
+		await imageStarted.promise;
+		await session.open(other.root);
+		put.mockClear();
+		imageRelease.resolve();
+		const missResult = await miss;
+		expect([hitResult, missResult, put.mock.calls.length]).toEqual(['rejected', 'rejected', 0]);
+	} finally {
+		get.mockRestore();
+		put.mockRestore();
+		await rm(other.root, { recursive: true, force: true });
+	}
+}
 async function optionReads(
 	f: Awaited<ReturnType<typeof fixture>>,
 	reader: ProjectImageCacheService,
@@ -92,7 +148,8 @@ test('real image reads revalidate project ownership and rebuild corrupt cache wi
 		expect(read).toHaveBeenCalledTimes(2);
 		await expect(reader.read({ ...query, entityId: 'unknown' })).rejects.toThrow();
 		await optionReads(f, reader, { query, bytes }, () => read.mock.calls);
+		await switchedProjectReads(f, session, reader, { query, bytes });
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
-}, 15000);
+}, 30000);

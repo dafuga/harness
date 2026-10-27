@@ -1,0 +1,56 @@
+{
+	"name": "image-project-scope",
+	"goal": "Prevent a design image read from returning a previous project image after the selected project changes during asynchronous work",
+	"createdAt": "2026-10-27T11:07:41.084Z",
+	"updatedAt": "2026-10-27T11:08:25.440Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T11:08:24.815Z",
+			"evidence": "ProjectImageCacheService.read awaits catalog, cache and planning operations but relies on a project identity checked only at entry; identity() also obtains the current project after the first await. A direct read can outlive a session switch."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T11:08:25.440Z",
+			"evidence": "The existing registered image-reader method case covers ownership, corrupt cache, options and hashes while the selected project stays fixed. Strengthen the same case with controlled cache-hit and provider-free image-read delays across real session.open calls."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
