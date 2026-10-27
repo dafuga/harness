@@ -1242,3 +1242,25 @@ and load workloads took 143.32 and 77.79 ms with 204,816,384 and 226,951,168
 bytes of whole-worker RSS; guidance took 9.01 ms with 263,323,648 bytes.
 Neither module emits a separate artifact. Source reasons are in Git notes.
 Full verification and real browser evidence remain pending.
+
+## Continuation: Playwright case outcome titles
+
+The Playwright case-result adapter kept the file-suite title in the recorded
+case title. Its existing configured case used a fixture without Playwright's
+root suite and missed the mismatch. Test-only commits `f13e31e359` and
+`3f7cbe8f0a` strengthen that same case and measure its workload; paired red
+`6eba510ac0b7` failed with the filename in the actual title. Source-only fix
+`ec3631637a` removes root, project and file prefixes; unchanged green
+`b21a4cafe249` passed. No case titles were added.
+
+The first focused capture passed 34 tests and registry validation but failed
+audit because the test file exceeded 220 lines. `5d7e34832d` shortened its
+existing assertion without dropping fields. On that final test tree, mutant
+`62450deed5` failed capture `bd857d27ae43` and restored `7f79e30df6` passed
+`14cf8cd4c55b`; the restored tree equals `5d7e34832d`. Focused capture
+`a47d30d9c599` passed all 34 cases, registry, typecheck and audit. The adapter
+source bytes/lines/complexity/dependencies were 3311/99/31/3; its normal
+recording workload took 0.199 ms and observed 91,406,336 bytes of whole-worker
+RSS. It emits no separate artifact. Source reasons are in Git notes. The
+actual Playwright reporter is not yet installed in generated apps; browser,
+full verification and current-main delivery remain pending.
