@@ -2,7 +2,7 @@
 	"name": "native-source-index-cache",
 	"goal": "Bound parsed source blobs to the indexed revision while reusing current blobs",
 	"createdAt": "2026-10-27T00:52:12.708Z",
-	"updatedAt": "2026-10-27T00:52:13.818Z",
+	"updatedAt": "2026-10-27T00:55:13.493Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T00:55:13.493Z",
+			"evidence": "test/services/unit-index/sourceIndex.ts failed at 3c29eb7f4defb22ecd9410e89b5accd24a9a1edc: after successive indexing, parsed cache size was 2 instead of 1 on harbor-mbp-2"
 		},
 		{
 			"id": "implement",
