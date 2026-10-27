@@ -40,6 +40,7 @@ export const screenshotReviewBodySchema = screenshotReviewInputSchema.extend({
 	testFile: z.string().trim().min(1),
 	testTitle: z.string().trim().min(1),
 	caseStatus: z.enum(['passed', 'failed']),
+	captureRetry: z.number().int().nonnegative().optional(),
 	captureStatus: z.enum(['passed', 'failed']),
 	capturePath: z.string().trim().min(1),
 	sha256: hash,

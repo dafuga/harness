@@ -1,10 +1,41 @@
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
+import { expect } from 'vitest';
 import { runCommand } from './cli';
+import { measureWorkload } from './measureWorkload';
 import { fixtureScenario, fixtureUnit } from './screenshotBaselineContracts';
 import { attachSyntheticScreenshot } from './screenshotBaselineRecord';
 import type { ScreenshotFixtureOptions } from './screenshotBaselineFixture.types';
+import { ScreenshotBaselineService } from '../../src/services/verification-evidence/ScreenshotBaselineService';
+
+/** Both attempts remain in evidence; the reviewed bytes belong to the selected retry. */
+export async function assertRetriedReview(): Promise<void> {
+	const fixture = await screenshotBaselineFixture({ attempts: 'bound' });
+	try {
+		const service = new ScreenshotBaselineService(fixture.root);
+		const review = await measureWorkload(
+			'service.verification-evidence-screenshot-baseline',
+			'review-retried-candidate',
+			() => service.review(fixture.input)
+		);
+		expect(review).toMatchObject({ caseStatus: 'passed', captureRetry: 1, recordStatus: 'failed' });
+		expect(review.capturePath).toContain('/retry-1.png');
+		const { id, unit, viewport, file } = review;
+		expect((await service.load({ id, unit, viewport, file, case: review.case })).bytes).toEqual(
+			fixture.image
+		);
+		expect(
+			fixture.record.tests[0].cases?.outcomes.map(({ status, retry }) => ({ status, retry }))
+		).toEqual([
+			{ status: 'failed', retry: 0 },
+			{ status: 'passed', retry: 1 }
+		]);
+		expect(fixture.record.scenarios[0].states[0].captures).toHaveLength(2);
+	} finally {
+		await fixture.dispose();
+	}
+}
 
 /** A disposable synthetic record exercises storage only; it is never browser or release proof. */
 export async function screenshotBaselineFixture(options: ScreenshotFixtureOptions = {}) {
@@ -39,6 +70,7 @@ export async function screenshotBaselineFixture(options: ScreenshotFixtureOption
 		return {
 			root,
 			input,
+			record,
 			image,
 			sha256,
 			dispose: () => rm(root, { recursive: true, force: true })

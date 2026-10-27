@@ -7,7 +7,10 @@ import { evidenceRef } from '../../../src/core/git-source-history/historyTypes';
 import { EvidenceBranchRepository } from '../../../src/repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
 import { ScreenshotBaselineService } from '../../../src/services/verification-evidence/ScreenshotBaselineService';
 import { measureWorkload } from '../../support/measureWorkload';
-import { screenshotBaselineFixture } from '../../support/screenshotBaselineFixture';
+import {
+	assertRetriedReview,
+	screenshotBaselineFixture
+} from '../../support/screenshotBaselineFixture';
 import { runHarness } from '../../support/cli';
 
 const request = (review: {
@@ -88,6 +91,7 @@ test('ScreenshotBaselineService.review after review validates each new request',
 	} finally {
 		await fixture.dispose();
 	}
+	await assertRetriedReview();
 }, 60_000);
 
 test('ScreenshotBaselineService.review rejects damaged source evidence', async () => {
@@ -98,6 +102,12 @@ test('ScreenshotBaselineService.review rejects damaged source evidence', async (
 		[{ bindingCase: 'default.mobile' }, 'valid case binding'],
 		[{ corruptImage: true }, 'PNG cannot be decoded'],
 		[{ duplicate: true }, 'screenshot is missing or ambiguous'],
+		[{ attempts: 'legacy' as const }, 'attempt binding'],
+		[{ attempts: 'missing' as const }, 'screenshot is missing or ambiguous'],
+		[{ attempts: 'duplicate' as const }, 'screenshot is missing or ambiguous'],
+		[{ attempts: 'unreported' as const }, 'references an unexecuted attempt'],
+		[{ attempts: 'duplicate-outcome' as const }, 'case attempts are ambiguous'],
+		[{ attempts: 'skipped' as const }, 'case did not execute'],
 		[{ provenance: 'fixture' as const }, 'matching served build and revision']
 	] as const) {
 		const fixture = await screenshotBaselineFixture(options);

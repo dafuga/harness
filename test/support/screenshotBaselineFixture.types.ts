@@ -1,4 +1,12 @@
 export interface ScreenshotFixtureOptions {
+	attempts?:
+		| 'bound'
+		| 'legacy'
+		| 'missing'
+		| 'duplicate'
+		| 'unreported'
+		| 'duplicate-outcome'
+		| 'skipped';
 	bindingCase?: string;
 	corruptImage?: boolean;
 	duplicate?: boolean;
@@ -21,10 +29,15 @@ export interface ScreenshotFixtureSeed {
 		file: string;
 		title: string;
 		revision: string;
-		status: 'failed' | 'skipped';
+		status: 'failed' | 'skipped' | 'passed';
 		retry: number;
 	};
-	sibling?: { path: string; note: string; outcome?: ScreenshotFixtureSeed['outcome'] };
+	sibling?: {
+		path: string;
+		note: string;
+		outcome?: ScreenshotFixtureSeed['outcome'];
+		omitCapture?: boolean;
+	};
 	caseBytes: Buffer;
 	log: Buffer;
 	options: ScreenshotFixtureOptions;

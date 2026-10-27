@@ -1,0 +1,81 @@
+{
+	"name": "screenshot-retry-binding",
+	"goal": "Retain and select screenshot evidence by its executed case attempt.",
+	"createdAt": "2026-10-27T03:45:08.984Z",
+	"updatedAt": "2026-10-27T03:53:26.861Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:45:09.584Z",
+			"evidence": "Case outcomes include retry numbers but screenshot bindings omit them, so repeated attempts are ambiguous and a capture can be attributed to the wrong outcome."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:45:10.151Z",
+			"evidence": "The existing review cases cover shared cases and duplicates but only one attempt. Extend those same cases with bound retries, missing attempt bindings and duplicate attempts."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:46:37.426Z",
+			"evidence": "The bound retry was rejected as ambiguous and the unbound first capture was incorrectly labeled as a later passing attempt."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:48:05.914Z",
+			"evidence": "Require retry bindings for repeated attempts, select the latest executed capture, reject ambiguous or unexecuted attempts, and preserve optional retry metadata on reviews."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:48:43.392Z",
+			"evidence": "The unchanged two review cases passed at ff24e7bf72; the paired test-only record failed in the same environment."
+		},
+		{
+			"id": "guard",
+			"title": "Reintroduce and restore retry misattribution in the existing review cases.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:50:39.980Z",
+			"evidence": "Mutant 1e4baae344 failed capture 34e691f5546b; restored 817d3d72ad passed d2552b31bdd5 with the same tree as 0ff2c07f3f."
+		},
+		{
+			"id": "source-measurements",
+			"title": "Measure changed units and retain their representative workloads.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:53:25.557Z",
+			"evidence": "At 7cae68c838, source bytes/lines/complexity/dependencies are 19708/520/128/11 for the baseline service and 18519/146/9/3 for guidance. Capture e4f505deb90b retains normal and retried workloads and whole-worker RSS; modules emit no separate artifacts."
+		},
+		{
+			"id": "final-guard",
+			"title": "Recheck the final measured case against the original selector.",
+			"status": "complete",
+			"completedAt": "2026-10-27T03:53:26.861Z",
+			"evidence": "Mutant 631a0bc0ed failed capture 72707949c83d; restored 4d7437e59d passed 492a32371a5e with the same tree as 7cae68c838."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
