@@ -10,6 +10,10 @@ import {
 	featurePlanImage,
 	registerFeaturePlanImage
 } from '../../utils/agents-providers/featurePlanImage';
+import {
+	featurePlanImpact,
+	registerFeaturePlanImpact
+} from '../../utils/agents-providers/featurePlanImpact';
 import { startFeaturePlan } from './feature-plan-command/startFeaturePlan';
 
 function defaultDependencies() {
@@ -87,6 +91,7 @@ function designOptionLine(
 function printPlan(plan: FeaturePlan, json = false, output = console.log) {
 	output(json ? JSON.stringify(plan, null, 2) : renderPlan(plan));
 }
+const readPlanInput = async (file: string) => JSON.parse(await readFile(file, 'utf8'));
 
 export class FeaturePlanCommand {
 	constructor(
@@ -107,14 +112,13 @@ export class FeaturePlanCommand {
 
 	register(task: Command): void {
 		const plan = task.command('plan').description('Review and approve feature plans');
+		const read = this.dependencies.readInput ?? readPlanInput;
+		const output = this.dependencies.output ?? console.log;
 		plan
 			.command('draft')
 			.requiredOption('--input <file>')
 			.option('--json')
 			.action(async (options: { input: string; json?: boolean }) => {
-				const read =
-					this.dependencies.readInput ??
-					(async (file: string) => JSON.parse(await readFile(file, 'utf8')));
 				const input = await read(options.input);
 				const draft = await this.dependencies.service.draft(
 					input as Parameters<FeaturePlanService['draft']>[0]
@@ -131,11 +135,8 @@ export class FeaturePlanCommand {
 				printPlan(latest, options.json, this.dependencies.output);
 			});
 		this.registerSelection(plan);
-		registerFeaturePlanImage(
-			plan,
-			this.dependencies.image ?? featurePlanImage,
-			this.dependencies.output ?? console.log
-		);
+		registerFeaturePlanImpact(plan, featurePlanImpact, read, output);
+		registerFeaturePlanImage(plan, this.dependencies.image ?? featurePlanImage, output);
 		this.registerApproval(plan);
 		this.registerStart(plan);
 	}

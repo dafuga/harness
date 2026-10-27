@@ -47,6 +47,11 @@
 				"name": "image",
 				"type": "<feature> --page <id> --option <id> --digest <sha> --output <file>",
 				"description": "Read the exact page option from the latest plan matching the reviewed digest and save its verified committed image to a new file."
+			},
+			{
+				"name": "impact",
+				"type": "--input <file> [--json]",
+				"description": "Discover page impacts of a source-bound proposal from committed module relationships before designs are generated."
 			}
 		],
 		"outputs": [
@@ -74,6 +79,11 @@
 				"name": "image",
 				"type": "Promise<void>",
 				"description": "Uses the revision- and option-bound planning image reader and prints the destination only after a successful write; never starts a provider."
+			},
+			{
+				"name": "impact",
+				"type": "{sourceCommit:string,valid:boolean,affectedPages:string[],errors:string[]}",
+				"description": "Print affected pages and graph blockers; invalid impact sets a nonzero CLI exit code. No provider is started."
 			}
 		],
 		"errors": [
@@ -112,6 +122,11 @@
 		},
 		{
 			"unit": "function.agents-providers-feature-plan-image",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-feature-plan-impact",
 			"via": "import",
 			"origin": "derived"
 		},

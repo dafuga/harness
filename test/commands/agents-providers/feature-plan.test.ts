@@ -14,6 +14,7 @@ async function assertJsonCommands() {
 		'approve',
 		'draft',
 		'image',
+		'impact',
 		'select',
 		'show',
 		'start'

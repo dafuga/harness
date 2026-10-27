@@ -3,30 +3,88 @@
 	"id": "function.agents-providers-feature-plan-impact",
 	"kind": "function",
 	"title": "featurePlanImpact",
-	"responsibility": "Owns the featurePlanImpact shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Discover affected pages of a source-bound feature proposal and register its read-only CLI command.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/agents-providers/featurePlanImpact.ts"],
-		"symbols": ["featurePlanImpact"]
+		"symbols": ["featurePlanImpact", "registerFeaturePlanImpact"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "featurePlanImpact.value",
-				"type": "string"
+				"name": "featurePlanImpact.input",
+				"type": "unknown",
+				"description": "JSON object with a committed sourceCommit and plan changes; other proposal fields are ignored.",
+				"examples": [
+					{
+						"case": "valid proposal",
+						"expected": "matching committed metadata and discovered pages returned"
+					},
+					{
+						"case": "invalid proposal",
+						"expected": "rejected before metadata or discovery"
+					},
+					{
+						"case": "incomplete graph",
+						"expected": "valid false with affected pages and diagnostics"
+					}
+				]
+			},
+			{
+				"name": "featurePlanImpact.dependencies",
+				"type": "optional trusted metadata reader and coverage validator",
+				"description": "Defaults to the real committed metadata admission and coverage discovery for the current project."
+			},
+			{
+				"name": "registerFeaturePlanImpact",
+				"type": "(plan:Command, impact:typeof featurePlanImpact, readInput:(file:string)=>Promise<unknown>, output:(text:string)=>void)",
+				"description": "Registers task plan impact with a file input and optional JSON output."
 			}
 		],
 		"outputs": [
 			{
 				"name": "featurePlanImpact",
-				"type": "string"
+				"type": "Promise<{sourceCommit:string,valid:boolean,affectedPages:string[],errors:string[]}>",
+				"description": "Validates proposal fields, reads metadata for that exact revision, and delegates page impact and blockers to the coverage validator without source scanning or mutation."
+			},
+			{
+				"name": "registerFeaturePlanImpact",
+				"type": "void",
+				"description": "Prints the discovered pages and every blocker; invalid impact sets a nonzero process exit code."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "invalid proposal or unavailable metadata",
+				"type": "Error",
+				"description": "Rejects before producing a result or starting a provider."
+			},
+			{
+				"name": "incomplete impact",
+				"type": "valid false",
+				"description": "Returns and prints coverage blockers instead of claiming page discovery is complete."
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "repository.agents-providers-module-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.git-source-history-module-data-service-module-data-admission",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-feature-plan-coverage",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/agents-providers/featurePlanImpact.ts",
