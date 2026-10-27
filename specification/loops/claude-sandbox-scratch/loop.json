@@ -1,0 +1,56 @@
+{
+	"name": "claude-sandbox-scratch",
+	"goal": "Keep Claude temporary files within the task scratch directory",
+	"createdAt": "2026-10-27T11:07:34.717Z",
+	"updatedAt": "2026-10-27T11:08:12.222Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T11:08:11.549Z",
+			"evidence": "A sandboxed Claude launch fails creating /tmp/claude; pointing CLAUDE_CODE_TMPDIR to task scratch reaches initialization without changing the shared directory."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T11:08:12.222Z",
+			"evidence": "The process adapter had one unregistered connect case and no arguments method/state case. Declare its methods and initialization states; assert the provider-specific scratch variable in the arguments case."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

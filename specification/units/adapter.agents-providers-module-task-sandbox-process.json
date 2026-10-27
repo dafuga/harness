@@ -28,23 +28,28 @@
 		"inputs": [
 			{
 				"name": "constructor.config",
-				"type": "{name?:string}"
+				"type": "{name?:string}",
+				"description": "Optional connect label; null is not an admitted configuration."
 			},
 			{
 				"name": "command.sdk",
-				"type": "absolute string path to pinned sandbox-runtime index.js"
+				"type": "absolute string path to pinned sandbox-runtime index.js",
+				"description": "Trusted sandbox-runtime module path passed unchanged to the driver."
 			},
 			{
 				"name": "command.settings",
-				"type": "absolute string path to trusted immutable JSON settings"
+				"type": "absolute string path to trusted immutable JSON settings",
+				"description": "Trusted settings file path passed unchanged to the driver."
 			},
 			{
 				"name": "command.argv",
-				"type": "string[] exact provider command arguments"
+				"type": "string[] exact provider command arguments",
+				"description": "Provider argument vector serialized without shell interpretation."
 			},
 			{
 				"name": "validateScratch.path",
-				"type": "absolute canonical trusted scratch directory"
+				"type": "absolute canonical trusted scratch directory",
+				"description": "Trusted scratch root to inspect; the caller supplies an absolute path."
 			},
 			{
 				"name": "arguments.scope",
@@ -65,7 +70,8 @@
 		"outputs": [
 			{
 				"name": "connect",
-				"type": "string"
+				"type": "string",
+				"description": "Configured name or module-task-sandbox-process by default."
 			},
 			{
 				"name": "command",
@@ -80,7 +86,7 @@
 			{
 				"name": "arguments",
 				"type": "string[]",
-				"description": "Builds the isolated provider argv with scratch temp variables and task cwd."
+				"description": "Builds isolated provider argv with task cwd and generic and Claude temporary directories in scratch."
 			},
 			{
 				"name": "environment",
@@ -97,6 +103,11 @@
 				"name": "Unsafe scratch contents",
 				"type": "Error before native process return",
 				"description": "Fail closed on any preexisting symbolic/hard link or unsafe special file; no cleanup of caller contents."
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Null configuration or method scope throws TypeError when a method reads it."
 			}
 		]
 	},
