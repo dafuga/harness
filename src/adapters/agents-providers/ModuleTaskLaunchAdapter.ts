@@ -60,17 +60,17 @@ async function runProvider(
 		const contextPaths = [input.cwd, scope.snapshot, scope.scratch];
 		if (contextPaths.some((path) => !isAbsolute(path)))
 			throw new Error('Context paths must be absolute.');
-		const readPaths = await providerReadPaths(input.provider, argv[0], scope.binDirectory);
+		const provider = await providerReadPaths(input.provider, argv[0], scope.binDirectory);
 		const providerConfig = await new ModuleTaskProviderConfigAdapter().paths(input.provider);
 		process = await sandbox.prepare({
 			cwd: input.cwd,
 			files: [...scope.files],
 			snapshot: scope.snapshot,
 			scratch: scope.scratch,
-			readPaths: [...new Set([...scope.readPaths, ...readPaths, ...providerConfig.readPaths])],
+			readPaths: [...new Set([...scope.readPaths, ...provider.paths, ...providerConfig.readPaths])],
 			exactReadDirectories: providerConfig.exactReadDirectories,
 			protectedPaths: [...scope.protectedPaths],
-			argv: [...argv],
+			argv: [provider.executable, ...argv.slice(1)],
 			...(scope.binDirectory ? { binDirectory: scope.binDirectory } : {})
 		});
 	} catch {
@@ -96,7 +96,7 @@ async function providerReadPaths(
 	provider: ModuleTaskLaunchProvider,
 	command: string | undefined,
 	binDirectory: string | undefined
-): Promise<string[]> {
+): Promise<{ executable: string; paths: string[] }> {
 	if (!command || basename(command) !== provider) throw new Error('Invalid provider command.');
 	const pathValue = process.env.PATH ?? '';
 	const search = [binDirectory, ...pathValue.split(delimiter)];
@@ -110,7 +110,7 @@ async function providerReadPaths(
 		paths.push(...runtimes.filter((path): path is string => path !== undefined));
 		if (!runtimes.some(Boolean)) throw new Error('Provider runtime is unavailable.');
 	}
-	return [...new Set(paths)];
+	return { executable, paths: [...new Set(paths)] };
 }
 
 async function findExecutable(

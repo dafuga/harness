@@ -2,7 +2,7 @@
 	"name": "task-provider-symlink-20261027",
 	"goal": "Launch an admitted provider executable through its canonical path inside the task sandbox.",
 	"createdAt": "2026-10-27T13:59:25.455Z",
-	"updatedAt": "2026-10-27T13:59:35.204Z",
+	"updatedAt": "2026-10-27T14:01:22.107Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T14:01:22.107Z",
+			"evidence": "Committed 3dd4c87b03 fails the unchanged synthetic symlink launch with exit 127; direct launch succeeds."
 		},
 		{
 			"id": "implement",

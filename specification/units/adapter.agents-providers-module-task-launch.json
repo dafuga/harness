@@ -64,7 +64,7 @@
 			{
 				"name": "run",
 				"type": "Promise<TaskProcessResult>",
-				"description": "Before provider config discovery or sandbox preparation, require the trusted qualification callback to succeed; the production default rejects. Qualified synthetic or trusted-host execution retains exact argv, scope validation, runtime/config discovery and cleanup semantics. No unqualified provider is launched."
+				"description": "Before provider config discovery or sandbox preparation, require the trusted qualification callback to succeed; the production default rejects. Qualified synthetic or trusted-host execution uses the admitted canonical provider executable with all original arguments unchanged, and retains scope validation, runtime/config discovery and cleanup semantics. No unqualified provider is launched."
 			},
 			{
 				"name": "qualify",
