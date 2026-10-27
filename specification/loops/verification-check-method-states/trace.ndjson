@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-27T16:09:35.591Z","name":"verification-check-method-states","goal":"Migrate verification checker behavior to declared method and initialization cases while preserving integrity evidence.","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-10-27T16:09:39.809Z","loop":"verification-check-method-states","step":"spec","evidence":"Declare check and integrity for default and injected indexers; retain shared-versus-fresh chain and changed-log assertions using a disposable headless record."}

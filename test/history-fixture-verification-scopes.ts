@@ -18,8 +18,11 @@ export const historyFixtureVerificationScopes: Record<string, VerificationScope>
 				'a changed capture of an attached parent refuses its child': 'changed-parent-capture'
 			},
 			'test/verification-check-shared.test.ts': {
+				'VerificationCheckService.integrity from default initialization': 'default',
 				'a checker shared by the records of a chain answers as a fresh checker for each':
-					'indexer-parity'
+					'indexer-parity',
+				'VerificationCheckService.check from default initialization': 'default',
+				'VerificationCheckService.check with an injected indexer': 'indexer-parity'
 			}
 		},
 		playwright: {}

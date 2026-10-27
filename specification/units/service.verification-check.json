@@ -125,6 +125,69 @@
 		]
 	},
 	"scenarios": ["history-fixture-integrity"],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["default", "indexer-parity"],
+		"cases": [
+			{
+				"id": "integrity.default",
+				"state": "default",
+				"subject": "VerificationCheckService.integrity",
+				"fixture": "test/support/budgetFixture.ts",
+				"test": {
+					"file": "test/verification-check-shared.test.ts",
+					"title": "VerificationCheckService.integrity from default initialization"
+				},
+				"expected": {
+					"kind": "value",
+					"value": [false, true, false]
+				}
+			},
+			{
+				"id": "integrity.indexer-parity",
+				"state": "indexer-parity",
+				"subject": "VerificationCheckService.integrity",
+				"fixture": "test/support/budgetFixture.ts",
+				"test": {
+					"file": "test/verification-check-shared.test.ts",
+					"title": "a checker shared by the records of a chain answers as a fresh checker for each"
+				},
+				"expected": {
+					"kind": "value",
+					"value": [false, true, false]
+				}
+			},
+			{
+				"id": "check.default",
+				"state": "default",
+				"subject": "VerificationCheckService.check",
+				"fixture": "test/support/budgetFixture.ts",
+				"test": {
+					"file": "test/verification-check-shared.test.ts",
+					"title": "VerificationCheckService.check from default initialization"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["passed", "failed", "passed"]
+				}
+			},
+			{
+				"id": "check.indexer-parity",
+				"state": "indexer-parity",
+				"subject": "VerificationCheckService.check",
+				"fixture": "test/support/budgetFixture.ts",
+				"test": {
+					"file": "test/verification-check-shared.test.ts",
+					"title": "VerificationCheckService.check with an injected indexer"
+				},
+				"expected": {
+					"kind": "value",
+					"value": ["passed", "failed", "passed"]
+				}
+			}
+		]
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
