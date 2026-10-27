@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { expect } from 'vitest';
 import { runCommand } from './cli';
+import { measureWorkload } from './measureWorkload';
 import { fixtureScenario, fixtureUnit } from './screenshotBaselineContracts';
 import { attachSyntheticScreenshot } from './screenshotBaselineRecord';
 import type { ScreenshotFixtureOptions } from './screenshotBaselineFixture.types';
@@ -13,7 +14,11 @@ export async function assertRetriedReview(): Promise<void> {
 	const fixture = await screenshotBaselineFixture({ attempts: 'bound' });
 	try {
 		const service = new ScreenshotBaselineService(fixture.root);
-		const review = await service.review(fixture.input);
+		const review = await measureWorkload(
+			'service.verification-evidence-screenshot-baseline',
+			'review-retried-candidate',
+			() => service.review(fixture.input)
+		);
 		expect(review).toMatchObject({ caseStatus: 'passed', captureRetry: 1, recordStatus: 'failed' });
 		expect(review.capturePath).toContain('/retry-1.png');
 		const { id, unit, viewport, file } = review;
