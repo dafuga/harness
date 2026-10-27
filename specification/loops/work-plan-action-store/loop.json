@@ -2,7 +2,7 @@
 	"name": "work-plan-action-store",
 	"goal": "Expose selected-project feature plan selection and approval to app controls without leaking results across project or bridge changes.",
 	"createdAt": "2026-10-27T10:34:04.538Z",
-	"updatedAt": "2026-10-27T10:34:20.293Z",
+	"updatedAt": "2026-10-27T10:40:08.634Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,12 +17,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:40:08.006Z",
+			"evidence": "Added a nonvisual action store that checks the visible digest and selected project, forwards only allowed bridge fields, and scopes pending and errors to observed project, bridge and capability changes."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:40:08.634Z",
+			"evidence": "Nineteen focused store cases passed, including the real Work snapshot boundary, late replies, duplicate actions, unavailable capability and attempts to override the selected project. No provider ran."
 		},
 		{
 			"id": "verify",

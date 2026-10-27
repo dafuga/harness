@@ -3,30 +3,74 @@
 	"id": "desktop.store.agents-providers-project-work-actions",
 	"kind": "store",
 	"title": "projectWorkActions",
-	"responsibility": "Owns the projectWorkActions store unit.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Coordinate selected-project feature-plan selection and approval from the visible Work snapshot.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/lib/stores/agents-providers/projectWorkActions.svelte.ts"],
 		"symbols": ["createProjectWorkActionsStore"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
-				"name": "createProjectWorkActionsStore.initialValue",
-				"type": "unknown"
+				"name": "createProjectWorkActionsStore.workspace",
+				"type": "Workspace",
+				"description": "Current project ID and bridge; operations are bound to this scope and the relevant capability."
+			},
+			{
+				"name": "createProjectWorkActionsStore.work",
+				"type": "Pick<ProjectWorkStore,'snapshot'|'refresh'>",
+				"description": "A scope-bound Work snapshot and its refresh method."
+			},
+			{
+				"name": "select.input",
+				"type": "Omit<FeaturePlanSelection,'projectId'>",
+				"description": "Feature, page, option and the digest of the currently visible plan."
+			},
+			{
+				"name": "approve.input",
+				"type": "Omit<FeaturePlanApproval,'projectId'>",
+				"description": "Feature, reviewer and the digest of the currently visible plan."
 			}
 		],
 		"outputs": [
 			{
-				"name": "createProjectWorkActionsStore",
-				"type": "unknown"
+				"name": "pending and error",
+				"type": "boolean and string|null",
+				"description": "Expose the current scoped action state. An observed project, bridge or relevant capability change invalidates that action, even if the prior scope later returns."
+			},
+			{
+				"name": "select and approve",
+				"type": "Promise<boolean>",
+				"description": "Require the visible feature plan to match the requested digest, forward only allowed fields and the selected project ID, call the corresponding bridge method, then refresh Work. Return true only if the call and refresh finish while the observed scope remains current. The Work store may report a refresh failure separately after an action succeeded. No provider is started by this store."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "unavailable, unreviewed or failed action",
+				"type": "false and scoped error",
+				"description": "No selected project, absent bridge capability, missing or stale visible plan, or bridge failure returns false. A concurrent action in the same scope returns false without starting another. A scope switch that is never observed by any store read cannot be distinguished from no switch."
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.agents-providers-project-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/desktop/src/lib/stores/agents-providers/projectWorkActions.svelte.ts",
