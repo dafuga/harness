@@ -194,7 +194,9 @@ test('the production worker refuses unqualified execution before a provider runs
 		expect(result.exitCode).toBe(1);
 		const task = JSON.parse((await f.cli(['show', 'orders-validation', '--json'])).stdout).task;
 		expect(task.status).toBe('failed');
-		expect(task.result.error).toMatch(/qualif|isolat|security/i);
+		expect(task.result.error).toBe('Provider launch was blocked before execution.');
+		expect(task.result.reportedModel).toBeNull();
+		expect(task.result.usage).toBeUndefined();
 		await expect(readFile(join(f.root, 'calls.ndjson'), 'utf8')).rejects.toMatchObject({
 			code: 'ENOENT'
 		});
