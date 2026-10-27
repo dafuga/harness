@@ -48,7 +48,18 @@
 				"description": "Comparable with no differences when definitions match; incomplete when metadata is missing or invalid; otherwise incompatible with ordered differences for unit, request, boundary, protocol, sampling and method."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "incomplete metadata",
+				"type": "ComparisonVerdict",
+				"description": "Missing, empty or invalid unit, method or comparison context on either side returns status incomplete with each gap in side order. The verdict is returned, not thrown; no difference is computed."
+			},
+			{
+				"name": "incompatible definitions",
+				"type": "ComparisonVerdict",
+				"description": "A unit, request, boundary, protocol, sampling or method difference, or a known metric's unexpected unit, returns status incompatible with every difference in fixed order. The verdict is returned, not thrown."
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -72,5 +83,457 @@
 		"size": "frozen",
 		"complexity": "frozen",
 		"performance": []
+	},
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"states": ["comparable", "incomplete", "incompatible"],
+		"props": [
+			"metric",
+			"unitOfMeasure",
+			"method",
+			"comparison",
+			"comparison.request",
+			"comparison.boundary",
+			"comparison.protocol",
+			"comparison.sampling"
+		],
+		"examples": [
+			{
+				"subject": "comparisonDifferences",
+				"name": "Identical definitions are comparable",
+				"call": "comparisonDifferences(\"latency-floor-ms\", {\"unitOfMeasure\":\"ms\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"warmup\":3,\"rounds\":5,\"iterations\":30}}}, {\"unitOfMeasure\":\"ms\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"warmup\":3,\"rounds\":5,\"iterations\":30}}})",
+				"input": [
+					"latency-floor-ms",
+					{
+						"unitOfMeasure": "ms",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
+						}
+					},
+					{
+						"unitOfMeasure": "ms",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": "comparable",
+						"differences": []
+					}
+				}
+			},
+			{
+				"subject": "comparisonDifferences",
+				"name": "Missing metadata is incomplete before any difference is considered",
+				"call": "comparisonDifferences(\"latency-floor-ms\", {\"unitOfMeasure\":\"seconds\"}, {})",
+				"input": [
+					"latency-floor-ms",
+					{
+						"unitOfMeasure": "seconds"
+					},
+					{}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": "incomplete",
+						"differences": [
+							"the measurement states no comparison context",
+							"the measurement states no method",
+							"the baseline states no comparison context",
+							"the baseline states no unit of measure",
+							"the baseline states no method"
+						]
+					}
+				}
+			},
+			{
+				"subject": "comparisonDifferences",
+				"name": "An invalid comparison context is incomplete",
+				"call": "comparisonDifferences(\"latency-floor-ms\", {\"unitOfMeasure\":\"ms\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"rounds\":5}}}, {\"unitOfMeasure\":\"ms\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"warmup\":3,\"rounds\":5,\"iterations\":30}}})",
+				"input": [
+					"latency-floor-ms",
+					{
+						"unitOfMeasure": "ms",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"rounds": 5
+							}
+						}
+					},
+					{
+						"unitOfMeasure": "ms",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": "incomplete",
+						"differences": ["the measurement states an invalid comparison context"]
+					}
+				}
+			},
+			{
+				"subject": "comparisonDifferences",
+				"name": "Every difference is named, in a fixed order",
+				"call": "comparisonDifferences(\"latency-floor-ms\", {\"unitOfMeasure\":\"seconds\",\"method\":\"Timed an inner helper.\",\"comparison\":{\"request\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"boundary\":\"fixture\",\"protocol\":\"other/1\",\"sampling\":{\"warmup\":0,\"rounds\":1,\"iterations\":1}}}, {\"unitOfMeasure\":\"ms\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"warmup\":3,\"rounds\":5,\"iterations\":30}}})",
+				"input": [
+					"latency-floor-ms",
+					{
+						"unitOfMeasure": "seconds",
+						"method": "Timed an inner helper.",
+						"comparison": {
+							"request": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+							"boundary": "fixture",
+							"protocol": "other/1",
+							"sampling": {
+								"warmup": 0,
+								"rounds": 1,
+								"iterations": 1
+							}
+						}
+					},
+					{
+						"unitOfMeasure": "ms",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": "incompatible",
+						"differences": [
+							"unit of measure is seconds, the baseline is in ms",
+							"request ffffffffffff differs from the baseline request 5d7a12e7a338",
+							"measured boundary is fixture, the baseline measured public-invocation",
+							"protocol is other/1, the baseline used harness-rounds/1",
+							"sampling is 1 rounds of 1 calls after 0 warm-up calls, the baseline used 5 rounds of 30 calls after 3 warm-up calls",
+							"method description differs from the baseline"
+						]
+					}
+				}
+			},
+			{
+				"subject": "comparisonDifferences",
+				"name": "A custom metric with matching units is comparable",
+				"call": "comparisonDifferences(\"custom-score\", {\"unitOfMeasure\":\"points\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"warmup\":3,\"rounds\":5,\"iterations\":30}}}, {\"unitOfMeasure\":\"points\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"warmup\":3,\"rounds\":5,\"iterations\":30}}})",
+				"input": [
+					"custom-score",
+					{
+						"unitOfMeasure": "points",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
+						}
+					},
+					{
+						"unitOfMeasure": "points",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": "comparable",
+						"differences": []
+					}
+				}
+			},
+			{
+				"subject": "comparisonDifferences",
+				"name": "A known metric rejects a unit other than its expected unit",
+				"call": "comparisonDifferences(\"latency-floor-ms\", {\"unitOfMeasure\":\"seconds\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"warmup\":3,\"rounds\":5,\"iterations\":30}}}, {\"unitOfMeasure\":\"seconds\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"warmup\":3,\"rounds\":5,\"iterations\":30}}})",
+				"input": [
+					"latency-floor-ms",
+					{
+						"unitOfMeasure": "seconds",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
+						}
+					},
+					{
+						"unitOfMeasure": "seconds",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": "incompatible",
+						"differences": ["unit of measure is seconds, latency-floor-ms is in ms"]
+					}
+				}
+			},
+			{
+				"subject": "comparisonDifferences",
+				"name": "A null comparison context counts as missing",
+				"call": "comparisonDifferences(\"latency-floor-ms\", {\"unitOfMeasure\":\"ms\",\"method\":\"Fastest call.\",\"comparison\":null}, {\"unitOfMeasure\":\"ms\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"warmup\":3,\"rounds\":5,\"iterations\":30}}})",
+				"input": [
+					"latency-floor-ms",
+					{
+						"unitOfMeasure": "ms",
+						"method": "Fastest call.",
+						"comparison": null
+					},
+					{
+						"unitOfMeasure": "ms",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": "incomplete",
+						"differences": ["the measurement states no comparison context"]
+					}
+				}
+			},
+			{
+				"subject": "comparisonDifferences",
+				"name": "A truncated request digest is an invalid comparison context",
+				"call": "comparisonDifferences(\"latency-floor-ms\", {\"unitOfMeasure\":\"ms\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003f\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"warmup\":3,\"rounds\":5,\"iterations\":30}}}, {\"unitOfMeasure\":\"ms\",\"method\":\"Fastest call.\",\"comparison\":{\"request\":\"5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff\",\"boundary\":\"public-invocation\",\"protocol\":\"harness-rounds/1\",\"sampling\":{\"warmup\":3,\"rounds\":5,\"iterations\":30}}})",
+				"input": [
+					"latency-floor-ms",
+					{
+						"unitOfMeasure": "ms",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003f",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
+						}
+					},
+					{
+						"unitOfMeasure": "ms",
+						"method": "Fastest call.",
+						"comparison": {
+							"request": "5d7a12e7a33893751760c740c01eb411d2db3f9e5a4334789232a934e3e003ff",
+							"boundary": "public-invocation",
+							"protocol": "harness-rounds/1",
+							"sampling": {
+								"warmup": 3,
+								"rounds": 5,
+								"iterations": 30
+							}
+						}
+					}
+				],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": "incomplete",
+						"differences": ["the measurement states an invalid comparison context"]
+					}
+				}
+			}
+		],
+		"cases": [
+			{
+				"id": "comparable.identical",
+				"state": "comparable",
+				"subject": "comparisonDifferences",
+				"example": "Identical definitions are comparable",
+				"test": {
+					"file": "test/utils/comparison-differences.test.ts",
+					"title": "comparisonDifferences: Identical definitions are comparable"
+				},
+				"props": [
+					"metric",
+					"unitOfMeasure",
+					"method",
+					"comparison",
+					"comparison.request",
+					"comparison.boundary",
+					"comparison.protocol",
+					"comparison.sampling"
+				]
+			},
+			{
+				"id": "incomplete.missing-metadata",
+				"state": "incomplete",
+				"subject": "comparisonDifferences",
+				"example": "Missing metadata is incomplete before any difference is considered",
+				"test": {
+					"file": "test/utils/comparison-differences.test.ts",
+					"title": "comparisonDifferences: Missing metadata is incomplete before any difference is considered"
+				},
+				"props": ["unitOfMeasure", "method", "comparison"],
+				"errors": ["incomplete metadata"]
+			},
+			{
+				"id": "incomplete.invalid-context",
+				"state": "incomplete",
+				"subject": "comparisonDifferences",
+				"example": "An invalid comparison context is incomplete",
+				"test": {
+					"file": "test/utils/comparison-differences.test.ts",
+					"title": "comparisonDifferences: An invalid comparison context is incomplete"
+				},
+				"props": ["comparison", "comparison.sampling"],
+				"errors": ["incomplete metadata"]
+			},
+			{
+				"id": "incompatible.ordered-differences",
+				"state": "incompatible",
+				"subject": "comparisonDifferences",
+				"example": "Every difference is named, in a fixed order",
+				"test": {
+					"file": "test/utils/comparison-differences.test.ts",
+					"title": "comparisonDifferences: Every difference is named, in a fixed order"
+				},
+				"props": [
+					"metric",
+					"unitOfMeasure",
+					"method",
+					"comparison.request",
+					"comparison.boundary",
+					"comparison.protocol",
+					"comparison.sampling"
+				],
+				"errors": ["incompatible definitions"]
+			},
+			{
+				"id": "comparable.custom-metric",
+				"state": "comparable",
+				"subject": "comparisonDifferences",
+				"example": "A custom metric with matching units is comparable",
+				"test": {
+					"file": "test/utils/comparison-differences.test.ts",
+					"title": "comparisonDifferences: A custom metric with matching units is comparable"
+				},
+				"props": ["metric", "unitOfMeasure"]
+			},
+			{
+				"id": "incompatible.known-metric-unit",
+				"state": "incompatible",
+				"subject": "comparisonDifferences",
+				"example": "A known metric rejects a unit other than its expected unit",
+				"test": {
+					"file": "test/utils/comparison-differences.test.ts",
+					"title": "comparisonDifferences: A known metric rejects a unit other than its expected unit"
+				},
+				"props": ["metric", "unitOfMeasure"],
+				"errors": ["incompatible definitions"]
+			},
+			{
+				"id": "incomplete.null-context",
+				"state": "incomplete",
+				"subject": "comparisonDifferences",
+				"example": "A null comparison context counts as missing",
+				"test": {
+					"file": "test/utils/comparison-differences.test.ts",
+					"title": "comparisonDifferences: A null comparison context counts as missing"
+				},
+				"props": ["comparison"],
+				"errors": ["incomplete metadata"]
+			},
+			{
+				"id": "incomplete.truncated-digest",
+				"state": "incomplete",
+				"subject": "comparisonDifferences",
+				"example": "A truncated request digest is an invalid comparison context",
+				"test": {
+					"file": "test/utils/comparison-differences.test.ts",
+					"title": "comparisonDifferences: A truncated request digest is an invalid comparison context"
+				},
+				"props": ["comparison.request"],
+				"errors": ["incomplete metadata"]
+			}
+		]
 	}
 }
