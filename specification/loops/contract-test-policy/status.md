@@ -1892,6 +1892,29 @@ units check, focused typecheck, lint and formatting passed. The earlier
 authored-expectation mutation proof remains bound to `13a963a459`, not this
 later commit.
 
+The official 0.164.0 client accepts `agents.enabled=false` and
+`features.multi_agent_v2=false` alongside `features.multi_agent=false`; with
+those settings its reported tool inventory no longer included collaboration.
+The pinned 0.154.0 accepted the settings before its model-access rejection.
+The existing two prepare cases were strengthened without changing their four
+total titles. Test-only `b853f8a69f` failed red `796b0acb2913`; source fix
+`1f1e95bab5` passed unchanged green `a01d075a9f0a` on the same profile.
+Mutation `ebcd9f7131` failed `707b76d0cc53`; restored identical tree
+`7e1ff8435e` passed `20dcd66bf5ae` on the same mutation profile. Capture
+`eeca19d2066d` at `bae080ed41` passed 30 focused cases; units check, targeted
+typecheck, lint and formatting passed. Source reasons are in Git notes.
+
+An actual adapter-generated command with the official 0.164.0 binary supplied
+through a synthetic resolver read and edited an unassigned disposable file
+under `/private/tmp`. A direct sandbox comparison reproduced that shared-temp
+access; earlier passing probes used a different temporary root. Explicit temp
+denials blocked it on 0.164.0 but not the pinned 0.154.0. A separate public
+application metadata read remained allowed on 0.164.0 despite explicit
+application-directory and file denials. The adapter contract at `bae080ed41`
+now describes these observed gaps and its tests call the declared rules
+requested grants rather than proof of effective isolation. The launch gate
+remains closed; neither client is qualified for a real Harness worker.
+
 The existing uncommitted verification fixture edits were left byte-for-byte
 unchanged. With those edits present, the focused non-browser
 `test/history-source.test.ts` case passed on the primary Mac against a disposable
