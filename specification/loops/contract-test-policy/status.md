@@ -942,3 +942,33 @@ The committed-tree inventory at `cef31ee621` reports 1,118 suite files,
 4,633 declarations, 54 standardized units, 736 registered cases and 6,084
 remaining gaps. The comparison-context unit has nine discovered cases and no
 reported gap. Full migration and aggregate verification remain pending.
+
+## Continuation: CPU analytics API response matrix
+
+`f8968974d9` replaces the existing grouped API test with seven declared cases
+covering the three accepted loopback hostnames, available and unavailable
+telemetry, numeric boundaries and non-loopback rejection. The original three
+flows remain covered; the other four rows declare previously untested host and
+availability combinations. Each case compares the complete authored JSON body
+alongside the HTTP status, content type and cache header. The cases use a fixed
+telemetry fixture and do not normalize response fields.
+
+Capture `5ad53d53fe20` passed 25 tests and registry validation but stopped on
+an incorrect workspace lint command. Capture `7adfcb33fa2a` passed those 25
+tests, registry validation, formatting, lint, root and Reports typechecks and
+root audit. The Reports app-profile audit also passed. Svelte checks reported
+zero errors and warnings; Tailwind printed its missing-content configuration
+warning. In isolated mutant `9262594f28`, changing `machinePercent` caused six
+existing cases to fail with JSON diffs in capture `7d0e519b3f16`. Restored
+`43b01c6a51` passed all seven in `3f4a4af0e87d` and has the same tree as
+`f8968974d9`.
+
+The seven response workloads observed 0.069–1.522 ms and
+92,078,080–92,471,296 bytes whole-worker RSS. The endpoint has 612 source bytes,
+15 lines, complexity three and three dependencies, with no separate emitted
+artifact. Its manifest reason is retained in Git notes. The committed-tree
+inventory reports 1,118 suite files, 4,639 declarations, 55 standardized units,
+743 registered cases and 6,082 remaining gaps; this API has seven discovered
+cases and no reported gap. Full migration and aggregate verification remain
+pending.
+
