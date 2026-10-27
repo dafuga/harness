@@ -135,8 +135,7 @@ function taskFailure(
 	provider: 'claude' | 'codex',
 	events: TaskPublicEvent[],
 	stderr: string | undefined,
-	fallback: string,
-	fallbackCategory?: ProviderFailureCategory
+	...[fallback, fallbackCategory]: [string, ProviderFailureCategory?]
 ): Error {
 	const category = providerFailureCategory(events, stderr) ?? fallbackCategory;
 	if (!category) return Object.assign(new Error(fallback), { quotaRejected: false });

@@ -50,15 +50,7 @@ function renderPlan(plan: FeaturePlan) {
 	];
 	for (const page of plan.pages) {
 		lines.push(`  ${page.module}`);
-		for (const option of page.options) {
-			const flags = [
-				option.preferred ? 'preferred' : '',
-				page.selected === option.id ? 'selected' : ''
-			].filter(Boolean);
-			lines.push(
-				`    ${option.id}${flags.length ? ` (${flags.join(', ')})` : ''} ${option.version} ${option.path}`
-			);
-		}
+		for (const option of page.options) lines.push(designOptionLine(page, option));
 	}
 	lines.push('Modules and wanted contracts:', ...moduleLines(plan), 'Tasks:');
 	for (const task of plan.tasks) {
@@ -74,6 +66,17 @@ function renderPlan(plan: FeaturePlan) {
 			: 'Not approved'
 	);
 	return lines.join('\n');
+}
+
+function designOptionLine(
+	page: FeaturePlan['pages'][number],
+	option: FeaturePlan['pages'][number]['options'][number]
+) {
+	const flags = [
+		option.preferred ? 'preferred' : '',
+		page.selected === option.id ? 'selected' : ''
+	].filter(Boolean);
+	return `    ${option.id}${flags.length ? ` (${flags.join(', ')})` : ''} ${option.version} ${option.path}`;
 }
 
 export class FeaturePlanCommand {

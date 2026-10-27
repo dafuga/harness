@@ -112,13 +112,12 @@ async function findExecutable(
 	command: string,
 	search: Array<string | undefined>
 ): Promise<string | undefined> {
-	const candidates = isAbsolute(command)
-		? [command]
-		: command.includes(sep)
-			? []
-			: search
-					.filter((dir): dir is string => Boolean(dir && isAbsolute(dir)))
-					.map((dir) => join(dir, command));
+	let candidates: string[] = [];
+	if (isAbsolute(command)) candidates = [command];
+	else if (!command.includes(sep))
+		candidates = search
+			.filter((dir): dir is string => Boolean(dir && isAbsolute(dir)))
+			.map((dir) => join(dir, command));
 	for (const candidate of candidates) {
 		try {
 			const canonical = await realpath(candidate);

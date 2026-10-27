@@ -37,7 +37,9 @@ async function validateMetadata(root: string, commit: string) {
 }
 async function checkedCommits(root: string, input: ModuleTaskDependencyBaseInput) {
 	const format = await git(root, ['rev-parse', '--show-object-format']);
-	const size = format === 'sha1' ? 40 : format === 'sha256' ? 64 : 0;
+	let size = 0;
+	if (format === 'sha1') size = 40;
+	if (format === 'sha256') size = 64;
 	if (!size) throw new Error('Unsupported repository object format.');
 	const checkpoints = [...new Set(input.checkpoints)].sort();
 	for (const commit of [input.sourceCommit, ...checkpoints]) {
