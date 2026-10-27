@@ -2,7 +2,7 @@
 	"name": "generated-component-contract",
 	"goal": "Register each generated component screenshot state and scenario",
 	"createdAt": "2026-10-27T05:38:23.797Z",
-	"updatedAt": "2026-10-27T05:46:57.940Z",
+	"updatedAt": "2026-10-27T06:06:58.049Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T06:06:54.135Z",
+			"evidence": "Commit c82cd6e83f emits the generated component cases and scenario without replacing authored metadata."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T06:06:58.049Z",
+			"evidence": "Same-profile harbor-mbp-2 pair: red fd30558ceff0 and green 130785fb017f; the unchanged generator case passed at c82cd6e83f."
 		},
 		{
 			"id": "verify",
