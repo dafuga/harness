@@ -105,6 +105,10 @@ function expectStandardTestForms(files: ReturnType<typeof projectFiles>): void {
 		);
 		expect(text, path).toContain('exercise the real runner on the designated test host');
 		expect(text, path).toContain(
+			'the declared build is stamped and the test owns its preview server'
+		);
+		expect(text, path).toContain('Check the generated build identity before browser capture');
+		expect(text, path).toContain(
 			'distinct declared case bindings sharing a state, viewport and evidence slot'
 		);
 		expect(text, path).toContain('plus wrong and duplicate bindings');

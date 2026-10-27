@@ -64,6 +64,7 @@ const standardTestForms = [
 	'- Retain reviewed baselines through Harness evidence with source revision, media hash and review provenance. Never automatically accept a missing or changed image.',
 	'- Keep compiler, lint and audit checks before browser screenshot gates in generated apps. Verify this order in the owning generator cases and real CLI static-violation matrix.',
 	'- When generating or changing a test runner, verify its reporter records declared files, titles and revisions for passed, failed, skipped and retried cases in the existing generator cases. Also exercise the real runner on the designated test host.',
+	'- When generating visual scenarios, verify in the existing generator case that the declared build is stamped and the test owns its preview server. Check the generated build identity before browser capture.',
 	'- Matrices include boundaries, invalid inputs and prop combinations that change behavior. Static types and configuration use compiler, lint, build and audit checks.',
 	'- Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.',
 	'',
