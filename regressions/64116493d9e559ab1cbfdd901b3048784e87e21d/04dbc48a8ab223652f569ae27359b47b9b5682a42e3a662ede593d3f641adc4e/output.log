@@ -1,0 +1,51 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-rRAKeN
+
+ ❯ test/validators/agents-providers/feature-plan-coverage.test.ts (10 tests | 1 failed) 11ms
+   ✓ FeaturePlanCoverageValidator.validate from default initialization covers supported and invalid inputs 3ms
+   ✓ covers direct pages and every consuming page with a deterministic deduplicated union 0ms
+   ✓ reports each missing consuming page and directly changed page 0ms
+   ✓ includes a registered planned page ancestor through intermediate planned modules 0ms
+   ✓ reuse alone does not introduce consuming-page coverage obligations 1ms
+   ✓ removed components still require all their consuming page designs 0ms
+   ✓ reports every unknown or inactive changed module 0ms
+   ✓ missing relationship metadata fails closed instead of silently reporting no pages 0ms
+   × unresolved committed graph references reject even otherwise complete designs 6ms
+     → dangling-test: expected { valid: false, …(2) } to deeply equal { valid: true, …(2) }
+   ✓ unregistered added pages and children fail closed until metadata is committed 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/validators/agents-providers/feature-plan-coverage.test.ts > unresolved committed graph references reject even otherwise complete designs
+AssertionError: dangling-test: expected { valid: false, …(2) } to deeply equal { valid: true, …(2) }
+
+- Expected
++ Received
+
+@@ -4,7 +4,7 @@
+    ],
+    "errors": [
+      "Unresolved committed graph reference: node=\"file:test/unrelated.test.ts\"; reason=\"unresolved-import\"; detail=\"missing-dangling-test-target\"",
+      "Unresolved committed source graph edge: file:test/unrelated.test.ts -> file:test/missing-fixture.json",
+    ],
+-   "valid": true,
++   "valid": false,
+  }
+
+ ❯ assertScopedUncertainty test/validators/agents-providers/feature-plan-coverage.test.fixtures.ts:140:72
+    138|   const result = validator.validate(input, metadata as never);
+    139|   const impact = { sourceCommit: input.sourceCommit, changes: input.ch…
+    140|   expect(validator.discover(impact as never, metadata as never), kind)…
+       |                                                                        ^
+    141|    valid: benign,
+    142|    affectedPages: ['page.alpha'],
+ ❯ test/validators/agents-providers/feature-plan-coverage.test.ts:182:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 passed (10)
+   Start at  12:46:57
+   Duration  2.35s (transform 66ms, setup 80ms, collect 19ms, tests 11ms, environment 0ms, prepare 21ms)
+
