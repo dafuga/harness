@@ -39,6 +39,18 @@ const reads = [
 		'5e5187769d390ab5a21a7bfd0f8013c9667b6b41',
 		'src/utils/verification-evidence/scenarioCoverage.ts'
 	],
+	[
+		'66419b84a0f32adca6800530532f35ff3cfc3af4',
+		'src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/caseGate.ts'
+	],
+	[
+		'66419b84a0f32adca6800530532f35ff3cfc3af4',
+		'src/services/verification-evidence/test-contract-service/executionCaseErrors.ts'
+	],
+	[
+		'e7fbf522ad7c865b69ffa5b9ec316864cbc3c7aa',
+		'src/services/verification-evidence/test-contract-service/executionCaseErrors.ts'
+	],
 	...d.files.flatMap((f) =>
 		[...(f.review ? [f.review] : []), ...(f.previousReviews ?? [])].map((r) => [r.commit, r.path])
 	)
@@ -80,3 +92,5 @@ Regression profile review retains `1fee21a175` for transient tool-call identity 
 Scenario coverage review retains `9bd3c0d300` for matching each capture to its declared evidence kind.
 The `44a2d10d23` review also retains the owned `problem` helper that validates declared screenshot provenance.
 The focused implementation at `5e5187769d` retains the same guard within the lint complexity limit.
+Visual case binding retains `66419b84a0` for the case gate and test-contract validation.
+The formatted binding implementation is retained at `e7fbf522ad`.

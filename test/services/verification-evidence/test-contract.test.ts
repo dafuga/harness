@@ -84,7 +84,9 @@ test('validate initialized and invalid registries against declared cases', async
 		() => assertVisualScenarioEvidence(unit, service)
 	);
 	await measureWorkload('service.verification-evidence-test-contract', 'visual-case-binding', () =>
-		assertVisualCaseBinding(unit, service)
+		measureWorkload('service.record-assembly', 'visual-case-gate', () =>
+			assertVisualCaseBinding(unit, service)
+		)
 	);
 	await measureWorkload('validator.verification-evidence-test-case', 'matrix-row-admission', () =>
 		assertMatrixRows(unit, service, 'validate')
