@@ -2,7 +2,7 @@
 	"name": "image-project-scope",
 	"goal": "Prevent a design image read from returning a previous project image after the selected project changes during asynchronous work",
 	"createdAt": "2026-10-27T11:07:41.084Z",
-	"updatedAt": "2026-10-27T11:08:25.440Z",
+	"updatedAt": "2026-10-27T11:19:41.824Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:19:28.384Z",
+			"evidence": "At 5eec62c6 both cache-hit and fresh image reads returned previous-project bytes, and the fresh read cached bytes after a real project switch. Clean-snapshot red record 653907fc3bbdbf4dac9fe56c06ff0ad63a8e413d139b8ebb9ee7a519d36dd3e1."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:19:40.309Z",
+			"evidence": "At 5ace9cac the reader captures the original project identity for cache keys and rechecks selected services after asynchronous reads and before returning or initiating a cache write."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T11:19:41.824Z",
+			"evidence": "The unchanged method case passed at 5ace9cac in the same other-laptop snapshot environment. Green record 83495af08c63012aed480cd25e9b99ca024e1699c68f93b661fb279c1096aede references the recorded red."
 		},
 		{
 			"id": "verify",
