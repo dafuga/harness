@@ -2,7 +2,7 @@
 	"name": "desktop-feature-plan-actions",
 	"goal": "Allow the selected local desktop project to select and approve an exact feature plan and queue its tasks.",
 	"createdAt": "2026-10-27T09:10:16.851Z",
-	"updatedAt": "2026-10-27T09:27:04.257Z",
+	"updatedAt": "2026-10-27T09:31:33.044Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -32,6 +32,13 @@
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
 			"status": "pending"
+		},
+		{
+			"id": "real-queue",
+			"title": "Verify committed plan approval and exact task admission without launching a provider.",
+			"status": "complete",
+			"completedAt": "2026-10-27T09:31:33.044Z",
+			"evidence": "The assigned feature-plan-action test uses a disposable project, Harness CLI metadata validation and real plan services; it commits a valid source contract, approves the plan and observes exactly one queued assigned task without starting the fixture provider. 4 tests passed."
 		}
 	],
 	"evaluators": [
