@@ -1861,9 +1861,11 @@ temporary directory and verified against the npm SHA-512 integrity value; the
 installed global CLI was not changed. It completed a no-tool `gpt-6-luna/max`
 request, with model and effort reported in thread configuration but no model
 in the completion event. Its neutral app-server also exposed and successfully
-ran read-only `collaboration.list_agents` with multi-agent disabled. No agent was
-spawned and no message was sent. The actual Harness worker remains blocked; the
-new runtime is not yet pinned or authorized by its native profile.
+ran read-only `collaboration.list_agents` with multi-agent disabled. The same
+call succeeded with the Harness worker's host-environment allowlist, so
+inherited desktop variables did not explain it. No agent was spawned and no
+message was sent. The actual Harness worker remains blocked; the new runtime is
+not yet pinned or authorized by its native profile.
 
 On isolated branch `dafuga/agent-liveness-examples-20261027`, commit
 `13a963a459` declares seven `agentLiveness` Examples for fresh and stale
