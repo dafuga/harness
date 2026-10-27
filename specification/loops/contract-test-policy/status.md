@@ -1839,3 +1839,25 @@ unit-owned lines, complexity 68 and five dependencies; it emits no separate
 artifact. Its source reasons are in Git notes. The validation is an additional
 prelaunch guard, not proof against concurrent mutation of trusted directories.
 The branch remains isolated and full verification and integration are pending.
+
+The profile adapter's existing suite is now a declared class matrix: `connect`
+and `prepare` each have default and named initialization cases, with invalid
+configuration and unsafe scope assertions inside those cases. The former
+standalone invalid-config test was folded into the default case and a default
+prepare case was added, keeping four total. Commit `141d047c32` binds authored
+expectations and the reusable fixture through `TestExpectationService`.
+Discovery and contract admission found four cases; capture `32e49a6a8d90` at
+that commit passed 30 profile, process and unchanged registry-guard cases.
+Units check, focused typecheck, lint and formatting passed. Workload observations
+include 4.12 ms for the complete fixture and assertion case and 92,733,440 bytes
+of whole-worker RSS, not isolated unit memory. The manifest reason is in Git
+notes. Full verification and integration remain pending.
+
+An official standalone Codex 0.164.0 package was downloaded to a task-owned
+temporary directory and verified against the npm SHA-512 integrity value; the
+installed global CLI was not changed. It completed a no-tool `gpt-6-luna/max`
+request, with model and effort reported in thread configuration but no model
+in the completion event. Its neutral app-server also exposed and successfully
+ran read-only `collaboration.list_agents` with multi-agent disabled. No agent was
+spawned and no message was sent. The actual Harness worker remains blocked; the
+new runtime is not yet pinned or authorized by its native profile.
