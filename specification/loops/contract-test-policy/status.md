@@ -1864,3 +1864,20 @@ in the completion event. Its neutral app-server also exposed and successfully
 ran read-only `collaboration.list_agents` with multi-agent disabled. No agent was
 spawned and no message was sent. The actual Harness worker remains blocked; the
 new runtime is not yet pinned or authorized by its native profile.
+
+On isolated branch `dafuga/agent-liveness-examples-20261027`, commit
+`13a963a459` declares seven `agentLiveness` Examples for fresh and stale
+heartbeats, completed and failed agents, reused and absent processes, and
+lookup errors. Three unregistered grouped tests became seven cases because
+those seven example capabilities are now explicitly declared. The same
+authored call is executed and rendered with its authored expected comment;
+the previous heartbeat boundary, process reuse, missing-start and short-circuit
+assertions remain inside the cases. Capture `4381b62ee49d` passed seven examples
+and 16 unchanged registry guards. Changing one expected state failed capture
+`cc5df809749a`; the identical restored tree passed `0cc02777eb4c` on the same
+profile. Units check, focused typecheck, lint and formatting passed. The
+unchanged source measured 2,720 bytes, 56 unit-owned lines, complexity 13 and
+one dependency; its normal examples retain timing and whole-worker RSS, with
+no separate module artifact. The manifest reason is in Git notes. This function
+is excluded from the public Functions catalog, so the shared preview's Examples
+tab remains unproven. Integration and deferred full verification remain open.
