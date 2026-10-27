@@ -19,7 +19,8 @@ export async function assertComponentCapture(
 		'desktop.component.deployment-route': '.deployment-route',
 		'reports.component.harness-harness-icon': 'svg',
 		'hub.component.account-menu': ':scope > *',
-		'desktop.component.deployment-dialog': 'dialog[open]'
+		'desktop.component.deployment-dialog': 'dialog[open]',
+		'desktop.component.project-agent': '.floating-chat-panel'
 	};
 	if (!selector[id]) return;
 	const content = page.locator(`[data-preview-unit="${id}"]`);

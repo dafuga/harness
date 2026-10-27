@@ -93,6 +93,8 @@ for (const viewport of catalogViewports) {
 			await openPreview(page, home, unit.id, variant);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id);
+			if (unit.id === 'desktop.component.project-agent')
+				await expect(component.locator('.floating-chat-panel')).toBeVisible();
 			await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
 			if (unit.id === 'reports.component.module-system-explorer-modules-screen' && !variant) {
