@@ -1,0 +1,56 @@
+{
+	"name": "native-measured-unit-identity",
+	"goal": "Preserve source identities for every measured or removed unit after verification releases indexes",
+	"createdAt": "2026-10-27T09:53:21.619Z",
+	"updatedAt": "2026-10-27T09:53:22.872Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-27T09:53:22.327Z",
+			"evidence": "Linux CI run 40421510002 failed attaching a verification record because benchmarked service.title was outside impact and its source files had been pruned before record assembly."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-27T09:53:22.872Z",
+			"evidence": "test/verify-measures.e2e.test.ts checks metrics for impacted units but not source identities for a benchmarked non-impacted unit or a removed base unit; extend that standard fixture to assert both and attach the measured record."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
