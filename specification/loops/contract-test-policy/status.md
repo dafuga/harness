@@ -1786,4 +1786,9 @@ titles, contract admission and units check passed, and targeted typecheck,
 lint and formatting passed. The unchanged implementation measured 605 bytes,
 16 lines, complexity three and zero dependencies; its focused capture retains
 timing and whole-worker RSS. The manifest reason is in Git notes. The Examples
-UI, integration and deferred full verification remain open.
+UI, integration and deferred full verification remain open. This function is
+currently excluded from the public Functions catalog: adding `@pure` alone does
+not pass the conservative source guard for its `Set` construction, and its
+source is outside the required `src/helpers` location. Making it visible needs a
+reviewed purity and ownership migration that preserves in-memory iterator,
+species and getter behavior; the six passing cases do not prove that migration.
