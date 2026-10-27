@@ -83,19 +83,6 @@
 	"testing": {
 		"version": 1,
 		"shape": "service",
-		"states": [
-			"qualified",
-			"unconfigured",
-			"qualification-rejected",
-			"invalid-input",
-			"open-failed",
-			"invalid-session",
-			"client-failed",
-			"cancelled-before",
-			"cancelled-opening",
-			"cancelled-running",
-			"cleanup-failed"
-		],
 		"cases": [
 			{
 				"id": "ready.qualified",
@@ -125,7 +112,8 @@
 						"name": "Error",
 						"message": "Broker transport is unqualified"
 					}
-				}
+				},
+				"errors": ["Unqualified binding"]
 			},
 			{
 				"id": "ready.rejected",
@@ -142,7 +130,8 @@
 						"name": "Error",
 						"message": "Synthetic qualification rejected"
 					}
-				}
+				},
+				"errors": ["Client or broker failure"]
 			},
 			{
 				"id": "run.invalid",
@@ -159,7 +148,8 @@
 						"name": "Error",
 						"message": "Invalid broker task input"
 					}
-				}
+				},
+				"errors": ["Invalid task input or session"]
 			},
 			{
 				"id": "run.unqualified",
@@ -176,7 +166,8 @@
 						"name": "Error",
 						"message": "Synthetic qualification rejected"
 					}
-				}
+				},
+				"errors": ["Client or broker failure"]
 			},
 			{
 				"id": "run.open-failed",
@@ -193,7 +184,8 @@
 						"name": "Error",
 						"message": "Synthetic broker open failed"
 					}
-				}
+				},
+				"errors": ["Client or broker failure"]
 			},
 			{
 				"id": "run.invalid-session",
@@ -210,7 +202,8 @@
 						"name": "Error",
 						"message": "Invalid broker session"
 					}
-				}
+				},
+				"errors": ["Invalid task input or session"]
 			},
 			{
 				"id": "run.success",
@@ -256,7 +249,8 @@
 						"name": "Error",
 						"message": "Synthetic client failed"
 					}
-				}
+				},
+				"errors": ["Client or broker failure"]
 			},
 			{
 				"id": "run.cancelled-before",
@@ -273,7 +267,8 @@
 						"name": "AbortError",
 						"message": "Broker task cancelled"
 					}
-				}
+				},
+				"errors": ["Cancellation"]
 			},
 			{
 				"id": "run.cancelled-opening",
@@ -290,7 +285,8 @@
 						"name": "AbortError",
 						"message": "Broker task cancelled"
 					}
-				}
+				},
+				"errors": ["Cancellation"]
 			},
 			{
 				"id": "run.cancelled-running",
@@ -307,7 +303,8 @@
 						"name": "AbortError",
 						"message": "Broker task cancelled"
 					}
-				}
+				},
+				"errors": ["Cancellation"]
 			},
 			{
 				"id": "run.cleanup-failed",
@@ -324,7 +321,8 @@
 						"name": "Error",
 						"message": "Synthetic broker cleanup failed"
 					}
-				}
+				},
+				"errors": ["Client or broker failure"]
 			}
 		]
 	},
