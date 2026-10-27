@@ -49,12 +49,26 @@ test('feature design preparation binds its proposal to one selected project revi
 	const gate = new IpcRequestValidator(),
 		commit = 'a'.repeat(40),
 		input = {
-			projectId: 'local-' + 'b'.repeat(64), sourceCommit: commit, originalRequest: 'Change the right panel.',
-			proposal: { feature: 'feature', sourceCommit: commit, goal: 'Improve the page.', tldr: 'Design then build.', changes: [], tasks: [] },
+			projectId: 'local-' + 'b'.repeat(64),
+			sourceCommit: commit,
+			originalRequest: 'Change the right panel.',
+			proposal: {
+				feature: 'feature',
+				sourceCommit: commit,
+				goal: 'Improve the page.',
+				tldr: 'Design then build.',
+				changes: [],
+				tasks: []
+			},
 			pageDesigns: []
 		};
 	expect(gate.parse('feature-plan:prepare', input)).toEqual(input);
-	expect(() => gate.parse('feature-plan:prepare', { ...input, proposal: { ...input.proposal, sourceCommit: 'c'.repeat(40) } })).toThrow();
+	expect(() =>
+		gate.parse('feature-plan:prepare', {
+			...input,
+			proposal: { ...input.proposal, sourceCommit: 'c'.repeat(40) }
+		})
+	).toThrow();
 	expect(() => gate.parse('feature-plan:prepare', { ...input, extra: true })).toThrow();
 });
 

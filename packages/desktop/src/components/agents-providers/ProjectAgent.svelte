@@ -61,20 +61,42 @@
 		return Boolean(text) && !end.some((item) => item.author === author && item.text === text);
 	}
 	function workTone(status: string) {
-		return status === 'accepted' ? 'green' : status === 'failed' ? 'red' : status === 'running' || status === 'review' ? 'amber' : 'gray';
+		return status === 'accepted'
+			? 'green'
+			: status === 'failed'
+				? 'red'
+				: status === 'running' || status === 'review'
+					? 'amber'
+					: 'gray';
 	}
 	function workLabel(status: string) {
-		return status === 'accepted' ? 'Completed' : status === 'failed' ? 'Failed' : status === 'running' || status === 'review' ? 'In progress' : 'To do';
+		return status === 'accepted'
+			? 'Completed'
+			: status === 'failed'
+				? 'Failed'
+				: status === 'running' || status === 'review'
+					? 'In progress'
+					: 'To do';
 	}
 	function workItems(feature: FeatureWorkSnapshot['features'][number]) {
-		const stored = feature.tasks.filter((task) => task.belongsToPlan), ids = new Set(stored.map((task) => task.id));
+		const stored = feature.tasks.filter((task) => task.belongsToPlan),
+			ids = new Set(stored.map((task) => task.id));
 		return [
 			...stored.map(({ id, title, status }) => ({ id, title, status })),
-			...(feature.plan?.tasks.filter((task) => !ids.has(task.id)).map(({ id, title }) => ({ id, title, status: 'queued' })) ?? [])
+			...(feature.plan?.tasks
+				.filter((task) => !ids.has(task.id))
+				.map(({ id, title }) => ({ id, title, status: 'queued' })) ?? [])
 		];
 	}
-	function countWork(feature: FeatureWorkSnapshot['features'][number], state: 'accepted' | 'running' | 'queued') {
-		return workItems(feature).filter((task) => state === 'running' ? task.status === 'running' || task.status === 'review' : task.status === state).length;
+	function countWork(
+		feature: FeatureWorkSnapshot['features'][number],
+		state: 'accepted' | 'running' | 'queued'
+	) {
+		return workItems(feature).filter((task) =>
+			state === 'running'
+				? task.status === 'running' || task.status === 'review'
+				: task.status === state
+		).length;
 	}
 	async function send(draft: RunDraft) {
 		const sent = await agent.send(draft);
@@ -138,14 +160,32 @@
 								{#each work.snapshot.features as feature (feature.id)}
 									<hx-div class="chat-work-feature">
 										<hx-small>{feature.goal || feature.id}</hx-small>
-						<hx-span class="chat-work-dots" role="list" aria-label={`Tasks for ${feature.id}`}>
-							{#each workItems(feature) as task (task.id)}<hx-span class="dot {workTone(task.status)}" role="listitem" title={`${task.title}: ${workLabel(task.status)}`} aria-label={`${task.title}: ${workLabel(task.status)}`}></hx-span>{/each}
+										<hx-span
+											class="chat-work-dots"
+											role="list"
+											aria-label={`Tasks for ${feature.id}`}
+										>
+											{#each workItems(feature) as task (task.id)}<hx-span
+													class="dot {workTone(task.status)}"
+													role="listitem"
+													title={`${task.title}: ${workLabel(task.status)}`}
+													aria-label={`${task.title}: ${workLabel(task.status)}`}
+												></hx-span>{/each}
 										</hx-span>
-						<hx-small>{countWork(feature, 'accepted')} completed · {countWork(feature, 'running')} in progress · {countWork(feature, 'queued')} to do</hx-small>
+										<hx-small
+											>{countWork(feature, 'accepted')} completed · {countWork(feature, 'running')} in
+											progress · {countWork(feature, 'queued')} to do</hx-small
+										>
 									</hx-div>
 								{/each}
 							</hx-summary>
-						<ProjectWork snapshot={work.snapshot} loading={work.loading} error={work.error} {workspace} actions={workActions} />
+							<ProjectWork
+								snapshot={work.snapshot}
+								loading={work.loading}
+								error={work.error}
+								{workspace}
+								actions={workActions}
+							/>
 						</hx-details>
 					{/key}
 				{/if}
@@ -182,7 +222,7 @@
 					running={agent.active || workspace.busy}
 					placeholder={`Describe the ${kind} to add…`}
 					comment={(text) => agent.comment(text)}
-					send={send}
+					{send}
 				/>
 			</hx-div>
 		</hx-div>
@@ -193,7 +233,13 @@
 			aria-labelledby="{id}-work-tab"
 			hidden={view !== 'work'}
 		>
-			<ProjectWork snapshot={work.snapshot} loading={work.loading} error={work.error} {workspace} actions={workActions} />
+			<ProjectWork
+				snapshot={work.snapshot}
+				loading={work.loading}
+				error={work.error}
+				{workspace}
+				actions={workActions}
+			/>
 		</hx-div>
 		<hx-div
 			class="work-pane"
@@ -209,6 +255,14 @@
 
 <style>
 	@import './project-agent/projectAgent.css';
-	.chat-work-feature { display: grid; gap: 0.2rem; min-width: 12rem; padding-top: 0.2rem; }
-	.chat-work-dots { display: flex; gap: 0.28rem; }
+	.chat-work-feature {
+		display: grid;
+		gap: 0.2rem;
+		min-width: 12rem;
+		padding-top: 0.2rem;
+	}
+	.chat-work-dots {
+		display: flex;
+		gap: 0.28rem;
+	}
 </style>

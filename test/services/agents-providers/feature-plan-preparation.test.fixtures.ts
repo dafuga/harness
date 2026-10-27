@@ -1,6 +1,10 @@
 import { expect, vi } from 'vitest';
 import { FeaturePlanPreparationService } from '../../../src/services/agents-providers/FeaturePlanPreparationService';
-import type { FeaturePlanPreparationInput, FeaturePlanProposal, GeneratedPage } from '../../../src/services/agents-providers/FeaturePlanPreparationService.types';
+import type {
+	FeaturePlanPreparationInput,
+	FeaturePlanProposal,
+	GeneratedPage
+} from '../../../src/services/agents-providers/FeaturePlanPreparationService.types';
 import type { FeaturePlan } from '../../../src/repositories/agents-providers/ModuleTaskRepository.types';
 import type { ModuleData } from '../../../src/services/git-source-history/ModuleDataService.types';
 export const sourceCommit = 'a'.repeat(40);
@@ -98,32 +102,71 @@ export function fixture(ids?: string[]) {
 }
 
 export function preparationFixture(ids: string[]) {
-	const state = fixture(ids), modules = [...new Set(ids)], region = { x: 0.62, y: 0.1, width: 0.36, height: 0.88 };
+	const state = fixture(ids),
+		modules = [...new Set(ids)],
+		region = { x: 0.62, y: 0.1, width: 0.36, height: 0.88 };
 	state.input.originalRequest = 'Update only the right-side panel; preserve every other page area.';
 	state.input.pageDesigns = modules.map((module) => ({
 		module,
-		reference: { kind: 'current', entityId: module, commit: sourceCommit, version: 'current-v1', state: 'ready', viewport: 'desktop', file: `designs/${module}.png`, sha256: 'a'.repeat(64) },
+		reference: {
+			kind: 'current',
+			entityId: module,
+			commit: sourceCommit,
+			version: 'current-v1',
+			state: 'ready',
+			viewport: 'desktop',
+			file: `designs/${module}.png`,
+			sha256: 'a'.repeat(64)
+		},
 		region,
 		options: [0, 1, 2].map((index) => ({
-			id: `o${index + 1}`, preferred: index === 0, direction: `Direction ${index + 1}`, instruction: `Prompt ${index + 1}`
+			id: `o${index + 1}`,
+			preferred: index === 0,
+			direction: `Direction ${index + 1}`,
+			instruction: `Prompt ${index + 1}`
 		}))
 	}));
 	const plan = state.input.proposal as FeaturePlanProposal;
-	plan.tasks = [...plan.tasks, ...modules.map((module, index) => ({
-		id: `page-task-${index}`, title: `Implement ${module}`, feature: proposal.feature, module,
-		moduleGoal: `Implement the ${module} module.`, instructions: `Implement ${module} from its committed wanted contract.`,
-		wantedContract: { responsibility: `Implement ${module}.`, inputs: [], outputs: [{ name: 'result', type: 'committed implementation' }], errors: [] }
-	}))];
-	if (!plan.tasks.length) plan.tasks = [{
-		id: 'module-task', title: 'Implement checkout', feature: proposal.feature, module: 'service.checkout',
-		moduleGoal: 'Implement the checkout service.', instructions: 'Implement checkout from its committed wanted contract.',
-		wantedContract: { responsibility: 'Implement checkout.', inputs: [], outputs: [{ name: 'result', type: 'committed implementation' }], errors: [] }
-	}];
+	plan.tasks = [
+		...plan.tasks,
+		...modules.map((module, index) => ({
+			id: `page-task-${index}`,
+			title: `Implement ${module}`,
+			feature: proposal.feature,
+			module,
+			moduleGoal: `Implement the ${module} module.`,
+			instructions: `Implement ${module} from its committed wanted contract.`,
+			wantedContract: {
+				responsibility: `Implement ${module}.`,
+				inputs: [],
+				outputs: [{ name: 'result', type: 'committed implementation' }],
+				errors: []
+			}
+		}))
+	];
+	if (!plan.tasks.length)
+		plan.tasks = [
+			{
+				id: 'module-task',
+				title: 'Implement checkout',
+				feature: proposal.feature,
+				module: 'service.checkout',
+				moduleGoal: 'Implement the checkout service.',
+				instructions: 'Implement checkout from its committed wanted contract.',
+				wantedContract: {
+					responsibility: 'Implement checkout.',
+					inputs: [],
+					outputs: [{ name: 'result', type: 'committed implementation' }],
+					errors: []
+				}
+			}
+		];
 	return state;
 }
 
 export async function assertNonvisual() {
-	const { service, input, deps } = preparationFixture([]), result = await service.prepare(input);
+	const { service, input, deps } = preparationFixture([]),
+		result = await service.prepare(input);
 	expect(deps.preparePage).not.toHaveBeenCalled();
 	expect(deps.admit).not.toHaveBeenCalled();
 	expect(deps.finalize).toHaveBeenCalledExactlyOnceWith(
@@ -141,8 +184,9 @@ export function configureCancellation(
 ) {
 	const { deps, controller } = state;
 	if (kind === 'cancelled') controller.abort();
-	if (kind === 'mid-cancel') deps.preparePage.mockImplementation(async ({ module }) => {
-		controller.abort();
-		return generatedPage(module);
-	});
+	if (kind === 'mid-cancel')
+		deps.preparePage.mockImplementation(async ({ module }) => {
+			controller.abort();
+			return generatedPage(module);
+		});
 }

@@ -155,10 +155,12 @@ async function assertIncompleteDesigns() {
 		if (kind === 'missing-reference') input.pageDesigns = [];
 		if (kind === 'duplicate-reference') input.pageDesigns!.push(input.pageDesigns![0]);
 		if (kind === 'missing-choices') input.pageDesigns![0].options = [];
-		if (kind === 'duplicate-choice') input.pageDesigns![0].options[1].id = input.pageDesigns![0].options[0].id;
+		if (kind === 'duplicate-choice')
+			input.pageDesigns![0].options[1].id = input.pageDesigns![0].options[0].id;
 		if (kind === 'two-preferred-choices') input.pageDesigns![0].options[1].preferred = true;
 		if (kind === 'invalid-reference-hash') input.pageDesigns![0].reference.sha256 = 'bad';
-		if (kind === 'invalid-region') input.pageDesigns![0].region = { x: 0.8, y: 0, width: 0.3, height: 1 };
+		if (kind === 'invalid-region')
+			input.pageDesigns![0].region = { x: 0.8, y: 0, width: 0.3, height: 1 };
 		if (kind === 'missing-request') input.originalRequest = '';
 		deps.preparePage.mockResolvedValue(design);
 		if (kind === 'selected' || kind === 'wrong-page' || kind === 'invalid-hash') {
@@ -186,7 +188,7 @@ async function assertAdmittedWorkSettles() {
 	deps.preparePage.mockImplementation(async ({ module }) => {
 		if (module === 'page.first') throw new Error('First page failed');
 		await gate;
-			return generatedPage(module);
+		return generatedPage(module);
 	});
 	let settled = false;
 	const pending = service.prepare(input).then(

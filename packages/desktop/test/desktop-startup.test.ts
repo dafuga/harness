@@ -121,8 +121,17 @@ test('preload exposes the selected project Work reader over the local transport'
 	});
 	expect(state.request).toHaveBeenCalledWith('projectWork', { projectId: 'project-a' });
 	const preparation = {
-		projectId: 'project-a', sourceCommit: 'a'.repeat(40), originalRequest: 'Improve the page.',
-		proposal: { feature: 'feature', sourceCommit: 'a'.repeat(40), goal: 'Improve the page.', tldr: 'Design then build.', changes: [], tasks: [] },
+		projectId: 'project-a',
+		sourceCommit: 'a'.repeat(40),
+		originalRequest: 'Improve the page.',
+		proposal: {
+			feature: 'feature',
+			sourceCommit: 'a'.repeat(40),
+			goal: 'Improve the page.',
+			tldr: 'Design then build.',
+			changes: [],
+			tasks: []
+		},
 		pageDesigns: []
 	};
 	expect(bridge.prepareFeaturePlan).toBeTypeOf('function');

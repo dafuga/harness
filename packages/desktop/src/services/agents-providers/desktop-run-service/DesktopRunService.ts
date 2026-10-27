@@ -81,9 +81,11 @@ export class DesktopRunService {
 		}
 	}
 	async prepareFeaturePlan(input: FeaturePlanPreparationRequest): Promise<FeaturePlan> {
-		const { session } = this, root = session.root;
+		const { session } = this,
+			root = session.root;
 		session.assertProject(input.projectId);
-		if (!root || session.busy || !this.claim(root)) throw new Error('A project operation is already active.');
+		if (!root || session.busy || !this.claim(root))
+			throw new Error('A project operation is already active.');
 		session.busy = true;
 		const controller = new AbortController();
 		this.active = { id: `feature-plan:${input.proposal.feature}`, controller };
@@ -93,7 +95,10 @@ export class DesktopRunService {
 			this.lease.signal.addEventListener('abort', () => controller.abort(), { once: true });
 			controller.signal.throwIfAborted();
 			const project = await session.mutable();
-			if (project.revision.commit !== input.sourceCommit || input.proposal.sourceCommit !== input.sourceCommit)
+			if (
+				project.revision.commit !== input.sourceCommit ||
+				input.proposal.sourceCommit !== input.sourceCommit
+			)
 				throw new Error('Feature plan source must match the writable project revision.');
 			const data = await new ModuleDataService(root).require(input.sourceCommit),
 				coverage = new FeaturePlanCoverageValidator(),
@@ -109,8 +114,11 @@ export class DesktopRunService {
 				discover: (proposal, metadata) => coverage.discover(proposal, metadata),
 				preparePage: async (page) => {
 					const bytes = await new ProjectImageCacheService(session).read({
-						projectId: input.projectId, entityId: page.module, commit: page.reference.commit,
-						version: page.reference.version, sha256: page.reference.sha256,
+						projectId: input.projectId,
+						entityId: page.module,
+						commit: page.reference.commit,
+						version: page.reference.version,
+						sha256: page.reference.sha256,
 						...(page.reference.option ? { option: page.reference.option } : {})
 					});
 					if (createHash('sha256').update(bytes).digest('hex') !== page.reference.sha256)
@@ -123,11 +131,15 @@ export class DesktopRunService {
 				draft: (plan) => planService.draft(plan)
 			});
 			const plan = await preparation.prepare({
-				proposal: input.proposal, data, originalRequest: input.originalRequest,
-				pageDesigns: input.pageDesigns, signal: controller.signal
+				proposal: input.proposal,
+				data,
+				originalRequest: input.originalRequest,
+				pageDesigns: input.pageDesigns,
+				signal: controller.signal
 			});
 			session.assertProject(input.projectId);
-			if (session.root !== root) throw new Error('The selected project changed during feature preparation.');
+			if (session.root !== root)
+				throw new Error('The selected project changed during feature preparation.');
 			return plan;
 		} finally {
 			await this.release(root);

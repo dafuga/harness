@@ -71,7 +71,13 @@ test('implemented pages select their declared screenshot rather than an absent p
 			// A plan with no implementation still has no screenshot to display.
 			expect(planCatalog(plan, null, new Set()).thumbnail).toBeNull();
 		}
-		const image = { file: 'o1-default-desktop.png', state: 'default', viewport: 'desktop', sha256: 'b'.repeat(64), bytes: 100 };
+		const image = {
+			file: 'o1-default-desktop.png',
+			state: 'default',
+			viewport: 'desktop',
+			sha256: 'b'.repeat(64),
+			bytes: 100
+		};
 		const designed = pagePlan(unit, [{ ...imagelessDesign, images: [image] }]);
 		expect(planCatalog(designed, catalogUnit(unit, new Set()), new Set()).thumbnail).toEqual({
 			version: 'v001',

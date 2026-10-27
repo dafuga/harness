@@ -111,7 +111,10 @@ function featurePlanOperations(context: BridgeContext) {
 		prepareFeaturePlan: async (input: FeaturePlanPreparationRequest) => {
 			const project = await writable(context);
 			context.session.assertProject(input.projectId);
-			if (project.revision.commit !== input.sourceCommit || input.proposal.sourceCommit !== input.sourceCommit)
+			if (
+				project.revision.commit !== input.sourceCommit ||
+				input.proposal.sourceCommit !== input.sourceCommit
+			)
 				throw new Error('Feature preparation must use the exact writable source revision.');
 			return context.runs.prepareFeaturePlan(input);
 		},

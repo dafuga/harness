@@ -12,14 +12,21 @@ import type {
 } from '../../../../../src/services/agents-providers/FeaturePlanPreparationService.types';
 import type { ImageGenerator } from '../../models/agents-providers/AgentRunner.types';
 import type { DesignVersion } from '../../models/development-tooling/Desktop.types';
-import type { PlanningPort, PlanRecord } from '../../models/planning-collaboration/PlanningPort.types';
+import type {
+	PlanningPort,
+	PlanRecord
+} from '../../models/planning-collaboration/PlanningPort.types';
 import { ImageBytesValidator } from '../../validators/development-tooling/ImageBytesValidator';
 
 const IMAGE_MODEL = 'gpt-image-2.5-sunburst';
 type PreparePageInput = Parameters<FeaturePlanPreparationDependencies['preparePage']>[0] & {
 	referenceBytes: Uint8Array;
 };
-type FinalizeInput = { sourceCommit: string; pages: GeneratedPage[]; designs: PreparationPageDesign[] };
+type FinalizeInput = {
+	sourceCommit: string;
+	pages: GeneratedPage[];
+	designs: PreparationPageDesign[];
+};
 type Dependencies = {
 	generator: Pick<ImageGenerator, 'generateImage'>;
 	planning: Pick<PlanningPort, 'plans' | 'addDesign'>;
@@ -32,48 +39,79 @@ function hash(bytes: Uint8Array): string {
 }
 
 function referenceExtension(file: string): string {
-	if (!safePath(file))
-		throw new Error('Unsafe committed image path.');
+	if (!safePath(file)) throw new Error('Unsafe committed image path.');
 	const extension = extname(file).toLowerCase();
 	if (extension !== '.png') throw new Error('Only committed PNG design references are supported.');
 	return extension;
 }
 
 function safePath(value: string): boolean {
-	return Boolean(value) && !value.startsWith('/') && !value.includes('\\') &&
-	!/[\x00-\x1f\x7f]/.test(value) &&
-		!value.split('/').some((part) => !part || part === '.' || part === '..');
+	return (
+		Boolean(value) &&
+		!value.startsWith('/') &&
+		!value.includes('\\') &&
+		!/[\x00-\x1f\x7f]/.test(value) &&
+		!value.split('/').some((part) => !part || part === '.' || part === '..')
+	);
 }
 
 function validChoices(options: PreparePageInput['options']): boolean {
-	return options.length === 3 && options.every((option) => Boolean(option.id.trim()) &&
-		Boolean(option.direction.trim()) && Boolean(option.instruction.trim()) && typeof option.preferred === 'boolean') &&
+	return (
+		options.length === 3 &&
+		options.every(
+			(option) =>
+				Boolean(option.id.trim()) &&
+				Boolean(option.direction.trim()) &&
+				Boolean(option.instruction.trim()) &&
+				typeof option.preferred === 'boolean'
+		) &&
 		new Set(options.map((option) => option.id)).size === 3 &&
 		new Set(options.map((option) => option.direction.trim().toLowerCase())).size === 3 &&
-		options.filter((option) => option.preferred).length === 1;
+		options.filter((option) => option.preferred).length === 1
+	);
 }
 
 function checkedReference(plan: PlanRecord, reference: PreparationDesignReference) {
 	const version = plan.versions.find((item) => item.version === reference.version),
-		image = version?.images.find((item) => item.sha256 === reference.sha256 && item.file === reference.file &&
-			item.state === reference.state && item.viewport === reference.viewport && item.option === reference.option);
+		image = version?.images.find(
+			(item) =>
+				item.sha256 === reference.sha256 &&
+				item.file === reference.file &&
+				item.state === reference.state &&
+				item.viewport === reference.viewport &&
+				item.option === reference.option
+		);
 	if (
-		!version || !image ||
+		!version ||
+		!image ||
 		(reference.option && !version.options?.some((option) => option.id === reference.option))
 	)
 		throw new Error(`Committed design reference changed for ${reference.entityId}.`);
 	return { version, image };
 }
 
-function choicesFor(version: DesignVersion, generated: GeneratedPage['options'], plan: PlanRecord, module: string): FeaturePlanPage {
+function choicesFor(
+	version: DesignVersion,
+	generated: GeneratedPage['options'],
+	plan: PlanRecord,
+	module: string
+): FeaturePlanPage {
 	const pageOptions = generated.map((expected, index) => {
 		const optionId = `o${index + 1}`,
 			option = version.options?.find((item) => item.id === optionId),
-			image = version.images.find((item) => item.option === optionId && option?.imageHashes.includes(item.sha256));
+			image = version.images.find(
+				(item) => item.option === optionId && option?.imageHashes.includes(item.sha256)
+			);
 		if (
-			expected.id !== optionId || !option || option.direction !== expected.direction ||
-			option.prompt !== expected.prompt || option.revisedPrompt !== expected.revisedPrompt ||
-			!image || image.bytes !== expected.bytes.byteLength || image.sha256 !== hash(expected.bytes) || !image.file ||
+			expected.id !== optionId ||
+			!option ||
+			option.direction !== expected.direction ||
+			option.prompt !== expected.prompt ||
+			option.revisedPrompt !== expected.revisedPrompt ||
+			!image ||
+			image.bytes !== expected.bytes.byteLength ||
+			image.sha256 !== hash(expected.bytes) ||
+			!image.file ||
 			!safePath(image.file)
 		)
 			throw new Error(`Committed design option ${optionId} is incomplete for ${module}.`);
@@ -100,9 +138,12 @@ export class FeaturePlanPreparationHostService {
 	async preparePage(input: PreparePageInput) {
 		input.signal.throwIfAborted();
 		if (input.reference.entityId !== input.module || !validChoices(input.options))
-			throw new Error(`Three distinct options, one preferred choice and an exact module reference are required for ${input.module}.`);
-		const plan = (await this.dependencies.planning.plans(input.reference.commit))
-			.find((record) => record.id === input.module);
+			throw new Error(
+				`Three distinct options, one preferred choice and an exact module reference are required for ${input.module}.`
+			);
+		const plan = (await this.dependencies.planning.plans(input.reference.commit)).find(
+			(record) => record.id === input.module
+		);
 		if (!plan) throw new Error(`The committed reference plan is unavailable for ${input.module}.`);
 		checkedReference(plan, input.reference);
 		if (hash(input.referenceBytes) !== input.reference.sha256)
@@ -144,16 +185,31 @@ export class FeaturePlanPreparationHostService {
 	async finalize(input: FinalizeInput, signal: AbortSignal) {
 		const byDesign = new Map(input.designs.map((design) => [design.module, design])),
 			modules = new Set(input.pages.map((page) => page.module));
-		if (byDesign.size !== input.designs.length || modules.size !== input.pages.length ||
-			input.pages.length !== byDesign.size || [...byDesign.keys()].some((module) => !modules.has(module)))
+		if (
+			byDesign.size !== input.designs.length ||
+			modules.size !== input.pages.length ||
+			input.pages.length !== byDesign.size ||
+			[...byDesign.keys()].some((module) => !modules.has(module))
+		)
 			throw new Error('Generated page set does not match its design references.');
 		for (const generated of input.pages) {
 			const design = byDesign.get(generated.module);
-			if (!design || design.reference.entityId !== generated.module || !validChoices(design.options) ||
-				generated.options.length !== 3 || design.options.length !== 3 ||
-				generated.options.some((option, index) => option.id !== design.options[index]?.id ||
-					option.direction !== design.options[index]?.direction || option.preferred !== design.options[index]?.preferred))
-				throw new Error(`Invalid page design reference or generated options for ${generated.module}.`);
+			if (
+				!design ||
+				design.reference.entityId !== generated.module ||
+				!validChoices(design.options) ||
+				generated.options.length !== 3 ||
+				design.options.length !== 3 ||
+				generated.options.some(
+					(option, index) =>
+						option.id !== design.options[index]?.id ||
+						option.direction !== design.options[index]?.direction ||
+						option.preferred !== design.options[index]?.preferred
+				)
+			)
+				throw new Error(
+					`Invalid page design reference or generated options for ${generated.module}.`
+				);
 		}
 		let current = input.sourceCommit;
 		if ((await this.dependencies.revision()) !== current)
@@ -201,7 +257,9 @@ export class FeaturePlanPreparationHostService {
 				});
 			if (!added.commit || (await this.dependencies.revision()) !== added.commit)
 				throw new Error(`Design commit for ${generated.module} is not the current branch tip.`);
-			const updated = (await this.dependencies.planning.plans(added.commit)).find((record) => record.id === generated.module);
+			const updated = (await this.dependencies.planning.plans(added.commit)).find(
+				(record) => record.id === generated.module
+			);
 			if (!updated || updated.versions.at(-1)?.version !== added.version)
 				throw new Error(`Committed design version could not be read for ${generated.module}.`);
 			pages.push(choicesFor(added, generated.options, updated, generated.module));
@@ -209,8 +267,8 @@ export class FeaturePlanPreparationHostService {
 		}
 		signal.throwIfAborted();
 		const data = await this.dependencies.data(current);
-		if (data.commit !== current) throw new Error('Final design metadata is not bound to the final commit.');
+		if (data.commit !== current)
+			throw new Error('Final design metadata is not bound to the final commit.');
 		return { sourceCommit: current, data, pages };
 	}
-
 }

@@ -1,6 +1,9 @@
 import { ProjectContextValidator } from '../projects-sessions/ProjectContextValidator';
 import { channels } from '../../models/development-tooling/DesktopBridge.types';
-import { creationProject, ipcPayload } from '../../utils/development-tooling/ipc-payload/ipcPayload';
+import {
+	creationProject,
+	ipcPayload
+} from '../../utils/development-tooling/ipc-payload/ipcPayload';
 import { commitPattern, ipcFields, textField } from '../../utils/development-tooling/ipcFields';
 import { gamePayload } from './gamePayload';
 import { planSchema } from '../../../../../src/repositories/agents-providers/module-task-repository/taskSchemas';
@@ -25,10 +28,17 @@ export class IpcRequestValidator {
 function featurePlanPayload(input: unknown): FeaturePlanPreparationRequest {
 	const fields = ipcFields(input),
 		allowed = ['projectId', 'sourceCommit', 'originalRequest', 'proposal', 'pageDesigns'];
-	if (Object.keys(fields).some((key) => !allowed.includes(key))) throw new Error('Invalid feature plan fields.');
+	if (Object.keys(fields).some((key) => !allowed.includes(key)))
+		throw new Error('Invalid feature plan fields.');
 	const sourceCommit = textField(fields.sourceCommit, 40, commitPattern),
-		proposal = planSchema.omit({ pages: true, revision: true, digest: true, approval: true }).parse(fields.proposal);
-	if (proposal.sourceCommit !== sourceCommit || !Array.isArray(fields.pageDesigns) || fields.pageDesigns.length > 10000)
+		proposal = planSchema
+			.omit({ pages: true, revision: true, digest: true, approval: true })
+			.parse(fields.proposal);
+	if (
+		proposal.sourceCommit !== sourceCommit ||
+		!Array.isArray(fields.pageDesigns) ||
+		fields.pageDesigns.length > 10000
+	)
 		throw new Error('Invalid feature plan revision or page references.');
 	return {
 		projectId: creationProject(fields.projectId),

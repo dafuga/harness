@@ -73,14 +73,22 @@ function fixture() {
 	const submit = vi
 		.spyOn(ModuleTaskServerService.prototype, 'submitApproved')
 		.mockResolvedValue({ created: ['feature.task'], reused: [], commit: undefined });
-	const runApproved = vi
-		.spyOn(ModuleTaskServerService.prototype, 'runApproved')
-		.mockResolvedValue({
-			submission: { created: ['feature.task'], reused: [], commit: undefined },
-			results: []
-		});
+	const runApproved = vi.spyOn(ModuleTaskServerService.prototype, 'runApproved').mockResolvedValue({
+		submission: { created: ['feature.task'], reused: [], commit: undefined },
+		results: []
+	});
 	const sampleResources = vi.fn(resourceSample(16 * 1024 ** 3));
-	return { context, project, writable, read, select, approve, submit, runApproved, sampleResources };
+	return {
+		context,
+		project,
+		writable,
+		read,
+		select,
+		approve,
+		submit,
+		runApproved,
+		sampleResources
+	};
 }
 afterEach(() => vi.restoreAllMocks());
 
@@ -119,18 +127,18 @@ test('featurePlanAction refuses a changed revision before selection or task admi
 	const f = fixture(),
 		changed = { ...f.project, revision: { ...f.project.revision, commit: 'c'.repeat(40) } };
 	f.writable.mockResolvedValueOnce(f.project).mockResolvedValueOnce(changed);
-	await expect(featurePlanAction(f.context, selection, f.writable, f.sampleResources)).rejects.toThrow(
-		'revision has changed'
-	);
+	await expect(
+		featurePlanAction(f.context, selection, f.writable, f.sampleResources)
+	).rejects.toThrow('revision has changed');
 	expect(f.select).not.toHaveBeenCalled();
 	expect(f.runApproved).not.toHaveBeenCalled();
 	f.writable
 		.mockResolvedValueOnce(f.project)
 		.mockResolvedValueOnce(f.project)
 		.mockResolvedValueOnce(changed);
-	await expect(featurePlanAction(f.context, approval, f.writable, f.sampleResources)).rejects.toThrow(
-		'revision has changed'
-	);
+	await expect(
+		featurePlanAction(f.context, approval, f.writable, f.sampleResources)
+	).rejects.toThrow('revision has changed');
 	expect(f.approve).toHaveBeenCalledOnce();
 	expect(f.submit).not.toHaveBeenCalled();
 	expect(f.runApproved).not.toHaveBeenCalled();
@@ -138,7 +146,9 @@ test('featurePlanAction refuses a changed revision before selection or task admi
 
 test('featurePlanAction propagates readiness and queue errors and submits only the approved digest', async () => {
 	const f = fixture();
-	const tasks = Array.from({ length: 4 }, (_, index) => ({ id: `task-${index}` })) as unknown as FeaturePlan['tasks'];
+	const tasks = Array.from({ length: 4 }, (_, index) => ({
+		id: `task-${index}`
+	})) as unknown as FeaturePlan['tasks'];
 	f.read.mockResolvedValue({ commit: undefined, plans: [{ ...plan, tasks }] });
 	f.approve.mockRejectedValueOnce(new Error('Not ready.'));
 	await expect(
@@ -151,12 +161,12 @@ test('featurePlanAction propagates readiness and queue errors and submits only t
 	f.sampleResources
 		.mockImplementationOnce(resourceSample(16 * 1024 ** 3, 'warning'))
 		.mockRejectedValueOnce(new Error('Resource probe unavailable.'));
-	await expect(featurePlanAction(f.context, approval, f.writable, f.sampleResources)).rejects.toThrow(
-		'Worker unavailable'
-	);
-	await expect(featurePlanAction(f.context, approval, f.writable, f.sampleResources)).rejects.toThrow(
-		'Worker unavailable'
-	);
+	await expect(
+		featurePlanAction(f.context, approval, f.writable, f.sampleResources)
+	).rejects.toThrow('Worker unavailable');
+	await expect(
+		featurePlanAction(f.context, approval, f.writable, f.sampleResources)
+	).rejects.toThrow('Worker unavailable');
 	await expect(
 		featurePlanAction(f.context, approval, f.writable, f.sampleResources)
 	).resolves.toMatchObject({ plan: approved, results: [] });
@@ -255,15 +265,15 @@ async function draftFixtureTask(root: string, module: string, sourceCommit: stri
 test('featurePlanAction approves and admits a committed fixture task without starting a provider', async () => {
 	const { f, module, sourceCommit } = await committedFixture();
 	const { task, draft } = await draftFixtureTask(f.root, module, sourceCommit);
-	const runApproved = vi.spyOn(ModuleTaskServerService.prototype, 'runApproved').mockImplementation(
-		async function (this: ModuleTaskServerService, input, _execution) {
+	const runApproved = vi
+		.spyOn(ModuleTaskServerService.prototype, 'runApproved')
+		.mockImplementation(async function (this: ModuleTaskServerService, input, _execution) {
 			const submission = await this.submitApproved(input);
 			return {
 				submission,
 				results: [{ status: 'review', task: task.id, result: { text: 'completed' } }]
 			};
-		}
-	);
+		});
 	const submitApproved = vi.spyOn(ModuleTaskServerService.prototype, 'submitApproved');
 	const context = { session: f.session } as unknown as BridgeContext;
 	const result = await featurePlanAction(

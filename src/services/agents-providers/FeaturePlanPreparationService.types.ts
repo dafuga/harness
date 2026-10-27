@@ -12,7 +12,9 @@ export type PreparationOption = {
 	revisedPrompt: string | null;
 	bytes: Uint8Array;
 };
-export type PreparationChoice = Pick<PreparationOption, 'id' | 'preferred' | 'direction'> & { instruction: string };
+export type PreparationChoice = Pick<PreparationOption, 'id' | 'preferred' | 'direction'> & {
+	instruction: string;
+};
 export type GeneratedPage = { module: string; options: PreparationOption[] };
 export type PreparationDesignReference = {
 	kind: 'current' | 'wanted';

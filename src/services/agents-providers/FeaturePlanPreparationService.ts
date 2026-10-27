@@ -13,7 +13,10 @@ const pageSchema = planSchema.shape.pages.element,
 	proposalSchema = planSchema.omit({ pages: true, revision: true, digest: true, approval: true });
 
 function assertReport(report: PreparationDiscovery) {
-	if (!report.valid || report.errors.length) throw new Error(`Feature preparation refused: ${report.errors.join('; ') || 'incomplete coverage'}`);
+	if (!report.valid || report.errors.length)
+		throw new Error(
+			`Feature preparation refused: ${report.errors.join('; ') || 'incomplete coverage'}`
+		);
 }
 function checkedPage(value: PreparationPage, module: string): PreparationPage {
 	const page = pageSchema.parse(value);
@@ -26,13 +29,28 @@ function checkedPage(value: PreparationPage, module: string): PreparationPage {
 		throw new Error(`Design choices for ${module} require distinct IDs and one preferred option.`);
 	return structuredClone(value);
 }
-function checkedGeneratedPage(value: GeneratedPage, module: string, choices: PreparationPageDesign['options']): GeneratedPage {
-	if (!value || value.module !== module || !Array.isArray(value.options) || value.options.length !== 3)
+function checkedGeneratedPage(
+	value: GeneratedPage,
+	module: string,
+	choices: PreparationPageDesign['options']
+): GeneratedPage {
+	if (
+		!value ||
+		value.module !== module ||
+		!Array.isArray(value.options) ||
+		value.options.length !== 3
+	)
 		throw new Error(`Incomplete generated choices for ${module}.`);
-	const complete = value.options.every((option) =>
-		option && nonempty(option.id) && typeof option.preferred === 'boolean' && nonempty(option.direction) &&
-		nonempty(option.prompt) && (option.revisedPrompt === null || typeof option.revisedPrompt === 'string') &&
-		option.bytes instanceof Uint8Array && option.bytes.byteLength > 0
+	const complete = value.options.every(
+		(option) =>
+			option &&
+			nonempty(option.id) &&
+			typeof option.preferred === 'boolean' &&
+			nonempty(option.direction) &&
+			nonempty(option.prompt) &&
+			(option.revisedPrompt === null || typeof option.revisedPrompt === 'string') &&
+			option.bytes instanceof Uint8Array &&
+			option.bytes.byteLength > 0
 	);
 	if (!complete)
 		throw new Error(`Generated choices for ${module} need complete prompts and image bytes.`);
@@ -41,15 +59,22 @@ function checkedGeneratedPage(value: GeneratedPage, module: string, choices: Pre
 		value.options.filter((option) => option.preferred).length !== 1 ||
 		value.options.some((option, index) => {
 			const expected = choices[index];
-			return !expected || option.id !== expected.id || option.preferred !== expected.preferred ||
-				option.direction !== expected.direction;
+			return (
+				!expected ||
+				option.id !== expected.id ||
+				option.preferred !== expected.preferred ||
+				option.direction !== expected.direction
+			);
 		})
 	)
-		throw new Error(`Generated choices for ${module} need distinct IDs, one preferred option and image bytes.`);
+		throw new Error(
+			`Generated choices for ${module} need distinct IDs, one preferred option and image bytes.`
+		);
 	return structuredClone(value);
 }
 const assertRevision = (sourceCommit: string, metadataCommit: string) => {
-	if (!isRevision(sourceCommit) || sourceCommit !== metadataCommit) throw new Error('Feature preparation requires matching committed source metadata.');
+	if (!isRevision(sourceCommit) || sourceCommit !== metadataCommit)
+		throw new Error('Feature preparation requires matching committed source metadata.');
 };
 function assertTaskGoals(proposal: FeaturePlanProposal) {
 	if (!proposal.tasks.length || proposal.tasks.some((task) => !task.moduleGoal?.trim()))
@@ -63,7 +88,8 @@ function checkedPageDesigns(
 ): Map<string, PreparationPageDesign> {
 	if (typeof originalRequest !== 'string' || !originalRequest.trim())
 		throw new Error('Feature preparation requires the original user request.');
-	if (!Array.isArray(pageDesigns)) throw new Error('Feature preparation requires page design references.');
+	if (!Array.isArray(pageDesigns))
+		throw new Error('Feature preparation requires page design references.');
 	const expected = new Set(modules),
 		checked = new Map<string, PreparationPageDesign>();
 	for (const page of pageDesigns) {
@@ -71,19 +97,26 @@ function checkedPageDesigns(
 			throw new Error('Invalid page design context.');
 		const { reference, region } = page;
 		if (
-			!expected.has(page.module) || checked.has(page.module) ||
-			!reference || typeof reference !== 'object' ||
+			!expected.has(page.module) ||
+			checked.has(page.module) ||
+			!reference ||
+			typeof reference !== 'object' ||
 			!['current', 'wanted'].includes(reference.kind) ||
 			reference.entityId !== page.module ||
 			!isRevision(reference.commit) ||
-			!nonempty(reference.version) || !nonempty(reference.state) || !nonempty(reference.viewport) ||
+			!nonempty(reference.version) ||
+			!nonempty(reference.state) ||
+			!nonempty(reference.viewport) ||
 			!safeReferenceFile(reference.file) ||
 			!/^[0-9a-f]{64}$/i.test(reference.sha256) ||
 			(reference.option !== undefined && !nonempty(reference.option))
 		)
 			throw new Error(`Invalid design reference for ${page.module}.`);
 		if (!validRegion(region)) throw new Error(`Invalid edit region for ${page.module}.`);
-		if (!validChoices(page.options)) throw new Error(`Each page needs three distinct design options and one preferred choice: ${page.module}.`);
+		if (!validChoices(page.options))
+			throw new Error(
+				`Each page needs three distinct design options and one preferred choice: ${page.module}.`
+			);
 		checked.set(page.module, structuredClone(page));
 	}
 	const missing = modules.filter((module) => !checked.has(module));
@@ -91,20 +124,42 @@ function checkedPageDesigns(
 	return checked;
 }
 
-const isRevision = (value: unknown): value is string => typeof value === 'string' && /^(?:[0-9a-f]{40}|[0-9a-f]{64})$/i.test(value);
-const nonempty = (value: unknown): value is string => typeof value === 'string' && Boolean(value.trim());
-const safeReferenceFile = (value: unknown): value is string => nonempty(value) && !value.startsWith('/') && !value.split(/[\\/]/).includes('..');
+const isRevision = (value: unknown): value is string =>
+	typeof value === 'string' && /^(?:[0-9a-f]{40}|[0-9a-f]{64})$/i.test(value);
+const nonempty = (value: unknown): value is string =>
+	typeof value === 'string' && Boolean(value.trim());
+const safeReferenceFile = (value: unknown): value is string =>
+	nonempty(value) && !value.startsWith('/') && !value.split(/[\\/]/).includes('..');
 function validChoices(value: unknown): value is PreparationPageDesign['options'] {
-	return Array.isArray(value) && value.length === 3 && value.every((choice) => choice && nonempty(choice.id) &&
-		typeof choice.preferred === 'boolean' && nonempty(choice.direction) && nonempty(choice.instruction)) &&
-		new Set(value.map((choice) => choice.id)).size === 3 && value.filter((choice) => choice.preferred).length === 1;
+	return (
+		Array.isArray(value) &&
+		value.length === 3 &&
+		value.every(
+			(choice) =>
+				choice &&
+				nonempty(choice.id) &&
+				typeof choice.preferred === 'boolean' &&
+				nonempty(choice.direction) &&
+				nonempty(choice.instruction)
+		) &&
+		new Set(value.map((choice) => choice.id)).size === 3 &&
+		value.filter((choice) => choice.preferred).length === 1
+	);
 }
 
 function validRegion(value: unknown): value is PreparationPageDesign['region'] {
 	if (value === null) return true;
 	if (!value || typeof value !== 'object') return false;
 	const { x, y, width, height } = value as NonNullable<PreparationPageDesign['region']>;
-	return [x, y, width, height].every(Number.isFinite) && x >= 0 && y >= 0 && width > 0 && height > 0 && x + width <= 1 && y + height <= 1;
+	return (
+		[x, y, width, height].every(Number.isFinite) &&
+		x >= 0 &&
+		y >= 0 &&
+		width > 0 &&
+		height > 0 &&
+		x + width <= 1 &&
+		y + height <= 1
+	);
 }
 
 function imagePrompt(input: {
@@ -142,11 +197,20 @@ export class FeaturePlanPreparationService {
 		signal.throwIfAborted();
 		const modules = [...new Set(discovery.affectedPages)].sort();
 		for (const module of modules) pageSchema.shape.module.parse(module);
-		const missingPageTasks = modules.filter((module) => !proposal.tasks.some((task) => task.module === module));
-		if (missingPageTasks.length) throw new Error(`Affected pages need page-level tasks: ${missingPageTasks.join(', ')}.`);
+		const missingPageTasks = modules.filter(
+			(module) => !proposal.tasks.some((task) => task.module === module)
+		);
+		if (missingPageTasks.length)
+			throw new Error(`Affected pages need page-level tasks: ${missingPageTasks.join(', ')}.`);
 		const originalRequest = input.originalRequest,
 			pageDesigns = checkedPageDesigns(input.pageDesigns, modules, originalRequest);
-		const generated = await this.preparePages(modules, proposal, originalRequest, pageDesigns, signal);
+		const generated = await this.preparePages(
+			modules,
+			proposal,
+			originalRequest,
+			pageDesigns,
+			signal
+		);
 		const finalized = await deps.finalize(
 			{
 				sourceCommit: proposal.sourceCommit,
