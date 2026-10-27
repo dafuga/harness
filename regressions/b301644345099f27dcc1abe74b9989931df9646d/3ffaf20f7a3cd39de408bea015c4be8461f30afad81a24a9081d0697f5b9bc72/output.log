@@ -1,0 +1,31 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-gQ6o7V
+
+ ❯ test/repositories/explanation-notes-order.test.ts (4 tests | 1 failed | 3 skipped) 1512ms
+   × notes alone hold the latest recorded reason for an exact change, wherever each is noted 1469ms
+     → a note payload batch must contain at most 64 blobs: expected 130 to be less than or equal to 64
+   ↓ a step of a chain noted again is held by its latest reason, wherever each is noted
+   ↓ a later long reason in the notes still fails, however the notes list it
+   ↓ a date that cannot be read is never later than one that can; equal ones agree everywhere
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/repositories/explanation-notes-order.test.ts > notes alone hold the latest recorded reason for an exact change, wherever each is noted
+AssertionError: a note payload batch must contain at most 64 blobs: expected 130 to be less than or equal to 64
+ ❯ assertHistoryNoteBatches test/support/historyNoteBatchCases.ts:51:5
+     49|    Math.max(...batches),
+     50|    'a note payload batch must contain at most 64 blobs'
+     51|   ).toBeLessThanOrEqual(64);
+       |     ^
+     52|  } finally {
+     53|   calls.mockRestore();
+ ❯ test/repositories/explanation-notes-order.test.ts:102:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  01:37:10
+   Duration  4.11s (transform 103ms, setup 105ms, collect 55ms, tests 1.51s, environment 0ms, prepare 24ms)
+
