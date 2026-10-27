@@ -4,7 +4,7 @@
 	"kind": "model",
 	"title": "PlanningView",
 	"responsibility": "Owns the PlanningView data model.",
-	"responsibilityOrigin": "derived",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -27,9 +27,15 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "ImageContent",
+				"type": "{unitId:string,version:string,file:string,state:string,viewport:PlanViewport,sha256:Sha256,width:number,height:number,mediaType:'image/png',bytes:Uint8Array,option?:string,commit:CommitId}",
+				"description": "An immutable image read from a commit and checked against its recorded hash. option identifies the containing design choice when present; commit identifies the commit that added the version."
+			}
+		],
 		"errors": []
 	},
 	"dependencies": [
