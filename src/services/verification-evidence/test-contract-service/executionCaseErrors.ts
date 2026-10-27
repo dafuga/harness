@@ -133,8 +133,7 @@ function duplicateVisuals(counts: Map<string, number>): string[] {
 
 function boundCapture(image: z.infer<typeof capture>, context: ReturnType<typeof visualContext>) {
 	const note = captureNote(image.note);
-	if (note?.revision !== context.run.revision || note.sha256 !== image.sha256)
-		return undefined;
+	if (note?.revision !== context.run.revision || note.sha256 !== image.sha256) return undefined;
 	const matches = context.cases.filter((item) => item.unit === note.unit && item.id === note.case);
 	const item = matches.length === 1 ? matches[0] : undefined;
 	if (!item || !image.viewport || !caseSlotMatches(image, item, context)) return undefined;
