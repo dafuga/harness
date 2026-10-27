@@ -2,7 +2,7 @@
 	"name": "design-prompt-provenance",
 	"goal": "Preserve entity provenance and requested-area boundaries in reference-aware image prompts.",
 	"createdAt": "2026-10-27T09:35:57.013Z",
-	"updatedAt": "2026-10-27T09:36:19.983Z",
+	"updatedAt": "2026-10-27T09:41:04.005Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:40:45.586Z",
+			"evidence": "96661189902156d2a824a763085b181e6fe9289b1bf4957044aa71d866403171: the committed test at 618ffe5597 fails specifically on Entity: Target after both SvelteKit configs are generated in the clean snapshot."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:40:46.187Z",
+			"evidence": "Restore the Entity: title label and retain the original user request and reference-scoping instructions. The existing provenance case and design-reference matrix remain the guard."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T09:41:04.005Z",
+			"evidence": "Restored the explicit Entity label without changing reference preservation, edit-area or authoritative-request instructions. The existing committed provenance and scoped-reference tests remain the guard."
 		},
 		{
 			"id": "green",

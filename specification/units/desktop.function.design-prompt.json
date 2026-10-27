@@ -36,7 +36,7 @@
 			{
 				"name": "designPrompt",
 				"type": "string",
-				"description": "Instructs the image generator to change only the selected thread region or the area described by the user, preserving all unrequested areas of an attached reference, including framing, content and styling. Explicit whole-page requests remain possible. If no reference is attached, it states that limitation and does not claim to preserve unseen pixels. User proposal text is included unchanged. These are instructions, not a pixel-level enforcement guarantee. Includes the original user request separately from the planning proposal so the requested edit scope cannot be lost in summarization."
+				"description": "Instructs the image generator to change only the selected thread region or the area described by the user, preserving all unrequested areas of an attached reference, including framing, content and styling. Explicit whole-page requests remain possible. If no reference is attached, it states that limitation and does not claim to preserve unseen pixels. User proposal text is included unchanged. These are instructions, not a pixel-level enforcement guarantee. Includes the original user request separately from the planning proposal so the requested edit scope cannot be lost in summarization. Retains the Entity: title label in the prompt for provenance."
 			}
 		],
 		"errors": []

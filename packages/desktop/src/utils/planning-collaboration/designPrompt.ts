@@ -14,7 +14,7 @@ export function designPrompt(
 		? 'Use the attached reference as the starting point. Change only the requested area. Preserve everything outside the requested area exactly as shown, including layout, text, colors, typography, navigation, images, and other controls. Keep the full framing and dimensions; do not restyle, move, crop, or replace unrelated parts.'
 		: 'No reference image is available. Follow the request and supplied context without inventing an existing page to preserve.';
 	return [
-		`Create a realistic product design for ${context.entity.title}. State: ${thread?.state ?? 'default'}. Viewport: ${thread?.viewport ?? 'desktop'}.`,
+		`Create a realistic product design. Entity: ${context.entity.title}. State: ${thread?.state ?? 'default'}. Viewport: ${thread?.viewport ?? 'desktop'}.`,
 		reference,
 		location,
 		'If the user explicitly requests a whole-page redesign, the whole page is the requested area.',
