@@ -2,11 +2,9 @@
 	"name": "reviewed-screenshot-baselines",
 	"goal": "Store explicitly reviewed screenshots in Git evidence and retrieve only their verified original bytes.",
 	"createdAt": "2026-10-27T02:30:06.434Z",
-	"updatedAt": "2026-10-27T02:30:59.889Z",
+	"updatedAt": "2026-10-27T02:49:11.509Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -19,17 +17,28 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T02:48:19.655Z",
+			"evidence": "The explicit review and read commands validate committed case, capture, build, viewport and original PNG bytes; the source outcome remains unchanged."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T02:48:20.214Z",
+			"evidence": "Focused capture 74c2473287fd27cb58332e758732695d1a6e11894e1ea3074ca1f9bd24574d52 passed 29 class, ledger, contract and guidance cases, including six newly declared class cases, at 3df0052df1; registry, typecheck and audit passed."
 		},
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
 			"status": "pending"
+		},
+		{
+			"id": "source-measurements",
+			"title": "Record source measures at the tested tree.",
+			"status": "complete",
+			"completedAt": "2026-10-27T02:49:11.509Z",
+			"evidence": "At 3df0052df1, source bytes/lines/complexity/dependencies: baseline service 17502/454/104/11; history command 7626/168/16/8; history guide 9079/151/0/1; entry 14626/217/6/143. These module units emit no separate artifacts."
 		}
 	],
 	"evaluators": [
