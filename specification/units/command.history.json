@@ -3,7 +3,7 @@
 	"id": "command.history",
 	"kind": "command",
 	"title": "HistoryCommand",
-	"responsibility": "Registers the history commands: attach, reasons, status, fetch, push, sync, build and import-reports.",
+	"responsibility": "Registers Git history, evidence synchronization, index building and explicit screenshot review commands.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -27,6 +27,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "service.verification-evidence-screenshot-baseline",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "workflow.build-history",
 			"via": "import",

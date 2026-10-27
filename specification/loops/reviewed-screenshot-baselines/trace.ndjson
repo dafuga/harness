@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-27T02:30:06.434Z","name":"reviewed-screenshot-baselines","goal":"Store explicitly reviewed screenshots in Git evidence and retrieve only their verified original bytes.","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-10-27T02:30:59.889Z","loop":"reviewed-screenshot-baselines","step":"spec","evidence":"Explicit review must bind an intact committed verification, case, viewport, served build and original PNG hash; retrieval must refuse missing, changed or mismatched evidence."}

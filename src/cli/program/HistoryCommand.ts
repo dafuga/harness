@@ -1,5 +1,11 @@
 import type { Flags } from './HistoryCommand.types';
 import type { Command } from 'commander';
+import { writeFile } from 'node:fs/promises';
+import {
+	ScreenshotBaselineService,
+	type ScreenshotBaselineRequest,
+	type ScreenshotReviewInput
+} from '../../services/verification-evidence/ScreenshotBaselineService';
 import { buildHistory, renderBuild, type BuildOptions } from './buildHistory';
 import { importReports, renderImport, type ImportOptions } from './importReports';
 import { persistReasons, renderReasons } from './persistReasons';
@@ -21,7 +27,55 @@ export function registerHistoryCommand(program: Command): Command {
 	registerRecords(history);
 	registerSync(history);
 	registerOutputs(history);
+	registerScreenshots(history);
 	return history;
+}
+
+/** Screenshot reviews are explicit; reading never replaces an existing file. */
+function registerScreenshots(history: Command): void {
+	const screenshot = history.command('screenshot').description('Review and read captured pixels.');
+	screenshot
+		.command('review')
+		.requiredOption('--commit <hash>', 'Full tested source commit.')
+		.requiredOption('--record <id>', 'Attached verification record id.')
+		.requiredOption('--unit <id>', 'Visual unit id.')
+		.requiredOption('--case <id>', 'Declared visual case id.')
+		.requiredOption('--scenario <id>', 'Scenario that produced the capture.')
+		.requiredOption('--evidence <id>', 'Declared screenshot evidence id.')
+		.requiredOption('--viewport <id>', 'Declared viewport id.')
+		.requiredOption('--reviewer <name>', 'Person who inspected the original image.')
+		.requiredOption('--reason <text>', 'Why this image is the expected baseline.')
+		.option('--json', 'Print structured results.')
+		.description('Retain an explicit review of an intact screenshot in Git evidence.')
+		.action(async ({ json, ...input }: ScreenshotReviewInput & { json?: boolean }) => {
+			const review = await new ScreenshotBaselineService(process.cwd()).review(input);
+			print({ json }, review, `Screenshot review ${review.id} retained.`);
+		});
+	screenshot
+		.command('read')
+		.requiredOption('--id <hash>', 'Screenshot review id.')
+		.requiredOption('--unit <id>', 'Visual unit id.')
+		.requiredOption('--case <id>', 'Declared visual case id.')
+		.requiredOption('--viewport <id>', 'Declared viewport id.')
+		.requiredOption('--file <path>', 'Authored screenshot file for this case.')
+		.requiredOption('--out <path>', 'New file to receive the original PNG bytes.')
+		.option('--json', 'Print structured results.')
+		.description('Read reviewed original pixels without overwriting an existing file.')
+		.action(
+			async ({
+				json,
+				out,
+				...input
+			}: ScreenshotBaselineRequest & { json?: boolean; out: string }) => {
+				const baseline = await new ScreenshotBaselineService(process.cwd()).load(input);
+				await writeFile(out, baseline.bytes, { flag: 'wx' });
+				print(
+					{ json },
+					{ id: baseline.review.id, sha256: baseline.review.sha256, out },
+					`Wrote ${out}.`
+				);
+			}
+		);
 }
 
 /** Commands that write or read what is attached to a commit. */

@@ -1,0 +1,269 @@
+{
+	"schemaVersion": 1,
+	"id": "service.verification-evidence-screenshot-baseline",
+	"kind": "service",
+	"title": "ScreenshotBaselineService",
+	"responsibility": "Stores explicit screenshot reviews and retrieves their intact revision-bound pixels.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/verification-evidence/ScreenshotBaselineService.ts",
+			"src/services/verification-evidence/screenshot-baseline-service/ScreenshotBaselineService.ts",
+			"src/services/verification-evidence/screenshot-baseline-service/ScreenshotBaselineService.types.ts",
+			"src/services/verification-evidence/screenshot-baseline-service/baselineSchemas.ts",
+			"src/services/verification-evidence/screenshot-baseline-service/screenshotCandidate.ts",
+			"src/services/verification-evidence/screenshot-baseline-service/screenshotContract.ts",
+			"src/services/verification-evidence/screenshot-baseline-service/selectScreenshot.ts"
+		],
+		"symbols": [
+			"ScreenshotBaselineService",
+			"ScreenshotBaseline",
+			"ScreenshotBaselineRequest",
+			"ScreenshotReview",
+			"ScreenshotReviewInput",
+			"ScreenshotBaselineService",
+			"ScreenshotBaselineService.constructor",
+			"ScreenshotBaselineService.review",
+			"ScreenshotBaselineService.load",
+			"ScreenshotBaseline",
+			"ScreenshotBaselineRequest",
+			"ScreenshotReview",
+			"ScreenshotReviewInput",
+			"ScreenshotReviewInput",
+			"ScreenshotReviewBody",
+			"ScreenshotReview",
+			"ScreenshotBaselineRequest",
+			"ScreenshotBaseline",
+			"ScreenshotContract",
+			"ScreenshotCandidate",
+			"screenshotReviewInputSchema",
+			"screenshotBaselineRequestSchema",
+			"screenshotReviewBodySchema",
+			"screenshotReviewSchema",
+			"screenshotCandidate",
+			"screenshotContract",
+			"selectScreenshot"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ScreenshotBaselineService.constructor.root",
+				"type": "string",
+				"description": "Git repository containing the tested source, notes and evidence."
+			},
+			{
+				"name": "ScreenshotBaselineService.review.input",
+				"type": "ScreenshotReviewInput",
+				"description": "Explicit reviewer and reason plus the source revision, verification record, unit, case, scenario, evidence and viewport to inspect."
+			},
+			{
+				"name": "ScreenshotBaselineService.load.input",
+				"type": "ScreenshotBaselineRequest",
+				"description": "Review id and the exact unit, case, viewport and expected screenshot file requested by a test."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ScreenshotBaselineService.review",
+				"type": "Promise<ScreenshotReview>",
+				"description": "Stores a content-addressed review in Git evidence after validating the original captured PNG, case, record and served build. Retains the source run and case outcomes."
+			},
+			{
+				"name": "ScreenshotBaselineService.load",
+				"type": "Promise<ScreenshotBaseline>",
+				"description": "Returns the review and original PNG bytes only after revalidating its identity, requested slot and source evidence."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Missing, ambiguous, damaged or mismatched source evidence and reviews are refused."
+			},
+			{
+				"name": "ZodError",
+				"type": "thrown",
+				"description": "Malformed review or lookup input is rejected."
+			},
+			{
+				"name": "Error",
+				"type": "thrown",
+				"description": "Filesystem, Git and parsing failures propagate."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.canonical-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.media-facts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verification-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.evidence-branch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.history-note",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.history-status",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/ScreenshotBaselineService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/ScreenshotBaselineService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["empty", "reviewed", "damaged"],
+		"cases": [
+			{
+				"id": "review.empty",
+				"state": "empty",
+				"subject": "ScreenshotBaselineService.review",
+				"test": {
+					"file": "test/services/verification-evidence/screenshot-baseline.test.ts",
+					"title": "ScreenshotBaselineService.review from empty accepts a reviewed candidate"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"recordStatus": "failed",
+						"caseStatus": "failed",
+						"captureStatus": "failed",
+						"file": "test/baselines/desktop.png"
+					}
+				}
+			},
+			{
+				"id": "review.reviewed",
+				"state": "reviewed",
+				"subject": "ScreenshotBaselineService.review",
+				"test": {
+					"file": "test/services/verification-evidence/screenshot-baseline.test.ts",
+					"title": "ScreenshotBaselineService.review after review validates each new request"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"reason": "A second explicit inspection."
+					}
+				},
+				"errors": ["ZodError", "ExpectedCliError"]
+			},
+			{
+				"id": "review.damaged",
+				"state": "damaged",
+				"subject": "ScreenshotBaselineService.review",
+				"test": {
+					"file": "test/services/verification-evidence/screenshot-baseline.test.ts",
+					"title": "ScreenshotBaselineService.review rejects damaged source evidence"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "The source snapshot and registry must both have passed."
+					}
+				},
+				"errors": ["ExpectedCliError", "Error"]
+			},
+			{
+				"id": "load.empty",
+				"state": "empty",
+				"subject": "ScreenshotBaselineService.load",
+				"test": {
+					"file": "test/services/verification-evidence/screenshot-baseline.test.ts",
+					"title": "ScreenshotBaselineService.load from empty refuses a missing review"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError",
+						"message": "The screenshot review is missing from Git evidence."
+					}
+				},
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "load.reviewed",
+				"state": "reviewed",
+				"subject": "ScreenshotBaselineService.load",
+				"test": {
+					"file": "test/services/verification-evidence/screenshot-baseline.test.ts",
+					"title": "ScreenshotBaselineService.load from reviewed returns the original bytes"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"reviewMatches": true,
+						"originalBytes": true
+					}
+				},
+				"errors": ["ExpectedCliError"]
+			},
+			{
+				"id": "load.damaged",
+				"state": "damaged",
+				"subject": "ScreenshotBaselineService.load",
+				"test": {
+					"file": "test/services/verification-evidence/screenshot-baseline.test.ts",
+					"title": "ScreenshotBaselineService.load rejects damaged original evidence"
+				},
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "ExpectedCliError"
+					}
+				},
+				"errors": ["ExpectedCliError"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
