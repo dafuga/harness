@@ -2,7 +2,7 @@
 	"name": "analytics-cjs-build",
 	"goal": "Keep analytics persistence available to Bun while its desktop CommonJS bundle passes the existing Node syntax check.",
 	"createdAt": "2026-10-27T10:19:53.937Z",
-	"updatedAt": "2026-10-27T10:30:17.180Z",
+	"updatedAt": "2026-10-27T10:32:27.540Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,11 +39,18 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T10:32:26.901Z",
+			"evidence": "The same clean-snapshot test passed at 32e0552b under the identical guarded environment; red record 0cd22d9358f20d061de36b7cb11842ef1330a6c75394e70baa44446dba5b1765 and green record a75ae2ccb92a8302183f93b62256f8f0ee8184b3fb08177bf3748ce9001bad87."
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		},
+		{
+			"id": "mutation",
+			"title": "Prove both original loader failures remain detectable.",
 			"status": "pending"
 		}
 	],
