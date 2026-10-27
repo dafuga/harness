@@ -398,6 +398,7 @@ Use exactly these five forms. Each draws its cases from the entity's declared co
 - Matrices include boundaries, invalid inputs and prop combinations that change behavior. Static types and configuration use compiler, lint, build and audit checks.
 - Generated app pipelines keep compiler, lint and audit checks before browser screenshot gates. When adding a mandatory gate, strengthen the existing generator-order and real CLI static-violation cases.
 - When generating or changing a test runner, verify its reporter records declared files, titles and revisions for passed, failed, skipped and retried cases in the existing generator cases. Also exercise the real runner on the designated test host.
+- Keep one Playwright reporter declaration with both Harness and JSON reporters when a fixture needs both. Check the existing generator case and the actual JSON output on the designated test host.
 - When generating visual scenarios, verify in the existing generator case that the declared build is stamped and the test owns its preview server. Check the generated build identity before browser capture.
 - Before accepting a test migration, run the compiler and structure audit for the root and every affected workspace. Check companion type files and Svelte source explicitly; an ignored-file lint warning is not Svelte verification.
 - Unsupported or missing coverage fails explicitly: a unit without its declared states, examples, methods or matrix rows is a reported gap. Never skip the case or cover it with another form.
