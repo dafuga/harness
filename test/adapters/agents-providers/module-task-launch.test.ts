@@ -4,14 +4,22 @@ import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
 import { ModuleTaskProviderConfigAdapter } from '../../../src/adapters/agents-providers/ModuleTaskProviderConfigAdapter';
 import { ModuleTaskLaunchAdapter } from '../../../src/adapters/agents-providers/ModuleTaskLaunchAdapter';
+import { ModuleTaskSandboxAdapter } from '../../../src/adapters/agents-providers/ModuleTaskSandboxAdapter';
+import { runChild } from './module-task-sandbox.test.fixtures';
+import { measureWorkload } from '../../support/measureWorkload';
 
 import type { SandboxRequest, SandboxProcess } from './module-task-launch.test.types';
 
 async function seedProviderFiles(bin: string, rules: string, files: string[]) {
-	await Promise.all([bin, rules].map((directory) => fs.mkdir(directory, { recursive: true })));
+	const providerDirectory = join(bin, '..', 'provider');
+	await Promise.all(
+		[bin, rules, providerDirectory].map((directory) => fs.mkdir(directory, { recursive: true }))
+	);
 	const fakeCodex = join(bin, 'codex');
-	await fs.writeFile(fakeCodex, '#!/bin/sh\nexit 0\n');
-	await fs.chmod(fakeCodex, 0o755);
+	const provider = join(providerDirectory, 'codex-real');
+	await fs.writeFile(provider, '#!/bin/sh\nexit 0\n');
+	await fs.chmod(provider, 0o755);
+	await fs.symlink(provider, fakeCodex);
 	await Promise.all(files.map((file) => fs.writeFile(file, 'synthetic placeholder')));
 }
 async function launchFixture(root: string) {
@@ -25,7 +33,7 @@ async function launchFixture(root: string) {
 	const ignored = join(rules, 'sibling.mdc'),
 		foreign = join(rules, 'foreign.json');
 	await seedProviderFiles(bin, rules, [auth, config, approved, review, ignored, foreign]);
-	process.env.PATH = bin;
+	process.env.PATH = `${bin}:/usr/bin:/bin`;
 	process.env.CODEX_HOME = codexHome;
 	const cwd = join(root, 'worktree'),
 		scratch = join(root, 'scratch'),
@@ -82,7 +90,7 @@ async function assertLaunchScope(
 	expect(prepared.exactReadDirectories).toEqual([await fs.realpath(rules)]);
 	expect(prepared.readPaths).not.toContain(await fs.realpath(ignored));
 	expect(prepared.readPaths).not.toContain(await fs.realpath(foreign));
-	expect(prepared.argv).toEqual(argv);
+	expect(prepared.argv).toEqual([await fs.realpath(join(f.bin, 'codex')), ...argv.slice(1)]);
 	expect(prepared).toMatchObject({
 		files: scope.files,
 		snapshot: scope.snapshot,
@@ -122,6 +130,7 @@ async function verifyCodexLaunch(f: Awaited<ReturnType<typeof launchFixture>>) {
 	};
 	const argv = ['codex', 'exec', '--model', 'gpt-6-luna'];
 	await assertLaunchQualification(argv, input);
+	if (process.platform === 'darwin') await assertNativeProviderLaunch(f, argv);
 	const qualification = vi.fn(async () => {});
 	const result = await new ModuleTaskLaunchAdapter({ qualification }).run(
 		argv,
@@ -140,19 +149,56 @@ async function verifyCodexLaunch(f: Awaited<ReturnType<typeof launchFixture>>) {
 	expect(wrapper.cleanup).toHaveBeenCalledOnce();
 }
 
-test('Codex launch passes only synthetic rules grants with the assigned scope', async () => {
-	const root = await fs.mkdtemp(join(tmpdir(), 'harness-provider-launch-'));
-	const previous = { PATH: process.env.PATH, CODEX_HOME: process.env.CODEX_HOME };
-	try {
-		await verifyCodexLaunch(await launchFixture(root));
-	} finally {
-		if (previous.PATH === undefined) delete process.env.PATH;
-		else process.env.PATH = previous.PATH;
-		if (previous.CODEX_HOME === undefined) delete process.env.CODEX_HOME;
-		else process.env.CODEX_HOME = previous.CODEX_HOME;
-		await fs.rm(root, { recursive: true, force: true });
-	}
-});
+async function assertNativeProviderLaunch(
+	f: Awaited<ReturnType<typeof launchFixture>>,
+	argv: string[]
+) {
+	const link = join(f.bin, 'codex');
+	const target = await fs.realpath(link);
+	const execute = (command: string[], input: { cwd: string; env?: NodeJS.ProcessEnv }) =>
+		runChild({
+			command: command[0],
+			args: command.slice(1),
+			cwd: input.cwd,
+			env: input.env ?? {},
+			cleanup: async () => undefined
+		});
+	const launch = () =>
+		new ModuleTaskLaunchAdapter({ qualification: async () => undefined }).run(
+			argv,
+			f.input,
+			execute,
+			new ModuleTaskSandboxAdapter()
+		);
+	await fs.unlink(link);
+	await fs.copyFile(target, link);
+	await fs.chmod(link, 0o755);
+	const direct = await launch();
+	expect(direct.code, 'synthetic direct provider should launch in the sandbox').toBe(0);
+	await fs.unlink(link);
+	await fs.symlink(target, link);
+	const symlink = await launch();
+	expect(symlink.code, 'synthetic symlink provider should launch in the sandbox').toBe(0);
+}
+
+test('Codex launch passes only synthetic rules grants with the assigned scope', async () =>
+	measureWorkload(
+		'adapter.agents-providers-module-task-launch',
+		'synthetic-provider-launch',
+		async () => {
+			const root = await fs.mkdtemp(join(tmpdir(), 'harness-provider-launch-'));
+			const previous = { PATH: process.env.PATH, CODEX_HOME: process.env.CODEX_HOME };
+			try {
+				await verifyCodexLaunch(await launchFixture(root));
+			} finally {
+				if (previous.PATH === undefined) delete process.env.PATH;
+				else process.env.PATH = previous.PATH;
+				if (previous.CODEX_HOME === undefined) delete process.env.CODEX_HOME;
+				else process.env.CODEX_HOME = previous.CODEX_HOME;
+				await fs.rm(root, { recursive: true, force: true });
+			}
+		}
+	));
 
 test('ModuleTaskLaunchAdapter connects', () => {
 	expect(new ModuleTaskLaunchAdapter()).toBeInstanceOf(ModuleTaskLaunchAdapter);
