@@ -9,7 +9,12 @@ import { stableJson } from '../../../utils/development-tooling/stableJson';
 import { appVisualViewports } from './appContractTests';
 
 /** Register generated page and layout state screenshots under their source-derived identity. */
-export function pageContractFiles(name: string, source: string, workspace: string): PlannedFile[] {
+export function pageContractFiles(
+	name: string,
+	source: string,
+	workspace: string,
+	location: { root: string; build: string } = { root: '.', build: 'app' }
+): PlannedFile[] {
 	const identity = unitIdentity(source, workspace);
 	if (identity?.kind !== 'page' && identity?.kind !== 'layout')
 		throw new Error(`Invalid page or layout source: ${source}`);
@@ -18,7 +23,9 @@ export function pageContractFiles(name: string, source: string, workspace: strin
 	const title = `/${route}`;
 	const scenario = identity.id.replace('.', '-');
 	const states = kind === 'page' ? ['default', 'error-state'] : ['default'];
-	const cases = pageCases(route, kind, states);
+	const prefix = `${location.root}/`.replace(/^\.\//, '');
+	const entry = `${prefix}${source}`;
+	const cases = pageCases(route, kind, states, prefix);
 	const unit: ComponentManifest = {
 		schemaVersion: 1,
 		id: identity.id,
@@ -27,10 +34,10 @@ export function pageContractFiles(name: string, source: string, workspace: strin
 		responsibility: `Owns the ${title} route ${kind === 'page' ? 'page' : 'layout'}.`,
 		responsibilityOrigin: 'derived',
 		status: 'active',
-		owns: { source: [source], symbols: [kind === 'page' ? '+page' : '+layout'] },
+		owns: { source: [entry], symbols: [kind === 'page' ? '+page' : '+layout'] },
 		contract: { origin: 'derived', inputs: [], outputs: [], errors: [] },
 		dependencies: [],
-		runtime: { kind: 'module', entry: source, targets: [{ kind: 'module', entry: source }] },
+		runtime: { kind: 'module', entry, targets: [{ kind: 'module', entry }] },
 		scenarios: [scenario],
 		testing: {
 			version: 1,
@@ -45,7 +52,7 @@ export function pageContractFiles(name: string, source: string, workspace: strin
 		{ path: `specification/units/${identity.id}.json`, contents: stableJson(unit) },
 		{
 			path: `specification/scenarios/${scenario}.json`,
-			contents: stableJson(pageScenario(unit, route))
+			contents: stableJson(pageScenario(unit, route, location))
 		}
 	];
 }
@@ -53,7 +60,8 @@ export function pageContractFiles(name: string, source: string, workspace: strin
 function pageCases(
 	route: string,
 	kind: 'page' | 'layout',
-	states: string[]
+	states: string[],
+	prefix: string
 ): NonNullable<ComponentManifest['testing']>['cases'] {
 	const suite = kind === 'page' ? `${route} view route is generated` : `${route} layout frame`;
 	return appVisualViewports.flatMap(({ id: viewport }) =>
@@ -66,12 +74,12 @@ function pageCases(
 				props: Object.keys(input),
 				viewports: [viewport],
 				test: {
-					file: `tests/e2e/${route}-${kind}.spec.ts`,
+					file: `${prefix}tests/e2e/${route}-${kind}.spec.ts`,
 					title: `${suite} > ${viewport} viewport > ${state}`
 				},
 				expected: {
 					kind: 'screenshot' as const,
-					file: `.cache/harness/visual-baselines/${route}-${kind}.spec.ts/${route}-${kind}-${state === 'error-state' ? 'error' : state}-${viewport}.png`
+					file: `${prefix}.cache/harness/visual-baselines/${route}-${kind}.spec.ts/${route}-${kind}-${state === 'error-state' ? 'error' : state}-${viewport}.png`
 				}
 			};
 		})
@@ -83,7 +91,11 @@ function pageInput(kind: 'page' | 'layout', state: string): Record<string, strin
 	return state === 'default' ? {} : { error: 'Preview error' };
 }
 
-function pageScenario(unit: ComponentManifest, route: string): ScenarioManifest {
+function pageScenario(
+	unit: ComponentManifest,
+	route: string,
+	location: { root: string; build: string }
+): ScenarioManifest {
 	const states = unit.testing!.states!;
 	return {
 		schemaVersion: 1,
@@ -99,6 +111,7 @@ function pageScenario(unit: ComponentManifest, route: string): ScenarioManifest 
 				kind: 'e2e',
 				runner: 'playwright',
 				target: `tests/e2e/${route}-${unit.kind}.spec.ts`,
+				...(location.root === '.' ? {} : { cwd: location.root }),
 				cases: unit.testing!.cases.map(({ id }) => ({ unit: unit.id, case: id }))
 			}
 		],
@@ -109,7 +122,7 @@ function pageScenario(unit: ComponentManifest, route: string): ScenarioManifest 
 				states,
 				viewports: appVisualViewports.map(({ id }) => id),
 				provenance: 'actual-capture',
-				build: 'app',
+				build: location.build,
 				capture: 'full-page',
 				required: true
 			}

@@ -1,7 +1,7 @@
 import type { GenerateModelInput, GenerateResult, GeneratePieceInput } from './generateCode.types';
 import { applyExports } from './exports';
-import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync } from 'node:fs';
+import { join, relative } from 'node:path';
 import type { ExportPlan } from '../../../core/projects-sessions/exports';
 import { fail } from '../../../core/development-tooling/errors';
 import {
@@ -28,10 +28,10 @@ import { ModelDependencyService } from '../../../services/development-tooling/Mo
 import { separateTypeDeclarations } from '../../../templates/development-tooling/separateTypeDeclarations';
 import { atomicComponentFiles } from '../../../templates/development-tooling/atomicComponents';
 import { atomLibrary, useAtomLibrary } from './atomLibrary';
-import { unitsConfigFile, unitsConfigSchema } from '../../../core/development-tooling/unitsConfig';
 import type { PlannedFile } from '../../../core/development-tooling/files';
 import { componentContractFiles } from '../../../templates/development-tooling/app-pieces/appContractTests';
 import { pageContractFiles } from '../../../templates/development-tooling/app-pieces/pageContracts';
+import { visualWorkspace } from './visualWorkspace';
 
 export { scaffoldKinds };
 
@@ -83,10 +83,11 @@ export async function generatePiece(input: GeneratePieceInput): Promise<Generate
 	const grouped = groupedFiles(pieces, selection?.group.id);
 	const atoms = missingAtoms(root, input.kind, library);
 	const registry = newVisualRegistry(root, input.kind, name, grouped.files);
-	const files = separateTypeDeclarations([...grouped.files, ...support, ...atoms, ...registry]);
+	const files = separateTypeDeclarations([...grouped.files, ...support, ...atoms]);
 	assertUniqueGroupedNames(root, selection?.group.id, files);
 	await ensureParents(root, files);
 	const writes = await writePlannedFiles(root, files, { force: input.force });
+	writes.push(...(await writeVisualRegistry(root, registry)));
 	writes.push(...(await saveGenerationGroup(root, selection)));
 	if (input.kind === 'resource') writes.push(...(await new ModelDependencyService().ensure(root)));
 	const exportsUpdated =
@@ -144,22 +145,32 @@ function missingAtoms(root: string, kind: PieceKind, library: string) {
 
 /** Preserve authored contracts when regenerating an existing visual unit. */
 function newVisualRegistry(root: string, kind: PieceKind, name: string, files: PlannedFile[]) {
-	if (!['component', 'view', 'layout'].includes(kind) || !existsSync(join(root, unitsConfigFile)))
-		return [];
-	const config = unitsConfigSchema.parse(
-		JSON.parse(readFileSync(join(root, unitsConfigFile), 'utf8'))
-	);
-	const workspace = config.workspaces.find((item) => item.root === '.');
+	if (!['component', 'view', 'layout'].includes(kind)) return undefined;
 	const source = files.find((item) =>
 		kind === 'component'
 			? item.path.startsWith('src/components/') && item.path.endsWith('.svelte')
 			: item.path.startsWith('src/routes/') &&
 				item.path.endsWith(kind === 'layout' ? '/+layout.svelte' : '/+page.svelte')
 	);
-	if (!workspace || !source || existsSync(join(root, source.path))) return [];
+	if (!source || existsSync(join(root, source.path))) return undefined;
+	const workspace = visualWorkspace(root);
+	if (!workspace) return undefined;
+	const location = { root: workspace.root, build: workspace.build };
 	const registry =
 		kind === 'component'
-			? componentContractFiles(name, source.path, workspace.name)
-			: pageContractFiles(name, source.path, workspace.name);
-	return registry.some((item) => existsSync(join(root, item.path))) ? [] : registry;
+			? componentContractFiles(name, source.path, workspace.name, location)
+			: pageContractFiles(name, source.path, workspace.name, location);
+	return registry.some((item) => existsSync(join(workspace.registryRoot, item.path)))
+		? undefined
+		: { root: workspace.registryRoot, files: registry };
+}
+
+async function writeVisualRegistry(root: string, registry: ReturnType<typeof newVisualRegistry>) {
+	if (!registry) return [];
+	await ensureParents(registry.root, registry.files);
+	const registered = await writePlannedFiles(registry.root, registry.files);
+	return registered.map((item) => ({
+		...item,
+		path: relative(root, join(registry.root, item.path))
+	}));
 }

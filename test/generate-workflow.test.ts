@@ -7,6 +7,7 @@ import { generateModel, generatePiece } from '../src/workflows/generate-code/gen
 import { scaffoldDetails, scaffoldKinds } from '../src/templates/scaffoldTypes';
 import { assertGeneratedComponentRegistry } from './support/generatedComponentRegistry';
 import { assertGeneratedPageLayoutRegistry } from './support/generatedPageLayoutRegistry';
+import { assertGeneratedWorkspaceRegistry } from './support/generatedWorkspaceRegistry';
 
 test('lib generation auto-exports package-safe scaffolds', async () => {
 	const root = await libProject();
@@ -65,6 +66,7 @@ test('app generation allows app-only scaffolds without package exports', async (
 	await rm(root, { recursive: true, force: true });
 	await assertGeneratedComponentRegistry();
 	await assertGeneratedPageLayoutRegistry();
+	await assertGeneratedWorkspaceRegistry();
 }, 30_000);
 
 async function libProject(): Promise<string> {

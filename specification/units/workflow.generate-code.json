@@ -17,7 +17,9 @@
 			"src/workflows/projects-sessions/generate-code/generationGroup.ts",
 			"src/workflows/projects-sessions/generate-code/generationGroup.types.ts",
 			"src/workflows/projects-sessions/generate-code/groupedFiles.ts",
-			"src/workflows/projects-sessions/generate-code/groupedImports.ts"
+			"src/workflows/projects-sessions/generate-code/groupedImports.ts",
+			"src/workflows/projects-sessions/generate-code/visualWorkspace.ts",
+			"src/workflows/projects-sessions/generate-code/visualWorkspace.types.ts"
 		],
 		"symbols": [
 			"scaffoldKinds",
@@ -48,7 +50,10 @@
 			"groupedExports",
 			"assertUniqueGroupedNames",
 			"groupedImports",
-			"groupedSpecifier"
+			"groupedSpecifier",
+			"visualWorkspace",
+			"VisualWorkspace",
+			"VisualWorkspace"
 		]
 	},
 	"contract": {
@@ -141,6 +146,10 @@
 			{
 				"name": "groupedSpecifier.paths",
 				"type": "Map<string, string>"
+			},
+			{
+				"name": "visualWorkspace.directory",
+				"type": "string"
 			}
 		],
 		"outputs": [
@@ -183,6 +192,10 @@
 			{
 				"name": "groupedSpecifier",
 				"type": "string"
+			},
+			{
+				"name": "visualWorkspace",
+				"type": "VisualWorkspace | undefined"
 			}
 		],
 		"errors": [
@@ -195,6 +208,11 @@
 	"dependencies": [
 		{
 			"unit": "config.module-groups",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.classify-path",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -240,6 +258,11 @@
 		},
 		{
 			"unit": "function.validation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
 			"via": "import",
 			"origin": "derived"
 		},
