@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.store.agents-providers-project-work-actions",
+	"kind": "store",
+	"title": "projectWorkActions",
+	"responsibility": "Owns the projectWorkActions store unit.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/lib/stores/agents-providers/projectWorkActions.svelte.ts"],
+		"symbols": ["createProjectWorkActionsStore"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "createProjectWorkActionsStore.initialValue",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "createProjectWorkActionsStore",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/stores/agents-providers/projectWorkActions.svelte.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/stores/agents-providers/projectWorkActions.svelte.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
