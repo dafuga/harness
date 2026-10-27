@@ -1,0 +1,33 @@
+
+ RUN  v3.2.4 /private/tmp/harness-snapshot-nv4DEW
+
+ ❯ test/generate-workflow.test.ts (5 tests | 1 failed | 4 skipped) 5201ms
+   ↓ lib generation auto-exports package-safe scaffolds
+   ↓ app-only scaffolds fail in lib projects
+   × app generation allows app-only scaffolds without package exports 5195ms
+     → Orphaned visual metadata blocks generation: expected undefined to be an instance of Error
+   ↓ generation keeps category folders, imports and package exports in agreement
+   ↓ the same category works for every source scaffold and can be extended
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/generate-workflow.test.ts > app generation allows app-only scaffolds without package exports
+AssertionError: Orphaned visual metadata blocks generation: expected undefined to be an instance of Error
+ ❯ assertOrphanedVisualRegistry test/support/generatedWorkspaceRegistry.ts:94:65
+     92|    (error: unknown) => error
+     93|   );
+     94|   expect(failure, 'Orphaned visual metadata blocks generation').toBeIn…
+       |                                                                 ^
+     95|   expect((failure as Error).message).toContain(
+     96|    'Visual registry exists without its generated source'
+ ❯ assertGeneratedWorkspaceRegistry test/support/generatedWorkspaceRegistry.ts:62:3
+ ❯ test/generate-workflow.test.ts:69:2
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 skipped (5)
+   Start at  11:11:36
+   Duration  7.87s (transform 182ms, setup 85ms, collect 385ms, tests 5.20s, environment 0ms, prepare 20ms)
+
