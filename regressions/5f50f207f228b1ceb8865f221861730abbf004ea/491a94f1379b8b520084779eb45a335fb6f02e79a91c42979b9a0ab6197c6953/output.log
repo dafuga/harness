@@ -1,0 +1,19 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-pgjAXT
+
+ ✓ test/services/unit-index.test.ts (14 tests) 2779ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2625ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 80ms
+ ✓ test/utils/comparison-differences.test.ts (8 tests) 6ms
+ ✓ test/utils/comparison-context.test.ts (9 tests) 6ms
+ ✓ test/utils/canonical-json.test.ts (20 tests) 4ms
+
+ Test Files  5 passed (5)
+      Tests  53 passed (53)
+   Start at  02:01:54
+   Duration  6.21s (transform 238ms, setup 219ms, collect 484ms, tests 2.88s, environment 0ms, prepare 108ms)
+
+Units registry is valid: 1827 units, 166 uncertain references.
+Checking formatting...
+All matched files use Prettier code style!
+Harness audit passed. Files and functions are staying small.
