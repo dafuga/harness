@@ -20,6 +20,8 @@
 			"Point",
 			"Line",
 			"Head",
+			"FocusedPoint",
+			"FocusedRun",
 			"unitGrowth",
 			"historySeries",
 			"unitGrowth",
@@ -31,8 +33,8 @@
 		"inputs": [
 			{
 				"name": "unitGrowth.records",
-				"type": "VerificationRecord[]",
-				"description": "Verification records in the order growth points should first appear."
+				"type": "Array<Pick<VerificationRecord, 'id' | 'measurements'>>",
+				"description": "Record identifiers and measurements in the order growth points should first appear."
 			},
 			{
 				"name": "unitGrowth.reviews",
@@ -41,8 +43,13 @@
 			},
 			{
 				"name": "historySeries.records",
-				"type": "VerificationRecord[]",
-				"description": "Verification records containing benchmark measurements to group."
+				"type": "Array<Pick<VerificationRecord, 'id' | 'measurements'>>",
+				"description": "Record identifiers and benchmark measurements to group."
+			},
+			{
+				"name": "historySeries.focused",
+				"type": "FocusedRun[]",
+				"description": "Optional focused runs; measurements from non-gapped points retain their tested revisions."
 			}
 		],
 		"outputs": [
@@ -54,7 +61,7 @@
 			{
 				"name": "historySeries",
 				"type": "BenchmarkSeries[]",
-				"description": "Benchmark groups by unit, workload, metric and target, with separate lines for different profiles, units, methods or comparison contexts. Only numeric values with workload and profile participate; multiple lines mark a group incompatible."
+				"description": "Benchmark groups by unit, workload, metric and target, with separate lines for different profiles, units, methods or comparison contexts. Only numeric values with workload and profile participate; eligible focused measurements retain their original revisions. Multiple lines mark a group incompatible."
 			}
 		],
 		"errors": []
