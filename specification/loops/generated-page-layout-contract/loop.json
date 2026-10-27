@@ -2,7 +2,7 @@
 	"name": "generated-page-layout-contract",
 	"goal": "Register generated page and layout screenshot cases including child-slot placeholders",
 	"createdAt": "2026-10-27T06:01:42.482Z",
-	"updatedAt": "2026-10-27T06:01:59.514Z",
+	"updatedAt": "2026-10-27T06:12:54.558Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T06:12:54.558Z",
+			"evidence": "The existing case fails at f033ad5290 on harbor-mbp-2 because page.dashboard has no generated contract. Harness record cb457ed37b800fe5d21c2c3460bf0440f1fc1ecf4ba183e579751c0c5c68530d."
 		},
 		{
 			"id": "implement",
