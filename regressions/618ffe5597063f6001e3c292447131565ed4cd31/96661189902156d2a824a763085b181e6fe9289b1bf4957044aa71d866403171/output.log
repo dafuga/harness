@@ -1,0 +1,49 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-GFqNE0/packages/desktop
+
+ ❯ test/run-integration.test.ts (9 tests | 1 failed | 8 skipped) 5013ms
+   ↓ Plan uses read-only CLI and saves a committed immutable version without claiming verification
+   ↓ approval alone never runs and Change records untracked and previously dirty source deltas
+   ↓ stale approval is rejected before agent execution
+   ↓ image generation failure creates no invented image or successful completion
+   ↓ failed Change never records a completed outcome
+   ↓ cancelled Change records cancellation and cannot cancel another run ID
+   ↓ observed host writes retain actual absolute path and hashes in committed change history
+   × visual provenance stores actual image orchestration model and exact full generator prompt 4991ms
+     → expected 'Create a realistic product design for…' to contain 'Entity: Target'
+   ↓ Plan refuses a generation whose expected latest version changed while the image was running
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/run-integration.test.ts > visual provenance stores actual image orchestration model and exact full generator prompt
+AssertionError: expected 'Create a realistic product design for…' to contain 'Entity: Target'
+
+- Expected
++ Received
+
+- Entity: Target
++ Create a realistic product design for Target. State: default. Viewport: desktop.
++ No reference image is available. Follow the request and supplied context without inventing an existing page to preserve.
++ Identify the requested edit area from the user request; do not assume the whole page is changing.
++ If the user explicitly requests a whole-page redesign, the whole page is the requested area.
++ Original user request (authoritative for the edit scope):
++ Design target
++ Planning proposal (do not expand the requested scope):
++ Precise design direction
+
+ ❯ test/run-integration.test.ts:177:25
+    175|  expect(version.generator).toBe('codex · selected');
+    176|  expect(version.prompt).toBe(imageCall.prompt);
+    177|  expect(version.prompt).toContain('Entity: Target');
+       |                         ^
+    178|  expect(version.prompt).toContain('Original user request (authoritativ…
+    179|  expect(version.prompt).toContain('Precise design direction');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 skipped (9)
+   Start at  10:40:26
+   Duration  6.92s (transform 1.05s, setup 88ms, collect 1.66s, tests 5.01s, environment 0ms, prepare 23ms)
+
