@@ -80,6 +80,7 @@ export class TestExpectationService {
 				output: await invoke(example.input)
 			};
 		} catch (error) {
+			if (!Object.hasOwn(example, 'error')) throw unexpectedExampleFailure(error);
 			observation = {
 				name: example.name,
 				input: example.input,
@@ -153,4 +154,12 @@ function assertExampleImplementations(
 	for (const name of Object.keys(functions))
 		if (!groups.some((group) => group.name === name))
 			throw new Error(`Unsupported example implementation: ${name}`);
+}
+
+/** Unexpected invocation failures keep their original value and actionable message. */
+function unexpectedExampleFailure(error: unknown): Error {
+	let detail = 'non-Error value thrown';
+	if (error instanceof Error) detail = error.message;
+	else if (typeof error === 'string') detail = error;
+	return new Error(`Example unexpectedly failed: ${detail}`, { cause: error });
 }
