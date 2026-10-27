@@ -36,9 +36,6 @@ export async function checkUnits(options: UnitsOptions = {}): Promise<CheckRepor
 export function registryErrors(loaded: LoadedUnits): string[] {
 	const files = new Set(loaded.index.files.keys());
 	const known = new Set(loaded.stored.map((manifest) => manifest.id));
-	const retired = new Set(
-		loaded.stored.filter((manifest) => manifest.status === 'retired').map((manifest) => manifest.id)
-	);
 	const scenarios = new Set(loaded.scenarios.map((scenario) => scenario.id));
 	return [
 		...loaded.errors,
@@ -50,11 +47,6 @@ export function registryErrors(loaded: LoadedUnits): string[] {
 			scenario.units
 				.filter((unit) => !known.has(unit))
 				.map((unit) => `${scenario.id} covers unknown unit ${unit}`)
-		),
-		...loaded.scenarios.flatMap((scenario) =>
-			scenario.units
-				.filter((unit) => retired.has(unit))
-				.map((unit) => `${scenario.id} covers retired unit ${unit}`)
 		),
 		...loaded.stored.flatMap((unit) =>
 			unit.scenarios
