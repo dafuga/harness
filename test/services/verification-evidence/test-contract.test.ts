@@ -10,7 +10,10 @@ import { TestContractService } from '../../../src/services/verification-evidence
 import { indexFiles } from '../../support/memoryTree';
 import { measureWorkload } from '../../support/measureWorkload';
 import { assertCaseAdmissionInputs } from '../../support/testCaseAdmissionCases';
-import { assertDeclaredInputCapabilities } from '../../support/testCapabilityCases';
+import {
+	assertDeclaredInputCapabilities,
+	assertVisualScenarioEvidence
+} from '../../support/testCapabilityCases';
 
 const service = new TestContractService();
 async function fixture() {
@@ -73,6 +76,11 @@ test('validate initialized and invalid registries against declared cases', async
 		'service.verification-evidence-test-contract',
 		'scenario-case-references',
 		() => assertScenarioReferences(registry, service)
+	);
+	await measureWorkload(
+		'service.verification-evidence-test-contract',
+		'visual-scenario-evidence',
+		() => assertVisualScenarioEvidence(unit, service)
 	);
 	await measureWorkload('validator.verification-evidence-test-case', 'matrix-row-admission', () =>
 		assertMatrixRows(unit, service, 'validate')
