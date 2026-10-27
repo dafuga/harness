@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "command.agents-providers-feature-plan-command-start-feature-plan",
+	"kind": "command",
+	"title": "startFeaturePlan",
+	"responsibility": "Start an approved feature's queue-only retry or a bounded approval-scoped worker batch.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/agents-providers/feature-plan-command/startFeaturePlan.ts"],
+		"symbols": ["startFeaturePlan"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "startFeaturePlan.feature",
+				"type": "string",
+				"description": "Feature identifier passed to the exact approved-plan selector."
+			},
+			{
+				"name": "startFeaturePlan.options",
+				"type": "{ digest: string; worker?: string; parallelism?: string; json?: boolean }",
+				"description": "The expected approval digest; optional worker enables a single batch with integer concurrency 1 through 8, defaulting to one."
+			},
+			{
+				"name": "startFeaturePlan.server",
+				"type": "Pick<ModuleTaskServerService, 'submitApproved'> & Partial<Pick<ModuleTaskServerService, 'runApproved'>>",
+				"description": "Trusted server; dispatch requires its approval-scoped runApproved operation."
+			},
+			{
+				"name": "startFeaturePlan.output",
+				"type": "(text: string) => void",
+				"description": "Receives the successful JSON or human-readable submission and worker outcomes."
+			}
+		],
+		"outputs": [
+			{
+				"name": "startFeaturePlan",
+				"type": "Promise<void>",
+				"description": "Without a worker, await and print idempotent approved submission. With a worker, await and print the actual bounded approved batch; remove only this command's signal listeners when settled."
+			}
+		],
+		"errors": [
+			{
+				"name": "invalid dispatch configuration",
+				"type": "Error",
+				"description": "Reject parallelism without a worker, a non-integer or out-of-range value, or missing approval-scoped dispatch before executing a worker."
+			},
+			{
+				"name": "server or output failure",
+				"type": "Error",
+				"description": "Propagate without claiming a successful start; the server retains its approval, readiness and isolation checks."
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.agents-providers-module-task-server",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/agents-providers/feature-plan-command/startFeaturePlan.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/agents-providers/feature-plan-command/startFeaturePlan.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

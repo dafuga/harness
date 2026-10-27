@@ -6,6 +6,7 @@ import { FeaturePlanService } from '../../services/agents-providers/FeaturePlanS
 import { ModuleTaskServerService } from '../../services/agents-providers/ModuleTaskServerService';
 import { FeaturePlanValidator } from '../../validators/agents-providers/FeaturePlanValidator';
 import { FeaturePlanReadinessAdapter } from '../../adapters/agents-providers/FeaturePlanReadinessAdapter';
+import { startFeaturePlan } from './feature-plan-command/startFeaturePlan';
 
 function defaultDependencies() {
 	const root = process.cwd();
@@ -84,7 +85,8 @@ export class FeaturePlanCommand {
 		private readonly dependencies: {
 			service: Pick<FeaturePlanService, 'draft' | 'select' | 'approve'>;
 			repository: Pick<FeaturePlanRepository, 'read'>;
-			server?: Pick<ModuleTaskServerService, 'submitApproved'>;
+			server?: Pick<ModuleTaskServerService, 'submitApproved'> &
+				Partial<Pick<ModuleTaskServerService, 'runApproved'>>;
 			output?: (text: string) => void;
 			readInput?: (file: string) => Promise<unknown>;
 		} = defaultDependencies()
@@ -147,15 +149,21 @@ export class FeaturePlanCommand {
 		plan
 			.command('start <feature>')
 			.requiredOption('--digest <sha>')
+			.option('--worker <id>', 'Dispatch an approval-scoped worker batch.')
+			.option('--parallelism <count>', 'Concurrent workers for this batch (1–8).')
 			.option('--json')
-			.action(async (feature: string, options: { digest: string; json?: boolean }) => {
-				const result = await this.submitApproved(feature, options.digest);
-				(this.dependencies.output ?? console.log)(
-					options.json
-						? JSON.stringify(result, null, 2)
-						: `Submitted ${feature}: ${result.created.length} created, ${result.reused.length} reused.`
-				);
-			});
+			.action(
+				(
+					feature: string,
+					options: { digest: string; worker?: string; parallelism?: string; json?: boolean }
+				) =>
+					startFeaturePlan(
+						feature,
+						options,
+						this.dependencies.server ?? new ModuleTaskServerService(process.cwd()),
+						this.dependencies.output ?? console.log
+					)
+			);
 	}
 
 	private submitApproved(feature: string, expectedDigest: string) {
