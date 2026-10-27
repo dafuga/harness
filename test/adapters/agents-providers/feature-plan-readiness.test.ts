@@ -140,12 +140,12 @@ async function assertSourceAndMetadataGates() {
 			dependencies.git.run
 				.mockResolvedValueOnce(plan.sourceCommit)
 				.mockResolvedValue('c'.repeat(40));
-		if (gate === 'git' || gate === 'metadata')
+		if (['git', 'metadata'].includes(gate))
 			await expect(adapter.verify(plan)).rejects.toBe(failure);
 		else await expect(adapter.verify(plan)).rejects.toThrow();
 		if (gate !== 'changed-during-read')
 			expect(dependencies.planning.readImage).not.toHaveBeenCalled();
-		if (gate === 'stale' || gate === 'git')
+		if (['stale', 'git'].includes(gate))
 			expect(dependencies.requireMetadata).not.toHaveBeenCalled();
 		expect(plan).toEqual(before);
 	}

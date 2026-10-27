@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import type * as FsPromises from 'node:fs/promises';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { registerUnitsCommand } from '../src/cli/program/UnitsCommand';
 import type { ComponentManifest } from '../src/core/development-tooling/unitTypes';
@@ -16,7 +17,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock('node:fs/promises', async (importOriginal) => {
-	const original = await importOriginal<typeof import('node:fs/promises')>();
+	const original = await importOriginal<typeof FsPromises>();
 	return {
 		...original,
 		readFile: mocks.readFile,

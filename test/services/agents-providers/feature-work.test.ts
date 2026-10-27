@@ -78,15 +78,14 @@ const projected = (
 	id: string,
 	status: ModuleTask['status'],
 	belongsToPlan: boolean,
-	dependsOn: string[] = [],
-	blockedBy: string[] = []
+	...dependencies: [dependsOn?: string[], blockedBy?: string[]]
 ) => ({
 	id,
 	title: `Task ${id}`,
 	module: 'service.synthetic',
 	status,
-	dependsOn,
-	blockedBy,
+	dependsOn: dependencies[0] ?? [],
+	blockedBy: dependencies[1] ?? [],
 	belongsToPlan
 });
 

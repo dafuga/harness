@@ -8,6 +8,13 @@ import * as unitFixtures from './support/unitProject';
 
 const { slugifySource, unitProject, configureTestAuthor, validationInvoker, commitModuleData } =
 	unitFixtures;
+const invalidContracts = [
+	'{',
+	'{"responsibility":"x","extra":true,"contract":{"inputs":[],"outputs":[],"errors":[]}}',
+	'{"responsibility":"x","contract":{"inputs":[],"outputs":[],"errors":[],"extra":true}}',
+	'{"responsibility":"x","contract":{"inputs":[{"name":"x","type":"string","extra":true}],"outputs":[],"errors":[]}}',
+	'{"responsibility":"x","contract":{"inputs":[{"name":"x"}],"outputs":[],"errors":[]}}'
+];
 
 test('CLI exposes execution targets and component versions, and refuses relaxed tolerance', async () => {
 	const p = await unitProject('lib'),
@@ -116,14 +123,7 @@ test('CLI authors declared contracts only for valid active units without changin
 			expect(result.stderr).not.toBe('');
 			expect(await readFile(file, 'utf8')).toBe(original);
 		};
-		const invalid = [
-			'{',
-			'{"responsibility":"x","extra":true,"contract":{"inputs":[],"outputs":[],"errors":[]}}',
-			'{"responsibility":"x","contract":{"inputs":[],"outputs":[],"errors":[],"extra":true}}',
-			'{"responsibility":"x","contract":{"inputs":[{"name":"x","type":"string","extra":true}],"outputs":[],"errors":[]}}',
-			'{"responsibility":"x","contract":{"inputs":[{"name":"x"}],"outputs":[],"errors":[]}}'
-		];
-		for (const body of invalid) await reject(id, body);
+		for (const body of invalidContracts) await reject(id, body);
 		await reject('function.unknown', JSON.stringify(value));
 		await rm(join(project.root, 'src/utils/slugify.ts'));
 		await project.harness(['units', 'retire', id, '--reason', 'No longer supported']);

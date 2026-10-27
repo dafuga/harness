@@ -1,6 +1,12 @@
 import { expect, vi } from 'vitest';
 import { ModuleTaskServerService } from '../../../../src/services/agents-providers/ModuleTaskServerService';
 import { componentManifestSchema } from '../../../../src/core/unitTypes';
+import type { ComponentManifest } from '../../../../src/core/unitTypes';
+import type {
+	ModuleTaskInput,
+	ModuleTaskQueue,
+	FeaturePlan
+} from '../../../../src/repositories/agents-providers/ModuleTaskRepository.types';
 export const root = '/disposable/repository';
 export const sourceCommit = 'a'.repeat(40);
 export const nextCommit = 'b'.repeat(40);
@@ -47,28 +53,24 @@ export const manifest = (id: string, changes: Record<string, unknown> = {}) => {
 		...changes
 	});
 };
-const makeService = (d: object) => new (ModuleTaskServerService as any)(root, d) as any;
+const makeService = (d: object) => new ModuleTaskServerService(root, d);
 export const invoke = (
-	f: any,
+	f: ReturnType<typeof makeFixture>,
 	execution: { worker: string; modules: string[]; once: boolean; signal: AbortSignal }
 ) => f.service.run(plan([task('task-one')]), execution);
-export const makeFixture = (
-	options: {
-		manifests?: unknown[];
-		errors?: string[];
-		metadataFailure?: Error;
-		approved?: unknown;
-		race?: (queue: any) => void;
-	} = {}
-) => {
-	let queue: any = { schemaVersion: 1, features: [], tasks: [] },
+function makeQueueStore(options: {
+	manifests?: unknown[];
+	errors?: string[];
+	metadataFailure?: Error;
+	approved?: unknown;
+	race?: (queue: ModuleTaskQueue) => void;
+}) {
+	let queue: ModuleTaskQueue = { schemaVersion: 1, features: [], tasks: [] },
 		commit: string | undefined;
-	if (options.approved) queue.plans = [structuredClone(options.approved)];
-	const tree = { revision: sourceCommit };
-	const manifests = options.manifests ?? [manifest('service.alpha'), manifest('service.beta')];
+	if (options.approved) queue.plans = [structuredClone(options.approved) as FeaturePlan];
 	const repository = {
 		read: vi.fn(async () => ({ commit, data: structuredClone(queue) })),
-		update: vi.fn(async (change: any, _source?: string) => {
+		update: vi.fn(async (change: (draft: ModuleTaskQueue) => unknown, _source?: string) => {
 			const before = JSON.stringify(queue);
 			let draft = structuredClone(queue),
 				value = change(draft);
@@ -77,9 +79,25 @@ export const makeFixture = (
 				draft = structuredClone(queue);
 				value = change(draft);
 			}
-			if (JSON.stringify(draft) !== before) ((queue = draft), (commit = nextCommit));
+			if (JSON.stringify(draft) !== before) {
+				queue = draft;
+				commit = nextCommit;
+			}
 			return { value, commit };
 		})
+	};
+	return { repository, queue: () => structuredClone(queue), commit: () => commit };
+}
+export const makeFixture = (options: Parameters<typeof makeQueueStore>[0] = {}) => {
+	const store = makeQueueStore(options),
+		{ repository } = store;
+	const tree = { revision: sourceCommit };
+	const manifests = options.manifests ?? [manifest('service.alpha'), manifest('service.beta')];
+	const worker: {
+		once: ReturnType<typeof vi.fn>;
+		onceApproved?: (...args: unknown[]) => Promise<unknown>;
+	} = {
+		once: vi.fn(async (..._args: unknown[]): Promise<unknown> => ({ status: 'idle' as const }))
 	};
 	const collaborators = {
 		repository,
@@ -90,11 +108,11 @@ export const makeFixture = (
 			})
 		},
 		openTree: vi.fn(async () => tree),
-		grantFiles: vi.fn(async (input: any, unit: any) => {
+		grantFiles: vi.fn(async (input: ModuleTaskInput, unit: ComponentManifest, _tree: unknown) => {
 			const role = input.role ?? 'implementation';
 			const files: string[] =
 				input.assignedFiles ??
-				(role === 'verification' ? input.verificationFiles : unit.owns.source.slice(0, 1));
+				(role === 'verification' ? input.verificationFiles! : unit.owns.source.slice(0, 1));
 			const allowed: string[] =
 				role === 'verification' ? (input.verificationFiles ?? []) : unit.owns.source;
 			if (!files.length || files.some((file) => !allowed.includes(file)))
@@ -108,13 +126,13 @@ export const makeFixture = (
 		requireMetadata: vi.fn(async () => {
 			if (options.metadataFailure) throw options.metadataFailure;
 		}),
-		worker: { once: vi.fn(async () => ({ status: 'idle' as const })) }
+		worker
 	};
 	return {
 		service: makeService(collaborators),
-		collaborators: collaborators as any,
-		queue: () => structuredClone(queue),
-		commit: () => commit,
+		collaborators,
+		queue: store.queue,
+		commit: store.commit,
 		tree
 	};
 };
@@ -126,10 +144,10 @@ export const rejectBeforeUpdate = async (
 	await expect(f.service.submit(value)).rejects.toThrow();
 	expect(f.collaborators.repository.update).not.toHaveBeenCalled();
 };
-export const admissionTrace = (f: any) => {
+export const admissionTrace = (f: ReturnType<typeof makeFixture>) => {
 	const { collaborators } = f;
 	return {
-		grants: collaborators.grantFiles.mock.calls.map(([input, unit, tree]: any[]) => [
+		grants: collaborators.grantFiles.mock.calls.map(([input, unit, tree]) => [
 			input.id,
 			unit.id,
 			tree
@@ -147,72 +165,28 @@ export const outcome = (status: 'review' | 'failed' = 'review') => ({
 	task: 'task-one',
 	result: Object.freeze({ opaqueWorkerResult: true })
 });
-export const approvedPlan = () => ({
-	feature: feature.id,
-	goal: feature.goal,
-	tldr: feature.tldr,
-	sourceCommit,
-	revision: 1,
-	pages: [],
-	changes: ['service.alpha', 'service.beta'].map((unit) => ({
-		unit,
-		kind: 'modify',
-		wantedContract: contract,
-		assignedFiles: [`src/${unit.split('.').at(-1)}.ts`]
-	})),
-	tasks: [task('task-one'), task('task-two', 'service.beta', { dependsOn: ['task-one'] })],
-	digest: 'c'.repeat(64),
-	approval: { digest: 'c'.repeat(64), reviewer: 'reviewer', approvedAt: '2026-10-26T12:00:00.000Z' }
-});
-export const checkApprovedSubmission = async () => {
-	const approved = approvedPlan(),
-		f = makeFixture({ approved });
-	const request = { feature: feature.id, expectedDigest: approved.digest };
-	const ids = ['task-one', 'task-two'],
-		c = f.collaborators;
-	const created = { created: ids, reused: [], commit: nextCommit };
-	const reused = { created: [], reused: ids, commit: nextCommit };
-	expect(await f.service.submitApproved(request)).toEqual(created);
-	expect(f.collaborators.plans.approved).toHaveBeenCalledWith(request);
-	expect(c.plans.approved.mock.invocationCallOrder[0]).toBeLessThan(
-		c.repository.update.mock.invocationCallOrder[0]
+export async function assertWatchCancellation() {
+	const f = makeFixture();
+	let finish!: (value: unknown) => void;
+	const active = new Promise<unknown>((resolve) => (finish = resolve));
+	f.collaborators.worker.once.mockResolvedValueOnce({ status: 'idle' }).mockReturnValueOnce(active);
+	const controller = new AbortController(),
+		pending = invoke(f, {
+			worker: 'worker-one',
+			modules: [],
+			once: false,
+			signal: controller.signal
+		});
+	let settled = false;
+	void pending.then(
+		() => (settled = true),
+		() => (settled = true)
 	);
-	expect(f.queue().tasks.map((item: any) => item.id)).toEqual(['task-one', 'task-two']);
-	expect(f.queue().tasks[1]).toMatchObject({ dependsOn: ['task-one'], wantedContract: contract });
-	expect(f.collaborators.worker.once).not.toHaveBeenCalled();
-	const before = f.queue();
-	expect(await f.service.submitApproved(request)).toEqual(reused);
-	expect(f.queue()).toEqual(before);
-};
-export const checkApprovedRejections = async () => {
-	const approved = approvedPlan(),
-		request = { feature: feature.id, expectedDigest: approved.digest };
-	for (const race of [
-		(queue: any) => (queue.plans = []),
-		(queue: any) => delete queue.plans[0].approval,
-		(queue: any) => (queue.plans[0].digest = 'd'.repeat(64)),
-		(queue: any) => (queue.plans[0].tasks[1].instructions = 'Changed'),
-		(queue: any) => (queue.plans[0].approval.reviewer = 'Changed')
-	]) {
-		const f = makeFixture({ approved, race });
-		await expect(f.service.submitApproved(request)).rejects.toThrow();
-		expect(f.queue().tasks).toEqual([]);
-		expect(f.queue().features).toEqual([]);
-		expect(f.commit()).toBeUndefined();
-	}
-	for (const options of [
-		{},
-		{ approved, metadataFailure: new Error('Missing metadata') },
-		{ approved, manifests: [manifest('service.alpha')] }
-	]) {
-		const f = makeFixture(options),
-			before = f.queue();
-		await expect(f.service.submitApproved(request)).rejects.toThrow();
-		expect(f.queue()).toEqual(before);
-		expect(f.collaborators.repository.update).not.toHaveBeenCalled();
-	}
-	const f = makeFixture({ approved });
-	const stale = { ...request, expectedDigest: 'd'.repeat(64) };
-	await expect(f.service.submitApproved(stale)).rejects.toThrow();
-	expect(f.queue().tasks).toEqual([]);
-};
+	await vi.waitFor(() => expect(f.collaborators.worker.once).toHaveBeenCalledTimes(2));
+	controller.abort();
+	await new Promise((resolve) => setTimeout(resolve, 0));
+	expect(settled).toBe(false);
+	finish({ status: 'idle' });
+	await expect(pending).rejects.toHaveProperty('name', 'AbortError');
+	expect(f.collaborators.worker.once).toHaveBeenCalledTimes(2);
+}

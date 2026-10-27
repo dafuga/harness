@@ -1,5 +1,6 @@
 import { expect, test, vi } from 'vitest';
-import { approvedPlan, feature, makeFixture } from './fixtures/module-task-server.fixtures';
+import { feature, makeFixture } from './fixtures/module-task-server.fixtures';
+import { approvedPlan } from './fixtures/module-task-server-approved.fixtures';
 import type { ApprovedTaskScope } from '../../../src/helpers/agents-providers/moduleTaskApprovedSubmission.types';
 import { ModuleTaskServerService } from '../../../src/services/agents-providers/ModuleTaskServerService';
 import { ModuleTaskRepository } from '../../../src/repositories/agents-providers/ModuleTaskRepository';

@@ -24,7 +24,7 @@ test('ModuleTaskToolBrokerAdapter.connect from custom initialization returns the
 	expect(new ModuleTaskToolBrokerAdapter({ name: 'custom' }).connect()).toBe('custom');
 });
 test('ModuleTaskToolBrokerAdapter.connect with invalid config throws TypeError', () => {
-	const adapter = new ModuleTaskToolBrokerAdapter(null as never);
+	const adapter = new ModuleTaskToolBrokerAdapter(null);
 	// throws TypeError
 	expect(() => adapter.connect()).toThrow(TypeError);
 });

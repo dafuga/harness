@@ -49,16 +49,17 @@ function measuredUnits(args: string[]): string[] {
 			'entry.index'
 		];
 	if (args[0] === 'plugin') return pluginMeasuredUnits(args);
-	const workload = measuredWorkloads[args.slice(0, 2).join(':')];
+	const operation = args.slice(0, 2).join(':');
+	const workload = measuredWorkloads[operation];
 	if (workload) return workload;
 	if (args[0] === 'new') return ['template.project-guidance'];
-	if (args[0] === 'history' && args[1] === 'build')
+	if (operation === 'history:build')
 		return [
 			'service.revision-detail',
 			'function.regression-history',
 			'repository.regression-proof'
 		];
-	if (args[0] !== 'loop' || args[1] !== 'record') return [];
+	if (operation !== 'loop:record') return [];
 	const units = [
 		'function.record-regression',
 		'service.regression-proof',

@@ -191,7 +191,7 @@ export function assertScopedUncertainty() {
 		const { metadata, reference, benign } = scopedReference(kind);
 		const input = plan([change('component.shared')], ['page.alpha']);
 		const before = structuredClone({ input, metadata });
-		const result = validator.validate(input as never, metadata as never);
+		const result = validator.validate(input, metadata as never);
 		const impact = { sourceCommit: input.sourceCommit, changes: input.changes };
 		expect(validator.discover(impact as never, metadata as never), kind).toEqual({
 			valid: benign,

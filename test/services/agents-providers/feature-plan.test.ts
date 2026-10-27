@@ -107,7 +107,7 @@ test('FeaturePlanService.approve verifies fully selected latest content before p
 	const approved = await state.service.approve({ ...request, expectedDigest: selected.digest });
 	expect(state.verifyReady).toHaveBeenCalledWith(selected);
 	expect(state.verifyReady.mock.invocationCallOrder[0]).toBeLessThan(
-		state.repository.approve.mock.invocationCallOrder[0]!
+		state.repository.approve.mock.invocationCallOrder[0]
 	);
 	expect(approved).toEqual({
 		...selected,
@@ -123,7 +123,7 @@ test('FeaturePlanService.approve verifies fully selected latest content before p
 test('FeaturePlanService.approve fails closed for tampering, absent readiness and repository conflicts', async () => {
 	const state = fixture();
 	const input = proposal();
-	input.pages[0]!.selected = 'first';
+	input.pages[0].selected = 'first';
 	const plan = await state.service.draft(input);
 	const request = {
 		feature: plan.feature,
@@ -138,7 +138,7 @@ test('FeaturePlanService.approve fails closed for tampering, absent readiness an
 	state.repository.approve.mockRejectedValueOnce(new Error('Concurrent revision'));
 	await expect(state.service.approve(request)).rejects.toThrow('Concurrent revision');
 	expect(state.plans).toEqual(before);
-	state.plans[0]!.goal = 'Tampered content';
+	state.plans[0].goal = 'Tampered content';
 	const calls = state.repository.approve.mock.calls.length;
 	await expect(state.service.approve(request)).rejects.toThrow();
 	await expect(
@@ -156,7 +156,7 @@ test('FeaturePlanService.approve fails closed for tampering, absent readiness an
 		const unsafe = new FeaturePlanService({
 			...state.dependencies,
 			verifyReady: undefined
-		} as never);
+		});
 		await unsafe.approve(request);
 	}).rejects.toThrow();
 	expect(state.plans).toEqual(before);

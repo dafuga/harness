@@ -16,7 +16,8 @@ const fullPlan = {
 };
 const registerTask = (service: unknown, server: unknown) => {
 	const program = new Command().exitOverride();
-	new (ModuleTaskCommand as any)(service, server).register(program.command('task').exitOverride());
+	const task = new ModuleTaskCommand(service as never, server as never);
+	task.register(program.command('task').exitOverride());
 	return program;
 };
 const withPlan = async (contents: string, run: (input: string) => Promise<unknown>) => {
@@ -121,7 +122,7 @@ const restoreSignalListeners = (
 	process
 		.listeners(event)
 		.filter((listener) => !baseline.includes(listener))
-		.forEach((listener) => process.removeListener(event, listener as (...args: any[]) => void));
+		.forEach((listener) => process.removeListener(event, listener as () => void));
 	if (!process.listeners(event).includes(foreign)) process.on(event, foreign);
 	process.removeListener(event, foreign);
 };

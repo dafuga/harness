@@ -185,7 +185,7 @@ async function assertUnsafeProfiles() {
 		try {
 			if (kind === 'missing') f.input.files = ['src/missing.ts'];
 			if (kind === 'parent') f.input.files = ['../private/auth.json'];
-			if (kind === 'symlink' || kind === 'hardlink') {
+			if (['symlink', 'hardlink'].includes(kind)) {
 				const alias = join(f.input.cwd, 'src/alias.ts');
 				if (kind === 'symlink') await symlink(f.credential, alias);
 				else await link(f.credential, alias);

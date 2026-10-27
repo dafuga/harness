@@ -49,10 +49,10 @@ async function assertPreparedPages(ids: string[]) {
 	expect(result).not.toHaveProperty('approval');
 	expect(result.pages.every((item) => item.selected === undefined)).toBe(true);
 	expect(deps.verify.mock.invocationCallOrder[0]).toBeGreaterThan(
-		deps.finalize.mock.invocationCallOrder[0]!
+		deps.finalize.mock.invocationCallOrder[0]
 	);
 	expect(deps.draft.mock.invocationCallOrder[0]).toBeGreaterThan(
-		deps.verify.mock.invocationCallOrder[0]!
+		deps.verify.mock.invocationCallOrder[0]
 	);
 	expect({ proposal: input.proposal, data: input.data }).toEqual(before);
 }

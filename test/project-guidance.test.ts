@@ -20,6 +20,23 @@ function hasParagraphWith(text: string, requirements: RegExp[]): boolean {
 		.split(/\n\s*\n/)
 		.some((paragraph) => requirements.every((rule) => rule.test(paragraph)));
 }
+function accountingGuidance(text: string) {
+	it('preserves model, quota, usage, cost and review-retry boundaries', () => {
+		expect(text).toMatch(/\bmodel\b/);
+		expect(text).toMatch(/\bintelligence\b/);
+		expect(text).toMatch(/\bselected\b[\s\S]{0,80}\bmodel\b/);
+		expect(text).toMatch(/\breported\b[\s\S]{0,80}\bmodel\b/);
+		expect(text).toMatch(/\bclaude\b[\s\S]{0,120}\bquota\b/);
+		expect(text).toMatch(/\bauth(?:entication)?\b[\s\S]{0,120}\bquota\b/);
+		expect(text).toMatch(/\bmodel access\b[\s\S]{0,120}\bquota\b/);
+		expect(text).toMatch(/\busage\b/);
+		expect(text).toMatch(/\bcost\b/);
+		expect(text).toMatch(
+			/(?:\bunknown\b[\s\S]{0,100}\b(?:cost|usage)\b|\b(?:cost|usage)\b[\s\S]{0,100}\bunknown\b)/
+		);
+		expect(text).toMatch(/\b(?:bounce|review retries?|requeue)\b/);
+	});
+}
 
 for (const output of guidance) {
 	describe(output.name, () => {
@@ -76,20 +93,6 @@ for (const output of guidance) {
 			expect(text).toMatch(/\bcommit(?:ted|ting)?\b/);
 		});
 
-		it('preserves model, quota, usage, cost and review-retry boundaries', () => {
-			expect(text).toMatch(/\bmodel\b/);
-			expect(text).toMatch(/\bintelligence\b/);
-			expect(text).toMatch(/\bselected\b[\s\S]{0,80}\bmodel\b/);
-			expect(text).toMatch(/\breported\b[\s\S]{0,80}\bmodel\b/);
-			expect(text).toMatch(/\bclaude\b[\s\S]{0,120}\bquota\b/);
-			expect(text).toMatch(/\bauth(?:entication)?\b[\s\S]{0,120}\bquota\b/);
-			expect(text).toMatch(/\bmodel access\b[\s\S]{0,120}\bquota\b/);
-			expect(text).toMatch(/\busage\b/);
-			expect(text).toMatch(/\bcost\b/);
-			expect(text).toMatch(
-				/(?:\bunknown\b[\s\S]{0,100}\b(?:cost|usage)\b|\b(?:cost|usage)\b[\s\S]{0,100}\bunknown\b)/
-			);
-			expect(text).toMatch(/\b(?:bounce|review retries?|requeue)\b/);
-		});
+		accountingGuidance(text);
 	});
 }

@@ -39,7 +39,7 @@ export const makeIdentitySandbox = (
 	env: NodeJS.ProcessEnv = { PATH: '/trusted/bin', HOME: '/tmp/harness-task-home' }
 ): RunnerSandboxFixture => ({
 	prepare: async ({ argv, cwd }) => ({
-		command: argv[0]!,
+		command: argv[0],
 		args: argv.slice(1),
 		cwd,
 		env,
@@ -185,7 +185,7 @@ export const makeWrapperProbe = () => {
 export const makeCleanupProbe = (outcome: 'resolve' | 'reject' | 'cancel') => {
 	const cleanup = vi.fn(async () => undefined);
 	const prepare = vi.fn(async (request: Parameters<RunnerSandboxFixture['prepare']>[0]) => ({
-		command: request.argv[0]!,
+		command: request.argv[0],
 		args: request.argv.slice(1),
 		cwd: request.cwd,
 		env: { PATH: '/trusted/bin' },
