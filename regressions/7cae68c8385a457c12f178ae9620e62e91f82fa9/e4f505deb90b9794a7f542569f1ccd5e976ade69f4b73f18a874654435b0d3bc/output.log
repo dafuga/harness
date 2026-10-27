@@ -1,0 +1,25 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-ZrAWrR
+
+ ✓ test/services/verification-evidence/screenshot-baseline.test.ts (6 tests) 10145ms
+   ✓ ScreenshotBaselineService.review from empty accepts a reviewed candidate  2102ms
+   ✓ ScreenshotBaselineService.review after review validates each new request  1321ms
+   ✓ ScreenshotBaselineService.review rejects damaged source evidence  3797ms
+   ✓ ScreenshotBaselineService.load from reviewed returns the original bytes  2203ms
+   ✓ ScreenshotBaselineService.load rejects damaged original evidence  478ms
+ ✓ test/services/unit-index.test.ts (14 tests) 2989ms
+   ✓ recorded service moves preserve implementations and registered owner-local placement  2831ms
+ ✓ test/project-template.test.ts (5 tests) 1554ms
+   ✓ generated app code and configuration obey their formatter settings  873ms
+   ✓ generated lib code and configuration obey their formatter settings  485ms
+ ✓ test/readable-unit-contracts.test.ts (2 tests) 80ms
+
+ Test Files  4 passed (4)
+      Tests  27 passed (27)
+   Start at  04:52:28
+   Duration  18.76s (transform 470ms, setup 180ms, collect 1.24s, tests 14.77s, environment 0ms, prepare 84ms)
+
+$ bun run src/index.ts units check
+Units registry is valid: 1828 units, 168 uncertain references.
+$ bun run src/index.ts audit .
+Harness audit passed. Files and functions are staying small.
