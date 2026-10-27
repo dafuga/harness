@@ -7,7 +7,7 @@ import type { CheckOutcome } from '../check-run-service/CheckRunService';
 export function caseGate(head: RevisionSide, revision: string, outcomes: CheckOutcome[]): string[] {
 	return outcomes
 		.filter(({ check }) => !check.id.startsWith('setup-'))
-		.flatMap(({ check, entry, gathered }) => {
+		.flatMap(({ check, entry }) => {
 			const scenario = head.scenarios.find((item) => item.id === check.scenario);
 			const references =
 				scenario?.tests.find((item) => `${scenario.id}:${item.id}` === check.id)?.cases ?? [];
@@ -23,14 +23,7 @@ export function caseGate(head: RevisionSide, revision: string, outcomes: CheckOu
 					)
 					.map((item) => item.test.file)
 			);
-			const visual =
-				head.config.testing === 1 ? visualObservation(scenario, check, gathered) : undefined;
-			const execution = {
-				revision,
-				files: selected,
-				outcomes: entry.cases?.outcomes ?? [],
-				visual
-			};
+			const execution = { revision, files: selected, outcomes: entry.cases?.outcomes ?? [] };
 			return new TestContractService()
 				.validate({
 					units: head.stored,
@@ -41,32 +34,4 @@ export function caseGate(head: RevisionSide, revision: string, outcomes: CheckOu
 				})
 				.map((failure) => `${check.id}: ${failure}`);
 		});
-}
-
-function visualObservation(
-	scenario: RevisionSide['scenarios'][number] | undefined,
-	check: CheckOutcome['check'],
-	gathered: CheckOutcome['gathered']
-) {
-	if (!scenario) return undefined;
-	return {
-		scenario: scenario.id,
-		check: check.name,
-		captures: gathered.flatMap(({ line, capture }) =>
-			line.kind === 'screenshot'
-				? [
-						{
-							evidence: line.evidence,
-							kind: line.kind,
-							state: line.state,
-							viewport: line.viewport,
-							sha256: capture.sha256,
-							note: line.note,
-							provenance: line.provenance,
-							server: line.server
-						}
-					]
-				: []
-		)
-	};
 }

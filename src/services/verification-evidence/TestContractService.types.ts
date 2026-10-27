@@ -22,19 +22,4 @@ export interface CaseExecution {
 	revision: string;
 	files: string[];
 	outcomes: CaseOutcome[];
-	/** The scenario check's own screenshot observations, never another check's captures. */
-	visual?: {
-		scenario: string;
-		check: string;
-		captures: Array<{
-			evidence: string;
-			kind: 'screenshot';
-			state: string;
-			viewport?: string;
-			sha256: string;
-			note?: string;
-			provenance?: 'fixture' | 'actual-capture';
-			server?: { revision: string; buildId: string };
-		}>;
-	};
 }
