@@ -34,14 +34,19 @@ export function registerFeaturePlanImpact(
 ) {
 	plan
 		.command('impact')
+		.description('Discover affected pages from committed relationships.')
 		.requiredOption('--input <file>')
 		.option('--json')
 		.action(async (options: { input: string; json?: boolean }) => {
 			const result = await impact(await readInput(options.input));
 			if (options.json) output(JSON.stringify(result, null, 2));
 			else {
-				const pages = result.affectedPages.map((page) => `  ${page}`);
-				const errors = result.errors.map((error) => `  ${error}`);
+				const pages = result.affectedPages.length
+					? result.affectedPages.map((page) => `  ${page}`)
+					: ['  none'];
+				const errors = result.errors.length
+					? result.errors.map((error) => `  ${error}`)
+					: ['  none'];
 				output(
 					[
 						`Source: ${result.sourceCommit}`,

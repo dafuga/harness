@@ -106,4 +106,5 @@ test('registerFeaturePlanImpact renders affected pages for a human reader', asyn
 	await program.parseAsync(['impact', '--input', 'proposal.json'], { from: 'user' });
 	expect(output.mock.calls[0][0]).toContain('page.alpha');
 	expect(output.mock.calls[0][0]).toContain('page.direct');
+	expect(output.mock.calls[0][0]).toContain('Blockers:\n  none');
 });
