@@ -10,17 +10,25 @@ import { environmentProfile } from '../src/workflows/verification-evidence/recor
 import { bugRepairPolicy } from '../src/utils/development-tooling/bugRepairPolicy';
 import { measureWorkload } from './support/measureWorkload';
 
-test('regression profiles ignore volatile macOS launcher identity while retaining workload settings', () => {
+test('regression profiles ignore volatile macOS launcher identity while retaining workload settings', async () => {
 	const source = {
 		PATH: '/pinned/runtime',
 		FEATURE_FLAG: 'enabled',
-		XPC_SERVICE_NAME: 'launcher-one'
+		XPC_SERVICE_NAME: 'launcher-one',
+		CODEX_TOOL_CALL_ID: 'call-one'
 	};
-	const first = environmentProfile(source);
+	const first = await measureWorkload('service.regression-proof', 'environment-profile', () =>
+		environmentProfile(source)
+	);
 	expect(
 		environmentProfile({ ...source, XPC_SERVICE_NAME: 'launcher-two' }),
 		'macOS launch identity is not workload configuration'
 	).toBe(first);
+	expect(
+		environmentProfile({ ...source, CODEX_TOOL_CALL_ID: 'call-two' }),
+		'per-call identity is not workload configuration'
+	).toBe(first);
+	expect(environmentProfile({ ...source, CODEX_SESSION_ID: 'another-session' })).not.toBe(first);
 	expect(environmentProfile({ ...source, PATH: '/another/runtime' })).not.toBe(first);
 	expect(environmentProfile({ ...source, FEATURE_FLAG: 'disabled' })).not.toBe(first);
 	const managed = {
