@@ -1,0 +1,31 @@
+
+ RUN  v3.2.4 /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-C2C7Y4
+
+ ❯ test/verification-check-shared.test.ts (4 tests | 4 skipped) 13937ms
+   ↓ VerificationCheckService.integrity from default initialization
+   ↓ a checker shared by the records of a chain answers as a fresh checker for each
+   ↓ VerificationCheckService.check from default initialization
+   ↓ VerificationCheckService.check with an injected indexer
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/verification-check-shared.test.ts [ test/verification-check-shared.test.ts ]
+SyntaxError: Unexpected end of JSON input
+ ❯ Object.verify test/support/verifyRepo.ts:52:24
+     50|   async verify(args = [], env = {}) {
+     51|    const result = await projectHarness(root, ['verify', 'run', '--json…
+     52|    const parsed = JSON.parse(result.stdout) as { record: VerificationR…
+       |                        ^
+     53|    return { exitCode: result.exitCode, stderr: result.stderr, ...parse…
+     54|   },
+ ❯ baselineRepo test/support/verifyRepo.ts:123:16
+ ❯ test/verification-check-shared.test.ts:20:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 skipped (4)
+   Start at  16:41:30
+   Duration  21.67s (transform 1.79s, setup 500ms, collect 3.00s, tests 13.94s, environment 0ms, prepare 34ms)
+
