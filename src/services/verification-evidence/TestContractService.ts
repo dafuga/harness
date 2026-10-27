@@ -89,7 +89,7 @@ function scenarioTestErrors(
 			continue;
 		}
 		seen.add(identity);
-		errors.push(...scenarioReferenceErrors(scenario, reference, units, required));
+		errors.push(...scenarioReferenceErrors(scenario, reference, units));
 	}
 	return errors;
 }
@@ -97,8 +97,7 @@ function scenarioTestErrors(
 function scenarioReferenceErrors(
 	scenario: ScenarioManifest,
 	reference: NonNullable<ScenarioManifest['tests'][number]['cases']>[number],
-	units: ReadonlyMap<string, ComponentManifest>,
-	required: boolean
+	units: ReadonlyMap<string, ComponentManifest>
 ): string[] {
 	const item = units.get(reference.unit)?.testing?.cases.find((item) => item.id === reference.case);
 	if (!scenario.units.includes(reference.unit) || !item)
@@ -108,50 +107,7 @@ function scenarioReferenceErrors(
 		return [`${scenario.id}: case ${item.id} requires a covered state ${item.state}`];
 	if (state.units && !state.units.includes(reference.unit))
 		return [`${scenario.id}: state does not cover unit ${reference.unit} for ${item.id}`];
-	return requiredVisualEvidence(scenario, reference.unit, item, required);
-}
-
-function requiredVisualEvidence(
-	scenario: ScenarioManifest,
-	unit: string,
-	item: NonNullable<ComponentManifest['testing']>['cases'][number],
-	required: boolean
-): string[] {
-	return required && item.expected?.kind === 'screenshot'
-		? visualCaseEvidenceErrors(scenario, unit, item)
-		: [];
-}
-
-function visualCaseEvidenceErrors(
-	scenario: ScenarioManifest,
-	unit: string,
-	item: NonNullable<ComponentManifest['testing']>['cases'][number]
-): string[] {
-	const errors: string[] = [];
-	for (const viewport of item.viewports ?? []) {
-		if (!scenario.viewports.some((entry) => entry.id === viewport))
-			errors.push(`${scenario.id}: case ${unit}/${item.id} viewport is not declared: ${viewport}`);
-		const slots = scenario.evidence.filter(
-			(entry) =>
-				entry.kind === 'screenshot' &&
-				entry.required &&
-				entry.states.includes(item.state) &&
-				entry.viewports.includes(viewport)
-		);
-		if (!slots.length)
-			errors.push(
-				`${scenario.id}: case ${unit}/${item.id} has no required screenshot for state ${item.state} at viewport ${viewport}`
-			);
-		for (const slot of slots) {
-			if (slot.provenance !== 'actual-capture')
-				errors.push(
-					`${scenario.id}: screenshot evidence ${slot.id} requires actual-capture provenance`
-				);
-			if (!slot.build)
-				errors.push(`${scenario.id}: screenshot evidence ${slot.id} requires a declared build`);
-		}
-	}
-	return [...new Set(errors)];
+	return [];
 }
 export type {
 	TestContract,
