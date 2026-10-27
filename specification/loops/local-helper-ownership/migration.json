@@ -4931,9 +4931,18 @@
 		{
 			"unit": "desktop.function.prepare-run",
 			"name": "prepareRun",
-			"commit": "093e9b654a52a5d3c2fc64e0af428c33eb96b56c",
-			"reason": "Validate the selected deployment environment before admitting approved entity changes.",
-			"definition": "952d57fef52b450cc905fcc13f53d647d987d2685897c5ba47b795726be78338"
+			"commit": "2df73acde40a1a8524ce5f4a400d43cc479626ce",
+			"reason": "Attach a verified, revision-bound current screenshot as a visual planning reference.",
+			"definition": "f8733f78cb23ce0e457973a357e99b4371501f9ddb2bdb25346d9649d8724b67",
+			"previousDefinitions": [
+				{
+					"unit": "desktop.function.prepare-run",
+					"name": "prepareRun",
+					"commit": "093e9b654a52a5d3c2fc64e0af428c33eb96b56c",
+					"reason": "Validate the selected deployment environment before admitting approved entity changes.",
+					"definition": "952d57fef52b450cc905fcc13f53d647d987d2685897c5ba47b795726be78338"
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.scrub-environment",

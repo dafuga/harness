@@ -1913,13 +1913,13 @@
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-			"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
+			"definition": "f9a00927902d5ec235a70223da2d848dab35adb5f7ea3c5fb0ef38929efc241e",
 			"relocationDefinition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab",
 			"review": {
-				"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+				"commit": "2df73acde40a1a8524ce5f4a400d43cc479626ce",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-				"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
-				"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+				"definition": "f9a00927902d5ec235a70223da2d848dab35adb5f7ea3c5fb0ef38929efc241e",
+				"reason": "Expose committed work snapshots for the selected project and recheck identity and session liveness."
 			},
 			"previousReviews": [
 				{
@@ -1951,6 +1951,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 					"definition": "1d90f89ba767376505c86d9f43308a91252c7d923657d563b9160197a7d6e63c",
 					"reason": "Adds provider-backed gameLevelGenerate to the existing owner-local bridge while preserving other game operations and registered identity."
+				},
+				{
+					"commit": "f94303b4de5fdca1ab1cf13d242b1a9e8ad0abc8",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
+					"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
+					"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
 				}
 			]
 		},
@@ -4507,13 +4513,13 @@
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-			"definition": "9af38bb547e07ebf831cdb00282fbe6796c4531c852a864beab50a936b5bd4d0",
+			"definition": "72fa0625842a4e33a40474261590c4cccc3e8654d8884137ae8e3bfeeb241883",
 			"relocationDefinition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695",
 			"review": {
-				"commit": "ed0d46ae25e79749c71d1dc6cc48652d70ece664",
+				"commit": "2df73acde40a1a8524ce5f4a400d43cc479626ce",
 				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-				"definition": "9af38bb547e07ebf831cdb00282fbe6796c4531c852a864beab50a936b5bd4d0",
-				"reason": "Admit committed module metadata before normal resource reads, retaining authenticated project scope and exposing validation diagnostics for repair."
+				"definition": "72fa0625842a4e33a40474261590c4cccc3e8654d8884137ae8e3bfeeb241883",
+				"reason": "Permit selected-project work reads through the existing owner-session validation."
 			},
 			"previousReviews": [
 				{
@@ -4544,6 +4550,12 @@
 					"commit": "9caa89c2be82b28283c3a171bab82a57cac39787",
 					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
 					"definition": "39a72f081bd6a9305930a5cdd68bc54c0b775dbd69a458ccebd7280f78193906",
+					"reason": "Admit committed module metadata before normal resource reads, retaining authenticated project scope and exposing validation diagnostics for repair."
+				},
+				{
+					"commit": "ed0d46ae25e79749c71d1dc6cc48652d70ece664",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "9af38bb547e07ebf831cdb00282fbe6796c4531c852a864beab50a936b5bd4d0",
 					"reason": "Admit committed module metadata before normal resource reads, retaining authenticated project scope and exposing validation diagnostics for repair."
 				}
 			]
