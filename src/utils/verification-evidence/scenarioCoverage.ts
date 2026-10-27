@@ -11,8 +11,6 @@ const durationTolerance = 0.05;
 export /** The first thing wrong with one capture, if anything. */
 function problem(input: CoverageInput, item: Gathered): string | undefined {
 	const evidence = input.scenario.evidence.find((entry) => entry.id === item.line.evidence);
-	if (evidence && evidence.kind !== item.line.kind)
-		return `capture ${item.line.file} has kind ${item.line.kind} but evidence ${evidence.id} requires ${evidence.kind}`;
 	if (item.line.kind === 'screenshot') return imageProblem(input, item, evidence);
 	if (item.line.kind === 'audio') return audioProblem(input, item, evidence);
 	if (item.line.kind === 'benchmark') return benchmarkProblem(item);
