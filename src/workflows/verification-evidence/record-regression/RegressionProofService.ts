@@ -73,7 +73,7 @@ export function environmentProfile(
 	source: Record<string, string | undefined> = process.env
 ): string {
 	const volatile =
-		/^(PWD|OLDPWD|_|SHLVL|XPC_SERVICE_NAME|CODEX_TOOL_CALL_ID|HARNESS_AGENT_ID|HARNESS_RESOURCE_LEASE|HARNESS_VERIFY_REVISION|HARNESS_VERIFY_TREE|HARNESS_EVIDENCE_DIR|SCREENSHOT_LABEL)$/;
+		/^(PWD|OLDPWD|_|SHLVL|XPC_SERVICE_NAME|HARNESS_AGENT_ID|HARNESS_RESOURCE_LEASE|HARNESS_VERIFY_REVISION|HARNESS_VERIFY_TREE|HARNESS_EVIDENCE_DIR|SCREENSHOT_LABEL)$/;
 	const env = Object.fromEntries(
 		Object.entries(source)
 			.filter(([key]) => !volatile.test(key))
