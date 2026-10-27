@@ -77,7 +77,11 @@ test('validate initialized and invalid registries against declared cases', async
 		'scenario-case-references',
 		() => assertScenarioReferences(registry, service)
 	);
-	assertVisualScenarioEvidence(unit, service);
+	await measureWorkload(
+		'service.verification-evidence-test-contract',
+		'visual-scenario-evidence',
+		() => assertVisualScenarioEvidence(unit, service)
+	);
 	await measureWorkload('validator.verification-evidence-test-case', 'matrix-row-admission', () =>
 		assertMatrixRows(unit, service, 'validate')
 	);

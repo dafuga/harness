@@ -2,7 +2,7 @@
 	"name": "visual-scenario-admission",
 	"goal": "Require every declared visual case viewport to have real screenshot evidence and a build",
 	"createdAt": "2026-10-27T04:28:00.919Z",
-	"updatedAt": "2026-10-27T04:29:45.412Z",
+	"updatedAt": "2026-10-27T04:30:54.827Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T04:30:52.995Z",
+			"evidence": "Fix ccc6f73b0a requires a matching screenshot slot, viewport, actual provenance and declared build for strict visual cases."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-27T04:30:54.827Z",
+			"evidence": "The unchanged class-method case passes for pages and components and rejects missing or mismatched slots."
 		},
 		{
 			"id": "verify",
