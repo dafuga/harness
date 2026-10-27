@@ -7,6 +7,17 @@ import { moduleTaskFixture } from './support/moduleTaskFixture';
 import { runHarness } from './support/cli';
 import { GitAdapter } from '../src/adapters/git-source-history/GitAdapter';
 
+async function validatedWorkerFixture() {
+	const fixture = await moduleTaskFixture();
+	try {
+		await runHarness(['validate', '--write', '--json'], fixture.root);
+		return fixture;
+	} catch (error) {
+		await fixture.dispose();
+		throw error;
+	}
+}
+
 test('module task creation requires a wanted contract and leaves source HEAD and edits intact', async () => {
 	const f = await moduleTaskFixture();
 	try {
@@ -65,7 +76,7 @@ test.each([
 ])(
 	'assigned worker preserves explicit %s intelligence %s',
 	async (model, intelligence, provider) => {
-		const f = await moduleTaskFixture();
+		const f = await validatedWorkerFixture();
 		try {
 			await f.feature();
 			await f.cli(['add', '--input', await f.input({ model, intelligence, assignee: 'owner' })]);
@@ -99,7 +110,7 @@ test.each([
 test.each(['quota', 'auth'])(
 	'auto falls back to Luna 6 max only for confirmed Claude quota (%s)',
 	async (mode) => {
-		const f = await moduleTaskFixture();
+		const f = await validatedWorkerFixture();
 		try {
 			await f.feature();
 			await f.cli(['add', '--input', await f.input()]);
@@ -131,7 +142,7 @@ test.each(['quota', 'auth'])(
 );
 
 test('explicit Claude quota failure never silently substitutes another model', async () => {
-	const f = await moduleTaskFixture();
+	const f = await validatedWorkerFixture();
 	try {
 		await f.feature();
 		await f.cli([
@@ -151,7 +162,7 @@ test('explicit Claude quota failure never silently substitutes another model', a
 }, 30000);
 
 test('competing workers claim once and writes outside the module require review as failed', async () => {
-	const f = await moduleTaskFixture();
+	const f = await validatedWorkerFixture();
 	try {
 		await f.feature();
 		await f.cli(['add', '--input', await f.input()]);
