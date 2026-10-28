@@ -1,0 +1,71 @@
+{
+	"schemaVersion": 1,
+	"id": "entry.index",
+	"kind": "entry",
+	"title": "index",
+	"responsibility": "Exports the initial library greeting.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/index.ts"],
+		"symbols": ["helloHarness"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "helloHarness",
+				"type": "string",
+				"description": "The library greeting."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/index.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/index.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "helloHarness",
+				"name": "returns a greeting",
+				"call": "helloHarness()",
+				"input": [],
+				"expected": {
+					"kind": "value",
+					"value": "hello from Harness"
+				}
+			}
+		],
+		"states": ["default"],
+		"cases": [
+			{
+				"id": "greeting.default",
+				"state": "default",
+				"subject": "helloHarness",
+				"example": "returns a greeting",
+				"test": {
+					"file": "test/index.test.ts",
+					"title": "helloHarness: returns a greeting"
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

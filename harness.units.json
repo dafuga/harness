@@ -1,0 +1,14 @@
+{
+	"schemaVersion": 1,
+	"workspaces": [
+		{
+			"name": "",
+			"root": "."
+		}
+	],
+	"tests": ["test/", "tests/", "src/routes/**/__harness/**/*.svelte"],
+	"global": [],
+	"ignored": ["**/*.md", "specification/features/", "specification/loops/", ".gitignore"],
+	"references": [],
+	"testing": 1
+}
