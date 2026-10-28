@@ -1,0 +1,17 @@
+
+ RUN  v3.2.4 /capture/tmp/harness-snapshot-qZLTpt
+
+Harness audit passed. Files and functions are staying small.
+Harness audit passed. Files and functions are staying small.
+src/index.ts [small-file]
+  File has 222 lines. Limit is 220. Split it by responsibility.
+error: Module not found "/capture/tmp/harness-audit-example-VaOWJR/missing-cli.ts"
+ ✓ test/harness-audit.test.ts (4 tests) 6791ms
+   ✓ runAudit: audits valid source  2251ms
+   ✓ runAudit: rejects oversized source  4481ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  18:22:22
+   Duration  7.89s (transform 143ms, setup 0ms, collect 159ms, tests 6.79s, environment 0ms, prepare 153ms)
+

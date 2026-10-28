@@ -1,0 +1,15 @@
+
+ RUN  v3.2.4 /capture/tmp/harness-snapshot-qZLTpt
+
+ ✓ test/fixture/script.fixture.test.ts (5 tests) 2062ms
+   ✓ runFixture: test without requested evidence  426ms
+   ✓ runFixture: audio without requested evidence  405ms
+   ✓ runFixture: clock without requested evidence  407ms
+   ✓ runFixture: bench without requested evidence  410ms
+   ✓ runFixture: control without requested evidence  410ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  18:22:06
+   Duration  3.13s (transform 109ms, setup 0ms, collect 89ms, tests 2.06s, environment 0ms, prepare 157ms)
+
