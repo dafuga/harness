@@ -1,14 +1,17 @@
 import type { Page } from '@playwright/test';
 
 /** Frame rendered UI roots, including fragments and fixed surfaces, with a small edge allowance. */
-export async function previewCaptureBounds(page: Page, id: string) {
+export async function previewCaptureBounds(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	const dialog = content.locator('dialog[open], [role="dialog"]:visible').last();
 	const modal =
 		(await content.getAttribute('data-preview-frame')) !== 'full' && (await dialog.count());
-	const projectAgentPanel = id === 'desktop.component.project-agent';
+	const projectAgent = id === 'desktop.component.project-agent';
 	let target = modal ? dialog : content;
-	if (projectAgentPanel) target = content.locator('.floating-chat-panel');
+	if (projectAgent)
+		target = content.locator(
+			variant === 'closed' ? '.floating-chat-bubble' : '.floating-chat-panel'
+		);
 	return target.evaluate(
 		(node, captureElement) => {
 			const boxes: DOMRect[] = [];
@@ -35,6 +38,6 @@ export async function previewCaptureBounds(page: Page, id: string) {
 			);
 			return { x: left, y: top, width: right - left, height: bottom - top };
 		},
-		Boolean(modal) || projectAgentPanel
+		Boolean(modal) || projectAgent
 	);
 }

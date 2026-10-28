@@ -108,7 +108,7 @@ export async function capturePreview(
 ) {
 	const { viewport, variant = '' } = target;
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS) return;
-	const clip = await previewCaptureBounds(page, id);
+	const clip = await previewCaptureBounds(page, id, variant);
 	const bytes = await page.screenshot({
 		fullPage: true,
 		clip,

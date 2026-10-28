@@ -17,6 +17,8 @@ import { desktopRoute } from './routeDesktop.svelte';
 import { hubRoute } from './routeHub';
 import type { PreviewCases } from './shared';
 import { nativeAtomFixture } from './nativeAtomProps';
+import { projectAgentStateFixture } from './projectAgentStateFixtures';
+import type { ProjectAgentState } from './projectAgentStateFixtures.types';
 export function previewFixture(id: string, variant = '') {
 	const desktop = createDesktopData(id);
 	// The shell opens at Pages, where its store starts and where the web workspace opens too.
@@ -55,7 +57,8 @@ export function previewFixture(id: string, variant = '') {
 		cases[id] ??
 		nativeAtomFixture(id);
 	if (!props) throw new Error(`No representative fixture for ${id}`);
-	const rendered = variantProps(id, props, variant);
+	const selectedProps = projectAgentProps(id, props, desktop, variant);
+	const rendered = variantProps(id, selectedProps, variant);
 	// A shell that reads its place from the browser is opened where its host serves it.
 	const address = { ...legacyAddresses, ...hub.addresses }[id];
 	if (address) history.replaceState(history.state, '', address);
@@ -71,6 +74,16 @@ export function previewFixture(id: string, variant = '') {
 	};
 }
 
+function projectAgentProps(
+	id: string,
+	props: PreviewCases[string],
+	desktop: ReturnType<typeof createDesktopData>,
+	variant: string
+) {
+	if (id === 'desktop.component.project-agent')
+		return projectAgentStateFixture(desktop, props, (variant || 'rest') as ProjectAgentState);
+	return props;
+}
 function desktopCases(desktop: ReturnType<typeof createDesktopData>) {
 	return Object.fromEntries(
 		Object.entries({ ...desktopControls, ...desktopRuntime, ...deploymentCases }).map(
@@ -82,7 +95,7 @@ function desktopCases(desktop: ReturnType<typeof createDesktopData>) {
 function variantProps(id: string, props: PreviewCases[string], variant: string) {
 	if (!previewVariants(id).includes(variant))
 		throw new Error(`Unknown preview variant ${id}:${variant}`);
-	if (!variant) return props;
+	if (!variant || id === 'desktop.component.project-agent') return props;
 	const shown = modulePreview(props as unknown as ExplorerScreenProps, variant);
 	if (id.endsWith('explorer-module-resources-screen')) {
 		const route = {
