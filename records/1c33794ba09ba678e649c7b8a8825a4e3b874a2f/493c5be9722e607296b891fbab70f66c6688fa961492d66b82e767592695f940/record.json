@@ -1,0 +1,2177 @@
+{
+	"id": "493c5be9722e607296b891fbab70f66c6688fa961492d66b82e767592695f940",
+	"schemaVersion": 1,
+	"repository": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-units-lib-jMIuBU/demo",
+	"source": {
+		"commit": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+		"tree": "d5e0b762d72f3b80136202bad72bdbae255796c4",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		}
+	],
+	"startedAt": "2026-10-28T15:35:29.344Z",
+	"finishedAt": "2026-10-28T15:35:54.524Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "entry.index",
+			"change": "added",
+			"target": "module",
+			"manifest": "4e8e22ff656ff469e0c5faad9cdbdbf1b1be2bed063a89ae973122524a2184fb",
+			"source": "e613dae1a19e8fc3a05ec005e5f64b63b4e398a4b6efddb0d0c88ef2af40a597",
+			"contract": "71be83426decabff97e463730547b2ac3bf28ac7c81e4ab247e5fc53ad23f85e",
+			"runtime": "468f0c71d780c33993456f77f9379f0580c6d82970cdfbf6ea659c856697291f",
+			"files": [
+				{
+					"path": "src/index.ts",
+					"hash": "f7e231a8fed7aecfda4a61c5465d65f8efbcbfe3"
+				}
+			]
+		},
+		{
+			"unit": "function.clock",
+			"change": "added",
+			"target": "module",
+			"manifest": "e6cb4877623e53f39989d136dc9b33c43a1942b292e757230069723d80a3a8f2",
+			"source": "525ddb01f568ac2990bb15576230a0cfeebaae6ab1f4c81469b8553b4afcc2ec",
+			"contract": "d15090294cf53af42ee069e6be44c9b25829888ae7631673b482927f64a5b9d2",
+			"runtime": "9e4c28d1331d03b919317b6f52700f12af3296395dddfdfe73399df39361a234",
+			"files": [
+				{
+					"path": "src/utils/clock.ts",
+					"hash": "2be7469869ae68bc75498759abd0d269f43d3692"
+				}
+			]
+		},
+		{
+			"unit": "function.slugify",
+			"change": "added",
+			"target": "module",
+			"manifest": "663cb12494557e3bb8d82fa9d32d2e81d705c0ee471b3cf3ea02e18db22d51f3",
+			"source": "1794326bf9e98bcf099d979cd7bf4a9d2164e0dae39d08fc6cb134a3728d3a2a",
+			"contract": "a59e90414a1e003ec7529c1684b055752bd76cfda28f920d9346927c37b1f45a",
+			"runtime": "07304def06b54418262f4817af835b0306e548bb7efbddf43214f0f9bb91a989",
+			"files": [
+				{
+					"path": "src/utils/slugify.ts",
+					"hash": "8697e784ca00c86dc32e5d77f7cdd586cf7a1c3f"
+				}
+			]
+		},
+		{
+			"unit": "page.titles",
+			"change": "added",
+			"target": "module",
+			"manifest": "612a1810a1e50709fb71730a18ff9e9f78dadca18321f658b05b946dc64d18e0",
+			"source": "312885061bde5e7b30b2c696c79f8ed010a477a8212b1df8414a23158759539c",
+			"contract": "42401477d0ea69fea98e35a9145454141fd0de8d8dc0c5552b7d8387e05c6869",
+			"runtime": "76295ce5ab3cc39453d711c28539338329fee1a391e08c61f66529a09eb873e3",
+			"files": [
+				{
+					"path": "src/routes/titles/+page.svelte",
+					"hash": "e26cace0020211206de843af6eda5ba540e0a3b4"
+				}
+			]
+		},
+		{
+			"unit": "script.fixture",
+			"change": "added",
+			"target": "module",
+			"manifest": "2b186bed278f3cff4c48d22a002af8d61ef1f81a398c1370b9a6d6a2290b0283",
+			"source": "22c449954e595c605d013bbb120d8ea14dbe17d6ca6cb377933b6ba68ab674ad",
+			"contract": "6583fe64bd8a53d93b3e0773b2ba302e9e1b9b769bc116f726172eba3fd40596",
+			"runtime": "0daf7d5c4483866193d82189ec961d4213d3e9eb6b7d459c62b96a03e1c296d4",
+			"files": [
+				{
+					"path": "scripts/fixture.mjs",
+					"hash": "82e1a2967a8b894447648da3ba74da45bd8b8826"
+				}
+			]
+		},
+		{
+			"unit": "script.harness-audit",
+			"change": "added",
+			"target": "module",
+			"manifest": "52aed736959bb10a98008fd5d231d7afbfa1fef0ac607bbda7d2524b26ed7c4a",
+			"source": "e6a1dc2d2c19e20e4501c2c77ec6cb0a5bb5f9a9e189a92d21d13cadba7ea458",
+			"contract": "d4e1c72cb167aac3e8f818e41d9f29c0478b5a716c52c0372b76f0f5ee0abb87",
+			"runtime": "acd242340ae59ca18b1cbab3668080fd4e19f8981d4072f1d28823868264a252",
+			"files": [
+				{
+					"path": "scripts/harness-audit.ts",
+					"hash": "e3709f68eb8f43ca17b684e65fe30e5f0155c655"
+				}
+			]
+		},
+		{
+			"unit": "service.clock",
+			"change": "added",
+			"target": "module",
+			"manifest": "5eacbbc61ce2dac22f0f70a75cc806d9b1cd99cfdcf25120d0bfa098067090e5",
+			"source": "35a224c029627a5d0131a2eb57b69f416b03c073674e2d0f5f6329a36c5a3576",
+			"contract": "f3e07005727040fb0c7fe5df56b677e440fae963f66b22f176e348a06032491c",
+			"runtime": "4126b140bc9c7aecd5cc9f3bb93e6f4a71315213e18834f4c928568d765c5ea0",
+			"files": [
+				{
+					"path": "src/services/ClockService.ts",
+					"hash": "0c12900848a775934bdbedcedd331f2b40b9b823"
+				}
+			]
+		},
+		{
+			"unit": "service.title",
+			"change": "added",
+			"target": "module",
+			"manifest": "30d186a33b35e398a3ff561f0f0305a595496deb0e08c570df5e6656b3093b99",
+			"source": "2ed5b270ce74adcdd03fe4d732343988e2ba879f1f26819f5192b930b500fd7c",
+			"contract": "d4d47f0c3c49fe32b148c8dac874f8b14f6069661dc8c78ff0d099ec618c8000",
+			"runtime": "8decf9f1602370a9b23fa1077977f3f0023aa7742b1fb406caad682ca92afaca",
+			"files": [
+				{
+					"path": "src/services/TitleService.ts",
+					"hash": "ccf06a0a7e19af46e7e056ba828e92f16b43a6f5"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "entry.index",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 73,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 3,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 64,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 3,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 100,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 4,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 237,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 7,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 4862,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 86,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 39,
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 4,
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 565,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 14,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 5,
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 127,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 7,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 165,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 9,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 10,
+			"method": "Deterministic rule fixture: the value is declared in source and is not a timing.",
+			"workload": "titles-1k",
+			"target": "module",
+			"samples": 1,
+			"comparison": {
+				"request": "e3d0bc4ab57e208c4938b33e04bbb087a077f2314c9f42b68d33dd8c8b493c68",
+				"boundary": "fixture",
+				"protocol": "declared-constant/1",
+				"sampling": {
+					"warmup": 0,
+					"rounds": 1,
+					"iterations": 1
+				}
+			},
+			"profile": "fae395e860966b98",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": true,
+		"changed": [
+			{
+				"path": ".codex/skills/harness/SKILL.md",
+				"status": "added",
+				"classification": "ignored"
+			},
+			{
+				"path": ".gitignore",
+				"status": "added",
+				"classification": "ignored"
+			},
+			{
+				"path": ".prettierignore",
+				"status": "added",
+				"classification": "other"
+			},
+			{
+				"path": ".prettierrc",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "AGENTS.md",
+				"status": "added",
+				"classification": "ignored"
+			},
+			{
+				"path": "README.md",
+				"status": "added",
+				"classification": "ignored"
+			},
+			{
+				"path": "eslint.config.js",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "eslint.harness-rules.js",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "harness.audit.json",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "harness.units.json",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "harness.verify.json",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "node_modules",
+				"status": "added",
+				"classification": "other"
+			},
+			{
+				"path": "package.json",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "playwright.config.ts",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "scripts/fixture.mjs",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "scripts/harness-audit.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "specification/scenarios/clock.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/titles-audio.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/titles-boundary.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/titles-page.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/entry.index.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/function.clock.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/function.slugify.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/page.titles.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/script.fixture.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/script.harness-audit.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/service.clock.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/service.title.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "src/index.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/routes/titles/+page.svelte",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/services/ClockService.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/services/TitleService.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/utils/clock.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/utils/slugify.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "test/fixture/function.clock.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/function.slugify.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/script.fixture.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/service.clock.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/service.title.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/harness-audit.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/index.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/auditFixture.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/build-page.mjs",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/capturePage.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/capturePage.types.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/harnessCaseReporter.js",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/pageControl.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/serve-page.mjs",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "tests/e2e/support/browserScreenshot.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "tests/e2e/support/browserTest.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "tests/e2e/support/browserTest.types.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "tests/e2e/titles-page.spec.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "tsconfig.json",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "vitest.config.ts",
+				"status": "added",
+				"classification": "global"
+			}
+		],
+		"units": {
+			"direct": [
+				"entry.index",
+				"function.clock",
+				"function.slugify",
+				"page.titles",
+				"script.fixture",
+				"script.harness-audit",
+				"service.clock",
+				"service.title"
+			],
+			"indirect": [],
+			"added": [
+				"entry.index",
+				"function.clock",
+				"function.slugify",
+				"page.titles",
+				"script.fixture",
+				"script.harness-audit",
+				"service.clock",
+				"service.title"
+			],
+			"removed": []
+		},
+		"uncertain": [
+			{
+				"node": "file:.prettierignore",
+				"reason": "unclassified-change",
+				"detail": ".prettierignore"
+			},
+			{
+				"node": "file:.prettierrc",
+				"reason": "global-change",
+				"detail": ".prettierrc"
+			},
+			{
+				"node": "file:eslint.config.js",
+				"reason": "global-change",
+				"detail": "eslint.config.js"
+			},
+			{
+				"node": "file:eslint.harness-rules.js",
+				"reason": "global-change",
+				"detail": "eslint.harness-rules.js"
+			},
+			{
+				"node": "file:harness.audit.json",
+				"reason": "global-change",
+				"detail": "harness.audit.json"
+			},
+			{
+				"node": "file:harness.units.json",
+				"reason": "global-change",
+				"detail": "harness.units.json"
+			},
+			{
+				"node": "file:harness.verify.json",
+				"reason": "global-change",
+				"detail": "harness.verify.json"
+			},
+			{
+				"node": "file:node_modules",
+				"reason": "unclassified-change",
+				"detail": "node_modules"
+			},
+			{
+				"node": "file:package.json",
+				"reason": "global-change",
+				"detail": "package.json"
+			},
+			{
+				"node": "file:playwright.config.ts",
+				"reason": "global-change",
+				"detail": "playwright.config.ts"
+			},
+			{
+				"node": "file:tsconfig.json",
+				"reason": "global-change",
+				"detail": "tsconfig.json"
+			},
+			{
+				"node": "file:vitest.config.ts",
+				"reason": "global-change",
+				"detail": "vitest.config.ts"
+			}
+		]
+	},
+	"tests": [
+		{
+			"id": "test/fixture/function.clock.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/function.clock.test.ts",
+			"status": "passed",
+			"durationMs": 621,
+			"log": {
+				"path": "logs/test-fixture-function.clock.test.ts.log",
+				"bytes": 329,
+				"sha256": "cda784d168a374effe23f96edaa703e8585e06917f9704a7a64031e78917abc1"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/function.clock.test.ts",
+						"title": "clock: numeric text",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/checks/test-fixture-function.clock.test.ts/case-results.ndjson",
+					"bytes": 159,
+					"sha256": "3cd174b3e4f1ca5262747d4b41d88a5cc31a5de16002b444f370a37e7c0e561c"
+				}
+			}
+		},
+		{
+			"id": "test/fixture/function.slugify.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/function.slugify.test.ts",
+			"status": "passed",
+			"durationMs": 621,
+			"log": {
+				"path": "logs/test-fixture-function.slugify.test.ts.log",
+				"bytes": 331,
+				"sha256": "52a2982f13fb89e5b53d192aeba4f7e3eab1162b235b1b6638f9a7f26b6736c7"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/function.slugify.test.ts",
+						"title": "slugify: numeric text",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/checks/test-fixture-function.slugify.test.ts/case-results.ndjson",
+					"bytes": 163,
+					"sha256": "f8c6bf86e975051a55d12cb9ed73050690a6ebc6004edbd1d35489011dd77561"
+				}
+			}
+		},
+		{
+			"id": "test/fixture/script.fixture.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/script.fixture.test.ts",
+			"status": "passed",
+			"durationMs": 804,
+			"log": {
+				"path": "logs/test-fixture-script.fixture.test.ts.log",
+				"bytes": 334,
+				"sha256": "586528a208b033ca7179b78bae467e5241fb00548a6288f574a0a47a7bdc5dfc"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/script.fixture.test.ts",
+						"title": "runFixture: test without requested evidence",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/script.fixture.test.ts",
+						"title": "runFixture: audio without requested evidence",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/script.fixture.test.ts",
+						"title": "runFixture: clock without requested evidence",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/script.fixture.test.ts",
+						"title": "runFixture: bench without requested evidence",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/script.fixture.test.ts",
+						"title": "runFixture: control without requested evidence",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/checks/test-fixture-script.fixture.test.ts/case-results.ndjson",
+					"bytes": 921,
+					"sha256": "448713d7d3260b0a4f1e30d090a82ec9abc492ac2b571a3e25a10e37710170c1"
+				}
+			}
+		},
+		{
+			"id": "test/fixture/service.clock.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/service.clock.test.ts",
+			"status": "passed",
+			"durationMs": 625,
+			"log": {
+				"path": "logs/test-fixture-service.clock.test.ts.log",
+				"bytes": 328,
+				"sha256": "9df86c20a14654040b4d87c6770a473498461aad1b266345590409613efd1c55"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/service.clock.test.ts",
+						"title": "ClockService.run: numeric text",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/checks/test-fixture-service.clock.test.ts/case-results.ndjson",
+					"bytes": 169,
+					"sha256": "6105a7779f2412ce20f3dd08ec98f8dd0e0c38649286a971281915fe5ada582a"
+				}
+			}
+		},
+		{
+			"id": "test/fixture/service.title.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/service.title.test.ts",
+			"status": "passed",
+			"durationMs": 739,
+			"log": {
+				"path": "logs/test-fixture-service.title.test.ts.log",
+				"bytes": 328,
+				"sha256": "e5b4f75511c9b83fb8d3d64163a36972d79f1231250582d2f1fd8876193e5b92"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/service.title.test.ts",
+						"title": "TitleService.run: numeric text",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/checks/test-fixture-service.title.test.ts/case-results.ndjson",
+					"bytes": 169,
+					"sha256": "038f4fad6b2e39fe00446f0b60e25ae55a3406b0ca198c11edcc12343009e812"
+				}
+			}
+		},
+		{
+			"id": "test/harness-audit.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/harness-audit.test.ts",
+			"status": "passed",
+			"durationMs": 2114,
+			"log": {
+				"path": "logs/test-harness-audit.test.ts.log",
+				"bytes": 750,
+				"sha256": "5cdc6b097d0b1bc4c8040d66e5dd4470c0fe8494bb92c681783cab302c1091c1"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/harness-audit.test.ts",
+						"title": "runAudit: audits valid source",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/harness-audit.test.ts",
+						"title": "runAudit: rejects oversized source",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/harness-audit.test.ts",
+						"title": "runAudit: reports a missing CLI file",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/harness-audit.test.ts",
+						"title": "runAudit: throws when the fallback command is unavailable",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/checks/test-harness-audit.test.ts/case-results.ndjson",
+					"bytes": 680,
+					"sha256": "fa47b05dd9f223142556c82b9dab2f6f2227d40b1ce94dfb05a22821857733c9"
+				}
+			}
+		},
+		{
+			"id": "test/index.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/index.test.ts",
+			"status": "passed",
+			"durationMs": 619,
+			"log": {
+				"path": "logs/test-index.test.ts.log",
+				"bytes": 312,
+				"sha256": "b422b41d74f7855f2b2b9962704dab4d3bddf48f5e42e6138fe488bc878af86c"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/index.test.ts",
+						"title": "helloHarness: returns a greeting",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/checks/test-index.test.ts/case-results.ndjson",
+					"bytes": 155,
+					"sha256": "41779dd00906bd286811b3fa1b132b13badbcd3654fefc125aeb4cb29a381c2a"
+				}
+			}
+		},
+		{
+			"id": "clock:clock",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x vitest run test/fixture/service.clock.test.ts && node scripts/fixture.mjs clock",
+			"status": "passed",
+			"durationMs": 691,
+			"log": {
+				"path": "logs/clock-clock.log",
+				"bytes": 328,
+				"sha256": "2b0d6076c0431ac0a611e3ccd500b6a2db0ea12ffe32572f2f48e7e9b53ed111"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/service.clock.test.ts",
+						"title": "ClockService.run: numeric text",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/clock/clock/case-results.ndjson",
+					"bytes": 169,
+					"sha256": "6105a7779f2412ce20f3dd08ec98f8dd0e0c38649286a971281915fe5ada582a"
+				}
+			}
+		},
+		{
+			"id": "titles-audio:audio",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x vitest run test/fixture/service.title.test.ts && node scripts/fixture.mjs audio",
+			"status": "passed",
+			"durationMs": 696,
+			"log": {
+				"path": "logs/titles-audio-audio.log",
+				"bytes": 328,
+				"sha256": "8628014b500a452f8c552e49d43cb808b200e66b56b7a2f3f5b7e5252b55473f"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/service.title.test.ts",
+						"title": "TitleService.run: numeric text",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-audio/audio/case-results.ndjson",
+					"bytes": 169,
+					"sha256": "038f4fad6b2e39fe00446f0b60e25ae55a3406b0ca198c11edcc12343009e812"
+				}
+			}
+		},
+		{
+			"id": "titles-boundary:bench",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x vitest run test/fixture/service.title.test.ts && node scripts/fixture.mjs bench",
+			"status": "passed",
+			"durationMs": 689,
+			"log": {
+				"path": "logs/titles-boundary-bench.log",
+				"bytes": 328,
+				"sha256": "049a874d062b5be044ffdcb7d2d29126f47d013f774162a7aa04d0272a84a640"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/service.title.test.ts",
+						"title": "TitleService.run: numeric text",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-boundary/bench/case-results.ndjson",
+					"bytes": 169,
+					"sha256": "038f4fad6b2e39fe00446f0b60e25ae55a3406b0ca198c11edcc12343009e812"
+				}
+			}
+		},
+		{
+			"id": "titles-page:page",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "tests/e2e/titles-page.spec.ts",
+			"status": "failed",
+			"durationMs": 3577,
+			"log": {
+				"path": "logs/titles-page-page.log",
+				"bytes": 7801,
+				"sha256": "449a6bda2436459982143ccc11140349e1d04724c5e5cc3ca21df3594f3c658a"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > mobile viewport > empty",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > desktop viewport > filled",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > tablet viewport > filled",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > mobile viewport > filled",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > desktop viewport > empty",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > tablet viewport > empty",
+						"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+						"status": "failed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-page/page/case-results.ndjson",
+					"bytes": 1145,
+					"sha256": "f2871b6c052503431cb5e95c3b22956c3f41c1ec957ff543add3791bb561bf00"
+				}
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "clock",
+			"status": "passed",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"states": [
+				{
+					"id": "default",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "output",
+							"kind": "output",
+							"state": "default",
+							"mediaType": "text/plain",
+							"status": "passed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/clock/clock/clock.txt",
+							"sha256": "8c840f2a8bad107a2a365b55dcfb7bccf130831ad89e0aafeb7e7feb0166e10e",
+							"bytes": 64,
+							"capturedAt": "2026-10-28T15:35:48.915Z"
+						}
+					]
+				},
+				{
+					"id": "initialized",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "method-result",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/clock/clock/method-result.json",
+							"sha256": "c5e21fa26d72b8f7dad38fd4328af5f558e16d06cba66dd8e1fa65269e52151d",
+							"bytes": 33,
+							"capturedAt": "2026-10-28T15:35:48.915Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "titles-audio",
+			"status": "passed",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"states": [
+				{
+					"id": "spoken",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "speech",
+							"kind": "audio",
+							"state": "spoken",
+							"mediaType": "audio/wav",
+							"provenance": "fixture",
+							"transcript": "Title: 165",
+							"status": "passed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-audio/audio/spoken.wav",
+							"sha256": "36b59f8c7fd996896f4f2c7856de67eda8c922bc38c544e1bc1d18b12e4f5268",
+							"bytes": 4044,
+							"capturedAt": "2026-10-28T15:35:49.916Z",
+							"durationSeconds": 0.25
+						}
+					]
+				},
+				{
+					"id": "initialized",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "method-result",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-audio/audio/method-result.json",
+							"sha256": "c5e21fa26d72b8f7dad38fd4328af5f558e16d06cba66dd8e1fa65269e52151d",
+							"bytes": 33,
+							"capturedAt": "2026-10-28T15:35:49.916Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "titles-boundary",
+			"status": "passed",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"states": [
+				{
+					"id": "default",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "boundary",
+							"kind": "benchmark",
+							"state": "default",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-boundary/bench/benchmark.json",
+							"sha256": "878fd64332f9da6811d28d1b0c60a15a606854e132d5443db23040f00ee50688",
+							"bytes": 443,
+							"capturedAt": "2026-10-28T15:35:50.634Z"
+						}
+					]
+				},
+				{
+					"id": "initialized",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "method-result",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-boundary/bench/method-result.json",
+							"sha256": "c5e21fa26d72b8f7dad38fd4328af5f558e16d06cba66dd8e1fa65269e52151d",
+							"bytes": 33,
+							"capturedAt": "2026-10-28T15:35:50.634Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "titles-page",
+			"status": "failed",
+			"testedRevision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f",
+			"states": [
+				{
+					"id": "empty",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "empty",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"empty.desktop\",\"revision\":\"1c33794ba09ba678e649c7b8a8825a4e3b874a2f\",\"sha256\":\"bd4392ea3b0e4aa9d7242f781bf6b0c5e5e436ba34c2cb958d1f1a3d4430a25c\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-page/page/empty-desktop.png",
+							"sha256": "bd4392ea3b0e4aa9d7242f781bf6b0c5e5e436ba34c2cb958d1f1a3d4430a25c",
+							"bytes": 8866,
+							"capturedAt": "2026-10-28T15:35:54.501Z",
+							"server": {
+								"buildId": "d437a4ce77be4c9930981a2ff4ddbbf93598e43db8764666b968d761014196a5",
+								"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "empty",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"empty.mobile\",\"revision\":\"1c33794ba09ba678e649c7b8a8825a4e3b874a2f\",\"sha256\":\"92c9996c23920cdd7aeeddc75fb822ae0fafd3c2099f1b3da2d02f3d271727fe\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-page/page/empty-mobile.png",
+							"sha256": "92c9996c23920cdd7aeeddc75fb822ae0fafd3c2099f1b3da2d02f3d271727fe",
+							"bytes": 5488,
+							"capturedAt": "2026-10-28T15:35:54.503Z",
+							"server": {
+								"buildId": "d437a4ce77be4c9930981a2ff4ddbbf93598e43db8764666b968d761014196a5",
+								"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "empty",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"empty.tablet\",\"revision\":\"1c33794ba09ba678e649c7b8a8825a4e3b874a2f\",\"sha256\":\"f25caf150e58ff1ffd47d8cd678037d64d69fd8d4aafb3593fb3ae2ea01521d1\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-page/page/empty-tablet.png",
+							"sha256": "f25caf150e58ff1ffd47d8cd678037d64d69fd8d4aafb3593fb3ae2ea01521d1",
+							"bytes": 6813,
+							"capturedAt": "2026-10-28T15:35:54.504Z",
+							"server": {
+								"buildId": "d437a4ce77be4c9930981a2ff4ddbbf93598e43db8764666b968d761014196a5",
+								"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f"
+							}
+						}
+					]
+				},
+				{
+					"id": "filled",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "filled",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"filled.mobile\",\"revision\":\"1c33794ba09ba678e649c7b8a8825a4e3b874a2f\",\"sha256\":\"d593b1b00d95f7a4d0322708e1c5ef74c0867887ee87f0a01df6f5d2d5cc0617\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-page/page/filled-mobile.png",
+							"sha256": "d593b1b00d95f7a4d0322708e1c5ef74c0867887ee87f0a01df6f5d2d5cc0617",
+							"bytes": 4316,
+							"capturedAt": "2026-10-28T15:35:54.499Z",
+							"server": {
+								"buildId": "d437a4ce77be4c9930981a2ff4ddbbf93598e43db8764666b968d761014196a5",
+								"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "filled",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"filled.tablet\",\"revision\":\"1c33794ba09ba678e649c7b8a8825a4e3b874a2f\",\"sha256\":\"ae17fe23edc6024f480a141afdaa8be120c817ec7507fa00ec78861818d1bca7\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-page/page/filled-tablet.png",
+							"sha256": "ae17fe23edc6024f480a141afdaa8be120c817ec7507fa00ec78861818d1bca7",
+							"bytes": 5507,
+							"capturedAt": "2026-10-28T15:35:54.500Z",
+							"server": {
+								"buildId": "d437a4ce77be4c9930981a2ff4ddbbf93598e43db8764666b968d761014196a5",
+								"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "filled",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"filled.desktop\",\"revision\":\"1c33794ba09ba678e649c7b8a8825a4e3b874a2f\",\"sha256\":\"78516dd4723011b0aeed4b4c18759f35978b5f5a6d35e8e1835e1d164a16d00e\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/1c33794ba09ba678e649c7b8a8825a4e3b874a2f/titles-page/page/filled-desktop.png",
+							"sha256": "78516dd4723011b0aeed4b4c18759f35978b5f5a6d35e8e1835e1d164a16d00e",
+							"bytes": 7472,
+							"capturedAt": "2026-10-28T15:35:54.502Z",
+							"server": {
+								"buildId": "d437a4ce77be4c9930981a2ff4ddbbf93598e43db8764666b968d761014196a5",
+								"revision": "1c33794ba09ba678e649c7b8a8825a4e3b874a2f"
+							}
+						}
+					]
+				},
+				{
+					"id": "offline",
+					"coverage": "inapplicable",
+					"reason": "The page is rendered on the server and never enters a client-side offline state.",
+					"captures": []
+				}
+			]
+		}
+	],
+	"builds": [
+		{
+			"id": "titles-page",
+			"directory": ".cache/harness/titles-page",
+			"buildId": "d437a4ce77be4c9930981a2ff4ddbbf93598e43db8764666b968d761014196a5",
+			"files": 2
+		}
+	],
+	"budgets": {
+		"status": "failed",
+		"findings": [
+			{
+				"unit": "entry.index",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 73,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "entry.index",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "entry.index",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.clock",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 64,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.clock",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.clock",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.slugify",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 100,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.slugify",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.slugify",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "page.titles",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 237,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "page.titles",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "page.titles",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.fixture",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 4862,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.fixture",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 39,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.fixture",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 4,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.harness-audit",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 565,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.harness-audit",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 5,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.harness-audit",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.clock",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 127,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.clock",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.clock",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.title",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 165,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.title",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.title",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.title",
+				"metric": "latency-warm-ms",
+				"baseline": null,
+				"measured": 10,
+				"detail": "titles-1k on the module target",
+				"status": "missing-baseline"
+			}
+		]
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [
+			{
+				"unit": "entry.index",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "e613dae1a19e8fc3a05ec005e5f64b63b4e398a4b6efddb0d0c88ef2af40a597",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-28T15:35:28.611Z"
+			},
+			{
+				"unit": "function.clock",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "525ddb01f568ac2990bb15576230a0cfeebaae6ab1f4c81469b8553b4afcc2ec",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-28T15:35:28.611Z"
+			},
+			{
+				"unit": "function.slugify",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "1794326bf9e98bcf099d979cd7bf4a9d2164e0dae39d08fc6cb134a3728d3a2a",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-28T15:35:28.611Z"
+			},
+			{
+				"unit": "page.titles",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "312885061bde5e7b30b2c696c79f8ed010a477a8212b1df8414a23158759539c",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-28T15:35:28.611Z"
+			},
+			{
+				"unit": "script.fixture",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "22c449954e595c605d013bbb120d8ea14dbe17d6ca6cb377933b6ba68ab674ad",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-28T15:35:28.611Z"
+			},
+			{
+				"unit": "script.harness-audit",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "e6a1dc2d2c19e20e4501c2c77ec6cb0a5bb5f9a9e189a92d21d13cadba7ea458",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-28T15:35:28.611Z"
+			},
+			{
+				"unit": "service.clock",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "35a224c029627a5d0131a2eb57b69f416b03c073674e2d0f5f6329a36c5a3576",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-28T15:35:28.611Z"
+			},
+			{
+				"unit": "service.title",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "2ed5b270ce74adcdd03fe4d732343988e2ba879f1f26819f5192b930b500fd7c",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-28T15:35:28.611Z"
+			}
+		],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"cases": "failed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "failed"
+	},
+	"failures": [
+		"titles-page:page: page.titles/empty.desktop: executed case did not pass",
+		"titles-page:page: page.titles/empty.tablet: executed case did not pass",
+		"titles-page:page: page.titles/empty.mobile: executed case did not pass",
+		"titles-page:page: page.titles/filled.desktop: executed case did not pass",
+		"titles-page:page: page.titles/filled.tablet: executed case did not pass",
+		"titles-page:page: page.titles/filled.mobile: executed case did not pass",
+		"titles-page: test page failed with exit code 1",
+		"entry.index: no baseline is established; a reviewer must establish one",
+		"function.clock: no baseline is established; a reviewer must establish one",
+		"function.slugify: no baseline is established; a reviewer must establish one",
+		"page.titles: no baseline is established; a reviewer must establish one",
+		"script.fixture: no baseline is established; a reviewer must establish one",
+		"script.harness-audit: no baseline is established; a reviewer must establish one",
+		"service.clock: no baseline is established; a reviewer must establish one",
+		"service.title: no baseline is established; a reviewer must establish one"
+	]
+}
