@@ -1115,6 +1115,36 @@
 			"units": ["reports.component.activity-agents"]
 		},
 		{
+			"id": "reports-component-activity-agents-unavailable",
+			"title": "Activity agents: Recorded history",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-tracking-never-used",
+			"title": "Activity agents: Tracking guidance",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-stale",
+			"title": "Activity agents: Stale roster",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-failed-read",
+			"title": "Activity agents: Refresh failure",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-unreadable",
+			"title": "Activity agents: Unreadable registrations",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
 			"id": "reports-component-activity-files",
 			"title": "Activity files",
 			"coverage": "required",
@@ -3029,6 +3059,11 @@
 				"hub-page-projects-project-id-members",
 				"hub-page-root",
 				"reports-component-activity-agents",
+				"reports-component-activity-agents-unavailable",
+				"reports-component-activity-agents-tracking-never-used",
+				"reports-component-activity-agents-stale",
+				"reports-component-activity-agents-failed-read",
+				"reports-component-activity-agents-unreadable",
 				"reports-component-activity-files",
 				"reports-component-activity-list",
 				"reports-component-activity-loops",

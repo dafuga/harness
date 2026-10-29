@@ -1,16 +1,20 @@
 import type { PreviewCases } from './shared';
-import { stamp, row } from './shared';
+import { noop, stamp, row } from './shared';
 import { commits } from '../../../../test/entityUnits';
 const agent = {
 	id: 'preview-agent',
 	label: 'Preview agent',
-	provider: null,
-	model: null,
+	provider: 'openai',
+	model: 'gpt-5.6-terra',
 	worktree: 'Preview checkout',
 	branch: 'main',
 	task: 'Capture component states',
 	loop: 'component-previews',
-	units: [],
+	units: [
+		'reports.component.activity-agents',
+		'reports.component.activity-list',
+		'reports.component.project-activity'
+	],
 	unknownUnits: [],
 	registeredAt: stamp,
 	heartbeatAt: stamp,
@@ -107,3 +111,34 @@ export const activityCases: PreviewCases = {
 	'reports.component.project-activity': { activity, live, base: '/harness' },
 	'reports.component.site-activity': { shown: { activity, live } }
 };
+
+const agentStates: Record<string, () => PreviewCases[string]> = {
+	unavailable: () => ({ agents: null, sampledAt: stamp }),
+	'tracking-never-used': () => ({
+		agents: { tracking: 'never-used', working: 0, unreadable: 0, roster: [] },
+		sampledAt: stamp
+	}),
+	stale: () => ({
+		agents: {
+			...live.agents,
+			working: 1,
+			roster: [{ ...agent, state: 'stale', detail: 'Last heartbeat is older than the allowance.' }]
+		},
+		sampledAt: stamp,
+		reading: { now: Date.parse(stamp) + 61_000, failed: false, refresh: noop }
+	}),
+	'failed-read': () => ({
+		agents: live.agents,
+		sampledAt: stamp,
+		reading: { now: Date.parse(stamp), failed: true, refresh: noop }
+	}),
+	unreadable: () => ({
+		agents: { ...live.agents, unreadable: 2 },
+		sampledAt: stamp
+	})
+};
+
+export function activityVariant(id: string, variant: string, props: PreviewCases[string]) {
+	if (id !== 'reports.component.activity-agents') return props;
+	return agentStates[variant]?.() ?? props;
+}

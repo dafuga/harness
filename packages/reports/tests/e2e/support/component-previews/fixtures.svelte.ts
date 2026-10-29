@@ -4,7 +4,7 @@ import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/Exp
 import { explorerCases } from './explorer';
 import { legacyAddresses, legacyCases } from './legacy';
 import { reportCases } from './reports';
-import { activityCases, activity } from './activity';
+import { activityCases, activity, activityVariant } from './activity';
 import { analyticsCases } from './analytics';
 import { createDesktopData } from './desktopData.svelte';
 import { desktopControls } from './desktopControls';
@@ -97,6 +97,8 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 		throw new Error(`Unknown preview variant ${id}:${variant}`);
 	if (!variant || id === 'desktop.component.project-agent') return props;
 	if (id === 'reports.component.status-badge') return { ...props, status: variant };
+	const activityProps = activityVariant(id, variant, props);
+	if (activityProps !== props) return activityProps;
 	const shown = modulePreview(props as unknown as ExplorerScreenProps, variant);
 	if (id.endsWith('explorer-module-resources-screen')) {
 		const route = {

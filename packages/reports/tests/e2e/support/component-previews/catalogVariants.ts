@@ -1,5 +1,13 @@
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
+	// Live activity keeps unavailable, stale, failed and untracked readings distinct.
+	'reports.component.activity-agents': [
+		'unavailable',
+		'tracking-never-used',
+		'stale',
+		'failed-read',
+		'unreadable'
+	],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',
