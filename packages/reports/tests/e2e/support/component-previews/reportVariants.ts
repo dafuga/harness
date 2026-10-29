@@ -2,7 +2,6 @@ import type { PreviewCases } from './shared';
 import { chatVariantProps } from './chatVariants';
 import { image, noop, text } from './shared';
 import { baselineNarration, releaseNarration } from './reportData';
-import { sourceVariant } from './reportSourceVariants';
 import { moduleCardVariant } from './reportModuleCardVariants';
 import { entityCasesVariant } from './reportEntityCasesVariants';
 import { replayControlsVariant } from './replayControlsVariants';
