@@ -5,6 +5,7 @@ import { blockSpans, type BlockSpan } from './block-spans/blockSpans';
 import { maskSource } from './maskSource';
 import { normalizeType, parseParameters } from './parseParameters';
 import { bodyEnd, matchingBrace, sourceNesting, type SourceNesting } from './sourceNesting';
+import { scanSymbolErrors } from './scanSymbolErrors';
 
 const callable = /^[ \t]*export\s+(?:default\s+)?(?:async\s+)?function\s*\*?\s*([\w$]+)/gm;
 const variable = /^[ \t]*export\s+(?:const|let|var)\s+([\w$]+)\b/gm;
@@ -31,7 +32,7 @@ export function scanExports(code: string): ExportScan {
 	const symbols = located
 		.sort((left, right) => left.index - right.index)
 		.map(({ index: _index, ...symbol }) => symbol);
-	return { symbols, errors: thrownErrors(masked) };
+	return { symbols: scanSymbolErrors(code, symbols), errors: thrownErrors(masked) };
 }
 
 function matches(source: Source, pattern: RegExp): RegExpExecArray[] {
@@ -67,7 +68,7 @@ function variableSymbol(source: Source, match: RegExpExecArray): Located {
 	if (single) {
 		return {
 			...plain(match, match[1], 'function'),
-			inputs: [{ name: `${match[1]}.${single[1]}`, type: 'unknown' }],
+			inputs: [{ name: `${match[1]}.${single[1]}`, type: 'unknown', required: true }],
 			output: 'unknown'
 		};
 	}

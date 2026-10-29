@@ -3,6 +3,12 @@ import type { SourceTree, TreeEntry } from '../../../src/core/sourceTypes';
 import { defaultUnitsConfig } from '../../../src/core/unitsConfig';
 import { SourceIndexService } from '../../../src/services/source-index-service/SourceIndexService';
 import { measureWorkload } from '../../support/measureWorkload';
+import { assertContractExtraction } from './contracts';
+
+test(
+	'source indexing derives contracts across callable, component and storage states',
+	assertContractExtraction
+);
 
 /** A delayed snapshot exposes overlapping reads while retaining their real source order. */
 function delayedTree(count: number, failed?: string) {

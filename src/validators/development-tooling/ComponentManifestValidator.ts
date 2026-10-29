@@ -5,10 +5,15 @@ import {
 	type ComponentManifest
 } from '../../core/development-tooling/unitTypes';
 import { derivedResponsibility } from '../../workflows/development-tooling/load-units/unit-index-service/derivedResponsibility';
+import { contractFindings } from './contractFindings';
 
 /** Checks one stored unit manifest against the schema and its own file name. */
 export class ComponentManifestValidator {
-	validate(value: unknown, file: string): ManifestValidation<ComponentManifest> {
+	validate(
+		value: unknown,
+		file: string,
+		options: { contractQuality?: boolean } = {}
+	): ManifestValidation<ComponentManifest> {
 		const label =
 			file
 				.split('/')
@@ -33,6 +38,7 @@ export class ComponentManifestValidator {
 			value: manifest,
 			errors: [
 				...errors,
+				...(options.contractQuality === false ? [] : contractFindings(manifest)),
 				...this.targetErrors(manifest, label),
 				...this.labelErrors(manifest),
 				...this.previewErrors(manifest)
