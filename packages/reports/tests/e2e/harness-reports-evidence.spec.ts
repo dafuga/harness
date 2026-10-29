@@ -35,6 +35,9 @@ const root = fixtures.reports;
 const evidence = join(evidenceOf('reports'), 'reports-captures');
 const title = 'Exported settings review';
 const made = { paired: '', exported: '' };
+const scenario = scenarioManifestSchema.parse(
+	JSON.parse(readFileSync('../../specification/scenarios/harness-reports.json', 'utf8'))
+);
 
 /** An address of a removed screen, followed to the page of the explorer it leads to. */
 async function retired(page: Page, address: string) {
@@ -91,6 +94,30 @@ const states: Record<string, (page: Page) => Promise<void>> = {
 	}
 };
 
+function scopedScenario() {
+	const entity = process.env.HARNESS_VERIFY_ENTITY;
+	if (!entity) return scenario;
+	const states = scenario.states.filter((state) => state.units?.includes(entity));
+	const ids = new Set(states.map((state) => state.id));
+	return {
+		...scenario,
+		units: [entity],
+		states,
+		evidence: scenario.evidence.map((item) => ({
+			...item,
+			states: item.states.filter((state) => ids.has(state))
+		}))
+	};
+}
+
+const selectedScenario = scopedScenario();
+const selectedIds = new Set(selectedScenario.states.map((state) => state.id));
+const selectedStates = Object.fromEntries(
+	Object.entries(states).filter(([state]) => selectedIds.has(state))
+);
+const subject = process.env.HARNESS_VERIFY_ENTITY ?? 'reports evidence';
+const needsReport = Object.keys(selectedStates).some((state) => !state.startsWith('retired-'));
+
 /** A finished report of this site with a tall capture and a before and after at every size. */
 async function finished(): Promise<string> {
 	const store = new ReportRepository(root);
@@ -120,48 +147,41 @@ async function finished(): Promise<string> {
 
 test.beforeAll(async () => {
 	rmSync(evidence, { recursive: true, force: true });
+	if (!needsReport) return;
 	made.paired = (await audioPairFixture(root, fixtures.site('alpha-project'))).run.id;
 	// Only a finalized report has an export for the server to serve.
 	made.exported = await finished();
 });
 
 for (const viewport of viewports) {
-	test(`every state of the reports of a site is captured at the ${viewport.id} viewport`, async ({
-		page
-	}) => {
+	test(`${subject} at ${viewport.id}`, async ({ page }) => {
 		await page.setViewportSize({ width: viewport.width, height: viewport.height });
-		for (const [state, reach] of Object.entries(states)) {
+		for (const [state, reach] of Object.entries(selectedStates)) {
 			await reach(page);
 			await captureScreen(page, state, viewport as Viewport, evidence);
 		}
 	});
 }
 
-test('a paired recording plays in the viewer and is captured as the server served it', async ({
-	page
-}) => {
-	await states.audio(page);
-	const player = page.getByRole('dialog').locator('audio').first();
-	await expect
-		.poll(() => player.evaluate((clip: HTMLAudioElement) => clip.currentSrc))
-		.toContain(`${origin}/api/reports/${made.paired}/assets/`);
-	expect(await captureAudio(page, 'audio', player, evidence)).toBeCloseTo(6, 0);
-});
+if (selectedStates.audio)
+	test(`${subject} at audio evidence`, async ({ page }) => {
+		await selectedStates.audio(page);
+		const player = page.getByRole('dialog').locator('audio').first();
+		await expect
+			.poll(() => player.evaluate((clip: HTMLAudioElement) => clip.currentSrc))
+			.toContain(`${origin}/api/reports/${made.paired}/assets/`);
+		expect(await captureAudio(page, 'audio', player, evidence)).toBeCloseTo(6, 0);
+	});
 
-test('what was captured satisfies the reports scenario, served by the build under test', async ({
-	page
-}) => {
-	const scenario = scenarioManifestSchema.parse(
-		JSON.parse(readFileSync('../../specification/scenarios/harness-reports.json', 'utf8'))
-	);
+test(`${subject} at evidence`, async ({ page }) => {
 	const { gathered, failures } = gatherCaptures(evidence, 'evidence');
-	const declared = Object.keys(states);
+	const declared = Object.keys(selectedStates);
 	expect(failures).toEqual([]);
 	expect(gathered).toHaveLength(declared.length * viewports.length + 1);
 	const served = await servedBuild(page);
 	const builds = { declared: ['reports'], compiled: new Map([['reports', served?.buildId ?? '']]) };
 	const judged = scenarioCoverage({
-		scenario,
+		scenario: selectedScenario,
 		commit: revision,
 		gathered,
 		checkFailed: false,
