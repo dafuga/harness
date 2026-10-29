@@ -48,56 +48,67 @@
 			{
 				"name": "ExplorerPlatforms.index",
 				"type": "HarnessIndex",
+				"required": true,
 				"description": "Project and branch history supplied by the Explorer host."
 			},
 			{
 				"name": "ExplorerPlatforms.head",
 				"type": "HarnessRevision",
+				"required": true,
 				"description": "Selected immutable revision; its platforms field supplies every displayed deployment declaration."
 			},
 			{
 				"name": "ExplorerPlatforms.parent",
 				"type": "HarnessRevision | null",
+				"required": true,
 				"description": "Optional comparison revision accepted by the shared screen interface; it never supplies missing platform settings."
 			},
 			{
 				"name": "ExplorerPlatforms.scope",
 				"type": "ExplorerScope",
+				"required": true,
 				"description": "Selected branch, commit and availability context used by the shared frame."
 			},
 			{
 				"name": "ExplorerPlatforms.route",
 				"type": "ExplorerLocation",
+				"required": true,
 				"description": "Current Platforms list or target detail address, including the selected branch and commit."
 			},
 			{
 				"name": "ExplorerPlatforms.entities",
 				"type": "ExplorerEntity[]",
+				"required": true,
 				"description": "Source-unit context accepted by the shared Explorer screen interface."
 			},
 			{
 				"name": "ExplorerPlatforms.lens",
 				"type": "EntityLens",
+				"required": true,
 				"description": "Revision-bound entity information accepted by the shared screen interface."
 			},
 			{
 				"name": "ExplorerPlatforms.client",
 				"type": "Pick<HarnessClient, \"revision\">",
+				"required": true,
 				"description": "Host revision loader accepted by the shared Explorer screen interface."
 			},
 			{
 				"name": "ExplorerPlatforms.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "Host media prefix accepted by the common screen interface."
 			},
 			{
 				"name": "ExplorerPlatforms.onroute",
 				"type": "(to: ExplorerLocation) => void",
+				"required": true,
 				"description": "Client navigation callback used by links while preserving branch and commit context."
 			},
 			{
 				"name": "ExplorerPlatforms.exportHref",
 				"type": "string",
+				"required": true,
 				"description": "Host export URL, or an empty string when no export is served."
 			}
 		],

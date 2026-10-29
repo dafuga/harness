@@ -31,41 +31,49 @@
 			{
 				"name": "EntitySearchResults.id",
 				"type": "string",
+				"required": true,
 				"description": "Required list ID and prefix for indexed option IDs."
 			},
 			{
 				"name": "EntitySearchResults.found",
 				"type": "SearchEntry[]",
+				"required": true,
 				"description": "Required results in supplied order, with category, name, purpose and identity."
 			},
 			{
 				"name": "EntitySearchResults.active",
 				"type": "number",
+				"required": true,
 				"description": "Required zero-based active position for aria-selected; an out-of-range value selects none."
 			},
 			{
 				"name": "EntitySearchResults.loading",
 				"type": "boolean",
+				"required": true,
 				"description": "Required flag showing Loading entities regardless of current result count."
 			},
 			{
 				"name": "EntitySearchResults.query",
 				"type": "string",
+				"required": true,
 				"description": "Required query text used in the empty-result message."
 			},
 			{
 				"name": "EntitySearchResults.scope",
 				"type": "string",
+				"required": true,
 				"description": "Required human-readable revision/search scope displayed above results."
 			},
 			{
 				"name": "EntitySearchResults.href",
 				"type": "(entry: SearchEntry) => string",
+				"required": true,
 				"description": "Required callback supplying each result’s actual link target."
 			},
 			{
 				"name": "EntitySearchResults.choose",
 				"type": "(entry: SearchEntry) => void",
+				"required": true,
 				"description": "Required callback for ordinary primary-button clicks. Modified or other-button clicks retain native link behavior."
 			}
 		],

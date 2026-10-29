@@ -28,10 +28,12 @@
 		],
 		"symbols": [
 			"ConfigCollection",
+			"ConfigValueMark",
 			"ConfigValueTree",
 			"collection",
 			"valueMark",
-			"ConfigCollection"
+			"ConfigCollection",
+			"ConfigValueMark"
 		]
 	},
 	"contract": {
@@ -40,21 +42,25 @@
 			{
 				"name": "ConfigValueTree.node",
 				"type": "ConfigValueNode",
+				"required": true,
 				"description": "Committed source expression or collection node to inspect. Object and array entries preserve exact keys; unknown counts stay omitted. No source is executed."
 			},
 			{
 				"name": "collection.node",
 				"type": "ConfigValueNode",
+				"required": false,
 				"description": "Optional source node. Returns its collection form only for object or array nodes; undefined and expressions have no inspectable collection."
 			},
 			{
 				"name": "valueMark.node",
 				"type": "ConfigValueNode | undefined",
+				"required": false,
 				"description": "Optional static object/array structure supplying its shape, schema flag and exact known count."
 			},
 			{
 				"name": "valueMark.text",
 				"type": "string",
+				"required": true,
 				"description": "Original committed expression text. Opaque values longer than 48 characters or one line receive an inspection icon with source size."
 			}
 		],

@@ -49,11 +49,13 @@
 			{
 				"name": "ExplorerPlatformDetails.host",
 				"type": "ExplorerScreenProps",
+				"required": true,
 				"description": "Explorer context whose selected revision and route identify the platform; other revisions never supply missing settings."
 			},
 			{
 				"name": "ExplorerPlatformDetails.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Revision-preserving link generation and client navigation callbacks supplied by the shared frame."
 			}
 		],

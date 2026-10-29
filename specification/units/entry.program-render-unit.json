@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "entry.program-render-unit",
+	"kind": "entry",
+	"title": "renderUnit",
+	"responsibility": "Owns the renderUnit entry point.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/cli/program/renderUnit.ts"],
+		"symbols": ["renderContract", "groupTests", "renderUnit"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "renderContract.manifest",
+				"type": "ComponentManifest"
+			},
+			{
+				"name": "groupTests.tests",
+				"type": "string[]"
+			},
+			{
+				"name": "renderUnit.detail",
+				"type": "UnitDetail"
+			}
+		],
+		"outputs": [
+			{
+				"name": "renderContract",
+				"type": "string[]"
+			},
+			{
+				"name": "groupTests",
+				"type": "string[]"
+			},
+			{
+				"name": "renderUnit",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.inspect-units",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/cli/program/renderUnit.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/cli/program/renderUnit.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
