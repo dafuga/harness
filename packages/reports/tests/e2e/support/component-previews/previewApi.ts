@@ -54,7 +54,7 @@ export async function servePreview(route: Route, home: string) {
 function activityFixture(route: Route) {
 	const variant = new URL(route.request().frame().page().url()).searchParams.get('variant');
 	if (variant === 'failed-refresh')
-		return route.fulfill({ status: 503, json: { message: 'Activity unavailable.' } });
+		return route.fulfill({ contentType: 'application/json', body: 'Activity unavailable.' });
 	return route.fulfill({ json: { activity, live } });
 }
 
