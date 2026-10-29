@@ -60,7 +60,7 @@ const actions: Record<string, CatalogStateAction> = {
 		await expect(component.locator('.viewer-images.comparison figure')).toHaveCount(2);
 	},
 	'reports.component.regression-proof:output-open': async (component) => {
-		await component.getByRole('summary', { name: 'Test command and recorded output' }).click();
+		await component.locator('summary').click();
 		await expect(component.getByText('harness verify run', { exact: true })).toBeVisible();
 	},
 	'reports.component.entity-search:open': async (component) => {
