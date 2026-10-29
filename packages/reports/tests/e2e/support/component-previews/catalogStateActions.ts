@@ -11,6 +11,11 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.getByRole('button', { name: 'View after recording' }).click();
 		await expect(component.getByRole('group', { name: 'After recording' })).toBeVisible();
 	},
+	'reports.component.activity-work:recorded': async (component) => {
+		const detail = component.locator('details').first();
+		await detail.locator('summary').click();
+		await expect(detail).toContainText('accepted by its records');
+	},
 	'reports.component.audio-evidence:notes': async (component) => {
 		await component.locator('.audio-details summary').click();
 		await expect(
@@ -22,11 +27,16 @@ const actions: Record<string, CatalogStateAction> = {
 		await expect(component.getByText('Browser capture', { exact: true })).toBeVisible();
 	},
 	'reports.component.evidence-grid:empty': async (component) => {
-		await component.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' }).fill('no-match');
+		await component
+			.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' })
+			.fill('no-match');
 		await expect(component.getByText('No matching evidence.', { exact: true })).toBeVisible();
 	},
 	'reports.component.evidence-grid:audio': async (component) => {
-		await component.locator('.media-tabs').getByRole('button', { name: /^Audio/ }).click();
+		await component
+			.locator('.media-tabs')
+			.getByRole('button', { name: /^Audio/ })
+			.click();
 		await expect(component.getByText('Release narration', { exact: true })).toBeVisible();
 	},
 	'reports.component.evidence-grid:image-open': async (component) => {
