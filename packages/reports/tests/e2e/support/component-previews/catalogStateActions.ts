@@ -1,5 +1,6 @@
 import { expect, type Locator } from '@playwright/test';
 import { prepareConsoleChatState } from './consoleChatActions';
+import { assertProviderPickerCardState } from './providerPickerCardActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -130,6 +131,8 @@ const actions: Record<string, CatalogStateAction> = {
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
 	if (id === 'reports.component.console-chat' && variant)
 		return prepareConsoleChatState(component, variant);
+	if (id === 'reports.component.provider-picker-cards' && variant)
+		return assertProviderPickerCardState(component, variant);
 	if (id === 'reports.component.audio-comparison') await assertAudioComparison(component, variant);
 	const action = actions[`${id}:${variant}`];
 	if (action) await action(component);

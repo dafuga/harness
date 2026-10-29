@@ -2399,6 +2399,48 @@
 			"units": ["reports.component.provider-picker-cards"]
 		},
 		{
+			"id": "reports-component-provider-picker-cards-unknown",
+			"title": "Active and queued model cards: Unknown session",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-in-use",
+			"title": "Active and queued model cards: In use",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-applying",
+			"title": "Active and queued model cards: Applying switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-applied",
+			"title": "Active and queued model cards: Applied switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-failed",
+			"title": "Active and queued model cards: Failed switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-cancelled",
+			"title": "Active and queued model cards: Cancelled switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-locked",
+			"title": "Active and queued model cards: Cancellation disabled",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
 			"id": "reports-component-recorded-value",
 			"title": "Recorded test value",
 			"coverage": "required",
@@ -4071,6 +4113,13 @@
 				"reports-component-project-activity-failed-read",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-cards",
+				"reports-component-provider-picker-cards-unknown",
+				"reports-component-provider-picker-cards-in-use",
+				"reports-component-provider-picker-cards-applying",
+				"reports-component-provider-picker-cards-applied",
+				"reports-component-provider-picker-cards-failed",
+				"reports-component-provider-picker-cards-cancelled",
+				"reports-component-provider-picker-cards-locked",
 				"reports-component-recorded-value",
 				"reports-component-regression-proof",
 				"reports-component-regression-proof-pending",

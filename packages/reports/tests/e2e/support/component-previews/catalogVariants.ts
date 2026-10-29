@@ -84,6 +84,16 @@ const variants: Record<string, string[]> = {
 		'following',
 		'not-following'
 	],
+	// Active observations and every switch status have distinct card presentations.
+	'reports.component.provider-picker-cards': [
+		'unknown',
+		'in-use',
+		'applying',
+		'applied',
+		'failed',
+		'cancelled',
+		'locked'
+	],
 	// A single recording, comparison pair and disabled upload each have distinct input layouts.
 	'reports.component.audio-upload-files': ['comparison', 'uploading'],
 	// Image, missing, compact provenance and paired-audio branches each render different evidence.
