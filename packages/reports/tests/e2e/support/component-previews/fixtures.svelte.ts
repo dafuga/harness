@@ -114,7 +114,13 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 }
 
 function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
-	if (id !== 'reports.component.audio-comparison' || variant !== 'unavailable') return null;
+	if (
+		id !== 'reports.component.audio-comparison' &&
+		id !== 'reports.component.audio-comparison-viewer'
+	)
+		return null;
+	if (variant === 'before' || variant === 'after') return props;
+	if (variant !== 'unavailable') return null;
 	const before = props.before as Record<string, unknown>;
 	return {
 		...props,

@@ -1,6 +1,6 @@
 import { children, noop, text, example, picker, image } from './shared';
 import type { PreviewCases } from './shared';
-import { report, picture, audio, group } from './reportData';
+import { report, picture, audio, group, baselineNarration, releaseNarration } from './reportData';
 import * as d from './explorerData';
 const field = group.fields[0];
 const entries = d.entities.map((e) => ({
@@ -13,25 +13,13 @@ const entries = d.entities.map((e) => ({
 }));
 export const reportCases: PreviewCases = {
 	'reports.component.audio-comparison': {
-		before: {
-			...audio,
-			id: 'baseline-narration',
-			title: 'Baseline narration',
-			category: 'Voice review',
-			phase: 'before'
-		},
-		after: {
-			...audio,
-			id: 'release-narration',
-			title: 'Release narration',
-			category: 'Voice review',
-			phase: 'after'
-		},
+		before: baselineNarration,
+		after: releaseNarration,
 		onopen: noop
 	},
 	'reports.component.audio-comparison-viewer': {
-		before: { ...audio, id: 'before', title: 'Before' },
-		after: { ...audio, id: 'after', title: 'After' },
+		before: baselineNarration,
+		after: releaseNarration,
 		assetBase: '/media/',
 		onclose: noop
 	},

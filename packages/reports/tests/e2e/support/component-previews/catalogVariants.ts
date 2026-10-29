@@ -10,6 +10,8 @@ const variants: Record<string, string[]> = {
 	],
 	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
 	'reports.component.audio-comparison': ['unavailable'],
+	// The comparison opens by default; each single-recording view stays independently inspectable.
+	'reports.component.audio-comparison-viewer': ['before', 'after', 'unavailable'],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',

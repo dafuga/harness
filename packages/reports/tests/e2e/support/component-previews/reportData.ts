@@ -24,6 +24,26 @@ export const audio: Evidence = {
 	durationSeconds: 1,
 	transcript: 'The activity list is ready.'
 };
+export const baselineNarration: Evidence = {
+	...audio,
+	id: 'baseline-narration',
+	title: 'Baseline narration',
+	category: 'Voice review',
+	phase: 'before',
+	source: 'Script review pass',
+	capturedAt: stamp,
+	transcript: 'The baseline narration needs a calmer final sentence.'
+};
+export const releaseNarration: Evidence = {
+	...audio,
+	id: 'release-narration',
+	title: 'Release narration',
+	category: 'Voice review',
+	phase: 'after',
+	source: 'Release candidate',
+	capturedAt: stamp,
+	transcript: 'The release narration is approved for the published walkthrough.'
+};
 export const report: Report = {
 	schemaVersion: 1,
 	id: 'preview-report',
