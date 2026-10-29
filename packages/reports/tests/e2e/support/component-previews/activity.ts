@@ -111,7 +111,7 @@ export const activityCases: PreviewCases = {
 const agentStates: Record<string, () => PreviewCases[string]> = {
 	unavailable: () => ({ agents: null, sampledAt: stamp }),
 	'tracking-never-used': () => ({
-		agents: { tracking: 'never-used', working: 0, unreadable: 0, roster: [] },
+		agents: { tracking: 'never-used', working: null, unreadable: 0, roster: [] },
 		sampledAt: stamp
 	}),
 	stale: () => ({

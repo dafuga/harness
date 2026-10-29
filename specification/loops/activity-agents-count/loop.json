@@ -2,7 +2,7 @@
 	"name": "activity-agents-count",
 	"goal": "The Activity agents catalog default states a working count once.",
 	"createdAt": "2026-10-29T19:01:55.069Z",
-	"updatedAt": "2026-10-29T19:02:55.801Z",
+	"updatedAt": "2026-10-29T19:06:10.966Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-29T19:06:09.524Z",
+			"evidence": "2b750c5d removes the repeated number while keeping the count element."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-29T19:06:10.966Z",
+			"evidence": "2b750c5d: unchanged focused component test passed."
 		},
 		{
 			"id": "verify",
