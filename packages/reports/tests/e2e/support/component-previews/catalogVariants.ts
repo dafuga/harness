@@ -172,7 +172,7 @@ const variants: Record<string, string[]> = {
 		'empty-file'
 	],
 	// Dense, display-label and disabled controls expose the select's distinct field treatments.
-	'reports.component.select': ['compact', 'display', 'disabled'],
+	'reports.component.select': ['compact', 'display', 'disabled', 'open'],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',

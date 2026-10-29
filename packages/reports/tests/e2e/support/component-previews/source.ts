@@ -9,7 +9,7 @@ const sourceText = (path: string) =>
 const source = {
 	files: async () => sourceFiles,
 	read: async (path: string) => sourceText(path),
-	commit: d.commits.middle
+	commit: 'b8e942614a5729731db6225e9c1297f031de8a40'
 };
 export const sourceCases: PreviewCases = {
 	'reports.component.source-code-action': {
@@ -22,7 +22,7 @@ export const sourceCases: PreviewCases = {
 	'reports.component.source-file-list': {
 		files: sourceFiles,
 		href: () => undefined,
-		children: text('<span>Synthetic file action</span>')
+		children: text('<button type="button" class="hx-action plain">View code</button>')
 	},
 	'reports.component.source-viewer': {
 		state: {
@@ -32,7 +32,7 @@ export const sourceCases: PreviewCases = {
 			loading: false,
 			error: ''
 		},
-		commit: d.commits.middle,
+		commit: source.commit,
 		onSelect: noop
 	}
 };
