@@ -2489,6 +2489,12 @@
 			"units": ["reports.component.select"]
 		},
 		{
+			"id": "reports-component-select-open",
+			"title": "Open report select control",
+			"coverage": "required",
+			"units": ["reports.component.select"]
+		},
+		{
 			"id": "reports-component-shared-primitives-atoms-html-a",
 			"title": "HtmlA",
 			"coverage": "required",
@@ -4056,6 +4062,7 @@
 				"reports-component-select-compact",
 				"reports-component-select-display",
 				"reports-component-select-disabled",
+				"reports-component-select-open",
 				"reports-component-shared-primitives-atoms-html-a",
 				"reports-component-shared-primitives-atoms-html-abbr",
 				"reports-component-shared-primitives-atoms-html-address",

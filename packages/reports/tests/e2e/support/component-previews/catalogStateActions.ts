@@ -101,6 +101,11 @@ const actions: Record<string, CatalogStateAction> = {
 	'reports.component.filter-dialog:open': async (component) => {
 		await component.getByRole('button', { name: 'Filters', exact: true }).click();
 		await expect(component.getByRole('dialog', { name: 'Filters', exact: true })).toBeVisible();
+	},
+	'reports.component.select:open': async (component) => {
+		const select = component.getByRole('combobox', { name: 'Viewport', exact: true });
+		await select.click();
+		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 	}
 };
 
