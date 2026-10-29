@@ -1451,6 +1451,12 @@
 			"units": ["reports.component.evidence-provenance"]
 		},
 		{
+			"id": "reports-component-evidence-provenance-extended",
+			"title": "Evidence provenance: Extended facts",
+			"coverage": "required",
+			"units": ["reports.component.evidence-provenance"]
+		},
+		{
 			"id": "reports-component-evidence-viewer",
 			"title": "Evidence viewer",
 			"coverage": "required",
@@ -3265,6 +3271,7 @@
 				"reports-component-evidence-grid-uploads",
 				"reports-component-evidence-grid-image-open",
 				"reports-component-evidence-provenance",
+				"reports-component-evidence-provenance-extended",
 				"reports-component-evidence-viewer",
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-dependencies-screen",

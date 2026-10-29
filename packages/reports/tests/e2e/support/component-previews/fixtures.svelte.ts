@@ -1,7 +1,6 @@
 import { modulePreview } from './modules';
 import { previewVariants } from './catalogVariants';
-import { baselineNarration, releaseNarration } from './reportData';
-import { noop } from './shared';
+import { reportVariantProps } from './reportVariants';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import { explorerCases } from './explorer';
 import { legacyAddresses, legacyCases } from './legacy';
@@ -114,94 +113,4 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 		return { ...shown, route, scope: { ...shown.scope, location: route } };
 	}
 	return shown;
-}
-
-function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
-	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
-	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
-	if (id === 'reports.component.audio-upload-files')
-		return audioUploadFilesVariant(props, variant);
-	if (id === 'reports.component.evidence-card') return evidenceCardVariant(props, variant);
-	if (id === 'reports.component.evidence-grid') return evidenceGridVariant(props, variant);
-	if (
-		id !== 'reports.component.audio-comparison' &&
-		id !== 'reports.component.audio-comparison-viewer'
-	)
-		return null;
-	if (variant === 'before' || variant === 'after') return props;
-	if (variant !== 'unavailable') return null;
-	const before = props.before as Record<string, unknown>;
-	return {
-		...props,
-		before: {
-			...before,
-			file: '',
-			missing: true,
-			note: 'The original recording was not retained with this evidence.'
-		}
-	};
-}
-
-function filterDialogVariant(props: PreviewCases[string], variant: string) {
-	if (variant === 'active') return { ...props, active: 3 };
-	return props;
-}
-
-function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {
-	if (variant === 'comparison') return { ...props, mode: 'comparison' };
-	if (variant === 'uploading') return { ...props, mode: 'comparison', uploading: true };
-	return null;
-}
-
-function evidenceCardVariant(props: PreviewCases[string], variant: string) {
-	const item = props.item as Record<string, unknown>;
-	if (variant === 'missing')
-		return {
-			...props,
-			item: { ...item, missing: true, note: 'The recorded screenshot could not be restored.' }
-		};
-	if (variant === 'compact')
-		return {
-			...props,
-			compact: true,
-			item: {
-				...item,
-				provenance: [
-					{ label: 'Viewport', value: 'Desktop' },
-					{ label: 'Source', value: 'Browser capture' }
-				]
-			}
-		};
-	if (variant === 'paired-audio')
-		return { ...props, item: releaseNarration, before: baselineNarration };
-	return null;
-}
-
-function evidenceGridVariant(props: PreviewCases[string], variant: string) {
-	if (variant === 'uploads')
-		return { ...props, reportId: 'preview-report', onUploaded: noop, idPrefix: 'upload-' };
-	return props;
-}
-
-function audioEvidenceVariant(props: PreviewCases[string], variant: string) {
-	const item = props.item as Record<string, unknown>;
-	if (variant === 'notes')
-		return {
-			...props,
-			item: {
-				...item,
-				transcript: undefined,
-				note: 'Timing and diction were reviewed before approval.'
-			}
-		};
-	if (variant !== 'unavailable') return null;
-	return {
-		...props,
-		item: {
-			...item,
-			file: '',
-			missing: true,
-			note: 'The original recording was not retained with this evidence.'
-		}
-	};
 }
