@@ -23,6 +23,10 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.entity-cases') return entityCasesVariant(props, variant);
 	if (id === 'reports.component.explorer-ui-explorer-module-card')
 		return moduleCardVariant(props, variant);
+	if (id === 'reports.component.source-viewer') {
+		const viewer = extendedSourceViewerVariant(props, variant);
+		if (viewer) return viewer;
+	}
 	if (id.startsWith('reports.component.source-')) return sourceVariant(props, id, variant);
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
 	if (id === 'reports.component.audio-upload-files') return audioUploadFilesVariant(props, variant);
@@ -70,6 +74,28 @@ function modalVariant(props: PreviewCases[string], variant: string) {
 			`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · desktop evidence</figcaption></figure></div>`
 		)
 	};
+}
+
+function extendedSourceViewerVariant(props: PreviewCases[string], variant: string) {
+	const state = props.state as Record<string, unknown>;
+	if (variant === 'loading-list')
+		return {
+			...props,
+			state: { ...state, files: [], path: '', text: '', loading: true, error: '' }
+		};
+	if (variant === 'list-error')
+		return {
+			...props,
+			state: {
+				...state,
+				files: [],
+				path: '',
+				text: '',
+				loading: false,
+				error: 'The archived source file list is unavailable.'
+			}
+		};
+	return variant === 'empty-file' ? { ...props, state: { ...state, text: '' } } : null;
 }
 
 function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {

@@ -3347,14 +3347,32 @@
 			"units": ["reports.component.source-dialog"]
 		},
 		{
+			"id": "reports-component-source-dialog-loading-file",
+			"title": "SourceDialog loading a selected file",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
 			"id": "reports-component-source-dialog-error",
 			"title": "SourceDialog unavailable archived source",
 			"coverage": "required",
 			"units": ["reports.component.source-dialog"]
 		},
 		{
+			"id": "reports-component-source-dialog-list-error",
+			"title": "SourceDialog unavailable file list",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
 			"id": "reports-component-source-dialog-empty",
 			"title": "SourceDialog without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
+			"id": "reports-component-source-dialog-empty-file",
+			"title": "SourceDialog with an empty file",
 			"coverage": "required",
 			"units": ["reports.component.source-dialog"]
 		},
@@ -3389,14 +3407,32 @@
 			"units": ["reports.component.source-viewer"]
 		},
 		{
+			"id": "reports-component-source-viewer-loading-list",
+			"title": "SourceViewer loading the file list",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
 			"id": "reports-component-source-viewer-error",
 			"title": "SourceViewer unavailable archived source",
 			"coverage": "required",
 			"units": ["reports.component.source-viewer"]
 		},
 		{
+			"id": "reports-component-source-viewer-list-error",
+			"title": "SourceViewer unavailable file list",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
 			"id": "reports-component-source-viewer-empty",
 			"title": "SourceViewer without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
+			"id": "reports-component-source-viewer-empty-file",
+			"title": "SourceViewer with an empty file",
 			"coverage": "required",
 			"units": ["reports.component.source-viewer"]
 		},
@@ -4163,15 +4199,21 @@
 				"reports-component-source-content-empty-file",
 				"reports-component-source-dialog",
 				"reports-component-source-dialog-loading",
+				"reports-component-source-dialog-loading-file",
 				"reports-component-source-dialog-error",
+				"reports-component-source-dialog-list-error",
 				"reports-component-source-dialog-empty",
+				"reports-component-source-dialog-empty-file",
 				"reports-component-source-file-list",
 				"reports-component-source-file-list-linked",
 				"reports-component-source-file-list-empty",
 				"reports-component-source-viewer",
 				"reports-component-source-viewer-loading",
+				"reports-component-source-viewer-loading-list",
 				"reports-component-source-viewer-error",
+				"reports-component-source-viewer-list-error",
 				"reports-component-source-viewer-empty",
+				"reports-component-source-viewer-empty-file",
 				"reports-component-status-badge",
 				"reports-component-status-badge-running",
 				"reports-component-status-badge-failed",
