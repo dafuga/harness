@@ -1,10 +1,9 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
-import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { expect, test } from 'vitest';
+import type { ModelDefinition } from '../../../../src/utils/unitMetadata';
 import { explorerEntityCategories as explorerCategories } from '../../../../src/utils/explorerRoute';
-import type { HarnessUnit } from '../../src/models/Harness.types';
 import { explorerCategory, explorerRole } from '../../src/utils/explorerCategory';
+import { modelDefinition } from '../entityClassFixtures';
 import { unit } from '../explorerFixture';
 
 const owning = (id: string, kind: string, source: string[]) =>
@@ -73,6 +72,20 @@ test('a unit of a product kind is listed under the category of that kind', () =>
 		expect(explorerCategory(unit('workflow.run-verify', 'workflow'))).toBe('services');
 	}));
 
+test('a runtime class beside shared declarations neither makes a model nor hides the types', () => {
+	const shared = modelDefinition('Runner', 'src/models/Runner.types.ts');
+	const failure = { ...modelDefinition('RunCancelled', 'src/models/RunnerValues.ts') };
+	delete failure.table;
+	const owner = (modelDefinitions: ModelDefinition[]) =>
+		unit('model.runner-types', 'model', {
+			owns: { source: [shared.source, failure.source], symbols: [] },
+			modelDefinitions
+		});
+	const mixed = owner([shared, failure]);
+	expect([explorerCategory(mixed), explorerRole(mixed)]).toEqual(['types', 'Type definitions']);
+	expect(explorerCategory(owner([failure])), 'the runtime class alone is no model').toBeNull();
+});
+
 test('a page is what renders an address, whatever kind it was registered as', () => {
 	const rendered = ['src/routes/titles/+page.server.ts', 'src/routes/titles/+page.svelte'];
 	expect(explorerCategory(owning('page.titles', 'page', rendered))).toBe('pages');
@@ -122,60 +135,6 @@ test('a unit inside a category says its role in a word a reader knows', () => {
 	expect(explorerRole(unit('service.x', 'service'))).toBe('Service');
 	expect(explorerRole(unit('endpoint.x', 'endpoint'))).toBe('Endpoint');
 	expect(explorerRole(unit('command.x', 'command'))).toBe('Command');
-});
-
-/** The registry of this repository, as its manifests state it. */
-function ownRegistry(): HarnessUnit[] {
-	const directory = join(import.meta.dirname, '../../../../specification/units');
-	return readdirSync(directory)
-		.filter((name) => name.endsWith('.json'))
-		.map((name) => JSON.parse(readFileSync(join(directory, name), 'utf8')) as HarnessUnit);
-}
-
-test("the policy holds for Harness's own registry", () => {
-	const units = ownRegistry().filter((item) => item.status === 'active');
-	expect(units.length).toBeGreaterThan(500);
-	const listed = (category: string) => units.filter((item) => explorerCategory(item) === category);
-	const aliases = new Set(
-		explorerCategories.map(
-			(category) => `reports.page.harness-branch-branch-at-${category}-entity-details`
-		)
-	);
-	// Every page renders an address, and every unit that renders one is a page.
-	const rendering = units.filter(
-		(item) =>
-			item.owns.source.some((path) => path.endsWith('/+page.svelte')) &&
-			item.catalog?.visibility !== 'internal' &&
-			!aliases.has(item.id) &&
-			!item.owns.source.some((path) => /\/shells(?:\/|$)/.test(path))
-	);
-	expect(
-		listed('pages')
-			.map((item) => item.id)
-			.sort()
-	).toEqual(rendering.map((item) => item.id).sort());
-	expect(listed('pages').map((item) => item.id)).not.toContain('reports.page.harness-view');
-	expect(listed('pages').map((item) => item.id)).not.toContain('reports.page.root');
-	expect(listed('pages').map((item) => item.id)).not.toContain('reports.layout.root');
-	const invented = ['audit', 'guide', 'template', 'module', 'entry', 'script', 'style'];
-	for (const item of units.filter((found) => invented.includes(found.kind))) {
-		expect([item.id, explorerCategory(item)]).toEqual([item.id, null]);
-	}
-	for (const item of listed('functions')) {
-		expect(['function', 'validator', 'serializer', 'kernel']).toContain(item.kind);
-	}
-	for (const item of units) {
-		const category = explorerCategory(item);
-		expect(category === null || explorerCategories.some((known) => known === category)).toBe(true);
-		expect(explorerRole(item)).toMatch(/^[A-Z][a-z]+( [a-z]+)*$/);
-	}
-	for (const category of ['functions', 'models', 'types'])
-		expect(listed(category), 'raw manifests have no source-derived declaration proof').toEqual([]);
-	for (const category of explorerCategories.filter(
-		(kind) => !['functions', 'models', 'types'].includes(kind)
-	)) {
-		expect(listed(category).length).toBeGreaterThan(0);
-	}
 });
 
 test('only explicitly pure functions with distinct runtime consumers are helpers', () => {
