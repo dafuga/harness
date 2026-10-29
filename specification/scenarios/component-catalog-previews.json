@@ -1271,6 +1271,12 @@
 			"units": ["reports.component.analytics-tasks"]
 		},
 		{
+			"id": "reports-component-analytics-tasks-empty",
+			"title": "Analytics tasks: No recorded tasks",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
 			"id": "reports-component-audio-comparison",
 			"title": "Audio comparison",
 			"coverage": "required",
@@ -3313,6 +3319,7 @@
 				"reports-component-analytics-models",
 				"reports-component-analytics-models-empty",
 				"reports-component-analytics-tasks",
+				"reports-component-analytics-tasks-empty",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-unavailable",
 				"reports-component-audio-comparison-viewer",
