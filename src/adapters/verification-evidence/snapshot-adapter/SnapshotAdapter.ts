@@ -32,7 +32,7 @@ export class SnapshotAdapter {
 		await extract(archive, directory);
 		const entries = await (await CommitTreeAdapter.open(root, commit)).list();
 		const snapshot = new SnapshotAdapter(directory, entries, outputs);
-		const hashes = await Promise.all(entries.map((entry) => snapshot.hash(entry.path)));
+		const hashes = await snapshot.hashes(entries);
 		snapshot.exported.push(...entries.filter((entry, index) => hashes[index] === entry.hash));
 		return snapshot;
 	}
@@ -60,7 +60,7 @@ export class SnapshotAdapter {
 	 * nothing may appear outside the declared outputs, wherever it is and whatever it is.
 	 */
 	async drift(): Promise<SnapshotDrift> {
-		const hashes = await Promise.all(this.exported.map((entry) => this.hash(entry.path)));
+		const hashes = await this.hashes(this.exported);
 		const changed = this.exported.filter((entry, index) => hashes[index] !== entry.hash);
 		const added = await snapshotAdditions(this.directory, {
 			tracked: new Set(this.tracked.map((entry) => entry.path)),
@@ -105,6 +105,13 @@ export class SnapshotAdapter {
 		} catch {
 			return undefined;
 		}
+	}
+
+	/** A repository export can contain thousands of files; retain one read at a time. */
+	private async hashes(entries: TreeEntry[]): Promise<Array<string | undefined>> {
+		const hashes: Array<string | undefined> = [];
+		for (const entry of entries) hashes.push(await this.hash(entry.path));
+		return hashes;
 	}
 }
 

@@ -33,10 +33,10 @@ export async function servePreview(route: Route, home: string) {
 			body: readFileSync(join(home, 'catalog', file))
 		});
 	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname);
+	if (url.pathname === '/api/project-activity') return activityFixture(route);
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
-		'/api/analytics-cpu': cpu,
-		'/api/project-activity': { activity, live },
+		'/api/analytics-cpu': cpuFixture(route),
 		'/tools': picker,
 		'/harness/data/index.json': shown.index,
 		'/harness/data/activity.json': activity
@@ -49,6 +49,29 @@ export async function servePreview(route: Route, home: string) {
 		contentType: 'text/html',
 		body: '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Component preview</title><link rel="stylesheet" href="/page.css"></head><body><div id="app"></div><script src="/page.iife.js"></script></body></html>'
 	});
+}
+
+function activityFixture(route: Route) {
+	const variant = new URL(route.request().frame().page().url()).searchParams.get('variant');
+	if (variant === 'failed-refresh')
+		return route.fulfill({ contentType: 'application/json', body: 'Activity unavailable.' });
+	return route.fulfill({ json: { activity, live } });
+}
+
+function cpuFixture(route: Route) {
+	const variant = new URL(route.request().frame().page().url()).searchParams.get('variant');
+	if (variant === 'no-agents') return { ...cpu, agents: [] };
+	if (variant !== 'unavailable') return cpu;
+	return {
+		...cpu,
+		status: 'unavailable',
+		logicalCores: 0,
+		intervalMs: 0,
+		machinePercent: null,
+		trackedPercent: null,
+		groups: [],
+		agents: []
+	};
 }
 /**
  * The history a page reads: a route module reads the route history, where every category has an

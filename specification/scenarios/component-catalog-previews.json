@@ -1217,6 +1217,18 @@
 			"units": ["reports.component.analytics-cpu"]
 		},
 		{
+			"id": "reports-component-analytics-cpu-no-agents",
+			"title": "Analytics cpu: No repository agents",
+			"coverage": "required",
+			"units": ["reports.component.analytics-cpu"]
+		},
+		{
+			"id": "reports-component-analytics-cpu-unavailable",
+			"title": "Analytics cpu: Unavailable sample",
+			"coverage": "required",
+			"units": ["reports.component.analytics-cpu"]
+		},
+		{
 			"id": "reports-component-analytics-filters",
 			"title": "Analytics filters",
 			"coverage": "required",
@@ -1235,14 +1247,32 @@
 			"units": ["reports.component.analytics-history"]
 		},
 		{
+			"id": "reports-component-analytics-history-empty",
+			"title": "Analytics history: Empty history",
+			"coverage": "required",
+			"units": ["reports.component.analytics-history"]
+		},
+		{
 			"id": "reports-component-analytics-models",
 			"title": "Analytics models",
 			"coverage": "required",
 			"units": ["reports.component.analytics-models"]
 		},
 		{
+			"id": "reports-component-analytics-models-empty",
+			"title": "Analytics models: No recorded models",
+			"coverage": "required",
+			"units": ["reports.component.analytics-models"]
+		},
+		{
 			"id": "reports-component-analytics-tasks",
 			"title": "Analytics tasks",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
+			"id": "reports-component-analytics-tasks-empty",
+			"title": "Analytics tasks: No recorded tasks",
 			"coverage": "required",
 			"units": ["reports.component.analytics-tasks"]
 		},
@@ -1585,6 +1615,18 @@
 		{
 			"id": "reports-component-gameplay-replay",
 			"title": "Gameplay replay",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-live-empty",
+			"title": "Gameplay replay: Waiting for first frame",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-interrupted",
+			"title": "Gameplay replay: Interrupted run",
 			"coverage": "required",
 			"units": ["reports.component.gameplay-replay"]
 		},
@@ -1979,6 +2021,18 @@
 			"units": ["reports.component.project-activity"]
 		},
 		{
+			"id": "reports-component-project-activity-recorded",
+			"title": "Project activity overview: Recorded history",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
+			"id": "reports-component-project-activity-empty",
+			"title": "Project activity overview: No activity",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
 			"id": "reports-component-provider-picker",
 			"title": "Session model picker",
 			"coverage": "required",
@@ -2027,6 +2081,42 @@
 			"units": ["reports.component.replay-controls"]
 		},
 		{
+			"id": "reports-component-replay-controls-playing",
+			"title": "Evidence replay controls: Playing",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-final-frame",
+			"title": "Evidence replay controls: Final frame",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-single-frame",
+			"title": "Evidence replay controls: Single frame",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-scene-unselected",
+			"title": "Evidence replay controls: No selected scene",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-fullscreen",
+			"title": "Evidence replay controls: Fullscreen",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-speed-2x",
+			"title": "Evidence replay controls: 2× speed",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
 			"id": "reports-component-report-checks",
 			"title": "Recorded report checks",
 			"coverage": "required",
@@ -2053,6 +2143,24 @@
 		{
 			"id": "reports-component-select",
 			"title": "Report select control",
+			"coverage": "required",
+			"units": ["reports.component.select"]
+		},
+		{
+			"id": "reports-component-select-compact",
+			"title": "Compact report select control",
+			"coverage": "required",
+			"units": ["reports.component.select"]
+		},
+		{
+			"id": "reports-component-select-display",
+			"title": "Report select with display label",
+			"coverage": "required",
+			"units": ["reports.component.select"]
+		},
+		{
+			"id": "reports-component-select-disabled",
+			"title": "Disabled report select control",
 			"coverage": "required",
 			"units": ["reports.component.select"]
 		},
@@ -2843,8 +2951,20 @@
 			"units": ["reports.component.site-activity"]
 		},
 		{
+			"id": "reports-component-site-activity-failed-refresh",
+			"title": "Live site activity: Failed refresh",
+			"coverage": "required",
+			"units": ["reports.component.site-activity"]
+		},
+		{
 			"id": "reports-component-source-code-action",
 			"title": "SourceCodeAction",
+			"coverage": "required",
+			"units": ["reports.component.source-code-action"]
+		},
+		{
+			"id": "reports-component-source-code-action-unavailable",
+			"title": "SourceCodeAction without archived source",
 			"coverage": "required",
 			"units": ["reports.component.source-code-action"]
 		},
@@ -2855,8 +2975,44 @@
 			"units": ["reports.component.source-content"]
 		},
 		{
+			"id": "reports-component-source-content-loading",
+			"title": "SourceContent loading archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
+			"id": "reports-component-source-content-error",
+			"title": "SourceContent unavailable archived source",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
+			"id": "reports-component-source-content-empty",
+			"title": "SourceContent without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
 			"id": "reports-component-source-dialog",
 			"title": "SourceDialog",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
+			"id": "reports-component-source-dialog-loading",
+			"title": "SourceDialog loading archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
+			"id": "reports-component-source-dialog-error",
+			"title": "SourceDialog unavailable archived source",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
+			"id": "reports-component-source-dialog-empty",
+			"title": "SourceDialog without archived files",
 			"coverage": "required",
 			"units": ["reports.component.source-dialog"]
 		},
@@ -2867,8 +3023,38 @@
 			"units": ["reports.component.source-file-list"]
 		},
 		{
+			"id": "reports-component-source-file-list-linked",
+			"title": "Source file list with repository links",
+			"coverage": "required",
+			"units": ["reports.component.source-file-list"]
+		},
+		{
+			"id": "reports-component-source-file-list-empty",
+			"title": "Source file list without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-file-list"]
+		},
+		{
 			"id": "reports-component-source-viewer",
 			"title": "SourceViewer",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
+			"id": "reports-component-source-viewer-loading",
+			"title": "SourceViewer loading archived source",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
+			"id": "reports-component-source-viewer-error",
+			"title": "SourceViewer unavailable archived source",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
+			"id": "reports-component-source-viewer-empty",
+			"title": "SourceViewer without archived files",
 			"coverage": "required",
 			"units": ["reports.component.source-viewer"]
 		},
@@ -3280,11 +3466,16 @@
 				"reports-component-activity-work-recorded",
 				"reports-component-activity-work-empty",
 				"reports-component-analytics-cpu",
+				"reports-component-analytics-cpu-no-agents",
+				"reports-component-analytics-cpu-unavailable",
 				"reports-component-analytics-filters",
 				"reports-component-analytics-filters-empty",
 				"reports-component-analytics-history",
+				"reports-component-analytics-history-empty",
 				"reports-component-analytics-models",
+				"reports-component-analytics-models-empty",
 				"reports-component-analytics-tasks",
+				"reports-component-analytics-tasks-empty",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-unavailable",
 				"reports-component-audio-comparison-viewer",
@@ -3342,6 +3533,8 @@
 				"reports-component-filter-dialog-open",
 				"reports-component-floating-chat",
 				"reports-component-gameplay-replay",
+				"reports-component-gameplay-replay-live-empty",
+				"reports-component-gameplay-replay-interrupted",
 				"reports-component-harness-entity-artifact",
 				"reports-component-harness-entity-audio",
 				"reports-component-harness-entity-behavior",
@@ -3407,6 +3600,8 @@
 				"reports-component-module-system-explorer-modules-screen-headless-audio",
 				"reports-component-networking-security-explorer-permissions-screen",
 				"reports-component-project-activity",
+				"reports-component-project-activity-recorded",
+				"reports-component-project-activity-empty",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-cards",
 				"reports-component-recorded-value",
@@ -3415,11 +3610,20 @@
 				"reports-component-regression-proof-gap",
 				"reports-component-regression-proof-output-open",
 				"reports-component-replay-controls",
+				"reports-component-replay-controls-playing",
+				"reports-component-replay-controls-final-frame",
+				"reports-component-replay-controls-single-frame",
+				"reports-component-replay-controls-scene-unselected",
+				"reports-component-replay-controls-fullscreen",
+				"reports-component-replay-controls-speed-2x",
 				"reports-component-report-checks",
 				"reports-component-report-findings",
 				"reports-component-report-summary",
 				"reports-component-report-view",
 				"reports-component-select",
+				"reports-component-select-compact",
+				"reports-component-select-display",
+				"reports-component-select-disabled",
 				"reports-component-shared-primitives-atoms-html-a",
 				"reports-component-shared-primitives-atoms-html-abbr",
 				"reports-component-shared-primitives-atoms-html-address",
@@ -3551,11 +3755,24 @@
 				"reports-component-shared-primitives-atoms-svg-use",
 				"reports-component-shared-primitives-loading-state",
 				"reports-component-site-activity",
+				"reports-component-site-activity-failed-refresh",
 				"reports-component-source-code-action",
+				"reports-component-source-code-action-unavailable",
 				"reports-component-source-content",
+				"reports-component-source-content-loading",
+				"reports-component-source-content-error",
+				"reports-component-source-content-empty",
 				"reports-component-source-dialog",
+				"reports-component-source-dialog-loading",
+				"reports-component-source-dialog-error",
+				"reports-component-source-dialog-empty",
 				"reports-component-source-file-list",
+				"reports-component-source-file-list-linked",
+				"reports-component-source-file-list-empty",
 				"reports-component-source-viewer",
+				"reports-component-source-viewer-loading",
+				"reports-component-source-viewer-error",
+				"reports-component-source-viewer-empty",
 				"reports-component-status-badge",
 				"reports-component-status-badge-running",
 				"reports-component-status-badge-failed",

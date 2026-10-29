@@ -144,6 +144,52 @@
 .analytics-table td:last-child {
 	padding-right: 0;
 }
+.analytics-models-table th,
+.analytics-models-table td {
+	white-space: normal;
+}
+.analytics-tasks-table {
+	table-layout: fixed;
+}
+.analytics-tasks-table th,
+.analytics-tasks-table td {
+	white-space: normal;
+	overflow-wrap: anywhere;
+}
+@media (max-width: 42rem) {
+	.analytics-tasks-table,
+	.analytics-tasks-table tbody,
+	.analytics-tasks-table tr,
+	.analytics-tasks-table td {
+		display: block;
+	}
+	.analytics-tasks-table thead {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+	}
+	.analytics-tasks-table tr {
+		padding: var(--hx-space-8) 0;
+	}
+	.analytics-tasks-table td {
+		display: grid;
+		grid-template-columns: minmax(8rem, 40%) minmax(0, 1fr);
+		gap: var(--hx-space-8);
+		padding: var(--hx-space-6) 0;
+		border: 0;
+	}
+	.analytics-tasks-table td::before {
+		content: attr(data-label);
+		color: var(--hx-color-text-muted);
+		font-size: var(--hx-type-size-2xs);
+		font-weight: var(--hx-style-weight-semibold);
+		letter-spacing: var(--hx-style-tracking-caps);
+		text-align: left;
+		text-transform: uppercase;
+	}
+}
 .analytics-table small {
 	display: block;
 }

@@ -23,51 +23,64 @@
 			{
 				"name": "Select.value",
 				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional bindable selected value, defaulting to an empty string."
 			},
 			{
 				"name": "Select.label",
 				"type": "string",
+				"required": true,
 				"description": "Required accessible label for the select."
 			},
 			{
 				"name": "Select.id",
 				"type": "string",
+				"required": false,
 				"description": "Optional HTML identifier."
 			},
 			{
 				"name": "Select.name",
 				"type": "string",
+				"required": false,
 				"description": "Optional form field name."
 			},
 			{
 				"name": "Select.required",
 				"type": "boolean",
+				"required": false,
 				"description": "Optional native required flag, omitted by default."
 			},
 			{
 				"name": "Select.disabled",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional disabled state, defaulting to false."
 			},
 			{
 				"name": "Select.children",
 				"type": "Snippet",
+				"required": true,
 				"description": "Required snippet supplying the option markup."
 			},
 			{
 				"name": "Select.compact",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional compact size for dense navigation. Defaults to false; coarse-pointer targets remain larger."
 			},
 			{
 				"name": "Select.display",
-				"type": "string | undefined",
+				"type": "string",
+				"required": false,
 				"description": "Optional closed-field label. Names over 16 characters show their first and last six characters. Native options and bound values stay complete."
 			},
 			{
 				"name": "Select.title",
-				"type": "string | undefined",
+				"type": "string",
+				"required": false,
 				"description": "Optional hover text. Defaults to the full display label."
 			}
 		],

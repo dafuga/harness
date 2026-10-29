@@ -38,21 +38,26 @@
 			{
 				"name": "EntityCases.document",
 				"type": "unknown",
+				"required": false,
 				"description": "Optional parsed test result. Used when no documented examples are supplied."
 			},
 			{
 				"name": "EntityCases.unit",
 				"type": "string",
+				"required": false,
 				"description": "Optional unit identifier limiting direct invocation rows to that function."
 			},
 			{
 				"name": "EntityCases.callable",
 				"type": "boolean",
+				"required": false,
+				"default": true,
 				"description": "Optional flag, true by default. Controls wording distinguishing observed end-to-end behavior from a direct function call; false is suitable for noncallable entities."
 			},
 			{
 				"name": "EntityCases.examples",
 				"type": "UsageExample[] | undefined",
+				"required": false,
 				"description": "Documented uses with input and one expected output or error. These are never recorded test results."
 			}
 		],

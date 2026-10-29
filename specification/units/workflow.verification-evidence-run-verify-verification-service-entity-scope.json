@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.verification-evidence-run-verify-verification-service-entity-scope",
+	"kind": "workflow",
+	"title": "entityScope",
+	"responsibility": "Owns the entityScope command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/verification-evidence/run-verify/verification-service/entityScope.ts"
+		],
+		"symbols": ["scopeFailure", "scopedScenarios", "scopedCheck"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "scopeFailure.entity",
+				"type": "string"
+			},
+			{
+				"name": "scopedScenarios.scenarios",
+				"type": "ScenarioManifest[]"
+			},
+			{
+				"name": "scopedScenarios.entity",
+				"type": "string"
+			},
+			{
+				"name": "scopedCheck.check",
+				"type": "PlannedCheck"
+			},
+			{
+				"name": "scopedCheck.entity",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "scopeFailure",
+				"type": "string"
+			},
+			{
+				"name": "scopedScenarios",
+				"type": "ScenarioManifest[]"
+			},
+			{
+				"name": "scopedCheck",
+				"type": "PlannedCheck"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.unit-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-plan",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/verification-evidence/run-verify/verification-service/entityScope.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/verification-evidence/run-verify/verification-service/entityScope.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

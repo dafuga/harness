@@ -23,6 +23,7 @@
 			{
 				"name": "SiteActivity.shown",
 				"type": "Shown",
+				"required": true,
 				"description": "Required initial recorded and live activity snapshot. Remains visible until a newer read arrives."
 			}
 		],

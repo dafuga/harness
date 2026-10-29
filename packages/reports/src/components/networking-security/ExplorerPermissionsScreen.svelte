@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
+	import './ExplorerPermissionsScreen.css';
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import EntityLink from '../explorer-ui/EntityLink.svelte';
 	import ExplorerFrame from '../explorer-ui/ExplorerFrame.svelte';
@@ -87,9 +88,9 @@
 					{#each rows as row, position (position)}
 						<hx-tr>
 							<hx-th scope="row">{@render ref(row.resource)}</hx-th>
-							<hx-td>{row.actions.join(', ')}</hx-td>
-							<hx-td><hx-code>{row.fields.join(', ')}</hx-code></hx-td>
-							<hx-td>{row.scope}</hx-td>
+							<hx-td data-label="Actions">{row.actions.join(', ')}</hx-td>
+							<hx-td data-label="Fields"><hx-code>{row.fields.join(', ')}</hx-code></hx-td>
+							<hx-td data-label="Scope">{row.scope}</hx-td>
 						</hx-tr>
 					{/each}
 				</hx-tbody>
@@ -207,8 +208,3 @@
 		{/snippet}
 	</ExplorerFrame>
 {/if}
-
-<style>
- .permission-data :global(table) { table-layout: auto; min-width: max-content; }
- .permission-data :global(code) { white-space: nowrap; }
-</style>

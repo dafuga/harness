@@ -29,21 +29,25 @@
 			{
 				"name": "ExplorerUsageLink.entity",
 				"type": "ExplorerEntity",
+				"required": true,
 				"description": "Referenced entity at the shown revision; its own capture is used."
 			},
 			{
 				"name": "ExplorerUsageLink.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Navigation preserving the selected branch and commit."
 			},
 			{
 				"name": "ExplorerUsageLink.lens",
 				"type": "EntityLens",
+				"required": true,
 				"description": "The selected revision evidence resolver; no screenshot is borrowed from another entity."
 			},
 			{
 				"name": "ExplorerUsageLink.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "URL prefix resolving the referenced screenshot file."
 			}
 		],

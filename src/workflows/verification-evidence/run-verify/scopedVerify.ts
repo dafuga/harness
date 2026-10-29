@@ -18,7 +18,7 @@ export function scopedVerify(
 	env: Record<string, string | undefined>
 ): Promise<StoredRecord> {
 	return new VerificationService({
-		...context,
+		...scopedContext(context),
 		impact: scopedImpact(context.commit, runtime),
 		requirePerformance: false,
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
@@ -26,6 +26,11 @@ export function scopedVerify(
 		env,
 		explained: () => Promise.resolve({ required: [], entries: [], overlong: [], failures: [] })
 	}).run();
+}
+
+/** Scoped evidence does not reopen repository-wide ledger and retirement checks from an empty base. */
+export function scopedContext(context: Base): Base {
+	return { ...context, base: context.head };
 }
 
 function scopedImpact(head: string, runtime: ImpactReport['runtime']): ImpactReport {

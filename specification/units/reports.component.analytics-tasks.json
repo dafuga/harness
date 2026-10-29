@@ -38,6 +38,7 @@
 			{
 				"name": "AnalyticsTasks.jev",
 				"type": "Jev",
+				"required": true,
 				"description": "Required Jev summary containing response and clean-code task arrays. Each row supplies task, loop/step, author model, assessed attempts, first-pass flag, attempts-to-pass and optional report identifier."
 			}
 		],

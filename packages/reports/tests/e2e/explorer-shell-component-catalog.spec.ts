@@ -127,13 +127,13 @@ for (const viewport of catalogViewports) {
 			}
 			await assertModulePreview(component, unit.id, variant);
 			if (unit.id === 'reports.component.networking-security-explorer-permissions-screen')
-				await assertPermissionTable(component, page);
+				await assertPermissionTable(component, page, viewport.id === 'mobile');
 			if (unit.id.endsWith('explorer-index')) await assertCompositionFilter(component);
 			if (
 				unit.id === 'reports.component.explorer-dependencies-screen' ||
 				unit.id.endsWith('at-dependencies')
 			) {
-				await dependencyTables(component, page, viewport.width);
+				await dependencyTables(component, page, viewport.width, viewport.id === 'mobile');
 			}
 			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations'))
 				await assertTranslationControls(component);

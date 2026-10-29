@@ -32,21 +32,26 @@
 			{
 				"name": "SourceViewer.state",
 				"type": "SourceState",
+				"required": true,
 				"description": "Current files, selected path, text, loading and error from the shared reader."
 			},
 			{
 				"name": "SourceViewer.commit",
 				"type": "string",
+				"required": true,
 				"description": "Revision label for these contents; displayed with its short hash."
 			},
 			{
 				"name": "SourceViewer.empty",
 				"type": "string",
+				"required": false,
+				"default": "No source files recorded at this revision.",
 				"description": "Optional explanation when no files were recorded."
 			},
 			{
 				"name": "SourceViewer.onSelect",
 				"type": "(path: string) => void",
+				"required": true,
 				"description": "Requests the selected recorded file."
 			}
 		],

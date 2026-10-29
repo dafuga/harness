@@ -44,7 +44,7 @@
 			</hx-div>
 			{#if group.tasks.length}
 				<hx-div class="analytics-scroll">
-					<hx-table class="analytics-table">
+					<hx-table class="analytics-table analytics-tasks-table">
 						<hx-thead>
 							<hx-tr>
 								<hx-th scope="col">Task</hx-th>
@@ -59,13 +59,15 @@
 						<hx-tbody>
 							{#each group.tasks as row}
 								<hx-tr>
-									<hx-td class="analytics-wrap">{text(row.task)}</hx-td>
-									<hx-td>{loopStep(row)}</hx-td>
-									<hx-td>{text(row.agentModel)}</hx-td>
-									<hx-td>{firstPass(row)}</hx-td>
-									<hx-td class="analytics-num">{analyticsCount(row.attempts)}</hx-td>
-									<hx-td class="analytics-num">{toPass(row)}</hx-td>
-									<hx-td>
+									<hx-td class="analytics-wrap" data-label="Task">{text(row.task)}</hx-td>
+									<hx-td data-label="Loop / step">{loopStep(row)}</hx-td>
+									<hx-td data-label="Agent model">{text(row.agentModel)}</hx-td>
+									<hx-td data-label="First pass">{firstPass(row)}</hx-td>
+									<hx-td class="analytics-num" data-label="Assessed attempts">
+										{analyticsCount(row.attempts)}
+									</hx-td>
+									<hx-td class="analytics-num" data-label="Attempts to pass">{toPass(row)}</hx-td>
+									<hx-td data-label="Report">
 										{#if row.report}
 											<hx-a class="text-link" href={reportHref(row.report)}>View report</hx-a>
 										{:else}

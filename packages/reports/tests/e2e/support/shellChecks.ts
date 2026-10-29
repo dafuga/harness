@@ -159,7 +159,12 @@ async function codeDestinations(page: Page, row: Locator, scoped: string): Promi
 }
 
 /** Package tables retain distinct declarations and search workspace origins at every viewport. */
-export async function dependencyTables(component: Locator, page: Page, width: number) {
+export async function dependencyTables(
+	component: Locator,
+	page: Page,
+	width: number,
+	mobile = false
+) {
 	await expect(
 		component.getByRole('table', { name: 'npm dependencies' }),
 		'Project dependencies include declarations'
@@ -178,6 +183,15 @@ export async function dependencyTables(component: Locator, page: Page, width: nu
 	await expect(component.getByText('No dependencies match this search.')).toBeVisible();
 	await component.getByRole('button', { name: 'Clear search' }).click();
 	await expect(component.locator('tbody tr')).toHaveCount(4);
+	if (mobile)
+		await expect
+			.poll(() =>
+				npm.locator('tbody').evaluate((body) => {
+					const frame = body.closest('.dep-scroll')!;
+					return frame.scrollWidth <= frame.clientWidth;
+				})
+			)
+			.toBe(true);
 	await expect
 		.poll(() => page.evaluate(() => document.documentElement.scrollWidth))
 		.toBeLessThanOrEqual(width);

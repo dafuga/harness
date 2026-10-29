@@ -14,8 +14,20 @@ const variants: Record<string, string[]> = {
 	'reports.component.activity-loops': ['empty'],
 	// Work distinguishes a live checkout from the recorded-history wording and an empty history.
 	'reports.component.activity-work': ['recorded', 'empty'],
+	// Project activity keeps checkout observations, recorded history and no activity distinct.
+	'reports.component.project-activity': ['recorded', 'empty'],
+	// Site activity's refresh failure preserves the last known live observation with a warning.
+	'reports.component.site-activity': ['failed-refresh'],
 	// History filters show both a focused query and the no-filter form.
 	'reports.component.analytics-filters': ['empty'],
+	// CPU distinguishes a healthy idle checkout from an unavailable local sample.
+	'reports.component.analytics-cpu': ['no-agents', 'unavailable'],
+	// History retains independent empty tables and summaries after filters remove every loop.
+	'reports.component.analytics-history': ['empty'],
+	// Model usage has a separate unrecorded state from populated author and evaluator evidence.
+	'reports.component.analytics-models': ['empty'],
+	// Task history distinguishes recorded assessment rows from both empty check sections.
+	'reports.component.analytics-tasks': ['empty'],
 	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
 	'reports.component.audio-comparison': ['unavailable'],
 	// The comparison opens by default; each single-recording view stays independently inspectable.
@@ -28,6 +40,17 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-card': ['missing', 'compact', 'paired-audio'],
 	// Media filtering, empty results, upload controls and a lightbox are separate gallery states.
 	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
+	// A replay can wait for its first live frame or retain an interrupted final run.
+	'reports.component.gameplay-replay': ['live-empty', 'interrupted'],
+	// Playback, selected controls and boundary-disabled controls each remain independently inspectable.
+	'reports.component.replay-controls': [
+		'playing',
+		'final-frame',
+		'single-frame',
+		'scene-unselected',
+		'fullscreen',
+		'speed-2x'
+	],
 	// The default shows two facts; this state proves a fuller recorded provenance set remains legible.
 	'reports.component.evidence-provenance': ['extended'],
 	// The lightbox needs separate before, compare and unavailable-image examples.
@@ -40,6 +63,14 @@ const variants: Record<string, string[]> = {
 	'reports.component.filter-dialog': ['active', 'open'],
 	// The default is a text dialog; the lightbox uses the viewport-filling presentation.
 	'reports.component.modal': ['lightbox'],
+	// Archived source distinguishes actionable, loading, unavailable, empty and linked views.
+	'reports.component.source-code-action': ['unavailable'],
+	'reports.component.source-content': ['loading', 'error', 'empty'],
+	'reports.component.source-dialog': ['loading', 'error', 'empty'],
+	'reports.component.source-file-list': ['linked', 'empty'],
+	'reports.component.source-viewer': ['loading', 'error', 'empty'],
+	// Dense, display-label and disabled controls expose the select's distinct field treatments.
+	'reports.component.select': ['compact', 'display', 'disabled'],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',

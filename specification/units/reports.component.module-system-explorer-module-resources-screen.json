@@ -37,9 +37,70 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "host",
-				"type": "ExplorerScreenProps",
-				"description": "Revision-bound module definitions, installation state and navigation."
+				"name": "ExplorerModuleResourcesScreen.index",
+				"type": "HarnessIndex",
+				"required": true,
+				"description": "Project and branch history supplied by the Explorer host."
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.head",
+				"type": "HarnessRevision",
+				"required": true,
+				"description": "Selected immutable revision; its module catalog supplies the selected resource type."
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.parent",
+				"type": "HarnessRevision | null",
+				"required": true,
+				"description": "First parent used by the shared Explorer frame; null at a branch tip or first commit."
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.scope",
+				"type": "ExplorerScope",
+				"required": true,
+				"description": "Selected branch, commit and availability context used by the shared frame."
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.route",
+				"type": "ExplorerLocation",
+				"required": true,
+				"description": "Current module-resource address, including selected branch, commit and resource entity."
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.entities",
+				"type": "ExplorerEntity[]",
+				"required": true,
+				"description": "Revision-scoped entity catalog supplied to the shared Explorer frame."
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.lens",
+				"type": "EntityLens",
+				"required": true,
+				"description": "Host readers for entity contracts, measurements and captured evidence."
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.client",
+				"type": "Pick<HarnessClient, 'revision'>",
+				"required": true,
+				"description": "Revision loader used by the shared Explorer frame for historical navigation."
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.mediaBase",
+				"type": "string",
+				"required": true,
+				"description": "Base URL from which the shared frame resolves captured media."
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.onroute",
+				"type": "(to: ExplorerLocation) => void",
+				"required": true,
+				"description": "Requests navigation while preserving the selected explorer scope."
+			},
+			{
+				"name": "ExplorerModuleResourcesScreen.exportHref",
+				"type": "string",
+				"required": true,
+				"description": "Project export URL; empty when the host provides no export."
 			}
 		],
 		"outputs": [
