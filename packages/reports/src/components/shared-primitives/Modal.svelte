@@ -59,6 +59,13 @@
 {/if}
 
 <style>
+	/* Text dialogs should fit their recorded content instead of inheriting the viewport canvas. */
+	.viewer-dialog.text[open] {
+		box-sizing: border-box;
+		width: min(760px, calc(100vw - 32px));
+		height: fit-content;
+		max-height: calc(100dvh - 32px);
+	}
 	/* Lightbox: a borderless full-screen canvas, so captured cards are not nested in another card */
 	.viewer-dialog.lightbox[open] {
 		display: flex;
