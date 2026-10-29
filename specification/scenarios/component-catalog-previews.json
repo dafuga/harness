@@ -1265,6 +1265,18 @@
 			"units": ["reports.component.audio-evidence"]
 		},
 		{
+			"id": "reports-component-audio-evidence-notes",
+			"title": "Audio evidence: Notes",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-unavailable",
+			"title": "Audio evidence: Unavailable recording",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
 			"id": "reports-component-audio-upload-files",
 			"title": "Audio upload files",
 			"coverage": "required",
@@ -3132,6 +3144,8 @@
 				"reports-component-audio-comparison-viewer-after",
 				"reports-component-audio-comparison-viewer-unavailable",
 				"reports-component-audio-evidence",
+				"reports-component-audio-evidence-notes",
+				"reports-component-audio-evidence-unavailable",
 				"reports-component-audio-upload-files",
 				"reports-component-brand-mark",
 				"reports-component-browser-errors",

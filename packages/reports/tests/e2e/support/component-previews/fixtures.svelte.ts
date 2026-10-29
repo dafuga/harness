@@ -114,6 +114,7 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 }
 
 function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
 	if (
 		id !== 'reports.component.audio-comparison' &&
 		id !== 'reports.component.audio-comparison-viewer'
@@ -126,6 +127,29 @@ function reportVariantProps(id: string, props: PreviewCases[string], variant: st
 		...props,
 		before: {
 			...before,
+			file: '',
+			missing: true,
+			note: 'The original recording was not retained with this evidence.'
+		}
+	};
+}
+
+function audioEvidenceVariant(props: PreviewCases[string], variant: string) {
+	const item = props.item as Record<string, unknown>;
+	if (variant === 'notes')
+		return {
+			...props,
+			item: {
+				...item,
+				transcript: undefined,
+				note: 'Timing and diction were reviewed before approval.'
+			}
+		};
+	if (variant !== 'unavailable') return null;
+	return {
+		...props,
+		item: {
+			...item,
 			file: '',
 			missing: true,
 			note: 'The original recording was not retained with this evidence.'

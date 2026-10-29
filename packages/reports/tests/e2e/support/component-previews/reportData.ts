@@ -14,15 +14,21 @@ export const picture: Evidence = {
 	source: 'Representative preview fixture'
 };
 export const audio: Evidence = {
-	id: 'spoken',
-	title: 'Spoken confirmation',
-	category: 'Audio',
+	id: 'accessibility-readback',
+	title: 'Accessibility review narration',
+	category: 'Release review',
 	file: 'preview.wav',
 	status: 'passed',
 	mediaType: 'audio',
 	mimeType: 'audio/wav',
-	durationSeconds: 1,
-	transcript: 'The activity list is ready.'
+	durationSeconds: 42,
+	source: 'Screen-reader validation',
+	capturedAt: stamp,
+	transcript: 'The final review confirms that keyboard labels and evidence links are announced.',
+	provenance: [
+		{ label: 'Viewport', value: 'Desktop' },
+		{ label: 'Review', value: 'Accessibility playback' }
+	]
 };
 export const baselineNarration: Evidence = {
 	...audio,

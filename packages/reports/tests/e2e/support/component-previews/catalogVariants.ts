@@ -14,6 +14,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.audio-comparison': ['unavailable'],
 	// The comparison opens by default; each single-recording view stays independently inspectable.
 	'reports.component.audio-comparison-viewer': ['before', 'after', 'unavailable'],
+	// A recorded clip exposes both its available notes and unavailable fallback separately.
+	'reports.component.audio-evidence': ['notes', 'unavailable'],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',
