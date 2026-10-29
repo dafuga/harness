@@ -1,9 +1,10 @@
 import type { PreviewCases } from './shared';
-import { noop, text } from './shared';
+import { image, noop, text } from './shared';
 import { baselineNarration, releaseNarration } from './reportData';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id === 'reports.component.select') return selectVariant(props, variant);
 	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
 	if (id === 'reports.component.modal') return modalVariant(props, variant);
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
@@ -28,6 +29,13 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	};
 }
 
+function selectVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'compact') return { ...props, compact: true };
+	if (variant === 'display')
+		return { ...props, display: 'release/orders/final-approval', title: 'release/orders/final-approval' };
+	return variant === 'disabled' ? { ...props, disabled: true } : props;
+}
+
 function filterDialogVariant(props: PreviewCases[string], variant: string) {
 	return variant === 'active' ? { ...props, active: 3 } : props;
 }
@@ -38,7 +46,7 @@ function modalVariant(props: PreviewCases[string], variant: string) {
 		...props,
 		title: 'Order card evidence',
 		variant: 'lightbox',
-		children: text('<p>Recorded order card evidence remains available for review.</p>')
+		children: text(`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · desktop evidence</figcaption></figure></div>`)
 	};
 }
 
