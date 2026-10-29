@@ -1,0 +1,17 @@
+{
+  "scenario": "Slugify titles end to end",
+  "assertions": [
+    {
+      "name": "Every title gives a result",
+      "passed": true
+    },
+    {
+      "name": "Surrounding spaces are removed",
+      "passed": true
+    },
+    {
+      "name": "Words stay in their order",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+
+Running 12 tests using 6 workers
+
+  ✘   3 tests/e2e/title-components.spec.ts:3:1 › Title list: listed at desktop (467ms)
+  ✘   2 tests/e2e/title-components.spec.ts:4:1 › Title list: listed at tablet (518ms)
+  ✘   6 tests/e2e/title-components.spec.ts:7:1 › Title row: row at tablet (496ms)
+  ✘   5 tests/e2e/title-components.spec.ts:5:1 › Title list: listed at mobile (471ms)
+  ✘   4 tests/e2e/title-components.spec.ts:6:1 › Title row: row at desktop (494ms)
+  ✘   1 tests/e2e/title-components.spec.ts:8:1 › Title row: row at mobile (479ms)
+  ✘  10 tests/e2e/title-components.spec.ts:11:1 › Title frame: rest at mobile (423ms)
+  ✘   8 tests/e2e/title-components.spec.ts:10:1 › Title frame: rest at tablet (440ms)
+  ✘   7 tests/e2e/title-components.spec.ts:9:1 › Title frame: rest at desktop (482ms)
+  ✘  11 tests/e2e/title-components.spec.ts:13:1 › Title frame: child at tablet (437ms)
+  ✘   9 tests/e2e/title-components.spec.ts:12:1 › Title frame: child at desktop (475ms)
+  ✘  12 tests/e2e/title-components.spec.ts:14:1 › Title frame: child at mobile (376ms)
+
+
+  1) tests/e2e/title-components.spec.ts:3:1 › Title list: listed at desktop ────────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/listed-desktop.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-list-listed-at-desktop/error-context.md
+
+  2) tests/e2e/title-components.spec.ts:4:1 › Title list: listed at tablet ─────────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/listed-tablet.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-list-listed-at-tablet/error-context.md
+
+  3) tests/e2e/title-components.spec.ts:5:1 › Title list: listed at mobile ─────────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/listed-mobile.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-list-listed-at-mobile/error-context.md
+
+  4) tests/e2e/title-components.spec.ts:6:1 › Title row: row at desktop ────────────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/row-desktop.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-row-row-at-desktop/error-context.md
+
+  5) tests/e2e/title-components.spec.ts:7:1 › Title row: row at tablet ─────────────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/row-tablet.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-row-row-at-tablet/error-context.md
+
+  6) tests/e2e/title-components.spec.ts:8:1 › Title row: row at mobile ─────────────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/row-mobile.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-row-row-at-mobile/error-context.md
+
+  7) tests/e2e/title-components.spec.ts:9:1 › Title frame: rest at desktop ─────────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/rest-desktop.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-frame-rest-at-desktop/error-context.md
+
+  8) tests/e2e/title-components.spec.ts:10:1 › Title frame: rest at tablet ─────────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/rest-tablet.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-frame-rest-at-tablet/error-context.md
+
+  9) tests/e2e/title-components.spec.ts:11:1 › Title frame: rest at mobile ─────────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/rest-mobile.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-frame-rest-at-mobile/error-context.md
+
+  10) tests/e2e/title-components.spec.ts:12:1 › Title frame: child at desktop ──────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/child-desktop.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-frame-child-at-desktop/error-context.md
+
+  11) tests/e2e/title-components.spec.ts:13:1 › Title frame: child at tablet ───────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/child-tablet.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-frame-child-at-tablet/error-context.md
+
+  12) tests/e2e/title-components.spec.ts:14:1 › Title frame: child at mobile ───────────────────────
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/title-components.spec.ts/child-mobile.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at captureComponent (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/captureComponent.ts:35:7)
+
+    Error Context: test-results/title-components-Title-frame-child-at-mobile/error-context.md
+
+  12 failed
+    tests/e2e/title-components.spec.ts:3:1 › Title list: listed at desktop ─────────────────────────
+    tests/e2e/title-components.spec.ts:4:1 › Title list: listed at tablet ──────────────────────────
+    tests/e2e/title-components.spec.ts:5:1 › Title list: listed at mobile ──────────────────────────
+    tests/e2e/title-components.spec.ts:6:1 › Title row: row at desktop ─────────────────────────────
+    tests/e2e/title-components.spec.ts:7:1 › Title row: row at tablet ──────────────────────────────
+    tests/e2e/title-components.spec.ts:8:1 › Title row: row at mobile ──────────────────────────────
+    tests/e2e/title-components.spec.ts:9:1 › Title frame: rest at desktop ──────────────────────────
+    tests/e2e/title-components.spec.ts:10:1 › Title frame: rest at tablet ──────────────────────────
+    tests/e2e/title-components.spec.ts:11:1 › Title frame: rest at mobile ──────────────────────────
+    tests/e2e/title-components.spec.ts:12:1 › Title frame: child at desktop ────────────────────────
+    tests/e2e/title-components.spec.ts:13:1 › Title frame: child at tablet ─────────────────────────
+    tests/e2e/title-components.spec.ts:14:1 › Title frame: child at mobile ─────────────────────────

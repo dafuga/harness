@@ -1,0 +1,20 @@
+{
+  "scenario": "Slugify titles end to end",
+  "environment": "node (headless)",
+  "fixture": "Three synthetic titles",
+  "steps": [
+    "Load the function",
+    "Slugify each title",
+    "Read what it returned"
+  ],
+  "input": [
+    "  Hello World  ",
+    "Already-Slugged",
+    "why?"
+  ],
+  "output": [
+    "hello world",
+    "already-slugged",
+    "why?"
+  ]
+}

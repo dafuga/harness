@@ -1,0 +1,126 @@
+
+Running 6 tests using 6 workers
+
+  ✘  2 tests/e2e/titles-page.spec.ts:16:1 › titles view route is generated › mobile viewport › empty (275ms)
+  ✘  3 tests/e2e/titles-page.spec.ts:12:1 › titles view route is generated › tablet viewport › filled (276ms)
+  ✘  4 tests/e2e/titles-page.spec.ts:17:1 › titles view route is generated › mobile viewport › filled (274ms)
+  ✘  1 tests/e2e/titles-page.spec.ts:7:1 › titles view route is generated › desktop viewport › filled (319ms)
+  ✘  6 tests/e2e/titles-page.spec.ts:11:1 › titles view route is generated › tablet viewport › empty (319ms)
+  ✘  5 tests/e2e/titles-page.spec.ts:6:1 › titles view route is generated › desktop viewport › empty (326ms)
+
+
+  1) tests/e2e/titles-page.spec.ts:6:1 › titles view route is generated › desktop viewport › empty ─
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/titles-page.spec.ts/empty-desktop.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at capturePage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/capturePage.ts:28:4)
+
+    Error Context: test-results/titles-page-titles-view-ro-7b785-ated-desktop-viewport-empty/error-context.md
+
+  2) tests/e2e/titles-page.spec.ts:7:1 › titles view route is generated › desktop viewport › filled 
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/titles-page.spec.ts/filled-desktop.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at capturePage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/capturePage.ts:28:4)
+
+    Error Context: test-results/titles-page-titles-view-ro-0dbd1-ted-desktop-viewport-filled/error-context.md
+
+  3) tests/e2e/titles-page.spec.ts:11:1 › titles view route is generated › tablet viewport › empty ─
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/titles-page.spec.ts/empty-tablet.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at capturePage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/capturePage.ts:28:4)
+
+    Error Context: test-results/titles-page-titles-view-ro-a928a-rated-tablet-viewport-empty/error-context.md
+
+  4) tests/e2e/titles-page.spec.ts:12:1 › titles view route is generated › tablet viewport › filled 
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/titles-page.spec.ts/filled-tablet.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at capturePage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/capturePage.ts:28:4)
+
+    Error Context: test-results/titles-page-titles-view-ro-1ba12-ated-tablet-viewport-filled/error-context.md
+
+  5) tests/e2e/titles-page.spec.ts:16:1 › titles view route is generated › mobile viewport › empty ─
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/titles-page.spec.ts/empty-mobile.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at capturePage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/capturePage.ts:28:4)
+
+    Error Context: test-results/titles-page-titles-view-ro-a2338-rated-mobile-viewport-empty/error-context.md
+
+  6) tests/e2e/titles-page.spec.ts:17:1 › titles view route is generated › mobile viewport › filled 
+
+    Error: A snapshot doesn't exist at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/.fixture-baselines/titles-page.spec.ts/filled-mobile.png.
+
+       at support/browserScreenshot.ts:20
+
+      18 | 		await settleScreenshot(target, options, !hasReviewedSnapshot(testInfo, name));
+      19 | 		try {
+    > 20 | 			await expect(target).toHaveScreenshot(name, {
+         | 			                     ^
+      21 | 				animations: 'disabled',
+      22 | 				caret: 'hide',
+      23 | 				...options
+        at /private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/tests/e2e/support/browserScreenshot.ts:20:25
+        at capturePage (/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-snapshot-Jy90sB/test/support/capturePage.ts:28:4)
+
+    Error Context: test-results/titles-page-titles-view-ro-c2a56-ated-mobile-viewport-filled/error-context.md
+
+  6 failed
+    tests/e2e/titles-page.spec.ts:6:1 › titles view route is generated › desktop viewport › empty ──
+    tests/e2e/titles-page.spec.ts:7:1 › titles view route is generated › desktop viewport › filled ─
+    tests/e2e/titles-page.spec.ts:11:1 › titles view route is generated › tablet viewport › empty ──
+    tests/e2e/titles-page.spec.ts:12:1 › titles view route is generated › tablet viewport › filled ─
+    tests/e2e/titles-page.spec.ts:16:1 › titles view route is generated › mobile viewport › empty ──
+    tests/e2e/titles-page.spec.ts:17:1 › titles view route is generated › mobile viewport › filled ─

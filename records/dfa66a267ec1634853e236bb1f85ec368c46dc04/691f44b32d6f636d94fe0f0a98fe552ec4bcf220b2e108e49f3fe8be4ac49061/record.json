@@ -1,0 +1,4545 @@
+{
+	"id": "691f44b32d6f636d94fe0f0a98fe552ec4bcf220b2e108e49f3fe8be4ac49061",
+	"schemaVersion": 1,
+	"repository": "/private/var/folders/pq/5gb8_xbd6xldj1v7spyvg10w0000gn/T/harness-units-lib-viafQw/demo",
+	"source": {
+		"commit": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+		"tree": "a5379b0407d83c20a2a3d2072f02453a0e42dbe9",
+		"base": null
+	},
+	"profile": {
+		"id": "fae395e860966b98",
+		"platform": "darwin",
+		"arch": "arm64",
+		"cpu": "Apple M1 Max",
+		"cores": 10,
+		"memoryBytes": 68719476736,
+		"runtime": "bun 1.2.18"
+	},
+	"tools": [
+		{
+			"id": "harness",
+			"version": "0.1.4"
+		}
+	],
+	"startedAt": "2026-10-29T15:01:40.628Z",
+	"finishedAt": "2026-10-29T15:02:11.125Z",
+	"status": "failed",
+	"components": [
+		{
+			"unit": "component.title-frame",
+			"change": "added",
+			"target": "module",
+			"manifest": "9ebb06f5ea84c0efabd51869a135f0b1bb4409e13fa4abe87cfef30df50a3178",
+			"source": "64788397a9ad1dd8296ddab4d8b2b614c856cbbd32591a39876075aad1df35f9",
+			"contract": "8b7b53385a86bace86fa9247c9b39e206d7aa0c21c7fad3bfb9f1a32874f6c18",
+			"runtime": "a31bdc3544407ba9abcbe0be921009483286126a2a2b561635f652a2c716afc6",
+			"files": [
+				{
+					"path": "src/components/TitleFrame.svelte",
+					"hash": "ac3ab435db03ae01d02252522fe75520918e83d6"
+				}
+			]
+		},
+		{
+			"unit": "component.title-list",
+			"change": "added",
+			"target": "module",
+			"manifest": "d89995b1510681063e62d1e8aa0aca025dd466c7b4f188e29f88fe1acebe7471",
+			"source": "0f026e8f49ef209993bacd35976fe5ff9687a9834a9202c4f5da05ff6f9cc87f",
+			"contract": "7b509ae843c9ca61acab0ba8040f27c1bb7b6ab458ab3911fa4ac11c247d2976",
+			"runtime": "96da2e4fc675277fceff0a18d297e5d39d18b01f4f387b5b8f68adac6f173024",
+			"files": [
+				{
+					"path": "src/components/TitleList.svelte",
+					"hash": "140f4b53105b17ee0ccb19763cbbc7ccfd1aaad4"
+				}
+			]
+		},
+		{
+			"unit": "component.title-row",
+			"change": "added",
+			"target": "module",
+			"manifest": "6a387737909c5959573d25a04cb29db20442ce84e3ef226b65e9b08192ad6f52",
+			"source": "b0ecbb20c099ae36c5a2a1db6c8c366de77e2a2067d62d1f230f9ff2815a1373",
+			"contract": "d1ab660eecc8206f1fef7ae0f8dc9ca3b3b585a4df982bd81b616b013af09c5d",
+			"runtime": "4cc875921f13ed7b2241f79e85e29ac46bf5861762d1a98628f6b48e20b2f703",
+			"files": [
+				{
+					"path": "src/components/TitleRow.svelte",
+					"hash": "1cc6e99a49a9bb576cc0407673a7046996716a1c"
+				}
+			]
+		},
+		{
+			"unit": "config.titles",
+			"change": "added",
+			"target": "module",
+			"manifest": "614a736e6ca872e1b314e61cf35428187757b06a3f342f3efa26c2ba0e8f0b1b",
+			"source": "434f667eefcb66a4ca75a0a1da5b573308cc51da713c17414671cda313b06991",
+			"contract": "91908b44faab784290328e7e1b7787fcdd8cd38d2d20841a83a70ec4ab3a18a2",
+			"runtime": "cfe6fad08c0bcdef9d4f1a945f380e8e0533c19e7a3f1a6a322b12c66c457610",
+			"files": [
+				{
+					"path": "src/config/titlesConfig.ts",
+					"hash": "33f19e0756571248e98e2a3ad396c68102ef8837"
+				}
+			]
+		},
+		{
+			"unit": "entry.index",
+			"change": "added",
+			"target": "module",
+			"manifest": "4e8e22ff656ff469e0c5faad9cdbdbf1b1be2bed063a89ae973122524a2184fb",
+			"source": "e613dae1a19e8fc3a05ec005e5f64b63b4e398a4b6efddb0d0c88ef2af40a597",
+			"contract": "71be83426decabff97e463730547b2ac3bf28ac7c81e4ab247e5fc53ad23f85e",
+			"runtime": "468f0c71d780c33993456f77f9379f0580c6d82970cdfbf6ea659c856697291f",
+			"files": [
+				{
+					"path": "src/index.ts",
+					"hash": "f7e231a8fed7aecfda4a61c5465d65f8efbcbfe3"
+				}
+			]
+		},
+		{
+			"unit": "function.clock",
+			"change": "added",
+			"target": "module",
+			"manifest": "e6cb4877623e53f39989d136dc9b33c43a1942b292e757230069723d80a3a8f2",
+			"source": "525ddb01f568ac2990bb15576230a0cfeebaae6ab1f4c81469b8553b4afcc2ec",
+			"contract": "d15090294cf53af42ee069e6be44c9b25829888ae7631673b482927f64a5b9d2",
+			"runtime": "9e4c28d1331d03b919317b6f52700f12af3296395dddfdfe73399df39361a234",
+			"files": [
+				{
+					"path": "src/utils/clock.ts",
+					"hash": "2be7469869ae68bc75498759abd0d269f43d3692"
+				}
+			]
+		},
+		{
+			"unit": "function.extra",
+			"change": "added",
+			"target": "module",
+			"manifest": "665fa37ed39c57e5b58b7d04724d74afffc25a683aa4f19c6d3e247ab4ae7a57",
+			"source": "e46eda0212d869c833f4696df17d8be6fb0b2ceb14fa8e8170ef9896835125b5",
+			"contract": "df0cb2520012834fc5103fd2a49f1a6d059076342c1079f97a72871cf4daaf39",
+			"runtime": "9fbc7e44062ab877ae76cedf2b2d1f38e373ef646584b31b59479459f969f83b",
+			"files": [
+				{
+					"path": "src/utils/extra.ts",
+					"hash": "c60f396c7219c190cb42278096d8e1f87893131d"
+				}
+			]
+		},
+		{
+			"unit": "function.packer",
+			"change": "added",
+			"target": "module",
+			"manifest": "73942fa77759bd7cd68d1ab7ade9d0c082ca00632ba049b63f1691cfb88f1860",
+			"source": "45dfd0068889cd98886ab7fa3910b7deaa4231ac61256420f9f090d71623315f",
+			"contract": "9669587c072cb97530896cdda48ff6e8545a2ed3b10b17ae55ea4c8843576acc",
+			"runtime": "7b8546f8cd480ded4ba427de6a2177ebd6502b0e7a2d1b161831da5bb925b412",
+			"files": [
+				{
+					"path": "src/utils/packer.ts",
+					"hash": "38199fa3a1f7fc9028f558578e8ddc36be596efa"
+				}
+			]
+		},
+		{
+			"unit": "function.slugify",
+			"change": "added",
+			"target": "module",
+			"manifest": "32635141a040308dc9df1c2db5da6657aa46dbe93ef79128fb321067e692396b",
+			"source": "1794326bf9e98bcf099d979cd7bf4a9d2164e0dae39d08fc6cb134a3728d3a2a",
+			"contract": "a59e90414a1e003ec7529c1684b055752bd76cfda28f920d9346927c37b1f45a",
+			"runtime": "07304def06b54418262f4817af835b0306e548bb7efbddf43214f0f9bb91a989",
+			"files": [
+				{
+					"path": "src/utils/slugify.ts",
+					"hash": "8697e784ca00c86dc32e5d77f7cdd586cf7a1c3f"
+				}
+			]
+		},
+		{
+			"unit": "kernel.counter",
+			"change": "added",
+			"target": "module",
+			"manifest": "69746cfd0882cabef5158aed93e1f3962ad9d272b69bde2735751c5c57c89f31",
+			"source": "2d5322c43b8244b632a8224590a008406d59e457f689d5195046f4fd8c6506ce",
+			"contract": "3ea391a89b66ce1f90551a19babc7a2586a1295a67aac171c7d325b9628a1b54",
+			"runtime": "9c9d5960e3fa26359355ad3e76598e60186f113281cf0884cb43f3a9c420c591",
+			"files": [
+				{
+					"path": "crates/counter/Cargo.toml",
+					"hash": "35c09df7cf1736535745ee3c725fbab80ecd7fe2"
+				},
+				{
+					"path": "crates/counter/src/lib.rs",
+					"hash": "ae9ac7f0d2c55963dd2a8d645f5a9878167f3e41"
+				}
+			]
+		},
+		{
+			"unit": "kernel.mixed",
+			"change": "added",
+			"target": "module",
+			"manifest": "6336fba4f0134dba067c2f26bea56c8883e25de8409f0e2d993e7ab0965eef77",
+			"source": "b8de76acecede6c94743dc6ee7b459e0d927af5d520ea786e4558d5120765c09",
+			"contract": "29590b08f0e5834943b97b288ec0f6b6a22d17f11046c0fc558e56b141e9e0cc",
+			"runtime": "6ef9235364251e7dfc902499cbe31e7bb21d1ca4fb0e2db278bd16078a928b6a",
+			"files": [
+				{
+					"path": "crates/mixed/bindings.ts",
+					"hash": "ef2aecd180a200158b914339ebaacb333dfd013b"
+				},
+				{
+					"path": "crates/mixed/src/lib.rs",
+					"hash": "ae9ac7f0d2c55963dd2a8d645f5a9878167f3e41"
+				}
+			]
+		},
+		{
+			"unit": "page.titles",
+			"change": "added",
+			"target": "module",
+			"manifest": "e75ecabe0c86f23f1d00192ed501d3ae36e725c0fff252dc9d14cc5e7c02fb62",
+			"source": "77594a50dfc03c4ad48a9d670a9039075ec5364ff10a9de096d754c3fead42a2",
+			"contract": "42401477d0ea69fea98e35a9145454141fd0de8d8dc0c5552b7d8387e05c6869",
+			"runtime": "76295ce5ab3cc39453d711c28539338329fee1a391e08c61f66529a09eb873e3",
+			"files": [
+				{
+					"path": "src/routes/titles/+page.svelte",
+					"hash": "76e2c9c7b137568d4fbf089b25c06f4ad1dd2bef"
+				}
+			]
+		},
+		{
+			"unit": "script.explorer",
+			"change": "added",
+			"target": "module",
+			"manifest": "ebe24c3c0d1976edf5b36e5f689f57a5af4d562ce94b0f3418ebe2513f2c6779",
+			"source": "8e5bae57b73efb7ced9fd573d5731105fbdf300380fad1ab9f19b887a8184610",
+			"contract": "eb12cd68e6ffb3628118a66c3298ccd72a2453c5d77ac533292a28b23f672a9b",
+			"runtime": "cf157726efe8b55f2045e032a1153128e27ba5411b3225cc59e280475ea2e168",
+			"files": [
+				{
+					"path": "scripts/explorer.mjs",
+					"hash": "2872c3c119b1a15b50a1cef6c975223e10784ac0"
+				}
+			]
+		},
+		{
+			"unit": "script.fixture",
+			"change": "added",
+			"target": "module",
+			"manifest": "2b186bed278f3cff4c48d22a002af8d61ef1f81a398c1370b9a6d6a2290b0283",
+			"source": "22c449954e595c605d013bbb120d8ea14dbe17d6ca6cb377933b6ba68ab674ad",
+			"contract": "6583fe64bd8a53d93b3e0773b2ba302e9e1b9b769bc116f726172eba3fd40596",
+			"runtime": "0daf7d5c4483866193d82189ec961d4213d3e9eb6b7d459c62b96a03e1c296d4",
+			"files": [
+				{
+					"path": "scripts/fixture.mjs",
+					"hash": "82e1a2967a8b894447648da3ba74da45bd8b8826"
+				}
+			]
+		},
+		{
+			"unit": "script.harness-audit",
+			"change": "added",
+			"target": "module",
+			"manifest": "52aed736959bb10a98008fd5d231d7afbfa1fef0ac607bbda7d2524b26ed7c4a",
+			"source": "e6a1dc2d2c19e20e4501c2c77ec6cb0a5bb5f9a9e189a92d21d13cadba7ea458",
+			"contract": "d4e1c72cb167aac3e8f818e41d9f29c0478b5a716c52c0372b76f0f5ee0abb87",
+			"runtime": "acd242340ae59ca18b1cbab3668080fd4e19f8981d4072f1d28823868264a252",
+			"files": [
+				{
+					"path": "scripts/harness-audit.ts",
+					"hash": "e3709f68eb8f43ca17b684e65fe30e5f0155c655"
+				}
+			]
+		},
+		{
+			"unit": "service.clock",
+			"change": "added",
+			"target": "module",
+			"manifest": "5eacbbc61ce2dac22f0f70a75cc806d9b1cd99cfdcf25120d0bfa098067090e5",
+			"source": "35a224c029627a5d0131a2eb57b69f416b03c073674e2d0f5f6329a36c5a3576",
+			"contract": "f3e07005727040fb0c7fe5df56b677e440fae963f66b22f176e348a06032491c",
+			"runtime": "4126b140bc9c7aecd5cc9f3bb93e6f4a71315213e18834f4c928568d765c5ea0",
+			"files": [
+				{
+					"path": "src/services/ClockService.ts",
+					"hash": "0c12900848a775934bdbedcedd331f2b40b9b823"
+				}
+			]
+		},
+		{
+			"unit": "service.title",
+			"change": "added",
+			"target": "module",
+			"manifest": "30d186a33b35e398a3ff561f0f0305a595496deb0e08c570df5e6656b3093b99",
+			"source": "2ed5b270ce74adcdd03fe4d732343988e2ba879f1f26819f5192b930b500fd7c",
+			"contract": "d4d47f0c3c49fe32b148c8dac874f8b14f6069661dc8c78ff0d099ec618c8000",
+			"runtime": "8decf9f1602370a9b23fa1077977f3f0023aa7742b1fb406caad682ca92afaca",
+			"files": [
+				{
+					"path": "src/services/TitleService.ts",
+					"hash": "ccf06a0a7e19af46e7e056ba828e92f16b43a6f5"
+				}
+			]
+		}
+	],
+	"measurements": [
+		{
+			"unit": "component.title-frame",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 344,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-frame",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 7,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-frame",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-frame",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 2,
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-frame",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-frame",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-frame",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-list",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 279,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-list",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 9,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-list",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-list",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 2,
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-list",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-list",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-list",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-row",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 165,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-row",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 6,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-row",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-row",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-row",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-row",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "component.title-row",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "config.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 43,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "config.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 1,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "config.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "config.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "config.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "config.titles",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "config.titles",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 73,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 3,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "entry.index",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 64,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 3,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "function.clock",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "function.extra",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 80,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.extra",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 3,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.extra",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "function.extra",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 0,
+			"partial": "1 reference could not be resolved in src/utils/extra.ts.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.extra",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.extra",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "function.extra",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "function.packer",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 79,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.packer",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 3,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.packer",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "function.packer",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "function.packer",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.packer",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "function.packer",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 100,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 4,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 0,
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "function.slugify",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.counter",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 130,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.counter",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 9,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.counter",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": null,
+			"unavailable": "Decision points are not counted in Rust: crates/counter/src/lib.rs.",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.counter",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": null,
+			"unavailable": "References are not read in Rust: crates/counter/src/lib.rs. Packages declared in crates/counter/Cargo.toml are not counted.",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.counter",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.counter",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.counter",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.mixed",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 188,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.mixed",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 10,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.mixed",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 3,
+			"partial": "Counted in 1 of 2 code files. Decision points are not counted in Rust: crates/mixed/src/lib.rs.",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.mixed",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 0,
+			"partial": "References are not read in Rust: crates/mixed/src/lib.rs.",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.mixed",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.mixed",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "kernel.mixed",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 396,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 10,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 2,
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "page.titles",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "script.explorer",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 1695,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.explorer",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 28,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.explorer",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 6,
+			"artifacts": []
+		},
+		{
+			"unit": "script.explorer",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 2,
+			"artifacts": []
+		},
+		{
+			"unit": "script.explorer",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.explorer",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "script.explorer",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 4862,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 86,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 39,
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 4,
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "script.fixture",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 565,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 14,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 5,
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "script.harness-audit",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 127,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 7,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"unavailable": "No benchmark measured this unit in this verification.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "service.clock",
+			"value": null,
+			"method": "Not measured.",
+			"workload": null,
+			"profile": null,
+			"metric": "memory-bytes",
+			"unitOfMeasure": "bytes",
+			"unavailable": "No benchmark measured this unit, and in-process memory cannot be attributed to it.",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-bytes",
+			"unitOfMeasure": "bytes",
+			"value": 165,
+			"method": "Sum of the byte sizes of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "source-lines",
+			"unitOfMeasure": "lines",
+			"value": 9,
+			"method": "Sum of the line counts of the owned source files.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "complexity",
+			"unitOfMeasure": "points",
+			"method": "Decision points in owned source, plus one per function or method.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "dependencies",
+			"unitOfMeasure": "count",
+			"method": "Unit dependencies plus distinct external modules referenced.",
+			"value": 1,
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"workload": null,
+			"profile": null,
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"metric": "artifact-bytes",
+			"unitOfMeasure": "bytes",
+			"value": null,
+			"unavailable": "A module unit emits no separate artifact.",
+			"method": "Not applicable.",
+			"artifacts": []
+		},
+		{
+			"unit": "service.title",
+			"metric": "latency-warm-ms",
+			"unitOfMeasure": "ms",
+			"value": 10,
+			"method": "Deterministic rule fixture: the value is declared in source and is not a timing.",
+			"workload": "titles-1k",
+			"target": "module",
+			"samples": 1,
+			"comparison": {
+				"request": "e3d0bc4ab57e208c4938b33e04bbb087a077f2314c9f42b68d33dd8c8b493c68",
+				"boundary": "fixture",
+				"protocol": "declared-constant/1",
+				"sampling": {
+					"warmup": 0,
+					"rounds": 1,
+					"iterations": 1
+				}
+			},
+			"profile": "fae395e860966b98",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"artifacts": []
+		}
+	],
+	"impact": {
+		"runtime": "module",
+		"expanded": true,
+		"changed": [
+			{
+				"path": ".codex/skills/harness/SKILL.md",
+				"status": "added",
+				"classification": "ignored"
+			},
+			{
+				"path": ".gitignore",
+				"status": "added",
+				"classification": "ignored"
+			},
+			{
+				"path": ".prettierignore",
+				"status": "added",
+				"classification": "other"
+			},
+			{
+				"path": ".prettierrc",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "AGENTS.md",
+				"status": "added",
+				"classification": "ignored"
+			},
+			{
+				"path": "README.md",
+				"status": "added",
+				"classification": "ignored"
+			},
+			{
+				"path": "crates/counter/Cargo.toml",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "crates/counter/src/lib.rs",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "crates/mixed/bindings.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "crates/mixed/src/lib.rs",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "eslint.config.js",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "eslint.harness-rules.js",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "harness.audit.json",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "harness.units.json",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "harness.verify.json",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "node_modules",
+				"status": "added",
+				"classification": "other"
+			},
+			{
+				"path": "package.json",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "playwright.config.ts",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "scripts/explorer.mjs",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "scripts/fixture.mjs",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "scripts/harness-audit.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "specification/scenarios/clock.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/function-extra.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/function-packer.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/kernel-counter.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/kernel-mixed.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/slugify-run.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/titles-audio.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/titles-boundary.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/titles-list.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/scenarios/titles-page.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/component.title-frame.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/component.title-list.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/component.title-row.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/config.titles.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/entry.index.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/function.clock.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/function.extra.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/function.packer.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/function.slugify.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/kernel.counter.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/kernel.mixed.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/page.titles.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/script.explorer.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/script.fixture.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/script.harness-audit.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/service.clock.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "specification/units/service.title.json",
+				"status": "added",
+				"classification": "registry"
+			},
+			{
+				"path": "src/components/TitleFrame.svelte",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/components/TitleList.svelte",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/components/TitleRow.svelte",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/config/titlesConfig.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/index.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/routes/titles/+page.svelte",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/services/ClockService.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/services/TitleService.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/utils/clock.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/utils/extra.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/utils/packer.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "src/utils/slugify.ts",
+				"status": "added",
+				"classification": "source"
+			},
+			{
+				"path": "test/fixture/function.clock.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/function.extra.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/function.packer.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/function.slugify.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/kernel.counter.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/kernel.mixed.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/script.explorer.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/script.fixture.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/service.clock.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/fixture/service.title.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/harness-audit.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/index.test.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/TitleFramePreview.svelte",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/auditFixture.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/build-components.mjs",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/build-page.mjs",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/captureComponent.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/captureComponent.types.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/captureExample.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/capturePage.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/capturePage.types.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/fixtureCaptureReporter.js",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/harnessCaseReporter.js",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/pageControl.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/serve-components.mjs",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "test/support/serve-page.mjs",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "tests/e2e/support/browserScreenshot.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "tests/e2e/support/browserTest.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "tests/e2e/support/browserTest.types.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "tests/e2e/title-components.spec.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "tests/e2e/titles-page.spec.ts",
+				"status": "added",
+				"classification": "test"
+			},
+			{
+				"path": "tsconfig.json",
+				"status": "added",
+				"classification": "global"
+			},
+			{
+				"path": "vitest.config.ts",
+				"status": "added",
+				"classification": "global"
+			}
+		],
+		"units": {
+			"direct": [
+				"component.title-frame",
+				"component.title-list",
+				"component.title-row",
+				"config.titles",
+				"entry.index",
+				"function.clock",
+				"function.extra",
+				"function.packer",
+				"function.slugify",
+				"kernel.counter",
+				"kernel.mixed",
+				"page.titles",
+				"script.explorer",
+				"script.fixture",
+				"script.harness-audit",
+				"service.clock",
+				"service.title"
+			],
+			"indirect": [],
+			"added": [
+				"component.title-frame",
+				"component.title-list",
+				"component.title-row",
+				"config.titles",
+				"entry.index",
+				"function.clock",
+				"function.extra",
+				"function.packer",
+				"function.slugify",
+				"kernel.counter",
+				"kernel.mixed",
+				"page.titles",
+				"script.explorer",
+				"script.fixture",
+				"script.harness-audit",
+				"service.clock",
+				"service.title"
+			],
+			"removed": []
+		},
+		"uncertain": [
+			{
+				"node": "file:.prettierignore",
+				"reason": "unclassified-change",
+				"detail": ".prettierignore"
+			},
+			{
+				"node": "file:.prettierrc",
+				"reason": "global-change",
+				"detail": ".prettierrc"
+			},
+			{
+				"node": "file:eslint.config.js",
+				"reason": "global-change",
+				"detail": "eslint.config.js"
+			},
+			{
+				"node": "file:eslint.harness-rules.js",
+				"reason": "global-change",
+				"detail": "eslint.harness-rules.js"
+			},
+			{
+				"node": "file:harness.audit.json",
+				"reason": "global-change",
+				"detail": "harness.audit.json"
+			},
+			{
+				"node": "file:harness.units.json",
+				"reason": "global-change",
+				"detail": "harness.units.json"
+			},
+			{
+				"node": "file:harness.verify.json",
+				"reason": "global-change",
+				"detail": "harness.verify.json"
+			},
+			{
+				"node": "file:node_modules",
+				"reason": "unclassified-change",
+				"detail": "node_modules"
+			},
+			{
+				"node": "file:package.json",
+				"reason": "global-change",
+				"detail": "package.json"
+			},
+			{
+				"node": "file:playwright.config.ts",
+				"reason": "global-change",
+				"detail": "playwright.config.ts"
+			},
+			{
+				"node": "file:tsconfig.json",
+				"reason": "global-change",
+				"detail": "tsconfig.json"
+			},
+			{
+				"node": "file:vitest.config.ts",
+				"reason": "global-change",
+				"detail": "vitest.config.ts"
+			}
+		]
+	},
+	"tests": [
+		{
+			"id": "test/fixture/function.clock.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/function.clock.test.ts",
+			"status": "passed",
+			"durationMs": 680,
+			"log": {
+				"path": "logs/test-fixture-function.clock.test.ts.log",
+				"bytes": 329,
+				"sha256": "d72b33827d2951ee20b00affff3efa90dde976688327e8f3072e02ba59586a82"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/function.clock.test.ts",
+						"title": "clock: numeric text",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/checks/test-fixture-function.clock.test.ts/case-results.ndjson",
+					"bytes": 159,
+					"sha256": "a390970147b951d721aff4e8761def124f422619997f1912d3339d4f6252f9ef"
+				}
+			}
+		},
+		{
+			"id": "test/fixture/function.slugify.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/function.slugify.test.ts",
+			"status": "passed",
+			"durationMs": 677,
+			"log": {
+				"path": "logs/test-fixture-function.slugify.test.ts.log",
+				"bytes": 331,
+				"sha256": "9183e271938b021e84dc5615476a9a228b9fcdd6b224aa7a6894c13aa4c56dde"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/function.slugify.test.ts",
+						"title": "slugify: numeric text",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/checks/test-fixture-function.slugify.test.ts/case-results.ndjson",
+					"bytes": 163,
+					"sha256": "66a327dbfb880ecc52d40ad256e71370dc86853e42ecac847903b7418fca7e52"
+				}
+			}
+		},
+		{
+			"id": "test/fixture/script.explorer.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/script.explorer.test.ts",
+			"status": "passed",
+			"durationMs": 694,
+			"log": {
+				"path": "logs/test-fixture-script.explorer.test.ts.log",
+				"bytes": 332,
+				"sha256": "95ba17b310b357a3bbae72062567579eb882579a0d75f3f01d4721e64ebecf88"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/script.explorer.test.ts",
+						"title": "runExplorer: slugify without requested evidence",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/checks/test-fixture-script.explorer.test.ts/case-results.ndjson",
+					"bytes": 188,
+					"sha256": "8f30c3cae04ee2103da07684f037779c1c89d24ecd9410990a9a3766297b8388"
+				}
+			}
+		},
+		{
+			"id": "test/fixture/script.fixture.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/script.fixture.test.ts",
+			"status": "passed",
+			"durationMs": 872,
+			"log": {
+				"path": "logs/test-fixture-script.fixture.test.ts.log",
+				"bytes": 334,
+				"sha256": "94d5d3cb2c9a5cd5c5b7c7b5ba18c7b0e2742c878d2eff9dc4d77ec8e7801e87"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/script.fixture.test.ts",
+						"title": "runFixture: test without requested evidence",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/script.fixture.test.ts",
+						"title": "runFixture: audio without requested evidence",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/script.fixture.test.ts",
+						"title": "runFixture: clock without requested evidence",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/script.fixture.test.ts",
+						"title": "runFixture: bench without requested evidence",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/script.fixture.test.ts",
+						"title": "runFixture: control without requested evidence",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/checks/test-fixture-script.fixture.test.ts/case-results.ndjson",
+					"bytes": 921,
+					"sha256": "d99611814f71b69b1f3dd470f70ed3db97742b95e6152f3eb7e974afcaf34306"
+				}
+			}
+		},
+		{
+			"id": "test/fixture/service.clock.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/service.clock.test.ts",
+			"status": "passed",
+			"durationMs": 669,
+			"log": {
+				"path": "logs/test-fixture-service.clock.test.ts.log",
+				"bytes": 328,
+				"sha256": "40021918a0509ef3a06858390c9a4751027163fcc9fce41a4eba0438a3320e22"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/service.clock.test.ts",
+						"title": "ClockService.run: numeric text",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/checks/test-fixture-service.clock.test.ts/case-results.ndjson",
+					"bytes": 169,
+					"sha256": "6d1e26d79c9d971d225f272524288ffeb16ec43444ebac1ee776a491187ba014"
+				}
+			}
+		},
+		{
+			"id": "test/fixture/service.title.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/service.title.test.ts",
+			"status": "passed",
+			"durationMs": 671,
+			"log": {
+				"path": "logs/test-fixture-service.title.test.ts.log",
+				"bytes": 328,
+				"sha256": "666c427287cdb6901626aecc79cb4002b52ca61544eaa39dc3f88f5171ea7013"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/service.title.test.ts",
+						"title": "TitleService.run: numeric text",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/checks/test-fixture-service.title.test.ts/case-results.ndjson",
+					"bytes": 169,
+					"sha256": "de74a7eb4a337de5c552c66ed4b058dbc55402f23064eb876a5e744d0274ca64"
+				}
+			}
+		},
+		{
+			"id": "test/harness-audit.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/harness-audit.test.ts",
+			"status": "passed",
+			"durationMs": 1991,
+			"log": {
+				"path": "logs/test-harness-audit.test.ts.log",
+				"bytes": 750,
+				"sha256": "32cff99b4600275ea57a1aa39fc8c8dc7d52eada3dd3d50a7ff83bcbebb07eb6"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/harness-audit.test.ts",
+						"title": "runAudit: audits valid source",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/harness-audit.test.ts",
+						"title": "runAudit: rejects oversized source",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/harness-audit.test.ts",
+						"title": "runAudit: reports a missing CLI file",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/harness-audit.test.ts",
+						"title": "runAudit: throws when the fallback command is unavailable",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/checks/test-harness-audit.test.ts/case-results.ndjson",
+					"bytes": 680,
+					"sha256": "a68f8cfe879515ba2776a97b9379aa983990f5ba5be0a648b6b9ea48a7dea7e1"
+				}
+			}
+		},
+		{
+			"id": "test/index.test.ts",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/index.test.ts",
+			"status": "passed",
+			"durationMs": 668,
+			"log": {
+				"path": "logs/test-index.test.ts.log",
+				"bytes": 312,
+				"sha256": "fbda1ccf5820fcec719137b65f7c26ae10d57411e2b8fff188a0c578091789e3"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/index.test.ts",
+						"title": "helloHarness: returns a greeting",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/checks/test-index.test.ts/case-results.ndjson",
+					"bytes": 155,
+					"sha256": "d809c56e517ae0bb2101e94aaf8a35995ce3e3050144f31f4e0a78aa5da869f8"
+				}
+			}
+		},
+		{
+			"id": "slugify-run:slugify",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x vitest run test/fixture/function.slugify.test.ts test/fixture/script.explorer.test.ts && node scripts/explorer.mjs slugify",
+			"status": "passed",
+			"durationMs": 922,
+			"log": {
+				"path": "logs/slugify-run-slugify.log",
+				"bytes": 388,
+				"sha256": "6f51a80191a1d96998fa969994cf412600a90ffaf01fd598cab5f0f9d428fa09"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/function.slugify.test.ts",
+						"title": "slugify: numeric text",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/script.explorer.test.ts",
+						"title": "runExplorer: slugify without requested evidence",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/slugify-run/slugify/case-results.ndjson",
+					"bytes": 351,
+					"sha256": "acddc65c157442880dc14cd88c87958e7034cf3cf52d7d0e4ae14c9afd6d835f"
+				}
+			}
+		},
+		{
+			"id": "clock:clock",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x vitest run test/fixture/service.clock.test.ts && node scripts/fixture.mjs clock",
+			"status": "passed",
+			"durationMs": 707,
+			"log": {
+				"path": "logs/clock-clock.log",
+				"bytes": 328,
+				"sha256": "25c20d628b96b2fe671b1821e4652587173eb4163526145f940e1d252be30be8"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/service.clock.test.ts",
+						"title": "ClockService.run: numeric text",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/clock/clock/case-results.ndjson",
+					"bytes": 169,
+					"sha256": "6d1e26d79c9d971d225f272524288ffeb16ec43444ebac1ee776a491187ba014"
+				}
+			}
+		},
+		{
+			"id": "titles-audio:audio",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x vitest run test/fixture/service.title.test.ts && node scripts/fixture.mjs audio",
+			"status": "passed",
+			"durationMs": 705,
+			"log": {
+				"path": "logs/titles-audio-audio.log",
+				"bytes": 328,
+				"sha256": "a687f9a4c5c298c4b6d94af530edfb7bc9c2475d1feb3b51bddf4071d30e82ec"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/service.title.test.ts",
+						"title": "TitleService.run: numeric text",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-audio/audio/case-results.ndjson",
+					"bytes": 169,
+					"sha256": "de74a7eb4a337de5c552c66ed4b058dbc55402f23064eb876a5e744d0274ca64"
+				}
+			}
+		},
+		{
+			"id": "titles-boundary:bench",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun x vitest run test/fixture/service.title.test.ts && node scripts/fixture.mjs bench",
+			"status": "passed",
+			"durationMs": 739,
+			"log": {
+				"path": "logs/titles-boundary-bench.log",
+				"bytes": 328,
+				"sha256": "23c145383f1d28b2e44645f8ed5878e2537fc1a136c89995f2f03cbee58f05e8"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/service.title.test.ts",
+						"title": "TitleService.run: numeric text",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-boundary/bench/case-results.ndjson",
+					"bytes": 169,
+					"sha256": "de74a7eb4a337de5c552c66ed4b058dbc55402f23064eb876a5e744d0274ca64"
+				}
+			}
+		},
+		{
+			"id": "function-extra:examples",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/function.extra.test.ts",
+			"status": "passed",
+			"durationMs": 661,
+			"log": {
+				"path": "logs/function-extra-examples.log",
+				"bytes": 329,
+				"sha256": "c109fc6f52fc826848f8057823e32a2228bf4ca3a2069fe4ecc0cfe2d3058b45"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/function.extra.test.ts",
+						"title": "extra: loads a named data module",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/function-extra/examples/case-results.ndjson",
+					"bytes": 172,
+					"sha256": "6d0b7f17356cfe59a10334f686ba2e941e951b68adbcc0478d0810e6bcac9f69"
+				}
+			}
+		},
+		{
+			"id": "function-packer:examples",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/function.packer.test.ts",
+			"status": "passed",
+			"durationMs": 670,
+			"log": {
+				"path": "logs/function-packer-examples.log",
+				"bytes": 330,
+				"sha256": "0741635b6ea590816f12460c1c45f64125b5b79efb724551a664f8698654ccaf"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/function.packer.test.ts",
+						"title": "packer: numeric text",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/function-packer/examples/case-results.ndjson",
+					"bytes": 161,
+					"sha256": "ed833d75987e0f8b76d6790e8279a4e02cf0795a22f8726e5e95ac75d8714ec2"
+				}
+			}
+		},
+		{
+			"id": "kernel-counter:examples",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/kernel.counter.test.ts",
+			"status": "passed",
+			"durationMs": 1813,
+			"log": {
+				"path": "logs/kernel-counter-examples.log",
+				"bytes": 366,
+				"sha256": "29e26fd4d3ceed44bd4e87bf55fcbbf8332a837a908e20e6966795c09ef46f79"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/kernel.counter.test.ts",
+						"title": "sign: value -1",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/kernel.counter.test.ts",
+						"title": "sign: value 0",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/kernel.counter.test.ts",
+						"title": "sign: value 1",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-counter/examples/case-results.ndjson",
+					"bytes": 460,
+					"sha256": "32f65a14a9dd4a0e44257f8a2b7a369c86f66e677c715c91d0a57c385a809afc"
+				}
+			}
+		},
+		{
+			"id": "kernel-mixed:examples",
+			"kind": "unit",
+			"runner": "vitest",
+			"target": "test/fixture/kernel.mixed.test.ts",
+			"status": "passed",
+			"durationMs": 1449,
+			"log": {
+				"path": "logs/kernel-mixed-examples.log",
+				"bytes": 362,
+				"sha256": "81710ce894d3e147ca9703a7e87ea5e0b8de5cb31a887a2519dec2455f2b745e"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "test/fixture/kernel.mixed.test.ts",
+						"title": "sign: value -1",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/kernel.mixed.test.ts",
+						"title": "sign: value 0",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/kernel.mixed.test.ts",
+						"title": "sign: value 1",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/kernel.mixed.test.ts",
+						"title": "bound: value 1",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/kernel.mixed.test.ts",
+						"title": "bound: value 2",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/kernel.mixed.test.ts",
+						"title": "bound: value 8",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					},
+					{
+						"file": "test/fixture/kernel.mixed.test.ts",
+						"title": "bound: value 9",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "passed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-mixed/examples/case-results.ndjson",
+					"bytes": 1062,
+					"sha256": "de9c9763f6d8b90074d094bd3eb7bcd32ba4e19d69fc661f6c727133db4d0810"
+				}
+			}
+		},
+		{
+			"id": "titles-list:list",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "tests/e2e/title-components.spec.ts",
+			"status": "failed",
+			"durationMs": 3653,
+			"log": {
+				"path": "logs/titles-list-list.log",
+				"bytes": 15768,
+				"sha256": "5c370a795fed4e6fa664951b4c42b60ea5316a2ac77fbd3869aca923a63cbe43"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title list: listed at desktop",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title list: listed at tablet",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title row: row at tablet",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title list: listed at mobile",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title row: row at desktop",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title row: row at mobile",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title frame: rest at mobile",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title frame: rest at tablet",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title frame: rest at desktop",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title frame: child at tablet",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title frame: child at desktop",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/title-components.spec.ts",
+						"title": "Title frame: child at mobile",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/case-results.ndjson",
+					"bytes": 1993,
+					"sha256": "0ad5547a6af9e3f9cfa315095a881d4d5269594bc9219de1cb415c9a5befe97c"
+				}
+			}
+		},
+		{
+			"id": "titles-page:page",
+			"kind": "e2e",
+			"runner": "playwright",
+			"target": "tests/e2e/titles-page.spec.ts",
+			"status": "failed",
+			"durationMs": 2450,
+			"log": {
+				"path": "logs/titles-page-page.log",
+				"bytes": 7543,
+				"sha256": "66685a449eeb89de06c06d4d4bf307601d337cc039c11b059f52ef069db01105"
+			},
+			"cases": {
+				"outcomes": [
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > mobile viewport > empty",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > tablet viewport > filled",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > mobile viewport > filled",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > desktop viewport > filled",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > tablet viewport > empty",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					},
+					{
+						"file": "tests/e2e/titles-page.spec.ts",
+						"title": "titles view route is generated > desktop viewport > empty",
+						"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+						"status": "failed",
+						"retry": 0
+					}
+				],
+				"artifact": {
+					"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-page/page/case-results.ndjson",
+					"bytes": 1145,
+					"sha256": "91075f8ab637c5fd961c43b037bb12ed8215325d3a546360b615c08becb9ca26"
+				}
+			}
+		}
+	],
+	"scenarios": [
+		{
+			"id": "clock",
+			"status": "passed",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"states": [
+				{
+					"id": "default",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "output",
+							"kind": "output",
+							"state": "default",
+							"mediaType": "text/plain",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/clock/clock/clock.txt",
+							"sha256": "8c840f2a8bad107a2a365b55dcfb7bccf130831ad89e0aafeb7e7feb0166e10e",
+							"bytes": 64,
+							"capturedAt": "2026-10-29T15:01:54.418Z"
+						}
+					]
+				},
+				{
+					"id": "initialized",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "method-result",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/clock/clock/method-result.json",
+							"sha256": "c5e21fa26d72b8f7dad38fd4328af5f558e16d06cba66dd8e1fa65269e52151d",
+							"bytes": 33,
+							"capturedAt": "2026-10-29T15:01:54.418Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "function-extra",
+			"status": "passed",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"states": [
+				{
+					"id": "initialized",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/function-extra/examples/function.extra-data-module.json",
+							"sha256": "d21fafbefaecb5e6129bc36ee2b399be7e6efcf062f213f1895bed7c3eff0d1e",
+							"bytes": 53,
+							"capturedAt": "2026-10-29T15:01:56.865Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "function-packer",
+			"status": "passed",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"states": [
+				{
+					"id": "initialized",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/function-packer/examples/function.packer-numeric-text.json",
+							"sha256": "c5e21fa26d72b8f7dad38fd4328af5f558e16d06cba66dd8e1fa65269e52151d",
+							"bytes": 33,
+							"capturedAt": "2026-10-29T15:01:58.817Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "kernel-counter",
+			"status": "passed",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"states": [
+				{
+					"id": "initialized",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-counter/examples/kernel.counter-sign-negative.json",
+							"sha256": "e7bcfa7f31f0129f27206edc60bfda624e606b604c2e5a6005bdaec58cc482d4",
+							"bytes": 27,
+							"capturedAt": "2026-10-29T15:02:00.660Z"
+						},
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-counter/examples/kernel.counter-sign-zero.json",
+							"sha256": "9fe34b3684795560a6f1c90bf9e87c77b752a656f7e734c9eb0c23cdf74463b0",
+							"bytes": 25,
+							"capturedAt": "2026-10-29T15:02:00.660Z"
+						},
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-counter/examples/kernel.counter-sign-positive.json",
+							"sha256": "9fe34b3684795560a6f1c90bf9e87c77b752a656f7e734c9eb0c23cdf74463b0",
+							"bytes": 25,
+							"capturedAt": "2026-10-29T15:02:00.660Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "kernel-mixed",
+			"status": "passed",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"states": [
+				{
+					"id": "initialized",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-mixed/examples/kernel.mixed-sign-negative.json",
+							"sha256": "e7bcfa7f31f0129f27206edc60bfda624e606b604c2e5a6005bdaec58cc482d4",
+							"bytes": 27,
+							"capturedAt": "2026-10-29T15:02:02.391Z"
+						},
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-mixed/examples/kernel.mixed-sign-zero.json",
+							"sha256": "9fe34b3684795560a6f1c90bf9e87c77b752a656f7e734c9eb0c23cdf74463b0",
+							"bytes": 25,
+							"capturedAt": "2026-10-29T15:02:02.392Z"
+						},
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-mixed/examples/kernel.mixed-sign-positive.json",
+							"sha256": "9fe34b3684795560a6f1c90bf9e87c77b752a656f7e734c9eb0c23cdf74463b0",
+							"bytes": 25,
+							"capturedAt": "2026-10-29T15:02:02.392Z"
+						},
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-mixed/examples/kernel.mixed-bound-1.json",
+							"sha256": "7e5a39346f1d5de7b5970e048d89ff06b543c215900b9f25c295a731d1e7160a",
+							"bytes": 25,
+							"capturedAt": "2026-10-29T15:02:02.392Z"
+						},
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-mixed/examples/kernel.mixed-bound-2.json",
+							"sha256": "4487048a3a18a3729d65ef2a1baa85d0f030dba3bcd8e6f3b0aa98ed395e02ce",
+							"bytes": 25,
+							"capturedAt": "2026-10-29T15:02:02.392Z"
+						},
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-mixed/examples/kernel.mixed-bound-8.json",
+							"sha256": "3a9427a5b9a0980534a3875f40d7567dacdc69fe58b9f06d07beaadea75b0eea",
+							"bytes": 25,
+							"capturedAt": "2026-10-29T15:02:02.392Z"
+						},
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/kernel-mixed/examples/kernel.mixed-bound-9.json",
+							"sha256": "7e5a39346f1d5de7b5970e048d89ff06b543c215900b9f25c295a731d1e7160a",
+							"bytes": 25,
+							"capturedAt": "2026-10-29T15:02:02.392Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "slugify-run",
+			"status": "passed",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"states": [
+				{
+					"id": "default",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "run",
+							"kind": "output",
+							"state": "default",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/slugify-run/slugify/slugify-run.json",
+							"sha256": "21c85b0d16a7ed2334af65b674766c1e2ea30c26aca304cc412b381d75402798",
+							"bytes": 364,
+							"capturedAt": "2026-10-29T15:01:52.682Z"
+						},
+						{
+							"evidence": "checks",
+							"kind": "assertions",
+							"state": "default",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/slugify-run/slugify/slugify-checks.json",
+							"sha256": "db9f6cadf093d51018dac9f146d6fc2145d332bb035fdded3e5db82c6889d544",
+							"bytes": 304,
+							"capturedAt": "2026-10-29T15:01:52.682Z"
+						}
+					]
+				},
+				{
+					"id": "initialized",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/slugify-run/slugify/function.slugify-numeric-text.json",
+							"sha256": "c5e21fa26d72b8f7dad38fd4328af5f558e16d06cba66dd8e1fa65269e52151d",
+							"bytes": 33,
+							"capturedAt": "2026-10-29T15:01:52.682Z"
+						}
+					]
+				},
+				{
+					"id": "evidence-disabled",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "example-results",
+							"kind": "assertions",
+							"state": "evidence-disabled",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/slugify-run/slugify/script.explorer-slugify.json",
+							"sha256": "7cc3f37dd66919b267efce83ead835d9e83f12b2feda99a1c60cab4cddce8765",
+							"bytes": 95,
+							"capturedAt": "2026-10-29T15:01:52.682Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "titles-audio",
+			"status": "passed",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"states": [
+				{
+					"id": "spoken",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "speech",
+							"kind": "audio",
+							"state": "spoken",
+							"mediaType": "audio/wav",
+							"provenance": "fixture",
+							"transcript": "Title: 165",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-audio/audio/spoken.wav",
+							"sha256": "36b59f8c7fd996896f4f2c7856de67eda8c922bc38c544e1bc1d18b12e4f5268",
+							"bytes": 4044,
+							"capturedAt": "2026-10-29T15:01:55.150Z",
+							"durationSeconds": 0.25
+						}
+					]
+				},
+				{
+					"id": "initialized",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "method-result",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-audio/audio/method-result.json",
+							"sha256": "c5e21fa26d72b8f7dad38fd4328af5f558e16d06cba66dd8e1fa65269e52151d",
+							"bytes": 33,
+							"capturedAt": "2026-10-29T15:01:55.150Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "titles-boundary",
+			"status": "passed",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"states": [
+				{
+					"id": "default",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "boundary",
+							"kind": "benchmark",
+							"state": "default",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-boundary/bench/benchmark.json",
+							"sha256": "878fd64332f9da6811d28d1b0c60a15a606854e132d5443db23040f00ee50688",
+							"bytes": 443,
+							"capturedAt": "2026-10-29T15:01:56.177Z"
+						}
+					]
+				},
+				{
+					"id": "initialized",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "method-result",
+							"kind": "assertions",
+							"state": "initialized",
+							"mediaType": "application/json",
+							"status": "passed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-boundary/bench/method-result.json",
+							"sha256": "c5e21fa26d72b8f7dad38fd4328af5f558e16d06cba66dd8e1fa65269e52151d",
+							"bytes": 33,
+							"capturedAt": "2026-10-29T15:01:56.177Z"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "titles-list",
+			"status": "failed",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"states": [
+				{
+					"id": "listed",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "listed",
+							"viewport": "desktop",
+							"clip": {
+								"x": 8,
+								"y": 16,
+								"width": 1424,
+								"height": 18
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-list\",\"case\":\"listed.desktop\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"f90d6a013d3c5dd52299da151b619bef5581af8a8d18b66a5d578248649db0de\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/listed-desktop.png",
+							"sha256": "f90d6a013d3c5dd52299da151b619bef5581af8a8d18b66a5d578248649db0de",
+							"bytes": 869,
+							"capturedAt": "2026-10-29T15:02:07.332Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "listed",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 16,
+								"width": 904,
+								"height": 18
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-list\",\"case\":\"listed.tablet\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"872de40a0e55156a46843d81af87e759163006f6e38cfd22b2352cd88f5c1fef\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/listed-tablet.png",
+							"sha256": "872de40a0e55156a46843d81af87e759163006f6e38cfd22b2352cd88f5c1fef",
+							"bytes": 825,
+							"capturedAt": "2026-10-29T15:02:07.332Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "listed",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 16,
+								"width": 374,
+								"height": 18
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-list\",\"case\":\"listed.mobile\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"5bdf6bebd93f2fa65f49ab0561eab6153466c12c878727751246b278f613a6a8\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/listed-mobile.png",
+							"sha256": "5bdf6bebd93f2fa65f49ab0561eab6153466c12c878727751246b278f613a6a8",
+							"bytes": 775,
+							"capturedAt": "2026-10-29T15:02:07.332Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						}
+					]
+				},
+				{
+					"id": "row",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "row",
+							"viewport": "tablet",
+							"clip": {
+								"x": 8,
+								"y": 8,
+								"width": 904,
+								"height": 18
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-row\",\"case\":\"row.tablet\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"808c3a529f4e740889af3e828988ba020e6fafdd1d646e5a4d8317148878219b\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/row-tablet.png",
+							"sha256": "808c3a529f4e740889af3e828988ba020e6fafdd1d646e5a4d8317148878219b",
+							"bytes": 744,
+							"capturedAt": "2026-10-29T15:02:07.332Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "row",
+							"viewport": "desktop",
+							"clip": {
+								"x": 8,
+								"y": 8,
+								"width": 1424,
+								"height": 18
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-row\",\"case\":\"row.desktop\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"108a52fd484532b885084cad277081dc514eff8e9bbb788a93123c0deb7752c9\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/row-desktop.png",
+							"sha256": "108a52fd484532b885084cad277081dc514eff8e9bbb788a93123c0deb7752c9",
+							"bytes": 776,
+							"capturedAt": "2026-10-29T15:02:07.332Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "row",
+							"viewport": "mobile",
+							"clip": {
+								"x": 8,
+								"y": 8,
+								"width": 374,
+								"height": 18
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-row\",\"case\":\"row.mobile\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"5cf5331b95fcc5e68b7b9680dffaefed933bc847292d659c15900dcf75d47b3c\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/row-mobile.png",
+							"sha256": "5cf5331b95fcc5e68b7b9680dffaefed933bc847292d659c15900dcf75d47b3c",
+							"bytes": 688,
+							"capturedAt": "2026-10-29T15:02:07.333Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						}
+					]
+				},
+				{
+					"id": "rest",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "frame-screens",
+							"kind": "screenshot",
+							"state": "rest",
+							"viewport": "desktop",
+							"clip": {
+								"x": 0,
+								"y": 0,
+								"width": 1440,
+								"height": 900
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-frame\",\"case\":\"rest.desktop\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"70bb54d1a10604169f20153940236c206f077bef9b40a048b1ff9b16157bf1e5\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/rest-desktop.png",
+							"sha256": "70bb54d1a10604169f20153940236c206f077bef9b40a048b1ff9b16157bf1e5",
+							"bytes": 8107,
+							"capturedAt": "2026-10-29T15:02:07.334Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "frame-screens",
+							"kind": "screenshot",
+							"state": "rest",
+							"viewport": "mobile",
+							"clip": {
+								"x": 0,
+								"y": 0,
+								"width": 390,
+								"height": 844
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-frame\",\"case\":\"rest.mobile\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"abafc6f2f6523672e1e314ae8968ac737630d0df5e8238ca84a53a525facf844\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/rest-mobile.png",
+							"sha256": "abafc6f2f6523672e1e314ae8968ac737630d0df5e8238ca84a53a525facf844",
+							"bytes": 4919,
+							"capturedAt": "2026-10-29T15:02:07.334Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "frame-screens",
+							"kind": "screenshot",
+							"state": "rest",
+							"viewport": "tablet",
+							"clip": {
+								"x": 0,
+								"y": 0,
+								"width": 920,
+								"height": 800
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-frame\",\"case\":\"rest.tablet\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"588388cf6e3457262068d8a6a58cdcabe2d87e5e52a7c2586e44ae827a84b587\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/rest-tablet.png",
+							"sha256": "588388cf6e3457262068d8a6a58cdcabe2d87e5e52a7c2586e44ae827a84b587",
+							"bytes": 6112,
+							"capturedAt": "2026-10-29T15:02:07.335Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						}
+					]
+				},
+				{
+					"id": "child",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "frame-screens",
+							"kind": "screenshot",
+							"state": "child",
+							"viewport": "tablet",
+							"clip": {
+								"x": 0,
+								"y": 0,
+								"width": 920,
+								"height": 800
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-frame\",\"case\":\"child.tablet\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"b92ea437e183646e167cb9e6aaf5bd3a3e88387e4e5d19685db7994512afb8b1\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/child-tablet.png",
+							"sha256": "b92ea437e183646e167cb9e6aaf5bd3a3e88387e4e5d19685db7994512afb8b1",
+							"bytes": 7201,
+							"capturedAt": "2026-10-29T15:02:07.336Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "frame-screens",
+							"kind": "screenshot",
+							"state": "child",
+							"viewport": "desktop",
+							"clip": {
+								"x": 0,
+								"y": 0,
+								"width": 1440,
+								"height": 900
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-frame\",\"case\":\"child.desktop\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"f59cb3ef38105596c030c0ee8b0e715330a5a0143e847b2708cd73fdd3e84a3e\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/child-desktop.png",
+							"sha256": "f59cb3ef38105596c030c0ee8b0e715330a5a0143e847b2708cd73fdd3e84a3e",
+							"bytes": 9244,
+							"capturedAt": "2026-10-29T15:02:07.337Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "frame-screens",
+							"kind": "screenshot",
+							"state": "child",
+							"viewport": "mobile",
+							"clip": {
+								"x": 0,
+								"y": 0,
+								"width": 390,
+								"height": 844
+							},
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"component.title-frame\",\"case\":\"child.mobile\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"9ac14b9b369ad688f7dfb0b7be5bf3bf331996a974f3088e4d5fe956da81b99b\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-list/list/child-mobile.png",
+							"sha256": "9ac14b9b369ad688f7dfb0b7be5bf3bf331996a974f3088e4d5fe956da81b99b",
+							"bytes": 5921,
+							"capturedAt": "2026-10-29T15:02:07.338Z",
+							"server": {
+								"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "titles-page",
+			"status": "failed",
+			"testedRevision": "dfa66a267ec1634853e236bb1f85ec368c46dc04",
+			"states": [
+				{
+					"id": "empty",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "empty",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"empty.desktop\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"bd4392ea3b0e4aa9d7242f781bf6b0c5e5e436ba34c2cb958d1f1a3d4430a25c\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-page/page/empty-desktop.png",
+							"sha256": "bd4392ea3b0e4aa9d7242f781bf6b0c5e5e436ba34c2cb958d1f1a3d4430a25c",
+							"bytes": 8866,
+							"capturedAt": "2026-10-29T15:02:11.079Z",
+							"server": {
+								"buildId": "e23aa8b91d313ddf26077a14c83aa5f41bec26adb10a8d8b8896da17afa90ec1",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "empty",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"empty.tablet\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"f25caf150e58ff1ffd47d8cd678037d64d69fd8d4aafb3593fb3ae2ea01521d1\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-page/page/empty-tablet.png",
+							"sha256": "f25caf150e58ff1ffd47d8cd678037d64d69fd8d4aafb3593fb3ae2ea01521d1",
+							"bytes": 6813,
+							"capturedAt": "2026-10-29T15:02:11.080Z",
+							"server": {
+								"buildId": "e23aa8b91d313ddf26077a14c83aa5f41bec26adb10a8d8b8896da17afa90ec1",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "empty",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"empty.mobile\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"92c9996c23920cdd7aeeddc75fb822ae0fafd3c2099f1b3da2d02f3d271727fe\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-page/page/empty-mobile.png",
+							"sha256": "92c9996c23920cdd7aeeddc75fb822ae0fafd3c2099f1b3da2d02f3d271727fe",
+							"bytes": 5488,
+							"capturedAt": "2026-10-29T15:02:11.080Z",
+							"server": {
+								"buildId": "e23aa8b91d313ddf26077a14c83aa5f41bec26adb10a8d8b8896da17afa90ec1",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						}
+					]
+				},
+				{
+					"id": "filled",
+					"coverage": "required",
+					"captures": [
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "filled",
+							"viewport": "desktop",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"filled.desktop\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"1bfc0b91086861b75de64808164d13b6470e6217f67168b87cb36e0613bc0885\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-page/page/filled-desktop.png",
+							"sha256": "1bfc0b91086861b75de64808164d13b6470e6217f67168b87cb36e0613bc0885",
+							"bytes": 8184,
+							"capturedAt": "2026-10-29T15:02:11.082Z",
+							"server": {
+								"buildId": "e23aa8b91d313ddf26077a14c83aa5f41bec26adb10a8d8b8896da17afa90ec1",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "filled",
+							"viewport": "tablet",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"filled.tablet\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"feb4d8fd31465e859cd7842bd5e13efc0cab9da2e08a8b5a005d456692389414\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-page/page/filled-tablet.png",
+							"sha256": "feb4d8fd31465e859cd7842bd5e13efc0cab9da2e08a8b5a005d456692389414",
+							"bytes": 6203,
+							"capturedAt": "2026-10-29T15:02:11.082Z",
+							"server": {
+								"buildId": "e23aa8b91d313ddf26077a14c83aa5f41bec26adb10a8d8b8896da17afa90ec1",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						},
+						{
+							"evidence": "screens",
+							"kind": "screenshot",
+							"state": "filled",
+							"viewport": "mobile",
+							"mediaType": "image/png",
+							"provenance": "actual-capture",
+							"note": "{\"unit\":\"page.titles\",\"case\":\"filled.mobile\",\"revision\":\"dfa66a267ec1634853e236bb1f85ec368c46dc04\",\"sha256\":\"b9094a66304b2c3a129f3b4196cb060654f8331793c07ff2ec97da2b63b03822\",\"retry\":0}",
+							"status": "failed",
+							"path": "evidence/dfa66a267ec1634853e236bb1f85ec368c46dc04/titles-page/page/filled-mobile.png",
+							"sha256": "b9094a66304b2c3a129f3b4196cb060654f8331793c07ff2ec97da2b63b03822",
+							"bytes": 5016,
+							"capturedAt": "2026-10-29T15:02:11.083Z",
+							"server": {
+								"buildId": "e23aa8b91d313ddf26077a14c83aa5f41bec26adb10a8d8b8896da17afa90ec1",
+								"revision": "dfa66a267ec1634853e236bb1f85ec368c46dc04"
+							}
+						}
+					]
+				},
+				{
+					"id": "offline",
+					"coverage": "inapplicable",
+					"reason": "The page is rendered on the server and never enters a client-side offline state.",
+					"captures": []
+				}
+			]
+		}
+	],
+	"builds": [
+		{
+			"id": "titles-page",
+			"directory": ".cache/harness/titles-page",
+			"buildId": "e23aa8b91d313ddf26077a14c83aa5f41bec26adb10a8d8b8896da17afa90ec1",
+			"files": 2
+		},
+		{
+			"id": "title-components",
+			"directory": ".cache/harness/title-components",
+			"buildId": "688041cfd88fef5a2f3082c42ed7274b66253d7bccb91b90ba8afddba253e0ae",
+			"files": 2
+		}
+	],
+	"budgets": {
+		"status": "failed",
+		"findings": [
+			{
+				"unit": "component.title-frame",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 344,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "component.title-frame",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "component.title-frame",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 2,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "component.title-list",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 279,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "component.title-list",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "component.title-list",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 2,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "component.title-row",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 165,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "component.title-row",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "component.title-row",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "config.titles",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 43,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "config.titles",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "config.titles",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "entry.index",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 73,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "entry.index",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "entry.index",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.clock",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 64,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.clock",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.clock",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.extra",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 80,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.extra",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.extra",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.packer",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 79,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.packer",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.packer",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.slugify",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 100,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.slugify",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "function.slugify",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "kernel.counter",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 130,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "kernel.counter",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": null,
+				"status": "missing-baseline",
+				"detail": "Decision points are not counted in Rust: crates/counter/src/lib.rs."
+			},
+			{
+				"unit": "kernel.counter",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": null,
+				"status": "missing-baseline",
+				"detail": "References are not read in Rust: crates/counter/src/lib.rs. Packages declared in crates/counter/Cargo.toml are not counted."
+			},
+			{
+				"unit": "kernel.mixed",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 188,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "kernel.mixed",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 3,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "kernel.mixed",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 0,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "page.titles",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 396,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "page.titles",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "page.titles",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 2,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.explorer",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 1695,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.explorer",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 6,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.explorer",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 2,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.fixture",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 4862,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.fixture",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 39,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.fixture",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 4,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.harness-audit",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 565,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.harness-audit",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 5,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "script.harness-audit",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.clock",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 127,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.clock",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.clock",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.title",
+				"metric": "source-bytes",
+				"baseline": null,
+				"measured": 165,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.title",
+				"metric": "complexity",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.title",
+				"metric": "dependencies",
+				"baseline": null,
+				"measured": 1,
+				"status": "missing-baseline"
+			},
+			{
+				"unit": "service.title",
+				"metric": "latency-warm-ms",
+				"baseline": null,
+				"measured": 10,
+				"detail": "titles-1k on the module target",
+				"status": "missing-baseline"
+			}
+		]
+	},
+	"reasons": {
+		"status": "passed",
+		"entries": [
+			{
+				"unit": "component.title-frame",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "64788397a9ad1dd8296ddab4d8b2b614c856cbbd32591a39876075aad1df35f9",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "component.title-list",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "0f026e8f49ef209993bacd35976fe5ff9687a9834a9202c4f5da05ff6f9cc87f",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "component.title-row",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "b0ecbb20c099ae36c5a2a1db6c8c366de77e2a2067d62d1f230f9ff2815a1373",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "config.titles",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "434f667eefcb66a4ca75a0a1da5b573308cc51da713c17414671cda313b06991",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "entry.index",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "e613dae1a19e8fc3a05ec005e5f64b63b4e398a4b6efddb0d0c88ef2af40a597",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "function.clock",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "525ddb01f568ac2990bb15576230a0cfeebaae6ab1f4c81469b8553b4afcc2ec",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "function.extra",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "e46eda0212d869c833f4696df17d8be6fb0b2ceb14fa8e8170ef9896835125b5",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "function.packer",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "45dfd0068889cd98886ab7fa3910b7deaa4231ac61256420f9f090d71623315f",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "function.slugify",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "1794326bf9e98bcf099d979cd7bf4a9d2164e0dae39d08fc6cb134a3728d3a2a",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "kernel.counter",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "2d5322c43b8244b632a8224590a008406d59e457f689d5195046f4fd8c6506ce",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "kernel.mixed",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "b8de76acecede6c94743dc6ee7b459e0d927af5d520ea786e4558d5120765c09",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "page.titles",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "77594a50dfc03c4ad48a9d670a9039075ec5364ff10a9de096d754c3fead42a2",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "script.explorer",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "8e5bae57b73efb7ced9fd573d5731105fbdf300380fad1ab9f19b887a8184610",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "script.fixture",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "22c449954e595c605d013bbb120d8ea14dbe17d6ca6cb377933b6ba68ab674ad",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "script.harness-audit",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "e6a1dc2d2c19e20e4501c2c77ec6cb0a5bb5f9a9e189a92d21d13cadba7ea458",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "service.clock",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "35a224c029627a5d0131a2eb57b69f416b03c073674e2d0f5f6329a36c5a3576",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			},
+			{
+				"unit": "service.title",
+				"symbol": "*",
+				"change": "added",
+				"from": null,
+				"to": "2ed5b270ce74adcdd03fe4d732343988e2ba879f1f26819f5192b930b500fd7c",
+				"behavior": "Fixture change.",
+				"simplification": {
+					"attempt": "Nothing simpler was found.",
+					"outcome": "not-improved"
+				},
+				"performance": {
+					"attempt": "No hot path is touched.",
+					"outcome": "not-applicable"
+				},
+				"recordedAt": "2026-10-29T15:01:39.971Z"
+			}
+		],
+		"missing": []
+	},
+	"gates": {
+		"snapshot": "passed",
+		"registry": "passed",
+		"cases": "failed",
+		"ledger": "passed",
+		"tests": "passed",
+		"scenarios": "failed",
+		"reasons": "passed",
+		"budgets": "failed"
+	},
+	"failures": [
+		"titles-list:list: component.title-frame/rest.desktop: executed case did not pass",
+		"titles-list:list: component.title-frame/rest.tablet: executed case did not pass",
+		"titles-list:list: component.title-frame/rest.mobile: executed case did not pass",
+		"titles-list:list: component.title-frame/child.desktop: executed case did not pass",
+		"titles-list:list: component.title-frame/child.tablet: executed case did not pass",
+		"titles-list:list: component.title-frame/child.mobile: executed case did not pass",
+		"titles-list:list: component.title-list/listed.desktop: executed case did not pass",
+		"titles-list:list: component.title-list/listed.tablet: executed case did not pass",
+		"titles-list:list: component.title-list/listed.mobile: executed case did not pass",
+		"titles-list:list: component.title-row/row.desktop: executed case did not pass",
+		"titles-list:list: component.title-row/row.tablet: executed case did not pass",
+		"titles-list:list: component.title-row/row.mobile: executed case did not pass",
+		"titles-page:page: page.titles/empty.desktop: executed case did not pass",
+		"titles-page:page: page.titles/empty.tablet: executed case did not pass",
+		"titles-page:page: page.titles/empty.mobile: executed case did not pass",
+		"titles-page:page: page.titles/filled.desktop: executed case did not pass",
+		"titles-page:page: page.titles/filled.tablet: executed case did not pass",
+		"titles-page:page: page.titles/filled.mobile: executed case did not pass",
+		"titles-list: test list failed with exit code 1",
+		"titles-page: test page failed with exit code 1",
+		"component.title-frame: no baseline is established; a reviewer must establish one",
+		"component.title-list: no baseline is established; a reviewer must establish one",
+		"component.title-row: no baseline is established; a reviewer must establish one",
+		"config.titles: no baseline is established; a reviewer must establish one",
+		"entry.index: no baseline is established; a reviewer must establish one",
+		"function.clock: no baseline is established; a reviewer must establish one",
+		"function.extra: no baseline is established; a reviewer must establish one",
+		"function.packer: no baseline is established; a reviewer must establish one",
+		"function.slugify: no baseline is established; a reviewer must establish one",
+		"kernel.counter: no baseline is established; a reviewer must establish one",
+		"kernel.mixed: no baseline is established; a reviewer must establish one",
+		"page.titles: no baseline is established; a reviewer must establish one",
+		"script.explorer: no baseline is established; a reviewer must establish one",
+		"script.fixture: no baseline is established; a reviewer must establish one",
+		"script.harness-audit: no baseline is established; a reviewer must establish one",
+		"service.clock: no baseline is established; a reviewer must establish one",
+		"service.title: no baseline is established; a reviewer must establish one"
+	]
+}
