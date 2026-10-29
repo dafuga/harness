@@ -8,6 +8,7 @@ import {
 	home,
 	output,
 	parent,
+	sampleRecord,
 	sampleDetail,
 	sampleScope,
 	screen
@@ -45,6 +46,23 @@ test('a capture is found by the whole of its binding, on the side that lists it'
 		const run = { ...binding, scenarioId: 'feed-run', viewport: null, sha256: output };
 		expect(recordedCapture(evidence(feed), run).capture.kind).toBe('output');
 	}));
+
+test('a scoped record keeps ownership of its listed capture', () => {
+	const detail = sampleDetail(head);
+	const [scoped] = detail.records;
+	const newer = sampleRecord(head);
+	scoped.id = 'record-scoped';
+	scoped.scenarios[0].origin = { record: scoped.id, commit: head };
+	newer.id = 'record-newer';
+	newer.finishedAt = '2026-10-02T00:00:00.000Z';
+	newer.scenarios = [];
+	detail.records = [scoped, newer];
+	const shown = explorerEvidence(sampleScope(home), { head: detail, parent: null }, { id: home });
+	expect(shown.after.record?.id).toBe('record-newer');
+	expect(
+		recordedCapture(shown, { ...binding, recordId: 'record-scoped' })
+	).toMatchObject({ record: 'record-scoped', capture: { sha256: screen } });
+});
 
 test('one field that differs, or a capture of another entity, is not listed', () => {
 	const changes = [
