@@ -45,6 +45,7 @@ export function registryErrors(loaded: LoadedUnits): string[] {
 	const scenarios = new Set(loaded.scenarios.map((scenario) => scenario.id));
 	return [
 		...loaded.errors,
+		...loaded.stored.flatMap(contractFindings),
 		...loaded.fresh.manifests.flatMap(contractFindings),
 		...loaded.stored
 			.filter((unit) => unit.status === 'active')
