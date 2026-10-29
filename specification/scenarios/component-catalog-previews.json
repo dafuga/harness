@@ -1541,6 +1541,12 @@
 			"units": ["reports.component.entity-cases"]
 		},
 		{
+			"id": "reports-component-entity-cases-observed-noncallable",
+			"title": "Input and output examples: observed noncallable result",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
 			"id": "reports-component-entity-cases-unavailable",
 			"title": "Input and output examples: unavailable result",
 			"coverage": "required",
@@ -3724,6 +3730,7 @@
 				"reports-component-entity-cases-recorded",
 				"reports-component-entity-cases-recorded-error",
 				"reports-component-entity-cases-observed",
+				"reports-component-entity-cases-observed-noncallable",
 				"reports-component-entity-cases-unavailable",
 				"reports-component-entity-cases-malformed",
 				"reports-component-entity-cases-wrong-unit",
