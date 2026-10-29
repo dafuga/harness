@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { GitAdapter } from '../../adapters/git-source-history/GitAdapter';
-import type { LoopState } from '../../workflows/development-tooling/loop-state/loopState';
+import type { LoopState } from '../../core/development-tooling/loopTypes';
 
 const loops = 'specification/loops';
 const committed: Record<string, string> = { A: 'added', D: 'removed' };

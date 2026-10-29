@@ -1,0 +1,565 @@
+{
+	"rule": "harness/layer-direction",
+	"edges": [
+		{
+			"from": "src/services/agents-providers/module-task-analytics-service/taskEvents.ts",
+			"to": "src/workflows/reports-media/analyticsRecord",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/services/agents-providers/ModuleTaskAnalyticsService.ts",
+			"to": "src/workflows/reports-media/analyticsRecord",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/services/AnalyticsService.ts",
+			"to": "src/cli/program/AnalyticsService",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/check-run-service/CheckRunService.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/check-run-service/gatherCaptures.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/check-run-service/mediaFacts.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/mediaFacts",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/check-run-service/readBrowserDiagnostics.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readBrowserDiagnostics",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/CheckRunService.ts",
+			"to": "src/workflows/run-verify/verification-service/CheckRunService",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/claude-query-service/ClaudeQueryService.ts",
+			"to": "src/cli/program/codex-gateway-service/claude-query-service/ClaudeQueryService",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/claude-query-service/gatewayMessages.ts",
+			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayMessages",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/claude-query-service/gatewayOptions.ts",
+			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/claude-query-service/gatewayPrompt.ts",
+			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayPrompt",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/codex-gateway-service/CodexGatewayService.ts",
+			"to": "src/cli/program/codex-gateway-service/CodexGatewayService",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/codex-gateway-service/gatewayReplay.ts",
+			"to": "src/cli/program/codex-gateway-service/gatewayReplay",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/codex-gateway-service/gatewayStream.ts",
+			"to": "src/cli/program/codex-gateway-service/gatewayStream",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/console-install-service/consoleDataModules.ts",
+			"to": "src/cli/program/console-install-service/consoleDataModules",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/console-install-service/consoleHostFiles.ts",
+			"to": "src/cli/program/console-install-service/consoleHostFiles",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/console-install-service/ConsoleInstallService.ts",
+			"to": "src/cli/program/console-install-service/ConsoleInstallService",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/ConsoleUninstallService.ts",
+			"to": "src/cli/program/ConsoleUninstallService",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/development-tooling/regression-proof-service/focusedScreens.ts",
+			"to": "src/workflows/verification-evidence/record-regression/focusedScreens",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/explorer-ui/revision-detail-service/source-impact-service/SourceImpactService.ts",
+			"to": "src/workflows/development-tooling/loadRevisions",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/services/history-index-service/budgetReviews.ts",
+			"to": "src/cli/program/history-index-service/budgetReviews",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/history-index-service/historySeries.ts",
+			"to": "src/cli/program/history-index-service/historySeries",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/history-index-service/revisionChanges.ts",
+			"to": "src/cli/program/history-index-service/revisionChanges",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/history-media-service/mediaPlace.ts",
+			"to": "src/cli/program/history-index-service/history-media-service/mediaPlace",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/hook-install-service/HookInstallService.ts",
+			"to": "src/cli/program/hook-install-service/HookInstallService",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/hook-install-service/hookScript.ts",
+			"to": "src/cli/program/hook-install-service/hookScript",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/hook-run-service/pushedRefs.ts",
+			"to": "src/cli/program/hook-run-service/pushedRefs",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/legacy-import-service/legacyReport.ts",
+			"to": "src/cli/program/legacy-import-service/legacyReport",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/module-system/ModuleScaffoldService.ts",
+			"to": "src/workflows/projects-sessions/generate-code/generateCode",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/services/PickerPreviewService.ts",
+			"to": "src/cli/program/codex-picker-command/PickerPreviewService",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/record-assembly-service/recordedBuilds.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/RuntimeServerService.ts",
+			"to": "src/cli/program/run-kernel/RuntimeServerService",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/SourceArchiveService.ts",
+			"to": "src/cli/program/history-index-service/SourceArchiveService",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/TrustedBaseService.ts",
+			"to": "src/workflows/verification-evidence/run-verify/TrustedBaseService",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/unit-index-service/UnitIndexService.ts",
+			"to": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/verification-evidence/task-completion-service/codeAudit.ts",
+			"to": "src/workflows/development-tooling/loadRevisions",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/services/verification-evidence/task-completion-service/sourceAudit.ts",
+			"to": "src/workflows/development-tooling/loop-state/loopState",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/services/verification-evidence/VerificationCheckService.ts",
+			"to": "src/workflows/development-tooling/loadRevisions",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/services/verification-service/scenarioCoverage.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/verification-service/verifyPlan.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/services/VerificationGates.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/VerificationGates",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/agents-providers/agentLiveness.ts",
+			"to": "src/services/agents-providers/agent-activity-service/agentLiveness",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/agents-providers/agentStatement.ts",
+			"to": "src/services/agents-providers/agent-activity-service/agentStatement",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/derivedResponsibility.ts",
+			"to": "src/workflows/development-tooling/load-units/unit-index-service/derivedResponsibility",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/development-tooling/benchSamples.ts",
+			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/benchSamples",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/development-tooling/blockComplexity.ts",
+			"to": "src/services/development-tooling/source-index-service/blockComplexity",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/development-tooling/complexityCoverage.ts",
+			"to": "src/services/development-tooling/source-index-service/complexityCoverage",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/development-tooling/consoleDataModules.ts",
+			"to": "src/cli/program/console-install-service/consoleDataModules",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/development-tooling/consoleHostFiles.ts",
+			"to": "src/cli/program/console-install-service/consoleHostFiles",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/development-tooling/cpuMetrics.ts",
+			"to": "src/services/development-tooling/cpu-usage-service/cpuMetrics",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/development-tooling/cpuProcesses.ts",
+			"to": "src/services/development-tooling/cpu-usage-service/cpu-process-adapter/cpuProcesses",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/development-tooling/deriveManifest.ts",
+			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/utils/development-tooling/gatewayTypes.ts",
+			"to": "src/cli/program/codex-gateway-service/codex-session-repository/gatewayTypes",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/development-tooling/hookScript.ts",
+			"to": "src/cli/program/hook-install-service/hookScript",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/development-tooling/installableHost.ts",
+			"to": "src/cli/program/console-install-service/installableHost",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/development-tooling/mediaPlace.ts",
+			"to": "src/cli/program/history-index-service/history-media-service/mediaPlace",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/development-tooling/peakMemory.ts",
+			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/peakMemory",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/development-tooling/pickerMcpTools.ts",
+			"to": "src/services/agents-providers/ProviderSwitchService",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/development-tooling/revisionChanges.ts",
+			"to": "src/cli/program/history-index-service/revisionChanges",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/development-tooling/revisionReasons.ts",
+			"to": "src/services/development-tooling/ExplanationService",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/development-tooling/revisionSummary.ts",
+			"to": "src/services/verification-evidence/history-status-service/HistoryStatusService",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/development-tooling/scanImports.ts",
+			"to": "src/services/development-tooling/source-index-service/scanImports",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/development-tooling/sourceBlocks.ts",
+			"to": "src/services/development-tooling/source-index-service/sourceBlocks",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/development-tooling/unitLineage.ts",
+			"to": "src/workflows/development-tooling/load-units/unit-index-service/unitLineage",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/utils/execution-runtimes/kernelWorkload.ts",
+			"to": "src/cli/program/run-kernel/kernelWorkload",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/execution-runtimes/resourceContext.ts",
+			"to": "src/services/agents-providers/agent-activity-service/ProcessIdentityAdapter",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/execution-runtimes/resourceContext.ts",
+			"to": "src/services/execution-runtimes/resource-queue-service/ResourceQueueRepository",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/execution-runtimes/resourceRequest.ts",
+			"to": "src/services/execution-runtimes/resource-queue-service/resource-policy/resourcePolicy",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/execution-runtimes/resourceRequest.ts",
+			"to": "src/services/execution-runtimes/ResourceQueueService",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/execution-runtimes/resourceWork.ts",
+			"to": "src/services/execution-runtimes/ResourceQueueService",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/explorer-ui/helperConsumers.ts",
+			"to": "src/services/explorer-ui/revision-detail-service/helperConsumers",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/explorer-ui/helperReferences.ts",
+			"to": "src/services/explorer-ui/revision-detail-service/helperReferences",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/explorer-ui/sideImpact.ts",
+			"to": "src/services/explorer-ui/revision-detail-service/source-impact-service/sideImpact",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/explorer-ui/unitMetadata.ts",
+			"to": "src/services/explorer-ui/revision-detail-service/unitMetadata",
+			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
+		},
+		{
+			"from": "src/utils/gatewayMessages.ts",
+			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayMessages",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/gatewayOptions.ts",
+			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayOptions",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/gatewayPrompt.ts",
+			"to": "src/cli/program/codex-gateway-service/claude-query-service/gatewayPrompt",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/gatewayReplay.ts",
+			"to": "src/cli/program/codex-gateway-service/gatewayReplay",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/gatewayStream.ts",
+			"to": "src/cli/program/codex-gateway-service/gatewayStream",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/git-source-history/commitMessage.ts",
+			"to": "src/services/git-source-history/commit-message-service/commitMessage",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/git-source-history/historyRefs.ts",
+			"to": "src/cli/program/history-sync-service/historyRefs",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/helperTemplates.ts",
+			"to": "src/services/explorer-ui/revision-detail-service/helperTemplates",
+			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
+		},
+		{
+			"from": "src/utils/historySeries.ts",
+			"to": "src/cli/program/history-index-service/historySeries",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/impactKernel.ts",
+			"to": "src/cli/program/run-kernel/impactKernel",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/loopUsage.ts",
+			"to": "src/services/projects-sessions/project-activity-service/loopUsage",
+			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
+		},
+		{
+			"from": "src/utils/pickerPaths.ts",
+			"to": "src/cli/program/codex-picker-command/pickerPaths",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/projects-sessions/projectActivity.ts",
+			"to": "src/services/projects-sessions/project-activity-service/projectActivity",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/pushedRefs.ts",
+			"to": "src/cli/program/hook-run-service/pushedRefs",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/readBrowserDiagnostics.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/readBrowserDiagnostics",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/recordedBuilds.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/recordedBuilds",
+			"todo": "TODO: move this service out of its workflow folder into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/reports-media/impactReport.ts",
+			"to": "src/services/reports-media/impact-service/impactReport",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/reports-media/impactSeeds.ts",
+			"to": "src/services/reports-media/impact-service/impactSeeds",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/reports-media/legacyReport.ts",
+			"to": "src/cli/program/legacy-import-service/legacyReport",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/reports-media/treeChanges.ts",
+			"to": "src/services/reports-media/impact-service/treeChanges",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/reportsEnvironment.ts",
+			"to": "src/cli/program/run-report/reportsEnvironment",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/scanComponent.ts",
+			"to": "src/services/development-tooling/source-index-service/scanComponent",
+			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
+		},
+		{
+			"from": "src/utils/unitDocumentation.ts",
+			"to": "src/services/explorer-ui/revision-detail-service/unitDocumentation",
+			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
+		},
+		{
+			"from": "src/utils/verification-evidence/benchMeasurement.ts",
+			"to": "src/cli/program/run-kernel-bench/benchMeasurement",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/verification-evidence/budgetFindings.ts",
+			"to": "src/services/verification-evidence/budget-service/budgetFindings",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/verification-evidence/budgetReviews.ts",
+			"to": "src/cli/program/history-index-service/budgetReviews",
+			"todo": "TODO: move this owner out of src/cli/program into src/services and point the old path at it."
+		},
+		{
+			"from": "src/utils/verification-evidence/comparisonDifferences.ts",
+			"to": "src/services/verification-evidence/budget-service/comparisonDifferences",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/verification-evidence/evidenceManifest.ts",
+			"to": "src/services/verification-evidence/evidence-attach-service/evidenceManifest",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/verification-evidence/gatherCaptures.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/gatherCaptures",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/utils/verification-evidence/lfsPointer.ts",
+			"to": "src/services/verification-evidence/history-status-service/attached-record-service/lfsPointer",
+			"todo": "TODO: this utility depends on a service; move it beside its owner or move the shared code down."
+		},
+		{
+			"from": "src/utils/verification-evidence/mediaFacts.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/mediaFacts",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/utils/verification-evidence/regressionFiles.ts",
+			"to": "src/workflows/verification-evidence/record-regression/regressionFiles",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/utils/verification-evidence/scenarioCoverage.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/utils/verification-evidence/sealRecord.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/record-assembly-service/sealRecord",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/utils/verification-evidence/sealRecord.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/sealRecord",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/utils/verification-evidence/verifyPlan.ts",
+			"to": "src/workflows/verification-evidence/run-verify/verification-service/verifyPlan",
+			"todo": "TODO: move the shared operation out of src/workflows into src/services or its declaration into src/core."
+		},
+		{
+			"from": "src/utils/writingLimits.ts",
+			"to": "src/services/git-source-history/commit-message-service/writingLimits",
+			"todo": "TODO: compatibility forward to an owner-local service module; retire once no consumer imports this utils path."
+		}
+	]
+}
