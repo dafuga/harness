@@ -71,6 +71,21 @@ const consoleProviders = [
 		]
 	}
 ];
+// Keep one realistic active registration within the chat's short desktop viewport.
+const consoleActivity = {
+	...live,
+	agents: {
+		...live.agents,
+		roster: live.agents.roster.map((agent) => ({
+			...agent,
+			task: '',
+			model: '',
+			provider: '',
+			branch: '',
+			units: []
+		}))
+	}
+};
 
 /** The local project chat uses the same request protocol as its real console bridge. */
 async function consoleAgentFixture(route: Route) {
@@ -102,7 +117,7 @@ async function consoleAgentFixture(route: Route) {
 	const answers: Record<string, unknown> = {
 		connect: { token: 'fixture-token', snapshot },
 		snapshot,
-		agentActivity: live,
+		agentActivity: consoleActivity,
 		providers: consoleProviders,
 		disconnect: null
 	};

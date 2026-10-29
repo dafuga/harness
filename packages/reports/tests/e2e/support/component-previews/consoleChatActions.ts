@@ -26,15 +26,7 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 		'title',
 		'Model: Codex · Preview model'
 	);
-	if (variant === 'agents') {
-		await component.getByRole('button', { name: 'Agents', exact: true }).click();
-		await expect(
-			component.getByRole('list', { name: 'Agent sessions' }).getByText('Preview agent')
-		).toBeVisible();
-		return expect(
-			component.getByRole('region', { name: 'Modules being worked on' }).getByText('Preview agent')
-		).toBeVisible();
-	}
+	if (variant === 'agents') return agentRoster(component);
 	const modes: Record<string, string> = { ask: 'Ask', change: 'Change', comment: 'Comment' };
 	if (modes[variant]) {
 		const button = component.getByRole('button', { name: modes[variant], exact: true });
@@ -51,4 +43,20 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 			component.getByRole('dialog', { name: pickers[variant], exact: true })
 		).toBeVisible();
 	}
+}
+
+async function agentRoster(component: Locator) {
+	await component.getByRole('button', { name: 'Agents', exact: true }).click();
+	await expect(
+		component.getByRole('list', { name: 'Agent sessions' }).getByText('Preview agent')
+	).toBeVisible();
+	await expect(
+		component
+			.getByRole('region', { name: 'Modules being worked on' })
+			.getByText('No fresh assignments')
+	).toBeVisible();
+	const body = component.locator('.floating-chat-body');
+	await expect
+		.poll(() => body.evaluate((node) => node.scrollHeight - node.clientHeight))
+		.toBeLessThanOrEqual(1);
 }
