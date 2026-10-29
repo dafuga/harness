@@ -2177,6 +2177,12 @@
 			"units": ["reports.component.modal"]
 		},
 		{
+			"id": "reports-component-modal-image",
+			"title": "Evidence image dialog",
+			"coverage": "required",
+			"units": ["reports.component.modal"]
+		},
+		{
 			"id": "reports-component-modal-lightbox",
 			"title": "Evidence lightbox dialog",
 			"coverage": "required",
@@ -3185,14 +3191,32 @@
 			"units": ["reports.component.source-content"]
 		},
 		{
+			"id": "reports-component-source-content-loading-file",
+			"title": "SourceContent loading a selected file",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
 			"id": "reports-component-source-content-error",
 			"title": "SourceContent unavailable archived source",
 			"coverage": "required",
 			"units": ["reports.component.source-content"]
 		},
 		{
+			"id": "reports-component-source-content-list-error",
+			"title": "SourceContent unavailable file list",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
 			"id": "reports-component-source-content-empty",
 			"title": "SourceContent without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
+			"id": "reports-component-source-content-empty-file",
+			"title": "SourceContent with an empty file",
 			"coverage": "required",
 			"units": ["reports.component.source-content"]
 		},
@@ -3830,6 +3854,7 @@
 				"reports-component-harness-screen",
 				"reports-component-image-zoom",
 				"reports-component-modal",
+				"reports-component-modal-image",
 				"reports-component-modal-lightbox",
 				"reports-component-module-system-explorer-module-resources-screen",
 				"reports-component-module-system-explorer-module-resources-screen-playwright",
@@ -3998,8 +4023,11 @@
 				"reports-component-source-code-action-unavailable",
 				"reports-component-source-content",
 				"reports-component-source-content-loading",
+				"reports-component-source-content-loading-file",
 				"reports-component-source-content-error",
+				"reports-component-source-content-list-error",
 				"reports-component-source-content-empty",
+				"reports-component-source-content-empty-file",
 				"reports-component-source-dialog",
 				"reports-component-source-dialog-loading",
 				"reports-component-source-dialog-error",

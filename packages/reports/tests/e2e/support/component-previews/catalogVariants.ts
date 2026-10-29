@@ -106,11 +106,18 @@ const variants: Record<string, string[]> = {
 	],
 	// Filters show their inactive trigger by default, with active and opened states separately.
 	'reports.component.filter-dialog': ['active', 'open'],
-	// The default is a text dialog; the lightbox uses the viewport-filling presentation.
-	'reports.component.modal': ['lightbox'],
+	// Text, image and viewport-filling lightbox dialogs use different presentation rules.
+	'reports.component.modal': ['image', 'lightbox'],
 	// Archived source distinguishes actionable, loading, unavailable, empty and linked views.
 	'reports.component.source-code-action': ['unavailable'],
-	'reports.component.source-content': ['loading', 'error', 'empty'],
+	'reports.component.source-content': [
+		'loading',
+		'loading-file',
+		'error',
+		'list-error',
+		'empty',
+		'empty-file'
+	],
 	'reports.component.source-dialog': ['loading', 'error', 'empty'],
 	'reports.component.source-file-list': ['linked', 'empty'],
 	'reports.component.source-viewer': ['loading', 'error', 'empty'],
