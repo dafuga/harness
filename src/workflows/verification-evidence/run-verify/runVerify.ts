@@ -1,9 +1,9 @@
+import { scopedVerify, timer, verifyEnv } from './scopedVerify';
 import type { VerifyOptions } from './runVerify.types';
 export type { VerifyOptions } from './runVerify.types';
 import { resolve } from 'node:path';
 import { GitAdapter } from '../../../adapters/git-source-history/GitAdapter';
 import { fail } from '../../../core/development-tooling/errors';
-import { resourcePriority } from '../../../core/execution-runtimes/resourceTypes';
 import {
 	defaultVerifyConfig,
 	verifyConfigFile,
@@ -60,6 +60,13 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 	const git = new GitAdapter(root);
 	if (!(await git.isRepository())) return fail('harness verify needs a Git repository.');
 	const commit = await resolveCommit(git, options.commit ?? 'HEAD');
+	return options.entity
+		? verifyEntity(git, commit, { ...options, root })
+		: verifyFull(git, commit, { ...options, root });
+}
+
+async function verifyFull(git: GitAdapter, commit: string, options: VerifyOptions) {
+	const root = options.root!;
 	const { requestedBase, proven } = await provenBase(git, commit, options.base);
 	const baseCommit = proven?.commit ?? null;
 	const { base, head } = await openRange({ root, base: baseCommit ?? 'none', head: commit });
@@ -97,6 +104,21 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		// stored messages of its commits, so a commit made past the hook does not pass.
 		explained: async () => reasons
 	}).run();
+}
+
+/** A scoped run opens only the head and goes straight to the entity's checks. */
+async function verifyEntity(git: GitAdapter, commit: string, options: VerifyOptions) {
+	const at = timer(options.entity);
+	const root = options.root!;
+	const { base, head } = await openRange({ root, base: 'none', head: commit });
+	const config = await verifyConfig(head);
+	const tree = await git.run(['rev-parse', `${commit}^{tree}`]);
+	at('range opened');
+	const context = { root, commit, tree, baseCommit: null, requestedBase: null, base, head, config };
+	const runtime = new UnitRuntimeService(root).kernel(runtimeKind(options.runtime));
+	const kind = runtime.kind;
+	void runtime.close();
+	return scopedVerify(context, kind, options, verifyEnv(options)).finally(() => at('checks done'));
 }
 
 /** Keep hashes for all unit versions and full source facts only for impacted units. */
@@ -191,13 +213,4 @@ export function renderVerify(stored: StoredRecord): string {
 
 function requiresPerformance(options: VerifyOptions, config: VerifyConfig): boolean {
 	return options.requirePerformance === true || config.performanceRequired === 1;
-}
-
-function verificationPriority(priority: string | undefined): string {
-	return resourcePriority.parse(priority ?? process.env.HARNESS_RESOURCE_PRIORITY ?? 'environment');
-}
-/** A scoped run tells its checks so, so they are admitted under memory pressure. */
-function verifyEnv(options: VerifyOptions): Record<string, string | undefined> {
-	const env = { ...process.env, HARNESS_RESOURCE_PRIORITY: verificationPriority(options.priority) };
-	return options.entity ? { ...env, HARNESS_VERIFY_ENTITY: options.entity } : env;
 }

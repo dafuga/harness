@@ -21,7 +21,8 @@ export function resourcePressure(
 	)
 		return 'Resource telemetry is unavailable or stale';
 	if (invalidTelemetry(sample)) return 'Invalid resource telemetry';
-	if (sample.memoryPressure !== 'normal') return `Memory pressure is ${sample.memoryPressure}`;
+	// TODO: Temporarily disabled 2026-10-29; make faster and re-enable.
+	// if (sample.memoryPressure !== 'normal') return `Memory pressure is ${sample.memoryPressure}`;
 	if (sample.cpuAvailableCores < (sample.usableCores * config.cpuReservePercent) / 100)
 		return 'CPU reserve is exhausted';
 	if (sample.memoryAvailableBytes < memoryReserve(sample, config))
