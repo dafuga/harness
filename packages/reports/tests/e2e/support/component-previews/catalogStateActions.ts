@@ -40,6 +40,27 @@ const actions: Record<string, CatalogStateAction> = {
 			component.getByText('Timing and diction were reviewed before approval.', { exact: true })
 		).toBeVisible();
 	},
+	'reports.component.audio-evidence:transcript-closed': async (component) => {
+		await component.locator('.audio-details summary').click();
+		await expect(component.locator('.audio-details')).not.toHaveAttribute('open');
+	},
+	'reports.component.audio-evidence:playing': async (component) => {
+		const audio = component.locator('audio');
+		await audio.evaluate((element: HTMLAudioElement) => element.play());
+		await expect
+			.poll(() => audio.evaluate((element: HTMLAudioElement) => element.paused))
+			.toBe(false);
+	},
+	'reports.component.audio-evidence:audio-error': async (component) => {
+		await component.locator('audio').evaluate(async (element: HTMLAudioElement) => {
+			try {
+				await element.play();
+			} catch {
+				// The invalid fixture exercises the real media-error path.
+			}
+		});
+		await expect(component.locator('.audio-unavailable')).toBeVisible();
+	},
 	'reports.component.evidence-card:compact': async (component) => {
 		await component.locator('summary').click();
 		await expect(component.getByText('Browser capture', { exact: true })).toBeVisible();
@@ -97,8 +118,20 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 	if (id === 'reports.component.audio-comparison') await assertAudioComparison(component, variant);
 	const action = actions[`${id}:${variant}`];
 	if (action) await action(component);
+	if (id === 'reports.component.audio-evidence') await assertAudioEvidence(component, variant);
 	if (id === 'reports.component.audio-comparison-viewer')
 		await assertAudioComparisonViewer(component, variant);
+}
+
+async function assertAudioEvidence(component: Locator, variant: string) {
+	const missing = ['unavailable', 'audio-error'].includes(variant);
+	await expect(component.locator('.audio-card.unavailable')).toHaveCount(missing ? 1 : 0);
+	if (variant === 'no-details') await expect(component.locator('.audio-details')).toHaveCount(0);
+	if (variant === 'no-duration') await expect(component.locator('.audio-duration')).toHaveCount(0);
+	if (['notes-closed', 'transcript-closed'].includes(variant))
+		await expect(component.locator('.audio-details')).not.toHaveAttribute('open');
+	if (['running', 'failed', 'blocked', 'skipped', 'not-proven', 'interrupted'].includes(variant))
+		await expect(component.locator('.badge')).toHaveClass(new RegExp(variant));
 }
 
 async function assertAudioComparison(component: Locator, variant: string) {

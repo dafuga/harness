@@ -1469,6 +1469,84 @@
 			"units": ["reports.component.audio-evidence"]
 		},
 		{
+			"id": "reports-component-audio-evidence-notes-closed",
+			"title": "Audio evidence: Notes closed",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-notes-transcript",
+			"title": "Audio evidence: Transcript and notes",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-transcript-closed",
+			"title": "Audio evidence: Transcript closed",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-no-details",
+			"title": "Audio evidence: No transcript or notes",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-no-duration",
+			"title": "Audio evidence: Duration not recorded",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-audio-error",
+			"title": "Audio evidence: Recording decode error",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-playing",
+			"title": "Audio evidence: Playing",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-running",
+			"title": "Audio evidence: Running",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-failed",
+			"title": "Audio evidence: Failed",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-blocked",
+			"title": "Audio evidence: Blocked",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-skipped",
+			"title": "Audio evidence: Skipped",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-not-proven",
+			"title": "Audio evidence: Not proven",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-interrupted",
+			"title": "Audio evidence: Interrupted",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
 			"id": "reports-component-audio-upload-files",
 			"title": "Audio upload files",
 			"coverage": "required",
@@ -3814,6 +3892,19 @@
 				"reports-component-audio-evidence",
 				"reports-component-audio-evidence-notes",
 				"reports-component-audio-evidence-unavailable",
+				"reports-component-audio-evidence-notes-closed",
+				"reports-component-audio-evidence-notes-transcript",
+				"reports-component-audio-evidence-transcript-closed",
+				"reports-component-audio-evidence-no-details",
+				"reports-component-audio-evidence-no-duration",
+				"reports-component-audio-evidence-audio-error",
+				"reports-component-audio-evidence-playing",
+				"reports-component-audio-evidence-running",
+				"reports-component-audio-evidence-failed",
+				"reports-component-audio-evidence-blocked",
+				"reports-component-audio-evidence-skipped",
+				"reports-component-audio-evidence-not-proven",
+				"reports-component-audio-evidence-interrupted",
 				"reports-component-audio-upload-files",
 				"reports-component-audio-upload-files-comparison",
 				"reports-component-audio-upload-files-uploading",

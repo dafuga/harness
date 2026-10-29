@@ -7,6 +7,7 @@ import { moduleCardVariant } from './reportModuleCardVariants';
 import { entityCasesVariant } from './reportEntityCasesVariants';
 import { replayControlsVariant } from './replayControlsVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
+import { audioEvidenceVariant } from './audioEvidenceVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
@@ -142,27 +143,4 @@ function regressionProofVariant(props: PreviewCases[string], variant: string) {
 			]
 		};
 	return variant === 'output-open' ? props : null;
-}
-
-function audioEvidenceVariant(props: PreviewCases[string], variant: string) {
-	const item = props.item as Record<string, unknown>;
-	if (variant === 'notes')
-		return {
-			...props,
-			item: {
-				...item,
-				transcript: undefined,
-				note: 'Timing and diction were reviewed before approval.'
-			}
-		};
-	if (variant !== 'unavailable') return null;
-	return {
-		...props,
-		item: {
-			...item,
-			file: '',
-			missing: true,
-			note: 'The original recording was not retained with this evidence.'
-		}
-	};
 }

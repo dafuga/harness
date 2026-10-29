@@ -61,8 +61,24 @@ const variants: Record<string, string[]> = {
 		'playing-before',
 		'playing-after'
 	],
-	// A recorded clip exposes both its available notes and unavailable fallback separately.
-	'reports.component.audio-evidence': ['notes', 'unavailable'],
+	// Playback, disclosures, media failures and each recorded result are separate states.
+	'reports.component.audio-evidence': [
+		'notes',
+		'unavailable',
+		'notes-closed',
+		'notes-transcript',
+		'transcript-closed',
+		'no-details',
+		'no-duration',
+		'audio-error',
+		'playing',
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted'
+	],
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',
