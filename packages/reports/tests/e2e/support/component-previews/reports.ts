@@ -2,15 +2,9 @@ import { children, noop, text, example, picker, image } from './shared';
 import type { PreviewCases } from './shared';
 import { report, picture, audio, group, baselineNarration, releaseNarration } from './reportData';
 import * as d from './explorerData';
+import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 const field = group.fields[0];
-const entries = d.entities.map((e) => ({
-	id: e.id,
-	name: e.name,
-	title: e.name,
-	category: e.category,
-	purpose: e.purpose,
-	entity: e.id
-}));
+const entries = explorerSearchEntries(d.entities, d.shown.head.commit);
 export const reportCases: PreviewCases = {
 	'reports.component.audio-comparison': {
 		before: baselineNarration,
