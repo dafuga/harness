@@ -10,6 +10,7 @@
 		"source": [
 			"src/utils/development-tooling/scanExports.ts",
 			"src/utils/development-tooling/scanExports.types.ts",
+			"src/utils/development-tooling/scanSymbolErrors.ts",
 			"src/utils/scanExports.ts"
 		],
 		"symbols": ["scanExports", "ExportScan", "ExportScan", "Source", "Located", "scanExports"]

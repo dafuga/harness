@@ -7,6 +7,7 @@ import {
 	titleServiceSource,
 	unitProject,
 	sharedDateHelperProject,
+	checkGeneratedAppContracts,
 	utcDateExamples
 } from './support/unitProject';
 
@@ -34,7 +35,7 @@ test('generic unit generator coexists with the Svelte component generator', asyn
 	const index = await project.harnessJson<IndexResult>(['units', 'index', '--write']);
 	expect(index.added).toContain('component.price-quote');
 	expect(index.added).not.toContain('function.price-quote');
-	await project.harness(['units', 'check']);
+	await checkGeneratedAppContracts(project);
 	const service = await project.harness(['generate', 'unit', 'Billing', '--kind', 'service']);
 	expect(service.stdout).toContain('create src/services/BillingService.ts');
 	expect(service.stdout).toContain('create specification/units/service.billing.json');
@@ -51,8 +52,8 @@ test('index derives contracts and keeps identity stable across re-index, moves a
 	const slugify = await project.json<Manifest>('specification/units/function.slugify.json');
 	expect(slugify.contract.origin).toBe('derived');
 	expect(slugify.contract.inputs).toEqual([
-		{ name: 'slugify.input', type: 'string' },
-		{ name: 'slugify.separator', type: 'unknown' }
+		{ name: 'slugify.input', type: 'string', required: true },
+		{ name: 'slugify.separator', type: 'string', required: false, default: '-' }
 	]);
 	expect(slugify.contract.outputs).toEqual([{ name: 'slugify', type: 'string' }]);
 	expect(slugify.contract.errors).toEqual([{ name: 'RangeError', type: 'thrown' }]);

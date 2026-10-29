@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
-import { parameterDefault } from '../../../utils/development-tooling/parameterDefaults';
+import { parameterDefault } from '../../../utils/development-tooling/parameterDefault';
 
 /** Read schema syntax without importing the model, evaluating validators or accessing storage. */
 export function scanStorage(code: string): NonNullable<ComponentManifest['contract']['storage']> {
@@ -61,11 +61,7 @@ function storageOf(
 		: 'id';
 	const declaredFields = definition.get('fields');
 	const fields = declaredFields ? properties(declaredFields) : undefined;
-	const unresolved = [
-		...(!table ? ['table is not a string literal'] : []),
-		...(!primaryKey ? ['primaryKey is not a string literal'] : []),
-		...(!fields ? ['fields are not a literal property map'] : [])
-	];
+	const unresolved = storageGaps(table, primaryKey, fields);
 	return {
 		name,
 		...(table ? { table } : {}),
@@ -74,6 +70,18 @@ function storageOf(
 		...sourceRules(definition),
 		...(unresolved.length ? { unresolved } : {})
 	};
+}
+
+function storageGaps(
+	table: string | undefined,
+	primaryKey: string | undefined,
+	fields: Map<string, ts.Expression> | undefined
+): string[] {
+	return [
+		...(!table ? ['table is not a string literal'] : []),
+		...(!primaryKey ? ['primaryKey is not a string literal'] : []),
+		...(!fields ? ['fields are not a literal property map'] : [])
+	];
 }
 
 function storageField(name: string, expression: ts.Expression, primaryKey: string | undefined) {
