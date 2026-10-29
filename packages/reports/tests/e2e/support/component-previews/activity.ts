@@ -188,6 +188,19 @@ const workStates: Record<string, () => PreviewCases[string]> = {
 	empty: () => ({ work: [], href: () => '/history', recorded: false })
 };
 
+const projectActivityStates: Record<string, () => PreviewCases[string]> = {
+	recorded: () => ({ activity: { ...activity, kind: 'recorded' }, live: null, base: '/harness' }),
+	empty: () => ({
+		activity: { ...activity, work: [], files: [], loops: { total: 0, types: [] } },
+		live: {
+			...live,
+			worktrees: [],
+			agents: { tracking: 'never-used', working: null, unreadable: 0, roster: [] }
+		},
+		base: '/harness'
+	})
+};
+
 export function activityVariant(id: string, variant: string, props: PreviewCases[string]) {
 	const states =
 		id === 'reports.component.activity-agents'
@@ -198,6 +211,8 @@ export function activityVariant(id: string, variant: string, props: PreviewCases
 					? loopStates
 					: id === 'reports.component.activity-work'
 						? workStates
-						: undefined;
+						: id === 'reports.component.project-activity'
+							? projectActivityStates
+							: undefined;
 	return states?.[variant]?.() ?? props;
 }

@@ -2009,6 +2009,18 @@
 			"units": ["reports.component.project-activity"]
 		},
 		{
+			"id": "reports-component-project-activity-recorded",
+			"title": "Project activity overview: Recorded history",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
+			"id": "reports-component-project-activity-empty",
+			"title": "Project activity overview: No activity",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
 			"id": "reports-component-provider-picker",
 			"title": "Session model picker",
 			"coverage": "required",
@@ -3442,6 +3454,8 @@
 				"reports-component-module-system-explorer-modules-screen-headless-audio",
 				"reports-component-networking-security-explorer-permissions-screen",
 				"reports-component-project-activity",
+				"reports-component-project-activity-recorded",
+				"reports-component-project-activity-empty",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-cards",
 				"reports-component-recorded-value",

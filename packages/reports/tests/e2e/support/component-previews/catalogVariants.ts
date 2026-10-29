@@ -14,6 +14,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.activity-loops': ['empty'],
 	// Work distinguishes a live checkout from the recorded-history wording and an empty history.
 	'reports.component.activity-work': ['recorded', 'empty'],
+	// Project activity keeps checkout observations, recorded history and no activity distinct.
+	'reports.component.project-activity': ['recorded', 'empty'],
 	// History filters show both a focused query and the no-filter form.
 	'reports.component.analytics-filters': ['empty'],
 	// CPU distinguishes a healthy idle checkout from an unavailable local sample.
