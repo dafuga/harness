@@ -1,5 +1,9 @@
 import { expect, test } from 'vitest';
-import { mib, resourceRequestSchema } from '../../src/core/execution-runtimes/resourceTypes';
+import {
+	mib,
+	resourceRequestSchema,
+	scopedVerificationLabel
+} from '../../src/core/execution-runtimes/resourceTypes';
 import {
 	impossibleRequest,
 	resourcePolicy,
@@ -133,3 +137,15 @@ test.each([2, 3, 5])(
 		);
 	}
 );
+test('memory pressure still admits scoped verification checks, and only them', () => {
+	const full = job({ id: 'full', sequence: 1 });
+	const scoped = job({ id: 'scoped', sequence: 2, label: scopedVerificationLabel });
+	const warning = resourcePolicy([full, scoped], snapshot({ memoryPressure: 'warning' }), config);
+	expect(warning.granted).toEqual(['scoped']);
+	expect(resourcePolicy([full], snapshot({ memoryPressure: 'warning' }), config)).toMatchObject({
+		granted: [],
+		reason: 'Memory pressure is warning'
+	});
+	const low = snapshot({ memoryPressure: 'warning', memoryAvailableBytes: 100 * mib });
+	expect(resourcePolicy([scoped], low, config).granted).toEqual([]);
+});

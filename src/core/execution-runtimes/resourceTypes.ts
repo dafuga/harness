@@ -36,3 +36,9 @@ export const resourceJobSchema = resourceRequestSchema.extend({
 	notice: z.string().nullable()
 });
 export const mib = 1024 * 1024;
+/**
+ * The label of a check of a scoped verification (`verify run --entity`). Such a check is small,
+ * so it is admitted under system memory pressure; every other reserve still applies. It is a
+ * label rather than a new job field so that older readers of the shared queue still parse it.
+ */
+export const scopedVerificationLabel = 'Scoped verification';

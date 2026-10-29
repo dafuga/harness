@@ -1,6 +1,7 @@
 import {
 	mib,
 	resourcePriorities,
+	scopedVerificationLabel,
 	type ResourceConfig,
 	type ResourceJob,
 	type ResourceRequest,
@@ -52,18 +53,23 @@ export function resourcePolicy(
 	now = Date.now()
 ) {
 	const pressure = resourcePressure(sample, config, now);
-	const ids = new Set(jobs.map((job) => job.id));
-	const roots = jobs.filter(
+	// Under memory pressure alone, only scoped verification checks are still admitted.
+	const scopedOnly =
+		pressure !== null && !resourcePressure({ ...sample, memoryPressure: 'normal' }, config, now);
+	if (pressure && !scopedOnly) return { granted: [], reason: pressure };
+	const admitted = scopedOnly ? jobs.filter((job) => job.label === scopedVerificationLabel) : jobs;
+	if (admitted.length === 0) return { granted: [], reason: pressure };
+	const ids = new Set(admitted.map((job) => job.id));
+	const roots = admitted.filter(
 		(job) => !job.parentId || (job.state === 'running' && !ids.has(job.parentId))
 	);
-	if (pressure) return { granted: [], reason: pressure };
 	const available = {
 		cpu: sample.cpuAvailableCores - (sample.usableCores * config.cpuReservePercent) / 100,
 		memory: sample.memoryAvailableBytes - memoryReserve(sample, config)
 	};
 	const granted = grantPool(roots, available.cpu, available.memory);
 	for (const job of roots) if (granted.includes(job.id)) spend(job, available);
-	granted.push(...grantChildren(jobs, available));
+	granted.push(...grantChildren(admitted, available));
 	return { granted, reason: granted.length ? null : 'Waiting for CPU and memory reservations' };
 }
 function grantPool(jobs: ResourceJob[], cpu: number, memory: number): string[] {

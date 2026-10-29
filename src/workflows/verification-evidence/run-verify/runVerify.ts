@@ -92,10 +92,7 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		requirePerformance: requiresPerformance(options, config),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
 		entity: options.entity,
-		env: {
-			...process.env,
-			HARNESS_RESOURCE_PRIORITY: verificationPriority(options.priority)
-		},
+		env: verifyEnv(options),
 		// What was written about the range is held to the writing limits: its reasons, and the
 		// stored messages of its commits, so a commit made past the hook does not pass.
 		explained: async () => reasons
@@ -198,4 +195,9 @@ function requiresPerformance(options: VerifyOptions, config: VerifyConfig): bool
 
 function verificationPriority(priority: string | undefined): string {
 	return resourcePriority.parse(priority ?? process.env.HARNESS_RESOURCE_PRIORITY ?? 'environment');
+}
+/** A scoped run tells its checks so, so they are admitted under memory pressure. */
+function verifyEnv(options: VerifyOptions): Record<string, string | undefined> {
+	const env = { ...process.env, HARNESS_RESOURCE_PRIORITY: verificationPriority(options.priority) };
+	return options.entity ? { ...env, HARNESS_VERIFY_ENTITY: options.entity } : env;
 }

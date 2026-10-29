@@ -2,7 +2,10 @@ import type { RunContext, CheckOutcome } from './CheckRunService.types';
 export type { RunContext, CheckOutcome } from './CheckRunService.types';
 import { readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
-import { resourcePriority } from '../../../../../core/execution-runtimes/resourceTypes';
+import {
+	resourcePriority,
+	scopedVerificationLabel
+} from '../../../../../core/execution-runtimes/resourceTypes';
 import { resourceEnvironment } from '../../../../../utils/execution-runtimes/resourceEnvironment';
 import { resourceWork } from '../../../../../utils/execution-runtimes/resourceWork';
 import { runIsolated, type IsolatedResult } from '../../../../../utils/run-isolated/runIsolated';
@@ -52,7 +55,8 @@ export class CheckRunService {
 			{
 				priority: resourcePriority.parse(
 					this.context.env.HARNESS_RESOURCE_PRIORITY ?? 'environment'
-				)
+				),
+				...(this.context.env.HARNESS_VERIFY_ENTITY ? { label: scopedVerificationLabel } : {})
 			},
 			(context) =>
 				runIsolated({
