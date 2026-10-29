@@ -72,6 +72,7 @@ const filterStates: Record<string, () => PreviewCases[string]> = {
 };
 
 export function analyticsVariant(id: string, variant: string, props: PreviewCases[string]) {
+	if (id === 'reports.component.analytics-cpu' && variant) return { ...props };
 	if (id !== 'reports.component.analytics-filters') return props;
 	return filterStates[variant]?.() ?? props;
 }
