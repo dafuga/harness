@@ -66,3 +66,12 @@ export const cpu = {
 	],
 	agents: [{ label: 'Preview agent', pid: 1234, processes: 1, corePercent: 16, machinePercent: 2 }]
 };
+
+const filterStates: Record<string, () => PreviewCases[string]> = {
+	empty: () => ({ filters: {} })
+};
+
+export function analyticsVariant(id: string, variant: string, props: PreviewCases[string]) {
+	if (id !== 'reports.component.analytics-filters') return props;
+	return filterStates[variant]?.() ?? props;
+}

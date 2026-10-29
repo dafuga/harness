@@ -7,7 +7,7 @@ import { explorerCases } from './explorer';
 import { legacyAddresses, legacyCases } from './legacy';
 import { reportCases } from './reports';
 import { activityCases, activity, activityVariant } from './activity';
-import { analyticsCases } from './analytics';
+import { analyticsCases, analyticsVariant } from './analytics';
 import { createDesktopData } from './desktopData.svelte';
 import { desktopControls } from './desktopControls';
 import { desktopRuntime, gameCases } from './desktopRuntime';
@@ -104,6 +104,8 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 	if (id === 'reports.component.status-badge') return { ...props, status: variant };
 	const activityProps = activityVariant(id, variant, props);
 	if (activityProps !== props) return activityProps;
+	const analyticsProps = analyticsVariant(id, variant, props);
+	if (analyticsProps !== props) return analyticsProps;
 	const shown = modulePreview(props as unknown as ExplorerScreenProps, variant);
 	if (id.endsWith('explorer-module-resources-screen')) {
 		const route = {
@@ -119,8 +121,7 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
 	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
-	if (id === 'reports.component.audio-upload-files')
-		return audioUploadFilesVariant(props, variant);
+	if (id === 'reports.component.audio-upload-files') return audioUploadFilesVariant(props, variant);
 	if (id === 'reports.component.evidence-card') return evidenceCardVariant(props, variant);
 	if (id === 'reports.component.evidence-grid') return evidenceGridVariant(props, variant);
 	if (

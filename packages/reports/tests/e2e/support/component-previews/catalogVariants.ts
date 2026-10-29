@@ -14,6 +14,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.activity-loops': ['empty'],
 	// Work distinguishes a live checkout from the recorded-history wording and an empty history.
 	'reports.component.activity-work': ['recorded', 'empty'],
+	// History filters show both a focused query and the no-filter form.
+	'reports.component.analytics-filters': ['empty'],
 	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
 	'reports.component.audio-comparison': ['unavailable'],
 	// The comparison opens by default; each single-recording view stays independently inspectable.

@@ -1223,6 +1223,12 @@
 			"units": ["reports.component.analytics-filters"]
 		},
 		{
+			"id": "reports-component-analytics-filters-empty",
+			"title": "Analytics filters: No filters",
+			"coverage": "required",
+			"units": ["reports.component.analytics-filters"]
+		},
+		{
 			"id": "reports-component-analytics-history",
 			"title": "Analytics history",
 			"coverage": "required",
@@ -3227,6 +3233,7 @@
 				"reports-component-activity-work-empty",
 				"reports-component-analytics-cpu",
 				"reports-component-analytics-filters",
+				"reports-component-analytics-filters-empty",
 				"reports-component-analytics-history",
 				"reports-component-analytics-models",
 				"reports-component-analytics-tasks",
