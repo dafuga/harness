@@ -91,9 +91,17 @@ export function boundProps(
 		return {
 			...item,
 			name: `${owner}.${item.name}`,
-			...(binding?.initializer ? { required: false, ...parameterDefault(binding.initializer) } : {})
+			...(binding?.initializer
+				? { required: false, ...parameterDefault(bindableValue(binding.initializer)) }
+				: {})
 		};
 	});
+}
+
+/** Svelte's `$bindable(value)` marks a two-way prop; its argument is the prop's default. */
+function bindableValue(node: ts.Expression): ts.Expression | undefined {
+	if (!ts.isCallExpression(node) || node.expression.getText() !== '$bindable') return node;
+	return node.arguments[0];
 }
 
 export function componentSnippets(code: string, owner: string) {
