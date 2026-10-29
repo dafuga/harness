@@ -198,8 +198,7 @@ export async function assertModulePreview(component: Locator, id: string, varian
 	}
 }
 
-/** Permission table words stay intact and wider data remains keyboard inspectable. */
-export async function assertPermissionTable(component: Locator, page: Page) {
+export async function assertPermissionTable(component: Locator, page: Page, mobile = false) {
 	const identifier = component.getByRole('table').first().locator('tbody code').first();
 	expect(
 		await identifier.evaluate((node) => {
@@ -215,6 +214,7 @@ export async function assertPermissionTable(component: Locator, page: Page) {
 	).toBe(true);
 	const region = component.getByRole('region', { name: /data access/ }).first();
 	if (await region.evaluate((node) => node.scrollWidth > node.clientWidth)) {
+		expect(mobile, 'Mobile permission grants retain every field without horizontal scrolling').toBe(false);
 		await region.focus();
 		await region.press('ArrowRight');
 		await expect.poll(() => region.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
