@@ -1283,6 +1283,18 @@
 			"units": ["reports.component.audio-upload-files"]
 		},
 		{
+			"id": "reports-component-audio-upload-files-comparison",
+			"title": "Audio upload files: Comparison pair",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-uploading",
+			"title": "Audio upload files: Uploading",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
 			"id": "reports-component-brand-mark",
 			"title": "Brand mark",
 			"coverage": "required",
@@ -3153,6 +3165,8 @@
 				"reports-component-audio-evidence-notes",
 				"reports-component-audio-evidence-unavailable",
 				"reports-component-audio-upload-files",
+				"reports-component-audio-upload-files-comparison",
+				"reports-component-audio-upload-files-uploading",
 				"reports-component-brand-mark",
 				"reports-component-browser-errors",
 				"reports-component-console-chat",

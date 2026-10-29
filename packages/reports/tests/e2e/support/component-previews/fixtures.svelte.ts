@@ -116,6 +116,8 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 
 function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
+	if (id === 'reports.component.audio-upload-files')
+		return audioUploadFilesVariant(props, variant);
 	if (
 		id !== 'reports.component.audio-comparison' &&
 		id !== 'reports.component.audio-comparison-viewer'
@@ -133,6 +135,12 @@ function reportVariantProps(id: string, props: PreviewCases[string], variant: st
 			note: 'The original recording was not retained with this evidence.'
 		}
 	};
+}
+
+function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'comparison') return { ...props, mode: 'comparison' };
+	if (variant === 'uploading') return { ...props, mode: 'comparison', uploading: true };
+	return null;
 }
 
 function audioEvidenceVariant(props: PreviewCases[string], variant: string) {
