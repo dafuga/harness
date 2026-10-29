@@ -15,8 +15,11 @@ function qualifiers(item: Field): string {
 /** `name  type` rows with the types in one column; the owner prefix (`Badge.`) is dropped. */
 function fields(list: Field[]): string[] {
 	if (list.length === 0) return ['none'];
+	const shortNames = list.map((item) => item.name.split('.').at(-1) ?? item.name);
+	const repeated = new Set(shortNames.filter((name, index) => shortNames.indexOf(name) !== index));
 	const rows = list.map(
-		(item) => [item.name.replace(/^[^.]+\./, ''), `${item.type}${qualifiers(item)}`] as const
+		(item, index) =>
+			[repeated.has(shortNames[index]) ? item.name : shortNames[index], `${item.type}${qualifiers(item)}`] as const
 	);
 	const width = Math.max(...rows.map(([name]) => name.length));
 	return rows.map(([name, type]) =>
