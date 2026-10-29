@@ -34,6 +34,7 @@ test.describe.configure({ mode: 'serial' });
 const root = fixtures.reports;
 const evidence = join(evidenceOf('reports'), 'reports-captures');
 const title = 'Exported settings review';
+const retiredReportId = 'removed-settings-review';
 const made = { paired: '', exported: '' };
 const scenario = scenarioManifestSchema.parse(
 	JSON.parse(readFileSync('../../specification/scenarios/harness-reports.json', 'utf8'))
@@ -57,7 +58,7 @@ async function exported(page: Page) {
 /** Each state the scenario declares: how to reach it and what must be on screen before capture. */
 const states: Record<string, (page: Page) => Promise<void>> = {
 	'retired-hub': (page) => retired(page, '/harness/reports'),
-	'retired-report': (page) => retired(page, `/reports/${made.exported}`),
+	'retired-report': (page) => retired(page, `/reports/${retiredReportId}`),
 	'retired-analytics': (page) => retired(page, '/harness/analytics'),
 	exported,
 	async 'image-gallery'(page) {
