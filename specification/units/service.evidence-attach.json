@@ -125,6 +125,11 @@
 			"unit": "service.verification-check",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.verification-evidence-evidence-attach-service-attach-dependencies",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
