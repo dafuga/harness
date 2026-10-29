@@ -26,6 +26,7 @@ import {
 import { assertProjectAgentState } from './support/component-previews/projectAgentStateAssertions';
 import type { ProjectAgentState } from './support/component-previews/projectAgentStateFixtures.types';
 import { prepareCatalogState } from './support/component-previews/catalogStateActions';
+import { assertReportPreviewState } from './support/component-previews/reportPreviewAssertions';
 import { documentedStyleTokens, expectColorRoles, expectStyleGroups } from './support/styleCatalog';
 let home = '';
 function assertCatalogRegistry() {
@@ -111,6 +112,7 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id, variant);
 			await prepareCatalogState(component, unit.id, variant);
 			await assertCatalogState(component, unit.id, variant, viewport.id);
+			await assertReportPreviewState(component, unit.id, variant);
 			if (isProjectAgent) {
 				const panel = component.locator('.floating-chat-panel');
 				if (variant === 'closed') {

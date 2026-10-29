@@ -2,6 +2,7 @@ import type { PreviewCases } from './shared';
 import { image, noop, text } from './shared';
 import { baselineNarration, releaseNarration } from './reportData';
 import { replayControlsVariant } from './replayControlsVariants';
+import { evidenceViewerVariant } from './evidenceViewerVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -46,11 +47,11 @@ function filterDialogVariant(props: PreviewCases[string], variant: string) {
 }
 
 function modalVariant(props: PreviewCases[string], variant: string) {
-	if (variant !== 'lightbox') return props;
+	if (variant !== 'lightbox' && variant !== 'image') return props;
 	return {
 		...props,
 		title: 'Order card evidence',
-		variant: 'lightbox',
+		variant,
 		children: text(`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · desktop evidence</figcaption></figure></div>`)
 	};
 }
@@ -156,38 +157,6 @@ function evidenceProvenanceVariant(props: PreviewCases[string], variant: string)
 			]
 		}
 	};
-}
-
-function evidenceViewerVariant(props: PreviewCases[string], variant: string) {
-	const selected = props.selected as Record<string, unknown>;
-	if (variant === 'unavailable') {
-		const unavailable = {
-			...selected,
-			missing: true,
-			note: 'The recorded screenshot could not be restored.'
-		};
-		return {
-			...props,
-			items: [unavailable],
-			navigableItems: [unavailable],
-			selected: unavailable
-		};
-	}
-	const before = {
-		...selected,
-		id: 'checkout-before',
-		title: 'Checkout before release',
-		comparison: 'checkout-flow',
-		phase: 'before'
-	};
-	const after = {
-		...selected,
-		id: 'checkout-after',
-		title: 'Checkout after release',
-		comparison: 'checkout-flow',
-		phase: 'after'
-	};
-	return { ...props, items: [before, after], navigableItems: [after], selected: after };
 }
 
 function gameplayReplayVariant(props: PreviewCases[string], variant: string) {
