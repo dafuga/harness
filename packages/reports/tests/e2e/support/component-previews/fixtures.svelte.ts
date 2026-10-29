@@ -180,7 +180,7 @@ function evidenceCardVariant(props: PreviewCases[string], variant: string) {
 function evidenceGridVariant(props: PreviewCases[string], variant: string) {
 	if (variant === 'uploads')
 		return { ...props, reportId: 'preview-report', onUploaded: noop, idPrefix: 'upload-' };
-	return null;
+	return props;
 }
 
 function audioEvidenceVariant(props: PreviewCases[string], variant: string) {
