@@ -117,6 +117,7 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 }
 
 function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
 	if (id === 'reports.component.audio-upload-files')
 		return audioUploadFilesVariant(props, variant);
@@ -139,6 +140,11 @@ function reportVariantProps(id: string, props: PreviewCases[string], variant: st
 			note: 'The original recording was not retained with this evidence.'
 		}
 	};
+}
+
+function filterDialogVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'active') return { ...props, active: 3 };
+	return props;
 }
 
 function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {

@@ -23,16 +23,20 @@
 			{
 				"name": "FilterDialog.active",
 				"type": "number",
-				"description": "Number of nondefault filter and sort choices. Highlights the icon; excludes local search."
+				"required": false,
+				"default": 0,
+				"description": "Optional number of nondefault filter and sort choices. Defaults to 0, highlights the icon and excludes local search."
 			},
 			{
 				"name": "FilterDialog.onreset",
 				"type": "() => void",
+				"required": true,
 				"description": "Restores default filter and sort choices while preserving the local search query."
 			},
 			{
 				"name": "FilterDialog.children",
 				"type": "Snippet",
+				"required": true,
 				"description": "The catalog’s existing filter controls, rendered inside the dialog."
 			}
 		],

@@ -1523,6 +1523,18 @@
 			"units": ["reports.component.filter-dialog"]
 		},
 		{
+			"id": "reports-component-filter-dialog-active",
+			"title": "Catalog filters with active choices",
+			"coverage": "required",
+			"units": ["reports.component.filter-dialog"]
+		},
+		{
+			"id": "reports-component-filter-dialog-open",
+			"title": "Opened catalog filters",
+			"coverage": "required",
+			"units": ["reports.component.filter-dialog"]
+		},
+		{
 			"id": "reports-component-floating-chat",
 			"title": "Floating chat",
 			"coverage": "required",
@@ -3253,6 +3265,8 @@
 				"reports-component-explorer-usage",
 				"reports-component-explorer-usage-link",
 				"reports-component-filter-dialog",
+				"reports-component-filter-dialog-active",
+				"reports-component-filter-dialog-open",
 				"reports-component-floating-chat",
 				"reports-component-gameplay-replay",
 				"reports-component-harness-entity-artifact",

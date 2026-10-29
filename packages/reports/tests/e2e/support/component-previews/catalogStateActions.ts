@@ -39,6 +39,10 @@ const actions: Record<string, CatalogStateAction> = {
 		await expect(dialog).toBeVisible();
 		await dialog.getByRole('combobox', { name: 'Search entities' }).fill('order');
 		await expect(dialog.getByRole('option').first()).toBeVisible();
+	},
+	'reports.component.filter-dialog:open': async (component) => {
+		await component.getByRole('button', { name: 'Filters', exact: true }).click();
+		await expect(component.getByRole('dialog', { name: 'Filters', exact: true })).toBeVisible();
 	}
 };
 

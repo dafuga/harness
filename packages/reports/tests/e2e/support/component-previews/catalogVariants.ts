@@ -26,6 +26,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
+	// Filters show their inactive trigger by default, with active and opened states separately.
+	'reports.component.filter-dialog': ['active', 'open'],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',

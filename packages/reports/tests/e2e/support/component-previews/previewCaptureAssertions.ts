@@ -61,6 +61,13 @@ export async function assertCatalogState(
 	variant = '',
 	viewport = ''
 ) {
+	if (id === 'reports.component.filter-dialog' && variant === 'active') {
+		const trigger = component.getByRole('button', { name: 'Filters', exact: true });
+		await expect(trigger).toHaveClass(/active/);
+		await expect(trigger).toHaveAttribute('title', 'Filters · 3 active');
+	}
+	if (id === 'reports.component.filter-dialog' && variant === 'open')
+		await expect(component.getByRole('dialog', { name: 'Filters', exact: true })).toBeVisible();
 	if (id === 'reports.component.entity-search' && variant === 'open') {
 		const dialog = component.getByRole('dialog', { name: 'Search project' });
 		await expect(dialog).toBeVisible();
