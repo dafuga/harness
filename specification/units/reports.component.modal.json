@@ -23,41 +23,52 @@
 			{
 				"name": "Modal.open",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional open state, defaulting to false. Used only when isOpen is null or undefined."
 			},
 			{
 				"name": "Modal.isOpen",
 				"type": "boolean",
+				"required": false,
 				"description": "Optional open-state alias that takes precedence over open, including when false."
 			},
 			{
 				"name": "Modal.title",
 				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional dialog heading, defaulting to an empty string."
 			},
 			{
 				"name": "Modal.variant",
 				"type": "'image' | 'text' | 'lightbox'",
+				"required": false,
+				"default": "image",
 				"description": "Optional presentation, defaulting to image. Text adds text styling; lightbox fills the viewport."
 			},
 			{
 				"name": "Modal.onClose",
 				"type": "() => void",
+				"required": false,
 				"description": "Optional close request callback for the close button, backdrop and native cancel event. Called alongside onclose when both are supplied; the parent owns open state."
 			},
 			{
 				"name": "Modal.onclose",
 				"type": "() => void",
+				"required": false,
 				"description": "Optional alternate close request callback, invoked after onClose for the same close actions. It does not replace onClose."
 			},
 			{
 				"name": "Modal.children",
 				"type": "import('svelte').Snippet",
+				"required": false,
 				"description": "Optional dialog body content; omitted content renders nothing."
 			},
 			{
 				"name": "Modal.footer",
 				"type": "import('svelte').Snippet",
+				"required": false,
 				"description": "Optional footer content. The footer is rendered only when this snippet is supplied."
 			}
 		],

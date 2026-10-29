@@ -1901,6 +1901,12 @@
 			"units": ["reports.component.modal"]
 		},
 		{
+			"id": "reports-component-modal-lightbox",
+			"title": "Evidence lightbox dialog",
+			"coverage": "required",
+			"units": ["reports.component.modal"]
+		},
+		{
 			"id": "reports-component-module-system-explorer-module-resources-screen",
 			"title": "ExplorerModuleResourcesScreen",
 			"coverage": "required",
@@ -3340,6 +3346,7 @@
 				"reports-component-harness-screen",
 				"reports-component-image-zoom",
 				"reports-component-modal",
+				"reports-component-modal-lightbox",
 				"reports-component-module-system-explorer-module-resources-screen",
 				"reports-component-module-system-explorer-module-resources-screen-playwright",
 				"reports-component-module-system-explorer-modules-screen",

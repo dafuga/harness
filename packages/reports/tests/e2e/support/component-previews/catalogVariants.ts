@@ -30,6 +30,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.entity-search': ['open'],
 	// Filters show their inactive trigger by default, with active and opened states separately.
 	'reports.component.filter-dialog': ['active', 'open'],
+	// The default is a text dialog; the lightbox uses the viewport-filling presentation.
+	'reports.component.modal': ['lightbox'],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',
