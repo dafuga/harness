@@ -16,6 +16,10 @@ const actions: Record<string, CatalogStateAction> = {
 		await detail.locator('summary').click();
 		await expect(detail).toContainText('accepted by its records');
 	},
+	'reports.component.site-activity:failed-refresh': async (component) => {
+		await component.getByRole('button', { name: 'Refresh activity' }).click();
+		await expect(component.getByRole('status')).toContainText('Activity could not be read again');
+	},
 	'reports.component.audio-evidence:notes': async (component) => {
 		await component.locator('.audio-details summary').click();
 		await expect(

@@ -201,6 +201,10 @@ const projectActivityStates: Record<string, () => PreviewCases[string]> = {
 	})
 };
 
+const siteActivityStates: Record<string, () => PreviewCases[string]> = {
+	'failed-refresh': () => ({ shown: { activity, live } })
+};
+
 export function activityVariant(id: string, variant: string, props: PreviewCases[string]) {
 	const states =
 		id === 'reports.component.activity-agents'
@@ -213,6 +217,8 @@ export function activityVariant(id: string, variant: string, props: PreviewCases
 						? workStates
 						: id === 'reports.component.project-activity'
 							? projectActivityStates
-							: undefined;
+							: id === 'reports.component.site-activity'
+								? siteActivityStates
+								: undefined;
 	return states?.[variant]?.() ?? props;
 }

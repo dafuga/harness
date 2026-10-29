@@ -2885,6 +2885,12 @@
 			"units": ["reports.component.site-activity"]
 		},
 		{
+			"id": "reports-component-site-activity-failed-refresh",
+			"title": "Live site activity: Failed refresh",
+			"coverage": "required",
+			"units": ["reports.component.site-activity"]
+		},
+		{
 			"id": "reports-component-source-code-action",
 			"title": "SourceCodeAction",
 			"coverage": "required",
@@ -3600,6 +3606,7 @@
 				"reports-component-shared-primitives-atoms-svg-use",
 				"reports-component-shared-primitives-loading-state",
 				"reports-component-site-activity",
+				"reports-component-site-activity-failed-refresh",
 				"reports-component-source-code-action",
 				"reports-component-source-content",
 				"reports-component-source-dialog",
