@@ -17,7 +17,7 @@ const counts: Record<string, number> = { empty: 0, short: 2, error: 1, expanded:
 
 for (const viewport of scenario.viewports) {
 	for (const state of scenario.states) {
-		test(`reports.component.activity-list: ${state.id} at ${viewport.id}`, async ({ page }) => {
+		test(`reports.component.activity-list:${state.id} at ${viewport.id}`, async ({ page }) => {
 			await page.setViewportSize({ width: viewport.width, height: viewport.height });
 			await openShellPage(page, home, 'activity', `?state=${state.id}`);
 			const list = page.getByRole('list', { name: 'Recent activity', exact: true });
