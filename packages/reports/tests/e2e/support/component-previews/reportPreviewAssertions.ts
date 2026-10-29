@@ -9,6 +9,15 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 		await expect(dialog.getByRole('img', { name: 'Synthetic order card evidence' })).toBeVisible();
 	}
 	if (!id.startsWith('reports.component.source-')) return;
+	if (
+		!variant &&
+		['source-content', 'source-dialog', 'source-viewer'].some((name) => id.endsWith(name))
+	) {
+		const code = component.locator('.source-code');
+		await expect(code).toBeVisible();
+		const fits = await code.evaluate((node) => node.scrollWidth <= node.clientWidth);
+		expect(fits, 'Representative source fits without horizontal clipping').toBe(true);
+	}
 	if (variant === 'loading-file') {
 		await expect(component.getByRole('combobox', { name: 'Source file' })).toBeVisible();
 		await expect(component.getByRole('status')).toHaveText('Loading source…');
