@@ -1199,6 +1199,18 @@
 			"units": ["reports.component.activity-work"]
 		},
 		{
+			"id": "reports-component-activity-work-recorded",
+			"title": "Activity work: Recorded history",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
+			"id": "reports-component-activity-work-empty",
+			"title": "Activity work: Empty history",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
 			"id": "reports-component-analytics-cpu",
 			"title": "Analytics cpu",
 			"coverage": "required",
@@ -3211,6 +3223,8 @@
 				"reports-component-activity-loops",
 				"reports-component-activity-loops-empty",
 				"reports-component-activity-work",
+				"reports-component-activity-work-recorded",
+				"reports-component-activity-work-empty",
 				"reports-component-analytics-cpu",
 				"reports-component-analytics-filters",
 				"reports-component-analytics-history",

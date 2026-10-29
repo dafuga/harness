@@ -12,6 +12,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.activity-files': ['recorded', 'clean', 'empty', 'truncated'],
 	// Loop history either lists known templates or explains that none has been recorded.
 	'reports.component.activity-loops': ['empty'],
+	// Work distinguishes a live checkout from the recorded-history wording and an empty history.
+	'reports.component.activity-work': ['recorded', 'empty'],
 	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
 	'reports.component.audio-comparison': ['unavailable'],
 	// The comparison opens by default; each single-recording view stays independently inspectable.
