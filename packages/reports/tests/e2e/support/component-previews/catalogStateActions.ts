@@ -4,6 +4,15 @@ import { prepareConsoleChatState } from './consoleChatActions';
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
 const actions: Record<string, CatalogStateAction> = {
+	'reports.component.analytics-tasks:unassessed': async (component) => {
+		await expect(component.getByRole('cell', { name: 'Not assessed' })).toBeVisible();
+	},
+	'reports.component.analytics-tasks:unpassed': async (component) => {
+		await expect(component.getByRole('cell', { name: 'Not yet passed' })).toBeVisible();
+	},
+	'reports.component.analytics-tasks:retried': async (component) => {
+		await expect(component.getByRole('link', { name: 'View report' })).toBeVisible();
+	},
 	'reports.component.audio-comparison-viewer:before': async (component) => {
 		await component.getByRole('button', { name: 'View before recording' }).click();
 		await expect(component.getByRole('group', { name: 'Before recording' })).toBeVisible();

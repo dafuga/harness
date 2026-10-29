@@ -1277,6 +1277,24 @@
 			"units": ["reports.component.analytics-tasks"]
 		},
 		{
+			"id": "reports-component-analytics-tasks-unassessed",
+			"title": "Analytics tasks: Not assessed",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
+			"id": "reports-component-analytics-tasks-unpassed",
+			"title": "Analytics tasks: Not yet passed",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
+			"id": "reports-component-analytics-tasks-retried",
+			"title": "Analytics tasks: Passed after retries",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
 			"id": "reports-component-audio-comparison",
 			"title": "Audio comparison",
 			"coverage": "required",
@@ -3704,6 +3722,9 @@
 				"reports-component-analytics-models-empty",
 				"reports-component-analytics-tasks",
 				"reports-component-analytics-tasks-empty",
+				"reports-component-analytics-tasks-unassessed",
+				"reports-component-analytics-tasks-unpassed",
+				"reports-component-analytics-tasks-retried",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-unavailable",
 				"reports-component-audio-comparison-after-unavailable",
