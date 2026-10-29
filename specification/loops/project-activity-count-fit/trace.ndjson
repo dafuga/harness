@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-29T23:27:35.356Z","name":"project-activity-count-fit","goal":"Keep the activity count readable at tablet width.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-29T23:27:40.205Z","loop":"project-activity-count-fit","step":"spec","evidence":"The stale tablet capture breaks Unknown into Unknow and n; the count must stay on one line."}
+{"event":"step.completed","timestamp":"2026-10-29T23:27:40.880Z","loop":"project-activity-count-fit","step":"coverage","evidence":"The component catalog checks stale wording but did not check the count word geometry at tablet width."}

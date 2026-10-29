@@ -13,6 +13,8 @@ export async function assertComponentCapture(
 ) {
 	assertCaptureSlot(id, viewport, variant);
 	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
+	if (id === 'reports.component.project-activity' && variant === 'stale')
+		await assertActivityCountFits(page);
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
 	if (!directory) return;
 	const selectors: Record<string, string> = {
@@ -53,6 +55,20 @@ export async function assertComponentCapture(
 			`${id} excludes the preview title and empty canvas`
 		).toBeLessThanOrEqual(Math.ceil(actual) + 18);
 	}
+}
+
+/** A long count label remains one word at every catalog viewport. */
+async function assertActivityCountFits(page: Page) {
+	const count = page
+		.locator('[data-preview-unit="reports.component.project-activity"]')
+		.getByTestId('agents-working');
+	await expect(count).toHaveText('Unknown');
+	const lines = await count.evaluate((node) => {
+		const range = document.createRange();
+		range.selectNodeContents(node);
+		return [...range.getClientRects()].filter((rect) => rect.width > 0).length;
+	});
+	expect(lines, 'The activity count must stay on one line').toBe(1);
 }
 
 /** An opened search is a populated dialog, rather than a capture of its trigger alone. */
