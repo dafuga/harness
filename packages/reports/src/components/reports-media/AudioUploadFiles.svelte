@@ -17,7 +17,7 @@
 	let names = $state<Record<string, string>>({});
 </script>
 
-<hx-div class="upload-pair upload-files" class:paired>
+<hx-div class="upload-pair upload-files" class:paired class:uploading>
 	{#each fields as field (field.name)}
 		<hx-label
 			>{$t(field.label)}

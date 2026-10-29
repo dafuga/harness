@@ -137,6 +137,10 @@
 	border-radius: var(--hx-radius);
 	cursor: pointer;
 }
+.upload-files.uploading label {
+	opacity: var(--hx-opacity-disabled);
+	cursor: not-allowed;
+}
 .upload-pair input {
 	position: absolute;
 	width: 1px;
