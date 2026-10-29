@@ -22,9 +22,18 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 		component.getByText('Ask a question, plan a design, or request a code change.')
 	).toBeVisible();
 	await expect(message).toBeEnabled();
+	await expect(component.getByRole('button', { name: 'Choose model' })).toHaveAttribute(
+		'title',
+		'Model: Codex · Preview model'
+	);
 	if (variant === 'agents') {
 		await component.getByRole('button', { name: 'Agents', exact: true }).click();
-		return expect(component.getByText('Preview agent')).toBeVisible();
+		await expect(
+			component.getByRole('list', { name: 'Agent sessions' }).getByText('Preview agent')
+		).toBeVisible();
+		return expect(
+			component.getByRole('region', { name: 'Modules being worked on' }).getByText('Preview agent')
+		).toBeVisible();
 	}
 	const modes: Record<string, string> = { ask: 'Ask', change: 'Change', comment: 'Comment' };
 	if (modes[variant]) {
