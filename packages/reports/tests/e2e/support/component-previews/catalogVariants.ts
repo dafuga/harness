@@ -10,6 +10,8 @@ const variants: Record<string, string[]> = {
 	],
 	// File activity distinguishes the live checkout from recorded, clean, empty and clipped views.
 	'reports.component.activity-files': ['recorded', 'clean', 'empty', 'truncated'],
+	// Loop history either lists known templates or explains that none has been recorded.
+	'reports.component.activity-loops': ['empty'],
 	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
 	'reports.component.audio-comparison': ['unavailable'],
 	// The comparison opens by default; each single-recording view stays independently inspectable.

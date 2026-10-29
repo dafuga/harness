@@ -1187,6 +1187,12 @@
 			"units": ["reports.component.activity-loops"]
 		},
 		{
+			"id": "reports-component-activity-loops-empty",
+			"title": "Activity loops: Empty history",
+			"coverage": "required",
+			"units": ["reports.component.activity-loops"]
+		},
+		{
 			"id": "reports-component-activity-work",
 			"title": "Activity work",
 			"coverage": "required",
@@ -3167,6 +3173,7 @@
 				"reports-component-activity-files-truncated",
 				"reports-component-activity-list",
 				"reports-component-activity-loops",
+				"reports-component-activity-loops-empty",
 				"reports-component-activity-work",
 				"reports-component-analytics-cpu",
 				"reports-component-analytics-filters",

@@ -179,12 +179,18 @@ const fileStates: Record<string, () => PreviewCases[string]> = {
 	})
 };
 
+const loopStates: Record<string, () => PreviewCases[string]> = {
+	empty: () => ({ loops: { total: 0, types: [] } })
+};
+
 export function activityVariant(id: string, variant: string, props: PreviewCases[string]) {
 	const states =
 		id === 'reports.component.activity-agents'
 			? agentStates
 			: id === 'reports.component.activity-files'
 				? fileStates
-				: undefined;
+				: id === 'reports.component.activity-loops'
+					? loopStates
+					: undefined;
 	return states?.[variant]?.() ?? props;
 }
