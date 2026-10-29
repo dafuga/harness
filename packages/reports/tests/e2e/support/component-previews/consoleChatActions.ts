@@ -14,9 +14,11 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 		).toBeVisible();
 		return expect(message).toBeDisabled();
 	}
-	if (variant === 'read-only') {
+	if (variant === 'read-only' || variant === 'agents') {
 		await expect(component.getByText('This project is read-only.')).toBeVisible();
-		return expect(message).toBeEnabled();
+		await expect(message).toBeEnabled();
+		if (variant === 'agents') return agentRoster(component);
+		return;
 	}
 	await expect(
 		component.getByText('Ask a question, plan a design, or request a code change.')
@@ -26,7 +28,6 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 		'title',
 		'Model: Codex · Preview model'
 	);
-	if (variant === 'agents') return agentRoster(component);
 	const modes: Record<string, string> = { ask: 'Ask', change: 'Change', comment: 'Comment' };
 	if (modes[variant]) {
 		const button = component.getByRole('button', { name: modes[variant], exact: true });

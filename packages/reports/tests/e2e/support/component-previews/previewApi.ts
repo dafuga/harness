@@ -99,7 +99,7 @@ async function consoleAgentFixture(route: Route) {
 	if (variant === 'connection-error' && method === 'connect')
 		return route.fulfill({ status: 503, json: { error: 'Project connection unavailable.' } });
 	const commit = commits.tip;
-	const writable = variant !== 'read-only';
+	const writable = variant !== 'read-only' && variant !== 'agents';
 	const snapshot = {
 		project: { id: 'preview-project', root: '/preview', name: 'Preview project' },
 		revision: { branch: 'feature/orders', commit, tip: commit, atTip: true },
