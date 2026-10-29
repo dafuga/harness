@@ -48,6 +48,10 @@ export async function prepareProviderPickerState(component: Locator, variant: st
 	const status = variant === 'request-cancelled' ? 'cancelled' : variant;
 	if (['applying', 'applied', 'failed', 'cancelled'].includes(status))
 		return expect(component.locator('.picker-request')).toHaveAttribute('data-status', status);
-	await expect(component.getByText('GPT 6.1', { exact: true })).toBeVisible();
-	await expect(component.getByText('Claude Opus 5.5', { exact: true })).toBeVisible();
+	await expect(
+		component.locator('.picker-active').getByText('GPT 6.1', { exact: true })
+	).toBeVisible();
+	await expect(
+		component.locator('.picker-request').getByText('Claude Opus 5.5', { exact: true })
+	).toBeVisible();
 }
