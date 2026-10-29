@@ -22,6 +22,10 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 		await expect(component.getByRole('combobox', { name: 'Source file' })).toBeVisible();
 		await expect(component.getByRole('status')).toHaveText('Loading source…');
 	}
+	if (variant === 'loading-list') {
+		await expect(component.getByRole('combobox', { name: 'Source file' })).toHaveCount(0);
+		await expect(component.getByRole('status')).toHaveText('Loading source…');
+	}
 	if (variant === 'list-error') {
 		await expect(component.getByRole('combobox', { name: 'Source file' })).toHaveCount(0);
 		await expect(component.getByRole('alert')).toContainText('file list is unavailable');
