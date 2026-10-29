@@ -14,8 +14,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.activity-loops': ['empty'],
 	// Work distinguishes a live checkout from the recorded-history wording and an empty history.
 	'reports.component.activity-work': ['recorded', 'empty'],
-	// Project activity keeps checkout observations, recorded history and no activity distinct.
-	'reports.component.project-activity': ['recorded', 'empty'],
+	// Project activity keeps recorded, empty, stale and failed live readings distinct.
+	'reports.component.project-activity': ['recorded', 'empty', 'stale', 'failed-read'],
 	// Site activity's refresh failure preserves the last known live observation with a warning.
 	'reports.component.site-activity': ['failed-refresh'],
 	// History filters show both a focused query and the no-filter form.
@@ -26,8 +26,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.analytics-history': ['empty'],
 	// Model usage has a separate unrecorded state from populated author and evaluator evidence.
 	'reports.component.analytics-models': ['empty'],
-	// Task history distinguishes recorded assessment rows from both empty check sections.
-	'reports.component.analytics-tasks': ['empty'],
+	// Task history separates empty, unassessed, not-yet-passed and retried assessments.
+	'reports.component.analytics-tasks': ['empty', 'unassessed', 'unpassed', 'retried'],
 	// Each side can be unavailable, have no duration or carry an independent result.
 	'reports.component.audio-comparison': [
 		'unavailable',
@@ -42,8 +42,25 @@ const variants: Record<string, string[]> = {
 		'not-proven',
 		'interrupted'
 	],
-	// The comparison opens by default; each single-recording view stays independently inspectable.
-	'reports.component.audio-comparison-viewer': ['before', 'after', 'unavailable'],
+	// Selection, playback, disclosures, availability and independent results are visible states.
+	'reports.component.audio-comparison-viewer': [
+		'before',
+		'after',
+		'unavailable',
+		'after-unavailable',
+		'both-unavailable',
+		'no-duration',
+		'mixed',
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted',
+		'transcript-closed',
+		'playing-before',
+		'playing-after'
+	],
 	// A recorded clip exposes both its available notes and unavailable fallback separately.
 	'reports.component.audio-evidence': ['notes', 'unavailable'],
 	// The console connects on open and exposes its access, roster and composer states.
@@ -89,6 +106,7 @@ const variants: Record<string, string[]> = {
 		'recorded',
 		'recorded-error',
 		'observed',
+		'observed-noncallable',
 		'unavailable',
 		'malformed',
 		'wrong-unit',

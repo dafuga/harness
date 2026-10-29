@@ -10,10 +10,13 @@ export async function assertEntityCasesState(component: Locator, variant: string
 		recorded: 'Calls of formatDuration recorded by a test.',
 		'recorded-error': 'Observed error',
 		observed: 'What a test observed end to end',
+		'observed-noncallable': 'What a test observed end to end.',
 		'expected-error': 'Expected error'
 	};
 	if (notes[variant])
 		await expect(component.getByText(notes[variant], { exact: false })).toBeVisible();
+	if (variant === 'observed-noncallable')
+		await expect(component).not.toContainText('not a direct call of this function');
 	if (variant === 'expanded')
 		await expect(component.locator('.cases > details')).toHaveAttribute('open');
 }
