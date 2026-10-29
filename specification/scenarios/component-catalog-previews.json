@@ -1289,6 +1289,66 @@
 			"units": ["reports.component.audio-comparison"]
 		},
 		{
+			"id": "reports-component-audio-comparison-after-unavailable",
+			"title": "Audio comparison: After recording unavailable",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-both-unavailable",
+			"title": "Audio comparison: Both recordings unavailable",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-no-duration",
+			"title": "Audio comparison: Durations not recorded",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-mixed",
+			"title": "Audio comparison: Different recording results",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-running",
+			"title": "Audio comparison: After running",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-failed",
+			"title": "Audio comparison: After failed",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-blocked",
+			"title": "Audio comparison: After blocked",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-skipped",
+			"title": "Audio comparison: After skipped",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-not-proven",
+			"title": "Audio comparison: After not proven",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-interrupted",
+			"title": "Audio comparison: After interrupted",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
 			"id": "reports-component-audio-comparison-viewer",
 			"title": "Audio comparison viewer",
 			"coverage": "required",
@@ -1367,6 +1427,66 @@
 			"units": ["reports.component.console-chat"]
 		},
 		{
+			"id": "reports-component-console-chat-open",
+			"title": "Local web project chat: Open conversation",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-loading",
+			"title": "Local web project chat: Connecting",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-connection-error",
+			"title": "Local web project chat: Connection unavailable",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-read-only",
+			"title": "Local web project chat: Read-only project",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-agents",
+			"title": "Local web project chat: Agent activity",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-ask",
+			"title": "Local web project chat: Ask",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-change",
+			"title": "Local web project chat: Change",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-comment",
+			"title": "Local web project chat: Comment",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-model-open",
+			"title": "Local web project chat: Model picker",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-effort-open",
+			"title": "Local web project chat: Reasoning picker",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
 			"id": "reports-component-contract-example",
 			"title": "Contract example",
 			"coverage": "required",
@@ -1387,6 +1507,60 @@
 		{
 			"id": "reports-component-entity-cases",
 			"title": "Input and output examples",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-empty",
+			"title": "Input and output examples: empty",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-expected-error",
+			"title": "Input and output examples: expected error",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-recorded",
+			"title": "Input and output examples: recorded call",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-recorded-error",
+			"title": "Input and output examples: observed error",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-observed",
+			"title": "Input and output examples: observed test result",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-unavailable",
+			"title": "Input and output examples: unavailable result",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-malformed",
+			"title": "Input and output examples: malformed result",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-wrong-unit",
+			"title": "Input and output examples: another unit",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-expanded",
+			"title": "Input and output examples: full values open",
 			"coverage": "required",
 			"units": ["reports.component.entity-cases"]
 		},
@@ -1543,6 +1717,36 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-module-card",
 			"title": "ExplorerModuleCard",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-missing",
+			"title": "ExplorerModuleCard: missing screenshot",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-function",
+			"title": "ExplorerModuleCard: function",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-page",
+			"title": "ExplorerModuleCard: page",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-page-missing",
+			"title": "ExplorerModuleCard: page without a screenshot",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-unlinked",
+			"title": "ExplorerModuleCard: unlinked dependency",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
@@ -1969,6 +2173,12 @@
 		{
 			"id": "reports-component-modal",
 			"title": "Evidence dialog",
+			"coverage": "required",
+			"units": ["reports.component.modal"]
+		},
+		{
+			"id": "reports-component-modal-image",
+			"title": "Evidence image dialog",
 			"coverage": "required",
 			"units": ["reports.component.modal"]
 		},
@@ -2981,14 +3191,32 @@
 			"units": ["reports.component.source-content"]
 		},
 		{
+			"id": "reports-component-source-content-loading-file",
+			"title": "SourceContent loading a selected file",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
 			"id": "reports-component-source-content-error",
 			"title": "SourceContent unavailable archived source",
 			"coverage": "required",
 			"units": ["reports.component.source-content"]
 		},
 		{
+			"id": "reports-component-source-content-list-error",
+			"title": "SourceContent unavailable file list",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
 			"id": "reports-component-source-content-empty",
 			"title": "SourceContent without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
+			"id": "reports-component-source-content-empty-file",
+			"title": "SourceContent with an empty file",
 			"coverage": "required",
 			"units": ["reports.component.source-content"]
 		},
@@ -3478,6 +3706,16 @@
 				"reports-component-analytics-tasks-empty",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-unavailable",
+				"reports-component-audio-comparison-after-unavailable",
+				"reports-component-audio-comparison-both-unavailable",
+				"reports-component-audio-comparison-no-duration",
+				"reports-component-audio-comparison-mixed",
+				"reports-component-audio-comparison-running",
+				"reports-component-audio-comparison-failed",
+				"reports-component-audio-comparison-blocked",
+				"reports-component-audio-comparison-skipped",
+				"reports-component-audio-comparison-not-proven",
+				"reports-component-audio-comparison-interrupted",
 				"reports-component-audio-comparison-viewer",
 				"reports-component-audio-comparison-viewer-before",
 				"reports-component-audio-comparison-viewer-after",
@@ -3491,10 +3729,29 @@
 				"reports-component-brand-mark",
 				"reports-component-browser-errors",
 				"reports-component-console-chat",
+				"reports-component-console-chat-open",
+				"reports-component-console-chat-loading",
+				"reports-component-console-chat-connection-error",
+				"reports-component-console-chat-read-only",
+				"reports-component-console-chat-agents",
+				"reports-component-console-chat-ask",
+				"reports-component-console-chat-change",
+				"reports-component-console-chat-comment",
+				"reports-component-console-chat-model-open",
+				"reports-component-console-chat-effort-open",
 				"reports-component-contract-example",
 				"reports-component-contract-table",
 				"reports-component-coverage-list",
 				"reports-component-entity-cases",
+				"reports-component-entity-cases-empty",
+				"reports-component-entity-cases-expected-error",
+				"reports-component-entity-cases-recorded",
+				"reports-component-entity-cases-recorded-error",
+				"reports-component-entity-cases-observed",
+				"reports-component-entity-cases-unavailable",
+				"reports-component-entity-cases-malformed",
+				"reports-component-entity-cases-wrong-unit",
+				"reports-component-entity-cases-expanded",
 				"reports-component-entity-contract",
 				"reports-component-entity-examples",
 				"reports-component-entity-search",
@@ -3521,6 +3778,11 @@
 				"reports-component-explorer-function-card",
 				"reports-component-explorer-ui-config-value-tree",
 				"reports-component-explorer-ui-explorer-module-card",
+				"reports-component-explorer-ui-explorer-module-card-missing",
+				"reports-component-explorer-ui-explorer-module-card-function",
+				"reports-component-explorer-ui-explorer-module-card-page",
+				"reports-component-explorer-ui-explorer-module-card-page-missing",
+				"reports-component-explorer-ui-explorer-module-card-unlinked",
 				"reports-component-explorer-ui-explorer-platform-details",
 				"reports-component-explorer-ui-explorer-platforms",
 				"reports-component-explorer-ui-explorer-translations-screen",
@@ -3592,6 +3854,7 @@
 				"reports-component-harness-screen",
 				"reports-component-image-zoom",
 				"reports-component-modal",
+				"reports-component-modal-image",
 				"reports-component-modal-lightbox",
 				"reports-component-module-system-explorer-module-resources-screen",
 				"reports-component-module-system-explorer-module-resources-screen-playwright",
@@ -3760,8 +4023,11 @@
 				"reports-component-source-code-action-unavailable",
 				"reports-component-source-content",
 				"reports-component-source-content-loading",
+				"reports-component-source-content-loading-file",
 				"reports-component-source-content-error",
+				"reports-component-source-content-list-error",
 				"reports-component-source-content-empty",
+				"reports-component-source-content-empty-file",
 				"reports-component-source-dialog",
 				"reports-component-source-dialog-loading",
 				"reports-component-source-dialog-error",

@@ -28,12 +28,37 @@ const variants: Record<string, string[]> = {
 	'reports.component.analytics-models': ['empty'],
 	// Task history distinguishes recorded assessment rows from both empty check sections.
 	'reports.component.analytics-tasks': ['empty'],
-	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
-	'reports.component.audio-comparison': ['unavailable'],
+	// Each side can be unavailable, have no duration or carry an independent result.
+	'reports.component.audio-comparison': [
+		'unavailable',
+		'after-unavailable',
+		'both-unavailable',
+		'no-duration',
+		'mixed',
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted'
+	],
 	// The comparison opens by default; each single-recording view stays independently inspectable.
 	'reports.component.audio-comparison-viewer': ['before', 'after', 'unavailable'],
 	// A recorded clip exposes both its available notes and unavailable fallback separately.
 	'reports.component.audio-evidence': ['notes', 'unavailable'],
+	// The console connects on open and exposes its access, roster and composer states.
+	'reports.component.console-chat': [
+		'open',
+		'loading',
+		'connection-error',
+		'read-only',
+		'agents',
+		'ask',
+		'change',
+		'comment',
+		'model-open',
+		'effort-open'
+	],
 	// A single recording, comparison pair and disabled upload each have distinct input layouts.
 	'reports.component.audio-upload-files': ['comparison', 'uploading'],
 	// Image, missing, compact provenance and paired-audio branches each render different evidence.
@@ -57,15 +82,42 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
 	// Paired results, pending repair, explicit gaps and expanded output are distinct proof states.
 	'reports.component.regression-proof': ['pending', 'gap', 'output-open'],
+	// Documented and observed cases retain failures, gaps and their expanded source values.
+	'reports.component.entity-cases': [
+		'empty',
+		'expected-error',
+		'recorded',
+		'recorded-error',
+		'observed',
+		'unavailable',
+		'malformed',
+		'wrong-unit',
+		'expanded'
+	],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
+	// Visual, page, function and unlinked dependency cards each have their own treatment.
+	'reports.component.explorer-ui-explorer-module-card': [
+		'missing',
+		'function',
+		'page',
+		'page-missing',
+		'unlinked'
+	],
 	// Filters show their inactive trigger by default, with active and opened states separately.
 	'reports.component.filter-dialog': ['active', 'open'],
-	// The default is a text dialog; the lightbox uses the viewport-filling presentation.
-	'reports.component.modal': ['lightbox'],
+	// Text, image and viewport-filling lightbox dialogs use different presentation rules.
+	'reports.component.modal': ['image', 'lightbox'],
 	// Archived source distinguishes actionable, loading, unavailable, empty and linked views.
 	'reports.component.source-code-action': ['unavailable'],
-	'reports.component.source-content': ['loading', 'error', 'empty'],
+	'reports.component.source-content': [
+		'loading',
+		'loading-file',
+		'error',
+		'list-error',
+		'empty',
+		'empty-file'
+	],
 	'reports.component.source-dialog': ['loading', 'error', 'empty'],
 	'reports.component.source-file-list': ['linked', 'empty'],
 	'reports.component.source-viewer': ['loading', 'error', 'empty'],

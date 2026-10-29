@@ -54,8 +54,15 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Loading history…|Loading this revision…|Sampling CPU…|Checking sign-in…|Reading the request…/
 	);
 	await expect(content).not.toContainText(
-		/This project could not be opened|Loading projects?…|Design preview unavailable|Preview unavailable|Screenshot unavailable|not listed by the evidence|Not verified|Reading the clip…|No screenshot (?:is )?recorded|TypeError:|ReferenceError:|Checking the GitHub connection…/
+		/This project could not be opened|Loading projects?…|Design preview unavailable|Preview unavailable|Screenshot unavailable|not listed by the evidence|Not verified|Reading the clip…|TypeError:|ReferenceError:|Checking the GitHub connection…/
 	);
+	if (
+		!(
+			id === 'reports.component.explorer-ui-explorer-module-card' &&
+			['missing', 'page-missing'].includes(variant)
+		)
+	)
+		await expect(content).not.toContainText(/No screenshot (?:is )?recorded/);
 	if (
 		id !== 'reports.component.activity-agents' ||
 		!['failed-read', 'unreadable'].includes(variant)

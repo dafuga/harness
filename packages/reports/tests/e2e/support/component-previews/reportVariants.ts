@@ -1,43 +1,52 @@
 import type { PreviewCases } from './shared';
+import { chatVariantProps } from './chatVariants';
 import { image, noop, text } from './shared';
 import { baselineNarration, releaseNarration } from './reportData';
+import { sourceVariant } from './reportSourceVariants';
+import { moduleCardVariant } from './reportModuleCardVariants';
+import { entityCasesVariant } from './reportEntityCasesVariants';
 import { replayControlsVariant } from './replayControlsVariants';
+import { audioComparisonVariant } from './audioComparisonVariants';
+import { evidenceViewerVariant } from './evidenceViewerVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
 	if (id === 'reports.component.select') return selectVariant(props, variant);
 	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
 	if (id === 'reports.component.modal') return modalVariant(props, variant);
+	if (id === 'reports.component.entity-cases') return entityCasesVariant(props, variant);
+	if (id === 'reports.component.explorer-ui-explorer-module-card')
+		return moduleCardVariant(props, variant);
 	if (id.startsWith('reports.component.source-')) return sourceVariant(props, id, variant);
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
 	if (id === 'reports.component.audio-upload-files') return audioUploadFilesVariant(props, variant);
 	if (id === 'reports.component.evidence-card') return evidenceCardVariant(props, variant);
 	if (id === 'reports.component.evidence-grid') return evidenceGridVariant(props, variant);
-	if (id === 'reports.component.evidence-provenance') return evidenceProvenanceVariant(props, variant);
+	if (id === 'reports.component.evidence-provenance')
+		return evidenceProvenanceVariant(props, variant);
 	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
+	if (id === 'reports.component.console-chat' || id === 'reports.component.floating-chat')
+		return chatVariantProps(id, props, variant);
 	if (id === 'reports.component.gameplay-replay') return gameplayReplayVariant(props, variant);
 	if (id === 'reports.component.replay-controls') return replayControlsVariant(props, variant);
 	if (id === 'reports.component.regression-proof') return regressionProofVariant(props, variant);
-	if (!['reports.component.audio-comparison', 'reports.component.audio-comparison-viewer'].includes(id))
+	if (
+		!['reports.component.audio-comparison', 'reports.component.audio-comparison-viewer'].includes(
+			id
+		)
+	)
 		return null;
-	if (variant === 'before' || variant === 'after') return props;
-	if (variant !== 'unavailable') return null;
-	const before = props.before as Record<string, unknown>;
-	return {
-		...props,
-		before: {
-			...before,
-			file: '',
-			missing: true,
-			note: 'The original recording was not retained with this evidence.'
-		}
-	};
+	return audioComparisonVariant(props, variant);
 }
 
 function selectVariant(props: PreviewCases[string], variant: string) {
 	if (variant === 'compact') return { ...props, compact: true };
 	if (variant === 'display')
-		return { ...props, display: 'release/orders/final-approval', title: 'release/orders/final-approval' };
+		return {
+			...props,
+			display: 'release/orders/final-approval',
+			title: 'release/orders/final-approval'
+		};
 	return variant === 'disabled' ? { ...props, disabled: true } : props;
 }
 
@@ -46,65 +55,16 @@ function filterDialogVariant(props: PreviewCases[string], variant: string) {
 }
 
 function modalVariant(props: PreviewCases[string], variant: string) {
-	if (variant !== 'lightbox') return props;
+	if (variant !== 'lightbox' && variant !== 'image') return props;
 	return {
 		...props,
 		title: 'Order card evidence',
-		variant: 'lightbox',
-		children: text(`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · desktop evidence</figcaption></figure></div>`)
+		variant,
+		children: text(
+			`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · desktop evidence</figcaption></figure></div>`
+		)
 	};
 }
-
-function sourceVariant(props: PreviewCases[string], id: string, variant: string) {
-	if (id === 'reports.component.source-code-action') return sourceActionVariant(props, variant);
-	if (id === 'reports.component.source-file-list') return sourceFileListVariant(props, variant);
-	if (id === 'reports.component.source-viewer') return sourceViewerVariant(props, variant);
-	return sourceReaderVariant(props, variant);
-}
-
-function sourceActionVariant(props: PreviewCases[string], variant: string) {
-	if (variant !== 'unavailable') return props;
-	const nav = props.nav as Record<string, unknown>;
-	return { ...props, nav: { ...nav, source: undefined } };
-}
-
-function sourceReaderVariant(props: PreviewCases[string], variant: string) {
-	if (variant === 'loading') return { ...props, files: pendingSourceFiles };
-	if (variant === 'error') return { ...props, read: unavailableSource };
-	return {
-		...props,
-		files: async () => [],
-		empty: 'No archived source was recorded for this revision.'
-	};
-}
-
-function sourceFileListVariant(props: PreviewCases[string], variant: string) {
-	if (variant === 'linked')
-		return {
-			...props,
-			href: (path: string) => `https://github.com/example/orders/blob/main/${path}`,
-			relativeTo: 'src/'
-		};
-	return { ...props, files: [], empty: 'No archived source files were recorded for this revision.' };
-}
-
-function sourceViewerVariant(props: PreviewCases[string], variant: string) {
-	const state = props.state as Record<string, unknown>;
-	if (variant === 'loading') return { ...props, state: { ...state, text: '', loading: true, error: '' } };
-	if (variant === 'error')
-		return { ...props, state: { ...state, text: '', loading: false, error: sourceUnavailable } };
-	return {
-		...props,
-		state: { ...state, files: [], path: '', text: '', loading: false, error: '' },
-		empty: 'No archived source was recorded for this revision.'
-	};
-}
-
-const sourceUnavailable = 'Archived source is unavailable for this revision.';
-const pendingSourceFiles = () => new Promise<string[]>(() => {});
-const unavailableSource = async () => {
-	throw new Error(sourceUnavailable);
-};
 
 function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {
 	if (variant === 'comparison') return { ...props, mode: 'comparison' };
@@ -156,38 +116,6 @@ function evidenceProvenanceVariant(props: PreviewCases[string], variant: string)
 			]
 		}
 	};
-}
-
-function evidenceViewerVariant(props: PreviewCases[string], variant: string) {
-	const selected = props.selected as Record<string, unknown>;
-	if (variant === 'unavailable') {
-		const unavailable = {
-			...selected,
-			missing: true,
-			note: 'The recorded screenshot could not be restored.'
-		};
-		return {
-			...props,
-			items: [unavailable],
-			navigableItems: [unavailable],
-			selected: unavailable
-		};
-	}
-	const before = {
-		...selected,
-		id: 'checkout-before',
-		title: 'Checkout before release',
-		comparison: 'checkout-flow',
-		phase: 'before'
-	};
-	const after = {
-		...selected,
-		id: 'checkout-after',
-		title: 'Checkout after release',
-		comparison: 'checkout-flow',
-		phase: 'after'
-	};
-	return { ...props, items: [before, after], navigableItems: [after], selected: after };
 }
 
 function gameplayReplayVariant(props: PreviewCases[string], variant: string) {
