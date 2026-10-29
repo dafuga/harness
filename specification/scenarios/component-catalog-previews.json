@@ -1511,6 +1511,60 @@
 			"units": ["reports.component.entity-cases"]
 		},
 		{
+			"id": "reports-component-entity-cases-empty",
+			"title": "Input and output examples: empty",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-expected-error",
+			"title": "Input and output examples: expected error",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-recorded",
+			"title": "Input and output examples: recorded call",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-recorded-error",
+			"title": "Input and output examples: observed error",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-observed",
+			"title": "Input and output examples: observed test result",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-unavailable",
+			"title": "Input and output examples: unavailable result",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-malformed",
+			"title": "Input and output examples: malformed result",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-wrong-unit",
+			"title": "Input and output examples: another unit",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
+			"id": "reports-component-entity-cases-expanded",
+			"title": "Input and output examples: full values open",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
 			"id": "reports-component-entity-contract",
 			"title": "Typed contract",
 			"coverage": "required",
@@ -1663,6 +1717,36 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-module-card",
 			"title": "ExplorerModuleCard",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-missing",
+			"title": "ExplorerModuleCard: missing screenshot",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-function",
+			"title": "ExplorerModuleCard: function",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-page",
+			"title": "ExplorerModuleCard: page",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-page-missing",
+			"title": "ExplorerModuleCard: page without a screenshot",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-unlinked",
+			"title": "ExplorerModuleCard: unlinked dependency",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
@@ -3635,6 +3719,15 @@
 				"reports-component-contract-table",
 				"reports-component-coverage-list",
 				"reports-component-entity-cases",
+				"reports-component-entity-cases-empty",
+				"reports-component-entity-cases-expected-error",
+				"reports-component-entity-cases-recorded",
+				"reports-component-entity-cases-recorded-error",
+				"reports-component-entity-cases-observed",
+				"reports-component-entity-cases-unavailable",
+				"reports-component-entity-cases-malformed",
+				"reports-component-entity-cases-wrong-unit",
+				"reports-component-entity-cases-expanded",
 				"reports-component-entity-contract",
 				"reports-component-entity-examples",
 				"reports-component-entity-search",
@@ -3661,6 +3754,11 @@
 				"reports-component-explorer-function-card",
 				"reports-component-explorer-ui-config-value-tree",
 				"reports-component-explorer-ui-explorer-module-card",
+				"reports-component-explorer-ui-explorer-module-card-missing",
+				"reports-component-explorer-ui-explorer-module-card-function",
+				"reports-component-explorer-ui-explorer-module-card-page",
+				"reports-component-explorer-ui-explorer-module-card-page-missing",
+				"reports-component-explorer-ui-explorer-module-card-unlinked",
 				"reports-component-explorer-ui-explorer-platform-details",
 				"reports-component-explorer-ui-explorer-platforms",
 				"reports-component-explorer-ui-explorer-translations-screen",
