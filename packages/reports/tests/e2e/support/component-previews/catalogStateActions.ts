@@ -13,6 +13,7 @@ const actions: Record<string, CatalogStateAction> = {
 		await expect(component.getByRole('group', { name: 'After recording' })).toBeVisible();
 	},
 	'reports.component.audio-comparison-viewer:transcript-closed': async (component) => {
+		await component.getByRole('button', { name: 'View before recording' }).click();
 		for (const details of await component.locator('.audio-details').all()) {
 			await details.locator('summary').click();
 			await expect(details).not.toHaveAttribute('open');
@@ -122,7 +123,9 @@ async function playRecording(component: Locator, phase: string) {
 
 async function assertAudioComparisonViewer(component: Locator, variant: string) {
 	const sides = component.locator('.audio-comparison-side');
-	await expect(sides).toHaveCount(['before', 'after'].includes(variant) ? 1 : 2);
+	await expect(sides).toHaveCount(
+		['before', 'after', 'transcript-closed'].includes(variant) ? 1 : 2
+	);
 	const missing = variant === 'both-unavailable' ? 2 : variant.includes('unavailable') ? 1 : 0;
 	await expect(component.locator('.audio-card.unavailable')).toHaveCount(missing);
 	if (variant === 'no-duration') await expect(component.locator('.audio-duration')).toHaveCount(0);
@@ -132,4 +135,11 @@ async function assertAudioComparisonViewer(component: Locator, variant: string) 
 	}
 	if (['running', 'failed', 'blocked', 'skipped', 'not-proven', 'interrupted'].includes(variant))
 		await expect(sides.nth(1).locator('.badge')).toHaveClass(new RegExp(variant));
+	if (component.page().viewportSize()?.width === 390 && (await sides.count()) === 2) {
+		const dialog = await component.locator('dialog[open]').boundingBox();
+		const last = await sides.last().boundingBox();
+		expect(last!.y + last!.height, 'Both recordings fit in the mobile capture').toBeLessThanOrEqual(
+			dialog!.y + dialog!.height
+		);
+	}
 }
