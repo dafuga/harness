@@ -125,6 +125,28 @@ test('an older capture is not current: a rejected, stale or unstored one is list
 	);
 });
 
+test('a scoped record keeps its captures when a newer scope records another entity', () => {
+	const captured = record([result(built(sha('a')))], {
+		id: 'r-page',
+		status: 'failed',
+		finishedAt: '2026-10-10T18:00:01.000Z'
+	});
+	const later = record([], {
+		id: 'r-other',
+		status: 'failed',
+		finishedAt: '2026-10-10T19:00:00.000Z'
+	});
+	const detail = revision([page], [declared()], [captured, later]);
+	const shown = explorerEvidence(scope('current'), { head: detail, parent: null }, page);
+	expect(shown.after.record?.id).toBe('r-other');
+	expect(
+		shown.after.captures.map((item) => [item.recordId, item.capture.viewport, item.usable])
+	).toEqual([
+		['r-page', 'desktop', true],
+		['r-page', 'mobile', true]
+	]);
+});
+
 test('inherited captures say where they came from, and stand only while nothing affects the unit', () => {
 	const origin = { record: 'r0', commit: sha('b') };
 	const inherited = record([
