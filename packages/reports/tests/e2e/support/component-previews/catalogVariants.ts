@@ -28,8 +28,20 @@ const variants: Record<string, string[]> = {
 	'reports.component.analytics-models': ['empty'],
 	// Task history distinguishes recorded assessment rows from both empty check sections.
 	'reports.component.analytics-tasks': ['empty'],
-	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
-	'reports.component.audio-comparison': ['unavailable'],
+	// Each side can be unavailable, have no duration or carry an independent result.
+	'reports.component.audio-comparison': [
+		'unavailable',
+		'after-unavailable',
+		'both-unavailable',
+		'no-duration',
+		'mixed',
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted'
+	],
 	// The comparison opens by default; each single-recording view stays independently inspectable.
 	'reports.component.audio-comparison-viewer': ['before', 'after', 'unavailable'],
 	// A recorded clip exposes both its available notes and unavailable fallback separately.

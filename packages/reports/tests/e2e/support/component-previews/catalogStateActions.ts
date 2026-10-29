@@ -77,6 +77,21 @@ const actions: Record<string, CatalogStateAction> = {
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
 	if (id === 'reports.component.console-chat' && variant)
 		return prepareConsoleChatState(component, variant);
+	if (id === 'reports.component.audio-comparison') await assertAudioComparison(component, variant);
 	const action = actions[`${id}:${variant}`];
 	if (action) await action(component);
+}
+
+async function assertAudioComparison(component: Locator, variant: string) {
+	const rows = component.locator('.audio-comparison-row');
+	await expect(rows).toHaveCount(2);
+	const missing = variant === 'both-unavailable' ? 2 : variant.includes('unavailable') ? 1 : 0;
+	await expect(component.locator('.audio-comparison-missing')).toHaveCount(missing);
+	if (variant === 'no-duration') await expect(component.locator('.audio-duration')).toHaveCount(0);
+	if (variant === 'mixed') {
+		await expect(rows.nth(0).locator('.badge')).toHaveClass(/failed/);
+		await expect(rows.nth(1).locator('.badge')).toHaveClass(/passed/);
+	}
+	if (['running', 'failed', 'blocked', 'skipped', 'not-proven', 'interrupted'].includes(variant))
+		await expect(rows.nth(1).locator('.badge')).toHaveClass(new RegExp(variant));
 }
