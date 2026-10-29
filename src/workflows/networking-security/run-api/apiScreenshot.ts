@@ -13,7 +13,11 @@ import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fail } from '../../../core/development-tooling/errors';
 
-/** Download only an attested capture of this page, with all artifact bindings intact. */
+/**
+ * Download a recorded capture of this page, with all artifact bindings and its hash intact. A
+ * capture that stands as proof is preferred; otherwise one of a failed or incomplete record is
+ * returned, and its verification says so, so it is never presented as passed.
+ */
 export async function apiScreenshot(
 	client: HarnessApiService,
 	entityId: string,
@@ -51,23 +55,42 @@ export async function apiScreenshot(
 		mediaType: artifact.mediaType,
 		capturedAt: capture.capturedAt,
 		inheritedFrom,
-		focused: focused ?? null
+		focused: focused ?? null,
+		verification: verificationOf(side!, selected)
+	};
+}
+
+/** What the record says about the capture, stated as recorded and never upgraded to passed. */
+function verificationOf(side: ExplorerSide, selected: ExplorerCapture) {
+	const status = selected.focused ? null : (side.record?.status ?? null);
+	const proven = selected.usable;
+	return {
+		record: selected.focused?.record ?? side.record?.id ?? null,
+		status,
+		standing: selected.standing,
+		usable: proven,
+		note: proven
+			? 'This capture stands as proof for its record.'
+			: `Not proof: record ${status ?? 'status unknown'}, capture ${selected.standing}. Inspect it, do not cite it as passed.`
 	};
 }
 
 function selectedCapture(side: ExplorerSide | null, options: HarnessApiOptions): ExplorerCapture {
-	const captures = side?.captures.filter((item) => matchesCapture(item, options)) ?? [];
+	const matching = side?.captures.filter((item) => matchesCapture(item, options)) ?? [];
+	const proven = matching.filter((item) => item.usable);
+	const captures = proven.length ? proven : matching;
 	if (captures.length !== 1)
 		fail(
 			captures.length
 				? 'Several screenshots match; select --viewport, --state and --scenario.'
-				: 'No usable recorded screenshot matches this entity and revision. Run its standard capture scenario first.'
+				: 'No recorded screenshot matches this entity and revision. Run its standard capture scenario first.'
 		);
 	return captures[0];
 }
 
 function matchesCapture(item: ExplorerCapture, options: HarnessApiOptions): boolean {
-	if (item.capture.kind !== 'screenshot' || !item.usable) return false;
+	if (item.capture.kind !== 'screenshot' || item.standing === 'unvalidated') return false;
+	if (!item.usable && item.capture.media === null) return false;
 	return (
 		(!options.viewport || item.capture.viewport === options.viewport) &&
 		(!options.state || item.state === options.state) &&
