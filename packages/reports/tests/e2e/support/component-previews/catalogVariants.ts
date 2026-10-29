@@ -127,7 +127,14 @@ const variants: Record<string, string[]> = {
 		'empty-file'
 	],
 	'reports.component.source-file-list': ['linked', 'empty'],
-	'reports.component.source-viewer': ['loading', 'error', 'empty'],
+	'reports.component.source-viewer': [
+		'loading',
+		'loading-list',
+		'error',
+		'list-error',
+		'empty',
+		'empty-file'
+	],
 	// Dense, display-label and disabled controls expose the select's distinct field treatments.
 	'reports.component.select': ['compact', 'display', 'disabled'],
 	// The default shows a passed badge; each other status is its own example.

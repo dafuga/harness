@@ -3293,14 +3293,32 @@
 			"units": ["reports.component.source-viewer"]
 		},
 		{
+			"id": "reports-component-source-viewer-loading-list",
+			"title": "SourceViewer loading the file list",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
 			"id": "reports-component-source-viewer-error",
 			"title": "SourceViewer unavailable archived source",
 			"coverage": "required",
 			"units": ["reports.component.source-viewer"]
 		},
 		{
+			"id": "reports-component-source-viewer-list-error",
+			"title": "SourceViewer unavailable file list",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
 			"id": "reports-component-source-viewer-empty",
 			"title": "SourceViewer without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
+			"id": "reports-component-source-viewer-empty-file",
+			"title": "SourceViewer with an empty file",
 			"coverage": "required",
 			"units": ["reports.component.source-viewer"]
 		},
@@ -4058,8 +4076,11 @@
 				"reports-component-source-file-list-empty",
 				"reports-component-source-viewer",
 				"reports-component-source-viewer-loading",
+				"reports-component-source-viewer-loading-list",
 				"reports-component-source-viewer-error",
+				"reports-component-source-viewer-list-error",
 				"reports-component-source-viewer-empty",
+				"reports-component-source-viewer-empty-file",
 				"reports-component-status-badge",
 				"reports-component-status-badge-running",
 				"reports-component-status-badge-failed",
