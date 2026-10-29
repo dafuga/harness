@@ -2645,6 +2645,42 @@
 			"units": ["reports.component.status-badge"]
 		},
 		{
+			"id": "reports-component-status-badge-running",
+			"title": "Report status badge: Running status",
+			"coverage": "required",
+			"units": ["reports.component.status-badge"]
+		},
+		{
+			"id": "reports-component-status-badge-failed",
+			"title": "Report status badge: Failed status",
+			"coverage": "required",
+			"units": ["reports.component.status-badge"]
+		},
+		{
+			"id": "reports-component-status-badge-blocked",
+			"title": "Report status badge: Blocked status",
+			"coverage": "required",
+			"units": ["reports.component.status-badge"]
+		},
+		{
+			"id": "reports-component-status-badge-skipped",
+			"title": "Report status badge: Skipped status",
+			"coverage": "required",
+			"units": ["reports.component.status-badge"]
+		},
+		{
+			"id": "reports-component-status-badge-not-proven",
+			"title": "Report status badge: Not proven status",
+			"coverage": "required",
+			"units": ["reports.component.status-badge"]
+		},
+		{
+			"id": "reports-component-status-badge-interrupted",
+			"title": "Report status badge: Interrupted status",
+			"coverage": "required",
+			"units": ["reports.component.status-badge"]
+		},
+		{
 			"id": "reports-component-upload-audio",
 			"title": "Audio evidence upload",
 			"coverage": "required",
@@ -3248,6 +3284,12 @@
 				"reports-component-source-file-list",
 				"reports-component-source-viewer",
 				"reports-component-status-badge",
+				"reports-component-status-badge-running",
+				"reports-component-status-badge-failed",
+				"reports-component-status-badge-blocked",
+				"reports-component-status-badge-skipped",
+				"reports-component-status-badge-not-proven",
+				"reports-component-status-badge-interrupted",
 				"reports-component-upload-audio",
 				"reports-component-upload-comparison",
 				"reports-component-usage-examples-usage-examples",

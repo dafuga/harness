@@ -1,5 +1,14 @@
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
+	// The default shows a passed badge; each other status is its own example.
+	'reports.component.status-badge': [
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted'
+	],
 	'reports.component.module-system-explorer-module-resources-screen': ['playwright'],
 	'reports.component.module-system-explorer-modules-screen': ['playwright', 'headless-audio'],
 	'desktop.component.project-agent': [

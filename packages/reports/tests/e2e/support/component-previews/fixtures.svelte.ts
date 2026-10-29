@@ -96,6 +96,7 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 	if (!previewVariants(id).includes(variant))
 		throw new Error(`Unknown preview variant ${id}:${variant}`);
 	if (!variant || id === 'desktop.component.project-agent') return props;
+	if (id === 'reports.component.status-badge') return { ...props, status: variant };
 	const shown = modulePreview(props as unknown as ExplorerScreenProps, variant);
 	if (id.endsWith('explorer-module-resources-screen')) {
 		const route = {
