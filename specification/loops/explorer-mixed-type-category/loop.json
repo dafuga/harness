@@ -2,7 +2,7 @@
 	"name": "explorer-mixed-type-category",
 	"goal": "Shared type modules that also own a runtime error class are listed under Types instead of dropped from every category.",
 	"createdAt": "2026-10-29T23:40:40.732Z",
-	"updatedAt": "2026-10-29T23:40:59.352Z",
+	"updatedAt": "2026-10-29T23:45:51.389Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-29T23:45:42.397Z",
+			"evidence": "Red recorded at a5c872d69d (first attempt 53a9644426 restructured for lint): cd packages/reports && bun x vitest run test/utils/explorer-category.test.ts test/utils/explorer-category-registry.test.ts failed with 'owned shared declarations are listed as models or types: expected [ …(3) ] to deeply equal []' and expected [ null, 'Model' ] to equal [ 'types', 'Type definitions' ]."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-29T23:45:49.934Z",
+			"evidence": "7c2f71f8e7: modelCategory returns types when any owned declaration is an interface or alias; a stored class still returns models and a runtime class alone stays null."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-29T23:45:51.389Z",
+			"evidence": "Green recorded at 7c2f71f8e7 with the same command and unchanged tests: 2 files passed. Reports svelte-check 0 errors; eslint and prettier clean on changed files."
 		},
 		{
 			"id": "verify",
