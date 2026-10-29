@@ -61,14 +61,6 @@ export async function assertCatalogState(
 	variant = '',
 	viewport = ''
 ) {
-	if (id === 'reports.component.explorer-ui-explorer-module-card' && variant === 'missing') {
-		await expect(component.getByText('No screenshot is recorded at this revision')).toBeVisible();
-		await expect(component.locator('img')).toHaveCount(0);
-	}
-	if (id === 'reports.component.explorer-ui-explorer-module-card' && variant === 'function') {
-		await expect(component.locator('.ex-function-call')).toBeVisible();
-		await expect(component.locator('img')).toHaveCount(0);
-	}
 	if (id === 'reports.component.filter-dialog' && variant === 'active') {
 		const trigger = component.getByRole('button', { name: 'Filters', exact: true });
 		await expect(trigger).toHaveClass(/active/);

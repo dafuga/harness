@@ -6,7 +6,7 @@ import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
 import { cpu } from './analytics';
 import { activity, live } from './activity';
-import { image, layoutImage, picker } from './shared';
+import { image, layoutImage, ordersPageImage, picker } from './shared';
 import { audioFixture } from '../../../../test/audioFixture';
 import { routeIndex, routeRevision } from './routeHistory';
 import { routePreview } from './visualUnits';
@@ -99,6 +99,8 @@ async function media(route: Route, path: string) {
 		return route.fulfill({ contentType: 'audio/wav', body: audioFixture(1) });
 	if (file === 'synthetic-layout-input.svg')
 		return route.fulfill({ contentType: 'image/svg+xml', body: layoutImage });
+	if (file === 'synthetic-orders-page-input.svg')
+		return route.fulfill({ contentType: 'image/svg+xml', body: ordersPageImage });
 	if (file !== 'synthetic-card-input.svg' && !fixtureMedia.has(file))
 		return route.fulfill({
 			status: 404,

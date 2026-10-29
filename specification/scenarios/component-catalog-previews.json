@@ -1559,6 +1559,24 @@
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-module-card-page",
+			"title": "ExplorerModuleCard: page",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-page-missing",
+			"title": "ExplorerModuleCard: page without a screenshot",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-unlinked",
+			"title": "ExplorerModuleCard: unlinked dependency",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-platform-details",
 			"title": "ExplorerPlatformDetails",
 			"coverage": "required",
@@ -3535,6 +3553,9 @@
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
 				"reports-component-explorer-ui-explorer-module-card-function",
+				"reports-component-explorer-ui-explorer-module-card-page",
+				"reports-component-explorer-ui-explorer-module-card-page-missing",
+				"reports-component-explorer-ui-explorer-module-card-unlinked",
 				"reports-component-explorer-ui-explorer-platform-details",
 				"reports-component-explorer-ui-explorer-platforms",
 				"reports-component-explorer-ui-explorer-translations-screen",

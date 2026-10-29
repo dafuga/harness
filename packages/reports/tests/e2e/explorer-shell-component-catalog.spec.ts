@@ -23,6 +23,7 @@ import {
 	assertTranslationControls
 } from './support/component-previews/previewCaptureAssertions';
 import { assertPermissionTable } from './support/component-previews/permissionPreviewAssertions';
+import { assertModuleCardPreview } from './support/component-previews/moduleCardPreviewAssertions';
 import { assertProjectAgentState } from './support/component-previews/projectAgentStateAssertions';
 import type { ProjectAgentState } from './support/component-previews/projectAgentStateFixtures.types';
 import { prepareCatalogState } from './support/component-previews/catalogStateActions';
@@ -111,6 +112,8 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id, variant);
 			await prepareCatalogState(component, unit.id, variant);
 			await assertCatalogState(component, unit.id, variant, viewport.id);
+			if (unit.id === 'reports.component.explorer-ui-explorer-module-card')
+				await assertModuleCardPreview(component, variant);
 			if (isProjectAgent) {
 				const panel = component.locator('.floating-chat-panel');
 				if (variant === 'closed') {
