@@ -6,8 +6,8 @@ import { sourceVariant } from './reportSourceVariants';
 import { moduleCardVariant } from './reportModuleCardVariants';
 import { entityCasesVariant } from './reportEntityCasesVariants';
 import { replayControlsVariant } from './replayControlsVariants';
-import { evidenceViewerVariant } from './evidenceViewerVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
+import { evidenceViewerVariant } from './evidenceViewerVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -17,8 +17,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.entity-cases') return entityCasesVariant(props, variant);
 	if (id === 'reports.component.explorer-ui-explorer-module-card')
 		return moduleCardVariant(props, variant);
-	if (id.startsWith('reports.component.source-'))
-		return extendedSourceReaderVariant(props, id, variant) ?? sourceVariant(props, id, variant);
+	if (id.startsWith('reports.component.source-')) return sourceVariant(props, id, variant);
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
 	if (id === 'reports.component.audio-upload-files') return audioUploadFilesVariant(props, variant);
 	if (id === 'reports.component.evidence-card') return evidenceCardVariant(props, variant);
@@ -65,20 +64,6 @@ function modalVariant(props: PreviewCases[string], variant: string) {
 			`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · desktop evidence</figcaption></figure></div>`
 		)
 	};
-}
-
-function extendedSourceReaderVariant(props: PreviewCases[string], id: string, variant: string) {
-	if (!['reports.component.source-content', 'reports.component.source-dialog'].includes(id))
-		return null;
-	if (variant === 'loading-file') return { ...props, read: () => new Promise<string>(() => {}) };
-	if (variant === 'list-error')
-		return {
-			...props,
-			files: async () => {
-				throw new Error('The archived source file list is unavailable.');
-			}
-		};
-	return variant === 'empty-file' ? { ...props, read: async () => '' } : null;
 }
 
 function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {

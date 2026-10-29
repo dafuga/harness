@@ -124,9 +124,9 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id, variant);
 			await prepareCatalogState(component, unit.id, variant);
 			await assertCatalogState(component, unit.id, variant, viewport.id);
-			await assertReportPreviewState(component, unit.id, variant);
 			if (unit.id === 'reports.component.explorer-ui-explorer-module-card')
 				await assertModuleCardPreview(component, variant);
+			await assertReportPreviewState(component, unit.id, variant);
 			if (isProjectAgent) {
 				const panel = component.locator('.floating-chat-panel');
 				if (variant === 'closed') {
