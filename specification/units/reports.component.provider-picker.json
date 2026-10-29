@@ -39,6 +39,8 @@
 			{
 				"name": "ProviderPicker.label",
 				"type": "string",
+				"required": false,
+				"default": "Model picker",
 				"description": "Optional heading, defaulting to Model picker."
 			}
 		],

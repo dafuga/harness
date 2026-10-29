@@ -41,6 +41,7 @@
 			{
 				"name": "AnalyticsModels.models",
 				"type": "Models",
+				"required": true,
 				"description": "Required analytics model summary with check/loop author counts, evaluator counts/tokens and per-author first-try figures for response and clean-code checks. Names, including unknown, are preserved."
 			}
 		],

@@ -35,21 +35,25 @@
 			{
 				"name": "ActivityFiles.files",
 				"type": "CommittedFile[]",
+				"required": true,
 				"description": "Required committed changes with path, status, last-change commit/time and unit owners. Kept in supplied order."
 			},
 			{
 				"name": "ActivityFiles.worktrees",
 				"type": "WorktreeState[] | null",
+				"required": true,
 				"description": "Required checkout snapshots or null. Null denotes unavailable live checkout state; an empty array or no changes displays no uncommitted changes. Includes truncation information."
 			},
 			{
 				"name": "ActivityFiles.href",
 				"type": "(commit: string) => string",
+				"required": true,
 				"description": "Required callback forming a commit-page link for each committed file."
 			},
 			{
 				"name": "ActivityFiles.registry",
 				"type": "string",
+				"required": true,
 				"description": "Required wording identifying which revision’s registry supplied component ownership labels."
 			}
 		],
