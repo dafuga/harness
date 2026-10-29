@@ -7,7 +7,9 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 	const modal =
 		(await content.getAttribute('data-preview-frame')) !== 'full' && (await dialog.count());
 	const projectAgent = id === 'desktop.component.project-agent';
-	let target = modal ? dialog : content;
+	const compactTarget =
+		id === 'reports.component.filter-dialog' ? content.locator('.filter-trigger') : undefined;
+	let target = modal ? dialog : (compactTarget ?? content);
 	if (projectAgent)
 		target = content.locator(
 			variant === 'closed' ? '.floating-chat-bubble' : '.floating-chat-panel'
@@ -38,6 +40,6 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			);
 			return { x: left, y: top, width: right - left, height: bottom - top };
 		},
-		Boolean(modal) || projectAgent
+		Boolean(modal) || projectAgent || Boolean(compactTarget)
 	);
 }
