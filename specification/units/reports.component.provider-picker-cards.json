@@ -31,31 +31,37 @@
 			{
 				"name": "ProviderPickerCards.active",
 				"type": "SessionObservation | null",
+				"required": true,
 				"description": "Required observed session or null. Null shows that the active selection is unknown; an observation supplies selection, client, idle state and time."
 			},
 			{
 				"name": "ProviderPickerCards.request",
 				"type": "SwitchRequest | null",
+				"required": true,
 				"description": "Required switch request or null. Shows requested selection, status, queue time and reason when present."
 			},
 			{
 				"name": "ProviderPickerCards.models",
 				"type": "PickerModel[]",
+				"required": true,
 				"description": "Required known models used to resolve a friendly model label, falling back to the model identifier."
 			},
 			{
 				"name": "ProviderPickerCards.providers",
 				"type": "Record<string, string>",
+				"required": true,
 				"description": "Required provider-name lookup used in selection labels."
 			},
 			{
 				"name": "ProviderPickerCards.locked",
 				"type": "boolean",
+				"required": true,
 				"description": "Required flag disabling cancellation while another operation locks the controls."
 			},
 			{
 				"name": "ProviderPickerCards.oncancel",
 				"type": "() => void",
+				"required": true,
 				"description": "Required callback invoked by the cancel action for a pending request."
 			}
 		],

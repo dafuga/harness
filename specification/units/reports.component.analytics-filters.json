@@ -34,6 +34,7 @@
 			{
 				"name": "AnalyticsFilters.filters",
 				"type": "AnalyticsSnapshot['filters']",
+				"required": true,
 				"description": "Required initial loop, task, model and optional since/until values. Missing values become empty; dates use their first ten characters. These initialize input defaults rather than live bindings."
 			}
 		],
