@@ -11,15 +11,22 @@
 		"symbols": ["load"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "load",
-				"type": "unknown"
+				"type": "never",
+				"description": "Does not return; throws the permanent redirect to the explorer."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Redirect",
+				"type": "SvelteKit redirect",
+				"description": "Throws HTTP 308 to /harness."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
