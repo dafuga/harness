@@ -93,7 +93,7 @@ export async function captureShell(
 	const served = await new BuildIdentityService().identify(home);
 	const revision = process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40);
 	await page.evaluate(() => document.fonts.ready.then(() => undefined));
-	const bytes = await page.screenshot({ animations: 'disabled', caret: 'hide' });
+	const bytes = await page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' });
 	const { state, viewport, slot = 'screens' } = shown;
 	recordCapture(
 		{
