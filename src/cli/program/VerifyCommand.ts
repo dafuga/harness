@@ -34,6 +34,10 @@ export function registerVerifyCommand(program: Command): void {
 			'--require-performance',
 			'Require current latency and memory profiling independently of budgets.'
 		)
+		.option(
+			'--entity <id>',
+			"Verify only this entity's scenario states; the record is partial and never passes."
+		)
 		.option('--json', 'Print the record and its directory.')
 		.description('Run the affected checks and scenarios and store the record, pass or fail.')
 		.action(async (flags: Flags) => {

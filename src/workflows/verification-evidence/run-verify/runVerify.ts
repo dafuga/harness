@@ -91,6 +91,7 @@ export async function verifyRun(options: VerifyOptions = {}): Promise<StoredReco
 		config,
 		requirePerformance: requiresPerformance(options, config),
 		testTimeoutMs: options.testTimeout ? Number(options.testTimeout) : undefined,
+		entity: options.entity,
 		env: {
 			...process.env,
 			HARNESS_RESOURCE_PRIORITY: verificationPriority(options.priority)

@@ -11,6 +11,8 @@ export interface VerifyOptions {
 	 */
 	base?: string;
 	runtime?: string;
+	/** Verify only this entity's scenario states; the record is partial and never passes. */
+	entity?: string;
 	testTimeout?: string;
 	record?: string;
 }

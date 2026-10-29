@@ -14,6 +14,7 @@ import { emittedTargets } from '../../../../utils/development-tooling/unitMeasur
 
 import { RecordAssemblyService } from './record-assembly-service/RecordAssemblyService';
 import { scenarioCoverage } from './scenarioCoverage';
+import { scopedCheck, scopedScenarios, scopeFailure } from './entityScope';
 import { referencedScenario } from './sealRecord';
 import { SnapshotRunService, type Executed } from './SnapshotRunService';
 import { verifyPlan } from './verifyPlan';
@@ -31,16 +32,20 @@ export class VerificationService {
 		const { context } = this;
 		const startedAt = new Date().toISOString();
 		const directory = this.store.directoryFor(context.commit, startedAt);
-		const referenced = this.referenced();
+		const { entity } = context;
+		const referenced = entity ? [] : this.referenced();
 		const kept = new Set(referenced.map((scenario) => scenario.id));
-		const rerun = context.head.scenarios.filter((scenario) => !kept.has(scenario.id));
-		const plan = verifyPlan({
-			selectedTests: context.impact.tests.selected,
+		const rerun = entity
+			? scopedScenarios(context.head.scenarios, entity)
+			: context.head.scenarios.filter((scenario) => !kept.has(scenario.id));
+		const planned = verifyPlan({
+			selectedTests: entity ? [] : context.impact.tests.selected,
 			scenarios: rerun,
 			config: context.config,
 			unitsConfig: context.head.config,
 			testTimeoutMs: context.testTimeoutMs
 		});
+		const plan = entity ? planned.map((check) => scopedCheck(check, entity)) : planned;
 		const executed = await this.snapshotRun(directory).execute(plan, this.artifactPaths());
 		const scenarios = rerun.map((scenario) => this.judge(scenario, executed));
 		const assembly = new RecordAssemblyService({
@@ -99,7 +104,8 @@ export class VerificationService {
 		const failures = [
 			...own.flatMap((outcome) => outcome.failures),
 			...coverage.failures,
-			...(ran ? [] : [`${scenario.id}: its checks did not run`])
+			...(ran ? [] : [`${scenario.id}: its checks did not run`]),
+			...(this.context.entity ? [scopeFailure(this.context.entity)] : [])
 		];
 		return {
 			result: {
