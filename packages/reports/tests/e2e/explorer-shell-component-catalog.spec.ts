@@ -133,7 +133,7 @@ for (const viewport of catalogViewports) {
 				unit.id === 'reports.component.explorer-dependencies-screen' ||
 				unit.id.endsWith('at-dependencies')
 			) {
-				await dependencyTables(component, page, viewport.width);
+				await dependencyTables(component, page, viewport.width, viewport.id === 'mobile');
 			}
 			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations'))
 				await assertTranslationControls(component);
