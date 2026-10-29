@@ -25,6 +25,9 @@ export interface ExportedSymbol {
 		| 'snippet';
 	inputs: ContractItem[];
 	output?: string;
+	/** Observed local errors, distinct from the file-wide union and indirect-call uncertainty. */
+	errors?: string[];
+	errorStatus?: 'found' | 'none-found' | 'unknown';
 }
 
 export interface ResolvedReference {

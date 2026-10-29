@@ -5,6 +5,7 @@ import {
 	type ComponentManifest
 } from '../../core/development-tooling/unitTypes';
 import { derivedResponsibility } from '../../workflows/development-tooling/load-units/unit-index-service/derivedResponsibility';
+import { contractFindings } from './contractFindings';
 
 /** Checks one stored unit manifest against the schema and its own file name. */
 export class ComponentManifestValidator {
@@ -33,6 +34,7 @@ export class ComponentManifestValidator {
 			value: manifest,
 			errors: [
 				...errors,
+				...contractFindings(manifest),
 				...this.targetErrors(manifest, label),
 				...this.labelErrors(manifest),
 				...this.previewErrors(manifest)

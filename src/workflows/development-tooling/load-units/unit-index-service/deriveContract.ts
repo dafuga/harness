@@ -28,6 +28,11 @@ export function deriveContract(files: SourceFile[]): ComponentManifest['contract
 		}));
 	return {
 		origin: 'derived',
+		errorStatus: symbols.some((symbol) => symbol.errorStatus === 'unknown')
+			? 'unknown'
+			: errors.length
+				? 'found'
+				: 'none-found',
 		inputs: (components.length
 			? components
 			: symbols.filter((symbol) => symbol.kind !== 'snippet')

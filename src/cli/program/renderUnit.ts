@@ -19,12 +19,13 @@ function fields(list: Field[]): string[] {
 	const repeated = new Set(shortNames.filter((name, index) => shortNames.indexOf(name) !== index));
 	const rows = list.map(
 		(item, index) =>
-			[repeated.has(shortNames[index]) ? item.name : shortNames[index], `${item.type}${qualifiers(item)}`] as const
+			[
+				repeated.has(shortNames[index]) ? item.name : shortNames[index],
+				`${item.type}${qualifiers(item)}`
+			] as const
 	);
 	const width = Math.max(...rows.map(([name]) => name.length));
-	return rows.map(([name, type]) =>
-		type === 'thrown' ? name : `${name.padEnd(width)}  ${type}`
-	);
+	return rows.map(([name, type]) => (type === 'thrown' ? name : `${name.padEnd(width)}  ${type}`));
 }
 
 /** What a caller needs: props or inputs, outputs for anything but a component, and errors. */
@@ -38,7 +39,16 @@ export function renderContract(manifest: ComponentManifest): string[] {
 	];
 	return [
 		`Contract (${contract.origin})`,
-		...indent(sections.flatMap(([title, list]) => [title, ...indent(fields(list))]))
+		...indent(
+			sections.flatMap(([title, list]) => [
+				title,
+				...indent(
+					title === 'Errors' && !list.length && contract.origin === 'derived'
+						? ['none found (static analysis; indirect errors unknown)']
+						: fields(list)
+				)
+			])
+		)
 	];
 }
 
@@ -80,7 +90,10 @@ export function renderUnit(detail: UnitDetail): string {
 	const rows: Array<[string, string[]]> = [
 		['Source', manifest.owns.source],
 		...runtimeRows(manifest),
-		['Version', [`source ${version.source.slice(0, 12)} · contract ${version.contract.slice(0, 12)}`]],
+		[
+			'Version',
+			[`source ${version.source.slice(0, 12)} · contract ${version.contract.slice(0, 12)}`]
+		],
 		...(retired.length ? [['Continues', retired] as [string, string[]]] : []),
 		['Depends on', manifest.dependencies.map((d) => `${d.unit} (${d.via})`)],
 		['Consumers', detail.consumers],

@@ -5,6 +5,10 @@ import type { UnitIndexResult } from '../../workflows/development-tooling/load-u
 import { UnitRegistryValidator } from '../../validators/development-tooling/UnitRegistryValidator';
 import { previewBinding } from '../../utils/development-tooling/previewBinding';
 import {
+	contractFailureCounts,
+	contractFindings
+} from '../../validators/development-tooling/contractFindings';
+import {
 	graphOf,
 	loadUnits,
 	type LoadedUnits
@@ -28,6 +32,8 @@ export async function checkUnits(options: UnitsOptions = {}): Promise<CheckRepor
 	return {
 		units: loaded.stored.filter((manifest) => manifest.status === 'active').length,
 		uncertain: graphOf(loaded).uncertain.length,
+		contractFailures: contractFailureCounts(loaded.fresh.manifests),
+		storedContractFailures: contractFailureCounts(loaded.stored),
 		errors: registryErrors(loaded)
 	};
 }
@@ -39,6 +45,7 @@ export function registryErrors(loaded: LoadedUnits): string[] {
 	const scenarios = new Set(loaded.scenarios.map((scenario) => scenario.id));
 	return [
 		...loaded.errors,
+		...loaded.fresh.manifests.flatMap(contractFindings),
 		...loaded.stored
 			.filter((unit) => unit.status === 'active')
 			.flatMap((unit) => previewBinding(unit, loaded.scenarios)),
