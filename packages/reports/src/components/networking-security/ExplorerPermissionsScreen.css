@@ -1,0 +1,74 @@
+.permission-data table {
+	table-layout: auto;
+	min-width: max-content;
+}
+
+.permission-data code {
+	white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+	.permission-data {
+		overflow-x: visible;
+	}
+
+	.permission-data table {
+		min-width: 0;
+		width: 100%;
+	}
+
+	.permission-data thead {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+	}
+
+	.permission-data table,
+	.permission-data tbody,
+	.permission-data tr {
+		display: block;
+		width: 100%;
+	}
+
+	.permission-data tr {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--hx-space-10);
+		padding: var(--hx-space-12) var(--hx-space-16);
+	}
+
+	.permission-data th,
+	.permission-data td {
+		display: grid;
+		gap: var(--hx-space-4);
+		padding: 0;
+		border: 0;
+	}
+
+	.permission-data th[scope='row'],
+	.permission-data td:last-child {
+		grid-column: 1 / -1;
+	}
+
+	.permission-data th[scope='row']::before,
+	.permission-data td::before {
+		color: var(--ex-soft);
+		font-size: var(--hx-type-size-sm);
+		font-weight: var(--hx-style-weight-medium);
+	}
+
+	.permission-data th[scope='row']::before {
+		content: 'Model';
+	}
+
+	.permission-data td::before {
+		content: attr(data-label);
+	}
+
+	.permission-data code {
+		white-space: normal;
+		overflow-wrap: anywhere;
+	}
+}
