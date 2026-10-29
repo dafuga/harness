@@ -1,6 +1,7 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
-import ConfigValueTree from '../../../src/components/explorer-ui/ConfigValueTree.svelte';
+import ConfigValueTree, { valueMark } from '../../../src/components/explorer-ui/ConfigValueTree.svelte';
+import type { ConfigValueMark } from '../../../src/components/explorer-ui/ConfigValueTree.svelte';
 import type { ConfigValueNode } from '../../../../../src/utils/explorer-ui/unitMetadata';
 import { measureWorkload } from '../../../../../test/support/measureWorkload';
 
@@ -29,3 +30,8 @@ test('source collections preserve exact keys and escaped expressions with nested
 			expect(body).toContain('0 items');
 		}
 	));
+
+test('inspection marks expose their icon and source-size label', () => {
+	const mark: ConfigValueMark | undefined = valueMark(node, node.source);
+	expect(mark).toEqual({ icon: 'object', size: '2 attributes' });
+});

@@ -1,7 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts" module>
-	import type { ConfigCollection } from './ConfigValueTree.module.types';
+	import type { ConfigCollection, ConfigValueMark } from './ConfigValueTree.module.types';
 
 	import type { ConfigValueNode } from '../../../../../src/utils/explorer-ui/unitMetadata';
 	import type { HarnessIconName } from '../../utils/explorer-ui/harnessIcons';
@@ -18,7 +18,10 @@
 		return kind === 'object' ? 'Object' : 'Array';
 	}
 	/** The mark of a value opened whole: its shape and what it holds, or its size as written. */
-	export function valueMark(node: ConfigValueNode | undefined, text: string) {
+	export function valueMark(
+		node: ConfigValueNode | undefined,
+		text: string
+	): ConfigValueMark | undefined {
 		const held = collection(node);
 		if (held) return { icon: shapeIcon(held), size: holds(held) };
 		const lines = text.split(/\r?\n/).length;
@@ -28,7 +31,7 @@
 		return { icon: 'code' as const, size };
 	}
 
-	export type { ConfigCollection } from './ConfigValueTree.module.types';
+	export type { ConfigCollection, ConfigValueMark } from './ConfigValueTree.module.types';
 </script>
 
 <script lang="ts">

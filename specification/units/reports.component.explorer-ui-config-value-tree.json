@@ -71,7 +71,7 @@
 			},
 			{
 				"name": "valueMark",
-				"type": "unknown",
+				"type": "ConfigValueMark | undefined",
 				"description": "Icon name and count/size label for an inspectable value, or undefined for a short unstructured expression."
 			}
 		],
