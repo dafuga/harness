@@ -20,6 +20,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.analytics-cpu': ['no-agents', 'unavailable'],
 	// History retains independent empty tables and summaries after filters remove every loop.
 	'reports.component.analytics-history': ['empty'],
+	// Model usage has a separate unrecorded state from populated author and evaluator evidence.
+	'reports.component.analytics-models': ['empty'],
 	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
 	'reports.component.audio-comparison': ['unavailable'],
 	// The comparison opens by default; each single-recording view stays independently inspectable.
