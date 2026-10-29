@@ -4,6 +4,12 @@ import { prepareConsoleChatState } from './consoleChatActions';
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
 const actions: Record<string, CatalogStateAction> = {
+	'reports.component.project-activity:stale': async (component) => {
+		await expect(component.getByText(/The last reading is older than a minute/)).toBeVisible();
+	},
+	'reports.component.project-activity:failed-read': async (component) => {
+		await expect(component.getByRole('status')).toContainText('Activity could not be read again');
+	},
 	'reports.component.analytics-tasks:unassessed': async (component) => {
 		await expect(component.getByRole('cell', { name: 'Not assessed' })).toBeVisible();
 	},

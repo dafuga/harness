@@ -14,8 +14,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.activity-loops': ['empty'],
 	// Work distinguishes a live checkout from the recorded-history wording and an empty history.
 	'reports.component.activity-work': ['recorded', 'empty'],
-	// Project activity keeps checkout observations, recorded history and no activity distinct.
-	'reports.component.project-activity': ['recorded', 'empty'],
+	// Project activity keeps recorded, empty, stale and failed live readings distinct.
+	'reports.component.project-activity': ['recorded', 'empty', 'stale', 'failed-read'],
 	// Site activity's refresh failure preserves the last known live observation with a warning.
 	'reports.component.site-activity': ['failed-refresh'],
 	// History filters show both a focused query and the no-filter form.
