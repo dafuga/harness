@@ -4,6 +4,28 @@ import { prepareConsoleChatState } from './consoleChatActions';
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
 const actions: Record<string, CatalogStateAction> = {
+	'reports.component.floating-chat:closed': async (component) => {
+		await expect(component.locator('.floating-chat-bubble')).toBeVisible();
+		await expect(component.locator('.floating-chat-panel')).toHaveCount(0);
+	},
+	'reports.component.floating-chat:notice': async (component) => {
+		await expect(
+			component.getByText('Agent suggestions appear when a provider connects.')
+		).toBeVisible();
+	},
+	'reports.component.floating-chat:navigation': async (component) => {
+		await expect(component.getByRole('navigation', { name: 'Project chat' })).toBeVisible();
+	},
+	'reports.component.floating-chat:following': async (component) => {
+		await expect
+			.poll(() => component.locator('.floating-chat-body').evaluate((node) => node.scrollTop))
+			.toBeGreaterThan(0);
+	},
+	'reports.component.floating-chat:not-following': async (component) => {
+		await expect
+			.poll(() => component.locator('.floating-chat-body').evaluate((node) => node.scrollTop))
+			.toBe(0);
+	},
 	'reports.component.project-activity:stale': async (component) => {
 		await expect(component.getByText(/The last reading is older than a minute/)).toBeVisible();
 	},

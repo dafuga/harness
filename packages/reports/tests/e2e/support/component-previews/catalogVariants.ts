@@ -76,6 +76,14 @@ const variants: Record<string, string[]> = {
 		'model-open',
 		'effort-open'
 	],
+	// Floating chat exposes its launcher, notice, navigation and conversation-follow modes.
+	'reports.component.floating-chat': [
+		'closed',
+		'notice',
+		'navigation',
+		'following',
+		'not-following'
+	],
 	// A single recording, comparison pair and disabled upload each have distinct input layouts.
 	'reports.component.audio-upload-files': ['comparison', 'uploading'],
 	// Image, missing, compact provenance and paired-audio branches each render different evidence.

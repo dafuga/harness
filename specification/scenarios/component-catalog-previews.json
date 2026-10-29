@@ -1919,6 +1919,36 @@
 			"units": ["reports.component.floating-chat"]
 		},
 		{
+			"id": "reports-component-floating-chat-closed",
+			"title": "Floating chat: Closed launcher",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-notice",
+			"title": "Floating chat: Notice",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-navigation",
+			"title": "Floating chat: Navigation",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-following",
+			"title": "Floating chat: Following conversation",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-not-following",
+			"title": "Floating chat: Reading from the top",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
 			"id": "reports-component-gameplay-replay",
 			"title": "Gameplay replay",
 			"coverage": "required",
@@ -3961,6 +3991,11 @@
 				"reports-component-filter-dialog-active",
 				"reports-component-filter-dialog-open",
 				"reports-component-floating-chat",
+				"reports-component-floating-chat-closed",
+				"reports-component-floating-chat-notice",
+				"reports-component-floating-chat-navigation",
+				"reports-component-floating-chat-following",
+				"reports-component-floating-chat-not-following",
 				"reports-component-gameplay-replay",
 				"reports-component-gameplay-replay-live-empty",
 				"reports-component-gameplay-replay-interrupted",
