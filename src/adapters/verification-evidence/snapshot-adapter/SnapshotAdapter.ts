@@ -60,7 +60,9 @@ export class SnapshotAdapter {
 	 * nothing may appear outside the declared outputs, wherever it is and whatever it is.
 	 */
 	async drift(): Promise<SnapshotDrift> {
-		const hashes = await Promise.all(this.exported.map((entry) => this.hash(entry.path)));
+		const hashes: Array<string | undefined> = [];
+		// A repository export can contain thousands of source files; retain one read at a time.
+		for (const entry of this.exported) hashes.push(await this.hash(entry.path));
 		const changed = this.exported.filter((entry, index) => hashes[index] !== entry.hash);
 		const added = await snapshotAdditions(this.directory, {
 			tracked: new Set(this.tracked.map((entry) => entry.path)),
