@@ -130,6 +130,31 @@ const variants: Record<string, string[]> = {
 		'wrong-unit',
 		'expanded'
 	],
+	// A contract changes for each entity kind, missing declarations, errors and an opened example.
+	'reports.component.entity-contract': [
+		'empty',
+		'errors',
+		'last',
+		'example-open',
+		'function',
+		'function-error',
+		'service',
+		'model',
+		'model-bare',
+		'types',
+		'config'
+	],
+	// Documentation distinguishes absent examples, setup, missing calls and expected outcomes.
+	'reports.component.entity-examples': [
+		'empty',
+		'gap',
+		'setup',
+		'inline-setup',
+		'missing-setup',
+		'error',
+		'missing-call',
+		'void'
+	],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
 	// Visual, page, function and unlinked dependency cards each have their own treatment.
@@ -172,7 +197,7 @@ const variants: Record<string, string[]> = {
 		'empty-file'
 	],
 	// Dense, display-label and disabled controls expose the select's distinct field treatments.
-	'reports.component.select': ['compact', 'display', 'disabled'],
+	'reports.component.select': ['compact', 'display', 'disabled', 'open'],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',

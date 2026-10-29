@@ -3,6 +3,9 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { catalogScenario, previewState } from './catalogUnits';
 import { assertEntityCasesState } from './entityCasesPreviewAssertions';
+import { assertAudioViewerCapture } from './catalogStateActions';
+import { assertEntityExamplesState } from './entityExamplesPreviewAssertions';
+import { assertEntityContractState } from './entityContractPreviewAssertions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
 export async function assertComponentCapture(
@@ -12,6 +15,7 @@ export async function assertComponentCapture(
 	variant = ''
 ) {
 	assertCaptureSlot(id, viewport, variant);
+	await assertAudioViewerCapture(page, id, viewport);
 	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
 	if (id === 'reports.component.project-activity' && variant === 'stale')
 		await assertActivityCountFits(page);
@@ -79,6 +83,10 @@ export async function assertCatalogState(
 	viewport = ''
 ) {
 	if (id === 'reports.component.entity-cases') await assertEntityCasesState(component, variant);
+	if (id === 'reports.component.entity-examples')
+		await assertEntityExamplesState(component, variant);
+	if (id === 'reports.component.entity-contract')
+		await assertEntityContractState(component, variant);
 	if (id === 'reports.component.filter-dialog' && variant === 'active') {
 		const trigger = component.getByRole('button', { name: 'Filters', exact: true });
 		await expect(trigger).toHaveClass(/active/);
@@ -92,7 +100,7 @@ export async function assertCatalogState(
 		await expect(dialog.getByRole('combobox', { name: 'Search entities' })).toHaveValue('order');
 		await expect(dialog.getByRole('option').first()).toContainText('Order');
 	}
-	if (id !== 'reports.component.entity-contract' || viewport !== 'mobile') return;
+	if (id !== 'reports.component.entity-contract' || viewport !== 'mobile' || variant) return;
 	const frame = component.locator('[data-harness-component="contract-table"] .frame').first();
 	const action = frame.getByRole('button', { name: 'View example for Orders' });
 	await expect(action).toBeVisible();
