@@ -1289,6 +1289,66 @@
 			"units": ["reports.component.audio-comparison"]
 		},
 		{
+			"id": "reports-component-audio-comparison-after-unavailable",
+			"title": "Audio comparison: After recording unavailable",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-both-unavailable",
+			"title": "Audio comparison: Both recordings unavailable",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-no-duration",
+			"title": "Audio comparison: Durations not recorded",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-mixed",
+			"title": "Audio comparison: Different recording results",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-running",
+			"title": "Audio comparison: After running",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-failed",
+			"title": "Audio comparison: After failed",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-blocked",
+			"title": "Audio comparison: After blocked",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-skipped",
+			"title": "Audio comparison: After skipped",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-not-proven",
+			"title": "Audio comparison: After not proven",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-interrupted",
+			"title": "Audio comparison: After interrupted",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
 			"id": "reports-component-audio-comparison-viewer",
 			"title": "Audio comparison viewer",
 			"coverage": "required",
@@ -3478,6 +3538,16 @@
 				"reports-component-analytics-tasks-empty",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-unavailable",
+				"reports-component-audio-comparison-after-unavailable",
+				"reports-component-audio-comparison-both-unavailable",
+				"reports-component-audio-comparison-no-duration",
+				"reports-component-audio-comparison-mixed",
+				"reports-component-audio-comparison-running",
+				"reports-component-audio-comparison-failed",
+				"reports-component-audio-comparison-blocked",
+				"reports-component-audio-comparison-skipped",
+				"reports-component-audio-comparison-not-proven",
+				"reports-component-audio-comparison-interrupted",
 				"reports-component-audio-comparison-viewer",
 				"reports-component-audio-comparison-viewer-before",
 				"reports-component-audio-comparison-viewer-after",

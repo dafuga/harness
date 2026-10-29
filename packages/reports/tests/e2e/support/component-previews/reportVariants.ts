@@ -3,6 +3,7 @@ import { image, noop, text } from './shared';
 import { baselineNarration, releaseNarration } from './reportData';
 import { replayControlsVariant } from './replayControlsVariants';
 import { sourceVariant } from './sourceVariants';
+import { audioComparisonVariant } from './audioComparisonVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -26,18 +27,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 		)
 	)
 		return null;
-	if (variant === 'before' || variant === 'after') return props;
-	if (variant !== 'unavailable') return null;
-	const before = props.before as Record<string, unknown>;
-	return {
-		...props,
-		before: {
-			...before,
-			file: '',
-			missing: true,
-			note: 'The original recording was not retained with this evidence.'
-		}
-	};
+	return audioComparisonVariant(props, variant);
 }
 
 function selectVariant(props: PreviewCases[string], variant: string) {
