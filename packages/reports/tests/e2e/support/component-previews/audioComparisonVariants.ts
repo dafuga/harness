@@ -4,7 +4,8 @@ const statuses = ['running', 'failed', 'blocked', 'skipped', 'not-proven', 'inte
 
 /** Keep each recording's availability, duration and verdict independently represented. */
 export function audioComparisonVariant(props: PreviewCases[string], variant: string) {
-	if (variant === 'before' || variant === 'after') return props;
+	if (['before', 'after', 'transcript-closed', 'playing-before', 'playing-after'].includes(variant))
+		return props;
 	const before = props.before as Record<string, unknown>;
 	const after = props.after as Record<string, unknown>;
 	if (variant === 'unavailable') return { ...props, before: unavailable(before) };

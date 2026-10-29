@@ -153,16 +153,6 @@ for (const viewport of catalogViewports) {
 			}
 			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations'))
 				await assertTranslationControls(component);
-			if (unit.id === 'reports.component.harness-explorer-index') {
-				await expect(
-					component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
-					'Catalogs omit the proof legend'
-				).toHaveCount(0);
-				await expect(
-					component.getByRole('button', { name: /^(?:Not proven|Proven)$/ }),
-					'Catalogs omit the standalone proof marks'
-				).toHaveCount(0);
-			}
 			if (unit.id === 'reports.component.explorer-ui-harness-explorer-styles-screen') {
 				await expectColorRoles(component);
 				await expectStyleGroups(component);

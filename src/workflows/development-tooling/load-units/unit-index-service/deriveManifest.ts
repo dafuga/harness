@@ -1,12 +1,12 @@
 import type { Declared } from './deriveManifest.types';
 import type { DeriveInput } from '../../../../utils/development-tooling/deriveManifest';
-import type { SourceFile } from '../../../../core/development-tooling/sourceTypes';
 import type {
 	ComponentManifest,
-	ContractItem,
 	UnitDependency
 } from '../../../../core/development-tooling/unitTypes';
 import { derivedResponsibility } from './derivedResponsibility';
+import { componentManifestSchema } from '../../../../core/development-tooling/unitTypes';
+import { deriveContract, declaredContract } from './deriveContract';
 
 const viaPriority = [
 	'import',
@@ -25,6 +25,8 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 	const kept = input.previous ?? defaults(input);
 	const preview = kept.preview;
 	const composition = compositionMetadata(input, kept.composition);
+	const execution = runtime(input.previous, source);
+	const contract = deriveContract(files, execution.entry);
 	return {
 		schemaVersion: 1,
 		id: input.id,
@@ -40,10 +42,12 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		...declaredMetadata(kept),
 		...lineage(input),
 		owns: { source, symbols: files.flatMap((file) => file.exports.map((symbol) => symbol.name)) },
-		contract: kept.contract.origin === 'declared' ? kept.contract : derivedContract(files),
+		contract: componentManifestSchema.shape.contract.parse(
+			kept.contract.origin === 'declared' ? declaredContract(kept.contract, contract) : contract
+		),
 		dependencies: [...derivedDependencies(input), ...declaredDependencies(input.previous)],
 		...(kept.helperContracts?.length ? { helperContracts: kept.helperContracts } : {}),
-		runtime: runtime(input.previous, source),
+		runtime: execution,
 		scenarios: kept.scenarios,
 		...(preview ? { preview } : {}),
 
@@ -86,20 +90,6 @@ function defaults(input: DeriveInput): Declared {
 		contract: { origin: 'derived', inputs: [], outputs: [], errors: [] },
 		scenarios: [],
 		budgets: { size: 'frozen', complexity: 'frozen', performance: [] }
-	};
-}
-
-function derivedContract(files: SourceFile[]): ComponentManifest['contract'] {
-	const symbols = files.flatMap((file) => file.exports);
-	const outputs: ContractItem[] = symbols
-		.filter((symbol) => symbol.output !== undefined && !symbol.name.endsWith('.constructor'))
-		.map((symbol) => ({ name: symbol.name, type: symbol.output ?? 'unknown' }));
-	const errors = [...new Set(files.flatMap((file) => file.errors))].sort();
-	return {
-		origin: 'derived',
-		inputs: symbols.flatMap((symbol) => symbol.inputs),
-		outputs,
-		errors: errors.map((name) => ({ name, type: 'thrown' }))
 	};
 }
 

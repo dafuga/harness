@@ -34,7 +34,9 @@ function detail(kind: string): UnitDetail {
 
 describe('units show rendering', () => {
 	test('a component contract lists aligned props and errors, never outputs', () => {
-		expect(renderContract(detail('component').manifest)).toEqual([
+		const manifest = detail('component').manifest;
+		manifest.contract.inputs = [...manifest.contract.inputs, ...manifest.contract.inputs];
+		expect(renderContract(manifest)).toEqual([
 			'Contract (declared)',
 			'  Props',
 			'    status  Status  (required)',
@@ -46,6 +48,12 @@ describe('units show rendering', () => {
 
 	test('a function contract also lists its outputs', () => {
 		expect(renderContract(detail('function').manifest)).toContain('  Outputs');
+		const manifest = detail('function').manifest;
+		manifest.contract.origin = 'derived';
+		manifest.contract.errors = [];
+		expect(renderContract(manifest)).toContain(
+			'    none found (static analysis; indirect errors unknown)'
+		);
 	});
 
 	test('duplicate function parameter names retain their callable owner', () => {

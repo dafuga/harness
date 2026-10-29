@@ -1277,6 +1277,24 @@
 			"units": ["reports.component.analytics-tasks"]
 		},
 		{
+			"id": "reports-component-analytics-tasks-unassessed",
+			"title": "Analytics tasks: Not assessed",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
+			"id": "reports-component-analytics-tasks-unpassed",
+			"title": "Analytics tasks: Not yet passed",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
+			"id": "reports-component-analytics-tasks-retried",
+			"title": "Analytics tasks: Passed after retries",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
 			"id": "reports-component-audio-comparison",
 			"title": "Audio comparison",
 			"coverage": "required",
@@ -1369,6 +1387,84 @@
 		{
 			"id": "reports-component-audio-comparison-viewer-unavailable",
 			"title": "Audio comparison viewer: Unavailable recording",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-after-unavailable",
+			"title": "Audio comparison viewer: After unavailable",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-both-unavailable",
+			"title": "Audio comparison viewer: Both unavailable",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-no-duration",
+			"title": "Audio comparison viewer: Durations not recorded",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-mixed",
+			"title": "Audio comparison viewer: Different recording results",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-running",
+			"title": "Audio comparison viewer: After running",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-failed",
+			"title": "Audio comparison viewer: After failed",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-blocked",
+			"title": "Audio comparison viewer: After blocked",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-skipped",
+			"title": "Audio comparison viewer: After skipped",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-not-proven",
+			"title": "Audio comparison viewer: After not proven",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-interrupted",
+			"title": "Audio comparison viewer: After interrupted",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-transcript-closed",
+			"title": "Audio comparison viewer: Transcripts closed",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-playing-before",
+			"title": "Audio comparison viewer: Playing before",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-playing-after",
+			"title": "Audio comparison viewer: Playing after",
 			"coverage": "required",
 			"units": ["reports.component.audio-comparison-viewer"]
 		},
@@ -2245,6 +2341,18 @@
 		{
 			"id": "reports-component-project-activity-empty",
 			"title": "Project activity overview: No activity",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
+			"id": "reports-component-project-activity-stale",
+			"title": "Project activity overview: Stale live reading",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
+			"id": "reports-component-project-activity-failed-read",
+			"title": "Project activity overview: Refresh failed",
 			"coverage": "required",
 			"units": ["reports.component.project-activity"]
 		},
@@ -3239,14 +3347,32 @@
 			"units": ["reports.component.source-dialog"]
 		},
 		{
+			"id": "reports-component-source-dialog-loading-file",
+			"title": "SourceDialog loading a selected file",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
 			"id": "reports-component-source-dialog-error",
 			"title": "SourceDialog unavailable archived source",
 			"coverage": "required",
 			"units": ["reports.component.source-dialog"]
 		},
 		{
+			"id": "reports-component-source-dialog-list-error",
+			"title": "SourceDialog unavailable file list",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
 			"id": "reports-component-source-dialog-empty",
 			"title": "SourceDialog without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
+			"id": "reports-component-source-dialog-empty-file",
+			"title": "SourceDialog with an empty file",
 			"coverage": "required",
 			"units": ["reports.component.source-dialog"]
 		},
@@ -3281,14 +3407,32 @@
 			"units": ["reports.component.source-viewer"]
 		},
 		{
+			"id": "reports-component-source-viewer-loading-list",
+			"title": "SourceViewer loading the file list",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
 			"id": "reports-component-source-viewer-error",
 			"title": "SourceViewer unavailable archived source",
 			"coverage": "required",
 			"units": ["reports.component.source-viewer"]
 		},
 		{
+			"id": "reports-component-source-viewer-list-error",
+			"title": "SourceViewer unavailable file list",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
 			"id": "reports-component-source-viewer-empty",
 			"title": "SourceViewer without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
+			"id": "reports-component-source-viewer-empty-file",
+			"title": "SourceViewer with an empty file",
 			"coverage": "required",
 			"units": ["reports.component.source-viewer"]
 		},
@@ -3710,6 +3854,9 @@
 				"reports-component-analytics-models-empty",
 				"reports-component-analytics-tasks",
 				"reports-component-analytics-tasks-empty",
+				"reports-component-analytics-tasks-unassessed",
+				"reports-component-analytics-tasks-unpassed",
+				"reports-component-analytics-tasks-retried",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-unavailable",
 				"reports-component-audio-comparison-after-unavailable",
@@ -3726,6 +3873,19 @@
 				"reports-component-audio-comparison-viewer-before",
 				"reports-component-audio-comparison-viewer-after",
 				"reports-component-audio-comparison-viewer-unavailable",
+				"reports-component-audio-comparison-viewer-after-unavailable",
+				"reports-component-audio-comparison-viewer-both-unavailable",
+				"reports-component-audio-comparison-viewer-no-duration",
+				"reports-component-audio-comparison-viewer-mixed",
+				"reports-component-audio-comparison-viewer-running",
+				"reports-component-audio-comparison-viewer-failed",
+				"reports-component-audio-comparison-viewer-blocked",
+				"reports-component-audio-comparison-viewer-skipped",
+				"reports-component-audio-comparison-viewer-not-proven",
+				"reports-component-audio-comparison-viewer-interrupted",
+				"reports-component-audio-comparison-viewer-transcript-closed",
+				"reports-component-audio-comparison-viewer-playing-before",
+				"reports-component-audio-comparison-viewer-playing-after",
 				"reports-component-audio-evidence",
 				"reports-component-audio-evidence-notes",
 				"reports-component-audio-evidence-unavailable",
@@ -3872,6 +4032,8 @@
 				"reports-component-project-activity",
 				"reports-component-project-activity-recorded",
 				"reports-component-project-activity-empty",
+				"reports-component-project-activity-stale",
+				"reports-component-project-activity-failed-read",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-cards",
 				"reports-component-recorded-value",
@@ -4037,15 +4199,21 @@
 				"reports-component-source-content-empty-file",
 				"reports-component-source-dialog",
 				"reports-component-source-dialog-loading",
+				"reports-component-source-dialog-loading-file",
 				"reports-component-source-dialog-error",
+				"reports-component-source-dialog-list-error",
 				"reports-component-source-dialog-empty",
+				"reports-component-source-dialog-empty-file",
 				"reports-component-source-file-list",
 				"reports-component-source-file-list-linked",
 				"reports-component-source-file-list-empty",
 				"reports-component-source-viewer",
 				"reports-component-source-viewer-loading",
+				"reports-component-source-viewer-loading-list",
 				"reports-component-source-viewer-error",
+				"reports-component-source-viewer-list-error",
 				"reports-component-source-viewer-empty",
+				"reports-component-source-viewer-empty-file",
 				"reports-component-status-badge",
 				"reports-component-status-badge-running",
 				"reports-component-status-badge-failed",

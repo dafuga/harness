@@ -40,14 +40,15 @@ export async function unitsGraph(options: UnitsOptions = {}): Promise<SourceGrap
 
 export async function showUnit(id: string, options: UnitsOptions = {}): Promise<UnitDetail> {
 	const loaded = await loadUnits(options.root);
-	const manifest = loaded.stored.find((unit) => unit.id === id);
+	const manifests = loaded.fresh.manifests;
+	const manifest = manifests.find((unit) => unit.id === id);
 	if (!manifest) return fail(`Unknown unit "${id}".`);
-	const byId = new Map(loaded.stored.map((unit) => [unit.id, unit]));
-	const graph = graphOf(loaded);
+	const byId = new Map(manifests.map((unit) => [unit.id, unit]));
+	const graph = graphOf(loaded, manifests);
 	return {
 		manifest,
 		version: componentVersion(manifest, loaded.index.files),
-		consumers: loaded.stored
+		consumers: manifests
 			.filter((unit) => unit.dependencies.some((dependency) => dependency.unit === id))
 			.map((unit) => unit.id),
 		tests: dependentTests(graph, manifest),

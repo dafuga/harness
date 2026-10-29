@@ -1,6 +1,6 @@
 import type { PreviewCases } from './shared';
 
-/** Preserve the source-preview loading, error, empty and linked examples. */
+/** Archived source states share a fixture without obscuring other report variants. */
 export function sourceVariant(props: PreviewCases[string], id: string, variant: string) {
 	if (id === 'reports.component.source-code-action') return sourceActionVariant(props, variant);
 	if (id === 'reports.component.source-file-list') return sourceFileListVariant(props, variant);
