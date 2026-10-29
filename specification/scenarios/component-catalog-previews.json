@@ -1391,6 +1391,84 @@
 			"units": ["reports.component.audio-comparison-viewer"]
 		},
 		{
+			"id": "reports-component-audio-comparison-viewer-after-unavailable",
+			"title": "Audio comparison viewer: After unavailable",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-both-unavailable",
+			"title": "Audio comparison viewer: Both unavailable",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-no-duration",
+			"title": "Audio comparison viewer: Durations not recorded",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-mixed",
+			"title": "Audio comparison viewer: Different recording results",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-running",
+			"title": "Audio comparison viewer: After running",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-failed",
+			"title": "Audio comparison viewer: After failed",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-blocked",
+			"title": "Audio comparison viewer: After blocked",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-skipped",
+			"title": "Audio comparison viewer: After skipped",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-not-proven",
+			"title": "Audio comparison viewer: After not proven",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-interrupted",
+			"title": "Audio comparison viewer: After interrupted",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-transcript-closed",
+			"title": "Audio comparison viewer: Transcripts closed",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-playing-before",
+			"title": "Audio comparison viewer: Playing before",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
+			"id": "reports-component-audio-comparison-viewer-playing-after",
+			"title": "Audio comparison viewer: Playing after",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison-viewer"]
+		},
+		{
 			"id": "reports-component-audio-evidence",
 			"title": "Audio evidence",
 			"coverage": "required",
@@ -3753,6 +3831,19 @@
 				"reports-component-audio-comparison-viewer-before",
 				"reports-component-audio-comparison-viewer-after",
 				"reports-component-audio-comparison-viewer-unavailable",
+				"reports-component-audio-comparison-viewer-after-unavailable",
+				"reports-component-audio-comparison-viewer-both-unavailable",
+				"reports-component-audio-comparison-viewer-no-duration",
+				"reports-component-audio-comparison-viewer-mixed",
+				"reports-component-audio-comparison-viewer-running",
+				"reports-component-audio-comparison-viewer-failed",
+				"reports-component-audio-comparison-viewer-blocked",
+				"reports-component-audio-comparison-viewer-skipped",
+				"reports-component-audio-comparison-viewer-not-proven",
+				"reports-component-audio-comparison-viewer-interrupted",
+				"reports-component-audio-comparison-viewer-transcript-closed",
+				"reports-component-audio-comparison-viewer-playing-before",
+				"reports-component-audio-comparison-viewer-playing-after",
 				"reports-component-audio-evidence",
 				"reports-component-audio-evidence-notes",
 				"reports-component-audio-evidence-unavailable",
