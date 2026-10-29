@@ -177,7 +177,9 @@ test(`${subject} at evidence`, async ({ page }) => {
 	const { gathered, failures } = gatherCaptures(evidence, 'evidence');
 	const declared = Object.keys(selectedStates);
 	expect(failures).toEqual([]);
-	expect(gathered).toHaveLength(declared.length * viewports.length + 1);
+	expect(gathered).toHaveLength(
+		declared.length * viewports.length + Number(Boolean(selectedStates.audio))
+	);
 	const served = await servedBuild(page);
 	const builds = { declared: ['reports'], compiled: new Map([['reports', served?.buildId ?? '']]) };
 	const judged = scenarioCoverage({
