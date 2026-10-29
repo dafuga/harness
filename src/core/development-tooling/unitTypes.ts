@@ -43,6 +43,15 @@ export const contractItemSchema = z.strictObject({
 	examples: z.array(z.json()).optional()
 });
 
+const errorStatusSchema = z.enum(['declared', 'none-found', 'unknown', 'found']);
+const contractOperationSchema = z.strictObject({
+	name: text,
+	inputs: z.array(contractItemSchema),
+	outputs: z.array(contractItemSchema),
+	errors: z.array(contractItemSchema),
+	errorStatus: errorStatusSchema
+});
+
 /** Authored usage, distinct from observed verification evidence. */
 export const usageExampleSchema = z
 	.strictObject({
@@ -136,7 +145,11 @@ export const componentManifestSchema = z.strictObject({
 		origin: z.enum(['derived', 'declared']),
 		inputs: z.array(contractItemSchema),
 		outputs: z.array(contractItemSchema),
-		errors: z.array(contractItemSchema)
+		errors: z.array(contractItemSchema),
+		errorStatus: errorStatusSchema.optional(),
+		operations: z.array(contractOperationSchema).optional(),
+		initialization: z.array(contractOperationSchema).optional(),
+		snippets: z.array(contractOperationSchema).optional()
 	}),
 	dependencies: z.array(unitDependencySchema),
 	helperContracts: z.array(helperContractSchema).optional(),

@@ -25,6 +25,7 @@ import { scanImports } from './scanImports';
 import { sourceBlocks } from './sourceBlocks';
 import { sourceExecution } from './sourceExecution';
 import { atomicSyntax } from '../../../templates/development-tooling/atomicSyntax.js';
+import { resolveComponentProps } from './ComponentPropsResolver';
 
 const languages: Record<string, SourceLanguage> = {
 	'.ts': 'ts',
@@ -53,7 +54,9 @@ export class SourceIndexService {
 		const kept = files.filter((file): file is SourceFile => file !== undefined);
 		const current = new Set(kept.map((file) => cacheKey(file.hash, file.language, file.path)));
 		for (const key of this.parsed.keys()) if (!current.has(key)) this.parsed.delete(key);
-		return { revision: tree.revision, files: new Map(kept.map((file) => [file.path, file])) };
+		const indexed = new Map(kept.map((file) => [file.path, file]));
+		await resolveComponentProps(tree, indexed);
+		return { revision: tree.revision, files: indexed };
 	}
 
 	private async file(

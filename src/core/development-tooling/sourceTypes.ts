@@ -13,7 +13,16 @@ export type UncertainReason =
 
 export interface ExportedSymbol {
 	name: string;
-	kind: 'function' | 'class' | 'method' | 'const' | 'type' | 'default' | 'reexport' | 'component';
+	kind:
+		| 'function'
+		| 'class'
+		| 'method'
+		| 'const'
+		| 'type'
+		| 'default'
+		| 'reexport'
+		| 'component'
+		| 'snippet';
 	inputs: ContractItem[];
 	output?: string;
 }
