@@ -16,7 +16,10 @@ function sourceActionVariant(props: PreviewCases[string], variant: string) {
 
 function sourceReaderVariant(props: PreviewCases[string], variant: string) {
 	if (variant === 'loading') return { ...props, files: pendingSourceFiles };
+	if (variant === 'loading-file') return { ...props, read: pendingSourceRead };
 	if (variant === 'error') return { ...props, read: unavailableSource };
+	if (variant === 'list-error') return { ...props, files: unavailableSourceList };
+	if (variant === 'empty-file') return { ...props, read: async () => '' };
 	return {
 		...props,
 		files: async () => [],
@@ -53,6 +56,10 @@ function sourceViewerVariant(props: PreviewCases[string], variant: string) {
 
 const sourceUnavailable = 'Archived source is unavailable for this revision.';
 const pendingSourceFiles = () => new Promise<string[]>(() => {});
+const pendingSourceRead = () => new Promise<string>(() => {});
+const unavailableSourceList = async () => {
+	throw new Error('The archived source file list is unavailable.');
+};
 const unavailableSource = async () => {
 	throw new Error(sourceUnavailable);
 };
