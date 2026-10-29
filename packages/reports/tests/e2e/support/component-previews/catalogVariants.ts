@@ -118,7 +118,14 @@ const variants: Record<string, string[]> = {
 		'empty',
 		'empty-file'
 	],
-	'reports.component.source-dialog': ['loading', 'error', 'empty'],
+	'reports.component.source-dialog': [
+		'loading',
+		'loading-file',
+		'error',
+		'list-error',
+		'empty',
+		'empty-file'
+	],
 	'reports.component.source-file-list': ['linked', 'empty'],
 	'reports.component.source-viewer': ['loading', 'error', 'empty'],
 	// Dense, display-label and disabled controls expose the select's distinct field treatments.

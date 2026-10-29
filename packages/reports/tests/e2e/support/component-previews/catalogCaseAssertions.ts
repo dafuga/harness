@@ -32,6 +32,16 @@ export async function assertCatalogLayout(
 
 /** Report examples retain their named values and consumers in each catalog capture. */
 export async function assertReportExamples(component: Locator, id: string) {
+	if (id === 'reports.component.harness-explorer-index') {
+		await expect(
+			component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
+			'Catalogs omit the proof legend'
+		).toHaveCount(0);
+		await expect(
+			component.getByRole('button', { name: /^(?:Not proven|Proven)$/ }),
+			'Catalogs omit the standalone proof marks'
+		).toHaveCount(0);
+	}
 	if (id === 'reports.component.explorer-function-card') {
 		await expect(component.locator('article')).toHaveCSS('border-top-style', 'solid');
 		await expect(component.locator('code')).toHaveText('filterOrders(orders, "SERVICE")');

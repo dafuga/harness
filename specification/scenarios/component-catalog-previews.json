@@ -3233,14 +3233,32 @@
 			"units": ["reports.component.source-dialog"]
 		},
 		{
+			"id": "reports-component-source-dialog-loading-file",
+			"title": "SourceDialog loading a selected file",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
 			"id": "reports-component-source-dialog-error",
 			"title": "SourceDialog unavailable archived source",
 			"coverage": "required",
 			"units": ["reports.component.source-dialog"]
 		},
 		{
+			"id": "reports-component-source-dialog-list-error",
+			"title": "SourceDialog unavailable file list",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
 			"id": "reports-component-source-dialog-empty",
 			"title": "SourceDialog without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
+			"id": "reports-component-source-dialog-empty-file",
+			"title": "SourceDialog with an empty file",
 			"coverage": "required",
 			"units": ["reports.component.source-dialog"]
 		},
@@ -4030,8 +4048,11 @@
 				"reports-component-source-content-empty-file",
 				"reports-component-source-dialog",
 				"reports-component-source-dialog-loading",
+				"reports-component-source-dialog-loading-file",
 				"reports-component-source-dialog-error",
+				"reports-component-source-dialog-list-error",
 				"reports-component-source-dialog-empty",
+				"reports-component-source-dialog-empty-file",
 				"reports-component-source-file-list",
 				"reports-component-source-file-list-linked",
 				"reports-component-source-file-list-empty",
