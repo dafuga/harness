@@ -31,31 +31,37 @@
 			{
 				"name": "ExplorerModuleCard.row",
 				"type": "CatalogRow | SupportRow",
+				"required": true,
 				"description": "Selected module or support dependency with its actual identity and revision-scoped consumers."
 			},
 			{
 				"name": "ExplorerModuleCard.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Navigation preserving branch, commit, entity and selected helper."
 			},
 			{
 				"name": "ExplorerModuleCard.lens",
 				"type": "EntityLens",
+				"required": true,
 				"description": "Revision-scoped evidence and consumer previews."
 			},
 			{
 				"name": "ExplorerModuleCard.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "URL prefix for the selected evidence assets."
 			},
 			{
 				"name": "ExplorerModuleCard.shot",
 				"type": "Evidence | null",
+				"required": false,
 				"description": "Optional own visual capture. Nonvisual modules omit the image region; missing visual captures remain explicit."
 			},
 			{
 				"name": "ExplorerModuleCard.category",
 				"type": "ExplorerCategory | null",
+				"required": false,
 				"description": "Module category, defaulting to the row category. Visual and nonvisual cards share this renderer."
 			}
 		],

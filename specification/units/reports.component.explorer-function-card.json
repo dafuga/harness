@@ -23,21 +23,25 @@
 			{
 				"name": "ExplorerFunctionCard.row",
 				"type": "CatalogRow",
+				"required": true,
 				"description": "The helper, service or model at the viewed revision, including its recorded name and consumer links."
 			},
 			{
 				"name": "ExplorerFunctionCard.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Navigation that retains branch and commit when opening the helper, service or consumer."
 			},
 			{
 				"name": "ExplorerFunctionCard.lens",
 				"type": "EntityLens",
+				"required": true,
 				"description": "Revision-scoped screenshot evidence for linked consumers."
 			},
 			{
 				"name": "ExplorerFunctionCard.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "URL prefix resolving consumer screenshots."
 			}
 		],

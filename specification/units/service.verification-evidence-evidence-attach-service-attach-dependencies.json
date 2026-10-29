@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "service.verification-evidence-evidence-attach-service-attach-dependencies",
+	"kind": "service",
+	"title": "attachDependencies",
+	"responsibility": "Owns the attachDependencies service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/verification-evidence/evidence-attach-service/attachDependencies.ts"],
+		"symbols": ["isScopedRecord", "inheritedRecords", "citedRecords"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "isScopedRecord.record",
+				"type": "Pick<DependentRecord, 'failures'>"
+			},
+			{
+				"name": "inheritedRecords.record",
+				"type": "DependentRecord"
+			},
+			{
+				"name": "citedRecords.record",
+				"type": "DependentRecord"
+			},
+			{
+				"name": "citedRecords.ledger",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "isScopedRecord",
+				"type": "boolean"
+			},
+			{
+				"name": "inheritedRecords",
+				"type": "string[]"
+			},
+			{
+				"name": "citedRecords",
+				"type": "string[]"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/verification-evidence/evidence-attach-service/attachDependencies.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/verification-evidence/evidence-attach-service/attachDependencies.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

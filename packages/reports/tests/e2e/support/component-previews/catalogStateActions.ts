@@ -16,6 +16,10 @@ const actions: Record<string, CatalogStateAction> = {
 		await detail.locator('summary').click();
 		await expect(detail).toContainText('accepted by its records');
 	},
+	'reports.component.site-activity:failed-refresh': async (component) => {
+		await component.getByRole('button', { name: 'Refresh activity' }).click();
+		await expect(component.getByRole('status')).toContainText('Activity could not be read again');
+	},
 	'reports.component.audio-evidence:notes': async (component) => {
 		await component.locator('.audio-details summary').click();
 		await expect(
@@ -50,6 +54,10 @@ const actions: Record<string, CatalogStateAction> = {
 	'reports.component.evidence-viewer:compare': async (component) => {
 		await component.getByRole('button', { name: 'Compare before and after' }).click();
 		await expect(component.locator('.viewer-images.comparison figure')).toHaveCount(2);
+	},
+	'reports.component.regression-proof:output-open': async (component) => {
+		await component.locator('summary').click();
+		await expect(component.getByText('harness verify run', { exact: true })).toBeVisible();
 	},
 	'reports.component.entity-search:open': async (component) => {
 		await component.getByRole('button', { name: 'Search entities', exact: true }).click();

@@ -1619,6 +1619,18 @@
 			"units": ["reports.component.gameplay-replay"]
 		},
 		{
+			"id": "reports-component-gameplay-replay-live-empty",
+			"title": "Gameplay replay: Waiting for first frame",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-interrupted",
+			"title": "Gameplay replay: Interrupted run",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
 			"id": "reports-component-harness-entity-artifact",
 			"title": "Entity artifact",
 			"coverage": "required",
@@ -2009,6 +2021,18 @@
 			"units": ["reports.component.project-activity"]
 		},
 		{
+			"id": "reports-component-project-activity-recorded",
+			"title": "Project activity overview: Recorded history",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
+			"id": "reports-component-project-activity-empty",
+			"title": "Project activity overview: No activity",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
 			"id": "reports-component-provider-picker",
 			"title": "Session model picker",
 			"coverage": "required",
@@ -2033,8 +2057,62 @@
 			"units": ["reports.component.regression-proof"]
 		},
 		{
+			"id": "reports-component-regression-proof-pending",
+			"title": "Regression proof: Pending green commit",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
+			"id": "reports-component-regression-proof-gap",
+			"title": "Regression proof: Recorded gap",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
+			"id": "reports-component-regression-proof-output-open",
+			"title": "Regression proof: Recorded output",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
 			"id": "reports-component-replay-controls",
 			"title": "Evidence replay controls",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-playing",
+			"title": "Evidence replay controls: Playing",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-final-frame",
+			"title": "Evidence replay controls: Final frame",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-single-frame",
+			"title": "Evidence replay controls: Single frame",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-scene-unselected",
+			"title": "Evidence replay controls: No selected scene",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-fullscreen",
+			"title": "Evidence replay controls: Fullscreen",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-speed-2x",
+			"title": "Evidence replay controls: 2× speed",
 			"coverage": "required",
 			"units": ["reports.component.replay-controls"]
 		},
@@ -2873,6 +2951,12 @@
 			"units": ["reports.component.site-activity"]
 		},
 		{
+			"id": "reports-component-site-activity-failed-refresh",
+			"title": "Live site activity: Failed refresh",
+			"coverage": "required",
+			"units": ["reports.component.site-activity"]
+		},
+		{
 			"id": "reports-component-source-code-action",
 			"title": "SourceCodeAction",
 			"coverage": "required",
@@ -3449,6 +3533,8 @@
 				"reports-component-filter-dialog-open",
 				"reports-component-floating-chat",
 				"reports-component-gameplay-replay",
+				"reports-component-gameplay-replay-live-empty",
+				"reports-component-gameplay-replay-interrupted",
 				"reports-component-harness-entity-artifact",
 				"reports-component-harness-entity-audio",
 				"reports-component-harness-entity-behavior",
@@ -3514,11 +3600,22 @@
 				"reports-component-module-system-explorer-modules-screen-headless-audio",
 				"reports-component-networking-security-explorer-permissions-screen",
 				"reports-component-project-activity",
+				"reports-component-project-activity-recorded",
+				"reports-component-project-activity-empty",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-cards",
 				"reports-component-recorded-value",
 				"reports-component-regression-proof",
+				"reports-component-regression-proof-pending",
+				"reports-component-regression-proof-gap",
+				"reports-component-regression-proof-output-open",
 				"reports-component-replay-controls",
+				"reports-component-replay-controls-playing",
+				"reports-component-replay-controls-final-frame",
+				"reports-component-replay-controls-single-frame",
+				"reports-component-replay-controls-scene-unselected",
+				"reports-component-replay-controls-fullscreen",
+				"reports-component-replay-controls-speed-2x",
 				"reports-component-report-checks",
 				"reports-component-report-findings",
 				"reports-component-report-summary",
@@ -3658,6 +3755,7 @@
 				"reports-component-shared-primitives-atoms-svg-use",
 				"reports-component-shared-primitives-loading-state",
 				"reports-component-site-activity",
+				"reports-component-site-activity-failed-refresh",
 				"reports-component-source-code-action",
 				"reports-component-source-code-action-unavailable",
 				"reports-component-source-content",

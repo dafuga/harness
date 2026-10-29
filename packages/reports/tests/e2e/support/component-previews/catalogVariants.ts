@@ -14,6 +14,10 @@ const variants: Record<string, string[]> = {
 	'reports.component.activity-loops': ['empty'],
 	// Work distinguishes a live checkout from the recorded-history wording and an empty history.
 	'reports.component.activity-work': ['recorded', 'empty'],
+	// Project activity keeps checkout observations, recorded history and no activity distinct.
+	'reports.component.project-activity': ['recorded', 'empty'],
+	// Site activity's refresh failure preserves the last known live observation with a warning.
+	'reports.component.site-activity': ['failed-refresh'],
 	// History filters show both a focused query and the no-filter form.
 	'reports.component.analytics-filters': ['empty'],
 	// CPU distinguishes a healthy idle checkout from an unavailable local sample.
@@ -36,10 +40,23 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-card': ['missing', 'compact', 'paired-audio'],
 	// Media filtering, empty results, upload controls and a lightbox are separate gallery states.
 	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
+	// A replay can wait for its first live frame or retain an interrupted final run.
+	'reports.component.gameplay-replay': ['live-empty', 'interrupted'],
+	// Playback, selected controls and boundary-disabled controls each remain independently inspectable.
+	'reports.component.replay-controls': [
+		'playing',
+		'final-frame',
+		'single-frame',
+		'scene-unselected',
+		'fullscreen',
+		'speed-2x'
+	],
 	// The default shows two facts; this state proves a fuller recorded provenance set remains legible.
 	'reports.component.evidence-provenance': ['extended'],
 	// The lightbox needs separate before, compare and unavailable-image examples.
 	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
+	// Paired results, pending repair, explicit gaps and expanded output are distinct proof states.
+	'reports.component.regression-proof': ['pending', 'gap', 'output-open'],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
 	// Filters show their inactive trigger by default, with active and opened states separately.

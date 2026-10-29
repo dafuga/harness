@@ -23,16 +23,20 @@
 			{
 				"name": "ContractTable.group",
 				"type": "ContractGroup",
+				"required": true,
 				"description": "Named parameter, return or component fields with types and authored or illustrative examples."
 			},
 			{
 				"name": "ContractTable.plain",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional compact labels beneath a callable heading."
 			},
 			{
 				"name": "ContractTable.onexample",
 				"type": "(field: ContractField, opener: HTMLButtonElement) => void",
+				"required": true,
 				"description": "Open the existing example modal and retain its focus return target."
 			}
 		],

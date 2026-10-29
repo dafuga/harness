@@ -33,6 +33,7 @@
 			{
 				"name": "ActivityLoops.loops",
 				"type": "ProjectActivity['loops']",
+				"required": true,
 				"description": "Required loop summary with total tracked loops and per-template counts, completion/open counts, last-use times and names."
 			}
 		],

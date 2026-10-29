@@ -36,16 +36,20 @@
 			{
 				"name": "ActivityWork.work",
 				"type": "WorkItem[]",
+				"required": true,
 				"description": "Required ordered commit summaries with branches, time, file/unit/reason counts and sampled unit/reason details. Full unit count falls back to listed length for its displayed count."
 			},
 			{
 				"name": "ActivityWork.href",
 				"type": "(commit: string) => string",
+				"required": true,
 				"description": "Required callback producing each commit-page address."
 			},
 			{
 				"name": "ActivityWork.recorded",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional flag, false by default. True labels reasons as recorded on the commit or accepted by its records; false says recorded on the commit."
 			}
 		],

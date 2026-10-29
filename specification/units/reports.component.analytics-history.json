@@ -40,11 +40,13 @@
 			{
 				"name": "AnalyticsHistory.summary",
 				"type": "AnalyticsSnapshot['summary']",
+				"required": true,
 				"description": "Required aggregate counts for templates, commands, evaluator outcomes and daily activity. Frequency bars scale to the largest count; percentages show each count’s share of its category total. Daily rows appear newest first."
 			},
 			{
 				"name": "AnalyticsHistory.loops",
 				"type": "AnalyticsSnapshot['loops']",
+				"required": true,
 				"description": "Required loop history rows supplying names, templates, models, status, timestamps, duration and evaluation count. Empty shows no loops recorded; absent optional timestamps or durations display a dash."
 			}
 		],

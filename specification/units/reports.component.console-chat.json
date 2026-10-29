@@ -26,18 +26,21 @@
 			{
 				"name": "ConsoleChat.base",
 				"type": "string",
+				"required": true,
 				"description": "URL prefix of the local explorer.",
 				"examples": ["/harness"]
 			},
 			{
 				"name": "ConsoleChat.path",
 				"type": "string",
+				"required": true,
 				"description": "Selected branch, optional commit and entity path, including its tab query.",
 				"examples": ["/branch/main/components/app.component.toolbar?tab=contract"]
 			},
 			{
 				"name": "ConsoleChat.navigate",
 				"type": "(path: string, replace: boolean) => void",
+				"required": true,
 				"description": "Host router callback. Receives the explorer path and whether to replace the current history entry.",
 				"examples": ["navigate(\"/branch/main/pages\", false)"]
 			}

@@ -92,11 +92,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.resource-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.verify-types",
 			"via": "import",
 			"origin": "derived"
@@ -163,6 +158,11 @@
 		},
 		{
 			"unit": "workflow.run-impact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-scoped-verify",
 			"via": "import",
 			"origin": "derived"
 		}

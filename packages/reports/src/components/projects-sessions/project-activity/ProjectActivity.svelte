@@ -206,5 +206,11 @@
 		.project-activity :global(.pa-list li:not([hidden])) {
 			padding-top: var(--hx-space-8);
 		}
+		.project-activity :global(.pa-count) {
+			flex-wrap: wrap;
+		}
+		.project-activity :global(.pa-count strong) {
+			flex: none;
+		}
 	}
 </style>

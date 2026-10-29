@@ -27,6 +27,7 @@
 			{
 				"name": "ActivityList.items",
 				"type": "Item[]",
+				"required": true,
 				"description": "Required list of generic items in display order. Every row is rendered; rows beyond the preview are hidden while collapsed.",
 				"examples": [
 					[
@@ -44,30 +45,36 @@
 			{
 				"name": "ActivityList.label",
 				"type": "string",
+				"required": true,
 				"description": "Required accessible list name, also normalized into the list ID used by the expansion control.",
 				"examples": ["Recent activity"]
 			},
 			{
 				"name": "ActivityList.noun",
 				"type": "string",
+				"required": true,
 				"description": "Required item name used in Show all/Show fewer button text.",
 				"examples": ["activities"]
 			},
 			{
 				"name": "ActivityList.preview",
 				"type": "number",
+				"required": true,
 				"description": "Required number of initial visible positions. Used directly without clamping or integer validation.",
 				"examples": [3]
 			},
 			{
 				"name": "ActivityList.ordered",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional flag, false by default. True renders an ordered list, false an unordered list.",
 				"examples": [false]
 			},
 			{
 				"name": "ActivityList.row",
 				"type": "Snippet<[Item]>",
+				"required": true,
 				"description": "Required snippet called with each item to render its row."
 			}
 		],

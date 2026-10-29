@@ -40,28 +40,34 @@
 			{
 				"name": "EntityStates.name",
 				"type": "string",
+				"required": true,
 				"description": "The readable entity name used to label the gallery.",
 				"examples": ["Activity list"]
 			},
 			{
 				"name": "EntityStates.evidence",
 				"type": "ExplorerEvidence",
+				"required": true,
 				"description": "Declared states and verified captures for this entity on both revision sides."
 			},
 			{
 				"name": "EntityStates.scope",
 				"type": "ExplorerScope",
+				"required": true,
 				"description": "The viewed branch tip or commit and its parent, without changing their identity."
 			},
 			{
 				"name": "EntityStates.mediaBase",
 				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional prefix for prebuilt media assets; empty when a bridge resolves images.",
 				"examples": ["/harness/media/"]
 			},
 			{
 				"name": "EntityStates.resolveImage",
 				"type": "(item: Evidence) => Promise<string>",
+				"required": false,
 				"description": "Optional bridge callback that returns an image URL only after validating the artifact bytes."
 			}
 		],
