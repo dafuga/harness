@@ -49,6 +49,25 @@ test('a derived unit names its default execution target and lists it as its only
 		targets: [{ kind: 'module', entry: 'src/utils/rank.ts' }]
 	});
 	expect(errorsOf(unit)).toEqual([]);
+	const invalid = {
+		...unit,
+		contract: {
+			...unit.contract,
+			inputs: [
+				{ name: 'Panel.props', type: '{}' },
+				{ name: 'run.input', type: 'unknown', required: true }
+			],
+			errors: [{ name: 'Error', type: 'thrown' }]
+		}
+	};
+	expect(errorsOf(invalid)).toEqual(
+		expect.arrayContaining([
+			'function.rank: contract input Panel.props is an empty props blob',
+			'function.rank: contract input Panel.props is missing required',
+			'function.rank: contract input run.input has unknown type',
+			'function.rank: contract error Error is a bare Error'
+		])
+	);
 });
 
 test('a unit may declare every applicable execution target beside its default', async () => {

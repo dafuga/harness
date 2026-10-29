@@ -1,8 +1,9 @@
 import type { ContractItem } from '../../core/development-tooling/unitTypes';
+import ts from 'typescript';
+import { parameterDefault, parameterType } from './parameterDefaults';
 
 const openers = new Set(['(', '[', '{', '<']);
 const closers = new Set([')', ']', '}']);
-const parameterModifiers = /^(?:(?:public|private|protected|readonly|override)\s+)+/;
 
 /** Splits text on separators that are not nested inside brackets or generics. */
 export function splitTopLevel(masked: string, separators: string): number[] {
@@ -20,36 +21,60 @@ export function splitTopLevel(masked: string, separators: string): number[] {
 /** Reads `name: type` pairs from a parameter list or an object type literal. */
 export function parseParameters(
 	code: string,
-	masked: string,
+	_masked: string,
 	options: { owner: string; separators?: string }
 ): ContractItem[] {
-	const cuts = [-1, ...splitTopLevel(masked, options.separators ?? ','), masked.length];
-	const items: ContractItem[] = [];
-	for (let index = 0; index < cuts.length - 1; index += 1) {
-		const from = cuts[index] + 1;
-		const item = parameter(code.slice(from, cuts[index + 1]), masked.slice(from, cuts[index + 1]));
-		if (item) items.push({ name: `${options.owner}.${item.name}`, type: item.type });
+	const properties = options.separators?.includes(';');
+	const text = properties ? `type Input = {${code}}` : `function input(${code}) {}`;
+	const file = ts.createSourceFile('parameters.ts', text, ts.ScriptTarget.Latest, true);
+	const declaration = file.statements[0];
+	if (ts.isFunctionDeclaration(declaration))
+		return declaration.parameters.flatMap((item) => parameterItems(item, options.owner));
+	if (ts.isTypeAliasDeclaration(declaration) && ts.isTypeLiteralNode(declaration.type))
+		return declaration.type.members.flatMap((item) =>
+			ts.isPropertySignature(item) ? [propertyItem(item, options.owner)] : []
+		);
+	return [];
+}
+
+function parameterItems(node: ts.ParameterDeclaration, owner: string): ContractItem[] {
+	if (ts.isObjectBindingPattern(node.name)) {
+		const members = node.type && ts.isTypeLiteralNode(node.type) ? node.type.members : [];
+		return node.name.elements.flatMap((binding) => {
+			const name = binding.propertyName?.getText() ?? binding.name.getText();
+			const property = members.find((item) => item.name?.getText() === name);
+			const type =
+				property && ts.isPropertySignature(property) ? property.type?.getText() : undefined;
+			return [
+				{
+					name: `${owner}.${name}`,
+					type: normalizeType(type ?? parameterType(binding.initializer)),
+					required:
+						!binding.initializer &&
+						!node.initializer &&
+						!(property && 'questionToken' in property && property.questionToken),
+					...parameterDefault(binding.initializer)
+				}
+			];
+		});
 	}
-	return items;
+	return [
+		{
+			name: `${owner}.${node.name.getText()}`,
+			type: normalizeType(node.type?.getText() ?? parameterType(node.initializer)),
+			required: !node.questionToken && !node.initializer && !node.dotDotDotToken,
+			...parameterDefault(node.initializer)
+		}
+	];
 }
 
-function parameter(code: string, masked: string): ContractItem | undefined {
-	const lead = masked.length - masked.trimStart().length;
-	const text = masked.slice(lead).replace(/^\.\.\./, '   ');
-	const skipped = lead + (parameterModifiers.exec(text)?.[0].length ?? 0);
-	const body = masked.slice(skipped);
-	if (!body.trim()) return undefined;
-	const colon = splitTopLevel(body, ':')[0] ?? -1;
-	const equals = splitTopLevel(body, '=').find((cut) => body[cut + 1] !== '>') ?? body.length;
-	const nameEnd = colon !== -1 && colon < equals ? colon : equals;
-	const type =
-		colon !== -1 && colon < equals ? code.slice(skipped + colon + 1, skipped + equals) : '';
-	return { name: parameterName(body.slice(0, nameEnd)), type: normalizeType(type) };
-}
-
-function parameterName(text: string): string {
-	const name = /^[\s.]*([\w$]+)/.exec(text)?.[1];
-	return name ?? 'input';
+function propertyItem(node: ts.PropertySignature, owner: string): ContractItem {
+	const name = ts.isStringLiteralLike(node.name) ? node.name.text : node.name.getText();
+	return {
+		name: `${owner}.${name}`,
+		type: normalizeType(node.type?.getText() ?? ''),
+		required: !node.questionToken
+	};
 }
 
 export function normalizeType(text: string): string {

@@ -42,8 +42,25 @@ const variants: Record<string, string[]> = {
 		'not-proven',
 		'interrupted'
 	],
-	// The comparison opens by default; each single-recording view stays independently inspectable.
-	'reports.component.audio-comparison-viewer': ['before', 'after', 'unavailable'],
+	// Selection, playback, disclosures, availability and independent results are visible states.
+	'reports.component.audio-comparison-viewer': [
+		'before',
+		'after',
+		'unavailable',
+		'after-unavailable',
+		'both-unavailable',
+		'no-duration',
+		'mixed',
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted',
+		'transcript-closed',
+		'playing-before',
+		'playing-after'
+	],
 	// A recorded clip exposes both its available notes and unavailable fallback separately.
 	'reports.component.audio-evidence': ['notes', 'unavailable'],
 	// The console connects on open and exposes its access, roster and composer states.
@@ -89,6 +106,7 @@ const variants: Record<string, string[]> = {
 		'recorded',
 		'recorded-error',
 		'observed',
+		'observed-noncallable',
 		'unavailable',
 		'malformed',
 		'wrong-unit',
@@ -118,9 +136,23 @@ const variants: Record<string, string[]> = {
 		'empty',
 		'empty-file'
 	],
-	'reports.component.source-dialog': ['loading', 'error', 'empty'],
+	'reports.component.source-dialog': [
+		'loading',
+		'loading-file',
+		'error',
+		'list-error',
+		'empty',
+		'empty-file'
+	],
 	'reports.component.source-file-list': ['linked', 'empty'],
-	'reports.component.source-viewer': ['loading', 'error', 'empty'],
+	'reports.component.source-viewer': [
+		'loading',
+		'loading-list',
+		'error',
+		'list-error',
+		'empty',
+		'empty-file'
+	],
 	// Dense, display-label and disabled controls expose the select's distinct field treatments.
 	'reports.component.select': ['compact', 'display', 'disabled'],
 	// The default shows a passed badge; each other status is its own example.

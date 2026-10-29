@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { compositionSchema } from './composition';
+import { sourceContractSchema } from './contractSchemas';
 
 export const unitIdPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const identifier = z
@@ -132,12 +133,7 @@ export const componentManifestSchema = z.strictObject({
 	/** Retired identities this unit continues; their baselines and history carry over. */
 	lineage: z.strictObject({ predecessors: z.array(identifier).min(1) }).optional(),
 	owns: z.strictObject({ source: z.array(text), symbols: z.array(text) }),
-	contract: z.strictObject({
-		origin: z.enum(['derived', 'declared']),
-		inputs: z.array(contractItemSchema),
-		outputs: z.array(contractItemSchema),
-		errors: z.array(contractItemSchema)
-	}),
+	contract: sourceContractSchema(contractItemSchema),
 	dependencies: z.array(unitDependencySchema),
 	helperContracts: z.array(helperContractSchema).optional(),
 	/** `kind` and `entry` name the default execution target; `targets` lists every applicable one. */

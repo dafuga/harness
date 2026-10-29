@@ -25,6 +25,8 @@ import { scanImports } from './scanImports';
 import { sourceBlocks } from './sourceBlocks';
 import { sourceExecution } from './sourceExecution';
 import { atomicSyntax } from '../../../templates/development-tooling/atomicSyntax.js';
+import { resolveComponentProps } from './ComponentPropsResolver';
+import { scanStorage } from './scanStorage';
 
 const languages: Record<string, SourceLanguage> = {
 	'.ts': 'ts',
@@ -53,7 +55,9 @@ export class SourceIndexService {
 		const kept = files.filter((file): file is SourceFile => file !== undefined);
 		const current = new Set(kept.map((file) => cacheKey(file.hash, file.language, file.path)));
 		for (const key of this.parsed.keys()) if (!current.has(key)) this.parsed.delete(key);
-		return { revision: tree.revision, files: new Map(kept.map((file) => [file.path, file])) };
+		const indexed = new Map(kept.map((file) => [file.path, file]));
+		await resolveComponentProps(tree, indexed);
+		return { revision: tree.revision, files: indexed };
 	}
 
 	private async file(
@@ -78,6 +82,7 @@ export class SourceIndexService {
 			workspace: placed.workspace,
 			identity: placed.identity,
 			...(parsed.composition ? { composition: parsed.composition } : {}),
+			...(parsed.storage?.length ? { storage: parsed.storage } : {}),
 			references: parsed.references.map((reference) =>
 				resolve(entry.path, reference, { placed, ...context })
 			),
@@ -140,6 +145,9 @@ function parseText(code: string, language: SourceLanguage, path: string): Parsed
 	const syntax =
 		language === 'svelte' && code.includes('@harness-tier') ? atomicSyntax(code) : undefined;
 	return {
+		...(/(?:^|\/)models\/.*\.ts$/.test(path) && !path.endsWith('.types.ts')
+			? { storage: scanStorage(code) }
+			: {}),
 		...(syntax?.tier
 			? {
 					composition: {
