@@ -152,7 +152,18 @@ function evidenceCardVariant(props: PreviewCases[string], variant: string) {
 			...props,
 			item: { ...item, missing: true, note: 'The recorded screenshot could not be restored.' }
 		};
-	if (variant === 'compact') return { ...props, compact: true };
+	if (variant === 'compact')
+		return {
+			...props,
+			compact: true,
+			item: {
+				...item,
+				provenance: [
+					{ label: 'Viewport', value: 'Desktop' },
+					{ label: 'Source', value: 'Browser capture' }
+				]
+			}
+		};
 	if (variant === 'paired-audio')
 		return { ...props, item: releaseNarration, before: baselineNarration };
 	return null;
