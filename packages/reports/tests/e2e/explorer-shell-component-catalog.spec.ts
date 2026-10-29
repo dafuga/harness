@@ -19,10 +19,10 @@ import { profilePreview } from './support/component-previews/profilePreview';
 import {
 	assertComponentCapture,
 	assertCatalogState,
-	assertPermissionTable,
 	assertModulePreview,
 	assertTranslationControls
 } from './support/component-previews/previewCaptureAssertions';
+import { assertPermissionTable } from './support/component-previews/permissionPreviewAssertions';
 import { assertProjectAgentState } from './support/component-previews/projectAgentStateAssertions';
 import type { ProjectAgentState } from './support/component-previews/projectAgentStateFixtures.types';
 import { prepareCatalogState } from './support/component-previews/catalogStateActions';

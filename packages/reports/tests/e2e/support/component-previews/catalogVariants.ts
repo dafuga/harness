@@ -59,6 +59,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.regression-proof': ['pending', 'gap', 'output-open'],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
+	// Visual cards expose missing evidence; function cards use a separate text-only layout.
+	'reports.component.explorer-ui-explorer-module-card': ['missing', 'function'],
 	// Filters show their inactive trigger by default, with active and opened states separately.
 	'reports.component.filter-dialog': ['active', 'open'],
 	// The default is a text dialog; the lightbox uses the viewport-filling presentation.
