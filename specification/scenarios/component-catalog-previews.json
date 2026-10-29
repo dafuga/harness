@@ -1289,6 +1289,66 @@
 			"units": ["reports.component.audio-comparison"]
 		},
 		{
+			"id": "reports-component-audio-comparison-after-unavailable",
+			"title": "Audio comparison: After recording unavailable",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-both-unavailable",
+			"title": "Audio comparison: Both recordings unavailable",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-no-duration",
+			"title": "Audio comparison: Durations not recorded",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-mixed",
+			"title": "Audio comparison: Different recording results",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-running",
+			"title": "Audio comparison: After running",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-failed",
+			"title": "Audio comparison: After failed",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-blocked",
+			"title": "Audio comparison: After blocked",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-skipped",
+			"title": "Audio comparison: After skipped",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-not-proven",
+			"title": "Audio comparison: After not proven",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
+			"id": "reports-component-audio-comparison-interrupted",
+			"title": "Audio comparison: After interrupted",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
 			"id": "reports-component-audio-comparison-viewer",
 			"title": "Audio comparison viewer",
 			"coverage": "required",
@@ -1363,6 +1423,66 @@
 		{
 			"id": "reports-component-console-chat",
 			"title": "Local web project chat",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-open",
+			"title": "Local web project chat: Open conversation",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-loading",
+			"title": "Local web project chat: Connecting",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-connection-error",
+			"title": "Local web project chat: Connection unavailable",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-read-only",
+			"title": "Local web project chat: Read-only project",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-agents",
+			"title": "Local web project chat: Agent activity",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-ask",
+			"title": "Local web project chat: Ask",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-change",
+			"title": "Local web project chat: Change",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-comment",
+			"title": "Local web project chat: Comment",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-model-open",
+			"title": "Local web project chat: Model picker",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
+			"id": "reports-component-console-chat-effort-open",
+			"title": "Local web project chat: Reasoning picker",
 			"coverage": "required",
 			"units": ["reports.component.console-chat"]
 		},
@@ -3562,6 +3682,16 @@
 				"reports-component-analytics-tasks-empty",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-unavailable",
+				"reports-component-audio-comparison-after-unavailable",
+				"reports-component-audio-comparison-both-unavailable",
+				"reports-component-audio-comparison-no-duration",
+				"reports-component-audio-comparison-mixed",
+				"reports-component-audio-comparison-running",
+				"reports-component-audio-comparison-failed",
+				"reports-component-audio-comparison-blocked",
+				"reports-component-audio-comparison-skipped",
+				"reports-component-audio-comparison-not-proven",
+				"reports-component-audio-comparison-interrupted",
 				"reports-component-audio-comparison-viewer",
 				"reports-component-audio-comparison-viewer-before",
 				"reports-component-audio-comparison-viewer-after",
@@ -3575,6 +3705,16 @@
 				"reports-component-brand-mark",
 				"reports-component-browser-errors",
 				"reports-component-console-chat",
+				"reports-component-console-chat-open",
+				"reports-component-console-chat-loading",
+				"reports-component-console-chat-connection-error",
+				"reports-component-console-chat-read-only",
+				"reports-component-console-chat-agents",
+				"reports-component-console-chat-ask",
+				"reports-component-console-chat-change",
+				"reports-component-console-chat-comment",
+				"reports-component-console-chat-model-open",
+				"reports-component-console-chat-effort-open",
 				"reports-component-contract-example",
 				"reports-component-contract-table",
 				"reports-component-coverage-list",

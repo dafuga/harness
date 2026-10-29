@@ -1,10 +1,13 @@
 import type { PreviewCases } from './shared';
+import { chatVariantProps } from './chatVariants';
 import { image, noop, text } from './shared';
 import { baselineNarration, releaseNarration } from './reportData';
 import { sourceVariant } from './reportSourceVariants';
 import { moduleCardVariant } from './reportModuleCardVariants';
 import { entityCasesVariant } from './reportEntityCasesVariants';
 import { replayControlsVariant } from './replayControlsVariants';
+import { sourceVariant } from './sourceVariants';
+import { audioComparisonVariant } from './audioComparisonVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -22,6 +25,8 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.evidence-provenance')
 		return evidenceProvenanceVariant(props, variant);
 	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
+	if (id === 'reports.component.console-chat' || id === 'reports.component.floating-chat')
+		return chatVariantProps(id, props, variant);
 	if (id === 'reports.component.gameplay-replay') return gameplayReplayVariant(props, variant);
 	if (id === 'reports.component.replay-controls') return replayControlsVariant(props, variant);
 	if (id === 'reports.component.regression-proof') return regressionProofVariant(props, variant);
@@ -31,18 +36,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 		)
 	)
 		return null;
-	if (variant === 'before' || variant === 'after') return props;
-	if (variant !== 'unavailable') return null;
-	const before = props.before as Record<string, unknown>;
-	return {
-		...props,
-		before: {
-			...before,
-			file: '',
-			missing: true,
-			note: 'The original recording was not retained with this evidence.'
-		}
-	};
+	return audioComparisonVariant(props, variant);
 }
 
 function selectVariant(props: PreviewCases[string], variant: string) {

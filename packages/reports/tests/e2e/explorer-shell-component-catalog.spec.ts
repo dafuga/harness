@@ -102,12 +102,19 @@ for (const viewport of catalogViewports) {
 			isProjectAgent && variant
 				? `desktop-component-project-agent-${variant} at ${viewport.id}`
 				: `${unit.id}${variant ? `:${variant}` : ''} at ${viewport.id}`;
-		test(title, async ({ page }) => {
-			const browserErrors: string[] = [];
+		test(title, async ({ page, browserErrors }) => {
+			const projectErrors: string[] = [];
+			if (unit.id === 'reports.component.console-chat' && variant === 'connection-error')
+				browserErrors.expectError({
+					type: 'console',
+					message:
+						'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
+					reason: 'The console connection-error fixture deliberately refuses the connection.'
+				});
 			if (isProjectAgent) {
-				page.on('pageerror', (error) => browserErrors.push(error.message));
+				page.on('pageerror', (error) => projectErrors.push(error.message));
 				page.on('console', (message) => {
-					if (message.type() === 'error') browserErrors.push(message.text());
+					if (message.type() === 'error') projectErrors.push(message.text());
 				});
 			}
 			await page.setViewportSize(viewport);
@@ -213,7 +220,7 @@ for (const viewport of catalogViewports) {
 				.toBeLessThanOrEqual(viewport.width);
 			if (viewport.id === 'desktop') await profilePreview(page, unit.id, variant);
 			if (isProjectAgent)
-				expect(browserErrors, 'ProjectAgent produces no unexpected browser errors').toEqual([]);
+				expect(projectErrors, 'ProjectAgent produces no unexpected browser errors').toEqual([]);
 		});
 	}
 }
