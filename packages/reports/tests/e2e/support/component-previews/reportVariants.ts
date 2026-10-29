@@ -1,4 +1,5 @@
 import type { PreviewCases } from './shared';
+import { chatVariantProps } from './chatVariants';
 import { image, noop, text } from './shared';
 import { baselineNarration, releaseNarration } from './reportData';
 import { replayControlsVariant } from './replayControlsVariants';
@@ -15,6 +16,8 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.evidence-grid') return evidenceGridVariant(props, variant);
 	if (id === 'reports.component.evidence-provenance') return evidenceProvenanceVariant(props, variant);
 	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
+	if (id === 'reports.component.console-chat' || id === 'reports.component.floating-chat')
+		return chatVariantProps(id, props, variant);
 	if (id === 'reports.component.gameplay-replay') return gameplayReplayVariant(props, variant);
 	if (id === 'reports.component.replay-controls') return replayControlsVariant(props, variant);
 	if (id === 'reports.component.regression-proof') return regressionProofVariant(props, variant);

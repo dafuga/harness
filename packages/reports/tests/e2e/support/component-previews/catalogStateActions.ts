@@ -3,6 +3,10 @@ import { expect, type Locator } from '@playwright/test';
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
 const actions: Record<string, CatalogStateAction> = {
+	'reports.component.console-chat:open': async (component) => {
+		await component.locator('.floating-chat-bubble').click();
+		await expect(component.locator('.floating-chat-panel')).toBeVisible();
+	},
 	'reports.component.audio-comparison-viewer:before': async (component) => {
 		await component.getByRole('button', { name: 'View before recording' }).click();
 		await expect(component.getByRole('group', { name: 'Before recording' })).toBeVisible();

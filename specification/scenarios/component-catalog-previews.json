@@ -1367,6 +1367,12 @@
 			"units": ["reports.component.console-chat"]
 		},
 		{
+			"id": "reports-component-console-chat-open",
+			"title": "Local web project chat: Open conversation",
+			"coverage": "required",
+			"units": ["reports.component.console-chat"]
+		},
+		{
 			"id": "reports-component-contract-example",
 			"title": "Contract example",
 			"coverage": "required",
@@ -3491,6 +3497,7 @@
 				"reports-component-brand-mark",
 				"reports-component-browser-errors",
 				"reports-component-console-chat",
+				"reports-component-console-chat-open",
 				"reports-component-contract-example",
 				"reports-component-contract-table",
 				"reports-component-coverage-list",
