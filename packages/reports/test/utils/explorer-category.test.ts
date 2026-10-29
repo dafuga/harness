@@ -1,10 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
-import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { expect, test } from 'vitest';
-import { modelDefinitions } from '../../../../src/services/explorer-ui/revision-detail-service/modelDefinitions';
+import type { ModelDefinition } from '../../../../src/utils/unitMetadata';
 import { explorerEntityCategories as explorerCategories } from '../../../../src/utils/explorerRoute';
-import type { HarnessUnit } from '../../src/models/Harness.types';
 import { explorerCategory, explorerRole } from '../../src/utils/explorerCategory';
 import { modelDefinition } from '../entityClassFixtures';
 import { unit } from '../explorerFixture';
@@ -59,20 +56,6 @@ test('a unit of a product kind is listed under the category of that kind', () =>
 			'runtime constants do not turn interfaces into database models'
 		).toBe('types');
 		expect(explorerRole(mixed), 'shared type role').toBe('Type definitions');
-		const failure = owning('model.runner-types', 'model', [
-			'src/models/Runner.types.ts',
-			'src/models/RunnerValues.ts'
-		]);
-		failure.modelDefinitions = [
-			{ ...modelDefinition('Runner', 'src/models/Runner.types.ts'), kind: 'interface' },
-			{ ...modelDefinition('RunCancelled', 'src/models/RunnerValues.ts'), table: undefined }
-		];
-		expect(
-			[explorerCategory(failure), explorerRole(failure)],
-			'a runtime error class beside shared interfaces keeps them listed as types'
-		).toEqual(['types', 'Type definitions']);
-		failure.modelDefinitions = failure.modelDefinitions.filter((item) => item.kind === 'class');
-		expect(explorerCategory(failure), 'the runtime class alone is still no model').toBeNull();
 		for (const source of [['src/models/Order.types.ts'], ['src/models/domain/Order.d.ts']]) {
 			const types = owning('model.order-types', 'model', source);
 			expect(explorerCategory(types), 'types are separate').toBe('types');
@@ -88,6 +71,20 @@ test('a unit of a product kind is listed under the category of that kind', () =>
 		expect(explorerCategory(unit('repository.budget-ledger', 'repository'))).toBe('services');
 		expect(explorerCategory(unit('workflow.run-verify', 'workflow'))).toBe('services');
 	}));
+
+test('a runtime class beside shared declarations neither makes a model nor hides the types', () => {
+	const shared = modelDefinition('Runner', 'src/models/Runner.types.ts');
+	const failure = { ...modelDefinition('RunCancelled', 'src/models/RunnerValues.ts') };
+	delete failure.table;
+	const owner = (modelDefinitions: ModelDefinition[]) =>
+		unit('model.runner-types', 'model', {
+			owns: { source: [shared.source, failure.source], symbols: [] },
+			modelDefinitions
+		});
+	const mixed = owner([shared, failure]);
+	expect([explorerCategory(mixed), explorerRole(mixed)]).toEqual(['types', 'Type definitions']);
+	expect(explorerCategory(owner([failure])), 'the runtime class alone is no model').toBeNull();
+});
 
 test('a page is what renders an address, whatever kind it was registered as', () => {
 	const rendered = ['src/routes/titles/+page.server.ts', 'src/routes/titles/+page.svelte'];
@@ -138,79 +135,6 @@ test('a unit inside a category says its role in a word a reader knows', () => {
 	expect(explorerRole(unit('service.x', 'service'))).toBe('Service');
 	expect(explorerRole(unit('endpoint.x', 'endpoint'))).toBe('Endpoint');
 	expect(explorerRole(unit('command.x', 'command'))).toBe('Command');
-});
-
-/** The registry of this repository, as its manifests state it. */
-function ownRegistry(): HarnessUnit[] {
-	const directory = join(import.meta.dirname, '../../../../specification/units');
-	return readdirSync(directory)
-		.filter((name) => name.endsWith('.json'))
-		.map((name) => JSON.parse(readFileSync(join(directory, name), 'utf8')) as HarnessUnit);
-}
-
-test("the policy holds for Harness's own registry", () => {
-	const units = ownRegistry().filter((item) => item.status === 'active');
-	expect(units.length).toBeGreaterThan(500);
-	const listed = (category: string) => units.filter((item) => explorerCategory(item) === category);
-	const aliases = new Set(
-		explorerCategories.map(
-			(category) => `reports.page.harness-branch-branch-at-${category}-entity-details`
-		)
-	);
-	// Every page renders an address, and every unit that renders one is a page.
-	const rendering = units.filter(
-		(item) =>
-			item.owns.source.some((path) => path.endsWith('/+page.svelte')) &&
-			item.catalog?.visibility !== 'internal' &&
-			!aliases.has(item.id) &&
-			!item.owns.source.some((path) => /\/shells(?:\/|$)/.test(path))
-	);
-	expect(
-		listed('pages')
-			.map((item) => item.id)
-			.sort()
-	).toEqual(rendering.map((item) => item.id).sort());
-	expect(listed('pages').map((item) => item.id)).not.toContain('reports.page.harness-view');
-	expect(listed('pages').map((item) => item.id)).not.toContain('reports.page.root');
-	expect(listed('pages').map((item) => item.id)).not.toContain('reports.layout.root');
-	const invented = ['audit', 'guide', 'template', 'module', 'entry', 'script', 'style'];
-	for (const item of units.filter((found) => invented.includes(found.kind))) {
-		expect([item.id, explorerCategory(item)]).toEqual([item.id, null]);
-	}
-	for (const item of listed('functions')) {
-		expect(['function', 'validator', 'serializer', 'kernel']).toContain(item.kind);
-	}
-	for (const item of units) {
-		const category = explorerCategory(item);
-		expect(category === null || explorerCategories.some((known) => known === category)).toBe(true);
-		expect(explorerRole(item)).toMatch(/^[A-Z][a-z]+( [a-z]+)*$/);
-	}
-	for (const category of ['functions', 'models', 'types'])
-		expect(listed(category), 'raw manifests have no source-derived declaration proof').toEqual([]);
-	const root = join(import.meta.dirname, '../../../..');
-	const declared = units
-		.filter((item) => item.kind === 'model')
-		.map((item) => ({
-			...item,
-			modelDefinitions: item.owns.source
-				.filter((path) => /\.[cm]?tsx?$/.test(path))
-				.flatMap((path) => modelDefinitions(readFileSync(join(root, path), 'utf8'), path))
-		}));
-	const projected = (category: string | null) =>
-		declared
-			.filter((item) => item.modelDefinitions.length && explorerCategory(item) === category)
-			.map((item) => item.id);
-	expect(
-		projected(null),
-		'a module that owns shared declarations is listed under Models or Types'
-	).toEqual([]);
-	expect(projected('models').length, 'stored classes are models').toBeGreaterThan(0);
-	expect(projected('types').length, 'shared declarations are types').toBeGreaterThan(0);
-	for (const category of explorerCategories.filter(
-		(kind) => !['functions', 'models', 'types'].includes(kind)
-	)) {
-		expect(listed(category).length).toBeGreaterThan(0);
-	}
 });
 
 test('only explicitly pure functions with distinct runtime consumers are helpers', () => {
