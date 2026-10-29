@@ -54,6 +54,15 @@ export async function assertComponentCapture(
 	}
 }
 
+/** An opened search is a populated dialog, rather than a capture of its trigger alone. */
+export async function assertCatalogState(component: Locator, id: string, variant = '') {
+	if (id !== 'reports.component.entity-search' || variant !== 'open') return;
+	const dialog = component.getByRole('dialog', { name: 'Search project' });
+	await expect(dialog).toBeVisible();
+	await expect(dialog.getByRole('combobox', { name: 'Search entities' })).toHaveValue('order');
+	await expect(dialog.getByRole('option').first()).toContainText('Order');
+}
+
 async function assertAgentsPreview(page: Page) {
 	const panel = page.locator('[data-harness-component="agents-providers-chat-agents"]');
 	await expect(panel).toBeVisible();

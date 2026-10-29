@@ -18,6 +18,7 @@ import {
 import { profilePreview } from './support/component-previews/profilePreview';
 import {
 	assertComponentCapture,
+	assertCatalogState,
 	assertPermissionTable,
 	assertModulePreview,
 	assertTranslationControls
@@ -109,6 +110,7 @@ for (const viewport of catalogViewports) {
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await readyPreview(page, unit.id, variant);
 			await prepareCatalogState(component, unit.id, variant);
+			await assertCatalogState(component, unit.id, variant);
 			if (isProjectAgent) {
 				const panel = component.locator('.floating-chat-panel');
 				if (variant === 'closed') {

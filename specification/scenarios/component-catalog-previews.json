@@ -1343,6 +1343,12 @@
 			"units": ["reports.component.entity-search"]
 		},
 		{
+			"id": "reports-component-entity-search-open",
+			"title": "Open entity search",
+			"coverage": "required",
+			"units": ["reports.component.entity-search"]
+		},
+		{
 			"id": "reports-component-entity-search-results",
 			"title": "Entity search results",
 			"coverage": "required",
@@ -3157,6 +3163,7 @@
 				"reports-component-entity-contract",
 				"reports-component-entity-examples",
 				"reports-component-entity-search",
+				"reports-component-entity-search-open",
 				"reports-component-entity-search-results",
 				"reports-component-entity-states",
 				"reports-component-evidence-card",

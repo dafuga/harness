@@ -16,6 +16,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.audio-comparison-viewer': ['before', 'after', 'unavailable'],
 	// A recorded clip exposes both its available notes and unavailable fallback separately.
 	'reports.component.audio-evidence': ['notes', 'unavailable'],
+	// The trigger is a default state; this variant shows its populated search dialog.
+	'reports.component.entity-search': ['open'],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',
