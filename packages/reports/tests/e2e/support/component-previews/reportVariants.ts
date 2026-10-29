@@ -5,11 +5,14 @@ import { baselineNarration, releaseNarration } from './reportData';
 import { sourceVariant } from './reportSourceVariants';
 import { moduleCardVariant } from './reportModuleCardVariants';
 import { entityCasesVariant } from './reportEntityCasesVariants';
+import { entityExamplesVariant } from './reportEntityExamplesVariants';
+import { entityContractVariant } from './reportEntityContractVariants';
 import { replayControlsVariant } from './replayControlsVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
 import { analyticsTaskVariant } from './analyticsTaskVariants';
 import { projectActivityVariant } from './projectActivityVariants';
+import { providerPickerCardVariant } from './providerPickerCardVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -17,10 +20,14 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 		return analyticsTaskVariant(props, variant);
 	if (id === 'reports.component.project-activity' && ['stale', 'failed-read'].includes(variant))
 		return projectActivityVariant(props, variant);
+	if (id === 'reports.component.provider-picker-cards')
+		return providerPickerCardVariant(props, variant);
 	if (id === 'reports.component.select') return selectVariant(props, variant);
 	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
 	if (id === 'reports.component.modal') return modalVariant(props, variant);
 	if (id === 'reports.component.entity-cases') return entityCasesVariant(props, variant);
+	if (id === 'reports.component.entity-contract') return entityContractVariant(props, variant);
+	if (id === 'reports.component.entity-examples') return entityExamplesVariant(props, variant);
 	if (id === 'reports.component.explorer-ui-explorer-module-card')
 		return moduleCardVariant(props, variant);
 	if (id === 'reports.component.source-viewer') {
@@ -46,7 +53,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 		)
 	)
 		return null;
-	return audioComparisonVariant(props, variant);
+	return audioComparisonVariant(props, variant, id);
 }
 
 function selectVariant(props: PreviewCases[string], variant: string) {

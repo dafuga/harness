@@ -7,10 +7,13 @@ import {
 	group,
 	baselineNarration,
 	releaseNarration,
+	viewerBaseline,
+	viewerRelease,
 	galleryItems
 } from './reportData';
 import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
+import { contractPreviewUnit } from './reportEntityContractVariants';
 const field = group.fields[0];
 const entries = explorerSearchEntries(d.entities, d.shown.head.commit);
 export const reportCases: PreviewCases = {
@@ -20,8 +23,8 @@ export const reportCases: PreviewCases = {
 		onopen: noop
 	},
 	'reports.component.audio-comparison-viewer': {
-		before: baselineNarration,
-		after: releaseNarration,
+		before: viewerBaseline,
+		after: viewerRelease,
 		assetBase: '/media/',
 		onclose: noop
 	},
@@ -62,11 +65,13 @@ export const reportCases: PreviewCases = {
 	'reports.component.coverage-list': { report },
 	'reports.component.entity-cases': { examples: [example] },
 	'reports.component.entity-contract': {
-		unit: d.entity.unit,
+		unit: contractPreviewUnit(d.entity.unit),
 		category: 'components',
 		contract: d.contract
 	},
-	'reports.component.entity-examples': { documentation: { examples: [example] } },
+	'reports.component.entity-examples': {
+		documentation: { path: 'README.md', examples: [example] }
+	},
 	'reports.component.entity-search': {
 		entries,
 		scope: { label: 'Preview project', pinned: null },

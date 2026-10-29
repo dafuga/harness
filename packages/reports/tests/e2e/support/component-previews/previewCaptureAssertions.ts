@@ -3,6 +3,9 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { catalogScenario, previewState } from './catalogUnits';
 import { assertEntityCasesState } from './entityCasesPreviewAssertions';
+import { assertAudioViewerCapture } from './catalogStateActions';
+import { assertEntityExamplesState } from './entityExamplesPreviewAssertions';
+import { assertEntityContractState } from './entityContractPreviewAssertions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
 export async function assertComponentCapture(
@@ -12,7 +15,10 @@ export async function assertComponentCapture(
 	variant = ''
 ) {
 	assertCaptureSlot(id, viewport, variant);
+	await assertAudioViewerCapture(page, id, viewport);
 	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
+	if (id === 'reports.component.project-activity' && variant === 'stale')
+		await assertActivityCountFits(page);
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
 	if (!directory) return;
 	const selectors: Record<string, string> = {
@@ -55,6 +61,20 @@ export async function assertComponentCapture(
 	}
 }
 
+/** A long count label remains one word at every catalog viewport. */
+async function assertActivityCountFits(page: Page) {
+	const count = page
+		.locator('[data-preview-unit="reports.component.project-activity"]')
+		.getByTestId('agents-working');
+	await expect(count).toHaveText('Unknown');
+	const lines = await count.evaluate((node) => {
+		const range = document.createRange();
+		range.selectNodeContents(node);
+		return [...range.getClientRects()].filter((rect) => rect.width > 0).length;
+	});
+	expect(lines, 'The activity count must stay on one line').toBe(1);
+}
+
 /** An opened search is a populated dialog, rather than a capture of its trigger alone. */
 export async function assertCatalogState(
 	component: Locator,
@@ -63,6 +83,10 @@ export async function assertCatalogState(
 	viewport = ''
 ) {
 	if (id === 'reports.component.entity-cases') await assertEntityCasesState(component, variant);
+	if (id === 'reports.component.entity-examples')
+		await assertEntityExamplesState(component, variant);
+	if (id === 'reports.component.entity-contract')
+		await assertEntityContractState(component, variant);
 	if (id === 'reports.component.filter-dialog' && variant === 'active') {
 		const trigger = component.getByRole('button', { name: 'Filters', exact: true });
 		await expect(trigger).toHaveClass(/active/);
@@ -76,7 +100,7 @@ export async function assertCatalogState(
 		await expect(dialog.getByRole('combobox', { name: 'Search entities' })).toHaveValue('order');
 		await expect(dialog.getByRole('option').first()).toContainText('Order');
 	}
-	if (id !== 'reports.component.entity-contract' || viewport !== 'mobile') return;
+	if (id !== 'reports.component.entity-contract' || viewport !== 'mobile' || variant) return;
 	const frame = component.locator('[data-harness-component="contract-table"] .frame').first();
 	const action = frame.getByRole('button', { name: 'View example for Orders' });
 	await expect(action).toBeVisible();

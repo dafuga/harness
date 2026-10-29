@@ -76,6 +76,24 @@ const variants: Record<string, string[]> = {
 		'model-open',
 		'effort-open'
 	],
+	// Floating chat exposes its launcher, notice, navigation and conversation-follow modes.
+	'reports.component.floating-chat': [
+		'closed',
+		'notice',
+		'navigation',
+		'following',
+		'not-following'
+	],
+	// Active observations and every switch status have distinct card presentations.
+	'reports.component.provider-picker-cards': [
+		'unknown',
+		'in-use',
+		'applying',
+		'applied',
+		'failed',
+		'cancelled',
+		'locked'
+	],
 	// A single recording, comparison pair and disabled upload each have distinct input layouts.
 	'reports.component.audio-upload-files': ['comparison', 'uploading'],
 	// Image, missing, compact provenance and paired-audio branches each render different evidence.
@@ -111,6 +129,31 @@ const variants: Record<string, string[]> = {
 		'malformed',
 		'wrong-unit',
 		'expanded'
+	],
+	// A contract changes for each entity kind, missing declarations, errors and an opened example.
+	'reports.component.entity-contract': [
+		'empty',
+		'errors',
+		'last',
+		'example-open',
+		'function',
+		'function-error',
+		'service',
+		'model',
+		'model-bare',
+		'types',
+		'config'
+	],
+	// Documentation distinguishes absent examples, setup, missing calls and expected outcomes.
+	'reports.component.entity-examples': [
+		'empty',
+		'gap',
+		'setup',
+		'inline-setup',
+		'missing-setup',
+		'error',
+		'missing-call',
+		'void'
 	],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
