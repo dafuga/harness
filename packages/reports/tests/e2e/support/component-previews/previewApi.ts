@@ -170,7 +170,7 @@ async function media(route: Route, path: string) {
 	const kept = all.bytes[file.replace(/\.[^.]+$/, '')];
 	if (kept) return route.fulfill({ contentType: kept.mediaType, body: Buffer.from(kept.data) });
 	if (file === 'preview.wav')
-		return route.fulfill({ contentType: 'audio/wav', body: audioFixture(1) });
+		return route.fulfill({ contentType: 'audio/wav', body: audioFixture(42) });
 	if (file === 'synthetic-layout-input.svg')
 		return route.fulfill({ contentType: 'image/svg+xml', body: layoutImage });
 	if (file === 'synthetic-orders-page-input.svg')
