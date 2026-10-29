@@ -1,5 +1,5 @@
 import type { PreviewCases } from './shared';
-import { noop, text } from './shared';
+import { image, noop, text } from './shared';
 import { baselineNarration, releaseNarration } from './reportData';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
@@ -38,7 +38,7 @@ function modalVariant(props: PreviewCases[string], variant: string) {
 		...props,
 		title: 'Order card evidence',
 		variant: 'lightbox',
-		children: text('<p>Recorded order card evidence remains available for review.</p>')
+		children: text(`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · desktop evidence</figcaption></figure></div>`)
 	};
 }
 
