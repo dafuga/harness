@@ -5,10 +5,21 @@ import type {
 } from '../../../../core/development-tooling/unitTypes';
 
 /** Retain the legacy arrays while separating component props from exported script functions. */
-export function deriveContract(files: SourceFile[]): ComponentManifest['contract'] {
+export function deriveContract(files: SourceFile[], entry?: string): ComponentManifest['contract'] {
 	const symbols = files.flatMap((file) => file.exports);
 	const storage = files.flatMap((file) => file.storage ?? []);
-	const components = symbols.filter((symbol) => symbol.kind === 'component');
+	const primary = files
+		.find((file) => file.path === entry)
+		?.exports.find((symbol) => symbol.kind === 'component');
+	const components = primary
+		? [primary]
+		: [
+				...new Map(
+					symbols
+						.filter((symbol) => symbol.kind === 'component')
+						.map((symbol) => [symbol.name, symbol])
+				).values()
+			];
 	const outputs = symbols
 		.filter(
 			(symbol) =>

@@ -13,14 +13,16 @@ function qualifiers(item: Field): string {
 }
 
 /** `name  type` rows with the types in one column; the owner prefix (`Badge.`) is dropped. */
-function fields(list: Field[]): string[] {
+function fields(list: Field[], componentProps = false): string[] {
 	if (list.length === 0) return ['none'];
+	if (componentProps)
+		list = [...new Map(list.map((item) => [item.name.split('.').at(-1), item])).values()];
 	const shortNames = list.map((item) => item.name.split('.').at(-1) ?? item.name);
 	const repeated = new Set(shortNames.filter((name, index) => shortNames.indexOf(name) !== index));
 	const rows = list.map(
 		(item, index) =>
 			[
-				repeated.has(shortNames[index]) ? item.name : shortNames[index],
+				!componentProps && repeated.has(shortNames[index]) ? item.name : shortNames[index],
 				`${item.type}${qualifiers(item)}`
 			] as const
 	);
@@ -61,7 +63,7 @@ export function renderContract(manifest: ComponentManifest): string[] {
 				...indent(
 					title === 'Errors' && !list.length && contract.origin === 'derived'
 						? ['none found (static analysis; indirect errors unknown)']
-						: fields(list)
+						: fields(list, component && title === 'Props')
 				)
 			])
 		),
