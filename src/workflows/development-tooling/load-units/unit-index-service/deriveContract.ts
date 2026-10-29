@@ -31,33 +31,11 @@ export function deriveContract(files: SourceFile[], entry?: string): ComponentMa
 	const errors = [...new Set(files.flatMap((file) => file.errors))].sort();
 	const snippets = symbols
 		.filter((symbol) => symbol.kind === 'snippet')
-		.map((symbol) => ({
-			name: symbol.name,
-			inputs: symbol.inputs,
-			outputs: [{ name: symbol.name, type: 'markup' }],
-			errors: [],
-			errorStatus: 'none-found' as const
-		}));
+		.map((symbol) => ({ ...operationContract(symbol), errorStatus: 'none-found' as const }));
 	return {
 		origin: 'derived',
-		errorStatus: symbols.some((symbol) => symbol.errorStatus === 'unknown')
-			? 'unknown'
-			: errors.length
-				? 'found'
-				: 'none-found',
-		inputs: storage.length
-			? storage.flatMap((model) =>
-					model.fields.map((field) => ({
-						name: `${model.name}.${field.name}`,
-						type: field.type,
-						required: field.required,
-						...(Object.hasOwn(field, 'default') ? { default: field.default } : {})
-					}))
-				)
-			: (components.length
-					? components
-					: symbols.filter((symbol) => symbol.kind !== 'snippet')
-				).flatMap((symbol) => symbol.inputs),
+		errorStatus: errorStatus(symbols, errors),
+		inputs: storage.length ? storageInputs(storage) : symbolInputs(symbols, components),
 		outputs,
 		...(storage.length ? { storage } : {}),
 		errors: errors.map((name) => ({ name, type: 'thrown' })),
@@ -72,6 +50,31 @@ export function deriveContract(files: SourceFile[], entry?: string): ComponentMa
 			.filter((symbol) => symbol.name.endsWith('.constructor'))
 			.map(operationContract)
 	};
+}
+
+function errorStatus(symbols: ExportedSymbol[], errors: string[]) {
+	if (symbols.some((symbol) => symbol.errorStatus === 'unknown')) return 'unknown' as const;
+	return errors.length ? ('found' as const) : ('none-found' as const);
+}
+
+function symbolInputs(symbols: ExportedSymbol[], components: ExportedSymbol[]): ContractItem[] {
+	const selected = components.length
+		? components
+		: symbols.filter((symbol) => symbol.kind !== 'snippet');
+	return selected.flatMap((symbol) => symbol.inputs);
+}
+
+function storageInputs(
+	models: NonNullable<ComponentManifest['contract']['storage']>
+): ContractItem[] {
+	return models.flatMap((model) =>
+		model.fields.map((field) => ({
+			name: `${model.name}.${field.name}`,
+			type: field.type,
+			required: field.required,
+			...(Object.hasOwn(field, 'default') ? { default: field.default } : {})
+		}))
+	);
 }
 
 /** Authored explanations survive; readable source signatures supply flags and literal defaults. */
@@ -105,7 +108,8 @@ export function operationContract(symbol: ExportedSymbol) {
 
 function explainedItem(item: ContractItem, declared: ContractItem[]): ContractItem {
 	const previous = declared.find((candidate) => candidate.name === item.name);
-	const { default: _default, ...documentation } = previous ?? {};
+	const documentation = { ...previous };
+	delete documentation.default;
 	return {
 		...documentation,
 		...item,
