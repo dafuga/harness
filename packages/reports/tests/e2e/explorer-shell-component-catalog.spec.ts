@@ -106,7 +106,7 @@ for (const viewport of catalogViewports) {
 			await page.setViewportSize(viewport);
 			await openPreview(page, home, unit.id, variant);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
-			const component = await readyPreview(page, unit.id);
+			const component = await readyPreview(page, unit.id, variant);
 			if (isProjectAgent) {
 				const panel = component.locator('.floating-chat-panel');
 				if (variant === 'closed') {

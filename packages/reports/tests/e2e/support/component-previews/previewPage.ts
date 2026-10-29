@@ -35,7 +35,7 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 		`${previewOrigin}/?unit=${encodeURIComponent(id)}${variant ? `&variant=${encodeURIComponent(variant)}` : ''}`
 	);
 }
-export async function readyPreview(page: Page, id: string) {
+export async function readyPreview(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	await expect(content).toBeAttached();
 	await readyRoute(page, id);
@@ -54,8 +54,13 @@ export async function readyPreview(page: Page, id: string) {
 		/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Loading history…|Loading this revision…|Sampling CPU…|Checking sign-in…|Reading the request…/
 	);
 	await expect(content).not.toContainText(
-		/This project could not be opened|Loading projects?…|Design preview unavailable|Preview unavailable|Screenshot unavailable|could not be read|not listed by the evidence|Not verified|Reading the clip…|No screenshot (?:is )?recorded|TypeError:|ReferenceError:|Checking the GitHub connection…/
+		/This project could not be opened|Loading projects?…|Design preview unavailable|Preview unavailable|Screenshot unavailable|not listed by the evidence|Not verified|Reading the clip…|No screenshot (?:is )?recorded|TypeError:|ReferenceError:|Checking the GitHub connection…/
 	);
+	if (
+		id !== 'reports.component.activity-agents' ||
+		!['failed-read', 'unreadable'].includes(variant)
+	)
+		await expect(content).not.toContainText('could not be read');
 	for (const img of await content.locator('img').all()) {
 		await img.scrollIntoViewIfNeeded();
 		await expect

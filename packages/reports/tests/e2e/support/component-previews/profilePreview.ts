@@ -11,7 +11,7 @@ export async function profilePreview(page: Page, unit: string, variant = '') {
 	for (let round = 0; round < 6; round++) {
 		const started = performance.now();
 		await page.evaluate(() => window.previewRemount());
-		await readyPreview(page, unit);
+		await readyPreview(page, unit, variant);
 		if (round > 0) elapsed.push(performance.now() - started);
 	}
 	const measurements = [
