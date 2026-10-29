@@ -53,6 +53,14 @@ export class ComponentPropsResolver {
 		if (ts.isIntersectionTypeNode(type))
 			return (await Promise.all(type.types.map((part) => this.members(path, part, next)))).flat();
 		if (!ts.isTypeReferenceNode(type)) return [];
+		return this.reference(path, type, next);
+	}
+
+	private async reference(
+		path: string,
+		type: ts.TypeReferenceNode,
+		next: Set<string>
+	): Promise<ContractItem[]> {
 		const name = type.typeName.getText();
 		if (
 			name === 'ComponentProps' &&

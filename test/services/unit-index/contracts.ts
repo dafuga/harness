@@ -1,4 +1,6 @@
 import { expect } from 'vitest';
+import type { Indexed } from '../../support/memoryTree';
+import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { indexFiles, unitOf } from '../../support/memoryTree';
 import { measureWorkload } from '../../support/measureWorkload';
 
@@ -40,8 +42,13 @@ export async function assertContractExtraction(): Promise<void> {
 	const indexed = await measureWorkload('service.source-index', 'derive-contract-states', () =>
 		indexFiles(declarations)
 	);
-	const contract = (id: string) => unitOf(indexed, id).contract;
-	const call = contract('function.call');
+	assertCallContract(unitOf(indexed, 'function.call').contract);
+	assertComponentContracts(indexed);
+	assertServiceContract(unitOf(indexed, 'service.store').contract);
+	assertModelContract(indexed);
+}
+
+function assertCallContract(call: ComponentManifest['contract']): void {
 	expect.soft(call.inputs).toEqual(
 		expect.arrayContaining([
 			{ name: 'call.name', type: 'string', required: true },
@@ -58,7 +65,10 @@ export async function assertContractExtraction(): Promise<void> {
 		.soft(call.operations?.[1])
 		.toMatchObject({ errors: [{ name: 'RangeError', type: 'thrown' }] });
 	expect.soft(call.operations?.[2]).toMatchObject({ errorStatus: 'unknown' });
-	const panel = contract('component.panel');
+}
+
+function assertComponentContracts(indexed: Indexed): void {
+	const panel = unitOf(indexed, 'component.panel').contract;
 	expect.soft(panel.inputs).toEqual([
 		{ name: 'Panel.title', type: 'string', required: true },
 		{ name: 'Panel.size', type: 'number', required: false, default: 16 },
@@ -72,27 +82,30 @@ export async function assertContractExtraction(): Promise<void> {
 		]
 	});
 	expect
-		.soft(contract('component.wrapper').inputs)
+		.soft(unitOf(indexed, 'component.wrapper').contract.inputs)
 		.toEqual(
 			panel.inputs.map((item) => ({ ...item, name: item.name.replace('Panel.', 'Wrapper.') }))
 		);
-	const service = contract('service.store');
-	expect
-		.soft(service.initialization?.[0])
-		.toMatchObject({
-			name: 'StoreService.constructor',
-			inputs: [
-				{ name: 'StoreService.constructor.root', type: 'string', required: false, default: '/tmp' }
-			]
-		});
+}
+
+function assertServiceContract(service: ComponentManifest['contract']): void {
+	expect.soft(service.initialization?.[0]).toMatchObject({
+		name: 'StoreService.constructor',
+		inputs: [
+			{ name: 'StoreService.constructor.root', type: 'string', required: false, default: '/tmp' }
+		]
+	});
 	expect
 		.soft(service.operations?.map((operation) => operation.name))
 		.toEqual(['StoreService.read', 'StoreService.write']);
 	expect.soft(service.operations?.[0].errors).toEqual([]);
 	expect.soft(service.operations?.[1].errors).toEqual([{ name: 'TypeError', type: 'thrown' }]);
+}
+
+function assertModelContract(indexed: Indexed): void {
 	const model = unitOf(indexed, 'model.entry');
 	expect.soft(model.owns.source).toEqual(['src/models/Entry.ts', 'src/models/Entry.types.ts']);
-	expect.soft(contract(model.id).storage?.[0]).toMatchObject({
+	expect.soft(model.contract.storage?.[0]).toMatchObject({
 		name: 'Entry',
 		table: 'entries',
 		primaryKey: 'id',
