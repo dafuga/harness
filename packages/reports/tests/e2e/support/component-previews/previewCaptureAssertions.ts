@@ -55,12 +55,24 @@ export async function assertComponentCapture(
 }
 
 /** An opened search is a populated dialog, rather than a capture of its trigger alone. */
-export async function assertCatalogState(component: Locator, id: string, variant = '') {
-	if (id !== 'reports.component.entity-search' || variant !== 'open') return;
-	const dialog = component.getByRole('dialog', { name: 'Search project' });
-	await expect(dialog).toBeVisible();
-	await expect(dialog.getByRole('combobox', { name: 'Search entities' })).toHaveValue('order');
-	await expect(dialog.getByRole('option').first()).toContainText('Order');
+export async function assertCatalogState(
+	component: Locator,
+	id: string,
+	variant = '',
+	viewport = ''
+) {
+	if (id === 'reports.component.entity-search' && variant === 'open') {
+		const dialog = component.getByRole('dialog', { name: 'Search project' });
+		await expect(dialog).toBeVisible();
+		await expect(dialog.getByRole('combobox', { name: 'Search entities' })).toHaveValue('order');
+		await expect(dialog.getByRole('option').first()).toContainText('Order');
+	}
+	if (id !== 'reports.component.entity-contract' || viewport !== 'mobile') return;
+	const frame = component.locator('[data-harness-component="contract-table"] .frame').first();
+	const action = frame.getByRole('button', { name: 'View example for Orders' });
+	await expect(action).toBeVisible();
+	const [frameBox, actionBox] = await Promise.all([frame.boundingBox(), action.boundingBox()]);
+	expect(actionBox!.x + actionBox!.width).toBeLessThanOrEqual(frameBox!.x + frameBox!.width);
 }
 
 async function assertAgentsPreview(page: Page) {

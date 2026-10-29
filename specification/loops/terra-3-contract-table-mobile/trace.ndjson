@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-29T20:26:44.792Z","name":"terra-3-contract-table-mobile","goal":"Keep contract table actions visible within the mobile catalog preview.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-29T20:27:29.751Z","loop":"terra-3-contract-table-mobile","step":"spec","evidence":"Mobile catalog preview hides the example action outside the ContractTable frame."}
+{"event":"step.completed","timestamp":"2026-10-29T20:27:30.729Z","loop":"terra-3-contract-table-mobile","step":"coverage","evidence":"The shared catalog capture checked document width, not controls clipped inside a scrollable table frame."}
