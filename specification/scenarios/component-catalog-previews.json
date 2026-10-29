@@ -1673,8 +1673,122 @@
 			"units": ["reports.component.entity-contract"]
 		},
 		{
+			"id": "reports-component-entity-contract-empty",
+			"title": "Typed contract: no props",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-errors",
+			"title": "Typed contract: declared errors",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-last",
+			"title": "Typed contract: removed revision",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-example-open",
+			"title": "Typed contract: example open",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-function",
+			"title": "Typed contract: function",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-function-error",
+			"title": "Typed contract: function throws",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-service",
+			"title": "Typed contract: service",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-model",
+			"title": "Typed contract: model",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-model-bare",
+			"title": "Typed contract: model without members",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-types",
+			"title": "Typed contract: type declarations",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-config",
+			"title": "Typed contract: config",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
 			"id": "reports-component-entity-examples",
 			"title": "Usage examples",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-empty",
+			"title": "Usage examples: empty",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-gap",
+			"title": "Usage examples: malformed documentation",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-setup",
+			"title": "Usage examples: titled setup",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-inline-setup",
+			"title": "Usage examples: inline setup",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-missing-setup",
+			"title": "Usage examples: missing setup",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-error",
+			"title": "Usage examples: expected error",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-missing-call",
+			"title": "Usage examples: undocumented call",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-void",
+			"title": "Usage examples: undefined return",
 			"coverage": "required",
 			"units": ["reports.component.entity-examples"]
 		},
@@ -3998,7 +4112,26 @@
 				"reports-component-entity-cases-wrong-unit",
 				"reports-component-entity-cases-expanded",
 				"reports-component-entity-contract",
+				"reports-component-entity-contract-empty",
+				"reports-component-entity-contract-errors",
+				"reports-component-entity-contract-last",
+				"reports-component-entity-contract-example-open",
+				"reports-component-entity-contract-function",
+				"reports-component-entity-contract-function-error",
+				"reports-component-entity-contract-service",
+				"reports-component-entity-contract-model",
+				"reports-component-entity-contract-model-bare",
+				"reports-component-entity-contract-types",
+				"reports-component-entity-contract-config",
 				"reports-component-entity-examples",
+				"reports-component-entity-examples-empty",
+				"reports-component-entity-examples-gap",
+				"reports-component-entity-examples-setup",
+				"reports-component-entity-examples-inline-setup",
+				"reports-component-entity-examples-missing-setup",
+				"reports-component-entity-examples-error",
+				"reports-component-entity-examples-missing-call",
+				"reports-component-entity-examples-void",
 				"reports-component-entity-search",
 				"reports-component-entity-search-open",
 				"reports-component-entity-search-results",

@@ -1,17 +1,19 @@
 import type { PreviewCases } from './shared';
 
-const unit = 'app.function.format-duration';
+const unit = 'js.function.json-parse';
 const calls = {
 	schemaVersion: 1,
 	kind: 'function-invocations',
 	unitId: unit,
-	symbol: 'formatDuration',
-	cases: [{ name: 'Format 90 seconds', input: { seconds: 90 }, output: '1:30' }]
+	symbol: 'JSON.parse',
+	cases: [
+		{ name: 'Read saved settings', input: { text: '{"enabled":true}' }, output: { enabled: true } }
+	]
 };
 const badCall = {
-	name: 'Reject a negative duration',
-	input: { seconds: -1 },
-	error: { name: 'RangeError', message: 'Seconds must be non-negative.' }
+	name: 'Reject incomplete JSON',
+	input: { text: '{"enabled":' },
+	error: { name: 'SyntaxError', message: 'JSON Parse error: Unexpected EOF' }
 };
 
 /** Authored examples and recorded results retain their own success, failure and gap states. */
@@ -27,6 +29,7 @@ export function entityCasesVariant(props: PreviewCases[string], variant: string)
 		return {
 			...recorded,
 			callable: variant !== 'observed-noncallable',
+			unit: variant === 'observed' ? 'app.function.filter-orders' : 'app.page.orders',
 			document: { input: { searchText: 'SERVICE' }, output: ['Order 1042 · Service call'] }
 		};
 	if (variant === 'unavailable') return { ...recorded, document: { assertions: [] } };
