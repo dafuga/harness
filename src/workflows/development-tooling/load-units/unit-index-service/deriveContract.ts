@@ -1,4 +1,4 @@
-import type { SourceFile } from '../../../../core/development-tooling/sourceTypes';
+import type { SourceFile, ExportedSymbol } from '../../../../core/development-tooling/sourceTypes';
 import type {
 	ComponentManifest,
 	ContractItem
@@ -39,7 +39,13 @@ export function deriveContract(files: SourceFile[]): ComponentManifest['contract
 		).flatMap((symbol) => symbol.inputs),
 		outputs,
 		errors: errors.map((name) => ({ name, type: 'thrown' })),
-		...(snippets.length ? { snippets } : {})
+		...(snippets.length ? { snippets } : {}),
+		operations: symbols
+			.filter(
+				(symbol) =>
+					['function', 'method'].includes(symbol.kind) && !symbol.name.endsWith('.constructor')
+			)
+			.map(operationContract)
 	};
 }
 
@@ -60,6 +66,25 @@ export function declaredContract(
 					}
 				: item;
 		}),
-		...(source.snippets ? { snippets: source.snippets } : {})
+		...(source.snippets ? { snippets: source.snippets } : {}),
+		operations: source.operations?.map((operation) => ({
+			...operation,
+			inputs: operation.inputs.map((item) => explainedItem(item, declared.inputs)),
+			outputs: operation.outputs.map((item) => explainedItem(item, declared.outputs))
+		}))
 	};
+}
+
+export function operationContract(symbol: ExportedSymbol) {
+	return {
+		name: symbol.name,
+		inputs: symbol.inputs,
+		outputs: symbol.output === undefined ? [] : [{ name: symbol.name, type: symbol.output }],
+		errors: (symbol.errors ?? []).map((name) => ({ name, type: 'thrown' })),
+		errorStatus: symbol.errorStatus ?? ('unknown' as const)
+	};
+}
+
+function explainedItem(item: ContractItem, declared: ContractItem[]): ContractItem {
+	return { ...declared.find((candidate) => candidate.name === item.name), ...item };
 }

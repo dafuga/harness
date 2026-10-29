@@ -32,6 +32,12 @@ function fields(list: Field[]): string[] {
 export function renderContract(manifest: ComponentManifest): string[] {
 	const { contract, kind } = manifest;
 	const component = kind === 'component';
+	if (!component && contract.operations?.length)
+		return [
+			`Contract (${contract.origin})`,
+			'  Operations',
+			...indent(operationRows(contract.operations), 2)
+		];
 	const sections: Array<[string, Field[]]> = [
 		[component ? 'Props' : 'Inputs', contract.inputs],
 		...(component ? [] : ([['Outputs', contract.outputs]] as Array<[string, Field[]]>)),
@@ -50,6 +56,32 @@ export function renderContract(manifest: ComponentManifest): string[] {
 			])
 		)
 	];
+}
+
+function operationRows(
+	operations: NonNullable<ComponentManifest['contract']['operations']>
+): string[] {
+	return operations.flatMap((operation) => [
+		operation.name,
+		...indent([
+			'Inputs',
+			...indent(fields(operation.inputs)),
+			'Outputs',
+			...indent(fields(operation.outputs)),
+			'Errors',
+			...indent(
+				operation.errors.length
+					? fields(operation.errors)
+					: [
+							operation.errorStatus === 'declared'
+								? 'none (declared)'
+								: operation.errorStatus === 'unknown'
+									? 'unknown (indirect calls or dynamic throws)'
+									: 'none found (static analysis; indirect errors unknown)'
+						]
+			)
+		])
+	]);
 }
 
 /** Test files grouped by directory, each with its count, so a long list stays one screen. */
