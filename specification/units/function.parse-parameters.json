@@ -7,7 +7,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/development-tooling/parseParameters.ts", "src/utils/parseParameters.ts"],
+		"source": [
+			"src/utils/development-tooling/parameterDefault.ts",
+			"src/utils/development-tooling/parseParameters.ts",
+			"src/utils/parseParameters.ts"
+		],
 		"symbols": [
 			"splitTopLevel",
 			"parseParameters",

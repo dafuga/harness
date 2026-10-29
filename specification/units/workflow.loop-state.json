@@ -166,6 +166,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.development-tooling-loop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"

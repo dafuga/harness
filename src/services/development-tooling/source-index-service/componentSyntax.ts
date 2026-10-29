@@ -1,7 +1,7 @@
 import ts from 'typescript';
 import type { ContractItem } from '../../../core/development-tooling/unitTypes';
 import { parseParameters } from '../../../utils/development-tooling/parseParameters';
-import { parameterDefault } from '../../../utils/development-tooling/parameterDefaults';
+import { parameterDefault } from '../../../utils/development-tooling/parameterDefault';
 
 /** Module scripts may export functions, but only the instance script declares props. */
 export function instanceScript(code: string): string {
@@ -53,6 +53,10 @@ export function localProps(
 	if (!ts.isTypeReferenceNode(type) || seen.has(type.typeName.getText(file))) return [];
 	const name = type.typeName.getText(file);
 	const next = new Set([...seen, name]);
+	return namedProps(name, file, next);
+}
+
+function namedProps(name: string, file: ts.SourceFile, next: Set<string>): ContractItem[] {
 	const declaration = file.statements.find(
 		(node) =>
 			(ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node)) &&
@@ -87,9 +91,17 @@ export function boundProps(
 		return {
 			...item,
 			name: `${owner}.${item.name}`,
-			...(binding?.initializer ? { required: false, ...parameterDefault(binding.initializer) } : {})
+			...(binding?.initializer
+				? { required: false, ...parameterDefault(bindableValue(binding.initializer)) }
+				: {})
 		};
 	});
+}
+
+/** Svelte's `$bindable(value)` marks a two-way prop; its argument is the prop's default. */
+function bindableValue(node: ts.Expression): ts.Expression | undefined {
+	if (!ts.isCallExpression(node) || node.expression.getText() !== '$bindable') return node;
+	return node.arguments[0];
 }
 
 export function componentSnippets(code: string, owner: string) {

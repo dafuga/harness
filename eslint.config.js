@@ -67,6 +67,7 @@ export default [
 			complexity: ['error', harnessRuleLimits.maxComplexity],
 			'consistent-return': 'error',
 			'harness/architecture-boundaries': 'error',
+			'harness/layer-direction': 'error',
 			'harness/max-class-lines': 'error',
 			'harness/max-method-lines': 'error',
 			'harness/no-manager-name': 'error',
