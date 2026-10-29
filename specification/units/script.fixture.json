@@ -1,0 +1,179 @@
+{
+	"schemaVersion": 1,
+	"id": "script.fixture",
+	"kind": "script",
+	"title": "fixture",
+	"responsibility": "Owns the fixture build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/fixture.mjs"],
+		"symbols": ["runFixture"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runFixture.mode",
+				"type": "unknown"
+			},
+			{
+				"name": "runFixture.target",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "runFixture",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/fixture.mjs",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/fixture.mjs"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "runFixture",
+				"name": "test without requested evidence",
+				"call": "runFixture(\"test\", 'test/fixture/function.slugify.test.ts')",
+				"input": ["test", "test/fixture/function.slugify.test.ts"],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 0,
+						"stdout": "",
+						"stderr": ""
+					}
+				}
+			},
+			{
+				"subject": "runFixture",
+				"name": "audio without requested evidence",
+				"call": "runFixture(\"audio\", 'test/fixture/function.slugify.test.ts')",
+				"input": ["audio", "test/fixture/function.slugify.test.ts"],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 0,
+						"stdout": "",
+						"stderr": ""
+					}
+				}
+			},
+			{
+				"subject": "runFixture",
+				"name": "clock without requested evidence",
+				"call": "runFixture(\"clock\", 'test/fixture/function.slugify.test.ts')",
+				"input": ["clock", "test/fixture/function.slugify.test.ts"],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 0,
+						"stdout": "",
+						"stderr": ""
+					}
+				}
+			},
+			{
+				"subject": "runFixture",
+				"name": "bench without requested evidence",
+				"call": "runFixture(\"bench\", 'test/fixture/function.slugify.test.ts')",
+				"input": ["bench", "test/fixture/function.slugify.test.ts"],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 0,
+						"stdout": "",
+						"stderr": ""
+					}
+				}
+			},
+			{
+				"subject": "runFixture",
+				"name": "control without requested evidence",
+				"call": "runFixture(\"control\", 'test/fixture/function.slugify.test.ts')",
+				"input": ["control", "test/fixture/function.slugify.test.ts"],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 0,
+						"stdout": "",
+						"stderr": ""
+					}
+				}
+			}
+		],
+		"states": ["evidence-disabled"],
+		"cases": [
+			{
+				"id": "test",
+				"state": "evidence-disabled",
+				"subject": "runFixture",
+				"example": "test without requested evidence",
+				"test": {
+					"file": "test/fixture/script.fixture.test.ts",
+					"title": "runFixture: test without requested evidence"
+				}
+			},
+			{
+				"id": "audio",
+				"state": "evidence-disabled",
+				"subject": "runFixture",
+				"example": "audio without requested evidence",
+				"test": {
+					"file": "test/fixture/script.fixture.test.ts",
+					"title": "runFixture: audio without requested evidence"
+				}
+			},
+			{
+				"id": "clock",
+				"state": "evidence-disabled",
+				"subject": "runFixture",
+				"example": "clock without requested evidence",
+				"test": {
+					"file": "test/fixture/script.fixture.test.ts",
+					"title": "runFixture: clock without requested evidence"
+				}
+			},
+			{
+				"id": "bench",
+				"state": "evidence-disabled",
+				"subject": "runFixture",
+				"example": "bench without requested evidence",
+				"test": {
+					"file": "test/fixture/script.fixture.test.ts",
+					"title": "runFixture: bench without requested evidence"
+				}
+			},
+			{
+				"id": "control",
+				"state": "evidence-disabled",
+				"subject": "runFixture",
+				"example": "control without requested evidence",
+				"test": {
+					"file": "test/fixture/script.fixture.test.ts",
+					"title": "runFixture: control without requested evidence"
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

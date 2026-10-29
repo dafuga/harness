@@ -1,0 +1,112 @@
+{
+	"schemaVersion": 1,
+	"id": "component.title-row",
+	"kind": "component",
+	"title": "TitleRow",
+	"responsibility": "Owns the TitleRow Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/components/TitleRow.svelte"],
+		"symbols": ["TitleRow"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TitleRow.title",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "TitleRow",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.slugify",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/components/TitleRow.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/components/TitleRow.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "component",
+		"states": ["row"],
+		"restState": "row",
+		"props": ["title"],
+		"cases": [
+			{
+				"id": "row.desktop",
+				"state": "row",
+				"input": {
+					"title": "123"
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title row: row at desktop"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/row-desktop.png"
+				},
+				"viewports": ["desktop"],
+				"props": ["title"]
+			},
+			{
+				"id": "row.tablet",
+				"state": "row",
+				"input": {
+					"title": "123"
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title row: row at tablet"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/row-tablet.png"
+				},
+				"viewports": ["tablet"],
+				"props": ["title"]
+			},
+			{
+				"id": "row.mobile",
+				"state": "row",
+				"input": {
+					"title": "123"
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title row: row at mobile"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/row-mobile.png"
+				},
+				"viewports": ["mobile"],
+				"props": ["title"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

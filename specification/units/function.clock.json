@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "function.clock",
+	"kind": "function",
+	"title": "clock",
+	"responsibility": "Owns the clock shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/clock.ts"],
+		"symbols": ["clock"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "clock.value",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "clock",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/clock.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/clock.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "clock",
+				"name": "numeric text",
+				"call": "clock(\"123\")",
+				"input": ["123"],
+				"expected": {
+					"kind": "value",
+					"value": "123"
+				}
+			}
+		],
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "numeric-text",
+				"state": "initialized",
+				"subject": "clock",
+				"example": "numeric text",
+				"input": ["123"],
+				"test": {
+					"file": "test/fixture/function.clock.test.ts",
+					"title": "clock: numeric text"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "123"
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

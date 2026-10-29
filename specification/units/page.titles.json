@@ -1,0 +1,142 @@
+{
+	"schemaVersion": 1,
+	"id": "page.titles",
+	"kind": "page",
+	"title": "/titles",
+	"responsibility": "Owns the /titles route page.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/routes/titles/+page.svelte"],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "+page.filled",
+				"type": "boolean"
+			}
+		],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "component.title-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.title",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/routes/titles/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/routes/titles/+page.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "page",
+		"states": ["empty", "filled"],
+		"cases": [
+			{
+				"id": "empty.desktop",
+				"state": "empty",
+				"test": {
+					"file": "tests/e2e/titles-page.spec.ts",
+					"title": "titles view route is generated > desktop viewport > empty"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/titles-page.spec.ts/empty-desktop.png"
+				},
+				"viewports": ["desktop"]
+			},
+			{
+				"id": "empty.tablet",
+				"state": "empty",
+				"test": {
+					"file": "tests/e2e/titles-page.spec.ts",
+					"title": "titles view route is generated > tablet viewport > empty"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/titles-page.spec.ts/empty-tablet.png"
+				},
+				"viewports": ["tablet"]
+			},
+			{
+				"id": "empty.mobile",
+				"state": "empty",
+				"test": {
+					"file": "tests/e2e/titles-page.spec.ts",
+					"title": "titles view route is generated > mobile viewport > empty"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/titles-page.spec.ts/empty-mobile.png"
+				},
+				"viewports": ["mobile"]
+			},
+			{
+				"id": "filled.desktop",
+				"state": "filled",
+				"test": {
+					"file": "tests/e2e/titles-page.spec.ts",
+					"title": "titles view route is generated > desktop viewport > filled"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/titles-page.spec.ts/filled-desktop.png"
+				},
+				"viewports": ["desktop"]
+			},
+			{
+				"id": "filled.tablet",
+				"state": "filled",
+				"test": {
+					"file": "tests/e2e/titles-page.spec.ts",
+					"title": "titles view route is generated > tablet viewport > filled"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/titles-page.spec.ts/filled-tablet.png"
+				},
+				"viewports": ["tablet"]
+			},
+			{
+				"id": "filled.mobile",
+				"state": "filled",
+				"test": {
+					"file": "tests/e2e/titles-page.spec.ts",
+					"title": "titles view route is generated > mobile viewport > filled"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/titles-page.spec.ts/filled-mobile.png"
+				},
+				"viewports": ["mobile"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,117 @@
+{
+	"schemaVersion": 1,
+	"id": "component.title-list",
+	"kind": "component",
+	"title": "TitleList",
+	"responsibility": "Owns the TitleList Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/components/TitleList.svelte"],
+		"symbols": ["TitleList"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TitleList.titles",
+				"type": "string[]"
+			}
+		],
+		"outputs": [
+			{
+				"name": "TitleList",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "component.title-row",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "config.titles",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/components/TitleList.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/components/TitleList.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "component",
+		"states": ["listed"],
+		"restState": "listed",
+		"props": ["titles"],
+		"cases": [
+			{
+				"id": "listed.desktop",
+				"state": "listed",
+				"input": {
+					"titles": ["123"]
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title list: listed at desktop"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/listed-desktop.png"
+				},
+				"viewports": ["desktop"],
+				"props": ["titles"]
+			},
+			{
+				"id": "listed.tablet",
+				"state": "listed",
+				"input": {
+					"titles": ["123"]
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title list: listed at tablet"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/listed-tablet.png"
+				},
+				"viewports": ["tablet"],
+				"props": ["titles"]
+			},
+			{
+				"id": "listed.mobile",
+				"state": "listed",
+				"input": {
+					"titles": ["123"]
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title list: listed at mobile"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/listed-mobile.png"
+				},
+				"viewports": ["mobile"],
+				"props": ["titles"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

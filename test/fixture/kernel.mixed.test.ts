@@ -1,0 +1,18 @@
+import { expect, test } from 'vitest';
+import { captureExample } from '../support/captureExample';
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+const directory = '.cache/harness/native-mixed'; mkdirSync(directory, { recursive: true });
+const source = '#[path = ' + JSON.stringify(resolve('crates/mixed/src/lib.rs')) + '] mod implementation;\nfn main() { let value: i32 = std::env::args().nth(1).unwrap().parse().unwrap(); println!("{}", implementation::sign(value)); }';
+writeFileSync(directory + '/main.rs', source);
+execFileSync('rustc', [directory + '/main.rs', '-o', directory + '/sign']);
+const sign = (value: number) => Number(execFileSync(directory + '/sign', [String(value)], { encoding: 'utf8' }).trim());
+import { bound } from '../../crates/mixed/bindings';
+test('sign: value -1', async () => { const actual = await sign(-1); expect(actual).toEqual(-1); captureExample({ unit: 'kernel.mixed', id: 'sign-negative', state: 'initialized' }, actual, -1); });
+test('sign: value 0', async () => { const actual = await sign(0); expect(actual).toEqual(1); captureExample({ unit: 'kernel.mixed', id: 'sign-zero', state: 'initialized' }, actual, 1); });
+test('sign: value 1', async () => { const actual = await sign(1); expect(actual).toEqual(1); captureExample({ unit: 'kernel.mixed', id: 'sign-positive', state: 'initialized' }, actual, 1); });
+test('bound: value 1', async () => { const actual = await bound(1); expect(actual).toEqual(0); captureExample({ unit: 'kernel.mixed', id: 'bound-1', state: 'initialized' }, actual, 0); });
+test('bound: value 2', async () => { const actual = await bound(2); expect(actual).toEqual(2); captureExample({ unit: 'kernel.mixed', id: 'bound-2', state: 'initialized' }, actual, 2); });
+test('bound: value 8', async () => { const actual = await bound(8); expect(actual).toEqual(8); captureExample({ unit: 'kernel.mixed', id: 'bound-8', state: 'initialized' }, actual, 8); });
+test('bound: value 9', async () => { const actual = await bound(9); expect(actual).toEqual(0); captureExample({ unit: 'kernel.mixed', id: 'bound-9', state: 'initialized' }, actual, 0); });

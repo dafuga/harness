@@ -1,0 +1,88 @@
+{
+	"schemaVersion": 1,
+	"id": "script.explorer",
+	"kind": "script",
+	"title": "explorer",
+	"responsibility": "Owns the explorer build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/explorer.mjs"],
+		"symbols": ["runExplorer"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runExplorer.mode",
+				"type": "unknown"
+			}
+		],
+		"outputs": [
+			{
+				"name": "runExplorer",
+				"type": "unknown"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/explorer.mjs",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/explorer.mjs"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "runExplorer",
+				"name": "slugify without requested evidence",
+				"call": "runExplorer('slugify')",
+				"input": ["slugify"],
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 0,
+						"stdout": "",
+						"stderr": ""
+					}
+				}
+			}
+		],
+		"states": ["evidence-disabled"],
+		"cases": [
+			{
+				"id": "slugify",
+				"state": "evidence-disabled",
+				"subject": "runExplorer",
+				"example": "slugify without requested evidence",
+				"input": ["slugify"],
+				"test": {
+					"file": "test/fixture/script.explorer.test.ts",
+					"title": "runExplorer: slugify without requested evidence"
+				},
+				"expected": {
+					"kind": "value",
+					"value": {
+						"status": 0,
+						"stdout": "",
+						"stderr": ""
+					}
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

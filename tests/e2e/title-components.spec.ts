@@ -1,0 +1,14 @@
+import { test } from './support/browserTest';
+import { captureComponent } from '../../test/support/captureComponent';
+test('Title list: listed at desktop', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-list', state: 'listed', viewport: {"id":"desktop","width":1440,"height":900} }));
+test('Title list: listed at tablet', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-list', state: 'listed', viewport: {"id":"tablet","width":920,"height":800} }));
+test('Title list: listed at mobile', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-list', state: 'listed', viewport: {"id":"mobile","width":390,"height":844} }));
+test('Title row: row at desktop', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-row', state: 'row', viewport: {"id":"desktop","width":1440,"height":900} }));
+test('Title row: row at tablet', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-row', state: 'row', viewport: {"id":"tablet","width":920,"height":800} }));
+test('Title row: row at mobile', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-row', state: 'row', viewport: {"id":"mobile","width":390,"height":844} }));
+test('Title frame: rest at desktop', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-frame', state: 'rest', viewport: {"id":"desktop","width":1440,"height":900} }));
+test('Title frame: rest at tablet', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-frame', state: 'rest', viewport: {"id":"tablet","width":920,"height":800} }));
+test('Title frame: rest at mobile', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-frame', state: 'rest', viewport: {"id":"mobile","width":390,"height":844} }));
+test('Title frame: child at desktop', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-frame', state: 'child', viewport: {"id":"desktop","width":1440,"height":900} }));
+test('Title frame: child at tablet', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-frame', state: 'child', viewport: {"id":"tablet","width":920,"height":800} }));
+test('Title frame: child at mobile', async ({ page, matchScreenshot }, info) => captureComponent({ page, matchScreenshot, info, unit: 'component.title-frame', state: 'child', viewport: {"id":"mobile","width":390,"height":844} }));

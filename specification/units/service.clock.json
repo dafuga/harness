@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "service.clock",
+	"kind": "service",
+	"title": "ClockService",
+	"responsibility": "Owns the ClockService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/ClockService.ts"],
+		"symbols": ["ClockService", "ClockService.run"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ClockService.run.value",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "ClockService.run",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.clock",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/ClockService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/ClockService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "service",
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "numeric-text",
+				"state": "initialized",
+				"subject": "ClockService.run",
+				"input": ["123"],
+				"test": {
+					"file": "test/fixture/service.clock.test.ts",
+					"title": "ClockService.run: numeric text"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "123"
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

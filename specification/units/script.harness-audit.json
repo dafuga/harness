@@ -1,0 +1,151 @@
+{
+	"schemaVersion": 1,
+	"id": "script.harness-audit",
+	"kind": "script",
+	"title": "harness-audit",
+	"responsibility": "Runs the project structure audit and preserves process failures.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/harness-audit.ts"],
+		"symbols": ["runAudit"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "process",
+				"type": "environment",
+				"description": "Current directory, PATH and optional HARNESS_CLI_PATH select the real project and CLI."
+			}
+		],
+		"outputs": [
+			{
+				"name": "runAudit",
+				"type": "number",
+				"description": "The audit process exit status, or 1 when it terminates without a status."
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "Error",
+				"description": "The selected executable cannot be started; the original operating-system error is thrown."
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/harness-audit.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/harness-audit.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "runAudit",
+				"name": "audits valid source",
+				"call": "withAuditFixture(\"valid\", runAudit)",
+				"input": ["valid"],
+				"expected": {
+					"kind": "value",
+					"value": 0
+				}
+			},
+			{
+				"subject": "runAudit",
+				"name": "rejects oversized source",
+				"call": "withAuditFixture(\"invalid-source\", runAudit)",
+				"input": ["invalid-source"],
+				"expected": {
+					"kind": "value",
+					"value": 1
+				}
+			},
+			{
+				"subject": "runAudit",
+				"name": "reports a missing CLI file",
+				"call": "withAuditFixture(\"missing-cli\", runAudit)",
+				"input": ["missing-cli"],
+				"expected": {
+					"kind": "value",
+					"value": 1
+				}
+			},
+			{
+				"subject": "runAudit",
+				"name": "throws when the fallback command is unavailable",
+				"call": "withAuditFixture(\"missing-command\", runAudit)",
+				"input": ["missing-command"],
+				"expected": {
+					"kind": "error",
+					"value": {
+						"name": "Error",
+						"code": "ENOENT"
+					}
+				}
+			}
+		],
+		"states": ["default"],
+		"cases": [
+			{
+				"id": "valid",
+				"state": "default",
+				"subject": "runAudit",
+				"example": "audits valid source",
+				"fixture": "test/support/auditFixture.ts",
+				"test": {
+					"file": "test/harness-audit.test.ts",
+					"title": "runAudit: audits valid source"
+				}
+			},
+			{
+				"id": "invalid-source",
+				"state": "default",
+				"subject": "runAudit",
+				"example": "rejects oversized source",
+				"fixture": "test/support/auditFixture.ts",
+				"test": {
+					"file": "test/harness-audit.test.ts",
+					"title": "runAudit: rejects oversized source"
+				}
+			},
+			{
+				"id": "missing-cli",
+				"state": "default",
+				"subject": "runAudit",
+				"example": "reports a missing CLI file",
+				"fixture": "test/support/auditFixture.ts",
+				"test": {
+					"file": "test/harness-audit.test.ts",
+					"title": "runAudit: reports a missing CLI file"
+				}
+			},
+			{
+				"id": "missing-command",
+				"state": "default",
+				"subject": "runAudit",
+				"example": "throws when the fallback command is unavailable",
+				"fixture": "test/support/auditFixture.ts",
+				"test": {
+					"file": "test/harness-audit.test.ts",
+					"title": "runAudit: throws when the fallback command is unavailable"
+				},
+				"errors": ["Error"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

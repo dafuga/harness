@@ -1,0 +1,170 @@
+{
+	"schemaVersion": 1,
+	"id": "component.title-frame",
+	"kind": "component",
+	"title": "TitleFrame",
+	"responsibility": "Owns the TitleFrame Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/components/TitleFrame.svelte"],
+		"symbols": ["TitleFrame"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TitleFrame.titles",
+				"type": "string[]"
+			},
+			{
+				"name": "TitleFrame.children",
+				"type": "Snippet"
+			}
+		],
+		"outputs": [
+			{
+				"name": "TitleFrame",
+				"type": "markup"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "component.title-list",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/components/TitleFrame.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/components/TitleFrame.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "component",
+		"states": ["rest", "child"],
+		"restState": "rest",
+		"props": ["titles", "children"],
+		"cases": [
+			{
+				"id": "rest.desktop",
+				"state": "rest",
+				"input": {
+					"titles": ["123"]
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title frame: rest at desktop"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/rest-desktop.png"
+				},
+				"viewports": ["desktop"],
+				"props": ["titles"]
+			},
+			{
+				"id": "rest.tablet",
+				"state": "rest",
+				"input": {
+					"titles": ["123"]
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title frame: rest at tablet"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/rest-tablet.png"
+				},
+				"viewports": ["tablet"],
+				"props": ["titles"]
+			},
+			{
+				"id": "rest.mobile",
+				"state": "rest",
+				"input": {
+					"titles": ["123"]
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title frame: rest at mobile"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/rest-mobile.png"
+				},
+				"viewports": ["mobile"],
+				"props": ["titles"]
+			},
+			{
+				"id": "child.desktop",
+				"state": "child",
+				"input": {
+					"titles": [],
+					"children": "Child content"
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title frame: child at desktop"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/child-desktop.png"
+				},
+				"viewports": ["desktop"],
+				"props": ["children"]
+			},
+			{
+				"id": "child.tablet",
+				"state": "child",
+				"input": {
+					"titles": [],
+					"children": "Child content"
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title frame: child at tablet"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/child-tablet.png"
+				},
+				"viewports": ["tablet"],
+				"props": ["children"]
+			},
+			{
+				"id": "child.mobile",
+				"state": "child",
+				"input": {
+					"titles": [],
+					"children": "Child content"
+				},
+				"test": {
+					"file": "tests/e2e/title-components.spec.ts",
+					"title": "Title frame: child at mobile"
+				},
+				"expected": {
+					"kind": "screenshot",
+					"file": ".fixture-baselines/title-components.spec.ts/child-mobile.png"
+				},
+				"viewports": ["mobile"],
+				"props": ["children"]
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

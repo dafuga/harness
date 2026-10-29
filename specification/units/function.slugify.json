@@ -1,0 +1,102 @@
+{
+	"schemaVersion": 1,
+	"id": "function.slugify",
+	"kind": "function",
+	"title": "slugify",
+	"responsibility": "Owns the slugify shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/slugify.ts"],
+		"symbols": ["slugify"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "slugify.input",
+				"type": "string"
+			}
+		],
+		"outputs": [
+			{
+				"name": "slugify",
+				"type": "string"
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [],
+	"helperContracts": [
+		{
+			"name": "slugify",
+			"source": "src/utils/slugify.ts",
+			"inputs": [
+				{
+					"name": "slugify.input",
+					"type": "string"
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "component.title-row"
+				},
+				{
+					"unit": "service.title"
+				}
+			]
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/slugify.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/slugify.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"testing": {
+		"version": 1,
+		"shape": "helper",
+		"examples": [
+			{
+				"subject": "slugify",
+				"name": "numeric text",
+				"call": "slugify(\" 123 \")",
+				"input": [" 123 "],
+				"expected": {
+					"kind": "value",
+					"value": "123"
+				}
+			}
+		],
+		"states": ["initialized"],
+		"cases": [
+			{
+				"id": "numeric-text",
+				"state": "initialized",
+				"subject": "slugify",
+				"example": "numeric text",
+				"input": [" 123 "],
+				"test": {
+					"file": "test/fixture/function.slugify.test.ts",
+					"title": "slugify: numeric text"
+				},
+				"expected": {
+					"kind": "value",
+					"value": "123"
+				}
+			}
+		]
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
