@@ -55,6 +55,10 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.getByRole('button', { name: 'Compare before and after' }).click();
 		await expect(component.locator('.viewer-images.comparison figure')).toHaveCount(2);
 	},
+	'reports.component.regression-proof:output-open': async (component) => {
+		await component.getByRole('summary', { name: 'Test command and recorded output' }).click();
+		await expect(component.getByText('harness verify run', { exact: true })).toBeVisible();
+	},
 	'reports.component.entity-search:open': async (component) => {
 		await component.getByRole('button', { name: 'Search entities', exact: true }).click();
 		const dialog = component.getByRole('dialog', { name: 'Search project' });

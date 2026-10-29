@@ -13,6 +13,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.evidence-grid') return evidenceGridVariant(props, variant);
 	if (id === 'reports.component.evidence-provenance') return evidenceProvenanceVariant(props, variant);
 	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
+	if (id === 'reports.component.regression-proof') return regressionProofVariant(props, variant);
 	if (!['reports.component.audio-comparison', 'reports.component.audio-comparison-viewer'].includes(id))
 		return null;
 	if (variant === 'before' || variant === 'after') return props;
@@ -132,6 +133,23 @@ function evidenceViewerVariant(props: PreviewCases[string], variant: string) {
 		phase: 'after'
 	};
 	return { ...props, items: [before, after], navigableItems: [after], selected: after };
+}
+
+function regressionProofVariant(props: PreviewCases[string], variant: string) {
+	const item = (props.items as Array<Record<string, unknown>>)[0];
+	if (variant === 'pending') return { ...props, items: [{ ...item, green: undefined }] };
+	if (variant === 'gap')
+		return {
+			...props,
+			items: [
+				{
+					...item,
+					loop: 'evidence-retention',
+					gap: 'The original failure record was not retained with this revision.'
+				}
+			]
+		};
+	return variant === 'output-open' ? props : null;
 }
 
 function audioEvidenceVariant(props: PreviewCases[string], variant: string) {

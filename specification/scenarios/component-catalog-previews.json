@@ -2045,6 +2045,24 @@
 			"units": ["reports.component.regression-proof"]
 		},
 		{
+			"id": "reports-component-regression-proof-pending",
+			"title": "Regression proof: Pending green commit",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
+			"id": "reports-component-regression-proof-gap",
+			"title": "Regression proof: Recorded gap",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
+			"id": "reports-component-regression-proof-output-open",
+			"title": "Regression proof: Recorded output",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
 			"id": "reports-component-replay-controls",
 			"title": "Evidence replay controls",
 			"coverage": "required",
@@ -3466,6 +3484,9 @@
 				"reports-component-provider-picker-cards",
 				"reports-component-recorded-value",
 				"reports-component-regression-proof",
+				"reports-component-regression-proof-pending",
+				"reports-component-regression-proof-gap",
+				"reports-component-regression-proof-output-open",
 				"reports-component-replay-controls",
 				"reports-component-report-checks",
 				"reports-component-report-findings",
