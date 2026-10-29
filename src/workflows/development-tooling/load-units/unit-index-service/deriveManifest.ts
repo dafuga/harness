@@ -5,6 +5,7 @@ import type {
 	UnitDependency
 } from '../../../../core/development-tooling/unitTypes';
 import { derivedResponsibility } from './derivedResponsibility';
+import { componentManifestSchema } from '../../../../core/development-tooling/unitTypes';
 import { deriveContract, declaredContract } from './deriveContract';
 
 const viaPriority = [
@@ -39,10 +40,11 @@ export function deriveManifest(input: DeriveInput): ComponentManifest {
 		...declaredMetadata(kept),
 		...lineage(input),
 		owns: { source, symbols: files.flatMap((file) => file.exports.map((symbol) => symbol.name)) },
-		contract:
+		contract: componentManifestSchema.shape.contract.parse(
 			kept.contract.origin === 'declared'
 				? declaredContract(kept.contract, deriveContract(files))
-				: deriveContract(files),
+				: deriveContract(files)
+		),
 		dependencies: [...derivedDependencies(input), ...declaredDependencies(input.previous)],
 		...(kept.helperContracts?.length ? { helperContracts: kept.helperContracts } : {}),
 		runtime: runtime(input.previous, source),
