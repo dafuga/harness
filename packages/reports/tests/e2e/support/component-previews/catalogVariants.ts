@@ -18,6 +18,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.audio-evidence': ['notes', 'unavailable'],
 	// A single recording, comparison pair and disabled upload each have distinct input layouts.
 	'reports.component.audio-upload-files': ['comparison', 'uploading'],
+	// Image, missing, compact provenance and paired-audio branches each render different evidence.
+	'reports.component.evidence-card': ['missing', 'compact', 'paired-audio'],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
 	// The default shows a passed badge; each other status is its own example.

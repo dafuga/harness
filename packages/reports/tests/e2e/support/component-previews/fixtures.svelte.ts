@@ -1,5 +1,6 @@
 import { modulePreview } from './modules';
 import { previewVariants } from './catalogVariants';
+import { baselineNarration, releaseNarration } from './reportData';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import { explorerCases } from './explorer';
 import { legacyAddresses, legacyCases } from './legacy';
@@ -118,6 +119,7 @@ function reportVariantProps(id: string, props: PreviewCases[string], variant: st
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
 	if (id === 'reports.component.audio-upload-files')
 		return audioUploadFilesVariant(props, variant);
+	if (id === 'reports.component.evidence-card') return evidenceCardVariant(props, variant);
 	if (
 		id !== 'reports.component.audio-comparison' &&
 		id !== 'reports.component.audio-comparison-viewer'
@@ -140,6 +142,19 @@ function reportVariantProps(id: string, props: PreviewCases[string], variant: st
 function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {
 	if (variant === 'comparison') return { ...props, mode: 'comparison' };
 	if (variant === 'uploading') return { ...props, mode: 'comparison', uploading: true };
+	return null;
+}
+
+function evidenceCardVariant(props: PreviewCases[string], variant: string) {
+	const item = props.item as Record<string, unknown>;
+	if (variant === 'missing')
+		return {
+			...props,
+			item: { ...item, missing: true, note: 'The recorded screenshot could not be restored.' }
+		};
+	if (variant === 'compact') return { ...props, compact: true };
+	if (variant === 'paired-audio')
+		return { ...props, item: releaseNarration, before: baselineNarration };
 	return null;
 }
 

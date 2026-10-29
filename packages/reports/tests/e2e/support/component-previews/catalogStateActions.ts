@@ -17,6 +17,10 @@ const actions: Record<string, CatalogStateAction> = {
 			component.getByText('Timing and diction were reviewed before approval.', { exact: true })
 		).toBeVisible();
 	},
+	'reports.component.evidence-card:compact': async (component) => {
+		await component.locator('summary').click();
+		await expect(component.getByText('Browser capture', { exact: true })).toBeVisible();
+	},
 	'reports.component.entity-search:open': async (component) => {
 		await component.getByRole('button', { name: 'Search entities', exact: true }).click();
 		const dialog = component.getByRole('dialog', { name: 'Search project' });

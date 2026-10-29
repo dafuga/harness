@@ -1379,6 +1379,24 @@
 			"units": ["reports.component.evidence-card"]
 		},
 		{
+			"id": "reports-component-evidence-card-missing",
+			"title": "Evidence card: Missing image",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-compact",
+			"title": "Evidence card: Compact details",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-paired-audio",
+			"title": "Evidence card: Paired audio",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
 			"id": "reports-component-evidence-grid",
 			"title": "Evidence grid",
 			"coverage": "required",
@@ -3181,6 +3199,9 @@
 				"reports-component-entity-search-results",
 				"reports-component-entity-states",
 				"reports-component-evidence-card",
+				"reports-component-evidence-card-missing",
+				"reports-component-evidence-card-compact",
+				"reports-component-evidence-card-paired-audio",
 				"reports-component-evidence-grid",
 				"reports-component-evidence-provenance",
 				"reports-component-evidence-viewer",
