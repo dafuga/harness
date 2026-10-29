@@ -1277,6 +1277,24 @@
 			"units": ["reports.component.analytics-tasks"]
 		},
 		{
+			"id": "reports-component-analytics-tasks-unassessed",
+			"title": "Analytics tasks: Not assessed",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
+			"id": "reports-component-analytics-tasks-unpassed",
+			"title": "Analytics tasks: Not yet passed",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
+			"id": "reports-component-analytics-tasks-retried",
+			"title": "Analytics tasks: Passed after retries",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
 			"id": "reports-component-audio-comparison",
 			"title": "Audio comparison",
 			"coverage": "required",
@@ -2239,6 +2257,18 @@
 		{
 			"id": "reports-component-project-activity-empty",
 			"title": "Project activity overview: No activity",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
+			"id": "reports-component-project-activity-stale",
+			"title": "Project activity overview: Stale live reading",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
+			"id": "reports-component-project-activity-failed-read",
+			"title": "Project activity overview: Refresh failed",
 			"coverage": "required",
 			"units": ["reports.component.project-activity"]
 		},
@@ -3704,6 +3734,9 @@
 				"reports-component-analytics-models-empty",
 				"reports-component-analytics-tasks",
 				"reports-component-analytics-tasks-empty",
+				"reports-component-analytics-tasks-unassessed",
+				"reports-component-analytics-tasks-unpassed",
+				"reports-component-analytics-tasks-retried",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-unavailable",
 				"reports-component-audio-comparison-after-unavailable",
@@ -3865,6 +3898,8 @@
 				"reports-component-project-activity",
 				"reports-component-project-activity-recorded",
 				"reports-component-project-activity-empty",
+				"reports-component-project-activity-stale",
+				"reports-component-project-activity-failed-read",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-cards",
 				"reports-component-recorded-value",
