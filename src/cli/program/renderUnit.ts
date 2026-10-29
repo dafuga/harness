@@ -32,14 +32,21 @@ function fields(list: Field[]): string[] {
 export function renderContract(manifest: ComponentManifest): string[] {
 	const { contract, kind } = manifest;
 	const component = kind === 'component';
-	if (!component && contract.operations?.length)
+	if (
+		!component &&
+		(contract.operations?.length || contract.initialization?.length || contract.storage?.length)
+	)
 		return [
 			`Contract (${contract.origin})`,
+			...(contract.storage?.length
+				? ['  Storage', ...indent(storageRows(contract.storage), 2)]
+				: []),
 			...(contract.initialization?.length
 				? ['  Initialization', ...indent(operationRows(contract.initialization), 2)]
 				: []),
-			'  Operations',
-			...indent(operationRows(contract.operations), 2)
+			...(contract.operations?.length
+				? ['  Operations', ...indent(operationRows(contract.operations), 2)]
+				: [])
 		];
 	const sections: Array<[string, Field[]]> = [
 		[component ? 'Props' : 'Inputs', contract.inputs],
@@ -89,6 +96,23 @@ function operationRows(
 									: 'none found (static analysis; indirect errors unknown)'
 						]
 			)
+		])
+	]);
+}
+
+function storageRows(models: NonNullable<ComponentManifest['contract']['storage']>): string[] {
+	return models.flatMap((model) => [
+		model.name,
+		...indent([
+			`Table  ${model.table ?? 'unknown'}`,
+			`Primary key  ${model.primaryKey ?? 'unknown'}`,
+			...model.fields.map(
+				(field) =>
+					`${field.name}  ${field.type}${qualifiers(field)}${field.primaryKey ? '  (primary key)' : ''}${field.nullable ? '  (nullable)' : ''}${field.validation ? `  validation: ${field.validation}` : ''}${field.relations ? `  relations: ${field.relations}` : ''}`
+			),
+			...(model.validation ? [`Validation  ${model.validation}`] : []),
+			...(model.relations ? [`Relations  ${model.relations}`] : []),
+			...(model.unresolved ?? []).map((gap) => `Unresolved  ${gap}`)
 		])
 	]);
 }

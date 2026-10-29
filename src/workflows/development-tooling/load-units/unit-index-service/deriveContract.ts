@@ -7,6 +7,7 @@ import type {
 /** Retain the legacy arrays while separating component props from exported script functions. */
 export function deriveContract(files: SourceFile[]): ComponentManifest['contract'] {
 	const symbols = files.flatMap((file) => file.exports);
+	const storage = files.flatMap((file) => file.storage ?? []);
 	const components = symbols.filter((symbol) => symbol.kind === 'component');
 	const outputs = symbols
 		.filter(
@@ -33,11 +34,21 @@ export function deriveContract(files: SourceFile[]): ComponentManifest['contract
 			: errors.length
 				? 'found'
 				: 'none-found',
-		inputs: (components.length
-			? components
-			: symbols.filter((symbol) => symbol.kind !== 'snippet')
-		).flatMap((symbol) => symbol.inputs),
+		inputs: storage.length
+			? storage.flatMap((model) =>
+					model.fields.map((field) => ({
+						name: `${model.name}.${field.name}`,
+						type: field.type,
+						required: field.required,
+						...(Object.hasOwn(field, 'default') ? { default: field.default } : {})
+					}))
+				)
+			: (components.length
+					? components
+					: symbols.filter((symbol) => symbol.kind !== 'snippet')
+				).flatMap((symbol) => symbol.inputs),
 		outputs,
+		...(storage.length ? { storage } : {}),
 		errors: errors.map((name) => ({ name, type: 'thrown' })),
 		...(snippets.length ? { snippets } : {}),
 		operations: symbols
@@ -62,6 +73,7 @@ export function declaredContract(
 		inputs: source.inputs.map((item) => explainedItem(item, declared.inputs)),
 		...(source.snippets ? { snippets: source.snippets } : {}),
 		initialization: source.initialization,
+		...(source.storage ? { storage: source.storage } : {}),
 		operations: source.operations?.map((operation) => ({
 			...operation,
 			inputs: operation.inputs.map((item) => explainedItem(item, declared.inputs)),

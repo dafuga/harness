@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { compositionSchema } from './composition';
+import { sourceContractSchema } from './contractSchemas';
 
 export const unitIdPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const identifier = z
@@ -41,15 +42,6 @@ export const contractItemSchema = z.strictObject({
 	description: z.string().optional(),
 	/** Values a person declared as examples of the item; any JSON, kept exactly as written. */
 	examples: z.array(z.json()).optional()
-});
-
-const errorStatusSchema = z.enum(['declared', 'none-found', 'unknown', 'found']);
-const contractOperationSchema = z.strictObject({
-	name: text,
-	inputs: z.array(contractItemSchema),
-	outputs: z.array(contractItemSchema),
-	errors: z.array(contractItemSchema),
-	errorStatus: errorStatusSchema
 });
 
 /** Authored usage, distinct from observed verification evidence. */
@@ -141,16 +133,7 @@ export const componentManifestSchema = z.strictObject({
 	/** Retired identities this unit continues; their baselines and history carry over. */
 	lineage: z.strictObject({ predecessors: z.array(identifier).min(1) }).optional(),
 	owns: z.strictObject({ source: z.array(text), symbols: z.array(text) }),
-	contract: z.strictObject({
-		origin: z.enum(['derived', 'declared']),
-		inputs: z.array(contractItemSchema),
-		outputs: z.array(contractItemSchema),
-		errors: z.array(contractItemSchema),
-		errorStatus: errorStatusSchema.optional(),
-		operations: z.array(contractOperationSchema).optional(),
-		initialization: z.array(contractOperationSchema).optional(),
-		snippets: z.array(contractOperationSchema).optional()
-	}),
+	contract: sourceContractSchema(contractItemSchema),
 	dependencies: z.array(unitDependencySchema),
 	helperContracts: z.array(helperContractSchema).optional(),
 	/** `kind` and `entry` name the default execution target; `targets` lists every applicable one. */

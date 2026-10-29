@@ -41,6 +41,7 @@ export interface ResolvedReference {
 }
 
 export interface SourceFile {
+	storage?: ComponentManifest['contract']['storage'];
 	composition?: ComponentManifest['composition'];
 	path: string;
 	/** Git blob hash of the contents. */
