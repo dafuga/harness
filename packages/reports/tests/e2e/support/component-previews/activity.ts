@@ -134,7 +134,57 @@ const agentStates: Record<string, () => PreviewCases[string]> = {
 	})
 };
 
+const fileStates: Record<string, () => PreviewCases[string]> = {
+	recorded: () => ({
+		files: activity.files,
+		worktrees: null,
+		href: () => '/history',
+		registry: 'Recorded commit'
+	}),
+	clean: () => ({
+		files: activity.files,
+		worktrees: [{ ...live.worktrees[0], changes: [] }],
+		href: () => '/history',
+		registry: 'Current checkout'
+	}),
+	empty: () => ({
+		files: [],
+		worktrees: [],
+		href: () => '/history',
+		registry: 'Current checkout'
+	}),
+	truncated: () => ({
+		files: activity.files,
+		worktrees: [
+			{
+				...live.worktrees[0],
+				truncated: true,
+				changes: [
+					...live.worktrees[0].changes,
+					{
+						path: 'src/components/ActivityFiles.svelte',
+						status: 'modified',
+						units: ['reports.component.activity-files']
+					},
+					{
+						path: 'specification/scenarios/component-catalog-previews.json',
+						status: 'modified',
+						units: []
+					}
+				]
+			}
+		],
+		href: () => '/history',
+		registry: 'Current checkout'
+	})
+};
+
 export function activityVariant(id: string, variant: string, props: PreviewCases[string]) {
-	if (id !== 'reports.component.activity-agents') return props;
-	return agentStates[variant]?.() ?? props;
+	const states =
+		id === 'reports.component.activity-agents'
+			? agentStates
+			: id === 'reports.component.activity-files'
+				? fileStates
+				: undefined;
+	return states?.[variant]?.() ?? props;
 }

@@ -1151,6 +1151,30 @@
 			"units": ["reports.component.activity-files"]
 		},
 		{
+			"id": "reports-component-activity-files-recorded",
+			"title": "Activity files: Recorded history",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
+			"id": "reports-component-activity-files-clean",
+			"title": "Activity files: Clean checkout",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
+			"id": "reports-component-activity-files-empty",
+			"title": "Activity files: Empty history",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
+			"id": "reports-component-activity-files-truncated",
+			"title": "Activity files: Additional changes",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
 			"id": "reports-component-activity-list",
 			"title": "Activity list",
 			"coverage": "required",
@@ -3089,6 +3113,10 @@
 				"reports-component-activity-agents-failed-read",
 				"reports-component-activity-agents-unreadable",
 				"reports-component-activity-files",
+				"reports-component-activity-files-recorded",
+				"reports-component-activity-files-clean",
+				"reports-component-activity-files-empty",
+				"reports-component-activity-files-truncated",
 				"reports-component-activity-list",
 				"reports-component-activity-loops",
 				"reports-component-activity-work",

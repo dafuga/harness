@@ -8,6 +8,8 @@ const variants: Record<string, string[]> = {
 		'failed-read',
 		'unreadable'
 	],
+	// File activity distinguishes the live checkout from recorded, clean, empty and clipped views.
+	'reports.component.activity-files': ['recorded', 'clean', 'empty', 'truncated'],
 	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
 	'reports.component.audio-comparison': ['unavailable'],
 	// The comparison opens by default; each single-recording view stays independently inspectable.
