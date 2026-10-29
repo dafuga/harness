@@ -112,6 +112,13 @@ for (const viewport of catalogViewports) {
 						'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
 					reason: 'The console connection-error fixture deliberately refuses the connection.'
 				});
+			if (unit.id === 'reports.component.provider-picker' && variant === 'connection-error')
+				browserErrors.expectError({
+					type: 'console',
+					message:
+						'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
+					reason: 'The picker connection-error fixture deliberately refuses the connection.'
+				});
 			if (isProjectAgent) {
 				page.on('pageerror', (error) => projectErrors.push(error.message));
 				page.on('console', (message) => {
