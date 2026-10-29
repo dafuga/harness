@@ -3,7 +3,9 @@ import { noop, text } from './shared';
 import * as d from './explorerData';
 const sourceFiles = ['src/components/OrderList.svelte', 'src/utils/filterOrders.ts'];
 const sourceText = (path: string) =>
-	`// Synthetic preview source of ${path}; no project file is read.\nexport const preview = true;\n`;
+	path.endsWith('.svelte')
+		? '<script lang="ts">\n  let orders = $state([]);\n</script>\n\n<h2>Recent orders</h2>\n'
+		: "export const isReady = (order) =>\n  order.status === 'ready';\n";
 const source = {
 	files: async () => sourceFiles,
 	read: async (path: string) => sourceText(path),
