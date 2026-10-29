@@ -65,7 +65,14 @@ const variants: Record<string, string[]> = {
 	'reports.component.modal': ['image', 'lightbox'],
 	// Archived source distinguishes actionable, loading, unavailable, empty and linked views.
 	'reports.component.source-code-action': ['unavailable'],
-	'reports.component.source-content': ['loading', 'error', 'empty'],
+	'reports.component.source-content': [
+		'loading',
+		'loading-file',
+		'error',
+		'list-error',
+		'empty',
+		'empty-file'
+	],
 	'reports.component.source-dialog': ['loading', 'error', 'empty'],
 	'reports.component.source-file-list': ['linked', 'empty'],
 	'reports.component.source-viewer': ['loading', 'error', 'empty'],
