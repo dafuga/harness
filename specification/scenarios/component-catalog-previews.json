@@ -1205,6 +1205,12 @@
 			"units": ["reports.component.audio-comparison"]
 		},
 		{
+			"id": "reports-component-audio-comparison-unavailable",
+			"title": "Audio comparison: Unavailable recording",
+			"coverage": "required",
+			"units": ["reports.component.audio-comparison"]
+		},
+		{
 			"id": "reports-component-audio-comparison-viewer",
 			"title": "Audio comparison viewer",
 			"coverage": "required",
@@ -3074,6 +3080,7 @@
 				"reports-component-analytics-models",
 				"reports-component-analytics-tasks",
 				"reports-component-audio-comparison",
+				"reports-component-audio-comparison-unavailable",
 				"reports-component-audio-comparison-viewer",
 				"reports-component-audio-evidence",
 				"reports-component-audio-upload-files",

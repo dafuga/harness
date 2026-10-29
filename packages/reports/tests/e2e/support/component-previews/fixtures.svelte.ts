@@ -96,6 +96,8 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 	if (!previewVariants(id).includes(variant))
 		throw new Error(`Unknown preview variant ${id}:${variant}`);
 	if (!variant || id === 'desktop.component.project-agent') return props;
+	const report = reportVariantProps(id, props, variant);
+	if (report) return report;
 	if (id === 'reports.component.status-badge') return { ...props, status: variant };
 	const activityProps = activityVariant(id, variant, props);
 	if (activityProps !== props) return activityProps;
@@ -109,4 +111,18 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 		return { ...shown, route, scope: { ...shown.scope, location: route } };
 	}
 	return shown;
+}
+
+function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id !== 'reports.component.audio-comparison' || variant !== 'unavailable') return null;
+	const before = props.before as Record<string, unknown>;
+	return {
+		...props,
+		before: {
+			...before,
+			file: '',
+			missing: true,
+			note: 'The original recording was not retained with this evidence.'
+		}
+	};
 }

@@ -8,6 +8,8 @@ const variants: Record<string, string[]> = {
 		'failed-read',
 		'unreadable'
 	],
+	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
+	'reports.component.audio-comparison': ['unavailable'],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',
