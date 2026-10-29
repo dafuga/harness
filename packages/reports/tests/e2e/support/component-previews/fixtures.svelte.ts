@@ -6,7 +6,7 @@ import { explorerCases } from './explorer';
 import { legacyAddresses, legacyCases } from './legacy';
 import { reportCases } from './reports';
 import { activityCases, activity, activityVariant } from './activity';
-import { analyticsCases } from './analytics';
+import { analyticsCases, analyticsVariant } from './analytics';
 import { createDesktopData } from './desktopData.svelte';
 import { desktopControls } from './desktopControls';
 import { desktopRuntime, gameCases } from './desktopRuntime';
@@ -103,6 +103,8 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 	if (id === 'reports.component.status-badge') return { ...props, status: variant };
 	const activityProps = activityVariant(id, variant, props);
 	if (activityProps !== props) return activityProps;
+	const analyticsProps = analyticsVariant(id, variant, props);
+	if (analyticsProps !== props) return analyticsProps;
 	const shown = modulePreview(props as unknown as ExplorerScreenProps, variant);
 	if (id.endsWith('explorer-module-resources-screen')) {
 		const route = {

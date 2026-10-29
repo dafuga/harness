@@ -1223,6 +1223,12 @@
 			"units": ["reports.component.analytics-filters"]
 		},
 		{
+			"id": "reports-component-analytics-filters-empty",
+			"title": "Analytics filters: No filters",
+			"coverage": "required",
+			"units": ["reports.component.analytics-filters"]
+		},
+		{
 			"id": "reports-component-analytics-history",
 			"title": "Analytics history",
 			"coverage": "required",
@@ -1921,6 +1927,12 @@
 		{
 			"id": "reports-component-modal",
 			"title": "Evidence dialog",
+			"coverage": "required",
+			"units": ["reports.component.modal"]
+		},
+		{
+			"id": "reports-component-modal-lightbox",
+			"title": "Evidence lightbox dialog",
 			"coverage": "required",
 			"units": ["reports.component.modal"]
 		},
@@ -3251,6 +3263,7 @@
 				"reports-component-activity-work-empty",
 				"reports-component-analytics-cpu",
 				"reports-component-analytics-filters",
+				"reports-component-analytics-filters-empty",
 				"reports-component-analytics-history",
 				"reports-component-analytics-models",
 				"reports-component-analytics-tasks",
@@ -3368,6 +3381,7 @@
 				"reports-component-harness-screen",
 				"reports-component-image-zoom",
 				"reports-component-modal",
+				"reports-component-modal-lightbox",
 				"reports-component-module-system-explorer-module-resources-screen",
 				"reports-component-module-system-explorer-module-resources-screen-playwright",
 				"reports-component-module-system-explorer-modules-screen",
