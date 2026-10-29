@@ -23,21 +23,25 @@
 			{
 				"name": "SourceCodeAction.entity",
 				"type": "ExplorerEntity",
+				"required": true,
 				"description": "Entity whose owned files should be read."
 			},
 			{
 				"name": "SourceCodeAction.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Revision-scoped navigation including an optional source callback."
 			},
 			{
 				"name": "SourceCodeAction.title",
 				"type": "string",
+				"required": false,
 				"description": "Optional displayed callable or entity name."
 			},
 			{
 				"name": "SourceCodeAction.path",
 				"type": "string",
+				"required": true,
 				"description": "The owned file selected by this row; its contents appear first in the modal."
 			}
 		],

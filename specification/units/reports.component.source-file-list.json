@@ -30,31 +30,40 @@
 			{
 				"name": "SourceFileList.files",
 				"type": "string[]",
+				"required": true,
 				"description": "Actual source paths, in display order."
 			},
 			{
 				"name": "SourceFileList.href",
 				"type": "(path: string) => string | undefined",
+				"required": true,
 				"description": "Optional external GitHub destination for each path."
 			},
 			{
 				"name": "SourceFileList.children",
 				"type": "Snippet<[string]>",
+				"required": true,
 				"description": "The existing action for each source file."
 			},
 			{
 				"name": "SourceFileList.label",
-				"type": "string | undefined",
+				"type": "string",
+				"required": false,
+				"default": "Source files",
 				"description": "Accessible list name, defaulting to Source files; test lists supply Test files."
 			},
 			{
 				"name": "SourceFileList.empty",
-				"type": "string | undefined",
+				"type": "string",
+				"required": false,
+				"default": "No source files recorded at this revision.",
 				"description": "Caller-supplied empty message for the selected file collection."
 			},
 			{
 				"name": "SourceFileList.relativeTo",
-				"type": "string | undefined",
+				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Directory prefix omitted from matching display labels. Complete paths remain in hover text and links, and are passed to each file action."
 			}
 		],
