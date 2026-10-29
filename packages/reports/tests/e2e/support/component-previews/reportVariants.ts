@@ -49,7 +49,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 		)
 	)
 		return null;
-	return audioComparisonVariant(props, variant);
+	return audioComparisonVariant(props, variant, id);
 }
 
 function selectVariant(props: PreviewCases[string], variant: string) {

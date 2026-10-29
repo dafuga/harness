@@ -1,17 +1,24 @@
 import type { PreviewCases } from './shared';
+import { baselineNarration, releaseNarration } from './reportData';
 
 const statuses = ['running', 'failed', 'blocked', 'skipped', 'not-proven', 'interrupted'];
 
 /** Keep each recording's availability, duration and verdict independently represented. */
-export function audioComparisonVariant(props: PreviewCases[string], variant: string) {
-	if (['before', 'after', 'transcript-closed', 'playing-before', 'playing-after'].includes(variant))
-		return props;
+export function audioComparisonVariant(props: PreviewCases[string], variant: string, id: string) {
+	if (['before', 'after', 'transcript-closed'].includes(variant))
+		return { ...props, before: baselineNarration, after: releaseNarration };
+	if (['playing-before', 'playing-after'].includes(variant)) return props;
 	const before = props.before as Record<string, unknown>;
 	const after = props.after as Record<string, unknown>;
-	if (variant === 'unavailable') return { ...props, before: unavailable(before) };
-	if (variant === 'after-unavailable') return { ...props, after: unavailableAfter(after) };
+	const compact = id === 'reports.component.audio-comparison-viewer';
+	if (variant === 'unavailable') return { ...props, before: unavailable(before, compact) };
+	if (variant === 'after-unavailable') return { ...props, after: unavailableAfter(after, compact) };
 	if (variant === 'both-unavailable')
-		return { ...props, before: unavailable(before), after: unavailableAfter(after) };
+		return {
+			...props,
+			before: unavailable(before, compact),
+			after: unavailableAfter(after, compact)
+		};
 	if (variant === 'no-duration')
 		return {
 			...props,
@@ -22,18 +29,22 @@ export function audioComparisonVariant(props: PreviewCases[string], variant: str
 	return statuses.includes(variant) ? { ...props, after: { ...after, status: variant } } : null;
 }
 
-function unavailable(item: Record<string, unknown>) {
+function unavailable(item: Record<string, unknown>, compact: boolean) {
 	return {
 		...item,
 		file: '',
 		missing: true,
-		note: 'The original recording was not retained with this evidence.'
+		note: compact
+			? 'Original file not retained.'
+			: 'The original recording was not retained with this evidence.'
 	};
 }
 
-function unavailableAfter(item: Record<string, unknown>) {
+function unavailableAfter(item: Record<string, unknown>, compact: boolean) {
 	return {
-		...unavailable(item),
-		note: 'The updated recording was not retained with this evidence.'
+		...unavailable(item, compact),
+		note: compact
+			? 'Updated file not retained.'
+			: 'The updated recording was not retained with this evidence.'
 	};
 }
