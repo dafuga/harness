@@ -26,7 +26,14 @@
 			{
 				"name": "EntityExamples.documentation",
 				"type": "UnitDocumentation | undefined",
+				"required": false,
 				"description": "Documentation read from this entity at the selected commit; absent or invalid content shows a gap."
+			},
+			{
+				"name": "EntityExamples.setupTitle",
+				"type": "string | undefined",
+				"required": false,
+				"description": "Optional heading for setup shown once before documented calls."
 			}
 		],
 		"outputs": [

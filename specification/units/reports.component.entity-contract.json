@@ -38,21 +38,25 @@
 			{
 				"name": "EntityContract.unit",
 				"type": "HarnessUnit",
+				"required": true,
 				"description": "The entity at the selected revision, including source-declared model definitions, fields, methods and recorded examples."
 			},
 			{
 				"name": "EntityContract.category",
 				"type": "ExplorerCategory",
+				"required": true,
 				"description": "The kind of entity; config outputs are labelled Provides."
 			},
 			{
 				"name": "EntityContract.contract",
 				"type": "ContractRow[]",
+				"required": true,
 				"description": "Prepared contract facts such as purpose, route and execution targets."
 			},
 			{
 				"name": "EntityContract.last",
 				"type": "string",
+				"required": false,
 				"description": "Optional parent commit when the selected revision removed this entity."
 			}
 		],

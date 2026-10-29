@@ -29,31 +29,38 @@
 			{
 				"name": "ExplorerUsage.consumers",
 				"type": "ExplorerEntity[]",
+				"required": true,
 				"description": "Referenced consumers at the shown revision, or empty for a dash."
 			},
 			{
 				"name": "ExplorerUsage.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Navigation preserving the selected branch and commit."
 			},
 			{
 				"name": "ExplorerUsage.lens",
 				"type": "EntityLens",
+				"required": true,
 				"description": "The selected revision evidence resolver; no screenshot is borrowed from another entity."
 			},
 			{
 				"name": "ExplorerUsage.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "URL prefix resolving the referenced screenshot file."
 			},
 			{
 				"name": "ExplorerUsage.layout",
 				"type": "'grouped' | 'flat'",
+				"required": false,
 				"description": "Compatibility input; every module-card footer is now flat, without consumer category labels."
 			},
 			{
 				"name": "ExplorerUsage.limit",
 				"type": "number",
+				"required": false,
+				"default": 3,
 				"description": "Optional lower limit; every footer shows at most three distinct consumers, with an accessible overflow ellipsis."
 			}
 		],

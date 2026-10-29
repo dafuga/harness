@@ -29,41 +29,52 @@
 			{
 				"name": "ExplorerCatalogItems.category",
 				"type": "ExplorerCategory | null",
+				"required": true,
 				"description": "Collection category, or null for support dependencies. Modules use the shared card; config setting rows retain their value table."
 			},
 			{
 				"name": "ExplorerCatalogItems.rows",
 				"type": "Array<CatalogRow | SupportRow>",
+				"required": true,
 				"description": "Required revision-scoped rows to render in their supplied order."
 			},
 			{
 				"name": "ExplorerCatalogItems.nav",
 				"type": "EntityNav",
+				"required": true,
 				"description": "Required entity navigation retaining the selected branch and revision."
 			},
 			{
 				"name": "ExplorerCatalogItems.lens",
 				"type": "EntityLens",
+				"required": true,
 				"description": "Required evidence lens supplying screenshots for each visual entity."
 			},
 			{
 				"name": "ExplorerCatalogItems.mediaBase",
 				"type": "string",
+				"required": true,
 				"description": "Required URL prefix used to resolve captured screenshot assets."
 			},
 			{
 				"name": "ExplorerCatalogItems.verification",
 				"type": "boolean",
+				"required": false,
+				"default": true,
 				"description": "Optional verification visibility, defaulting to true; relationship tabs pass false."
 			},
 			{
 				"name": "ExplorerCatalogItems.batch",
 				"type": "number",
+				"required": false,
+				"default": 0,
 				"description": "Optional rows shown per View More step, defaulting to 0 for all rows; relationship tabs pass 4."
 			},
 			{
 				"name": "ExplorerCatalogItems.label",
 				"type": "string",
+				"required": false,
+				"default": "category ?? 'Other'",
 				"description": "Optional accessible name of a batched group and its View More action, defaulting to the category."
 			}
 		],

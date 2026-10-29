@@ -19,11 +19,13 @@
 			{
 				"name": "serviceContract.unit",
 				"type": "HarnessUnit",
+				"required": true,
 				"description": "The viewed service unit, including recorded classes and methods, owned symbols, and declared parameter, return and error fields."
 			},
 			{
 				"name": "modelContract.unit",
 				"type": "HarnessUnit",
+				"required": true,
 				"description": "The selected model declarations, including static public methods and existing qualified error contracts."
 			}
 		],

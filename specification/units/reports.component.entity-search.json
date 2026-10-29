@@ -32,21 +32,25 @@
 			{
 				"name": "EntitySearch.entries",
 				"type": "SearchEntry[] | null",
+				"required": true,
 				"description": "Required list of entities, or null while the host loads them. Null yields no matches and loading wording; the component does not fetch entries."
 			},
 			{
 				"name": "EntitySearch.scope",
 				"type": "{ label: string; pinned: string | null }",
+				"required": true,
 				"description": "Required label and optional pinned commit. Label names searched scope; pinned takes precedence in placeholder wording over loading."
 			},
 			{
 				"name": "EntitySearch.href",
 				"type": "(entry: SearchEntry) => string",
+				"required": true,
 				"description": "Required callback providing complete result link targets."
 			},
 			{
 				"name": "EntitySearch.open",
 				"type": "(entry: SearchEntry) => void",
+				"required": true,
 				"description": "Opens the chosen entity in the host after closing the search modal."
 			}
 		],
