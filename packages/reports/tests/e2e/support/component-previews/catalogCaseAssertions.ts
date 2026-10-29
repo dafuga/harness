@@ -30,8 +30,8 @@ export async function assertCatalogLayout(
 	}
 }
 
-/** Report examples retain their named values and consumers in each catalog capture. */
-export async function assertReportExamples(component: Locator, id: string) {
+/** Catalog examples retain their named values, consumers and basic presentation. */
+export async function assertCatalogDetails(component: Locator, id: string) {
 	if (id === 'reports.component.explorer-function-card') {
 		await expect(component.locator('article')).toHaveCSS('border-top-style', 'solid');
 		await expect(component.locator('code')).toHaveText('filterOrders(orders, "SERVICE")');
@@ -43,5 +43,13 @@ export async function assertReportExamples(component: Locator, id: string) {
 	if (id === 'reports.component.harness-entity-history-row') {
 		await expect(component.locator('table.ex-history tbody > tr')).toHaveCount(1);
 		await expect(component.locator('td').first()).toHaveCSS('white-space', 'nowrap');
+	}
+	if (id === 'reports.component.harness-harness-icon') {
+		await expect(component.getByRole('img', { name: 'Component', exact: true })).toBeVisible();
+		await expect(component.locator('path')).toHaveAttribute('d', /\S+/);
+	}
+	if (id === 'hub.component.account-menu') {
+		await expect(component).toHaveCSS('display', 'flex');
+		await expect(component).toHaveCSS('column-gap', '10px');
 	}
 }

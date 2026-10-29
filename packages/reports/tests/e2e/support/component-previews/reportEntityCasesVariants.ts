@@ -23,9 +23,10 @@ export function entityCasesVariant(props: PreviewCases[string], variant: string)
 	if (variant === 'recorded') return { ...recorded, document: calls };
 	if (variant === 'recorded-error')
 		return { ...recorded, document: { ...calls, cases: [badCall] } };
-	if (variant === 'observed')
+	if (variant === 'observed' || variant === 'observed-noncallable')
 		return {
 			...recorded,
+			callable: variant !== 'observed-noncallable',
 			document: { input: { searchText: 'SERVICE' }, output: ['Order 1042 · Service call'] }
 		};
 	if (variant === 'unavailable') return { ...recorded, document: { assertions: [] } };

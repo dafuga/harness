@@ -106,6 +106,7 @@ const variants: Record<string, string[]> = {
 		'recorded',
 		'recorded-error',
 		'observed',
+		'observed-noncallable',
 		'unavailable',
 		'malformed',
 		'wrong-unit',
