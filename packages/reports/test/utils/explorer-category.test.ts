@@ -2,9 +2,11 @@ import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
+import { modelDefinitions } from '../../../../src/services/explorer-ui/revision-detail-service/modelDefinitions';
 import { explorerEntityCategories as explorerCategories } from '../../../../src/utils/explorerRoute';
 import type { HarnessUnit } from '../../src/models/Harness.types';
 import { explorerCategory, explorerRole } from '../../src/utils/explorerCategory';
+import { modelDefinition } from '../entityClassFixtures';
 import { unit } from '../explorerFixture';
 
 const owning = (id: string, kind: string, source: string[]) =>
@@ -57,6 +59,20 @@ test('a unit of a product kind is listed under the category of that kind', () =>
 			'runtime constants do not turn interfaces into database models'
 		).toBe('types');
 		expect(explorerRole(mixed), 'shared type role').toBe('Type definitions');
+		const failure = owning('model.runner-types', 'model', [
+			'src/models/Runner.types.ts',
+			'src/models/RunnerValues.ts'
+		]);
+		failure.modelDefinitions = [
+			{ ...modelDefinition('Runner', 'src/models/Runner.types.ts'), kind: 'interface' },
+			{ ...modelDefinition('RunCancelled', 'src/models/RunnerValues.ts'), table: undefined }
+		];
+		expect(
+			[explorerCategory(failure), explorerRole(failure)],
+			'a runtime error class beside shared interfaces keeps them listed as types'
+		).toEqual(['types', 'Type definitions']);
+		failure.modelDefinitions = failure.modelDefinitions.filter((item) => item.kind === 'class');
+		expect(explorerCategory(failure), 'the runtime class alone is still no model').toBeNull();
 		for (const source of [['src/models/Order.types.ts'], ['src/models/domain/Order.d.ts']]) {
 			const types = owning('model.order-types', 'model', source);
 			expect(explorerCategory(types), 'types are separate').toBe('types');
@@ -171,6 +187,25 @@ test("the policy holds for Harness's own registry", () => {
 	}
 	for (const category of ['functions', 'models', 'types'])
 		expect(listed(category), 'raw manifests have no source-derived declaration proof').toEqual([]);
+	const root = join(import.meta.dirname, '../../../..');
+	const declared = units
+		.filter((item) => item.kind === 'model')
+		.map((item) => ({
+			...item,
+			modelDefinitions: item.owns.source
+				.filter((path) => /\.[cm]?tsx?$/.test(path))
+				.flatMap((path) => modelDefinitions(readFileSync(join(root, path), 'utf8'), path))
+		}));
+	const projected = (category: string | null) =>
+		declared
+			.filter((item) => item.modelDefinitions.length && explorerCategory(item) === category)
+			.map((item) => item.id);
+	expect(
+		projected(null),
+		'a module that owns shared declarations is listed under Models or Types'
+	).toEqual([]);
+	expect(projected('models').length, 'stored classes are models').toBeGreaterThan(0);
+	expect(projected('types').length, 'shared declarations are types').toBeGreaterThan(0);
 	for (const category of explorerCategories.filter(
 		(kind) => !['functions', 'models', 'types'].includes(kind)
 	)) {
