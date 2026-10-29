@@ -112,6 +112,17 @@ const variants: Record<string, string[]> = {
 		'wrong-unit',
 		'expanded'
 	],
+	// Documentation distinguishes absent examples, setup, missing calls and expected outcomes.
+	'reports.component.entity-examples': [
+		'empty',
+		'gap',
+		'setup',
+		'inline-setup',
+		'missing-setup',
+		'error',
+		'missing-call',
+		'void'
+	],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
 	// Visual, page, function and unlinked dependency cards each have their own treatment.

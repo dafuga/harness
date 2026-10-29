@@ -5,6 +5,7 @@ import { baselineNarration, releaseNarration } from './reportData';
 import { sourceVariant } from './reportSourceVariants';
 import { moduleCardVariant } from './reportModuleCardVariants';
 import { entityCasesVariant } from './reportEntityCasesVariants';
+import { entityExamplesVariant } from './reportEntityExamplesVariants';
 import { replayControlsVariant } from './replayControlsVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
@@ -21,6 +22,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
 	if (id === 'reports.component.modal') return modalVariant(props, variant);
 	if (id === 'reports.component.entity-cases') return entityCasesVariant(props, variant);
+	if (id === 'reports.component.entity-examples') return entityExamplesVariant(props, variant);
 	if (id === 'reports.component.explorer-ui-explorer-module-card')
 		return moduleCardVariant(props, variant);
 	if (id === 'reports.component.source-viewer') {

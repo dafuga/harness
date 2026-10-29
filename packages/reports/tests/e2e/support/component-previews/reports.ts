@@ -66,7 +66,9 @@ export const reportCases: PreviewCases = {
 		category: 'components',
 		contract: d.contract
 	},
-	'reports.component.entity-examples': { documentation: { examples: [example] } },
+	'reports.component.entity-examples': {
+		documentation: { path: 'README.md', examples: [example] }
+	},
 	'reports.component.entity-search': {
 		entries,
 		scope: { label: 'Preview project', pinned: null },
