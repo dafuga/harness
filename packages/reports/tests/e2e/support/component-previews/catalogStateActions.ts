@@ -16,6 +16,13 @@ const actions: Record<string, CatalogStateAction> = {
 		await expect(
 			component.getByText('Timing and diction were reviewed before approval.', { exact: true })
 		).toBeVisible();
+	},
+	'reports.component.entity-search:open': async (component) => {
+		await component.getByRole('button', { name: 'Search entities', exact: true }).click();
+		const dialog = component.getByRole('dialog', { name: 'Search project' });
+		await expect(dialog).toBeVisible();
+		await dialog.getByRole('combobox', { name: 'Search entities' }).fill('order');
+		await expect(dialog.getByRole('option').first()).toBeVisible();
 	}
 };
 
