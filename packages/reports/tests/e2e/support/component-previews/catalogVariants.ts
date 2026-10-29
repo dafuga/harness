@@ -14,8 +14,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.activity-loops': ['empty'],
 	// Work distinguishes a live checkout from the recorded-history wording and an empty history.
 	'reports.component.activity-work': ['recorded', 'empty'],
-	// Project activity keeps checkout observations, recorded history and no activity distinct.
-	'reports.component.project-activity': ['recorded', 'empty'],
+	// Project activity keeps recorded, empty, stale and failed live readings distinct.
+	'reports.component.project-activity': ['recorded', 'empty', 'stale', 'failed-read'],
 	// Site activity's refresh failure preserves the last known live observation with a warning.
 	'reports.component.site-activity': ['failed-refresh'],
 	// History filters show both a focused query and the no-filter form.
@@ -26,8 +26,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.analytics-history': ['empty'],
 	// Model usage has a separate unrecorded state from populated author and evaluator evidence.
 	'reports.component.analytics-models': ['empty'],
-	// Task history distinguishes recorded assessment rows from both empty check sections.
-	'reports.component.analytics-tasks': ['empty'],
+	// Task history separates empty, unassessed, not-yet-passed and retried assessments.
+	'reports.component.analytics-tasks': ['empty', 'unassessed', 'unpassed', 'retried'],
 	// Each side can be unavailable, have no duration or carry an independent result.
 	'reports.component.audio-comparison': [
 		'unavailable',
@@ -92,6 +92,24 @@ const variants: Record<string, string[]> = {
 		'model-open',
 		'effort-open'
 	],
+	// Floating chat exposes its launcher, notice, navigation and conversation-follow modes.
+	'reports.component.floating-chat': [
+		'closed',
+		'notice',
+		'navigation',
+		'following',
+		'not-following'
+	],
+	// Active observations and every switch status have distinct card presentations.
+	'reports.component.provider-picker-cards': [
+		'unknown',
+		'in-use',
+		'applying',
+		'applied',
+		'failed',
+		'cancelled',
+		'locked'
+	],
 	// A single recording, comparison pair and disabled upload each have distinct input layouts.
 	'reports.component.audio-upload-files': ['comparison', 'uploading'],
 	// Image, missing, compact provenance and paired-audio branches each render different evidence.
@@ -122,10 +140,36 @@ const variants: Record<string, string[]> = {
 		'recorded',
 		'recorded-error',
 		'observed',
+		'observed-noncallable',
 		'unavailable',
 		'malformed',
 		'wrong-unit',
 		'expanded'
+	],
+	// A contract changes for each entity kind, missing declarations, errors and an opened example.
+	'reports.component.entity-contract': [
+		'empty',
+		'errors',
+		'last',
+		'example-open',
+		'function',
+		'function-error',
+		'service',
+		'model',
+		'model-bare',
+		'types',
+		'config'
+	],
+	// Documentation distinguishes absent examples, setup, missing calls and expected outcomes.
+	'reports.component.entity-examples': [
+		'empty',
+		'gap',
+		'setup',
+		'inline-setup',
+		'missing-setup',
+		'error',
+		'missing-call',
+		'void'
 	],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
@@ -151,11 +195,25 @@ const variants: Record<string, string[]> = {
 		'empty',
 		'empty-file'
 	],
-	'reports.component.source-dialog': ['loading', 'error', 'empty'],
+	'reports.component.source-dialog': [
+		'loading',
+		'loading-file',
+		'error',
+		'list-error',
+		'empty',
+		'empty-file'
+	],
 	'reports.component.source-file-list': ['linked', 'empty'],
-	'reports.component.source-viewer': ['loading', 'error', 'empty'],
+	'reports.component.source-viewer': [
+		'loading',
+		'loading-list',
+		'error',
+		'list-error',
+		'empty',
+		'empty-file'
+	],
 	// Dense, display-label and disabled controls expose the select's distinct field treatments.
-	'reports.component.select': ['compact', 'display', 'disabled'],
+	'reports.component.select': ['compact', 'display', 'disabled', 'open'],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',

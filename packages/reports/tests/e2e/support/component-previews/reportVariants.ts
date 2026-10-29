@@ -5,19 +5,36 @@ import { baselineNarration, releaseNarration } from './reportData';
 import { sourceVariant } from './reportSourceVariants';
 import { moduleCardVariant } from './reportModuleCardVariants';
 import { entityCasesVariant } from './reportEntityCasesVariants';
+import { entityExamplesVariant } from './reportEntityExamplesVariants';
+import { entityContractVariant } from './reportEntityContractVariants';
 import { replayControlsVariant } from './replayControlsVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
 import { audioEvidenceVariant } from './audioEvidenceVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
+import { analyticsTaskVariant } from './analyticsTaskVariants';
+import { projectActivityVariant } from './projectActivityVariants';
+import { providerPickerCardVariant } from './providerPickerCardVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id === 'reports.component.analytics-tasks' && variant !== 'empty')
+		return analyticsTaskVariant(props, variant);
+	if (id === 'reports.component.project-activity' && ['stale', 'failed-read'].includes(variant))
+		return projectActivityVariant(props, variant);
+	if (id === 'reports.component.provider-picker-cards')
+		return providerPickerCardVariant(props, variant);
 	if (id === 'reports.component.select') return selectVariant(props, variant);
 	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
 	if (id === 'reports.component.modal') return modalVariant(props, variant);
 	if (id === 'reports.component.entity-cases') return entityCasesVariant(props, variant);
+	if (id === 'reports.component.entity-contract') return entityContractVariant(props, variant);
+	if (id === 'reports.component.entity-examples') return entityExamplesVariant(props, variant);
 	if (id === 'reports.component.explorer-ui-explorer-module-card')
 		return moduleCardVariant(props, variant);
+	if (id === 'reports.component.source-viewer') {
+		const viewer = extendedSourceViewerVariant(props, variant);
+		if (viewer) return viewer;
+	}
 	if (id.startsWith('reports.component.source-')) return sourceVariant(props, id, variant);
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
 	if (id === 'reports.component.audio-upload-files') return audioUploadFilesVariant(props, variant);
@@ -65,6 +82,28 @@ function modalVariant(props: PreviewCases[string], variant: string) {
 			`<div class="viewer-images"><figure><img src="${image}" alt="Synthetic order card evidence" /><figcaption>Recorded order card · desktop evidence</figcaption></figure></div>`
 		)
 	};
+}
+
+function extendedSourceViewerVariant(props: PreviewCases[string], variant: string) {
+	const state = props.state as Record<string, unknown>;
+	if (variant === 'loading-list')
+		return {
+			...props,
+			state: { ...state, files: [], path: '', text: '', loading: true, error: '' }
+		};
+	if (variant === 'list-error')
+		return {
+			...props,
+			state: {
+				...state,
+				files: [],
+				path: '',
+				text: '',
+				loading: false,
+				error: 'The archived source file list is unavailable.'
+			}
+		};
+	return variant === 'empty-file' ? { ...props, state: { ...state, text: '' } } : null;
 }
 
 function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {

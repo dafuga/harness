@@ -1,9 +1,47 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { prepareConsoleChatState } from './consoleChatActions';
+import { assertProviderPickerCardState } from './providerPickerCardActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
 const actions: Record<string, CatalogStateAction> = {
+	'reports.component.floating-chat:closed': async (component) => {
+		await expect(component.locator('.floating-chat-bubble')).toBeVisible();
+		await expect(component.locator('.floating-chat-panel')).toHaveCount(0);
+	},
+	'reports.component.floating-chat:notice': async (component) => {
+		await expect(
+			component.getByText('Agent suggestions appear when a provider connects.')
+		).toBeVisible();
+	},
+	'reports.component.floating-chat:navigation': async (component) => {
+		await expect(component.getByRole('navigation', { name: 'Project chat' })).toBeVisible();
+	},
+	'reports.component.floating-chat:following': async (component) => {
+		await expect
+			.poll(() => component.locator('.floating-chat-body').evaluate((node) => node.scrollTop))
+			.toBeGreaterThan(0);
+	},
+	'reports.component.floating-chat:not-following': async (component) => {
+		await expect
+			.poll(() => component.locator('.floating-chat-body').evaluate((node) => node.scrollTop))
+			.toBe(0);
+	},
+	'reports.component.project-activity:stale': async (component) => {
+		await expect(component.getByText(/The last reading is older than a minute/)).toBeVisible();
+	},
+	'reports.component.project-activity:failed-read': async (component) => {
+		await expect(component.getByRole('status')).toContainText('Activity could not be read again');
+	},
+	'reports.component.analytics-tasks:unassessed': async (component) => {
+		await expect(component.getByRole('cell', { name: 'Not assessed' })).toBeVisible();
+	},
+	'reports.component.analytics-tasks:unpassed': async (component) => {
+		await expect(component.getByRole('cell', { name: 'Not yet passed' })).toBeVisible();
+	},
+	'reports.component.analytics-tasks:retried': async (component) => {
+		await expect(component.getByRole('link', { name: 'View report' })).toBeVisible();
+	},
 	'reports.component.audio-comparison-viewer:before': async (component) => {
 		await component.getByRole('button', { name: 'View before recording' }).click();
 		await expect(component.getByRole('group', { name: 'Before recording' })).toBeVisible();
@@ -98,6 +136,10 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.locator('.cases > details > summary').click();
 		await expect(component.locator('.cases > details > pre')).toContainText('Format a duration');
 	},
+	'reports.component.entity-contract:example-open': async (component) => {
+		await component.getByRole('button', { name: 'View example for Orders' }).click();
+		await expect(component.getByRole('dialog', { name: 'Example for Orders' })).toBeVisible();
+	},
 	'reports.component.entity-search:open': async (component) => {
 		await component.getByRole('button', { name: 'Search entities', exact: true }).click();
 		const dialog = component.getByRole('dialog', { name: 'Search project' });
@@ -108,6 +150,11 @@ const actions: Record<string, CatalogStateAction> = {
 	'reports.component.filter-dialog:open': async (component) => {
 		await component.getByRole('button', { name: 'Filters', exact: true }).click();
 		await expect(component.getByRole('dialog', { name: 'Filters', exact: true })).toBeVisible();
+	},
+	'reports.component.select:open': async (component) => {
+		const select = component.getByRole('combobox', { name: 'Viewport', exact: true });
+		await select.click();
+		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 	}
 };
 
@@ -115,6 +162,8 @@ const actions: Record<string, CatalogStateAction> = {
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
 	if (id === 'reports.component.console-chat' && variant)
 		return prepareConsoleChatState(component, variant);
+	if (id === 'reports.component.provider-picker-cards' && variant)
+		return assertProviderPickerCardState(component, variant);
 	if (id === 'reports.component.audio-comparison') await assertAudioComparison(component, variant);
 	const action = actions[`${id}:${variant}`];
 	if (action) await action(component);

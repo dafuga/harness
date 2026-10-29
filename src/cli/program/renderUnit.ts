@@ -1,46 +1,8 @@
 import type { UnitDetail } from './inspectUnits.types';
 import type { ComponentManifest } from '../../core/development-tooling/unitTypes';
-
-type Field = ComponentManifest['contract']['inputs'][number];
-const indent = (lines: string[], depth = 1) => lines.map((line) => `${'  '.repeat(depth)}${line}`);
-
-function qualifiers(item: Field): string {
-	const values = [
-		item.required === undefined ? undefined : item.required ? 'required' : 'optional',
-		Object.hasOwn(item, 'default') ? `default ${JSON.stringify(item.default)}` : undefined
-	].filter((value): value is string => Boolean(value));
-	return values.length ? `  (${values.join('; ')})` : '';
-}
-
-/** `name  type` rows with the types in one column; the owner prefix (`Badge.`) is dropped. */
-function fields(list: Field[]): string[] {
-	if (list.length === 0) return ['none'];
-	const shortNames = list.map((item) => item.name.split('.').at(-1) ?? item.name);
-	const repeated = new Set(shortNames.filter((name, index) => shortNames.indexOf(name) !== index));
-	const rows = list.map(
-		(item, index) =>
-			[repeated.has(shortNames[index]) ? item.name : shortNames[index], `${item.type}${qualifiers(item)}`] as const
-	);
-	const width = Math.max(...rows.map(([name]) => name.length));
-	return rows.map(([name, type]) =>
-		type === 'thrown' ? name : `${name.padEnd(width)}  ${type}`
-	);
-}
-
-/** What a caller needs: props or inputs, outputs for anything but a component, and errors. */
-export function renderContract(manifest: ComponentManifest): string[] {
-	const { contract, kind } = manifest;
-	const component = kind === 'component';
-	const sections: Array<[string, Field[]]> = [
-		[component ? 'Props' : 'Inputs', contract.inputs],
-		...(component ? [] : ([['Outputs', contract.outputs]] as Array<[string, Field[]]>)),
-		['Errors', contract.errors]
-	];
-	return [
-		`Contract (${contract.origin})`,
-		...indent(sections.flatMap(([title, list]) => [title, ...indent(fields(list))]))
-	];
-}
+import { indent } from './contractRows';
+import { renderContract } from './renderContract';
+export { renderContract } from './renderContract';
 
 /** Test files grouped by directory, each with its count, so a long list stays one screen. */
 export function groupTests(tests: string[]): string[] {
@@ -80,7 +42,10 @@ export function renderUnit(detail: UnitDetail): string {
 	const rows: Array<[string, string[]]> = [
 		['Source', manifest.owns.source],
 		...runtimeRows(manifest),
-		['Version', [`source ${version.source.slice(0, 12)} · contract ${version.contract.slice(0, 12)}`]],
+		[
+			'Version',
+			[`source ${version.source.slice(0, 12)} · contract ${version.contract.slice(0, 12)}`]
+		],
 		...(retired.length ? [['Continues', retired] as [string, string[]]] : []),
 		['Depends on', manifest.dependencies.map((d) => `${d.unit} (${d.via})`)],
 		['Consumers', detail.consumers],

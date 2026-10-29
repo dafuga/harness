@@ -9,6 +9,10 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 		await expect(dialog.getByRole('img', { name: 'Synthetic order card evidence' })).toBeVisible();
 	}
 	if (!id.startsWith('reports.component.source-')) return;
+	if (id === 'reports.component.source-file-list' && variant !== 'empty')
+		await expect(component.getByRole('button', { name: 'View code', exact: true })).toHaveCount(2, {
+			timeout: 1_000
+		});
 	if (
 		!variant &&
 		['source-content', 'source-dialog', 'source-viewer'].some((name) => id.endsWith(name))
@@ -20,6 +24,10 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 	}
 	if (variant === 'loading-file') {
 		await expect(component.getByRole('combobox', { name: 'Source file' })).toBeVisible();
+		await expect(component.getByRole('status')).toHaveText('Loading source…');
+	}
+	if (variant === 'loading-list') {
+		await expect(component.getByRole('combobox', { name: 'Source file' })).toHaveCount(0);
 		await expect(component.getByRole('status')).toHaveText('Loading source…');
 	}
 	if (variant === 'list-error') {

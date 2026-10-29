@@ -1277,6 +1277,24 @@
 			"units": ["reports.component.analytics-tasks"]
 		},
 		{
+			"id": "reports-component-analytics-tasks-unassessed",
+			"title": "Analytics tasks: Not assessed",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
+			"id": "reports-component-analytics-tasks-unpassed",
+			"title": "Analytics tasks: Not yet passed",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
+			"id": "reports-component-analytics-tasks-retried",
+			"title": "Analytics tasks: Passed after retries",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
 			"id": "reports-component-audio-comparison",
 			"title": "Audio comparison",
 			"coverage": "required",
@@ -1697,6 +1715,12 @@
 			"units": ["reports.component.entity-cases"]
 		},
 		{
+			"id": "reports-component-entity-cases-observed-noncallable",
+			"title": "Input and output examples: observed noncallable result",
+			"coverage": "required",
+			"units": ["reports.component.entity-cases"]
+		},
+		{
 			"id": "reports-component-entity-cases-unavailable",
 			"title": "Input and output examples: unavailable result",
 			"coverage": "required",
@@ -1727,8 +1751,122 @@
 			"units": ["reports.component.entity-contract"]
 		},
 		{
+			"id": "reports-component-entity-contract-empty",
+			"title": "Typed contract: no props",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-errors",
+			"title": "Typed contract: declared errors",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-last",
+			"title": "Typed contract: removed revision",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-example-open",
+			"title": "Typed contract: example open",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-function",
+			"title": "Typed contract: function",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-function-error",
+			"title": "Typed contract: function throws",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-service",
+			"title": "Typed contract: service",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-model",
+			"title": "Typed contract: model",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-model-bare",
+			"title": "Typed contract: model without members",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-types",
+			"title": "Typed contract: type declarations",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-config",
+			"title": "Typed contract: config",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
 			"id": "reports-component-entity-examples",
 			"title": "Usage examples",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-empty",
+			"title": "Usage examples: empty",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-gap",
+			"title": "Usage examples: malformed documentation",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-setup",
+			"title": "Usage examples: titled setup",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-inline-setup",
+			"title": "Usage examples: inline setup",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-missing-setup",
+			"title": "Usage examples: missing setup",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-error",
+			"title": "Usage examples: expected error",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-missing-call",
+			"title": "Usage examples: undocumented call",
+			"coverage": "required",
+			"units": ["reports.component.entity-examples"]
+		},
+		{
+			"id": "reports-component-entity-examples-void",
+			"title": "Usage examples: undefined return",
 			"coverage": "required",
 			"units": ["reports.component.entity-examples"]
 		},
@@ -1969,6 +2107,36 @@
 		{
 			"id": "reports-component-floating-chat",
 			"title": "Floating chat",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-closed",
+			"title": "Floating chat: Closed launcher",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-notice",
+			"title": "Floating chat: Notice",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-navigation",
+			"title": "Floating chat: Navigation",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-following",
+			"title": "Floating chat: Following conversation",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-not-following",
+			"title": "Floating chat: Reading from the top",
 			"coverage": "required",
 			"units": ["reports.component.floating-chat"]
 		},
@@ -2399,6 +2567,18 @@
 			"units": ["reports.component.project-activity"]
 		},
 		{
+			"id": "reports-component-project-activity-stale",
+			"title": "Project activity overview: Stale live reading",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
+			"id": "reports-component-project-activity-failed-read",
+			"title": "Project activity overview: Refresh failed",
+			"coverage": "required",
+			"units": ["reports.component.project-activity"]
+		},
+		{
 			"id": "reports-component-provider-picker",
 			"title": "Session model picker",
 			"coverage": "required",
@@ -2407,6 +2587,48 @@
 		{
 			"id": "reports-component-provider-picker-cards",
 			"title": "Active and queued model cards",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-unknown",
+			"title": "Active and queued model cards: Unknown session",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-in-use",
+			"title": "Active and queued model cards: In use",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-applying",
+			"title": "Active and queued model cards: Applying switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-applied",
+			"title": "Active and queued model cards: Applied switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-failed",
+			"title": "Active and queued model cards: Failed switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-cancelled",
+			"title": "Active and queued model cards: Cancelled switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-locked",
+			"title": "Active and queued model cards: Cancellation disabled",
 			"coverage": "required",
 			"units": ["reports.component.provider-picker-cards"]
 		},
@@ -2527,6 +2749,12 @@
 		{
 			"id": "reports-component-select-disabled",
 			"title": "Disabled report select control",
+			"coverage": "required",
+			"units": ["reports.component.select"]
+		},
+		{
+			"id": "reports-component-select-open",
+			"title": "Open report select control",
 			"coverage": "required",
 			"units": ["reports.component.select"]
 		},
@@ -3389,14 +3617,32 @@
 			"units": ["reports.component.source-dialog"]
 		},
 		{
+			"id": "reports-component-source-dialog-loading-file",
+			"title": "SourceDialog loading a selected file",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
 			"id": "reports-component-source-dialog-error",
 			"title": "SourceDialog unavailable archived source",
 			"coverage": "required",
 			"units": ["reports.component.source-dialog"]
 		},
 		{
+			"id": "reports-component-source-dialog-list-error",
+			"title": "SourceDialog unavailable file list",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
 			"id": "reports-component-source-dialog-empty",
 			"title": "SourceDialog without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
+			"id": "reports-component-source-dialog-empty-file",
+			"title": "SourceDialog with an empty file",
 			"coverage": "required",
 			"units": ["reports.component.source-dialog"]
 		},
@@ -3431,14 +3677,32 @@
 			"units": ["reports.component.source-viewer"]
 		},
 		{
+			"id": "reports-component-source-viewer-loading-list",
+			"title": "SourceViewer loading the file list",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
 			"id": "reports-component-source-viewer-error",
 			"title": "SourceViewer unavailable archived source",
 			"coverage": "required",
 			"units": ["reports.component.source-viewer"]
 		},
 		{
+			"id": "reports-component-source-viewer-list-error",
+			"title": "SourceViewer unavailable file list",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
 			"id": "reports-component-source-viewer-empty",
 			"title": "SourceViewer without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
+			"id": "reports-component-source-viewer-empty-file",
+			"title": "SourceViewer with an empty file",
 			"coverage": "required",
 			"units": ["reports.component.source-viewer"]
 		},
@@ -3860,6 +4124,9 @@
 				"reports-component-analytics-models-empty",
 				"reports-component-analytics-tasks",
 				"reports-component-analytics-tasks-empty",
+				"reports-component-analytics-tasks-unassessed",
+				"reports-component-analytics-tasks-unpassed",
+				"reports-component-analytics-tasks-retried",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-unavailable",
 				"reports-component-audio-comparison-after-unavailable",
@@ -3930,12 +4197,32 @@
 				"reports-component-entity-cases-recorded",
 				"reports-component-entity-cases-recorded-error",
 				"reports-component-entity-cases-observed",
+				"reports-component-entity-cases-observed-noncallable",
 				"reports-component-entity-cases-unavailable",
 				"reports-component-entity-cases-malformed",
 				"reports-component-entity-cases-wrong-unit",
 				"reports-component-entity-cases-expanded",
 				"reports-component-entity-contract",
+				"reports-component-entity-contract-empty",
+				"reports-component-entity-contract-errors",
+				"reports-component-entity-contract-last",
+				"reports-component-entity-contract-example-open",
+				"reports-component-entity-contract-function",
+				"reports-component-entity-contract-function-error",
+				"reports-component-entity-contract-service",
+				"reports-component-entity-contract-model",
+				"reports-component-entity-contract-model-bare",
+				"reports-component-entity-contract-types",
+				"reports-component-entity-contract-config",
 				"reports-component-entity-examples",
+				"reports-component-entity-examples-empty",
+				"reports-component-entity-examples-gap",
+				"reports-component-entity-examples-setup",
+				"reports-component-entity-examples-inline-setup",
+				"reports-component-entity-examples-missing-setup",
+				"reports-component-entity-examples-error",
+				"reports-component-entity-examples-missing-call",
+				"reports-component-entity-examples-void",
 				"reports-component-entity-search",
 				"reports-component-entity-search-open",
 				"reports-component-entity-search-results",
@@ -3976,6 +4263,11 @@
 				"reports-component-filter-dialog-active",
 				"reports-component-filter-dialog-open",
 				"reports-component-floating-chat",
+				"reports-component-floating-chat-closed",
+				"reports-component-floating-chat-notice",
+				"reports-component-floating-chat-navigation",
+				"reports-component-floating-chat-following",
+				"reports-component-floating-chat-not-following",
 				"reports-component-gameplay-replay",
 				"reports-component-gameplay-replay-live-empty",
 				"reports-component-gameplay-replay-interrupted",
@@ -4047,8 +4339,17 @@
 				"reports-component-project-activity",
 				"reports-component-project-activity-recorded",
 				"reports-component-project-activity-empty",
+				"reports-component-project-activity-stale",
+				"reports-component-project-activity-failed-read",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-cards",
+				"reports-component-provider-picker-cards-unknown",
+				"reports-component-provider-picker-cards-in-use",
+				"reports-component-provider-picker-cards-applying",
+				"reports-component-provider-picker-cards-applied",
+				"reports-component-provider-picker-cards-failed",
+				"reports-component-provider-picker-cards-cancelled",
+				"reports-component-provider-picker-cards-locked",
 				"reports-component-recorded-value",
 				"reports-component-regression-proof",
 				"reports-component-regression-proof-pending",
@@ -4069,6 +4370,7 @@
 				"reports-component-select-compact",
 				"reports-component-select-display",
 				"reports-component-select-disabled",
+				"reports-component-select-open",
 				"reports-component-shared-primitives-atoms-html-a",
 				"reports-component-shared-primitives-atoms-html-abbr",
 				"reports-component-shared-primitives-atoms-html-address",
@@ -4212,15 +4514,21 @@
 				"reports-component-source-content-empty-file",
 				"reports-component-source-dialog",
 				"reports-component-source-dialog-loading",
+				"reports-component-source-dialog-loading-file",
 				"reports-component-source-dialog-error",
+				"reports-component-source-dialog-list-error",
 				"reports-component-source-dialog-empty",
+				"reports-component-source-dialog-empty-file",
 				"reports-component-source-file-list",
 				"reports-component-source-file-list-linked",
 				"reports-component-source-file-list-empty",
 				"reports-component-source-viewer",
 				"reports-component-source-viewer-loading",
+				"reports-component-source-viewer-loading-list",
 				"reports-component-source-viewer-error",
+				"reports-component-source-viewer-list-error",
 				"reports-component-source-viewer-empty",
+				"reports-component-source-viewer-empty-file",
 				"reports-component-status-badge",
 				"reports-component-status-badge-running",
 				"reports-component-status-badge-failed",

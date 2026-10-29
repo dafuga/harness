@@ -4776,9 +4776,9 @@
 		{
 			"unit": "function.derive-manifest",
 			"name": "deriveManifest",
-			"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
-			"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit.",
-			"definition": "d10d760ab19c3631fceef91b103cd06c02f1fee7ac06ce32918b0c90287dd022",
+			"commit": "aeadc55b9de2d7165ce4a79de5ce2ad404093b68",
+			"reason": "Derive grouped source contracts from the registered runtime entry, preserving declared explanations and canonical manifest ordering.",
+			"definition": "35afcf9e0f712bdd61e62752e9835e65fdc8e9cc8ec38897f48832683412c6f0",
 			"previousReviews": [
 				{
 					"unit": "function.derive-manifest",
@@ -4793,6 +4793,13 @@
 					"commit": "40debc42b29d927f0b5a38456a29044976d5953f",
 					"reason": "Index native atom composition and real runtime dependencies while preserving owner-local source.",
 					"definition": "3c6ad72e19d9861a00cb263693f3514f7bb1e05866d993c51bcdea909c3fc225"
+				},
+				{
+					"unit": "function.derive-manifest",
+					"name": "deriveManifest",
+					"commit": "9ccc2d115414ca5482806e4b4e82f47086f6aa62",
+					"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit.",
+					"definition": "d10d760ab19c3631fceef91b103cd06c02f1fee7ac06ce32918b0c90287dd022"
 				}
 			]
 		},
@@ -5461,6 +5468,20 @@
 			"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
 			"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof.",
 			"definition": "77fb4e594e25fc7458e591cdd99335d9289431cbab1f4bf222735d2b3d10eaab"
+		},
+		{
+			"unit": "function.scan-component",
+			"name": "scanComponent",
+			"commit": "fbcfd0bfc775bd965dff261f4503a954436dd764",
+			"definition": "f65112a7deea343c60bfb6c86ad22ad7f714ef0aed5f7f5726ede4bde9e13030",
+			"reason": "Read instance props separately from script exports and snippets, with optional flags and literal defaults."
+		},
+		{
+			"unit": "reports.function.activity-display",
+			"name": "activityDisplay",
+			"commit": "2b750c5dd0f1e8c0a6933ef4dc348ba9cfeca3fb",
+			"definition": "010445fa19c69439c1a3a1d485a73fc8296befffb736991eca733ab66115b1e2",
+			"reason": "Record main’s intentional removal of the repeated agent count from the displayed activity sentence."
 		}
 	]
 }

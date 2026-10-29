@@ -40,7 +40,8 @@ export class UnitRegistryRepository {
 		const texts = await readTreeTexts(tree, paths);
 		for (const [index, path] of paths.entries()) {
 			const text = texts[index];
-			const checked = this.validator.validate(parseJson(text), path);
+			// Historical manifests remain readable; units check applies current quality rules.
+			const checked = this.validator.validate(parseJson(text), path, { contractQuality: false });
 			result.errors.push(...checked.errors);
 			if (!checked.value) continue;
 			result.manifests.push(checked.value);

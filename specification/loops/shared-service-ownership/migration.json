@@ -1585,7 +1585,7 @@
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 					"definition": "e17905e36b16d1ea9acad4df5deda52208ca85268d2d9b86f88fceae26872ef2",
-					"reason": "Retain the game branch\u2019s unload confirmation and quit-time window and backend guards."
+					"reason": "Retain the game branch’s unload confirmation and quit-time window and backend guards."
 				}
 			]
 		},
@@ -1653,13 +1653,13 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "src/services/RegressionProofService.ts",
 					"definition": "d686ee37b2344e2960908907bfd564b34cbffbb50df4422256129fa9241e1104",
-					"reason": "Retain main\u2019s canonical screenshot evidence mapping after relocation."
+					"reason": "Retain main’s canonical screenshot evidence mapping after relocation."
 				},
 				{
 					"commit": "9fb0505ef04992cc5b1716d2b7b5280d4f866036",
 					"path": "src/services/RegressionProofService.ts",
 					"definition": "50ff3a98e3e93eb0c0393cd95cf8a929b427d23e0f9b242046743b17ad8d40ec",
-					"reason": "Retain main\u2019s bounded failed-green diagnostics after relocation."
+					"reason": "Retain main’s bounded failed-green diagnostics after relocation."
 				},
 				{
 					"commit": "ff91d603c94486efdaddde9cd5e5288703cf38e2",
@@ -1692,7 +1692,7 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "src/workflows/loadUnits.ts",
 					"definition": "9d367801f0fa6ade38ffdf6e7c305993641678882f75cca10eae2642226738dc",
-					"reason": "Retain main\u2019s committed helper-example validation after relocation."
+					"reason": "Retain main’s committed helper-example validation after relocation."
 				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
@@ -1712,19 +1712,25 @@
 			"unit": "service.unit-index",
 			"from": "src/services/unit-index-service/UnitIndexService.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
-			"definition": "7ddfbd9389331a61bcad4f2fbd1d89b2d7f6dc19f9f279764dc0be1862801ca4",
+			"definition": "8108618e245acc0b8491b8a8982d367712c8227949313998ff42a3186cbcd036",
 			"relocationDefinition": "778cb54bcdb5124bbba4a4a7713eb68ba9bbc398edbbb93f94edd04daad12a03",
 			"review": {
-				"commit": "8e28bfa54b08ad3b43e8f89c9f3b452db28e6da1",
+				"commit": "a2cbc15b070ceb40f4e369f023be426cfeeb6993",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
-				"definition": "7ddfbd9389331a61bcad4f2fbd1d89b2d7f6dc19f9f279764dc0be1862801ca4",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				"definition": "8108618e245acc0b8491b8a8982d367712c8227949313998ff42a3186cbcd036",
+				"reason": "Merge separately registered persisted-model type companions while retaining retired identities and source ownership."
 			},
 			"previousReviews": [
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
 					"definition": "9c90c0ea8a6b95ce4fb61fb6c62b97da447ab6a81ba9a0f6304e8dbed97f2c37",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "8e28bfa54b08ad3b43e8f89c9f3b452db28e6da1",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/UnitIndexService.ts",
+					"definition": "7ddfbd9389331a61bcad4f2fbd1d89b2d7f6dc19f9f279764dc0be1862801ca4",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
 				}
 			]
@@ -1733,13 +1739,13 @@
 			"unit": "function.derive-manifest",
 			"from": "src/services/unit-index-service/deriveManifest.ts",
 			"to": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-			"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
+			"definition": "d279b407c37eb745bef7b25692bb61f60392d100c6cad729a990c77b34578097",
 			"relocationDefinition": "1cd59498d00359c72afea479b5bfff4ea88598a992c18f917842636421fffc65",
 			"review": {
-				"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+				"commit": "aeadc55b9de2d7165ce4a79de5ce2ad404093b68",
 				"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
-				"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
-				"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof."
+				"definition": "d279b407c37eb745bef7b25692bb61f60392d100c6cad729a990c77b34578097",
+				"reason": "Derive grouped source contracts from the registered runtime entry, preserving declared explanations and canonical manifest ordering."
 			},
 			"previousReviews": [
 				{
@@ -1771,6 +1777,12 @@
 					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
 					"definition": "daea7400bead3e801fc5023cc628f0fc98e2b35ad5c0ba2ca5168b6810c140b5",
 					"reason": "Extract unchanged optional metadata projection to keep composition indexing within the lint complexity limit."
+				},
+				{
+					"commit": "7c72cac191a91bc1f6b4f5586f7c165b896d8d29",
+					"path": "src/workflows/development-tooling/load-units/unit-index-service/deriveManifest.ts",
+					"definition": "96917061214e864b210db9dcdcc83fdb44b4b8aa9129b0304d630c4aa9ad235c",
+					"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof."
 				}
 			]
 		},
@@ -1896,13 +1908,13 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/desktop/src/utils/desktopBridge.ts",
 					"definition": "49fa30e9845e0a21cb92e90e4f4051da92484987f28dba1024e8902ad8757dca",
-					"reason": "Retain main\u2019s deployment operations and active project scoping."
+					"reason": "Retain main’s deployment operations and active project scoping."
 				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/utils/desktopBridge.ts",
 					"definition": "b46a6eeefb79f68661eaeae18ae934b919ca30dc5812ed7f3e1e02ef247453d0",
-					"reason": "Retain the game branch\u2019s game operations and project-independent game creation."
+					"reason": "Retain the game branch’s game operations and project-independent game creation."
 				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
@@ -1973,7 +1985,7 @@
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/services/HostedProjectService.ts",
 					"definition": "a9f13f9e5e99931e95884d9ea5b67648b0f0224b2c7488add859ec28c2f43d57",
-					"reason": "Retain the game branch\u2019s local game creation and reread of the open project."
+					"reason": "Retain the game branch’s local game creation and reread of the open project."
 				}
 			]
 		},
@@ -2101,13 +2113,13 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 					"definition": "b143897f40851a469c666af36a0ff3b65680682493a5fba0043f0ec9a5bb07c0",
-					"reason": "Retain main\u2019s measurement-aware hosted API replies."
+					"reason": "Retain main’s measurement-aware hosted API replies."
 				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 					"definition": "00b9a5d65308d3c0bdc69ffcc83074cfebd49c878b0d50c0bb21ab8273678e08",
-					"reason": "Retain the game branch\u2019s project request extraction within method limits."
+					"reason": "Retain the game branch’s project request extraction within method limits."
 				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
@@ -2371,7 +2383,7 @@
 				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 				"path": "src/commands/new.ts",
 				"definition": "d75850024742dc2f26d08b564d099efc61f57c5ce29b82312aa1bde4180ac3d8",
-				"reason": "Retain the game branch\u2019s game project command and dimension option."
+				"reason": "Retain the game branch’s game project command and dimension option."
 			}
 		},
 		{
@@ -2593,26 +2605,34 @@
 			"unit": "workflow.inspect-units",
 			"from": "src/workflows/inspectUnits.ts",
 			"to": "src/cli/program/inspectUnits.ts",
-			"definition": "7ca7dc76b501a40efbcfff3eac281dbcc4ed9a91849e59c968292ffe7049ae55",
+			"definition": "f72c910d280fe0609a276d10532561a6227b83c233c33618af346a405b38eb21",
 			"relocationDefinition": "072cf1293671393fd361ca319d41b7dbb0a77de9cc57be8e81f46013d9296019",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "683fedbe4e1a1f2bb12635b15f31a3cb4cb47f73",
 				"path": "src/cli/program/inspectUnits.ts",
-				"definition": "7ca7dc76b501a40efbcfff3eac281dbcc4ed9a91849e59c968292ffe7049ae55",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "f72c910d280fe0609a276d10532561a6227b83c233c33618af346a405b38eb21",
+				"reason": "Inspect freshly derived contracts and dependency facts without requiring a registry rewrite."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/inspectUnits.ts",
+					"definition": "7ca7dc76b501a40efbcfff3eac281dbcc4ed9a91849e59c968292ffe7049ae55",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "workflow.run-verify",
 			"from": "src/workflows/runVerify.ts",
 			"to": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-			"definition": "0a00e3a481743871561e9e3dba677231d4ea6650406dbcf91d924d4f0a0f0195",
+			"definition": "52242a062d31ccfb295d263aff09bdf1eddb419254c83e487acefcc7d0e82d83",
 			"relocationDefinition": "e0409b5f004bb8a3d911c1b43ea9f69717d3d9f5ba894bfc7c741da424850a38",
 			"review": {
-				"commit": "e2851bc0f1946cff58cc105f1eb9966d575fa6bf",
+				"commit": "d43af247975d9a0d2a77adb26dd519c1a31f4bee",
 				"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
-				"definition": "0a00e3a481743871561e9e3dba677231d4ea6650406dbcf91d924d4f0a0f0195",
-				"reason": "Retain compact source hashes for measured and removed units before releasing full indexes."
+				"definition": "52242a062d31ccfb295d263aff09bdf1eddb419254c83e487acefcc7d0e82d83",
+				"reason": "Record main’s scoped entity verification path, preserving full verification behavior and priority handling."
 			},
 			"previousReviews": [
 				{
@@ -2650,6 +2670,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
 					"definition": "888e2137a33e49d4281fd5a35e1df21fca4097c88223c19db0e348b28ba8f7fe",
 					"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+				},
+				{
+					"commit": "e2851bc0f1946cff58cc105f1eb9966d575fa6bf",
+					"path": "src/workflows/verification-evidence/run-verify/runVerify.ts",
+					"definition": "0a00e3a481743871561e9e3dba677231d4ea6650406dbcf91d924d4f0a0f0195",
+					"reason": "Retain compact source hashes for measured and removed units before releasing full indexes."
 				}
 			]
 		},
@@ -2657,14 +2683,22 @@
 			"unit": "service.verification",
 			"from": "src/services/verification-service/VerificationService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-			"definition": "fcfc6dd3b50f6abf780d83c14a847a0bc1d382bbb25a979d25b39086a3e53a38",
+			"definition": "8191d762e020c376fcdf27b2a505c02877620d91a318d703ed1e41133f16c61f",
 			"relocationDefinition": "146b117282696844fcc9506d83b7d30df30482554e3603d38b08b295272e02c9",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "7b10468b45e2087c7e46501aa9cbcc54beeb8be7",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
-				"definition": "fcfc6dd3b50f6abf780d83c14a847a0bc1d382bbb25a979d25b39086a3e53a38",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "8191d762e020c376fcdf27b2a505c02877620d91a318d703ed1e41133f16c61f",
+				"reason": "Record main’s entity scenario selection and partial-verification verdict for scoped runs."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/VerificationService.ts",
+					"definition": "fcfc6dd3b50f6abf780d83c14a847a0bc1d382bbb25a979d25b39086a3e53a38",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "function.scenario-coverage",
@@ -2855,14 +2889,22 @@
 			"unit": "workflow.manage-units",
 			"from": "src/workflows/manageUnits.ts",
 			"to": "src/cli/program/manageUnits.ts",
-			"definition": "fbf0eb9a9e1831f1455c480266bd3a7ace78dcfe9fc32054f6a1bcc6e8df71b6",
+			"definition": "87548f18489da50626771fe056383f4bb7258177e0666e557ec88be19bf91bea",
 			"relocationDefinition": "9724dcb63f8d4269c25b93b40fe77fac47ecd44518b088f3f0e8b47a79c03353",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "ed44856479b8b702f03f90795ad513bdca4a90ca",
 				"path": "src/cli/program/manageUnits.ts",
-				"definition": "fbf0eb9a9e1831f1455c480266bd3a7ace78dcfe9fc32054f6a1bcc6e8df71b6",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "87548f18489da50626771fe056383f4bb7258177e0666e557ec88be19bf91bea",
+				"reason": "Check source-derived contract quality and report current and stored entity failure counts."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "src/cli/program/manageUnits.ts",
+					"definition": "fbf0eb9a9e1831f1455c480266bd3a7ace78dcfe9fc32054f6a1bcc6e8df71b6",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "command.explain",
@@ -2887,7 +2929,7 @@
 				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 				"path": "packages/desktop/src/services/ProjectSessionService.ts",
 				"definition": "b682426cdf8ec2c96946aa9725037009973fff0487cff89abdd4695052f6b0be",
-				"reason": "Retain the game branch\u2019s selection state and game project identity."
+				"reason": "Retain the game branch’s selection state and game project identity."
 			}
 		},
 		{
@@ -2933,7 +2975,7 @@
 				"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 				"path": "packages/desktop/src/services/ProjectOperationsService.ts",
 				"definition": "df70d5294b43a7a26cd848d6e0e1bf6f5a982dbe9da22e44e18d81f9f9e0d48a",
-				"reason": "Retain the game branch\u2019s snapshot of the already open project."
+				"reason": "Retain the game branch’s snapshot of the already open project."
 			}
 		},
 		{
@@ -3200,7 +3242,7 @@
 				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 				"path": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
 				"definition": "eafd716cc1f661e23d7d16bb94afe2aa70bcfd9feceb040d7267803f29ddeb27",
-				"reason": "Retain main\u2019s focused screenshot evidence reads."
+				"reason": "Retain main’s focused screenshot evidence reads."
 			}
 		},
 		{
@@ -3628,7 +3670,7 @@
 				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 				"path": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
 				"definition": "e12d157a00d668f62b5cfaeba6fc54cf425e0c785065f12b53adfcd345593362",
-				"reason": "Retain main\u2019s committed source measurement projection."
+				"reason": "Retain main’s committed source measurement projection."
 			}
 		},
 		{
@@ -3698,13 +3740,13 @@
 			"unit": "service.check-run",
 			"from": "src/services/check-run-service/CheckRunService.ts",
 			"to": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-			"definition": "44e5129b4a7794f6aac2f13c0e044c841a795cd8af599cc9d11320c8ac6cefdf",
+			"definition": "1063715061bcde25b7974396646e41b64b11ce223c65017ec6479f2a2288a05b",
 			"relocationDefinition": "b4409148ed49b4fe1574ee44790338bbbe23be3b7a6a284687a37ca0b9e8a0c6",
 			"review": {
-				"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
+				"commit": "598db30a94819da673d67784dc9f5e0d21450c47",
 				"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
-				"definition": "44e5129b4a7794f6aac2f13c0e044c841a795cd8af599cc9d11320c8ac6cefdf",
-				"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+				"definition": "1063715061bcde25b7974396646e41b64b11ce223c65017ec6479f2a2288a05b",
+				"reason": "Record main’s scoped verification resource label while preserving the admitted execution context."
 			},
 			"previousReviews": [
 				{
@@ -3718,6 +3760,12 @@
 					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
 					"definition": "a9e91f3446297034bc4f2cc3cc62dff0526a4823a63902fb45973e6d3460ab7d",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "4694c7cca7d5ef14aa3f76339437ad07c36354a1",
+					"path": "src/workflows/verification-evidence/run-verify/verification-service/check-run-service/CheckRunService.ts",
+					"definition": "44e5129b4a7794f6aac2f13c0e044c841a795cd8af599cc9d11320c8ac6cefdf",
+					"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
 				}
 			]
 		},
@@ -3757,13 +3805,13 @@
 			"unit": "command.verify",
 			"from": "src/commands/VerifyCommand.ts",
 			"to": "src/cli/program/VerifyCommand.ts",
-			"definition": "db36ea90786b7885ee7c0a55303a7469d7123de88e83abc8b63c89666184f1b2",
+			"definition": "6736a38b01420ffb9f56fc518519c271223340134fd05f7a1be21defaf27ab1d",
 			"relocationDefinition": "9bdae348aa1c461f5189e3ab3900c11dec68f78ec4a82c0d9c7986c56cfabbfc",
 			"review": {
-				"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+				"commit": "7b10468b45e2087c7e46501aa9cbcc54beeb8be7",
 				"path": "src/cli/program/VerifyCommand.ts",
-				"definition": "db36ea90786b7885ee7c0a55303a7469d7123de88e83abc8b63c89666184f1b2",
-				"reason": "Add the explicit performance requirement flag while retaining current verification arguments and outputs."
+				"definition": "6736a38b01420ffb9f56fc518519c271223340134fd05f7a1be21defaf27ab1d",
+				"reason": "Record main’s explicit entity option for partial verification."
 			},
 			"previousReviews": [
 				{
@@ -3789,6 +3837,12 @@
 					"path": "src/cli/program/VerifyCommand.ts",
 					"definition": "189f6724d1f0fc04e7771d4ffe0dcb488cf8d5016443c1d0ef7ee3903793ce47",
 					"reason": "Admit verification and loop work through bounded resource leases while preserving cleanup, existing results and delayed-observer exit handling."
+				},
+				{
+					"commit": "3f02435bdd97721f0dff36c7e2681ce6650e3e38",
+					"path": "src/cli/program/VerifyCommand.ts",
+					"definition": "db36ea90786b7885ee7c0a55303a7469d7123de88e83abc8b63c89666184f1b2",
+					"reason": "Add the explicit performance requirement flag while retaining current verification arguments and outputs."
 				}
 			]
 		},
@@ -3954,13 +4008,13 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/desktop/src/initializers/initializePreload.ts",
 					"definition": "82fdf0148db86ebc1b7b616ea67e7e3a95ff52c622b7c3458a905d127d36fe73",
-					"reason": "Retain main\u2019s deployment bridge methods in the isolated preload."
+					"reason": "Retain main’s deployment bridge methods in the isolated preload."
 				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/initializers/initializePreload.ts",
 					"definition": "392af9b941403a4de6f0df55e32810b357f07816e287a7eff6c4b50ef191e2ee",
-					"reason": "Retain the game branch\u2019s game bridge methods in the isolated preload."
+					"reason": "Retain the game branch’s game bridge methods in the isolated preload."
 				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
@@ -3999,7 +4053,7 @@
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/services/LocalTransportClientService.ts",
 					"definition": "feef703fe74a059e33f7ed0faef4b1c1b8208aae27c8b09e278f4965d52c36a6",
-					"reason": "Retain the game branch\u2019s local transport request bound for full-size game documents."
+					"reason": "Retain the game branch’s local transport request bound for full-size game documents."
 				}
 			]
 		},
@@ -4544,7 +4598,7 @@
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/desktop/src/adapters/PinnedHistoryAdapter.ts",
 					"definition": "191a47d794391e1f000a6ac989d60d4af5d235e26400dcca6afa8ad5fbc6056a",
-					"reason": "Retain main\u2019s regression evidence and source measurement projection."
+					"reason": "Retain main’s regression evidence and source measurement projection."
 				}
 			]
 		},
@@ -4892,7 +4946,7 @@
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/services/LocalClientService.ts",
 					"definition": "b22f573e49778ad7dbda682a022403c64da2ae30cb03d8b9f33db55b527d5893",
-					"reason": "Retain the game branch\u2019s local transport request bound for full-size game documents."
+					"reason": "Retain the game branch’s local transport request bound for full-size game documents."
 				}
 			]
 		},
@@ -5046,7 +5100,7 @@
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "src/workflows/create-project/createProject.ts",
 					"definition": "6d8ebd2b12dfe7c85ac76def00cf62ea5fb3f9956bf84f53affbee9219b0f4f4",
-					"reason": "Retain the game branch\u2019s dimension, parent folder and partial-creation handling."
+					"reason": "Retain the game branch’s dimension, parent folder and partial-creation handling."
 				}
 			]
 		},
@@ -5079,7 +5133,7 @@
 				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 				"path": "packages/desktop/src/services/project-task-service/ProjectTaskService.ts",
 				"definition": "8c771efe4a0656c993f5384024042df58ac6123ba1223a421e4a36427d19c171",
-				"reason": "Retain main\u2019s verified change promotion after approved project tasks."
+				"reason": "Retain main’s verified change promotion after approved project tasks."
 			}
 		},
 		{
@@ -5098,7 +5152,7 @@
 				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 				"path": "packages/desktop/src/services/change-run-service/ChangeRunService.ts",
 				"definition": "3ba2a6fd8c7b69de3f0a3a15db0efb9dfa49c820fbe8cd08536ec3f5cf81a3c5",
-				"reason": "Retain main\u2019s verified change promotion after approved entity runs."
+				"reason": "Retain main’s verified change promotion after approved entity runs."
 			}
 		},
 		{

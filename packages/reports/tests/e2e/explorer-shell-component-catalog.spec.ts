@@ -26,7 +26,7 @@ import { assertPermissionTable } from './support/component-previews/permissionPr
 import { assertModuleCardPreview } from './support/component-previews/moduleCardPreviewAssertions';
 import {
 	assertCatalogLayout,
-	assertReportExamples
+	assertCatalogDetails
 } from './support/component-previews/catalogCaseAssertions';
 import { assertProjectAgentState } from './support/component-previews/projectAgentStateAssertions';
 import type { ProjectAgentState } from './support/component-previews/projectAgentStateFixtures.types';
@@ -153,16 +153,6 @@ for (const viewport of catalogViewports) {
 			}
 			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations'))
 				await assertTranslationControls(component);
-			if (unit.id === 'reports.component.harness-explorer-index') {
-				await expect(
-					component.getByText('Hover, focus or tap a mark to read why.', { exact: true }),
-					'Catalogs omit the proof legend'
-				).toHaveCount(0);
-				await expect(
-					component.getByRole('button', { name: /^(?:Not proven|Proven)$/ }),
-					'Catalogs omit the standalone proof marks'
-				).toHaveCount(0);
-			}
 			if (unit.id === 'reports.component.explorer-ui-harness-explorer-styles-screen') {
 				await expectColorRoles(component);
 				await expectStyleGroups(component);
@@ -176,11 +166,7 @@ for (const viewport of catalogViewports) {
 					'Only the compact value is painted in a closed revision field'
 				).toHaveCSS('color', 'rgba(0, 0, 0, 0)');
 			await assertCatalogLayout(component, unit, viewport);
-			await assertReportExamples(component, unit.id);
-			if (unit.id === 'reports.component.harness-harness-icon') {
-				await expect(component.getByRole('img', { name: 'Component', exact: true })).toBeVisible();
-				await expect(component.locator('path')).toHaveAttribute('d', /\S+/);
-			}
+			await assertCatalogDetails(component, unit.id);
 			if (
 				['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
 					(name) => unit.id === `desktop.component.${name}`
@@ -204,10 +190,6 @@ for (const viewport of catalogViewports) {
 			if (unit.id === 'reports.component.provider-picker-cards') {
 				await expect(component.getByText('GPT 6.1', { exact: true })).toBeVisible();
 				await expect(component.getByText('Claude Opus 5.5', { exact: true })).toBeVisible();
-			}
-			if (unit.id === 'hub.component.account-menu') {
-				await expect(component).toHaveCSS('display', 'flex');
-				await expect(component).toHaveCSS('column-gap', '10px');
 			}
 			if (unit.id === 'reports.component.harness-explorer-page-card') {
 				await expect(component.locator('article')).toHaveCSS('display', 'grid');

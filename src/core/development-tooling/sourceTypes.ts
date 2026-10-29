@@ -13,9 +13,21 @@ export type UncertainReason =
 
 export interface ExportedSymbol {
 	name: string;
-	kind: 'function' | 'class' | 'method' | 'const' | 'type' | 'default' | 'reexport' | 'component';
+	kind:
+		| 'function'
+		| 'class'
+		| 'method'
+		| 'const'
+		| 'type'
+		| 'default'
+		| 'reexport'
+		| 'component'
+		| 'snippet';
 	inputs: ContractItem[];
 	output?: string;
+	/** Observed local errors, distinct from the file-wide union and indirect-call uncertainty. */
+	errors?: string[];
+	errorStatus?: 'found' | 'none-found' | 'unknown';
 }
 
 export interface ResolvedReference {
@@ -29,6 +41,7 @@ export interface ResolvedReference {
 }
 
 export interface SourceFile {
+	storage?: ComponentManifest['contract']['storage'];
 	composition?: ComponentManifest['composition'];
 	path: string;
 	/** Git blob hash of the contents. */
