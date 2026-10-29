@@ -1,1 +1,4 @@
 {"event":"loop.created","timestamp":"2026-10-29T19:01:55.069Z","name":"activity-agents-count","goal":"The Activity agents catalog default states a working count once.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-29T19:02:54.442Z","loop":"activity-agents-count","step":"spec","evidence":"The default catalog capture rendered the duplicated text “1 1 registered agent is working”; one total is expected."}
+{"event":"step.completed","timestamp":"2026-10-29T19:02:55.007Z","loop":"activity-agents-count","step":"coverage","evidence":"project-activity.test.ts asserted the intended phrase but not that the separately emphasized total was not duplicated."}
+{"event":"step.completed","timestamp":"2026-10-29T19:02:55.801Z","loop":"activity-agents-count","step":"red","evidence":"4894d31cef: focused component test failed on unchanged duplicate-count assertion."}
