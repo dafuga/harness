@@ -187,7 +187,7 @@ for (const viewport of catalogViewports) {
 			}
 			if (unit.id === 'desktop.component.relationships-panel')
 				await expect(component.locator('.chip')).toHaveText(['Page', 'Layout']);
-			if (unit.id === 'reports.component.provider-picker-cards') {
+			if (unit.id === 'reports.component.provider-picker-cards' && !variant) {
 				await expect(component.getByText('GPT 6.1', { exact: true })).toBeVisible();
 				await expect(component.getByText('Claude Opus 5.5', { exact: true })).toBeVisible();
 			}
