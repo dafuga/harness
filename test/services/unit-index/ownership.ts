@@ -26,6 +26,7 @@ export async function assertCompanionOwnership(
 		'src/components/Tile.types.ts': 'export interface TileProps { title: string }'
 	});
 	expect(visual.result.added).toEqual(['component.tile']);
+	await assertForwardedComponentOwnership(unitOf(visual, 'component.tile'));
 	const types = {
 		...first,
 		id: 'model.z-types',
@@ -34,4 +35,34 @@ export async function assertCompanionOwnership(
 	};
 	const declared = await indexFiles(files, [first, types]);
 	expect(unitOf(declared, 'model.z-types').owns.source).toEqual(types.owns.source);
+}
+
+/** A relocated component and its retained forwarding entry describe one public prop contract. */
+async function assertForwardedComponentOwnership(original: ComponentManifest): Promise<void> {
+	const entry = 'src/components/catalog/Tile.svelte';
+	const files = {
+		'src/components/Tile.svelte': `<script lang="ts">
+			import type { ComponentProps } from 'svelte';
+			import Tile from './catalog/Tile.svelte';
+			let props: ComponentProps<typeof Tile> = $props();
+		</script><Tile {...props} />`,
+		[entry]: '<script lang="ts">let { title }: { title: string } = $props();</script><p>{title}</p>'
+	};
+	for (const origin of ['derived', 'declared'] as const) {
+		const owner = {
+			...original,
+			owns: { ...original.owns, source: Object.keys(files) },
+			runtime: { kind: 'module' as const, entry, targets: [{ kind: 'module' as const, entry }] },
+			contract: {
+				...original.contract,
+				origin,
+				inputs: [{ name: 'Tile.title', type: 'string', required: true }]
+			}
+		};
+		const indexed = await indexFiles(files, [owner]);
+		expect(
+			unitOf(indexed, owner.id).contract.inputs,
+			'forwarded component props appear once'
+		).toEqual([{ name: 'Tile.title', type: 'string', required: true }]);
+	}
 }

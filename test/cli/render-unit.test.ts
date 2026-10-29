@@ -34,7 +34,9 @@ function detail(kind: string): UnitDetail {
 
 describe('units show rendering', () => {
 	test('a component contract lists aligned props and errors, never outputs', () => {
-		expect(renderContract(detail('component').manifest)).toEqual([
+		const manifest = detail('component').manifest;
+		manifest.contract.inputs = [...manifest.contract.inputs, ...manifest.contract.inputs];
+		expect(renderContract(manifest)).toEqual([
 			'Contract (declared)',
 			'  Props',
 			'    status  Status  (required)',
