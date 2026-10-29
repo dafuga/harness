@@ -1619,6 +1619,18 @@
 			"units": ["reports.component.gameplay-replay"]
 		},
 		{
+			"id": "reports-component-gameplay-replay-live-empty",
+			"title": "Gameplay replay: Waiting for first frame",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-interrupted",
+			"title": "Gameplay replay: Interrupted run",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
 			"id": "reports-component-harness-entity-artifact",
 			"title": "Entity artifact",
 			"coverage": "required",
@@ -3485,6 +3497,8 @@
 				"reports-component-filter-dialog-open",
 				"reports-component-floating-chat",
 				"reports-component-gameplay-replay",
+				"reports-component-gameplay-replay-live-empty",
+				"reports-component-gameplay-replay-interrupted",
 				"reports-component-harness-entity-artifact",
 				"reports-component-harness-entity-audio",
 				"reports-component-harness-entity-behavior",
