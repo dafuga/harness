@@ -18,8 +18,8 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 		await expect(component.getByRole('alert')).toContainText('file list is unavailable');
 	}
 	if (variant === 'empty-file') {
-		const code = component.locator('.source-code code');
-		await expect(code).toBeVisible();
-		await expect(code).toHaveText('');
+		const pre = component.locator('.source-code');
+		await expect(pre).toBeVisible();
+		await expect(pre.locator('code')).toHaveText('');
 	}
 }
