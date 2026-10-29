@@ -35,7 +35,7 @@ export async function servePreview(route: Route, home: string) {
 	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname);
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
-		'/api/analytics-cpu': cpu,
+		'/api/analytics-cpu': cpuFixture(route),
 		'/api/project-activity': { activity, live },
 		'/tools': picker,
 		'/harness/data/index.json': shown.index,
@@ -49,6 +49,22 @@ export async function servePreview(route: Route, home: string) {
 		contentType: 'text/html',
 		body: '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Component preview</title><link rel="stylesheet" href="/page.css"></head><body><div id="app"></div><script src="/page.iife.js"></script></body></html>'
 	});
+}
+
+function cpuFixture(route: Route) {
+	const variant = new URL(route.request().frame().page().url()).searchParams.get('variant');
+	if (variant === 'no-agents') return { ...cpu, agents: [] };
+	if (variant !== 'unavailable') return cpu;
+	return {
+		...cpu,
+		status: 'unavailable',
+		logicalCores: 0,
+		intervalMs: 0,
+		machinePercent: null,
+		trackedPercent: null,
+		groups: [],
+		agents: []
+	};
 }
 /**
  * The history a page reads: a route module reads the route history, where every category has an

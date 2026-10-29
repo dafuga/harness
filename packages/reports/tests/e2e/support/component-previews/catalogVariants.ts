@@ -16,6 +16,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.activity-work': ['recorded', 'empty'],
 	// History filters show both a focused query and the no-filter form.
 	'reports.component.analytics-filters': ['empty'],
+	// CPU distinguishes a healthy idle checkout from an unavailable local sample.
+	'reports.component.analytics-cpu': ['no-agents', 'unavailable'],
 	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
 	'reports.component.audio-comparison': ['unavailable'],
 	// The comparison opens by default; each single-recording view stays independently inspectable.

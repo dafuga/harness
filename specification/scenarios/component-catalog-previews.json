@@ -1217,6 +1217,18 @@
 			"units": ["reports.component.analytics-cpu"]
 		},
 		{
+			"id": "reports-component-analytics-cpu-no-agents",
+			"title": "Analytics cpu: No repository agents",
+			"coverage": "required",
+			"units": ["reports.component.analytics-cpu"]
+		},
+		{
+			"id": "reports-component-analytics-cpu-unavailable",
+			"title": "Analytics cpu: Unavailable sample",
+			"coverage": "required",
+			"units": ["reports.component.analytics-cpu"]
+		},
+		{
 			"id": "reports-component-analytics-filters",
 			"title": "Analytics filters",
 			"coverage": "required",
@@ -3238,6 +3250,8 @@
 				"reports-component-activity-work-recorded",
 				"reports-component-activity-work-empty",
 				"reports-component-analytics-cpu",
+				"reports-component-analytics-cpu-no-agents",
+				"reports-component-analytics-cpu-unavailable",
 				"reports-component-analytics-filters",
 				"reports-component-analytics-filters-empty",
 				"reports-component-analytics-history",
