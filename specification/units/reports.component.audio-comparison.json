@@ -34,16 +34,19 @@
 			{
 				"name": "AudioComparison.before",
 				"type": "Evidence",
+				"required": true,
 				"description": "Required original recording whose identity preserves its gallery anchor. Missing flag or empty file marks its side unavailable."
 			},
 			{
 				"name": "AudioComparison.after",
 				"type": "Evidence",
+				"required": true,
 				"description": "Required updated recording supplying the card title, category and main anchor. Missing flag or empty file marks its side unavailable."
 			},
 			{
 				"name": "AudioComparison.onopen",
 				"type": "() => void",
+				"required": true,
 				"description": "Required callback for opening the comparison viewer. Its button is disabled until mount completes."
 			}
 		],

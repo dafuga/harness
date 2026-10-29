@@ -38,11 +38,13 @@
 			{
 				"name": "UploadAudio.reportId",
 				"type": "string",
+				"required": true,
 				"description": "Required report identifier included in submitted form data."
 			},
 			{
 				"name": "UploadAudio.onUploaded",
 				"type": "(report: Report) => void",
+				"required": true,
 				"description": "Required callback receiving the returned report after a 201 response with an evidence array."
 			}
 		],

@@ -43,16 +43,20 @@
 			{
 				"name": "AudioEvidence.item",
 				"type": "Evidence",
+				"required": true,
 				"description": "Required audio evidence including file, title, status and optional duration, transcript, source, note and provenance. Missing flag, empty file or playback error yields unavailable/not-proven display. Valid recorded duration takes precedence over loaded metadata."
 			},
 			{
 				"name": "AudioEvidence.assetBase",
 				"type": "string",
+				"required": true,
 				"description": "Required prefix concatenated directly with the recorded file to form playback/download URL."
 			},
 			{
 				"name": "AudioEvidence.idPrefix",
 				"type": "string",
+				"required": false,
+				"default": "evidence-",
 				"description": "Optional HTML ID prefix, default evidence-. Additional copies can supply a distinct prefix to avoid duplicate card IDs."
 			}
 		],

@@ -29,11 +29,13 @@
 			{
 				"name": "ImageZoom.src",
 				"type": "string",
+				"required": true,
 				"description": "Required image address. The component loads this directly into the image element."
 			},
 			{
 				"name": "ImageZoom.alt",
 				"type": "string",
+				"required": true,
 				"description": "Required image alternative text."
 			}
 		],

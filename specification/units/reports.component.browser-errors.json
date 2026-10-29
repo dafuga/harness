@@ -33,6 +33,7 @@
 			{
 				"name": "BrowserErrors.diagnostics",
 				"type": "BrowserDiagnostic[]",
+				"required": false,
 				"description": "Optional recorded test-attempt diagnostics. Missing or empty arrays render nothing; each supplied attempt may contain observations, expectations or both."
 			}
 		],

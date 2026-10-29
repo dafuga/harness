@@ -37,11 +37,14 @@
 			{
 				"name": "ReportChecks.checks",
 				"type": "Check[]",
+				"required": true,
 				"description": "Required recorded checks, supplying status, grouping, counts and optional command/output details."
 			},
 			{
 				"name": "ReportChecks.embedded",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional compact presentation, defaulting to false. True omits the enclosing panel and Checks heading."
 			}
 		],

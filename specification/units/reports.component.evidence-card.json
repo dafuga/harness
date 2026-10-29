@@ -39,26 +39,32 @@
 			{
 				"name": "EvidenceCard.item",
 				"type": "Evidence",
+				"required": true,
 				"description": "Required evidence record. Media classification selects screenshot or audio display. For screenshots, missing flag or image-load error disables opening and changes displayed status to not-proven."
 			},
 			{
 				"name": "EvidenceCard.before",
 				"type": "Evidence",
+				"required": false,
 				"description": "Optional original recording. For audio items, presence selects a paired comparison card; otherwise audio is rendered individually. Ignored for screenshots."
 			},
 			{
 				"name": "EvidenceCard.assetBase",
 				"type": "string",
+				"required": true,
 				"description": "Required prefix concatenated with screenshot files or passed to audio playback."
 			},
 			{
 				"name": "EvidenceCard.onopen",
 				"type": "() => void",
+				"required": true,
 				"description": "Required callback invoked by screenshot or paired-audio opening controls. Individual audio playback uses its own controls."
 			},
 			{
 				"name": "EvidenceCard.compact",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional screenshot presentation: false by default. True keeps provenance in a Capture details disclosure beneath the image. Audio rendering is unchanged.",
 				"examples": [true]
 			}

@@ -39,26 +39,32 @@
 			{
 				"name": "EvidenceGrid.items",
 				"type": "Evidence[]",
+				"required": true,
 				"description": "Required evidence list. Helpers pair related audio and choose gallery entries; screenshot-only lists feed image navigation."
 			},
 			{
 				"name": "EvidenceGrid.assetBase",
 				"type": "string",
+				"required": true,
 				"description": "Required asset prefix forwarded to cards and viewers."
 			},
 			{
 				"name": "EvidenceGrid.reportId",
 				"type": "string",
+				"required": false,
 				"description": "Optional report identifier. Upload controls appear only when both this value and onUploaded are supplied."
 			},
 			{
 				"name": "EvidenceGrid.onUploaded",
 				"type": "(report: Report) => void",
+				"required": false,
 				"description": "Optional callback receiving an updated report from upload controls. Also gates their visibility alongside reportId."
 			},
 			{
 				"name": "EvidenceGrid.idPrefix",
 				"type": "string",
+				"required": false,
+				"default": "",
 				"description": "Optional prefix, empty by default, keeping the gallery heading ID unique on pages with multiple galleries. Does not prefix individual evidence-card IDs."
 			}
 		],

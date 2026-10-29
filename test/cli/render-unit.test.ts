@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import type { UnitDetail } from '../../src/cli/program/inspectUnits.types';
 import { groupTests, renderContract, renderUnit } from '../../src/cli/program/renderUnit';
 
-const field = (name: string, type: string) => ({ name, type }) as never;
+const field = (name: string, type: string, metadata = {}) => ({ name, type, ...metadata }) as never;
 function detail(kind: string): UnitDetail {
 	const entry = 'src/Badge.svelte';
 	return {
@@ -15,7 +15,10 @@ function detail(kind: string): UnitDetail {
 			runtime: { kind: 'module', entry, targets: [{ kind: 'module', entry }] },
 			contract: {
 				origin: 'declared',
-				inputs: [field('Badge.status', 'Status'), field('Badge.size', 'number')],
+				inputs: [
+					field('Badge.status', 'Status', { required: true }),
+					field('Badge.size', 'number', { required: false, default: 16 })
+				],
 				outputs: [field('Badge', 'markup')],
 				errors: [field('ExpectedCliError', 'thrown')]
 			},
@@ -34,8 +37,8 @@ describe('units show rendering', () => {
 		expect(renderContract(detail('component').manifest)).toEqual([
 			'Contract (declared)',
 			'  Props',
-			'    status  Status',
-			'    size    number',
+			'    status  Status  (required)',
+			'    size    number  (optional; default 16)',
 			'  Errors',
 			'    ExpectedCliError'
 		]);

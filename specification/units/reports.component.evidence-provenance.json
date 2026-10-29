@@ -28,6 +28,7 @@
 			{
 				"name": "EvidenceProvenance.item",
 				"type": "Evidence",
+				"required": true,
 				"description": "Required evidence record whose optional provenance list supplies labels and values. Labels serve as row keys."
 			}
 		],

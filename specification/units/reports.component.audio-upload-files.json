@@ -29,11 +29,13 @@
 			{
 				"name": "AudioUploadFiles.mode",
 				"type": "string",
+				"required": true,
 				"description": "Required mode string. Exactly comparison renders before and after fields; every other value renders one audio field."
 			},
 			{
 				"name": "AudioUploadFiles.uploading",
 				"type": "boolean",
+				"required": true,
 				"description": "Required flag disabling file inputs during an upload."
 			}
 		],

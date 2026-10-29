@@ -32,6 +32,7 @@
 			{
 				"name": "ReportFindings.findings",
 				"type": "Finding[]",
+				"required": true,
 				"description": "Required findings, supplying each status, title, detail and optional evidence identifiers."
 			}
 		],

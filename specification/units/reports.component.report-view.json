@@ -40,26 +40,32 @@
 			{
 				"name": "ReportView.report",
 				"type": "Report",
+				"required": true,
 				"description": "Required report providing summary, findings, checks, acceptance criteria, coverage, evidence and replay data."
 			},
 			{
 				"name": "ReportView.assetBase",
 				"type": "string",
+				"required": true,
 				"description": "Required media address prefix passed to evidence and replay viewers."
 			},
 			{
 				"name": "ReportView.downloadBase",
 				"type": "string",
+				"required": true,
 				"description": "Required download address prefix passed to the report summary."
 			},
 			{
 				"name": "ReportView.portable",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional portable presentation, defaulting to false. True changes the brand destination and hides project-history navigation and upload eligibility."
 			},
 			{
 				"name": "ReportView.onUploaded",
 				"type": "(report: Report) => void",
+				"required": false,
 				"description": "Optional callback forwarded to evidence uploads so the host can receive the updated report."
 			}
 		],

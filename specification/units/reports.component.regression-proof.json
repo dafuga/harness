@@ -39,25 +39,39 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "Request",
-				"type": "Regression inputs",
-				"description": "Commit-linked regression results for the selected unit"
+				"name": "RegressionProof.items",
+				"type": "RegressionView[]",
+				"required": false,
+				"default": [],
+				"description": "Optional recorded regression views. The default empty list renders no proof section."
+			},
+			{
+				"name": "RegressionProof.unit",
+				"type": "string",
+				"required": true,
+				"description": "Required unit identifier used to retain matching or unscoped regression views."
+			},
+			{
+				"name": "RegressionProof.href",
+				"type": "(commit: string) => string",
+				"required": true,
+				"description": "Required function producing the destination for each recorded commit."
+			},
+			{
+				"name": "RegressionProof.follow",
+				"type": "(commit: string) => void",
+				"required": false,
+				"description": "Optional client-side commit navigation callback; modified primary-click links use it while normal link behavior remains available."
 			}
 		],
 		"outputs": [
 			{
-				"name": "Result",
-				"type": "Regression result",
-				"description": "Readable failure and pass cards with revision links and optional recorded output"
+				"name": "RegressionProof",
+				"type": "markup",
+				"description": "Regression evidence cards for visible matching views, including red/green commits, assertions and recorded output disclosure."
 			}
 		],
-		"errors": [
-			{
-				"name": "Invalid proof",
-				"type": "Explicit rejection or gap",
-				"description": "Missing or damaged evidence is shown as a gap; no result is invented."
-			}
-		]
+		"errors": []
 	},
 	"dependencies": [
 		{

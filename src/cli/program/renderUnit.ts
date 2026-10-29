@@ -4,10 +4,20 @@ import type { ComponentManifest } from '../../core/development-tooling/unitTypes
 type Field = ComponentManifest['contract']['inputs'][number];
 const indent = (lines: string[], depth = 1) => lines.map((line) => `${'  '.repeat(depth)}${line}`);
 
+function qualifiers(item: Field): string {
+	const values = [
+		item.required === undefined ? undefined : item.required ? 'required' : 'optional',
+		Object.hasOwn(item, 'default') ? `default ${JSON.stringify(item.default)}` : undefined
+	].filter((value): value is string => Boolean(value));
+	return values.length ? `  (${values.join('; ')})` : '';
+}
+
 /** `name  type` rows with the types in one column; the owner prefix (`Badge.`) is dropped. */
 function fields(list: Field[]): string[] {
 	if (list.length === 0) return ['none'];
-	const rows = list.map((item) => [item.name.replace(/^[^.]+\./, ''), item.type] as const);
+	const rows = list.map(
+		(item) => [item.name.replace(/^[^.]+\./, ''), `${item.type}${qualifiers(item)}`] as const
+	);
 	const width = Math.max(...rows.map(([name]) => name.length));
 	return rows.map(([name, type]) =>
 		type === 'thrown' ? name : `${name.padEnd(width)}  ${type}`

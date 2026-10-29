@@ -34,6 +34,10 @@ export const performanceTolerance = 0.05;
 export const contractItemSchema = z.strictObject({
 	name: text,
 	type: text,
+	/** Whether callers must provide this input; omitted for historical contracts that lack it. */
+	required: z.boolean().optional(),
+	/** A literal prop default, kept as data so contract viewers can show it exactly. */
+	default: z.json().optional(),
 	description: z.string().optional(),
 	/** Values a person declared as examples of the item; any JSON, kept exactly as written. */
 	examples: z.array(z.json()).optional()

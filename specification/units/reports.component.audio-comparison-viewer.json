@@ -31,21 +31,25 @@
 			{
 				"name": "AudioComparisonViewer.before",
 				"type": "Evidence",
+				"required": true,
 				"description": "Required before recording, used in before and comparison views."
 			},
 			{
 				"name": "AudioComparisonViewer.after",
 				"type": "Evidence",
+				"required": true,
 				"description": "Required after recording, used in after/comparison views and as the comparison title."
 			},
 			{
 				"name": "AudioComparisonViewer.assetBase",
 				"type": "string",
+				"required": true,
 				"description": "Required URL prefix passed to each audio card for its file."
 			},
 			{
 				"name": "AudioComparisonViewer.onclose",
 				"type": "() => void",
+				"required": true,
 				"description": "Required callback called after the attached dialog is closed natively, allowing focus to return to its opener."
 			}
 		],

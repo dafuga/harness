@@ -36,16 +36,20 @@
 			{
 				"name": "ReportSummary.report",
 				"type": "Report",
+				"required": true,
 				"description": "Required report supplying status, summary, findings, coverage, checks, revision, timestamps and export availability. The gap count includes failed, blocked or not-proven findings and coverage plus a missing revision; it does not count failed checks."
 			},
 			{
 				"name": "ReportSummary.downloadBase",
 				"type": "string",
+				"required": true,
 				"description": "Required address prefix used to build available PDF, ZIP and HTML download links."
 			},
 			{
 				"name": "ReportSummary.portable",
 				"type": "boolean",
+				"required": false,
+				"default": false,
 				"description": "Optional portable-view flag, defaulting to false. Hides ZIP and HTML downloads while retaining an available PDF link."
 			}
 		],
