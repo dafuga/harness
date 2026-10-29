@@ -1,6 +1,14 @@
 import { children, noop, text, example, picker, image } from './shared';
 import type { PreviewCases } from './shared';
-import { report, picture, audio, group, baselineNarration, releaseNarration } from './reportData';
+import {
+	report,
+	picture,
+	audio,
+	group,
+	baselineNarration,
+	releaseNarration,
+	galleryItems
+} from './reportData';
 import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 const field = group.fields[0];
@@ -82,7 +90,7 @@ export const reportCases: PreviewCases = {
 		mediaBase: '/media/'
 	},
 	'reports.component.evidence-card': { item: picture, assetBase: '/media/', onopen: noop },
-	'reports.component.evidence-grid': { items: [picture], assetBase: '/media/' },
+	'reports.component.evidence-grid': { items: galleryItems, assetBase: '/media/' },
 	'reports.component.evidence-provenance': {
 		item: {
 			...picture,

@@ -21,6 +21,18 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.locator('summary').click();
 		await expect(component.getByText('Browser capture', { exact: true })).toBeVisible();
 	},
+	'reports.component.evidence-grid:empty': async (component) => {
+		await component.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' }).fill('no-match');
+		await expect(component.getByText('No matching evidence.', { exact: true })).toBeVisible();
+	},
+	'reports.component.evidence-grid:audio': async (component) => {
+		await component.locator('.media-tabs').getByRole('button', { name: /^Audio/ }).click();
+		await expect(component.getByText('Release narration', { exact: true })).toBeVisible();
+	},
+	'reports.component.evidence-grid:image-open': async (component) => {
+		await component.getByRole('button', { name: 'Open Synthetic preview input' }).first().click();
+		await expect(component.getByRole('dialog')).toBeVisible();
+	},
 	'reports.component.entity-search:open': async (component) => {
 		await component.getByRole('button', { name: 'Search entities', exact: true }).click();
 		const dialog = component.getByRole('dialog', { name: 'Search project' });

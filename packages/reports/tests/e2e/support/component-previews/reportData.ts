@@ -50,6 +50,27 @@ export const releaseNarration: Evidence = {
 	capturedAt: stamp,
 	transcript: 'The release narration is approved for the published walkthrough.'
 };
+export const galleryItems: Evidence[] = [
+	picture,
+	{
+		...picture,
+		id: 'checkout-mobile',
+		title: 'Checkout confirmation on mobile',
+		category: 'Checkout',
+		viewport: 'Mobile',
+		source: 'Mobile browser capture'
+	},
+	{
+		...picture,
+		id: 'checkout-tablet',
+		title: 'Checkout confirmation on tablet',
+		category: 'Checkout',
+		viewport: 'Tablet',
+		source: 'Tablet browser capture'
+	},
+	baselineNarration,
+	releaseNarration
+];
 export const report: Report = {
 	schemaVersion: 1,
 	id: 'preview-report',
@@ -67,7 +88,7 @@ export const report: Report = {
 	checks: [
 		{ id: 'states', title: 'Component states render correctly', status: 'passed', durationMs: 220 }
 	],
-	evidence: [picture, audio],
+	evidence: galleryItems,
 	findings: [
 		{
 			id: 'layout',

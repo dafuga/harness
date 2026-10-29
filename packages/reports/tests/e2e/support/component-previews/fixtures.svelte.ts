@@ -1,6 +1,7 @@
 import { modulePreview } from './modules';
 import { previewVariants } from './catalogVariants';
 import { baselineNarration, releaseNarration } from './reportData';
+import { noop } from './shared';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import { explorerCases } from './explorer';
 import { legacyAddresses, legacyCases } from './legacy';
@@ -120,6 +121,7 @@ function reportVariantProps(id: string, props: PreviewCases[string], variant: st
 	if (id === 'reports.component.audio-upload-files')
 		return audioUploadFilesVariant(props, variant);
 	if (id === 'reports.component.evidence-card') return evidenceCardVariant(props, variant);
+	if (id === 'reports.component.evidence-grid') return evidenceGridVariant(props, variant);
 	if (
 		id !== 'reports.component.audio-comparison' &&
 		id !== 'reports.component.audio-comparison-viewer'
@@ -166,6 +168,12 @@ function evidenceCardVariant(props: PreviewCases[string], variant: string) {
 		};
 	if (variant === 'paired-audio')
 		return { ...props, item: releaseNarration, before: baselineNarration };
+	return null;
+}
+
+function evidenceGridVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'uploads')
+		return { ...props, reportId: 'preview-report', onUploaded: noop, idPrefix: 'upload-' };
 	return null;
 }
 

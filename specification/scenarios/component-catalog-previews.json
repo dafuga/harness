@@ -1409,6 +1409,30 @@
 			"units": ["reports.component.evidence-grid"]
 		},
 		{
+			"id": "reports-component-evidence-grid-empty",
+			"title": "Evidence grid: Empty filter",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-audio",
+			"title": "Evidence grid: Audio",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-uploads",
+			"title": "Evidence grid: Upload controls",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-image-open",
+			"title": "Evidence grid: Image viewer",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
 			"id": "reports-component-evidence-provenance",
 			"title": "Evidence provenance",
 			"coverage": "required",
@@ -3210,6 +3234,10 @@
 				"reports-component-evidence-card-compact",
 				"reports-component-evidence-card-paired-audio",
 				"reports-component-evidence-grid",
+				"reports-component-evidence-grid-empty",
+				"reports-component-evidence-grid-audio",
+				"reports-component-evidence-grid-uploads",
+				"reports-component-evidence-grid-image-open",
 				"reports-component-evidence-provenance",
 				"reports-component-evidence-viewer",
 				"reports-component-explorer-catalog-items",

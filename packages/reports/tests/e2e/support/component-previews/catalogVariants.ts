@@ -22,6 +22,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.audio-upload-files': ['comparison', 'uploading'],
 	// Image, missing, compact provenance and paired-audio branches each render different evidence.
 	'reports.component.evidence-card': ['missing', 'compact', 'paired-audio'],
+	// Media filtering, empty results, upload controls and a lightbox are separate gallery states.
+	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
 	// The default shows a passed badge; each other status is its own example.
