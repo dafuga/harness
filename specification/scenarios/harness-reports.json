@@ -4,7 +4,7 @@
 	"title": "Reports of the hosting site as their export shows them, and where the removed report and analytics screens lead",
 	"kind": "ui",
 	"units": [
-		"reports.page.harness-reports",
+		"reports.page.root",
 		"reports.page.harness-reports-id",
 		"reports.page.harness-analytics",
 		"reports.component.report-view",
@@ -29,7 +29,7 @@
 			"id": "retired-hub",
 			"title": "The explorer page that the address of the removed report hub leads to",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-pages"]
+			"units": ["reports.page.root"]
 		},
 		{
 			"id": "retired-report",
