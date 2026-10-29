@@ -34,6 +34,7 @@ export async function servePreview(route: Route, home: string) {
 		});
 	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname);
 	if (url.pathname === '/api/project-activity') return activityFixture(route);
+	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
 		'/api/analytics-cpu': cpuFixture(route),
@@ -49,6 +50,45 @@ export async function servePreview(route: Route, home: string) {
 		contentType: 'text/html',
 		body: '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Component preview</title><link rel="stylesheet" href="/page.css"></head><body><div id="app"></div><script src="/page.iife.js"></script></body></html>'
 	});
+}
+
+/** The local project chat uses the same request protocol as its real console bridge. */
+function consoleAgentFixture(route: Route) {
+	const { method } = route.request().postDataJSON() as { method: string };
+	const commit = commits.tip;
+	const snapshot = {
+		project: { id: 'preview-project', root: '/preview', name: 'Preview project' },
+		revision: { branch: 'feature/orders', commit, tip: commit, atTip: true },
+		entities: [],
+		writable: true,
+		capabilities: { agents: true, comments: true, planning: true, approval: true, source: 'local' }
+	};
+	const answers: Record<string, unknown> = {
+		connect: { token: 'fixture-token', snapshot },
+		snapshot,
+		providers: [
+			{
+				id: 'codex',
+				label: 'Codex',
+				available: true,
+				reason: null,
+				version: 'fixture',
+				imageGeneration: true,
+				models: [
+					{
+						id: 'preview-model',
+						label: 'Preview model',
+						efforts: ['high'],
+						defaultEffort: 'high',
+						isDefault: true
+					}
+				]
+			}
+		],
+		disconnect: null
+	};
+	if (!(method in answers)) throw new Error(`Unexpected preview agent request: ${method}`);
+	return route.fulfill({ json: answers[method] });
 }
 
 function activityFixture(route: Route) {

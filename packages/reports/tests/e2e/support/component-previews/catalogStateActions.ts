@@ -6,6 +6,10 @@ const actions: Record<string, CatalogStateAction> = {
 	'reports.component.console-chat:open': async (component) => {
 		await component.locator('.floating-chat-bubble').click();
 		await expect(component.locator('.floating-chat-panel')).toBeVisible();
+		await expect(
+			component.getByText('Ask a question, plan a design, or request a code change.')
+		).toBeVisible();
+		await expect(component.getByRole('textbox', { name: 'Message' })).toBeEnabled();
 	},
 	'reports.component.audio-comparison-viewer:before': async (component) => {
 		await component.getByRole('button', { name: 'View before recording' }).click();
