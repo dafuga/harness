@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { catalogScenario, previewState } from './catalogUnits';
 import { assertEntityCasesState } from './entityCasesPreviewAssertions';
+import { assertAudioViewerCapture } from './catalogStateActions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
 export async function assertComponentCapture(
@@ -12,6 +13,7 @@ export async function assertComponentCapture(
 	variant = ''
 ) {
 	assertCaptureSlot(id, viewport, variant);
+	await assertAudioViewerCapture(page, id, viewport);
 	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
 	if (!directory) return;
