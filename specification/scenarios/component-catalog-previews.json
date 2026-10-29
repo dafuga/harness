@@ -1463,6 +1463,24 @@
 			"units": ["reports.component.evidence-viewer"]
 		},
 		{
+			"id": "reports-component-evidence-viewer-before",
+			"title": "Evidence viewer: Before screenshot",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-compare",
+			"title": "Evidence viewer: Compare screenshots",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-unavailable",
+			"title": "Evidence viewer: Unavailable image",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
 			"id": "reports-component-explorer-catalog-items",
 			"title": "ExplorerCatalogItems",
 			"coverage": "required",
@@ -3273,6 +3291,9 @@
 				"reports-component-evidence-provenance",
 				"reports-component-evidence-provenance-extended",
 				"reports-component-evidence-viewer",
+				"reports-component-evidence-viewer-before",
+				"reports-component-evidence-viewer-compare",
+				"reports-component-evidence-viewer-unavailable",
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-dependencies-screen",
 				"reports-component-explorer-function-card",

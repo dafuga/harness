@@ -10,6 +10,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.evidence-card') return evidenceCardVariant(props, variant);
 	if (id === 'reports.component.evidence-grid') return evidenceGridVariant(props, variant);
 	if (id === 'reports.component.evidence-provenance') return evidenceProvenanceVariant(props, variant);
+	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
 	if (!['reports.component.audio-comparison', 'reports.component.audio-comparison-viewer'].includes(id))
 		return null;
 	if (variant === 'before' || variant === 'after') return props;
@@ -80,6 +81,38 @@ function evidenceProvenanceVariant(props: PreviewCases[string], variant: string)
 			]
 		}
 	};
+}
+
+function evidenceViewerVariant(props: PreviewCases[string], variant: string) {
+	const selected = props.selected as Record<string, unknown>;
+	if (variant === 'unavailable') {
+		const unavailable = {
+			...selected,
+			missing: true,
+			note: 'The recorded screenshot could not be restored.'
+		};
+		return {
+			...props,
+			items: [unavailable],
+			navigableItems: [unavailable],
+			selected: unavailable
+		};
+	}
+	const before = {
+		...selected,
+		id: 'checkout-before',
+		title: 'Checkout before release',
+		comparison: 'checkout-flow',
+		phase: 'before'
+	};
+	const after = {
+		...selected,
+		id: 'checkout-after',
+		title: 'Checkout after release',
+		comparison: 'checkout-flow',
+		phase: 'after'
+	};
+	return { ...props, items: [before, after], navigableItems: [after], selected: after };
 }
 
 function audioEvidenceVariant(props: PreviewCases[string], variant: string) {

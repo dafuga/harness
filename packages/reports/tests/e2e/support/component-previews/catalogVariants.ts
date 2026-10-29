@@ -28,6 +28,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
 	// The default shows two facts; this state proves a fuller recorded provenance set remains legible.
 	'reports.component.evidence-provenance': ['extended'],
+	// The lightbox needs separate before, compare and unavailable-image examples.
+	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
 	// Filters show their inactive trigger by default, with active and opened states separately.

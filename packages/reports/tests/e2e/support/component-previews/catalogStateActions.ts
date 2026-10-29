@@ -33,6 +33,14 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.getByRole('button', { name: 'Open Synthetic preview input' }).first().click();
 		await expect(component.getByRole('dialog')).toBeVisible();
 	},
+	'reports.component.evidence-viewer:before': async (component) => {
+		await component.getByRole('button', { name: 'View before screenshot' }).click();
+		await expect(component.getByRole('heading', { name: 'Checkout before release' })).toBeVisible();
+	},
+	'reports.component.evidence-viewer:compare': async (component) => {
+		await component.getByRole('button', { name: 'Compare before and after' }).click();
+		await expect(component.locator('.viewer-images.comparison figure')).toHaveCount(2);
+	},
 	'reports.component.entity-search:open': async (component) => {
 		await component.getByRole('button', { name: 'Search entities', exact: true }).click();
 		const dialog = component.getByRole('dialog', { name: 'Search project' });
