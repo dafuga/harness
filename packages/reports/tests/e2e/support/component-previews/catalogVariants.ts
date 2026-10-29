@@ -112,6 +112,20 @@ const variants: Record<string, string[]> = {
 		'wrong-unit',
 		'expanded'
 	],
+	// A contract changes for each entity kind, missing declarations, errors and an opened example.
+	'reports.component.entity-contract': [
+		'empty',
+		'errors',
+		'last',
+		'example-open',
+		'function',
+		'function-error',
+		'service',
+		'model',
+		'model-bare',
+		'types',
+		'config'
+	],
 	// Documentation distinguishes absent examples, setup, missing calls and expected outcomes.
 	'reports.component.entity-examples': [
 		'empty',

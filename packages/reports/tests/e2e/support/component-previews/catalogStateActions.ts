@@ -91,6 +91,10 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.locator('.cases > details > summary').click();
 		await expect(component.locator('.cases > details > pre')).toContainText('Format a duration');
 	},
+	'reports.component.entity-contract:example-open': async (component) => {
+		await component.getByRole('button', { name: 'View example for Orders' }).click();
+		await expect(component.getByRole('dialog', { name: 'Example for Orders' })).toBeVisible();
+	},
 	'reports.component.entity-search:open': async (component) => {
 		await component.getByRole('button', { name: 'Search entities', exact: true }).click();
 		const dialog = component.getByRole('dialog', { name: 'Search project' });

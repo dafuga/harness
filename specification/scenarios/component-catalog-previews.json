@@ -1673,6 +1673,72 @@
 			"units": ["reports.component.entity-contract"]
 		},
 		{
+			"id": "reports-component-entity-contract-empty",
+			"title": "Typed contract: no props",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-errors",
+			"title": "Typed contract: declared errors",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-last",
+			"title": "Typed contract: removed revision",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-example-open",
+			"title": "Typed contract: example open",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-function",
+			"title": "Typed contract: function",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-function-error",
+			"title": "Typed contract: function throws",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-service",
+			"title": "Typed contract: service",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-model",
+			"title": "Typed contract: model",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-model-bare",
+			"title": "Typed contract: model without members",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-types",
+			"title": "Typed contract: type declarations",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
+			"id": "reports-component-entity-contract-config",
+			"title": "Typed contract: config",
+			"coverage": "required",
+			"units": ["reports.component.entity-contract"]
+		},
+		{
 			"id": "reports-component-entity-examples",
 			"title": "Usage examples",
 			"coverage": "required",
@@ -3968,6 +4034,17 @@
 				"reports-component-entity-cases-wrong-unit",
 				"reports-component-entity-cases-expanded",
 				"reports-component-entity-contract",
+				"reports-component-entity-contract-empty",
+				"reports-component-entity-contract-errors",
+				"reports-component-entity-contract-last",
+				"reports-component-entity-contract-example-open",
+				"reports-component-entity-contract-function",
+				"reports-component-entity-contract-function-error",
+				"reports-component-entity-contract-service",
+				"reports-component-entity-contract-model",
+				"reports-component-entity-contract-model-bare",
+				"reports-component-entity-contract-types",
+				"reports-component-entity-contract-config",
 				"reports-component-entity-examples",
 				"reports-component-entity-examples-empty",
 				"reports-component-entity-examples-gap",
