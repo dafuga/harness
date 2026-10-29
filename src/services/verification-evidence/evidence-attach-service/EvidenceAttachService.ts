@@ -21,6 +21,7 @@ import {
 	type StoredRecord
 } from '../../../repositories/verification-evidence/VerificationStoreRepository';
 import { evidenceManifest } from './evidenceManifest';
+import { citedRecords, inheritedRecords, isScopedRecord } from './attachDependencies';
 import { sourceArchiveRef } from '../../../utils/git-source-history/historyRefs';
 import { lfsPointer } from '../../../utils/verification-evidence/lfsPointer';
 import { stableJson } from '../../../utils/development-tooling/stableJson';
@@ -107,22 +108,22 @@ export class EvidenceAttachService {
 	/**
 	 * The base record and the records behind inherited scenarios are attached first, and so are
 	 * the records the budget ledger of this commit cites, so every clone can check the ledger.
+	 * A scoped record proves only its entity, so it attaches alone.
 	 */
 	private async dependencies(stored: StoredRecord): Promise<void> {
 		const { record } = stored;
-		const inherited = record.scenarios.flatMap((scenario) => scenario.referencedRecord ?? []);
-		for (const id of new Set([record.source.baseRecord ?? '', ...inherited])) {
-			if (!id) continue;
+		for (const id of inheritedRecords(record)) {
 			const subject = `Record ${short(record.id)} cannot be attached`;
 			const dependency =
 				this.store.load(id) ??
 				fail(`${subject}: it inherits from record ${short(id)}, which is not available`);
 			await this.attach(dependency.record.source.commit, dependency);
 		}
+		if (isScopedRecord(record)) return;
 		const tree = await CommitTreeAdapter.open(this.root, record.source.commit);
 		const ledger = await new BudgetLedgerRepository(this.root).read(tree);
-		for (const id of new Set(ledger.events.map((event) => event.record.id))) {
-			const cited = id === record.id ? undefined : this.store.load(id);
+		for (const id of citedRecords(record, ledger.events.map((event) => event.record.id))) {
+			const cited = this.store.load(id);
 			if (cited) await this.attach(cited.record.source.commit, cited);
 		}
 	}
