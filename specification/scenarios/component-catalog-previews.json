@@ -1247,6 +1247,12 @@
 			"units": ["reports.component.analytics-history"]
 		},
 		{
+			"id": "reports-component-analytics-history-empty",
+			"title": "Analytics history: Empty history",
+			"coverage": "required",
+			"units": ["reports.component.analytics-history"]
+		},
+		{
 			"id": "reports-component-analytics-models",
 			"title": "Analytics models",
 			"coverage": "required",
@@ -3279,6 +3285,7 @@
 				"reports-component-analytics-filters",
 				"reports-component-analytics-filters-empty",
 				"reports-component-analytics-history",
+				"reports-component-analytics-history-empty",
 				"reports-component-analytics-models",
 				"reports-component-analytics-tasks",
 				"reports-component-audio-comparison",

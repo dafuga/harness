@@ -71,8 +71,16 @@ const filterStates: Record<string, () => PreviewCases[string]> = {
 	empty: () => ({ filters: {} })
 };
 
+const historyStates: Record<string, () => PreviewCases[string]> = {
+	empty: () => ({
+		summary: { templates: {}, commands: {}, evaluatorOutcomes: {}, daily: {} },
+		loops: []
+	})
+};
+
 export function analyticsVariant(id: string, variant: string, props: PreviewCases[string]) {
 	if (id === 'reports.component.analytics-cpu' && variant) return { ...props };
+	if (id === 'reports.component.analytics-history') return historyStates[variant]?.() ?? props;
 	if (id !== 'reports.component.analytics-filters') return props;
 	return filterStates[variant]?.() ?? props;
 }

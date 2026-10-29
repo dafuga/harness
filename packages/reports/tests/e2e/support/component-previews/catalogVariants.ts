@@ -18,6 +18,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.analytics-filters': ['empty'],
 	// CPU distinguishes a healthy idle checkout from an unavailable local sample.
 	'reports.component.analytics-cpu': ['no-agents', 'unavailable'],
+	// History retains independent empty tables and summaries after filters remove every loop.
+	'reports.component.analytics-history': ['empty'],
 	// The default shows both recorded clips; this keeps an unavailable side legible on its own.
 	'reports.component.audio-comparison': ['unavailable'],
 	// The comparison opens by default; each single-recording view stays independently inspectable.
