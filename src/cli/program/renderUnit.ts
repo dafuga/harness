@@ -13,24 +13,43 @@ function qualifiers(item: Field): string {
 }
 
 /** `name  type` rows with the types in one column; the owner prefix (`Badge.`) is dropped. */
-function fields(list: Field[]): string[] {
+function fields(list: Field[], componentProps = false): string[] {
 	if (list.length === 0) return ['none'];
+	if (componentProps)
+		list = [...new Map(list.map((item) => [item.name.split('.').at(-1), item])).values()];
 	const shortNames = list.map((item) => item.name.split('.').at(-1) ?? item.name);
 	const repeated = new Set(shortNames.filter((name, index) => shortNames.indexOf(name) !== index));
 	const rows = list.map(
 		(item, index) =>
-			[repeated.has(shortNames[index]) ? item.name : shortNames[index], `${item.type}${qualifiers(item)}`] as const
+			[
+				!componentProps && repeated.has(shortNames[index]) ? item.name : shortNames[index],
+				`${item.type}${qualifiers(item)}`
+			] as const
 	);
 	const width = Math.max(...rows.map(([name]) => name.length));
-	return rows.map(([name, type]) =>
-		type === 'thrown' ? name : `${name.padEnd(width)}  ${type}`
-	);
+	return rows.map(([name, type]) => (type === 'thrown' ? name : `${name.padEnd(width)}  ${type}`));
 }
 
 /** What a caller needs: props or inputs, outputs for anything but a component, and errors. */
 export function renderContract(manifest: ComponentManifest): string[] {
 	const { contract, kind } = manifest;
 	const component = kind === 'component';
+	if (
+		!component &&
+		(contract.operations?.length || contract.initialization?.length || contract.storage?.length)
+	)
+		return [
+			`Contract (${contract.origin})`,
+			...(contract.storage?.length
+				? ['  Storage', ...indent(storageRows(contract.storage), 2)]
+				: []),
+			...(contract.initialization?.length
+				? ['  Initialization', ...indent(operationRows(contract.initialization), 2)]
+				: []),
+			...(contract.operations?.length
+				? ['  Operations', ...indent(operationRows(contract.operations), 2)]
+				: [])
+		];
 	const sections: Array<[string, Field[]]> = [
 		[component ? 'Props' : 'Inputs', contract.inputs],
 		...(component ? [] : ([['Outputs', contract.outputs]] as Array<[string, Field[]]>)),
@@ -38,8 +57,66 @@ export function renderContract(manifest: ComponentManifest): string[] {
 	];
 	return [
 		`Contract (${contract.origin})`,
-		...indent(sections.flatMap(([title, list]) => [title, ...indent(fields(list))]))
+		...indent(
+			sections.flatMap(([title, list]) => [
+				title,
+				...indent(
+					title === 'Errors' && !list.length && contract.origin === 'derived'
+						? ['none found (static analysis; indirect errors unknown)']
+						: fields(list, component && title === 'Props')
+				)
+			])
+		),
+		...(contract.snippets?.length
+			? ['  Snippets (local)', ...indent(operationRows(contract.snippets), 2)]
+			: []),
+		...(component && contract.operations?.length
+			? ['  Module exports', ...indent(operationRows(contract.operations), 2)]
+			: [])
 	];
+}
+
+function operationRows(
+	operations: NonNullable<ComponentManifest['contract']['operations']>
+): string[] {
+	return operations.flatMap((operation) => [
+		operation.name,
+		...indent([
+			'Inputs',
+			...indent(fields(operation.inputs)),
+			'Outputs',
+			...indent(fields(operation.outputs)),
+			'Errors',
+			...indent(
+				operation.errors.length
+					? fields(operation.errors)
+					: [
+							operation.errorStatus === 'declared'
+								? 'none (declared)'
+								: operation.errorStatus === 'unknown'
+									? 'unknown (indirect calls or dynamic throws)'
+									: 'none found (static analysis; indirect errors unknown)'
+						]
+			)
+		])
+	]);
+}
+
+function storageRows(models: NonNullable<ComponentManifest['contract']['storage']>): string[] {
+	return models.flatMap((model) => [
+		model.name,
+		...indent([
+			`Table  ${model.table ?? 'unknown'}`,
+			`Primary key  ${model.primaryKey ?? 'unknown'}`,
+			...model.fields.map(
+				(field) =>
+					`${field.name}  ${field.type}${qualifiers(field)}${field.primaryKey ? '  (primary key)' : ''}${field.nullable ? '  (nullable)' : ''}${field.validation ? `  validation: ${field.validation}` : ''}${field.relations ? `  relations: ${field.relations}` : ''}`
+			),
+			...(model.validation ? [`Validation  ${model.validation}`] : []),
+			...(model.relations ? [`Relations  ${model.relations}`] : []),
+			...(model.unresolved ?? []).map((gap) => `Unresolved  ${gap}`)
+		])
+	]);
 }
 
 /** Test files grouped by directory, each with its count, so a long list stays one screen. */
@@ -80,7 +157,10 @@ export function renderUnit(detail: UnitDetail): string {
 	const rows: Array<[string, string[]]> = [
 		['Source', manifest.owns.source],
 		...runtimeRows(manifest),
-		['Version', [`source ${version.source.slice(0, 12)} · contract ${version.contract.slice(0, 12)}`]],
+		[
+			'Version',
+			[`source ${version.source.slice(0, 12)} · contract ${version.contract.slice(0, 12)}`]
+		],
 		...(retired.length ? [['Continues', retired] as [string, string[]]] : []),
 		['Depends on', manifest.dependencies.map((d) => `${d.unit} (${d.via})`)],
 		['Consumers', detail.consumers],

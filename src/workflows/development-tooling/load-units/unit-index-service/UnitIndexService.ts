@@ -4,12 +4,13 @@ import type { ComponentManifest } from '../../../../core/development-tooling/uni
 import { deriveManifest } from './deriveManifest';
 import { stableJson } from '../../../../utils/development-tooling/stableJson';
 import { unitLineage } from './unitLineage';
+import { modelCompanions } from './modelCompanions';
 import type { SourceIndex } from '../../../../services/development-tooling/source-index-service/SourceIndexService';
 
 /** Reconciles the stored registry with the source tree without ever changing an identity. */
 export class UnitIndexService {
 	index(index: SourceIndex, existing: ComponentManifest[]): UnitIndexResult {
-		const registry = this.registry(existing);
+		const registry = this.registry(modelCompanions(index, existing));
 		const pending = this.claim(registry, this.groups(index));
 		this.place(registry, pending, index);
 		this.refresh(registry, index);

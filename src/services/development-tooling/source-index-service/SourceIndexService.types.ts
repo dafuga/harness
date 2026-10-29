@@ -8,6 +8,7 @@ export interface SourceIndex {
 	files: Map<string, SourceFile>;
 }
 export interface Parsed {
+	storage?: SourceFile['storage'];
 	composition?: SourceFile['composition'];
 	execution: NonNullable<SourceFile['execution']>;
 	bytes: number;
