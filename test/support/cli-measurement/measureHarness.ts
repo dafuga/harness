@@ -88,6 +88,9 @@ const benchmarkRunUnits = [
 ];
 
 const measuredWorkloads: Record<string, string[]> = {
+	'units:show': ['workflow.inspect-units', 'repository.unit-registry', 'function.unit-types'],
+	'units:index': ['workflow.manage-units', 'repository.unit-registry', 'function.unit-types'],
+	'units:check': ['workflow.manage-units', 'validator.component-manifest'],
 	'info:modules': ['guide.module-system-modules', 'guide.guide', 'entry.program', 'entry.index'],
 	'info:resources': ['guide.resources', 'guide.guide', 'entry.program', 'entry.index'],
 	'resources:status': [

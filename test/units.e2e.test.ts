@@ -7,6 +7,7 @@ import {
 	titleServiceSource,
 	unitProject,
 	sharedDateHelperProject,
+	checkGeneratedAppContracts,
 	utcDateExamples
 } from './support/unitProject';
 
@@ -34,7 +35,7 @@ test('generic unit generator coexists with the Svelte component generator', asyn
 	const index = await project.harnessJson<IndexResult>(['units', 'index', '--write']);
 	expect(index.added).toContain('component.price-quote');
 	expect(index.added).not.toContain('function.price-quote');
-	await project.harness(['units', 'check']);
+	await checkGeneratedAppContracts(project);
 	const service = await project.harness(['generate', 'unit', 'Billing', '--kind', 'service']);
 	expect(service.stdout).toContain('create src/services/BillingService.ts');
 	expect(service.stdout).toContain('create specification/units/service.billing.json');
