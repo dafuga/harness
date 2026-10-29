@@ -81,40 +81,5 @@ function dependentTests(graph: SourceGraph, manifest: ComponentManifest): string
 		.sort();
 }
 
-export function renderUnit(detail: UnitDetail): string {
-	const { manifest } = detail;
-	const items = (title: string, values: string[]) =>
-		values.length > 0
-			? [`${title}:`, ...values.map((value) => `  - ${value}`)]
-			: [`${title}: none`];
-	const contract = (label: string, list: ComponentManifest['contract']['inputs']) =>
-		items(
-			label,
-			list.map((item) => `${item.name}: ${item.type}`)
-		);
-	return [
-		`# ${manifest.id} (${manifest.kind}, ${manifest.status})`,
-		manifest.responsibility,
-		...items('Source', manifest.owns.source),
-		`Runtime: ${manifest.runtime.kind} ${manifest.runtime.entry} (default)`,
-		...items(
-			'Execution targets',
-			manifest.runtime.targets.map((target) => `${target.kind} ${target.entry}`)
-		),
-		...items('Continues retired units', manifest.lineage?.predecessors ?? []),
-		`Version: source ${detail.version.source.slice(0, 12)}, contract ${detail.version.contract.slice(0, 12)}`,
-		`Contract (${manifest.contract.origin}):`,
-		...contract('Inputs', manifest.contract.inputs),
-		...contract('Outputs', manifest.contract.outputs),
-		...contract('Errors', manifest.contract.errors),
-		...items(
-			'Dependencies',
-			manifest.dependencies.map((dependency) => `${dependency.unit} via ${dependency.via}`)
-		),
-		...items('Consumers', detail.consumers),
-		...items('Tests', detail.tests),
-		...items('Scenarios', manifest.scenarios)
-	].join('\n');
-}
-
+export { renderUnit } from './renderUnit';
 export type { UnitDetail } from './inspectUnits.types';

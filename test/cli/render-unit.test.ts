@@ -1,0 +1,61 @@
+import { describe, expect, test } from 'vitest';
+import type { UnitDetail } from '../../src/cli/program/inspectUnits.types';
+import { groupTests, renderContract, renderUnit } from '../../src/cli/program/renderUnit';
+
+const field = (name: string, type: string) => ({ name, type }) as never;
+function detail(kind: string): UnitDetail {
+	const entry = 'src/Badge.svelte';
+	return {
+		manifest: {
+			id: `demo.${kind}.badge`,
+			kind,
+			status: 'active',
+			responsibility: 'Shows a badge.',
+			owns: { source: [entry] },
+			runtime: { kind: 'module', entry, targets: [{ kind: 'module', entry }] },
+			contract: {
+				origin: 'declared',
+				inputs: [field('Badge.status', 'Status'), field('Badge.size', 'number')],
+				outputs: [field('Badge', 'markup')],
+				errors: [field('ExpectedCliError', 'thrown')]
+			},
+			dependencies: [],
+			scenarios: []
+		},
+		version: { unit: 'x', source: 'a'.repeat(64), contract: 'b'.repeat(64) },
+		consumers: [],
+		tests: ['pkg/test/a.test.ts', 'pkg/test/b.test.ts', 'pkg/test/utils/c.test.ts'],
+		dependencies: []
+	} as unknown as UnitDetail;
+}
+
+describe('units show rendering', () => {
+	test('a component contract lists aligned props and errors, never outputs', () => {
+		expect(renderContract(detail('component').manifest)).toEqual([
+			'Contract (declared)',
+			'  Props',
+			'    status  Status',
+			'    size    number',
+			'  Errors',
+			'    ExpectedCliError'
+		]);
+	});
+
+	test('a function contract also lists its outputs', () => {
+		expect(renderContract(detail('function').manifest)).toContain('  Outputs');
+	});
+
+	test('tests collapse to a count per directory', () => {
+		expect(groupTests(detail('component').tests)).toEqual([
+			'3 files',
+			'  pkg/test/        2',
+			'  pkg/test/utils/  1'
+		]);
+	});
+
+	test('identical runtime targets and an empty lineage are not repeated', () => {
+		const text = renderUnit(detail('component'));
+		expect(text).not.toMatch(/Targets|Continues|Execution targets/);
+		expect(text).toContain('Runtime     module src/Badge.svelte');
+	});
+});
