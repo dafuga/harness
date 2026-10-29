@@ -42,6 +42,15 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
 	// A replay can wait for its first live frame or retain an interrupted final run.
 	'reports.component.gameplay-replay': ['live-empty', 'interrupted'],
+	// Playback, selected controls and boundary-disabled controls each remain independently inspectable.
+	'reports.component.replay-controls': [
+		'playing',
+		'final-frame',
+		'single-frame',
+		'scene-unselected',
+		'fullscreen',
+		'speed-2x'
+	],
 	// The default shows two facts; this state proves a fuller recorded provenance set remains legible.
 	'reports.component.evidence-provenance': ['extended'],
 	// The lightbox needs separate before, compare and unavailable-image examples.

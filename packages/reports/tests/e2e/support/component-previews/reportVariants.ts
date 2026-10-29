@@ -1,6 +1,7 @@
 import type { PreviewCases } from './shared';
 import { image, noop, text } from './shared';
 import { baselineNarration, releaseNarration } from './reportData';
+import { replayControlsVariant } from './replayControlsVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -15,6 +16,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.evidence-provenance') return evidenceProvenanceVariant(props, variant);
 	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
 	if (id === 'reports.component.gameplay-replay') return gameplayReplayVariant(props, variant);
+	if (id === 'reports.component.replay-controls') return replayControlsVariant(props, variant);
 	if (id === 'reports.component.regression-proof') return regressionProofVariant(props, variant);
 	if (!['reports.component.audio-comparison', 'reports.component.audio-comparison-viewer'].includes(id))
 		return null;
