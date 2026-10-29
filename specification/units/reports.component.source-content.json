@@ -23,21 +23,25 @@
 			{
 				"name": "SourceContent.files",
 				"type": "SourceFiles",
+				"required": true,
 				"description": "Async listing restricted to the selected entity and revision."
 			},
 			{
 				"name": "SourceContent.read",
 				"type": "SourceRead",
+				"required": true,
 				"description": "Async reader for one recorded path at the same revision."
 			},
 			{
 				"name": "SourceContent.commit",
 				"type": "string",
+				"required": true,
 				"description": "Exact revision associated with the contents."
 			},
 			{
 				"name": "SourceContent.empty",
 				"type": "string",
+				"required": false,
 				"description": "Optional no-files explanation."
 			}
 		],

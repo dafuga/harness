@@ -2045,6 +2045,24 @@
 			"units": ["reports.component.regression-proof"]
 		},
 		{
+			"id": "reports-component-regression-proof-pending",
+			"title": "Regression proof: Pending green commit",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
+			"id": "reports-component-regression-proof-gap",
+			"title": "Regression proof: Recorded gap",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
+			"id": "reports-component-regression-proof-output-open",
+			"title": "Regression proof: Recorded output",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
 			"id": "reports-component-replay-controls",
 			"title": "Evidence replay controls",
 			"coverage": "required",
@@ -2897,8 +2915,32 @@
 			"units": ["reports.component.source-code-action"]
 		},
 		{
+			"id": "reports-component-source-code-action-unavailable",
+			"title": "SourceCodeAction without archived source",
+			"coverage": "required",
+			"units": ["reports.component.source-code-action"]
+		},
+		{
 			"id": "reports-component-source-content",
 			"title": "SourceContent",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
+			"id": "reports-component-source-content-loading",
+			"title": "SourceContent loading archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
+			"id": "reports-component-source-content-error",
+			"title": "SourceContent unavailable archived source",
+			"coverage": "required",
+			"units": ["reports.component.source-content"]
+		},
+		{
+			"id": "reports-component-source-content-empty",
+			"title": "SourceContent without archived files",
 			"coverage": "required",
 			"units": ["reports.component.source-content"]
 		},
@@ -2909,14 +2951,62 @@
 			"units": ["reports.component.source-dialog"]
 		},
 		{
+			"id": "reports-component-source-dialog-loading",
+			"title": "SourceDialog loading archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
+			"id": "reports-component-source-dialog-error",
+			"title": "SourceDialog unavailable archived source",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
+			"id": "reports-component-source-dialog-empty",
+			"title": "SourceDialog without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-dialog"]
+		},
+		{
 			"id": "reports-component-source-file-list",
 			"title": "Source file list",
 			"coverage": "required",
 			"units": ["reports.component.source-file-list"]
 		},
 		{
+			"id": "reports-component-source-file-list-linked",
+			"title": "Source file list with repository links",
+			"coverage": "required",
+			"units": ["reports.component.source-file-list"]
+		},
+		{
+			"id": "reports-component-source-file-list-empty",
+			"title": "Source file list without archived files",
+			"coverage": "required",
+			"units": ["reports.component.source-file-list"]
+		},
+		{
 			"id": "reports-component-source-viewer",
 			"title": "SourceViewer",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
+			"id": "reports-component-source-viewer-loading",
+			"title": "SourceViewer loading archived source",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
+			"id": "reports-component-source-viewer-error",
+			"title": "SourceViewer unavailable archived source",
+			"coverage": "required",
+			"units": ["reports.component.source-viewer"]
+		},
+		{
+			"id": "reports-component-source-viewer-empty",
+			"title": "SourceViewer without archived files",
 			"coverage": "required",
 			"units": ["reports.component.source-viewer"]
 		},
@@ -3466,6 +3556,9 @@
 				"reports-component-provider-picker-cards",
 				"reports-component-recorded-value",
 				"reports-component-regression-proof",
+				"reports-component-regression-proof-pending",
+				"reports-component-regression-proof-gap",
+				"reports-component-regression-proof-output-open",
 				"reports-component-replay-controls",
 				"reports-component-report-checks",
 				"reports-component-report-findings",
@@ -3608,10 +3701,22 @@
 				"reports-component-site-activity",
 				"reports-component-site-activity-failed-refresh",
 				"reports-component-source-code-action",
+				"reports-component-source-code-action-unavailable",
 				"reports-component-source-content",
+				"reports-component-source-content-loading",
+				"reports-component-source-content-error",
+				"reports-component-source-content-empty",
 				"reports-component-source-dialog",
+				"reports-component-source-dialog-loading",
+				"reports-component-source-dialog-error",
+				"reports-component-source-dialog-empty",
 				"reports-component-source-file-list",
+				"reports-component-source-file-list-linked",
+				"reports-component-source-file-list-empty",
 				"reports-component-source-viewer",
+				"reports-component-source-viewer-loading",
+				"reports-component-source-viewer-error",
+				"reports-component-source-viewer-empty",
 				"reports-component-status-badge",
 				"reports-component-status-badge-running",
 				"reports-component-status-badge-failed",

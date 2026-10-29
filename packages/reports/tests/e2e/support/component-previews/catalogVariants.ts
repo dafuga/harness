@@ -44,12 +44,20 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-provenance': ['extended'],
 	// The lightbox needs separate before, compare and unavailable-image examples.
 	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
+	// Paired results, pending repair, explicit gaps and expanded output are distinct proof states.
+	'reports.component.regression-proof': ['pending', 'gap', 'output-open'],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
 	// Filters show their inactive trigger by default, with active and opened states separately.
 	'reports.component.filter-dialog': ['active', 'open'],
 	// The default is a text dialog; the lightbox uses the viewport-filling presentation.
 	'reports.component.modal': ['lightbox'],
+	// Archived source distinguishes actionable, loading, unavailable, empty and linked views.
+	'reports.component.source-code-action': ['unavailable'],
+	'reports.component.source-content': ['loading', 'error', 'empty'],
+	'reports.component.source-dialog': ['loading', 'error', 'empty'],
+	'reports.component.source-file-list': ['linked', 'empty'],
+	'reports.component.source-viewer': ['loading', 'error', 'empty'],
 	// Dense, display-label and disabled controls expose the select's distinct field treatments.
 	'reports.component.select': ['compact', 'display', 'disabled'],
 	// The default shows a passed badge; each other status is its own example.

@@ -23,36 +23,43 @@
 			{
 				"name": "SourceDialog.open",
 				"type": "boolean",
+				"required": true,
 				"description": "Whether to show and mount the reader."
 			},
 			{
 				"name": "SourceDialog.title",
 				"type": "string",
+				"required": true,
 				"description": "Entity or callable name used in the dialog title."
 			},
 			{
 				"name": "SourceDialog.files",
 				"type": "SourceFiles",
+				"required": true,
 				"description": "Lists owned files for this source session."
 			},
 			{
 				"name": "SourceDialog.read",
 				"type": "SourceRead",
+				"required": true,
 				"description": "Reads the captured revision of a selected file."
 			},
 			{
 				"name": "SourceDialog.commit",
 				"type": "string",
+				"required": true,
 				"description": "Source revision shown beside the selector."
 			},
 			{
 				"name": "SourceDialog.onClose",
 				"type": "() => void",
+				"required": true,
 				"description": "Host closes the session and restores focus."
 			},
 			{
 				"name": "SourceDialog.empty",
 				"type": "string",
+				"required": false,
 				"description": "Optional message for histories without archived source."
 			}
 		],
