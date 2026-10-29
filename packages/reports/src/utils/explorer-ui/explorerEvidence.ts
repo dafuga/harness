@@ -15,6 +15,7 @@ import type {
 import { focusedCaptures, focusedScenario } from '../explorer-evidence/focusedCaptures';
 import { captureProvenance } from '../reports-media/captureProvenance';
 import { scenarioFor } from './explorerState';
+import { explorerCoverage } from './explorer-verdict/explorerCoverage';
 import { verdictCoverage, verdictRecord } from './explorer-verdict/explorerVerdict';
 
 const short = (commit: string) => commit.slice(0, 7);
@@ -52,6 +53,7 @@ function captures(record: HarnessRecord, coverage: ExplorerScenarioCoverage[]): 
 					scenario: item.scenario,
 					state: state.id,
 					capture,
+					recordId: record.id,
 					standing: captureProvenance(record, result, capture).standing,
 					usable,
 					current: usable && !result.inherited,
@@ -60,6 +62,32 @@ function captures(record: HarnessRecord, coverage: ExplorerScenarioCoverage[]): 
 			})
 		);
 	});
+}
+
+/** Captures from every sound scoped record, newest first, with one latest record per slot. */
+function recordedCaptures(detail: HarnessRevision, unit: Named): ExplorerCapture[] {
+	const seen = new Set<string>();
+	return detail.records
+		.filter((record) => record.valid && record.source.commit === detail.commit)
+		.sort((left, right) => right.finishedAt.localeCompare(left.finishedAt))
+		.flatMap((record) => {
+			const coverage = detail.registry.scenarios
+				.filter((scenario) => scenario.units.includes(unit.id))
+				.map(explorerCoverage(detail, record, unit.id));
+			return captures(record, coverage);
+		})
+		.filter((item) => {
+			const key = [
+				item.scenario,
+				item.state,
+				item.capture.evidence,
+				item.capture.kind,
+				item.capture.viewport ?? ''
+			].join('\n');
+			if (seen.has(key)) return false;
+			seen.add(key);
+			return true;
+		});
 }
 
 /** Why a stored revision shows nothing for a unit, before its captures are looked at. */
@@ -94,7 +122,7 @@ function side(
 	const gap = unrecorded(detail, record, unit.id);
 	const found = [
 		...focusedCaptures(detail, unit.id),
-		...(gap === null && record ? captures(record, coverage) : [])
+		...(gap === null && record ? recordedCaptures(detail, unit) : [])
 	];
 	const none =
 		found.length === 0 ? 'The record of this commit holds no capture for this unit.' : null;

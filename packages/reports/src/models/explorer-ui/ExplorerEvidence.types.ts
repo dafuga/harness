@@ -57,6 +57,8 @@ export interface ExplorerCapture {
 	scenario: string;
 	state: string;
 	capture: HarnessCapture;
+	/** The record that stored this capture when it differs from the side's verdict record. */
+	recordId?: string;
 	standing: CaptureStanding;
 	/** Retained focused pixels; this grants no full-verification verdict. */
 	focused?: {

@@ -62,10 +62,11 @@ export async function apiScreenshot(
 
 /** What the record says about the capture, stated as recorded and never upgraded to passed. */
 function verificationOf(side: ExplorerSide, selected: ExplorerCapture) {
-	const status = selected.focused ? null : (side.record?.status ?? null);
+	const record = recordFor(side, selected);
+	const status = selected.focused ? null : (record?.status ?? null);
 	const proven = selected.usable;
 	return {
-		record: selected.focused?.record ?? side.record?.id ?? null,
+		record: selected.focused?.record ?? record?.id ?? null,
 		status,
 		standing: selected.standing,
 		usable: proven,
@@ -105,7 +106,7 @@ function artifactBinding(
 ): EvidenceArtifactQuery {
 	const { capture, scenario, state, focused } = selected;
 	const side = result.evidence[query.side];
-	const recordId = focused?.record ?? side?.record?.id;
+	const recordId = focused?.record ?? (side ? recordFor(side, selected)?.id : undefined);
 	if (!recordId) fail('The screenshot has no record binding.');
 	return {
 		...query,
@@ -118,4 +119,10 @@ function artifactBinding(
 		notesRevision: result.identity.notesRevision,
 		evidenceRevision: result.identity.evidenceRevision
 	};
+}
+
+function recordFor(side: ExplorerSide, capture: ExplorerCapture) {
+	return capture.recordId
+		? (side.detail?.records.find((record) => record.id === capture.recordId) ?? side.record)
+		: side.record;
 }

@@ -45,6 +45,11 @@ export function screenPick(
 	};
 }
 const unrecorded = { standing: null, label: undefined, facts: undefined, note: undefined };
+function recordFor(side: ExplorerSide, found: ExplorerCapture) {
+	return found.recordId
+		? (side.detail?.records.find((record) => record.id === found.recordId) ?? side.record)
+		: side.record;
+}
 function told(side: ExplorerSide, found: ExplorerCapture) {
 	if (found.focused)
 		return {
@@ -53,9 +58,10 @@ function told(side: ExplorerSide, found: ExplorerCapture) {
 			facts: [{ label: 'Focused run', value: found.focused.loop + ' · ' + found.focused.status }],
 			note: 'Captured from the exact served revision; this focused run grants no full verification verdict.'
 		};
-	const tested = side.record?.scenarios.find((entry) => entry.id === found.scenario);
-	if (!side.record || !tested) return unrecorded;
-	return captureProvenance(side.record, tested, found.capture);
+	const record = recordFor(side, found);
+	const tested = record?.scenarios.find((entry) => entry.id === found.scenario);
+	if (!record || !tested) return unrecorded;
+	return captureProvenance(record, tested, found.capture);
 }
 function item(side: ExplorerSide, found: ExplorerCapture, phase: Phase): Evidence {
 	const { capture, scenario, state } = found;
