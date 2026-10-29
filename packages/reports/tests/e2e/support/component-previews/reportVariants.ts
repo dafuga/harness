@@ -14,6 +14,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.evidence-grid') return evidenceGridVariant(props, variant);
 	if (id === 'reports.component.evidence-provenance') return evidenceProvenanceVariant(props, variant);
 	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
+	if (id === 'reports.component.gameplay-replay') return gameplayReplayVariant(props, variant);
 	if (id === 'reports.component.regression-proof') return regressionProofVariant(props, variant);
 	if (!['reports.component.audio-comparison', 'reports.component.audio-comparison-viewer'].includes(id))
 		return null;
@@ -185,6 +186,15 @@ function evidenceViewerVariant(props: PreviewCases[string], variant: string) {
 		phase: 'after'
 	};
 	return { ...props, items: [before, after], navigableItems: [after], selected: after };
+}
+
+function gameplayReplayVariant(props: PreviewCases[string], variant: string) {
+	const report = props.report as Record<string, unknown>;
+	if (variant === 'live-empty')
+		return { ...props, report: { ...report, state: 'active', status: 'running', evidence: [] } };
+	return variant === 'interrupted'
+		? { ...props, report: { ...report, state: 'finalized', status: 'interrupted' } }
+		: null;
 }
 
 function regressionProofVariant(props: PreviewCases[string], variant: string) {

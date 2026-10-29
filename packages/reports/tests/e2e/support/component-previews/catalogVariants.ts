@@ -40,6 +40,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-card': ['missing', 'compact', 'paired-audio'],
 	// Media filtering, empty results, upload controls and a lightbox are separate gallery states.
 	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
+	// A replay can wait for its first live frame or retain an interrupted final run.
+	'reports.component.gameplay-replay': ['live-empty', 'interrupted'],
 	// The default shows two facts; this state proves a fuller recorded provenance set remains legible.
 	'reports.component.evidence-provenance': ['extended'],
 	// The lightbox needs separate before, compare and unavailable-image examples.

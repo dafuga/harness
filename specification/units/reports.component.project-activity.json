@@ -31,21 +31,25 @@
 			{
 				"name": "ProjectActivity.activity",
 				"type": "ProjectActivity",
+				"required": true,
 				"description": "Required recorded activity, including repository identity, branch/head, work and loops. Its kind controls whether registry information is described as recorded."
 			},
 			{
 				"name": "ProjectActivity.live",
 				"type": "LiveActivity | null",
+				"required": true,
 				"description": "Required live observations or null. Supplies agent and worktree state when available."
 			},
 			{
 				"name": "ProjectActivity.base",
 				"type": "string",
+				"required": true,
 				"description": "Required explorer prefix used for commit links. A commit uses the current branch when it belongs there, otherwise a listed matching branch."
 			},
 			{
 				"name": "ProjectActivity.reading",
 				"type": "{ now: number; failed: boolean; refresh: () => void }",
+				"required": false,
 				"description": "Optional live-reading state, supplying the current time, failed-read flag and refresh callback to the live views."
 			}
 		],
