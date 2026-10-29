@@ -144,6 +144,7 @@ test('the number of working agents is what registered agents say, and each is sh
 	const agents = section(html, 'Working agents');
 	expect(html).toMatch(/data-testid="agents-working"[^>]*>\s*1\s*</);
 	expect(agents).toContain('1 registered agent is working');
+	expect(agents).not.toContain('1 1 registered agent is working');
 	expect(agents).toContain('Opus session');
 	expect(agents).toContain('anthropic · claude-opus-5-5');
 	expect(agents).toContain('alpha-checkout · branch checkout');
