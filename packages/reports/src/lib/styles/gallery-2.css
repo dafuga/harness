@@ -270,6 +270,7 @@
 		grid-template-columns: 1fr;
 	}
 	.upload-pair {
+		grid-template-columns: minmax(0, 1fr);
 		gap: var(--hx-space-8);
 	}
 	.upload-pair label {
