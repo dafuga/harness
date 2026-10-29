@@ -1,5 +1,5 @@
 import type { ProjectActivity } from '../../core/projects-sessions/activityTypes';
-import type { LoopState } from '../../workflows/development-tooling/loop-state/loopState';
+import type { LoopState } from '../../core/development-tooling/loopTypes';
 
 export interface ActivityRevision {
 	commit: string;
