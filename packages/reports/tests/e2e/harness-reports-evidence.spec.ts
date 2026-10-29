@@ -57,7 +57,7 @@ async function exported(page: Page) {
 /** Each state the scenario declares: how to reach it and what must be on screen before capture. */
 const states: Record<string, (page: Page) => Promise<void>> = {
 	'retired-hub': (page) => retired(page, '/harness/reports'),
-	'retired-report': (page) => retired(page, `/harness/reports/${made.exported}`),
+	'retired-report': (page) => retired(page, `/reports/${made.exported}`),
 	'retired-analytics': (page) => retired(page, '/harness/analytics'),
 	exported,
 	async 'image-gallery'(page) {

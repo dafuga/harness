@@ -5,7 +5,7 @@
 	"kind": "ui",
 	"units": [
 		"reports.page.root",
-		"reports.page.harness-reports-id",
+		"reports.page.reports-id",
 		"reports.page.analytics",
 		"reports.component.report-view",
 		"reports.component.report-summary",
@@ -35,7 +35,7 @@
 			"id": "retired-report",
 			"title": "The explorer page that the address of a removed report page leads to",
 			"coverage": "required",
-			"units": ["reports.page.harness-branch-branch-at-pages"]
+			"units": ["reports.page.reports-id"]
 		},
 		{
 			"id": "retired-analytics",

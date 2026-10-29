@@ -11,20 +11,28 @@
 		"symbols": ["load"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "load.input",
-				"type": "{ params: { id: string } }"
+				"type": "{ params: { id: string } }",
+				"description": "The legacy report identifier to carry into the console address."
 			}
 		],
 		"outputs": [
 			{
 				"name": "load",
-				"type": "unknown"
+				"type": "never",
+				"description": "Does not return; throws the permanent redirect to the report address in the explorer."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Redirect",
+				"type": "SvelteKit redirect",
+				"description": "Throws HTTP 308 to /harness/reports/{encoded id}."
+			}
+		]
 	},
 	"dependencies": [],
 	"runtime": {
