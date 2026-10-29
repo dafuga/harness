@@ -48,6 +48,15 @@ describe('units show rendering', () => {
 		expect(renderContract(detail('function').manifest)).toContain('  Outputs');
 	});
 
+	test('duplicate function parameter names retain their callable owner', () => {
+		const manifest = detail('function').manifest;
+		manifest.contract.inputs = [
+			field('serviceContract.unit', 'HarnessUnit'),
+			field('modelContract.unit', 'HarnessUnit')
+		];
+		expect(renderContract(manifest)).toContain('    serviceContract.unit  HarnessUnit');
+	});
+
 	test('tests collapse to a count per directory', () => {
 		expect(groupTests(detail('component').tests)).toEqual([
 			'3 files',
