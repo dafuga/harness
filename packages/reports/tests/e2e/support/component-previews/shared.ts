@@ -32,6 +32,17 @@ export const layoutImage = `<svg xmlns="http://www.w3.org/2000/svg" width="920" 
 <rect x="40" y="152" width="840" height="368" rx="12" fill="#142b3e" stroke="#f3c33b" stroke-width="2" stroke-dasharray="8 6"/>
 <text x="460" y="326" text-anchor="middle" fill="#f3c33b" font-family="sans-serif" font-size="32">Child content</text>
 <text x="460" y="366" text-anchor="middle" fill="#d8e4ee" font-family="sans-serif" font-size="22">Your page renders here</text></svg>`;
+/** Fictional page input, distinct from the nested component and layout examples. */
+export const ordersPageImage = `<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560">
+<rect width="920" height="560" fill="#0e1c29"/>
+<text x="48" y="56" fill="#f3c33b" font-family="sans-serif" font-size="18">SYNTHETIC PAGE INPUT</text>
+<text x="48" y="116" fill="#f4f7fb" font-family="sans-serif" font-size="36">Orders</text>
+<rect x="48" y="150" width="824" height="54" rx="8" fill="#142b3e" stroke="#30495f"/>
+<text x="68" y="184" fill="#92a6bb" font-family="sans-serif" font-size="20">Search orders</text>
+<g fill="#d8e4ee" font-family="sans-serif" font-size="23">
+<text x="68" y="270">Order #1048</text><text x="650" y="270">Ready to ship</text>
+<text x="68" y="342">Order #1047</text><text x="650" y="342">Delivered</text>
+</g></svg>`;
 export const example = {
 	name: 'Format a duration',
 	description: 'Turns seconds into display text.',

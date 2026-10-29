@@ -48,6 +48,14 @@ test('a scoped Playwright check greps the tests named after the entity', () => {
 	expect(scopedCheck(vitest, badge)).toBe(vitest);
 });
 
+test('a scoped Playwright check preserves a scenario selector', () => {
+	const check = {
+		runner: 'command',
+		command: "bun x playwright test preview.spec.ts --grep 'APIs catalog'"
+	} as PlannedCheck;
+	expect(scopedCheck(check, badge)).toBe(check);
+});
+
 test('a scoped record states it is partial', () => {
 	expect(scopeFailure(badge)).toContain('partial and never a full pass');
 });

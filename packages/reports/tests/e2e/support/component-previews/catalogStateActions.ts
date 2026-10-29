@@ -1,4 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
+import { prepareConsoleChatState } from './consoleChatActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -59,6 +60,10 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.locator('summary').click();
 		await expect(component.getByText('harness verify run', { exact: true })).toBeVisible();
 	},
+	'reports.component.entity-cases:expanded': async (component) => {
+		await component.locator('.cases > details > summary').click();
+		await expect(component.locator('.cases > details > pre')).toContainText('Format a duration');
+	},
 	'reports.component.entity-search:open': async (component) => {
 		await component.getByRole('button', { name: 'Search entities', exact: true }).click();
 		const dialog = component.getByRole('dialog', { name: 'Search project' });
@@ -74,6 +79,8 @@ const actions: Record<string, CatalogStateAction> = {
 
 /** Reproduce catalog variants that are reached through the component's own controls. */
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.console-chat' && variant)
+		return prepareConsoleChatState(component, variant);
 	if (id === 'reports.component.audio-comparison') await assertAudioComparison(component, variant);
 	const action = actions[`${id}:${variant}`];
 	if (action) await action(component);
