@@ -10,11 +10,7 @@ const agent = {
 	branch: 'main',
 	task: 'Capture component states',
 	loop: 'component-previews',
-	units: [
-		'reports.component.activity-agents',
-		'reports.component.activity-list',
-		'reports.component.project-activity'
-	],
+	units: ['reports.component.activity-agents'],
 	unknownUnits: [],
 	registeredAt: stamp,
 	heartbeatAt: stamp,
