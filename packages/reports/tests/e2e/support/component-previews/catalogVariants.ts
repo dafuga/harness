@@ -40,6 +40,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.filter-dialog': ['active', 'open'],
 	// The default is a text dialog; the lightbox uses the viewport-filling presentation.
 	'reports.component.modal': ['lightbox'],
+	// Dense, display-label and disabled controls expose the select's distinct field treatments.
+	'reports.component.select': ['compact', 'display', 'disabled'],
 	// The default shows a passed badge; each other status is its own example.
 	'reports.component.status-badge': [
 		'running',

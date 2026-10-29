@@ -4,6 +4,7 @@ import { baselineNarration, releaseNarration } from './reportData';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id === 'reports.component.select') return selectVariant(props, variant);
 	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
 	if (id === 'reports.component.modal') return modalVariant(props, variant);
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
@@ -26,6 +27,13 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 			note: 'The original recording was not retained with this evidence.'
 		}
 	};
+}
+
+function selectVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'compact') return { ...props, compact: true };
+	if (variant === 'display')
+		return { ...props, display: 'release/orders/final-approval', title: 'release/orders/final-approval' };
+	return variant === 'disabled' ? { ...props, disabled: true } : props;
 }
 
 function filterDialogVariant(props: PreviewCases[string], variant: string) {
