@@ -146,6 +146,11 @@ test('memory pressure still admits scoped verification checks, and only them', (
 		granted: [],
 		reason: 'Memory pressure is warning'
 	});
+	const running = { ...scoped, state: 'running' as const };
+	const child = job({ id: 'child', sequence: 3, parentId: 'scoped' });
+	expect(
+		resourcePolicy([running, child], snapshot({ memoryPressure: 'warning' }), config).granted
+	).toEqual(['child']);
 	const low = snapshot({ memoryPressure: 'warning', memoryAvailableBytes: 100 * mib });
 	expect(resourcePolicy([scoped], low, config).granted).toEqual([]);
 });

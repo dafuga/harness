@@ -57,7 +57,7 @@ export function resourcePolicy(
 	const scopedOnly =
 		pressure !== null && !resourcePressure({ ...sample, memoryPressure: 'normal' }, config, now);
 	if (pressure && !scopedOnly) return { granted: [], reason: pressure };
-	const admitted = scopedOnly ? jobs.filter((job) => job.label === scopedVerificationLabel) : jobs;
+	const admitted = scopedOnly ? scopedJobs(jobs) : jobs;
 	if (admitted.length === 0) return { granted: [], reason: pressure };
 	const ids = new Set(admitted.map((job) => job.id));
 	const roots = admitted.filter(
@@ -161,4 +161,11 @@ function grantChildren(jobs: ResourceJob[], available: Budget): string[] {
 		spend(job, available);
 	}
 	return granted;
+}
+/** Scoped verification jobs and the work nested beneath them. */
+function scopedJobs(jobs: ResourceJob[]): ResourceJob[] {
+	const byId = new Map(jobs.map((job) => [job.id, job]));
+	const scoped = (job: ResourceJob | undefined): boolean =>
+		!!job && (job.label === scopedVerificationLabel || scoped(byId.get(job.parentId ?? '')));
+	return jobs.filter((job) => scoped(job));
 }
