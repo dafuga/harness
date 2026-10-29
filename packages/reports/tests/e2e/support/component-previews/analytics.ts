@@ -71,8 +71,40 @@ const filterStates: Record<string, () => PreviewCases[string]> = {
 	empty: () => ({ filters: {} })
 };
 
+const historyStates: Record<string, () => PreviewCases[string]> = {
+	empty: () => ({
+		summary: { templates: {}, commands: {}, evaluatorOutcomes: {}, daily: {} },
+		loops: []
+	})
+};
+
+const modelStates: Record<string, () => PreviewCases[string]> = {
+	empty: () => ({
+		models: {
+			authors: {},
+			loopAuthors: {},
+			evaluators: {},
+			firstTryByAuthor: {},
+			inputTokens: 0,
+			outputTokens: 0
+		}
+	})
+};
+
+const taskStates: Record<string, () => PreviewCases[string]> = {
+	empty: () => ({
+		jev: {
+			response: { ...check, tasks: [] },
+			cleanCode: { ...check, tasks: [] }
+		}
+	})
+};
+
 export function analyticsVariant(id: string, variant: string, props: PreviewCases[string]) {
 	if (id === 'reports.component.analytics-cpu' && variant) return { ...props };
+	if (id === 'reports.component.analytics-history') return historyStates[variant]?.() ?? props;
+	if (id === 'reports.component.analytics-models') return modelStates[variant]?.() ?? props;
+	if (id === 'reports.component.analytics-tasks') return taskStates[variant]?.() ?? props;
 	if (id !== 'reports.component.analytics-filters') return props;
 	return filterStates[variant]?.() ?? props;
 }

@@ -144,6 +144,10 @@
 .analytics-table td:last-child {
 	padding-right: 0;
 }
+.analytics-models-table th,
+.analytics-models-table td {
+	white-space: normal;
+}
 .analytics-table small {
 	display: block;
 }

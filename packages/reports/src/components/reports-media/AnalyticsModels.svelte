@@ -130,7 +130,7 @@
 		</hx-p>
 		{#if firstTry.length}
 			<hx-div class="analytics-scroll">
-				<hx-table class="analytics-table">
+				<hx-table class="analytics-table analytics-models-table">
 					<hx-thead>
 						<hx-tr>
 							<hx-th scope="col">Author model</hx-th>

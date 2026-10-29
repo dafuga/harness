@@ -5,6 +5,7 @@ import {
 	scopedScenarios,
 	scopeFailure
 } from '../src/workflows/verification-evidence/run-verify/verification-service/entityScope';
+import { scopedContext } from '../src/workflows/verification-evidence/run-verify/scopedVerify';
 import type { ScenarioManifest } from '../src/core/development-tooling/unitTypes';
 import type { PlannedCheck } from '../src/utils/verification-evidence/verifyPlan';
 
@@ -49,4 +50,11 @@ test('a scoped Playwright check greps the tests named after the entity', () => {
 
 test('a scoped record states it is partial', () => {
 	expect(scopeFailure(badge)).toContain('partial and never a full pass');
+});
+
+test('a scoped run does not reopen repository-wide gates from an empty base', () => {
+	const base = { name: 'empty' };
+	const head = { name: 'head' };
+	const context = scopedContext({ base, head } as never);
+	expect(context.base).toBe(head);
 });

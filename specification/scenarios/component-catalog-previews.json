@@ -1247,14 +1247,32 @@
 			"units": ["reports.component.analytics-history"]
 		},
 		{
+			"id": "reports-component-analytics-history-empty",
+			"title": "Analytics history: Empty history",
+			"coverage": "required",
+			"units": ["reports.component.analytics-history"]
+		},
+		{
 			"id": "reports-component-analytics-models",
 			"title": "Analytics models",
 			"coverage": "required",
 			"units": ["reports.component.analytics-models"]
 		},
 		{
+			"id": "reports-component-analytics-models-empty",
+			"title": "Analytics models: No recorded models",
+			"coverage": "required",
+			"units": ["reports.component.analytics-models"]
+		},
+		{
 			"id": "reports-component-analytics-tasks",
 			"title": "Analytics tasks",
+			"coverage": "required",
+			"units": ["reports.component.analytics-tasks"]
+		},
+		{
+			"id": "reports-component-analytics-tasks-empty",
+			"title": "Analytics tasks: No recorded tasks",
 			"coverage": "required",
 			"units": ["reports.component.analytics-tasks"]
 		},
@@ -3297,8 +3315,11 @@
 				"reports-component-analytics-filters",
 				"reports-component-analytics-filters-empty",
 				"reports-component-analytics-history",
+				"reports-component-analytics-history-empty",
 				"reports-component-analytics-models",
+				"reports-component-analytics-models-empty",
 				"reports-component-analytics-tasks",
+				"reports-component-analytics-tasks-empty",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-unavailable",
 				"reports-component-audio-comparison-viewer",
