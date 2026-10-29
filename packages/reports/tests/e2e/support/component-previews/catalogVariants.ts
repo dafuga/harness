@@ -32,6 +32,8 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-provenance': ['extended'],
 	// The lightbox needs separate before, compare and unavailable-image examples.
 	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
+	// Paired results, pending repair, explicit gaps and expanded output are distinct proof states.
+	'reports.component.regression-proof': ['pending', 'gap', 'output-open'],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
 	// Filters show their inactive trigger by default, with active and opened states separately.
