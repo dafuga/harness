@@ -52,39 +52,58 @@ export async function servePreview(route: Route, home: string) {
 	});
 }
 
+const consoleProviders = [
+	{
+		id: 'codex',
+		label: 'Codex',
+		available: true,
+		reason: null,
+		version: 'fixture',
+		imageGeneration: true,
+		models: [
+			{
+				id: 'preview-model',
+				label: 'Preview model',
+				efforts: ['high'],
+				defaultEffort: 'high',
+				isDefault: true
+			}
+		]
+	}
+];
+
 /** The local project chat uses the same request protocol as its real console bridge. */
-function consoleAgentFixture(route: Route) {
+async function consoleAgentFixture(route: Route) {
 	const { method } = route.request().postDataJSON() as { method: string };
+	const page = route.request().frame().page();
+	const variant = new URL(page.url()).searchParams.get('variant');
+	if (variant === 'loading' && method === 'connect') {
+		await new Promise<void>((resolve) => page.once('close', () => resolve()));
+		return;
+	}
+	if (variant === 'connection-error' && method === 'connect')
+		return route.fulfill({ status: 503, json: { error: 'Project connection unavailable.' } });
 	const commit = commits.tip;
+	const writable = variant !== 'read-only';
 	const snapshot = {
 		project: { id: 'preview-project', root: '/preview', name: 'Preview project' },
 		revision: { branch: 'feature/orders', commit, tip: commit, atTip: true },
 		entities: [],
-		writable: true,
-		capabilities: { agents: true, comments: true, planning: true, approval: true, source: 'local' }
+		writable,
+		capabilities: {
+			agents: writable,
+			comments: true,
+			planning: writable,
+			approval: writable,
+			source: 'local',
+			...(!writable ? { reason: 'This project is read-only.' } : {})
+		}
 	};
 	const answers: Record<string, unknown> = {
 		connect: { token: 'fixture-token', snapshot },
 		snapshot,
-		providers: [
-			{
-				id: 'codex',
-				label: 'Codex',
-				available: true,
-				reason: null,
-				version: 'fixture',
-				imageGeneration: true,
-				models: [
-					{
-						id: 'preview-model',
-						label: 'Preview model',
-						efforts: ['high'],
-						defaultEffort: 'high',
-						isDefault: true
-					}
-				]
-			}
-		],
+		agentActivity: live,
+		providers: consoleProviders,
 		disconnect: null
 	};
 	if (!(method in answers)) throw new Error(`Unexpected preview agent request: ${method}`);

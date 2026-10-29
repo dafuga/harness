@@ -34,8 +34,19 @@ const variants: Record<string, string[]> = {
 	'reports.component.audio-comparison-viewer': ['before', 'after', 'unavailable'],
 	// A recorded clip exposes both its available notes and unavailable fallback separately.
 	'reports.component.audio-evidence': ['notes', 'unavailable'],
-	// The console waits to connect until its own launcher opens the project chat.
-	'reports.component.console-chat': ['open'],
+	// The console connects on open and exposes its access, roster and composer states.
+	'reports.component.console-chat': [
+		'open',
+		'loading',
+		'connection-error',
+		'read-only',
+		'agents',
+		'ask',
+		'change',
+		'comment',
+		'model-open',
+		'effort-open'
+	],
 	// A single recording, comparison pair and disabled upload each have distinct input layouts.
 	'reports.component.audio-upload-files': ['comparison', 'uploading'],
 	// Image, missing, compact provenance and paired-audio branches each render different evidence.

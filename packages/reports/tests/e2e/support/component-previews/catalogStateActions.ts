@@ -1,16 +1,9 @@
 import { expect, type Locator } from '@playwright/test';
+import { prepareConsoleChatState } from './consoleChatActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
 const actions: Record<string, CatalogStateAction> = {
-	'reports.component.console-chat:open': async (component) => {
-		await component.locator('.floating-chat-bubble').click();
-		await expect(component.locator('.floating-chat-panel')).toBeVisible();
-		await expect(
-			component.getByText('Ask a question, plan a design, or request a code change.')
-		).toBeVisible();
-		await expect(component.getByRole('textbox', { name: 'Message' })).toBeEnabled();
-	},
 	'reports.component.audio-comparison-viewer:before': async (component) => {
 		await component.getByRole('button', { name: 'View before recording' }).click();
 		await expect(component.getByRole('group', { name: 'Before recording' })).toBeVisible();
@@ -82,6 +75,8 @@ const actions: Record<string, CatalogStateAction> = {
 
 /** Reproduce catalog variants that are reached through the component's own controls. */
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.console-chat' && variant)
+		return prepareConsoleChatState(component, variant);
 	const action = actions[`${id}:${variant}`];
 	if (action) await action(component);
 }
