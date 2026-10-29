@@ -13,8 +13,20 @@ const entries = d.entities.map((e) => ({
 }));
 export const reportCases: PreviewCases = {
 	'reports.component.audio-comparison': {
-		before: { ...audio, id: 'before', title: 'Before' },
-		after: { ...audio, id: 'after', title: 'After' },
+		before: {
+			...audio,
+			id: 'baseline-narration',
+			title: 'Baseline narration',
+			category: 'Voice review',
+			phase: 'before'
+		},
+		after: {
+			...audio,
+			id: 'release-narration',
+			title: 'Release narration',
+			category: 'Voice review',
+			phase: 'after'
+		},
 		onopen: noop
 	},
 	'reports.component.audio-comparison-viewer': {
