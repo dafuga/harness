@@ -35,6 +35,9 @@ export function renderContract(manifest: ComponentManifest): string[] {
 	if (!component && contract.operations?.length)
 		return [
 			`Contract (${contract.origin})`,
+			...(contract.initialization?.length
+				? ['  Initialization', ...indent(operationRows(contract.initialization), 2)]
+				: []),
 			'  Operations',
 			...indent(operationRows(contract.operations), 2)
 		];
@@ -54,7 +57,13 @@ export function renderContract(manifest: ComponentManifest): string[] {
 						: fields(list)
 				)
 			])
-		)
+		),
+		...(contract.snippets?.length
+			? ['  Snippets (local)', ...indent(operationRows(contract.snippets), 2)]
+			: []),
+		...(component && contract.operations?.length
+			? ['  Module exports', ...indent(operationRows(contract.operations), 2)]
+			: [])
 	];
 }
 

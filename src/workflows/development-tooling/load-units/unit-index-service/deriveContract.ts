@@ -45,6 +45,9 @@ export function deriveContract(files: SourceFile[]): ComponentManifest['contract
 				(symbol) =>
 					['function', 'method'].includes(symbol.kind) && !symbol.name.endsWith('.constructor')
 			)
+			.map(operationContract),
+		initialization: symbols
+			.filter((symbol) => symbol.name.endsWith('.constructor'))
 			.map(operationContract)
 	};
 }
@@ -56,17 +59,9 @@ export function declaredContract(
 ): ComponentManifest['contract'] {
 	return {
 		...declared,
-		inputs: declared.inputs.map((item) => {
-			const found = source.inputs.find((input) => input.name === item.name);
-			return found
-				? {
-						...item,
-						required: found.required,
-						...(Object.hasOwn(found, 'default') ? { default: found.default } : {})
-					}
-				: item;
-		}),
+		inputs: source.inputs.map((item) => explainedItem(item, declared.inputs)),
 		...(source.snippets ? { snippets: source.snippets } : {}),
+		initialization: source.initialization,
 		operations: source.operations?.map((operation) => ({
 			...operation,
 			inputs: operation.inputs.map((item) => explainedItem(item, declared.inputs)),
@@ -86,5 +81,11 @@ export function operationContract(symbol: ExportedSymbol) {
 }
 
 function explainedItem(item: ContractItem, declared: ContractItem[]): ContractItem {
-	return { ...declared.find((candidate) => candidate.name === item.name), ...item };
+	const previous = declared.find((candidate) => candidate.name === item.name);
+	const { default: _default, ...documentation } = previous ?? {};
+	return {
+		...documentation,
+		...item,
+		...(item.type === 'unknown' && previous ? { type: previous.type } : {})
+	};
 }
