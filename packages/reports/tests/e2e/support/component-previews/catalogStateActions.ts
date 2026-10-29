@@ -59,6 +59,10 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.locator('summary').click();
 		await expect(component.getByText('harness verify run', { exact: true })).toBeVisible();
 	},
+	'reports.component.entity-cases:expanded': async (component) => {
+		await component.locator('.cases > details > summary').click();
+		await expect(component.locator('.cases > details > pre')).toContainText('Format a duration');
+	},
 	'reports.component.entity-search:open': async (component) => {
 		await component.getByRole('button', { name: 'Search entities', exact: true }).click();
 		const dialog = component.getByRole('dialog', { name: 'Search project' });

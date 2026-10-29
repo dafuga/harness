@@ -57,6 +57,18 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
 	// Paired results, pending repair, explicit gaps and expanded output are distinct proof states.
 	'reports.component.regression-proof': ['pending', 'gap', 'output-open'],
+	// Documented and observed cases retain failures, gaps and their expanded source values.
+	'reports.component.entity-cases': [
+		'empty',
+		'expected-error',
+		'recorded',
+		'recorded-error',
+		'observed',
+		'unavailable',
+		'malformed',
+		'wrong-unit',
+		'expanded'
+	],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
 	// Visual, page, function and unlinked dependency cards each have their own treatment.

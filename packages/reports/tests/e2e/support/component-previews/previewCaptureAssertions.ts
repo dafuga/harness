@@ -2,6 +2,7 @@ import { expect, type Page, type Locator } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { catalogScenario, previewState } from './catalogUnits';
+import { assertEntityCasesState } from './entityCasesPreviewAssertions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
 export async function assertComponentCapture(
@@ -61,6 +62,7 @@ export async function assertCatalogState(
 	variant = '',
 	viewport = ''
 ) {
+	if (id === 'reports.component.entity-cases') await assertEntityCasesState(component, variant);
 	if (id === 'reports.component.filter-dialog' && variant === 'active') {
 		const trigger = component.getByRole('button', { name: 'Filters', exact: true });
 		await expect(trigger).toHaveClass(/active/);
