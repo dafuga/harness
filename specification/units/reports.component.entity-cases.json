@@ -68,7 +68,13 @@
 				"description": "Readable input and output rows. Authored examples show expected outcomes; test records show observed outcomes. Full values remain available in a disclosure."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Expanding full values cannot serialize BigInt or circular input."
+			}
+		]
 	},
 	"dependencies": [
 		{
