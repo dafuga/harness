@@ -90,7 +90,14 @@ export const explorerCatalogVariants: Record<string, string[]> = {
 		'many-usage',
 		'usage-open'
 	],
-	'reports.component.explorer-usage': ['empty', 'many', 'limited', 'limit-zero', 'duplicates'],
+	'reports.component.explorer-usage': [
+		'empty',
+		'many',
+		'limited',
+		'limit-zero',
+		'duplicates',
+		'usage-open'
+	],
 	'reports.component.explorer-usage-link': [
 		'visual-open',
 		'missing-open',

@@ -38,6 +38,7 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			captureElement,
 			includeUsageTooltip: [
 				'reports.component.explorer-usage-link',
+				'reports.component.explorer-usage',
 				'reports.component.explorer-function-card',
 				'reports.component.explorer-ui-explorer-module-card'
 			].includes(id),

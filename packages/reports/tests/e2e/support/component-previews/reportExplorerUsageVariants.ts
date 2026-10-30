@@ -1,8 +1,10 @@
 import { entities, entity } from './explorerData';
 import type { PreviewCases } from './shared';
+import { usageLinkVariant } from './reportUsageLinkVariants';
 
 /** Different consumer counts and limits exercise the same real footer component. */
 export function explorerUsageVariant(props: PreviewCases[string], variant: string) {
+	if (variant === 'usage-open') return usageLinkVariant(props, 'visual-open');
 	if (variant === 'empty') return { ...props, consumers: [] };
 	if (variant === 'duplicates') return { ...props, consumers: [entity, entity] };
 	const consumers = entities.slice(0, 4);

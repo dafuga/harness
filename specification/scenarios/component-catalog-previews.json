@@ -3275,6 +3275,12 @@
 			"units": ["reports.component.explorer-usage"]
 		},
 		{
+			"id": "reports-component-explorer-usage-usage-open",
+			"title": "ExplorerUsage: consumer preview open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage"]
+		},
+		{
 			"id": "reports-component-explorer-usage-link",
 			"title": "ExplorerUsageLink",
 			"coverage": "required",
@@ -6485,6 +6491,7 @@
 				"reports-component-explorer-usage-limited",
 				"reports-component-explorer-usage-limit-zero",
 				"reports-component-explorer-usage-duplicates",
+				"reports-component-explorer-usage-usage-open",
 				"reports-component-explorer-usage-link",
 				"reports-component-explorer-usage-link-visual-open",
 				"reports-component-explorer-usage-link-missing-open",
