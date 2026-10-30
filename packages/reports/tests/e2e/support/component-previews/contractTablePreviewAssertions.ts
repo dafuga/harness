@@ -1,5 +1,8 @@
 import { expect, type Locator } from '@playwright/test';
-import { assertMobileContractFields } from './entityContractPreviewAssertions';
+import {
+	assertContractTypeColor,
+	assertMobileContractFields
+} from './entityContractPreviewAssertions';
 
 /** Empty, labelled and long tables preserve their layout and example controls. */
 export async function assertContractTableState(
@@ -7,6 +10,7 @@ export async function assertContractTableState(
 	variant: string,
 	viewport: string
 ) {
+	if (!variant) await assertContractTypeColor(component);
 	if (['empty', 'empty-kept', 'plain-empty'].includes(variant))
 		await expect(component.getByText('No inputs', { exact: true })).toBeVisible();
 	if (variant === 'plain') await expect(component.locator('.label')).toHaveText('Inputs');

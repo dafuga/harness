@@ -1,7 +1,9 @@
 import { expect, type Locator } from '@playwright/test';
+import { assertContractTypeColor } from './entityContractPreviewAssertions';
 
 /** Provenance and value forms must remain identifiable in their own catalog captures. */
 export async function assertContractExampleState(component: Locator, variant: string) {
+	if (!variant) await assertContractTypeColor(component);
 	const labels: Record<string, string> = {
 		illustrative: 'Illustrative example',
 		missing: 'Example not recorded',

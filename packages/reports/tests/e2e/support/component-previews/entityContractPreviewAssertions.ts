@@ -19,6 +19,22 @@ export async function assertEntityContractState(component: Locator, variant: str
 		await expect(component.getByText(expected[variant], { exact: false }).first()).toBeVisible();
 }
 
+/** Standalone contract examples and tables inherit the Explorer's shared primary token. */
+export async function assertContractTypeColor(component: Locator) {
+	const colors = await component
+		.locator('code.type')
+		.first()
+		.evaluate((node) => {
+			const probe = document.createElement('span');
+			probe.style.color = 'var(--hx-color-primary)';
+			node.append(probe);
+			const expected = getComputedStyle(probe).color;
+			probe.remove();
+			return { actual: getComputedStyle(node).color, expected };
+		});
+	expect(colors.actual, 'Contract type uses the Explorer primary color').toBe(colors.expected);
+}
+
 /** Text, badges and controls must remain disjoint for every mobile contract table row. */
 export async function assertMobileContractFields(component: Locator) {
 	const rows = component.locator('[data-harness-component="contract-table"] tbody tr');
