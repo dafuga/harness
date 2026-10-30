@@ -17,7 +17,7 @@ export async function prepareEvidenceCard(component: Locator, variant: string) {
 	if (missing) await expect(component.locator('.image-button')).toBeDisabled();
 	else await expect(component.locator('.image-button')).toBeEnabled();
 	if (variant === 'minimal') {
-		await expect(component.locator('.evidence-provenance')).toHaveCount(0);
+		await expect(component.getByText('No provenance recorded.', { exact: true })).toBeVisible();
 		await expect(component.locator('.evidence-meta time')).toHaveCount(0);
 	}
 	if (['running', 'failed', 'blocked', 'skipped', 'not-proven', 'interrupted'].includes(variant))

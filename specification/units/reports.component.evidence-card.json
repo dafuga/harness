@@ -76,7 +76,13 @@
 				"description": "Screenshot card with lazy image, title anchor, category, status, provenance and optional viewport/time. Missing screenshots show a placeholder and note. Audio delegates to its single or paired card. The component does not verify evidence bytes."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "onopen callback error",
+				"type": "thrown",
+				"description": "An error thrown by onopen propagates when a screenshot or paired audio is opened."
+			}
+		]
 	},
 	"dependencies": [
 		{
