@@ -166,12 +166,15 @@ export const reportCases: PreviewCases = {
 				loop: 'component-previews',
 				units: [d.ids.list],
 				red: {
-					commit: d.commits.first,
+					commit: 'a71f5d4e9271dc1d5be988c980d99c808b23f041',
 					assertion: 'Requires its own screenshot.',
 					command: 'harness verify run',
 					output: 'Expected screenshot to exist.'
 				},
-				green: { commit: d.commits.middle, output: 'Required screenshots passed.' }
+				green: {
+					commit: 'd5c82a9b1e7f3d44c2a98e609b7f4a33cc140df2',
+					output: 'Required screenshots passed.'
+				}
 			}
 		]
 	},
