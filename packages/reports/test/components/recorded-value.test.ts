@@ -41,3 +41,28 @@ test('empty, absent and falsy values are different to a reader', () => {
 	expect(draw(false)).toContain('Boolean');
 	expect(draw('')).not.toBe(draw('Empty text'));
 });
+
+test('reading or converting supplied values propagates their errors', () => {
+	const getter = Object.defineProperty({}, 'total', {
+		enumerable: true,
+		get() {
+			throw new Error('unreadable total');
+		}
+	});
+	const conversion = Object.defineProperty(() => undefined, Symbol.toPrimitive, {
+		value() {
+			throw new Error('unprintable value');
+		}
+	});
+	const proxy = new Proxy(
+		{},
+		{
+			ownKeys() {
+				throw new Error('unreadable keys');
+			}
+		}
+	);
+	expect(() => draw(getter)).toThrow('unreadable total');
+	expect(() => draw(proxy)).toThrow('unreadable keys');
+	expect(() => draw(conversion)).toThrow('unprintable value');
+});
