@@ -1,8 +1,8 @@
 import type {
 	CoverageInput,
 	CoverageResult
-} from '../../../../utils/verification-evidence/scenarioCoverage';
-import { problem } from '../../../../utils/verification-evidence/scenarioCoverage';
+} from '../../../../utils/verification-evidence/scenarioCoverage.types';
+import { problem } from './captureProblem';
 import type { Gathered } from '../../../../utils/verification-evidence/gatherCaptures';
 import { scenarioRequirements } from '../../../../utils/verification-evidence/scenarioRequirements';
 

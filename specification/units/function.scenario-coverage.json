@@ -13,6 +13,7 @@
 			"src/utils/verification-evidence/scenarioCoverage.ts",
 			"src/utils/verification-evidence/scenarioCoverage.types.ts",
 			"src/workflows/run-verify/verification-service/scenarioCoverage.ts",
+			"src/workflows/verification-evidence/run-verify/verification-service/captureProblem.ts",
 			"src/workflows/verification-evidence/run-verify/verification-service/scenarioCoverage.ts"
 		],
 		"symbols": [
@@ -28,6 +29,7 @@
 			"Evidence",
 			"Viewport",
 			"scenarioCoverage",
+			"problem",
 			"scenarioCoverage"
 		]
 	},

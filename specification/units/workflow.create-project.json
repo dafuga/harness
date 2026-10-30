@@ -3,8 +3,8 @@
 	"id": "workflow.create-project",
 	"kind": "workflow",
 	"title": "createProject",
-	"responsibility": "Owns the createProject command workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Creates app, library or game project files from admitted names and template inputs, preserving ordered writes and overwrite protection.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -22,36 +22,51 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createProject.input",
 				"type": "CreateProjectInput",
-				"required": true
+				"required": true,
+				"description": "Project kind and name with optional parent directory, game dimension and force; omitted parent creates the named directory relative to the current directory, and omitted force protects changed files."
 			},
 			{
 				"name": "renderCreateProject.result",
 				"type": "CreateProjectResult",
-				"required": true
+				"required": true,
+				"description": "Created project kind/name and actual per-file write statuses to render."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createProject",
-				"type": "Promise<CreateProjectResult>"
+				"type": "Promise<CreateProjectResult>",
+				"description": "Promise of the validated project kind/name and ordered file-write results; earlier successful writes are not rolled back after a later failure."
 			},
 			{
 				"name": "renderCreateProject",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable creation heading and per-file create/skip/overwrite lines."
 			}
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
+				"name": "Error(\"Dimension must be 2d or 3d.\")",
+				"type": "thrown",
+				"description": "Throws Error with this exact message when a provided dimension is neither 2d nor 3d."
+			},
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown",
+				"description": "Rejects invalid project names and refused overwrites with the existing CLI failure messages."
+			},
+			{
+				"name": "Project file failure",
+				"type": "propagated",
+				"description": "Template construction and filesystem errors propagate; the caller owns recovery of a partially written target."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createProject",
@@ -59,22 +74,35 @@
 					{
 						"name": "createProject.input",
 						"type": "CreateProjectInput",
-						"required": true
+						"required": true,
+						"description": "Project kind and name with optional parent directory, game dimension and force; omitted parent creates the named directory relative to the current directory, and omitted force protects changed files."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createProject",
-						"type": "Promise<CreateProjectResult>"
+						"type": "Promise<CreateProjectResult>",
+						"description": "Promise of the validated project kind/name and ordered file-write results; earlier successful writes are not rolled back after a later failure."
 					}
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "Error(\"Dimension must be 2d or 3d.\")",
+						"type": "thrown",
+						"description": "Throws Error with this exact message when a provided dimension is neither 2d nor 3d."
+					},
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects invalid project names and refused overwrites with the existing CLI failure messages."
+					},
+					{
+						"name": "Project file failure",
+						"type": "propagated",
+						"description": "Template construction and filesystem errors propagate; the caller owns recovery of a partially written target."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderCreateProject",
@@ -82,17 +110,19 @@
 					{
 						"name": "renderCreateProject.result",
 						"type": "CreateProjectResult",
-						"required": true
+						"required": true,
+						"description": "Created project kind/name and actual per-file write statuses to render."
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderCreateProject",
-						"type": "string"
+						"type": "string",
+						"description": "Human-readable creation heading and per-file create/skip/overwrite lines."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

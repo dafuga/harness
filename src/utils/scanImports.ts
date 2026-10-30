@@ -1,3 +1,9 @@
-export { scanImports } from './development-tooling/scanImports';
-export { svelteScripts } from './development-tooling/scanImports';
-export * from './development-tooling/scanImports';
+export {
+	scanImports,
+	svelteScripts
+} from '../services/development-tooling/source-index-service/scanImports';
+export type {
+	ReferenceVia,
+	SourceLanguage,
+	SourceReference
+} from './development-tooling/scanImports.types';

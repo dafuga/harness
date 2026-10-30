@@ -11,6 +11,7 @@
 			"src/services/development-tooling/source-index-service/httpReferences.ts",
 			"src/services/development-tooling/source-index-service/scanImports.ts",
 			"src/services/development-tooling/source-index-service/scanImports.types.ts",
+			"src/services/development-tooling/source-index-service/svelteScripts.ts",
 			"src/services/source-index-service/scanImports.ts",
 			"src/utils/development-tooling/scanImports.ts",
 			"src/utils/development-tooling/scanImports.types.ts",
@@ -18,12 +19,14 @@
 		],
 		"symbols": [
 			"httpReferences",
+			"svelteScripts",
 			"scanImports",
 			"Found",
 			"LiteralPattern",
-			"scanImports",
 			"svelteScripts",
 			"scanImports",
+			"scanImports",
+			"svelteScripts",
 			"ReferenceVia",
 			"SourceLanguage",
 			"SourceReference",
@@ -31,7 +34,10 @@
 			"SourceLanguage",
 			"SourceReference",
 			"scanImports",
-			"svelteScripts"
+			"svelteScripts",
+			"ReferenceVia",
+			"SourceLanguage",
+			"SourceReference"
 		]
 	},
 	"contract": {

@@ -3,8 +3,9 @@ import type { LiteralPattern, Found } from './scanImports.types';
 import type {
 	SourceReference,
 	SourceLanguage
-} from '../../../utils/development-tooling/scanImports';
-import { svelteScripts } from '../../../utils/development-tooling/scanImports';
+} from '../../../utils/development-tooling/scanImports.types';
+import { svelteScripts } from './svelteScripts';
+export { svelteScripts } from './svelteScripts';
 import { maskSource } from '../../../utils/development-tooling/maskSource';
 import { atomicSyntax } from '../../../templates/development-tooling/atomicSyntax.js';
 

@@ -5,11 +5,16 @@ import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { generateModel, generatePiece } from '../src/workflows/generate-code/generateCode';
 import { scaffoldDetails, scaffoldKinds } from '../src/templates/scaffoldTypes';
+import { generateElements } from '../src/workflows/projects-sessions/generate-code/generateElements';
+import { createProject } from '../src/cli/program/create-project/createProject';
+import { measureWorkload } from './support/measureWorkload';
 
 test('lib generation auto-exports package-safe scaffolds', async () => {
 	const root = await libProject();
 
-	await generatePiece({ root, kind: 'service', name: 'PublishPost' });
+	await measureWorkload('workflow.generate-code', 'generate-service-with-public-export', () =>
+		generatePiece({ root, kind: 'service', name: 'PublishPost' })
+	);
 	await generatePiece({ root, kind: 'mailer', name: 'Welcome' });
 	await generatePiece({ root, kind: 'concern', name: 'Publishable' });
 	await generatePiece({ root, kind: 'config', name: 'Search' });
@@ -38,6 +43,13 @@ test('app-only scaffolds fail in lib projects', async () => {
 	await expect(generatePiece({ root, kind: 'view', name: 'Dashboard' })).rejects.toThrow(
 		'only available in Harness app projects'
 	);
+	const created = await measureWorkload('workflow.create-project', 'create-library-files', () =>
+		createProject({ kind: 'lib', name: 'measured-lib', parent: root })
+	);
+	expect(created.writes.some((file) => file.path === 'src/index.ts')).toBe(true);
+	expect(
+		JSON.parse(await readFile(join(root, 'measured-lib/package.json'), 'utf8')).harness.kind
+	).toBe('lib');
 	await rm(root, { recursive: true, force: true });
 });
 
@@ -60,6 +72,13 @@ test('app generation allows app-only scaffolds without package exports', async (
 	expect(button).toContain('@harness-element button');
 	const input = await readFile(join(root, 'src/components/atoms/HtmlInput.svelte'), 'utf8');
 	expect(input).toContain('@harness-element input');
+	const native = await measureWorkload(
+		'workflow.projects-sessions-generate-code-generate-elements',
+		'retain-existing-native-library',
+		() => generateElements({ root })
+	);
+	expect(native.writes.length).toBeGreaterThan(0);
+	expect(native.writes.every((file) => file.status === 'skipped')).toBe(true);
 	await rm(root, { recursive: true, force: true });
 });
 
