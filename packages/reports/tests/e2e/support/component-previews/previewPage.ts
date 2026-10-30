@@ -15,6 +15,7 @@ import { hostedFixture } from '../../../../../hub/tests/e2e/hosted-fixture';
 import { applyActivityPreviewContext } from './activityPreviewContext';
 import { audioComparisonPreMount } from './audioComparisonPreMount';
 import { assertLanguagePickerCapture } from './translationsPreviewAssertions';
+import { previewImages, routeLoadingZoom } from './imageZoomActions';
 const pageUnitIds = new Set(
 	catalogUnits
 		.filter((unit) => unit.owns.source.some((path) => path.endsWith('/+page.svelte')))
@@ -33,6 +34,7 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 			? await audioComparisonPreMount()
 			: '';
 	await page.route('**/*', (route) => servePreview(route, home, markup));
+	await routeLoadingZoom(page, id, variant);
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
 	// Freeze calendar labels alone: Playwright's clock also erases NavigationTiming entries.
@@ -46,7 +48,11 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 		});
 	}, Date.parse('2026-10-20T10:00:05Z'));
 	await page.goto(
-		`${previewOrigin}/?unit=${encodeURIComponent(id)}${variant ? `&variant=${encodeURIComponent(variant)}` : ''}`
+		`${previewOrigin}/?unit=${encodeURIComponent(id)}${variant ? `&variant=${encodeURIComponent(variant)}` : ''}`,
+		{
+			waitUntil:
+				id === 'reports.component.image-zoom' && variant === 'loading' ? 'domcontentloaded' : 'load'
+		}
 	);
 }
 export async function readyPreview(page: Page, id: string, variant = '') {
@@ -99,7 +105,7 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		(id === 'reports.component.explorer-ui-explorer-translations-screen' &&
 			['gaps', 'gaps-open'].includes(variant));
 	if (!expectedReadFailure) await expect(content).not.toContainText('could not be read');
-	for (const img of await content.locator('img').all()) {
+	for (const img of await previewImages(content, id, variant)) {
 		await img.scrollIntoViewIfNeeded();
 		await expect
 			.poll(() =>

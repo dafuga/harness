@@ -21,6 +21,8 @@ import { evidenceViewerVariant } from './evidenceViewerVariants';
 import { activityReportVariant } from './activityReportVariants';
 import { reportChecksVariant } from './reportChecksVariants';
 import { recordedValueVariant } from './recordedValueVariants';
+import { reportSummaryVariant } from './reportSummaryVariants';
+import { imageZoomVariant } from './imageZoomVariants';
 import { providerPickerCardVariant } from './providerPickerCardVariants';
 import { providerPickerVariant } from './providerPickerVariants';
 
@@ -61,6 +63,8 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
 	if (id === 'reports.component.report-checks') return reportChecksVariant(props, variant);
 	if (id === 'reports.component.recorded-value') return recordedValueVariant(props, variant);
+	if (id === 'reports.component.report-summary') return reportSummaryVariant(props, variant);
+	if (id === 'reports.component.image-zoom') return imageZoomVariant(props, variant);
 	if (id === 'reports.component.console-chat' || id === 'reports.component.floating-chat')
 		return chatVariantProps(id, props, variant);
 	if (id === 'reports.component.gameplay-replay') return gameplayReplayVariant(props, variant);

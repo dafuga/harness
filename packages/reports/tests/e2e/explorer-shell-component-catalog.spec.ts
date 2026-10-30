@@ -136,6 +136,8 @@ for (const viewport of catalogViewports) {
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
 			await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
+			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
+				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
 			await assertRecordedValueCapture(component, unit.id, variant);
 			if (unit.id === 'reports.component.module-system-explorer-modules-screen' && !variant) {

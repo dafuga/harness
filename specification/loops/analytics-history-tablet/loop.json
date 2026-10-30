@@ -1,0 +1,62 @@
+{
+	"name": "analytics-history-tablet",
+	"goal": "Keep loop history labels readable at tablet widths",
+	"createdAt": "2026-10-30T02:40:32.928Z",
+	"updatedAt": "2026-10-30T02:44:46.006Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-30T02:40:57.351Z",
+			"evidence": "At tablet width the eight narrow table columns split headers and model names inside words. Labeled rows keep each field readable."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-30T02:40:57.940Z",
+			"evidence": "The prior catalog assertion covered horizontal fit and mobile labels but did not exercise the tablet layout. The same label check now covers compact tablet width."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-30T02:42:37.879Z",
+			"evidence": "The committed tablet catalog assertion failed on harbor-mbp-2 because the compact field labels are not displayed at tablet width."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-30T02:42:51.244Z",
+			"evidence": "Use the labeled stacked history rows at tablet widths and keep the status badge at its natural width."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-10-30T02:44:46.006Z",
+			"evidence": "The unchanged tablet catalog assertion passed on harbor-mbp-2 at the repair commit."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
