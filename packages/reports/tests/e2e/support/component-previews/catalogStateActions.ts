@@ -126,6 +126,11 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.getByRole('button', { name: 'Filters', exact: true }).click();
 		await expect(component.getByRole('dialog', { name: 'Filters', exact: true })).toBeVisible();
 	},
+	'reports.component.select:display': async (component) => {
+		const label = component.locator('.report-select-value');
+		await expect(label).toHaveText('releas…proval');
+		expect(await label.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
+	},
 	'reports.component.select:open': async (component) => {
 		const select = component.getByRole('combobox', { name: 'Viewport', exact: true });
 		await select.click();
