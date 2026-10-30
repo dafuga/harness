@@ -1,4 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
+import { previewCaptureBounds } from './previewCaptureBounds';
 
 /** Open the real console conversation and settle the selected visible state. */
 export async function prepareConsoleChatState(component: Locator, variant: string) {
@@ -30,7 +31,7 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 	await expect(message).toBeEnabled();
 	await expect(component.getByRole('button', { name: 'Choose model' })).toHaveAttribute(
 		'title',
-		'Model: Codex · Preview model'
+		'Model: Codex · GPT 6.1'
 	);
 	const modes: Record<string, string> = { ask: 'Ask', change: 'Change', comment: 'Comment' };
 	if (modes[variant]) {
@@ -47,6 +48,25 @@ export async function prepareConsoleChatState(component: Locator, variant: strin
 		await expect(
 			component.getByRole('dialog', { name: pickers[variant], exact: true })
 		).toBeVisible();
+		await assertChatFrame(component, variant);
+	}
+}
+
+async function assertChatFrame(component: Locator, variant: string) {
+	const clip = await previewCaptureBounds(
+		component.page(),
+		'reports.component.console-chat',
+		variant
+	);
+	const offset = await component.page().evaluate(() => ({ x: scrollX, y: scrollY }));
+	for (const selector of ['.floating-chat-panel', '.floating-chat-bubble']) {
+		const box = await component.locator(selector).boundingBox();
+		expect(box).not.toBeNull();
+		const message = 'Console chat capture includes its panel and launcher';
+		expect(clip.x, message).toBeLessThanOrEqual(box!.x + offset.x);
+		expect(clip.y, message).toBeLessThanOrEqual(box!.y + offset.y);
+		expect(clip.x + clip.width, message).toBeGreaterThanOrEqual(box!.x + offset.x + box!.width);
+		expect(clip.y + clip.height, message).toBeGreaterThanOrEqual(box!.y + offset.y + box!.height);
 	}
 }
 

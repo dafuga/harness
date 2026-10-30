@@ -65,8 +65,8 @@ const consoleProviders = [
 		imageGeneration: true,
 		models: [
 			{
-				id: 'preview-model',
-				label: 'Preview model',
+				id: 'gpt-6.1',
+				label: 'GPT 6.1',
 				efforts: ['high'],
 				defaultEffort: 'high',
 				isDefault: true
