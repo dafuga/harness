@@ -21,6 +21,7 @@ export async function preparePlatforms(component: Locator, variant: string) {
 	} else if (variant.startsWith('status-')) {
 		await dialog.getByRole('combobox', { name: 'Status filter' }).selectOption(variant.slice(7));
 		await dialog.getByRole('button', { name: 'Done' }).click();
+		await component.page().mouse.move(1, 1);
 	}
 }
 
@@ -43,12 +44,18 @@ export async function assertPlatforms(component: Locator, variant: string) {
 		await expect(component.getByRole('button', { name: 'Show all platforms' })).toBeVisible();
 	if (variant === 'filter-open')
 		await expect(component.getByRole('dialog', { name: 'Filters' })).toBeVisible();
+	await assertPlatformFilterResults(component, variant);
+	if (variant === 'detail-web') await expect(component).toContainText('orders-web');
+	await assertPlatformInteraction(component, variant);
+}
+
+async function assertPlatformFilterResults(component: Locator, variant: string) {
 	if (variant === 'status-configured') await expect(component.locator('.pf-card')).toHaveCount(2);
 	if (['status-setup-required', 'status-not-configured'].includes(variant))
 		await expect(component.locator('.pf-card')).toHaveCount(1);
 	if (variant === 'status-not-recorded') await expect(component.locator('.pf-card')).toHaveCount(4);
-	if (variant === 'detail-web') await expect(component).toContainText('orders-web');
-	await assertPlatformInteraction(component, variant);
+	if (variant.startsWith('status-') && variant !== 'status-options-open')
+		await expect(component.locator('.pf-card:hover')).toHaveCount(0);
 }
 
 async function assertPlatformInteraction(component: Locator, variant: string) {
