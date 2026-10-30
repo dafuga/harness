@@ -19,6 +19,7 @@ import {
 import { assertPermissionTable } from './support/component-previews/permissionPreviewAssertions';
 import { assertMobileContractFields } from './support/component-previews/entityContractPreviewAssertions';
 import { assertModuleCardPreview } from './support/component-previews/moduleCardPreviewAssertions';
+import { assertLanguagePickerCapture } from './support/component-previews/translationsPreviewAssertions';
 import {
 	assertCatalogLayout,
 	assertCatalogDetails
@@ -135,7 +136,13 @@ for (const viewport of catalogViewports) {
 				} else await expect(panel).toBeVisible();
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
-			await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
+			const capture = await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
+			if (
+				capture &&
+				unit.id === 'reports.component.explorer-ui-explorer-translations-screen' &&
+				variant === 'language-open'
+			)
+				await assertLanguagePickerCapture(page, capture.clip, capture.bytes);
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
