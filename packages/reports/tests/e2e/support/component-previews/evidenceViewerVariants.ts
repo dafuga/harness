@@ -7,7 +7,8 @@ const after: Evidence = {
 	...cardPicture,
 	id: 'checkout-after',
 	title: 'Checkout after release',
-	comparison: 'checkout-flow'
+	comparison: 'checkout-flow',
+	provenance: [{ label: 'Viewport', value: 'Desktop' }]
 };
 const before: Evidence = {
 	...after,
