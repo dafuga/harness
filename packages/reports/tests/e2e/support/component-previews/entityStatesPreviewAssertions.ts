@@ -7,6 +7,8 @@ export async function prepareEntityStates(component: Locator, variant: string) {
 	if (variant === 'scenario-open' || variant === 'viewport-open') {
 		const name = variant === 'scenario-open' ? 'Scenario' : 'Viewport';
 		const select = component.getByRole('combobox', { name });
+		const second = select.locator('option').nth(1);
+		await expect(second).toHaveText(variant === 'scenario-open' ? 'Archived orders' : /Mobile/);
 		await select.click();
 		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 	}
