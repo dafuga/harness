@@ -3,12 +3,14 @@
 	"id": "reports.component.module-system-plugins-plugin-steps",
 	"kind": "component",
 	"title": "Plugin steps",
-	"responsibility": "Lists the written steps for setting up a plugin or generating one of its resources.",
+	"responsibility": "Lists plugin setup or resource-generation instructions and explains when no steps are provided.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
-		"level": "molecule",
+		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-ul"
 		]
@@ -24,14 +26,14 @@
 				"name": "PluginSteps.lines",
 				"type": "string[]",
 				"required": true,
-				"description": "The steps, in order."
+				"description": "Required setup or resource-generation instructions in display order. An empty array shows No steps provided."
 			}
 		],
 		"outputs": [
 			{
 				"name": "PluginSteps",
 				"type": "markup",
-				"description": "A list of steps in quiet supporting text."
+				"description": "A list of supplied steps, or the shared empty-state message No steps provided. when lines is empty."
 			}
 		],
 		"errors": [],
@@ -40,6 +42,16 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-li",
 			"via": "import",
