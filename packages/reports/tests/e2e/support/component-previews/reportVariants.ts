@@ -178,6 +178,7 @@ function gameplayReplayVariant(props: PreviewCases[string], variant: string) {
 
 function regressionProofVariant(props: PreviewCases[string], variant: string) {
 	const item = (props.items as Array<Record<string, unknown>>)[0];
+	if (variant === 'empty') return { ...props, items: [] };
 	if (variant === 'pending') return { ...props, items: [{ ...item, green: undefined }] };
 	if (variant === 'capture-only')
 		return { ...props, items: [{ ...item, loop: 'component-capture', red: null }] };
