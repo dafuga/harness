@@ -2,7 +2,7 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Each card branch retains its real name, destination and own visual evidence. */
 export async function assertModuleCardPreview(component: Locator, variant: string) {
-	if (['missing', 'page-missing'].includes(variant)) {
+	if (['missing', 'page-missing', 'layout-missing'].includes(variant)) {
 		await expect(component.getByText('No screenshot is recorded at this revision')).toBeVisible();
 		await expect(component.locator('img')).toHaveCount(0);
 	}
@@ -18,12 +18,12 @@ export async function assertModuleCardPreview(component: Locator, variant: strin
 		await expect(component.locator('span.ex-function-call')).toHaveText('Orders styles');
 		await expect(component.locator('a.ex-function-call')).toHaveCount(0);
 	}
-	if (variant === 'page') {
-		await expect(component.locator('a.ex-page-open img')).toHaveAttribute(
-			'src',
-			'/media/synthetic-orders-page-input.svg'
-		);
-	}
+	const images: Record<string, [string, string]> = {
+		page: ['a.ex-page-open img', '/media/synthetic-orders-page-input.svg'],
+		layout: ['img', '/media/synthetic-layout-input.svg']
+	};
+	if (images[variant])
+		await expect(component.locator(images[variant][0])).toHaveAttribute('src', images[variant][1]);
 	if (variant === 'api') {
 		await expect(component.locator('.ex-function-call')).toContainText(
 			'GET POST DELETE /api/orders'

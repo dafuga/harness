@@ -1,6 +1,6 @@
 import { expect, type Locator } from '@playwright/test';
 import { prepareEntityStates } from './entityStatesPreviewAssertions';
-import { prepareUsageLink } from './usageLinkPreviewAssertions';
+import { prepareUsageLink, prepareUsagePopover } from './usageLinkPreviewAssertions';
 import { prepareConfigValueTree } from './configValueTreePreviewAssertions';
 import { prepareCatalogItems } from './catalogItemsPreviewAssertions';
 import { prepareDependencies } from './dependenciesPreviewAssertions';
@@ -15,6 +15,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.analytics-history': prepareAnalyticsHistory,
 	'reports.component.activity-list': prepareActivityList,
 	'reports.component.explorer-usage-link': prepareUsageLink,
+	'reports.component.explorer-ui-explorer-module-card': prepareUsagePopover,
 	'reports.component.explorer-ui-config-value-tree': prepareConfigValueTree,
 	'reports.component.explorer-catalog-items': prepareCatalogItems,
 	'reports.component.explorer-dependencies-screen': prepareDependencies,

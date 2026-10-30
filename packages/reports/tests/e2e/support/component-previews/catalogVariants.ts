@@ -147,9 +147,12 @@ const variants: Record<string, string[]> = {
 		'api-no-methods',
 		'page',
 		'page-missing',
+		'layout',
+		'layout-missing',
 		'unlinked',
 		'no-usage',
-		'many-usage'
+		'many-usage',
+		'usage-open'
 	],
 	// Filters show their inactive trigger by default, with active and opened states separately.
 	'reports.component.filter-dialog': ['active', 'open'],
