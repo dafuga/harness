@@ -162,6 +162,7 @@ export async function capturePreview(
 	const clip = await previewCaptureBounds(page, id, variant);
 	const nativeOpen =
 		(id === 'reports.component.select' && variant === 'open') ||
+		(id === 'reports.component.evidence-grid' && variant === 'status-open') ||
 		(id === 'reports.component.explorer-ui-explorer-translations-screen' &&
 			variant === 'language-open');
 	const bytes = await page.screenshot({
