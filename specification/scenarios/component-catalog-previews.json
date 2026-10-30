@@ -3359,6 +3359,36 @@
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
 		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-empty-generated",
+			"title": "ExplorerModuleResourcesScreen: none generated",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-unavailable",
+			"title": "ExplorerModuleResourcesScreen: plugin unavailable",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-not-found",
+			"title": "ExplorerModuleResourcesScreen: resource not found",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-unindexed",
+			"title": "ExplorerModuleResourcesScreen: catalog not indexed",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-missing-id",
+			"title": "ExplorerModuleResourcesScreen: resource not named",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
 			"id": "reports-component-module-system-explorer-modules-screen",
 			"title": "ExplorerModulesScreen",
 			"coverage": "required",
@@ -5491,6 +5521,11 @@
 				"reports-component-modal-lightbox",
 				"reports-component-module-system-explorer-module-resources-screen",
 				"reports-component-module-system-explorer-module-resources-screen-playwright",
+				"reports-component-module-system-explorer-module-resources-screen-empty-generated",
+				"reports-component-module-system-explorer-module-resources-screen-unavailable",
+				"reports-component-module-system-explorer-module-resources-screen-not-found",
+				"reports-component-module-system-explorer-module-resources-screen-unindexed",
+				"reports-component-module-system-explorer-module-resources-screen-missing-id",
 				"reports-component-module-system-explorer-modules-screen",
 				"reports-component-module-system-explorer-modules-screen-playwright",
 				"reports-component-module-system-explorer-modules-screen-headless-audio",

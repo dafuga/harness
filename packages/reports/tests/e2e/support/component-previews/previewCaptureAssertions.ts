@@ -204,6 +204,7 @@ export async function assertModulePreview(component: Locator, id: string, varian
 	}
 	if (id === 'reports.component.module-system-explorer-module-resources-screen') {
 		if (variant) {
+			if (variant !== 'playwright') return;
 			await expect(
 				component.getByRole('heading', { level: 1, name: 'Browser tests', exact: true })
 			).toBeVisible();
