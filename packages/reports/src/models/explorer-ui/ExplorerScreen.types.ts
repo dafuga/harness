@@ -27,7 +27,6 @@ export interface ExplorerScreenProps {
 	mediaBase: string;
 	onroute: (to: ExplorerLocation) => void;
 	/** Empty where the host serves no export. */
-	exportHref: string;
 }
 
 /**

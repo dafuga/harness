@@ -4,7 +4,6 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ReportRepository } from '../src/repositories/report-repository/ReportRepository';
 import type { RecordInput } from '../src/models/Report.types';
-import { reportDisplay } from '../src/components/gameplay-replay/reportDisplay';
 
 const roots: string[] = [];
 async function fixture() {
@@ -46,18 +45,13 @@ test('concurrent evidence updates survive and runs remain isolated', async () =>
 
 test('finalized history rejects mutation and unfinished runs can be interrupted', async () => {
 	const { store, run } = await fixture();
-	expect(reportDisplay(run)).toBe('running');
-	expect(
-		reportDisplay({ ...run, updatedAt: new Date(Date.now() - 16 * 60_000).toISOString() })
-	).toBe('interrupted');
 	await store.record(run.id, { kind: 'heartbeat', data: {} });
-	expect(reportDisplay(await store.get(run.id))).toBe('running');
 	await store.record(run.id, {
 		kind: 'check',
 		data: { id: 'one', title: 'Blocked CI', status: 'blocked' }
 	});
 	await store.seal(run.id);
-	await store.finish(run.id, { pdf: 'report.pdf', zip: 'report.zip', html: 'index.html' });
+	await store.finish(run.id);
 	expect((await store.get(run.id)).status).toBe('blocked');
 	await expect(
 		store.record(run.id, { kind: 'summary', data: { text: 'overwrite' } })

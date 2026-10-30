@@ -58,7 +58,7 @@ test('paired upload validates both originals, attaches phases and protects final
 	).toBe(400);
 	expect((await store.get(run.id)).evidence).toHaveLength(2);
 	await store.seal(run.id);
-	await store.finish(run.id, { html: 'index.html', pdf: 'report.pdf', zip: 'report.zip' });
+	await store.finish(run.id);
 	payload.after.buffer = audioFixture();
 	expect(
 		(

@@ -23,8 +23,7 @@ const surfaces = [
 	unitSource('desktop.component.project-gate'),
 	unitSource('hub.component.hub-frame'),
 	unitSource('reports.component.harness-harness-navbar'),
-	unitSource('reports.component.harness-harness-header'),
-	unitSource('reports.component.report-view')
+	unitSource('reports.component.harness-harness-header')
 ];
 
 test('the mark is five square tiles in the current colour, decorative by default', () => {

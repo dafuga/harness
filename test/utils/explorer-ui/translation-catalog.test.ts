@@ -95,14 +95,14 @@ test('unrelated addMessages calls are not app translations', () => {
 	});
 });
 
-test.each(['reports', 'replay'])(
+test.each(['reports'])(
 	'%s English and French have matching keys, valid ICU and matching parameters',
 	(group) => {
 		const read = (locale: string) =>
 			flattenMessages(
 				JSON.parse(
 					readFileSync(
-						`packages/reports/src/${group === 'reports' ? 'utils/reports-media/report-locale' : 'components/reports-media/gameplay-replay/translations'}/${locale}.json`,
+						`packages/reports/src/utils/reports-media/report-locale/${locale}.json`,
 						'utf8'
 					)
 				)

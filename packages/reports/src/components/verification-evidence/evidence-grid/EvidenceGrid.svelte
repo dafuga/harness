@@ -4,7 +4,6 @@
 	import type { Media } from './EvidenceGrid.types';
 
 	import type { Evidence } from '../../../models/reports-media/Report.types';
-	import type { Report } from '../../../models/reports-media/Report.types';
 	import { evidenceMedia } from '../../../utils/verification-evidence/evidenceMedia';
 	import { audioPairs } from '../../../utils/reports-media/audioPairs';
 	import { t } from '../../../utils/reports-media/reportLocale';
@@ -17,20 +16,14 @@
 	import AudioComparisonViewer from '../../reports-media/AudioComparisonViewer.svelte';
 	import EvidenceCard from '../EvidenceCard.svelte';
 	import EvidenceViewer from '../EvidenceViewer.svelte';
-	import UploadAudio from '../../reports-media/UploadAudio.svelte';
-	import UploadComparison from '../../shared-primitives/UploadComparison.svelte';
 	import Select from '../../shared-primitives/Select.svelte';
 	let {
 		items,
 		assetBase,
-		reportId,
-		onUploaded,
 		idPrefix = ''
 	}: {
 		items: Evidence[];
 		assetBase: string;
-		reportId?: string;
-		onUploaded?: (report: Report) => void;
 		/** Keeps heading ids unique when a page shows a second gallery. */
 		idPrefix?: string;
 	} = $props();
@@ -45,8 +38,8 @@
 	let browsable = $derived(galleryEvidence(items, pairs));
 	let imageCount = $derived(browsable.filter((item) => evidenceMedia(item) === 'image').length);
 	let audioCount = $derived(items.filter((item) => evidenceMedia(item) === 'audio').length);
-	// Screenshot-only reports that cannot upload keep the original gallery exactly as before.
-	let showMedia = $derived(audioCount > 0 || Boolean(reportId && onUploaded));
+	// Screenshot-only galleries keep the original gallery exactly as before.
+	let showMedia = $derived(audioCount > 0);
 	let mediaMode = $derived<Media>(showMedia ? media : '');
 	let inMedia = $derived(
 		mediaMode ? browsable.filter((item) => evidenceMedia(item) === mediaMode) : browsable
@@ -109,10 +102,6 @@
 				})}{:else}{filtered.length} / {browsable.length}{/if}</hx-span
 		>
 	</hx-div>
-	{#if reportId && onUploaded}
-		<UploadComparison {reportId} {onUploaded} />
-		<UploadAudio {reportId} {onUploaded} />
-	{/if}
 	{#if showMedia}
 		<hx-div class="media-tabs" role="group" aria-label={$t('mediaType')}>
 			<hx-button class:active={!mediaMode} aria-pressed={!mediaMode} onclick={() => setMedia('')}

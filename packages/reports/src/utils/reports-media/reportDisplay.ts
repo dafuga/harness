@@ -1,13 +1,3 @@
-import type { Report } from '../../models/reports-media/Report.types';
-
-/**
- * Whether an unfinished report still receives updates. This says nothing about its outcome:
- * what was recorded stays what is shown, and a report gone quiet is marked as such beside it.
- */
-export function reportStale(report: Report, now = Date.now()): boolean {
-	return report.state !== 'finalized' && now - Date.parse(report.updatedAt) > 15 * 60_000;
-}
-
 export function timeAgo(
 	value: string,
 	now = Date.now(),
@@ -30,10 +20,3 @@ export function timeAgo(
 		unit
 	);
 }
-
-export function evidenceAnchor(id: string) {
-	return `evidence-${id}`;
-}
-
-export { reportDisplay } from '../../components/reports-media/gameplay-replay/reportDisplay';
-export { dateLabel } from '../../components/reports-media/report-summary/reportDisplay';

@@ -75,8 +75,7 @@ export function host(
 		lens: reading,
 		client,
 		mediaBase: '/media/',
-		onroute: () => {},
-		exportHref: ''
+		onroute: () => {}
 	};
 }
 

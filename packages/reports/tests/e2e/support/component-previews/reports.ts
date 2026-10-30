@@ -24,7 +24,6 @@ export const reportCases: PreviewCases = {
 		onclose: noop
 	},
 	'reports.component.audio-evidence': { item: audio, assetBase: '/media/' },
-	'reports.component.audio-upload-files': { mode: 'single', uploading: false },
 	'reports.component.brand-mark': { size: 56, label: 'Harness' },
 	'reports.component.browser-errors': {
 		diagnostics: [
@@ -57,7 +56,6 @@ export const reportCases: PreviewCases = {
 	},
 	'reports.component.contract-example': { field },
 	'reports.component.contract-table': { group, onexample: noop },
-	'reports.component.coverage-list': { report },
 	'reports.component.entity-cases': { examples: [example] },
 	'reports.component.entity-contract': {
 		unit: d.entity.unit,
@@ -118,11 +116,6 @@ export const reportCases: PreviewCases = {
 		title: 'Project chat',
 		children
 	},
-	'reports.component.gameplay-replay': {
-		report: { ...report, evidence: [picture] },
-		assetBase: '/media/',
-		portable: true
-	},
 	'reports.component.image-zoom': { src: image, alt: 'Activity list preview' },
 	'reports.component.modal': {
 		open: true,
@@ -158,30 +151,6 @@ export const reportCases: PreviewCases = {
 			}
 		]
 	},
-	'reports.component.replay-controls': {
-		playing: false,
-		index: 0,
-		count: 3,
-		elapsed: 0,
-		total: 15,
-		title: 'Activity list',
-		scene: 1,
-		scenes: [1, 2],
-		fullscreen: false,
-		ontoggle: noop,
-		onseek: noop,
-		onscene: noop,
-		onfullscreen: noop
-	},
-	'reports.component.report-checks': { checks: report.checks },
-	'reports.component.report-findings': { findings: report.findings },
-	'reports.component.report-summary': { report, downloadBase: '/exports/', portable: true },
-	'reports.component.report-view': {
-		report,
-		assetBase: '/media/',
-		downloadBase: '/exports/',
-		portable: true
-	},
 	// A raw snippet renders one element, so the synthetic options come in one group.
 	'reports.component.select': {
 		value: 'desktop',
@@ -191,7 +160,5 @@ export const reportCases: PreviewCases = {
 		)
 	},
 	'reports.component.status-badge': { status: 'passed' },
-	'reports.component.upload-audio': { reportId: 'preview-report', onUploaded: noop },
-	'reports.component.upload-comparison': { reportId: 'preview-report', onUploaded: noop },
 	'reports.component.usage-examples-usage-examples': { examples: [example] }
 };
