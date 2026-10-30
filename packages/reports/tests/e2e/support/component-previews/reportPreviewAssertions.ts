@@ -6,6 +6,7 @@ import { assertUsageLink } from './usageLinkPreviewAssertions';
 import { assertConfigValueTree } from './configValueTreePreviewAssertions';
 import { assertCatalogItems } from './catalogItemsPreviewAssertions';
 import { assertUsageExamples } from './usageExamplesPreviewAssertions';
+import { assertDependenciesState } from './dependenciesPreviewAssertions';
 
 /** Check that each additional report preview actually renders its distinct state. */
 export async function assertReportPreviewState(component: Locator, id: string, variant = '') {
@@ -21,6 +22,8 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 		return assertCatalogItems(component, variant);
 	if (id === 'reports.component.usage-examples-usage-examples')
 		return assertUsageExamples(component, variant);
+	if (id === 'reports.component.explorer-dependencies-screen')
+		return assertDependenciesState(component, variant);
 	if (id === 'reports.component.modal' && variant === 'image') {
 		const dialog = component.getByRole('dialog', { name: 'Order card evidence' });
 		await expect(dialog).toBeVisible();

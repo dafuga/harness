@@ -8,10 +8,7 @@ import { prepareAudioEvidence } from './audioEvidenceActions';
 import { prepareAudioUploadFiles } from './audioUploadFilesActions';
 import { prepareEntitySearchState } from './entitySearchPreviewActions';
 import { prepareEvidenceCard } from './evidenceCardActions';
-import { prepareEntityStates } from './entityStatesPreviewAssertions';
-import { prepareUsageLink } from './usageLinkPreviewAssertions';
-import { prepareConfigValueTree } from './configValueTreePreviewAssertions';
-import { prepareCatalogItems } from './catalogItemsPreviewAssertions';
+import { prepareReportState } from './reportStateActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -145,12 +142,7 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 	if (id === 'reports.component.activity-files') await prepareActivityFileState(component, variant);
 	if (id === 'reports.component.activity-work' && variant !== 'recorded')
 		await prepareActivityWorkState(component, variant);
-	if (id === 'reports.component.entity-states') return prepareEntityStates(component, variant);
-	if (id === 'reports.component.explorer-usage-link') return prepareUsageLink(component, variant);
-	if (id === 'reports.component.explorer-ui-config-value-tree')
-		return prepareConfigValueTree(component, variant);
-	if (id === 'reports.component.explorer-catalog-items')
-		return prepareCatalogItems(component, variant);
+	if (await prepareReportState(component, id, variant)) return;
 	if (id === 'reports.component.entity-search' && variant)
 		return prepareEntitySearchState(component, variant);
 	if (id === 'reports.component.provider-picker')

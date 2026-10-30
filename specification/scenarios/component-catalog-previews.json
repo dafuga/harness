@@ -2471,6 +2471,42 @@
 			"units": ["reports.component.explorer-dependencies-screen"]
 		},
 		{
+			"id": "reports-component-explorer-dependencies-screen-unindexed",
+			"title": "ExplorerDependenciesScreen: not indexed",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen-empty",
+			"title": "ExplorerDependenciesScreen: no declarations",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen-partial",
+			"title": "ExplorerDependenciesScreen: partial manifests",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen-unreadable",
+			"title": "ExplorerDependenciesScreen: unreadable manifests",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen-filtered",
+			"title": "ExplorerDependenciesScreen: filtered declarations",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
+			"id": "reports-component-explorer-dependencies-screen-no-matches",
+			"title": "ExplorerDependenciesScreen: no matches",
+			"coverage": "required",
+			"units": ["reports.component.explorer-dependencies-screen"]
+		},
+		{
 			"id": "reports-component-explorer-function-card",
 			"title": "Function card",
 			"coverage": "required",
@@ -5115,6 +5151,12 @@
 				"reports-component-explorer-catalog-items-empty-configs",
 				"reports-component-explorer-catalog-items-unlinked",
 				"reports-component-explorer-dependencies-screen",
+				"reports-component-explorer-dependencies-screen-unindexed",
+				"reports-component-explorer-dependencies-screen-empty",
+				"reports-component-explorer-dependencies-screen-partial",
+				"reports-component-explorer-dependencies-screen-unreadable",
+				"reports-component-explorer-dependencies-screen-filtered",
+				"reports-component-explorer-dependencies-screen-no-matches",
 				"reports-component-explorer-function-card",
 				"reports-component-explorer-function-card-service",
 				"reports-component-explorer-function-card-model",

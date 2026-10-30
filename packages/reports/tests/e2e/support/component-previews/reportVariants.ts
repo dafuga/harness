@@ -10,12 +10,7 @@ import { searchResultsVariant } from './reportSearchResultsVariants';
 import { entitySearchVariant } from './reportEntitySearchVariants';
 import { contractExampleVariant } from './reportContractExampleVariants';
 import { contractTableVariant } from './reportContractTableVariants';
-import { functionCardVariant } from './reportFunctionCardVariants';
-import { explorerUsageVariant } from './reportExplorerUsageVariants';
-import { usageLinkVariant } from './reportUsageLinkVariants';
-import { entityStatesVariant } from './reportEntityStatesVariants';
-import { configValueVariant } from './configValueTreeVariants';
-import { catalogItemsVariant } from './catalogItemsVariants';
+import { explorerVariantProps } from './reportExplorerVariants';
 import { usageExamplesVariant } from './usageExamplesVariants';
 import { replayControlsVariant } from './replayControlsVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
@@ -46,18 +41,13 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.modal') return modalVariant(props, variant);
 	if (id === 'reports.component.contract-example') return contractExampleVariant(props, variant);
 	if (id === 'reports.component.contract-table') return contractTableVariant(props, variant);
-	if (id === 'reports.component.explorer-function-card') return functionCardVariant(props, variant);
-	if (id === 'reports.component.explorer-usage') return explorerUsageVariant(props, variant);
-	if (id === 'reports.component.explorer-usage-link') return usageLinkVariant(props, variant);
+	const explorer = explorerVariantProps(id, props, variant);
+	if (explorer) return explorer;
 	if (id === 'reports.component.entity-cases') return entityCasesVariant(props, variant);
 	if (id === 'reports.component.entity-contract') return entityContractVariant(props, variant);
 	if (id === 'reports.component.entity-examples') return entityExamplesVariant(props, variant);
 	if (id === 'reports.component.entity-search') return entitySearchVariant(props, variant);
 	if (id === 'reports.component.entity-search-results') return searchResultsVariant(props, variant);
-	if (id === 'reports.component.entity-states') return entityStatesVariant(props, variant);
-	if (id === 'reports.component.explorer-ui-config-value-tree')
-		return configValueVariant(props, variant);
-	if (id === 'reports.component.explorer-catalog-items') return catalogItemsVariant(props, variant);
 	if (id === 'reports.component.usage-examples-usage-examples')
 		return usageExamplesVariant(props, variant);
 	if (id === 'reports.component.explorer-ui-explorer-module-card')

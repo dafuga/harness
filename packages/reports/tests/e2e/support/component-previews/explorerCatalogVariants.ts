@@ -1,5 +1,13 @@
 /** Explorer collections and usage links each expose their distinct presentations. */
 export const explorerCatalogVariants: Record<string, string[]> = {
+	'reports.component.explorer-dependencies-screen': [
+		'unindexed',
+		'empty',
+		'partial',
+		'unreadable',
+		'filtered',
+		'no-matches'
+	],
 	'reports.component.explorer-catalog-items': [
 		'multiple',
 		'batched',
