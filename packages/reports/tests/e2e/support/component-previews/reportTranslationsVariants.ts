@@ -18,6 +18,7 @@ export function translationsVariant(props: PreviewCases[string], variant: string
 	if (variant === 'empty')
 		return { ...props, head: { ...host.head, translations: { ...translationData, rows: [] } } };
 	if (variant === 'english-only') return englishOnly(props, host);
+	if (variant === 'german') return germanTranslations(props, host);
 	if (variant === 'gaps' || variant === 'gaps-open')
 		return {
 			...props,
@@ -73,4 +74,16 @@ function englishOnly(props: PreviewCases[string], host: ExplorerScreenProps) {
 			}
 		}
 	};
+}
+
+function germanTranslations(props: PreviewCases[string], host: ExplorerScreenProps) {
+	const values: Record<string, string> = {
+		acceptance: 'Abnahmekriterien',
+		active: 'Aktueller Bericht',
+		listenAndCompare: 'Anhören und vergleichen'
+	};
+	const rows = translationData.rows
+		.filter((row) => Object.hasOwn(values, row.key))
+		.map((row) => ({ ...row, values: { ...row.values, de: values[row.key] } }));
+	return { ...props, head: { ...host.head, translations: { ...translationData, rows } } };
 }

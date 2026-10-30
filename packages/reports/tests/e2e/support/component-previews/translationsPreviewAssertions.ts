@@ -125,8 +125,10 @@ export async function assertTranslations(component: Locator, variant: string) {
 	if (variant === 'gaps-open')
 		await expect(component).toContainText('packages/orders/fr.json is unavailable');
 	if (variant === 'search') await expect(component.locator('tbody tr')).toHaveCount(1);
-	if (variant === 'german')
+	if (variant === 'german') {
 		await expect(component.getByRole('columnheader', { name: 'German' })).toBeVisible();
+		await expect(component).toContainText('Anhören und vergleichen');
+	}
 	if (variant === 'more') await expect(component.locator('tbody tr')).toHaveCount(100);
 	if (variant === 'missing-values') {
 		await expect(component).toContainText('Not translated');
