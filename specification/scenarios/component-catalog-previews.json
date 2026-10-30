@@ -1145,6 +1145,66 @@
 			"units": ["reports.component.activity-agents"]
 		},
 		{
+			"id": "reports-component-activity-agents-empty-roster",
+			"title": "Activity agents: No working registrations",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-gone",
+			"title": "Activity agents: Process ended",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-completed",
+			"title": "Activity agents: Finished",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-failed",
+			"title": "Activity agents: Failed",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-details-open",
+			"title": "Activity agents: Finished agent details",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-unstated",
+			"title": "Activity agents: Unstated model",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-many-units",
+			"title": "Activity agents: More assigned units",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-expanded-units",
+			"title": "Activity agents: All assigned units",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-many-agents",
+			"title": "Activity agents: More registered agents",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
+			"id": "reports-component-activity-agents-expanded-agents",
+			"title": "Activity agents: All registered agents",
+			"coverage": "required",
+			"units": ["reports.component.activity-agents"]
+		},
+		{
 			"id": "reports-component-activity-files",
 			"title": "Activity files",
 			"coverage": "required",
@@ -5362,6 +5422,16 @@
 				"reports-component-activity-agents-stale",
 				"reports-component-activity-agents-failed-read",
 				"reports-component-activity-agents-unreadable",
+				"reports-component-activity-agents-empty-roster",
+				"reports-component-activity-agents-gone",
+				"reports-component-activity-agents-completed",
+				"reports-component-activity-agents-failed",
+				"reports-component-activity-agents-details-open",
+				"reports-component-activity-agents-unstated",
+				"reports-component-activity-agents-many-units",
+				"reports-component-activity-agents-expanded-units",
+				"reports-component-activity-agents-many-agents",
+				"reports-component-activity-agents-expanded-agents",
 				"reports-component-activity-files",
 				"reports-component-activity-files-recorded",
 				"reports-component-activity-files-clean",

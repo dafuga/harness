@@ -18,36 +18,14 @@ import { audioEvidenceVariant } from './audioEvidenceVariants';
 import { evidenceCardVariant } from './evidenceCardVariants';
 import { evidenceGridVariant } from './evidenceGridVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
-import { analyticsTaskVariant } from './analyticsTaskVariants';
-import { projectActivityVariant, siteActivityVariant } from './projectActivityVariants';
-import { activityWorkVariant } from './activityWorkVariants';
-import { activityFileVariant } from './activityFileVariants';
+import { activityReportVariant } from './activityReportVariants';
 import { providerPickerCardVariant } from './providerPickerCardVariants';
 import { providerPickerVariant } from './providerPickerVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
-	if (id === 'reports.component.analytics-cpu') return { ...props };
-	if (id === 'reports.component.analytics-filters' && variant === 'all-filters')
-		return {
-			filters: {
-				loop: 'release-check',
-				task: 'verify',
-				model: 'GPT 6.1',
-				since: '2026-10-20',
-				until: '2026-10-26'
-			}
-		};
-	if (id === 'reports.component.activity-files') return activityFileVariant(props, variant);
-	if (id === 'reports.component.site-activity') return siteActivityVariant(props, variant);
-	if (id === 'reports.component.activity-work') return activityWorkVariant(props, variant);
-	if (id === 'reports.component.analytics-tasks' && variant !== 'empty')
-		return analyticsTaskVariant(props, variant);
-	if (
-		id === 'reports.component.project-activity' &&
-		['empty', 'stale', 'failed-read'].includes(variant)
-	)
-		return projectActivityVariant(props, variant);
+	const activity = activityReportVariant(id, props, variant);
+	if (activity) return activity;
 	if (id === 'reports.component.provider-picker-cards')
 		return providerPickerCardVariant(props, variant);
 	if (id === 'reports.component.provider-picker') return providerPickerVariant(props, variant);

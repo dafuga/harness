@@ -6,7 +6,17 @@ export const activityCatalogVariants: Record<string, string[]> = {
 		'tracking-never-used',
 		'stale',
 		'failed-read',
-		'unreadable'
+		'unreadable',
+		'empty-roster',
+		'gone',
+		'completed',
+		'failed',
+		'details-open',
+		'unstated',
+		'many-units',
+		'expanded-units',
+		'many-agents',
+		'expanded-agents'
 	],
 	// File activity distinguishes the live checkout from recorded, clean, empty and clipped views.
 	'reports.component.activity-files': [

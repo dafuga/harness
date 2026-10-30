@@ -119,15 +119,6 @@ const agentStates: Record<string, () => PreviewCases[string]> = {
 		agents: { tracking: 'never-used', working: null, unreadable: 0, roster: [] },
 		sampledAt: stamp
 	}),
-	stale: () => ({
-		agents: {
-			...live.agents,
-			working: 1,
-			roster: [{ ...agent, state: 'stale', detail: 'Last heartbeat is older than the allowance.' }]
-		},
-		sampledAt: stamp,
-		reading: { now: Date.parse(stamp) + 61_000, failed: false, refresh: noop }
-	}),
 	'failed-read': () => ({
 		agents: live.agents,
 		sampledAt: stamp,
