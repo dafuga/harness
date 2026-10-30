@@ -12,7 +12,10 @@
 	const id = untrack(() => requested);
 	const unit = previewUnits.find((unit) => unit.id === id);
 	if (!unit) throw new Error(`Unknown preview component ${id}`);
-	const fixture = previewFixture(id, new URLSearchParams(location.search).get('variant') ?? '');
+	const variant = new URLSearchParams(location.search).get('variant') ?? '';
+	const fixture = previewFixture(id, variant);
+	const compactEvidence =
+		id === 'reports.component.evidence-card' && ['compact', 'compact-closed'].includes(variant);
 	const Component = previewComponent(unit.source);
 	// A layout frames a page, so it is given the marked child slot below and never a real page.
 	const layout = unit.kind === 'layout';
@@ -57,11 +60,19 @@
 </script>
 
 <div class="preview-catalog" class:hx-shell={reports} class:hub-page={id.startsWith('hub.')}>
-	<main class="preview-main" class:hx-main={reports} class:full-frame={fullFrame}>
+	<main
+		class="preview-main"
+		class:hx-main={reports}
+		class:full-frame={fullFrame}
+		class:gallery-section={id === 'reports.component.evidence-card' && !compactEvidence}
+		class:states-gallery={compactEvidence}
+	>
 		<h1 id="preview-title" class:preview-hidden={routePreview(id)}>{unit.title}</h1>
 		{#await fixture.ready}<p role="status">Preparing component preview…</p>{:then}
 			<div
 				class="preview-content"
+				class:upload-audio={id === 'reports.component.audio-upload-files'}
+				class:evidence-grid={id === 'reports.component.evidence-card'}
 				class:provider-picker={id.includes('provider-picker')}
 				class:account={id === 'hub.component.account-menu'}
 				class:ex-content={explorer && !fullFrame}

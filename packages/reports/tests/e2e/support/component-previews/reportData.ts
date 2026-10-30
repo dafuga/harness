@@ -13,6 +13,18 @@ export const picture: Evidence = {
 	phase: 'after',
 	source: 'Representative preview fixture'
 };
+export const cardPicture: Evidence = {
+	...picture,
+	id: 'checkout-confirmation',
+	title: 'Checkout confirmation',
+	category: 'Checkout',
+	file: 'checkout-confirmation.svg',
+	source: 'Chromium capture',
+	provenance: [
+		{ label: 'Viewport', value: 'Desktop' },
+		{ label: 'Source', value: 'Chromium capture' }
+	]
+};
 export const audio: Evidence = {
 	id: 'accessibility-readback',
 	title: 'Accessibility review narration',

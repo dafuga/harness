@@ -9,11 +9,29 @@ export const activityCatalogVariants: Record<string, string[]> = {
 		'unreadable'
 	],
 	// File activity distinguishes the live checkout from recorded, clean, empty and clipped views.
-	'reports.component.activity-files': ['recorded', 'clean', 'empty', 'truncated'],
+	'reports.component.activity-files': [
+		'recorded',
+		'clean',
+		'empty',
+		'truncated',
+		'many-uncommitted',
+		'expanded-uncommitted',
+		'many-committed',
+		'expanded-committed',
+		'multiple-checkouts'
+	],
 	// Loop history either lists known templates or explains that none has been recorded.
 	'reports.component.activity-loops': ['empty'],
 	// Work distinguishes a live checkout from the recorded-history wording and an empty history.
-	'reports.component.activity-work': ['recorded', 'empty'],
+	'reports.component.activity-work': [
+		'recorded',
+		'empty',
+		'details-open',
+		'no-reason',
+		'truncated',
+		'many',
+		'expanded'
+	],
 	// Project activity keeps recorded, empty, stale and failed live readings distinct.
 	'reports.component.project-activity': ['recorded', 'empty', 'stale', 'failed-read'],
 	// Site activity's refresh failure preserves the last known live observation with a warning.

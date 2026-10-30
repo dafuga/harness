@@ -2,8 +2,12 @@ import { expect, type Locator, type Page } from '@playwright/test';
 import { prepareConsoleChatState } from './consoleChatActions';
 import { assertProviderPickerCardState } from './providerPickerCardActions';
 import { prepareProviderPickerState } from './providerPickerActions';
+import { prepareActivityWorkState } from './activityWorkActions';
+import { prepareActivityFileState } from './activityFileActions';
 import { prepareAudioEvidence } from './audioEvidenceActions';
+import { prepareAudioUploadFiles } from './audioUploadFilesActions';
 import { prepareEntitySearchState } from './entitySearchPreviewActions';
+import { prepareEvidenceCard } from './evidenceCardActions';
 import { prepareEntityStates } from './entityStatesPreviewAssertions';
 import { prepareUsageLink } from './usageLinkPreviewAssertions';
 
@@ -77,10 +81,6 @@ const actions: Record<string, CatalogStateAction> = {
 		await component.getByRole('button', { name: 'Refresh activity' }).click();
 		await expect(component.getByRole('status')).toContainText('Activity could not be read again');
 	},
-	'reports.component.evidence-card:compact': async (component) => {
-		await component.locator('summary').click();
-		await expect(component.getByText('Browser capture', { exact: true })).toBeVisible();
-	},
 	'reports.component.evidence-grid:empty': async (component) => {
 		await component
 			.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' })
@@ -140,6 +140,9 @@ const actions: Record<string, CatalogStateAction> = {
 
 /** Reproduce catalog variants that are reached through the component's own controls. */
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.activity-files') await prepareActivityFileState(component, variant);
+	if (id === 'reports.component.activity-work' && variant !== 'recorded')
+		await prepareActivityWorkState(component, variant);
 	if (id === 'reports.component.entity-states') return prepareEntityStates(component, variant);
 	if (id === 'reports.component.explorer-usage-link') return prepareUsageLink(component, variant);
 	if (id === 'reports.component.entity-search' && variant)
@@ -152,6 +155,9 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 		return assertProviderPickerCardState(component, variant);
 	if (id === 'reports.component.audio-comparison') await assertAudioComparison(component, variant);
 	if (id === 'reports.component.audio-evidence') return prepareAudioEvidence(component, variant);
+	if (id === 'reports.component.audio-upload-files')
+		return prepareAudioUploadFiles(component, variant);
+	if (id === 'reports.component.evidence-card') return prepareEvidenceCard(component, variant);
 	const action = actions[`${id}:${variant}`];
 	if (action) await action(component);
 	if (id === 'reports.component.audio-comparison-viewer')

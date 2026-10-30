@@ -1175,6 +1175,36 @@
 			"units": ["reports.component.activity-files"]
 		},
 		{
+			"id": "reports-component-activity-files-many-uncommitted",
+			"title": "Activity files: More uncommitted files available",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
+			"id": "reports-component-activity-files-expanded-uncommitted",
+			"title": "Activity files: All uncommitted files shown",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
+			"id": "reports-component-activity-files-many-committed",
+			"title": "Activity files: More committed files available",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
+			"id": "reports-component-activity-files-expanded-committed",
+			"title": "Activity files: All committed files shown",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
+			"id": "reports-component-activity-files-multiple-checkouts",
+			"title": "Activity files: Multiple changed checkouts",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
 			"id": "reports-component-activity-list",
 			"title": "Activity list",
 			"coverage": "required",
@@ -1207,6 +1237,36 @@
 		{
 			"id": "reports-component-activity-work-empty",
 			"title": "Activity work: Empty history",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
+			"id": "reports-component-activity-work-details-open",
+			"title": "Activity work: Components and reasons open",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
+			"id": "reports-component-activity-work-no-reason",
+			"title": "Activity work: No reason recorded",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
+			"id": "reports-component-activity-work-truncated",
+			"title": "Activity work: Additional components and reasons",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
+			"id": "reports-component-activity-work-many",
+			"title": "Activity work: More commits available",
+			"coverage": "required",
+			"units": ["reports.component.activity-work"]
+		},
+		{
+			"id": "reports-component-activity-work-expanded",
+			"title": "Activity work: All commits shown",
 			"coverage": "required",
 			"units": ["reports.component.activity-work"]
 		},
@@ -1621,6 +1681,36 @@
 		{
 			"id": "reports-component-audio-upload-files-uploading",
 			"title": "Audio upload files: Uploading",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-single-uploading",
+			"title": "Audio upload files: Single upload disabled",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-selected",
+			"title": "Audio upload files: Recording selected",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-before-selected",
+			"title": "Audio upload files: Before selected",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-after-selected",
+			"title": "Audio upload files: After selected",
+			"coverage": "required",
+			"units": ["reports.component.audio-upload-files"]
+		},
+		{
+			"id": "reports-component-audio-upload-files-both-selected",
+			"title": "Audio upload files: Both recordings selected",
 			"coverage": "required",
 			"units": ["reports.component.audio-upload-files"]
 		},
@@ -2185,6 +2275,66 @@
 		{
 			"id": "reports-component-evidence-card-paired-audio",
 			"title": "Evidence card: Paired audio",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-compact-closed",
+			"title": "Evidence card: Compact details closed",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-image-error",
+			"title": "Evidence card: Image decode error",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-single-audio",
+			"title": "Evidence card: Single audio",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-minimal",
+			"title": "Evidence card: Minimal metadata",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-running",
+			"title": "Evidence card: Running",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-failed",
+			"title": "Evidence card: Failed",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-blocked",
+			"title": "Evidence card: Blocked",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-skipped",
+			"title": "Evidence card: Skipped",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-not-proven",
+			"title": "Evidence card: Not proven",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-interrupted",
+			"title": "Evidence card: Interrupted",
 			"coverage": "required",
 			"units": ["reports.component.evidence-card"]
 		},
@@ -4599,12 +4749,22 @@
 				"reports-component-activity-files-clean",
 				"reports-component-activity-files-empty",
 				"reports-component-activity-files-truncated",
+				"reports-component-activity-files-many-uncommitted",
+				"reports-component-activity-files-expanded-uncommitted",
+				"reports-component-activity-files-many-committed",
+				"reports-component-activity-files-expanded-committed",
+				"reports-component-activity-files-multiple-checkouts",
 				"reports-component-activity-list",
 				"reports-component-activity-loops",
 				"reports-component-activity-loops-empty",
 				"reports-component-activity-work",
 				"reports-component-activity-work-recorded",
 				"reports-component-activity-work-empty",
+				"reports-component-activity-work-details-open",
+				"reports-component-activity-work-no-reason",
+				"reports-component-activity-work-truncated",
+				"reports-component-activity-work-many",
+				"reports-component-activity-work-expanded",
 				"reports-component-analytics-cpu",
 				"reports-component-analytics-cpu-no-agents",
 				"reports-component-analytics-cpu-unavailable",
@@ -4674,6 +4834,11 @@
 				"reports-component-audio-upload-files",
 				"reports-component-audio-upload-files-comparison",
 				"reports-component-audio-upload-files-uploading",
+				"reports-component-audio-upload-files-single-uploading",
+				"reports-component-audio-upload-files-selected",
+				"reports-component-audio-upload-files-before-selected",
+				"reports-component-audio-upload-files-after-selected",
+				"reports-component-audio-upload-files-both-selected",
 				"reports-component-brand-mark",
 				"reports-component-browser-errors",
 				"reports-component-console-chat",
@@ -4768,6 +4933,16 @@
 				"reports-component-evidence-card-missing",
 				"reports-component-evidence-card-compact",
 				"reports-component-evidence-card-paired-audio",
+				"reports-component-evidence-card-compact-closed",
+				"reports-component-evidence-card-image-error",
+				"reports-component-evidence-card-single-audio",
+				"reports-component-evidence-card-minimal",
+				"reports-component-evidence-card-running",
+				"reports-component-evidence-card-failed",
+				"reports-component-evidence-card-blocked",
+				"reports-component-evidence-card-skipped",
+				"reports-component-evidence-card-not-proven",
+				"reports-component-evidence-card-interrupted",
 				"reports-component-evidence-grid",
 				"reports-component-evidence-grid-empty",
 				"reports-component-evidence-grid-audio",
