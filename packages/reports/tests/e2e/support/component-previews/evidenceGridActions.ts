@@ -59,6 +59,10 @@ async function selectStatus(component: Locator, variant: string) {
 		await select.selectOption('passed');
 		await expect(select).toHaveValue('passed');
 	} else {
+		await component
+			.getByRole('textbox', { name: 'Search screenshots, audio and transcripts' })
+			.fill('refund');
+		await expect(component.getByText('No matching evidence.', { exact: true })).toBeVisible();
 		await select.click();
 		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
 	}

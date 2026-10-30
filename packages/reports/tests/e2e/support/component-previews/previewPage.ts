@@ -151,8 +151,11 @@ export async function capturePreview(
 	const { viewport, variant = '' } = target;
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS) return;
 	const clip = await previewCaptureBounds(page, id, variant);
+	const nativeSelectOpen =
+		(id === 'reports.component.select' && variant === 'open') ||
+		(id === 'reports.component.evidence-grid' && variant === 'status-open');
 	const bytes = await page.screenshot({
-		fullPage: id !== 'reports.component.select' || variant !== 'open',
+		fullPage: !nativeSelectOpen,
 		clip,
 		animations: 'disabled',
 		caret: 'hide'
@@ -176,7 +179,10 @@ export async function capturePreview(
 			file: `${state}-${viewport}.png`,
 			mediaType: 'image/png',
 			provenance: 'actual-capture',
-			note: 'Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.',
+			note:
+				id === 'reports.component.evidence-grid' && ['image-open', 'audio-open'].includes(variant)
+					? 'Rendered dialog bounds without preview-only canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.'
+					: 'Rendered component bounds with an 8px edge allowance, excluding preview-only headings and canvas. Synthetic representative inputs; real backend and native-device behavior are not reproduced.',
 			server: {
 				buildId: served?.buildId ?? 'not-built',
 				revision: process.env.HARNESS_VERIFY_REVISION ?? '0'.repeat(40)
