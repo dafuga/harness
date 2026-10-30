@@ -16,8 +16,11 @@ document.body.dataset.pickerPreview = 'true';
 const unitId =
 	new URLSearchParams(location.search).get('unit') ?? 'reports.component.activity-list';
 const preMounted =
-	['reports.component.audio-comparison', 'reports.component.upload-comparison'].includes(unitId) &&
-	new URLSearchParams(location.search).get('variant') === 'pre-mount';
+	[
+		'reports.component.audio-comparison',
+		'reports.component.upload-comparison',
+		'reports.component.upload-audio'
+	].includes(unitId) && new URLSearchParams(location.search).get('variant') === 'pre-mount';
 // Preserve the document's original unit before real route fixtures replace the visible URL.
 window.previewDocument = Object.freeze({ unit: unitId, timeOrigin: performance.timeOrigin });
 let styles = [base, base2, base3, harness, gallery, gallery2, picker, analytics];

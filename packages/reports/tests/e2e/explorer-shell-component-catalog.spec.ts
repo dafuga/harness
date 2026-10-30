@@ -86,7 +86,7 @@ for (const viewport of catalogViewports) {
 				? `desktop-component-project-agent-${variant} at ${viewport.id}`
 				: `${unit.id}${variant ? `:${variant}` : ''} at ${viewport.id}`;
 		test(title, async ({ page, browserErrors }) => {
-			picker.expectUploadError(unit.id, variant, browserErrors);
+			picker.expectUploadErrors(unit.id, variant, browserErrors);
 			const projectErrors: string[] = [];
 			if (unit.id === 'reports.component.console-chat' && variant === 'connection-error')
 				browserErrors.expectError({
@@ -121,7 +121,7 @@ for (const viewport of catalogViewports) {
 				await expect(component.getByRole('heading', { name: 'Acceptance' })).toBeVisible();
 				await preview.capturePreview(page, home, unit.id, target);
 			}
-			await test.step('State', () => prepareCatalogState(component, unit.id, variant));
+			await test.step('Prepare state', () => prepareCatalogState(component, unit.id, variant));
 			await assertCatalogState(component, unit.id, variant, viewport.id);
 			if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
 				await assertMobileContractFields(component);
