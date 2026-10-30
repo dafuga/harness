@@ -1,6 +1,9 @@
+import { explorerKitVariant } from './explorerKitVariants';
+import { pluginVariant } from './pluginVariants';
 import type { PreviewCases } from './shared';
 import { chatVariantProps } from './chatVariants';
 import { image, text } from './shared';
+import { sourceVariant } from './reportSourceVariants';
 
 import { moduleCardVariant } from './reportModuleCardVariants';
 import { entityCasesVariant } from './reportEntityCasesVariants';
@@ -31,6 +34,8 @@ import { browserErrorsVariant } from './browserErrorsVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	const kit = explorerKitVariant(id, props, variant) ?? pluginVariant(id, props, variant);
+	if (kit) return kit;
 	const activity = activityReportVariant(id, props, variant);
 	if (activity) return activity;
 	if (id === 'reports.component.provider-picker-cards')
@@ -56,6 +61,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 		const viewer = extendedSourceViewerVariant(props, variant);
 		if (viewer) return viewer;
 	}
+	if (id.startsWith('reports.component.source-')) return sourceVariant(props, id, variant);
 
 	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
 

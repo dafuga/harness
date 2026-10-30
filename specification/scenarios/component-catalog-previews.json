@@ -2668,8 +2668,32 @@
 			"units": ["reports.component.explorer-ui-explorer-kit-card"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-kit-card-section",
+			"title": "explorer-ui-explorer-kit-card: section",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-card-tone",
+			"title": "explorer-ui-explorer-kit-card: tone",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-card"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-kit-command-block",
 			"title": "Command block",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-command-block"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-command-block-long",
+			"title": "explorer-ui-explorer-kit-command-block: long",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-command-block"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-command-block-multiline",
+			"title": "explorer-ui-explorer-kit-command-block: multiline",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-kit-command-block"]
 		},
@@ -2680,14 +2704,38 @@
 			"units": ["reports.component.explorer-ui-explorer-kit-empty-state"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-kit-empty-state-action",
+			"title": "explorer-ui-explorer-kit-empty-state: action",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-empty-state"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-kit-notice",
 			"title": "Explorer notice",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-kit-notice"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-kit-notice-long",
+			"title": "explorer-ui-explorer-kit-notice: long",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-notice"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-kit-pill",
 			"title": "Explorer pill",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-pill-state",
+			"title": "explorer-ui-explorer-kit-pill: state",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-pill-tone",
+			"title": "explorer-ui-explorer-kit-pill: tone",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
 		},
@@ -3670,8 +3718,56 @@
 			"units": ["reports.component.module-system-plugins-explorer-plugin-card"]
 		},
 		{
+			"id": "reports-component-module-system-plugins-explorer-plugin-card-available",
+			"title": "module-system-plugins-explorer-plugin-card: available",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-explorer-plugin-card"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-explorer-plugin-card-included",
+			"title": "module-system-plugins-explorer-plugin-card: included",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-explorer-plugin-card"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-explorer-plugin-card-available-testing",
+			"title": "module-system-plugins-explorer-plugin-card: available-testing",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-explorer-plugin-card"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-explorer-plugin-card-installed-testing",
+			"title": "module-system-plugins-explorer-plugin-card: installed-testing",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-explorer-plugin-card"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-explorer-plugin-card-included-testing",
+			"title": "module-system-plugins-explorer-plugin-card: included-testing",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-explorer-plugin-card"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-explorer-plugin-card-empty-resources",
+			"title": "module-system-plugins-explorer-plugin-card: empty-resources",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-explorer-plugin-card"]
+		},
+		{
 			"id": "reports-component-module-system-plugins-plugin-resource-card",
 			"title": "Plugin resource card",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-resource-card"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-resource-card-available",
+			"title": "module-system-plugins-plugin-resource-card: available",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-resource-card"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-resource-card-empty-instructions",
+			"title": "module-system-plugins-plugin-resource-card: empty-instructions",
 			"coverage": "required",
 			"units": ["reports.component.module-system-plugins-plugin-resource-card"]
 		},
@@ -3682,8 +3778,56 @@
 			"units": ["reports.component.module-system-plugins-plugin-state-pills"]
 		},
 		{
+			"id": "reports-component-module-system-plugins-plugin-state-pills-available",
+			"title": "module-system-plugins-plugin-state-pills: available",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-state-pills"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-state-pills-included",
+			"title": "module-system-plugins-plugin-state-pills: included",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-state-pills"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-state-pills-available-testing",
+			"title": "module-system-plugins-plugin-state-pills: available-testing",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-state-pills"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-state-pills-installed-testing",
+			"title": "module-system-plugins-plugin-state-pills: installed-testing",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-state-pills"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-state-pills-included-testing",
+			"title": "module-system-plugins-plugin-state-pills: included-testing",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-state-pills"]
+		},
+		{
 			"id": "reports-component-module-system-plugins-plugin-steps",
 			"title": "Plugin steps",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-steps"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-steps-empty",
+			"title": "module-system-plugins-plugin-steps: empty",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-steps"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-steps-long",
+			"title": "module-system-plugins-plugin-steps: long",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-steps"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-steps-multiline",
+			"title": "module-system-plugins-plugin-steps: multiline",
 			"coverage": "required",
 			"units": ["reports.component.module-system-plugins-plugin-steps"]
 		},
@@ -6247,7 +6391,31 @@
 				"reports-page-harness-branch-branch-at-translations",
 				"reports-page-harness-branch-branch-at-types",
 				"reports-page-harness-branch-branch-at-types-entity",
-				"reports-page-harness-branch-branch-at-types-entity-history"
+				"reports-page-harness-branch-branch-at-types-entity-history",
+				"reports-component-explorer-ui-explorer-kit-card-section",
+				"reports-component-explorer-ui-explorer-kit-card-tone",
+				"reports-component-explorer-ui-explorer-kit-pill-state",
+				"reports-component-explorer-ui-explorer-kit-pill-tone",
+				"reports-component-explorer-ui-explorer-kit-empty-state-action",
+				"reports-component-explorer-ui-explorer-kit-notice-long",
+				"reports-component-explorer-ui-explorer-kit-command-block-long",
+				"reports-component-explorer-ui-explorer-kit-command-block-multiline",
+				"reports-component-module-system-plugins-explorer-plugin-card-available",
+				"reports-component-module-system-plugins-explorer-plugin-card-included",
+				"reports-component-module-system-plugins-explorer-plugin-card-available-testing",
+				"reports-component-module-system-plugins-explorer-plugin-card-installed-testing",
+				"reports-component-module-system-plugins-explorer-plugin-card-included-testing",
+				"reports-component-module-system-plugins-explorer-plugin-card-empty-resources",
+				"reports-component-module-system-plugins-plugin-state-pills-available",
+				"reports-component-module-system-plugins-plugin-state-pills-included",
+				"reports-component-module-system-plugins-plugin-state-pills-available-testing",
+				"reports-component-module-system-plugins-plugin-state-pills-installed-testing",
+				"reports-component-module-system-plugins-plugin-state-pills-included-testing",
+				"reports-component-module-system-plugins-plugin-resource-card-available",
+				"reports-component-module-system-plugins-plugin-resource-card-empty-instructions",
+				"reports-component-module-system-plugins-plugin-steps-empty",
+				"reports-component-module-system-plugins-plugin-steps-long",
+				"reports-component-module-system-plugins-plugin-steps-multiline"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
