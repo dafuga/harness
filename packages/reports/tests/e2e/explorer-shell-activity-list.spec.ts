@@ -24,8 +24,8 @@ for (const viewport of scenario.viewports) {
 			if (state.id === 'expanded')
 				await page.getByRole('button', { name: 'Show all 7 activities', exact: true }).click();
 			await page.evaluate(() => document.fonts.ready.then(() => undefined));
-			await captureShell(page, home, { state: state.id, viewport: viewport.id });
 			await expect(list.locator(':scope > li:visible')).toHaveCount(counts[state.id] ?? 3);
+			if (state.id === 'empty') await expect(page.getByRole('status')).toHaveText('No activities.');
 			if (state.id === 'error')
 				await expect(page.getByRole('alert')).toContainText('Could not read recent activity.');
 			if (state.id === 'ordered') expect(await list.evaluate((node) => node.tagName)).toBe('OL');
@@ -37,6 +37,10 @@ for (const viewport of scenario.viewports) {
 			expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
 				true
 			);
+			await page.evaluate(() => scrollTo(0, 0));
+			const clip = await page.getByTestId('activity-list-capture').boundingBox();
+			if (!clip) throw new Error('Activity List has no capture bounds.');
+			await captureShell(page, home, { state: state.id, viewport: viewport.id, clip });
 		});
 	}
 }

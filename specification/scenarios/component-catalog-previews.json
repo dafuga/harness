@@ -1271,6 +1271,36 @@
 			"units": ["reports.component.activity-list"]
 		},
 		{
+			"id": "reports-component-activity-list-empty",
+			"title": "Activity list: Empty",
+			"coverage": "required",
+			"units": ["reports.component.activity-list"]
+		},
+		{
+			"id": "reports-component-activity-list-short",
+			"title": "Activity list: Short",
+			"coverage": "required",
+			"units": ["reports.component.activity-list"]
+		},
+		{
+			"id": "reports-component-activity-list-ordered",
+			"title": "Activity list: Ordered",
+			"coverage": "required",
+			"units": ["reports.component.activity-list"]
+		},
+		{
+			"id": "reports-component-activity-list-expanded",
+			"title": "Activity list: Expanded",
+			"coverage": "required",
+			"units": ["reports.component.activity-list"]
+		},
+		{
+			"id": "reports-component-activity-list-error",
+			"title": "Activity list: Caller error row",
+			"coverage": "required",
+			"units": ["reports.component.activity-list"]
+		},
+		{
 			"id": "reports-component-activity-loops",
 			"title": "Activity loops",
 			"coverage": "required",
@@ -5683,6 +5713,11 @@
 				"reports-component-activity-files-expanded-committed",
 				"reports-component-activity-files-multiple-checkouts",
 				"reports-component-activity-list",
+				"reports-component-activity-list-empty",
+				"reports-component-activity-list-short",
+				"reports-component-activity-list-ordered",
+				"reports-component-activity-list-expanded",
+				"reports-component-activity-list-error",
 				"reports-component-activity-loops",
 				"reports-component-activity-loops-empty",
 				"reports-component-activity-work",

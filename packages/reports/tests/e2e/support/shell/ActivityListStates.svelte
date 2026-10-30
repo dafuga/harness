@@ -29,27 +29,26 @@
 	<h1>{titles[state] ?? state}</h1>
 	<section class="pa-card" aria-label="Component preview">
 		<h2>Recent activity</h2>
-		{#if state === 'empty'}<p class="pa-empty" role="status">No recent activity.</p>{/if}
-		<ActivityList
-			{items}
-			label="Recent activity"
-			noun="activities"
-			preview={3}
-			ordered={state === 'ordered'}
-		>
-			{#snippet row(item)}
-				{#if item.error}
-					<div role="alert" class="error-row">
-						<strong>Could not read recent activity.</strong>
-						<span
-							>The caller supplied this error message. Try again when the connection returns.</span
-						>
-					</div>
-				{:else}<div class="activity-row">
-						<span aria-hidden="true">✓</span><strong>{item.name}</strong>
-					</div>{/if}
-			{/snippet}
-		</ActivityList>
+		<div class="list-preview" data-testid="activity-list-capture">
+			<ActivityList
+				{items}
+				label="Recent activity"
+				noun="activities"
+				preview={3}
+				ordered={state === 'ordered'}
+			>
+				{#snippet row(item)}
+					{#if item.error}
+						<div role="alert" class="error-row">
+							<strong>Could not read recent activity.</strong>
+							<span>Check your connection and try again.</span>
+						</div>
+					{:else}<div class="activity-row">
+							<span aria-hidden="true">✓</span><strong>{item.name}</strong>
+						</div>{/if}
+				{/snippet}
+			</ActivityList>
+		</div>
 	</section>
 	<p class="note">
 		{state === 'error'
@@ -59,6 +58,9 @@
 </main>
 
 <style>
+	.list-preview {
+		display: flow-root;
+	}
 	.state-fixture {
 		max-width: 760px;
 		margin: 0 auto;
