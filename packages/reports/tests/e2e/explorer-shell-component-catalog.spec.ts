@@ -4,11 +4,7 @@ import { expect, test } from '../../../../test/support/browserTest';
 import { buildShellFixture, removeShellFixture, captureShell } from './support/shellFixture';
 import { pictured } from './support/sharedSelect';
 import { catalogCases, catalogViewports } from './support/component-previews/catalogUnits';
-import {
-	openPreview,
-	readyPreview,
-	capturePreview
-} from './support/component-previews/previewPage';
+import * as preview from './support/component-previews/previewPage';
 import { profilePreview } from './support/component-previews/profilePreview';
 import {
 	assertComponentCapture,
@@ -43,8 +39,8 @@ for (const viewport of catalogViewports) {
 		test(`console data loading: ${stage} at ${viewport.id}`, async ({ page }) => {
 			const unit = 'reports.component.harness-harness-console';
 			await page.setViewportSize(viewport);
-			await openPreview(page, home, unit);
-			await readyPreview(page, unit);
+			await preview.openPreview(page, home, unit);
+			await preview.readyPreview(page, unit);
 			let release!: () => void;
 			const held = new Promise<void>((resolve) => (release = resolve));
 			const path = stage === 'history' ? '**/data/index.json' : '**/data/revisions/*.json';
@@ -78,7 +74,7 @@ for (const viewport of catalogViewports) {
 			} finally {
 				release();
 			}
-			await readyPreview(page, unit);
+			await preview.readyPreview(page, unit);
 			await expect(status).toHaveCount(0);
 			await expect(page.getByRole('heading', { level: 1, name: 'Components' })).toBeVisible();
 		});
@@ -117,9 +113,13 @@ for (const viewport of catalogViewports) {
 				});
 			}
 			await page.setViewportSize(viewport);
-			await openPreview(page, home, unit.id, variant);
+			await preview.openPreview(page, home, unit.id, variant);
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
-			const component = await readyPreview(page, unit.id, variant);
+			const component = await preview.readyPreview(page, unit.id, variant);
+			const captureBeforeAssertion =
+				unit.id === 'reports.component.coverage-list' && variant === 'empty';
+			if (captureBeforeAssertion)
+				await preview.capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
 			await prepareCatalogState(component, unit.id, variant);
 			await assertCatalogState(component, unit.id, variant, viewport.id);
 			if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
@@ -135,7 +135,8 @@ for (const viewport of catalogViewports) {
 				} else await expect(panel).toBeVisible();
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
-			await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
+			if (!captureBeforeAssertion)
+				await preview.capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);
