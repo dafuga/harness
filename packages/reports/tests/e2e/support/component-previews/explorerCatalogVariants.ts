@@ -1,5 +1,15 @@
 /** Explorer collections and usage links each expose their distinct presentations. */
 export const explorerCatalogVariants: Record<string, string[]> = {
+	'reports.component.explorer-ui-explorer-platform-details': [
+		'ios',
+		'android',
+		'desktop',
+		'unrecorded',
+		'unindexed',
+		'gap',
+		'not-found',
+		'source-unavailable'
+	],
 	'reports.component.explorer-dependencies-screen': [
 		'unindexed',
 		'empty',
