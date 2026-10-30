@@ -81,4 +81,9 @@ async function openImage(component: Locator) {
 		.poll(() => image.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0))
 		.toBe(true);
 	await image.evaluate((node: HTMLImageElement) => node.decode());
+	const caption = dialog.locator('figcaption').first();
+	await expect(caption).toBeVisible();
+	const captionBox = await caption.boundingBox();
+	const dialogBox = await dialog.boundingBox();
+	expect(captionBox!.y + captionBox!.height).toBeLessThanOrEqual(dialogBox!.y + dialogBox!.height);
 }

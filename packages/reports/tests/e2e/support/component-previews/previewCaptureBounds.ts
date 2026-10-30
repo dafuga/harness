@@ -15,7 +15,7 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			variant === 'closed' ? '.floating-chat-bubble' : '.floating-chat-panel'
 		);
 	const bounds = await target.evaluate(
-		(node, { captureElement, includeUsageTooltip }) => {
+		(node, { captureElement, includeUsageTooltip, edge }) => {
 			const boxes: DOMRect[] = [];
 			function collect(element: Element) {
 				const style = getComputedStyle(element);
@@ -30,21 +30,24 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			const tooltip = includeUsageTooltip && node.querySelector('[role="tooltip"]');
 			if (tooltip) collect(tooltip);
 			if (!boxes.length) throw new Error('The component has no rendered capture bounds.');
-			const left = Math.max(0, Math.floor(Math.min(...boxes.map((box) => box.left)) + scrollX) - 8);
-			const top = Math.max(0, Math.floor(Math.min(...boxes.map((box) => box.top)) + scrollY) - 8);
+			const start = (value: number, scroll: number) =>
+				Math.max(0, Math.floor(value + scroll) - edge);
+			const left = start(Math.min(...boxes.map((box) => box.left)), scrollX);
+			const top = start(Math.min(...boxes.map((box) => box.top)), scrollY);
 			const right = Math.min(
 				document.documentElement.scrollWidth,
-				Math.ceil(Math.max(...boxes.map((box) => box.right)) + scrollX) + 8
+				Math.ceil(Math.max(...boxes.map((box) => box.right)) + scrollX) + edge
 			);
 			const bottom = Math.min(
 				document.documentElement.scrollHeight,
-				Math.ceil(Math.max(...boxes.map((box) => box.bottom)) + scrollY) + 8
+				Math.ceil(Math.max(...boxes.map((box) => box.bottom)) + scrollY) + edge
 			);
 			return { x: left, y: top, width: right - left, height: bottom - top };
 		},
 		{
 			captureElement: Boolean(modal) || projectAgent || Boolean(compactTarget),
-			includeUsageTooltip: id === 'reports.component.explorer-usage-link'
+			includeUsageTooltip: id === 'reports.component.explorer-usage-link',
+			edge: id === 'reports.component.evidence-grid' && modal ? 0 : 8
 		}
 	);
 	if (id === 'reports.component.select' && variant === 'open') {

@@ -4,6 +4,13 @@ import { noop } from './shared';
 /** Supply empty, screenshot-only and upload-enabled gallery inputs. */
 export function evidenceGridVariant(props: PreviewCases[string], variant: string) {
 	if (variant === 'no-items') return { ...props, items: [] };
+	if (variant === 'image-open')
+		return {
+			...props,
+			items: (props.items as Array<{ provenance?: unknown }>).map((item, index) =>
+				index === 0 ? { ...item, provenance: undefined } : item
+			)
+		};
 	if (variant === 'screenshot-only')
 		return {
 			...props,
