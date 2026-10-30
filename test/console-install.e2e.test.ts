@@ -30,8 +30,7 @@ beforeAll(async () => {
 		`/harness/commit/${target.commit}/map`,
 		'/harness/data/index.json',
 		`/harness/data/revisions/${target.commit}.json`,
-		`/harness/media/${target.media}`,
-		`/harness/export/${target.commit}`
+		`/harness/media/${target.media}`
 	];
 }, 600_000);
 afterAll(async () => {
@@ -114,7 +113,7 @@ test('in workerd only the host administrator reaches the console, its data and i
 		]);
 	const html = await page.text();
 	expect(await explorer.text()).toBe(html);
-	expect(html).toContain('window.harnessConsole={"exportable":true,"base":"/harness"}');
+	expect(html).toContain('window.harnessConsole={"base":"/harness"}');
 	expect(html).not.toContain(commit);
 	expect(await (await get('/harness/data/index.json', admin)).json()).toEqual(index);
 	const detail = await get(`/harness/data/revisions/${commit}.json`, admin);
@@ -126,16 +125,7 @@ test('in workerd only the host administrator reaches the console, its data and i
 	expect(createHash('sha256').update(bytes).digest('hex')).toBe(media.slice(0, 64));
 	const part = await get(`/harness/media/${media}`, { ...admin, range: 'bytes=0-7' });
 	expect([part.status, Buffer.from(await part.arrayBuffer())]).toEqual([206, bytes.subarray(0, 8)]);
-	// The portable report is built inside the Worker, with the recorded media inlined.
-	const report = await get(`/harness/export/${commit}`, admin);
-	expect([report.status, report.headers.get('content-disposition')]).toEqual([
-		200,
-		`attachment; filename="harness-${commit.slice(0, 12)}.html"`
-	]);
-	const portable = await report.text();
-	expect(portable).toContain('window.projectReport=');
-	expect(portable).toContain(`data:image/png;base64,${bytes.toString('base64')}`);
-	for (const path of [`/harness/export/${'f'.repeat(40)}`, '/harness/data/secret.json']) {
+	for (const path of [`/harness/export/${commit}`, '/harness/data/secret.json']) {
 		expect([path, (await get(path, admin)).status]).toEqual([path, 404]);
 	}
 }, 300_000);

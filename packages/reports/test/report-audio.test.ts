@@ -3,7 +3,6 @@ import { mkdtemp, readFile, rm, writeFile, symlink, unlink } from 'node:fs/promi
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ReportRepository } from '../src/repositories/report-repository/ReportRepository';
-import { ReportExportService } from '../src/services/report-export-service/ReportExportService';
 import { audioFixture } from './audioFixture';
 const roots: string[] = [];
 async function fixture() {
@@ -62,28 +61,21 @@ test('rejects disguised audio and symlinks without adding evidence', async () =>
 	).rejects.toThrow(/symlink/);
 	expect((await store.get(run.id)).evidence).toHaveLength(0);
 });
-test('audio survives portable HTML and PDF finalization', async () => {
+test('finalizing keeps the audio and refuses more evidence', async () => {
 	const { store, run, record } = await fixture();
-	await store.record(run.id, record);
-	const final = await new ReportExportService(store).finalize(run.id);
+	const updated = await store.record(run.id, record);
+	await store.seal(run.id);
+	const final = await store.finish(run.id);
 	expect(final.status).toBe('failed');
-	const html = await readFile(join(store.directory(run.id), 'exports', 'index.html'), 'utf8');
-	expect(html).toContain('data:audio/wav;base64,');
-	expect(html).toContain('Recorded sound');
-	expect(
-		(await readFile(join(store.directory(run.id), 'exports', 'report.pdf')))
-			.subarray(0, 4)
-			.toString()
-	).toBe('%PDF');
+	const kept = join(store.directory(run.id), 'assets', updated.evidence[0].file);
+	expect((await readFile(kept)).length).toBeGreaterThan(0);
 	await expect(store.record(run.id, record)).rejects.toThrow(/finaliz/);
 });
-test('missing audio becomes not proven and exports omit its bytes', async () => {
+test('missing audio becomes not proven at finalization', async () => {
 	const { store, run, record } = await fixture();
 	const updated = await store.record(run.id, record);
 	await unlink(join(store.directory(run.id), 'assets', updated.evidence[0].file));
-	const final = await new ReportExportService(store).finalize(run.id);
+	await store.seal(run.id);
+	const final = await store.finish(run.id);
 	expect(final.evidence[0]).toMatchObject({ missing: true, status: 'not-proven' });
-	expect(
-		await readFile(join(store.directory(run.id), 'exports', 'index.html'), 'utf8')
-	).not.toContain('data:audio/wav;base64,');
 });

@@ -1,11 +1,6 @@
 import { mkdir, readdir, lstat } from 'node:fs/promises';
 import { join } from 'node:path';
-import type {
-	BeginInput,
-	RecordInput,
-	Report,
-	Exports
-} from '../../../models/reports-media/Report.types';
+import type { BeginInput, RecordInput, Report } from '../../../models/reports-media/Report.types';
 import { atomicJson, readJson, safeId } from '../../../utils/reports-media/reportFiles';
 import { reportFiles } from './reportFiles';
 import { reportLock } from '../../../utils/reports-media/reportLock';
@@ -92,12 +87,11 @@ export class ReportRepository {
 			return run;
 		});
 	}
-	async finish(id: string, exports: Exports) {
+	async finish(id: string) {
 		return reportLock(this.directory(id), async () => {
 			const run = await this.get(id);
 			if (run.state !== 'finalizing') throw new Error('Report must be finalizing');
 			run.state = 'finalized';
-			run.exports = exports;
 			run.updatedAt = new Date().toISOString();
 			await atomicJson(join(this.directory(id), 'manifest.json'), run);
 			return run;

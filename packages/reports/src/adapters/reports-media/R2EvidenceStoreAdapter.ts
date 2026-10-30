@@ -43,24 +43,6 @@ export class R2EvidenceStoreAdapter {
 	async getReplay(reportId: string, file: string) {
 		return this.read(replayObjectKey(reportId, file));
 	}
-	async putPublication(
-		reportId: string,
-		version: string,
-		file: { path: string; bytes: Buffer; mime: string }
-	) {
-		if (!/^[a-f0-9]{64}$/.test(version)) throw new Error('Invalid publication digest');
-		if (
-			!/^(index\.html|report\.pdf|report\.zip|assets\/[a-f0-9]{64}\.(png|jpg|webp|wav|mp3|m4a|ogg))$/.test(
-				file.path
-			)
-		)
-			throw new Error('Invalid publication file');
-		await this.write(
-			`published-reports/${safeId(reportId)}/${version}/${file.path}`,
-			file.bytes,
-			file.mime
-		);
-	}
 	private async write(key: string, bytes: Buffer, mime: string) {
 		await this.client.send(
 			new PutObjectCommand({ Bucket: this.config.bucket, Key: key, Body: bytes, ContentType: mime })

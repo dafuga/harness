@@ -193,7 +193,6 @@
 		behavior={host.lens.behavior(entity.unit)}
 		{nav}
 		mediaBase={host.mediaBase}
-		exportHref={host.exportHref}
 	/>
 {/snippet}
 

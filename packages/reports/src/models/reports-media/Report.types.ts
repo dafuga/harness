@@ -79,6 +79,7 @@ export interface Report {
 	findings: Finding[];
 	coverage: Coverage[];
 	acceptance: string[];
+	/** What a run finalized before exports were removed wrote; retention deletes those files. */
 	exports?: Exports;
 }
 export interface BeginInput {

@@ -5,11 +5,10 @@ import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Report } from '../../src/models/Report.types';
 import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
-import { ReportExportService } from '../../src/services/report-export-service/ReportExportService';
 import { audioFixture } from '../../test/audioFixture';
 import { analytics, type Models } from './support/analyticsCli';
 import { fixtures, sites } from './support/fixtures';
-import { expectRetired } from './support/portableReport';
+import { expectRetired } from './support/retiredAddress';
 
 const home = fixtures.reports;
 const id = (name: string) => readFileSync(join(home, name), 'utf8').trim();
@@ -50,7 +49,7 @@ test('what lists reports is about the hosting application only, whatever the add
 	}
 });
 
-/** A finished report with a screenshot and built exports, recorded for the given application. */
+/** A finished report with a screenshot, recorded for the given application. */
 async function finished(project: string, title: string): Promise<Report> {
 	const run = await store.begin({ project, title, mode: 'feature', environment: 'local fixture' });
 	await store.record(run.id, {
@@ -65,7 +64,8 @@ async function finished(project: string, title: string): Promise<Report> {
 			status: 'passed'
 		}
 	});
-	await new ReportExportService(store).finalize(run.id);
+	await store.seal(run.id);
+	await store.finish(run.id);
 	return store.get(run.id);
 }
 
@@ -77,18 +77,15 @@ test("every route serves the application's own report and none serves the other 
 		await finished(fixtures.site('alpha-checkout'), 'Own finished review'),
 		await finished(foreignProject, 'Foreign finished review')
 	];
-	// Both reports are complete in the store: each has its screenshot and its built exports.
+	// Both reports are complete in the store: each has its screenshot.
 	for (const run of [mine, theirs]) {
 		expect(existsSync(join(home, 'runs', run.id, 'assets', run.evidence[0].file))).toBe(true);
-		expect(existsSync(join(home, 'runs', run.id, 'exports', run.exports?.html ?? ''))).toBe(true);
 	}
 	const routes = (run: Report) => [
 		`/api/reports/${run.id}`,
 		`/harness/reports/${run.id}`,
 		`/reports/${run.id}`,
 		`/api/reports/${run.id}/assets/${run.evidence[0].file}`,
-		`/api/reports/${run.id}/exports/${run.exports?.html}`,
-		`/api/reports/${run.id}/exports/${run.exports?.zip}`,
 		`/api/replay-video?run=${run.id}`
 	];
 	for (const address of routes(mine)) {
@@ -133,8 +130,8 @@ test("every route serves the application's own report and none serves the other 
 	}
 	await expectRetired(page, `/harness/reports/${theirs.id}`);
 	await expect(page.locator('body')).not.toContainText('Foreign finished review');
-	// The own report is still read, as the page its export built and the API serves.
-	const served = await request.get(`/api/reports/${mine.id}/exports/${mine.exports?.html}`);
+	// The own report is still read through the API.
+	const served = await request.get(`/api/reports/${mine.id}`);
 	expect(await served.text()).toContain('Own finished review');
 });
 

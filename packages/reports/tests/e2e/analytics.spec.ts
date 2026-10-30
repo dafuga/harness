@@ -1,6 +1,6 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { mkdir } from 'node:fs/promises';
-import { expectRetired } from './support/portableReport';
+import { expectRetired } from './support/retiredAddress';
 import { categories as expectedCategories } from './support/explorer';
 const evidence = '/tmp/harness-analytics-evidence';
 

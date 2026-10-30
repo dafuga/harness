@@ -3,9 +3,9 @@ import { readFile } from 'node:fs/promises';
 import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { audioFixture } from '../../test/audioFixture';
 import { fixtures } from './support/fixtures';
-import { expectRetired, reportView } from './support/portableReport';
+import { expectRetired } from './support/retiredAddress';
 // The report page and its form are gone. What the form posted to is the upload service of the
-// API, which a command line or another client still uses; the viewer still shows what it stored.
+// API, which a command line or another client still uses.
 test('the upload service adds a real audio file to an active report and preserves uncertain status', async ({
 	page,
 	request,
@@ -32,16 +32,6 @@ test('the upload service adds a real audio file to an active report and preserve
 	});
 	expect(uploaded.status()).toBe(201);
 	expect((await uploaded.json()).evidence).toHaveLength(1);
-	await page.goto(await reportView(run.id));
-	const card = page.locator('.audio-card');
-	await expect(card).toContainText('Form recording');
-	await expect(card).toContainText('Not proven');
-	await card.locator('audio').evaluate(async (audio: HTMLAudioElement) => {
-		await audio.play();
-	});
-	await expect
-		.poll(() => card.locator('audio').evaluate((audio: HTMLAudioElement) => audio.currentTime))
-		.toBeGreaterThan(0);
 	const saved = await store.get(run.id);
 	expect(saved.evidence[0].storage).toBe('r2-evidence');
 	const asset = '/api/reports/' + run.id + '/assets/' + saved.evidence[0].file;
@@ -64,7 +54,7 @@ test('the upload service adds a real audio file to an active report and preserve
 	expect(invalid.status()).toBe(400);
 	expect((await store.get(run.id)).evidence).toHaveLength(1);
 	await store.seal(run.id);
-	await store.finish(run.id, { html: 'index.html', pdf: 'report.pdf', zip: 'report.zip' });
+	await store.finish(run.id);
 	const sealed = await request.post('/api/report-audio-upload', {
 		headers: { Origin: origin },
 		multipart: {
@@ -75,9 +65,6 @@ test('the upload service adds a real audio file to an active report and preserve
 	});
 	expect(sealed.status()).toBe(409);
 	expect((await store.get(run.id)).evidence).toHaveLength(1);
-	// The sealed report is still shown, with the one recording it had when it was sealed.
-	await page.goto(await reportView(run.id));
-	await expect(page.locator('.audio-card')).toHaveCount(1);
 	expect(await readFile(store.directory(run.id) + '/assets/' + saved.evidence[0].file)).toEqual(
 		audioFixture()
 	);

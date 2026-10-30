@@ -1,10 +1,8 @@
 import { ReportRepository } from '../../../repositories/reports-media/report-repository/ReportRepository';
-import { ReportExportService } from '../report-export-service/ReportExportService';
 import { ReportImportService } from './ReportImportService';
 import { ReportServerService } from './report-server-service/ReportServerService';
 import { ReportRetentionService } from './report-retention-service/ReportRetentionService';
 import { ReportStorageSyncService } from './ReportStorageSyncService';
-import { ReportPublishService } from './report-publish-service/ReportPublishService';
 import { reportCli, inputData, required } from './reportCli';
 import type { BeginInput, RecordInput } from '../../../models/reports-media/Report.types';
 
@@ -19,15 +17,15 @@ export class ReportCommandService {
 				data: await inputData(flags)
 			});
 		if (operation === 'finalize') {
-			return new ReportExportService(this.repository).finalize(required(flags, 'run'));
+			const id = required(flags, 'run');
+			await this.repository.seal(id);
+			return this.repository.finish(id);
 		}
 		if (operation === 'import') return this.import(flags);
-		if (operation === 'publish')
-			return new ReportPublishService(this.repository).publish(required(flags, 'run'));
 		if (operation === 'serve' || operation === 'stop') return this.server(operation, flags);
 		if (['cleanup', 'sync-storage'].includes(operation)) return this.storage(operation, flags);
 		throw new Error(
-			'Usage: report <begin|record|finalize|import|publish|serve|stop|cleanup|sync-storage> [options]'
+			'Usage: report <begin|record|finalize|import|serve|stop|cleanup|sync-storage> [options]'
 		);
 	}
 	/** Starts the server of this report store, or ends the one it started on that port. */

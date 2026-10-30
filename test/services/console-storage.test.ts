@@ -85,9 +85,7 @@ test('the generated store is opened from the binding of the request and fails cl
 	});
 	expect(server.contents).toContain("env?.['HARNESS_HISTORY']");
 	expect(server.contents).toContain('The HARNESS_HISTORY binding is missing');
-	expect(server.contents).toContain(
-		'consoleAccess({ policy, data, exporter: consoleExporter, host })'
-	);
+	expect(server.contents).toContain('consoleAccess({ policy, data, host })');
 	expect(server.contents).not.toMatch(/node:|process\.|Buffer\b/);
 	// The slot a stamp is written into is part of the host's own emitted code.
 	expect(server.contents).toContain(`build: 'harness-build:${'0'.repeat(64)}'`);

@@ -1,11 +1,9 @@
 import { test, expect } from '../../../../test/support/browserTest';
-import { mkdir } from 'node:fs/promises';
-import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { audioFixture } from '../../test/audioFixture';
 import { fixtures } from './support/fixtures';
-import { expectRetired, reportView } from './support/portableReport';
-// The form of the removed report page posted to this service; the service and the viewer remain.
+import { expectRetired } from './support/retiredAddress';
+// The form of the removed report page posted to this service; the service remains.
 test('paired upload validates both originals, attaches phases and protects finalized history', async ({
 	page,
 	request,
@@ -30,31 +28,6 @@ test('paired upload validates both originals, attaches phases and protects final
 		}
 	});
 	expect(uploaded.status()).toBe(201);
-	await page.goto(await reportView(run.id));
-	await page.evaluate(async () => {
-		await document.fonts.ready;
-	});
-	if (process.env.TAKE_SCREENSHOT === 'true') {
-		const directory = 'output/evidence/' + (process.env.SCREENSHOT_LABEL || 'current');
-		await mkdir(directory, { recursive: true });
-		await page
-			.locator('.evidence-grid')
-			.screenshot({ path: join(directory, 'audio-paired-upload.png') });
-	}
-	await page
-		.getByRole('button', {
-			name: 'Open audio comparison: Uploaded comparison',
-			exact: true
-		})
-		.click();
-	const pair = page.getByRole('dialog');
-	await expect(pair.locator('audio')).toHaveCount(2);
-	await expect(pair.getByRole('group', { name: 'Before recording', exact: true })).toContainText(
-		'Not proven'
-	);
-	await expect(pair.getByRole('group', { name: 'After recording', exact: true })).toContainText(
-		'Not proven'
-	);
 	const saved = await store.get(run.id);
 	expect(saved.evidence.map((item) => item.storage)).toEqual(['r2-evidence', 'r2-evidence']);
 	expect(saved.evidence.map((item) => item.phase)).toEqual(['before', 'after']);

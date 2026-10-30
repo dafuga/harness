@@ -18,7 +18,6 @@ const protectedPaths = [
 	'/harness/data/index.json',
 	`/harness/data/revisions/${commits.reordered}.json`,
 	`/harness/${media?.media}`,
-	`/harness/export/${commits.reordered}`,
 	'/api/reports'
 ];
 
@@ -116,9 +115,5 @@ test('looking at history changes nothing in the repository that is inspected', a
 		await page.goto(`/harness/branch/main/commit/${commits.reordered}/${rest}`);
 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 	}
-	const download = await page.request.get(`/harness/export/${commits.reordered}`);
-	expect(download.status()).toBe(200);
-	expect(download.headers()['content-disposition']).toContain('attachment');
-	expect(await download.text()).toContain('window.projectReport');
 	expect(currentRefs()).toBe(refs.trim());
 });

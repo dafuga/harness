@@ -1,7 +1,7 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { activityAnswer } from './support/activityAnswer';
 import { activityFixture } from './support/activityFixture';
-import { expectRetired } from './support/portableReport';
+import { expectRetired } from './support/retiredAddress';
 
 /**
  * The page that kept reading who is working is gone. What let it read again, show a busy

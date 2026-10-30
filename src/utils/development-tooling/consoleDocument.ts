@@ -24,7 +24,7 @@ function inlined(text: string, tag: string): string {
  * only after the policy admits the request keeps the viewer private too.
  */
 export function consoleDocument(assets: ConsoleAssets, options: ConsoleDocumentOptions): string {
-	const settings = JSON.stringify({ exportable: false, ...options }).replace(/</g, '\\u003c');
+	const settings = JSON.stringify(options).replace(/</g, '\\u003c');
 	return [
 		'<!doctype html><html lang="en"><head><meta charset="utf-8">',
 		'<meta name="viewport" content="width=device-width,initial-scale=1">',

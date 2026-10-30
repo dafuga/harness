@@ -1,6 +1,5 @@
 import type {
 	ConsoleSource,
-	ConsoleExporter,
 	ConsoleHost,
 	ConsoleAccess,
 	ConsoleData
@@ -30,7 +29,6 @@ function refused(status: number, text: string): Response {
 export function consoleAccess(options: {
 	policy: ConsolePolicy;
 	data: ConsoleSource;
-	exporter?: ConsoleExporter;
 	host?: ConsoleHost;
 }): ConsoleAccess {
 	const guard = async (event: ConsoleRequest): Promise<Response | undefined> => {
@@ -39,7 +37,7 @@ export function consoleAccess(options: {
 			.catch(() => false);
 		return allowed === true ? undefined : refused(403, 'Forbidden');
 	};
-	const { data: source, exporter } = options;
+	const { data: source } = options;
 	const open = (event: ConsoleRequest) => (typeof source === 'function' ? source(event) : source);
 	return {
 		guard,
@@ -53,9 +51,6 @@ export function consoleAccess(options: {
 		async media(event, name) {
 			const range = event.request.headers.get('range');
 			return (await guard(event)) ?? recorded(open(event), name, range);
-		},
-		async report(event, commit, record) {
-			return (await guard(event)) ?? exported({ data: open(event), exporter }, commit, record);
 		}
 	};
 }
@@ -97,30 +92,6 @@ async function redirected(
 		: undefined;
 	if (!target) return undefined;
 	return new Response(null, { status: 308, headers: { ...closed, location: target } });
-}
-
-async function exported(
-	options: { data: ConsoleData; exporter?: ConsoleExporter },
-	commit: string,
-	record: string | null
-): Promise<Response> {
-	const { data, exporter } = options;
-	const stored = /^[0-9a-f]{40}$/.test(commit) && exporter;
-	const index = stored ? await data.json('index.json') : undefined;
-	const detail = stored ? await data.json(`revisions/${commit}.json`) : undefined;
-	const media = (name: string) => data.media(name);
-	const html =
-		exporter && index && detail
-			? await exporter({ commit, record, index, detail, media })
-			: undefined;
-	if (html === undefined) return refused(404, 'Not found');
-	return new Response(html, {
-		headers: {
-			'content-type': 'text/html; charset=utf-8',
-			'content-disposition': `attachment; filename="harness-${commit.slice(0, 12)}.html"`,
-			'cache-control': 'private, no-store'
-		}
-	});
 }
 
 /** Media is immutable and private: named by its hash, cacheable only by the admin's browser. */

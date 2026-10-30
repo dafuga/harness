@@ -125,8 +125,7 @@ function show(route: ExplorerLocation) {
 			lens: lens(shown),
 			client: { revision: (commit: string) => Promise.resolve(stored[commit]) },
 			mediaBase: '/media/',
-			onroute: show,
-			exportHref: ''
+			onroute: show
 		}
 	});
 }
@@ -164,5 +163,5 @@ if (shellVariants.has(variant ?? '')) {
 		fetcher
 	);
 	history.replaceState(null, '', '/harness' + explorerRoutePath(asked()));
-	mount(HarnessShell, { target, props: { base: '/harness', exportable: false } });
+	mount(HarnessShell, { target, props: { base: '/harness' } });
 } else show(asked());

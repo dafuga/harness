@@ -1,14 +1,11 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ReportRepository } from '../../src/repositories/report-repository/ReportRepository';
 import { ScreenshotUploadService } from '../../src/services/ScreenshotUploadService';
 import { ScreenshotRetentionService } from '../../src/services/ScreenshotRetentionService';
-import { ReportExportService } from '../../src/services/report-export-service/ReportExportService';
 import type { Report } from '../../src/models/Report.types';
-import { reportProcess } from '../../src/utils/reportProcess';
-import { reportPdf } from '../../src/services/report-export-service/reportPdf';
 
 const roots: string[] = [];
 const oldImage = Buffer.from(
@@ -52,20 +49,27 @@ async function setup(finalize: boolean) {
 			: '2026-09-10T12:00:00.000Z';
 	}
 	await writeFile(manifest, JSON.stringify(current));
-	if (finalize) await new ReportExportService(repository).finalize(report.id);
+	if (finalize) {
+		await repository.seal(report.id);
+		await repository.finish(report.id);
+		await legacyExports(repository, report.id);
+	}
 	return { repository, report, directory };
 }
 afterEach(async () => {
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
 });
-async function entries(path: string): Promise<string[]> {
-	const result = await reportProcess(reportPdf(), [
-		'-c',
-		'import json,sys,zipfile; print(json.dumps(zipfile.ZipFile(sys.argv[1]).namelist()))',
-		path
-	]);
-	if (result.code) throw new Error(result.output);
-	return JSON.parse(result.output);
+/** What a run finalized before exports were removed left beside its media. */
+async function legacyExports(repository: ReportRepository, id: string) {
+	const directory = repository.directory(id);
+	await mkdir(join(directory, 'exports', 'assets'), { recursive: true });
+	const stored = await repository.get(id);
+	stored.exports = { html: 'index.html', pdf: 'report.pdf', zip: 'report.zip' };
+	await writeFile(join(directory, 'manifest.json'), JSON.stringify(stored));
+	for (const name of Object.values(stored.exports))
+		await writeFile(join(directory, 'exports', name), oldImage);
+	for (const item of stored.evidence)
+		await writeFile(join(directory, 'exports', 'assets', item.file), oldImage);
 }
 
 test.each([false, true])(
@@ -94,12 +98,13 @@ test.each([false, true])(
 			expect(await readFile(join(directory, 'exports', 'unrelated.txt'), 'utf8')).toBe(
 				'keep this file'
 			);
-			const html = await readFile(join(directory, 'exports', 'index.html'), 'utf8');
-			expect(html).not.toContain(oldImage.toString('base64'));
-			expect(html).toContain(newImage.toString('base64'));
-			const archive = await entries(join(directory, 'exports', 'report.zip'));
-			expect(archive).not.toContain(`assets/${oldFile}`);
-			expect(archive).toContain(`assets/${newFile}`);
+			for (const name of ['index.html', 'report.pdf', 'report.zip'])
+				await expect(stat(join(directory, 'exports', name))).rejects.toMatchObject({
+					code: 'ENOENT'
+				});
+			const kept = join(directory, 'exports', 'assets');
+			await expect(stat(join(kept, oldFile))).rejects.toMatchObject({ code: 'ENOENT' });
+			await expect(stat(join(kept, newFile))).resolves.toBeDefined();
 		}
 	}
 );
