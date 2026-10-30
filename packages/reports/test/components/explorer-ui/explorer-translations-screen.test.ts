@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest';
+import { render } from 'svelte/server';
 import ExplorerTranslationsScreen from '../../../src/components/explorer-ui/ExplorerTranslationsScreen.svelte';
 import { revision } from '../../entityFixture';
-import { screen, words } from '../../entityRender';
+import { hostProps, screen, words } from '../../entityRender';
 import { commits, ids } from '../../entityUnits';
 
 test('translations compare source text safely with scoped caller links', () => {
@@ -53,4 +54,22 @@ test('old revisions without catalog data do not display current dictionaries', (
 		screen: 'translations'
 	});
 	expect(words(body)).toContain('No translation catalog is recorded at this revision.');
+});
+
+test('translation caller links propagate a host URL reader failure', () => {
+	const head = revision(commits.middle, []);
+	head.translations = {
+		locales: ['en'],
+		gaps: [],
+		rows: [
+			{ scope: 'reports', key: 'hello', values: { en: 'Hello' }, sources: [], usedBy: [ids.list] }
+		]
+	};
+	const props = hostProps('commit', { category: 'pages', screen: 'translations' }, { head });
+	props.lens.href = () => {
+		throw new Error('Cannot build caller link');
+	};
+	expect(() => render(ExplorerTranslationsScreen, { props }).body).toThrow(
+		'Cannot build caller link'
+	);
 });

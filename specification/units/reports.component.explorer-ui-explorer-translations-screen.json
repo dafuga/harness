@@ -50,52 +50,62 @@
 			{
 				"name": "ExplorerTranslationsScreen.index",
 				"type": "HarnessIndex",
-				"required": true
+				"required": true,
+				"description": "Project branches and revisions supplied to the shared explorer frame."
 			},
 			{
 				"name": "ExplorerTranslationsScreen.head",
 				"type": "HarnessRevision",
-				"required": true
+				"required": true,
+				"description": "Selected revision containing the translation catalog and entity registry."
 			},
 			{
 				"name": "ExplorerTranslationsScreen.parent",
 				"type": "HarnessRevision | null",
-				"required": true
+				"required": true,
+				"description": "Comparison revision supplied by the host, or null when none is available."
 			},
 			{
 				"name": "ExplorerTranslationsScreen.scope",
 				"type": "ExplorerScope",
-				"required": true
+				"required": true,
+				"description": "Selected branch and commit used by the shared explorer frame."
 			},
 			{
 				"name": "ExplorerTranslationsScreen.route",
 				"type": "ExplorerLocation",
-				"required": true
+				"required": true,
+				"description": "Current Translations address, including the selected branch and optional commit."
 			},
 			{
 				"name": "ExplorerTranslationsScreen.entities",
 				"type": "ExplorerEntity[]",
-				"required": true
+				"required": true,
+				"description": "Revision-scoped entity catalog used to resolve recorded translation consumers."
 			},
 			{
 				"name": "ExplorerTranslationsScreen.lens",
 				"type": "EntityLens",
-				"required": true
+				"required": true,
+				"description": "Host readers, including the URL builder for links to recorded consumers."
 			},
 			{
 				"name": "ExplorerTranslationsScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
-				"required": true
+				"required": true,
+				"description": "Host revision loader accepted by the shared explorer screen interface."
 			},
 			{
 				"name": "ExplorerTranslationsScreen.mediaBase",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Base URL from which the shared frame resolves recorded media."
 			},
 			{
 				"name": "ExplorerTranslationsScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
-				"required": true
+				"required": true,
+				"description": "Requests navigation while preserving the selected explorer scope."
 			}
 		],
 		"outputs": [
@@ -105,7 +115,23 @@
 				"description": "Compares English with the selected language, with search, paging and links to recorded consumers."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "lens.href callback error",
+				"type": "thrown",
+				"description": "An error from the host URL reader propagates while rendering a recorded consumer link."
+			},
+			{
+				"name": "onroute callback error",
+				"type": "thrown",
+				"description": "An error from the host navigation callback propagates when a consumer link is activated."
+			},
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Duplicate formatted scope:key row identifiers throw when the list is mounted or updated."
+			}
+		],
 		"operations": [],
 		"initialization": [],
 		"snippets": [
