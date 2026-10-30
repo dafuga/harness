@@ -122,7 +122,7 @@ export async function capturePreview(
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS) return;
 	const clip = await previewCaptureBounds(page, id, variant);
 	const bytes = await page.screenshot({
-		fullPage: true,
+		fullPage: id !== 'reports.component.select' || variant !== 'open',
 		clip,
 		animations: 'disabled',
 		caret: 'hide'
