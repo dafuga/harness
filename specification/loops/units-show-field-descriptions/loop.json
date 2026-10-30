@@ -2,7 +2,7 @@
 	"name": "units-show-field-descriptions",
 	"goal": "Show documented input behavior including conditional defaults in units show.",
 	"createdAt": "2026-10-30T22:07:43.978Z",
-	"updatedAt": "2026-10-30T22:08:47.957Z",
+	"updatedAt": "2026-10-30T22:08:53.364Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,7 +34,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T22:08:53.364Z",
+			"evidence": "At 40753699dc each field description follows its typed row, preserving conditional defaults as prose."
 		},
 		{
 			"id": "green",
