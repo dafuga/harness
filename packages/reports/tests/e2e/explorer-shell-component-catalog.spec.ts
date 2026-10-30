@@ -137,12 +137,7 @@ for (const viewport of catalogViewports) {
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
 			const capture = await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
-			if (
-				capture &&
-				unit.id === 'reports.component.explorer-ui-explorer-translations-screen' &&
-				variant === 'language-open'
-			)
-				await assertLanguagePickerCapture(page, capture.clip, capture.bytes);
+			await assertLanguagePickerCapture(page, unit.id, variant, capture);
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);

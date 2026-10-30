@@ -3,9 +3,17 @@ import { expect, type Locator, type Page } from '@playwright/test';
 /** A native picker can be open while its popup is absent from captured pixels. */
 export async function assertLanguagePickerCapture(
 	page: Page,
-	clip: { x: number; y: number; width: number; height: number },
-	opened: Buffer
+	id: string,
+	variant: string,
+	capture?: { clip: { x: number; y: number; width: number; height: number }; bytes: Buffer }
 ) {
+	if (
+		!capture ||
+		id !== 'reports.component.explorer-ui-explorer-translations-screen' ||
+		variant !== 'language-open'
+	)
+		return;
+	const { clip, bytes: opened } = capture;
 	const language = page.getByRole('combobox', { name: 'Language' });
 	await expect.poll(() => language.evaluate((node) => node.matches(':open'))).toBe(true);
 	await page.keyboard.press('Escape');
