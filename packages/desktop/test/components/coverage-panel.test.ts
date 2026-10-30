@@ -16,6 +16,8 @@ test('each scenario is listed with its checks and its states as the record judge
 	expect(body).toContain('Recorded for ccccccc · record rec-cccccc-0000');
 	expect(body).toContain('Orders page over synthetic orders');
 	expect(body).toContain('orders-browser · passed');
+	expect(body).not.toContain('Browser diagnostics are unavailable for this record.');
+	expect(body).not.toContain('No browser diagnostic entries were recorded.');
 	const row = (state: string) => body.slice(body.indexOf(`<td>${state}</td>`)).split('</tr>')[0];
 	expect(row('default')).toContain('aria-label="passed"');
 	expect(row('empty')).toMatch(/aria-label="failed[^"]*"/);
