@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { catalogShot } from '../../src/utils/entityScreens';
 import { explorerEvidence } from '../../src/utils/explorerEvidence';
 import { scope } from '../entityPlaces';
@@ -32,7 +33,14 @@ test('a revision without a registry is said to have none, and no page of another
 });
 
 // Exercise the real registry's preview policy through the shared capture projection.
-test('every dedicated visual catalog capture can appear in its registered catalog card', () => {
+test('every dedicated visual catalog capture can appear in its registered catalog card', () =>
+	measureWorkload(
+		'reports.function.explorer-evidence-focused-captures',
+		'catalog-capture-projection',
+		catalogCaptureProjection
+	));
+
+function catalogCaptureProjection(): void {
 	const catalog = JSON.parse(
 		readFileSync('../../specification/scenarios/component-catalog-previews.json', 'utf8')
 	);
@@ -77,7 +85,7 @@ test('every dedicated visual catalog capture can appear in its registered catalo
 	expect(unavailable, 'Captured previews visible through each registered preview choice').toEqual(
 		[]
 	);
-});
+}
 
 // Historical manifests may prefer a scenario that was never captured, beside actual own-source proof.
 test('default page cards show their own focused source when a historical preferred state is absent', () => {
