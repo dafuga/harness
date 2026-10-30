@@ -1,5 +1,41 @@
 /** Explorer collections and usage links each expose their distinct presentations. */
 export const explorerCatalogVariants: Record<string, string[]> = {
+	'reports.component.networking-security-explorer-permissions-screen': [
+		'index',
+		'guest',
+		'admin',
+		'empty',
+		'unindexed',
+		'not-found',
+		'gap',
+		'empty-data',
+		'endpoint',
+		'endpoint-empty',
+		'endpoint-unindexed'
+	],
+	'reports.component.explorer-ui-explorer-translations-screen': [
+		'unindexed',
+		'empty',
+		'gaps',
+		'gaps-open',
+		'search',
+		'no-matches',
+		'german',
+		'more',
+		'missing-values'
+	],
+	'reports.component.explorer-ui-explorer-platforms': [
+		'unindexed',
+		'gap',
+		'search',
+		'no-matches',
+		'filter-open',
+		'status-configured',
+		'status-setup-required',
+		'status-not-configured',
+		'status-not-recorded',
+		'detail-web'
+	],
 	'reports.component.explorer-ui-explorer-platform-details': [
 		'ios',
 		'android',

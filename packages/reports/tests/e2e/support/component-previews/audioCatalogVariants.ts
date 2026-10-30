@@ -20,7 +20,8 @@ export const audioCatalogVariants: Record<string, string[]> = {
 		'blocked',
 		'skipped',
 		'not-proven',
-		'interrupted'
+		'interrupted',
+		'pre-mount'
 	],
 	'reports.component.audio-comparison-viewer': [
 		'before',

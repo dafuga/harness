@@ -165,6 +165,9 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 }
 
 async function assertAudioComparison(component: Locator, variant: string) {
+	const opener = component.locator('.audio-comparison-preview');
+	if (variant === 'pre-mount') await expect(opener).toBeDisabled();
+	else await expect(opener).toBeEnabled();
 	const rows = component.locator('.audio-comparison-row');
 	await expect(rows).toHaveCount(2);
 	const missing = variant === 'both-unavailable' ? 2 : variant.includes('unavailable') ? 1 : 0;

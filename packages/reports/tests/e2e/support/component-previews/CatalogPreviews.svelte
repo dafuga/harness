@@ -16,6 +16,10 @@
 	const fixture = previewFixture(id, variant);
 	const compactEvidence =
 		id === 'reports.component.evidence-card' && ['compact', 'compact-closed'].includes(variant);
+	const galleryCard = [
+		'reports.component.evidence-card',
+		'reports.component.audio-comparison'
+	].includes(id);
 	const Component = previewComponent(unit.source);
 	// A layout frames a page, so it is given the marked child slot below and never a real page.
 	const layout = unit.kind === 'layout';
@@ -64,7 +68,7 @@
 		class="preview-main"
 		class:hx-main={reports}
 		class:full-frame={fullFrame}
-		class:gallery-section={id === 'reports.component.evidence-card' && !compactEvidence}
+		class:gallery-section={galleryCard && !compactEvidence}
 		class:states-gallery={compactEvidence}
 	>
 		<h1 id="preview-title" class:preview-hidden={routePreview(id)}>{unit.title}</h1>
@@ -72,7 +76,7 @@
 			<div
 				class="preview-content"
 				class:upload-audio={id === 'reports.component.audio-upload-files'}
-				class:evidence-grid={id === 'reports.component.evidence-card'}
+				class:evidence-grid={galleryCard}
 				class:provider-picker={id.includes('provider-picker')}
 				class:account={id === 'hub.component.account-menu'}
 				class:ex-content={explorer && !fullFrame}

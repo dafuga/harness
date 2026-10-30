@@ -15,6 +15,9 @@ import hub from '../../../../../hub/src/lib/styles/hub.css?inline';
 document.body.dataset.pickerPreview = 'true';
 const unitId =
 	new URLSearchParams(location.search).get('unit') ?? 'reports.component.activity-list';
+const preMounted =
+	unitId === 'reports.component.audio-comparison' &&
+	new URLSearchParams(location.search).get('variant') === 'pre-mount';
 // Preserve the document's original unit before real route fixtures replace the visible URL.
 window.previewDocument = Object.freeze({ unit: unitId, timeOrigin: performance.timeOrigin });
 let styles = [base, base2, base3, harness, gallery, gallery2, picker, analytics];
@@ -27,10 +30,11 @@ document.head.prepend(contextStyle);
 let mounted: ReturnType<typeof mount> | undefined;
 window.previewRemount = async () => {
 	if (mounted) await unmount(mounted);
+	else if (preMounted) document.getElementById('app')!.replaceChildren();
 	mounted = mount(CatalogPreviews, {
 		target: document.getElementById('app')!,
 		props: { id: unitId }
 	});
 	await tick();
 };
-void window.previewRemount();
+if (!preMounted) void window.previewRemount();

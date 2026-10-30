@@ -26,7 +26,7 @@ const fixtureMedia = new Set(
 	)
 );
 export const previewOrigin = 'http://127.0.0.1:47999';
-export async function servePreview(route: Route, home: string) {
+export async function servePreview(route: Route, home: string, markup = '') {
 	const url = new URL(route.request().url());
 	const file = /\/(page\.(?:iife\.js|css))$/.exec(url.pathname)?.[1];
 	if (file)
@@ -50,7 +50,7 @@ export async function servePreview(route: Route, home: string) {
 	if (url.pathname !== '/') throw new Error(`Unexpected preview request: ${url.pathname}`);
 	return route.fulfill({
 		contentType: 'text/html',
-		body: '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Component preview</title><link rel="stylesheet" href="/page.css"></head><body><div id="app"></div><script src="/page.iife.js"></script></body></html>'
+		body: `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Component preview</title><link rel="stylesheet" href="/page.css"></head><body><div id="app">${markup}</div><script src="/page.iife.js"></script></body></html>`
 	});
 }
 
