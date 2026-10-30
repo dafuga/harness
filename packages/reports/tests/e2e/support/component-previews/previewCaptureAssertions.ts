@@ -162,7 +162,7 @@ export async function assertTranslationControls(component: Locator) {
 
 /** Module previews must show the actual library and generated-resource content. */
 export async function assertModulePreview(component: Locator, id: string, variant = '') {
-	if (id === 'reports.component.networking-security-explorer-permissions-screen') {
+	if (id === 'reports.component.networking-security-explorer-permissions-screen' && !variant) {
 		for (const text of [
 			'Member',
 			'app.endpoint.orders',
@@ -175,6 +175,7 @@ export async function assertModulePreview(component: Locator, id: string, varian
 
 	if (id === 'reports.component.module-system-explorer-modules-screen') {
 		if (variant) {
+			if (!['playwright', 'headless-audio'].includes(variant)) return;
 			await expect(
 				component.getByRole('heading', {
 					level: 1,
@@ -204,6 +205,7 @@ export async function assertModulePreview(component: Locator, id: string, varian
 	}
 	if (id === 'reports.component.module-system-explorer-module-resources-screen') {
 		if (variant) {
+			if (variant !== 'playwright') return;
 			await expect(
 				component.getByRole('heading', { level: 1, name: 'Browser tests', exact: true })
 			).toBeVisible();

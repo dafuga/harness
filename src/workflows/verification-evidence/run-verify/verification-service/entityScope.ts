@@ -31,11 +31,11 @@ export function scopedScenarios(scenarios: ScenarioManifest[], entity: string): 
 
 const escaped = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-/** A Playwright check limited to the tests named after the entity, at every viewport and variant. */
+/** The component catalog names tests by entity; page scenarios keep their own test names. */
 export function scopedCheck(check: PlannedCheck, entity: string): PlannedCheck {
 	const playwright = check.runner === 'playwright' || /\bplaywright test\b/.test(check.command);
 	const selected = /(?:^|\s)(?:--grep|-g)(?:\s|=)/.test(check.command);
-	if (!playwright || selected) return check;
+	if (check.scenario !== 'component-catalog-previews' || !playwright || selected) return check;
 	const grep = `(^| )${escaped(entity)}(:[^ ]+)? at `;
 	return { ...check, command: `${check.command} --grep '${grep}'` };
 }

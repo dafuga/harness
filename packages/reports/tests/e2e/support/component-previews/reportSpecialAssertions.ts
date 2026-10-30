@@ -9,6 +9,10 @@ import { assertUsageExamples } from './usageExamplesPreviewAssertions';
 import { assertDependenciesState } from './dependenciesPreviewAssertions';
 import { assertRegressionProofState } from './regressionProofPreviewAssertions';
 import { assertPlatformDetails } from './platformDetailsPreviewAssertions';
+import { assertPlatforms } from './platformsPreviewAssertions';
+import { assertTranslations } from './translationsPreviewAssertions';
+import { assertModuleState } from './modulePreviewAssertions';
+import { assertPermissionState } from './permissionPreviewAssertions';
 
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.analytics-filters': assertAnalyticsFilters,
@@ -21,7 +25,12 @@ const checks: Record<string, (component: Locator, variant: string) => Promise<vo
 	'reports.component.explorer-catalog-items': assertCatalogItems,
 	'reports.component.usage-examples-usage-examples': assertUsageExamples,
 	'reports.component.explorer-dependencies-screen': assertDependenciesState,
-	'reports.component.explorer-ui-explorer-platform-details': assertPlatformDetails
+	'reports.component.explorer-ui-explorer-platform-details': assertPlatformDetails,
+	'reports.component.explorer-ui-explorer-platforms': assertPlatforms,
+	'reports.component.explorer-ui-explorer-translations-screen': assertTranslations,
+	'reports.component.module-system-explorer-module-resources-screen': assertModuleState,
+	'reports.component.module-system-explorer-modules-screen': assertModuleState,
+	'reports.component.networking-security-explorer-permissions-screen': assertPermissionState
 };
 
 /** Run only the checks belonging to this report preview. */

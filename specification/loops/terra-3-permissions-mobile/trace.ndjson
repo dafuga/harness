@@ -1,1 +1,3 @@
 {"event":"loop.created","timestamp":"2026-10-29T22:18:30.987Z","name":"terra-3-permissions-mobile","goal":"Keep every permission grant field visible in mobile catalog captures.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T01:26:08.214Z","loop":"terra-3-permissions-mobile","step":"spec","evidence":"Mobile permission tables clipped grant fields; every declared field must remain visible."}
+{"event":"step.completed","timestamp":"2026-10-30T01:26:08.807Z","loop":"terra-3-permissions-mobile","step":"coverage","evidence":"The catalog preview lacked a mobile assertion for visible grant fields; the shared component case now checks them."}

@@ -25,3 +25,23 @@ export async function assertPermissionTable(component: Locator, page: Page, mobi
 		await expect.poll(() => region.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
 	}
 }
+
+/** Profiles and endpoint panels keep their own grants, gaps and empty states visible. */
+export async function assertPermissionState(component: Locator, variant: string) {
+	const words: Record<string, string> = {
+		index: 'Users & Permissions',
+		guest: 'No API access declared.',
+		admin: 'All accounts',
+		empty: 'No profiles are declared',
+		unindexed: 'No permission catalog is indexed',
+		'not-found': 'Profile not found',
+		gap: 'Policy manifest is unavailable at this revision.',
+		'empty-data': 'No data access declared.',
+		endpoint: 'Administrator',
+		'endpoint-empty': 'No access declaration names this endpoint',
+		'endpoint-unindexed': 'No access declaration names this endpoint'
+	};
+	if (words[variant]) await expect(component).toContainText(words[variant]);
+	if (variant === 'index') await expect(component.locator('article')).toHaveCount(3);
+	if (variant === 'endpoint') await expect(component.locator('article')).toHaveCount(2);
+}

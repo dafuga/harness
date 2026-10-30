@@ -8,13 +8,13 @@
 	import type {
 		ApiGrant,
 		DataGrant,
-  GrantOfKind,
+		GrantOfKind,
 		ExplorerPermissionsScreenProps,
 		ProfileEntry,
 		ProfileGrant
 	} from './ExplorerPermissionsScreen.types';
 	let host: ExplorerPermissionsScreenProps = $props();
- let navigation = $derived({route:host.route,href:host.lens.href,go:host.onroute});
+	let navigation = $derived({ route: host.route, href: host.lens.href, go: host.onroute });
 	// Only the shown revision's own declarations: no profile inherits or implies another's access.
 	let catalog = $derived(host.head.permissions);
 	let profiles = $derived(catalog?.profiles ?? []);
@@ -44,11 +44,12 @@
 		const { branch, commit } = host.route;
 		return entity ? { branch, commit, category: entity.category, entity: id } : null;
 	}
-
 </script>
 
 {#snippet link(to: ExplorerLocation, text: string, code = false)}
- <EntityLink {to} nav={navigation}>{#if code}<hx-code>{text}</hx-code>{:else}{text}{/if}</EntityLink>
+	<EntityLink {to} nav={navigation}
+		>{#if code}<hx-code>{text}</hx-code>{:else}{text}{/if}</EntityLink
+	>
 {/snippet}
 
 <!-- A unit links only where this revision registers it; any other ID is shown exactly. -->
