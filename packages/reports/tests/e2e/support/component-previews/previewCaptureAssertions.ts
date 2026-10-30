@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { catalogScenario, previewState } from './catalogUnits';
 import { assertEntityCasesState } from './entityCasesPreviewAssertions';
-import { assertAudioViewerCapture } from './catalogStateActions';
+import { assertAudioViewerCapture } from './audioViewerCaptureAssertions';
 import { assertEntityExamplesState } from './entityExamplesPreviewAssertions';
 import { assertEntityContractState } from './entityContractPreviewAssertions';
 import { assertSearchResultsState } from './searchResultsPreviewAssertions';

@@ -44,6 +44,10 @@ export async function assertReportPreviewState(component: Locator, id: string, v
 		await expect(dialog.getByRole('img', { name: 'Synthetic order card evidence' })).toBeVisible();
 	}
 	if (!id.startsWith('reports.component.source-')) return;
+	return assertSourcePreviewState(component, id, variant);
+}
+
+async function assertSourcePreviewState(component: Locator, id: string, variant: string) {
 	if (id === 'reports.component.source-file-list' && variant !== 'empty')
 		await expect(component.getByRole('button', { name: 'View code', exact: true })).toHaveCount(2, {
 			timeout: 1_000

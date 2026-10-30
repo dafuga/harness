@@ -2,7 +2,7 @@
 	"name": "terra-2-audio-viewer-mobile",
 	"goal": "Keep both audio comparison cards visible on mobile",
 	"createdAt": "2026-10-29T23:41:32.463Z",
-	"updatedAt": "2026-10-29T23:41:32.463Z",
+	"updatedAt": "2026-10-30T01:09:17.944Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -13,12 +13,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T01:09:17.346Z",
+			"evidence": "In the mobile comparison capture the second recording extends below the dialog and is cut off."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T01:09:17.944Z",
+			"evidence": "component-catalog-previews captured mobile without checking both recording bounds; its shared capture assertion now checks the full pair."
 		},
 		{
 			"id": "red",
