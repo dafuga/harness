@@ -4295,6 +4295,18 @@
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
 		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-resource-link-focused",
+			"title": "ExplorerModuleResourcesScreen: focused breadcrumb",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-module-resources-screen-resource-link-hovered",
+			"title": "ExplorerModuleResourcesScreen: hovered breadcrumb",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-module-resources-screen"]
+		},
+		{
 			"id": "reports-component-module-system-explorer-modules-screen",
 			"title": "ExplorerModulesScreen",
 			"coverage": "required",
@@ -7495,6 +7507,8 @@
 				"reports-component-module-system-explorer-module-resources-screen-not-found",
 				"reports-component-module-system-explorer-module-resources-screen-unindexed",
 				"reports-component-module-system-explorer-module-resources-screen-missing-id",
+				"reports-component-module-system-explorer-module-resources-screen-resource-link-focused",
+				"reports-component-module-system-explorer-module-resources-screen-resource-link-hovered",
 				"reports-component-module-system-explorer-modules-screen",
 				"reports-component-module-system-explorer-modules-screen-playwright",
 				"reports-component-module-system-explorer-modules-screen-headless-audio",

@@ -5,6 +5,19 @@ import { hostProps } from '../../entityRender';
 import { modulePreview } from '../../../tests/e2e/support/component-previews/modules';
 import { measureWorkload } from '../../../../../test/support/measureWorkload';
 
+test('resource links surface an address callback error', () => {
+	const props = modulePreview(hostProps('commit'));
+	props.route = { ...props.route, screen: 'module-resources', entity: 'email.email' };
+	const error = new Error('address unavailable');
+	props.lens = {
+		...props.lens,
+		href: () => {
+			throw error;
+		}
+	};
+	expect(() => render(ExplorerModuleResourcesScreen, { props }).body).toThrow(error);
+});
+
 test('module code catalog lists generated resources and their owning module', async () => {
 	const props = modulePreview(hostProps('commit'));
 	props.route = { ...props.route, screen: 'module-resources', entity: 'email.email' };
