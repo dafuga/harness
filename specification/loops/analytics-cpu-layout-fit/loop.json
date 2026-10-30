@@ -1,0 +1,60 @@
+{
+	"name": "analytics-cpu-layout-fit",
+	"goal": "Keep CPU readings visible and readable at every viewport.",
+	"createdAt": "2026-10-30T01:05:01.433Z",
+	"updatedAt": "2026-10-30T01:12:25.776Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-10-30T01:05:16.957Z",
+			"evidence": "Mobile hides CPU table columns; tablet breaks measured. All readings and words must remain visible."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-10-30T01:05:23.410Z",
+			"evidence": "The catalog checked CPU values but not column bounds or word wrapping; it now asserts both layouts."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-10-30T01:11:34.411Z",
+			"evidence": "Regression b2574e4e8cef reproduced the tablet word break and mobile table overflow on harbor-mbp-2."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-10-30T01:12:25.776Z",
+			"evidence": "Use compact CPU table cells on mobile and the existing quiet style for unmeasured totals."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

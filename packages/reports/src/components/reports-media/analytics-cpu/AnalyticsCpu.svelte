@@ -53,7 +53,9 @@
 			{/each}
 			<hx-div class="analytics-card" data-testid="cpu-tracked">
 				<hx-span class="analytics-label">Tracked combined</hx-span>
-				<hx-strong class="analytics-value">{percent(cpu.trackedPercent)}</hx-strong>
+				<hx-strong class="analytics-value" class:analytics-quiet={cpu.trackedPercent === null}>
+					{percent(cpu.trackedPercent)}
+				</hx-strong>
 				<hx-small
 					>Machine-wide Codex and Harness plus this repository's agents; not a figure of this
 					repository</hx-small
@@ -79,7 +81,7 @@
 			</hx-div>
 			{#if cpu.agents.length}
 				<hx-div class="analytics-scroll">
-					<hx-table class="analytics-table">
+					<hx-table class="analytics-table analytics-cpu-table">
 						<hx-thead>
 							<hx-tr>
 								<hx-th>Agent</hx-th>
@@ -119,3 +121,27 @@
 		automatically saved or published.
 	</hx-p>
 </hx-section>
+
+<style>
+	@media (max-width: 42rem) {
+		:global(.analytics-table.analytics-cpu-table) {
+			table-layout: fixed;
+		}
+		:global(.analytics-table.analytics-cpu-table th),
+		:global(.analytics-table.analytics-cpu-table td) {
+			padding-right: var(--hx-space-6);
+			white-space: normal;
+			overflow-wrap: anywhere;
+		}
+		:global(.analytics-table.analytics-cpu-table th) {
+			letter-spacing: var(--hx-style-tracking-normal);
+		}
+		:global(.analytics-table.analytics-cpu-table .analytics-wrap) {
+			min-width: 0;
+		}
+		:global(.analytics-table.analytics-cpu-table th:last-child),
+		:global(.analytics-table.analytics-cpu-table td:last-child) {
+			padding-right: 0;
+		}
+	}
+</style>
