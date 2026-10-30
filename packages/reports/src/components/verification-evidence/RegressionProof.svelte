@@ -32,16 +32,16 @@
 	}
 </script>
 
-{#if shown.length}
-	<hx-section
-		class="regression-proof"
-		aria-label="Regression proof"
-		data-harness-component="regression-proof"
-	>
-		<hx-header>
-			<hx-h2>Regression proof</hx-h2>
-			<hx-p>Recorded regression tests and evidence.</hx-p>
-		</hx-header>
+<hx-section
+	class="regression-proof"
+	aria-label="Regression proof"
+	data-harness-component="regression-proof"
+>
+	<hx-header>
+		<hx-h2>Regression proof</hx-h2>
+		<hx-p>Recorded regression tests and evidence.</hx-p>
+	</hx-header>
+	{#if shown.length}
 		{#each shown as item, index (index)}
 			<hx-article>
 				<hx-h3>{item.loop.replaceAll('-', ' ')}</hx-h3>
@@ -116,8 +116,10 @@
 			{/if}
 			Full verification and budgets are checked separately.
 		</hx-p>
-	</hx-section>
-{/if}
+	{:else}
+		<hx-p>No regression proof is available for this unit.</hx-p>
+	{/if}
+</hx-section>
 
 <style>
 	@import './regression-proof/regressionProof.css';

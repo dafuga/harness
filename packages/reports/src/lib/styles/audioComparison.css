@@ -172,7 +172,22 @@
 	}
 	.audio-comparison-viewer.comparison {
 		grid-template-columns: minmax(0, 1fr);
-		gap: var(--hx-space-24);
+		gap: var(--hx-space-12);
+	}
+	.viewer-actions.audio-comparison-toolbar {
+		margin-bottom: var(--hx-space-12);
+	}
+	.audio-comparison-viewer .audio-comparison-side {
+		gap: var(--hx-space-4);
+	}
+	.audio-comparison-viewer .evidence-card.audio-card .audio-stage {
+		gap: var(--hx-space-8);
+		margin: var(--hx-space-8) var(--hx-space-8) 0;
+		padding: var(--hx-space-12);
+	}
+	.audio-comparison-viewer .evidence-card.audio-card .card-body {
+		gap: var(--hx-space-6);
+		padding: var(--hx-space-8) var(--hx-space-12) var(--hx-space-12);
 	}
 	.audio-comparison-viewer .audio-card audio {
 		height: 44px;
