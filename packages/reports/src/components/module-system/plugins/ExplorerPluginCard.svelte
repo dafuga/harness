@@ -22,7 +22,10 @@
 			<hx-li class="ex-pill">{resource.title}</hx-li>
 		{/each}
 	</hx-ul>
-	{#if !entry.installed}<CommandBlock label="Install" command={`harness plugin add ${module.id}`} />{/if}
+	{#if !entry.installed}<CommandBlock
+			label="Install"
+			command={`harness plugin add ${module.id}`}
+		/>{/if}
 </Card>
 
 <style>
