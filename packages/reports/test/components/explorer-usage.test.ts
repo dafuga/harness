@@ -9,6 +9,24 @@ import { commits, ids } from '../entityUnits';
 import { withHelpers, withNamedConsumers } from '../entityPreviewHelpers';
 import { explorerRelations } from '../../src/utils/explorerRelations';
 
+test('usage surfaces an address callback failure while rendering a consumer', () => {
+	const host = hostProps('current');
+	const consumer = host.entities.find((item) => item.id === ids.list)!;
+	const error = new Error('address unavailable');
+	const nav = {
+		route: host.route,
+		href: () => {
+			throw error;
+		},
+		go: host.onroute
+	};
+	expect(() =>
+		render(ExplorerUsage, {
+			props: { consumers: [consumer], nav, lens: host.lens, mediaBase: host.mediaBase }
+		}).body
+	).toThrow(error);
+});
+
 for (const mode of ['current', 'commit'] as const) {
 	test.each([0, 1, 3, 4, 7])(
 		`component card usage is flat and capped with %i consumers at ${mode} scope`,
