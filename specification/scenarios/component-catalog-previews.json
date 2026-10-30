@@ -1289,14 +1289,14 @@
 			"units": ["reports.component.analytics-cpu"]
 		},
 		{
-			"id": "reports-component-analytics-cpu-unavailable",
-			"title": "Analytics cpu: Unavailable sample",
+			"id": "reports-component-analytics-cpu-not-measured",
+			"title": "Analytics cpu: Percentages not measured",
 			"coverage": "required",
 			"units": ["reports.component.analytics-cpu"]
 		},
 		{
-			"id": "reports-component-analytics-cpu-not-measured",
-			"title": "Analytics cpu: Percentages not measured",
+			"id": "reports-component-analytics-cpu-unavailable",
+			"title": "Analytics cpu: Unavailable sample",
 			"coverage": "required",
 			"units": ["reports.component.analytics-cpu"]
 		},
