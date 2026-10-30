@@ -36,8 +36,10 @@ export async function prepareImageZoom(component: Locator, variant: string) {
 	if (variant === 'maximum') await zoomToMaximum(component, plus);
 	if (variant === 'focused') {
 		const stage = component.locator('.stage.zoomed');
-		await stage.focus();
+		await component.page().keyboard.press('Tab');
+		await component.page().keyboard.press('Tab');
 		await expect(stage).toBeFocused();
+		await expect.poll(() => stage.evaluate((node) => node.matches(':focus-visible'))).toBe(true);
 	}
 	if (['panned', 'dragging'].includes(variant)) await panZoom(component, plus, variant);
 }
@@ -61,6 +63,8 @@ async function zoomToMaximum(component: Locator, plus: Locator) {
 	}
 	await expect(plus).toHaveAttribute('aria-disabled', 'true');
 	await expect(component.locator('output')).toHaveText('400%');
+	// At maximum zoom, start at the image's header instead of an empty center region.
+	await component.locator('.stage.zoomed').evaluate((node) => node.scrollTo(0, 0));
 }
 
 async function panZoom(component: Locator, plus: Locator, variant: string) {
