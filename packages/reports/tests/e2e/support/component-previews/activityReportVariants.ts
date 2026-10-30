@@ -23,6 +23,22 @@ export function activityReportVariant(id: string, props: PreviewCases[string], v
 	if (id === 'reports.component.activity-agents') return activityAgentVariant(props, variant);
 	if (id === 'reports.component.analytics-models' && variant !== 'empty')
 		return analyticsModelVariant(props, variant);
+	if (id === 'reports.component.analytics-history' && variant === 'active') {
+		const loop = (props.loops as Array<Record<string, unknown>>)[0];
+		return {
+			...props,
+			loops: [
+				{
+					...loop,
+					status: 'active',
+					template: undefined,
+					completedAt: undefined,
+					durationMs: undefined,
+					evaluations: 0
+				}
+			]
+		};
+	}
 	if (id === 'reports.component.site-activity') return siteActivityVariant(props, variant);
 	if (id === 'reports.component.activity-work') return activityWorkVariant(props, variant);
 	if (id === 'reports.component.analytics-tasks' && variant !== 'empty')

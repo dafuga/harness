@@ -36,10 +36,10 @@ export const analyticsCases: PreviewCases = {
 			{
 				name: 'component-previews',
 				template: 'feature',
-				agentModel: 'Fixture author',
+				agentModel: 'gpt-6.1-terra',
 				status: 'complete',
 				createdAt: stamp,
-				completedAt: stamp,
+				completedAt: '2026-10-20T10:00:12Z',
 				durationMs: 12000,
 				evaluations: 1
 			}

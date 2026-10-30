@@ -50,8 +50,8 @@ export const activityCatalogVariants: Record<string, string[]> = {
 	'reports.component.analytics-filters': ['empty', 'all-filters'],
 	// CPU distinguishes pending, idle, unmeasured and unavailable local samples.
 	'reports.component.analytics-cpu': ['loading', 'no-agents', 'not-measured', 'unavailable'],
-	// History retains independent empty tables and summaries after filters remove every loop.
-	'reports.component.analytics-history': ['empty'],
+	// History distinguishes completed, active and absent loops.
+	'reports.component.analytics-history': ['empty', 'active'],
 	// Unknown model names and unassessed rates stay distinct from empty or measured data.
 	'reports.component.analytics-models': ['empty', 'unknown', 'unassessed'],
 	// Task history separates empty, unassessed, not-yet-passed and retried assessments.

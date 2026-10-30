@@ -10,6 +10,7 @@ import { prepareTranslations } from './translationsPreviewAssertions';
 
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.entity-states': prepareEntityStates,
+	'reports.component.analytics-history': prepareAnalyticsHistory,
 	'reports.component.explorer-usage-link': prepareUsageLink,
 	'reports.component.explorer-ui-config-value-tree': prepareConfigValueTree,
 	'reports.component.explorer-catalog-items': prepareCatalogItems,
@@ -27,6 +28,39 @@ export async function prepareReportState(component: Locator, id: string, variant
 	if (!action) return false;
 	await action(component, variant);
 	return true;
+}
+
+async function prepareAnalyticsHistory(component: Locator, variant: string) {
+	if (variant === 'empty') {
+		await expect(component.getByText('No loops recorded in this view.')).toBeVisible();
+		return;
+	}
+	const table = component.getByRole('table');
+	const scroll = table.locator('..');
+	expect(
+		await scroll.evaluate((node) => node.scrollWidth <= node.clientWidth),
+		'History table fits its available width'
+	).toBe(true);
+	const cells = table.locator('tbody tr').first().locator('td');
+	await expect(cells).toHaveCount(8);
+	if (variant === 'active') await expect(cells.nth(3)).toHaveText('active');
+	if ((component.page().viewportSize()?.width ?? 0) > 672) return;
+	const labels = [
+		'Loop',
+		'Template',
+		'Agent model',
+		'Status',
+		'Created',
+		'Completed',
+		'Duration',
+		'Evaluations'
+	];
+	for (let index = 0; index < labels.length; index++) {
+		await expect(cells.nth(index)).toHaveAttribute('data-label', labels[index]);
+		expect(
+			await cells.nth(index).evaluate((node) => getComputedStyle(node, '::before').content)
+		).toBe(`"${labels[index]}"`);
+	}
 }
 
 async function prepareReportChecks(component: Locator, variant: string) {

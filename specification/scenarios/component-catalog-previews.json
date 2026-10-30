@@ -1391,6 +1391,12 @@
 			"units": ["reports.component.analytics-history"]
 		},
 		{
+			"id": "reports-component-analytics-history-active",
+			"title": "Analytics history: Active loop",
+			"coverage": "required",
+			"units": ["reports.component.analytics-history"]
+		},
+		{
 			"id": "reports-component-analytics-models",
 			"title": "Analytics models",
 			"coverage": "required",
@@ -5697,6 +5703,7 @@
 				"reports-component-analytics-filters-all-filters",
 				"reports-component-analytics-history",
 				"reports-component-analytics-history-empty",
+				"reports-component-analytics-history-active",
 				"reports-component-analytics-models",
 				"reports-component-analytics-models-empty",
 				"reports-component-analytics-models-unknown",
