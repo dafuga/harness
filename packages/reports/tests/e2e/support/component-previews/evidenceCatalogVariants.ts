@@ -36,5 +36,22 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 	],
 	'reports.component.evidence-provenance': ['extended'],
 	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
+	'reports.component.report-checks': [
+		'empty',
+		'embedded',
+		'embedded-empty',
+		'details-open',
+		'embedded-details-open',
+		'minimal',
+		'command-open',
+		'output-open',
+		'multiple',
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted'
+	],
 	'reports.component.regression-proof': ['pending', 'gap', 'output-open', 'capture-only', 'empty']
 };

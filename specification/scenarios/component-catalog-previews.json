@@ -3917,6 +3917,96 @@
 			"units": ["reports.component.report-checks"]
 		},
 		{
+			"id": "reports-component-report-checks-empty",
+			"title": "Report checks: Empty",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-embedded",
+			"title": "Report checks: Embedded",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-embedded-empty",
+			"title": "Report checks: Embedded empty",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-details-open",
+			"title": "Report checks: Expanded details",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-embedded-details-open",
+			"title": "Report checks: Embedded expanded details",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-minimal",
+			"title": "Report checks: Minimal check",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-command-open",
+			"title": "Report checks: Command only",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-output-open",
+			"title": "Report checks: Output only",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-multiple",
+			"title": "Report checks: Multiple checks",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-running",
+			"title": "Report checks: Running",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-failed",
+			"title": "Report checks: Failed",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-blocked",
+			"title": "Report checks: Blocked",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-skipped",
+			"title": "Report checks: Skipped",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-not-proven",
+			"title": "Report checks: Not proven",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
+			"id": "reports-component-report-checks-interrupted",
+			"title": "Report checks: Interrupted",
+			"coverage": "required",
+			"units": ["reports.component.report-checks"]
+		},
+		{
 			"id": "reports-component-report-findings",
 			"title": "Report findings",
 			"coverage": "required",
@@ -5812,6 +5902,21 @@
 				"reports-component-replay-controls-fullscreen",
 				"reports-component-replay-controls-speed-2x",
 				"reports-component-report-checks",
+				"reports-component-report-checks-empty",
+				"reports-component-report-checks-embedded",
+				"reports-component-report-checks-embedded-empty",
+				"reports-component-report-checks-details-open",
+				"reports-component-report-checks-embedded-details-open",
+				"reports-component-report-checks-minimal",
+				"reports-component-report-checks-command-open",
+				"reports-component-report-checks-output-open",
+				"reports-component-report-checks-multiple",
+				"reports-component-report-checks-running",
+				"reports-component-report-checks-failed",
+				"reports-component-report-checks-blocked",
+				"reports-component-report-checks-skipped",
+				"reports-component-report-checks-not-proven",
+				"reports-component-report-checks-interrupted",
 				"reports-component-report-findings",
 				"reports-component-report-summary",
 				"reports-component-report-view",
