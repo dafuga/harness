@@ -12,13 +12,17 @@ import { catalogUnits, previewState } from './catalogUnits';
 import { previewNavigation } from './previewNavigation';
 import { previewCaptureBounds } from './previewCaptureBounds';
 import { hostedFixture } from '../../../../../hub/tests/e2e/hosted-fixture';
+import { applyActivityPreviewContext } from './activityPreviewContext';
 const pageUnitIds = new Set(
 	catalogUnits
 		.filter((unit) => unit.owns.source.some((path) => path.endsWith('/+page.svelte')))
 		.map((unit) => unit.id)
 );
 export async function openPreview(page: Page, home: string, id: string, variant = '') {
-	if (id === 'reports.component.entity-search-results' && page.viewportSize()?.width === 390) {
+	if (
+		['reports.component.entity-search', 'reports.component.entity-search-results'].includes(id) &&
+		page.viewportSize()?.width === 390
+	) {
 		const cdp = await page.context().newCDPSession(page);
 		await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
 	}
@@ -42,6 +46,7 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 export async function readyPreview(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	await expect(content).toBeAttached();
+	await applyActivityPreviewContext(page, content, id);
 	await readyRoute(page, id);
 	const dialog = {
 		'desktop.component.deployment-activity': 'Deployments',

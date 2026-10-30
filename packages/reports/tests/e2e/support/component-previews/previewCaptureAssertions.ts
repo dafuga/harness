@@ -7,6 +7,9 @@ import { assertAudioViewerCapture } from './catalogStateActions';
 import { assertEntityExamplesState } from './entityExamplesPreviewAssertions';
 import { assertEntityContractState } from './entityContractPreviewAssertions';
 import { assertSearchResultsState } from './searchResultsPreviewAssertions';
+import { assertEntitySearchState } from './entitySearchPreviewActions';
+import { assertContractExampleState } from './contractExamplePreviewAssertions';
+import { assertContractTableState } from './contractTablePreviewAssertions';
 import { assertActivityCountFits } from './projectActivityAssertions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
@@ -77,6 +80,10 @@ export async function assertCatalogState(
 		await assertEntityContractState(component, variant);
 	if (id === 'reports.component.entity-search-results')
 		await assertSearchResultsState(component, variant, viewport);
+	if (id === 'reports.component.contract-example')
+		await assertContractExampleState(component, variant);
+	if (id === 'reports.component.contract-table')
+		await assertContractTableState(component, variant, viewport);
 	if (id === 'reports.component.filter-dialog' && variant === 'active') {
 		const trigger = component.getByRole('button', { name: 'Filters', exact: true });
 		await expect(trigger).toHaveClass(/active/);
@@ -84,12 +91,8 @@ export async function assertCatalogState(
 	}
 	if (id === 'reports.component.filter-dialog' && variant === 'open')
 		await expect(component.getByRole('dialog', { name: 'Filters', exact: true })).toBeVisible();
-	if (id === 'reports.component.entity-search' && variant === 'open') {
-		const dialog = component.getByRole('dialog', { name: 'Search project' });
-		await expect(dialog).toBeVisible();
-		await expect(dialog.getByRole('combobox', { name: 'Search entities' })).toHaveValue('order');
-		await expect(dialog.getByRole('option').first()).toContainText('Order');
-	}
+	if (id === 'reports.component.entity-search')
+		await assertEntitySearchState(component, variant, viewport);
 	if (id !== 'reports.component.entity-contract' || viewport !== 'mobile' || variant) return;
 	const frame = component.locator('[data-harness-component="contract-table"] .frame').first();
 	const action = frame.getByRole('button', { name: 'View example for Orders' });

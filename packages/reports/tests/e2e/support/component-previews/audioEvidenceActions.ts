@@ -2,7 +2,7 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Reach and check recording states through the same controls a reader uses. */
 export async function prepareAudioEvidence(component: Locator, variant: string) {
-	if (variant === 'notes' || variant === 'transcript-closed') {
+	if (['notes', 'transcript-closed', 'notes-transcript-closed'].includes(variant)) {
 		await component.locator('.audio-details summary').click();
 		if (variant === 'notes')
 			await expect(
@@ -16,6 +16,13 @@ export async function prepareAudioEvidence(component: Locator, variant: string) 
 			.poll(() => audio.evaluate((element: HTMLAudioElement) => element.paused))
 			.toBe(false);
 	}
+	if (variant === 'duration-loaded') {
+		await component.locator('audio').evaluate(async (element: HTMLAudioElement) => {
+			await element.play();
+			element.pause();
+		});
+		await expect(component.locator('.audio-duration')).toHaveText('0:42');
+	}
 	if (variant === 'audio-error') {
 		await component.locator('audio').evaluate(async (element: HTMLAudioElement) => {
 			try {
@@ -26,12 +33,28 @@ export async function prepareAudioEvidence(component: Locator, variant: string) 
 		});
 		await expect(component.locator('.audio-unavailable')).toBeVisible();
 	}
+	await assertAudioEvidence(component, variant);
+}
+
+async function assertAudioEvidence(component: Locator, variant: string) {
 	const missing = ['unavailable', 'audio-error'].includes(variant);
 	await expect(component.locator('.audio-card.unavailable')).toHaveCount(missing ? 1 : 0);
-	if (variant === 'no-details') await expect(component.locator('.audio-details')).toHaveCount(0);
-	if (variant === 'no-duration') await expect(component.locator('.audio-duration')).toHaveCount(0);
-	if (['notes-closed', 'transcript-closed'].includes(variant))
+	if (['no-details', 'minimal'].includes(variant))
+		await expect(component.locator('.audio-details')).toHaveCount(0);
+	if (['no-duration', 'minimal'].includes(variant))
+		await expect(component.locator('.audio-duration')).toHaveCount(0);
+	if (['notes-closed', 'transcript-closed', 'notes-transcript-closed'].includes(variant))
 		await expect(component.locator('.audio-details')).not.toHaveAttribute('open');
+	if (variant === 'minimal') {
+		await expect(component.locator('.audio-source')).toHaveCount(0);
+		await expect(component.locator('.evidence-meta time')).toHaveCount(0);
+	}
+	if (variant.startsWith('phase-'))
+		await expect(component.locator('.audio-kind')).toContainText(
+			new RegExp(variant.slice('phase-'.length), 'i')
+		);
+	if (variant === 'standing')
+		await expect(component.locator('.audio-kind')).toContainText('Baseline recording');
 	if (['running', 'failed', 'blocked', 'skipped', 'not-proven', 'interrupted'].includes(variant))
 		await expect(component.locator('.badge')).toHaveClass(new RegExp(variant));
 }
