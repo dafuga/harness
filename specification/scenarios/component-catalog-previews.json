@@ -1721,6 +1721,60 @@
 			"units": ["reports.component.contract-table"]
 		},
 		{
+			"id": "reports-component-contract-table-plain",
+			"title": "Contract table: plain label",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-empty",
+			"title": "Contract table: empty",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-empty-kept",
+			"title": "Contract table: empty table kept",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-plain-empty",
+			"title": "Contract table: plain empty",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-hide-names",
+			"title": "Contract table: unnamed returns",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-illustrative",
+			"title": "Contract table: illustrative example",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-missing",
+			"title": "Contract table: missing example",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-long",
+			"title": "Contract table: long field and type",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-multiple",
+			"title": "Contract table: multiple fields",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
 			"id": "reports-component-coverage-list",
 			"title": "Coverage list",
 			"coverage": "required",
@@ -4444,6 +4498,15 @@
 				"reports-component-contract-example-markup",
 				"reports-component-contract-example-multiple",
 				"reports-component-contract-table",
+				"reports-component-contract-table-plain",
+				"reports-component-contract-table-empty",
+				"reports-component-contract-table-empty-kept",
+				"reports-component-contract-table-plain-empty",
+				"reports-component-contract-table-hide-names",
+				"reports-component-contract-table-illustrative",
+				"reports-component-contract-table-missing",
+				"reports-component-contract-table-long",
+				"reports-component-contract-table-multiple",
 				"reports-component-coverage-list",
 				"reports-component-entity-cases",
 				"reports-component-entity-cases-empty",
