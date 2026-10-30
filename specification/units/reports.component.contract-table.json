@@ -13,7 +13,8 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/components/ContractTable.svelte",
-			"packages/reports/src/components/shared-primitives/ContractTable.svelte"
+			"packages/reports/src/components/shared-primitives/ContractTable.svelte",
+			"packages/reports/src/components/shared-primitives/contractTableMobile.css"
 		],
 		"symbols": ["ContractTable", "ContractTable"]
 	},
@@ -44,7 +45,7 @@
 			{
 				"name": "ContractTable",
 				"type": "markup",
-				"description": "A field table with unbroken names and types, clipped long examples and keyboard-accessible detail controls; wider tables scroll within their frame and return tables omit names."
+				"description": "A field table with keyboard-accessible details; names, types and examples stack on phones while wider layouts use columns."
 			}
 		],
 		"errors": []

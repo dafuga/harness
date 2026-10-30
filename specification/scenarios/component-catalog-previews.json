@@ -1889,6 +1889,42 @@
 			"units": ["reports.component.entity-search-results"]
 		},
 		{
+			"id": "reports-component-entity-search-results-initial",
+			"title": "Entity search results: no query",
+			"coverage": "required",
+			"units": ["reports.component.entity-search-results"]
+		},
+		{
+			"id": "reports-component-entity-search-results-loading",
+			"title": "Entity search results: loading",
+			"coverage": "required",
+			"units": ["reports.component.entity-search-results"]
+		},
+		{
+			"id": "reports-component-entity-search-results-no-matches",
+			"title": "Entity search results: no matches",
+			"coverage": "required",
+			"units": ["reports.component.entity-search-results"]
+		},
+		{
+			"id": "reports-component-entity-search-results-second-selected",
+			"title": "Entity search results: second selected",
+			"coverage": "required",
+			"units": ["reports.component.entity-search-results"]
+		},
+		{
+			"id": "reports-component-entity-search-results-none-selected",
+			"title": "Entity search results: no selection",
+			"coverage": "required",
+			"units": ["reports.component.entity-search-results"]
+		},
+		{
+			"id": "reports-component-entity-search-results-no-purpose",
+			"title": "Entity search results: no recorded purpose",
+			"coverage": "required",
+			"units": ["reports.component.entity-search-results"]
+		},
+		{
 			"id": "reports-component-entity-states",
 			"title": "Supported states",
 			"coverage": "required",
@@ -4358,6 +4394,12 @@
 				"reports-component-entity-search",
 				"reports-component-entity-search-open",
 				"reports-component-entity-search-results",
+				"reports-component-entity-search-results-initial",
+				"reports-component-entity-search-results-loading",
+				"reports-component-entity-search-results-no-matches",
+				"reports-component-entity-search-results-second-selected",
+				"reports-component-entity-search-results-none-selected",
+				"reports-component-entity-search-results-no-purpose",
 				"reports-component-entity-states",
 				"reports-component-evidence-card",
 				"reports-component-evidence-card-missing",

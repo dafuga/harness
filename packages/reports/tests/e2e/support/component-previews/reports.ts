@@ -13,6 +13,7 @@ import {
 } from './reportData';
 import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
+import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
 import { contractPreviewUnit } from './reportEntityContractVariants';
 const field = group.fields[0];
 const entries = explorerSearchEntries(d.entities, d.shown.head.commit);
@@ -80,7 +81,7 @@ export const reportCases: PreviewCases = {
 	},
 	'reports.component.entity-search-results': {
 		id: 'preview-search',
-		found: entries,
+		found: entitySearch(entries, 'order', 12),
 		active: 0,
 		loading: false,
 		query: 'order',
