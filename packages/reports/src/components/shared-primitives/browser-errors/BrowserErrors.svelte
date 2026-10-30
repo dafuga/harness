@@ -46,6 +46,10 @@
 			{/each}
 		</hx-details>
 	</hx-div>
+{:else if diagnostics}
+	<hx-p class="metadata">No browser diagnostic entries were recorded.</hx-p>
+{:else}
+	<hx-p class="metadata">Browser diagnostics are unavailable for this record.</hx-p>
 {/if}
 
 <style>

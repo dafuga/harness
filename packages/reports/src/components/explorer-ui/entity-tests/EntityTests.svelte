@@ -49,6 +49,7 @@
 	const job = (scenario: string, test: string) =>
 		record?.tests.find((item) => item.id === `${scenario}:${test}`);
 </script>
+
 <hx-div
 	role="tabpanel"
 	aria-label={`${entity.name} tests`}
@@ -183,9 +184,9 @@
 					</hx-li>
 				{/each}
 			</hx-ul>
-			{#each scenario.tests as check, position (position)}<BrowserErrors
-					diagnostics={check.browserErrors}
-				/>{/each}
+			{#each scenario.tests as check, position (position)}
+				{#if check.browserErrors?.length}<BrowserErrors diagnostics={check.browserErrors} />{/if}
+			{/each}
 		</hx-section>
 	{/each}
 	{#if gone.length}

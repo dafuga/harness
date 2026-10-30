@@ -2,7 +2,7 @@
 	"name": "browser-errors-empty",
 	"goal": "Represent unavailable and empty browser diagnostic records without implying a passing test.",
 	"createdAt": "2026-10-30T07:53:11.061Z",
-	"updatedAt": "2026-10-30T07:53:12.326Z",
+	"updatedAt": "2026-10-30T08:03:38.946Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T08:03:35.778Z",
+			"evidence": "Red record 79c7c282f7ee: both new catalog examples rendered no visible component and failed the visibility assertion."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T08:03:36.794Z",
+			"evidence": "Show neutral unavailable or empty messages, while the Reports and Desktop consumers skip empty collections."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T08:03:38.946Z",
+			"evidence": "Green record 4830dd733669: the same browser command, tests and fixtures passed at the fix commit."
 		},
 		{
 			"id": "verify",
