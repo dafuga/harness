@@ -52,6 +52,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
 	'reports.component.explorer-ui-explorer-platform-details': preparePlatformDetails,
 	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations,
+	'reports.component.module-system-explorer-module-resources-screen': prepareModuleState,
 	'reports.component.module-system-explorer-modules-screen': prepareModuleState,
 	'reports.component.networking-security-explorer-permissions-screen': preparePermissionState
 };
