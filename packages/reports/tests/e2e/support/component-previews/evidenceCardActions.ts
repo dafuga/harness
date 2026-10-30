@@ -2,6 +2,8 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Reach the compact disclosure and check the visible card branch. */
 export async function prepareEvidenceCard(component: Locator, variant: string) {
+	if (['compact', 'compact-closed'].includes(variant))
+		await expect(component.locator('.image-button')).toHaveCSS('padding', '0px');
 	if (variant === 'compact') {
 		await component.locator('summary').click();
 		await expect(component.getByText('Chromium capture', { exact: true })).toBeVisible();
