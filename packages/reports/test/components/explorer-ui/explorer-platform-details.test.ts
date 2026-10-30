@@ -100,4 +100,5 @@ test('platform details propagate navigation and malformed source path errors', (
 	expect(
 		() => render(ExplorerPlatformDetails, { props: { host: malformed, nav: nav(host.route) } }).body
 	).toThrow(URIError);
+	expect(() => render(ExplorerPlatforms, { props: malformed }).body).toThrow(URIError);
 });

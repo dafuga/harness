@@ -119,7 +119,23 @@
 				"description": "The four-target catalog or selected platform details, with search, a status dialog and explicit missing-data states."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "lens.href callback error",
+				"type": "thrown",
+				"description": "An error from the host URL reader propagates while rendering platform links."
+			},
+			{
+				"name": "onroute callback error",
+				"type": "thrown",
+				"description": "An error from the host navigation callback propagates when a platform link is activated."
+			},
+			{
+				"name": "URIError",
+				"type": "thrown",
+				"description": "A recorded source path with an unpaired UTF-16 surrogate cannot be encoded as a GitHub URL in platform details."
+			}
+		],
 		"operations": [],
 		"initialization": [],
 		"snippets": [
