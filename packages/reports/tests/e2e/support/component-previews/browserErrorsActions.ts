@@ -2,6 +2,15 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Open the actual disclosure and check the classified diagnostic before capture. */
 export async function prepareBrowserErrors(component: Locator, variant: string) {
+	if (variant === 'unavailable' || variant === 'empty') {
+		const message =
+			variant === 'unavailable'
+				? 'Browser diagnostics are unavailable for this record.'
+				: 'No browser diagnostic entries were recorded.';
+		await expect(component.getByText(message)).toBeVisible();
+		await expect(component.locator('details')).toHaveCount(0);
+		return;
+	}
 	const details = component.locator('details');
 	const count = variant === 'zero-entries' ? 0 : variant === 'multiple' ? 2 : 1;
 	await expect(details.locator('summary')).toHaveText(`Browser errors · ${count} entries`);
