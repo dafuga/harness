@@ -169,11 +169,11 @@
 		{/each}
 	</hx-div>
 </hx-section>
-<EvidenceViewer
-	items={items.map(prepared)}
-	navigableItems={items.map(prepared).filter((item) => !item.missing)}
-	selected={viewing}
-	{assetBase}
-	onclose={() => (viewing = null)}
-	onselect={(item) => (viewing = item)}
-/>
+{#if viewing}<EvidenceViewer
+		items={items.map(prepared)}
+		navigableItems={items.map(prepared).filter((item) => !item.missing)}
+		selected={viewing}
+		{assetBase}
+		onclose={() => (viewing = null)}
+		onselect={(item) => (viewing = item)}
+	/>{/if}

@@ -185,14 +185,14 @@
 	</hx-div>
 	{#if !filtered.length}<hx-p class="empty">{$t('noEvidence')}</hx-p>{/if}
 </hx-section>
-<EvidenceViewer
-	items={images}
-	navigableItems={filteredImages}
-	selected={selectedImage}
-	{assetBase}
-	onclose={() => (selected = null)}
-	onselect={selectItem}
-/>
+{#if selectedImage}<EvidenceViewer
+		items={images}
+		navigableItems={filteredImages}
+		selected={selectedImage}
+		{assetBase}
+		onclose={() => (selected = null)}
+		onselect={selectItem}
+	/>{/if}
 {#if selectedPair}<AudioComparisonViewer
 		before={selectedPair.before}
 		after={selectedPair.after}

@@ -47,7 +47,7 @@
 				"name": "EvidenceViewer.selected",
 				"type": "Evidence | null",
 				"required": true,
-				"description": "Required selected screenshot or null. Non-null opens the modal; null closes it through the modal open prop."
+				"description": "Required selected screenshot or null. Non-null opens the modal; null shows the unselected message."
 			},
 			{
 				"name": "EvidenceViewer.assetBase",
@@ -72,7 +72,7 @@
 			{
 				"name": "EvidenceViewer",
 				"type": "markup",
-				"description": "Screenshot lightbox initially showing after, with before/compare choices when a partner exists. Previous/next wraps through the navigable subset and resets to after. Viewport switching prefers the same comparison, then category/title, category, then first candidate. Displays provenance, captions, missing notes and image links. Changing image/view recreates zoom state."
+				"description": "An unselected message or a screenshot lightbox initially showing after, with before/compare choices when a partner exists. Previous/next wraps through the navigable subset and resets to after. Viewport switching prefers the same comparison, then category/title, category, then first candidate. Displays provenance, captions, missing notes and image links. Changing image/view recreates zoom state."
 			}
 		],
 		"errors": [
