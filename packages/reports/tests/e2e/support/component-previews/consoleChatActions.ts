@@ -59,6 +59,28 @@ async function populateConversation(component: Locator, message: Locator) {
 	await component.getByRole('button', { name: 'Send comment', exact: true }).click();
 	await expect(component.getByText('Please review the activity panel on mobile.')).toBeVisible();
 	await expect(component.getByText('Comment saved on this device; not shared yet.')).toBeVisible();
+	await assertMessageFrame(component);
+}
+
+async function assertMessageFrame(component: Locator) {
+	await component
+		.page()
+		.evaluate(
+			() =>
+				new Promise<void>((resolve) =>
+					requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+				)
+		);
+	const message = await component.locator('.chat-message.user').boundingBox();
+	const body = await component.locator('.floating-chat-body').boundingBox();
+	const composer = await component.locator('.chat-compose').boundingBox();
+	expect(message).not.toBeNull();
+	expect(body).not.toBeNull();
+	expect(composer).not.toBeNull();
+	const visible =
+		message!.y >= body!.y &&
+		message!.y + message!.height <= Math.min(body!.y + body!.height, composer!.y);
+	expect(visible, 'Latest chat message is visible above the composer').toBe(true);
 }
 
 async function assertChatFrame(component: Locator, variant: string) {
