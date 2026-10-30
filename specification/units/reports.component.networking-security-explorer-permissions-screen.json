@@ -146,6 +146,11 @@
 				"name": "onroute callback error",
 				"type": "thrown",
 				"description": "An error supplied by the navigation callback propagates when a permission link is activated."
+			},
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Duplicate profile source paths throw when the keyed profile index is mounted or updated."
 			}
 		],
 		"operations": [],
