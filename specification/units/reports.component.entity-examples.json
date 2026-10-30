@@ -53,6 +53,11 @@
 				"name": "RangeError",
 				"type": "thrown",
 				"description": "The recursive formatter cannot render a circular example."
+			},
+			{
+				"name": "Value access or conversion error",
+				"type": "thrown",
+				"description": "A supplied getter, proxy or value conversion callback can throw while formatting an example."
 			}
 		]
 	},

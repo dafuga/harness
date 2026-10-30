@@ -21,6 +21,17 @@ const calls = [
 const create = 'const agents = new AgentActivityService(root, checkouts);';
 const times = (body: string, text: string) => body.split(text).length - 1;
 
+test('example value access errors propagate while rendering', () => {
+	const error = new Error('example value unavailable');
+	const output = Object.defineProperty({}, 'total', {
+		enumerable: true,
+		get: () => {
+			throw error;
+		}
+	});
+	expect(() => draw([{ name: 'Order', call: 'readOrder()', output }])).toThrow(error);
+});
+
 test('authored examples are expected outcomes, including errors and empty values', () => {
 	const body = draw([
 		{ name: 'Normal <tag>', input: false, output: 0 },
