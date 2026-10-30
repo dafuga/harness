@@ -41,7 +41,38 @@
 				"description": "Method contracts projected through the same service renderer, without inventing persistence methods or treating constants as returns."
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "serviceContract.TypeError",
+				"type": "thrown",
+				"description": "BigInt or circular examples cannot be serialized as JSON."
+			},
+			{
+				"name": "serviceContract.RangeError",
+				"type": "thrown",
+				"description": "A deeply nested example can exceed the JSON serializer stack."
+			},
+			{
+				"name": "serviceContract.Example serialization callback error",
+				"type": "thrown",
+				"description": "A supplied example getter, proxy trap or toJSON method can throw during serialization."
+			},
+			{
+				"name": "modelContract.TypeError",
+				"type": "thrown",
+				"description": "BigInt or circular examples cannot be serialized as JSON."
+			},
+			{
+				"name": "modelContract.RangeError",
+				"type": "thrown",
+				"description": "A deeply nested example can exceed the JSON serializer stack."
+			},
+			{
+				"name": "modelContract.Example serialization callback error",
+				"type": "thrown",
+				"description": "A supplied example getter, proxy trap or toJSON method can throw during serialization."
+			}
+		],
 		"operations": [
 			{
 				"name": "serviceContract",
@@ -60,8 +91,24 @@
 						"description": "CRUD-first callable signatures with parameter, return and error groups, plus facts outside discovered methods. Multiple classes keep qualified method names; no discovered methods returns empty arrays."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "BigInt or circular examples cannot be serialized as JSON."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "A deeply nested example can exceed the JSON serializer stack."
+					},
+					{
+						"name": "Example serialization callback error",
+						"type": "thrown",
+						"description": "A supplied example getter, proxy trap or toJSON method can throw during serialization."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "modelContract",
@@ -80,8 +127,24 @@
 						"description": "Method contracts projected through the same service renderer, without inventing persistence methods or treating constants as returns."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown",
+						"description": "BigInt or circular examples cannot be serialized as JSON."
+					},
+					{
+						"name": "RangeError",
+						"type": "thrown",
+						"description": "A deeply nested example can exceed the JSON serializer stack."
+					},
+					{
+						"name": "Example serialization callback error",
+						"type": "thrown",
+						"description": "A supplied example getter, proxy trap or toJSON method can throw during serialization."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

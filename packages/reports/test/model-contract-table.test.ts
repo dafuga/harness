@@ -3,7 +3,11 @@ import { content, words } from './entityRender';
 import { record, revision } from './entityFixture';
 import { commits, units } from './entityUnits';
 import { modelContractFixture } from './entityModelContract';
-import { modelContract } from '../src/components/explorer-ui/entity-contract/serviceMethods';
+import {
+	modelContract,
+	serviceContract
+} from '../src/components/explorer-ui/entity-contract/serviceMethods';
+import { orderFeed, serviceUnit } from './entityServiceContract';
 import { measureWorkload } from '../../../test/support/measureWorkload';
 
 const model = modelContractFixture(
@@ -19,6 +23,26 @@ const model = modelContractFixture(
 );
 const head = revision(commits.tip, [record(commits.tip)]);
 head.registry.units.push(model);
+
+test('service and model projections propagate example conversion errors', () => {
+	const error = new Error('Example conversion failed');
+	const rejected = {
+		toJSON() {
+			throw error;
+		}
+	};
+	const service = serviceUnit(orderFeed);
+	service.contract.inputs[0].examples = [rejected];
+	const invalidModel = {
+		...model,
+		contract: {
+			...model.contract,
+			errors: [{ name: 'Order.find.failure', type: 'Error', examples: [rejected] }]
+		}
+	};
+	expect(() => serviceContract(service)).toThrow(error);
+	expect(() => modelContract(invalidModel)).toThrow(error);
+});
 
 test('model contracts show each real initialization and mutation method with parameter and return tables', async () => {
 	const body = content(
