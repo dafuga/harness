@@ -1,4 +1,5 @@
 import { activityCatalogVariants } from './activityCatalogVariants';
+import { providerPickerStates } from './providerPickerVariants';
 import { audioCatalogVariants } from './audioCatalogVariants';
 
 /** Additional representative states stay beside each component's required default state. */
@@ -26,22 +27,7 @@ const variants: Record<string, string[]> = {
 		'not-following'
 	],
 	// Connection, session, queue and selection branches are exercised through the picker client.
-	'reports.component.provider-picker': [
-		'loading',
-		'connection-error',
-		'unbound',
-		'unobserved',
-		'control-unavailable',
-		'refreshing',
-		'provider-claude',
-		'queue-empty',
-		'queue-populated',
-		'cancelled',
-		'applying',
-		'applied',
-		'failed',
-		'request-cancelled'
-	],
+	'reports.component.provider-picker': providerPickerStates,
 	// Active observations and every switch status have distinct card presentations.
 	'reports.component.provider-picker-cards': [
 		'unknown',

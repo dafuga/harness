@@ -2705,6 +2705,12 @@
 			"units": ["reports.component.provider-picker"]
 		},
 		{
+			"id": "reports-component-provider-picker-queue-error",
+			"title": "Session model picker: Unreadable queued sessions",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
 			"id": "reports-component-provider-picker-cancelled",
 			"title": "Session model picker: Request cancelled",
 			"coverage": "required",
@@ -2731,6 +2737,48 @@
 		{
 			"id": "reports-component-provider-picker-request-cancelled",
 			"title": "Session model picker: Cancelled switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-bind-ready",
+			"title": "Session model picker: Session ID entered",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-binding",
+			"title": "Session model picker: Binding session",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-queueing",
+			"title": "Session model picker: Queueing switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-cancelling",
+			"title": "Session model picker: Cancelling switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-loading-queue",
+			"title": "Session model picker: Loading queued sessions",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-no-models",
+			"title": "Session model picker: No model catalog",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-in-use",
+			"title": "Session model picker: Session in use",
 			"coverage": "required",
 			"units": ["reports.component.provider-picker"]
 		},
@@ -4512,11 +4560,19 @@
 				"reports-component-provider-picker-provider-claude",
 				"reports-component-provider-picker-queue-empty",
 				"reports-component-provider-picker-queue-populated",
+				"reports-component-provider-picker-queue-error",
 				"reports-component-provider-picker-cancelled",
 				"reports-component-provider-picker-applying",
 				"reports-component-provider-picker-applied",
 				"reports-component-provider-picker-failed",
 				"reports-component-provider-picker-request-cancelled",
+				"reports-component-provider-picker-bind-ready",
+				"reports-component-provider-picker-binding",
+				"reports-component-provider-picker-queueing",
+				"reports-component-provider-picker-cancelling",
+				"reports-component-provider-picker-loading-queue",
+				"reports-component-provider-picker-no-models",
+				"reports-component-provider-picker-in-use",
 				"reports-component-provider-picker-cards",
 				"reports-component-provider-picker-cards-unknown",
 				"reports-component-provider-picker-cards-in-use",

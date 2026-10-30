@@ -6,24 +6,39 @@ export async function pickerFixture(route: Route) {
 	const page = route.request().frame().page();
 	const variant = new URL(page.url()).searchParams.get('variant') ?? '';
 	const { name } = route.request().postDataJSON() as { name: string };
-	if (
-		(variant === 'loading' && name === 'open_model_picker') ||
-		(variant === 'refreshing' && name === 'get_provider_status')
-	) {
+	const held: Record<string, string> = {
+		loading: 'open_model_picker',
+		refreshing: 'get_provider_status',
+		binding: 'get_provider_status',
+		queueing: 'request_model_switch',
+		cancelling: 'cancel_model_switch',
+		'loading-queue': 'list_observed_sessions'
+	};
+	if (held[variant] === name) {
 		await new Promise<void>((resolve) => page.once('close', () => resolve()));
 		return;
 	}
 	if (variant === 'connection-error' && name === 'open_model_picker')
 		return route.fulfill({ status: 503, json: { error: 'Picker unavailable.' } });
 	if (name === 'list_observed_sessions')
-		return route.fulfill({ json: { sessions: variant === 'queue-empty' ? [] : [picker.request] } });
+		return route.fulfill({
+			json: {
+				sessions:
+					variant === 'queue-error' ? null : variant === 'queue-empty' ? [] : [picker.request]
+			}
+		});
 	if (name === 'cancel_model_switch') return route.fulfill({ json: { ...picker, request: null } });
 	return route.fulfill({ json: pickerSnapshot(variant) });
 }
 
 function pickerSnapshot(variant: string) {
-	if (variant === 'unbound') return { ...picker, sessionId: null, active: null, request: null };
+	if (['unbound', 'bind-ready', 'binding'].includes(variant))
+		return { ...picker, sessionId: null, active: null, request: null };
 	if (variant === 'unobserved') return { ...picker, active: null, request: null };
+	if (['queue-empty', 'queueing'].includes(variant)) return { ...picker, request: null };
+	if (variant === 'no-models') return { ...picker, models: [], active: null, request: null };
+	if (variant === 'in-use')
+		return { ...picker, active: { ...picker.active, idle: false, clients: 2 } };
 	if (variant === 'control-unavailable')
 		return {
 			...picker,

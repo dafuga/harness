@@ -51,13 +51,7 @@
 				"description": "Connects to the picker client on mount and closes that connection on destruction. Displays session status and active/queued selections, allows binding a trimmed session identifier, refreshes state, and queues supported model/effort selections. Queuing does not immediately change the observed active model or global defaults. Operation failures appear as error text and controls lock while an operation runs."
 			}
 		],
-		"errors": [
-			{
-				"name": "Error",
-				"type": "thrown",
-				"description": "An invalid non-array response while listing queued sessions raises Queued sessions could not be read. inside the operation handler. That handler catches it and displays its message; ordinary operation failures are also caught, rather than deliberately thrown to the caller."
-			}
-		]
+		"errors": []
 	},
 	"dependencies": [
 		{

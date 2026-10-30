@@ -1,4 +1,5 @@
 import type { Manifest } from './self-verify-config.test.types';
+import { spawnSync } from 'node:child_process';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
@@ -37,6 +38,16 @@ test('this repository declares no source, test or specification file as somethin
 	for (const build of config.builds) {
 		expect(config.outputs.some((declared) => covers(declared, `${build.directory}/x`))).toBe(true);
 	}
+});
+
+test('standalone evidence fixtures load outside the test runner', () => {
+	const result = spawnSync(
+		'bun',
+		['-e', "import('./test/support/verifyRepo.ts').then(() => console.log('fixture ready'))"],
+		{ encoding: 'utf8' }
+	);
+	expect(result.status, `standalone evidence fixtures load: ${result.stderr}`).toBe(0);
+	expect(result.stdout.trim()).toBe('fixture ready');
 });
 
 const wrappers = under('specification/scenarios').flatMap((path) => {

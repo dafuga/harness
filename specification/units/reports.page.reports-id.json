@@ -14,8 +14,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "load.input",
-				"type": "{ params: { id: string } }",
+				"name": "load.params",
+				"type": "{ id: string }",
+				"required": true,
 				"description": "The legacy report identifier to carry into the console address."
 			}
 		],
@@ -31,6 +32,11 @@
 				"name": "Redirect",
 				"type": "SvelteKit redirect",
 				"description": "Throws HTTP 308 to /harness/reports/{encoded id}."
+			},
+			{
+				"name": "URIError",
+				"type": "URIError",
+				"description": "A report identifier containing an unpaired UTF-16 surrogate cannot be URL encoded."
 			}
 		]
 	},
