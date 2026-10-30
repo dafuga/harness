@@ -15,7 +15,25 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 		'not-proven',
 		'interrupted'
 	],
-	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
+	'reports.component.evidence-grid': [
+		'empty',
+		'audio',
+		'uploads',
+		'image-open',
+		'no-items',
+		'screenshot-only',
+		'screenshots',
+		'viewport-mobile',
+		'viewport-tablet',
+		'viewport-desktop',
+		'category',
+		'status',
+		'status-open',
+		'search',
+		'audio-open',
+		'upload-comparison-open',
+		'upload-audio-open'
+	],
 	'reports.component.evidence-provenance': ['extended'],
 	'reports.component.evidence-viewer': ['before', 'compare', 'unavailable'],
 	'reports.component.regression-proof': ['pending', 'gap', 'output-open', 'capture-only', 'empty']
