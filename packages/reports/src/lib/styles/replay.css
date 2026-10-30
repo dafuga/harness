@@ -32,7 +32,8 @@
 	gap: var(--hx-space-8);
 }
 .replay-meta .button,
-.replay-player button {
+.replay-player button,
+.replay-controls button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -151,7 +152,7 @@
 	align-items: flex-end;
 	gap: var(--hx-space-12) var(--hx-space-16);
 }
-.replay-player .replay-play {
+.replay-controls .replay-play {
 	min-width: 150px;
 	border-color: var(--hx-color-primary);
 	background: var(--hx-color-primary);
@@ -214,7 +215,7 @@
 		flex: 1 1 100%;
 		margin-left: 0;
 	}
-	.replay-player .replay-play,
+	.replay-controls .replay-play,
 	.replay-end button:first-child,
 	.replay-field {
 		flex: 1 1 140px;

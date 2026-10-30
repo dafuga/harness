@@ -5,6 +5,7 @@
 	import { REPLAY_SPEEDS } from '../../utils/reports-media/replayFrames';
 	import { t } from '../../utils/reports-media/reportLocale';
 	import Select from '../shared-primitives/Select.svelte';
+	import '../../lib/styles/replay.css';
 	let {
 		playing,
 		index,
