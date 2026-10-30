@@ -59,9 +59,10 @@ test('a scoped record keeps ownership of its listed capture', () => {
 	detail.records = [scoped, newer];
 	const shown = explorerEvidence(sampleScope(home), { head: detail, parent: null }, { id: home });
 	expect(shown.after.record?.id).toBe('record-newer');
-	expect(
-		recordedCapture(shown, { ...binding, recordId: 'record-scoped' })
-	).toMatchObject({ record: 'record-scoped', capture: { sha256: screen } });
+	expect(recordedCapture(shown, { ...binding, recordId: 'record-scoped' })).toMatchObject({
+		record: 'record-scoped',
+		capture: { sha256: screen }
+	});
 });
 
 test('one field that differs, or a capture of another entity, is not listed', () => {

@@ -122,7 +122,10 @@ export class EvidenceAttachService {
 		if (isScopedRecord(record)) return;
 		const tree = await CommitTreeAdapter.open(this.root, record.source.commit);
 		const ledger = await new BudgetLedgerRepository(this.root).read(tree);
-		for (const id of citedRecords(record, ledger.events.map((event) => event.record.id))) {
+		for (const id of citedRecords(
+			record,
+			ledger.events.map((event) => event.record.id)
+		)) {
 			const cited = this.store.load(id);
 			if (cited) await this.attach(cited.record.source.commit, cited);
 		}
