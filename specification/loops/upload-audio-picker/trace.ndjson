@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T04:29:18.268Z","name":"upload-audio-picker","goal":"Capture the open audio upload mode selector","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T04:29:54.958Z","loop":"upload-audio-picker","step":"spec","evidence":"The open audio mode selector must visibly show both choices in its capture."}
+{"event":"step.completed","timestamp":"2026-10-30T04:29:55.520Z","loop":"upload-audio-picker","step":"coverage","evidence":"The component catalog covered only the collapsed form and did not open or inspect the audio mode picker."}

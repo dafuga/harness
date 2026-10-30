@@ -1,5 +1,26 @@
 /** Distinct playback, selection, availability and recorded-result examples. */
 export const audioCatalogVariants: Record<string, string[]> = {
+	'reports.component.upload-audio': [
+		'open',
+		'pre-mount',
+		'mode-open',
+		'comparison',
+		'single-selected',
+		'before-selected',
+		'after-selected',
+		'both-selected',
+		'single-uploading',
+		'comparison-uploading',
+		'single-success',
+		'comparison-success',
+		'single-error',
+		'comparison-error',
+		'malformed-response',
+		'network-error',
+		'too-large',
+		'before-too-large',
+		'after-too-large'
+	],
 	'reports.component.audio-upload-files': [
 		'comparison',
 		'uploading',

@@ -11,6 +11,7 @@ import { prepareImageZoom } from './imageZoomActions';
 import { prepareCoverageList } from './coverageListActions';
 import { prepareUploadComparison } from './uploadComparisonActions';
 import { prepareReportFindings } from './reportFindingsActions';
+import { prepareUploadAudio } from './uploadAudioActions';
 
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.entity-states': prepareEntityStates,
@@ -30,6 +31,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.image-zoom': prepareImageZoom,
 	'reports.component.coverage-list': prepareCoverageList,
 	'reports.component.upload-comparison': prepareUploadComparison,
+	'reports.component.upload-audio': prepareUploadAudio,
 	'reports.component.report-findings': prepareReportFindings,
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
 	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations

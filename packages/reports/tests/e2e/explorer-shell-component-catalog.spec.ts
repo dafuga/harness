@@ -86,7 +86,7 @@ for (const viewport of catalogViewports) {
 				? `desktop-component-project-agent-${variant} at ${viewport.id}`
 				: `${unit.id}${variant ? `:${variant}` : ''} at ${viewport.id}`;
 		test(title, async ({ page, browserErrors }) => {
-			picker.expectUploadError(unit.id, variant, browserErrors);
+			picker.expectUploadErrors(unit.id, variant, browserErrors);
 			const projectErrors: string[] = [];
 			if (unit.id === 'reports.component.console-chat' && variant === 'connection-error')
 				browserErrors.expectError({

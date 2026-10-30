@@ -12,10 +12,11 @@ export async function assertOpenPickerPixels(
 		variant === 'language-open';
 	const status = id === 'reports.component.evidence-grid' && variant === 'status-open';
 	const viewport = id === 'reports.component.upload-comparison' && variant === 'viewport-open';
-	if (!capture || (!language && !status && !viewport)) return;
+	const audioMode = id === 'reports.component.upload-audio' && variant === 'mode-open';
+	if (!capture || (!language && !status && !viewport && !audioMode)) return;
 	const { clip, bytes: opened } = capture;
 	const selector = page.getByRole('combobox', {
-		name: language ? 'Language' : status ? 'Status' : 'Viewport'
+		name: language ? 'Language' : status ? 'Status' : audioMode ? 'Audio upload mode' : 'Viewport'
 	});
 	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(true);
 	const control = (await selector.boundingBox())!;
@@ -29,13 +30,13 @@ export async function assertOpenPickerPixels(
 		caret: 'hide'
 	});
 	const changed = await pickerPixelsChanged(page, { opened, closed, clip, control });
-	const message = `The open ${language ? 'language' : status ? 'status' : 'viewport'} menu must change pixels outside its control`;
+	const message = `The open ${language ? 'language' : status ? 'status' : audioMode ? 'audio mode' : 'viewport'} menu must change pixels outside its control`;
 	expect(changed, message).toBeGreaterThan(100);
 	await selector.click();
 }
 
 /** The failure fixture returns an intentional HTTP error, logged by the browser. */
-export function expectUploadError(
+export function expectUploadErrors(
 	id: string,
 	variant: string,
 	errors: { expectError: (entry: { type: 'console'; message: string; reason: string }) => void }
@@ -46,6 +47,22 @@ export function expectUploadError(
 			message:
 				'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
 			reason: 'The comparison upload error fixture deliberately refuses the upload.'
+		});
+	if (
+		id === 'reports.component.upload-audio' &&
+		['single-error', 'comparison-error'].includes(variant)
+	)
+		errors.expectError({
+			type: 'console',
+			message:
+				'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
+			reason: 'The audio upload error fixture deliberately refuses the upload.'
+		});
+	if (id === 'reports.component.upload-audio' && variant === 'network-error')
+		errors.expectError({
+			type: 'console',
+			message: 'Failed to load resource: net::ERR_FAILED',
+			reason: 'The audio upload network fixture deliberately aborts the request.'
 		});
 }
 

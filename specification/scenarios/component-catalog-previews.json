@@ -5753,6 +5753,120 @@
 			"units": ["reports.component.upload-audio"]
 		},
 		{
+			"id": "reports-component-upload-audio-open",
+			"title": "Audio evidence upload: open",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-pre-mount",
+			"title": "Audio evidence upload: pre mount",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-mode-open",
+			"title": "Audio evidence upload: mode open",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-comparison",
+			"title": "Audio evidence upload: comparison",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-single-selected",
+			"title": "Audio evidence upload: single selected",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-before-selected",
+			"title": "Audio evidence upload: before selected",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-after-selected",
+			"title": "Audio evidence upload: after selected",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-both-selected",
+			"title": "Audio evidence upload: both selected",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-single-uploading",
+			"title": "Audio evidence upload: single uploading",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-comparison-uploading",
+			"title": "Audio evidence upload: comparison uploading",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-single-success",
+			"title": "Audio evidence upload: single success",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-comparison-success",
+			"title": "Audio evidence upload: comparison success",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-single-error",
+			"title": "Audio evidence upload: single error",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-comparison-error",
+			"title": "Audio evidence upload: comparison error",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-malformed-response",
+			"title": "Audio evidence upload: malformed response",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-network-error",
+			"title": "Audio evidence upload: network error",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-too-large",
+			"title": "Audio evidence upload: too large",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-before-too-large",
+			"title": "Audio evidence upload: before too large",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
+			"id": "reports-component-upload-audio-after-too-large",
+			"title": "Audio evidence upload: after too large",
+			"coverage": "required",
+			"units": ["reports.component.upload-audio"]
+		},
+		{
 			"id": "reports-component-upload-comparison",
 			"title": "Screenshot comparison upload",
 			"coverage": "required",
@@ -6982,6 +7096,25 @@
 				"reports-component-status-badge-not-proven",
 				"reports-component-status-badge-interrupted",
 				"reports-component-upload-audio",
+				"reports-component-upload-audio-open",
+				"reports-component-upload-audio-pre-mount",
+				"reports-component-upload-audio-mode-open",
+				"reports-component-upload-audio-comparison",
+				"reports-component-upload-audio-single-selected",
+				"reports-component-upload-audio-before-selected",
+				"reports-component-upload-audio-after-selected",
+				"reports-component-upload-audio-both-selected",
+				"reports-component-upload-audio-single-uploading",
+				"reports-component-upload-audio-comparison-uploading",
+				"reports-component-upload-audio-single-success",
+				"reports-component-upload-audio-comparison-success",
+				"reports-component-upload-audio-single-error",
+				"reports-component-upload-audio-comparison-error",
+				"reports-component-upload-audio-malformed-response",
+				"reports-component-upload-audio-network-error",
+				"reports-component-upload-audio-too-large",
+				"reports-component-upload-audio-before-too-large",
+				"reports-component-upload-audio-after-too-large",
 				"reports-component-upload-comparison",
 				"reports-component-upload-comparison-open",
 				"reports-component-upload-comparison-pre-mount",
