@@ -60,7 +60,18 @@
 				"description": "Open audio modal initially in compare mode with Before/After/Compare controls. Mount pauses all document audio. Keyed audio cards are destroyed when leaving view, so their cleanup pauses playback. Each retains its own transcript, availability and status."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "onclose callback error",
+				"type": "thrown",
+				"description": "An error thrown by onclose propagates when the viewer closes."
+			},
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Compare mode throws if the before and after recordings have the same ID."
+			}
+		]
 	},
 	"dependencies": [
 		{
