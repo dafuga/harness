@@ -2,3 +2,5 @@
 {"event":"step.completed","timestamp":"2026-10-30T01:28:03.562Z","loop":"terra-3-scoped-page-selector","step":"spec","evidence":"The scoped platform page command received a component-catalog name filter and Playwright found no tests."}
 {"event":"step.completed","timestamp":"2026-10-30T01:28:04.133Z","loop":"terra-3-scoped-page-selector","step":"coverage","evidence":"The entity-scope test covered preserving an existing selector but not page scenarios with their own test names."}
 {"event":"step.completed","timestamp":"2026-10-30T01:29:00.208Z","loop":"terra-3-scoped-page-selector","step":"red","evidence":"The committed scope test failed because a page scenario acquired the catalog-only grep."}
+{"event":"step.completed","timestamp":"2026-10-30T01:29:19.671Z","loop":"terra-3-scoped-page-selector","step":"implement","evidence":"Only component-catalog checks get the entity-name grep; page scenario commands remain unchanged."}
+{"event":"step.completed","timestamp":"2026-10-30T01:29:56.285Z","loop":"terra-3-scoped-page-selector","step":"green","evidence":"The unchanged scoped selector test passed at the separate fix commit."}

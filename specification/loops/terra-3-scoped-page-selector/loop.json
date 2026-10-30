@@ -2,7 +2,7 @@
 	"name": "terra-3-scoped-page-selector",
 	"goal": "Run page scenarios without component-catalog-only name filters.",
 	"createdAt": "2026-10-30T01:28:02.969Z",
-	"updatedAt": "2026-10-30T01:29:00.208Z",
+	"updatedAt": "2026-10-30T01:29:56.285Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T01:29:19.671Z",
+			"evidence": "Only component-catalog checks get the entity-name grep; page scenario commands remain unchanged."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T01:29:56.285Z",
+			"evidence": "The unchanged scoped selector test passed at the separate fix commit."
 		},
 		{
 			"id": "verify",
