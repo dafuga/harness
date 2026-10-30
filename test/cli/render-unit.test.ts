@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+import { measureWorkload } from '../support/measureWorkload';
 import type { UnitDetail } from '../../src/cli/program/inspectUnits.types';
 import { groupTests, renderContract, renderUnit } from '../../src/cli/program/renderUnit';
 
@@ -33,26 +34,28 @@ function detail(kind: string): UnitDetail {
 }
 
 describe('units show rendering', () => {
-	test('a component contract lists aligned props and errors, never outputs', () => {
-		const manifest = detail('component').manifest;
-		manifest.contract.inputs.push(
-			field('Badge.label', 'string', {
-				required: false,
-				description: 'Defaults to the category or Other when null.'
-			})
-		);
-		manifest.contract.inputs = [...manifest.contract.inputs, ...manifest.contract.inputs];
-		expect(renderContract(manifest)).toEqual([
-			'Contract (declared)',
-			'  Props',
-			'    status  Status  (required)',
-			'    size    number  (optional; default 16)',
-			'    label   string  (optional)',
-			'      Defaults to the category or Other when null.',
-			'  Errors',
-			'    ExpectedCliError'
-		]);
-	});
+	test('a component contract lists aligned props and errors, never outputs', () =>
+		measureWorkload('entry.program-render-unit', 'component-contract-rendering', () => {
+			const manifest = detail('component').manifest;
+			manifest.contract.inputs.push(
+				field('Badge.label', 'string', {
+					required: false,
+					description: 'Defaults to the category or Other when null.\r\nNames the action.'
+				})
+			);
+			manifest.contract.inputs = [...manifest.contract.inputs, ...manifest.contract.inputs];
+			expect(renderContract(manifest)).toEqual([
+				'Contract (declared)',
+				'  Props',
+				'    status  Status  (required)',
+				'    size    number  (optional; default 16)',
+				'    label   string  (optional)',
+				'      Defaults to the category or Other when null.',
+				'      Names the action.',
+				'  Errors',
+				'    ExpectedCliError'
+			]);
+		}));
 
 	test('a function contract also lists its outputs', () => {
 		expect(renderContract(detail('function').manifest)).toContain('  Outputs');

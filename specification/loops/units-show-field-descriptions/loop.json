@@ -2,11 +2,9 @@
 	"name": "units-show-field-descriptions",
 	"goal": "Show documented input behavior including conditional defaults in units show.",
 	"createdAt": "2026-10-30T22:07:43.978Z",
-	"updatedAt": "2026-10-30T22:08:53.364Z",
+	"updatedAt": "2026-10-30T22:09:42.480Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T22:09:42.480Z",
+			"evidence": "The unchanged rendering test passed at 899ebe7358; matching red and green records are retained."
 		},
 		{
 			"id": "verify",

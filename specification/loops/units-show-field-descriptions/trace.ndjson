@@ -3,3 +3,4 @@
 {"event":"step.completed","timestamp":"2026-10-30T22:07:45.160Z","loop":"units-show-field-descriptions","step":"coverage","evidence":"The standard render-unit test checks literal defaults but no field description, so a conditional default can disappear."}
 {"event":"step.completed","timestamp":"2026-10-30T22:08:47.957Z","loop":"units-show-field-descriptions","step":"red","evidence":"At a738cc9fd9 the standard render-unit case omitted the conditional default; red record 34967b8ea21a."}
 {"event":"step.completed","timestamp":"2026-10-30T22:08:53.364Z","loop":"units-show-field-descriptions","step":"implement","evidence":"At 40753699dc each field description follows its typed row, preserving conditional defaults as prose."}
+{"event":"step.completed","timestamp":"2026-10-30T22:09:42.480Z","loop":"units-show-field-descriptions","step":"green","evidence":"The unchanged rendering test passed at 899ebe7358; matching red and green records are retained."}
