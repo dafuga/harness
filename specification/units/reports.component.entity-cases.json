@@ -73,6 +73,11 @@
 				"name": "TypeError",
 				"type": "thrown",
 				"description": "Expanding full values cannot serialize BigInt or circular input."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Expanding deeply nested full values can exceed the JSON serializer stack."
 			}
 		]
 	},

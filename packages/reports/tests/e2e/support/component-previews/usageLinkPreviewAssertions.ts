@@ -42,8 +42,13 @@ export async function prepareUsageLink(component: Locator, variant: string) {
 export async function assertUsageLink(component: Locator, variant: string) {
 	if (variant.startsWith('source-')) {
 		const source = component.getByRole('button', { name: 'renderOrderRow' });
-		if (variant === 'source-enabled') await expect(source).toBeEnabled();
-		else await expect(source).toBeDisabled();
+		if (variant === 'source-enabled') {
+			await expect(source).toBeEnabled();
+			await expect(source).toHaveCSS('opacity', '1');
+		} else {
+			await expect(source).toBeDisabled();
+			await expect(source, 'Disabled source links are visibly dimmed').toHaveCSS('opacity', '0.45');
+		}
 	}
 	if (!variant.endsWith('-open')) return;
 	const tip = component.getByRole('tooltip');
@@ -70,13 +75,19 @@ async function assertUsageLinkImage(tip: Locator, variant: string) {
 
 async function assertUsageLinkBounds(component: Locator, tip: Locator, variant: string) {
 	const box = await tip.boundingBox();
+	const trigger = await component.getByRole('link').boundingBox();
+	expect(trigger).not.toBeNull();
+	expect(box).not.toBeNull();
+	expect(box!.x, 'Usage preview overlaps its trigger horizontally').toBeLessThanOrEqual(
+		trigger!.x + trigger!.width
+	);
+	expect(box!.x + box!.width).toBeGreaterThanOrEqual(trigger!.x);
 	const clip = await previewCaptureBounds(
 		component.page(),
 		'reports.component.explorer-usage-link',
 		variant
 	);
 	const offset = await component.page().evaluate(() => ({ x: scrollX, y: scrollY }));
-	expect(box).not.toBeNull();
 	expect(clip.x).toBeLessThanOrEqual(box!.x + offset.x);
 	expect(clip.y).toBeLessThanOrEqual(box!.y + offset.y);
 	expect(clip.x + clip.width).toBeGreaterThanOrEqual(box!.x + offset.x + box!.width);
