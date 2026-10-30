@@ -20,6 +20,7 @@ export const explorerCatalogVariants: Record<string, string[]> = {
 		'gaps-open',
 		'search',
 		'no-matches',
+		'language-open',
 		'german',
 		'more',
 		'missing-values'

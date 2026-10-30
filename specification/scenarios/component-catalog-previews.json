@@ -2975,6 +2975,12 @@
 			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-language-open",
+			"title": "ExplorerTranslationsScreen: language selector open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-translations-screen-german",
 			"title": "ExplorerTranslationsScreen: German",
 			"coverage": "required",
@@ -6129,6 +6135,7 @@
 				"reports-component-explorer-ui-explorer-translations-screen-gaps-open",
 				"reports-component-explorer-ui-explorer-translations-screen-search",
 				"reports-component-explorer-ui-explorer-translations-screen-no-matches",
+				"reports-component-explorer-ui-explorer-translations-screen-language-open",
 				"reports-component-explorer-ui-explorer-translations-screen-german",
 				"reports-component-explorer-ui-explorer-translations-screen-more",
 				"reports-component-explorer-ui-explorer-translations-screen-missing-values",
