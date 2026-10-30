@@ -19,7 +19,7 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			else for (const child of node.children) collect(child);
 			const tooltip = includeUsageTooltip && node.querySelector('[role="tooltip"]');
 			if (tooltip) collect(tooltip);
-			const picker = chatPicker && node.querySelector('[role="dialog"]');
+			const picker = chatPicker && node.querySelector('dialog[open], [role="dialog"]');
 			if (picker) collect(picker);
 			if (!boxes.length) throw new Error('The component has no rendered capture bounds.');
 			const start = (value: number, scroll: number) =>

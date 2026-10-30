@@ -2,7 +2,7 @@
 	"name": "console-chat-native-dialog-frame",
 	"goal": "Capture the full native console picker with its chat",
 	"createdAt": "2026-10-30T04:15:10.506Z",
-	"updatedAt": "2026-10-30T04:15:11.951Z",
+	"updatedAt": "2026-10-30T04:17:58.475Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T04:17:48.806Z",
+			"evidence": "At 018c5da861 the capture starts at x=492 while the native dialog starts at x=300; the bounds assertion failed."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T04:17:58.475Z",
+			"evidence": "Include the open native dialog in the console picker bounds."
 		},
 		{
 			"id": "green",
