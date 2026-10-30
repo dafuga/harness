@@ -3,3 +3,5 @@
 {"event":"step.completed","timestamp":"2026-10-30T04:06:10.284Z","loop":"console-chat-picker-dialog-frame","step":"coverage","evidence":"The capture assertion covered the panel and launcher but not the open dialog; include its bounds in the existing catalog assertion."}
 {"event":"step.completed","timestamp":"2026-10-30T04:11:52.985Z","loop":"console-chat-picker-dialog-frame","step":"red","evidence":"At 963e3951d4 the desktop model-open test failed because the dialog extended beyond the capture."}
 {"event":"step.completed","timestamp":"2026-10-30T04:12:02.184Z","loop":"console-chat-picker-dialog-frame","step":"implement","evidence":"Include the independently positioned dialog in the console picker capture bounds."}
+{"event":"step.added","timestamp":"2026-10-30T04:15:26.675Z","loop":"console-chat-picker-dialog-frame","step":"correction","title":"Correct the invalid red proof"}
+{"event":"step.added","timestamp":"2026-10-30T04:15:38.762Z","loop":"console-chat-picker-dialog-frame","step":"invalid-red","title":"Prior red timed out on the wrong selector and is not defect proof."}
