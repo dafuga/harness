@@ -1,4 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
+import { previewCaptureBounds } from './previewCaptureBounds';
 
 /** Prepare report-level disclosures, dialogs and gallery controls for their own captures. */
 export async function prepareReportView(component: Locator, variant: string) {
@@ -49,8 +50,20 @@ export async function prepareReportView(component: Locator, variant: string) {
 	if (variant === 'empty') {
 		await expect(component.getByText('No findings recorded.')).toBeVisible();
 		await expect(component.getByText('No matching evidence.')).toBeVisible();
+		await expect(component.locator('.report-intro .badge').first()).toContainText('Not proven');
+		await expect(component.getByRole('link', { name: 'Download PDF' })).toHaveCount(0);
 	}
+	await assertDialogCapture(component, variant);
 	await assertReportLifecycle(component, variant);
+}
+
+async function assertDialogCapture(component: Locator, variant: string) {
+	if (!(await component.getByRole('dialog').count())) return;
+	const page = component.page();
+	const bounds = await previewCaptureBounds(page, 'reports.component.report-view', variant);
+	const viewport = page.viewportSize();
+	expect(bounds.width).toBe(viewport?.width);
+	expect(bounds.height).toBe(viewport?.height);
 }
 
 async function assertReportLifecycle(component: Locator, variant: string) {
