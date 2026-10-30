@@ -2,7 +2,7 @@
 	"name": "catalog-viewport-state-names",
 	"goal": "Keep named states ending in viewport names distinct in catalog evidence.",
 	"createdAt": "2026-10-30T21:58:16.430Z",
-	"updatedAt": "2026-10-30T21:58:17.860Z",
+	"updatedAt": "2026-10-30T21:59:37.903Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T21:59:37.903Z",
+			"evidence": "At 34c29f8982 the catalog guard expected the named desktop state capture and received undefined; red record 2c0cde4e0e8d."
 		},
 		{
 			"id": "implement",

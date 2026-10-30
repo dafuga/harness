@@ -71,14 +71,20 @@ function sharedState(item: ExplorerCapture, captures: ExplorerCapture[]): string
 	const viewport = item.capture.viewport ?? '';
 	const state = withoutViewportSuffix(item.state, viewport);
 	if (state === item.state) return state;
-	const sibling = captures.some(
+	const siblings = captures.filter(
 		(other) =>
 			other.capture.viewport !== viewport &&
 			other.focused?.record === item.focused?.record &&
-			other.capture.server?.revision === item.capture.server?.revision &&
+			other.capture.server?.revision === item.capture.server?.revision
+	);
+	// An identical name at another viewport is an explicit state, even if its name ends in a device.
+	if (siblings.some((other) => other.state === item.state)) return item.state;
+	const qualified = siblings.some(
+		(other) =>
+			other.state !== state &&
 			withoutViewportSuffix(other.state, other.capture.viewport ?? '') === state
 	);
-	return sibling ? state : item.state;
+	return qualified ? state : item.state;
 }
 
 /** @pure Describe a focused gallery independently of declared full-verification scenarios. */
