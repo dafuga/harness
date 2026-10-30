@@ -3,7 +3,12 @@ import { expect, type Locator } from '@playwright/test';
 /** Exercise the viewer's own controls and retain the selected state for capture. */
 export async function prepareEvidenceViewer(component: Locator, variant: string) {
 	const dialog = component.getByRole('dialog');
+	if (variant === 'unselected') return assertUnselected(component, dialog);
 	await expect(dialog).toBeVisible();
+	if (variant === 'closed') {
+		await dialog.getByRole('button', { name: 'Close viewer' }).click();
+		return assertUnselected(component, dialog);
+	}
 	if (variant === 'before')
 		await dialog.getByRole('button', { name: 'View before screenshot' }).click();
 	if (variant === 'compare')
@@ -27,6 +32,11 @@ export async function prepareEvidenceViewer(component: Locator, variant: string)
 		await image.evaluate((node: HTMLImageElement) => node.decode());
 	}
 	await assertViewerImagesFit(dialog, variant);
+}
+
+async function assertUnselected(component: Locator, dialog: Locator) {
+	await expect(dialog).toHaveCount(0);
+	await expect(component.getByText('No screenshot selected.', { exact: true })).toBeVisible();
 }
 
 /** Capture every image, its zoom controls, original link and caption inside the lightbox. */

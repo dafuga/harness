@@ -2885,6 +2885,18 @@
 			"units": ["reports.component.evidence-viewer"]
 		},
 		{
+			"id": "reports-component-evidence-viewer-unselected",
+			"title": "Evidence viewer: No screenshot selected",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-closed",
+			"title": "Evidence viewer: Closed",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
 			"id": "reports-component-evidence-viewer-before",
 			"title": "Evidence viewer: Before screenshot",
 			"coverage": "required",
@@ -7248,6 +7260,8 @@
 				"reports-component-evidence-provenance-empty",
 				"reports-component-evidence-provenance-absent",
 				"reports-component-evidence-viewer",
+				"reports-component-evidence-viewer-unselected",
+				"reports-component-evidence-viewer-closed",
 				"reports-component-evidence-viewer-before",
 				"reports-component-evidence-viewer-compare",
 				"reports-component-evidence-viewer-unavailable",

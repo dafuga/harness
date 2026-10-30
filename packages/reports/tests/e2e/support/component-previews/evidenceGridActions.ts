@@ -2,6 +2,7 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Exercise gallery filters and viewers through their real controls. */
 export async function prepareEvidenceGrid(component: Locator, variant: string) {
+	await expect(component.getByText('No screenshot selected.', { exact: true })).toHaveCount(0);
 	if (variant === 'no-items') {
 		await expect(component.getByText('No matching evidence.', { exact: true })).toBeVisible();
 		await expect(component.locator('.evidence-grid .evidence-card')).toHaveCount(0);
@@ -81,8 +82,14 @@ async function openUpload(component: Locator, variant: string) {
 }
 
 async function openImage(component: Locator) {
-	await component.getByRole('button', { name: 'Open Checkout confirmation', exact: true }).click();
+	const button = component.getByRole('button', { name: 'Open Checkout confirmation', exact: true });
+	await button.click();
 	const dialog = component.getByRole('dialog');
+	await expect(dialog).toBeVisible();
+	await dialog.getByRole('button', { name: 'Close viewer' }).click();
+	await expect(dialog).toHaveCount(0);
+	await expect(component.getByText('No screenshot selected.', { exact: true })).toHaveCount(0);
+	await button.click();
 	await expect(dialog).toBeVisible();
 	const image = dialog.locator('img').first();
 	await expect

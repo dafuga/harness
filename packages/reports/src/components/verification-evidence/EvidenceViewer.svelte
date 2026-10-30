@@ -150,6 +150,7 @@
 			</hx-figure>{/each}
 	</hx-div>
 </Modal>
+{#if !selected}<hx-p class="muted">{$t('noScreenshotSelected')}</hx-p>{/if}
 
 <style>
 	/* Give recorded images the space left after the viewer's controls and provenance. */
