@@ -9,11 +9,7 @@ const tooltipUnits = new Set([
 
 /** Frame rendered UI roots, including fragments and fixed surfaces, with a small edge allowance. */
 export async function previewCaptureBounds(page: Page, id: string, variant = '') {
-	if (isPlatformPicker(id, variant)) {
-		const viewport = page.viewportSize();
-		if (!viewport) throw new Error('Platform status capture requires a viewport.');
-		return { x: 0, y: 0, ...viewport };
-	}
+	if (isPlatformPicker(id, variant)) return platformPickerBounds(page);
 	if (await reportViewDialog(page, id)) {
 		const viewport = page.viewportSize();
 		if (!viewport) throw new Error('Report dialog capture requires a viewport.');
@@ -35,6 +31,32 @@ function isPlatformPicker(id: string, variant: string) {
 	return (
 		id === 'reports.component.explorer-ui-explorer-platforms' && variant === 'status-options-open'
 	);
+}
+
+/** Include the open options and dialog without the preview-only page around them. */
+async function platformPickerBounds(page: Page) {
+	return page.getByRole('dialog', { name: 'Filters' }).evaluate((dialog) => {
+		const options = [...dialog.querySelectorAll('option')].map((option) =>
+			option.getBoundingClientRect()
+		);
+		if (!options.length || options.some((box) => !box.width || !box.height))
+			throw new Error('Platform status options have no rendered bounds.');
+		const boxes = [dialog.getBoundingClientRect(), ...options];
+		if (
+			boxes.some(
+				(box) => box.left < 0 || box.top < 0 || box.right > innerWidth || box.bottom > innerHeight
+			)
+		)
+			throw new Error('Platform status dialog or options extend outside the viewport.');
+		const left = Math.max(0, Math.floor(Math.min(...boxes.map((box) => box.left)) - 8));
+		const top = Math.max(0, Math.floor(Math.min(...boxes.map((box) => box.top)) - 8));
+		const right = Math.min(innerWidth, Math.ceil(Math.max(...boxes.map((box) => box.right)) + 8));
+		const bottom = Math.min(
+			innerHeight,
+			Math.ceil(Math.max(...boxes.map((box) => box.bottom)) + 8)
+		);
+		return { x: left + scrollX, y: top + scrollY, width: right - left, height: bottom - top };
+	});
 }
 
 async function measuredBounds(
