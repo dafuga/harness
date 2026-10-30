@@ -3299,8 +3299,26 @@
 			"units": ["reports.component.explorer-usage-link"]
 		},
 		{
+			"id": "reports-component-explorer-usage-link-hover-open",
+			"title": "ExplorerUsageLink: pointer preview",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage-link"]
+		},
+		{
+			"id": "reports-component-explorer-usage-link-inherited-open",
+			"title": "ExplorerUsageLink: inherited preview",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage-link"]
+		},
+		{
 			"id": "reports-component-explorer-usage-link-missing-open",
 			"title": "ExplorerUsageLink: missing visual preview",
+			"coverage": "required",
+			"units": ["reports.component.explorer-usage-link"]
+		},
+		{
+			"id": "reports-component-explorer-usage-link-image-error-open",
+			"title": "ExplorerUsageLink: image load error",
 			"coverage": "required",
 			"units": ["reports.component.explorer-usage-link"]
 		},
@@ -6501,7 +6519,10 @@
 				"reports-component-explorer-usage-usage-open",
 				"reports-component-explorer-usage-link",
 				"reports-component-explorer-usage-link-visual-open",
+				"reports-component-explorer-usage-link-hover-open",
+				"reports-component-explorer-usage-link-inherited-open",
 				"reports-component-explorer-usage-link-missing-open",
+				"reports-component-explorer-usage-link-image-error-open",
 				"reports-component-explorer-usage-link-function-open",
 				"reports-component-explorer-usage-link-source-enabled",
 				"reports-component-explorer-usage-link-source-disabled",
