@@ -61,17 +61,20 @@
 			{
 				"name": "design.context",
 				"type": "HubSourceContext",
-				"required": true
+				"required": true,
+				"description": "Authorized source context bound to the requested repository and revision."
 			},
 			{
 				"name": "design.plan",
 				"type": "HubPlan",
-				"required": true
+				"required": true,
+				"description": "Committed plan whose design metadata and image bindings are requested."
 			},
 			{
 				"name": "design.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative design metadata path to read and validate."
 			}
 		],
 		"outputs": [
@@ -152,17 +155,20 @@
 					{
 						"name": "design.context",
 						"type": "HubSourceContext",
-						"required": true
+						"required": true,
+						"description": "Authorized source context bound to the requested repository and revision."
 					},
 					{
 						"name": "design.plan",
 						"type": "HubPlan",
-						"required": true
+						"required": true,
+						"description": "Committed plan whose design metadata and image bindings are requested."
 					},
 					{
 						"name": "design.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative design metadata path to read and validate."
 					}
 				],
 				"outputs": [

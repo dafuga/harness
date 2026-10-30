@@ -8,9 +8,9 @@ import { configValueCatalogVariants } from './configValueTreeVariants';
 import { usageExampleCatalogVariants } from './usageExamplesVariants';
 import { moduleCatalogVariants } from './reportModuleVariants';
 import { recordedValueStates } from './recordedValueVariants';
-import { reportSummaryStates } from './reportSummaryVariants';
+
 import { imageZoomStates } from './imageZoomVariants';
-import { coverageListStates } from './coverageListVariants';
+
 import { browserErrorsStates } from './browserErrorsVariants';
 
 /** Additional representative states stay beside each component's required default state. */
@@ -23,9 +23,9 @@ const variants: Record<string, string[]> = {
 	...usageExampleCatalogVariants,
 	...moduleCatalogVariants,
 	'reports.component.recorded-value': recordedValueStates,
-	'reports.component.report-summary': reportSummaryStates,
+
 	'reports.component.image-zoom': imageZoomStates,
-	'reports.component.coverage-list': coverageListStates,
+
 	'reports.component.browser-errors': browserErrorsStates,
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [

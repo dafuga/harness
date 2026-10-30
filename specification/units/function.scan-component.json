@@ -33,67 +33,80 @@
 			{
 				"name": "instanceScript.code",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Svelte source from which comments and module-context scripts are excluded."
 			},
 			{
 				"name": "componentSource.code",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Svelte component or instance TypeScript source to parse without executing it."
 			},
 			{
 				"name": "propsDeclaration.file",
 				"type": "ts.SourceFile",
-				"required": true
+				"required": true,
+				"description": "Parsed instance source whose top-level props declaration is selected."
 			},
 			{
 				"name": "propsType.node",
 				"type": "ts.VariableDeclaration",
-				"required": true
+				"required": true,
+				"description": "Props variable declaration whose annotation or $props type argument is inspected."
 			},
 			{
 				"name": "localProps.type",
 				"type": "ts.TypeNode | undefined",
-				"required": true
+				"required": true,
+				"description": "Optional props type node to expand into source-declared fields."
 			},
 			{
 				"name": "localProps.file",
 				"type": "ts.SourceFile",
-				"required": true
+				"required": true,
+				"description": "Instance source containing local interfaces and aliases referenced by the props type."
 			},
 			{
 				"name": "localProps.seen",
 				"type": "unknown",
-				"required": false
+				"required": false,
+				"description": "Visited local type names preventing recursive expansion; defaults to an empty set."
 			},
 			{
 				"name": "propMembers.members",
 				"type": "ts.NodeArray<ts.TypeElement>",
-				"required": true
+				"required": true,
+				"description": "Interface or object-type members to convert to required or optional prop fields."
 			},
 			{
 				"name": "boundProps.items",
 				"type": "ContractItem[]",
-				"required": true
+				"required": true,
+				"description": "Declared prop fields before destructured binding names and literal defaults are applied."
 			},
 			{
 				"name": "boundProps.node",
 				"type": "ts.VariableDeclaration",
-				"required": true
+				"required": true,
+				"description": "Props declaration containing the actual destructuring bindings and defaults."
 			},
 			{
 				"name": "boundProps.owner",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Canonical component name used to qualify each public input."
 			},
 			{
 				"name": "componentSnippets.code",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Svelte source whose authored markup snippets are scanned separately from props and script exports."
 			},
 			{
 				"name": "componentSnippets.owner",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Canonical component name used to qualify each snippet and its parameters."
 			},
 			{
 				"name": "scanComponent.code",
@@ -123,7 +136,8 @@
 					{
 						"name": "instanceScript.code",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Svelte source from which comments and module-context scripts are excluded."
 					}
 				],
 				"outputs": [
@@ -141,7 +155,8 @@
 					{
 						"name": "componentSource.code",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Svelte component or instance TypeScript source to parse without executing it."
 					}
 				],
 				"outputs": [
@@ -159,7 +174,8 @@
 					{
 						"name": "propsDeclaration.file",
 						"type": "ts.SourceFile",
-						"required": true
+						"required": true,
+						"description": "Parsed instance source whose top-level props declaration is selected."
 					}
 				],
 				"outputs": [
@@ -177,7 +193,8 @@
 					{
 						"name": "propsType.node",
 						"type": "ts.VariableDeclaration",
-						"required": true
+						"required": true,
+						"description": "Props variable declaration whose annotation or $props type argument is inspected."
 					}
 				],
 				"outputs": [
@@ -195,17 +212,20 @@
 					{
 						"name": "localProps.type",
 						"type": "ts.TypeNode | undefined",
-						"required": true
+						"required": true,
+						"description": "Optional props type node to expand into source-declared fields."
 					},
 					{
 						"name": "localProps.file",
 						"type": "ts.SourceFile",
-						"required": true
+						"required": true,
+						"description": "Instance source containing local interfaces and aliases referenced by the props type."
 					},
 					{
 						"name": "localProps.seen",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Visited local type names preventing recursive expansion; defaults to an empty set."
 					}
 				],
 				"outputs": [
@@ -223,7 +243,8 @@
 					{
 						"name": "propMembers.members",
 						"type": "ts.NodeArray<ts.TypeElement>",
-						"required": true
+						"required": true,
+						"description": "Interface or object-type members to convert to required or optional prop fields."
 					}
 				],
 				"outputs": [
@@ -241,17 +262,20 @@
 					{
 						"name": "boundProps.items",
 						"type": "ContractItem[]",
-						"required": true
+						"required": true,
+						"description": "Declared prop fields before destructured binding names and literal defaults are applied."
 					},
 					{
 						"name": "boundProps.node",
 						"type": "ts.VariableDeclaration",
-						"required": true
+						"required": true,
+						"description": "Props declaration containing the actual destructuring bindings and defaults."
 					},
 					{
 						"name": "boundProps.owner",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Canonical component name used to qualify each public input."
 					}
 				],
 				"outputs": [
@@ -269,12 +293,14 @@
 					{
 						"name": "componentSnippets.code",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Svelte source whose authored markup snippets are scanned separately from props and script exports."
 					},
 					{
 						"name": "componentSnippets.owner",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Canonical component name used to qualify each snippet and its parameters."
 					}
 				],
 				"outputs": [

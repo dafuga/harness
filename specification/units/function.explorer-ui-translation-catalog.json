@@ -31,29 +31,34 @@
 			{
 				"name": "translationCatalog.tree",
 				"type": "SourceTree",
-				"required": true
+				"required": true,
+				"description": "Selected-revision source tree from which translation declarations and dictionaries are read."
 			},
 			{
 				"name": "translationCatalog.units",
 				"type": "RevisionRegistry['units']",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Optional registered units used to identify translation sources; defaults to an empty list."
 			},
 			{
 				"name": "flattenMessages.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Dictionary object containing string messages or nested dictionaries; invalid shapes are rejected."
 			},
 			{
 				"name": "flattenMessages.prefix",
 				"type": "string",
 				"required": false,
-				"default": ""
+				"default": "",
+				"description": "Optional dotted path prepended to flattened message keys; defaults to an empty string."
 			},
 			{
 				"name": "translationMessages.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "TypeScript source containing static translation imports, registrations and dictionary declarations."
 			}
 		],
 		"outputs": [
@@ -71,13 +76,15 @@
 					{
 						"name": "translationCatalog.tree",
 						"type": "SourceTree",
-						"required": true
+						"required": true,
+						"description": "Selected-revision source tree from which translation declarations and dictionaries are read."
 					},
 					{
 						"name": "translationCatalog.units",
 						"type": "RevisionRegistry['units']",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Optional registered units used to identify translation sources; defaults to an empty list."
 					}
 				],
 				"outputs": [
@@ -95,13 +102,15 @@
 					{
 						"name": "flattenMessages.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Dictionary object containing string messages or nested dictionaries; invalid shapes are rejected."
 					},
 					{
 						"name": "flattenMessages.prefix",
 						"type": "string",
 						"required": false,
-						"default": ""
+						"default": "",
+						"description": "Optional dotted path prepended to flattened message keys; defaults to an empty string."
 					}
 				],
 				"outputs": [
@@ -124,7 +133,8 @@
 					{
 						"name": "translationMessages.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "TypeScript source containing static translation imports, registrations and dictionary declarations."
 					}
 				],
 				"outputs": [

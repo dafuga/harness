@@ -34,57 +34,68 @@
 			{
 				"name": "testPath.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative path to classify as a test, fixture or scenario input."
 			},
 			{
 				"name": "metadata.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative path to classify as loop metadata or Markdown documentation."
 			},
 			{
 				"name": "regressionFiles.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository containing the selected committed test corpus."
 			},
 			{
 				"name": "regressionFiles.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Exact commit whose tests, fixtures and runner configuration are fingerprinted."
 			},
 			{
 				"name": "regressionFiles.tests",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Named strengthened tests that must exist in the committed corpus."
 			},
 			{
 				"name": "regressionFixCommit.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository containing both the red checkpoint and candidate repair."
 			},
 			{
 				"name": "regressionFixCommit.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Candidate fix commit whose ancestry, source-only repair and frozen test inputs are checked."
 			},
 			{
 				"name": "regressionFixCommit.red",
 				"type": "RegressionRecord",
-				"required": true
+				"required": true,
+				"description": "Retained failing record identifying the original test commit and frozen corpus."
 			},
 			{
 				"name": "regressionTestCommit.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository containing the candidate failing-test checkpoint."
 			},
 			{
 				"name": "regressionTestCommit.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Commit checked for a test-only change before any product repair."
 			},
 			{
 				"name": "regressionTestCommit.tests",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Named tests that the failing-test commit must strengthen."
 			}
 		],
 		"outputs": [
@@ -108,7 +119,8 @@
 					{
 						"name": "testPath.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative path to classify as a test, fixture or scenario input."
 					}
 				],
 				"outputs": [
@@ -126,7 +138,8 @@
 					{
 						"name": "metadata.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative path to classify as loop metadata or Markdown documentation."
 					}
 				],
 				"outputs": [
@@ -144,17 +157,20 @@
 					{
 						"name": "regressionFiles.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository containing the selected committed test corpus."
 					},
 					{
 						"name": "regressionFiles.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Exact commit whose tests, fixtures and runner configuration are fingerprinted."
 					},
 					{
 						"name": "regressionFiles.tests",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Named strengthened tests that must exist in the committed corpus."
 					}
 				],
 				"outputs": [
@@ -177,17 +193,20 @@
 					{
 						"name": "regressionFixCommit.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository containing both the red checkpoint and candidate repair."
 					},
 					{
 						"name": "regressionFixCommit.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Candidate fix commit whose ancestry, source-only repair and frozen test inputs are checked."
 					},
 					{
 						"name": "regressionFixCommit.red",
 						"type": "RegressionRecord",
-						"required": true
+						"required": true,
+						"description": "Retained failing record identifying the original test commit and frozen corpus."
 					}
 				],
 				"outputs": [
@@ -210,17 +229,20 @@
 					{
 						"name": "regressionTestCommit.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository containing the candidate failing-test checkpoint."
 					},
 					{
 						"name": "regressionTestCommit.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Commit checked for a test-only change before any product repair."
 					},
 					{
 						"name": "regressionTestCommit.tests",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Named tests that the failing-test commit must strengthen."
 					}
 				],
 				"outputs": [

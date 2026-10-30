@@ -41,23 +41,27 @@
 				"name": "GameWorkspace.projectId",
 				"type": "string | null",
 				"required": false,
-				"default": null
+				"default": null,
+				"description": "Identifier of the game project to load, or null before project selection."
 			},
 			{
 				"name": "GameWorkspace.commit",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Optional historical commit to load; omitted for the current editable document."
 			},
 			{
 				"name": "GameWorkspace.readonly",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Prevents document changes and saves when true; defaults to false."
 			},
 			{
 				"name": "GameWorkspace.bridge",
 				"type": "DesktopBridge",
-				"required": false
+				"required": false,
+				"description": "Optional native bridge used to read and save game documents."
 			}
 		],
 		"outputs": [

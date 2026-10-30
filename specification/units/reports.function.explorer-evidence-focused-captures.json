@@ -37,12 +37,14 @@
 			{
 				"name": "withoutViewportSuffix.state",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Recorded state identifier that may end with its device viewport suffix."
 			},
 			{
 				"name": "withoutViewportSuffix.viewport",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Viewport identifier to remove only when it is the exact final state suffix."
 			},
 			{
 				"name": "focusedScenario.sides",
@@ -103,12 +105,14 @@
 					{
 						"name": "withoutViewportSuffix.state",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Recorded state identifier that may end with its device viewport suffix."
 					},
 					{
 						"name": "withoutViewportSuffix.viewport",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Viewport identifier to remove only when it is the exact final state suffix."
 					}
 				],
 				"outputs": [

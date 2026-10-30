@@ -63,7 +63,9 @@ console.log(JSON.stringify({value:greet('real'),instrumented:bytes.includes('__h
 			'Bun preload requires actual source observations'
 		).toHaveLength(1);
 		expect(measurements.filter((item) => item.unitOfMeasure === 'bytes')).toHaveLength(1);
+		// Cold public schema and profiler entries must both validate after bootstrap.
 		assertProjectBootstrap(fixture.environment);
+		expect(await readFile(join(fixture.root, 'subject.ts'), 'utf8')).toBe(source);
 	} finally {
 		await fixture.remove();
 	}

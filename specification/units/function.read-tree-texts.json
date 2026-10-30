@@ -16,12 +16,14 @@
 			{
 				"name": "readTreeTexts.tree",
 				"type": "Pick<SourceTree, 'read'>",
-				"required": true
+				"required": true,
+				"description": "Source-tree reader bound to the requested revision."
 			},
 			{
 				"name": "readTreeTexts.paths",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Ordered source paths to read in bounded batches; returned text retains this order."
 			}
 		],
 		"outputs": [
@@ -45,12 +47,14 @@
 					{
 						"name": "readTreeTexts.tree",
 						"type": "Pick<SourceTree, 'read'>",
-						"required": true
+						"required": true,
+						"description": "Source-tree reader bound to the requested revision."
 					},
 					{
 						"name": "readTreeTexts.paths",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Ordered source paths to read in bounded batches; returned text retains this order."
 					}
 				],
 				"outputs": [

@@ -26,7 +26,8 @@
 				"name": "referencePrompt.discover",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Includes discovery guidance when true; defaults to false for already known unit references."
 			}
 		],
 		"outputs": [
@@ -51,7 +52,8 @@
 						"name": "referencePrompt.discover",
 						"type": "boolean",
 						"required": false,
-						"default": false
+						"default": false,
+						"description": "Includes discovery guidance when true; defaults to false for already known unit references."
 					}
 				],
 				"outputs": [

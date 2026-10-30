@@ -51,7 +51,8 @@
 				"name": "historySeries.focused",
 				"type": "RegressionView[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Optional retained focused regression runs supplying measurements alongside full verification records; defaults to an empty list."
 			}
 		],
 		"outputs": [
@@ -107,7 +108,8 @@
 						"name": "historySeries.focused",
 						"type": "RegressionView[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Optional retained focused regression runs supplying measurements alongside full verification records; defaults to an empty list."
 					}
 				],
 				"outputs": [

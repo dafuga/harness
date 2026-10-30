@@ -30,22 +30,26 @@
 			{
 				"name": "recordedPreview.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "Workspace providing the project, selected revision and authorized screenshot reader."
 			},
 			{
 				"name": "recordedPreview.entityId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Registered entity whose recorded screenshot is requested."
 			},
 			{
 				"name": "recordedPreview.thumbnail",
 				"type": "RecordedThumbnail",
-				"required": true
+				"required": true,
+				"description": "Selected screenshot metadata, including its revision and media identity."
 			},
 			{
 				"name": "recordedPreview.apply",
 				"type": "(state: PreviewState) => void",
-				"required": true
+				"required": true,
+				"description": "Receives loading, loaded or unavailable preview state until cleanup releases the image."
 			}
 		],
 		"outputs": [
@@ -63,22 +67,26 @@
 					{
 						"name": "recordedPreview.workspace",
 						"type": "Workspace",
-						"required": true
+						"required": true,
+						"description": "Workspace providing the project, selected revision and authorized screenshot reader."
 					},
 					{
 						"name": "recordedPreview.entityId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Registered entity whose recorded screenshot is requested."
 					},
 					{
 						"name": "recordedPreview.thumbnail",
 						"type": "RecordedThumbnail",
-						"required": true
+						"required": true,
+						"description": "Selected screenshot metadata, including its revision and media identity."
 					},
 					{
 						"name": "recordedPreview.apply",
 						"type": "(state: PreviewState) => void",
-						"required": true
+						"required": true,
+						"description": "Receives loading, loaded or unavailable preview state until cleanup releases the image."
 					}
 				],
 				"outputs": [

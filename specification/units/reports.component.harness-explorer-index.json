@@ -57,7 +57,8 @@
 				"name": "ExplorerIndex.scope",
 				"type": "string",
 				"required": false,
-				"default": ""
+				"default": "",
+				"description": "Optional selected branch and revision scope for catalog links."
 			},
 			{
 				"name": "ExplorerIndex.list",

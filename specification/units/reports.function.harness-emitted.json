@@ -92,22 +92,26 @@
 			{
 				"name": "built.record",
 				"type": "HarnessRecord | null",
-				"required": true
+				"required": true,
+				"description": "Optional selected verification record containing emitted-size observations."
 			},
 			{
 				"name": "built.unit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Registered unit identifier whose emitted artifact measurement is selected."
 			},
 			{
 				"name": "built.target",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Optional execution target used to select its matching emitted-size observation."
 			},
 			{
 				"name": "targetsOf.unit",
 				"type": "HarnessUnit",
-				"required": true
+				"required": true,
+				"description": "Unit whose declared runtime targets determine applicable emitted artifact rows."
 			},
 			{
 				"name": "harnessEmitted.unit",
@@ -274,17 +278,20 @@
 					{
 						"name": "built.record",
 						"type": "HarnessRecord | null",
-						"required": true
+						"required": true,
+						"description": "Optional selected verification record containing emitted-size observations."
 					},
 					{
 						"name": "built.unit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Registered unit identifier whose emitted artifact measurement is selected."
 					},
 					{
 						"name": "built.target",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "Optional execution target used to select its matching emitted-size observation."
 					}
 				],
 				"outputs": [
@@ -302,7 +309,8 @@
 					{
 						"name": "targetsOf.unit",
 						"type": "HarnessUnit",
-						"required": true
+						"required": true,
+						"description": "Unit whose declared runtime targets determine applicable emitted artifact rows."
 					}
 				],
 				"outputs": [

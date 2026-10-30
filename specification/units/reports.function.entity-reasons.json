@@ -73,22 +73,26 @@
 			{
 				"name": "alike.said",
 				"type": "Array<{ text: string; of: Item }>",
-				"required": true
+				"required": true,
+				"description": "Reason text and its originating items to group by normalized wording."
 			},
 			{
 				"name": "attempts.reasons",
 				"type": "HarnessExplanation[]",
-				"required": true
+				"required": true,
+				"description": "Recorded explanations whose attempts and outcomes are summarized."
 			},
 			{
 				"name": "attempts.kind",
 				"type": "ReasonKind",
-				"required": true
+				"required": true,
+				"description": "Explanation category selecting the simplification or performance attempt."
 			},
 			{
 				"name": "uses.reason",
 				"type": "HarnessExplanation",
-				"required": true
+				"required": true,
+				"description": "One recorded explanation from which each attempt and its subject are projected."
 			},
 			{
 				"name": "entityReasons.reasons",
@@ -193,7 +197,8 @@
 					{
 						"name": "alike.said",
 						"type": "Array<{ text: string; of: Item }>",
-						"required": true
+						"required": true,
+						"description": "Reason text and its originating items to group by normalized wording."
 					}
 				],
 				"outputs": [
@@ -211,12 +216,14 @@
 					{
 						"name": "attempts.reasons",
 						"type": "HarnessExplanation[]",
-						"required": true
+						"required": true,
+						"description": "Recorded explanations whose attempts and outcomes are summarized."
 					},
 					{
 						"name": "attempts.kind",
 						"type": "ReasonKind",
-						"required": true
+						"required": true,
+						"description": "Explanation category selecting the simplification or performance attempt."
 					}
 				],
 				"outputs": [
@@ -234,7 +241,8 @@
 					{
 						"name": "uses.reason",
 						"type": "HarnessExplanation",
-						"required": true
+						"required": true,
+						"description": "One recorded explanation from which each attempt and its subject are projected."
 					}
 				],
 				"outputs": [

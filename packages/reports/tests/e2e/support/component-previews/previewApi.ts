@@ -4,8 +4,7 @@ import { join } from 'node:path';
 import { buildData } from './buildData';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
-import { routeCpuFixture } from './analyticsCpuActions';
-import { siteActivityVariant } from './projectActivityVariants';
+
 import { activity, live } from './activity';
 import { image, layoutImage, ordersPageImage } from './shared';
 import {
@@ -43,7 +42,6 @@ export async function servePreview(route: Route, home: string, markup = '') {
 		});
 	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname);
 	if (url.pathname === '/api/project-activity') return activityFixture(route);
-	if (url.pathname === '/api/analytics-cpu') return routeCpuFixture(route);
 	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
 	if (url.pathname === '/api/replay-video')
 		return route.fulfill({ contentType: 'video/mp4', body: 'Synthetic export response.' });
@@ -133,10 +131,7 @@ function activityFixture(route: Route) {
 	const variant = query.get('variant') ?? '';
 	if (variant === 'failed-refresh')
 		return route.fulfill({ contentType: 'application/json', body: 'Activity unavailable.' });
-	if (query.get('unit') === 'reports.component.site-activity') {
-		const props = siteActivityVariant({ shown: { activity, live } }, variant);
-		return route.fulfill({ json: props?.shown ?? { activity, live } });
-	}
+
 	return route.fulfill({ json: { activity, live } });
 }
 

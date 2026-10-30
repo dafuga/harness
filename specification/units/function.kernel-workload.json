@@ -63,12 +63,14 @@
 			{
 				"name": "edges.size",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Number of graph nodes whose repeatable synthetic dependency edges are generated."
 			},
 			{
 				"name": "edges.next",
 				"type": "Random",
-				"required": true
+				"required": true,
+				"description": "Seeded random-number source controlling edge counts, endpoints and occasional cycles."
 			}
 		],
 		"outputs": [
@@ -161,12 +163,14 @@
 					{
 						"name": "edges.size",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Number of graph nodes whose repeatable synthetic dependency edges are generated."
 					},
 					{
 						"name": "edges.next",
 						"type": "Random",
-						"required": true
+						"required": true,
+						"description": "Seeded random-number source controlling edge counts, endpoints and occasional cycles."
 					}
 				],
 				"outputs": [

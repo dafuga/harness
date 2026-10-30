@@ -29,22 +29,26 @@
 			{
 				"name": "RecordedPreview.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "Current project and revision context used to fetch the recorded image."
 			},
 			{
 				"name": "RecordedPreview.entityId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Registered entity whose selected screenshot is shown."
 			},
 			{
 				"name": "RecordedPreview.title",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Accessible title identifying the previewed entity."
 			},
 			{
 				"name": "RecordedPreview.thumbnail",
 				"type": "RecordedThumbnail",
-				"required": true
+				"required": true,
+				"description": "Recorded screenshot selection and provenance to load for this entity."
 			},
 			{
 				"name": "RecordedPreview.compact",

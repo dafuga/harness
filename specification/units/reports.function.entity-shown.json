@@ -47,7 +47,8 @@
 			{
 				"name": "modelTableView.unit",
 				"type": "HarnessUnit",
-				"required": true
+				"required": true,
+				"description": "Selected model unit whose source-declared storage definitions and unresolved gaps are presented."
 			},
 			{
 				"name": "entityChanged.host",
@@ -148,7 +149,8 @@
 					{
 						"name": "modelTableView.unit",
 						"type": "HarnessUnit",
-						"required": true
+						"required": true,
+						"description": "Selected model unit whose source-declared storage definitions and unresolved gaps are presented."
 					}
 				],
 				"outputs": [

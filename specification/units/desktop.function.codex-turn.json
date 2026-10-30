@@ -43,7 +43,8 @@
 			{
 				"name": "codexTurn.queue",
 				"type": "ResourceQueueService",
-				"required": false
+				"required": false,
+				"description": "Optional resource queue admitting the provider process; omitted to use the normal managed turn queue."
 			}
 		],
 		"outputs": [
@@ -84,7 +85,8 @@
 					{
 						"name": "codexTurn.queue",
 						"type": "ResourceQueueService",
-						"required": false
+						"required": false,
+						"description": "Optional resource queue admitting the provider process; omitted to use the normal managed turn queue."
 					}
 				],
 				"outputs": [

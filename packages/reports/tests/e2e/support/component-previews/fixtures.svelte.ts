@@ -54,15 +54,11 @@ export function previewFixture(id: string, variant = '') {
 	if (!props) throw new Error(`No representative fixture for ${id}`);
 	const selectedProps = projectAgentProps(id, props, desktop, variant);
 	const rendered = variantProps(id, selectedProps, variant);
-	const reactive =
-		id === 'reports.component.evidence-viewer'
-			? evidenceViewerState(rendered as PreviewCases[string])
-			: rendered;
 	// A shell that reads its place from the browser is opened where its host serves it.
 	const address = { ...legacyAddresses, ...hub.addresses }[id];
 	if (address) history.replaceState(history.state, '', address);
 	return {
-		props: reactive,
+		props: reactiveProps(id, rendered),
 		remote,
 		hub: hub.context,
 		cleanup: () => {
@@ -71,6 +67,12 @@ export function previewFixture(id: string, variant = '') {
 		},
 		ready: desktop.ready
 	};
+}
+
+function reactiveProps<Props>(id: string, props: Props) {
+	return id === 'reports.component.evidence-viewer'
+		? evidenceViewerState(props as PreviewCases[string])
+		: props;
 }
 
 function projectAgentProps(

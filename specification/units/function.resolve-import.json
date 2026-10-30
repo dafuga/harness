@@ -27,12 +27,14 @@
 			{
 				"name": "resolveHttpEndpoint.reference",
 				"type": "SourceReference",
-				"required": true
+				"required": true,
+				"description": "Source-recorded HTTP request with method and URL to resolve against a registered endpoint."
 			},
 			{
 				"name": "resolveHttpEndpoint.context",
 				"type": "ResolveContext",
-				"required": true
+				"required": true,
+				"description": "Project files and route resolution context used to identify the request destination."
 			},
 			{
 				"name": "resolveImport.from",
@@ -68,12 +70,14 @@
 					{
 						"name": "resolveHttpEndpoint.reference",
 						"type": "SourceReference",
-						"required": true
+						"required": true,
+						"description": "Source-recorded HTTP request with method and URL to resolve against a registered endpoint."
 					},
 					{
 						"name": "resolveHttpEndpoint.context",
 						"type": "ResolveContext",
-						"required": true
+						"required": true,
+						"description": "Project files and route resolution context used to identify the request destination."
 					}
 				],
 				"outputs": [

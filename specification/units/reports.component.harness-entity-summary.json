@@ -50,7 +50,8 @@
 				"name": "EntitySummary.comparison",
 				"type": "MetricComparison | null",
 				"required": false,
-				"default": null
+				"default": null,
+				"description": "Optional metric comparison used by compact overview rows; defaults to null."
 			}
 		],
 		"outputs": [

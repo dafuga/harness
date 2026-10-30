@@ -33,7 +33,8 @@
 				"name": "deviceCapabilities.comments",
 				"type": "boolean",
 				"required": false,
-				"default": true
+				"default": true,
+				"description": "Whether the device may comment; false also disables agent and planning actions. Defaults to true."
 			}
 		],
 		"outputs": [
@@ -58,7 +59,8 @@
 						"name": "deviceCapabilities.comments",
 						"type": "boolean",
 						"required": false,
-						"default": true
+						"default": true,
+						"description": "Whether the device may comment; false also disables agent and planning actions. Defaults to true."
 					}
 				],
 				"outputs": [

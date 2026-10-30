@@ -40,7 +40,8 @@
 			{
 				"name": "httpReferences.code",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Script source to scan for fetch calls and statically readable request methods and URLs."
 			},
 			{
 				"name": "scanImports.code",
@@ -81,7 +82,8 @@
 					{
 						"name": "httpReferences.code",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Script source to scan for fetch calls and statically readable request methods and URLs."
 					}
 				],
 				"outputs": [

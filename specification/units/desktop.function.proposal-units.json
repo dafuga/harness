@@ -43,12 +43,14 @@
 			{
 				"name": "taskUnits.units",
 				"type": "ComponentManifest[]",
-				"required": true
+				"required": true,
+				"description": "Registered units eligible to be referenced in the proposed task."
 			},
 			{
 				"name": "taskUnits.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Task wording used to rank relevant existing unit references."
 			}
 		],
 		"outputs": [
@@ -92,12 +94,14 @@
 					{
 						"name": "taskUnits.units",
 						"type": "ComponentManifest[]",
-						"required": true
+						"required": true,
+						"description": "Registered units eligible to be referenced in the proposed task."
 					},
 					{
 						"name": "taskUnits.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Task wording used to rank relevant existing unit references."
 					}
 				],
 				"outputs": [

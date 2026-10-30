@@ -29,12 +29,14 @@
 			{
 				"name": "parameterDefault.node",
 				"type": "ts.Expression | undefined",
-				"required": true
+				"required": true,
+				"description": "Optional initializer expression to inspect for a JSON literal default; absent or computed expressions yield no default."
 			},
 			{
 				"name": "parameterType.node",
 				"type": "ts.Expression | undefined",
-				"required": true
+				"required": true,
+				"description": "Optional initializer expression whose readable literal value determines an inferred type."
 			},
 			{
 				"name": "splitTopLevel.masked",
@@ -57,7 +59,8 @@
 			{
 				"name": "parseParameters._masked",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Compatibility argument containing masked source; the AST parser currently reads code directly."
 			},
 			{
 				"name": "parseParameters.options",
@@ -97,7 +100,8 @@
 					{
 						"name": "parameterDefault.node",
 						"type": "ts.Expression | undefined",
-						"required": true
+						"required": true,
+						"description": "Optional initializer expression to inspect for a JSON literal default; absent or computed expressions yield no default."
 					}
 				],
 				"outputs": [
@@ -115,7 +119,8 @@
 					{
 						"name": "parameterType.node",
 						"type": "ts.Expression | undefined",
-						"required": true
+						"required": true,
+						"description": "Optional initializer expression whose readable literal value determines an inferred type."
 					}
 				],
 				"outputs": [
@@ -165,7 +170,8 @@
 					{
 						"name": "parseParameters._masked",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Compatibility argument containing masked source; the AST parser currently reads code directly."
 					},
 					{
 						"name": "parseParameters.options",

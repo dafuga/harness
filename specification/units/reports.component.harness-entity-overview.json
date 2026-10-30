@@ -37,7 +37,8 @@
 				"name": "EntityOverview.comparison",
 				"type": "MetricComparison | null",
 				"required": false,
-				"default": null
+				"default": null,
+				"description": "Optional before/after metric context for the summary; defaults to null."
 			},
 			{
 				"name": "EntityOverview.children",

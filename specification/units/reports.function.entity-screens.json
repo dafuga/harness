@@ -89,7 +89,8 @@
 				"name": "catalogShot.allowFocusedDefault",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Allows an unselected default to use a retained focused capture when true; defaults to false."
 			},
 			{
 				"name": "galleryItems.evidence",
@@ -225,7 +226,8 @@
 						"name": "catalogShot.allowFocusedDefault",
 						"type": "boolean",
 						"required": false,
-						"default": false
+						"default": false,
+						"description": "Allows an unselected default to use a retained focused capture when true; defaults to false."
 					}
 				],
 				"outputs": [
