@@ -3143,6 +3143,42 @@
 			"units": ["reports.component.explorer-ui-config-value-tree"]
 		},
 		{
+			"id": "reports-component-explorer-ui-config-value-tree-unknown-object",
+			"title": "ConfigValueTree: object contents unavailable",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-single-array",
+			"title": "ConfigValueTree: one item",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-single-object",
+			"title": "ConfigValueTree: one attribute",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-long-key",
+			"title": "ConfigValueTree: long source key",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-disclosure-focused",
+			"title": "ConfigValueTree: focused disclosure",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
+			"id": "reports-component-explorer-ui-config-value-tree-disclosure-hovered",
+			"title": "ConfigValueTree: hovered disclosure",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-config-value-tree"]
+		},
+		{
 			"id": "reports-component-explorer-ui-config-value-tree-schema-array",
 			"title": "ConfigValueTree: array schema",
 			"coverage": "required",
@@ -7147,6 +7183,12 @@
 				"reports-component-explorer-ui-config-value-tree-empty-array",
 				"reports-component-explorer-ui-config-value-tree-empty-object",
 				"reports-component-explorer-ui-config-value-tree-unknown-array",
+				"reports-component-explorer-ui-config-value-tree-unknown-object",
+				"reports-component-explorer-ui-config-value-tree-single-array",
+				"reports-component-explorer-ui-config-value-tree-single-object",
+				"reports-component-explorer-ui-config-value-tree-long-key",
+				"reports-component-explorer-ui-config-value-tree-disclosure-focused",
+				"reports-component-explorer-ui-config-value-tree-disclosure-hovered",
 				"reports-component-explorer-ui-config-value-tree-schema-array",
 				"reports-component-explorer-ui-config-value-tree-expression",
 				"reports-component-explorer-ui-config-value-tree-long-expression",
