@@ -17,11 +17,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/MeasuresPanel.svelte",
-			"packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte"
-		],
-		"symbols": ["MeasuresPanel", "MeasuresPanel"]
+		"source": ["packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte"],
+		"symbols": ["MeasuresPanel"]
 	},
 	"contract": {
 		"origin": "declared",

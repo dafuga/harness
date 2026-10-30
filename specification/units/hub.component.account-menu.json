@@ -15,11 +15,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/AccountMenu.svelte",
-			"packages/hub/src/components/accounts-access/AccountMenu.svelte"
-		],
-		"symbols": ["AccountMenu", "AccountMenu"]
+		"source": ["packages/hub/src/components/accounts-access/AccountMenu.svelte"],
+		"symbols": ["AccountMenu"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -29,11 +29,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/RegressionProof.svelte",
 			"packages/reports/src/components/verification-evidence/RegressionProof.svelte",
 			"packages/reports/src/components/verification-evidence/regression-proof/regressionProof.css"
 		],
-		"symbols": ["RegressionProof", "RegressionProof"]
+		"symbols": ["RegressionProof"]
 	},
 	"contract": {
 		"origin": "declared",

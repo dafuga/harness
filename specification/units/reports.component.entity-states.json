@@ -28,11 +28,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/EntityStates.svelte",
-			"packages/reports/src/components/explorer-ui/EntityStates.svelte"
-		],
-		"symbols": ["EntityStates", "EntityStates"]
+		"source": ["packages/reports/src/components/explorer-ui/EntityStates.svelte"],
+		"symbols": ["EntityStates"]
 	},
 	"contract": {
 		"origin": "declared",

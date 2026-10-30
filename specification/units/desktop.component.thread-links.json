@@ -15,11 +15,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/explorer-ui/thread-links/ThreadLinks.svelte",
-			"packages/desktop/src/components/thread-links/ThreadLinks.svelte"
-		],
-		"symbols": ["ThreadLinks", "ThreadLinks"]
+		"source": ["packages/desktop/src/components/explorer-ui/thread-links/ThreadLinks.svelte"],
+		"symbols": ["ThreadLinks"]
 	},
 	"contract": {
 		"origin": "declared",

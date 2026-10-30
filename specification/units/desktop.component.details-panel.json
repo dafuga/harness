@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/DetailsPanel.svelte",
-			"packages/desktop/src/components/shared-primitives/DetailsPanel.svelte"
-		],
-		"symbols": ["DetailsPanel", "DetailsPanel"]
+		"source": ["packages/desktop/src/components/shared-primitives/DetailsPanel.svelte"],
+		"symbols": ["DetailsPanel"]
 	},
 	"contract": {
 		"origin": "declared",

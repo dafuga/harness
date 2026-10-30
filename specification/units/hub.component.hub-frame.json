@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/HubFrame.svelte",
-			"packages/hub/src/components/shared-primitives/HubFrame.svelte"
-		],
-		"symbols": ["HubFrame", "HubFrame"]
+		"source": ["packages/hub/src/components/shared-primitives/HubFrame.svelte"],
+		"symbols": ["HubFrame"]
 	},
 	"contract": {
 		"origin": "declared",

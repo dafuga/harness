@@ -16,11 +16,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/EvidenceProvenance.svelte",
-			"packages/reports/src/components/verification-evidence/EvidenceProvenance.svelte"
-		],
-		"symbols": ["EvidenceProvenance", "EvidenceProvenance"]
+		"source": ["packages/reports/src/components/verification-evidence/EvidenceProvenance.svelte"],
+		"symbols": ["EvidenceProvenance"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -24,11 +24,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/DeploymentActivity.svelte",
-			"packages/desktop/src/components/development-tooling/DeploymentActivity.svelte"
-		],
-		"symbols": ["DeploymentActivity", "DeploymentActivity"]
+		"source": ["packages/desktop/src/components/development-tooling/DeploymentActivity.svelte"],
+		"symbols": ["DeploymentActivity"]
 	},
 	"contract": {
 		"origin": "declared",

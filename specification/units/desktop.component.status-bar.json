@@ -16,11 +16,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/StatusBar.svelte",
-			"packages/desktop/src/components/shared-primitives/StatusBar.svelte"
-		],
-		"symbols": ["StatusBar", "StatusBar"]
+		"source": ["packages/desktop/src/components/shared-primitives/StatusBar.svelte"],
+		"symbols": ["StatusBar"]
 	},
 	"contract": {
 		"origin": "declared",

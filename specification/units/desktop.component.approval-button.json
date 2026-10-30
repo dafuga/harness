@@ -15,11 +15,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/ApprovalButton.svelte",
-			"packages/desktop/src/components/shared-primitives/ApprovalButton.svelte"
-		],
-		"symbols": ["ApprovalButton", "ApprovalButton"]
+		"source": ["packages/desktop/src/components/shared-primitives/ApprovalButton.svelte"],
+		"symbols": ["ApprovalButton"]
 	},
 	"contract": {
 		"origin": "declared",

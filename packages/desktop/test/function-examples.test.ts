@@ -15,8 +15,8 @@ import {
 	words
 } from '../../reports/test/artifactCaseDocs';
 import type { BehaviorCell } from '../../reports/src/utils/entityBehavior';
-import EntityCard from '../src/components/EntityCard.svelte';
-import RuntimeArtifact from '../src/components/RuntimeArtifact.svelte';
+import EntityCard from '../src/components/explorer-ui/EntityCard.svelte';
+import RuntimeArtifact from '../src/components/execution-runtimes/RuntimeArtifact.svelte';
 import type { Workspace } from '../src/lib/stores/workspace.svelte';
 import type { CatalogEntity } from '../src/models/Desktop.types';
 import { workspaceRoute } from '../src/utils/workspaceRoute';

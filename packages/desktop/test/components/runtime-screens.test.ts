@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { screenOptions } from '../../../reports/src/utils/entityScreens';
-import RuntimeScreens from '../../src/components/RuntimeScreens.svelte';
+import RuntimeScreens from '../../src/components/execution-runtimes/RuntimeScreens.svelte';
 import { commits, drawn, ids, scopeOf, shownEvidence } from '../evidence-fixture';
 
 const shown = async (id: string, commit: string | null = null) => {

@@ -11,11 +11,8 @@
 		"uses": ["reports.component.shared-primitives-atoms-html-span"]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/PlanBadge.svelte",
-			"packages/desktop/src/components/planning-collaboration/PlanBadge.svelte"
-		],
-		"symbols": ["PlanBadge", "PlanBadge"]
+		"source": ["packages/desktop/src/components/planning-collaboration/PlanBadge.svelte"],
+		"symbols": ["PlanBadge"]
 	},
 	"contract": {
 		"origin": "declared",

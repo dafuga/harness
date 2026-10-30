@@ -14,11 +14,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/StatusIcon.svelte",
-			"packages/desktop/src/components/shared-primitives/StatusIcon.svelte"
-		],
-		"symbols": ["StatusIcon", "StatusIcon"]
+		"source": ["packages/desktop/src/components/shared-primitives/StatusIcon.svelte"],
+		"symbols": ["StatusIcon"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/InviteAccept.svelte",
-			"packages/hub/src/components/shared-primitives/InviteAccept.svelte"
-		],
-		"symbols": ["InviteAccept", "InviteAccept"]
+		"source": ["packages/hub/src/components/shared-primitives/InviteAccept.svelte"],
+		"symbols": ["InviteAccept"]
 	},
 	"contract": {
 		"origin": "declared",

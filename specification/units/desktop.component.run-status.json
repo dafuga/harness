@@ -16,11 +16,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RunStatus.svelte",
-			"packages/desktop/src/components/shared-primitives/RunStatus.svelte"
-		],
-		"symbols": ["RunStatus", "RunStatus"]
+		"source": ["packages/desktop/src/components/shared-primitives/RunStatus.svelte"],
+		"symbols": ["RunStatus"]
 	},
 	"contract": {
 		"origin": "declared",

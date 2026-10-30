@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { render } from 'svelte/server';
-import ExplorerUsage from '../../src/components/ExplorerUsage.svelte';
+import ExplorerUsage from '../../src/components/explorer-ui/ExplorerUsage.svelte';
 import { content, hostProps, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 import { withHelpers, withNamedConsumers } from '../entityPreviewHelpers';

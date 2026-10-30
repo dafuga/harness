@@ -22,11 +22,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RelationshipsPanel.svelte",
-			"packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte"
-		],
-		"symbols": ["RelationshipsPanel", "RelationshipsPanel"]
+		"source": ["packages/desktop/src/components/shared-primitives/RelationshipsPanel.svelte"],
+		"symbols": ["RelationshipsPanel"]
 	},
 	"contract": {
 		"origin": "declared",

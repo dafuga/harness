@@ -14,11 +14,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/EntityExamples.svelte",
-			"packages/reports/src/components/explorer-ui/EntityExamples.svelte"
-		],
-		"symbols": ["EntityExamples", "EntityExamples"]
+		"source": ["packages/reports/src/components/explorer-ui/EntityExamples.svelte"],
+		"symbols": ["EntityExamples"]
 	},
 	"contract": {
 		"origin": "declared",

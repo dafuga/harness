@@ -7,9 +7,9 @@
 		DeploymentReceipt
 	} from '../../models/development-tooling/Deployment.types';
 	import { displayTime } from '../../utils/development-tooling/revisionTime';
-	import ChoiceDialog from '../ChoiceDialog.svelte';
+	import ChoiceDialog from '../shared-primitives/ChoiceDialog.svelte';
 	import DeploymentDetails from './DeploymentDetails.svelte';
-	import Icon from '../Icon.svelte';
+	import Icon from '../shared-primitives/Icon.svelte';
 	/**
 	 * Deploy promotes the verified preprod commit to production, whatever environment, branch or
 	 * commit is shown. Opening reads the promotion and changes nothing; only Promote to production,

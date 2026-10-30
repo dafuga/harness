@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/AgentControls.svelte",
-			"packages/desktop/src/components/agents-providers/AgentControls.svelte"
-		],
-		"symbols": ["AgentControls", "AgentControls"]
+		"source": ["packages/desktop/src/components/agents-providers/AgentControls.svelte"],
+		"symbols": ["AgentControls"]
 	},
 	"contract": {
 		"origin": "declared",

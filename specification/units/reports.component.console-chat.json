@@ -14,11 +14,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ConsoleChat.svelte",
-			"packages/reports/src/components/planning-collaboration/ConsoleChat.svelte"
-		],
-		"symbols": ["ConsoleChat", "ConsoleChat"]
+		"source": ["packages/reports/src/components/planning-collaboration/ConsoleChat.svelte"],
+		"symbols": ["ConsoleChat"]
 	},
 	"contract": {
 		"origin": "declared",

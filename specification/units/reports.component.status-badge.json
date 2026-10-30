@@ -11,11 +11,8 @@
 		"uses": []
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/StatusBadge.svelte",
-			"packages/reports/src/components/shared-primitives/StatusBadge.svelte"
-		],
-		"symbols": ["StatusBadge", "StatusBadge"]
+		"source": ["packages/reports/src/components/shared-primitives/StatusBadge.svelte"],
+		"symbols": ["StatusBadge"]
 	},
 	"contract": {
 		"origin": "declared",

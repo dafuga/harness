@@ -17,11 +17,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/accounts-access/login-panel/LoginPanel.svelte",
-			"packages/hub/src/components/login-panel/LoginPanel.svelte"
-		],
-		"symbols": ["LoginPanel", "LoginPanel"]
+		"source": ["packages/hub/src/components/accounts-access/login-panel/LoginPanel.svelte"],
+		"symbols": ["LoginPanel"]
 	},
 	"contract": {
 		"origin": "declared",

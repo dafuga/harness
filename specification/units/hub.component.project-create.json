@@ -23,11 +23,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/ProjectCreate.svelte",
-			"packages/hub/src/components/projects-sessions/ProjectCreate.svelte"
-		],
-		"symbols": ["ProjectCreate", "ProjectCreate"]
+		"source": ["packages/hub/src/components/projects-sessions/ProjectCreate.svelte"],
+		"symbols": ["ProjectCreate"]
 	},
 	"contract": {
 		"origin": "declared",

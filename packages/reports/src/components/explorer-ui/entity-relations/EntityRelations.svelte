@@ -12,7 +12,7 @@
 	import { entityUsage } from './entityUsage';
 	import { entityCatalog } from '../../../utils/explorer-ui/entityCatalog';
 	import type { ExplorerScreenProps } from '../../../models/explorer-ui/ExplorerScreen.types';
-	import ExplorerCatalogItems from '../../ExplorerCatalogItems.svelte';
+	import ExplorerCatalogItems from '../ExplorerCatalogItems.svelte';
 	import HarnessIcon from '../HarnessIcon.svelte';
 	import HarnessGroup from '../HarnessGroup.svelte';
 	let {

@@ -31,11 +31,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/AudioEvidence.svelte",
 			"packages/reports/src/components/verification-evidence/AudioEvidence.svelte",
 			"packages/reports/src/components/verification-evidence/AudioEvidence.types.ts"
 		],
-		"symbols": ["AudioEvidence", "AudioEvidence", "AudioEvent"]
+		"symbols": ["AudioEvidence", "AudioEvent"]
 	},
 	"contract": {
 		"origin": "declared",

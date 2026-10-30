@@ -11,11 +11,8 @@
 		"uses": ["reports.component.harness-harness-icon"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ContractTable.svelte",
-			"packages/reports/src/components/shared-primitives/ContractTable.svelte"
-		],
-		"symbols": ["ContractTable", "ContractTable"]
+		"source": ["packages/reports/src/components/shared-primitives/ContractTable.svelte"],
+		"symbols": ["ContractTable"]
 	},
 	"contract": {
 		"origin": "declared",

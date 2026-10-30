@@ -18,11 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/Composer.svelte",
-			"packages/desktop/src/components/shared-primitives/Composer.svelte"
-		],
-		"symbols": ["Composer", "Composer"]
+		"source": ["packages/desktop/src/components/shared-primitives/Composer.svelte"],
+		"symbols": ["Composer"]
 	},
 	"contract": {
 		"origin": "declared",

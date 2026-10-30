@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimeRun.svelte",
-			"packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte"
-		],
-		"symbols": ["RuntimeRun", "RuntimeRun"]
+		"source": ["packages/desktop/src/components/execution-runtimes/RuntimeRun.svelte"],
+		"symbols": ["RuntimeRun"]
 	},
 	"contract": {
 		"origin": "declared",

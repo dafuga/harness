@@ -33,11 +33,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/CoveragePanel.svelte",
-			"packages/desktop/src/components/shared-primitives/CoveragePanel.svelte"
-		],
-		"symbols": ["CoveragePanel", "CoveragePanel"]
+		"source": ["packages/desktop/src/components/shared-primitives/CoveragePanel.svelte"],
+		"symbols": ["CoveragePanel"]
 	},
 	"contract": {
 		"origin": "declared",

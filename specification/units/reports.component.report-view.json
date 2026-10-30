@@ -28,11 +28,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/ReportView.svelte",
 			"packages/reports/src/components/reports-media/ReportView.svelte",
 			"packages/reports/src/components/reports-media/ReportView.types.ts"
 		],
-		"symbols": ["ReportView", "ReportView", "Detail"]
+		"symbols": ["ReportView", "Detail"]
 	},
 	"contract": {
 		"origin": "declared",

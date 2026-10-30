@@ -2,7 +2,7 @@
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
-	import ProjectAgent from '../../../../desktop/src/components/ProjectAgent.svelte';
+	import ProjectAgent from '../../../../desktop/src/components/agents-providers/ProjectAgent.svelte';
 	import { createConsoleWorkspaceStore } from '../../lib/projects-sessions/console-workspace/consoleWorkspace.svelte';
 	let {
 		base,

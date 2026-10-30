@@ -25,17 +25,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/gameplay-replay/GameplayReplay.svelte",
 			"packages/reports/src/components/reports-media/gameplay-replay/GameplayReplay.svelte",
 			"packages/reports/src/components/reports-media/gameplay-replay/replayPresentation.ts"
 		],
-		"symbols": [
-			"GameplayReplay",
-			"GameplayReplay",
-			"replayScenes",
-			"replayCursorIndex",
-			"replayNotice"
-		]
+		"symbols": ["GameplayReplay", "replayScenes", "replayCursorIndex", "replayNotice"]
 	},
 	"contract": {
 		"origin": "declared",

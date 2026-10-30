@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { render } from 'svelte/server';
-import DeploymentDetails from '../../src/components/DeploymentDetails.svelte';
+import DeploymentDetails from '../../src/components/development-tooling/DeploymentDetails.svelte';
 import { deploymentActivityFixture } from '../deployment-ui-fixture';
 test('activity and production details share progress, errors and receipt rendering', () => {
 	const deployment = deploymentActivityFixture({

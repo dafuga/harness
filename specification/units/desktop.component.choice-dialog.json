@@ -15,11 +15,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/ChoiceDialog.svelte",
-			"packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte"
-		],
-		"symbols": ["ChoiceDialog", "ChoiceDialog"]
+		"source": ["packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte"],
+		"symbols": ["ChoiceDialog"]
 	},
 	"contract": {
 		"origin": "declared",

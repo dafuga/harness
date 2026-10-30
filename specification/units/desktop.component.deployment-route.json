@@ -11,11 +11,8 @@
 		"uses": ["reports.component.shared-primitives-atoms-html-span"]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/DeploymentRoute.svelte",
-			"packages/desktop/src/components/development-tooling/DeploymentRoute.svelte"
-		],
-		"symbols": ["DeploymentRoute", "DeploymentRoute"]
+		"source": ["packages/desktop/src/components/development-tooling/DeploymentRoute.svelte"],
+		"symbols": ["DeploymentRoute"]
 	},
 	"contract": {
 		"origin": "declared",

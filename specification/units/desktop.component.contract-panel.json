@@ -23,11 +23,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/ContractPanel.svelte",
-			"packages/desktop/src/components/shared-primitives/ContractPanel.svelte"
-		],
-		"symbols": ["ContractPanel", "ContractPanel"]
+		"source": ["packages/desktop/src/components/shared-primitives/ContractPanel.svelte"],
+		"symbols": ["ContractPanel"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -17,11 +17,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/HostedConnection.svelte",
-			"packages/desktop/src/components/networking-security/HostedConnection.svelte"
-		],
-		"symbols": ["HostedConnection", "HostedConnection"]
+		"source": ["packages/desktop/src/components/networking-security/HostedConnection.svelte"],
+		"symbols": ["HostedConnection"]
 	},
 	"contract": {
 		"origin": "declared",

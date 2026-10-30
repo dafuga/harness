@@ -24,11 +24,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/report-summary/ReportSummary.svelte",
-			"packages/reports/src/components/reports-media/report-summary/ReportSummary.svelte"
-		],
-		"symbols": ["ReportSummary", "ReportSummary"]
+		"source": ["packages/reports/src/components/reports-media/report-summary/ReportSummary.svelte"],
+		"symbols": ["ReportSummary"]
 	},
 	"contract": {
 		"origin": "declared",

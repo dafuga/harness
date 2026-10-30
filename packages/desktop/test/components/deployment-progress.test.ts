@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { render } from 'svelte/server';
-import DeploymentProgress from '../../src/components/DeploymentProgress.svelte';
+import DeploymentProgress from '../../src/components/development-tooling/DeploymentProgress.svelte';
 import { deploymentActivityFixture } from '../deployment-ui-fixture';
 test('shared progress names its current step and retains failure position', () => {
 	const deployment = deploymentActivityFixture({

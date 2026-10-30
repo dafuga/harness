@@ -11,11 +11,8 @@
 		"uses": ["reports.component.recorded-value"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ContractExample.svelte",
-			"packages/reports/src/components/shared-primitives/ContractExample.svelte"
-		],
-		"symbols": ["ContractExample", "ContractExample"]
+		"source": ["packages/reports/src/components/shared-primitives/ContractExample.svelte"],
+		"symbols": ["ContractExample"]
 	},
 	"contract": {
 		"origin": "declared",

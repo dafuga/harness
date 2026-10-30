@@ -11,11 +11,8 @@
 		"uses": ["reports.component.select"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/UploadComparison.svelte",
-			"packages/reports/src/components/shared-primitives/UploadComparison.svelte"
-		],
-		"symbols": ["UploadComparison", "UploadComparison"]
+		"source": ["packages/reports/src/components/shared-primitives/UploadComparison.svelte"],
+		"symbols": ["UploadComparison"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -27,11 +27,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/nav-bar/NavBar.svelte",
 			"packages/desktop/src/components/projects-sessions/nav-bar/NavBar.svelte",
 			"packages/desktop/src/components/projects-sessions/nav-bar/nav-bar/navBar.css"
 		],
-		"symbols": ["NavBar", "NavBar"]
+		"symbols": ["NavBar"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -23,11 +23,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/ProjectGate.svelte",
-			"packages/desktop/src/components/projects-sessions/ProjectGate.svelte"
-		],
-		"symbols": ["ProjectGate", "ProjectGate"]
+		"source": ["packages/desktop/src/components/projects-sessions/ProjectGate.svelte"],
+		"symbols": ["ProjectGate"]
 	},
 	"contract": {
 		"origin": "declared",

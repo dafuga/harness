@@ -17,11 +17,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RemoteDevices.svelte",
-			"packages/desktop/src/components/networking-security/RemoteDevices.svelte"
-		],
-		"symbols": ["RemoteDevices", "RemoteDevices"]
+		"source": ["packages/desktop/src/components/networking-security/RemoteDevices.svelte"],
+		"symbols": ["RemoteDevices"]
 	},
 	"contract": {
 		"origin": "declared",

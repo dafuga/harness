@@ -18,11 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/MessageList.svelte",
-			"packages/desktop/src/components/shared-primitives/MessageList.svelte"
-		],
-		"symbols": ["MessageList", "MessageList"]
+		"source": ["packages/desktop/src/components/shared-primitives/MessageList.svelte"],
+		"symbols": ["MessageList"]
 	},
 	"contract": {
 		"origin": "declared",

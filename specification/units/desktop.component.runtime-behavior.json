@@ -21,11 +21,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimeBehavior.svelte",
-			"packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte"
-		],
-		"symbols": ["RuntimeBehavior", "RuntimeBehavior"]
+		"source": ["packages/desktop/src/components/execution-runtimes/RuntimeBehavior.svelte"],
+		"symbols": ["RuntimeBehavior"]
 	},
 	"contract": {
 		"origin": "declared",

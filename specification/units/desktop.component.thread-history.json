@@ -21,11 +21,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/ThreadHistory.svelte",
-			"packages/desktop/src/components/git-source-history/ThreadHistory.svelte"
-		],
-		"symbols": ["ThreadHistory", "ThreadHistory"]
+		"source": ["packages/desktop/src/components/git-source-history/ThreadHistory.svelte"],
+		"symbols": ["ThreadHistory"]
 	},
 	"contract": {
 		"origin": "declared",

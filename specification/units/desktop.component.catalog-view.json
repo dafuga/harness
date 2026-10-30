@@ -24,11 +24,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/CatalogView.svelte",
-			"packages/desktop/src/components/explorer-ui/CatalogView.svelte"
-		],
-		"symbols": ["CatalogView", "CatalogView"]
+		"source": ["packages/desktop/src/components/explorer-ui/CatalogView.svelte"],
+		"symbols": ["CatalogView"]
 	},
 	"contract": {
 		"origin": "declared",

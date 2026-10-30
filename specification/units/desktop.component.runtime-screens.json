@@ -25,11 +25,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimeScreens.svelte",
-			"packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte"
-		],
-		"symbols": ["RuntimeScreens", "RuntimeScreens"]
+		"source": ["packages/desktop/src/components/execution-runtimes/RuntimeScreens.svelte"],
+		"symbols": ["RuntimeScreens"]
 	},
 	"contract": {
 		"origin": "declared",

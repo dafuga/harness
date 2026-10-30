@@ -23,11 +23,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/EntityCard.svelte",
-			"packages/desktop/src/components/explorer-ui/EntityCard.svelte"
-		],
-		"symbols": ["EntityCard", "EntityCard"]
+		"source": ["packages/desktop/src/components/explorer-ui/EntityCard.svelte"],
+		"symbols": ["EntityCard"]
 	},
 	"contract": {
 		"origin": "declared",

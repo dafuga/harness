@@ -18,11 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/SourceFileList.svelte",
-			"packages/reports/src/components/explorer-ui/SourceFileList.svelte"
-		],
-		"symbols": ["SourceFileList", "SourceFileList"]
+		"source": ["packages/reports/src/components/explorer-ui/SourceFileList.svelte"],
+		"symbols": ["SourceFileList"]
 	},
 	"contract": {
 		"origin": "declared",

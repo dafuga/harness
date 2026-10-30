@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/WorkspaceShell.svelte",
-			"packages/desktop/src/components/projects-sessions/WorkspaceShell.svelte"
-		],
-		"symbols": ["WorkspaceShell", "WorkspaceShell"]
+		"source": ["packages/desktop/src/components/projects-sessions/WorkspaceShell.svelte"],
+		"symbols": ["WorkspaceShell"]
 	},
 	"contract": {
 		"origin": "declared",

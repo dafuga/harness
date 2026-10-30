@@ -11,11 +11,8 @@
 		"uses": ["reports.component.source-viewer"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/SourceContent.svelte",
-			"packages/reports/src/components/explorer-ui/SourceContent.svelte"
-		],
-		"symbols": ["SourceContent", "SourceContent"]
+		"source": ["packages/reports/src/components/explorer-ui/SourceContent.svelte"],
+		"symbols": ["SourceContent"]
 	},
 	"contract": {
 		"origin": "declared",

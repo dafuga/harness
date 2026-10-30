@@ -22,11 +22,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/AudioComparison.svelte",
-			"packages/reports/src/components/reports-media/AudioComparison.svelte"
-		],
-		"symbols": ["AudioComparison", "AudioComparison"]
+		"source": ["packages/reports/src/components/reports-media/AudioComparison.svelte"],
+		"symbols": ["AudioComparison"]
 	},
 	"contract": {
 		"origin": "declared",

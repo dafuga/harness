@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ProviderPickerCards.svelte",
-			"packages/reports/src/components/agents-providers/ProviderPickerCards.svelte"
-		],
-		"symbols": ["ProviderPickerCards", "ProviderPickerCards"]
+		"source": ["packages/reports/src/components/agents-providers/ProviderPickerCards.svelte"],
+		"symbols": ["ProviderPickerCards"]
 	},
 	"contract": {
 		"origin": "declared",

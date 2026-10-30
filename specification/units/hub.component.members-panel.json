@@ -22,11 +22,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/MembersPanel.svelte",
-			"packages/hub/src/components/shared-primitives/MembersPanel.svelte"
-		],
-		"symbols": ["MembersPanel", "MembersPanel"]
+		"source": ["packages/hub/src/components/shared-primitives/MembersPanel.svelte"],
+		"symbols": ["MembersPanel"]
 	},
 	"contract": {
 		"origin": "declared",

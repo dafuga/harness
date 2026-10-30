@@ -11,11 +11,8 @@
 		"uses": ["desktop.component.icon", "desktop.component.workspace-link"]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/explorer-ui/reference-text/ReferenceText.svelte",
-			"packages/desktop/src/components/reference-text/ReferenceText.svelte"
-		],
-		"symbols": ["ReferenceText", "ReferenceText"]
+		"source": ["packages/desktop/src/components/explorer-ui/reference-text/ReferenceText.svelte"],
+		"symbols": ["ReferenceText"]
 	},
 	"contract": {
 		"origin": "declared",

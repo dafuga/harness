@@ -16,11 +16,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/PriorImage.svelte",
-			"packages/desktop/src/components/shared-primitives/PriorImage.svelte"
-		],
-		"symbols": ["PriorImage", "PriorImage"]
+		"source": ["packages/desktop/src/components/shared-primitives/PriorImage.svelte"],
+		"symbols": ["PriorImage"]
 	},
 	"contract": {
 		"origin": "declared",

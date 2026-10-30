@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimePane.svelte",
-			"packages/desktop/src/components/execution-runtimes/RuntimePane.svelte"
-		],
-		"symbols": ["RuntimePane", "RuntimePane"]
+		"source": ["packages/desktop/src/components/execution-runtimes/RuntimePane.svelte"],
+		"symbols": ["RuntimePane"]
 	},
 	"contract": {
 		"origin": "declared",

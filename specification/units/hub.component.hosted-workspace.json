@@ -18,11 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/HostedWorkspace.svelte",
-			"packages/hub/src/components/projects-sessions/HostedWorkspace.svelte"
-		],
-		"symbols": ["HostedWorkspace", "HostedWorkspace"]
+		"source": ["packages/hub/src/components/projects-sessions/HostedWorkspace.svelte"],
+		"symbols": ["HostedWorkspace"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -22,11 +22,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/FloatingChat.svelte",
 			"packages/reports/src/components/planning-collaboration/FloatingChat.svelte",
 			"packages/reports/src/components/planning-collaboration/floating-chat/floatingChat.css"
 		],
-		"symbols": ["FloatingChat", "FloatingChat"]
+		"symbols": ["FloatingChat"]
 	},
 	"contract": {
 		"origin": "declared",

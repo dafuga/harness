@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ActivityList from '../../../../src/components/ActivityList.svelte';
+	import ActivityList from '../../../../src/components/projects-sessions/ActivityList.svelte';
 	let { state = 'collapsed' }: { state?: string } = $props();
 	const titles: Record<string, string> = {
 		collapsed: 'Collapsed list',

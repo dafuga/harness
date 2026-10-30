@@ -17,11 +17,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/AudioUploadFiles.svelte",
-			"packages/reports/src/components/reports-media/AudioUploadFiles.svelte"
-		],
-		"symbols": ["AudioUploadFiles", "AudioUploadFiles"]
+		"source": ["packages/reports/src/components/reports-media/AudioUploadFiles.svelte"],
+		"symbols": ["AudioUploadFiles"]
 	},
 	"contract": {
 		"origin": "declared",

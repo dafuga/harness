@@ -18,11 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimeAudio.svelte",
-			"packages/desktop/src/components/reports-media/RuntimeAudio.svelte"
-		],
-		"symbols": ["RuntimeAudio", "RuntimeAudio"]
+		"source": ["packages/desktop/src/components/reports-media/RuntimeAudio.svelte"],
+		"symbols": ["RuntimeAudio"]
 	},
 	"contract": {
 		"origin": "declared",

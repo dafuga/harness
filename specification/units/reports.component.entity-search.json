@@ -20,11 +20,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/entity-search/EntitySearch.svelte",
-			"packages/reports/src/components/explorer-ui/entity-search/EntitySearch.svelte"
-		],
-		"symbols": ["EntitySearch", "EntitySearch"]
+		"source": ["packages/reports/src/components/explorer-ui/entity-search/EntitySearch.svelte"],
+		"symbols": ["EntitySearch"]
 	},
 	"contract": {
 		"origin": "declared",

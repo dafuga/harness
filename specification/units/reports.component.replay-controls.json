@@ -21,11 +21,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ReplayControls.svelte",
-			"packages/reports/src/components/reports-media/ReplayControls.svelte"
-		],
-		"symbols": ["ReplayControls", "ReplayControls"]
+		"source": ["packages/reports/src/components/reports-media/ReplayControls.svelte"],
+		"symbols": ["ReplayControls"]
 	},
 	"contract": {
 		"origin": "declared",

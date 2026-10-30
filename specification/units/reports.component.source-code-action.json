@@ -11,11 +11,8 @@
 		"uses": ["reports.component.harness-harness-action"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/SourceCodeAction.svelte",
-			"packages/reports/src/components/explorer-ui/SourceCodeAction.svelte"
-		],
-		"symbols": ["SourceCodeAction", "SourceCodeAction"]
+		"source": ["packages/reports/src/components/explorer-ui/SourceCodeAction.svelte"],
+		"symbols": ["SourceCodeAction"]
 	},
 	"contract": {
 		"origin": "declared",

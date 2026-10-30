@@ -15,11 +15,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/AgentEffortPicker.svelte",
-			"packages/desktop/src/components/agents-providers/AgentEffortPicker.svelte"
-		],
-		"symbols": ["AgentEffortPicker", "AgentEffortPicker"]
+		"source": ["packages/desktop/src/components/agents-providers/AgentEffortPicker.svelte"],
+		"symbols": ["AgentEffortPicker"]
 	},
 	"contract": {
 		"origin": "declared",

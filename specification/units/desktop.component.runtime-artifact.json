@@ -27,11 +27,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimeArtifact.svelte",
-			"packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte"
-		],
-		"symbols": ["RuntimeArtifact", "RuntimeArtifact"]
+		"source": ["packages/desktop/src/components/execution-runtimes/RuntimeArtifact.svelte"],
+		"symbols": ["RuntimeArtifact"]
 	},
 	"contract": {
 		"origin": "declared",

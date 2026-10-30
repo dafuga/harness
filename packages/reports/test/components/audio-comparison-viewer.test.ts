@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { render } from 'svelte/server';
-import AudioComparisonViewer from '../../src/components/AudioComparisonViewer.svelte';
+import AudioComparisonViewer from '../../src/components/reports-media/AudioComparisonViewer.svelte';
 import type { Evidence } from '../../src/models/Report.types';
 
 test('the audio viewer retains both originals, transcripts and independent outcomes', () => {

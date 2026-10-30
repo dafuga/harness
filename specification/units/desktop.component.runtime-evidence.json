@@ -22,11 +22,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RuntimeEvidence.svelte",
-			"packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte"
-		],
-		"symbols": ["RuntimeEvidence", "RuntimeEvidence"]
+		"source": ["packages/desktop/src/components/verification-evidence/RuntimeEvidence.svelte"],
+		"symbols": ["RuntimeEvidence"]
 	},
 	"contract": {
 		"origin": "declared",

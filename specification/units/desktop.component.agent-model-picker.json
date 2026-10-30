@@ -18,11 +18,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/AgentModelPicker.svelte",
-			"packages/desktop/src/components/agents-providers/AgentModelPicker.svelte"
-		],
-		"symbols": ["AgentModelPicker", "AgentModelPicker"]
+		"source": ["packages/desktop/src/components/agents-providers/AgentModelPicker.svelte"],
+		"symbols": ["AgentModelPicker"]
 	},
 	"contract": {
 		"origin": "declared",

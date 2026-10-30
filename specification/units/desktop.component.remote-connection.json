@@ -11,11 +11,8 @@
 		"uses": ["desktop.component.remote-host-panel", "desktop.component.remote-phone-panel"]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RemoteConnection.svelte",
-			"packages/desktop/src/components/networking-security/RemoteConnection.svelte"
-		],
-		"symbols": ["RemoteConnection", "RemoteConnection"]
+		"source": ["packages/desktop/src/components/networking-security/RemoteConnection.svelte"],
+		"symbols": ["RemoteConnection"]
 	},
 	"contract": {
 		"origin": "declared",

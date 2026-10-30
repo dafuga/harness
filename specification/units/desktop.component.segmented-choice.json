@@ -14,11 +14,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/SegmentedChoice.svelte",
-			"packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte"
-		],
-		"symbols": ["SegmentedChoice", "SegmentedChoice"]
+		"source": ["packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte"],
+		"symbols": ["SegmentedChoice"]
 	},
 	"contract": {
 		"origin": "declared",

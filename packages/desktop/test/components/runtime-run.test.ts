@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { entityBehavior } from '../../../reports/src/utils/entityBehavior';
-import RuntimeRun from '../../src/components/RuntimeRun.svelte';
+import RuntimeRun from '../../src/components/execution-runtimes/RuntimeRun.svelte';
 import { commits, drawn, ids, scopeOf, shownEvidence } from '../evidence-fixture';
 
 test('each side lists its states and results; where they differ is said on the after side', async () => {

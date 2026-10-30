@@ -19,11 +19,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/AnnotatedImage.svelte",
-			"packages/desktop/src/components/shared-primitives/AnnotatedImage.svelte"
-		],
-		"symbols": ["AnnotatedImage", "AnnotatedImage"]
+		"source": ["packages/desktop/src/components/shared-primitives/AnnotatedImage.svelte"],
+		"symbols": ["AnnotatedImage"]
 	},
 	"contract": {
 		"origin": "declared",

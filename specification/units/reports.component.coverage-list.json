@@ -11,11 +11,8 @@
 		"uses": ["reports.component.status-badge"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/CoverageList.svelte",
-			"packages/reports/src/components/shared-primitives/CoverageList.svelte"
-		],
-		"symbols": ["CoverageList", "CoverageList"]
+		"source": ["packages/reports/src/components/shared-primitives/CoverageList.svelte"],
+		"symbols": ["CoverageList"]
 	},
 	"contract": {
 		"origin": "declared",

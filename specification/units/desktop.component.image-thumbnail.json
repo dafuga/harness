@@ -14,11 +14,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/ImageThumbnail.svelte",
-			"packages/desktop/src/components/shared-primitives/ImageThumbnail.svelte"
-		],
-		"symbols": ["ImageThumbnail", "ImageThumbnail"]
+		"source": ["packages/desktop/src/components/shared-primitives/ImageThumbnail.svelte"],
+		"symbols": ["ImageThumbnail"]
 	},
 	"contract": {
 		"origin": "declared",

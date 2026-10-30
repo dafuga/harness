@@ -11,11 +11,8 @@
 		"uses": ["reports.component.modal", "reports.component.source-content"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/SourceDialog.svelte",
-			"packages/reports/src/components/explorer-ui/SourceDialog.svelte"
-		],
-		"symbols": ["SourceDialog", "SourceDialog"]
+		"source": ["packages/reports/src/components/explorer-ui/SourceDialog.svelte"],
+		"symbols": ["SourceDialog"]
 	},
 	"contract": {
 		"origin": "declared",

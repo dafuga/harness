@@ -1,7 +1,7 @@
 import { render } from 'svelte/server';
 import { test } from 'vitest';
 import { expect } from '../../../test/verificationExpect';
-import ContractPanel from '../src/components/ContractPanel.svelte';
+import ContractPanel from '../src/components/shared-primitives/ContractPanel.svelte';
 
 test('the default contract explains fields; exact names and types remain in a disclosure', () => {
 	const contract = {

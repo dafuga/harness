@@ -20,11 +20,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ReportFindings.svelte",
-			"packages/reports/src/components/reports-media/ReportFindings.svelte"
-		],
-		"symbols": ["ReportFindings", "ReportFindings"]
+		"source": ["packages/reports/src/components/reports-media/ReportFindings.svelte"],
+		"symbols": ["ReportFindings"]
 	},
 	"contract": {
 		"origin": "declared",

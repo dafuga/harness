@@ -26,11 +26,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/entity-contract/EntityContract.svelte",
-			"packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte"
-		],
-		"symbols": ["EntityContract", "EntityContract"]
+		"source": ["packages/reports/src/components/explorer-ui/entity-contract/EntityContract.svelte"],
+		"symbols": ["EntityContract"]
 	},
 	"contract": {
 		"origin": "declared",

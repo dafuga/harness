@@ -11,11 +11,8 @@
 		"uses": ["reports.component.harness-harness-console"]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/HarnessScreen.svelte",
-			"packages/reports/src/components/explorer-ui/HarnessScreen.svelte"
-		],
-		"symbols": ["HarnessScreen", "HarnessScreen"]
+		"source": ["packages/reports/src/components/explorer-ui/HarnessScreen.svelte"],
+		"symbols": ["HarnessScreen"]
 	},
 	"contract": {
 		"origin": "declared",

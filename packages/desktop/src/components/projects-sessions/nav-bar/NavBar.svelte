@@ -7,9 +7,9 @@
 	import type { Snippet } from 'svelte';
 	import { categories } from '../../../models/development-tooling/Desktop.types';
 	import type { Workspace } from '../../../lib/stores/projects-sessions/workspace.svelte';
-	import DeploymentActivity from '../../DeploymentActivity.svelte';
-	import DeploymentDialog from '../../DeploymentDialog.svelte';
-	import EnvironmentPicker from '../../EnvironmentPicker.svelte';
+	import DeploymentActivity from '../../development-tooling/DeploymentActivity.svelte';
+	import DeploymentDialog from '../../development-tooling/DeploymentDialog.svelte';
+	import EnvironmentPicker from '../../development-tooling/EnvironmentPicker.svelte';
 	import Icon from '../../shared-primitives/Icon.svelte';
 	import ProjectSwitcher from '../project-switcher/ProjectSwitcher.svelte';
 	import RevisionPicker from '../../shared-primitives/RevisionPicker.svelte';

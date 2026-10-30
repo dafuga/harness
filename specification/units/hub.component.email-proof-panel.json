@@ -20,11 +20,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/EmailProofPanel.svelte",
-			"packages/hub/src/components/verification-evidence/EmailProofPanel.svelte"
-		],
-		"symbols": ["EmailProofPanel", "EmailProofPanel"]
+		"source": ["packages/hub/src/components/verification-evidence/EmailProofPanel.svelte"],
+		"symbols": ["EmailProofPanel"]
 	},
 	"contract": {
 		"origin": "declared",

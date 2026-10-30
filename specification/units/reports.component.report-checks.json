@@ -25,11 +25,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ReportChecks.svelte",
-			"packages/reports/src/components/verification-evidence/ReportChecks.svelte"
-		],
-		"symbols": ["ReportChecks", "ReportChecks"]
+		"source": ["packages/reports/src/components/verification-evidence/ReportChecks.svelte"],
+		"symbols": ["ReportChecks"]
 	},
 	"contract": {
 		"origin": "declared",

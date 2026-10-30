@@ -20,11 +20,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/AgentSettings.svelte",
-			"packages/desktop/src/components/agents-providers/AgentSettings.svelte"
-		],
-		"symbols": ["AgentSettings", "AgentSettings"]
+		"source": ["packages/desktop/src/components/agents-providers/AgentSettings.svelte"],
+		"symbols": ["AgentSettings"]
 	},
 	"contract": {
 		"origin": "declared",

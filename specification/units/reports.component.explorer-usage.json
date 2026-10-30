@@ -17,11 +17,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/reports/src/components/ExplorerUsage.svelte",
-			"packages/reports/src/components/explorer-ui/ExplorerUsage.svelte"
-		],
-		"symbols": ["ExplorerUsage", "ExplorerUsage"]
+		"source": ["packages/reports/src/components/explorer-ui/ExplorerUsage.svelte"],
+		"symbols": ["ExplorerUsage"]
 	},
 	"contract": {
 		"origin": "declared",

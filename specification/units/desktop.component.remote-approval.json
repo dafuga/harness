@@ -22,11 +22,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RemoteApproval.svelte",
-			"packages/desktop/src/components/networking-security/RemoteApproval.svelte"
-		],
-		"symbols": ["RemoteApproval", "RemoteApproval"]
+		"source": ["packages/desktop/src/components/networking-security/RemoteApproval.svelte"],
+		"symbols": ["RemoteApproval"]
 	},
 	"contract": {
 		"origin": "declared",

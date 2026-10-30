@@ -22,11 +22,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/RevisionPicker.svelte",
-			"packages/desktop/src/components/shared-primitives/RevisionPicker.svelte"
-		],
-		"symbols": ["RevisionPicker", "RevisionPicker"]
+		"source": ["packages/desktop/src/components/shared-primitives/RevisionPicker.svelte"],
+		"symbols": ["RevisionPicker"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -11,11 +11,8 @@
 		"uses": ["reports.component.shared-primitives-atoms-html-a"]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/WorkspaceLink.svelte",
-			"packages/desktop/src/components/projects-sessions/WorkspaceLink.svelte"
-		],
-		"symbols": ["WorkspaceLink", "WorkspaceLink"]
+		"source": ["packages/desktop/src/components/projects-sessions/WorkspaceLink.svelte"],
+		"symbols": ["WorkspaceLink"]
 	},
 	"contract": {
 		"origin": "declared",

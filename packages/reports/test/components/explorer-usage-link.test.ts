@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { render } from 'svelte/server';
-import ExplorerUsageLink from '../../src/components/ExplorerUsageLink.svelte';
+import ExplorerUsageLink from '../../src/components/explorer-ui/ExplorerUsageLink.svelte';
 import { hostProps, words } from '../entityRender';
 import { ids } from '../entityUnits';
 

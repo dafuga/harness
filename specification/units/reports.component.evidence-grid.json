@@ -27,11 +27,10 @@
 	},
 	"owns": {
 		"source": [
-			"packages/reports/src/components/evidence-grid/EvidenceGrid.svelte",
 			"packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte",
 			"packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.types.ts"
 		],
-		"symbols": ["EvidenceGrid", "EvidenceGrid", "Media"]
+		"symbols": ["EvidenceGrid", "Media"]
 	},
 	"contract": {
 		"origin": "declared",

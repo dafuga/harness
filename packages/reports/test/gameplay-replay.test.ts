@@ -1,6 +1,6 @@
 import { afterEach, expect, test, vi } from 'vitest';
 import { render } from 'svelte/server';
-import ReportView from '../src/components/ReportView.svelte';
+import ReportView from '../src/components/reports-media/ReportView.svelte';
 import type { Report } from '../src/models/Report.types';
 const report: Report = {
 	schemaVersion: 1,

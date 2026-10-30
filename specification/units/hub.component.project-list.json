@@ -21,11 +21,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/hub/src/components/ProjectList.svelte",
-			"packages/hub/src/components/projects-sessions/ProjectList.svelte"
-		],
-		"symbols": ["ProjectList", "ProjectList"]
+		"source": ["packages/hub/src/components/projects-sessions/ProjectList.svelte"],
+		"symbols": ["ProjectList"]
 	},
 	"contract": {
 		"origin": "declared",

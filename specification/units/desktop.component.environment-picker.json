@@ -16,11 +16,8 @@
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/EnvironmentPicker.svelte",
-			"packages/desktop/src/components/development-tooling/EnvironmentPicker.svelte"
-		],
-		"symbols": ["EnvironmentPicker", "EnvironmentPicker"]
+		"source": ["packages/desktop/src/components/development-tooling/EnvironmentPicker.svelte"],
+		"symbols": ["EnvironmentPicker"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -1,8 +1,8 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <script lang="ts">
-	import BrowserErrors from '../../../../reports/src/components/browser-errors/BrowserErrors.svelte';
-	import EntityStates from '../../../../reports/src/components/EntityStates.svelte';
+	import BrowserErrors from '../../../../reports/src/components/shared-primitives/browser-errors/BrowserErrors.svelte';
+	import EntityStates from '../../../../reports/src/components/explorer-ui/EntityStates.svelte';
 	import { explorerName } from '../../../../reports/src/utils/explorerName';
 	import type {
 		CoverageStanding,
@@ -13,7 +13,7 @@
 	import { evidenceNotice } from '../../utils/verification-evidence/evidenceNotice';
 	import RuntimeBehavior from '../execution-runtimes/RuntimeBehavior.svelte';
 	import StatusIcon from './StatusIcon.svelte';
-	import RegressionProof from '../../../../reports/src/components/RegressionProof.svelte';
+	import RegressionProof from '../../../../reports/src/components/verification-evidence/RegressionProof.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	let {
 		entity,

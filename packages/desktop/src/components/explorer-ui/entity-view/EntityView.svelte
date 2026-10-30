@@ -26,7 +26,7 @@
 	import StatusIcon from '../../shared-primitives/StatusIcon.svelte';
 	import Icon from '../../shared-primitives/Icon.svelte';
 	import WorkspaceLink from '../../projects-sessions/WorkspaceLink.svelte';
-	import EntityExamples from '../../../../../reports/src/components/EntityExamples.svelte';
+	import EntityExamples from '../../../../../reports/src/components/explorer-ui/EntityExamples.svelte';
 	import { workspaceSections as sections } from '../../../utils/projects-sessions/workspaceRoute';
 	let { workspace }: { workspace: Workspace } = $props();
 	/** A function has a plan and no designs; every other entity has designs and no plan section. */
