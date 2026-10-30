@@ -3407,6 +3407,54 @@
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
+			"id": "reports-component-module-system-explorer-modules-screen-detail-email",
+			"title": "ExplorerModulesScreen: installed plugin",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-detail-offline",
+			"title": "ExplorerModulesScreen: available plugin",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-project-module",
+			"title": "ExplorerModulesScreen: project plugin",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-unindexed",
+			"title": "ExplorerModulesScreen: catalog not indexed",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-empty",
+			"title": "ExplorerModulesScreen: empty catalog",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-gaps",
+			"title": "ExplorerModulesScreen: incomplete catalog",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-not-found",
+			"title": "ExplorerModulesScreen: plugin not found",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-explorer-modules-screen-detail-unindexed",
+			"title": "ExplorerModulesScreen: plugin catalog unavailable",
+			"coverage": "required",
+			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
 			"id": "reports-component-networking-security-explorer-permissions-screen",
 			"title": "User profile with scoped endpoint and data access",
 			"coverage": "required",
@@ -5529,6 +5577,14 @@
 				"reports-component-module-system-explorer-modules-screen",
 				"reports-component-module-system-explorer-modules-screen-playwright",
 				"reports-component-module-system-explorer-modules-screen-headless-audio",
+				"reports-component-module-system-explorer-modules-screen-detail-email",
+				"reports-component-module-system-explorer-modules-screen-detail-offline",
+				"reports-component-module-system-explorer-modules-screen-project-module",
+				"reports-component-module-system-explorer-modules-screen-unindexed",
+				"reports-component-module-system-explorer-modules-screen-empty",
+				"reports-component-module-system-explorer-modules-screen-gaps",
+				"reports-component-module-system-explorer-modules-screen-not-found",
+				"reports-component-module-system-explorer-modules-screen-detail-unindexed",
 				"reports-component-networking-security-explorer-permissions-screen",
 				"reports-component-project-activity",
 				"reports-component-project-activity-recorded",

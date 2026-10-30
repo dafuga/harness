@@ -175,6 +175,7 @@ export async function assertModulePreview(component: Locator, id: string, varian
 
 	if (id === 'reports.component.module-system-explorer-modules-screen') {
 		if (variant) {
+			if (!['playwright', 'headless-audio'].includes(variant)) return;
 			await expect(
 				component.getByRole('heading', {
 					level: 1,

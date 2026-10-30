@@ -27,7 +27,8 @@ const checks: Record<string, (component: Locator, variant: string) => Promise<vo
 	'reports.component.explorer-ui-explorer-platform-details': assertPlatformDetails,
 	'reports.component.explorer-ui-explorer-platforms': assertPlatforms,
 	'reports.component.explorer-ui-explorer-translations-screen': assertTranslations,
-	'reports.component.module-system-explorer-module-resources-screen': assertModuleState
+	'reports.component.module-system-explorer-module-resources-screen': assertModuleState,
+	'reports.component.module-system-explorer-modules-screen': assertModuleState
 };
 
 /** Run only the checks belonging to this report preview. */

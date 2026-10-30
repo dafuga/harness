@@ -180,7 +180,6 @@ const variants: Record<string, string[]> = {
 		'not-proven',
 		'interrupted'
 	],
-	'reports.component.module-system-explorer-modules-screen': ['playwright', 'headless-audio'],
 	'desktop.component.project-agent': [
 		'closed',
 		'read-only',
