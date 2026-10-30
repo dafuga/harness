@@ -1,6 +1,7 @@
 import type { PreviewCases } from './shared';
 import { noop, stamp, row } from './shared';
 import { commits } from '../../../../test/entityUnits';
+import { activityWorkPreview } from './activityWorkVariants';
 const agent = {
 	id: 'preview-agent',
 	label: 'Preview agent',
@@ -103,7 +104,10 @@ export const activityCases: PreviewCases = {
 		row
 	},
 	'reports.component.activity-loops': { loops: activity.loops },
-	'reports.component.activity-work': { work: activity.work, href: () => '/history' },
+	'reports.component.activity-work': {
+		work: activityWorkPreview(activity.work),
+		href: () => '/history'
+	},
 	'reports.component.project-activity': { activity, live, base: '/harness' },
 	'reports.component.site-activity': { shown: { activity, live } }
 };
@@ -183,11 +187,6 @@ const loopStates: Record<string, () => PreviewCases[string]> = {
 	empty: () => ({ loops: { total: 0, types: [] } })
 };
 
-const workStates: Record<string, () => PreviewCases[string]> = {
-	recorded: () => ({ work: activity.work, href: () => '/history', recorded: true }),
-	empty: () => ({ work: [], href: () => '/history', recorded: false })
-};
-
 const projectActivityStates: Record<string, () => PreviewCases[string]> = {
 	recorded: () => ({ activity: { ...activity, kind: 'recorded' }, live: null, base: '/harness' }),
 	empty: () => ({
@@ -201,10 +200,6 @@ const projectActivityStates: Record<string, () => PreviewCases[string]> = {
 	})
 };
 
-const siteActivityStates: Record<string, () => PreviewCases[string]> = {
-	'failed-refresh': () => ({ shown: { activity, live } })
-};
-
 export function activityVariant(id: string, variant: string, props: PreviewCases[string]) {
 	const states =
 		id === 'reports.component.activity-agents'
@@ -213,12 +208,8 @@ export function activityVariant(id: string, variant: string, props: PreviewCases
 				? fileStates
 				: id === 'reports.component.activity-loops'
 					? loopStates
-					: id === 'reports.component.activity-work'
-						? workStates
-						: id === 'reports.component.project-activity'
-							? projectActivityStates
-							: id === 'reports.component.site-activity'
-								? siteActivityStates
-								: undefined;
+					: id === 'reports.component.project-activity'
+						? projectActivityStates
+						: undefined;
 	return states?.[variant]?.() ?? props;
 }
