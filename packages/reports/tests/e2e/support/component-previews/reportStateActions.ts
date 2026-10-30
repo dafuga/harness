@@ -7,6 +7,7 @@ import { prepareCatalogItems } from './catalogItemsPreviewAssertions';
 import { prepareDependencies } from './dependenciesPreviewAssertions';
 import { prepareEvidenceGrid } from './evidenceGridActions';
 import { preparePlatforms } from './platformsPreviewAssertions';
+import { preparePlatformDetails } from './platformDetailsPreviewAssertions';
 import { prepareTranslations } from './translationsPreviewAssertions';
 import { prepareImageZoom } from './imageZoomActions';
 import { prepareCoverageList } from './coverageListActions';
@@ -47,6 +48,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.evidence-viewer': prepareEvidenceViewer,
 	'reports.component.report-view': prepareReportView,
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
+	'reports.component.explorer-ui-explorer-platform-details': preparePlatformDetails,
 	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations
 };
 
