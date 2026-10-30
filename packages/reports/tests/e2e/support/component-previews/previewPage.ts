@@ -151,8 +151,12 @@ export async function capturePreview(
 	const { viewport, variant = '' } = target;
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS) return;
 	const clip = await previewCaptureBounds(page, id, variant);
+	const nativeOpen =
+		(id === 'reports.component.select' && variant === 'open') ||
+		(id === 'reports.component.explorer-ui-explorer-translations-screen' &&
+			variant === 'language-open');
 	const bytes = await page.screenshot({
-		fullPage: id !== 'reports.component.select' || variant !== 'open',
+		fullPage: !nativeOpen,
 		clip,
 		animations: 'disabled',
 		caret: 'hide'
