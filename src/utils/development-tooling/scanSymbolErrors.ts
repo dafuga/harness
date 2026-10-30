@@ -65,13 +65,9 @@ function observeError(node: ts.Node, errors: Set<string>): boolean {
 		return false;
 	}
 	const status = node.arguments[0];
-	if (name === 'error' && status && ts.isNumericLiteral(status)) {
-		errors.add(`HttpError ${status.text}`);
-		return false;
-	}
-	// SvelteKit's redirect() always throws a Redirect with its literal status.
-	if (name === 'redirect' && status && ts.isNumericLiteral(status)) {
-		errors.add(`Redirect ${status.text}`);
+	// Both SvelteKit helpers throw a typed error with their literal status.
+	if (['error', 'redirect'].includes(name) && status && ts.isNumericLiteral(status)) {
+		errors.add(`${name === 'error' ? 'HttpError' : 'Redirect'} ${status.text}`);
 		return false;
 	}
 	return true;
