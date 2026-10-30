@@ -3,8 +3,8 @@
 	"id": "service.source-index",
 	"kind": "service",
 	"title": "SourceIndexService",
-	"responsibility": "Owns the SourceIndexService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Indexes revision-bound source, imports, declarations, storage syntax and execution facts, resolving component props and caching parsed blobs with bounded reads.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -35,131 +35,162 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ComponentPropsResolver.constructor.tree",
 				"type": "SourceTree",
-				"required": true
+				"required": true,
+				"description": "Readable source snapshot used to resolve prop declarations without importing application code."
 			},
 			{
 				"name": "ComponentPropsResolver.constructor.files",
 				"type": "Map<string, SourceFile>",
-				"required": true
+				"required": true,
+				"description": "Indexed source files and references available in this same revision."
 			},
 			{
 				"name": "ComponentPropsResolver.inputs.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source path containing the component prop declaration to resolve."
 			},
 			{
 				"name": "ComponentPropsResolver.inputs.owner",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Component name prefixed to each resolved prop field."
 			},
 			{
 				"name": "ComponentPropsResolver.inputs.seen",
-				"type": "unknown",
-				"required": false
+				"type": "Set<string>",
+				"required": false,
+				"description": "Already visited type references for recursion protection; defaults to a new empty Set."
 			},
 			{
 				"name": "resolveComponentProps.tree",
 				"type": "SourceTree",
-				"required": true
+				"required": true,
+				"description": "Readable snapshot supplying the indexed component and imported prop-type source."
 			},
 			{
 				"name": "resolveComponentProps.files",
 				"type": "Map<string, SourceFile>",
-				"required": true
+				"required": true,
+				"description": "Indexed file map whose component prop signatures are enriched in place."
 			},
 			{
 				"name": "SourceIndexService.index.tree",
 				"type": "SourceTree",
-				"required": true
+				"required": true,
+				"description": "Snapshot with list and read operations; source read failures reject indexing."
 			},
 			{
 				"name": "SourceIndexService.index.config",
 				"type": "UnitsConfig",
-				"required": true
+				"required": true,
+				"description": "Workspace, classification, ignore and declared-reference rules for this index."
 			},
 			{
 				"name": "importedBinding.file",
 				"type": "ts.SourceFile",
-				"required": true
+				"required": true,
+				"description": "Parsed TypeScript source containing import and re-export bindings."
 			},
 			{
 				"name": "importedBinding.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Local or exported binding name to resolve to its original name and module specifier."
 			},
 			{
 				"name": "selectedProps.items",
 				"type": "ContractItem[]",
-				"required": true
+				"required": true,
+				"description": "Resolved prop fields to transform without executing component code."
 			},
 			{
 				"name": "selectedProps.operator",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Partial, Required or Pick selects its named transform; other operators use the exclusion branch."
 			},
 			{
 				"name": "selectedProps.keys",
 				"type": "ts.TypeNode | undefined",
-				"required": true
+				"required": true,
+				"description": "Literal key type or union used by Pick/exclusion; absent or unsupported keys yield no selected fields."
 			},
 			{
 				"name": "scanStorage.code",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "TypeScript source to inspect for exported classes with static definition syntax; never evaluated."
 			},
 			{
 				"name": "sourceExecution.code",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source bytes to classify as runtime, declarative or unknown."
 			},
 			{
 				"name": "sourceExecution.language",
 				"type": "SourceLanguage",
-				"required": true
+				"required": true,
+				"description": "Indexed language determining the applicable source classifier."
 			},
 			{
 				"name": "sourceExecution.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source path used to recognize supported declaration and script contexts."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ComponentPropsResolver.inputs",
-				"type": "Promise<ContractItem[]>"
+				"type": "Promise<ContractItem[]>",
+				"description": "Resolved prop fields with source-derived names, types, required flags and literal defaults."
 			},
 			{
 				"name": "resolveComponentProps",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Completes after enriching indexed component prop signatures; returns no data."
 			},
 			{
 				"name": "SourceIndexService.index",
-				"type": "Promise<SourceIndex>"
+				"type": "Promise<SourceIndex>",
+				"description": "SourceIndex keyed by repository-relative paths; ignored paths are omitted and cached parses from prior revisions are released."
 			},
 			{
 				"name": "importedBinding",
-				"type": "unknown"
+				"type": "{ name: string; specifier: string } | undefined",
+				"description": "Original binding name and module specifier, or undefined when no supported import/re-export binds that name."
 			},
 			{
 				"name": "selectedProps",
-				"type": "ContractItem[]"
+				"type": "ContractItem[]",
+				"description": "Transformed prop fields; unresolved key selections remain an empty array."
 			},
 			{
 				"name": "scanStorage",
-				"type": "NonNullable<ComponentManifest['contract']['storage']>"
+				"type": "NonNullable<ComponentManifest['contract']['storage']>",
+				"description": "Static storage facts including explicitly unresolved schema syntax; does not create tables or read rows."
 			},
 			{
 				"name": "sourceExecution",
-				"type": "NonNullable<SourceFile['execution']>"
+				"type": "NonNullable<SourceFile['execution']>",
+				"description": "Source-based runtime/declarative/unknown classification; unreadable or unsupported code is never assumed declarative."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Source read or parse failure",
+				"type": "propagated",
+				"description": "Snapshot list/read rejections and parser or prop-resolver exceptions reject indexing; unreadable source is not fabricated."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ComponentPropsResolver.inputs",
@@ -167,27 +198,37 @@
 					{
 						"name": "ComponentPropsResolver.inputs.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Source path containing the component prop declaration to resolve."
 					},
 					{
 						"name": "ComponentPropsResolver.inputs.owner",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Component name prefixed to each resolved prop field."
 					},
 					{
 						"name": "ComponentPropsResolver.inputs.seen",
-						"type": "unknown",
-						"required": false
+						"type": "Set<string>",
+						"required": false,
+						"description": "Already visited type references for recursion protection; defaults to a new empty Set."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ComponentPropsResolver.inputs",
-						"type": "Promise<ContractItem[]>"
+						"type": "Promise<ContractItem[]>",
+						"description": "Resolved prop fields with source-derived names, types, required flags and literal defaults."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Source read or parse failure",
+						"type": "propagated",
+						"description": "Snapshot list/read rejections and parser or prop-resolver exceptions reject indexing; unreadable source is not fabricated."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "resolveComponentProps",
@@ -195,22 +236,31 @@
 					{
 						"name": "resolveComponentProps.tree",
 						"type": "SourceTree",
-						"required": true
+						"required": true,
+						"description": "Readable snapshot supplying the indexed component and imported prop-type source."
 					},
 					{
 						"name": "resolveComponentProps.files",
 						"type": "Map<string, SourceFile>",
-						"required": true
+						"required": true,
+						"description": "Indexed file map whose component prop signatures are enriched in place."
 					}
 				],
 				"outputs": [
 					{
 						"name": "resolveComponentProps",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Completes after enriching indexed component prop signatures; returns no data."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Source read or parse failure",
+						"type": "propagated",
+						"description": "Snapshot list/read rejections and parser or prop-resolver exceptions reject indexing; unreadable source is not fabricated."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SourceIndexService.index",
@@ -218,22 +268,31 @@
 					{
 						"name": "SourceIndexService.index.tree",
 						"type": "SourceTree",
-						"required": true
+						"required": true,
+						"description": "Snapshot with list and read operations; source read failures reject indexing."
 					},
 					{
 						"name": "SourceIndexService.index.config",
 						"type": "UnitsConfig",
-						"required": true
+						"required": true,
+						"description": "Workspace, classification, ignore and declared-reference rules for this index."
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceIndexService.index",
-						"type": "Promise<SourceIndex>"
+						"type": "Promise<SourceIndex>",
+						"description": "SourceIndex keyed by repository-relative paths; ignored paths are omitted and cached parses from prior revisions are released."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Source read or parse failure",
+						"type": "propagated",
+						"description": "Snapshot list/read rejections and parser or prop-resolver exceptions reject indexing; unreadable source is not fabricated."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "importedBinding",
@@ -241,22 +300,31 @@
 					{
 						"name": "importedBinding.file",
 						"type": "ts.SourceFile",
-						"required": true
+						"required": true,
+						"description": "Parsed TypeScript source containing import and re-export bindings."
 					},
 					{
 						"name": "importedBinding.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Local or exported binding name to resolve to its original name and module specifier."
 					}
 				],
 				"outputs": [
 					{
 						"name": "importedBinding",
-						"type": "unknown"
+						"type": "{ name: string; specifier: string } | undefined",
+						"description": "Original binding name and module specifier, or undefined when no supported import/re-export binds that name."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Source syntax access failure",
+						"type": "propagated",
+						"description": "Parsing or reading caller-supplied syntax nodes may throw; this syntax transformation performs no filesystem I/O."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "selectedProps",
@@ -264,27 +332,37 @@
 					{
 						"name": "selectedProps.items",
 						"type": "ContractItem[]",
-						"required": true
+						"required": true,
+						"description": "Resolved prop fields to transform without executing component code."
 					},
 					{
 						"name": "selectedProps.operator",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Partial, Required or Pick selects its named transform; other operators use the exclusion branch."
 					},
 					{
 						"name": "selectedProps.keys",
 						"type": "ts.TypeNode | undefined",
-						"required": true
+						"required": true,
+						"description": "Literal key type or union used by Pick/exclusion; absent or unsupported keys yield no selected fields."
 					}
 				],
 				"outputs": [
 					{
 						"name": "selectedProps",
-						"type": "ContractItem[]"
+						"type": "ContractItem[]",
+						"description": "Transformed prop fields; unresolved key selections remain an empty array."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Source syntax access failure",
+						"type": "propagated",
+						"description": "Parsing or reading caller-supplied syntax nodes may throw; this syntax transformation performs no filesystem I/O."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scanStorage",
@@ -292,17 +370,25 @@
 					{
 						"name": "scanStorage.code",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "TypeScript source to inspect for exported classes with static definition syntax; never evaluated."
 					}
 				],
 				"outputs": [
 					{
 						"name": "scanStorage",
-						"type": "NonNullable<ComponentManifest['contract']['storage']>"
+						"type": "NonNullable<ComponentManifest['contract']['storage']>",
+						"description": "Static storage facts including explicitly unresolved schema syntax; does not create tables or read rows."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Source syntax access failure",
+						"type": "propagated",
+						"description": "Parsing or reading caller-supplied syntax nodes may throw; this syntax transformation performs no filesystem I/O."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "sourceExecution",
@@ -310,27 +396,37 @@
 					{
 						"name": "sourceExecution.code",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Source bytes to classify as runtime, declarative or unknown."
 					},
 					{
 						"name": "sourceExecution.language",
 						"type": "SourceLanguage",
-						"required": true
+						"required": true,
+						"description": "Indexed language determining the applicable source classifier."
 					},
 					{
 						"name": "sourceExecution.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Source path used to recognize supported declaration and script contexts."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sourceExecution",
-						"type": "NonNullable<SourceFile['execution']>"
+						"type": "NonNullable<SourceFile['execution']>",
+						"description": "Source-based runtime/declarative/unknown classification; unreadable or unsupported code is never assumed declarative."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Source syntax access failure",
+						"type": "propagated",
+						"description": "Parsing or reading caller-supplied syntax nodes may throw; this syntax transformation performs no filesystem I/O."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [
@@ -340,22 +436,25 @@
 					{
 						"name": "ComponentPropsResolver.constructor.tree",
 						"type": "SourceTree",
-						"required": true
+						"required": true,
+						"description": "Readable source snapshot used to resolve prop declarations without importing application code."
 					},
 					{
 						"name": "ComponentPropsResolver.constructor.files",
 						"type": "Map<string, SourceFile>",
-						"required": true
+						"required": true,
+						"description": "Indexed source files and references available in this same revision."
 					}
 				],
 				"outputs": [
 					{
 						"name": "ComponentPropsResolver.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Constructs a resolver holding the supplied snapshot and index; resolves no prop fields during construction."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			}
 		]
 	},

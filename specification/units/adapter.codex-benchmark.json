@@ -149,7 +149,8 @@
 						"name": "CodexBenchmarkAdapter.constructor.executable",
 						"type": "string",
 						"required": false,
-						"default": "codex"
+						"default": "codex",
+						"description": "Native Codex executable name or path."
 					}
 				],
 				"outputs": [

@@ -3,8 +3,8 @@
 	"id": "model.analytics-event",
 	"kind": "model",
 	"title": "AnalyticsEvent",
-	"responsibility": "Owns the AnalyticsEvent data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Stores timestamped analytics event payloads in events through a supplied persistence adapter.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"lineage": {
 		"predecessors": ["model.analytics-event-types"]
@@ -27,48 +27,62 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "AnalyticsEvent.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stored row identity; the model passes it to the adapter without generating a key."
 			},
 			{
 				"name": "AnalyticsEvent.timestamp",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Timestamp attached to the stored analytics event."
 			},
 			{
 				"name": "AnalyticsEvent.data",
 				"type": "json",
-				"required": true
+				"required": true,
+				"description": "Structured payload retained by the adapter; no model code is executed to describe it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "AnalyticsEvent.find",
-				"type": "Promise<AnalyticsEventAttributes | null>"
+				"type": "Promise<AnalyticsEventAttributes | null>",
+				"description": "Promise of the matching events row, or null according to the adapter lookup result."
 			},
 			{
 				"name": "AnalyticsEvent.findBy",
-				"type": "Promise<AnalyticsEventAttributes[]>"
+				"type": "Promise<AnalyticsEventAttributes[]>",
+				"description": "Promise of events rows matching the supplied attribute filters."
 			},
 			{
 				"name": "AnalyticsEvent.create",
-				"type": "Promise<AnalyticsEventAttributes>"
+				"type": "Promise<AnalyticsEventAttributes>",
+				"description": "Promise of the events row returned by the adapter after creation."
 			},
 			{
 				"name": "AnalyticsEvent.update",
-				"type": "Promise<AnalyticsEventAttributes | null>"
+				"type": "Promise<AnalyticsEventAttributes | null>",
+				"description": "Promise of the updated events row, or null according to the adapter update result."
 			},
 			{
 				"name": "AnalyticsEvent.delete",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Promise of the adapter deletion result for the requested events row."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Persistence operation failure",
+				"type": "propagated",
+				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "AnalyticsEvent.find",
@@ -76,22 +90,31 @@
 					{
 						"name": "AnalyticsEvent.find.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the events table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "AnalyticsEvent.find.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsEvent.find",
-						"type": "Promise<AnalyticsEventAttributes | null>"
+						"type": "Promise<AnalyticsEventAttributes | null>",
+						"description": "Promise of the matching events row, or null according to the adapter lookup result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AnalyticsEvent.findBy",
@@ -99,22 +122,31 @@
 					{
 						"name": "AnalyticsEvent.findBy.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the events table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "AnalyticsEvent.findBy.fields",
 						"type": "Partial<AnalyticsEventAttributes>",
-						"required": true
+						"required": true,
+						"description": "Partial stored attributes used as equality filters for events."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsEvent.findBy",
-						"type": "Promise<AnalyticsEventAttributes[]>"
+						"type": "Promise<AnalyticsEventAttributes[]>",
+						"description": "Promise of events rows matching the supplied attribute filters."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AnalyticsEvent.create",
@@ -122,22 +154,31 @@
 					{
 						"name": "AnalyticsEvent.create.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the events table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "AnalyticsEvent.create.input",
 						"type": "AnalyticsEventCreateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to events; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsEvent.create",
-						"type": "Promise<AnalyticsEventAttributes>"
+						"type": "Promise<AnalyticsEventAttributes>",
+						"description": "Promise of the events row returned by the adapter after creation."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AnalyticsEvent.update",
@@ -145,27 +186,37 @@
 					{
 						"name": "AnalyticsEvent.update.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the events table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "AnalyticsEvent.update.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					},
 					{
 						"name": "AnalyticsEvent.update.input",
 						"type": "AnalyticsEventUpdateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to events; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsEvent.update",
-						"type": "Promise<AnalyticsEventAttributes | null>"
+						"type": "Promise<AnalyticsEventAttributes | null>",
+						"description": "Promise of the updated events row, or null according to the adapter update result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "AnalyticsEvent.delete",
@@ -173,22 +224,31 @@
 					{
 						"name": "AnalyticsEvent.delete.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the events table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "AnalyticsEvent.delete.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "AnalyticsEvent.delete",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Promise of the adapter deletion result for the requested events row."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [],

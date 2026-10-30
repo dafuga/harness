@@ -86,14 +86,31 @@ export function declaredContract(
 		...declared,
 		inputs: source.inputs.map((item) => explainedItem(item, declared.inputs)),
 		...(source.snippets ? { snippets: source.snippets } : {}),
-		initialization: source.initialization,
+		initialization: source.initialization?.map((operation) =>
+			declaredOperation(operation, declared.initialization, declared)
+		),
 		...(source.storage ? { storage: source.storage } : {}),
-		operations: source.operations?.map((operation) => ({
-			...operation,
-			...declaredErrors(operation.name, declared.operations),
-			inputs: operation.inputs.map((item) => explainedItem(item, declared.inputs)),
-			outputs: operation.outputs.map((item) => explainedItem(item, declared.outputs))
-		}))
+		operations: source.operations?.map((operation) =>
+			declaredOperation(operation, declared.operations, declared)
+		)
+	};
+}
+
+function declaredOperation(
+	operation: NonNullable<ComponentManifest['contract']['operations']>[number],
+	previous: ComponentManifest['contract']['operations'],
+	contract: ComponentManifest['contract']
+) {
+	const authored = previous?.find((item) => item.name === operation.name);
+	return {
+		...operation,
+		...declaredErrors(operation.name, previous),
+		inputs: operation.inputs.map((item) =>
+			explainedItem(item, authored?.inputs ?? [], contract.inputs)
+		),
+		outputs: operation.outputs.map((item) =>
+			explainedItem(item, authored?.outputs ?? [], contract.outputs)
+		)
 	};
 }
 
@@ -117,13 +134,20 @@ export function operationContract(symbol: ExportedSymbol) {
 	};
 }
 
-function explainedItem(item: ContractItem, declared: ContractItem[]): ContractItem {
-	const previous = declared.find((candidate) => candidate.name === item.name);
+function explainedItem(
+	item: ContractItem,
+	declared: ContractItem[],
+	fallback: ContractItem[] = []
+): ContractItem {
+	const inherited = fallback.find((candidate) => candidate.name === item.name);
+	const authored = declared.find((candidate) => candidate.name === item.name);
+	const previous = { ...inherited, ...authored };
+	if (previous.type === 'unknown' && inherited) previous.type = inherited.type;
 	const documentation = { ...previous };
 	delete documentation.default;
 	return {
 		...documentation,
 		...item,
-		...(item.type === 'unknown' && previous ? { type: previous.type } : {})
+		...(item.type === 'unknown' && previous.type ? { type: previous.type } : {})
 	};
 }

@@ -149,7 +149,8 @@
 						"name": "ClaudeBenchmarkAdapter.constructor.executable",
 						"type": "string",
 						"required": false,
-						"default": "claude"
+						"default": "claude",
+						"description": "Provider CLI executable name or path; defaults to the adapter provider."
 					}
 				],
 				"outputs": [

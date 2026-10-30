@@ -173,7 +173,8 @@
 					{
 						"name": "ResourceMonitorService.constructor.options",
 						"type": "MonitorOptions",
-						"required": true
+						"required": true,
+						"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
 					}
 				],
 				"outputs": [

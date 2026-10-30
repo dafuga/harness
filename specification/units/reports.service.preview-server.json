@@ -123,7 +123,9 @@
 					{
 						"name": "PreviewServerService.constructor.port",
 						"type": "number",
-						"required": false
+						"required": false,
+						"description": "Loopback port used to reserve the one preview slot.",
+						"examples": [47840]
 					}
 				],
 				"outputs": [

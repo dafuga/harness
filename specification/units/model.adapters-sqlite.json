@@ -3,35 +3,44 @@
 	"id": "model.adapters-sqlite",
 	"kind": "model",
 	"title": "sqlite",
-	"responsibility": "Owns the sqlite data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Preserves the generated-model SQLite factory address by delegating adapter construction to the canonical SqliteAdapter implementation.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/models/adapters/sqlite.ts"],
 		"symbols": ["createSqliteAdapter"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "createSqliteAdapter.db",
 				"type": "SqliteDatabase",
-				"required": true
+				"required": true,
+				"description": "Caller-owned SQLite database handle passed to the canonical adapter factory."
 			},
 			{
 				"name": "createSqliteAdapter.models",
 				"type": "readonly SqliteModel[]",
-				"required": true
+				"required": true,
+				"description": "Source-declared model definitions supplied to the canonical factory."
 			}
 		],
 		"outputs": [
 			{
 				"name": "createSqliteAdapter",
-				"type": "unknown"
+				"type": "SqliteAdapter",
+				"description": "Canonical SQLite persistence adapter wrapping the supplied database and model definitions."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Adapter construction failure",
+				"type": "propagated",
+				"description": "Exceptions from canonical adapter construction propagate unchanged; this compatibility factory adds no validation or storage methods."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "createSqliteAdapter",
@@ -39,22 +48,31 @@
 					{
 						"name": "createSqliteAdapter.db",
 						"type": "SqliteDatabase",
-						"required": true
+						"required": true,
+						"description": "Caller-owned SQLite database handle passed to the canonical adapter factory."
 					},
 					{
 						"name": "createSqliteAdapter.models",
 						"type": "readonly SqliteModel[]",
-						"required": true
+						"required": true,
+						"description": "Source-declared model definitions supplied to the canonical factory."
 					}
 				],
 				"outputs": [
 					{
 						"name": "createSqliteAdapter",
-						"type": "unknown"
+						"type": "SqliteAdapter",
+						"description": "Canonical SQLite persistence adapter wrapping the supplied database and model definitions."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Adapter construction failure",
+						"type": "propagated",
+						"description": "Exceptions from canonical adapter construction propagate unchanged; this compatibility factory adds no validation or storage methods."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

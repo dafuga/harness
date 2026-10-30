@@ -133,7 +133,8 @@
 					{
 						"name": "TaskCommand.constructor.root",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Project filesystem root used to read committed source, loop metadata or verification evidence."
 					}
 				],
 				"outputs": [

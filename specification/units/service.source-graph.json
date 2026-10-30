@@ -3,8 +3,8 @@
 	"id": "service.source-graph",
 	"kind": "service",
 	"title": "SourceGraphService",
-	"responsibility": "Owns the SourceGraphService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Builds dependency graphs from indexed references, unit ownership and authored scenarios while retaining unresolved-reference uncertainty.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -24,60 +24,76 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "fileNode.path",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Repository-relative file path to prefix with file:; no path resolution or I/O occurs."
 			},
 			{
 				"name": "unitNode.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stable unit ID to prefix with unit:."
 			},
 			{
 				"name": "scenarioNode.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Authored scenario ID to prefix with scenario:."
 			},
 			{
 				"name": "SourceGraphService.build.index",
 				"type": "SourceIndex",
-				"required": true
+				"required": true,
+				"description": "Indexed files, resolved source references and unresolved-reference facts for one source revision."
 			},
 			{
 				"name": "SourceGraphService.build.manifests",
 				"type": "ComponentManifest[]",
-				"required": true
+				"required": true,
+				"description": "Registry records; only active owners with indexed source contribute unit nodes."
 			},
 			{
 				"name": "SourceGraphService.build.scenarios",
 				"type": "ScenarioManifest[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Authored scenario coverage and test declarations; defaults to an empty array."
 			}
 		],
 		"outputs": [
 			{
 				"name": "fileNode",
-				"type": "string"
+				"type": "string",
+				"description": "Graph file-node identity."
 			},
 			{
 				"name": "unitNode",
-				"type": "string"
+				"type": "string",
+				"description": "Graph unit-node identity."
 			},
 			{
 				"name": "scenarioNode",
-				"type": "string"
+				"type": "string",
+				"description": "Graph scenario-node identity."
 			},
 			{
 				"name": "SourceGraphService.build",
-				"type": "SourceGraph"
+				"type": "SourceGraph",
+				"description": "Sorted graph nodes and conservative dependency edges, including import mode and uncertainty; no test execution verdict."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Input access failure",
+				"type": "propagated",
+				"description": "Caller-provided map or array iterators, getters and collection methods may throw; graph construction performs no I/O or schema validation."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "fileNode",
@@ -85,17 +101,19 @@
 					{
 						"name": "fileNode.path",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Repository-relative file path to prefix with file:; no path resolution or I/O occurs."
 					}
 				],
 				"outputs": [
 					{
 						"name": "fileNode",
-						"type": "string"
+						"type": "string",
+						"description": "Graph file-node identity."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "unitNode",
@@ -103,17 +121,19 @@
 					{
 						"name": "unitNode.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stable unit ID to prefix with unit:."
 					}
 				],
 				"outputs": [
 					{
 						"name": "unitNode",
-						"type": "string"
+						"type": "string",
+						"description": "Graph unit-node identity."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "scenarioNode",
@@ -121,17 +141,19 @@
 					{
 						"name": "scenarioNode.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Authored scenario ID to prefix with scenario:."
 					}
 				],
 				"outputs": [
 					{
 						"name": "scenarioNode",
-						"type": "string"
+						"type": "string",
+						"description": "Graph scenario-node identity."
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "SourceGraphService.build",
@@ -139,28 +161,38 @@
 					{
 						"name": "SourceGraphService.build.index",
 						"type": "SourceIndex",
-						"required": true
+						"required": true,
+						"description": "Indexed files, resolved source references and unresolved-reference facts for one source revision."
 					},
 					{
 						"name": "SourceGraphService.build.manifests",
 						"type": "ComponentManifest[]",
-						"required": true
+						"required": true,
+						"description": "Registry records; only active owners with indexed source contribute unit nodes."
 					},
 					{
 						"name": "SourceGraphService.build.scenarios",
 						"type": "ScenarioManifest[]",
 						"required": false,
-						"default": []
+						"default": [],
+						"description": "Authored scenario coverage and test declarations; defaults to an empty array."
 					}
 				],
 				"outputs": [
 					{
 						"name": "SourceGraphService.build",
-						"type": "SourceGraph"
+						"type": "SourceGraph",
+						"description": "Sorted graph nodes and conservative dependency edges, including import mode and uncertainty; no test execution verdict."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Input access failure",
+						"type": "propagated",
+						"description": "Caller-provided map or array iterators, getters and collection methods may throw; graph construction performs no I/O or schema validation."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

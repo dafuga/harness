@@ -136,12 +136,14 @@
 					{
 						"name": "ThreeSceneAdapter.constructor.canvas",
 						"type": "HTMLCanvasElement",
-						"required": true
+						"required": true,
+						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
 					},
 					{
 						"name": "ThreeSceneAdapter.constructor.context",
 						"type": "WebGL2RenderingContext",
-						"required": true
+						"required": true,
+						"description": "WebGL2 context already selected by the renderer factory."
 					}
 				],
 				"outputs": [

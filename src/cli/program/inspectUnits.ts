@@ -8,6 +8,7 @@ import {
 } from '../../core/development-tooling/unitTypes';
 import { verificationRecordSchema } from '../../core/verification-evidence/verificationTypes';
 import { testAttribution } from './testAttribution';
+import { declarationRole } from '../../services/explorer-ui/revision-detail-service/declarationRole';
 import { componentVersion } from '../../utils/development-tooling/componentVersion';
 import { graphOf, loadUnits } from '../../workflows/development-tooling/load-units/loadUnits';
 import type { UnitsOptions } from './manageUnits';
@@ -55,6 +56,19 @@ export async function showUnit(id: string, options: UnitsOptions = {}): Promise<
 			.map((test) => test.file)
 			.sort(),
 		testAttribution: attribution,
+		declarations: manifest.owns.source.flatMap((source) => {
+			const file = loaded.index.files.get(source);
+			return (
+				file?.exports.map((symbol) => ({
+					name: symbol.name,
+					source,
+					role: declarationRole(
+						symbol.kind,
+						Boolean(file.storage?.some((table) => table.name === symbol.name))
+					)
+				})) ?? []
+			);
+		}),
 		dependencies: manifest.dependencies.flatMap((dependency) => {
 			const unit = byId.get(dependency.unit);
 			return unit

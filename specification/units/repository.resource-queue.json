@@ -287,8 +287,9 @@
 				"inputs": [
 					{
 						"name": "ResourceQueueRepository.constructor.home",
-						"type": "unknown",
-						"required": false
+						"type": "string",
+						"required": false,
+						"description": "Filesystem directory containing this queue SQLite database and validated reserve configuration."
 					}
 				],
 				"outputs": [

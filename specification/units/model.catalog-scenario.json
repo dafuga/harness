@@ -3,8 +3,8 @@
 	"id": "model.catalog-scenario",
 	"kind": "model",
 	"title": "CatalogScenario",
-	"responsibility": "Owns the CatalogScenario data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Stores revision-bound scenario declarations in catalog_scenarios through a supplied persistence adapter.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"lineage": {
 		"predecessors": ["model.catalog-scenario-types"]
@@ -27,58 +27,74 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CatalogScenario.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stored row identity; the model passes it to the adapter without generating a key."
 			},
 			{
 				"name": "CatalogScenario.scenarioId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stable authored scenario ID at the recorded commit."
 			},
 			{
 				"name": "CatalogScenario.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Git commit to which this stored record belongs."
 			},
 			{
 				"name": "CatalogScenario.title",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source-revision display title."
 			},
 			{
 				"name": "CatalogScenario.data",
 				"type": "json",
-				"required": true
+				"required": true,
+				"description": "Structured payload retained by the adapter; no model code is executed to describe it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogScenario.find",
-				"type": "Promise<CatalogScenarioAttributes | null>"
+				"type": "Promise<CatalogScenarioAttributes | null>",
+				"description": "Promise of the matching catalog_scenarios row, or null according to the adapter lookup result."
 			},
 			{
 				"name": "CatalogScenario.findBy",
-				"type": "Promise<CatalogScenarioAttributes[]>"
+				"type": "Promise<CatalogScenarioAttributes[]>",
+				"description": "Promise of catalog_scenarios rows matching the supplied attribute filters."
 			},
 			{
 				"name": "CatalogScenario.create",
-				"type": "Promise<CatalogScenarioAttributes>"
+				"type": "Promise<CatalogScenarioAttributes>",
+				"description": "Promise of the catalog_scenarios row returned by the adapter after creation."
 			},
 			{
 				"name": "CatalogScenario.update",
-				"type": "Promise<CatalogScenarioAttributes | null>"
+				"type": "Promise<CatalogScenarioAttributes | null>",
+				"description": "Promise of the updated catalog_scenarios row, or null according to the adapter update result."
 			},
 			{
 				"name": "CatalogScenario.delete",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Promise of the adapter deletion result for the requested catalog_scenarios row."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Persistence operation failure",
+				"type": "propagated",
+				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CatalogScenario.find",
@@ -86,22 +102,31 @@
 					{
 						"name": "CatalogScenario.find.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_scenarios table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogScenario.find.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogScenario.find",
-						"type": "Promise<CatalogScenarioAttributes | null>"
+						"type": "Promise<CatalogScenarioAttributes | null>",
+						"description": "Promise of the matching catalog_scenarios row, or null according to the adapter lookup result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogScenario.findBy",
@@ -109,22 +134,31 @@
 					{
 						"name": "CatalogScenario.findBy.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_scenarios table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogScenario.findBy.fields",
 						"type": "Partial<CatalogScenarioAttributes>",
-						"required": true
+						"required": true,
+						"description": "Partial stored attributes used as equality filters for catalog_scenarios."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogScenario.findBy",
-						"type": "Promise<CatalogScenarioAttributes[]>"
+						"type": "Promise<CatalogScenarioAttributes[]>",
+						"description": "Promise of catalog_scenarios rows matching the supplied attribute filters."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogScenario.create",
@@ -132,22 +166,31 @@
 					{
 						"name": "CatalogScenario.create.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_scenarios table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogScenario.create.input",
 						"type": "CatalogScenarioCreateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_scenarios; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogScenario.create",
-						"type": "Promise<CatalogScenarioAttributes>"
+						"type": "Promise<CatalogScenarioAttributes>",
+						"description": "Promise of the catalog_scenarios row returned by the adapter after creation."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogScenario.update",
@@ -155,27 +198,37 @@
 					{
 						"name": "CatalogScenario.update.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_scenarios table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogScenario.update.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					},
 					{
 						"name": "CatalogScenario.update.input",
 						"type": "CatalogScenarioUpdateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_scenarios; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogScenario.update",
-						"type": "Promise<CatalogScenarioAttributes | null>"
+						"type": "Promise<CatalogScenarioAttributes | null>",
+						"description": "Promise of the updated catalog_scenarios row, or null according to the adapter update result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogScenario.delete",
@@ -183,22 +236,31 @@
 					{
 						"name": "CatalogScenario.delete.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_scenarios table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogScenario.delete.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogScenario.delete",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Promise of the adapter deletion result for the requested catalog_scenarios row."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [],
