@@ -29,6 +29,7 @@ import { coverageListVariant } from './coverageListVariants';
 import { providerPickerCardVariant } from './providerPickerCardVariants';
 import { providerPickerVariant } from './providerPickerVariants';
 import { browserErrorsVariant } from './browserErrorsVariants';
+import { gameplayReplayVariant } from './gameplayReplayVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -152,15 +153,6 @@ function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {
 	)
 		return { ...props, mode: 'comparison', uploading: variant === 'uploading' };
 	return null;
-}
-
-function gameplayReplayVariant(props: PreviewCases[string], variant: string) {
-	const report = props.report as Record<string, unknown>;
-	if (variant === 'live-empty')
-		return { ...props, report: { ...report, state: 'active', status: 'running', evidence: [] } };
-	return variant === 'interrupted'
-		? { ...props, report: { ...report, state: 'finalized', status: 'interrupted' } }
-		: null;
 }
 
 function regressionProofVariant(props: PreviewCases[string], variant: string) {

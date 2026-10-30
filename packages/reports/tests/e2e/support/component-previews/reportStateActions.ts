@@ -15,6 +15,7 @@ import { prepareUploadAudio } from './uploadAudioActions';
 import { prepareEvidenceProvenance } from './evidenceProvenanceActions';
 import { prepareBrowserErrors } from './browserErrorsActions';
 import { prepareEvidenceViewer } from './evidenceViewerActions';
+import { prepareGameplayReplay } from './gameplayReplayActions';
 
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.entity-states': prepareEntityStates,
@@ -39,6 +40,7 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.evidence-provenance': prepareEvidenceProvenance,
 	'reports.component.browser-errors': prepareBrowserErrors,
 	'reports.component.replay-controls': prepareReplayControls,
+	'reports.component.gameplay-replay': prepareGameplayReplay,
 	'reports.component.evidence-viewer': prepareEvidenceViewer,
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
 	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations

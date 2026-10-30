@@ -9,6 +9,10 @@ const pickerNames: Record<string, Record<string, string>> = {
 	'reports.component.replay-controls': {
 		'speed-open': 'Playback speed',
 		'scene-open': 'Jump to scene'
+	},
+	'reports.component.gameplay-replay': {
+		'speed-open': 'Playback speed',
+		'scene-open': 'Jump to scene'
 	}
 };
 
@@ -29,7 +33,7 @@ export async function assertOpenPickerPixels(
 	await selector.focus();
 	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(false);
 	const closed = await page.screenshot({
-		fullPage: id === 'reports.component.entity-states',
+		fullPage: ['reports.component.entity-states', 'reports.component.gameplay-replay'].includes(id),
 		clip,
 		animations: 'disabled',
 		caret: 'hide'

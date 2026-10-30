@@ -85,6 +85,7 @@ async function previewTarget(content: Locator, id: string, variant: string) {
 		['model-open', 'model-selected', 'effort-open', 'effort-selected'].includes(variant);
 	const modal = await previewModal(content, dialog, chatPicker);
 	const projectAgent = id === 'desktop.component.project-agent';
+	const replayFull = id === 'reports.component.gameplay-replay' && variant === 'fullscreen';
 	const compactTarget =
 		id === 'reports.component.filter-dialog' ? content.locator('.filter-trigger') : undefined;
 	let target = modal ? dialog : (compactTarget ?? content);
@@ -92,11 +93,12 @@ async function previewTarget(content: Locator, id: string, variant: string) {
 		target = content.locator(
 			variant === 'closed' ? '.floating-chat-bubble' : '.floating-chat-panel'
 		);
+	if (replayFull) target = content.locator('.replay-player.full');
 	return {
 		target,
 		modal,
 		chatPicker,
-		captureElement: Boolean(modal) || projectAgent || Boolean(compactTarget)
+		captureElement: Boolean(modal) || projectAgent || replayFull || Boolean(compactTarget)
 	};
 }
 

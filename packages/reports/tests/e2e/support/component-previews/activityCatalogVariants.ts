@@ -58,8 +58,23 @@ export const activityCatalogVariants: Record<string, string[]> = {
 	'reports.component.analytics-models': ['empty', 'unknown', 'unassessed'],
 	// Task history separates empty, unassessed, not-yet-passed and retried assessments.
 	'reports.component.analytics-tasks': ['empty', 'unassessed', 'unpassed', 'retried'],
-	// A replay can wait for its first live frame or retain an interrupted final run.
-	'reports.component.gameplay-replay': ['live-empty', 'interrupted'],
+	// Replay covers run status, image loading and failure, playback, export and controls.
+	'reports.component.gameplay-replay': [
+		'live-empty',
+		'live',
+		'interrupted',
+		'nonportable',
+		'download-preparing',
+		'loading',
+		'image-error',
+		'playing',
+		'last-frame',
+		'ended',
+		'waiting-live',
+		'fullscreen',
+		'speed-open',
+		'scene-open'
+	],
 	// Playback, selected controls and boundary-disabled controls each remain independently inspectable.
 	'reports.component.replay-controls': [
 		'playing',

@@ -3569,6 +3569,78 @@
 			"units": ["reports.component.gameplay-replay"]
 		},
 		{
+			"id": "reports-component-gameplay-replay-live",
+			"title": "Gameplay replay: Live with frames",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-nonportable",
+			"title": "Gameplay replay: Download available",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-download-preparing",
+			"title": "Gameplay replay: Preparing download",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-loading",
+			"title": "Gameplay replay: Loading frame",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-image-error",
+			"title": "Gameplay replay: Frame failed to load",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-playing",
+			"title": "Gameplay replay: Playing",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-last-frame",
+			"title": "Gameplay replay: Last frame",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-ended",
+			"title": "Gameplay replay: Replay ended",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-waiting-live",
+			"title": "Gameplay replay: Waiting for next capture",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-fullscreen",
+			"title": "Gameplay replay: Fullscreen",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-speed-open",
+			"title": "Gameplay replay: Speed selector open",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-scene-open",
+			"title": "Gameplay replay: Scene selector open",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
 			"id": "reports-component-harness-entity-artifact",
 			"title": "Entity artifact",
 			"coverage": "required",
@@ -6906,6 +6978,18 @@
 				"reports-component-gameplay-replay",
 				"reports-component-gameplay-replay-live-empty",
 				"reports-component-gameplay-replay-interrupted",
+				"reports-component-gameplay-replay-live",
+				"reports-component-gameplay-replay-nonportable",
+				"reports-component-gameplay-replay-download-preparing",
+				"reports-component-gameplay-replay-loading",
+				"reports-component-gameplay-replay-image-error",
+				"reports-component-gameplay-replay-playing",
+				"reports-component-gameplay-replay-last-frame",
+				"reports-component-gameplay-replay-ended",
+				"reports-component-gameplay-replay-waiting-live",
+				"reports-component-gameplay-replay-fullscreen",
+				"reports-component-gameplay-replay-speed-open",
+				"reports-component-gameplay-replay-scene-open",
 				"reports-component-harness-entity-artifact",
 				"reports-component-harness-entity-audio",
 				"reports-component-harness-entity-behavior",

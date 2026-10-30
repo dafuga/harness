@@ -5,6 +5,7 @@ import { previewImages } from './imageZoomActions';
 export async function assertPreviewLoading(content: Locator, id: string, variant: string) {
 	const loading: Record<string, string> = {
 		'reports.component.analytics-cpu': 'Sampling CPU…',
+		'reports.component.gameplay-replay': 'Loading screenshot…',
 		'reports.component.entity-states': 'Loading recorded capture…'
 	};
 	if (variant === 'loading' && loading[id]) return await expect(content).toContainText(loading[id]);
@@ -16,7 +17,8 @@ export async function assertPreviewLoading(content: Locator, id: string, variant
 }
 
 export function previewWaitUntil(id: string, variant: string) {
-	return id === 'reports.component.image-zoom' && variant === 'loading'
+	return ['reports.component.image-zoom', 'reports.component.gameplay-replay'].includes(id) &&
+		variant === 'loading'
 		? 'domcontentloaded'
 		: 'load';
 }

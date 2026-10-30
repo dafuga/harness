@@ -45,6 +45,8 @@ export async function servePreview(route: Route, home: string, markup = '') {
 	if (url.pathname === '/api/project-activity') return activityFixture(route);
 	if (url.pathname === '/api/analytics-cpu') return routeCpuFixture(route);
 	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
+	if (url.pathname === '/api/replay-video')
+		return route.fulfill({ contentType: 'video/mp4', body: 'Synthetic export response.' });
 	if (url.pathname === '/tools') return pickerFixture(route);
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
