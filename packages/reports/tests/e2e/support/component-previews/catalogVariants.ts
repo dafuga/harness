@@ -1,5 +1,8 @@
+import { audioCatalogVariants } from './audioCatalogVariants';
+
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
+	...audioCatalogVariants,
 	// Live activity keeps unavailable, stale, failed and untracked readings distinct.
 	'reports.component.activity-agents': [
 		'unavailable',
@@ -28,57 +31,6 @@ const variants: Record<string, string[]> = {
 	'reports.component.analytics-models': ['empty'],
 	// Task history separates empty, unassessed, not-yet-passed and retried assessments.
 	'reports.component.analytics-tasks': ['empty', 'unassessed', 'unpassed', 'retried'],
-	// Each side can be unavailable, have no duration or carry an independent result.
-	'reports.component.audio-comparison': [
-		'unavailable',
-		'after-unavailable',
-		'both-unavailable',
-		'no-duration',
-		'mixed',
-		'running',
-		'failed',
-		'blocked',
-		'skipped',
-		'not-proven',
-		'interrupted'
-	],
-	// Selection, playback, disclosures, availability and independent results are visible states.
-	'reports.component.audio-comparison-viewer': [
-		'before',
-		'after',
-		'unavailable',
-		'after-unavailable',
-		'both-unavailable',
-		'no-duration',
-		'mixed',
-		'running',
-		'failed',
-		'blocked',
-		'skipped',
-		'not-proven',
-		'interrupted',
-		'transcript-closed',
-		'playing-before',
-		'playing-after'
-	],
-	// Playback, disclosures, media failures and each recorded result are separate states.
-	'reports.component.audio-evidence': [
-		'notes',
-		'unavailable',
-		'notes-closed',
-		'notes-transcript',
-		'transcript-closed',
-		'no-details',
-		'no-duration',
-		'audio-error',
-		'playing',
-		'running',
-		'failed',
-		'blocked',
-		'skipped',
-		'not-proven',
-		'interrupted'
-	],
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',
