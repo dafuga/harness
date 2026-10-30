@@ -40,6 +40,7 @@
 		(id === 'reports.component.networking-security-explorer-permissions-screen' &&
 			variant.startsWith('endpoint')) ||
 		Boolean(unit.source?.includes('/components/explorer-ui/')) ||
+		Boolean(unit.source?.includes('/components/module-system/plugins/')) ||
 		[
 			'explorer-catalog-items',
 			'explorer-function-card',

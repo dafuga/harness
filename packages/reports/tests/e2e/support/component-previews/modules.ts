@@ -4,6 +4,7 @@ import { standardCodeModules } from '../../../../../../src/templates/module-syst
 import { rustWasmModule } from '../../../../../../src/templates/module-system/rustWasmModule';
 import { rustBackendModule } from '../../../../../../src/templates/module-system/rustBackendModule';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
+import { text } from './shared';
 const definition = (id: string, title: string, resource: string, resourceTitle: string) => ({
 	schemaVersion: 1 as const,
 	id,
@@ -106,6 +107,19 @@ export function modulePreview(host: ExplorerScreenProps, entity?: string): Explo
 export function moduleCases(host: ExplorerScreenProps) {
 	const library = modulePreview(host);
 	return {
+		'reports.component.module-system-plugins-explorer-plugin-card': {
+			entry: moduleData.modules[0],
+			title: text('<a href="/plugins/email">Email</a>')
+		},
+		'reports.component.module-system-plugins-plugin-resource-card': {
+			entry: moduleData.modules[0],
+			resource: moduleData.modules[0].definition.resources[0],
+			title: text('<a href="/plugins/email/email">Emails</a>')
+		},
+		'reports.component.module-system-plugins-plugin-state-pills': { entry: moduleData.modules[0] },
+		'reports.component.module-system-plugins-plugin-steps': {
+			lines: moduleData.modules[0].definition.instructions
+		},
 		'reports.component.networking-security-explorer-permissions-screen': {
 			...host,
 			head: { ...host.head, permissions: permissionProfiles },

@@ -9,7 +9,8 @@ export function visualUnit(unit: PreviewManifest): boolean {
 	if (unit.status !== 'active') return false;
 	// Document metadata and SVG definitions have no independent rendered surface to capture.
 	if (internalAtom(unit)) return false;
-	if (['component', 'shell'].includes(unit.kind)) return true;
+	if (['component', 'shell'].includes(unit.kind))
+		return [unit.runtime.entry, ...unit.owns.source].some((path) => path.endsWith('.svelte'));
 	if (!['page', 'layout'].includes(unit.kind)) return false;
 	const category = explorerCategory(unit);
 	return category === 'pages' || (unit.kind === 'layout' && category === 'layouts');

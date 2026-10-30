@@ -125,6 +125,11 @@
 		"reports.component.explorer-catalog-items",
 		"reports.component.explorer-dependencies-screen",
 		"reports.component.explorer-ui-config-value-tree",
+		"reports.component.explorer-ui-explorer-kit-card",
+		"reports.component.explorer-ui-explorer-kit-command-block",
+		"reports.component.explorer-ui-explorer-kit-empty-state",
+		"reports.component.explorer-ui-explorer-kit-notice",
+		"reports.component.explorer-ui-explorer-kit-pill",
 		"reports.component.explorer-ui-explorer-module-card",
 		"reports.component.explorer-ui-explorer-platform-details",
 		"reports.component.explorer-ui-explorer-platforms",
@@ -182,6 +187,10 @@
 		"reports.component.modal",
 		"reports.component.module-system-explorer-module-resources-screen",
 		"reports.component.module-system-explorer-modules-screen",
+		"reports.component.module-system-plugins-explorer-plugin-card",
+		"reports.component.module-system-plugins-plugin-resource-card",
+		"reports.component.module-system-plugins-plugin-state-pills",
+		"reports.component.module-system-plugins-plugin-steps",
 		"reports.component.networking-security-explorer-permissions-screen",
 		"reports.component.provider-picker",
 		"reports.component.provider-picker-cards",
@@ -2653,6 +2662,36 @@
 			"units": ["reports.component.explorer-ui-config-value-tree"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-kit-card",
+			"title": "Explorer card",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-command-block",
+			"title": "Command block",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-command-block"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-empty-state",
+			"title": "Explorer empty state",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-empty-state"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-notice",
+			"title": "Explorer notice",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-notice"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-pill",
+			"title": "Explorer pill",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-module-card",
 			"title": "ExplorerModuleCard",
 			"coverage": "required",
@@ -3623,6 +3662,30 @@
 			"title": "ExplorerModulesScreen: hovered plugin link",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-explorer-plugin-card",
+			"title": "Plugin library card",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-explorer-plugin-card"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-resource-card",
+			"title": "Plugin resource card",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-resource-card"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-state-pills",
+			"title": "Plugin state pills",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-state-pills"]
+		},
+		{
+			"id": "reports-component-module-system-plugins-plugin-steps",
+			"title": "Plugin steps",
+			"coverage": "required",
+			"units": ["reports.component.module-system-plugins-plugin-steps"]
 		},
 		{
 			"id": "reports-component-networking-security-explorer-permissions-screen",
@@ -5729,6 +5792,11 @@
 				"reports-component-explorer-ui-config-value-tree-schema-array",
 				"reports-component-explorer-ui-config-value-tree-expression",
 				"reports-component-explorer-ui-config-value-tree-long-expression",
+				"reports-component-explorer-ui-explorer-kit-card",
+				"reports-component-explorer-ui-explorer-kit-command-block",
+				"reports-component-explorer-ui-explorer-kit-empty-state",
+				"reports-component-explorer-ui-explorer-kit-notice",
+				"reports-component-explorer-ui-explorer-kit-pill",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
 				"reports-component-explorer-ui-explorer-module-card-image-error",
@@ -5891,6 +5959,10 @@
 				"reports-component-module-system-explorer-modules-screen-detail-unindexed",
 				"reports-component-module-system-explorer-modules-screen-link-focused",
 				"reports-component-module-system-explorer-modules-screen-link-hovered",
+				"reports-component-module-system-plugins-explorer-plugin-card",
+				"reports-component-module-system-plugins-plugin-resource-card",
+				"reports-component-module-system-plugins-plugin-state-pills",
+				"reports-component-module-system-plugins-plugin-steps",
 				"reports-component-networking-security-explorer-permissions-screen",
 				"reports-component-networking-security-explorer-permissions-screen-index",
 				"reports-component-networking-security-explorer-permissions-screen-guest",

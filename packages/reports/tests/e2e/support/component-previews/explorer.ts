@@ -18,6 +18,20 @@ const seen = {
 };
 export const explorerCases: PreviewCases = {
 	...moduleCases(d.host()),
+	'reports.component.explorer-ui-explorer-kit-card': {
+		children: text('<h2>OrderList</h2><p>Displays the current orders.</p>')
+	},
+	'reports.component.explorer-ui-explorer-kit-command-block': {
+		label: 'Install',
+		command: 'harness plugin add email'
+	},
+	'reports.component.explorer-ui-explorer-kit-empty-state': {
+		children: text('No dependencies recorded for this revision.')
+	},
+	'reports.component.explorer-ui-explorer-kit-notice': {
+		children: text('Some dependencies could not be read at this revision.')
+	},
+	'reports.component.explorer-ui-explorer-kit-pill': { children: text('Installed') },
 	'reports.component.explorer-dependencies-screen': dependencyPreview(
 		d.host()
 	) as unknown as Record<string, unknown>,
