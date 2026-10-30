@@ -1883,6 +1883,36 @@
 			"units": ["reports.component.entity-search"]
 		},
 		{
+			"id": "reports-component-entity-search-open-initial",
+			"title": "Entity search: open without a query",
+			"coverage": "required",
+			"units": ["reports.component.entity-search"]
+		},
+		{
+			"id": "reports-component-entity-search-open-loading",
+			"title": "Entity search: loading",
+			"coverage": "required",
+			"units": ["reports.component.entity-search"]
+		},
+		{
+			"id": "reports-component-entity-search-open-no-matches",
+			"title": "Entity search: no matches",
+			"coverage": "required",
+			"units": ["reports.component.entity-search"]
+		},
+		{
+			"id": "reports-component-entity-search-open-second-selected",
+			"title": "Entity search: second result selected",
+			"coverage": "required",
+			"units": ["reports.component.entity-search"]
+		},
+		{
+			"id": "reports-component-entity-search-open-pinned",
+			"title": "Entity search: pinned revision",
+			"coverage": "required",
+			"units": ["reports.component.entity-search"]
+		},
+		{
 			"id": "reports-component-entity-search-results",
 			"title": "Entity search results",
 			"coverage": "required",
@@ -4345,6 +4375,11 @@
 				"reports-component-entity-examples-void",
 				"reports-component-entity-search",
 				"reports-component-entity-search-open",
+				"reports-component-entity-search-open-initial",
+				"reports-component-entity-search-open-loading",
+				"reports-component-entity-search-open-no-matches",
+				"reports-component-entity-search-open-second-selected",
+				"reports-component-entity-search-open-pinned",
 				"reports-component-entity-search-results",
 				"reports-component-entity-search-results-initial",
 				"reports-component-entity-search-results-loading",

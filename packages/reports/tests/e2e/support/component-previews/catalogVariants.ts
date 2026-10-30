@@ -102,8 +102,15 @@ const variants: Record<string, string[]> = {
 		'missing-call',
 		'void'
 	],
-	// The trigger is a default state; this variant shows its populated search dialog.
-	'reports.component.entity-search': ['open'],
+	// Search opens with empty, loading, filtered, selected and revision-pinned presentations.
+	'reports.component.entity-search': [
+		'open',
+		'open-initial',
+		'open-loading',
+		'open-no-matches',
+		'open-second-selected',
+		'open-pinned'
+	],
 	// Search results distinguish typing, loading, no matches and selection changes.
 	'reports.component.entity-search-results': [
 		'initial',

@@ -7,6 +7,7 @@ import { assertAudioViewerCapture } from './catalogStateActions';
 import { assertEntityExamplesState } from './entityExamplesPreviewAssertions';
 import { assertEntityContractState } from './entityContractPreviewAssertions';
 import { assertSearchResultsState } from './searchResultsPreviewAssertions';
+import { assertEntitySearchState } from './entitySearchPreviewActions';
 import { assertActivityCountFits } from './projectActivityAssertions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
@@ -84,12 +85,8 @@ export async function assertCatalogState(
 	}
 	if (id === 'reports.component.filter-dialog' && variant === 'open')
 		await expect(component.getByRole('dialog', { name: 'Filters', exact: true })).toBeVisible();
-	if (id === 'reports.component.entity-search' && variant === 'open') {
-		const dialog = component.getByRole('dialog', { name: 'Search project' });
-		await expect(dialog).toBeVisible();
-		await expect(dialog.getByRole('combobox', { name: 'Search entities' })).toHaveValue('order');
-		await expect(dialog.getByRole('option').first()).toContainText('Order');
-	}
+	if (id === 'reports.component.entity-search')
+		await assertEntitySearchState(component, variant, viewport);
 	if (id !== 'reports.component.entity-contract' || viewport !== 'mobile' || variant) return;
 	const frame = component.locator('[data-harness-component="contract-table"] .frame').first();
 	const action = frame.getByRole('button', { name: 'View example for Orders' });
