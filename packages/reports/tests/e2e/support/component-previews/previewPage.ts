@@ -84,11 +84,13 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		)
 	)
 		await expect(content).not.toContainText(/No screenshot (?:is )?recorded/);
-	const expectedActivityFailure =
+	const expectedReadFailure =
 		(id === 'reports.component.activity-agents' &&
 			['failed-read', 'unreadable'].includes(variant)) ||
-		(id === 'reports.component.project-activity' && variant === 'failed-read');
-	if (!expectedActivityFailure) await expect(content).not.toContainText('could not be read');
+		(id === 'reports.component.project-activity' && variant === 'failed-read') ||
+		(id === 'reports.component.explorer-dependencies-screen' &&
+			['partial', 'unreadable'].includes(variant));
+	if (!expectedReadFailure) await expect(content).not.toContainText('could not be read');
 	for (const img of await content.locator('img').all()) {
 		await img.scrollIntoViewIfNeeded();
 		await expect
