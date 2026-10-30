@@ -35,6 +35,7 @@
 			}
 		],
 		"errors": [],
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},
@@ -60,7 +61,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-module-system-plugins-plugin-steps",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",
