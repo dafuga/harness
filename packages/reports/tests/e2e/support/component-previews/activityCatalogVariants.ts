@@ -63,10 +63,14 @@ export const activityCatalogVariants: Record<string, string[]> = {
 	// Playback, selected controls and boundary-disabled controls each remain independently inspectable.
 	'reports.component.replay-controls': [
 		'playing',
+		'middle-frame',
 		'final-frame',
 		'single-frame',
+		'no-scenes',
 		'scene-unselected',
 		'fullscreen',
-		'speed-2x'
+		'speed-2x',
+		'speed-open',
+		'scene-open'
 	]
 };

@@ -187,7 +187,7 @@ export const reportCases: PreviewCases = {
 		count: 3,
 		elapsed: 0,
 		total: 15,
-		title: 'Activity list',
+		title: 'Courtyard checkpoint',
 		scene: 1,
 		scenes: [1, 2],
 		fullscreen: false,
