@@ -26,7 +26,11 @@ export async function prepareActivityAgentState(component: Locator, variant: str
 		await expect(more).toBeVisible();
 		if (variant === 'expanded-units') {
 			await more.click();
-			await expect(component.getByText('not in the registry')).toBeVisible();
+			const warning = component.getByText('not in the registry');
+			await expect(warning).toBeVisible();
+			await expect(warning.locator('..')).toHaveText(
+				'reports.component.missing-preview not in the registry'
+			);
 		}
 	}
 	if (variant === 'many-agents' || variant === 'expanded-agents') {
