@@ -1,45 +1,50 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
 /** A native picker can be open while its popup is absent from captured pixels. */
-export async function assertOpenLanguagePixels(
+export async function assertOpenPickerPixels(
 	page: Page,
 	id: string,
 	variant: string,
 	capture?: { clip: { x: number; y: number; width: number; height: number }; bytes: Buffer }
 ) {
-	if (
-		!capture ||
-		id !== 'reports.component.explorer-ui-explorer-translations-screen' ||
-		variant !== 'language-open'
-	)
-		return;
+	const language =
+		id === 'reports.component.explorer-ui-explorer-translations-screen' &&
+		variant === 'language-open';
+	const status = id === 'reports.component.evidence-grid' && variant === 'status-open';
+	if (!capture || (!language && !status)) return;
 	const { clip, bytes: opened } = capture;
-	const language = page.getByRole('combobox', { name: 'Language' });
-	await expect.poll(() => language.evaluate((node) => node.matches(':open'))).toBe(true);
-	const control = (await language.boundingBox())!;
+	const selector = page.getByRole('combobox', { name: language ? 'Language' : 'Status' });
+	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(true);
+	const control = (await selector.boundingBox())!;
 	await page.mouse.click(1, 1);
-	await language.focus();
-	await expect.poll(() => language.evaluate((node) => node.matches(':open'))).toBe(false);
+	await selector.focus();
+	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(false);
 	const closed = await page.screenshot({
 		fullPage: false,
 		clip,
 		animations: 'disabled',
 		caret: 'hide'
 	});
-	const changed = await pickerPixelsChanged(page, opened, closed, clip, control);
-	expect(changed, 'The open language menu must change pixels outside its control').toBeGreaterThan(
-		100
-	);
-	await language.click();
+	const changed = await pickerPixelsChanged(page, { opened, closed, clip, control });
+	const message = `The open ${language ? 'language' : 'status'} menu must change pixels outside its control`;
+	expect(changed, message).toBeGreaterThan(100);
+	await selector.click();
 }
 
 /** Compare the captured images outside the selector, excluding focus or arrow changes. */
 async function pickerPixelsChanged(
 	page: Page,
-	opened: Buffer,
-	closed: Buffer,
-	clip: { x: number; y: number; width: number; height: number },
-	control: { x: number; y: number; width: number; height: number }
+	{
+		opened,
+		closed,
+		clip,
+		control
+	}: {
+		opened: Buffer;
+		closed: Buffer;
+		clip: { x: number; y: number; width: number; height: number };
+		control: { x: number; y: number; width: number; height: number };
+	}
 ) {
 	return page.evaluate(
 		async ({ before, after, clip, control }) => {
@@ -103,17 +108,25 @@ export async function prepareTranslations(component: Locator, variant: string) {
 export async function assertTranslations(component: Locator, variant: string) {
 	if (variant === 'unindexed')
 		await expect(component).toContainText('No translation catalog is recorded');
-	if (variant === 'empty' || variant === 'no-matches')
+	if (variant === 'english-only') {
+		await expect(component.getByRole('combobox', { name: 'Language' })).toHaveCount(0);
+		await expect(component).toContainText('No comparison languages are recorded at this revision.');
+		await expect(component.getByRole('columnheader')).toHaveText(['English', 'Used In']);
+		await expect(component).toContainText('Acceptance criteria');
+	}
+	if (['empty', 'no-matches'].includes(variant))
 		await expect(component).toContainText('No translations match this search.');
-	if (variant === 'gaps' || variant === 'gaps-open')
+	if (['gaps', 'gaps-open'].includes(variant))
 		await expect(component.locator('.ex-translations-gaps summary')).toContainText(
 			'Some translation sources could not be read'
 		);
 	if (variant === 'gaps-open')
 		await expect(component).toContainText('packages/orders/fr.json is unavailable');
 	if (variant === 'search') await expect(component.locator('tbody tr')).toHaveCount(1);
-	if (variant === 'german')
+	if (variant === 'german') {
 		await expect(component.getByRole('columnheader', { name: 'German' })).toBeVisible();
+		await expect(component).toContainText('Anhören und vergleichen');
+	}
 	if (variant === 'more') await expect(component.locator('tbody tr')).toHaveCount(100);
 	if (variant === 'missing-values') {
 		await expect(component).toContainText('Not translated');

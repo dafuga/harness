@@ -2045,6 +2045,114 @@
 			"units": ["reports.component.coverage-list"]
 		},
 		{
+			"id": "reports-component-coverage-list-acceptance",
+			"title": "Coverage list: acceptance",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-coverage",
+			"title": "Coverage list: coverage",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-embedded",
+			"title": "Coverage list: embedded",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-embedded-acceptance",
+			"title": "Coverage list: embedded acceptance",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-embedded-coverage",
+			"title": "Coverage list: embedded coverage",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-empty",
+			"title": "Coverage list: empty",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-acceptance-empty",
+			"title": "Coverage list: acceptance empty",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-coverage-empty",
+			"title": "Coverage list: coverage empty",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-embedded-empty",
+			"title": "Coverage list: embedded empty",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-embedded-acceptance-empty",
+			"title": "Coverage list: embedded acceptance empty",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-embedded-coverage-empty",
+			"title": "Coverage list: embedded coverage empty",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-minimal",
+			"title": "Coverage list: minimal",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-running",
+			"title": "Coverage list: running",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-failed",
+			"title": "Coverage list: failed",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-blocked",
+			"title": "Coverage list: blocked",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-skipped",
+			"title": "Coverage list: skipped",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-not-proven",
+			"title": "Coverage list: not proven",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
+			"id": "reports-component-coverage-list-interrupted",
+			"title": "Coverage list: interrupted",
+			"coverage": "required",
+			"units": ["reports.component.coverage-list"]
+		},
+		{
 			"id": "reports-component-entity-cases",
 			"title": "Input and output examples",
 			"coverage": "required",
@@ -2819,8 +2927,26 @@
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-module-card-image-error",
+			"title": "ExplorerModuleCard: image failed to decode",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-module-card-function",
 			"title": "ExplorerModuleCard: function",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-api",
+			"title": "ExplorerModuleCard: API methods",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-api-no-methods",
+			"title": "ExplorerModuleCard: API without recorded methods",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
@@ -2839,6 +2965,18 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-module-card-unlinked",
 			"title": "ExplorerModuleCard: unlinked dependency",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-no-usage",
+			"title": "ExplorerModuleCard: no usage",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-many-usage",
+			"title": "ExplorerModuleCard: more usages",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
@@ -2977,6 +3115,12 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-translations-screen-empty",
 			"title": "ExplorerTranslationsScreen: empty catalog",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-english-only",
+			"title": "ExplorerTranslationsScreen: no comparison languages",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
 		},
@@ -6010,6 +6154,24 @@
 				"reports-component-contract-table-long",
 				"reports-component-contract-table-multiple",
 				"reports-component-coverage-list",
+				"reports-component-coverage-list-acceptance",
+				"reports-component-coverage-list-coverage",
+				"reports-component-coverage-list-embedded",
+				"reports-component-coverage-list-embedded-acceptance",
+				"reports-component-coverage-list-embedded-coverage",
+				"reports-component-coverage-list-empty",
+				"reports-component-coverage-list-acceptance-empty",
+				"reports-component-coverage-list-coverage-empty",
+				"reports-component-coverage-list-embedded-empty",
+				"reports-component-coverage-list-embedded-acceptance-empty",
+				"reports-component-coverage-list-embedded-coverage-empty",
+				"reports-component-coverage-list-minimal",
+				"reports-component-coverage-list-running",
+				"reports-component-coverage-list-failed",
+				"reports-component-coverage-list-blocked",
+				"reports-component-coverage-list-skipped",
+				"reports-component-coverage-list-not-proven",
+				"reports-component-coverage-list-interrupted",
 				"reports-component-entity-cases",
 				"reports-component-entity-cases-empty",
 				"reports-component-entity-cases-expected-error",
@@ -6139,10 +6301,15 @@
 				"reports-component-explorer-ui-config-value-tree-long-expression",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
+				"reports-component-explorer-ui-explorer-module-card-image-error",
 				"reports-component-explorer-ui-explorer-module-card-function",
+				"reports-component-explorer-ui-explorer-module-card-api",
+				"reports-component-explorer-ui-explorer-module-card-api-no-methods",
 				"reports-component-explorer-ui-explorer-module-card-page",
 				"reports-component-explorer-ui-explorer-module-card-page-missing",
 				"reports-component-explorer-ui-explorer-module-card-unlinked",
+				"reports-component-explorer-ui-explorer-module-card-no-usage",
+				"reports-component-explorer-ui-explorer-module-card-many-usage",
 				"reports-component-explorer-ui-explorer-platform-details",
 				"reports-component-explorer-ui-explorer-platform-details-ios",
 				"reports-component-explorer-ui-explorer-platform-details-android",
@@ -6166,6 +6333,7 @@
 				"reports-component-explorer-ui-explorer-translations-screen",
 				"reports-component-explorer-ui-explorer-translations-screen-unindexed",
 				"reports-component-explorer-ui-explorer-translations-screen-empty",
+				"reports-component-explorer-ui-explorer-translations-screen-english-only",
 				"reports-component-explorer-ui-explorer-translations-screen-gaps",
 				"reports-component-explorer-ui-explorer-translations-screen-gaps-open",
 				"reports-component-explorer-ui-explorer-translations-screen-search",

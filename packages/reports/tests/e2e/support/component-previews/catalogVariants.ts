@@ -10,6 +10,7 @@ import { moduleCatalogVariants } from './reportModuleVariants';
 import { recordedValueStates } from './recordedValueVariants';
 import { reportSummaryStates } from './reportSummaryVariants';
 import { imageZoomStates } from './imageZoomVariants';
+import { coverageListStates } from './coverageListVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
@@ -23,6 +24,7 @@ const variants: Record<string, string[]> = {
 	'reports.component.recorded-value': recordedValueStates,
 	'reports.component.report-summary': reportSummaryStates,
 	'reports.component.image-zoom': imageZoomStates,
+	'reports.component.coverage-list': coverageListStates,
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',
@@ -139,10 +141,15 @@ const variants: Record<string, string[]> = {
 	// Visual, page, function and unlinked dependency cards each have their own treatment.
 	'reports.component.explorer-ui-explorer-module-card': [
 		'missing',
+		'image-error',
 		'function',
+		'api',
+		'api-no-methods',
 		'page',
 		'page-missing',
-		'unlinked'
+		'unlinked',
+		'no-usage',
+		'many-usage'
 	],
 	// Filters show their inactive trigger by default, with active and opened states separately.
 	'reports.component.filter-dialog': ['active', 'open'],

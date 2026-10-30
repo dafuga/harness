@@ -77,6 +77,11 @@
 				"name": "TypeError",
 				"type": "thrown",
 				"description": "Function-card argument examples cannot serialize BigInt or circular values."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "Serializing a deeply nested function argument example can exceed the runtime stack."
 			}
 		]
 	},

@@ -29,6 +29,7 @@
 	let selected = $derived(
 		locales.includes(language) ? language : locales.includes('fr') ? 'fr' : (locales[0] ?? 'fr')
 	);
+	let rowLocales = $derived(locales.length ? ['en', selected] : ['en']);
 	let rows = $derived((catalog?.rows ?? []).filter(matches));
 	let visible = $derived(rows.slice(0, limit));
 	$effect(() => {
@@ -81,6 +82,9 @@
 				<hx-p class="ex-empty">No translation catalog is recorded at this revision.</hx-p>
 			{:else}
 				<hx-p class="ex-note" role="status">{rows.length} of {catalog.rows.length} strings</hx-p>
+				{#if !locales.length}
+					<hx-p class="ex-note">No comparison languages are recorded at this revision.</hx-p>
+				{/if}
 				{#if catalog.gaps.length}
 					<hx-details class="ex-translations-gaps">
 						<hx-summary>Some translation sources could not be read</hx-summary>
@@ -98,17 +102,17 @@
 						aria-label="Translation strings"
 					>
 						<hx-table>
-							<hx-thead
-								><hx-tr
-									><hx-th scope="col">English</hx-th><hx-th scope="col"
-										>{languageName(selected)}</hx-th
-									><hx-th scope="col">Used In</hx-th></hx-tr
-								></hx-thead
-							>
+							<hx-thead>
+								<hx-tr>
+									<hx-th scope="col">English</hx-th>
+									{#if locales.length}<hx-th scope="col">{languageName(selected)}</hx-th>{/if}
+									<hx-th scope="col">Used In</hx-th>
+								</hx-tr>
+							</hx-thead>
 							<hx-tbody>
 								{#each visible as row (`${row.scope}:${row.key}`)}
 									<hx-tr>
-										{#each ['en', selected] as locale}
+										{#each rowLocales as locale}
 											<hx-td lang={locale}
 												>{#if Object.hasOwn(row.values, locale)}{#if row.values[locale] === ''}<hx-span
 															class="ex-translations-missing">Empty string</hx-span
