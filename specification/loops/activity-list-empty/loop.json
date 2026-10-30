@@ -2,7 +2,7 @@
 	"name": "activity-list-empty",
 	"goal": "Show a meaningful empty activity list and capture only the component states",
 	"createdAt": "2026-10-30T02:48:50.113Z",
-	"updatedAt": "2026-10-30T02:50:15.165Z",
+	"updatedAt": "2026-10-30T02:54:22.765Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T02:52:15.906Z",
+			"evidence": "The committed empty catalog assertion failed on harbor-mbp-2 because the component has no empty status message."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T02:52:31.211Z",
+			"evidence": "Render an accessible empty message from the supplied item name and document the propagated row-snippet error."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T02:54:22.765Z",
+			"evidence": "The unchanged empty catalog assertion passed on harbor-mbp-2 at the separate component repair commit."
 		},
 		{
 			"id": "verify",
