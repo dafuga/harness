@@ -82,7 +82,7 @@
 		gap: var(--hx-space-4) var(--hx-space-12);
 	}
 	dt {
-		color: var(--ex-soft);
+		color: var(--hx-color-text-supporting);
 		font-size: var(--hx-type-size-sm);
 	}
 	dd {
@@ -91,13 +91,13 @@
 	}
 	.none,
 	.note {
-		color: var(--ex-soft);
+		color: var(--hx-color-text-supporting);
 	}
 	.type {
 		padding: var(--hx-space-2) var(--hx-space-8);
-		border: var(--hx-border-thin) solid color-mix(in srgb, var(--ex-gold) 45%, transparent);
+		border: var(--hx-border-thin) solid color-mix(in srgb, var(--hx-color-primary) 45%, transparent);
 		border-radius: var(--hx-radius-compact);
-		color: var(--ex-gold);
+		color: var(--hx-color-primary);
 		font-size: var(--hx-type-size-sm);
 	}
 	.examples {
@@ -105,7 +105,7 @@
 		gap: var(--hx-space-10);
 		min-width: 0;
 		padding-top: var(--hx-space-14);
-		border-top: var(--hx-border-thin) solid var(--ex-line);
+		border-top: var(--hx-border-thin) solid var(--hx-color-border);
 	}
 	h3 {
 		margin: 0;
@@ -113,7 +113,7 @@
 		font-weight: var(--hx-style-weight-semibold);
 	}
 	.declared {
-		color: var(--ex-gold);
+		color: var(--hx-color-primary);
 	}
 	.illustrative {
 		font-style: var(--hx-style-font-italic);
@@ -138,7 +138,7 @@
 		margin: 0;
 		padding: var(--hx-space-8) var(--hx-space-10);
 		border-radius: var(--hx-radius-compact);
-		background: var(--ex-raised);
+		background: var(--hx-color-surface-raised);
 		font: var(--hx-style-code);
 		white-space: pre-wrap;
 		overflow-wrap: anywhere;
@@ -147,13 +147,13 @@
 		margin-top: var(--hx-space-8);
 	}
 	.whole summary {
-		color: var(--ex-gold);
+		color: var(--hx-color-primary);
 		font-size: var(--hx-type-size-sm);
 		cursor: pointer;
 	}
 	.whole summary:focus-visible {
 		border-radius: var(--hx-radius-xsmall);
-		outline: var(--hx-border-thick) solid var(--ex-gold);
+		outline: var(--hx-border-thick) solid var(--hx-color-primary);
 		outline-offset: var(--hx-border-thick);
 	}
 	.whole .literal {

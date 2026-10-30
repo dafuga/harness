@@ -11,7 +11,7 @@
 	[data-harness-component='contract-table'] tbody tr {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) 44px;
-		border-bottom: var(--hx-border-thin) solid var(--ex-line);
+		border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
 	}
 	[data-harness-component='contract-table'] tbody tr:last-child {
 		border-bottom: 0;
