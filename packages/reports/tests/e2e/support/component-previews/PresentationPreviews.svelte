@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import DataTable from '../../../../src/components/shared-primitives/DataTable.svelte';
 	import CodeLine from '../../../../src/components/shared-primitives/CodeLine.svelte';
 	import DetailList from '../../../../src/components/shared-primitives/DetailList.svelte';
@@ -7,6 +8,16 @@
 	import Modal from '../../../../src/components/shared-primitives/Modal.svelte';
 	let { id, variant }: { id: string; variant: string } = $props();
 	let inspection = $state(false);
+	let opener: HTMLElement | null = null;
+	function inspect(event: MouseEvent) {
+		opener = event.currentTarget as HTMLElement;
+		inspection = true;
+	}
+	async function closeInspection() {
+		inspection = false;
+		await tick();
+		opener?.focus();
+	}
 	const longName = 'OrderStore.findByCustomerAndRevision'.repeat(8);
 	const sources: Record<string, string> = {
 		long: `const source = '${longName}';`,
@@ -63,20 +74,13 @@
 		{#if ['action-focused', 'inspection-open'].includes(variant)}
 			<CodeLine text={source}>
 				{#snippet action()}
-					<HarnessAction
-						label="Inspect full source"
-						tone="plain"
-						onclick={() => (inspection = true)}>Inspect</HarnessAction
+					<HarnessAction label="Inspect full source" tone="plain" onclick={inspect}
+						>Inspect</HarnessAction
 					>
 				{/snippet}
 			</CodeLine>
 		{:else}<CodeLine text={source} mode={variant === 'wrap' ? 'wrap' : 'clip'} />{/if}
-		<Modal
-			open={inspection}
-			title="Full source"
-			variant="text"
-			onClose={() => (inspection = false)}
-		>
+		<Modal open={inspection} title="Full source" variant="text" onClose={closeInspection}>
 			<CodeLine text={source} mode="wrap" />
 		</Modal>
 	{:else}
