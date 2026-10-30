@@ -64,6 +64,9 @@ test('source graph resolves imports, re-exports, dynamic imports and Svelte scri
 		unit: 'service.title'
 	});
 	expect(graph.nodes).toContainEqual({ id: 'file:test/services/title.test.ts', kind: 'test' });
+	expect(
+		graph.edges.find((edge) => edge.from === 'file:test/services/title.test.ts')
+	).toHaveProperty('typeOnly', false);
 	expect(graph.edges).toContainEqual({
 		from: 'unit:service.title',
 		to: 'file:src/services/TitleService.ts',
@@ -87,7 +90,12 @@ test('unresolved references are uncertain and text inside strings or comments is
 	const from = graph.edges.filter((item) => item.from === 'file:src/utils/decoy.ts');
 
 	expect(from).toEqual([
-		{ from: 'file:src/utils/decoy.ts', to: 'file:src/services/TitleService.ts', via: 'url' }
+		{
+			from: 'file:src/utils/decoy.ts',
+			to: 'file:src/services/TitleService.ts',
+			via: 'url',
+			typeOnly: false
+		}
 	]);
 	expect(graph.uncertain).toContainEqual({
 		node: 'file:src/utils/decoy.ts',

@@ -49,7 +49,20 @@ export function renderUnit(detail: UnitDetail): string {
 		...(retired.length ? [['Continues', retired] as [string, string[]]] : []),
 		['Depends on', manifest.dependencies.map((d) => `${d.unit} (${d.via})`)],
 		['Consumers', detail.consumers],
-		['Tests', groupTests(detail.tests)],
+		['Impacted test files', groupTests(detail.tests)],
+		...(detail.testAttribution
+			? ([
+					[
+						'Direct import files',
+						groupTests(detail.testAttribution.directImports.map((test) => test.file))
+					],
+					[
+						'Transitive impact files',
+						groupTests(detail.testAttribution.transitiveImpacts.map((test) => test.file))
+					],
+					['Authored scenarios', detail.testAttribution.scenarios.map((scenario) => scenario.id)]
+				] as Array<[string, string[]]>)
+			: []),
 		['Scenarios', manifest.scenarios]
 	];
 	return [

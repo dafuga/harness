@@ -50,7 +50,14 @@ function node(id: string, kind: string, unit: string | undefined): GraphNode {
 function referenceEdges(path: string, references: ResolvedReference[]): GraphEdge[] {
 	return references.flatMap((reference) =>
 		reference.path
-			? [{ from: fileNode(path), to: fileNode(reference.path), via: reference.via }]
+			? [
+					{
+						from: fileNode(path),
+						to: fileNode(reference.path),
+						via: reference.via,
+						typeOnly: reference.typeOnly
+					}
+				]
 			: []
 	);
 }
@@ -92,7 +99,12 @@ function uncertain(index: SourceIndex): UncertainNode[] {
 }
 
 function unique(edges: GraphEdge[]): GraphEdge[] {
-	const seen = new Map(edges.map((edge) => [`${edge.from}\n${edge.to}\n${edge.via}`, edge]));
+	const seen = new Map(
+		edges.map((edge) => [
+			`${edge.from}\n${edge.to}\n${edge.via}\n${edge.typeOnly ?? 'unknown'}`,
+			edge
+		])
+	);
 	return [...seen.values()].sort(
 		(left, right) => compare(left.from, right.from) || compare(left.to, right.to)
 	);

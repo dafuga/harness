@@ -87,6 +87,8 @@ export interface GraphEdge {
 	from: string;
 	to: string;
 	via: string;
+	/** Source references retain their import mode; absent on structural or historical edges. */
+	typeOnly?: boolean;
 }
 
 export interface UncertainNode {

@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 import { measureWorkload } from '../support/measureWorkload';
 import type { UnitDetail } from '../../src/cli/program/inspectUnits.types';
 import { groupTests, renderContract, renderUnit } from '../../src/cli/program/renderUnit';
+import { assertTestAttribution } from './unitAttribution';
 
 const field = (name: string, type: string, metadata = {}) => ({ name, type, ...metadata }) as never;
 function detail(kind: string): UnitDetail {
@@ -82,11 +83,12 @@ describe('units show rendering', () => {
 			'  pkg/test/        2',
 			'  pkg/test/utils/  1'
 		]);
+		return assertTestAttribution(detail('component'));
 	});
 
 	test('identical runtime targets and an empty lineage are not repeated', () => {
 		const text = renderUnit(detail('component'));
 		expect(text).not.toMatch(/Targets|Continues|Execution targets/);
-		expect(text).toContain('Runtime     module src/Badge.svelte');
+		expect(text).toMatch(/Runtime\s+module src\/Badge.svelte/);
 	});
 });

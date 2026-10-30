@@ -116,7 +116,7 @@ function styleReferences(code: string): SourceReference[] {
 function unique(found: Found[]): SourceReference[] {
 	const seen = new Set<string>();
 	return found.flatMap(({ index: _index, ...reference }) => {
-		const key = `${reference.via}\n${reference.specifier ?? reference.detail}`;
+		const key = `${reference.via}\n${reference.specifier ?? reference.detail}\n${reference.typeOnly}`;
 		if (seen.has(key)) return [];
 		seen.add(key);
 		return [reference];

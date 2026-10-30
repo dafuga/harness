@@ -1,11 +1,10 @@
-import { assertCompanionOwnership } from './unit-index/ownership';
+import { assertCompanionOwnership, assertContractDependency } from './unit-index/ownership';
 import './unit-index/composition';
 import './unit-index/http';
 import './unit-index/sourceIndex';
 import { execFileSync } from 'node:child_process';
 import { expect, test } from 'vitest';
 import { componentManifestSchema, type ComponentManifest } from '../../src/core/unitTypes';
-import { SourceGraphService } from '../../src/services/SourceGraphService';
 import { UnitRegistryValidator } from '../../src/validators/UnitRegistryValidator';
 import { indexFiles, retire, unitOf, helperMoveGaps, serviceMoveGaps } from '../support/memoryTree';
 import { resolve } from 'node:path';
@@ -165,32 +164,10 @@ test('a declared responsibility survives re-indexing while a derived one follows
 	);
 });
 
-test('an alternative implementation is a related unit linked by a declared contract dependency', async () => {
-	const files = {
-		'src/utils/rank.ts': 'export function rank(value: number): number {\n\treturn value;\n}\n',
-		'src/utils/rankFast.ts':
-			'export function rankFast(value: number): number {\n\treturn value;\n}\n'
-	};
-	const first = await indexFiles(files);
-	const link = {
-		unit: 'function.rank',
-		via: 'contract',
-		origin: 'declared',
-		contract: 'rank'
-	} as const;
-	const fast = { ...unitOf(first, 'function.rank-fast'), dependencies: [link] };
-	const again = await indexFiles(files, [unitOf(first, 'function.rank'), fast]);
-
-	expect(again.result.updated).toEqual([]);
-	expect(unitOf(again, 'function.rank-fast').dependencies).toEqual([link]);
-	const graph = new SourceGraphService().build(again.index, again.result.manifests);
-	expect(graph.edges).toEqual(
-		expect.arrayContaining([
-			{ from: 'unit:function.rank-fast', to: 'unit:function.rank', via: 'contract' },
-			{ from: 'file:src/utils/rankFast.ts', to: 'unit:function.rank', via: 'contract' }
-		])
-	);
-});
+test(
+	'an alternative implementation is a related unit linked by a declared contract dependency',
+	assertContractDependency
+);
 
 test('several owned files produce identical metadata after one indexing pass', async () => {
 	const files = {

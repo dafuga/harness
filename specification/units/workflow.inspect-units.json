@@ -10,6 +10,8 @@
 		"source": [
 			"src/cli/program/inspectUnits.ts",
 			"src/cli/program/inspectUnits.types.ts",
+			"src/cli/program/testAttribution.ts",
+			"src/cli/program/testAttribution.types.ts",
 			"src/workflows/inspectUnits.ts"
 		],
 		"symbols": [
@@ -20,6 +22,9 @@
 			"renderUnit",
 			"UnitDetail",
 			"UnitDetail",
+			"testAttribution",
+			"TestDependency",
+			"TestAttribution",
 			"unitSchema",
 			"listUnits",
 			"unitsGraph",
@@ -58,6 +63,21 @@
 				"type": "UnitsOptions",
 				"required": false,
 				"default": {}
+			},
+			{
+				"name": "testAttribution.graph",
+				"type": "SourceGraph",
+				"required": true
+			},
+			{
+				"name": "testAttribution.manifest",
+				"type": "ComponentManifest",
+				"required": true
+			},
+			{
+				"name": "testAttribution.scenarios",
+				"type": "ScenarioManifest[]",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -76,6 +96,10 @@
 			{
 				"name": "showUnit",
 				"type": "Promise<UnitDetail>"
+			},
+			{
+				"name": "testAttribution",
+				"type": "TestAttribution"
 			}
 		],
 		"errors": [
@@ -174,6 +198,34 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "testAttribution",
+				"inputs": [
+					{
+						"name": "testAttribution.graph",
+						"type": "SourceGraph",
+						"required": true
+					},
+					{
+						"name": "testAttribution.manifest",
+						"type": "ComponentManifest",
+						"required": true
+					},
+					{
+						"name": "testAttribution.scenarios",
+						"type": "ScenarioManifest[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "testAttribution",
+						"type": "TestAttribution"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			}
 		],
