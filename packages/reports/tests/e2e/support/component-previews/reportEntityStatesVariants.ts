@@ -3,11 +3,16 @@ import type { Evidence } from '../../../../src/models/reports-media/Report.types
 import type { PreviewCases } from './shared';
 
 /** Synthetic, visibly labelled fixture images show the matching populated or empty order list. */
-export function orderListImage(empty: boolean) {
+export function orderListImage(empty: boolean, compact = false) {
+	const firstRow = compact ? 155 : 230;
+	const secondRow = compact ? 196 : 290;
 	const body = empty
-		? '<text x="52" y="230" fill="#d8e4ee" font-size="24">No matching orders</text>'
-		: '<text x="52" y="230" fill="#d8e4ee" font-size="24">Order A-1048 · Ready to ship</text><text x="52" y="290" fill="#d8e4ee" font-size="24">Order A-1047 · Delivered</text>';
-	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560"><rect width="920" height="560" fill="#0e1c29"/><g font-family="sans-serif"><text x="52" y="60" fill="#f3c33b" font-size="20">SYNTHETIC ORDER LIST</text><text x="52" y="125" fill="#f4f7fb" font-size="36">Orders</text>${body}</g></svg>`;
+		? `<text x="52" y="${firstRow}" fill="#d8e4ee" font-size="24">No matching orders</text>`
+		: `<text x="52" y="${firstRow}" fill="#d8e4ee" font-size="24">Order A-1048 · Ready to ship</text><text x="52" y="${secondRow}" fill="#d8e4ee" font-size="24">Order A-1047 · Delivered</text>`;
+	const height = compact ? 230 : 560;
+	const header = compact ? 40 : 60;
+	const title = compact ? 95 : 125;
+	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="920" height="${height}" viewBox="0 0 920 ${height}"><rect width="920" height="${height}" fill="#0e1c29"/><g font-family="sans-serif"><text x="52" y="${header}" fill="#f3c33b" font-size="20">SYNTHETIC ORDER LIST</text><text x="52" y="${title}" fill="#f4f7fb" font-size="36">Orders</text>${body}</g></svg>`;
 	return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
 
@@ -21,6 +26,19 @@ export function entityStatesVariant(props: PreviewCases[string], variant: string
 	const evidence = props.evidence as ExplorerEvidence;
 	if (variant === 'scenario-open' || variant === 'scenario-selected')
 		return { ...props, evidence: withArchivedScenario(evidence) };
+	if (variant === 'image-error')
+		return {
+			...props,
+			resolveImage: async (item: Evidence) =>
+				item.title === 'Default · Before'
+					? '/media/preview-invalid-image.svg'
+					: orderListImage(item.title.startsWith('Empty'))
+		};
+	if (variant === 'viewer-open')
+		return {
+			...props,
+			resolveImage: async (item: Evidence) => orderListImage(item.title.startsWith('Empty'), true)
+		};
 	const changed = galleryEvidence(evidence, variant);
 	if (changed) return { ...props, evidence: changed };
 	if (variant === 'loading') return { ...props, resolveImage: () => new Promise<string>(() => {}) };
@@ -31,7 +49,7 @@ export function entityStatesVariant(props: PreviewCases[string], variant: string
 				throw new Error('Recorded capture could not be loaded.');
 			}
 		};
-	if (['viewport-mobile', 'viewport-open', 'viewer-open'].includes(variant)) return props;
+	if (['viewport-mobile', 'viewport-open', 'capture-details-open'].includes(variant)) return props;
 	return null;
 }
 
@@ -49,6 +67,22 @@ function withArchivedScenario(evidence: ExplorerEvidence): ExplorerEvidence {
 function galleryEvidence(evidence: ExplorerEvidence, variant: string): ExplorerEvidence | null {
 	if (variant === 'empty') return { ...evidence, scenarios: [] };
 	if (variant === 'current') return { ...evidence, mode: 'current', before: null };
+	if (variant === 'initial')
+		return {
+			...evidence,
+			before: null,
+			initial: 'This is the first commit of its history: there is no parent to compare with.'
+		};
+	if (variant === 'coverage-gap') {
+		const scenario = evidence.scenarios[0];
+		const state = {
+			id: 'pending',
+			title: 'Pending',
+			coverage: 'missing',
+			reason: 'The team has not specified capture coverage.'
+		};
+		return { ...evidence, scenarios: [{ ...scenario, states: [state] }] };
+	}
 	if (variant === 'missing')
 		return {
 			...evidence,
