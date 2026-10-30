@@ -87,9 +87,11 @@
 								>{test.id} · {test.status ?? 'not in the record'}</hx-span
 							>{/each}
 					</hx-p>
-					{#each item.tests as check, position (position)}<BrowserErrors
-							diagnostics={check.browserErrors}
-						/>{/each}
+					{#each item.tests as check, position (position)}
+						{#if check.browserErrors?.length}<BrowserErrors
+								diagnostics={check.browserErrors}
+							/>{/if}
+					{/each}
 					<hx-table>
 						<hx-thead>
 							<hx-tr
