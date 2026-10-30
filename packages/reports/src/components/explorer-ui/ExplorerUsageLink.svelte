@@ -140,7 +140,11 @@
 					/>
 					<hx-span>{origin}</hx-span>
 				{:else}
-					<hx-span>No screenshot is recorded at this revision</hx-span>
+					<hx-span
+						>{file && failed === file
+							? 'Screenshot could not be loaded.'
+							: 'No screenshot is recorded at this revision'}</hx-span
+					>
 				{/if}
 			</hx-span>{/if}{/if}</hx-span
 >
