@@ -160,6 +160,8 @@ export const referenceVerificationScopes: Record<string, VerificationScope> = {
 		vitest: {
 			'test/console-workspace.test.ts': {
 				'chat references navigate the standalone explorer to scoped entity history':
+					'history-navigation',
+				'module screens retain revision-scoped project chat without selecting a source entity':
 					'history-navigation'
 			},
 			'test/console-bridge.test.ts': {
@@ -171,7 +173,9 @@ export const referenceVerificationScopes: Record<string, VerificationScope> = {
 			'test/console-agent.test.ts': {
 				'owner web chat requires loopback Host, same origin and JSON before invoking its executor':
 					'owner-boundary',
-				'oversized and malformed payloads never reach the executor': 'owner-boundary'
+				'oversized and malformed payloads never reach the executor': 'owner-boundary',
+				'native local API clients use bearer headers and receive original artifact bytes':
+					'owner-boundary'
 			},
 			'test/preview-lifecycle.test.ts': {
 				'the owned preview autonomously recovers after crash': 'route-runtime',
