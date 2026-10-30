@@ -1277,8 +1277,20 @@
 			"units": ["reports.component.analytics-cpu"]
 		},
 		{
+			"id": "reports-component-analytics-cpu-loading",
+			"title": "Analytics cpu: Sampling",
+			"coverage": "required",
+			"units": ["reports.component.analytics-cpu"]
+		},
+		{
 			"id": "reports-component-analytics-cpu-no-agents",
 			"title": "Analytics cpu: No repository agents",
+			"coverage": "required",
+			"units": ["reports.component.analytics-cpu"]
+		},
+		{
+			"id": "reports-component-analytics-cpu-not-measured",
+			"title": "Analytics cpu: Percentages not measured",
 			"coverage": "required",
 			"units": ["reports.component.analytics-cpu"]
 		},
@@ -1297,6 +1309,12 @@
 		{
 			"id": "reports-component-analytics-filters-empty",
 			"title": "Analytics filters: No filters",
+			"coverage": "required",
+			"units": ["reports.component.analytics-filters"]
+		},
+		{
+			"id": "reports-component-analytics-filters-all-filters",
+			"title": "Analytics filters: All filters",
 			"coverage": "required",
 			"units": ["reports.component.analytics-filters"]
 		},
@@ -3449,6 +3467,18 @@
 			"units": ["reports.component.regression-proof"]
 		},
 		{
+			"id": "reports-component-regression-proof-capture-only",
+			"title": "Regression proof: Focused capture without failing test",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
+			"id": "reports-component-regression-proof-empty",
+			"title": "Regression proof: No recorded proof",
+			"coverage": "required",
+			"units": ["reports.component.regression-proof"]
+		},
+		{
 			"id": "reports-component-replay-controls",
 			"title": "Evidence replay controls",
 			"coverage": "required",
@@ -4952,10 +4982,13 @@
 				"reports-component-activity-work-many",
 				"reports-component-activity-work-expanded",
 				"reports-component-analytics-cpu",
+				"reports-component-analytics-cpu-loading",
 				"reports-component-analytics-cpu-no-agents",
+				"reports-component-analytics-cpu-not-measured",
 				"reports-component-analytics-cpu-unavailable",
 				"reports-component-analytics-filters",
 				"reports-component-analytics-filters-empty",
+				"reports-component-analytics-filters-all-filters",
 				"reports-component-analytics-history",
 				"reports-component-analytics-history-empty",
 				"reports-component-analytics-models",
@@ -5314,6 +5347,8 @@
 				"reports-component-regression-proof-pending",
 				"reports-component-regression-proof-gap",
 				"reports-component-regression-proof-output-open",
+				"reports-component-regression-proof-capture-only",
+				"reports-component-regression-proof-empty",
 				"reports-component-replay-controls",
 				"reports-component-replay-controls-playing",
 				"reports-component-replay-controls-final-frame",

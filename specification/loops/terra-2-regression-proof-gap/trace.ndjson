@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T00:51:21.926Z","name":"terra-2-regression-proof-gap","goal":"Incomplete regression evidence must not claim proof.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T00:51:38.462Z","loop":"terra-2-regression-proof-gap","step":"spec","evidence":"The gap and pending previews claim proof in the footnote without a complete red and green record."}
+{"event":"step.completed","timestamp":"2026-10-30T00:51:39.016Z","loop":"terra-2-regression-proof-gap","step":"coverage","evidence":"component-catalog-previews exercises gap and pending but lacks an assertion that incomplete records cannot claim proof; add that assertion to its shared preview checks."}
