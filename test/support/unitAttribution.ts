@@ -3,6 +3,15 @@ import type { UnitProject } from './unitProject.types';
 import type { Shown } from '../units-policy.e2e.test.types';
 
 export async function writeAttribution(project: UnitProject): Promise<void> {
+	await project.write(
+		'src/utils/slugify.ts',
+		(await project.read('src/utils/slugify.ts')) +
+			'\nexport class SlugifyFailure extends Error {}\n'
+	);
+	await project.write(
+		'src/utils/slugify.types.ts',
+		'export interface SlugifyOptions { lower?: boolean }\n'
+	);
 	await project.write('src/utils/forward.ts', "export { slugify } from './slugify';\n");
 	await project.write('test/direct.test.ts', "import { slugify } from '../src/utils/slugify';\n");
 	await project.write(
@@ -30,6 +39,13 @@ export async function writeAttribution(project: UnitProject): Promise<void> {
 }
 
 export function assertAttribution(shown: Shown): void {
+	expect(shown.declarations).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({ name: 'slugify', role: 'operation' }),
+			expect.objectContaining({ name: 'SlugifyFailure', role: 'runtime-support' }),
+			expect.objectContaining({ name: 'SlugifyOptions', role: 'type' })
+		])
+	);
 	expect(shown.tests).toEqual([
 		'test/direct.test.ts',
 		'test/transitive.test.ts',

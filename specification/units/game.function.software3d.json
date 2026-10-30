@@ -109,7 +109,8 @@
 					{
 						"name": "Software3dAdapter.constructor.canvas",
 						"type": "HTMLCanvasElement",
-						"required": true
+						"required": true,
+						"description": "Browser canvas owned by this renderer or canvas-only stream transport."
 					}
 				],
 				"outputs": [

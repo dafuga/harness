@@ -72,6 +72,8 @@ async function assertForwardedComponentOwnership(original: ComponentManifest): P
 export async function assertContractDependency(): Promise<void> {
 	const files = {
 		'src/utils/rank.ts': 'export function rank(value: number): number {\n\treturn value;\n}\n',
+		'test/rank.test.ts':
+			"import type { rank } from '../src/utils/rank';\nimport { rank as runtimeRank } from '../src/utils/rank';\n",
 		'src/utils/rankFast.ts':
 			'export function rankFast(value: number): number {\n\treturn value;\n}\n'
 	};
@@ -92,6 +94,11 @@ export async function assertContractDependency(): Promise<void> {
 		'build-contract-dependency-graph',
 		() => new SourceGraphService().build(again.index, again.result.manifests)
 	);
+	expect(
+		graph.edges
+			.filter((edge) => edge.from === 'file:test/rank.test.ts')
+			.map((edge) => edge.typeOnly)
+	).toEqual([true, false]);
 	expect(graph.edges).toEqual(
 		expect.arrayContaining([
 			{ from: 'unit:function.rank-fast', to: 'unit:function.rank', via: 'contract' },

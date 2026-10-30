@@ -3,8 +3,8 @@
 	"id": "workflow.generate-code",
 	"kind": "workflow",
 	"title": "generateCode",
-	"responsibility": "Owns the generateCode command workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Plans and writes categorized model or scaffold files, preserving overwrite protection, project eligibility, dependencies and public library exports.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -52,168 +52,206 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "generateModel.input",
 				"type": "GenerateModelInput",
-				"required": true
+				"required": true,
+				"description": "Model name, field specifications and adapter (d1/sqlite/postgres), with optional category, force and root; omitted root uses the current directory and omitted force protects changed files."
 			},
 			{
 				"name": "generatePiece.input",
 				"type": "GeneratePieceInput",
-				"required": true
+				"required": true,
+				"description": "Scaffold kind and name, with optional category, responsibility, root, force and component level; root defaults to the current directory and force is disabled when omitted."
 			},
 			{
 				"name": "renderGenerateResult.result",
 				"type": "GenerateResult",
-				"required": true
+				"required": true,
+				"description": "Generation outcome containing scaffold kind/name, per-file statuses and whether the public library exports changed."
 			},
 			{
 				"name": "generationGroup.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project directory used to load the revision taxonomy and resolve explicit or inferred responsibility categories."
 			},
 			{
 				"name": "generationGroup.input",
 				"type": "{ name: string; group?: string; responsibility?: string }",
-				"required": true
+				"required": true,
+				"description": "Code name plus optional explicit group and responsibility; a categorized project requires one unambiguous category."
 			},
 			{
 				"name": "saveGenerationGroup.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Generation root used to report the taxonomy file path relative to the caller."
 			},
 			{
 				"name": "saveGenerationGroup.selection",
 				"type": "Selection",
-				"required": false
+				"required": false,
+				"description": "Selected category and taxonomy owner; omitted selection or an existing category returns no writes."
 			},
 			{
 				"name": "groupedFiles.files",
 				"type": "PlannedFile[]",
-				"required": true
+				"required": true,
+				"description": "Planned source and test files whose paths and module references must move together."
 			},
 			{
 				"name": "groupedFiles.group",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Optional category ID; omission preserves original paths and contents."
 			},
 			{
 				"name": "groupedExports.plans",
 				"type": "ExportPlan[]",
-				"required": true
+				"required": true,
+				"description": "Public export plans to retarget to the grouped generated files."
 			},
 			{
 				"name": "groupedExports.paths",
 				"type": "Map<string, string>",
-				"required": true
+				"required": true,
+				"description": "Original-to-grouped source path map from the same planned generation."
 			},
 			{
 				"name": "assertUniqueGroupedNames.root",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Project directory searched for existing declarations in the chosen category."
 			},
 			{
 				"name": "assertUniqueGroupedNames.group",
 				"type": "string | undefined",
-				"required": true
+				"required": true,
+				"description": "Chosen category; omission skips the categorized duplicate-name check."
 			},
 			{
 				"name": "assertUniqueGroupedNames.files",
 				"type": "PlannedFile[]",
-				"required": true
+				"required": true,
+				"description": "Planned source files to check against same-name files already in the category."
 			},
 			{
 				"name": "groupedImports.contents",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source text whose module addresses and declared atom-library path are rewritten; ordinary strings remain intact."
 			},
 			{
 				"name": "groupedImports.before",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Original repository-relative source file path used to resolve old module addresses."
 			},
 			{
 				"name": "groupedImports.after",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Destination repository-relative source path used to render new relative addresses."
 			},
 			{
 				"name": "groupedImports.paths",
 				"type": "Map<string, string>",
-				"required": true
+				"required": true,
+				"description": "Original-to-destination path map used to follow generated source moves."
 			},
 			{
 				"name": "groupedSpecifier.specifier",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Relative module specifier; framework $types addresses and trailing directory slashes retain their supported spelling."
 			},
 			{
 				"name": "groupedSpecifier.before",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Original source file path from which the specifier resolves."
 			},
 			{
 				"name": "groupedSpecifier.after",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Destination source file path from which the returned relative specifier resolves."
 			},
 			{
 				"name": "groupedSpecifier.paths",
 				"type": "Map<string, string>",
-				"required": true
+				"required": true,
+				"description": "Original-to-destination source path map; unmatched targets keep their resolved destination."
 			}
 		],
 		"outputs": [
 			{
 				"name": "generateModel",
-				"type": "Promise<GenerateResult>"
+				"type": "Promise<GenerateResult>",
+				"description": "Promise of the generated model name/kind, actual file-write statuses and whether SDK exports changed."
 			},
 			{
 				"name": "generatePiece",
-				"type": "Promise<GenerateResult>"
+				"type": "Promise<GenerateResult>",
+				"description": "Promise of the generated scaffold name/kind, actual file-write statuses and whether SDK exports changed."
 			},
 			{
 				"name": "renderGenerateResult",
-				"type": "string"
+				"type": "string",
+				"description": "Human-readable generation summary and per-file create/skip/overwrite lines."
 			},
 			{
 				"name": "generationGroup",
-				"type": "Selection | undefined"
+				"type": "Selection | undefined",
+				"description": "Selected taxonomy owner/category and whether it must be added; undefined for an uncategorized legacy project without an explicit choice."
 			},
 			{
 				"name": "saveGenerationGroup",
-				"type": "Promise<FileWriteResult[]>"
+				"type": "Promise<FileWriteResult[]>",
+				"description": "Promise of the taxonomy file write, or an empty list when the selected category is already recorded or absent."
 			},
 			{
 				"name": "groupedFiles",
-				"type": "unknown"
+				"type": "{ paths: Map<string, string>; files: PlannedFile[] }",
+				"description": "Original-to-destination path map and planned files with rewritten module references; does not write them."
 			},
 			{
 				"name": "groupedExports",
-				"type": "ExportPlan[]"
+				"type": "ExportPlan[]",
+				"description": "Export plans rewritten against the grouped source path map."
 			},
 			{
 				"name": "assertUniqueGroupedNames",
-				"type": "void"
+				"type": "void",
+				"description": "Returns no data after validating uniqueness, or throws before generation writes start."
 			},
 			{
 				"name": "groupedImports",
-				"type": "string"
+				"type": "string",
+				"description": "Source text with only module/atom-library address edits applied in reverse source order."
 			},
 			{
 				"name": "groupedSpecifier",
-				"type": "string"
+				"type": "string",
+				"description": "Relative module address from the destination source, retaining explicit extensions and directory slashes."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Rejects unsafe names, fields, unsupported adapters/scaffolds/levels, ambiguous categories, duplicate declarations and refused overwrites before the affected write."
+			},
+			{
+				"name": "Generation boundary failure",
+				"type": "propagated",
+				"description": "Filesystem, dependency installation, taxonomy loading and public-export update failures propagate; earlier successful writes are not presented as an atomic transaction."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "generateModel",
@@ -221,17 +259,30 @@
 					{
 						"name": "generateModel.input",
 						"type": "GenerateModelInput",
-						"required": true
+						"required": true,
+						"description": "Model name, field specifications and adapter (d1/sqlite/postgres), with optional category, force and root; omitted root uses the current directory and omitted force protects changed files."
 					}
 				],
 				"outputs": [
 					{
 						"name": "generateModel",
-						"type": "Promise<GenerateResult>"
+						"type": "Promise<GenerateResult>",
+						"description": "Promise of the generated model name/kind, actual file-write statuses and whether SDK exports changed."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects unsafe names, fields, unsupported adapters/scaffolds/levels, ambiguous categories, duplicate declarations and refused overwrites before the affected write."
+					},
+					{
+						"name": "Generation boundary failure",
+						"type": "propagated",
+						"description": "Filesystem, dependency installation, taxonomy loading and public-export update failures propagate; earlier successful writes are not presented as an atomic transaction."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "generatePiece",
@@ -239,17 +290,30 @@
 					{
 						"name": "generatePiece.input",
 						"type": "GeneratePieceInput",
-						"required": true
+						"required": true,
+						"description": "Scaffold kind and name, with optional category, responsibility, root, force and component level; root defaults to the current directory and force is disabled when omitted."
 					}
 				],
 				"outputs": [
 					{
 						"name": "generatePiece",
-						"type": "Promise<GenerateResult>"
+						"type": "Promise<GenerateResult>",
+						"description": "Promise of the generated scaffold name/kind, actual file-write statuses and whether SDK exports changed."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects unsafe names, fields, unsupported adapters/scaffolds/levels, ambiguous categories, duplicate declarations and refused overwrites before the affected write."
+					},
+					{
+						"name": "Generation boundary failure",
+						"type": "propagated",
+						"description": "Filesystem, dependency installation, taxonomy loading and public-export update failures propagate; earlier successful writes are not presented as an atomic transaction."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "renderGenerateResult",
@@ -257,17 +321,19 @@
 					{
 						"name": "renderGenerateResult.result",
 						"type": "GenerateResult",
-						"required": true
+						"required": true,
+						"description": "Generation outcome containing scaffold kind/name, per-file statuses and whether the public library exports changed."
 					}
 				],
 				"outputs": [
 					{
 						"name": "renderGenerateResult",
-						"type": "string"
+						"type": "string",
+						"description": "Human-readable generation summary and per-file create/skip/overwrite lines."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "generationGroup",
@@ -275,27 +341,36 @@
 					{
 						"name": "generationGroup.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project directory used to load the revision taxonomy and resolve explicit or inferred responsibility categories."
 					},
 					{
 						"name": "generationGroup.input",
 						"type": "{ name: string; group?: string; responsibility?: string }",
-						"required": true
+						"required": true,
+						"description": "Code name plus optional explicit group and responsibility; a categorized project requires one unambiguous category."
 					}
 				],
 				"outputs": [
 					{
 						"name": "generationGroup",
-						"type": "Selection | undefined"
+						"type": "Selection | undefined",
+						"description": "Selected taxonomy owner/category and whether it must be added; undefined for an uncategorized legacy project without an explicit choice."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects unsafe names, fields, unsupported adapters/scaffolds/levels, ambiguous categories, duplicate declarations and refused overwrites before the affected write."
+					},
+					{
+						"name": "Generation boundary failure",
+						"type": "propagated",
+						"description": "Filesystem, dependency installation, taxonomy loading and public-export update failures propagate; earlier successful writes are not presented as an atomic transaction."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "saveGenerationGroup",
@@ -303,22 +378,31 @@
 					{
 						"name": "saveGenerationGroup.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Generation root used to report the taxonomy file path relative to the caller."
 					},
 					{
 						"name": "saveGenerationGroup.selection",
 						"type": "Selection",
-						"required": false
+						"required": false,
+						"description": "Selected category and taxonomy owner; omitted selection or an existing category returns no writes."
 					}
 				],
 				"outputs": [
 					{
 						"name": "saveGenerationGroup",
-						"type": "Promise<FileWriteResult[]>"
+						"type": "Promise<FileWriteResult[]>",
+						"description": "Promise of the taxonomy file write, or an empty list when the selected category is already recorded or absent."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Generation boundary failure",
+						"type": "propagated",
+						"description": "Filesystem, dependency installation, taxonomy loading and public-export update failures propagate; earlier successful writes are not presented as an atomic transaction."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "groupedFiles",
@@ -326,22 +410,25 @@
 					{
 						"name": "groupedFiles.files",
 						"type": "PlannedFile[]",
-						"required": true
+						"required": true,
+						"description": "Planned source and test files whose paths and module references must move together."
 					},
 					{
 						"name": "groupedFiles.group",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "Optional category ID; omission preserves original paths and contents."
 					}
 				],
 				"outputs": [
 					{
 						"name": "groupedFiles",
-						"type": "unknown"
+						"type": "{ paths: Map<string, string>; files: PlannedFile[] }",
+						"description": "Original-to-destination path map and planned files with rewritten module references; does not write them."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "groupedExports",
@@ -349,22 +436,25 @@
 					{
 						"name": "groupedExports.plans",
 						"type": "ExportPlan[]",
-						"required": true
+						"required": true,
+						"description": "Public export plans to retarget to the grouped generated files."
 					},
 					{
 						"name": "groupedExports.paths",
 						"type": "Map<string, string>",
-						"required": true
+						"required": true,
+						"description": "Original-to-grouped source path map from the same planned generation."
 					}
 				],
 				"outputs": [
 					{
 						"name": "groupedExports",
-						"type": "ExportPlan[]"
+						"type": "ExportPlan[]",
+						"description": "Export plans rewritten against the grouped source path map."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "assertUniqueGroupedNames",
@@ -372,32 +462,42 @@
 					{
 						"name": "assertUniqueGroupedNames.root",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Project directory searched for existing declarations in the chosen category."
 					},
 					{
 						"name": "assertUniqueGroupedNames.group",
 						"type": "string | undefined",
-						"required": true
+						"required": true,
+						"description": "Chosen category; omission skips the categorized duplicate-name check."
 					},
 					{
 						"name": "assertUniqueGroupedNames.files",
 						"type": "PlannedFile[]",
-						"required": true
+						"required": true,
+						"description": "Planned source files to check against same-name files already in the category."
 					}
 				],
 				"outputs": [
 					{
 						"name": "assertUniqueGroupedNames",
-						"type": "void"
+						"type": "void",
+						"description": "Returns no data after validating uniqueness, or throws before generation writes start."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Rejects unsafe names, fields, unsupported adapters/scaffolds/levels, ambiguous categories, duplicate declarations and refused overwrites before the affected write."
+					},
+					{
+						"name": "Generation boundary failure",
+						"type": "propagated",
+						"description": "Filesystem, dependency installation, taxonomy loading and public-export update failures propagate; earlier successful writes are not presented as an atomic transaction."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "groupedImports",
@@ -405,32 +505,37 @@
 					{
 						"name": "groupedImports.contents",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Source text whose module addresses and declared atom-library path are rewritten; ordinary strings remain intact."
 					},
 					{
 						"name": "groupedImports.before",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Original repository-relative source file path used to resolve old module addresses."
 					},
 					{
 						"name": "groupedImports.after",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Destination repository-relative source path used to render new relative addresses."
 					},
 					{
 						"name": "groupedImports.paths",
 						"type": "Map<string, string>",
-						"required": true
+						"required": true,
+						"description": "Original-to-destination path map used to follow generated source moves."
 					}
 				],
 				"outputs": [
 					{
 						"name": "groupedImports",
-						"type": "string"
+						"type": "string",
+						"description": "Source text with only module/atom-library address edits applied in reverse source order."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "groupedSpecifier",
@@ -438,32 +543,37 @@
 					{
 						"name": "groupedSpecifier.specifier",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Relative module specifier; framework $types addresses and trailing directory slashes retain their supported spelling."
 					},
 					{
 						"name": "groupedSpecifier.before",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Original source file path from which the specifier resolves."
 					},
 					{
 						"name": "groupedSpecifier.after",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Destination source file path from which the returned relative specifier resolves."
 					},
 					{
 						"name": "groupedSpecifier.paths",
 						"type": "Map<string, string>",
-						"required": true
+						"required": true,
+						"description": "Original-to-destination source path map; unmatched targets keep their resolved destination."
 					}
 				],
 				"outputs": [
 					{
 						"name": "groupedSpecifier",
-						"type": "string"
+						"type": "string",
+						"description": "Relative module address from the destination source, retaining explicit extensions and directory slashes."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

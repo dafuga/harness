@@ -3,30 +3,32 @@
 	"id": "service.agents-providers-module-task-analytics-service-task-metrics",
 	"kind": "service",
 	"title": "taskMetrics",
-	"responsibility": "Owns the taskMetrics service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Aggregates deduplicated module-task events into review, failure, usage and cost totals, grouped by reported or requested model identity.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/agents-providers/module-task-analytics-service/taskMetrics.ts"],
 		"symbols": ["taskMetrics"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "taskMetrics.events",
 				"type": "AnalyticsEvent[]",
-				"required": true
+				"required": true,
+				"description": "Recorded analytics events; only task events with moduleTask details contribute, duplicate event IDs collapse to their last value."
 			}
 		],
 		"outputs": [
 			{
 				"name": "taskMetrics",
-				"type": "unknown"
+				"type": "{ tasks: number; executions: number; submissions: number; accepted: number; bounces: number; reviewed: number; bounceRate: number | null; executionFailures: number; inputTokens: number | null; outputTokens: number | null; cacheReadTokens: number | null; cacheWriteTokens: number | null; apiCostUsd: number | null; apiCostRangeUsd: { minimum: number | null; maximum: number | null }; unpricedExecutions: number; unreportedUsage: number; byModel: Array<{ provider: string; model: string; intelligence: string; modelSource: string; tasks: number; executions: number; submissions: number; accepted: number; bounces: number; reviewed: number; bounceRate: number | null; executionFailures: number; inputTokens: number | null; outputTokens: number | null; cacheReadTokens: number | null; cacheWriteTokens: number | null; apiCostUsd: number | null; apiCostRangeUsd: { minimum: number | null; maximum: number | null }; unpricedExecutions: number; unreportedUsage: number }> }",
+				"description": "Overall and per-model task totals; bounce rate uses accepted plus incomplete reviews, execution failures stay separate, and missing usage or cost inputs produce null totals."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "taskMetrics",
@@ -34,17 +36,19 @@
 					{
 						"name": "taskMetrics.events",
 						"type": "AnalyticsEvent[]",
-						"required": true
+						"required": true,
+						"description": "Recorded analytics events; only task events with moduleTask details contribute, duplicate event IDs collapse to their last value."
 					}
 				],
 				"outputs": [
 					{
 						"name": "taskMetrics",
-						"type": "unknown"
+						"type": "{ tasks: number; executions: number; submissions: number; accepted: number; bounces: number; reviewed: number; bounceRate: number | null; executionFailures: number; inputTokens: number | null; outputTokens: number | null; cacheReadTokens: number | null; cacheWriteTokens: number | null; apiCostUsd: number | null; apiCostRangeUsd: { minimum: number | null; maximum: number | null }; unpricedExecutions: number; unreportedUsage: number; byModel: Array<{ provider: string; model: string; intelligence: string; modelSource: string; tasks: number; executions: number; submissions: number; accepted: number; bounces: number; reviewed: number; bounceRate: number | null; executionFailures: number; inputTokens: number | null; outputTokens: number | null; cacheReadTokens: number | null; cacheWriteTokens: number | null; apiCostUsd: number | null; apiCostRangeUsd: { minimum: number | null; maximum: number | null }; unpricedExecutions: number; unreportedUsage: number }> }",
+						"description": "Overall and per-model task totals; bounce rate uses accepted plus incomplete reviews, execution failures stay separate, and missing usage or cost inputs produce null totals."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

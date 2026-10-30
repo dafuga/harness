@@ -77,7 +77,8 @@
 					{
 						"name": "AuthFailure.constructor.code",
 						"type": "AuthFailureCode",
-						"required": true
+						"required": true,
+						"description": "Declared authentication failure code used for the error message and status."
 					}
 				],
 				"outputs": [

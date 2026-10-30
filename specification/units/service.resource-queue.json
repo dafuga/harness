@@ -146,7 +146,8 @@
 						"name": "ResourceQueueService.constructor.options",
 						"type": "Dependencies",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional telemetry dependencies, cancellation, queue timeout or waiting callback for the named operation."
 					}
 				],
 				"outputs": [

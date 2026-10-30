@@ -3,8 +3,8 @@
 	"id": "model.catalog-metadata",
 	"kind": "model",
 	"title": "CatalogMetadata",
-	"responsibility": "Owns the CatalogMetadata data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Stores catalog schema versions and source digests in catalog_metadata through a supplied persistence adapter.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"lineage": {
 		"predecessors": ["model.catalog-metadata-types"]
@@ -27,48 +27,62 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CatalogMetadata.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Stored row identity; the model passes it to the adapter without generating a key."
 			},
 			{
 				"name": "CatalogMetadata.schemaVersion",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Catalog storage schema version."
 			},
 			{
 				"name": "CatalogMetadata.digest",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source digest used to recognize catalog freshness."
 			}
 		],
 		"outputs": [
 			{
 				"name": "CatalogMetadata.find",
-				"type": "Promise<CatalogMetadataAttributes | null>"
+				"type": "Promise<CatalogMetadataAttributes | null>",
+				"description": "Promise of the matching catalog_metadata row, or null according to the adapter lookup result."
 			},
 			{
 				"name": "CatalogMetadata.findBy",
-				"type": "Promise<CatalogMetadataAttributes[]>"
+				"type": "Promise<CatalogMetadataAttributes[]>",
+				"description": "Promise of catalog_metadata rows matching the supplied attribute filters."
 			},
 			{
 				"name": "CatalogMetadata.create",
-				"type": "Promise<CatalogMetadataAttributes>"
+				"type": "Promise<CatalogMetadataAttributes>",
+				"description": "Promise of the catalog_metadata row returned by the adapter after creation."
 			},
 			{
 				"name": "CatalogMetadata.update",
-				"type": "Promise<CatalogMetadataAttributes | null>"
+				"type": "Promise<CatalogMetadataAttributes | null>",
+				"description": "Promise of the updated catalog_metadata row, or null according to the adapter update result."
 			},
 			{
 				"name": "CatalogMetadata.delete",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Promise of the adapter deletion result for the requested catalog_metadata row."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "Persistence operation failure",
+				"type": "propagated",
+				"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "CatalogMetadata.find",
@@ -76,22 +90,31 @@
 					{
 						"name": "CatalogMetadata.find.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_metadata table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogMetadata.find.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogMetadata.find",
-						"type": "Promise<CatalogMetadataAttributes | null>"
+						"type": "Promise<CatalogMetadataAttributes | null>",
+						"description": "Promise of the matching catalog_metadata row, or null according to the adapter lookup result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogMetadata.findBy",
@@ -99,22 +122,31 @@
 					{
 						"name": "CatalogMetadata.findBy.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_metadata table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogMetadata.findBy.fields",
 						"type": "Partial<CatalogMetadataAttributes>",
-						"required": true
+						"required": true,
+						"description": "Partial stored attributes used as equality filters for catalog_metadata."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogMetadata.findBy",
-						"type": "Promise<CatalogMetadataAttributes[]>"
+						"type": "Promise<CatalogMetadataAttributes[]>",
+						"description": "Promise of catalog_metadata rows matching the supplied attribute filters."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogMetadata.create",
@@ -122,22 +154,31 @@
 					{
 						"name": "CatalogMetadata.create.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_metadata table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogMetadata.create.input",
 						"type": "CatalogMetadataCreateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_metadata; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogMetadata.create",
-						"type": "Promise<CatalogMetadataAttributes>"
+						"type": "Promise<CatalogMetadataAttributes>",
+						"description": "Promise of the catalog_metadata row returned by the adapter after creation."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogMetadata.update",
@@ -145,27 +186,37 @@
 					{
 						"name": "CatalogMetadata.update.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_metadata table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogMetadata.update.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					},
 					{
 						"name": "CatalogMetadata.update.input",
 						"type": "CatalogMetadataUpdateInput",
-						"required": true
+						"required": true,
+						"description": "Create attributes or update patch forwarded to catalog_metadata; omitted update fields remain the adapter's responsibility."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogMetadata.update",
-						"type": "Promise<CatalogMetadataAttributes | null>"
+						"type": "Promise<CatalogMetadataAttributes | null>",
+						"description": "Promise of the updated catalog_metadata row, or null according to the adapter update result."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CatalogMetadata.delete",
@@ -173,22 +224,31 @@
 					{
 						"name": "CatalogMetadata.delete.adapter",
 						"type": "PersistenceAdapter",
-						"required": true
+						"required": true,
+						"description": "Persistence adapter used for the catalog_metadata table; the model owns no connection lifecycle."
 					},
 					{
 						"name": "CatalogMetadata.delete.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Stored row identity; the model passes it to the adapter without generating a key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "CatalogMetadata.delete",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Promise of the adapter deletion result for the requested catalog_metadata row."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "Persistence operation failure",
+						"type": "propagated",
+						"description": "Adapter exceptions and promise rejections pass through unchanged; caller-provided field getters can also throw during argument copying."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": [],

@@ -12,6 +12,8 @@
 			"src/services/explorer-ui/revision-detail-service/configValueStructure.types.ts",
 			"src/services/explorer-ui/revision-detail-service/configValues.ts",
 			"src/services/explorer-ui/revision-detail-service/configValues.types.ts",
+			"src/services/explorer-ui/revision-detail-service/declarationRole.ts",
+			"src/services/explorer-ui/revision-detail-service/declarationRole.types.ts",
 			"src/services/explorer-ui/revision-detail-service/modelDefinitions.ts",
 			"src/services/explorer-ui/revision-detail-service/modelTable.ts",
 			"src/services/explorer-ui/revision-detail-service/pureHelperCalls.ts",
@@ -32,6 +34,8 @@
 			"CollectionNode",
 			"configValues",
 			"ConfigSource",
+			"declarationRole",
+			"DeclarationRole",
 			"modelDefinitions",
 			"modelTable",
 			"pureGlobals",
@@ -89,6 +93,19 @@
 				"type": "string",
 				"required": true,
 				"description": "Source path used for syntax selection and source-preserving provenance."
+			},
+			{
+				"name": "declarationRole.kind",
+				"type": "string",
+				"required": true,
+				"description": "Source-declared export/declaration kind, independent of the unit ID and folder-derived kind."
+			},
+			{
+				"name": "declarationRole.stored",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Whether this class owns source-declared storage, including unresolved schema syntax; defaults to false."
 			},
 			{
 				"name": "modelDefinitions.text",
@@ -206,6 +223,33 @@
 					{
 						"name": "configValues",
 						"type": "ConfigVariable[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "declarationRole",
+				"inputs": [
+					{
+						"name": "declarationRole.kind",
+						"type": "string",
+						"required": true,
+						"description": "Source-declared export/declaration kind, independent of the unit ID and folder-derived kind."
+					},
+					{
+						"name": "declarationRole.stored",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "Whether this class owns source-declared storage, including unresolved schema syntax; defaults to false."
+					}
+				],
+				"outputs": [
+					{
+						"name": "declarationRole",
+						"type": "DeclarationRole",
+						"description": "Declaration role: persisted model, type, operation, compatibility export or runtime support."
 					}
 				],
 				"errors": [],

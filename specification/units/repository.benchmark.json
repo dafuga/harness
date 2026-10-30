@@ -142,7 +142,8 @@
 					{
 						"name": "BenchmarkRepository.constructor.home",
 						"type": "unknown",
-						"required": false
+						"required": false,
+						"description": "Directory containing the private persisted benchmark run subfolders."
 					}
 				],
 				"outputs": [

@@ -3,19 +3,19 @@
 	"id": "model.adapters-types",
 	"kind": "model",
 	"title": "types",
-	"responsibility": "Owns the types data model.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Preserves the generated-model PersistenceAdapter type import address; declares no persisted model or runtime operations.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/models/adapters/types.ts"],
 		"symbols": ["PersistenceAdapter"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

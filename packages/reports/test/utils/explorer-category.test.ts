@@ -5,6 +5,7 @@ import { explorerEntityCategories as explorerCategories } from '../../../../src/
 import { explorerCategory, explorerRole } from '../../src/utils/explorerCategory';
 import { modelDefinition } from '../entityClassFixtures';
 import { unit } from '../explorerFixture';
+import { declarationRole } from '../../../../src/services/explorer-ui/revision-detail-service/declarationRole';
 
 const owning = (id: string, kind: string, source: string[]) =>
 	unit(id, kind, { owns: { source, symbols: [] } });
@@ -72,19 +73,24 @@ test('a unit of a product kind is listed under the category of that kind', () =>
 		expect(explorerCategory(unit('workflow.run-verify', 'workflow'))).toBe('services');
 	}));
 
-test('a runtime class beside shared declarations neither makes a model nor hides the types', () => {
-	const shared = modelDefinition('Runner', 'src/models/Runner.types.ts');
-	const failure = { ...modelDefinition('RunCancelled', 'src/models/RunnerValues.ts') };
-	delete failure.table;
-	const owner = (modelDefinitions: ModelDefinition[]) =>
-		unit('model.runner-types', 'model', {
-			owns: { source: [shared.source, failure.source], symbols: [] },
-			modelDefinitions
-		});
-	const mixed = owner([shared, failure]);
-	expect([explorerCategory(mixed), explorerRole(mixed)]).toEqual(['types', 'Type definitions']);
-	expect(explorerCategory(owner([failure])), 'the runtime class alone is no model').toBeNull();
-});
+test('a runtime class beside shared declarations neither makes a model nor hides the types', () =>
+	measureWorkload('function.unit-metadata', 'classify-declaration-roles', () => {
+		const shared = modelDefinition('Runner', 'src/models/Runner.types.ts');
+		const failure = { ...modelDefinition('RunCancelled', 'src/models/RunnerValues.ts') };
+		delete failure.table;
+		const owner = (modelDefinitions: ModelDefinition[]) =>
+			unit('model.runner-types', 'model', {
+				owns: { source: [shared.source, failure.source], symbols: [] },
+				modelDefinitions
+			});
+		const mixed = owner([shared, failure]);
+		expect([explorerCategory(mixed), explorerRole(mixed)]).toEqual(['types', 'Type definitions']);
+		expect(explorerCategory(owner([failure])), 'the runtime class alone is no model').toBeNull();
+		expect(
+			['interface', 'type', 'class', 'function', 'reexport'].map((kind) => declarationRole(kind))
+		).toEqual(['type', 'type', 'runtime-support', 'operation', 'compatibility']);
+		expect(declarationRole('class', true)).toBe('persisted-model');
+	}));
 
 test('a page is what renders an address, whatever kind it was registered as', () => {
 	const rendered = ['src/routes/titles/+page.server.ts', 'src/routes/titles/+page.svelte'];

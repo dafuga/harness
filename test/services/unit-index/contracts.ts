@@ -3,6 +3,7 @@ import type { Indexed } from '../../support/memoryTree';
 import type { ComponentManifest } from '../../../src/core/unitTypes';
 import { indexFiles, unitOf } from '../../support/memoryTree';
 import { measureWorkload } from '../../support/measureWorkload';
+import { assertContractDocumentation } from './contractDocumentation';
 
 const declarations = {
 	'src/utils/call.ts': `export function call(name: string, size = 16, flag?: boolean,
@@ -46,6 +47,7 @@ export async function assertContractExtraction(): Promise<void> {
 	assertComponentContracts(indexed);
 	assertServiceContract(unitOf(indexed, 'service.store').contract);
 	assertModelContract(indexed);
+	await assertContractDocumentation(declarations, indexed);
 }
 
 function assertCallContract(call: ComponentManifest['contract']): void {
