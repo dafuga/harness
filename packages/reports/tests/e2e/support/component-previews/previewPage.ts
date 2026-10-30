@@ -79,8 +79,11 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 		if (dialog === 'Deploy') await expect(page.getByText('Loading promotion…')).toHaveCount(0);
 	}
 	const emptyComponent =
-		['reports.component.regression-proof', 'reports.component.activity-list'].includes(id) &&
-		variant === 'empty';
+		[
+			'reports.component.regression-proof',
+			'reports.component.activity-list',
+			'reports.component.report-findings'
+		].includes(id) && variant === 'empty';
 	if (!emptyComponent) {
 		await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
 		await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);

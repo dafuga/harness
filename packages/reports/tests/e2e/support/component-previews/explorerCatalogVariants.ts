@@ -100,7 +100,10 @@ export const explorerCatalogVariants: Record<string, string[]> = {
 	],
 	'reports.component.explorer-usage-link': [
 		'visual-open',
+		'hover-open',
+		'inherited-open',
 		'missing-open',
+		'image-error-open',
 		'function-open',
 		'source-enabled',
 		'source-disabled',
