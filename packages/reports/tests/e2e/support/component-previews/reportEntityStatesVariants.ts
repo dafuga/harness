@@ -19,6 +19,16 @@ export async function resolveStateImage(item: Evidence): Promise<string> {
 /** State gallery variations retain revision, scenario and missing-capture boundaries. */
 export function entityStatesVariant(props: PreviewCases[string], variant: string) {
 	const evidence = props.evidence as ExplorerEvidence;
+	if (variant === 'scenario-open' || variant === 'scenario-selected') {
+		const first = evidence.scenarios[0];
+		const archived = {
+			...first,
+			id: 'archived-orders',
+			title: 'Archived orders',
+			states: [{ id: 'archived', title: 'Archived', coverage: 'required' as const }]
+		};
+		return { ...props, evidence: { ...evidence, scenarios: [first, archived] } };
+	}
 	if (variant === 'empty') return { ...props, evidence: { ...evidence, scenarios: [] } };
 	if (variant === 'current')
 		return { ...props, evidence: { ...evidence, mode: 'current', before: null } };
@@ -68,6 +78,6 @@ export function entityStatesVariant(props: PreviewCases[string], variant: string
 				throw new Error('Recorded capture could not be loaded.');
 			}
 		};
-	if (variant === 'viewport-mobile' || variant === 'viewer-open') return props;
+	if (['viewport-mobile', 'viewport-open', 'viewer-open'].includes(variant)) return props;
 	return null;
 }

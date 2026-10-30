@@ -2537,6 +2537,24 @@
 			"units": ["reports.component.entity-states"]
 		},
 		{
+			"id": "reports-component-entity-states-scenario-open",
+			"title": "Supported states: scenario menu open",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-scenario-selected",
+			"title": "Supported states: another scenario selected",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-viewport-open",
+			"title": "Supported states: viewport menu open",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
 			"id": "reports-component-entity-states-viewport-mobile",
 			"title": "Supported states: mobile viewport",
 			"coverage": "required",
@@ -6638,6 +6656,9 @@
 				"reports-component-entity-states-incomparable",
 				"reports-component-entity-states-loading",
 				"reports-component-entity-states-load-error",
+				"reports-component-entity-states-scenario-open",
+				"reports-component-entity-states-scenario-selected",
+				"reports-component-entity-states-viewport-open",
 				"reports-component-entity-states-viewport-mobile",
 				"reports-component-entity-states-viewer-open",
 				"reports-component-evidence-card",

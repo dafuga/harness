@@ -10,14 +10,24 @@ export async function assertOpenPickerPixels(
 	const language =
 		id === 'reports.component.explorer-ui-explorer-translations-screen' &&
 		variant === 'language-open';
+	const gallery = id === 'reports.component.entity-states';
+	const galleryScenario = gallery && variant === 'scenario-open';
+	const galleryViewport = gallery && variant === 'viewport-open';
 	const status = id === 'reports.component.evidence-grid' && variant === 'status-open';
 	const viewport = id === 'reports.component.upload-comparison' && variant === 'viewport-open';
 	const audioMode = id === 'reports.component.upload-audio' && variant === 'mode-open';
-	if (!capture || (!language && !status && !viewport && !audioMode)) return;
+	if (
+		!capture ||
+		(!language && !status && !viewport && !audioMode && !galleryScenario && !galleryViewport)
+	)
+		return;
 	const { clip, bytes: opened } = capture;
-	const selector = page.getByRole('combobox', {
-		name: language ? 'Language' : status ? 'Status' : audioMode ? 'Audio upload mode' : 'Viewport'
-	});
+	let name = 'Viewport';
+	if (language) name = 'Language';
+	else if (status) name = 'Status';
+	else if (audioMode) name = 'Audio upload mode';
+	else if (galleryScenario) name = 'Scenario';
+	const selector = page.getByRole('combobox', { name });
 	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(true);
 	const control = (await selector.boundingBox())!;
 	await page.mouse.click(1, 1);
@@ -30,7 +40,7 @@ export async function assertOpenPickerPixels(
 		caret: 'hide'
 	});
 	const changed = await pickerPixelsChanged(page, { opened, closed, clip, control });
-	const message = `The open ${language ? 'language' : status ? 'status' : audioMode ? 'audio mode' : 'viewport'} menu must change pixels outside its control`;
+	const message = `The open ${name.toLowerCase()} menu must change pixels outside its control`;
 	expect(changed, message).toBeGreaterThan(100);
 	await selector.click();
 }
