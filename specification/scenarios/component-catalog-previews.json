@@ -103,16 +103,7 @@
 		"hub.page.projects-project-id-harness-path",
 		"hub.page.projects-project-id-members",
 		"hub.page.root",
-		"reports.component.activity-agents",
-		"reports.component.activity-files",
 		"reports.component.activity-list",
-		"reports.component.activity-loops",
-		"reports.component.activity-work",
-		"reports.component.analytics-cpu",
-		"reports.component.analytics-filters",
-		"reports.component.analytics-history",
-		"reports.component.analytics-models",
-		"reports.component.analytics-tasks",
 		"reports.component.audio-comparison",
 		"reports.component.audio-comparison-viewer",
 		"reports.component.audio-evidence",
@@ -135,7 +126,6 @@
 		"reports.component.evidence-viewer",
 		"reports.component.explorer-catalog-items",
 		"reports.component.explorer-dependencies-screen",
-		"reports.component.explorer-function-card",
 		"reports.component.explorer-ui-config-value-tree",
 		"reports.component.explorer-ui-explorer-module-card",
 		"reports.component.explorer-ui-explorer-platform-details",
@@ -152,7 +142,6 @@
 		"reports.component.harness-entity-audio",
 		"reports.component.harness-entity-behavior",
 		"reports.component.harness-entity-behavior-screen",
-		"reports.component.harness-entity-change",
 		"reports.component.harness-entity-config",
 		"reports.component.harness-entity-config-screen",
 		"reports.component.harness-entity-details",
@@ -180,27 +169,16 @@
 		"reports.component.harness-explorer-controls",
 		"reports.component.harness-explorer-frame",
 		"reports.component.harness-explorer-index",
-		"reports.component.harness-explorer-page-card",
 		"reports.component.harness-explorer-pages-screen",
 		"reports.component.harness-explorer-table",
 		"reports.component.harness-harness-action",
-		"reports.component.harness-harness-activity",
-		"reports.component.harness-harness-compare",
-		"reports.component.harness-harness-compare-media",
 		"reports.component.harness-harness-console",
-		"reports.component.harness-harness-emitted-growth",
-		"reports.component.harness-harness-failures",
-		"reports.component.harness-harness-growth",
 		"reports.component.harness-harness-header",
-		"reports.component.harness-harness-history",
 		"reports.component.harness-harness-icon",
-		"reports.component.harness-harness-legacy",
-		"reports.component.harness-harness-map",
 		"reports.component.harness-harness-navbar",
 		"reports.component.harness-harness-selectors",
 		"reports.component.harness-harness-shell",
 		"reports.component.harness-harness-tabs",
-		"reports.component.harness-harness-unit",
 		"reports.component.harness-harness-verdict",
 		"reports.component.harness-screen",
 		"reports.component.image-zoom",
@@ -208,7 +186,6 @@
 		"reports.component.module-system-explorer-module-resources-screen",
 		"reports.component.module-system-explorer-modules-screen",
 		"reports.component.networking-security-explorer-permissions-screen",
-		"reports.component.project-activity",
 		"reports.component.provider-picker",
 		"reports.component.provider-picker-cards",
 		"reports.component.recorded-value",
@@ -349,7 +326,6 @@
 		"reports.component.shared-primitives-atoms-svg-tspan",
 		"reports.component.shared-primitives-atoms-svg-use",
 		"reports.component.shared-primitives-loading-state",
-		"reports.component.site-activity",
 		"reports.component.source-code-action",
 		"reports.component.source-content",
 		"reports.component.source-dialog",
@@ -1109,64 +1085,10 @@
 			"units": ["hub.page.root"]
 		},
 		{
-			"id": "reports-component-activity-agents",
-			"title": "Activity agents",
-			"coverage": "required",
-			"units": ["reports.component.activity-agents"]
-		},
-		{
-			"id": "reports-component-activity-files",
-			"title": "Activity files",
-			"coverage": "required",
-			"units": ["reports.component.activity-files"]
-		},
-		{
 			"id": "reports-component-activity-list",
 			"title": "Activity list",
 			"coverage": "required",
 			"units": ["reports.component.activity-list"]
-		},
-		{
-			"id": "reports-component-activity-loops",
-			"title": "Activity loops",
-			"coverage": "required",
-			"units": ["reports.component.activity-loops"]
-		},
-		{
-			"id": "reports-component-activity-work",
-			"title": "Activity work",
-			"coverage": "required",
-			"units": ["reports.component.activity-work"]
-		},
-		{
-			"id": "reports-component-analytics-cpu",
-			"title": "Analytics cpu",
-			"coverage": "required",
-			"units": ["reports.component.analytics-cpu"]
-		},
-		{
-			"id": "reports-component-analytics-filters",
-			"title": "Analytics filters",
-			"coverage": "required",
-			"units": ["reports.component.analytics-filters"]
-		},
-		{
-			"id": "reports-component-analytics-history",
-			"title": "Analytics history",
-			"coverage": "required",
-			"units": ["reports.component.analytics-history"]
-		},
-		{
-			"id": "reports-component-analytics-models",
-			"title": "Analytics models",
-			"coverage": "required",
-			"units": ["reports.component.analytics-models"]
-		},
-		{
-			"id": "reports-component-analytics-tasks",
-			"title": "Analytics tasks",
-			"coverage": "required",
-			"units": ["reports.component.analytics-tasks"]
 		},
 		{
 			"id": "reports-component-audio-comparison",
@@ -1301,12 +1223,6 @@
 			"units": ["reports.component.explorer-dependencies-screen"]
 		},
 		{
-			"id": "reports-component-explorer-function-card",
-			"title": "Function card",
-			"coverage": "required",
-			"units": ["reports.component.explorer-function-card"]
-		},
-		{
 			"id": "reports-component-explorer-ui-config-value-tree",
 			"title": "ConfigValueTree",
 			"coverage": "required",
@@ -1401,12 +1317,6 @@
 			"title": "EntityBehaviorScreen",
 			"coverage": "required",
 			"units": ["reports.component.harness-entity-behavior-screen"]
-		},
-		{
-			"id": "reports-component-harness-entity-change",
-			"title": "Entity change",
-			"coverage": "required",
-			"units": ["reports.component.harness-entity-change"]
 		},
 		{
 			"id": "reports-component-harness-entity-config",
@@ -1571,12 +1481,6 @@
 			"units": ["reports.component.harness-explorer-index"]
 		},
 		{
-			"id": "reports-component-harness-explorer-page-card",
-			"title": "Visual catalog card",
-			"coverage": "required",
-			"units": ["reports.component.harness-explorer-page-card"]
-		},
-		{
 			"id": "reports-component-harness-explorer-pages-screen",
 			"title": "ExplorerPagesScreen",
 			"coverage": "required",
@@ -1595,46 +1499,10 @@
 			"units": ["reports.component.harness-harness-action"]
 		},
 		{
-			"id": "reports-component-harness-harness-activity",
-			"title": "Recorded project activity",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-activity"]
-		},
-		{
-			"id": "reports-component-harness-harness-compare",
-			"title": "Revision impact comparison",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-compare"]
-		},
-		{
-			"id": "reports-component-harness-harness-compare-media",
-			"title": "Revision media comparison",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-compare-media"]
-		},
-		{
 			"id": "reports-component-harness-harness-console",
 			"title": "Explorer console",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-console"]
-		},
-		{
-			"id": "reports-component-harness-harness-emitted-growth",
-			"title": "Build output size history",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-emitted-growth"]
-		},
-		{
-			"id": "reports-component-harness-harness-failures",
-			"title": "Verification failure details",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-failures"]
-		},
-		{
-			"id": "reports-component-harness-harness-growth",
-			"title": "Unit measurement history",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-growth"]
 		},
 		{
 			"id": "reports-component-harness-harness-header",
@@ -1643,28 +1511,10 @@
 			"units": ["reports.component.harness-harness-header"]
 		},
 		{
-			"id": "reports-component-harness-harness-history",
-			"title": "Revision verification history",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-history"]
-		},
-		{
 			"id": "reports-component-harness-harness-icon",
 			"title": "Explorer icon",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-icon"]
-		},
-		{
-			"id": "reports-component-harness-harness-legacy",
-			"title": "Historical report references",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-legacy"]
-		},
-		{
-			"id": "reports-component-harness-harness-map",
-			"title": "Unit dependency map",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-map"]
 		},
 		{
 			"id": "reports-component-harness-harness-navbar",
@@ -1689,12 +1539,6 @@
 			"title": "Explorer section tabs",
 			"coverage": "required",
 			"units": ["reports.component.harness-harness-tabs"]
-		},
-		{
-			"id": "reports-component-harness-harness-unit",
-			"title": "Unit contract and evidence",
-			"coverage": "required",
-			"units": ["reports.component.harness-harness-unit"]
 		},
 		{
 			"id": "reports-component-harness-harness-verdict",
@@ -1728,7 +1572,7 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-module-resources-screen-playwright",
-			"title": "ExplorerModuleResourcesScreen \u00b7 Playwright empty",
+			"title": "ExplorerModuleResourcesScreen · Playwright empty",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-module-resources-screen"]
 		},
@@ -1740,13 +1584,13 @@
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-playwright",
-			"title": "ExplorerModulesScreen \u00b7 playwright",
+			"title": "ExplorerModulesScreen · playwright",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
 		{
 			"id": "reports-component-module-system-explorer-modules-screen-headless-audio",
-			"title": "ExplorerModulesScreen \u00b7 headless-audio",
+			"title": "ExplorerModulesScreen · headless-audio",
 			"coverage": "required",
 			"units": ["reports.component.module-system-explorer-modules-screen"]
 		},
@@ -1755,12 +1599,6 @@
 			"title": "User profile with scoped endpoint and data access",
 			"coverage": "required",
 			"units": ["reports.component.networking-security-explorer-permissions-screen"]
-		},
-		{
-			"id": "reports-component-project-activity",
-			"title": "Project activity overview",
-			"coverage": "required",
-			"units": ["reports.component.project-activity"]
 		},
 		{
 			"id": "reports-component-provider-picker",
@@ -2603,12 +2441,6 @@
 			"units": ["reports.component.shared-primitives-loading-state"]
 		},
 		{
-			"id": "reports-component-site-activity",
-			"title": "Live site activity",
-			"coverage": "required",
-			"units": ["reports.component.site-activity"]
-		},
-		{
 			"id": "reports-component-source-code-action",
 			"title": "SourceCodeAction",
 			"coverage": "required",
@@ -2992,16 +2824,7 @@
 				"hub-page-projects-project-id-harness-path",
 				"hub-page-projects-project-id-members",
 				"hub-page-root",
-				"reports-component-activity-agents",
-				"reports-component-activity-files",
 				"reports-component-activity-list",
-				"reports-component-activity-loops",
-				"reports-component-activity-work",
-				"reports-component-analytics-cpu",
-				"reports-component-analytics-filters",
-				"reports-component-analytics-history",
-				"reports-component-analytics-models",
-				"reports-component-analytics-tasks",
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-viewer",
 				"reports-component-audio-evidence",
@@ -3024,7 +2847,6 @@
 				"reports-component-evidence-viewer",
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-dependencies-screen",
-				"reports-component-explorer-function-card",
 				"reports-component-explorer-ui-config-value-tree",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-platform-details",
@@ -3041,7 +2863,6 @@
 				"reports-component-harness-entity-audio",
 				"reports-component-harness-entity-behavior",
 				"reports-component-harness-entity-behavior-screen",
-				"reports-component-harness-entity-change",
 				"reports-component-harness-entity-config",
 				"reports-component-harness-entity-config-screen",
 				"reports-component-harness-entity-details",
@@ -3069,27 +2890,16 @@
 				"reports-component-harness-explorer-controls",
 				"reports-component-harness-explorer-frame",
 				"reports-component-harness-explorer-index",
-				"reports-component-harness-explorer-page-card",
 				"reports-component-harness-explorer-pages-screen",
 				"reports-component-harness-explorer-table",
 				"reports-component-harness-harness-action",
-				"reports-component-harness-harness-activity",
-				"reports-component-harness-harness-compare",
-				"reports-component-harness-harness-compare-media",
 				"reports-component-harness-harness-console",
-				"reports-component-harness-harness-emitted-growth",
-				"reports-component-harness-harness-failures",
-				"reports-component-harness-harness-growth",
 				"reports-component-harness-harness-header",
-				"reports-component-harness-harness-history",
 				"reports-component-harness-harness-icon",
-				"reports-component-harness-harness-legacy",
-				"reports-component-harness-harness-map",
 				"reports-component-harness-harness-navbar",
 				"reports-component-harness-harness-selectors",
 				"reports-component-harness-harness-shell",
 				"reports-component-harness-harness-tabs",
-				"reports-component-harness-harness-unit",
 				"reports-component-harness-harness-verdict",
 				"reports-component-harness-screen",
 				"reports-component-image-zoom",
@@ -3100,7 +2910,6 @@
 				"reports-component-module-system-explorer-modules-screen-playwright",
 				"reports-component-module-system-explorer-modules-screen-headless-audio",
 				"reports-component-networking-security-explorer-permissions-screen",
-				"reports-component-project-activity",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-cards",
 				"reports-component-recorded-value",
@@ -3241,7 +3050,6 @@
 				"reports-component-shared-primitives-atoms-svg-tspan",
 				"reports-component-shared-primitives-atoms-svg-use",
 				"reports-component-shared-primitives-loading-state",
-				"reports-component-site-activity",
 				"reports-component-source-code-action",
 				"reports-component-source-content",
 				"reports-component-source-dialog",

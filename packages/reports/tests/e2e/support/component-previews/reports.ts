@@ -106,12 +106,6 @@ export const reportCases: PreviewCases = {
 		onclose: noop,
 		onselect: noop
 	},
-	'reports.component.explorer-function-card': {
-		row: d.helperRows[0],
-		nav: d.navigation,
-		lens: d.reading,
-		mediaBase: '/media/'
-	},
 	'reports.component.filter-dialog': {
 		children: text('<label>Verification<select><option>Any result</option></select></label>'),
 		onreset: noop,

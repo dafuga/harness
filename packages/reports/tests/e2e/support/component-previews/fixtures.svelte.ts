@@ -4,8 +4,7 @@ import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/Exp
 import { explorerCases } from './explorer';
 import { legacyAddresses, legacyCases } from './legacy';
 import { reportCases } from './reports';
-import { activityCases, activity } from './activity';
-import { analyticsCases } from './analytics';
+import { activityCases } from './activity';
 import { createDesktopData } from './desktopData.svelte';
 import { desktopControls } from './desktopControls';
 import { desktopRuntime, gameCases } from './desktopRuntime';
@@ -28,19 +27,13 @@ export function previewFixture(id: string, variant = '') {
 
 	desktop.workspace.remote = { host: {} as never };
 	const legacy = {
-		...legacyCases,
-		'reports.component.harness-harness-activity': {
-			...legacyCases['reports.component.harness-harness-activity'],
-			// What a built history recorded: the same synthetic activity, read as recorded.
-			client: { activity: async () => ({ ...activity, kind: 'recorded' }) }
-		}
+		...legacyCases
 	};
 	const cases: PreviewCases = {
 		...explorerCases,
 		...legacy,
 		...reportCases,
 		...activityCases,
-		...analyticsCases,
 		...desktopCases(desktop),
 		...gameCases,
 		...remote.cases,

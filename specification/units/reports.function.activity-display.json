@@ -114,46 +114,6 @@
 			"origin": "derived"
 		}
 	],
-	"helperContracts": [
-		{
-			"name": "plural",
-			"source": "packages/reports/src/helpers/strings/plural.ts",
-			"inputs": [
-				{
-					"name": "plural.count",
-					"type": "number"
-				},
-				{
-					"name": "plural.word",
-					"type": "string"
-				}
-			],
-			"output": "string",
-			"pure": true,
-			"examples": [
-				{
-					"name": "Keep the singular word for one item",
-					"call": "plural(1, \"task\")",
-					"input": [1, "task"],
-					"output": "1 task"
-				},
-				{
-					"name": "Add s for other counts",
-					"call": "plural(2, \"task\")",
-					"input": [2, "task"],
-					"output": "2 tasks"
-				}
-			],
-			"consumers": [
-				{
-					"unit": "reports.component.activity-loops"
-				},
-				{
-					"unit": "reports.component.activity-work"
-				}
-			]
-		}
-	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/utils/projects-sessions/activityDisplay.ts",

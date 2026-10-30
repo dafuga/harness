@@ -83,13 +83,6 @@ export const live = {
 	agents: { tracking: 'available', working: 1, unreadable: 0, roster: [agent] }
 };
 export const activityCases: PreviewCases = {
-	'reports.component.activity-agents': { agents: live.agents, sampledAt: stamp },
-	'reports.component.activity-files': {
-		files: activity.files,
-		worktrees: live.worktrees,
-		href: () => '/history',
-		registry: 'Current checkout'
-	},
 	'reports.component.activity-list': {
 		items: [
 			{ title: 'Review component states' },
@@ -101,9 +94,5 @@ export const activityCases: PreviewCases = {
 		noun: 'activities',
 		preview: 3,
 		row
-	},
-	'reports.component.activity-loops': { loops: activity.loops },
-	'reports.component.activity-work': { work: activity.work, href: () => '/history' },
-	'reports.component.project-activity': { activity, live, base: '/harness' },
-	'reports.component.site-activity': { shown: { activity, live } }
+	}
 };

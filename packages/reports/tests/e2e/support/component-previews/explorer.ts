@@ -58,13 +58,6 @@ export const explorerCases: PreviewCases = {
 		'functions',
 		'examples'
 	) as unknown as Record<string, unknown>,
-	'reports.component.harness-entity-change': {
-		row: d.reading.history(d.entity.id)[0],
-		timings: [],
-		detail: d.changeDetail,
-		nav: d.navigation,
-		full: true
-	},
 	'reports.component.harness-entity-config': {
 		entity: d.entities.find((e) => e.id === d.ids.settings),
 		scope: d.shown.scope,
@@ -173,23 +166,6 @@ export const explorerCases: PreviewCases = {
 		list: names
 	},
 	// The page variant of the card: only it names the provenance of its picture on its link.
-	'reports.component.harness-explorer-page-card': {
-		row: d.rows[0],
-		shot: {
-			id: 'preview',
-			title: 'Synthetic preview input',
-			category: 'Components',
-			file: 'synthetic-card-input.svg',
-			status: 'not-proven',
-			mediaType: 'image',
-			standing: 'Synthetic input',
-			source: 'fixture-input'
-		},
-		nav: d.navigation,
-		lens: d.reading,
-		mediaBase: '/media/',
-		category: 'pages'
-	},
 	'reports.component.harness-explorer-pages-screen': {
 		...d.host('pages'),
 		route: { ...d.host('pages').route, entity: undefined }
