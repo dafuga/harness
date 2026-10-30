@@ -16,6 +16,16 @@ import {
 const drawn = (document: unknown, scope?: string) =>
 	render(EntityCases, { props: { document, unit: scope } }).body.replace(/<!--.*?-->/gs, '');
 
+test('document access errors propagate while reading cases', () => {
+	const error = new Error('document unavailable');
+	const document = Object.defineProperty({}, 'kind', {
+		get: () => {
+			throw error;
+		}
+	});
+	expect(() => drawn(document)).toThrow(error);
+});
+
 test('cases are a table of input and observed output, with where they come from', () => {
 	expect(rows(drawn(calls, unit))).toEqual(callRows);
 	expect(words(drawn(calls, unit))).toContain('Calls of composeModes recorded by a test.');
