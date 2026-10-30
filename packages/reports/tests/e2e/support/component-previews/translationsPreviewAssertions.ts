@@ -1,6 +1,7 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
 const pickerNames: Record<string, Record<string, string>> = {
+	'reports.component.explorer-ui-explorer-platforms': { 'status-options-open': 'Status filter' },
 	'reports.component.explorer-ui-explorer-translations-screen': { 'language-open': 'Language' },
 	'reports.component.entity-states': { 'scenario-open': 'Scenario', 'viewport-open': 'Viewport' },
 	'reports.component.evidence-grid': { 'status-open': 'Status' },
@@ -29,7 +30,12 @@ export async function assertOpenPickerPixels(
 	const selector = page.getByRole('combobox', { name });
 	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(true);
 	const control = (await selector.boundingBox())!;
-	await page.mouse.click(1, 1);
+	if (id === 'reports.component.explorer-ui-explorer-platforms')
+		await page
+			.getByRole('dialog', { name: 'Filters' })
+			.getByRole('heading', { name: 'Filters' })
+			.click();
+	else await page.mouse.click(1, 1);
 	await selector.focus();
 	await expect.poll(() => selector.evaluate((node) => node.matches(':open'))).toBe(false);
 	const closed = await page.screenshot({

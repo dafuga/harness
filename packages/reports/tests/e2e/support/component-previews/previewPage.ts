@@ -137,9 +137,9 @@ export async function capturePreview(
 	target: PreviewCaptureTarget
 ) {
 	const { viewport, variant = '' } = target;
-	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS) return;
-	const clip = await previewCaptureBounds(page, id, variant);
 	const nativeOpen = usesNativePopup(id, variant);
+	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS && !nativeOpen) return;
+	const clip = await previewCaptureBounds(page, id, variant);
 	const reportDialog = await reportViewDialog(page, id);
 	const bytes = await page.screenshot({
 		fullPage: !nativeOpen && !reportDialog,
@@ -154,7 +154,7 @@ export async function capturePreview(
 			fs.writeFile(join(process.env.COMPONENT_PREVIEW_SHOTS!, `${state}-${viewport}.png`), bytes)
 		);
 	}
-	if (!evidenceRequested()) return;
+	if (!evidenceRequested()) return { clip, bytes };
 	const served = await new BuildIdentityService().identify(home);
 	recordCapture(
 		{
@@ -187,6 +187,7 @@ const nativePopups: Record<string, string[]> = {
 	'reports.component.evidence-grid': ['status-open'],
 	'reports.component.upload-comparison': ['viewport-open'],
 	'reports.component.upload-audio': ['mode-open'],
+	'reports.component.explorer-ui-explorer-platforms': ['status-options-open'],
 	'reports.component.explorer-ui-explorer-translations-screen': ['language-open']
 };
 

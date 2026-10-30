@@ -5,6 +5,18 @@ import { hostProps } from '../../entityRender';
 import { modulePreview } from '../../../tests/e2e/support/component-previews/modules';
 import { measureWorkload } from '../../../../../test/support/measureWorkload';
 
+test('module links propagate host URL generation errors', () => {
+	const props = modulePreview(hostProps('commit'));
+	const error = new Error('navigation unavailable');
+	props.lens = {
+		...props.lens,
+		href: () => {
+			throw error;
+		}
+	};
+	expect(() => render(ExplorerModulesScreen, { props }).body).toThrow(error);
+});
+
 test('module library presents real definitions, installation state and generator instructions', async () => {
 	const html = await measureWorkload(
 		'reports.component.module-system-explorer-modules-screen',

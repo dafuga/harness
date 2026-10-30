@@ -36,7 +36,12 @@ export const explorerCatalogVariants: Record<string, string[]> = {
 		'status-setup-required',
 		'status-not-configured',
 		'status-not-recorded',
-		'detail-web'
+		'detail-web',
+		'search-focused',
+		'card-focused',
+		'card-hovered',
+		'filter-active-open',
+		'status-options-open'
 	],
 	'reports.component.explorer-ui-explorer-platform-details': [
 		'ios',

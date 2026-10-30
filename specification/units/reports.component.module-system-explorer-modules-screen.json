@@ -111,7 +111,18 @@
 				"description": "Discover capability modules and their installation and generation instructions."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "lens.href callback error",
+				"type": "thrown",
+				"description": "An error supplied by the URL callback propagates while rendering plugin links."
+			},
+			{
+				"name": "onroute callback error",
+				"type": "thrown",
+				"description": "An error supplied by the navigation callback propagates when a plugin link is activated."
+			}
+		]
 	},
 	"dependencies": [
 		{
