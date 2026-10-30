@@ -32,7 +32,9 @@ export async function prepareUsageLink(component: Locator, variant: string) {
 		await expect(component.getByRole('tooltip')).toHaveCount(0);
 	}
 	if (!variant.endsWith('-open')) return;
-	await component.getByRole('link').focus();
+	const link = component.getByRole('link');
+	if (variant === 'hover-open') await link.hover();
+	else await link.focus();
 	await expect(component.getByRole('tooltip')).toBeVisible();
 }
 
@@ -47,14 +49,26 @@ export async function assertUsageLink(component: Locator, variant: string) {
 	const tip = component.getByRole('tooltip');
 	if (variant === 'function-open') await expect(tip.locator('code')).toHaveText('filterOrders');
 	if (variant === 'missing-open') await expect(tip).toContainText('No screenshot is recorded');
-	if (variant === 'visual-open') {
+	if (variant === 'image-error-open')
+		await expect(tip).toContainText('Screenshot could not be loaded.');
+	await assertUsageLinkImage(tip, variant);
+	await assertUsageLinkBounds(component, tip, variant);
+}
+
+async function assertUsageLinkImage(tip: Locator, variant: string) {
+	if (['visual-open', 'hover-open', 'inherited-open'].includes(variant)) {
 		const image = tip.getByRole('img', { name: 'Screenshot of OrderList' });
 		await expect
 			.poll(() => image.evaluate((node: HTMLImageElement) => node.naturalWidth))
 			.toBeGreaterThan(0);
 		await image.evaluate((node: HTMLImageElement) => node.decode());
-		await expect(tip).toContainText(/Fresh capture at|Reused from/);
+		await expect(tip).toContainText(
+			variant === 'inherited-open' ? 'Reused from aaaaaaa' : 'Fresh capture at bbbbbbb'
+		);
 	}
+}
+
+async function assertUsageLinkBounds(component: Locator, tip: Locator, variant: string) {
 	const box = await tip.boundingBox();
 	const clip = await previewCaptureBounds(
 		component.page(),
