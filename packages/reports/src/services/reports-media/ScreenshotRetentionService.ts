@@ -51,15 +51,7 @@ export class ScreenshotRetentionService {
 		if (info?.isSymbolicLink()) throw new Error('Invalid report assets directory');
 		const exportDirectory = join(directory, 'exports');
 		const exportAssets = join(exportDirectory, 'assets');
-		if (report.exports) {
-			for (const path of [exportDirectory, exportAssets]) {
-				if ((await lstat(path).catch(() => undefined))?.isSymbolicLink())
-					throw new Error('Invalid report exports directory');
-			}
-			// A run finalized before exports were removed inlined its media into these files.
-			for (const name of ['index.html', 'report.pdf', 'report.zip'])
-				await rm(join(exportDirectory, name), { force: true });
-		}
+		if (report.exports) await this.purgeExports(exportDirectory, exportAssets);
 		for (const file of new Set(stale.map((item) => item.file))) {
 			const retained = report.evidence.some(
 				(item) => item.file === file && !item.missing && !stale.includes(item)
@@ -69,5 +61,14 @@ export class ScreenshotRetentionService {
 				if (report.exports) await rm(join(exportAssets, file), { force: true });
 			}
 		}
+	}
+	private async purgeExports(directory: string, assets: string) {
+		for (const path of [directory, assets]) {
+			if ((await lstat(path).catch(() => undefined))?.isSymbolicLink())
+				throw new Error('Invalid report exports directory');
+		}
+		// Older finalized runs inlined their media into these files.
+		for (const name of ['index.html', 'report.pdf', 'report.zip'])
+			await rm(join(directory, name), { force: true });
 	}
 }
