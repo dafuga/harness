@@ -67,6 +67,25 @@
 	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-sm);
 }
+/* Keep the native select semantics while allowing supported browsers to render its picker in-page. */
+@supports (appearance: base-select) {
+	.ex-translations .ex-translations-language .report-select select,
+	.ex-translations .ex-translations-language .report-select select::picker(select) {
+		appearance: base-select;
+	}
+	.ex-translations .ex-translations-language .report-select select::picker(select) {
+		color: var(--hx-color-text);
+		background: var(--hx-color-surface);
+		border: var(--hx-border-thin) solid var(--hx-color-border);
+		border-radius: var(--hx-radius);
+	}
+	.ex-translations .ex-translations-language .report-select select::picker-icon {
+		display: none;
+	}
+	.ex-translations-language option {
+		padding: var(--hx-space-2) var(--hx-space-4);
+	}
+}
 /* Match the documented small-tablet breakpoint; keep both requested languages visible together. */
 @media (max-width: 720px) {
 	.ex-translations table {
