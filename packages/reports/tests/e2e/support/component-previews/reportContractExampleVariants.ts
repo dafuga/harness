@@ -27,7 +27,17 @@ export function contractExampleVariant(props: PreviewCases[string], variant: str
 			}
 		};
 	if (variant === 'missing')
-		return { ...props, field: { ...field, type: 'OrderStore', source: 'missing', examples: [] } };
+		return {
+			...props,
+			field: {
+				...field,
+				name: 'orderStore',
+				type: 'OrderStore',
+				description: 'The store that reads and updates orders.',
+				source: 'missing',
+				examples: []
+			}
+		};
 	if (variant === 'no-description')
 		return { ...props, field: { ...field, description: undefined } };
 	if (variant === 'structure' || variant === 'structure-open')

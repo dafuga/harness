@@ -17,8 +17,10 @@ export async function assertContractTableState(
 	if (variant === 'hide-names')
 		await expect(component.locator('thead th').first()).toHaveText('Type');
 	if (variant === 'illustrative') await expect(component.getByText('Illustrative')).toBeVisible();
-	if (variant === 'missing')
+	if (variant === 'missing') {
 		await expect(component.getByText('Example not recorded')).toBeVisible();
+		await expect(component.getByRole('rowheader', { name: 'orderStore' })).toBeVisible();
+	}
 	if (variant === 'long')
 		await expect(component.getByText('OrderStore.find.returnValue')).toBeVisible();
 	if (variant === 'multiple') await expect(component.locator('tbody tr')).toHaveCount(2);

@@ -39,7 +39,9 @@ export function contractTableVariant(props: PreviewCases[string], variant: strin
 			...props,
 			group: {
 				...group,
-				fields: [{ ...field, type: 'OrderStore', source: 'missing', examples: [] }]
+				fields: [
+					{ ...field, name: 'orderStore', type: 'OrderStore', source: 'missing', examples: [] }
+				]
 			}
 		};
 	if (variant === 'long') return { ...props, group: { ...group, fields: [longField] } };
