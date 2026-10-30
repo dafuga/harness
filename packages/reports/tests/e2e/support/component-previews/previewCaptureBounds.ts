@@ -14,7 +14,7 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 		target = content.locator(
 			variant === 'closed' ? '.floating-chat-bubble' : '.floating-chat-panel'
 		);
-	return target.evaluate(
+	const bounds = await target.evaluate(
 		(node, captureElement) => {
 			const boxes: DOMRect[] = [];
 			function collect(element: Element) {
@@ -42,4 +42,9 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 		},
 		Boolean(modal) || projectAgent || Boolean(compactTarget)
 	);
+	if (id === 'reports.component.select' && variant === 'open') {
+		const height = await page.evaluate(() => document.documentElement.scrollHeight);
+		return { ...bounds, height: Math.min(height - bounds.y, bounds.height + 180) };
+	}
+	return bounds;
 }

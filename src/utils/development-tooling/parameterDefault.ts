@@ -10,22 +10,30 @@ export function parameterDefault(node: ts.Expression | undefined): Pick<Contract
 		ts.isSatisfiesExpression(node)
 	)
 		return parameterDefault(node.expression);
+	const primitive = primitiveDefault(node);
+	if (primitive) return primitive;
+	if (ts.isArrayLiteralExpression(node)) {
+		const items = node.elements.map((item) => parameterDefault(item));
+		return items.every((item) => Object.hasOwn(item, 'default'))
+			? { default: items.map((item) => item.default!) }
+			: {};
+	}
+	return ts.isObjectLiteralExpression(node) ? objectDefault(node) : {};
+}
+
+function primitiveDefault(node: ts.Expression): Pick<ContractItem, 'default'> | undefined {
 	if (ts.isStringLiteralLike(node)) return { default: node.text };
 	if (node.kind === ts.SyntaxKind.TrueKeyword) return { default: true };
 	if (node.kind === ts.SyntaxKind.FalseKeyword) return { default: false };
 	if (node.kind === ts.SyntaxKind.NullKeyword) return { default: null };
 	if (ts.isNumericLiteral(node)) return { default: Number(node.text) };
-	if (ts.isPrefixUnaryExpression(node) && ts.isNumericLiteral(node.operand)) {
-		if (node.operator === ts.SyntaxKind.MinusToken) return { default: -Number(node.operand.text) };
-		if (node.operator === ts.SyntaxKind.PlusToken) return { default: Number(node.operand.text) };
-	}
-	if (ts.isArrayLiteralExpression(node)) {
-		const values = node.elements.map((item) => parameterDefault(item as ts.Expression));
-		return values.every((item) => Object.hasOwn(item, 'default'))
-			? { default: values.map((item) => item.default!) }
-			: {};
-	}
-	if (!ts.isObjectLiteralExpression(node)) return {};
+	if (!ts.isPrefixUnaryExpression(node) || !ts.isNumericLiteral(node.operand)) return undefined;
+	if (node.operator === ts.SyntaxKind.MinusToken) return { default: -Number(node.operand.text) };
+	if (node.operator === ts.SyntaxKind.PlusToken) return { default: Number(node.operand.text) };
+	return undefined;
+}
+
+function objectDefault(node: ts.ObjectLiteralExpression): Pick<ContractItem, 'default'> {
 	const entries: Array<[string, NonNullable<ContractItem['default']> | null]> = [];
 	for (const property of node.properties) {
 		if (!ts.isPropertyAssignment(property) || ts.isComputedPropertyName(property.name)) return {};

@@ -1487,6 +1487,84 @@
 			"units": ["reports.component.audio-evidence"]
 		},
 		{
+			"id": "reports-component-audio-evidence-notes-closed",
+			"title": "Audio evidence: Notes closed",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-notes-transcript",
+			"title": "Audio evidence: Transcript and notes",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-transcript-closed",
+			"title": "Audio evidence: Transcript closed",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-no-details",
+			"title": "Audio evidence: No transcript or notes",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-no-duration",
+			"title": "Audio evidence: Duration not recorded",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-audio-error",
+			"title": "Audio evidence: Recording decode error",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-playing",
+			"title": "Audio evidence: Playing",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-running",
+			"title": "Audio evidence: Running",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-failed",
+			"title": "Audio evidence: Failed",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-blocked",
+			"title": "Audio evidence: Blocked",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-skipped",
+			"title": "Audio evidence: Skipped",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-not-proven",
+			"title": "Audio evidence: Not proven",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
+			"id": "reports-component-audio-evidence-interrupted",
+			"title": "Audio evidence: Interrupted",
+			"coverage": "required",
+			"units": ["reports.component.audio-evidence"]
+		},
+		{
 			"id": "reports-component-audio-upload-files",
 			"title": "Audio upload files",
 			"coverage": "required",
@@ -2033,6 +2111,36 @@
 			"units": ["reports.component.floating-chat"]
 		},
 		{
+			"id": "reports-component-floating-chat-closed",
+			"title": "Floating chat: Closed launcher",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-notice",
+			"title": "Floating chat: Notice",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-navigation",
+			"title": "Floating chat: Navigation",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-following",
+			"title": "Floating chat: Following conversation",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
+			"id": "reports-component-floating-chat-not-following",
+			"title": "Floating chat: Reading from the top",
+			"coverage": "required",
+			"units": ["reports.component.floating-chat"]
+		},
+		{
 			"id": "reports-component-gameplay-replay",
 			"title": "Gameplay replay",
 			"coverage": "required",
@@ -2477,8 +2585,134 @@
 			"units": ["reports.component.provider-picker"]
 		},
 		{
+			"id": "reports-component-provider-picker-loading",
+			"title": "Session model picker: Connecting",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-connection-error",
+			"title": "Session model picker: Connection unavailable",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-unbound",
+			"title": "Session model picker: Unbound session",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-unobserved",
+			"title": "Session model picker: Unobserved session",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-control-unavailable",
+			"title": "Session model picker: Desktop control unavailable",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-refreshing",
+			"title": "Session model picker: Refreshing",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-provider-claude",
+			"title": "Session model picker: Claude selected",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-queue-empty",
+			"title": "Session model picker: No queued sessions",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-queue-populated",
+			"title": "Session model picker: Queued sessions",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-cancelled",
+			"title": "Session model picker: Request cancelled",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-applying",
+			"title": "Session model picker: Applying switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-applied",
+			"title": "Session model picker: Applied switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-failed",
+			"title": "Session model picker: Failed switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
+			"id": "reports-component-provider-picker-request-cancelled",
+			"title": "Session model picker: Cancelled switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker"]
+		},
+		{
 			"id": "reports-component-provider-picker-cards",
 			"title": "Active and queued model cards",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-unknown",
+			"title": "Active and queued model cards: Unknown session",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-in-use",
+			"title": "Active and queued model cards: In use",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-applying",
+			"title": "Active and queued model cards: Applying switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-applied",
+			"title": "Active and queued model cards: Applied switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-failed",
+			"title": "Active and queued model cards: Failed switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-cancelled",
+			"title": "Active and queued model cards: Cancelled switch",
+			"coverage": "required",
+			"units": ["reports.component.provider-picker-cards"]
+		},
+		{
+			"id": "reports-component-provider-picker-cards-locked",
+			"title": "Active and queued model cards: Cancellation disabled",
 			"coverage": "required",
 			"units": ["reports.component.provider-picker-cards"]
 		},
@@ -2599,6 +2833,12 @@
 		{
 			"id": "reports-component-select-disabled",
 			"title": "Disabled report select control",
+			"coverage": "required",
+			"units": ["reports.component.select"]
+		},
+		{
+			"id": "reports-component-select-open",
+			"title": "Open report select control",
 			"coverage": "required",
 			"units": ["reports.component.select"]
 		},
@@ -4003,6 +4243,19 @@
 				"reports-component-audio-evidence",
 				"reports-component-audio-evidence-notes",
 				"reports-component-audio-evidence-unavailable",
+				"reports-component-audio-evidence-notes-closed",
+				"reports-component-audio-evidence-notes-transcript",
+				"reports-component-audio-evidence-transcript-closed",
+				"reports-component-audio-evidence-no-details",
+				"reports-component-audio-evidence-no-duration",
+				"reports-component-audio-evidence-audio-error",
+				"reports-component-audio-evidence-playing",
+				"reports-component-audio-evidence-running",
+				"reports-component-audio-evidence-failed",
+				"reports-component-audio-evidence-blocked",
+				"reports-component-audio-evidence-skipped",
+				"reports-component-audio-evidence-not-proven",
+				"reports-component-audio-evidence-interrupted",
 				"reports-component-audio-upload-files",
 				"reports-component-audio-upload-files-comparison",
 				"reports-component-audio-upload-files-uploading",
@@ -4094,6 +4347,11 @@
 				"reports-component-filter-dialog-active",
 				"reports-component-filter-dialog-open",
 				"reports-component-floating-chat",
+				"reports-component-floating-chat-closed",
+				"reports-component-floating-chat-notice",
+				"reports-component-floating-chat-navigation",
+				"reports-component-floating-chat-following",
+				"reports-component-floating-chat-not-following",
 				"reports-component-gameplay-replay",
 				"reports-component-gameplay-replay-live-empty",
 				"reports-component-gameplay-replay-interrupted",
@@ -4168,7 +4426,28 @@
 				"reports-component-project-activity-stale",
 				"reports-component-project-activity-failed-read",
 				"reports-component-provider-picker",
+				"reports-component-provider-picker-loading",
+				"reports-component-provider-picker-connection-error",
+				"reports-component-provider-picker-unbound",
+				"reports-component-provider-picker-unobserved",
+				"reports-component-provider-picker-control-unavailable",
+				"reports-component-provider-picker-refreshing",
+				"reports-component-provider-picker-provider-claude",
+				"reports-component-provider-picker-queue-empty",
+				"reports-component-provider-picker-queue-populated",
+				"reports-component-provider-picker-cancelled",
+				"reports-component-provider-picker-applying",
+				"reports-component-provider-picker-applied",
+				"reports-component-provider-picker-failed",
+				"reports-component-provider-picker-request-cancelled",
 				"reports-component-provider-picker-cards",
+				"reports-component-provider-picker-cards-unknown",
+				"reports-component-provider-picker-cards-in-use",
+				"reports-component-provider-picker-cards-applying",
+				"reports-component-provider-picker-cards-applied",
+				"reports-component-provider-picker-cards-failed",
+				"reports-component-provider-picker-cards-cancelled",
+				"reports-component-provider-picker-cards-locked",
 				"reports-component-recorded-value",
 				"reports-component-regression-proof",
 				"reports-component-regression-proof-pending",
@@ -4189,6 +4468,7 @@
 				"reports-component-select-compact",
 				"reports-component-select-display",
 				"reports-component-select-disabled",
+				"reports-component-select-open",
 				"reports-component-shared-primitives-atoms-html-a",
 				"reports-component-shared-primitives-atoms-html-abbr",
 				"reports-component-shared-primitives-atoms-html-address",

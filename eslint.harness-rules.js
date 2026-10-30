@@ -1,4 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
+import { relative } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const limits = {
 	maxFileLines: 220,
@@ -34,6 +36,27 @@ const forbiddenImports = [
 			'Command modules should delegate instead of importing templates or file-generation helpers.'
 	}
 ];
+
+/** Lower layers never reach up: shared declarations belong in src/core, operations in services. */
+const layerDirections = [
+	{
+		from: 'src/utils/',
+		targets: ['src/services/', 'src/workflows/', 'src/cli/'],
+		message:
+			'Utility modules must not import services, workflows or the CLI. Move the shared declaration into src/core or the owner into src/services.'
+	},
+	{
+		from: 'src/services/',
+		targets: ['src/workflows/', 'src/cli/'],
+		message:
+			'Service modules must not import workflows or the CLI. Move the shared declaration into src/core or the service out of its workflow or command folder.'
+	}
+];
+
+const repositoryRoot = fileURLToPath(new URL('.', import.meta.url));
+
+/** Existing edges, each with the TODO that retires it; a new edge is not admitted here. */
+export const layerAllowlist = readLayerAllowlist();
 
 export default {
 	rules: {
@@ -99,9 +122,46 @@ export default {
 			}
 		},
 		'architecture-boundaries': importBoundaryRule('architecture-boundaries'),
-		'thin-command-modules': importBoundaryRule('thin-command-modules')
+		'thin-command-modules': importBoundaryRule('thin-command-modules'),
+		'layer-direction': layerDirectionRule()
 	}
 };
+
+/** The upward edge a relative specifier makes from a file, whether or not it is allowlisted. */
+export function layerEdge(filename, source) {
+	if (!source.startsWith('.')) return undefined;
+	const file = repositoryPath(filename);
+	const target = repositoryPath(fileURLToPath(new URL(source, pathToFileURL(filename)))).replace(
+		/\.(ts|js)$/,
+		''
+	);
+	const direction = layerDirections.find(
+		(entry) => file.startsWith(entry.from) && entry.targets.some((path) => target.startsWith(path))
+	);
+	return direction && { file, target, message: direction.message };
+}
+
+function layerDirectionRule() {
+	return {
+		meta: { type: 'problem', messages: { upward: '{{message}} ({{target}})' } },
+		create(context) {
+			const check = (node, literal) => {
+				if (typeof literal?.value !== 'string') return;
+				const edge = layerEdge(context.filename, literal.value);
+				if (edge && !layerAllowlist.has(`${edge.file} -> ${edge.target}`))
+					context.report({ node, messageId: 'upward', data: edge });
+			};
+			const declared = (node) => check(node, node.source);
+			return {
+				ImportDeclaration: declared,
+				ExportNamedDeclaration: declared,
+				ExportAllDeclaration: declared,
+				ImportExpression: declared,
+				TSImportType: (node) => check(node, node.source ?? node.argument?.literal)
+			};
+		}
+	};
+}
 
 function importBoundaryRule(ruleName) {
 	return {
@@ -155,4 +215,15 @@ function positiveLimits(config) {
 
 function normalize(value) {
 	return value.replaceAll('\\', '/');
+}
+
+function repositoryPath(path) {
+	return normalize(relative(repositoryRoot, path));
+}
+
+function readLayerAllowlist() {
+	const path = new URL('./eslint.layer-allowlist.json', import.meta.url);
+	if (!existsSync(path)) return new Map();
+	const { edges } = JSON.parse(readFileSync(path, 'utf8'));
+	return new Map(edges.map((edge) => [`${edge.from} -> ${edge.to}`, edge.todo]));
 }

@@ -1,4 +1,6 @@
 import type { UnitProject } from './unitProject.types';
+import type { CheckReport } from '../../src/cli/program/manageUnits.types';
+import { expect } from 'vitest';
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -73,5 +75,31 @@ export const utcDateExamples = [
 		output: '2026-10-20T00:00:00.000Z'
 	}
 ];
+
+/** The app scaffold's JavaScript tools remain readable but fail the stricter contract gate. */
+export async function checkGeneratedAppContracts(project: UnitProject): Promise<void> {
+	const checked = await project.harness(['units', 'check', '--json'], false);
+	expect(checked.exitCode).toBe(1);
+	const report = JSON.parse(checked.stdout) as CheckReport;
+	expect(report.contractFailures).toEqual({
+		entities: 3,
+		issues: 7,
+		unknownTypes: 2,
+		emptyProps: 0,
+		missingRequired: 0,
+		bareErrors: 1
+	});
+	expect([...new Set(report.errors)].sort()).toEqual(
+		[
+			'script.atomic-components: contract error Error is a bare Error',
+			'script.atomic-syntax: contract input atomicSyntax.content has unknown type',
+			'script.atomic-syntax: contract input walkAtomicMarkup.node has unknown type',
+			'script.atomic-syntax: contract input walkAtomicMarkup.callback has unknown type',
+			'script.html-elements: contract input elementName.tag has unknown type',
+			'script.html-elements: contract input atomTag.atom has unknown type',
+			'script.html-elements: contract input nativeAtomSource.atom has unknown type'
+		].sort()
+	);
+}
 
 export type { UnitProject } from './unitProject.types';

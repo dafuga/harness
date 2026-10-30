@@ -32,14 +32,18 @@ const compatibility = (unit: Classified) =>
 			(path.endsWith('/[entity]/details/+page.svelte') || /\/shells(?:\/|$)/.test(path))
 	);
 
-/** Only selected-revision declarations owned by this shared module establish its category. */
+/**
+ * Only selected-revision declarations owned by this shared module establish its category. A
+ * stored class makes a model; owned interfaces or aliases make types, even beside a runtime class
+ * such as an error, which the Types page leaves out. A runtime class alone proves neither.
+ */
 function modelCategory(unit: Classified): 'models' | 'types' | null {
 	const definitions = (unit.modelDefinitions ?? []).filter((item) =>
 		unit.owns.source.includes(item.source)
 	);
 	if (definitions.some((item) => item.kind === 'class' && (item.table || item.tableGap)))
 		return 'models';
-	return definitions.length && definitions.every((item) => item.kind !== 'class') ? 'types' : null;
+	return definitions.some((item) => item.kind !== 'class') ? 'types' : null;
 }
 
 const unlisted = (unit: Classified) =>

@@ -7,6 +7,8 @@ import {
 	group,
 	baselineNarration,
 	releaseNarration,
+	viewerBaseline,
+	viewerRelease,
 	galleryItems
 } from './reportData';
 import * as d from './explorerData';
@@ -21,8 +23,8 @@ export const reportCases: PreviewCases = {
 		onopen: noop
 	},
 	'reports.component.audio-comparison-viewer': {
-		before: baselineNarration,
-		after: releaseNarration,
+		before: viewerBaseline,
+		after: viewerRelease,
 		assetBase: '/media/',
 		onclose: noop
 	},

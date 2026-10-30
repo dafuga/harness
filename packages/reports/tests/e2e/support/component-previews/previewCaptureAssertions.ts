@@ -3,8 +3,10 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { catalogScenario, previewState } from './catalogUnits';
 import { assertEntityCasesState } from './entityCasesPreviewAssertions';
+import { assertAudioViewerCapture } from './catalogStateActions';
 import { assertEntityExamplesState } from './entityExamplesPreviewAssertions';
 import { assertEntityContractState } from './entityContractPreviewAssertions';
+import { assertActivityCountFits } from './projectActivityAssertions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
 export async function assertComponentCapture(
@@ -14,7 +16,10 @@ export async function assertComponentCapture(
 	variant = ''
 ) {
 	assertCaptureSlot(id, viewport, variant);
+	await assertAudioViewerCapture(page, id, viewport);
 	if (id === 'desktop.component.agents-providers-chat-agents') await assertAgentsPreview(page);
+	if (id === 'reports.component.project-activity' && variant === 'stale')
+		await assertActivityCountFits(page);
 	const directory = process.env.COMPONENT_PREVIEW_SHOTS;
 	if (!directory) return;
 	const selectors: Record<string, string> = {

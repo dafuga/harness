@@ -1,0 +1,51 @@
+/** Distinct playback, selection, availability and recorded-result examples. */
+export const audioCatalogVariants: Record<string, string[]> = {
+	'reports.component.audio-comparison': [
+		'unavailable',
+		'after-unavailable',
+		'both-unavailable',
+		'no-duration',
+		'mixed',
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted'
+	],
+	'reports.component.audio-comparison-viewer': [
+		'before',
+		'after',
+		'unavailable',
+		'after-unavailable',
+		'both-unavailable',
+		'no-duration',
+		'mixed',
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted',
+		'transcript-closed',
+		'playing-before',
+		'playing-after'
+	],
+	'reports.component.audio-evidence': [
+		'notes',
+		'unavailable',
+		'notes-closed',
+		'notes-transcript',
+		'transcript-closed',
+		'no-details',
+		'no-duration',
+		'audio-error',
+		'playing',
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted'
+	]
+};

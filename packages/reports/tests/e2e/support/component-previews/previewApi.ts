@@ -6,7 +6,8 @@ import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
 import { cpu } from './analytics';
 import { activity, live } from './activity';
-import { image, layoutImage, ordersPageImage, picker } from './shared';
+import { image, layoutImage, ordersPageImage } from './shared';
+import { pickerFixture } from './providerPickerApi';
 import { audioFixture } from '../../../../test/audioFixture';
 import { routeIndex, routeRevision } from './routeHistory';
 import { routePreview } from './visualUnits';
@@ -35,10 +36,10 @@ export async function servePreview(route: Route, home: string) {
 	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname);
 	if (url.pathname === '/api/project-activity') return activityFixture(route);
 	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
+	if (url.pathname === '/tools') return pickerFixture(route);
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
 		'/api/analytics-cpu': cpuFixture(route),
-		'/tools': picker,
 		'/harness/data/index.json': shown.index,
 		'/harness/data/activity.json': activity
 	};
@@ -171,6 +172,8 @@ async function media(route: Route, path: string) {
 	if (kept) return route.fulfill({ contentType: kept.mediaType, body: Buffer.from(kept.data) });
 	if (file === 'preview.wav')
 		return route.fulfill({ contentType: 'audio/wav', body: audioFixture(42) });
+	if (file === 'preview-corrupt.wav')
+		return route.fulfill({ contentType: 'audio/wav', body: 'Invalid audio fixture.' });
 	if (file === 'synthetic-layout-input.svg')
 		return route.fulfill({ contentType: 'image/svg+xml', body: layoutImage });
 	if (file === 'synthetic-orders-page-input.svg')

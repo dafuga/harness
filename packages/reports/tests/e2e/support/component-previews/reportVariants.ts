@@ -9,9 +9,12 @@ import { entityExamplesVariant } from './reportEntityExamplesVariants';
 import { entityContractVariant } from './reportEntityContractVariants';
 import { replayControlsVariant } from './replayControlsVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
+import { audioEvidenceVariant } from './audioEvidenceVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
 import { analyticsTaskVariant } from './analyticsTaskVariants';
 import { projectActivityVariant } from './projectActivityVariants';
+import { providerPickerCardVariant } from './providerPickerCardVariants';
+import { providerPickerVariant } from './providerPickerVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -19,6 +22,9 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 		return analyticsTaskVariant(props, variant);
 	if (id === 'reports.component.project-activity' && ['stale', 'failed-read'].includes(variant))
 		return projectActivityVariant(props, variant);
+	if (id === 'reports.component.provider-picker-cards')
+		return providerPickerCardVariant(props, variant);
+	if (id === 'reports.component.provider-picker') return providerPickerVariant(props, variant);
 	if (id === 'reports.component.select') return selectVariant(props, variant);
 	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
 	if (id === 'reports.component.modal') return modalVariant(props, variant);
@@ -50,7 +56,7 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 		)
 	)
 		return null;
-	return audioComparisonVariant(props, variant);
+	return audioComparisonVariant(props, variant, id);
 }
 
 function selectVariant(props: PreviewCases[string], variant: string) {
@@ -178,27 +184,4 @@ function regressionProofVariant(props: PreviewCases[string], variant: string) {
 			]
 		};
 	return variant === 'output-open' ? props : null;
-}
-
-function audioEvidenceVariant(props: PreviewCases[string], variant: string) {
-	const item = props.item as Record<string, unknown>;
-	if (variant === 'notes')
-		return {
-			...props,
-			item: {
-				...item,
-				transcript: undefined,
-				note: 'Timing and diction were reviewed before approval.'
-			}
-		};
-	if (variant !== 'unavailable') return null;
-	return {
-		...props,
-		item: {
-			...item,
-			file: '',
-			missing: true,
-			note: 'The original recording was not retained with this evidence.'
-		}
-	};
 }

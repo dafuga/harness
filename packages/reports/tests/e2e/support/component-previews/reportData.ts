@@ -50,6 +50,17 @@ export const releaseNarration: Evidence = {
 	capturedAt: stamp,
 	transcript: 'The release narration is approved for the published walkthrough.'
 };
+function viewerRecording(item: Evidence): Evidence {
+	return {
+		...item,
+		source: undefined,
+		capturedAt: undefined,
+		transcript: undefined,
+		provenance: undefined
+	};
+}
+export const viewerBaseline = viewerRecording(baselineNarration);
+export const viewerRelease = viewerRecording(releaseNarration);
 export const galleryItems: Evidence[] = [
 	picture,
 	{
