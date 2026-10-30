@@ -2777,6 +2777,60 @@
 			"title": "Translations in English and French"
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-unindexed",
+			"title": "ExplorerTranslationsScreen: catalog not recorded",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-empty",
+			"title": "ExplorerTranslationsScreen: empty catalog",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-gaps",
+			"title": "ExplorerTranslationsScreen: source gaps",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-gaps-open",
+			"title": "ExplorerTranslationsScreen: source gaps open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-search",
+			"title": "ExplorerTranslationsScreen: matching search",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-no-matches",
+			"title": "ExplorerTranslationsScreen: no matches",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-german",
+			"title": "ExplorerTranslationsScreen: German",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-more",
+			"title": "ExplorerTranslationsScreen: more strings",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-translations-screen-missing-values",
+			"title": "ExplorerTranslationsScreen: missing and empty values",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-translations-screen"]
+		},
+		{
 			"id": "reports-component-explorer-ui-harness-explorer-styles-screen",
 			"title": "ExplorerStylesScreen",
 			"coverage": "required",
@@ -5340,6 +5394,15 @@
 				"reports-component-explorer-ui-explorer-platforms-status-not-recorded",
 				"reports-component-explorer-ui-explorer-platforms-detail-web",
 				"reports-component-explorer-ui-explorer-translations-screen",
+				"reports-component-explorer-ui-explorer-translations-screen-unindexed",
+				"reports-component-explorer-ui-explorer-translations-screen-empty",
+				"reports-component-explorer-ui-explorer-translations-screen-gaps",
+				"reports-component-explorer-ui-explorer-translations-screen-gaps-open",
+				"reports-component-explorer-ui-explorer-translations-screen-search",
+				"reports-component-explorer-ui-explorer-translations-screen-no-matches",
+				"reports-component-explorer-ui-explorer-translations-screen-german",
+				"reports-component-explorer-ui-explorer-translations-screen-more",
+				"reports-component-explorer-ui-explorer-translations-screen-missing-values",
 				"reports-component-explorer-ui-harness-explorer-styles-screen",
 				"reports-component-explorer-ui-harness-group",
 				"reports-component-explorer-usage",

@@ -8,6 +8,7 @@ import { catalogItemsVariant } from './catalogItemsVariants';
 import { dependenciesVariant } from './reportDependenciesVariants';
 import { platformDetailsVariant } from './reportPlatformDetailsVariants';
 import { platformsVariant } from './reportPlatformsVariants';
+import { translationsVariant } from './reportTranslationsVariants';
 
 /** Explorer fixtures keep each screen, card and relationship presentation separate. */
 export function explorerVariantProps(id: string, props: PreviewCases[string], variant: string) {
@@ -24,5 +25,7 @@ export function explorerVariantProps(id: string, props: PreviewCases[string], va
 		return platformDetailsVariant(props, variant);
 	if (id === 'reports.component.explorer-ui-explorer-platforms')
 		return platformsVariant(props, variant);
+	if (id === 'reports.component.explorer-ui-explorer-translations-screen')
+		return translationsVariant(props, variant);
 	return null;
 }

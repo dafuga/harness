@@ -10,6 +10,7 @@ import { assertDependenciesState } from './dependenciesPreviewAssertions';
 import { assertRegressionProofState } from './regressionProofPreviewAssertions';
 import { assertPlatformDetails } from './platformDetailsPreviewAssertions';
 import { assertPlatforms } from './platformsPreviewAssertions';
+import { assertTranslations } from './translationsPreviewAssertions';
 
 const checks: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.analytics-filters': assertAnalyticsFilters,
@@ -23,7 +24,8 @@ const checks: Record<string, (component: Locator, variant: string) => Promise<vo
 	'reports.component.usage-examples-usage-examples': assertUsageExamples,
 	'reports.component.explorer-dependencies-screen': assertDependenciesState,
 	'reports.component.explorer-ui-explorer-platform-details': assertPlatformDetails,
-	'reports.component.explorer-ui-explorer-platforms': assertPlatforms
+	'reports.component.explorer-ui-explorer-platforms': assertPlatforms,
+	'reports.component.explorer-ui-explorer-translations-screen': assertTranslations
 };
 
 /** Run only the checks belonging to this report preview. */

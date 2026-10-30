@@ -1,5 +1,16 @@
 /** Explorer collections and usage links each expose their distinct presentations. */
 export const explorerCatalogVariants: Record<string, string[]> = {
+	'reports.component.explorer-ui-explorer-translations-screen': [
+		'unindexed',
+		'empty',
+		'gaps',
+		'gaps-open',
+		'search',
+		'no-matches',
+		'german',
+		'more',
+		'missing-values'
+	],
 	'reports.component.explorer-ui-explorer-platforms': [
 		'unindexed',
 		'gap',

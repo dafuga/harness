@@ -5,6 +5,7 @@ import { prepareConfigValueTree } from './configValueTreePreviewAssertions';
 import { prepareCatalogItems } from './catalogItemsPreviewAssertions';
 import { prepareDependencies } from './dependenciesPreviewAssertions';
 import { preparePlatforms } from './platformsPreviewAssertions';
+import { prepareTranslations } from './translationsPreviewAssertions';
 
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.entity-states': prepareEntityStates,
@@ -12,7 +13,8 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.explorer-ui-config-value-tree': prepareConfigValueTree,
 	'reports.component.explorer-catalog-items': prepareCatalogItems,
 	'reports.component.explorer-dependencies-screen': prepareDependencies,
-	'reports.component.explorer-ui-explorer-platforms': preparePlatforms
+	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
+	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations
 };
 
 /** Open report examples through their actual controls before a capture. */

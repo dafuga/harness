@@ -150,7 +150,10 @@ for (const viewport of catalogViewports) {
 			) {
 				await dependencyTables(component, page, viewport.width, viewport.id === 'mobile');
 			}
-			if (unit.id.endsWith('explorer-translations-screen') || unit.id.endsWith('at-translations'))
+			if (
+				(unit.id.endsWith('explorer-translations-screen') && !variant) ||
+				unit.id.endsWith('at-translations')
+			)
 				await assertTranslationControls(component);
 			if (unit.id === 'reports.component.explorer-ui-harness-explorer-styles-screen') {
 				await expectColorRoles(component);
