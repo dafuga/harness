@@ -1175,6 +1175,36 @@
 			"units": ["reports.component.activity-files"]
 		},
 		{
+			"id": "reports-component-activity-files-many-uncommitted",
+			"title": "Activity files: More uncommitted files available",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
+			"id": "reports-component-activity-files-expanded-uncommitted",
+			"title": "Activity files: All uncommitted files shown",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
+			"id": "reports-component-activity-files-many-committed",
+			"title": "Activity files: More committed files available",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
+			"id": "reports-component-activity-files-expanded-committed",
+			"title": "Activity files: All committed files shown",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
+			"id": "reports-component-activity-files-multiple-checkouts",
+			"title": "Activity files: Multiple changed checkouts",
+			"coverage": "required",
+			"units": ["reports.component.activity-files"]
+		},
+		{
 			"id": "reports-component-activity-list",
 			"title": "Activity list",
 			"coverage": "required",
@@ -4479,6 +4509,11 @@
 				"reports-component-activity-files-clean",
 				"reports-component-activity-files-empty",
 				"reports-component-activity-files-truncated",
+				"reports-component-activity-files-many-uncommitted",
+				"reports-component-activity-files-expanded-uncommitted",
+				"reports-component-activity-files-many-committed",
+				"reports-component-activity-files-expanded-committed",
+				"reports-component-activity-files-multiple-checkouts",
 				"reports-component-activity-list",
 				"reports-component-activity-loops",
 				"reports-component-activity-loops-empty",

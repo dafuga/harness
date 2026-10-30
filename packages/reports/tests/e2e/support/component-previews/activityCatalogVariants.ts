@@ -9,7 +9,17 @@ export const activityCatalogVariants: Record<string, string[]> = {
 		'unreadable'
 	],
 	// File activity distinguishes the live checkout from recorded, clean, empty and clipped views.
-	'reports.component.activity-files': ['recorded', 'clean', 'empty', 'truncated'],
+	'reports.component.activity-files': [
+		'recorded',
+		'clean',
+		'empty',
+		'truncated',
+		'many-uncommitted',
+		'expanded-uncommitted',
+		'many-committed',
+		'expanded-committed',
+		'multiple-checkouts'
+	],
 	// Loop history either lists known templates or explains that none has been recorded.
 	'reports.component.activity-loops': ['empty'],
 	// Work distinguishes a live checkout from the recorded-history wording and an empty history.

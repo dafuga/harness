@@ -3,6 +3,7 @@ import { prepareConsoleChatState } from './consoleChatActions';
 import { assertProviderPickerCardState } from './providerPickerCardActions';
 import { prepareProviderPickerState } from './providerPickerActions';
 import { prepareActivityWorkState } from './activityWorkActions';
+import { prepareActivityFileState } from './activityFileActions';
 import { prepareAudioEvidence } from './audioEvidenceActions';
 import { prepareEntitySearchState } from './entitySearchPreviewActions';
 
@@ -139,6 +140,7 @@ const actions: Record<string, CatalogStateAction> = {
 
 /** Reproduce catalog variants that are reached through the component's own controls. */
 export async function prepareCatalogState(component: Locator, id: string, variant: string) {
+	if (id === 'reports.component.activity-files') await prepareActivityFileState(component, variant);
 	if (id === 'reports.component.activity-work' && variant !== 'recorded')
 		await prepareActivityWorkState(component, variant);
 	if (id === 'reports.component.entity-search' && variant)
