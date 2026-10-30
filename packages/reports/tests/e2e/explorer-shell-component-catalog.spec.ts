@@ -19,7 +19,7 @@ import {
 import { assertPermissionTable } from './support/component-previews/permissionPreviewAssertions';
 import { assertMobileContractFields } from './support/component-previews/entityContractPreviewAssertions';
 import { assertModuleCardPreview } from './support/component-previews/moduleCardPreviewAssertions';
-import { assertLanguagePickerCapture } from './support/component-previews/translationsPreviewAssertions';
+import { assertOpenLanguageCapture } from './support/component-previews/translationsPreviewAssertions';
 import {
 	assertCatalogLayout,
 	assertCatalogDetails
@@ -137,7 +137,7 @@ for (const viewport of catalogViewports) {
 				await assertProjectAgentState(page, component, (variant || 'rest') as ProjectAgentState);
 			}
 			const capture = await capturePreview(page, home, unit.id, { viewport: viewport.id, variant });
-			await assertLanguagePickerCapture(page, unit.id, variant, capture);
+			await assertOpenLanguageCapture(page, unit.id, variant, capture);
 			if (unit.id === 'reports.component.image-zoom' && variant === 'dragging')
 				await page.mouse.up();
 			await assertComponentCapture(page, unit.id, viewport.id, variant);

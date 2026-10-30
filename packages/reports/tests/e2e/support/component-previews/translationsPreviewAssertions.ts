@@ -1,7 +1,7 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 
 /** A native picker can be open while its popup is absent from captured pixels. */
-export async function assertLanguagePickerCapture(
+export async function assertOpenLanguageCapture(
 	page: Page,
 	id: string,
 	variant: string,
@@ -16,7 +16,8 @@ export async function assertLanguagePickerCapture(
 	const { clip, bytes: opened } = capture;
 	const language = page.getByRole('combobox', { name: 'Language' });
 	await expect.poll(() => language.evaluate((node) => node.matches(':open'))).toBe(true);
-	await page.keyboard.press('Escape');
+	await page.mouse.click(1, 1);
+	await language.focus();
 	await expect.poll(() => language.evaluate((node) => node.matches(':open'))).toBe(false);
 	const closed = await page.screenshot({
 		fullPage: false,
