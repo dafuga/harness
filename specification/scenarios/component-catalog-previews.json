@@ -2663,6 +2663,36 @@
 			"units": ["reports.component.evidence-grid"]
 		},
 		{
+			"id": "reports-component-evidence-grid-category-audio",
+			"title": "Evidence grid: category audio",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-status-failed",
+			"title": "Evidence grid: status failed",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-status-blocked",
+			"title": "Evidence grid: status blocked",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-status-skipped",
+			"title": "Evidence grid: status skipped",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
+			"id": "reports-component-evidence-grid-status-not-proven",
+			"title": "Evidence grid: status not proven",
+			"coverage": "required",
+			"units": ["reports.component.evidence-grid"]
+		},
+		{
 			"id": "reports-component-evidence-grid-search",
 			"title": "Evidence grid: Search results",
 			"coverage": "required",
@@ -6227,6 +6257,11 @@
 				"reports-component-evidence-grid-category",
 				"reports-component-evidence-grid-status",
 				"reports-component-evidence-grid-status-open",
+				"reports-component-evidence-grid-category-audio",
+				"reports-component-evidence-grid-status-failed",
+				"reports-component-evidence-grid-status-blocked",
+				"reports-component-evidence-grid-status-skipped",
+				"reports-component-evidence-grid-status-not-proven",
 				"reports-component-evidence-grid-search",
 				"reports-component-evidence-grid-audio-open",
 				"reports-component-evidence-grid-upload-comparison-open",

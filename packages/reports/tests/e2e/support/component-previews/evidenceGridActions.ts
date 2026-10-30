@@ -24,14 +24,17 @@ export async function prepareEvidenceGrid(component: Locator, variant: string) {
 		await expect(button).toHaveAttribute('aria-pressed', 'true');
 	}
 	if (variant.startsWith('viewport-')) await selectViewport(component, variant.slice(9));
-	if (variant === 'category') {
+	if (variant === 'category' || variant === 'category-audio') {
 		const button = component
 			.getByRole('group', { name: 'Evidence filters' })
-			.getByRole('button', { name: 'Checkout', exact: true });
+			.getByRole('button', {
+				name: variant === 'category' ? 'Checkout' : 'Voice review',
+				exact: true
+			});
 		await button.click();
 		await expect(button).toHaveAttribute('aria-pressed', 'true');
 	}
-	if (['status', 'status-open'].includes(variant)) await selectStatus(component, variant);
+	if (variant === 'status' || variant.startsWith('status-')) await selectStatus(component, variant);
 	if (variant.startsWith('upload-')) await openUpload(component, variant);
 	if (variant === 'uploads') await expect(component.locator('.upload-comparison')).toHaveCount(2);
 	if (variant === 'image-open') await openImage(component);
@@ -55,12 +58,15 @@ async function selectViewport(component: Locator, size: string) {
 
 async function selectStatus(component: Locator, variant: string) {
 	const select = component.getByRole('combobox', { name: 'Status' });
-	if (variant === 'status') {
-		await select.selectOption('passed');
-		await expect(select).toHaveValue('passed');
-	} else {
+	if (variant === 'status-open') {
 		await select.click();
 		await expect.poll(() => select.evaluate((node) => node.matches(':open'))).toBe(true);
+	} else {
+		const status = variant === 'status' ? 'passed' : variant.slice('status-'.length);
+		await select.selectOption(status);
+		await expect(select).toHaveValue(status);
+		if (status !== 'passed')
+			await expect(component.locator('.evidence-grid .evidence-card')).toHaveCount(1);
 	}
 }
 
