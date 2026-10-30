@@ -2927,8 +2927,26 @@
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-module-card-image-error",
+			"title": "ExplorerModuleCard: image failed to decode",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-module-card-function",
 			"title": "ExplorerModuleCard: function",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-api",
+			"title": "ExplorerModuleCard: API methods",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-api-no-methods",
+			"title": "ExplorerModuleCard: API without recorded methods",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
@@ -2947,6 +2965,18 @@
 		{
 			"id": "reports-component-explorer-ui-explorer-module-card-unlinked",
 			"title": "ExplorerModuleCard: unlinked dependency",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-no-usage",
+			"title": "ExplorerModuleCard: no usage",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-module-card"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-module-card-many-usage",
+			"title": "ExplorerModuleCard: more usages",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-module-card"]
 		},
@@ -6271,10 +6301,15 @@
 				"reports-component-explorer-ui-config-value-tree-long-expression",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
+				"reports-component-explorer-ui-explorer-module-card-image-error",
 				"reports-component-explorer-ui-explorer-module-card-function",
+				"reports-component-explorer-ui-explorer-module-card-api",
+				"reports-component-explorer-ui-explorer-module-card-api-no-methods",
 				"reports-component-explorer-ui-explorer-module-card-page",
 				"reports-component-explorer-ui-explorer-module-card-page-missing",
 				"reports-component-explorer-ui-explorer-module-card-unlinked",
+				"reports-component-explorer-ui-explorer-module-card-no-usage",
+				"reports-component-explorer-ui-explorer-module-card-many-usage",
 				"reports-component-explorer-ui-explorer-platform-details",
 				"reports-component-explorer-ui-explorer-platform-details-ios",
 				"reports-component-explorer-ui-explorer-platform-details-android",

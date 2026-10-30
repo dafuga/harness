@@ -141,10 +141,15 @@ const variants: Record<string, string[]> = {
 	// Visual, page, function and unlinked dependency cards each have their own treatment.
 	'reports.component.explorer-ui-explorer-module-card': [
 		'missing',
+		'image-error',
 		'function',
+		'api',
+		'api-no-methods',
 		'page',
 		'page-missing',
-		'unlinked'
+		'unlinked',
+		'no-usage',
+		'many-usage'
 	],
 	// Filters show their inactive trigger by default, with active and opened states separately.
 	'reports.component.filter-dialog': ['active', 'open'],
