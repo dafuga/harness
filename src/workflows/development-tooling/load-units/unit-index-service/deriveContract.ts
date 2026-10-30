@@ -90,10 +90,21 @@ export function declaredContract(
 		...(source.storage ? { storage: source.storage } : {}),
 		operations: source.operations?.map((operation) => ({
 			...operation,
+			...declaredErrors(operation.name, declared.operations),
 			inputs: operation.inputs.map((item) => explainedItem(item, declared.inputs)),
 			outputs: operation.outputs.map((item) => explainedItem(item, declared.outputs))
 		}))
 	};
+}
+
+/** An authored operation's errors replace scanned ones; an empty list declares that none are thrown. */
+function declaredErrors(
+	name: string,
+	declared: ComponentManifest['contract']['operations']
+): Partial<NonNullable<ComponentManifest['contract']['operations']>[number]> {
+	const authored = declared?.find((operation) => operation.name === name);
+	if (authored?.errorStatus !== 'declared') return {};
+	return { errors: authored.errors, errorStatus: 'declared' };
 }
 
 export function operationContract(symbol: ExportedSymbol) {
