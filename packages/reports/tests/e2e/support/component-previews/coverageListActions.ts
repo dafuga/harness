@@ -4,6 +4,7 @@ import { expect, type Locator } from '@playwright/test';
 export async function prepareCoverageList(component: Locator, variant: string) {
 	const acceptance = !variant.includes('coverage');
 	const coverage = !variant.includes('acceptance');
+	if (variant.startsWith('embedded')) await expect(component.locator('h2')).toHaveCount(0);
 	if (variant.endsWith('empty')) {
 		if (acceptance)
 			await expect(component.getByText('No acceptance criteria recorded yet.')).toBeVisible();
