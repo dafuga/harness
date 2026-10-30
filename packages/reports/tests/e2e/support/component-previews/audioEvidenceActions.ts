@@ -48,6 +48,7 @@ async function assertAudioEvidence(component: Locator, variant: string) {
 	if (variant === 'minimal') {
 		await expect(component.locator('.audio-source')).toHaveCount(0);
 		await expect(component.locator('.evidence-meta time')).toHaveCount(0);
+		await expect(component.getByText('No provenance recorded.', { exact: true })).toBeVisible();
 	}
 	if (variant.startsWith('phase-'))
 		await expect(component.locator('.audio-kind')).toContainText(
