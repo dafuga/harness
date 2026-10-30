@@ -21,6 +21,7 @@ test('CLI exposes execution targets and component versions, and refuses relaxed 
 
 	const path = 'specification/units/function.slugify.json';
 	const examples = [0, false, null, 'A title', { label: 'An item' }];
+	const description = 'Text to convert to a URL slug.';
 	await project.write(
 		path,
 		JSON.stringify({
@@ -31,6 +32,7 @@ test('CLI exposes execution targets and component versions, and refuses relaxed 
 				inputs: shown.manifest.contract.inputs.map((field) => ({
 					...field,
 					type: 'unknown',
+					description,
 					examples
 				}))
 			}
@@ -41,6 +43,9 @@ test('CLI exposes execution targets and component versions, and refuses relaxed 
 	const documented = await project.harnessJson<Shown>(['units', 'show', 'function.slugify']);
 	expect(documented.manifest.contract.inputs[0].examples).toEqual(examples);
 	expect(documented.version.contract).not.toBe(shown.version.contract);
+	expect((await project.harness(['units', 'show', 'function.slugify'])).stdout).toContain(
+		description
+	);
 
 	const budget = { workload: 'slugify-1k', metric: 'latency-warm-ms', tolerance: 0.25 };
 	const relaxed = {
