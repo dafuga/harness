@@ -15,6 +15,8 @@
 		appearance: base-select;
 	}
 	.ex-content .pf-controls .report-select select::picker(select) {
+		position-area: bottom;
+		position-try-fallbacks: none;
 		color: var(--hx-color-text);
 		background: var(--hx-color-surface);
 		border: var(--hx-border-thin) solid var(--hx-color-border);
@@ -27,7 +29,6 @@
 		padding: var(--hx-space-2) var(--hx-space-4);
 	}
 }
-/* Four across a desktop, two on a tablet, one on a phone. */
 .ex-content .pf-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
@@ -175,7 +176,6 @@
 	margin-top: var(--hx-space-2);
 	color: var(--ex-gold);
 }
-/* The detail of one platform. */
 .ex-content .pf-meta {
 	display: flex;
 	flex-wrap: wrap;
