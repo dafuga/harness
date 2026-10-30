@@ -2,8 +2,11 @@ import { expect, type Locator } from '@playwright/test';
 
 /** Use the real pagination and config value controls for their opened examples. */
 export async function prepareCatalogItems(component: Locator, variant: string) {
-	if (variant === 'more')
-		await component.getByRole('button', { name: 'View more Components' }).click();
+	const more = component.getByRole('button', { name: 'View more Components' });
+	if (variant === 'more' || variant === 'all') await more.click();
+	if (variant === 'all') await more.click();
+	if (variant === 'batch-focused') await more.focus();
+	if (variant === 'batch-hovered') await more.hover();
 	if (variant === 'configs-open')
 		await component.getByRole('button', { name: 'View value for orderSettings.steps' }).click();
 }
@@ -12,15 +15,12 @@ export async function prepareCatalogItems(component: Locator, variant: string) {
 export async function assertCatalogItems(component: Locator, variant: string) {
 	if (!variant) await expect(component.getByRole('article')).toHaveCount(1);
 	if (variant === 'multiple') await expect(component.getByRole('article')).toHaveCount(3);
-	if (variant === 'batched' || variant === 'more') {
-		await expect(component.getByRole('article')).toHaveCount(variant === 'more' ? 2 : 1);
-		await expect(component.getByRole('button', { name: 'View more Components' })).toBeVisible();
-	}
+	await assertPagination(component, variant);
 	if (variant === 'functions') await expect(component).toContainText('filterOrders');
 	if (variant === 'pages')
 		await expect(component.getByRole('img', { name: 'Screenshot of Orders page' })).toBeVisible();
 	if (variant === 'unlinked') await expect(component).toContainText('Orders styles');
-	if (variant === 'configs' || variant === 'configs-open' || variant === 'empty-configs') {
+	if (['configs', 'configs-open', 'empty-configs'].includes(variant)) {
 		await expect(component.getByRole('columnheader')).toHaveText(['Variable', 'Value']);
 		await expect(component.locator('tbody tr')).toHaveCount(variant === 'empty-configs' ? 0 : 4);
 	}
@@ -28,4 +28,23 @@ export async function assertCatalogItems(component: Locator, variant: string) {
 		await expect(
 			component.getByRole('dialog', { name: 'orderSettings.steps · Value' })
 		).toBeVisible();
+}
+
+async function assertPagination(component: Locator, variant: string) {
+	const counts: Record<string, number> = {
+		batched: 1,
+		more: 2,
+		all: 3,
+		'batch-focused': 1,
+		'batch-hovered': 1
+	};
+	if (!counts[variant]) return;
+	const more = component.getByRole('button', { name: 'View more Components' });
+	await expect(component.getByRole('article')).toHaveCount(counts[variant]);
+	if (variant === 'all') await expect(more).toHaveCount(0);
+	else await expect(more).toBeVisible();
+	if (variant === 'batch-focused')
+		expect(await more.evaluate((button) => button.matches(':focus-visible'))).toBe(true);
+	if (variant === 'batch-hovered')
+		expect(await more.evaluate((button) => button.matches(':hover'))).toBe(true);
 }

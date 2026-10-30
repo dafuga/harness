@@ -2969,6 +2969,24 @@
 			"units": ["reports.component.explorer-catalog-items"]
 		},
 		{
+			"id": "reports-component-explorer-catalog-items-all",
+			"title": "ExplorerCatalogItems: all components loaded",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-batch-focused",
+			"title": "ExplorerCatalogItems: focused pagination",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
+			"id": "reports-component-explorer-catalog-items-batch-hovered",
+			"title": "ExplorerCatalogItems: hovered pagination",
+			"coverage": "required",
+			"units": ["reports.component.explorer-catalog-items"]
+		},
+		{
 			"id": "reports-component-explorer-catalog-items-functions",
 			"title": "ExplorerCatalogItems: functions",
 			"coverage": "required",
@@ -7100,6 +7118,9 @@
 				"reports-component-explorer-catalog-items-multiple",
 				"reports-component-explorer-catalog-items-batched",
 				"reports-component-explorer-catalog-items-more",
+				"reports-component-explorer-catalog-items-all",
+				"reports-component-explorer-catalog-items-batch-focused",
+				"reports-component-explorer-catalog-items-batch-hovered",
 				"reports-component-explorer-catalog-items-functions",
 				"reports-component-explorer-catalog-items-pages",
 				"reports-component-explorer-catalog-items-configs",
