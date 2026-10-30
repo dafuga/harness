@@ -1,4 +1,4 @@
-export interface FolderKind {
-	kind: string;
-	suffix?: string;
-}
+export type {
+	FolderKind,
+	UnitIdentity
+} from '../../development-tooling/classify-path/unitIdentity.types';

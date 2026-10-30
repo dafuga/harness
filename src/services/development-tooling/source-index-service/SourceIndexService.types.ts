@@ -1,5 +1,5 @@
 import type { ExportedSymbol, SourceFile } from '../../../core/development-tooling/sourceTypes';
-import type { SourceReference } from '../../../utils/development-tooling/scanImports';
+import type { SourceReference } from '../../../utils/development-tooling/scanImports.types';
 import type { SourceBlock } from '../../../utils/development-tooling/sourceBlocks';
 
 export interface SourceIndex {

@@ -1,4 +1,6 @@
 import { expect, test } from 'vitest';
+import { assertColdEntries } from '../support/coldEntries';
+import { measureWorkload } from '../support/measureWorkload';
 import { resolveImport } from '../../src/utils/resolveImport';
 import { scanImports } from '../../src/services/source-index-service/scanImports';
 
@@ -22,33 +24,46 @@ test('scanImports records HTTP requests without reading URL-looking text as call
 	).toEqual([{ via: 'http', specifier: '/api/orders', typeOnly: false }]);
 });
 
-test('scanImports reads static, type, side-effect, re-export, dynamic, require and URL references', () => {
-	const code = [
-		"import defaultValue, { a,\n\tb } from './multi';",
-		"import type { T } from './types';",
-		"import { runtime } from './types';",
-		"import './side-effect.css';",
-		"export * from './all';",
-		"export { c as d } from './named';",
-		"const lazy = () => import('./lazy');",
-		"const legacy = require('./legacy');",
-		"const asset = new URL('./asset.wasm', import.meta.url);",
-		"import * as ns from 'node:path';"
-	].join('\n');
+test('scanImports reads static, type, side-effect, re-export, dynamic, require and URL references', () =>
+	measureWorkload('function.scan-imports', 'scan-supported-module-references', () => {
+		const code = [
+			"import defaultValue, { a,\n\tb } from './multi';",
+			"import type { T } from './types';",
+			"import { runtime } from './types';",
+			"import './side-effect.css';",
+			"export * from './all';",
+			"export { c as d } from './named';",
+			"const lazy = () => import('./lazy');",
+			"const legacy = require('./legacy');",
+			"const asset = new URL('./asset.wasm', import.meta.url);",
+			"import * as ns from 'node:path';"
+		].join('\n');
 
-	expect(scanImports(code, 'ts')).toEqual([
-		{ specifier: './multi', via: 'import', typeOnly: false },
-		{ specifier: './types', via: 'import', typeOnly: true },
-		{ specifier: './types', via: 'import', typeOnly: false },
-		{ specifier: './side-effect.css', via: 'import', typeOnly: false },
-		{ specifier: './all', via: 'reexport', typeOnly: false },
-		{ specifier: './named', via: 'reexport', typeOnly: false },
-		{ specifier: './lazy', via: 'dynamic-import', typeOnly: false },
-		{ specifier: './legacy', via: 'require', typeOnly: false },
-		{ specifier: './asset.wasm', via: 'url', typeOnly: false },
-		{ specifier: 'node:path', via: 'import', typeOnly: false }
-	]);
-});
+		expect(scanImports(code, 'ts')).toEqual([
+			{ specifier: './multi', via: 'import', typeOnly: false },
+			{ specifier: './types', via: 'import', typeOnly: true },
+			{ specifier: './types', via: 'import', typeOnly: false },
+			{ specifier: './side-effect.css', via: 'import', typeOnly: false },
+			{ specifier: './all', via: 'reexport', typeOnly: false },
+			{ specifier: './named', via: 'reexport', typeOnly: false },
+			{ specifier: './lazy', via: 'dynamic-import', typeOnly: false },
+			{ specifier: './legacy', via: 'require', typeOnly: false },
+			{ specifier: './asset.wasm', via: 'url', typeOnly: false },
+			{ specifier: 'node:path', via: 'import', typeOnly: false }
+		]);
+		assertColdEntries(
+			[
+				'src/utils/scanImports.ts',
+				'src/utils/development-tooling/scanImports.ts',
+				'src/services/source-index-service/scanImports.ts',
+				'src/services/development-tooling/source-index-service/scanImports.ts'
+			].map((entry) => ({
+				entry,
+				code: `console.log(JSON.stringify(m.scanImports(${JSON.stringify(code)}, 'ts')));`
+			})),
+			scanImports(code, 'ts')
+		);
+	}));
 
 test('scanImports ignores comments, strings, templates and regular expressions', () => {
 	const code = [

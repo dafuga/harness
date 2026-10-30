@@ -6,9 +6,9 @@ import type { ExportPlan } from '../../../core/projects-sessions/exports';
 import { fail } from '../../../core/development-tooling/errors';
 import {
 	ensureParents,
-	renderFileList,
 	writePlannedFiles
-} from '../../../core/development-tooling/files';
+} from '../../../adapters/development-tooling/planned-files/writePlannedFiles';
+import { renderFileList } from '../../../core/development-tooling/renderFileList';
 import { detectGameDimension, detectProjectKind } from './project';
 import { validateCodeName } from '../../../core/development-tooling/validation';
 import { parseFields } from '../../../core/development-tooling/fields/fields';

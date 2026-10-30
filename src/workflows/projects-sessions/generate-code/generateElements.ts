@@ -1,4 +1,7 @@
-import { ensureParents, writePlannedFiles } from '../../../core/development-tooling/files';
+import {
+	ensureParents,
+	writePlannedFiles
+} from '../../../adapters/development-tooling/planned-files/writePlannedFiles';
 import { atomicComponentFiles } from '../../../templates/development-tooling/atomicComponents';
 import { detectProjectKind } from './project';
 import { fail } from '../../../core/development-tooling/errors';
