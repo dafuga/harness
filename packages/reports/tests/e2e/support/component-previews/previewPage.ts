@@ -59,9 +59,15 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 	}
 	await expect.poll(() => content.locator(':visible').count()).toBeGreaterThan(0);
 	await expect.poll(() => content.evaluate((node) => node.childElementCount)).toBeGreaterThan(0);
-	await expect(content).not.toContainText(
-		/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Loading history…|Loading this revision…|Sampling CPU…|Checking sign-in…|Reading the request…/
-	);
+	if (id === 'reports.component.entity-states' && variant === 'loading')
+		await expect(content).toContainText('Loading recorded capture…');
+	else {
+		await expect(content).not.toContainText(
+			/Reading what it holds…|Reading the capture…|Loading screenshot…|Loading recorded activity…|Loading history…|Loading this revision…|Sampling CPU…|Checking sign-in…|Reading the request…/
+		);
+		if (id === 'reports.component.entity-states')
+			await expect(content).not.toContainText('Loading recorded capture…');
+	}
 	await expect(content).not.toContainText(
 		/This project could not be opened|Loading projects?…|Design preview unavailable|Preview unavailable|Screenshot unavailable|not listed by the evidence|Not verified|Reading the clip…|TypeError:|ReferenceError:|Checking the GitHub connection…/
 	);

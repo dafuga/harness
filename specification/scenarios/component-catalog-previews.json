@@ -2105,6 +2105,66 @@
 			"units": ["reports.component.entity-states"]
 		},
 		{
+			"id": "reports-component-entity-states-empty",
+			"title": "Supported states: none declared",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-current",
+			"title": "Supported states: current",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-missing",
+			"title": "Supported states: captures missing",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-rejected",
+			"title": "Supported states: capture rejected",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-inapplicable",
+			"title": "Supported states: inapplicable",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-incomparable",
+			"title": "Supported states: incomparable revisions",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-loading",
+			"title": "Supported states: loading capture",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-load-error",
+			"title": "Supported states: capture load error",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-viewport-mobile",
+			"title": "Supported states: mobile viewport",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
+			"id": "reports-component-entity-states-viewer-open",
+			"title": "Supported states: viewer open",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
 			"id": "reports-component-evidence-card",
 			"title": "Evidence card",
 			"coverage": "required",
@@ -4658,6 +4718,16 @@
 				"reports-component-entity-search-results-none-selected",
 				"reports-component-entity-search-results-no-purpose",
 				"reports-component-entity-states",
+				"reports-component-entity-states-empty",
+				"reports-component-entity-states-current",
+				"reports-component-entity-states-missing",
+				"reports-component-entity-states-rejected",
+				"reports-component-entity-states-inapplicable",
+				"reports-component-entity-states-incomparable",
+				"reports-component-entity-states-loading",
+				"reports-component-entity-states-load-error",
+				"reports-component-entity-states-viewport-mobile",
+				"reports-component-entity-states-viewer-open",
 				"reports-component-evidence-card",
 				"reports-component-evidence-card-missing",
 				"reports-component-evidence-card-compact",
