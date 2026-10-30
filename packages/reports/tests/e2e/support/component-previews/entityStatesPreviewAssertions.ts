@@ -1,4 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
+import { previewCaptureBounds } from './previewCaptureBounds';
 
 /** Reach the viewport and image viewer through the gallery's real controls. */
 export async function prepareEntityStates(component: Locator, variant: string) {
@@ -38,6 +39,9 @@ export async function prepareEntityStates(component: Locator, variant: string) {
 			viewer.getByRole('button', { name: 'View after screenshot', exact: true })
 		).toHaveClass(/active/);
 		await expect(viewer.locator('figcaption')).toBeInViewport({ ratio: 1 });
+		const page = component.page();
+		const bounds = await previewCaptureBounds(page, 'reports.component.entity-states', variant);
+		expect({ width: bounds.width, height: bounds.height }).toEqual(page.viewportSize());
 	}
 }
 
