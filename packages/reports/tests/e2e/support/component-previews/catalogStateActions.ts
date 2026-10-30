@@ -5,6 +5,7 @@ import { prepareProviderPickerState } from './providerPickerActions';
 import { prepareAudioEvidence } from './audioEvidenceActions';
 import { prepareAudioUploadFiles } from './audioUploadFilesActions';
 import { prepareEntitySearchState } from './entitySearchPreviewActions';
+import { prepareEvidenceCard } from './evidenceCardActions';
 
 type CatalogStateAction = (component: Locator) => Promise<void>;
 
@@ -75,10 +76,6 @@ const actions: Record<string, CatalogStateAction> = {
 	'reports.component.site-activity:failed-refresh': async (component) => {
 		await component.getByRole('button', { name: 'Refresh activity' }).click();
 		await expect(component.getByRole('status')).toContainText('Activity could not be read again');
-	},
-	'reports.component.evidence-card:compact': async (component) => {
-		await component.locator('summary').click();
-		await expect(component.getByText('Browser capture', { exact: true })).toBeVisible();
 	},
 	'reports.component.evidence-grid:empty': async (component) => {
 		await component
@@ -151,6 +148,7 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 	if (id === 'reports.component.audio-evidence') return prepareAudioEvidence(component, variant);
 	if (id === 'reports.component.audio-upload-files')
 		return prepareAudioUploadFiles(component, variant);
+	if (id === 'reports.component.evidence-card') return prepareEvidenceCard(component, variant);
 	const action = actions[`${id}:${variant}`];
 	if (action) await action(component);
 	if (id === 'reports.component.audio-comparison-viewer')

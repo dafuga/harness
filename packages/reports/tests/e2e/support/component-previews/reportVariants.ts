@@ -1,7 +1,6 @@
 import type { PreviewCases } from './shared';
 import { chatVariantProps } from './chatVariants';
 import { image, noop, text } from './shared';
-import { baselineNarration, releaseNarration } from './reportData';
 import { sourceVariant } from './reportSourceVariants';
 import { moduleCardVariant } from './reportModuleCardVariants';
 import { entityCasesVariant } from './reportEntityCasesVariants';
@@ -14,6 +13,7 @@ import { contractTableVariant } from './reportContractTableVariants';
 import { replayControlsVariant } from './replayControlsVariants';
 import { audioComparisonVariant } from './audioComparisonVariants';
 import { audioEvidenceVariant } from './audioEvidenceVariants';
+import { evidenceCardVariant } from './evidenceCardVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
 import { analyticsTaskVariant } from './analyticsTaskVariants';
 import { projectActivityVariant } from './projectActivityVariants';
@@ -131,30 +131,6 @@ function audioUploadFilesVariant(props: PreviewCases[string], variant: string) {
 	)
 		return { ...props, mode: 'comparison', uploading: variant === 'uploading' };
 	return null;
-}
-
-function evidenceCardVariant(props: PreviewCases[string], variant: string) {
-	const item = props.item as Record<string, unknown>;
-	if (variant === 'missing')
-		return {
-			...props,
-			item: { ...item, missing: true, note: 'The recorded screenshot could not be restored.' }
-		};
-	if (variant === 'compact')
-		return {
-			...props,
-			compact: true,
-			item: {
-				...item,
-				provenance: [
-					{ label: 'Viewport', value: 'Desktop' },
-					{ label: 'Source', value: 'Browser capture' }
-				]
-			}
-		};
-	return variant === 'paired-audio'
-		? { ...props, item: releaseNarration, before: baselineNarration }
-		: null;
 }
 
 function evidenceGridVariant(props: PreviewCases[string], variant: string) {

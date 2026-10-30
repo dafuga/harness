@@ -3,6 +3,7 @@ import type { PreviewCases } from './shared';
 import {
 	report,
 	picture,
+	cardPicture,
 	audio,
 	group,
 	baselineNarration,
@@ -95,7 +96,7 @@ export const reportCases: PreviewCases = {
 		scope: d.shown.scope,
 		mediaBase: '/media/'
 	},
-	'reports.component.evidence-card': { item: picture, assetBase: '/media/', onopen: noop },
+	'reports.component.evidence-card': { item: cardPicture, assetBase: '/media/', onopen: noop },
 	'reports.component.evidence-grid': { items: galleryItems, assetBase: '/media/' },
 	'reports.component.evidence-provenance': {
 		item: {

@@ -2159,6 +2159,66 @@
 			"units": ["reports.component.evidence-card"]
 		},
 		{
+			"id": "reports-component-evidence-card-compact-closed",
+			"title": "Evidence card: Compact details closed",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-image-error",
+			"title": "Evidence card: Image decode error",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-single-audio",
+			"title": "Evidence card: Single audio",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-minimal",
+			"title": "Evidence card: Minimal metadata",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-running",
+			"title": "Evidence card: Running",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-failed",
+			"title": "Evidence card: Failed",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-blocked",
+			"title": "Evidence card: Blocked",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-skipped",
+			"title": "Evidence card: Skipped",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-not-proven",
+			"title": "Evidence card: Not proven",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
+			"id": "reports-component-evidence-card-interrupted",
+			"title": "Evidence card: Interrupted",
+			"coverage": "required",
+			"units": ["reports.component.evidence-card"]
+		},
+		{
 			"id": "reports-component-evidence-grid",
 			"title": "Evidence grid",
 			"coverage": "required",
@@ -4643,6 +4703,16 @@
 				"reports-component-evidence-card-missing",
 				"reports-component-evidence-card-compact",
 				"reports-component-evidence-card-paired-audio",
+				"reports-component-evidence-card-compact-closed",
+				"reports-component-evidence-card-image-error",
+				"reports-component-evidence-card-single-audio",
+				"reports-component-evidence-card-minimal",
+				"reports-component-evidence-card-running",
+				"reports-component-evidence-card-failed",
+				"reports-component-evidence-card-blocked",
+				"reports-component-evidence-card-skipped",
+				"reports-component-evidence-card-not-proven",
+				"reports-component-evidence-card-interrupted",
 				"reports-component-evidence-grid",
 				"reports-component-evidence-grid-empty",
 				"reports-component-evidence-grid-audio",

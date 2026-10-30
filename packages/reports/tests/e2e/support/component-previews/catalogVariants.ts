@@ -1,10 +1,12 @@
 import { activityCatalogVariants } from './activityCatalogVariants';
 import { providerPickerStates } from './providerPickerVariants';
 import { audioCatalogVariants } from './audioCatalogVariants';
+import { evidenceCatalogVariants } from './evidenceCatalogVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
 	...audioCatalogVariants,
+	...evidenceCatalogVariants,
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',
@@ -48,8 +50,6 @@ const variants: Record<string, string[]> = {
 		'after-selected',
 		'both-selected'
 	],
-	// Image, missing, compact provenance and paired-audio branches each render different evidence.
-	'reports.component.evidence-card': ['missing', 'compact', 'paired-audio'],
 	// Media filtering, empty results, upload controls and a lightbox are separate gallery states.
 	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
 	// The default shows two facts; this state proves a fuller recorded provenance set remains legible.

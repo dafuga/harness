@@ -57,12 +57,18 @@
 </script>
 
 <div class="preview-catalog" class:hx-shell={reports} class:hub-page={id.startsWith('hub.')}>
-	<main class="preview-main" class:hx-main={reports} class:full-frame={fullFrame}>
+	<main
+		class="preview-main"
+		class:hx-main={reports}
+		class:full-frame={fullFrame}
+		class:gallery-section={id === 'reports.component.evidence-card'}
+	>
 		<h1 id="preview-title" class:preview-hidden={routePreview(id)}>{unit.title}</h1>
 		{#await fixture.ready}<p role="status">Preparing component preview…</p>{:then}
 			<div
 				class="preview-content"
 				class:upload-audio={id === 'reports.component.audio-upload-files'}
+				class:evidence-grid={id === 'reports.component.evidence-card'}
 				class:provider-picker={id.includes('provider-picker')}
 				class:account={id === 'hub.component.account-menu'}
 				class:ex-content={explorer && !fullFrame}
