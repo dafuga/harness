@@ -1,4 +1,4 @@
-import type { Locator } from '@playwright/test';
+import { expect, type Locator } from '@playwright/test';
 import { prepareEntityStates } from './entityStatesPreviewAssertions';
 import { prepareUsageLink } from './usageLinkPreviewAssertions';
 import { prepareConfigValueTree } from './configValueTreePreviewAssertions';
@@ -15,6 +15,8 @@ const actions: Record<string, (component: Locator, variant: string) => Promise<v
 	'reports.component.explorer-catalog-items': prepareCatalogItems,
 	'reports.component.explorer-dependencies-screen': prepareDependencies,
 	'reports.component.evidence-grid': prepareEvidenceGrid,
+	'reports.component.report-checks': prepareReportChecks,
+	'reports.component.recorded-value': prepareRecordedValue,
 	'reports.component.explorer-ui-explorer-platforms': preparePlatforms,
 	'reports.component.explorer-ui-explorer-translations-screen': prepareTranslations
 };
@@ -25,4 +27,36 @@ export async function prepareReportState(component: Locator, id: string, variant
 	if (!action) return false;
 	await action(component, variant);
 	return true;
+}
+
+async function prepareReportChecks(component: Locator, variant: string) {
+	if (variant.endsWith('empty')) {
+		await expect(component.getByText('No checks recorded yet.')).toBeVisible();
+		await expect(component.locator('article.check')).toHaveCount(0);
+		return;
+	}
+	await expect(component.locator('article.check')).toHaveCount(variant === 'multiple' ? 3 : 1);
+	await expect(component.getByText('Checkout confirmation')).toBeVisible();
+	if (variant.endsWith('open')) {
+		const details = component.locator('details').first();
+		await details.locator('summary').click();
+		await expect(details).toHaveAttribute('open', '');
+		if (variant !== 'output-open') await expect(details.locator('code')).toContainText('checkout');
+		if (variant !== 'command-open') await expect(details).toContainText('12 passed');
+	}
+}
+
+async function prepareRecordedValue(component: Locator, variant: string) {
+	const notices: Record<string, string> = {
+		absent: 'Not recorded',
+		'empty-text': 'Empty text',
+		'empty-list': 'Empty list',
+		'empty-object': 'Empty object'
+	};
+	if (notices[variant])
+		await expect(component.getByText(notices[variant], { exact: true })).toBeVisible();
+	if (variant === 'table' || variant === 'many-rows')
+		await expect(component.getByRole('region', { name: 'Recorded rows' })).toBeVisible();
+	if (variant === 'long-text' || variant === 'custom-label')
+		await expect(component.getByText(/Preview shortened/)).toBeVisible();
 }

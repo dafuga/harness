@@ -18,6 +18,8 @@ import { audioEvidenceVariant } from './audioEvidenceVariants';
 import { evidenceCardVariant } from './evidenceCardVariants';
 import { evidenceGridVariant } from './evidenceGridVariants';
 import { evidenceViewerVariant } from './evidenceViewerVariants';
+import { reportChecksVariant } from './reportChecksVariants';
+import { recordedValueVariant } from './recordedValueVariants';
 import { analyticsTaskVariant } from './analyticsTaskVariants';
 import { projectActivityVariant, siteActivityVariant } from './projectActivityVariants';
 import { activityWorkVariant } from './activityWorkVariants';
@@ -79,6 +81,8 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.evidence-provenance')
 		return evidenceProvenanceVariant(props, variant);
 	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
+	if (id === 'reports.component.report-checks') return reportChecksVariant(props, variant);
+	if (id === 'reports.component.recorded-value') return recordedValueVariant(props, variant);
 	if (id === 'reports.component.console-chat' || id === 'reports.component.floating-chat')
 		return chatVariantProps(id, props, variant);
 	if (id === 'reports.component.gameplay-replay') return gameplayReplayVariant(props, variant);

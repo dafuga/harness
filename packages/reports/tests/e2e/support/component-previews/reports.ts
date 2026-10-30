@@ -12,6 +12,8 @@ import {
 	viewerRelease
 } from './reportData';
 import { evidenceGridItems } from './evidenceGridData';
+import { reportCheck } from './reportChecksVariants';
+import { recordedValueFixture } from './recordedValueVariants';
 import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
@@ -157,7 +159,7 @@ export const reportCases: PreviewCases = {
 		locked: false,
 		oncancel: noop
 	},
-	'reports.component.recorded-value': { value: { current: true, working: 1, labels: ['Working'] } },
+	'reports.component.recorded-value': { value: recordedValueFixture },
 	'reports.component.regression-proof': {
 		unit: d.ids.list,
 		href: () => '/history',
@@ -193,7 +195,7 @@ export const reportCases: PreviewCases = {
 		onscene: noop,
 		onfullscreen: noop
 	},
-	'reports.component.report-checks': { checks: report.checks },
+	'reports.component.report-checks': { checks: [reportCheck] },
 	'reports.component.report-findings': { findings: report.findings },
 	'reports.component.report-summary': { report, downloadBase: '/exports/', portable: true },
 	'reports.component.report-view': {

@@ -63,7 +63,13 @@
 				"description": "A readable, bounded preview. Full original data stays available in its recording."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "Getter, proxy or conversion error",
+				"type": "thrown",
+				"description": "Propagates errors thrown by supplied property getters, proxy traps or string conversion while presenting a value."
+			}
+		]
 	},
 	"dependencies": [
 		{

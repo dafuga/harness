@@ -28,11 +28,24 @@ export function siteActivityVariant(props: PreviewCases[string], variant: string
 				...shown,
 				live: {
 					...shown.live,
-					sampledAt: new Date(Date.parse(shown.live.sampledAt) - 120_000).toISOString()
+					sampledAt: earlier(shown.live.sampledAt),
+					agents: {
+						...shown.live.agents,
+						roster: shown.live.agents.roster.map((agent) => ({
+							...agent,
+							registeredAt: earlier(agent.registeredAt),
+							heartbeatAt: earlier(agent.heartbeatAt),
+							expiresAt: earlier(agent.expiresAt)
+						}))
+					}
 				}
 			}
 		};
 	return variant === 'failed-refresh' ? props : null;
+}
+
+function earlier(timestamp: string) {
+	return new Date(Date.parse(timestamp) - 120_000).toISOString();
 }
 
 function emptyActivity(shown: { activity: ProjectActivity; live: LiveActivity }) {
