@@ -2,7 +2,7 @@
 	"name": "catalog-viewport-state-names",
 	"goal": "Keep named states ending in viewport names distinct in catalog evidence.",
 	"createdAt": "2026-10-30T21:58:16.430Z",
-	"updatedAt": "2026-10-30T21:59:37.903Z",
+	"updatedAt": "2026-10-30T22:01:38.819Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T22:01:37.635Z",
+			"evidence": "At ff5f670d94, repeated exact state names win over inferred device suffixes; only genuinely device-qualified siblings are grouped."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T22:01:38.819Z",
+			"evidence": "The unchanged catalog and entity-screen tests passed at ff5f670d94; green record 8b89059bc7f6."
 		},
 		{
 			"id": "verify",
