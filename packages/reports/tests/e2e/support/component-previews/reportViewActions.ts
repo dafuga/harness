@@ -72,10 +72,14 @@ async function assertReportLifecycle(component: Locator, variant: string) {
 	if (variant === 'finalizing')
 		await expect(component.getByText(/Exports are being built/)).toBeVisible();
 	if (variant === 'historical')
-		await expect(component.getByText(/historical record/)).toBeVisible();
+		await expect(
+			component.getByText(
+				'Imported evidence from an earlier run. These checks have not been rerun.'
+			)
+		).toBeVisible();
 	if (variant === 'gaps') await expect(component.locator('.gap-count')).toContainText('2 gaps');
 	if (variant === 'no-revision')
-		await expect(component.locator('.run-details .badge')).toContainText('Not proven');
+		await expect(component.locator('.run-details summary .badge')).toContainText('Not proven');
 	if (variant === 'suite') await expect(component.locator('.eyebrow')).toContainText('Full suite');
 }
 
