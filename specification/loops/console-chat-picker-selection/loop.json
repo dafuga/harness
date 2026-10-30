@@ -2,7 +2,7 @@
 	"name": "console-chat-picker-selection",
 	"goal": "Make the selected model and reasoning effort visible in console pickers",
 	"createdAt": "2026-10-30T05:04:20.644Z",
-	"updatedAt": "2026-10-30T05:10:17.181Z",
+	"updatedAt": "2026-10-30T05:12:09.969Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T05:12:09.969Z",
+			"evidence": "The unchanged model picker selection assertion passed at a14914d381 on harbor-mbp-2."
 		},
 		{
 			"id": "verify",
