@@ -11,6 +11,7 @@ export function providerPickerCardVariant(props: PreviewCases[string], variant: 
 	if (!['applying', 'applied', 'failed', 'cancelled'].includes(variant)) return null;
 	return {
 		...props,
+		active: variant === 'applied' ? { ...active, selection: request.target } : active,
 		request: {
 			...request,
 			status: variant,

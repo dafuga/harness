@@ -6,7 +6,8 @@ import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
 import { cpu } from './analytics';
 import { activity, live } from './activity';
-import { image, layoutImage, ordersPageImage, picker } from './shared';
+import { image, layoutImage, ordersPageImage } from './shared';
+import { pickerFixture } from './providerPickerApi';
 import { audioFixture } from '../../../../test/audioFixture';
 import { routeIndex, routeRevision } from './routeHistory';
 import { routePreview } from './visualUnits';
@@ -35,10 +36,10 @@ export async function servePreview(route: Route, home: string) {
 	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname);
 	if (url.pathname === '/api/project-activity') return activityFixture(route);
 	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
+	if (url.pathname === '/tools') return pickerFixture(route);
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
 		'/api/analytics-cpu': cpuFixture(route),
-		'/tools': picker,
 		'/harness/data/index.json': shown.index,
 		'/harness/data/activity.json': activity
 	};

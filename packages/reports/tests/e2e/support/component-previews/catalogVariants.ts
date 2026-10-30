@@ -1,36 +1,10 @@
+import { activityCatalogVariants } from './activityCatalogVariants';
+import { providerPickerStates } from './providerPickerVariants';
 import { audioCatalogVariants } from './audioCatalogVariants';
 
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
 	...audioCatalogVariants,
-	// Live activity keeps unavailable, stale, failed and untracked readings distinct.
-	'reports.component.activity-agents': [
-		'unavailable',
-		'tracking-never-used',
-		'stale',
-		'failed-read',
-		'unreadable'
-	],
-	// File activity distinguishes the live checkout from recorded, clean, empty and clipped views.
-	'reports.component.activity-files': ['recorded', 'clean', 'empty', 'truncated'],
-	// Loop history either lists known templates or explains that none has been recorded.
-	'reports.component.activity-loops': ['empty'],
-	// Work distinguishes a live checkout from the recorded-history wording and an empty history.
-	'reports.component.activity-work': ['recorded', 'empty'],
-	// Project activity keeps recorded, empty, stale and failed live readings distinct.
-	'reports.component.project-activity': ['recorded', 'empty', 'stale', 'failed-read'],
-	// Site activity's refresh failure preserves the last known live observation with a warning.
-	'reports.component.site-activity': ['failed-refresh'],
-	// History filters show both a focused query and the no-filter form.
-	'reports.component.analytics-filters': ['empty'],
-	// CPU distinguishes a healthy idle checkout from an unavailable local sample.
-	'reports.component.analytics-cpu': ['no-agents', 'unavailable'],
-	// History retains independent empty tables and summaries after filters remove every loop.
-	'reports.component.analytics-history': ['empty'],
-	// Model usage has a separate unrecorded state from populated author and evaluator evidence.
-	'reports.component.analytics-models': ['empty'],
-	// Task history separates empty, unassessed, not-yet-passed and retried assessments.
-	'reports.component.analytics-tasks': ['empty', 'unassessed', 'unpassed', 'retried'],
 	// The console connects on open and exposes its access, roster and composer states.
 	'reports.component.console-chat': [
 		'open',
@@ -52,6 +26,8 @@ const variants: Record<string, string[]> = {
 		'following',
 		'not-following'
 	],
+	// Connection, session, queue and selection branches are exercised through the picker client.
+	'reports.component.provider-picker': providerPickerStates,
 	// Active observations and every switch status have distinct card presentations.
 	'reports.component.provider-picker-cards': [
 		'unknown',
@@ -68,17 +44,6 @@ const variants: Record<string, string[]> = {
 	'reports.component.evidence-card': ['missing', 'compact', 'paired-audio'],
 	// Media filtering, empty results, upload controls and a lightbox are separate gallery states.
 	'reports.component.evidence-grid': ['empty', 'audio', 'uploads', 'image-open'],
-	// A replay can wait for its first live frame or retain an interrupted final run.
-	'reports.component.gameplay-replay': ['live-empty', 'interrupted'],
-	// Playback, selected controls and boundary-disabled controls each remain independently inspectable.
-	'reports.component.replay-controls': [
-		'playing',
-		'final-frame',
-		'single-frame',
-		'scene-unselected',
-		'fullscreen',
-		'speed-2x'
-	],
 	// The default shows two facts; this state proves a fuller recorded provenance set remains legible.
 	'reports.component.evidence-provenance': ['extended'],
 	// The lightbox needs separate before, compare and unavailable-image examples.
@@ -125,6 +90,15 @@ const variants: Record<string, string[]> = {
 	],
 	// The trigger is a default state; this variant shows its populated search dialog.
 	'reports.component.entity-search': ['open'],
+	// Search results distinguish typing, loading, no matches and selection changes.
+	'reports.component.entity-search-results': [
+		'initial',
+		'loading',
+		'no-matches',
+		'second-selected',
+		'none-selected',
+		'no-purpose'
+	],
 	// Visual, page, function and unlinked dependency cards each have their own treatment.
 	'reports.component.explorer-ui-explorer-module-card': [
 		'missing',
@@ -200,6 +174,9 @@ const variants: Record<string, string[]> = {
 		'agents-many'
 	]
 };
-export const previewVariants = (id: string): string[] => ['', ...(variants[id] ?? [])];
+export const previewVariants = (id: string): string[] => [
+	'',
+	...(activityCatalogVariants[id] ?? variants[id] ?? [])
+];
 export const previewState = (id: string, variant = ''): string =>
 	id.replaceAll('.', '-') + (variant ? `-${variant}` : '');

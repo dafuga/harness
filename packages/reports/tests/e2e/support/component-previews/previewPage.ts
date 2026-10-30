@@ -18,6 +18,10 @@ const pageUnitIds = new Set(
 		.map((unit) => unit.id)
 );
 export async function openPreview(page: Page, home: string, id: string, variant = '') {
+	if (id === 'reports.component.entity-search-results' && page.viewportSize()?.width === 390) {
+		const cdp = await page.context().newCDPSession(page);
+		await cdp.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
+	}
 	await page.route('**/*', (route) => servePreview(route, home));
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
@@ -122,7 +126,7 @@ export async function capturePreview(
 	if (!evidenceRequested() && !process.env.COMPONENT_PREVIEW_SHOTS) return;
 	const clip = await previewCaptureBounds(page, id, variant);
 	const bytes = await page.screenshot({
-		fullPage: true,
+		fullPage: id !== 'reports.component.select' || variant !== 'open',
 		clip,
 		animations: 'disabled',
 		caret: 'hide'

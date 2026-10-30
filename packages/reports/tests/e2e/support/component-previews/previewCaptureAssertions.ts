@@ -6,6 +6,8 @@ import { assertEntityCasesState } from './entityCasesPreviewAssertions';
 import { assertAudioViewerCapture } from './catalogStateActions';
 import { assertEntityExamplesState } from './entityExamplesPreviewAssertions';
 import { assertEntityContractState } from './entityContractPreviewAssertions';
+import { assertSearchResultsState } from './searchResultsPreviewAssertions';
+import { assertActivityCountFits } from './projectActivityAssertions';
 
 /** The saved picture must frame actual compact and multi-root UI, not its preview document. */
 export async function assertComponentCapture(
@@ -61,20 +63,6 @@ export async function assertComponentCapture(
 	}
 }
 
-/** A long count label remains one word at every catalog viewport. */
-async function assertActivityCountFits(page: Page) {
-	const count = page
-		.locator('[data-preview-unit="reports.component.project-activity"]')
-		.getByTestId('agents-working');
-	await expect(count).toHaveText('Unknown');
-	const lines = await count.evaluate((node) => {
-		const range = document.createRange();
-		range.selectNodeContents(node);
-		return [...range.getClientRects()].filter((rect) => rect.width > 0).length;
-	});
-	expect(lines, 'The activity count must stay on one line').toBe(1);
-}
-
 /** An opened search is a populated dialog, rather than a capture of its trigger alone. */
 export async function assertCatalogState(
 	component: Locator,
@@ -87,6 +75,8 @@ export async function assertCatalogState(
 		await assertEntityExamplesState(component, variant);
 	if (id === 'reports.component.entity-contract')
 		await assertEntityContractState(component, variant);
+	if (id === 'reports.component.entity-search-results')
+		await assertSearchResultsState(component, variant, viewport);
 	if (id === 'reports.component.filter-dialog' && variant === 'active') {
 		const trigger = component.getByRole('button', { name: 'Filters', exact: true });
 		await expect(trigger).toHaveClass(/active/);

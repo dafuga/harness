@@ -23,6 +23,7 @@ import {
 	assertTranslationControls
 } from './support/component-previews/previewCaptureAssertions';
 import { assertPermissionTable } from './support/component-previews/permissionPreviewAssertions';
+import { assertMobileContractFields } from './support/component-previews/entityContractPreviewAssertions';
 import { assertModuleCardPreview } from './support/component-previews/moduleCardPreviewAssertions';
 import {
 	assertCatalogLayout,
@@ -112,6 +113,16 @@ for (const viewport of catalogViewports) {
 						'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
 					reason: 'The console connection-error fixture deliberately refuses the connection.'
 				});
+			if (unit.id === 'reports.component.provider-picker' && variant === 'connection-error') {
+				// Desktop profiles six remounts, each exercising the same refused connection.
+				for (let attempt = 0; attempt < (viewport.id === 'desktop' ? 7 : 1); attempt++)
+					browserErrors.expectError({
+						type: 'console',
+						message:
+							'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
+						reason: 'The picker connection-error fixture deliberately refuses the connection.'
+					});
+			}
 			if (isProjectAgent) {
 				page.on('pageerror', (error) => projectErrors.push(error.message));
 				page.on('console', (message) => {
@@ -124,6 +135,8 @@ for (const viewport of catalogViewports) {
 			const component = await readyPreview(page, unit.id, variant);
 			await prepareCatalogState(component, unit.id, variant);
 			await assertCatalogState(component, unit.id, variant, viewport.id);
+			if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
+				await assertMobileContractFields(component);
 			if (unit.id === 'reports.component.explorer-ui-explorer-module-card')
 				await assertModuleCardPreview(component, variant);
 			await assertReportPreviewState(component, unit.id, variant);
@@ -187,7 +200,7 @@ for (const viewport of catalogViewports) {
 			}
 			if (unit.id === 'desktop.component.relationships-panel')
 				await expect(component.locator('.chip')).toHaveText(['Page', 'Layout']);
-			if (unit.id === 'reports.component.provider-picker-cards') {
+			if (unit.id === 'reports.component.provider-picker-cards' && !variant) {
 				await expect(component.getByText('GPT 6.1', { exact: true })).toBeVisible();
 				await expect(component.getByText('Claude Opus 5.5', { exact: true })).toBeVisible();
 			}

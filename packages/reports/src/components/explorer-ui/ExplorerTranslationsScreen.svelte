@@ -4,6 +4,7 @@
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type { TranslationRow } from '../../../../../src/core/explorer-ui/Translation.types';
 	import type { CatalogFilter } from '../../utils/explorer-ui/entityCatalog';
+	import type { EntityNav } from '../../utils/explorer-ui/entityLens';
 	import ExplorerFrame from './ExplorerFrame.svelte';
 	import ExplorerControls from './ExplorerControls.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
@@ -50,7 +51,7 @@
 </script>
 
 <ExplorerFrame {host} registryRequired={false}>
-	{#snippet children(nav)}
+	{#snippet children(nav: EntityNav)}
 		<hx-section
 			class="ex-translations"
 			data-harness-component="explorer-translations-screen"

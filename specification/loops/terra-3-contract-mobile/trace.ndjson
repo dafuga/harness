@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-29T23:55:23.215Z","name":"terra-3-contract-mobile","goal":"Keep contract field names, types and examples legible without overlap on mobile.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-29T23:55:40.387Z","loop":"terra-3-contract-mobile","step":"spec","evidence":"Mobile API captures of entity-contract at b7fbe0ea show contract table names and types overlapping examples."}
+{"event":"step.completed","timestamp":"2026-10-29T23:55:41.846Z","loop":"terra-3-contract-mobile","step":"coverage","evidence":"The component-catalog-previews mobile assertion checked only the first example button; it did not check field text, type badges, examples or other rows for overlap."}

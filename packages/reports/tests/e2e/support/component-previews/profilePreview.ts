@@ -4,6 +4,7 @@ import { median } from '../../../../../../src/utils/benchSamples';
 import { recordCapture } from '../../../../../../src/utils/record-capture/recordCapture';
 import { readyPreview } from './previewPage';
 import { previewState } from './catalogUnits';
+import { prepareProviderPickerState } from './providerPickerActions';
 /** Profiles a real remount and settled render, including fixture and browser-protocol overhead. */
 export async function profilePreview(page: Page, unit: string, variant = '') {
 	const workload = 'representative-browser-mount' + (variant ? `-${variant}` : '');
@@ -12,6 +13,8 @@ export async function profilePreview(page: Page, unit: string, variant = '') {
 		const started = performance.now();
 		await page.evaluate(() => window.previewRemount());
 		await readyPreview(page, unit, variant);
+		if (unit === 'reports.component.provider-picker')
+			await prepareProviderPickerState(page.locator(`[data-preview-unit="${unit}"]`), variant);
 		if (round > 0) elapsed.push(performance.now() - started);
 	}
 	const measurements = [
