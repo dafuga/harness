@@ -4,6 +4,7 @@ import { picture } from './reportData';
 import { commits, entities, entity, helperRows, reading, shown } from './explorerData';
 import { entityCatalog } from '../../../../src/utils/entityCatalog';
 import { explorerEntities } from '../../../../src/utils/explorerEntities';
+import { explorerRelations } from '../../../../src/utils/explorerRelations';
 import { withApis } from '../../../../test/entityApiFixtures';
 
 /** Distinct visual, page and nonvisual rows of the shared module card. */
@@ -15,10 +16,11 @@ export function moduleCardVariant(props: PreviewCases[string], variant: string) 
 	if (['api', 'api-no-methods'].includes(variant)) return apiCard(props, variant);
 	if (['no-usage', 'many-usage'].includes(variant)) {
 		const row = props.row as CatalogRow;
-		return {
-			...props,
-			row: { ...row, usedIn: variant === 'no-usage' ? [] : entities.slice(0, 4) }
-		};
+		const usedIn =
+			variant === 'no-usage'
+				? []
+				: entities.filter((item) => item.id !== row.entity.id).slice(0, 4);
+		return { ...props, row: { ...row, usedIn } };
 	}
 	if (['page', 'page-missing'].includes(variant)) {
 		const row = entityCatalog(entities, 'pages', reading.relations)[0];
@@ -39,9 +41,9 @@ export function moduleCardVariant(props: PreviewCases[string], variant: string) 
 
 function apiCard(props: PreviewCases[string], variant: string) {
 	const head = withApis({ ...shown.head, commit: commits.tip });
-	const row = entityCatalog(explorerEntities(head), 'apis', reading.relations).find(
-		(item) => item.name === '/api/orders'
-	)!;
+	const row = entityCatalog(explorerEntities(head), 'apis', (id) =>
+		explorerRelations(head, id)
+	).find((item) => item.name === '/api/orders')!;
 	if (variant === 'api') return { ...props, row, category: 'apis' };
 	const unit = { ...row.entity.unit, owns: { ...row.entity.unit.owns, symbols: [] } };
 	return { ...props, row: { ...row, entity: { ...row.entity, unit } }, category: 'apis' };

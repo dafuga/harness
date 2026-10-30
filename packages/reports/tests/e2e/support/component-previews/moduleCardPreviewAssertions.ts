@@ -24,10 +24,12 @@ export async function assertModuleCardPreview(component: Locator, variant: strin
 			'/media/synthetic-orders-page-input.svg'
 		);
 	}
-	if (variant === 'api')
+	if (variant === 'api') {
 		await expect(component.locator('.ex-function-call')).toContainText(
 			'GET POST DELETE /api/orders'
 		);
+		await expect(component.getByRole('group', { name: 'Used In' })).toContainText('OrderStore');
+	}
 	if (variant === 'api-no-methods')
 		await expect(component.locator('.ex-function-call')).toHaveText('/api/orders');
 	if (variant === 'no-usage')
@@ -36,5 +38,6 @@ export async function assertModuleCardPreview(component: Locator, variant: strin
 		const usage = component.getByRole('group', { name: 'Used In' });
 		await expect(usage.getByRole('link')).toHaveCount(3);
 		await expect(usage.locator('.ex-usage-more')).toContainText('1 more usage');
+		await expect(usage).not.toContainText('OrderCard');
 	}
 }
