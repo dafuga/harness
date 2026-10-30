@@ -1,1 +1,3 @@
 {"event":"loop.created","timestamp":"2026-10-29T23:41:32.463Z","name":"terra-2-audio-viewer-mobile","goal":"Keep both audio comparison cards visible on mobile","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T01:09:17.346Z","loop":"terra-2-audio-viewer-mobile","step":"spec","evidence":"In the mobile comparison capture the second recording extends below the dialog and is cut off."}
+{"event":"step.completed","timestamp":"2026-10-30T01:09:17.944Z","loop":"terra-2-audio-viewer-mobile","step":"coverage","evidence":"component-catalog-previews captured mobile without checking both recording bounds; its shared capture assertion now checks the full pair."}

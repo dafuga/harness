@@ -43,7 +43,7 @@
 				"type": "RegressionView[]",
 				"required": false,
 				"default": [],
-				"description": "Optional recorded regression views. The default empty list renders no proof section."
+				"description": "Optional recorded regression views. An empty or unmatched list shows that proof is unavailable."
 			},
 			{
 				"name": "RegressionProof.unit",
@@ -68,7 +68,7 @@
 			{
 				"name": "RegressionProof",
 				"type": "markup",
-				"description": "Regression evidence cards for visible matching views, including red/green commits, assertions and recorded output disclosure."
+				"description": "Matching regression evidence with commit links and recorded output, or an unavailable message when no matching views are supplied."
 			}
 		],
 		"errors": []
