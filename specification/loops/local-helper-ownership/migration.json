@@ -5462,5 +5462,18 @@
 			"reason": "Add revision-scoped API discovery and transitive page HTTP usage while retaining the original owner and migration proof.",
 			"definition": "77fb4e594e25fc7458e591cdd99335d9289431cbab1f4bf222735d2b3d10eaab"
 		}
+	],
+	"retiredOwners": [
+		"packages/reports/src/components/explorer-ui/entity-change/EntityChange.svelte",
+		"packages/reports/src/components/explorer-ui/harness-compare-media/HarnessCompareMedia.svelte",
+		"packages/reports/src/components/explorer-ui/harness-compare/HarnessCompare.svelte",
+		"packages/reports/src/components/explorer-ui/harness-failures/HarnessFailures.svelte",
+		"packages/reports/src/components/explorer-ui/harness-growth/HarnessGrowth.svelte",
+		"packages/reports/src/components/explorer-ui/harness-legacy/HarnessLegacy.svelte",
+		"packages/reports/src/components/explorer-ui/harness-map/HarnessMap.svelte",
+		"packages/reports/src/components/projects-sessions/activity-agents/ActivityAgents.svelte",
+		"packages/reports/src/components/projects-sessions/project-activity/ProjectActivity.svelte",
+		"packages/reports/src/components/projects-sessions/site-activity/SiteActivity.svelte",
+		"packages/reports/src/components/reports-media/analytics-cpu/AnalyticsCpu.svelte"
 	]
 }

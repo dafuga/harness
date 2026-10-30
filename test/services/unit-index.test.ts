@@ -18,7 +18,12 @@ const slugify = 'export function slugify(input: string): string {\n\treturn inpu
 const other = 'export function slugifyTitle(input: string): string {\n\treturn input;\n}\n';
 test('recorded source moves retain definitions, owner-local placement and registered identity', () => {
 	const root = import.meta.dirname + '/../..';
-	const gaps = helperMoveGaps(root, migration.helpers, migration.followUps);
+	const gaps = helperMoveGaps(
+		root,
+		migration.helpers,
+		migration.followUps,
+		migration.retiredOwners
+	);
 	expect(migration.helpers).toHaveLength(411);
 	const [helper] = migration.helpers;
 	expect(helperMoveGaps(root, [helper], [{ ...helper, to: 'missing.ts' }])).not.toEqual([]);

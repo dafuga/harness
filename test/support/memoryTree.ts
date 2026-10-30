@@ -119,7 +119,8 @@ export function helperMoveGaps(
 		definition: string;
 		to?: string;
 		ownerSource?: string;
-	}>
+	}>,
+	retiredOwners: readonly string[] = []
 ): string[] {
 	const gaps: string[] = [];
 	for (const move of moves) {
@@ -136,7 +137,8 @@ export function helperMoveGaps(
 		}
 		if (posix.dirname(location) !== posix.dirname(owner))
 			gaps.push(`${move.name}: different owner folder`);
-		if (!existsSync(resolve(root, owner))) gaps.push(`${move.name}: owner source is missing`);
+		if (!retiredOwners.includes(owner) && !existsSync(resolve(root, owner)))
+			gaps.push(`${move.name}: owner source is missing`);
 		if (movedDefinition(location, move.name) !== current.definition)
 			gaps.push(`${move.name}: definition changed`);
 		const unit = JSON.parse(
