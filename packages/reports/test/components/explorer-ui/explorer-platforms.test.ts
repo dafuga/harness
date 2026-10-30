@@ -1,8 +1,9 @@
 import { expect, test } from 'vitest';
+import { render } from 'svelte/server';
 import { measureWorkload } from '../../../../../test/support/measureWorkload';
 import ExplorerPlatforms from '../../../src/components/explorer-ui/ExplorerPlatforms.svelte';
 import { revision } from '../../entityFixture';
-import { screen, count, words } from '../../entityRender';
+import { hostProps, screen, count, words } from '../../entityRender';
 import { commits } from '../../entityUnits';
 import { platformFixture } from '../../platformFixture';
 
@@ -60,4 +61,17 @@ test('a missing declaration never borrows parent or current project settings', (
 	expect(words(body)).toContain('No platform configuration is recorded at this revision.');
 	expect(words(body)).not.toContain('orders-web');
 	expect(words(body)).not.toContain('bun run build:web');
+});
+
+test('the platform catalog propagates a host link generation error', () => {
+	const head = { ...revision(commits.middle, []), platforms: platformFixture };
+	const host = hostProps('commit', { category: 'platforms' }, { head });
+	const error = new Error('navigation unavailable');
+	host.lens = {
+		...host.lens,
+		href: () => {
+			throw error;
+		}
+	};
+	expect(() => render(ExplorerPlatforms, { props: host }).body).toThrow(error);
 });
