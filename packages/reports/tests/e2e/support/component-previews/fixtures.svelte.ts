@@ -20,6 +20,7 @@ import type { PreviewCases } from './shared';
 import { nativeAtomFixture } from './nativeAtomProps';
 import { projectAgentStateFixture } from './projectAgentStateFixtures';
 import type { ProjectAgentState } from './projectAgentStateFixtures.types';
+import { evidenceViewerState } from './evidenceViewerState.svelte';
 export function previewFixture(id: string, variant = '') {
 	const desktop = createDesktopData(id);
 	// The shell opens at Pages, where its store starts and where the web workspace opens too.
@@ -60,11 +61,15 @@ export function previewFixture(id: string, variant = '') {
 	if (!props) throw new Error(`No representative fixture for ${id}`);
 	const selectedProps = projectAgentProps(id, props, desktop, variant);
 	const rendered = variantProps(id, selectedProps, variant);
+	const reactive =
+		id === 'reports.component.evidence-viewer'
+			? evidenceViewerState(rendered as PreviewCases[string])
+			: rendered;
 	// A shell that reads its place from the browser is opened where its host serves it.
 	const address = { ...legacyAddresses, ...hub.addresses }[id];
 	if (address) history.replaceState(history.state, '', address);
 	return {
-		props: rendered,
+		props: reactive,
 		remote,
 		hub: hub.context,
 		cleanup: () => {
