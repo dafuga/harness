@@ -7,24 +7,28 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
-		"level": "molecule",
+		"level": "organism",
 		"uses": [
 			"reports.component.shared-primitives-atoms-html-code",
-			"reports.component.shared-primitives-atoms-html-dd",
 			"reports.component.shared-primitives-atoms-html-details",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-dl",
-			"reports.component.shared-primitives-atoms-html-dt",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-strong",
-			"reports.component.shared-primitives-atoms-html-summary"
+			"reports.component.shared-primitives-atoms-html-summary",
+			"reports.component.shared-primitives-detail-list"
 		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/shared-primitives/ContractPanel.svelte"],
-		"symbols": ["ContractPanel"]
+		"symbols": [
+			"ContractPanel",
+			"ContractPanel.label",
+			"ContractPanel.children",
+			"ContractPanel.empty"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -45,7 +49,57 @@
 		],
 		"errors": [],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ContractPanel.label",
+				"inputs": [
+					{
+						"name": "ContractPanel.label.field",
+						"type": "EntityContract['inputs'][number]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContractPanel.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ContractPanel.children",
+				"inputs": [
+					{
+						"name": "ContractPanel.children.field",
+						"type": "EntityContract['inputs'][number]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContractPanel.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ContractPanel.empty",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ContractPanel.empty",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -55,11 +109,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-code",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dd",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -74,22 +123,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-dl",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dt",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-h2",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -109,6 +153,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-detail-list",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.entity-contract",
 			"via": "import",
 			"origin": "derived"
@@ -124,7 +173,12 @@
 			}
 		]
 	},
-	"scenarios": ["desktop-native", "desktop-renderer"],
+	"scenarios": ["desktop-native", "desktop-renderer", "component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "desktop-component-contract-panel",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

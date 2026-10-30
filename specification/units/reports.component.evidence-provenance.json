@@ -7,17 +7,15 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
-		"level": "molecule",
+		"level": "organism",
 		"uses": [
-			"reports.component.shared-primitives-atoms-html-dd",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-dl",
-			"reports.component.shared-primitives-atoms-html-dt"
+			"reports.component.shared-primitives-detail-list"
 		]
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/verification-evidence/EvidenceProvenance.svelte"],
-		"symbols": ["EvidenceProvenance"]
+		"symbols": ["EvidenceProvenance", "EvidenceProvenance.label", "EvidenceProvenance.children"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -33,31 +31,59 @@
 			{
 				"name": "EvidenceProvenance",
 				"type": "markup",
-				"description": "Definition list of supplied provenance facts, or a message when none are recorded. Does not derive or verify provenance."
+				"description": "Semantic provenance term/value rows in recorded order, including repeated labels. Missing or empty provenance shows the translated no-provenance message."
 			}
 		],
 		"errors": [],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "EvidenceProvenance.label",
+				"inputs": [
+					{
+						"name": "EvidenceProvenance.label.fact",
+						"type": "NonNullable<Evidence['provenance']>[number]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceProvenance.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "EvidenceProvenance.children",
+				"inputs": [
+					{
+						"name": "EvidenceProvenance.children.fact",
+						"type": "NonNullable<Evidence['provenance']>[number]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "EvidenceProvenance.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dd",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-dl",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dt",
+			"unit": "reports.component.shared-primitives-detail-list",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -82,7 +108,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-evidence-provenance",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

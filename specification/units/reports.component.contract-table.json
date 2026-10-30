@@ -8,11 +8,20 @@
 	"status": "active",
 	"composition": {
 		"level": "organism",
-		"uses": ["reports.component.harness-harness-icon"]
+		"uses": [
+			"reports.component.harness-harness-icon",
+			"reports.component.shared-primitives-code-line",
+			"reports.component.shared-primitives-data-table"
+		]
 	},
 	"owns": {
 		"source": ["packages/reports/src/components/shared-primitives/ContractTable.svelte"],
-		"symbols": ["ContractTable"]
+		"symbols": [
+			"ContractTable",
+			"ContractTable.header",
+			"ContractTable.empty",
+			"ContractTable.children"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -52,7 +61,45 @@
 			}
 		],
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ContractTable.header",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ContractTable.header",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ContractTable.empty",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ContractTable.empty",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "ContractTable.children",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ContractTable.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -61,7 +108,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-code-line",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-contract-table-mobile",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-data-table",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -81,7 +138,12 @@
 			}
 		]
 	},
-	"scenarios": [],
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-contract-table",
+		"viewport": "desktop"
+	},
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

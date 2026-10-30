@@ -1,4 +1,4 @@
-.ex-config-values.ex-scroll :global(:is(th, td)) {
+.ex-config-values :global(:is(th, td)) {
 	padding-block: var(--hx-space-12);
 	vertical-align: top;
 }
@@ -26,7 +26,7 @@
 	overflow-wrap: anywhere;
 }
 @media (max-width: 640px) {
-	.ex-config-values.ex-scroll :global(:is(th, td)) {
+	.ex-config-values :global(:is(th, td)) {
 		padding: var(--hx-space-10);
 	}
 	.ex-config-values :global(thead th:first-child) {

@@ -1,46 +1,45 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <script lang="ts">
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { t } from '../../utils/reports-media/reportLocale';
+	import DetailList from '../shared-primitives/DetailList.svelte';
 	let { item }: { item: Evidence } = $props();
+	let facts = $derived(
+		item.provenance?.length
+			? item.provenance
+			: [{ label: $t('provenance'), value: $t('noProvenance') }]
+	);
 </script>
 
-<hx-dl class="evidence-provenance" data-harness-component="evidence-provenance">
-	{#if item.provenance?.length}
-		{#each item.provenance as fact}
-			<hx-div>
-				<hx-dt>{fact.label}</hx-dt>
-				<hx-dd>{fact.value}</hx-dd>
-			</hx-div>
-		{/each}
-	{:else}
-		<hx-div><hx-dt>{$t('provenance')}</hx-dt><hx-dd>{$t('noProvenance')}</hx-dd></hx-div>
-	{/if}
-</hx-dl>
+<hx-div class="evidence-provenance" data-harness-component="evidence-provenance">
+	<DetailList rows={facts} rowKey={(_fact, position) => position}>
+		{#snippet label(fact: NonNullable<Evidence['provenance']>[number])}{fact.label}{/snippet}
+		{#snippet children(fact: NonNullable<Evidence['provenance']>[number])}{fact.value}{/snippet}
+	</DetailList>
+</hx-div>
 
 <style>
 	.evidence-provenance {
-		display: grid;
-		gap: var(--hx-space-4);
 		margin: var(--hx-space-10) 0 0;
 		font-size: var(--hx-type-size-xs);
 		line-height: var(--hx-style-leading-normal);
 		text-align: left;
 		overflow-wrap: anywhere;
 	}
-	.evidence-provenance div {
+	.evidence-provenance :global(dl) {
+		display: grid;
+		gap: var(--hx-space-4);
+	}
+	.evidence-provenance :global(.detail-row) {
 		display: grid;
 		grid-template-columns: minmax(0, 9.5em) minmax(0, 1fr);
 		gap: var(--hx-space-8);
 	}
-	.evidence-provenance dt {
+	.evidence-provenance :global(dt) {
 		color: var(--hx-color-text-muted, var(--hx-color-text-muted));
 	}
-	.evidence-provenance dd {
-		margin: 0;
-	}
-	.evidence-provenance div:first-child dd {
+	.evidence-provenance :global(.detail-row:first-child dd) {
 		font-weight: var(--hx-style-weight-semibold);
 	}
 </style>

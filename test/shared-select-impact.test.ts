@@ -12,6 +12,7 @@ import { impactKernel } from '../src/utils/impact-kernel/impactKernel';
 import { scanImports } from '../src/services/source-index-service/scanImports';
 import { loadUnits, type LoadedUnits } from '../src/workflows/loadUnits';
 const select = 'packages/reports/src/components/Select.svelte';
+const canonicalSelect = 'packages/reports/src/components/shared-primitives/Select.svelte';
 const shared = '$shared';
 const selectTest = 'packages/reports/test/components/select.test.ts';
 const indexer = new sourceIndex.SourceIndexService();
@@ -42,7 +43,9 @@ function imports(from: string): Written[] {
 		if (!item.specifier) return [];
 		if (!alias || !target) {
 			const to = join(dirname(from), item.specifier);
-			return to === select ? [{ from, specifier: item.specifier, to }] : [];
+			return [select, canonicalSelect].includes(to)
+				? [{ from, specifier: item.specifier, to }]
+				: [];
 		}
 		const path = join('packages', name, target, item.specifier.slice(alias.length + 1));
 		const to = [path, `${path}.ts`].find((candidate) => loaded.index.files.has(candidate));
@@ -72,9 +75,13 @@ function changed(path: string): Promise<ImpactReport> {
 const owner = (path: string | undefined) =>
 	loaded.stored.find((unit) => unit.status === 'active' && unit.owns.source.includes(path ?? ''))
 		?.id;
-const consumers = () =>
+const consumers = (entry = select) =>
 	written.filter(
-		(item) => item.to === select && loaded.index.files.get(item.from)?.classification !== 'test'
+		(item) =>
+			item.to === entry &&
+			!item.from.startsWith('packages/reports/src/') &&
+			loaded.index.files.get(item.from)?.classification !== 'test' &&
+			owner(item.from) !== owner(select)
 	);
 test('no import written through a build alias of any package is left as a package from outside', () => {
 	const declared = Object.fromEntries(
@@ -105,7 +112,7 @@ test('the registry stores Select as a derived dependency of each of its consumer
 			.filter((item) => item.to === select && !consumers().includes(item))
 			.map((item) => item.from)
 	).toEqual([selectTest]);
-	const units = consumers().map((item) => owner(item.from));
+	const units = [...consumers(), ...consumers(canonicalSelect)].map((item) => owner(item.from));
 	expect(units.sort()).toEqual([
 		...[
 			'agent-controls',
@@ -133,6 +140,15 @@ test('the registry stores Select as a derived dependency of each of its consumer
 });
 test('a change of Select reaches its consumers, the pages that show them, and their tests and scenarios', async () => {
 	const report = await changed(select);
+	const canonical = await changed(canonicalSelect);
+	expect(canonical.units.direct).toEqual(report.units.direct);
+	expect(canonical.units.indirect).toEqual(
+		expect.arrayContaining(
+			[...consumers(), ...consumers(canonicalSelect)].map((item) => owner(item.from))
+		)
+	);
+	expect(canonical.tests.selected).toEqual(expect.arrayContaining(report.tests.selected));
+	expect(canonical.scenarios.affected).toEqual(expect.arrayContaining(report.scenarios.affected));
 	expect(report.units.direct).toEqual(['reports.component.select']);
 	expect(report.units.indirect).toEqual(
 		expect.arrayContaining(consumers().map((item) => owner(item.from)))
@@ -169,25 +185,28 @@ test('a change of Select reaches its consumers, the pages that show them, and th
 	expect([report.expanded, report.tests.excluded.length > 0]).toEqual([false, true]);
 }, 60_000);
 test('a change of Select reaches every unit, test and scenario that a change of a consumer reaches', async () => {
-	const target = await changed(select);
-	const reached = new Set([...target.units.direct, ...target.units.indirect]);
-	const omitted: string[] = [];
-	for (const item of consumers()) {
-		const importer = await changed(item.from);
-		const units = importer.expanded
-			? [owner(item.from) ?? 'no owner']
-			: [...importer.units.direct, ...importer.units.indirect];
-		const due = importer.expanded
-			? []
-			: [...importer.tests.selected, ...importer.scenarios.affected];
-		const got = [...target.tests.selected, ...target.scenarios.affected];
-		const lost = [
-			...units.filter((unit) => !reached.has(unit)),
-			...due.filter((name) => !got.includes(name))
-		];
-		if (lost.length > 0) omitted.push(`${item.from}: ${lost.length} not reached, first ${lost[0]}`);
+	for (const entry of [select, canonicalSelect]) {
+		const target = await changed(entry);
+		const reached = new Set([...target.units.direct, ...target.units.indirect]);
+		const omitted: string[] = [];
+		for (const item of consumers(entry)) {
+			const importer = await changed(item.from);
+			const units = importer.expanded
+				? [owner(item.from) ?? 'no owner']
+				: [...importer.units.direct, ...importer.units.indirect];
+			const due = importer.expanded
+				? []
+				: [...importer.tests.selected, ...importer.scenarios.affected];
+			const got = [...target.tests.selected, ...target.scenarios.affected];
+			const lost = [
+				...units.filter((unit) => !reached.has(unit)),
+				...due.filter((name) => !got.includes(name))
+			];
+			if (lost.length > 0)
+				omitted.push(`${item.from}: ${lost.length} not reached, first ${lost[0]}`);
+		}
+		expect(omitted).toEqual([]);
 	}
-	expect(omitted).toEqual([]);
 }, 60_000);
 test('declaring the Select imports moves those references alone: packages and uncertainties stay', async () => {
 	const kept = loaded.config.references.filter(
