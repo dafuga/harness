@@ -182,9 +182,8 @@ for (const viewport of catalogViewports) {
 				['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
 					(name) => unit.id === `desktop.component.${name}`
 				)
-			) {
+			)
 				await expect(component.getByText('Expires in 5:00', { exact: true })).toBeVisible();
-			}
 			if (unit.id === 'desktop.component.agent-controls') {
 				const provider = component
 					.getByRole('group', { name: 'Agent', exact: true })
