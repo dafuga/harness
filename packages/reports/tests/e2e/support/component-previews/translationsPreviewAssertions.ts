@@ -5,7 +5,11 @@ const pickerNames: Record<string, Record<string, string>> = {
 	'reports.component.entity-states': { 'scenario-open': 'Scenario', 'viewport-open': 'Viewport' },
 	'reports.component.evidence-grid': { 'status-open': 'Status' },
 	'reports.component.upload-comparison': { 'viewport-open': 'Viewport' },
-	'reports.component.upload-audio': { 'mode-open': 'Audio upload mode' }
+	'reports.component.upload-audio': { 'mode-open': 'Audio upload mode' },
+	'reports.component.replay-controls': {
+		'speed-open': 'Playback speed',
+		'scene-open': 'Jump to scene'
+	}
 };
 
 /** A native picker can be open while its popup is absent from captured pixels. */

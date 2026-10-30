@@ -16,6 +16,7 @@ import { reportCheck } from './reportChecksVariants';
 import { recordedValueFixture } from './recordedValueVariants';
 import { reportSummaryFixture } from './reportSummaryVariants';
 import { coverageListFixture } from './coverageListVariants';
+import { evidenceViewerProps } from './evidenceViewerVariants';
 import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
@@ -112,14 +113,7 @@ export const reportCases: PreviewCases = {
 			]
 		}
 	},
-	'reports.component.evidence-viewer': {
-		items: [picture],
-		navigableItems: [picture],
-		selected: picture,
-		assetBase: '/media/',
-		onclose: noop,
-		onselect: noop
-	},
+	'reports.component.evidence-viewer': evidenceViewerProps,
 	'reports.component.explorer-function-card': {
 		row: d.helperRows[0],
 		nav: d.navigation,
@@ -187,7 +181,7 @@ export const reportCases: PreviewCases = {
 		count: 3,
 		elapsed: 0,
 		total: 15,
-		title: 'Activity list',
+		title: 'Courtyard checkpoint',
 		scene: 1,
 		scenes: [1, 2],
 		fullscreen: false,

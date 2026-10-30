@@ -75,7 +75,23 @@
 				"description": "Screenshot lightbox initially showing after, with before/compare choices when a partner exists. Previous/next wraps through the navigable subset and resets to after. Viewport switching prefers the same comparison, then category/title, category, then first candidate. Displays provenance, captions, missing notes and image links. Changing image/view recreates zoom state."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "onclose callback error",
+				"type": "thrown",
+				"description": "An error thrown by onclose propagates when the viewer closes."
+			},
+			{
+				"name": "onselect callback error",
+				"type": "thrown",
+				"description": "An error thrown by onselect propagates when navigation or viewport switching selects evidence."
+			},
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Svelte rejects a comparison whose before and after evidence share the same id."
+			}
+		]
 	},
 	"dependencies": [
 		{

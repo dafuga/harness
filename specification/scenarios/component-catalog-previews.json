@@ -2861,6 +2861,60 @@
 			"units": ["reports.component.evidence-viewer"]
 		},
 		{
+			"id": "reports-component-evidence-viewer-no-pair",
+			"title": "Evidence viewer: No comparison partner",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-no-provenance",
+			"title": "Evidence viewer: No provenance",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-no-navigation",
+			"title": "Evidence viewer: No navigable evidence",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-viewport-mobile",
+			"title": "Evidence viewer: Mobile screenshot selected",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-viewport-tablet",
+			"title": "Evidence viewer: Tablet screenshot selected",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-next",
+			"title": "Evidence viewer: Next screenshot",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-previous",
+			"title": "Evidence viewer: Previous screenshot",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-zoomed",
+			"title": "Evidence viewer: Zoomed image",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
+			"id": "reports-component-evidence-viewer-actual-size",
+			"title": "Evidence viewer: Actual image size",
+			"coverage": "required",
+			"units": ["reports.component.evidence-viewer"]
+		},
+		{
 			"id": "reports-component-explorer-catalog-items",
 			"title": "ExplorerCatalogItems",
 			"coverage": "required",
@@ -4511,6 +4565,12 @@
 			"units": ["reports.component.replay-controls"]
 		},
 		{
+			"id": "reports-component-replay-controls-middle-frame",
+			"title": "Evidence replay controls: Middle frame",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
 			"id": "reports-component-replay-controls-final-frame",
 			"title": "Evidence replay controls: Final frame",
 			"coverage": "required",
@@ -4519,6 +4579,12 @@
 		{
 			"id": "reports-component-replay-controls-single-frame",
 			"title": "Evidence replay controls: Single frame",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-no-scenes",
+			"title": "Evidence replay controls: No scenes",
 			"coverage": "required",
 			"units": ["reports.component.replay-controls"]
 		},
@@ -4537,6 +4603,18 @@
 		{
 			"id": "reports-component-replay-controls-speed-2x",
 			"title": "Evidence replay controls: 2× speed",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-speed-open",
+			"title": "Evidence replay controls: Speed selector open",
+			"coverage": "required",
+			"units": ["reports.component.replay-controls"]
+		},
+		{
+			"id": "reports-component-replay-controls-scene-open",
+			"title": "Evidence replay controls: Scene selector open",
 			"coverage": "required",
 			"units": ["reports.component.replay-controls"]
 		},
@@ -6716,6 +6794,15 @@
 				"reports-component-evidence-viewer-before",
 				"reports-component-evidence-viewer-compare",
 				"reports-component-evidence-viewer-unavailable",
+				"reports-component-evidence-viewer-no-pair",
+				"reports-component-evidence-viewer-no-provenance",
+				"reports-component-evidence-viewer-no-navigation",
+				"reports-component-evidence-viewer-viewport-mobile",
+				"reports-component-evidence-viewer-viewport-tablet",
+				"reports-component-evidence-viewer-next",
+				"reports-component-evidence-viewer-previous",
+				"reports-component-evidence-viewer-zoomed",
+				"reports-component-evidence-viewer-actual-size",
 				"reports-component-explorer-catalog-items",
 				"reports-component-explorer-catalog-items-multiple",
 				"reports-component-explorer-catalog-items-batched",
@@ -6991,11 +7078,15 @@
 				"reports-component-regression-proof-empty",
 				"reports-component-replay-controls",
 				"reports-component-replay-controls-playing",
+				"reports-component-replay-controls-middle-frame",
 				"reports-component-replay-controls-final-frame",
 				"reports-component-replay-controls-single-frame",
+				"reports-component-replay-controls-no-scenes",
 				"reports-component-replay-controls-scene-unselected",
 				"reports-component-replay-controls-fullscreen",
 				"reports-component-replay-controls-speed-2x",
+				"reports-component-replay-controls-speed-open",
+				"reports-component-replay-controls-scene-open",
 				"reports-component-report-checks",
 				"reports-component-report-checks-empty",
 				"reports-component-report-checks-embedded",

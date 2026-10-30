@@ -18,6 +18,18 @@ export const checkoutConfirmation = `<svg xmlns="http://www.w3.org/2000/svg" wid
 <text x="132" y="409" fill="#526174" font-family="sans-serif" font-size="17">A confirmation has been sent to your email.</text>
 </svg>`;
 
+/** Fictional earlier checkout capture for a before/after evidence pair. */
+export const checkoutBefore = checkoutConfirmation
+	.replace('Order confirmed', 'Order pending')
+	.replace(
+		'Thanks, Alex. Your order is being prepared.',
+		'Review the order before confirming payment.'
+	)
+	.replace(
+		'A confirmation has been sent to your email.',
+		'Confirmation will be sent after payment.'
+	);
+
 /** Fictional responsive checkout screens used as gallery inputs. */
 export const checkoutMobile = `<svg xmlns="http://www.w3.org/2000/svg" width="390" height="680" viewBox="0 0 390 680">
 <rect width="390" height="680" fill="#f3f5f8"/><rect width="390" height="64" fill="#fff"/>
