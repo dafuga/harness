@@ -135,6 +135,8 @@ async function resource(component: Locator, variant: string) {
 
 async function steps(component: Locator, variant: string) {
 	await expect(component.locator('.mod-steps')).toBeAttached();
+	if (variant === 'empty')
+		await expect(component.getByText('No steps provided.', { exact: true })).toBeVisible();
 	const counts: Record<string, number> = { empty: 0, long: 1 };
 	await expect(component.locator('.mod-steps li')).toHaveCount(counts[variant] ?? 2);
 	if (variant === 'long')
