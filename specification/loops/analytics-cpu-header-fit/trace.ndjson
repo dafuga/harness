@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T01:21:14.725Z","name":"analytics-cpu-header-fit","goal":"Keep CPU table labels readable on mobile.","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T01:21:19.494Z","loop":"analytics-cpu-header-fit","step":"spec","evidence":"The populated mobile capture splits Processes into two fragments; the label must stay whole."}
+{"event":"step.completed","timestamp":"2026-10-30T01:21:25.992Z","loop":"analytics-cpu-header-fit","step":"coverage","evidence":"The catalog checked column bounds but not whether the header word wraps; it now checks text rectangles."}

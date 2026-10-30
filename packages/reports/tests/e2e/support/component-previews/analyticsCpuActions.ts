@@ -61,6 +61,13 @@ async function assertCpuColumnsFit(component: Locator) {
 	expect(last!.x + last!.width, 'CPU table columns fit in the visible area').toBeLessThanOrEqual(
 		area!.x + area!.width
 	);
+	const processes = component.getByRole('columnheader', { name: 'Processes' });
+	const lines = await processes.evaluate((node) => {
+		const range = document.createRange();
+		range.selectNodeContents(node);
+		return [...range.getClientRects()].filter((rect) => rect.width > 0).length;
+	});
+	expect(lines, 'The Processes header stays on one line').toBe(1);
 }
 
 async function assertMeasuredWordFits(component: Locator) {
