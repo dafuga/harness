@@ -2,7 +2,7 @@
 	"name": "entity-states-picker-visibility",
 	"goal": "Show scenario and viewport pickers in captured States gallery pixels",
 	"createdAt": "2026-10-30T05:19:57.981Z",
-	"updatedAt": "2026-10-30T05:19:57.981Z",
+	"updatedAt": "2026-10-30T05:21:39.348Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -13,12 +13,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T05:21:38.718Z",
+			"evidence": "Open scenario and viewport menus must appear in States gallery capture pixels; native popups can be absent from browser screenshots."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T05:21:39.348Z",
+			"evidence": "The component-catalog-previews scenario lacked multiple-scenario and open-picker fixtures and asserted no pixel difference outside each control; the shared catalog test now exercises both."
 		},
 		{
 			"id": "red",
