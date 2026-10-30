@@ -11,7 +11,8 @@ async function renderUploadComparison() {
 	const { createServer } = await import('vite');
 	const server = await createServer({
 		configFile: resolve('vite.config.ts'),
-		server: { middlewareMode: true },
+		// Match the production fixture's Svelte CSS hashes in the server-rendered markup.
+		server: { middlewareMode: true, hmr: false },
 		appType: 'custom'
 	});
 	try {

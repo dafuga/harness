@@ -16,7 +16,11 @@ export async function prepareUploadComparison(component: Locator, variant: strin
 	}
 	await detail.locator('summary').click();
 	await expect(detail).toHaveAttribute('open', '');
-	if (variant === 'pre-mount') return await expect(submit).toBeDisabled();
+	if (variant === 'pre-mount') {
+		await expect(submit).toBeDisabled();
+		await expect(component.locator('.report-select svg')).toHaveCSS('width', '16px');
+		return;
+	}
 	await expect(submit).toBeEnabled();
 	const viewport = component.getByRole('combobox', { name: 'Viewport' });
 	if (variant === 'viewport-open') {
