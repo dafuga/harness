@@ -17,6 +17,7 @@ export function translationsVariant(props: PreviewCases[string], variant: string
 	if (variant === 'unindexed') return { ...props, head: { ...host.head, translations: undefined } };
 	if (variant === 'empty')
 		return { ...props, head: { ...host.head, translations: { ...translationData, rows: [] } } };
+	if (variant === 'english-only') return englishOnly(props, host);
 	if (variant === 'gaps' || variant === 'gaps-open')
 		return {
 			...props,
@@ -56,4 +57,20 @@ export function translationsVariant(props: PreviewCases[string], variant: string
 			}
 		};
 	return props;
+}
+
+function englishOnly(props: PreviewCases[string], host: ExplorerScreenProps) {
+	return {
+		...props,
+		head: {
+			...host.head,
+			translations: {
+				...translationData,
+				locales: ['en'],
+				rows: translationData.rows
+					.slice(0, 2)
+					.map((row) => ({ ...row, values: { en: row.values.en } }))
+			}
+		}
+	};
 }

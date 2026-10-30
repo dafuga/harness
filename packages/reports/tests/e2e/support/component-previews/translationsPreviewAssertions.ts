@@ -26,7 +26,7 @@ export async function assertOpenLanguagePixels(
 		animations: 'disabled',
 		caret: 'hide'
 	});
-	const changed = await pickerPixelsChanged(page, opened, closed, clip, control);
+	const changed = await pickerPixelsChanged(page, { opened, closed, clip, control });
 	expect(changed, 'The open language menu must change pixels outside its control').toBeGreaterThan(
 		100
 	);
@@ -36,10 +36,17 @@ export async function assertOpenLanguagePixels(
 /** Compare the captured images outside the selector, excluding focus or arrow changes. */
 async function pickerPixelsChanged(
 	page: Page,
-	opened: Buffer,
-	closed: Buffer,
-	clip: { x: number; y: number; width: number; height: number },
-	control: { x: number; y: number; width: number; height: number }
+	{
+		opened,
+		closed,
+		clip,
+		control
+	}: {
+		opened: Buffer;
+		closed: Buffer;
+		clip: { x: number; y: number; width: number; height: number };
+		control: { x: number; y: number; width: number; height: number };
+	}
 ) {
 	return page.evaluate(
 		async ({ before, after, clip, control }) => {
@@ -103,9 +110,13 @@ export async function prepareTranslations(component: Locator, variant: string) {
 export async function assertTranslations(component: Locator, variant: string) {
 	if (variant === 'unindexed')
 		await expect(component).toContainText('No translation catalog is recorded');
-	if (variant === 'empty' || variant === 'no-matches')
+	if (variant === 'english-only') {
+		await expect(component.getByRole('combobox', { name: 'Language' })).toHaveCount(0);
+		await expect(component).toContainText('Not translated');
+	}
+	if (['empty', 'no-matches'].includes(variant))
 		await expect(component).toContainText('No translations match this search.');
-	if (variant === 'gaps' || variant === 'gaps-open')
+	if (['gaps', 'gaps-open'].includes(variant))
 		await expect(component.locator('.ex-translations-gaps summary')).toContainText(
 			'Some translation sources could not be read'
 		);
