@@ -57,7 +57,13 @@
 				"description": "Paired-audio card with independent before/after badges and positive finite duration labels. Unavailable sides show not-proven. Does not create a combined passing result or play audio itself."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "onopen callback error",
+				"type": "thrown",
+				"description": "An error thrown by onopen propagates when the comparison is opened."
+			}
+		]
 	},
 	"dependencies": [
 		{

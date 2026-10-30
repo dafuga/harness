@@ -3635,6 +3635,36 @@
 			"units": ["reports.component.gameplay-replay"]
 		},
 		{
+			"id": "reports-component-gameplay-replay-last-image-error",
+			"title": "Gameplay replay: Last frame failed to load",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-skipped",
+			"title": "Gameplay replay: Skipped failed frame",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-single-frame",
+			"title": "Gameplay replay: Single frame",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-scene-selected",
+			"title": "Gameplay replay: Second scene selected",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
+			"id": "reports-component-gameplay-replay-speed-2x",
+			"title": "Gameplay replay: 2× speed selected",
+			"coverage": "required",
+			"units": ["reports.component.gameplay-replay"]
+		},
+		{
 			"id": "reports-component-gameplay-replay-playing",
 			"title": "Gameplay replay: Playing",
 			"coverage": "required",
@@ -7181,6 +7211,11 @@
 				"reports-component-gameplay-replay-download-preparing",
 				"reports-component-gameplay-replay-loading",
 				"reports-component-gameplay-replay-image-error",
+				"reports-component-gameplay-replay-last-image-error",
+				"reports-component-gameplay-replay-skipped",
+				"reports-component-gameplay-replay-single-frame",
+				"reports-component-gameplay-replay-scene-selected",
+				"reports-component-gameplay-replay-speed-2x",
 				"reports-component-gameplay-replay-playing",
 				"reports-component-gameplay-replay-last-frame",
 				"reports-component-gameplay-replay-ended",
