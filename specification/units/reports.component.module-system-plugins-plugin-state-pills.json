@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.module-system-plugins-plugin-state-pills",
+	"kind": "component",
+	"title": "Plugin state pills",
+	"responsibility": "Says whether a plugin is included by default, installed or available, and marks testing tools.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": ["reports.component.explorer-ui-explorer-kit-pill"]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/module-system/plugins/PluginStatePills.svelte"],
+		"symbols": ["PluginStatePills"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "PluginStatePills.entry",
+				"type": "ModuleEntry",
+				"description": "The plugin as read at this revision: its definition, source and whether it is installed."
+			}
+		],
+		"outputs": [
+			{
+				"name": "PluginStatePills",
+				"type": "markup",
+				"description": "One state pill, plus a Testing pill for testing plugins."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.module-system-module-definition",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/module-system/plugins/PluginStatePills.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/module-system/plugins/PluginStatePills.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

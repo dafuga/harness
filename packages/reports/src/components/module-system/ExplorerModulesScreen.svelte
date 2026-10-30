@@ -5,14 +5,18 @@
 	import type { ExplorerLocation } from '../../models/explorer-ui/Explorer.types';
 	import type { ExplorerScreenProps } from '../../models/explorer-ui/ExplorerScreen.types';
 	import type {
-		ModuleEntry,
-		ModuleResource
+		ModuleEntry
 	} from '../../../../../src/services/module-system/moduleDefinition.types';
 	import { plainClick } from '../../utils/explorer-ui/harnessShell';
 	import ExplorerFrame from '../explorer-ui/ExplorerFrame.svelte';
 	import CommandBlock from '../explorer-ui/explorer-kit/CommandBlock.svelte';
 	import EmptyState from '../explorer-ui/explorer-kit/EmptyState.svelte';
 	import Notice from '../explorer-ui/explorer-kit/Notice.svelte';
+	import Card from '../explorer-ui/explorer-kit/Card.svelte';
+	import ExplorerPluginCard from './plugins/ExplorerPluginCard.svelte';
+	import PluginResourceCard from './plugins/PluginResourceCard.svelte';
+	import PluginStatePills from './plugins/PluginStatePills.svelte';
+	import PluginSteps from './plugins/PluginSteps.svelte';
 	let host: ExplorerScreenProps = $props();
 	const sources = { builtin: 'Provided by Harness', project: 'Defined by this project' };
 	let catalog = $derived(
@@ -42,36 +46,6 @@
 {#snippet link(to: ExplorerLocation, text: string)}
 	<hx-a href={host.lens.href(to)} onclick={(event) => follow(event, to)}>{text}</hx-a>
 {/snippet}
-{#snippet state(entry: ModuleEntry)}
-	{@const label = entry.definition.includedByDefault
-		? 'Included'
-		: entry.installed
-			? 'Installed'
-			: 'Available'}
-	<hx-span class="ex-pill mod-state" data-state={label}>{label}</hx-span>
-{/snippet}
-{#snippet steps(lines: string[])}
-	<hx-ul class="ex-reasons mod-steps">
-		{#each lines as line, position (position)}<hx-li>{line}</hx-li>{/each}
-	</hx-ul>
-{/snippet}
-{#snippet card(entry: ModuleEntry)}
-	{@const module = entry.definition}
-	<hx-article class="ex-card mod-card">
-		<hx-header class="mod-head">
-			<hx-h2>{@render link(at('modules', module.id), module.title)}</hx-h2>
-			{@render state(entry)}
-			{#if module.testing}<hx-span class="ex-pill">Testing</hx-span>{/if}
-		</hx-header>
-		<hx-p class="mod-text">{module.description}</hx-p>
-		<hx-ul class="mod-kinds" aria-label={`${module.title} resource types`}>
-			{#each module.resources as resource (resource.id)}
-				<hx-li class="ex-pill">{resource.title}</hx-li>
-			{/each}
-		</hx-ul>
-		{#if !entry.installed}<CommandBlock label="Install" command={`harness plugin add ${module.id}`} />{/if}
-	</hx-article>
-{/snippet}
 {#snippet library()}
 	<hx-h1 id="mod-title">Plugins</hx-h1>
 	<hx-p class="ex-lead">External capabilities and headless testing tools for your project.</hx-p>
@@ -83,45 +57,44 @@
 		{/if}
 		{#if catalog.modules.length}
 			<hx-div class="mod-grid">
-				{#each catalog.modules as entry (entry.definition.id)}{@render card(entry)}{/each}
+				{#each catalog.modules as entry (entry.definition.id)}
+					<ExplorerPluginCard {entry}>
+						{#snippet title()}{@render link(
+								at('modules', entry.definition.id),
+								entry.definition.title
+							)}{/snippet}
+					</ExplorerPluginCard>
+				{/each}
 			</hx-div>
 		{:else}
 			<EmptyState>No plugins are defined at this revision.</EmptyState>
 		{/if}
 	{/if}
 {/snippet}
-{#snippet kind(entry: ModuleEntry, resource: ModuleResource)}
-	{@const id = entry.definition.id}
-	{@const list = entry.installed ? moduleResourceLocation(host.route, id, resource) : null}
-	<hx-article class="ex-card mod-card">
-		<hx-h3
-			>{#if list}{@render link(list, resource.title)}{:else}{resource.title}{/if}</hx-h3
-		>
-		{@render steps(resource.instructions)}
-		<CommandBlock
-			label={entry.installed ? 'Generate' : 'Generate, once installed'}
-			command={`harness plugin generate ${id} ${resource.id} Example`}
-		/>
-	</hx-article>
-{/snippet}
 {#snippet detail(entry: ModuleEntry)}
 	{@const module = entry.definition}
 	<hx-header class="ex-head-title">
 		<hx-h1 id="mod-title">{module.title}</hx-h1>
-		{@render state(entry)}
-		{#if module.testing}<hx-span class="ex-pill">Testing</hx-span>{/if}
+		<PluginStatePills {entry} />
 	</hx-header>
 	<hx-p class="ex-lead">{module.description}</hx-p>
 	<hx-p class="ex-soft">Version {module.version} · {sources[entry.source]}</hx-p>
 	{#if !entry.installed}<CommandBlock label="Install" command={`harness plugin add ${module.id}`} />{/if}
-	<hx-section class="ex-card" aria-labelledby="mod-setup">
+	<Card as="section" labelledby="mod-setup">
 		<hx-h2 id="mod-setup">Setup</hx-h2>
-		{@render steps(module.instructions)}
-	</hx-section>
+		<PluginSteps lines={module.instructions} />
+	</Card>
 	<hx-h2>Resource types</hx-h2>
 	{#if module.testing}<CommandBlock label="Run headlessly" command={`harness plugin test ${module.id}`} />{/if}
 	<hx-div class="mod-grid">
-		{#each module.resources as resource (resource.id)}{@render kind(entry, resource)}{/each}
+		{#each module.resources as resource (resource.id)}
+			{@const list = entry.installed
+				? moduleResourceLocation(host.route, module.id, resource)
+				: null}
+			<PluginResourceCard {entry} {resource}>
+				{#snippet title()}{#if list}{@render link(list, resource.title)}{:else}{resource.title}{/if}{/snippet}
+			</PluginResourceCard>
+		{/each}
 	</hx-div>
 {/snippet}
 <ExplorerFrame {host} registryRequired={false}>
@@ -160,37 +133,6 @@
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: var(--hx-space-14);
-	}
-	.mod-card :is(h2, h3) {
-		color: var(--ex-text);
-		font-size: var(--hx-type-size-lg);
-		overflow-wrap: anywhere;
-	}
-	.mod-head,
-	.mod-kinds {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: var(--hx-space-6) var(--hx-space-10);
-	}
-	.mod-head {
-		justify-content: space-between;
-	}
-	.mod-text,
-	.mod-steps {
-		color: var(--ex-soft);
-		font-size: var(--hx-type-size-sm);
-		overflow-wrap: anywhere;
-	}
-	.mod-state[data-state='Available'] {
-		border-style: dashed;
-		background: transparent;
-		color: var(--ex-muted);
-	}
-	.mod-steps {
-		display: grid;
-		gap: var(--hx-space-6);
-		min-width: 0;
 	}
 	@media (max-width: 760px) {
 		.mod-grid {
