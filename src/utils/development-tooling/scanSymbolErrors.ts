@@ -69,5 +69,10 @@ function observeError(node: ts.Node, errors: Set<string>): boolean {
 		errors.add(`HttpError ${status.text}`);
 		return false;
 	}
+	// SvelteKit's redirect() always throws a Redirect with its literal status.
+	if (name === 'redirect' && status && ts.isNumericLiteral(status)) {
+		errors.add(`Redirect ${status.text}`);
+		return false;
+	}
 	return true;
 }
