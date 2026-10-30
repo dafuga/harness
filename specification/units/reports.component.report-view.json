@@ -76,7 +76,13 @@
 				"description": "Report summary, findings, evidence gallery, replay and footer. Checks, acceptance and coverage open in a dialog; closing returns focus to the triggering button. Upload eligibility is passed only for an active, nonportable report."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Svelte rejects duplicate finding or visible evidence ids, or duplicate check or coverage ids when their detail dialog is opened."
+			}
+		]
 	},
 	"dependencies": [
 		{

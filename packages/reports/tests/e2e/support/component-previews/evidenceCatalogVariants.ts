@@ -103,5 +103,33 @@ export const evidenceCatalogVariants: Record<string, string[]> = {
 		'not-proven',
 		'interrupted'
 	],
-	'reports.component.regression-proof': ['pending', 'gap', 'output-open', 'capture-only', 'empty']
+	'reports.component.regression-proof': ['pending', 'gap', 'output-open', 'capture-only', 'empty'],
+	'reports.component.report-view': [
+		'active',
+		'portable',
+		'empty',
+		'run-open',
+		'portable-open',
+		'checks-open',
+		'acceptance-open',
+		'coverage-open',
+		'image-open',
+		'audio-open',
+		'audio-selected',
+		'search-empty',
+		'upload-comparison-open',
+		'upload-audio-open',
+		'stale',
+		'finalizing',
+		'historical',
+		'gaps',
+		'no-revision',
+		'suite',
+		'running',
+		'failed',
+		'blocked',
+		'skipped',
+		'not-proven',
+		'interrupted'
+	]
 };

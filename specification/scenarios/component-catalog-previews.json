@@ -4835,6 +4835,162 @@
 			"units": ["reports.component.report-view"]
 		},
 		{
+			"id": "reports-component-report-view-active",
+			"title": "Report viewer: Active report",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-portable",
+			"title": "Report viewer: Portable report",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-empty",
+			"title": "Report viewer: Empty report",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-run-open",
+			"title": "Report viewer: Run details open",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-portable-open",
+			"title": "Report viewer: Portable run details open",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-checks-open",
+			"title": "Report viewer: Verification details open",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-acceptance-open",
+			"title": "Report viewer: Acceptance details open",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-coverage-open",
+			"title": "Report viewer: Coverage details open",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-image-open",
+			"title": "Report viewer: Screenshot viewer open",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-audio-open",
+			"title": "Report viewer: Audio comparison open",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-audio-selected",
+			"title": "Report viewer: Audio selected",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-search-empty",
+			"title": "Report viewer: No matching evidence",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-upload-comparison-open",
+			"title": "Report viewer: Screenshot upload open",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-upload-audio-open",
+			"title": "Report viewer: Audio upload open",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-stale",
+			"title": "Report viewer: Stale active report",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-finalizing",
+			"title": "Report viewer: Finalizing report",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-historical",
+			"title": "Report viewer: Historical report",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-gaps",
+			"title": "Report viewer: Recorded gaps",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-no-revision",
+			"title": "Report viewer: Revision unavailable",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-suite",
+			"title": "Report viewer: Suite report",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-running",
+			"title": "Report viewer: Running result",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-failed",
+			"title": "Report viewer: Failed result",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-blocked",
+			"title": "Report viewer: Blocked result",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-skipped",
+			"title": "Report viewer: Skipped result",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-not-proven",
+			"title": "Report viewer: Not proven result",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
+			"id": "reports-component-report-view-interrupted",
+			"title": "Report viewer: Interrupted result",
+			"coverage": "required",
+			"units": ["reports.component.report-view"]
+		},
+		{
 			"id": "reports-component-select",
 			"title": "Report select control",
 			"coverage": "required",
@@ -7063,6 +7219,32 @@
 				"reports-component-report-summary-not-proven",
 				"reports-component-report-summary-interrupted",
 				"reports-component-report-view",
+				"reports-component-report-view-active",
+				"reports-component-report-view-portable",
+				"reports-component-report-view-empty",
+				"reports-component-report-view-run-open",
+				"reports-component-report-view-portable-open",
+				"reports-component-report-view-checks-open",
+				"reports-component-report-view-acceptance-open",
+				"reports-component-report-view-coverage-open",
+				"reports-component-report-view-image-open",
+				"reports-component-report-view-audio-open",
+				"reports-component-report-view-audio-selected",
+				"reports-component-report-view-search-empty",
+				"reports-component-report-view-upload-comparison-open",
+				"reports-component-report-view-upload-audio-open",
+				"reports-component-report-view-stale",
+				"reports-component-report-view-finalizing",
+				"reports-component-report-view-historical",
+				"reports-component-report-view-gaps",
+				"reports-component-report-view-no-revision",
+				"reports-component-report-view-suite",
+				"reports-component-report-view-running",
+				"reports-component-report-view-failed",
+				"reports-component-report-view-blocked",
+				"reports-component-report-view-skipped",
+				"reports-component-report-view-not-proven",
+				"reports-component-report-view-interrupted",
 				"reports-component-select",
 				"reports-component-select-compact",
 				"reports-component-select-display",

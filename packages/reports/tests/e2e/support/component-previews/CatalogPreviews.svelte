@@ -14,6 +14,7 @@
 	if (!unit) throw new Error(`Unknown preview component ${id}`);
 	const variant = new URLSearchParams(location.search).get('variant') ?? '';
 	const fixture = previewFixture(id, variant);
+	const reportView = id === 'reports.component.report-view';
 	const compactEvidence =
 		id === 'reports.component.evidence-card' && ['compact', 'compact-closed'].includes(variant);
 	const galleryCard = [
@@ -28,6 +29,7 @@
 	const Root = layout ? previewComponent('packages/reports/src/routes/+layout.svelte') : null;
 	// A route module draws a whole screen of its application, as the screen components do.
 	const fullFrame =
+		reportView ||
 		layout ||
 		routePreview(id) ||
 		/(?:harness-(navbar|header|console|shell)|harness-screen|workspace-shell|hosted-workspace)$/.test(
@@ -71,7 +73,7 @@
 		class:gallery-section={galleryCard && !compactEvidence}
 		class:states-gallery={compactEvidence}
 	>
-		<h1 id="preview-title" class:preview-hidden={routePreview(id)}>{unit.title}</h1>
+		<h1 id="preview-title" class:preview-hidden={routePreview(id) || reportView}>{unit.title}</h1>
 		{#await fixture.ready}<p role="status">Preparing component preview…</p>{:then}
 			<div
 				class="preview-content"
