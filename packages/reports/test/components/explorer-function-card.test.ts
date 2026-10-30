@@ -6,6 +6,18 @@ import { count, drawn, screen, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 import { withHelpers } from '../entityPreviewHelpers';
 
+test('deep example values can exceed the serializer stack', () => {
+	const head = structuredClone(revision(commits.tip, []));
+	let value: Record<string, unknown> = {};
+	for (let depth = 0; depth < 20_000; depth++) value = { next: value };
+	Object.defineProperty(value, 'label', { enumerable: true, get: () => 'order' });
+	const input = head.registry.units.find((unit) => unit.id === ids.filter)!.contract.inputs[0];
+	input.examples = [value];
+	expect(() =>
+		screen(ExplorerCatalogScreen, 'current', { category: 'functions' }, { head })
+	).toThrow(RangeError);
+});
+
 test('function catalog cards stay concise and retain revision links without detail panels', () => {
 	for (const mode of ['current', 'commit'] as const) {
 		const body = screen(ExplorerCatalogScreen, mode, { category: 'functions' });
