@@ -10,6 +10,9 @@
 	} from '../../../../../src/services/module-system/moduleDefinition.types';
 	import { plainClick } from '../../utils/explorer-ui/harnessShell';
 	import ExplorerFrame from '../explorer-ui/ExplorerFrame.svelte';
+	import CommandBlock from '../explorer-ui/explorer-kit/CommandBlock.svelte';
+	import EmptyState from '../explorer-ui/explorer-kit/EmptyState.svelte';
+	import Notice from '../explorer-ui/explorer-kit/Notice.svelte';
 	let host: ExplorerScreenProps = $props();
 	const sources = { builtin: 'Provided by Harness', project: 'Defined by this project' };
 	let catalog = $derived(
@@ -39,12 +42,6 @@
 {#snippet link(to: ExplorerLocation, text: string)}
 	<hx-a href={host.lens.href(to)} onclick={(event) => follow(event, to)}>{text}</hx-a>
 {/snippet}
-{#snippet command(label: string, text: string)}
-	<hx-figure class="mod-command">
-		<hx-figcaption>{label}</hx-figcaption>
-		<hx-pre><hx-code>{text}</hx-code></hx-pre>
-	</hx-figure>
-{/snippet}
 {#snippet state(entry: ModuleEntry)}
 	{@const label = entry.definition.includedByDefault
 		? 'Included'
@@ -72,24 +69,24 @@
 				<hx-li class="ex-pill">{resource.title}</hx-li>
 			{/each}
 		</hx-ul>
-		{#if !entry.installed}{@render command('Install', `harness plugin add ${module.id}`)}{/if}
+		{#if !entry.installed}<CommandBlock label="Install" command={`harness plugin add ${module.id}`} />{/if}
 	</hx-article>
 {/snippet}
 {#snippet library()}
 	<hx-h1 id="mod-title">Plugins</hx-h1>
 	<hx-p class="ex-lead">External capabilities and headless testing tools for your project.</hx-p>
 	{#if !catalog}
-		<hx-p class="ex-empty">No plugin catalog was indexed for this revision.</hx-p>
+		<EmptyState>No plugin catalog was indexed for this revision.</EmptyState>
 	{:else}
 		{#if catalog.gaps.length}
-			<hx-p class="mod-text" role="note">May be incomplete: {catalog.gaps.join('; ')}</hx-p>
+			<Notice>May be incomplete: {catalog.gaps.join('; ')}</Notice>
 		{/if}
 		{#if catalog.modules.length}
 			<hx-div class="mod-grid">
 				{#each catalog.modules as entry (entry.definition.id)}{@render card(entry)}{/each}
 			</hx-div>
 		{:else}
-			<hx-p class="ex-empty">No plugins are defined at this revision.</hx-p>
+			<EmptyState>No plugins are defined at this revision.</EmptyState>
 		{/if}
 	{/if}
 {/snippet}
@@ -101,10 +98,10 @@
 			>{#if list}{@render link(list, resource.title)}{:else}{resource.title}{/if}</hx-h3
 		>
 		{@render steps(resource.instructions)}
-		{@render command(
-			entry.installed ? 'Generate' : 'Generate, once installed',
-			`harness plugin generate ${id} ${resource.id} Example`
-		)}
+		<CommandBlock
+			label={entry.installed ? 'Generate' : 'Generate, once installed'}
+			command={`harness plugin generate ${id} ${resource.id} Example`}
+		/>
 	</hx-article>
 {/snippet}
 {#snippet detail(entry: ModuleEntry)}
@@ -116,13 +113,13 @@
 	</hx-header>
 	<hx-p class="ex-lead">{module.description}</hx-p>
 	<hx-p class="ex-soft">Version {module.version} · {sources[entry.source]}</hx-p>
-	{#if !entry.installed}{@render command('Install', `harness plugin add ${module.id}`)}{/if}
+	{#if !entry.installed}<CommandBlock label="Install" command={`harness plugin add ${module.id}`} />{/if}
 	<hx-section class="ex-card" aria-labelledby="mod-setup">
 		<hx-h2 id="mod-setup">Setup</hx-h2>
 		{@render steps(module.instructions)}
 	</hx-section>
 	<hx-h2>Resource types</hx-h2>
-	{#if module.testing}{@render command('Run headlessly', `harness plugin test ${module.id}`)}{/if}
+	{#if module.testing}<CommandBlock label="Run headlessly" command={`harness plugin test ${module.id}`} />{/if}
 	<hx-div class="mod-grid">
 		{#each module.resources as resource (resource.id)}{@render kind(entry, resource)}{/each}
 	</hx-div>
@@ -147,11 +144,11 @@
 					{@render detail(shown)}
 				{:else}
 					<hx-h1 id="mod-title">Plugin not found</hx-h1>
-					<hx-p class="ex-empty">
+					<EmptyState>
 						{catalog
 							? `No plugin called “${host.route.entity}” is defined at this revision.`
 							: 'No plugin catalog was indexed for this revision.'}
-					</hx-p>
+					</EmptyState>
 				{/if}
 			{/if}
 		</hx-section>
@@ -190,26 +187,10 @@
 		background: transparent;
 		color: var(--ex-muted);
 	}
-	.mod-steps,
-	.mod-command {
+	.mod-steps {
 		display: grid;
 		gap: var(--hx-space-6);
 		min-width: 0;
-	}
-	.mod-command figcaption {
-		color: var(--ex-muted);
-		font-size: var(--hx-type-size-compact);
-	}
-	.mod-command pre {
-		margin: 0;
-		padding: var(--hx-space-10) var(--hx-space-12);
-		border: var(--hx-border-thin) solid var(--ex-line);
-		border-radius: var(--hx-radius-small);
-		background: var(--hx-color-background);
-		color: var(--ex-text);
-		font-size: var(--hx-type-size-sm);
-		white-space: pre-wrap;
-		overflow-wrap: anywhere;
 	}
 	@media (max-width: 760px) {
 		.mod-grid {

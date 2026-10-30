@@ -11,6 +11,8 @@
 	import ExplorerControls from './ExplorerControls.svelte';
 	import ExplorerFrame from './ExplorerFrame.svelte';
 	import HarnessIcon from './HarnessIcon.svelte';
+	import EmptyState from './explorer-kit/EmptyState.svelte';
+	import Pill from './explorer-kit/Pill.svelte';
 	let host: ExplorerScreenProps = $props();
 	const kinds: Record<ProjectDependency['kind'], string> = {
 		runtime: 'Runtime',
@@ -91,8 +93,8 @@
 {#snippet inventory(table: (typeof tables)[number])}
 	<hx-div class="dep-group">
 		<hx-h2>
-			{table.title}<hx-span class="ex-pill"
-				>{table.rows.length}<hx-span class="ex-hidden"> declarations</hx-span></hx-span
+			{table.title}<Pill
+				>{table.rows.length}<hx-span class="ex-hidden"> declarations</hx-span></Pill
 			>
 		</hx-h2>
 		<hx-div class="ex-scroll dep-scroll">
@@ -137,19 +139,19 @@
 		<hx-p class="ex-hidden" role="status">{listed.length} of {rows.length} declarations shown</hx-p>
 		{#each tables as table (table.id)}{@render inventory(table)}{/each}
 		{#if !listed.length}
-			<hx-p class="ex-empty">
+			<EmptyState>
 				No dependencies match this search.
 				<hx-button type="button" class="ex-text-button" onclick={() => (filter.search = '')}
 					>Clear search</hx-button
 				>
-			</hx-p>
+			</EmptyState>
 		{/if}
 	{:else}
-		<hx-p class="ex-empty">
+		<EmptyState>
 			{found.gaps.length
 				? 'No declarations could be read from the manifests at this revision.'
 				: 'No dependencies are declared in the manifests at this revision.'}
-		</hx-p>
+		</EmptyState>
 	{/if}
 {/snippet}
 
@@ -167,9 +169,9 @@
 			{#if record}
 				{@render declared(record)}
 			{:else}
-				<hx-p class="ex-empty">
+				<EmptyState>
 					No dependency record was indexed for this revision. It may predate dependency indexing.
-				</hx-p>
+				</EmptyState>
 			{/if}
 		</hx-section>
 	{/snippet}

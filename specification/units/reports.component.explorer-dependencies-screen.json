@@ -9,6 +9,8 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.harness-explorer-controls",
 			"reports.component.harness-explorer-frame",
 			"reports.component.harness-harness-icon",
@@ -56,6 +58,16 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.harness-explorer-controls",
 			"via": "import",

@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-ui-explorer-kit-empty-state",
+	"kind": "component",
+	"title": "Explorer empty state",
+	"responsibility": "Says that a list or screen has nothing to show at this revision, and why.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": ["reports.component.shared-primitives-atoms-html-p"]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte"],
+		"symbols": ["EmptyState"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "EmptyState.children",
+				"type": "Snippet",
+				"description": "The explanation, and optionally an action such as clearing a search."
+			}
+		],
+		"outputs": [
+			{
+				"name": "EmptyState",
+				"type": "markup",
+				"description": "A paragraph with the shared ex-empty style."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

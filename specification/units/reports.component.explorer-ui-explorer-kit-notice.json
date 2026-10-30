@@ -1,0 +1,58 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-ui-explorer-kit-notice",
+	"kind": "component",
+	"title": "Explorer notice",
+	"responsibility": "Shows a side note that qualifies what a screen shows, such as a reading that may be incomplete.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": ["reports.component.shared-primitives-atoms-html-p"]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte"],
+		"symbols": ["Notice"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "Notice.children",
+				"type": "Snippet",
+				"description": "The note."
+			}
+		],
+		"outputs": [
+			{
+				"name": "Notice",
+				"type": "markup",
+				"description": "A paragraph with role note in quiet supporting text."
+			}
+		],
+		"errors": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/explorer-kit/Notice.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

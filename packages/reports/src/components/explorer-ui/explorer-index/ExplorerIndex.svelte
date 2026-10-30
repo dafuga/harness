@@ -12,6 +12,7 @@
 	import HarnessIcon from '../HarnessIcon.svelte';
 	import HarnessGroup from '../HarnessGroup.svelte';
 	import Select from '../../shared-primitives/Select.svelte';
+	import EmptyState from '../explorer-kit/EmptyState.svelte';
 	let {
 		category,
 		rows,
@@ -101,9 +102,9 @@
 	{/if}
 	<hx-p class="ex-hidden" role="status">{listed.length} of {rows.length} {noun} shown</hx-p>
 	{#if rows.length === 0}
-		<hx-p class="ex-empty">No {noun} are in the registry of this revision.</hx-p>
+		<EmptyState>No {noun} are in the registry of this revision.</EmptyState>
 	{:else if listed.length === 0}
-		<hx-p class="ex-empty">
+		<EmptyState>
 			No {noun} match{filtered ? ' this search' : ''}.
 			<hx-button
 				type="button"
@@ -120,7 +121,7 @@
 					};
 				}}>Show all {noun}</hx-button
 			>
-		</hx-p>
+		</EmptyState>
 	{:else if sections.length}
 		{#each sections as section (section.id)}
 			<hx-section class="ex-group">

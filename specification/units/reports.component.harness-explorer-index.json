@@ -9,6 +9,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.explorer-ui-harness-group",
 			"reports.component.harness-explorer-controls",
 			"reports.component.harness-harness-icon",
@@ -66,6 +67,11 @@
 		"errors": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.component.explorer-ui-harness-group",
 			"via": "import",
