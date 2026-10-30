@@ -60,7 +60,7 @@
 			...item,
 			file: read?.file ?? '',
 			missing: !read?.file,
-			note: read?.note ?? item.note ?? 'Loading recorded capture…'
+			note: read ? (read.note ?? item.note) : 'Loading recorded capture…'
 		};
 	}
 	$effect(() => {
