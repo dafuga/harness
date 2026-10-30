@@ -18,10 +18,11 @@ test('usage surfaces an address callback failure while rendering a consumer', ()
 		},
 		go: host.onroute
 	};
-	expect(() =>
-		render(ExplorerUsage, {
-			props: { consumers: [consumer], nav, lens: host.lens, mediaBase: host.mediaBase }
-		}).body
+	expect(
+		() =>
+			render(ExplorerUsage, {
+				props: { consumers: [consumer], nav, lens: host.lens, mediaBase: host.mediaBase }
+			}).body
 	).toThrow(error);
 });
 
