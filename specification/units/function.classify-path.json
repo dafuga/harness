@@ -11,7 +11,9 @@
 			"src/utils/accounts-access/classify-path/classifyPath.ts",
 			"src/utils/accounts-access/classify-path/classifyPath.types.ts",
 			"src/utils/classify-path/classifyPath.ts",
-			"src/utils/classifyPath.ts"
+			"src/utils/classifyPath.ts",
+			"src/utils/development-tooling/classify-path/classifyPath.ts",
+			"src/utils/development-tooling/classify-path/classifyPath.types.ts"
 		],
 		"symbols": [
 			"classifyPath",
@@ -19,7 +21,11 @@
 			"PathClass",
 			"classifyPath",
 			"PathClass",
-			"classifyPath"
+			"classifyPath",
+			"PathClass",
+			"classifyPath",
+			"PathClass",
+			"PathClass"
 		]
 	},
 	"contract": {
@@ -95,11 +101,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/classifyPath.ts",
+		"entry": "src/utils/development-tooling/classify-path/classifyPath.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/classifyPath.ts"
+				"entry": "src/utils/development-tooling/classify-path/classifyPath.ts"
 			}
 		]
 	},

@@ -380,6 +380,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "config.module-groups",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.explorer-route",
 			"via": "import",
 			"origin": "derived"

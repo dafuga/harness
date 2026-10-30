@@ -39,7 +39,7 @@
 				"name": "ProviderSwitch.id",
 				"type": "string",
 				"required": true,
-				"description": "Stored row identity; the model passes it to the adapter without generating a key."
+				"description": "Recorded switch ID, separate from the session primary key."
 			},
 			{
 				"name": "ProviderSwitch.data",

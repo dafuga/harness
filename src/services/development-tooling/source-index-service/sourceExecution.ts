@@ -1,6 +1,6 @@
 import ts from 'typescript';
 import type { SourceFile } from '../../../core/development-tooling/sourceTypes';
-import type { SourceLanguage } from '../../../utils/development-tooling/scanImports';
+import type { SourceLanguage } from '../../../utils/development-tooling/scanImports.types';
 /** Only inspected declarations can omit runtime profiling; exported types alone prove nothing. */
 export function sourceExecution(
 	code: string,

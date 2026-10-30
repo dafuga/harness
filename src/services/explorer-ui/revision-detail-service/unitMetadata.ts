@@ -12,6 +12,7 @@ import { ModuleCategoryService } from '../../development-tooling/ModuleCategoryS
 import { moduleGroup } from '../../../utils/development-tooling/moduleGroup';
 import { configValues } from './configValues';
 import { modelDefinitions } from './modelDefinitions';
+import type { ModuleGroup } from '../../../configs/development-tooling/moduleGroupsConfig';
 
 const kinds = new Set(['function', 'helper', 'shared-function', 'module']);
 
@@ -156,9 +157,25 @@ async function configurationsAt(tree: Pick<SourceTree, 'read'>, units: Unit[]): 
 async function categoriesAt(tree: HelperTree, units: Unit[]) {
 	const categories = await new ModuleCategoryService().at(tree);
 	for (const unit of units) {
-		const group = categories ? moduleGroup(unit.owns.source, categories.groups) : undefined;
+		const group = categories ? await canonicalGroup(tree, unit, categories.groups) : undefined;
 		if (group) unit.group = group;
 		else delete unit.group;
 	}
 	return categories;
+}
+
+/** Compatibility forwards do not establish a second implementation domain. */
+async function canonicalGroup(tree: Pick<SourceTree, 'read'>, unit: Unit, groups: ModuleGroup[]) {
+	const group = moduleGroup(unit.owns.source, groups);
+	if (group || !groups.length) return group;
+	const declarations: string[] = [];
+	for (const path of unit.owns.source.filter((path) => /\.[cm]?[jt]sx?$/.test(path))) {
+		try {
+			if (scanExports(await tree.read(path)).symbols.some((symbol) => symbol.kind !== 'reexport'))
+				declarations.push(path);
+		} catch {
+			// Missing selected-revision source cannot establish a canonical category.
+		}
+	}
+	return moduleGroup(declarations, groups);
 }

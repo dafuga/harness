@@ -5584,6 +5584,36 @@
 			"commit": "2b750c5dd0f1e8c0a6933ef4dc348ba9cfeca3fb",
 			"definition": "010445fa19c69439c1a3a1d485a73fc8296befffb736991eca733ab66115b1e2",
 			"reason": "Record main’s intentional removal of the repeated agent count from the displayed activity sentence."
+		},
+		{
+			"unit": "function.unit-identity",
+			"name": "unitIdentity",
+			"commit": "b6884688229d4a46998568169dceb5d8285ffe62",
+			"to": "src/utils/development-tooling/classify-path/unitIdentity.ts",
+			"ownerSource": "src/utils/development-tooling/classify-path/classifyPath.ts",
+			"definition": "c1ed556d07e4885e72f7b4cb9aab7f8e9a67cad48ac179bf74f93d6d08cfc674",
+			"reason": "Move code identity classification into Development tooling while preserving stable IDs and compatibility paths."
+		},
+		{
+			"unit": "function.scan-imports",
+			"name": "scanImports",
+			"commit": "5982f7e9d7d1a11f6c39381a0b6007d8439096fa",
+			"definition": "8ce6e488b7982c900be3136155862854f9979c39fef48286e2a90f5c17393642",
+			"reason": "Load script extraction from an owner-local leaf while retaining scanner behavior and public forwards."
+		},
+		{
+			"unit": "function.validation",
+			"name": "validateFieldName",
+			"commit": "5982f7e9d7d1a11f6c39381a0b6007d8439096fa",
+			"definition": "2a226b19007f40900b39129e3e3ca76395475dba919a445ebe310dc4fce25009",
+			"reason": "Resolve field names through the core leaf without importing the validation aggregate."
+		},
+		{
+			"unit": "function.scenario-coverage",
+			"name": "scenarioCoverage",
+			"commit": "5982f7e9d7d1a11f6c39381a0b6007d8439096fa",
+			"definition": "5d5b20a570d5335326b5fd18abd95b867681f159f3f2e56f7c70cd5a7afc29ab",
+			"reason": "Read capture validation from the coverage owner without importing its compatibility facade."
 		}
 	],
 	"retiredOwners": [

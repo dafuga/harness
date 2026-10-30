@@ -3,6 +3,7 @@ import { expect, test } from 'vitest';
 import { unitMetadata } from '../../src/services/revision-detail-service/unitMetadata';
 import { revisionRegistry } from '../../src/utils/revision-registry/revisionRegistry';
 import { indexFiles, memoryTree } from '../support/memoryTree';
+import { assertCanonicalCategory } from './canonicalCategory';
 import {
 	referenceCases as cases,
 	declarationSource as source,
@@ -64,6 +65,7 @@ test('revision metadata derives project categories from the same committed sourc
 		'configValues',
 		[]
 	);
+	await assertCanonicalCategory();
 });
 test('revision metadata lists standalone shared exports without requiring callers', async () => {
 	const paths = [

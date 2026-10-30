@@ -12,15 +12,22 @@
 			"src/utils/accounts-access/classify-path/unitIdentity.types.ts",
 			"src/utils/accounts-access/unitIdentity.ts",
 			"src/utils/classify-path/unitIdentity.ts",
+			"src/utils/development-tooling/classify-path/unitIdentity.ts",
+			"src/utils/development-tooling/classify-path/unitIdentity.types.ts",
 			"src/utils/unitIdentity.ts"
 		],
 		"symbols": [
 			"unitIdentity",
 			"FolderKind",
 			"UnitIdentity",
+			"UnitIdentity",
 			"unitIdentity",
 			"unitIdentity",
-			"unitIdentity"
+			"unitIdentity",
+			"FolderKind",
+			"UnitIdentity",
+			"unitIdentity",
+			"UnitIdentity"
 		]
 	},
 	"contract": {
@@ -88,11 +95,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "src/utils/accounts-access/unitIdentity.ts",
+		"entry": "src/utils/development-tooling/classify-path/unitIdentity.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "src/utils/accounts-access/unitIdentity.ts"
+				"entry": "src/utils/development-tooling/classify-path/unitIdentity.ts"
 			}
 		]
 	},
