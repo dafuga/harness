@@ -61,7 +61,7 @@
 	// left the screen.
 	function put() {
 		if (!root || !tip) return;
-		const at = root.getBoundingClientRect();
+		const at = (root.querySelector('a') ?? root).getBoundingClientRect();
 		const view = { width: document.documentElement.clientWidth, height: innerHeight };
 		if (at.bottom < 0 || at.top > view.height) return close();
 		const whole = tip.scrollHeight + tip.offsetHeight - tip.clientHeight;
@@ -168,6 +168,10 @@
 		font: inherit;
 		cursor: pointer;
 		text-align: left;
+	}
+	.ex-usage-link > button:disabled {
+		opacity: var(--hx-opacity-disabled);
+		cursor: not-allowed;
 	}
 	.ex-usage-link > :global(a:hover) {
 		color: var(--ex-text);
