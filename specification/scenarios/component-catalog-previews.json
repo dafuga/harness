@@ -1403,6 +1403,18 @@
 			"units": ["reports.component.analytics-models"]
 		},
 		{
+			"id": "reports-component-analytics-models-unknown",
+			"title": "Analytics models: Unknown model names",
+			"coverage": "required",
+			"units": ["reports.component.analytics-models"]
+		},
+		{
+			"id": "reports-component-analytics-models-unassessed",
+			"title": "Analytics models: No assessed checks",
+			"coverage": "required",
+			"units": ["reports.component.analytics-models"]
+		},
+		{
 			"id": "reports-component-analytics-tasks",
 			"title": "Analytics tasks",
 			"coverage": "required",
@@ -5687,6 +5699,8 @@
 				"reports-component-analytics-history-empty",
 				"reports-component-analytics-models",
 				"reports-component-analytics-models-empty",
+				"reports-component-analytics-models-unknown",
+				"reports-component-analytics-models-unassessed",
 				"reports-component-analytics-tasks",
 				"reports-component-analytics-tasks-empty",
 				"reports-component-analytics-tasks-unassessed",
