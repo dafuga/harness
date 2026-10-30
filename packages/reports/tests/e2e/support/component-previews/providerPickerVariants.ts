@@ -15,7 +15,14 @@ export const providerPickerStates = [
 	'applying',
 	'applied',
 	'failed',
-	'request-cancelled'
+	'request-cancelled',
+	'bind-ready',
+	'binding',
+	'queueing',
+	'cancelling',
+	'loading-queue',
+	'no-models',
+	'in-use'
 ];
 
 /** The same public props accompany each protocol-driven picker state. */

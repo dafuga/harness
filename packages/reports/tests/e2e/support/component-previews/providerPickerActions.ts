@@ -1,4 +1,5 @@
 import { expect, type Locator } from '@playwright/test';
+import { preparePickerOperation, preparePickerQueue } from './providerPickerOperationActions';
 
 /** Reach and verify each picker state through its public controls and client. */
 export async function prepareProviderPickerState(component: Locator, variant: string) {
@@ -9,12 +10,19 @@ export async function prepareProviderPickerState(component: Locator, variant: st
 		return expect(component.getByRole('status')).toHaveText('No picker state received.');
 	}
 	await expect(component.getByText(/Local preview: not connected to Codex/)).toBeVisible();
+	if (await preparePickerOperation(component, variant)) return;
+	if (await preparePickerQueue(component, variant)) return;
 	if (variant === 'unbound') {
 		await expect(component.getByLabel('Session ID')).toBeVisible();
 		return expect(component.getByRole('button', { name: 'Queue switch' })).toBeDisabled();
 	}
 	if (variant === 'unobserved')
 		return expect(component.getByText('Unknown', { exact: true })).toBeVisible();
+	if (variant === 'in-use') return expect(component.getByText(/In use · clients: 2/)).toBeVisible();
+	if (variant === 'no-models') {
+		await expect(component.getByText('This selection is not in the catalog.')).toBeVisible();
+		return expect(component.getByRole('button', { name: 'Queue switch' })).toBeDisabled();
+	}
 	if (variant === 'control-unavailable')
 		return expect(
 			component.getByText('Desktop control is unavailable; the request stays pending.')
@@ -30,20 +38,6 @@ export async function prepareProviderPickerState(component: Locator, variant: st
 		return expect(component.getByRole('combobox', { name: 'Reasoning effort' })).toHaveValue(
 			'xhigh'
 		);
-	}
-	if (['queue-empty', 'queue-populated', 'queue-error'].includes(variant)) {
-		if (variant === 'queue-empty')
-			await expect(component.getByText('Nothing is queued for this session.')).toBeVisible();
-		await component.getByRole('button', { name: 'Show queued sessions' }).click();
-		if (variant === 'queue-error')
-			return expect(component.getByRole('alert')).toHaveText('Queued sessions could not be read.');
-		return expect(
-			component.getByText(
-				variant === 'queue-empty'
-					? 'No queued sessions.'
-					: /Claude Opus 5.5 · xhigh effort · pending/
-			)
-		).toBeVisible();
 	}
 	if (variant === 'cancelled') {
 		await component.getByRole('button', { name: 'Cancel pending switch' }).click();
