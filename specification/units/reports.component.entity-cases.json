@@ -77,6 +77,11 @@
 				"name": "RangeError",
 				"type": "thrown",
 				"description": "Expanding deeply nested full values can exceed the JSON serializer stack."
+			},
+			{
+				"name": "Value access or serialization callback error",
+				"type": "thrown",
+				"description": "A supplied getter, proxy or toJSON method can throw while a document or example value is read or serialized."
 			}
 		],
 		"operations": [],
