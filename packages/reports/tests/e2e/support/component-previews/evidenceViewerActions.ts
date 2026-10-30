@@ -26,6 +26,16 @@ export async function prepareEvidenceViewer(component: Locator, variant: string)
 			.toBe(true);
 		await image.evaluate((node: HTMLImageElement) => node.decode());
 	}
+	if (
+		dialog.page().viewportSize()?.width === 920 &&
+		['', 'before', 'no-pair', 'no-navigation'].includes(variant)
+	) {
+		const caption = await dialog.locator('figcaption').first().boundingBox();
+		const frame = await dialog.boundingBox();
+		expect(caption!.y + caption!.height, 'Desktop caption fits the viewer').toBeLessThanOrEqual(
+			frame!.y + frame!.height
+		);
+	}
 }
 
 async function assertViewerState(dialog: Locator, variant: string) {
