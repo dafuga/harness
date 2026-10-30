@@ -2561,6 +2561,12 @@
 			"units": ["reports.component.entity-states"]
 		},
 		{
+			"id": "reports-component-entity-states-capture-details-open",
+			"title": "Supported states: capture details open",
+			"coverage": "required",
+			"units": ["reports.component.entity-states"]
+		},
+		{
 			"id": "reports-component-entity-states-viewer-open",
 			"title": "Supported states: viewer open",
 			"coverage": "required",
@@ -6660,6 +6666,7 @@
 				"reports-component-entity-states-scenario-selected",
 				"reports-component-entity-states-viewport-open",
 				"reports-component-entity-states-viewport-mobile",
+				"reports-component-entity-states-capture-details-open",
 				"reports-component-entity-states-viewer-open",
 				"reports-component-evidence-card",
 				"reports-component-evidence-card-missing",

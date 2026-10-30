@@ -14,6 +14,11 @@ export async function prepareEntityStates(component: Locator, variant: string) {
 	}
 	if (variant === 'viewport-mobile')
 		await component.getByRole('combobox', { name: 'Viewport' }).selectOption('mobile');
+	if (variant === 'capture-details-open') {
+		const details = component.locator('.state-card details.card-body').first();
+		await details.locator('summary').click();
+		await expect(details).toHaveAttribute('open', '');
+	}
 	if (variant === 'viewer-open') {
 		await component.locator('.state-card .image-button').first().click();
 		await expect(component.getByRole('dialog')).toBeVisible();

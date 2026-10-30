@@ -13,6 +13,7 @@ export const entityStatesCatalogVariants: Record<string, string[]> = {
 		'scenario-selected',
 		'viewport-open',
 		'viewport-mobile',
+		'capture-details-open',
 		'viewer-open'
 	]
 };

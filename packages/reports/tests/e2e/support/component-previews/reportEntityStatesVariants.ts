@@ -31,7 +31,8 @@ export function entityStatesVariant(props: PreviewCases[string], variant: string
 				throw new Error('Recorded capture could not be loaded.');
 			}
 		};
-	if (['viewport-mobile', 'viewport-open', 'viewer-open'].includes(variant)) return props;
+	if (['viewport-mobile', 'viewport-open', 'capture-details-open', 'viewer-open'].includes(variant))
+		return props;
 	return null;
 }
 
