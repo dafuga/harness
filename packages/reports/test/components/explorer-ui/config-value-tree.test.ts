@@ -1,6 +1,7 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import ConfigValueTree, {
+	collection,
 	valueMark
 } from '../../../src/components/explorer-ui/ConfigValueTree.svelte';
 import type { ConfigValueMark } from '../../../src/components/explorer-ui/ConfigValueTree.svelte';
@@ -36,4 +37,16 @@ test('source collections preserve exact keys and escaped expressions with nested
 test('inspection marks expose their icon and source-size label', () => {
 	const mark: ConfigValueMark | undefined = valueMark(node, node.source);
 	expect(mark).toEqual({ icon: 'object', size: '2 attributes' });
+});
+
+test('errors from caller-provided source node access propagate', () => {
+	const error = new Error('source node unavailable');
+	const source = new Proxy(node, {
+		get: () => {
+			throw error;
+		}
+	});
+	expect(() => collection(source)).toThrow(error);
+	expect(() => valueMark(source, '{}')).toThrow(error);
+	expect(() => render(ConfigValueTree, { props: { node: source } }).body).toThrow(error);
 });

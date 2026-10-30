@@ -13,12 +13,12 @@ export const configValueCatalogVariants: Record<string, string[]> = {
 		'empty-object',
 		'unknown-array',
 		'unknown-object',
-		'schema-array',
 		'single-array',
 		'single-object',
 		'long-key',
 		'disclosure-focused',
 		'disclosure-hovered',
+		'schema-array',
 		'expression',
 		'long-expression'
 	]

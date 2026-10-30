@@ -46,7 +46,12 @@ export const explorerCatalogVariants: Record<string, string[]> = {
 		'unindexed',
 		'gap',
 		'not-found',
-		'source-unavailable'
+		'source-unavailable',
+		'no-commands',
+		'no-requirements',
+		'no-sources',
+		'source-focused',
+		'source-hovered'
 	],
 	'reports.component.explorer-dependencies-screen': [
 		'unindexed',

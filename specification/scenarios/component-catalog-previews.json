@@ -3335,6 +3335,36 @@
 			"units": ["reports.component.explorer-ui-explorer-platform-details"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-no-commands",
+			"title": "ExplorerPlatformDetails: no commands",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-no-requirements",
+			"title": "ExplorerPlatformDetails: no release requirements",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-no-sources",
+			"title": "ExplorerPlatformDetails: no sources",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-source-focused",
+			"title": "ExplorerPlatformDetails: focused source",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platform-details-source-hovered",
+			"title": "ExplorerPlatformDetails: hovered source",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platform-details"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-platforms",
 			"title": "ExplorerPlatforms",
 			"coverage": "required",
@@ -7215,6 +7245,11 @@
 				"reports-component-explorer-ui-explorer-platform-details-gap",
 				"reports-component-explorer-ui-explorer-platform-details-not-found",
 				"reports-component-explorer-ui-explorer-platform-details-source-unavailable",
+				"reports-component-explorer-ui-explorer-platform-details-no-commands",
+				"reports-component-explorer-ui-explorer-platform-details-no-requirements",
+				"reports-component-explorer-ui-explorer-platform-details-no-sources",
+				"reports-component-explorer-ui-explorer-platform-details-source-focused",
+				"reports-component-explorer-ui-explorer-platform-details-source-hovered",
 				"reports-component-explorer-ui-explorer-platforms",
 				"reports-component-explorer-ui-explorer-platforms-unindexed",
 				"reports-component-explorer-ui-explorer-platforms-gap",

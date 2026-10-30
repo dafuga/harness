@@ -66,7 +66,23 @@
 				"description": "Deployment settings, commands, release requirements and GitHub source links for the selected platform, or an explicit configuration gap."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "nav.href callback error",
+				"type": "thrown",
+				"description": "An error supplied by the navigation URL callback propagates while rendering links."
+			},
+			{
+				"name": "nav.go callback error",
+				"type": "thrown",
+				"description": "An error supplied by the navigation callback propagates when a link is activated."
+			},
+			{
+				"name": "URIError",
+				"type": "thrown",
+				"description": "A recorded source path with an unpaired UTF-16 surrogate cannot be encoded as a GitHub URL."
+			}
+		]
 	},
 	"dependencies": [
 		{

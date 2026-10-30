@@ -1,7 +1,10 @@
 import { expect, test } from 'vitest';
+import { render } from 'svelte/server';
+import ExplorerPlatformDetails from '../../../src/components/explorer-ui/ExplorerPlatformDetails.svelte';
 import ExplorerPlatforms from '../../../src/components/explorer-ui/ExplorerPlatforms.svelte';
 import { index, revision } from '../../entityFixture';
-import { screen, words } from '../../entityRender';
+import { hostProps, screen, words } from '../../entityRender';
+import { nav } from '../../entityPlaces';
 import { commits } from '../../entityUnits';
 import { platformFixture } from '../../platformFixture';
 
@@ -75,4 +78,26 @@ test('source references never link to an untrusted repository origin', () => {
 	);
 	expect(words(body)).toContain('wrangler.jsonc');
 	expect(body).not.toContain('https://elsewhere.invalid');
+});
+
+test('platform details propagate navigation and malformed source path errors', () => {
+	const history = { ...index, sourceRepository: 'https://github.com/example/orders' };
+	const host = hostProps('commit', { category: 'platforms', entity: 'web' }, { head }, history);
+	const error = new Error('navigation unavailable');
+	const links = {
+		...nav(host.route),
+		href: () => {
+			throw error;
+		}
+	};
+	expect(() => render(ExplorerPlatformDetails, { props: { host, nav: links } }).body).toThrow(
+		error
+	);
+	const entries = platformFixture.entries.map((entry) =>
+		entry.id === 'web' ? { ...entry, sources: ['\ud800'] } : entry
+	);
+	const malformed = { ...host, head: { ...head, platforms: { entries } } };
+	expect(
+		() => render(ExplorerPlatformDetails, { props: { host: malformed, nav: nav(host.route) } }).body
+	).toThrow(URIError);
 });
