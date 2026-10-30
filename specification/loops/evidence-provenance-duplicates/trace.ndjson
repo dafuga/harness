@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T04:43:22.913Z","name":"evidence-provenance-duplicates","goal":"Render repeated provenance labels without an exception","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T04:43:23.479Z","loop":"evidence-provenance-duplicates","step":"spec","evidence":"Two recorded provenance facts may share a label and should both render."}
+{"event":"step.completed","timestamp":"2026-10-30T04:43:24.031Z","loop":"evidence-provenance-duplicates","step":"coverage","evidence":"The catalog only supplies unique labels and cannot detect a keyed-list exception for repeated labels."}
