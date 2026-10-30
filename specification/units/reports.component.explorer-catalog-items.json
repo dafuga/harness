@@ -93,6 +93,36 @@
 				"name": "RangeError",
 				"type": "thrown",
 				"description": "Serializing a deeply nested function argument example can exceed the runtime stack."
+			},
+			{
+				"name": "Example serialization callback error",
+				"type": "thrown",
+				"description": "A getter, proxy or toJSON method on an example can throw while a function invocation is serialized."
+			},
+			{
+				"name": "nav.href callback error",
+				"type": "thrown",
+				"description": "An address callback error propagates while rendering a card, table or consumer link."
+			},
+			{
+				"name": "nav.go callback error",
+				"type": "thrown",
+				"description": "A navigation callback error propagates when a card, table or consumer link is activated."
+			},
+			{
+				"name": "nav.source callback error",
+				"type": "thrown",
+				"description": "A source-opening callback error propagates when a consumer source button is activated."
+			},
+			{
+				"name": "lens.evidence callback error",
+				"type": "thrown",
+				"description": "An evidence callback error propagates while resolving a card image or consumer preview."
+			},
+			{
+				"name": "each_key_duplicate",
+				"type": "thrown",
+				"description": "Duplicate row identifiers throw when a keyed card list is mounted or updated."
 			}
 		],
 		"operations": [],

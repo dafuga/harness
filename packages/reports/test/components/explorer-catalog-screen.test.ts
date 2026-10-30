@@ -1,12 +1,27 @@
 import { expect, test } from 'vitest';
+import { render } from 'svelte/server';
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import ExplorerCatalogScreen from '../../src/components/explorer-ui/ExplorerCatalogScreen.svelte';
 import { record, revision } from '../entityFixture';
-import { content, drawn, count, screen, words } from '../entityRender';
+import { content, drawn, count, hostProps, screen, words } from '../entityRender';
 import { commits, ids } from '../entityUnits';
 import { configStrings } from '../entityConfigFixtures';
 
 const kinds = { configs: ['Configs', 'orderSettings'] } as const;
+
+test('catalog cards propagate host evidence and link reader errors', () => {
+	for (const reader of ['evidence', 'href'] as const) {
+		const host = hostProps('commit', { category: 'components' });
+		const error = new Error(`Cannot read ${reader}`);
+		host.lens = {
+			...host.lens,
+			[reader]: () => {
+				throw error;
+			}
+		};
+		expect(() => render(ExplorerCatalogScreen, { props: host }).body).toThrow(error);
+	}
+});
 
 test.each(['initializer', 'entry'])('Configs exclude non-config %s modules', (kind) => {
 	const head = revision(commits.middle, [record(commits.middle)]);
