@@ -3,7 +3,7 @@
 	"id": "reports.component.evidence-grid",
 	"kind": "component",
 	"title": "Evidence grid",
-	"responsibility": "Filters report media and coordinates screenshot and paired-audio viewers plus optional uploads.",
+	"responsibility": "Filters report media and coordinates screenshot and paired-audio viewers.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -20,9 +20,7 @@
 			"reports.component.shared-primitives-atoms-html-option",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.upload-audio",
-			"reports.component.upload-comparison"
+			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
 	"owns": {
@@ -128,16 +126,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.upload-audio",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.upload-comparison",
 			"via": "import",
 			"origin": "derived"
 		},

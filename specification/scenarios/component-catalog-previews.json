@@ -107,13 +107,11 @@
 		"reports.component.audio-comparison",
 		"reports.component.audio-comparison-viewer",
 		"reports.component.audio-evidence",
-		"reports.component.audio-upload-files",
 		"reports.component.brand-mark",
 		"reports.component.browser-errors",
 		"reports.component.console-chat",
 		"reports.component.contract-example",
 		"reports.component.contract-table",
-		"reports.component.coverage-list",
 		"reports.component.entity-cases",
 		"reports.component.entity-contract",
 		"reports.component.entity-examples",
@@ -137,7 +135,6 @@
 		"reports.component.explorer-usage-link",
 		"reports.component.filter-dialog",
 		"reports.component.floating-chat",
-		"reports.component.gameplay-replay",
 		"reports.component.harness-entity-artifact",
 		"reports.component.harness-entity-audio",
 		"reports.component.harness-entity-behavior",
@@ -190,11 +187,6 @@
 		"reports.component.provider-picker-cards",
 		"reports.component.recorded-value",
 		"reports.component.regression-proof",
-		"reports.component.replay-controls",
-		"reports.component.report-checks",
-		"reports.component.report-findings",
-		"reports.component.report-summary",
-		"reports.component.report-view",
 		"reports.component.select",
 		"reports.component.shared-primitives-atoms-html-a",
 		"reports.component.shared-primitives-atoms-html-abbr",
@@ -332,8 +324,6 @@
 		"reports.component.source-file-list",
 		"reports.component.source-viewer",
 		"reports.component.status-badge",
-		"reports.component.upload-audio",
-		"reports.component.upload-comparison",
 		"reports.component.usage-examples-usage-examples",
 		"reports.layout.explorer-layout",
 		"reports.page.harness-branch-branch-at-apis",
@@ -1109,12 +1099,6 @@
 			"units": ["reports.component.audio-evidence"]
 		},
 		{
-			"id": "reports-component-audio-upload-files",
-			"title": "Audio upload files",
-			"coverage": "required",
-			"units": ["reports.component.audio-upload-files"]
-		},
-		{
 			"id": "reports-component-brand-mark",
 			"title": "Brand mark",
 			"coverage": "required",
@@ -1143,12 +1127,6 @@
 			"title": "Contract field table",
 			"coverage": "required",
 			"units": ["reports.component.contract-table"]
-		},
-		{
-			"id": "reports-component-coverage-list",
-			"title": "Coverage list",
-			"coverage": "required",
-			"units": ["reports.component.coverage-list"]
 		},
 		{
 			"id": "reports-component-entity-cases",
@@ -1287,12 +1265,6 @@
 			"title": "Floating chat",
 			"coverage": "required",
 			"units": ["reports.component.floating-chat"]
-		},
-		{
-			"id": "reports-component-gameplay-replay",
-			"title": "Gameplay replay",
-			"coverage": "required",
-			"units": ["reports.component.gameplay-replay"]
 		},
 		{
 			"id": "reports-component-harness-entity-artifact",
@@ -1623,36 +1595,6 @@
 			"title": "Regression proof",
 			"coverage": "required",
 			"units": ["reports.component.regression-proof"]
-		},
-		{
-			"id": "reports-component-replay-controls",
-			"title": "Evidence replay controls",
-			"coverage": "required",
-			"units": ["reports.component.replay-controls"]
-		},
-		{
-			"id": "reports-component-report-checks",
-			"title": "Recorded report checks",
-			"coverage": "required",
-			"units": ["reports.component.report-checks"]
-		},
-		{
-			"id": "reports-component-report-findings",
-			"title": "Report findings",
-			"coverage": "required",
-			"units": ["reports.component.report-findings"]
-		},
-		{
-			"id": "reports-component-report-summary",
-			"title": "Report overview and downloads",
-			"coverage": "required",
-			"units": ["reports.component.report-summary"]
-		},
-		{
-			"id": "reports-component-report-view",
-			"title": "Report viewer",
-			"coverage": "required",
-			"units": ["reports.component.report-view"]
 		},
 		{
 			"id": "reports-component-select",
@@ -2477,18 +2419,6 @@
 			"units": ["reports.component.status-badge"]
 		},
 		{
-			"id": "reports-component-upload-audio",
-			"title": "Audio evidence upload",
-			"coverage": "required",
-			"units": ["reports.component.upload-audio"]
-		},
-		{
-			"id": "reports-component-upload-comparison",
-			"title": "Screenshot comparison upload",
-			"coverage": "required",
-			"units": ["reports.component.upload-comparison"]
-		},
-		{
 			"id": "reports-component-usage-examples-usage-examples",
 			"title": "Function usage examples",
 			"coverage": "required",
@@ -2828,13 +2758,11 @@
 				"reports-component-audio-comparison",
 				"reports-component-audio-comparison-viewer",
 				"reports-component-audio-evidence",
-				"reports-component-audio-upload-files",
 				"reports-component-brand-mark",
 				"reports-component-browser-errors",
 				"reports-component-console-chat",
 				"reports-component-contract-example",
 				"reports-component-contract-table",
-				"reports-component-coverage-list",
 				"reports-component-entity-cases",
 				"reports-component-entity-contract",
 				"reports-component-entity-examples",
@@ -2858,7 +2786,6 @@
 				"reports-component-explorer-usage-link",
 				"reports-component-filter-dialog",
 				"reports-component-floating-chat",
-				"reports-component-gameplay-replay",
 				"reports-component-harness-entity-artifact",
 				"reports-component-harness-entity-audio",
 				"reports-component-harness-entity-behavior",
@@ -2914,11 +2841,6 @@
 				"reports-component-provider-picker-cards",
 				"reports-component-recorded-value",
 				"reports-component-regression-proof",
-				"reports-component-replay-controls",
-				"reports-component-report-checks",
-				"reports-component-report-findings",
-				"reports-component-report-summary",
-				"reports-component-report-view",
 				"reports-component-select",
 				"reports-component-shared-primitives-atoms-html-a",
 				"reports-component-shared-primitives-atoms-html-abbr",
@@ -3056,8 +2978,6 @@
 				"reports-component-source-file-list",
 				"reports-component-source-viewer",
 				"reports-component-status-badge",
-				"reports-component-upload-audio",
-				"reports-component-upload-comparison",
 				"reports-component-usage-examples-usage-examples",
 				"reports-layout-explorer-layout",
 				"reports-page-harness-branch-branch-at-apis",

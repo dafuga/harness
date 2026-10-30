@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-10-30T17:02:58.665Z","name":"remove-old-report-surfaces","goal":"Remove the old report UI and export pipeline while preserving explorer evidence consumers and passing registry, ownership, type, lint and unit checks."}
+{"event":"step.added","timestamp":"2026-10-30T17:03:59.415Z","loop":"remove-old-report-surfaces","step":"verify","title":"Registry and retained surfaces pass the requested checks"}

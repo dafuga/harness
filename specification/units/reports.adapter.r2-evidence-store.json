@@ -23,8 +23,7 @@
 			"R2EvidenceStoreAdapter.put",
 			"R2EvidenceStoreAdapter.get",
 			"R2EvidenceStoreAdapter.putReplay",
-			"R2EvidenceStoreAdapter.getReplay",
-			"R2EvidenceStoreAdapter.putPublication"
+			"R2EvidenceStoreAdapter.getReplay"
 		]
 	},
 	"contract": {
@@ -97,18 +96,6 @@
 			{
 				"name": "R2EvidenceStoreAdapter.getReplay.file",
 				"type": "string"
-			},
-			{
-				"name": "R2EvidenceStoreAdapter.putPublication.reportId",
-				"type": "string"
-			},
-			{
-				"name": "R2EvidenceStoreAdapter.putPublication.version",
-				"type": "string"
-			},
-			{
-				"name": "R2EvidenceStoreAdapter.putPublication.file",
-				"type": "{ path: string; bytes: Buffer; mime: string }"
 			}
 		],
 		"outputs": [
@@ -138,10 +125,6 @@
 			},
 			{
 				"name": "R2EvidenceStoreAdapter.getReplay",
-				"type": "unknown"
-			},
-			{
-				"name": "R2EvidenceStoreAdapter.putPublication",
 				"type": "unknown"
 			}
 		],

@@ -91,11 +91,6 @@
 				"name": "onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"description": "Requests navigation while preserving the selected explorer scope."
-			},
-			{
-				"name": "exportHref",
-				"type": "string",
-				"description": "Project export URL; empty when the host provides no export."
 			}
 		],
 		"outputs": [

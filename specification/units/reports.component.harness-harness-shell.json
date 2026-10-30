@@ -29,11 +29,6 @@
 				"name": "HarnessShell.links",
 				"type": "Array<{ label: string; href: string }>",
 				"description": "Optional compatibility links, defaulting to an empty list. Forwarded to the console, which currently does not render them."
-			},
-			{
-				"name": "HarnessShell.exportable",
-				"type": "boolean",
-				"description": "Optional export flag, defaulting to true, forwarded to the console."
 			}
 		],
 		"outputs": [

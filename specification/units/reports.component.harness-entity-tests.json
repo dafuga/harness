@@ -14,7 +14,6 @@
 			"reports.component.harness-entity-behavior",
 			"reports.component.harness-harness-verdict",
 			"reports.component.regression-proof",
-			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-li",
@@ -69,11 +68,6 @@
 				"name": "EntityTests.mediaBase",
 				"type": "string",
 				"description": "Required base for recorded artifacts and media gallery."
-			},
-			{
-				"name": "EntityTests.exportHref",
-				"type": "string",
-				"description": "Optional record-download base, empty by default. A record and nonempty base produce a link with its record ID as query."
 			}
 		],
 		"outputs": [
@@ -108,11 +102,6 @@
 		},
 		{
 			"unit": "reports.component.regression-proof",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
 		},

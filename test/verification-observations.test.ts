@@ -91,7 +91,7 @@ test.each([
 			scenario: 'modular-h-branding-contract',
 			file: 'test/components/brand-mark.test.ts',
 			state: 'shared-surfaces',
-			count: 6,
+			count: 5,
 			workspace: 'reports'
 		}
 	],

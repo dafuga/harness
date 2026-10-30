@@ -55,11 +55,6 @@
 				"description": "Compatibility input accepted by the prop type but not read or rendered by this component."
 			},
 			{
-				"name": "HarnessConsole.exportable",
-				"type": "boolean",
-				"description": "Optional export availability flag, defaulting to true. False supplies the screen with an empty export address."
-			},
-			{
 				"name": "HarnessConsole.content",
 				"type": "ExplorerScreen",
 				"description": "Required screen component rendered once its selected revision and parent context are ready."

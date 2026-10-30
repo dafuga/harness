@@ -60,17 +60,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.service.report-export",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.service.report-import",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.service.report-publish",
 			"via": "import",
 			"origin": "derived"
 		},

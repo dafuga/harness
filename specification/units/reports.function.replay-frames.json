@@ -8,23 +8,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/reports/src/components/gameplay-replay/replayFrames.ts",
-			"packages/reports/src/components/reports-media/gameplay-replay/replayFrames.ts",
 			"packages/reports/src/utils/replayFrames.ts",
 			"packages/reports/src/utils/reports-media/replayFrames.ts",
 			"packages/reports/src/utils/reports-media/replayFrames.types.ts"
 		],
 		"symbols": [
-			"replayStart",
-			"replayStart",
-			"replayStart",
 			"FRAME_SECONDS",
-			"REPLAY_SPEEDS",
 			"replayFrames",
 			"FRAME_SECONDS",
-			"REPLAY_SPEEDS",
 			"replayFrames",
-			"replayStart",
 			"ReplayFrame",
 			"ReplayFrame"
 		]
@@ -32,11 +24,6 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
-			{
-				"name": "replayStart.frames",
-				"type": "ReplayFrame[]",
-				"description": "Replay frames to choose an initial position from."
-			},
 			{
 				"name": "replayFrames.items",
 				"type": "Evidence[]",
@@ -48,16 +35,6 @@
 				"name": "FRAME_SECONDS",
 				"type": "unknown",
 				"description": "Three-second duration per frame."
-			},
-			{
-				"name": "REPLAY_SPEEDS",
-				"type": "unknown",
-				"description": "Playback multipliers 0.25, 0.5, 1, 2, 4, 8 and 16."
-			},
-			{
-				"name": "replayStart",
-				"type": "unknown",
-				"description": "Index of the first frame whose title names a scene, otherwise zero, including for an empty list."
 			},
 			{
 				"name": "replayFrames",

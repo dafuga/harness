@@ -85,11 +85,6 @@
 				"name": "ExplorerScreenProps.onroute",
 				"type": "(to: ExplorerLocation) => void",
 				"description": "Goes to another address of the explorer in the same branch and revision mode."
-			},
-			{
-				"name": "ExplorerScreenProps.exportHref",
-				"type": "string",
-				"description": "Where a record is downloaded from; empty where the host serves none."
 			}
 		],
 		"outputs": [

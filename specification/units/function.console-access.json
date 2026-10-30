@@ -18,10 +18,8 @@
 			"consoleAccess",
 			"consoleAccess",
 			"ConsoleData",
-			"ConsoleExportInput",
 			"ConsoleSource",
 			"ConsoleHost",
-			"ConsoleExporter",
 			"ConsoleAccess",
 			"consoleAccess"
 		]
@@ -31,15 +29,15 @@
 		"inputs": [
 			{
 				"name": "consoleAccess.options",
-				"type": "{ policy: ConsolePolicy; data: ConsoleSource; exporter?: ConsoleExporter; host?: ConsoleHost; }",
-				"description": "Host policy and data source, with optional report exporter and build identity. Data may be shared or opened from each admitted request; policy must return exactly true to admit it."
+				"type": "{ policy: ConsolePolicy; data: ConsoleSource; host?: ConsoleHost; }",
+				"description": "Host policy and data source, with optional build identity. Data may be shared or opened from each admitted request; policy must return exactly true to admit it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "consoleAccess",
 				"type": "ConsoleAccess",
-				"description": "Guard, page entry, JSON, media and report handlers. Denials return 403, absent or invalid resources return 404, legacy addresses may redirect with 308, and media supports byte-range 206 or 416 responses. Policy exceptions deny access; data is opened only after admission."
+				"description": "Guard, page entry, JSON and media handlers. Denials return 403, absent or invalid resources return 404, legacy addresses may redirect with 308, and media supports byte-range 206 or 416 responses. Policy exceptions deny access; data is opened only after admission."
 			}
 		],
 		"errors": []

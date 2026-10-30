@@ -66,3 +66,7 @@ Benchmark analytics retains implementation commit `9425223b3` for the additive q
 Resource admission retains implementation commit `43dacd370` for evaluator, verification and priority changes. Original relocation proofs and prior behavior reviews remain present.
 
 Scoped screenshot admission retains implementation commit `b0fc91c01` for selected-revision registry validation. The original service move and every earlier implementation review remain included.
+
+Report export removal retains implementation commit `0a97ffe38` for the console host files that no longer generate the export route.
+
+The retained report CLI description is reviewed at `325d2720a`; the pack also retains its original relocation proof.

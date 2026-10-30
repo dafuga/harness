@@ -73,11 +73,6 @@
 			"unit": "reports.repository.report",
 			"via": "import",
 			"origin": "derived"
-		},
-		{
-			"unit": "reports.service.report-export",
-			"via": "import",
-			"origin": "derived"
 		}
 	],
 	"runtime": {

@@ -1,13 +1,13 @@
 {
 	"schemaVersion": 1,
-	"id": "script.package-reports",
+	"id": "script.package-website",
 	"kind": "script",
-	"title": "package-reports",
-	"responsibility": "Owns the package-reports build or maintenance script.",
-	"responsibilityOrigin": "derived",
+	"title": "package-website",
+	"responsibility": "Packages the built website and report command into dist/reports and emits the console-ui assets entry for console hosts.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/package-reports.ts"],
+		"source": ["scripts/package-website.ts"],
 		"symbols": []
 	},
 	"contract": {
@@ -24,11 +24,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "scripts/package-reports.ts",
+		"entry": "scripts/package-website.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "scripts/package-reports.ts"
+				"entry": "scripts/package-website.ts"
 			}
 		]
 	},

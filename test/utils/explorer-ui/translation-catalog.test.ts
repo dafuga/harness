@@ -97,7 +97,7 @@ test('unrelated addMessages calls are not app translations', () => {
 
 test.each(['reports'])(
 	'%s English and French have matching keys, valid ICU and matching parameters',
-	(group) => {
+	() => {
 		const read = (locale: string) =>
 			flattenMessages(
 				JSON.parse(
