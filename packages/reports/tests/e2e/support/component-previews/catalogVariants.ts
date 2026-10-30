@@ -84,7 +84,9 @@ const variants: Record<string, string[]> = {
 		'illustrative',
 		'missing',
 		'long',
-		'multiple'
+		'multiple',
+		'focused',
+		'hovered'
 	],
 	// Documented and observed cases retain failures, gaps and their expanded source values.
 	'reports.component.entity-cases': [

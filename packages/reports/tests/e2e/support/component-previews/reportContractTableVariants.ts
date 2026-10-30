@@ -46,5 +46,5 @@ export function contractTableVariant(props: PreviewCases[string], variant: strin
 		};
 	if (variant === 'long') return { ...props, group: { ...group, fields: [longField] } };
 	if (variant === 'multiple') return { ...props, group: { ...group, fields: [field, longField] } };
-	return null;
+	return ({ focused: props, hovered: props } as Record<string, PreviewCases[string]>)[variant];
 }

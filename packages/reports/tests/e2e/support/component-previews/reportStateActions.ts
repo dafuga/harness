@@ -1,5 +1,6 @@
 import { expect, type Locator } from '@playwright/test';
 import { prepareEntityStates } from './entityStatesPreviewAssertions';
+import { prepareContractTableState } from './contractTablePreviewAssertions';
 import { prepareUsageLink, prepareUsagePopover } from './usageLinkPreviewAssertions';
 import { prepareConfigValueTree } from './configValueTreePreviewAssertions';
 import { prepareCatalogItems } from './catalogItemsPreviewAssertions';
@@ -20,6 +21,7 @@ import { prepareReportView } from './reportViewActions';
 
 const actions: Record<string, (component: Locator, variant: string) => Promise<void>> = {
 	'reports.component.entity-states': prepareEntityStates,
+	'reports.component.contract-table': prepareContractTableState,
 	'reports.component.analytics-history': prepareAnalyticsHistory,
 	'reports.component.activity-list': prepareActivityList,
 	'reports.component.explorer-usage-link': prepareUsageLink,

@@ -2093,6 +2093,18 @@
 			"units": ["reports.component.contract-table"]
 		},
 		{
+			"id": "reports-component-contract-table-focused",
+			"title": "Contract table: example control focused",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
+			"id": "reports-component-contract-table-hovered",
+			"title": "Contract table: example control hovered",
+			"coverage": "required",
+			"units": ["reports.component.contract-table"]
+		},
+		{
 			"id": "reports-component-coverage-list",
 			"title": "Coverage list",
 			"coverage": "required",
@@ -6912,6 +6924,8 @@
 				"reports-component-contract-table-missing",
 				"reports-component-contract-table-long",
 				"reports-component-contract-table-multiple",
+				"reports-component-contract-table-focused",
+				"reports-component-contract-table-hovered",
 				"reports-component-coverage-list",
 				"reports-component-coverage-list-acceptance",
 				"reports-component-coverage-list-coverage",

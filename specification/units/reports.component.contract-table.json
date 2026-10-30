@@ -48,7 +48,13 @@
 				"description": "A field table with keyboard-accessible details; names, types and examples stack on phones while wider layouts use columns."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "onexample callback error",
+				"type": "thrown",
+				"description": "Any value thrown by the caller-supplied onexample callback propagates when the example control is activated."
+			}
+		]
 	},
 	"dependencies": [
 		{

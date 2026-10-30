@@ -4,6 +4,17 @@ import {
 	assertMobileContractFields
 } from './entityContractPreviewAssertions';
 
+/** Show keyboard focus or pointer hover on the real example control. */
+export async function prepareContractTableState(component: Locator, variant: string) {
+	if (!['focused', 'hovered'].includes(variant)) return;
+	const button = component.getByRole('button', { name: 'View example for seconds' });
+	if (variant === 'hovered') await button.hover();
+	else {
+		await button.focus();
+		await expect.poll(() => button.evaluate((node) => node.matches(':focus-visible'))).toBe(true);
+	}
+}
+
 /** Empty, labelled and long tables preserve their layout and example controls. */
 export async function assertContractTableState(
 	component: Locator,
