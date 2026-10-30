@@ -6,6 +6,13 @@ export async function prepareAudioUploadFiles(component: Locator, variant: strin
 	const paired = ['comparison', 'uploading', 'before-selected', 'after-selected', 'both-selected'];
 	const inputs = component.locator('input[type="file"]');
 	await expect(inputs).toHaveCount(paired.includes(variant) ? 2 : 1);
+	if (!paired.includes(variant)) {
+		const group = await component.locator('.upload-files').boundingBox();
+		const label = await component.locator('.upload-files label').boundingBox();
+		expect(label!.width, 'The single recording uses the full upload width').toBeGreaterThanOrEqual(
+			group!.width - 1
+		);
+	}
 	for (const input of await inputs.all()) {
 		if (['uploading', 'single-uploading'].includes(variant)) await expect(input).toBeDisabled();
 		else await expect(input).toBeEnabled();

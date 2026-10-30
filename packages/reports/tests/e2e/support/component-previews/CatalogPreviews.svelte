@@ -62,6 +62,7 @@
 		{#await fixture.ready}<p role="status">Preparing component preview…</p>{:then}
 			<div
 				class="preview-content"
+				class:upload-audio={id === 'reports.component.audio-upload-files'}
 				class:provider-picker={id.includes('provider-picker')}
 				class:account={id === 'hub.component.account-menu'}
 				class:ex-content={explorer && !fullFrame}
