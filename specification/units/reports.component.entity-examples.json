@@ -43,7 +43,18 @@
 				"description": "Only example titles and code snippets, or a stated gap when documentation is absent."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "An example containing BigInt cannot be serialized."
+			},
+			{
+				"name": "RangeError",
+				"type": "thrown",
+				"description": "The recursive formatter cannot render a circular example."
+			}
+		]
 	},
 	"dependencies": [
 		{
