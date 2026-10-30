@@ -36,6 +36,7 @@
 		overflow-wrap: anywhere;
 	}
 	[data-harness-component='contract-table'] tbody .example {
+		width: 100%;
 		min-width: 0;
 		max-width: 100%;
 		white-space: normal;

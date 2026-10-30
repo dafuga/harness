@@ -138,9 +138,10 @@
 		font-size: var(--hx-type-size-sm);
 		white-space: nowrap;
 	}
-	/* A preview fills its column but asks no more room than a short value and its label need;
-	   a longer value is clipped with an ellipsis, and its full example opens in the dialog. */
+	/* A zero intrinsic width lets the table fit its actions; min-width fills the assigned column.
+	   Longer previews are clipped with an ellipsis; the dialog shows the full example. */
 	.example {
+		width: 0;
 		min-width: 100%;
 		max-width: var(--hx-layout-contract-example);
 		overflow: hidden;
