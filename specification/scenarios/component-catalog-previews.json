@@ -2711,6 +2711,66 @@
 			"units": ["reports.component.explorer-ui-explorer-platforms"]
 		},
 		{
+			"id": "reports-component-explorer-ui-explorer-platforms-unindexed",
+			"title": "ExplorerPlatforms: revision not indexed",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-gap",
+			"title": "ExplorerPlatforms: manifest unavailable",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-search",
+			"title": "ExplorerPlatforms: matching search",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-no-matches",
+			"title": "ExplorerPlatforms: no matches",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-filter-open",
+			"title": "ExplorerPlatforms: filter open",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-status-configured",
+			"title": "ExplorerPlatforms: configured status",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-status-setup-required",
+			"title": "ExplorerPlatforms: setup required status",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-status-not-configured",
+			"title": "ExplorerPlatforms: not configured status",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-status-not-recorded",
+			"title": "ExplorerPlatforms: not recorded status",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-platforms-detail-web",
+			"title": "ExplorerPlatforms: Web detail",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-platforms"]
+		},
+		{
 			"id": "reports-component-explorer-ui-explorer-translations-screen",
 			"units": ["reports.component.explorer-ui-explorer-translations-screen"],
 			"coverage": "required",
@@ -5269,6 +5329,16 @@
 				"reports-component-explorer-ui-explorer-platform-details-not-found",
 				"reports-component-explorer-ui-explorer-platform-details-source-unavailable",
 				"reports-component-explorer-ui-explorer-platforms",
+				"reports-component-explorer-ui-explorer-platforms-unindexed",
+				"reports-component-explorer-ui-explorer-platforms-gap",
+				"reports-component-explorer-ui-explorer-platforms-search",
+				"reports-component-explorer-ui-explorer-platforms-no-matches",
+				"reports-component-explorer-ui-explorer-platforms-filter-open",
+				"reports-component-explorer-ui-explorer-platforms-status-configured",
+				"reports-component-explorer-ui-explorer-platforms-status-setup-required",
+				"reports-component-explorer-ui-explorer-platforms-status-not-configured",
+				"reports-component-explorer-ui-explorer-platforms-status-not-recorded",
+				"reports-component-explorer-ui-explorer-platforms-detail-web",
 				"reports-component-explorer-ui-explorer-translations-screen",
 				"reports-component-explorer-ui-harness-explorer-styles-screen",
 				"reports-component-explorer-ui-harness-group",

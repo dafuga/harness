@@ -1,5 +1,17 @@
 /** Explorer collections and usage links each expose their distinct presentations. */
 export const explorerCatalogVariants: Record<string, string[]> = {
+	'reports.component.explorer-ui-explorer-platforms': [
+		'unindexed',
+		'gap',
+		'search',
+		'no-matches',
+		'filter-open',
+		'status-configured',
+		'status-setup-required',
+		'status-not-configured',
+		'status-not-recorded',
+		'detail-web'
+	],
 	'reports.component.explorer-ui-explorer-platform-details': [
 		'ios',
 		'android',
