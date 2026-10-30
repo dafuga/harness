@@ -2,7 +2,7 @@
 	"name": "console-chat-picker-dialog-frame",
 	"goal": "Keep the entire picker visible with its console chat",
 	"createdAt": "2026-10-30T04:06:08.834Z",
-	"updatedAt": "2026-10-30T04:12:02.184Z",
+	"updatedAt": "2026-10-30T04:15:38.762Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -46,6 +46,16 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		},
+		{
+			"id": "correction",
+			"title": "Correct the invalid red proof",
+			"status": "pending"
+		},
+		{
+			"id": "invalid-red",
+			"title": "Prior red timed out on the wrong selector and is not defect proof.",
 			"status": "pending"
 		}
 	],

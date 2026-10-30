@@ -4541,6 +4541,60 @@
 			"units": ["reports.component.report-findings"]
 		},
 		{
+			"id": "reports-component-report-findings-empty",
+			"title": "Report findings: empty",
+			"coverage": "required",
+			"units": ["reports.component.report-findings"]
+		},
+		{
+			"id": "reports-component-report-findings-with-evidence",
+			"title": "Report findings: with evidence",
+			"coverage": "required",
+			"units": ["reports.component.report-findings"]
+		},
+		{
+			"id": "reports-component-report-findings-multiple",
+			"title": "Report findings: multiple",
+			"coverage": "required",
+			"units": ["reports.component.report-findings"]
+		},
+		{
+			"id": "reports-component-report-findings-running",
+			"title": "Report findings: running",
+			"coverage": "required",
+			"units": ["reports.component.report-findings"]
+		},
+		{
+			"id": "reports-component-report-findings-failed",
+			"title": "Report findings: failed",
+			"coverage": "required",
+			"units": ["reports.component.report-findings"]
+		},
+		{
+			"id": "reports-component-report-findings-blocked",
+			"title": "Report findings: blocked",
+			"coverage": "required",
+			"units": ["reports.component.report-findings"]
+		},
+		{
+			"id": "reports-component-report-findings-skipped",
+			"title": "Report findings: skipped",
+			"coverage": "required",
+			"units": ["reports.component.report-findings"]
+		},
+		{
+			"id": "reports-component-report-findings-not-proven",
+			"title": "Report findings: not proven",
+			"coverage": "required",
+			"units": ["reports.component.report-findings"]
+		},
+		{
+			"id": "reports-component-report-findings-interrupted",
+			"title": "Report findings: interrupted",
+			"coverage": "required",
+			"units": ["reports.component.report-findings"]
+		},
+		{
 			"id": "reports-component-report-summary",
 			"title": "Report overview and downloads",
 			"coverage": "required",
@@ -6726,6 +6780,15 @@
 				"reports-component-report-checks-not-proven",
 				"reports-component-report-checks-interrupted",
 				"reports-component-report-findings",
+				"reports-component-report-findings-empty",
+				"reports-component-report-findings-with-evidence",
+				"reports-component-report-findings-multiple",
+				"reports-component-report-findings-running",
+				"reports-component-report-findings-failed",
+				"reports-component-report-findings-blocked",
+				"reports-component-report-findings-skipped",
+				"reports-component-report-findings-not-proven",
+				"reports-component-report-findings-interrupted",
 				"reports-component-report-summary",
 				"reports-component-report-summary-run-open",
 				"reports-component-report-summary-portable-open",

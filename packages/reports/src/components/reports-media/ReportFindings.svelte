@@ -7,9 +7,9 @@
 	let { findings }: { findings: Finding[] } = $props();
 </script>
 
-{#if findings.length}
-	<hx-section class="findings" aria-labelledby="findings-title"
-		><hx-h2 id="findings-title">{$t('findings')}</hx-h2>
+<hx-section class="findings" aria-labelledby="findings-title">
+	<hx-h2 id="findings-title">{$t('findings')}</hx-h2>
+	{#if findings.length}
 		<hx-div class="finding-grid"
 			>{#each findings as item (item.id)}
 				<hx-article class="panel" id={'finding-' + item.id}>
@@ -24,5 +24,7 @@
 				</hx-article>
 			{/each}</hx-div
 		>
-	</hx-section>
-{/if}
+	{:else}
+		<hx-p class="muted">{$t('noFindings')}</hx-p>
+	{/if}
+</hx-section>

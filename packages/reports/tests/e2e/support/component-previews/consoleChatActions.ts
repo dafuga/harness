@@ -68,7 +68,11 @@ async function assertChatFrame(component: Locator, variant: string) {
 		variant
 	);
 	const offset = await component.page().evaluate(() => ({ x: scrollX, y: scrollY }));
-	for (const selector of ['.floating-chat-panel', '.floating-chat-bubble', '[role="dialog"]']) {
+	for (const selector of [
+		'.floating-chat-panel',
+		'.floating-chat-bubble',
+		'dialog[open], [role="dialog"]:visible'
+	]) {
 		const box = await component.locator(selector).boundingBox();
 		expect(box).not.toBeNull();
 		const message = 'Console chat capture includes its panel, launcher and dialog';

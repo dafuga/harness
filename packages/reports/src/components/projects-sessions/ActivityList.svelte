@@ -30,7 +30,7 @@
 	{/each}
 </hx-element>
 {#if !items.length}
-	<hx-element this="p" class="pa-empty" role="status">No {noun}.</hx-element>
+	<hx-element this={'p'} class="pa-empty" role="status">No {noun}.</hx-element>
 {/if}
 {#if items.length > preview}
 	<hx-button

@@ -19,7 +19,7 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			else for (const child of node.children) collect(child);
 			const tooltip = includeUsageTooltip && node.querySelector('[role="tooltip"]');
 			if (tooltip) collect(tooltip);
-			const picker = chatPicker && node.querySelector('[role="dialog"]');
+			const picker = chatPicker && node.querySelector('dialog[open], [role="dialog"]');
 			if (picker) collect(picker);
 			if (!boxes.length) throw new Error('The component has no rendered capture bounds.');
 			const start = (value: number, scroll: number) =>
@@ -57,8 +57,9 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 
 async function previewTarget(content: Locator, id: string, variant: string) {
 	const dialog = content.locator('dialog[open], [role="dialog"]:visible').last();
-	const chatPicker = isChatPicker(id, variant);
-	const modal = !chatPicker && (await previewModal(content, dialog));
+	const chatPicker =
+		id === 'reports.component.console-chat' && ['model-open', 'effort-open'].includes(variant);
+	const modal = await previewModal(content, dialog, chatPicker);
 	const projectAgent = id === 'desktop.component.project-agent';
 	const compactTarget =
 		id === 'reports.component.filter-dialog' ? content.locator('.filter-trigger') : undefined;
@@ -75,11 +76,8 @@ async function previewTarget(content: Locator, id: string, variant: string) {
 	};
 }
 
-function isChatPicker(id: string, variant: string) {
-	return id === 'reports.component.console-chat' && ['model-open', 'effort-open'].includes(variant);
-}
-
-async function previewModal(content: Locator, dialog: Locator) {
+async function previewModal(content: Locator, dialog: Locator, chatPicker: boolean) {
+	if (chatPicker) return false;
 	return (
 		(await content.getAttribute('data-preview-frame')) !== 'full' && (await dialog.count()) > 0
 	);
