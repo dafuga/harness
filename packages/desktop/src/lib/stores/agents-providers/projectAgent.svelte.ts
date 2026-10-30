@@ -50,6 +50,7 @@ class ProjectAgentState {
 	}
 	get notice() {
 		if (this.workspace.error) return 'Chat unavailable: ' + this.workspace.error;
+		if (this.workspace.busy) return 'Loading project…';
 		return this.allowed
 			? 'Ask a question, plan a design, or request a code change.'
 			: this.workspace.capabilities.reason || 'Read-only project access.';
@@ -89,7 +90,7 @@ class ProjectAgentState {
 		}
 	}
 }
-export function createProjectAgentStore(workspace: Workspace) {
+export function createProjectAgentStore(workspace: Workspace): ProjectAgentState {
 	return new ProjectAgentState(workspace);
 }
 

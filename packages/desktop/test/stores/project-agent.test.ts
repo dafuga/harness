@@ -118,6 +118,13 @@ test('a run that failed after its plan was written opens that plan and is not ke
 test('nothing is asked for a Change, in a hosted project or at a past commit', async () => {
 	const local = shown();
 	await expect(local.agent.send({ ...draft, mode: 'change' })).resolves.toBe(false);
+	const loading = shown({ busy: true, capabilities: { agents: false } });
+	expect(loading.agent.allowed).toBe(false);
+	expect(loading.agent.notice).toBe('Loading project…');
+	const failed = shown({ busy: true, error: 'Connection failed', capabilities: { agents: false } });
+	expect(failed.agent.notice).toBe('Chat unavailable: Connection failed');
+	const denied = shown({ capabilities: { agents: false, reason: 'This project is read-only.' } });
+	expect(denied.agent.notice).toBe('This project is read-only.');
 	for (const change of [
 		{ capabilities: { agents: false } },
 		{ pinned: true },

@@ -160,6 +160,7 @@ export async function capturePreview(
 function usesNativePopup(id: string, variant: string) {
 	return (
 		(id === 'reports.component.select' && variant === 'open') ||
+		(id === 'reports.component.evidence-grid' && variant === 'status-open') ||
 		(id === 'reports.component.explorer-ui-explorer-translations-screen' &&
 			variant === 'language-open')
 	);
