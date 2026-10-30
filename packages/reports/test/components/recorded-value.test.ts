@@ -1,6 +1,7 @@
 import { render } from 'svelte/server';
 import { expect, test } from 'vitest';
 import RecordedValue from '../../src/components/recorded-value/RecordedValue.svelte';
+import ContractExample from '../../src/components/ContractExample.svelte';
 
 const draw = (value: unknown) => render(RecordedValue, { props: { value } }).body;
 
@@ -65,4 +66,11 @@ test('reading or converting supplied values propagates their errors', () => {
 	expect(() => draw(getter)).toThrow('unreadable total');
 	expect(() => draw(proxy)).toThrow('unreadable keys');
 	expect(() => draw(conversion)).toThrow('unprintable value');
+	const field = {
+		name: 'order',
+		type: 'Order',
+		source: 'declared' as const,
+		examples: [{ form: 'structure' as const, value: getter, text: '{}' }]
+	};
+	expect(() => render(ContractExample, { props: { field } }).body).toThrow('unreadable total');
 });
