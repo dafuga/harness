@@ -32,6 +32,14 @@ export async function assertModuleCardPreview(component: Locator, variant: strin
 	}
 	if (variant === 'api-no-methods')
 		await expect(component.locator('.ex-function-call')).toHaveText('/api/orders');
+	if (variant === 'usage-open') {
+		const preview = component.getByRole('tooltip', { name: 'Preview of OrderList' });
+		const image = preview.getByRole('img', { name: 'Screenshot of OrderList' });
+		await expect(image).toHaveAttribute('src', /^data:image\/svg\+xml,/);
+		expect(decodeURIComponent((await image.getAttribute('src'))!)).toContain(
+			'SYNTHETIC ORDER LIST'
+		);
+	}
 	if (variant === 'no-usage')
 		await expect(component.getByRole('group', { name: 'Used In' })).toContainText('—');
 	if (variant === 'many-usage') {
