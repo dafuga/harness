@@ -57,7 +57,8 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 
 async function previewTarget(content: Locator, id: string, variant: string) {
 	const dialog = content.locator('dialog[open], [role="dialog"]:visible').last();
-	const modal = await previewModal(content, dialog, id, variant);
+	const chatPicker = isChatPicker(id, variant);
+	const modal = !chatPicker && (await previewModal(content, dialog));
 	const projectAgent = id === 'desktop.component.project-agent';
 	const compactTarget =
 		id === 'reports.component.filter-dialog' ? content.locator('.filter-trigger') : undefined;
@@ -74,9 +75,11 @@ async function previewTarget(content: Locator, id: string, variant: string) {
 	};
 }
 
-async function previewModal(content: Locator, dialog: Locator, id: string, variant: string) {
-	if (id === 'reports.component.console-chat' && ['model-open', 'effort-open'].includes(variant))
-		return false;
+function isChatPicker(id: string, variant: string) {
+	return id === 'reports.component.console-chat' && ['model-open', 'effort-open'].includes(variant);
+}
+
+async function previewModal(content: Locator, dialog: Locator) {
 	return (
 		(await content.getAttribute('data-preview-frame')) !== 'full' && (await dialog.count()) > 0
 	);
