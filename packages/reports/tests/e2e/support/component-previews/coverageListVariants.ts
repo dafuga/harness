@@ -49,7 +49,14 @@ export const coverageListStates = [
 	'interrupted'
 ];
 
-const outcomes: Status[] = ['running', 'failed', 'blocked', 'skipped', 'not-proven', 'interrupted'];
+const outcomeDetails: Partial<Record<Status, string>> = {
+	running: 'Checking the displayed order number and total.',
+	failed: 'The displayed total did not match the completed purchase.',
+	blocked: 'The checkout environment was unavailable.',
+	skipped: 'The checkout flow was outside this run’s scope.',
+	'not-proven': 'No confirmation evidence was recorded.',
+	interrupted: 'The run ended before the confirmation was checked.'
+};
 
 /** Keep each example to one component with its actual input shape. */
 export function coverageListVariant(props: PreviewCases[string], variant: string) {
@@ -69,12 +76,13 @@ export function coverageListVariant(props: PreviewCases[string], variant: string
 			embedded,
 			report: { ...base, coverage: [{ id: 'checkout', title: 'Checkout', status: 'passed' }] }
 		};
-	if (outcomes.includes(variant as Status))
+	const detail = outcomeDetails[variant as Status];
+	if (detail)
 		return {
 			...props,
 			section,
 			embedded,
-			report: { ...base, coverage: [{ ...base.coverage[0], status: variant as Status }] }
+			report: { ...base, coverage: [{ ...base.coverage[0], status: variant as Status, detail }] }
 		};
 	return { ...props, section, embedded };
 }
