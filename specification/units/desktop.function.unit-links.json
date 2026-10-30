@@ -36,7 +36,8 @@
 				"name": "unitLinks.options",
 				"type": "{ history?: boolean }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Optional link options; history selects commit-history destinations instead of detail pages. Defaults to an empty object."
 			}
 		],
 		"outputs": [
@@ -68,7 +69,8 @@
 						"name": "unitLinks.options",
 						"type": "{ history?: boolean }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Optional link options; history selects commit-history destinations instead of detail pages. Defaults to an empty object."
 					}
 				],
 				"outputs": [

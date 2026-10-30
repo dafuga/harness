@@ -68,7 +68,8 @@
 			{
 				"name": "EntityDetails.nav",
 				"type": "EntityNav",
-				"required": false
+				"required": false,
+				"description": "Optional entity navigation context for contract links at the selected branch and revision."
 			}
 		],
 		"outputs": [

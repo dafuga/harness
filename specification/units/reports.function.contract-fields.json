@@ -58,12 +58,14 @@
 			{
 				"name": "fieldOf.item",
 				"type": "Item",
-				"required": true
+				"required": true,
+				"description": "Declared input, output or error item whose type, explanation and examples are presented."
 			},
 			{
 				"name": "fieldOf.unit",
 				"type": "HarnessUnit",
-				"required": true
+				"required": true,
+				"description": "Selected unit supplying callable identity and source context for the contract field."
 			},
 			{
 				"name": "contractFields.unit",
@@ -104,32 +106,38 @@
 			{
 				"name": "returnField.declared",
 				"type": "Item | undefined",
-				"required": true
+				"required": true,
+				"description": "Optional authored return item; absent declarations retain an explicit source-derived gap."
 			},
 			{
 				"name": "returnField.type",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source-declared return type to display and use for illustrative value shapes."
 			},
 			{
 				"name": "returnField.callable",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Canonical callable name used to identify this return field."
 			},
 			{
 				"name": "returnField.unit",
 				"type": "HarnessUnit",
-				"required": true
+				"required": true,
+				"description": "Selected-revision unit supplying contract documentation and identity."
 			},
 			{
 				"name": "guess.type",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Type expression for which a bounded illustrative value may be constructed."
 			},
 			{
 				"name": "guess.depth",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current recursion depth limiting nested illustrative type expansion."
 			}
 		],
 		"outputs": [
@@ -182,12 +190,14 @@
 					{
 						"name": "fieldOf.item",
 						"type": "Item",
-						"required": true
+						"required": true,
+						"description": "Declared input, output or error item whose type, explanation and examples are presented."
 					},
 					{
 						"name": "fieldOf.unit",
 						"type": "HarnessUnit",
-						"required": true
+						"required": true,
+						"description": "Selected unit supplying callable identity and source context for the contract field."
 					}
 				],
 				"outputs": [
@@ -283,22 +293,26 @@
 					{
 						"name": "returnField.declared",
 						"type": "Item | undefined",
-						"required": true
+						"required": true,
+						"description": "Optional authored return item; absent declarations retain an explicit source-derived gap."
 					},
 					{
 						"name": "returnField.type",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Source-declared return type to display and use for illustrative value shapes."
 					},
 					{
 						"name": "returnField.callable",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Canonical callable name used to identify this return field."
 					},
 					{
 						"name": "returnField.unit",
 						"type": "HarnessUnit",
-						"required": true
+						"required": true,
+						"description": "Selected-revision unit supplying contract documentation and identity."
 					}
 				],
 				"outputs": [
@@ -316,12 +330,14 @@
 					{
 						"name": "guess.type",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Type expression for which a bounded illustrative value may be constructed."
 					},
 					{
 						"name": "guess.depth",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Current recursion depth limiting nested illustrative type expansion."
 					}
 				],
 				"outputs": [

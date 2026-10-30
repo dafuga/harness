@@ -62,63 +62,75 @@
 			{
 				"name": "configValueStructure.value",
 				"type": "ts.Expression",
-				"required": true
+				"required": true,
+				"description": "Source expression to describe structurally without executing configuration."
 			},
 			{
 				"name": "configValueStructure.bindings",
 				"type": "Bindings",
-				"required": true
+				"required": true,
+				"description": "Local expression bindings that can be followed during static inspection."
 			},
 			{
 				"name": "configValueStructure.depth",
 				"type": "number",
 				"required": false,
-				"default": 0
+				"default": 0,
+				"description": "Current recursion depth used to bound structural inspection; defaults to zero."
 			},
 			{
 				"name": "configValues.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Committed configuration source text or JSON document to inspect."
 			},
 			{
 				"name": "configValues.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source path used for syntax selection and source-preserving provenance."
 			},
 			{
 				"name": "modelDefinitions.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Committed source text containing exported model or type declarations."
 			},
 			{
 				"name": "modelDefinitions.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Selected-revision source path used to parse and attribute model definitions."
 			},
 			{
 				"name": "modelTable.node",
 				"type": "ts.ClassDeclaration",
-				"required": true
+				"required": true,
+				"description": "Model class declaration whose static storage schema is inspected."
 			},
 			{
 				"name": "modelTable.file",
 				"type": "ts.SourceFile",
-				"required": true
+				"required": true,
+				"description": "Parsed source containing the model and source text for unresolved schema expressions."
 			},
 			{
 				"name": "pureHelperCalls.node",
 				"type": "ts.CallExpression",
-				"required": true
+				"required": true,
+				"description": "Call expression whose target is checked against admitted pure operations."
 			},
 			{
 				"name": "pureHelperCalls.local",
 				"type": "Set<string>",
-				"required": true
+				"required": true,
+				"description": "Locally declared callable names already proven pure."
 			},
 			{
 				"name": "pureHelpers.code",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Source text containing explicitly declared pure helper candidates."
 			},
 			{
 				"name": "unitMetadata.tree",
@@ -148,18 +160,21 @@
 					{
 						"name": "configValueStructure.value",
 						"type": "ts.Expression",
-						"required": true
+						"required": true,
+						"description": "Source expression to describe structurally without executing configuration."
 					},
 					{
 						"name": "configValueStructure.bindings",
 						"type": "Bindings",
-						"required": true
+						"required": true,
+						"description": "Local expression bindings that can be followed during static inspection."
 					},
 					{
 						"name": "configValueStructure.depth",
 						"type": "number",
 						"required": false,
-						"default": 0
+						"default": 0,
+						"description": "Current recursion depth used to bound structural inspection; defaults to zero."
 					}
 				],
 				"outputs": [
@@ -177,12 +192,14 @@
 					{
 						"name": "configValues.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Committed configuration source text or JSON document to inspect."
 					},
 					{
 						"name": "configValues.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Source path used for syntax selection and source-preserving provenance."
 					}
 				],
 				"outputs": [
@@ -200,12 +217,14 @@
 					{
 						"name": "modelDefinitions.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Committed source text containing exported model or type declarations."
 					},
 					{
 						"name": "modelDefinitions.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Selected-revision source path used to parse and attribute model definitions."
 					}
 				],
 				"outputs": [
@@ -223,12 +242,14 @@
 					{
 						"name": "modelTable.node",
 						"type": "ts.ClassDeclaration",
-						"required": true
+						"required": true,
+						"description": "Model class declaration whose static storage schema is inspected."
 					},
 					{
 						"name": "modelTable.file",
 						"type": "ts.SourceFile",
-						"required": true
+						"required": true,
+						"description": "Parsed source containing the model and source text for unresolved schema expressions."
 					}
 				],
 				"outputs": [
@@ -246,12 +267,14 @@
 					{
 						"name": "pureHelperCalls.node",
 						"type": "ts.CallExpression",
-						"required": true
+						"required": true,
+						"description": "Call expression whose target is checked against admitted pure operations."
 					},
 					{
 						"name": "pureHelperCalls.local",
 						"type": "Set<string>",
-						"required": true
+						"required": true,
+						"description": "Locally declared callable names already proven pure."
 					}
 				],
 				"outputs": [
@@ -269,7 +292,8 @@
 					{
 						"name": "pureHelpers.code",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Source text containing explicitly declared pure helper candidates."
 					}
 				],
 				"outputs": [

@@ -48,22 +48,26 @@
 			{
 				"name": "sameTime.one",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "First process-start timestamp, compared after normalizing whitespace."
 			},
 			{
 				"name": "sameTime.other",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Second process-start timestamp to compare with the first."
 			},
 			{
 				"name": "named.names",
 				"type": "string[]",
-				"required": false
+				"required": false,
+				"description": "Candidate executable names checked against the protected platform-service basenames."
 			},
 			{
 				"name": "probing.context",
 				"type": "ServiceContext",
-				"required": true
+				"required": true,
+				"description": "Service cleanup context supplying optional process probes and cancellation signal."
 			},
 			{
 				"name": "classifyProcess.known",
@@ -126,12 +130,14 @@
 					{
 						"name": "sameTime.one",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "First process-start timestamp, compared after normalizing whitespace."
 					},
 					{
 						"name": "sameTime.other",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Second process-start timestamp to compare with the first."
 					}
 				],
 				"outputs": [
@@ -149,7 +155,8 @@
 					{
 						"name": "named.names",
 						"type": "string[]",
-						"required": false
+						"required": false,
+						"description": "Candidate executable names checked against the protected platform-service basenames."
 					}
 				],
 				"outputs": [
@@ -167,7 +174,8 @@
 					{
 						"name": "probing.context",
 						"type": "ServiceContext",
-						"required": true
+						"required": true,
+						"description": "Service cleanup context supplying optional process probes and cancellation signal."
 					}
 				],
 				"outputs": [

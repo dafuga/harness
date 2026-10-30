@@ -60,7 +60,8 @@
 			{
 				"name": "sourceContractSchema.item",
 				"type": "typeof contractItemSchema",
-				"required": true
+				"required": true,
+				"description": "Contract-item schema used for inputs, returns, errors, callable members and storage field declarations."
 			}
 		],
 		"outputs": [
@@ -128,7 +129,8 @@
 					{
 						"name": "sourceContractSchema.item",
 						"type": "typeof contractItemSchema",
-						"required": true
+						"required": true,
+						"description": "Contract-item schema used for inputs, returns, errors, callable members and storage field declarations."
 					}
 				],
 				"outputs": [

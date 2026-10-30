@@ -35,12 +35,14 @@
 			{
 				"name": "scanSymbolErrors.code",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "TypeScript source to inspect for direct throws, SvelteKit errors and indirect calls."
 			},
 			{
 				"name": "scanSymbolErrors.symbols",
 				"type": "ExportedSymbol[]",
-				"required": true
+				"required": true,
+				"description": "Scanned exported declarations whose error names and certainty are enriched."
 			}
 		],
 		"outputs": [
@@ -78,12 +80,14 @@
 					{
 						"name": "scanSymbolErrors.code",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "TypeScript source to inspect for direct throws, SvelteKit errors and indirect calls."
 					},
 					{
 						"name": "scanSymbolErrors.symbols",
 						"type": "ExportedSymbol[]",
-						"required": true
+						"required": true,
+						"description": "Scanned exported declarations whose error names and certainty are enriched."
 					}
 				],
 				"outputs": [

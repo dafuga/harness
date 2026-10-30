@@ -37,34 +37,40 @@
 			{
 				"name": "HarnessGroup.count",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Optional item count displayed beside the group title."
 			},
 			{
 				"name": "HarnessGroup.icon",
 				"type": "HarnessIconName",
-				"required": false
+				"required": false,
+				"description": "Optional shared icon identifying the group."
 			},
 			{
 				"name": "HarnessGroup.source",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Optional source attribution displayed with the group heading."
 			},
 			{
 				"name": "HarnessGroup.description",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "Optional explanatory text beneath the group title."
 			},
 			{
 				"name": "HarnessGroup.level",
 				"type": "2 | 3",
 				"required": false,
-				"default": 2
+				"default": 2,
+				"description": "Heading level for the group title; defaults to 2."
 			},
 			{
 				"name": "HarnessGroup.variant",
 				"type": "'catalog' | 'relation' | 'styles'",
 				"required": false,
-				"default": "catalog"
+				"default": "catalog",
+				"description": "Visual context for the group, such as catalog or relationships; defaults to catalog."
 			},
 			{
 				"name": "HarnessGroup.resetKey",

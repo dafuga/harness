@@ -3,15 +3,15 @@
 	"id": "reports.component.shared-primitives-contract-table-mobile",
 	"kind": "component",
 	"title": "contractTableMobile",
-	"responsibility": "Owns the contractTableMobile Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Defines responsive ContractTable cell and example layouts for narrow viewports.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/shared-primitives/contractTableMobile.css"],
 		"symbols": []
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [],

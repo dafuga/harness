@@ -29,52 +29,62 @@
 			{
 				"name": "ExplorerCatalogScreen.index",
 				"type": "HarnessIndex",
-				"required": true
+				"required": true,
+				"description": "Prepared history index for the selected repository and its recorded revisions."
 			},
 			{
 				"name": "ExplorerCatalogScreen.head",
 				"type": "HarnessRevision",
-				"required": true
+				"required": true,
+				"description": "Exact selected source revision supplying every displayed contract, measurement and capture."
 			},
 			{
 				"name": "ExplorerCatalogScreen.parent",
 				"type": "HarnessRevision | null",
-				"required": true
+				"required": true,
+				"description": "First parent of the selected commit, or null at a branch tip or first commit."
 			},
 			{
 				"name": "ExplorerCatalogScreen.scope",
 				"type": "ExplorerScope",
-				"required": true
+				"required": true,
+				"description": "Selected branch, commit and comparison scope shared by the explorer host."
 			},
 			{
 				"name": "ExplorerCatalogScreen.route",
 				"type": "ExplorerLocation",
-				"required": true
+				"required": true,
+				"description": "Current explorer location, including category, entity, section and tab."
 			},
 			{
 				"name": "ExplorerCatalogScreen.entities",
 				"type": "ExplorerEntity[]",
-				"required": true
+				"required": true,
+				"description": "Units projected from the selected revision, including entities removed by the shown commit."
 			},
 			{
 				"name": "ExplorerCatalogScreen.lens",
 				"type": "EntityLens",
-				"required": true
+				"required": true,
+				"description": "Host-provided readers for entity relationships, history and selected-revision details."
 			},
 			{
 				"name": "ExplorerCatalogScreen.client",
 				"type": "Pick<HarnessClient, 'revision'>",
-				"required": true
+				"required": true,
+				"description": "Revision reader used only for commits the displayed history requests."
 			},
 			{
 				"name": "ExplorerCatalogScreen.mediaBase",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Base URL for retained recorded evidence media."
 			},
 			{
 				"name": "ExplorerCatalogScreen.onroute",
 				"type": "(to: ExplorerLocation) => void",
-				"required": true
+				"required": true,
+				"description": "Receives the requested explorer destination for host-controlled navigation."
 			}
 		],
 		"outputs": [

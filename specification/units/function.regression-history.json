@@ -32,47 +32,56 @@
 			{
 				"name": "regressionHash.bytes",
 				"type": "string | Buffer",
-				"required": true
+				"required": true,
+				"description": "Exact string or byte sequence to hash with SHA-256."
 			},
 			{
 				"name": "regressionHistory.commit",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Selected source commit whose retained focused regression runs are projected."
 			},
 			{
 				"name": "regressionHistory.notes",
 				"type": "Map<string, ReadNote>",
-				"required": true
+				"required": true,
+				"description": "Pinned Git notes identifying retained regression records."
 			},
 			{
 				"name": "regressionHistory.load",
 				"type": "Loader",
-				"required": true
+				"required": true,
+				"description": "Reader that verifies and loads the record, log and files named by a regression note."
 			},
 			{
 				"name": "regressionHistory.media",
 				"type": "MediaPlacer",
-				"required": false
+				"required": false,
+				"description": "Places verified capture bytes in the prepared history media store."
 			},
 			{
 				"name": "sameRegression.red",
 				"type": "RegressionRecord",
-				"required": true
+				"required": true,
+				"description": "Failing checkpoint supplying the original tests, command, assertion and environment."
 			},
 			{
 				"name": "sameRegression.green",
 				"type": "RegressionRecord",
-				"required": true
+				"required": true,
+				"description": "Candidate passing checkpoint to compare with the original regression inputs."
 			},
 			{
 				"name": "readRegression.note",
 				"type": "RegressionNote",
-				"required": true
+				"required": true,
+				"description": "Pinned regression note naming its committed evidence path and manifest hash."
 			},
 			{
 				"name": "readRegression.read",
 				"type": "(path: string) => Promise<Buffer | undefined>",
-				"required": true
+				"required": true,
+				"description": "Reader for exact evidence bytes addressed relative to that retained record."
 			}
 		],
 		"outputs": [
@@ -96,7 +105,8 @@
 					{
 						"name": "regressionHash.bytes",
 						"type": "string | Buffer",
-						"required": true
+						"required": true,
+						"description": "Exact string or byte sequence to hash with SHA-256."
 					}
 				],
 				"outputs": [
@@ -114,22 +124,26 @@
 					{
 						"name": "regressionHistory.commit",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Selected source commit whose retained focused regression runs are projected."
 					},
 					{
 						"name": "regressionHistory.notes",
 						"type": "Map<string, ReadNote>",
-						"required": true
+						"required": true,
+						"description": "Pinned Git notes identifying retained regression records."
 					},
 					{
 						"name": "regressionHistory.load",
 						"type": "Loader",
-						"required": true
+						"required": true,
+						"description": "Reader that verifies and loads the record, log and files named by a regression note."
 					},
 					{
 						"name": "regressionHistory.media",
 						"type": "MediaPlacer",
-						"required": false
+						"required": false,
+						"description": "Places verified capture bytes in the prepared history media store."
 					}
 				],
 				"outputs": [
@@ -147,12 +161,14 @@
 					{
 						"name": "sameRegression.red",
 						"type": "RegressionRecord",
-						"required": true
+						"required": true,
+						"description": "Failing checkpoint supplying the original tests, command, assertion and environment."
 					},
 					{
 						"name": "sameRegression.green",
 						"type": "RegressionRecord",
-						"required": true
+						"required": true,
+						"description": "Candidate passing checkpoint to compare with the original regression inputs."
 					}
 				],
 				"outputs": [
@@ -170,12 +186,14 @@
 					{
 						"name": "readRegression.note",
 						"type": "RegressionNote",
-						"required": true
+						"required": true,
+						"description": "Pinned regression note naming its committed evidence path and manifest hash."
 					},
 					{
 						"name": "readRegression.read",
 						"type": "(path: string) => Promise<Buffer | undefined>",
-						"required": true
+						"required": true,
+						"description": "Reader for exact evidence bytes addressed relative to that retained record."
 					}
 				],
 				"outputs": [

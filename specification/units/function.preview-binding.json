@@ -20,12 +20,14 @@
 			{
 				"name": "previewBinding.unit",
 				"type": "PreviewUnit",
-				"required": true
+				"required": true,
+				"description": "Visual unit and its optional declared scenario, state and viewport selection."
 			},
 			{
 				"name": "previewBinding.scenarios",
 				"type": "ScenarioManifest[]",
-				"required": true
+				"required": true,
+				"description": "Selected-revision scenarios against which the preview slot and unit attribution are validated."
 			}
 		],
 		"outputs": [
@@ -43,12 +45,14 @@
 					{
 						"name": "previewBinding.unit",
 						"type": "PreviewUnit",
-						"required": true
+						"required": true,
+						"description": "Visual unit and its optional declared scenario, state and viewport selection."
 					},
 					{
 						"name": "previewBinding.scenarios",
 						"type": "ScenarioManifest[]",
-						"required": true
+						"required": true,
+						"description": "Selected-revision scenarios against which the preview slot and unit attribution are validated."
 					}
 				],
 				"outputs": [

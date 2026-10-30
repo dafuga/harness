@@ -54,7 +54,8 @@
 			{
 				"name": "CoveragePanel.workspace",
 				"type": "Workspace",
-				"required": false
+				"required": false,
+				"description": "Optional current workspace used to resolve recorded evidence and regression links."
 			}
 		],
 		"outputs": [

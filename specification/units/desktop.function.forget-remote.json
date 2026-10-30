@@ -19,7 +19,8 @@
 			{
 				"name": "accountView.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "Workspace whose hosted transport, source capability and selected project determine whether it is an account view."
 			},
 			{
 				"name": "forgetRemote.workspace",
@@ -50,7 +51,8 @@
 					{
 						"name": "accountView.workspace",
 						"type": "Workspace",
-						"required": true
+						"required": true,
+						"description": "Workspace whose hosted transport, source capability and selected project determine whether it is an account view."
 					}
 				],
 				"outputs": [

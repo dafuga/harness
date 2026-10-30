@@ -37,17 +37,20 @@
 			{
 				"name": "read.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Recorded JSON value to present without mutating the original."
 			},
 			{
 				"name": "read.depth",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current nesting depth used to truncate deeply nested presentation."
 			},
 			{
 				"name": "read.budget",
 				"type": "{ left: number }",
-				"required": true
+				"required": true,
+				"description": "Shared remaining-node budget, decremented while building the bounded presentation."
 			}
 		],
 		"outputs": [
@@ -85,17 +88,20 @@
 					{
 						"name": "read.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Recorded JSON value to present without mutating the original."
 					},
 					{
 						"name": "read.depth",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Current nesting depth used to truncate deeply nested presentation."
 					},
 					{
 						"name": "read.budget",
 						"type": "{ left: number }",
-						"required": true
+						"required": true,
+						"description": "Shared remaining-node budget, decremented while building the bounded presentation."
 					}
 				],
 				"outputs": [

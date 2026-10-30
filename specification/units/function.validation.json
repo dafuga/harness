@@ -76,12 +76,14 @@
 			{
 				"name": "validateName.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Proposed project or code name to trim and validate."
 			},
 			{
 				"name": "validateName.label",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Human-readable field label included in validation errors."
 			},
 			{
 				"name": "validateKebabName.name",
@@ -252,12 +254,14 @@
 					{
 						"name": "validateName.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Proposed project or code name to trim and validate."
 					},
 					{
 						"name": "validateName.label",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Human-readable field label included in validation errors."
 					}
 				],
 				"outputs": [
