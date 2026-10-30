@@ -123,9 +123,15 @@ for (const viewport of catalogViewports) {
 			await expect(page.locator('#preview-title')).toHaveText(unit.title);
 			const component = await preview.readyPreview(page, unit.id, variant);
 			const target = { viewport: viewport.id, variant };
-			const early = unit.id === 'reports.component.coverage-list' && variant === 'empty';
+			const early =
+				variant === 'empty' &&
+				[
+					'reports.component.coverage-list',
+					'reports.component.module-system-plugins-plugin-steps'
+				].includes(unit.id);
 			if (early) {
-				await expect(component.getByRole('heading', { name: 'Acceptance' })).toBeVisible();
+				if (unit.id === 'reports.component.coverage-list')
+					await expect(component.getByRole('heading', { name: 'Acceptance' })).toBeVisible();
 				await preview.capturePreview(page, home, unit.id, target);
 			}
 			await test.step('Prepare state', () => prepareCatalogState(component, unit.id, variant));

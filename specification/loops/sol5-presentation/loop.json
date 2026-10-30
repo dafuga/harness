@@ -1,0 +1,42 @@
+{
+	"name": "sol5-presentation",
+	"goal": "Share table, code-line and detail-list presentation while retaining public component identities and all responsive states",
+	"createdAt": "2026-10-30T22:50:35.478Z",
+	"updatedAt": "2026-10-30T22:50:35.478Z",
+	"template": "refactor",
+	"templateLineage": [
+		"feature",
+		"refactor"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Name the responsibility boundary and unchanged behavior.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Extract or reorganize one responsibility at a time.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
