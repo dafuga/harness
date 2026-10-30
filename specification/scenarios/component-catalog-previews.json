@@ -326,6 +326,9 @@
 		"reports.component.shared-primitives-atoms-svg-text-path",
 		"reports.component.shared-primitives-atoms-svg-tspan",
 		"reports.component.shared-primitives-atoms-svg-use",
+		"reports.component.shared-primitives-code-line",
+		"reports.component.shared-primitives-data-table",
+		"reports.component.shared-primitives-detail-list",
 		"reports.component.shared-primitives-loading-state",
 		"reports.component.source-code-action",
 		"reports.component.source-content",
@@ -372,6 +375,24 @@
 		{
 			"id": "desktop-component-agent-controls",
 			"title": "Agent controls",
+			"coverage": "required",
+			"units": ["desktop.component.agent-controls"]
+		},
+		{
+			"id": "desktop-component-agent-controls-compact",
+			"title": "Agent controls: compact",
+			"coverage": "required",
+			"units": ["desktop.component.agent-controls"]
+		},
+		{
+			"id": "desktop-component-agent-controls-empty",
+			"title": "Agent controls: empty",
+			"coverage": "required",
+			"units": ["desktop.component.agent-controls"]
+		},
+		{
+			"id": "desktop-component-agent-controls-unavailable",
+			"title": "Agent controls: unavailable",
 			"coverage": "required",
 			"units": ["desktop.component.agent-controls"]
 		},
@@ -432,6 +453,30 @@
 		{
 			"id": "desktop-component-contract-panel",
 			"title": "Contract panel",
+			"coverage": "required",
+			"units": ["desktop.component.contract-panel"]
+		},
+		{
+			"id": "desktop-component-contract-panel-empty",
+			"title": "Contract panel: empty",
+			"coverage": "required",
+			"units": ["desktop.component.contract-panel"]
+		},
+		{
+			"id": "desktop-component-contract-panel-missing-description",
+			"title": "Contract panel: missing-description",
+			"coverage": "required",
+			"units": ["desktop.component.contract-panel"]
+		},
+		{
+			"id": "desktop-component-contract-panel-long",
+			"title": "Contract panel: long",
+			"coverage": "required",
+			"units": ["desktop.component.contract-panel"]
+		},
+		{
+			"id": "desktop-component-contract-panel-technical-open",
+			"title": "Contract panel: technical-open",
 			"coverage": "required",
 			"units": ["desktop.component.contract-panel"]
 		},
@@ -822,6 +867,30 @@
 		{
 			"id": "desktop-component-remote-approval",
 			"title": "Remote approval",
+			"coverage": "required",
+			"units": ["desktop.component.remote-approval"]
+		},
+		{
+			"id": "desktop-component-remote-approval-no-projects",
+			"title": "Remote approval: no-projects",
+			"coverage": "required",
+			"units": ["desktop.component.remote-approval"]
+		},
+		{
+			"id": "desktop-component-remote-approval-busy",
+			"title": "Remote approval: busy",
+			"coverage": "required",
+			"units": ["desktop.component.remote-approval"]
+		},
+		{
+			"id": "desktop-component-remote-approval-read",
+			"title": "Remote approval: read",
+			"coverage": "required",
+			"units": ["desktop.component.remote-approval"]
+		},
+		{
+			"id": "desktop-component-remote-approval-write",
+			"title": "Remote approval: write",
 			"coverage": "required",
 			"units": ["desktop.component.remote-approval"]
 		},
@@ -3442,6 +3511,54 @@
 			"units": ["reports.component.harness-explorer-table"]
 		},
 		{
+			"id": "reports-component-harness-explorer-table-empty",
+			"title": "Entity catalog table: empty",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
+			"id": "reports-component-harness-explorer-table-functions",
+			"title": "Entity catalog table: functions",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
+			"id": "reports-component-harness-explorer-table-models",
+			"title": "Entity catalog table: models",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
+			"id": "reports-component-harness-explorer-table-types",
+			"title": "Entity catalog table: types",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
+			"id": "reports-component-harness-explorer-table-services",
+			"title": "Entity catalog table: services",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
+			"id": "reports-component-harness-explorer-table-layouts",
+			"title": "Entity catalog table: layouts",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
+			"id": "reports-component-harness-explorer-table-apis",
+			"title": "Entity catalog table: apis",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
+			"id": "reports-component-harness-explorer-table-platforms",
+			"title": "Entity catalog table: platforms",
+			"coverage": "required",
+			"units": ["reports.component.harness-explorer-table"]
+		},
+		{
 			"id": "reports-component-harness-harness-action",
 			"title": "Explorer action",
 			"coverage": "required",
@@ -5086,6 +5203,96 @@
 			"units": ["reports.component.shared-primitives-atoms-svg-use"]
 		},
 		{
+			"id": "reports-component-shared-primitives-code-line",
+			"title": "CodeLine",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-code-line"]
+		},
+		{
+			"id": "reports-component-shared-primitives-code-line-long",
+			"title": "CodeLine: long",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-code-line"]
+		},
+		{
+			"id": "reports-component-shared-primitives-code-line-multiline",
+			"title": "CodeLine: multiline",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-code-line"]
+		},
+		{
+			"id": "reports-component-shared-primitives-code-line-wrap",
+			"title": "CodeLine: wrap",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-code-line"]
+		},
+		{
+			"id": "reports-component-shared-primitives-code-line-action-focused",
+			"title": "CodeLine: action-focused",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-code-line"]
+		},
+		{
+			"id": "reports-component-shared-primitives-code-line-inspection-open",
+			"title": "CodeLine: inspection-open",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-code-line"]
+		},
+		{
+			"id": "reports-component-shared-primitives-data-table",
+			"title": "DataTable",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-data-table"]
+		},
+		{
+			"id": "reports-component-shared-primitives-data-table-empty",
+			"title": "DataTable: empty",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-data-table"]
+		},
+		{
+			"id": "reports-component-shared-primitives-data-table-long",
+			"title": "DataTable: long",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-data-table"]
+		},
+		{
+			"id": "reports-component-shared-primitives-data-table-focused",
+			"title": "DataTable: focused",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-data-table"]
+		},
+		{
+			"id": "reports-component-shared-primitives-detail-list",
+			"title": "DetailList",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-detail-list"]
+		},
+		{
+			"id": "reports-component-shared-primitives-detail-list-empty",
+			"title": "DetailList: empty",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-detail-list"]
+		},
+		{
+			"id": "reports-component-shared-primitives-detail-list-long",
+			"title": "DetailList: long",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-detail-list"]
+		},
+		{
+			"id": "reports-component-shared-primitives-detail-list-values",
+			"title": "DetailList: values",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-detail-list"]
+		},
+		{
+			"id": "reports-component-shared-primitives-detail-list-duplicate-labels",
+			"title": "DetailList: duplicate-labels",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-detail-list"]
+		},
+		{
 			"id": "reports-component-shared-primitives-loading-state",
 			"title": "Accessible data loading status",
 			"coverage": "required",
@@ -5575,6 +5782,9 @@
 			"kind": "screenshot",
 			"states": [
 				"desktop-component-agent-controls",
+				"desktop-component-agent-controls-compact",
+				"desktop-component-agent-controls-empty",
+				"desktop-component-agent-controls-unavailable",
 				"desktop-component-agent-effort-picker",
 				"desktop-component-agent-model-picker",
 				"desktop-component-agent-settings",
@@ -5585,6 +5795,10 @@
 				"desktop-component-choice-dialog",
 				"desktop-component-composer",
 				"desktop-component-contract-panel",
+				"desktop-component-contract-panel-empty",
+				"desktop-component-contract-panel-missing-description",
+				"desktop-component-contract-panel-long",
+				"desktop-component-contract-panel-technical-open",
 				"desktop-component-coverage-panel",
 				"desktop-component-deployment-activity",
 				"desktop-component-deployment-details",
@@ -5624,12 +5838,36 @@
 				"desktop-component-plan-badge",
 				"desktop-component-prior-image",
 				"desktop-component-project-agent",
+				"desktop-component-project-agent-closed",
+				"desktop-component-project-agent-read-only",
+				"desktop-component-project-agent-local-comment",
+				"desktop-component-project-agent-hosted-comment",
+				"desktop-component-project-agent-comment-retry",
+				"desktop-component-project-agent-conversation",
+				"desktop-component-project-agent-historical",
+				"desktop-component-project-agent-ask",
+				"desktop-component-project-agent-plan",
+				"desktop-component-project-agent-visual-plan",
+				"desktop-component-project-agent-change",
+				"desktop-component-project-agent-no-provider",
+				"desktop-component-project-agent-running",
+				"desktop-component-project-agent-saved-plan",
+				"desktop-component-project-agent-failure",
+				"desktop-component-project-agent-agents-empty",
+				"desktop-component-project-agent-agents-active",
+				"desktop-component-project-agent-agents-unknown",
+				"desktop-component-project-agent-agents-stale",
+				"desktop-component-project-agent-agents-many",
 				"desktop-component-project-gate",
 				"desktop-component-project-switcher",
 				"desktop-component-recorded-preview",
 				"desktop-component-reference-text",
 				"desktop-component-relationships-panel",
 				"desktop-component-remote-approval",
+				"desktop-component-remote-approval-no-projects",
+				"desktop-component-remote-approval-busy",
+				"desktop-component-remote-approval-read",
+				"desktop-component-remote-approval-write",
 				"desktop-component-remote-connection",
 				"desktop-component-remote-devices",
 				"desktop-component-remote-host-panel",
@@ -5937,10 +6175,18 @@
 				"reports-component-explorer-ui-config-value-tree-expression",
 				"reports-component-explorer-ui-config-value-tree-long-expression",
 				"reports-component-explorer-ui-explorer-kit-card",
+				"reports-component-explorer-ui-explorer-kit-card-section",
+				"reports-component-explorer-ui-explorer-kit-card-tone",
 				"reports-component-explorer-ui-explorer-kit-command-block",
+				"reports-component-explorer-ui-explorer-kit-command-block-long",
+				"reports-component-explorer-ui-explorer-kit-command-block-multiline",
 				"reports-component-explorer-ui-explorer-kit-empty-state",
+				"reports-component-explorer-ui-explorer-kit-empty-state-action",
 				"reports-component-explorer-ui-explorer-kit-notice",
+				"reports-component-explorer-ui-explorer-kit-notice-long",
 				"reports-component-explorer-ui-explorer-kit-pill",
+				"reports-component-explorer-ui-explorer-kit-pill-state",
+				"reports-component-explorer-ui-explorer-kit-pill-tone",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
 				"reports-component-explorer-ui-explorer-module-card-image-error",
@@ -6058,6 +6304,14 @@
 				"reports-component-harness-explorer-index",
 				"reports-component-harness-explorer-pages-screen",
 				"reports-component-harness-explorer-table",
+				"reports-component-harness-explorer-table-empty",
+				"reports-component-harness-explorer-table-functions",
+				"reports-component-harness-explorer-table-models",
+				"reports-component-harness-explorer-table-types",
+				"reports-component-harness-explorer-table-services",
+				"reports-component-harness-explorer-table-layouts",
+				"reports-component-harness-explorer-table-apis",
+				"reports-component-harness-explorer-table-platforms",
 				"reports-component-harness-harness-action",
 				"reports-component-harness-harness-console",
 				"reports-component-harness-harness-header",
@@ -6104,9 +6358,25 @@
 				"reports-component-module-system-explorer-modules-screen-link-focused",
 				"reports-component-module-system-explorer-modules-screen-link-hovered",
 				"reports-component-module-system-plugins-explorer-plugin-card",
+				"reports-component-module-system-plugins-explorer-plugin-card-available",
+				"reports-component-module-system-plugins-explorer-plugin-card-included",
+				"reports-component-module-system-plugins-explorer-plugin-card-available-testing",
+				"reports-component-module-system-plugins-explorer-plugin-card-installed-testing",
+				"reports-component-module-system-plugins-explorer-plugin-card-included-testing",
+				"reports-component-module-system-plugins-explorer-plugin-card-empty-resources",
 				"reports-component-module-system-plugins-plugin-resource-card",
+				"reports-component-module-system-plugins-plugin-resource-card-available",
+				"reports-component-module-system-plugins-plugin-resource-card-empty-instructions",
 				"reports-component-module-system-plugins-plugin-state-pills",
+				"reports-component-module-system-plugins-plugin-state-pills-available",
+				"reports-component-module-system-plugins-plugin-state-pills-included",
+				"reports-component-module-system-plugins-plugin-state-pills-available-testing",
+				"reports-component-module-system-plugins-plugin-state-pills-installed-testing",
+				"reports-component-module-system-plugins-plugin-state-pills-included-testing",
 				"reports-component-module-system-plugins-plugin-steps",
+				"reports-component-module-system-plugins-plugin-steps-empty",
+				"reports-component-module-system-plugins-plugin-steps-long",
+				"reports-component-module-system-plugins-plugin-steps-multiline",
 				"reports-component-networking-security-explorer-permissions-screen",
 				"reports-component-networking-security-explorer-permissions-screen-index",
 				"reports-component-networking-security-explorer-permissions-screen-guest",
@@ -6316,6 +6586,21 @@
 				"reports-component-shared-primitives-atoms-svg-text-path",
 				"reports-component-shared-primitives-atoms-svg-tspan",
 				"reports-component-shared-primitives-atoms-svg-use",
+				"reports-component-shared-primitives-code-line",
+				"reports-component-shared-primitives-code-line-long",
+				"reports-component-shared-primitives-code-line-multiline",
+				"reports-component-shared-primitives-code-line-wrap",
+				"reports-component-shared-primitives-code-line-action-focused",
+				"reports-component-shared-primitives-code-line-inspection-open",
+				"reports-component-shared-primitives-data-table",
+				"reports-component-shared-primitives-data-table-empty",
+				"reports-component-shared-primitives-data-table-long",
+				"reports-component-shared-primitives-data-table-focused",
+				"reports-component-shared-primitives-detail-list",
+				"reports-component-shared-primitives-detail-list-empty",
+				"reports-component-shared-primitives-detail-list-long",
+				"reports-component-shared-primitives-detail-list-values",
+				"reports-component-shared-primitives-detail-list-duplicate-labels",
 				"reports-component-shared-primitives-loading-state",
 				"reports-component-source-code-action",
 				"reports-component-source-code-action-unavailable",
@@ -6391,31 +6676,7 @@
 				"reports-page-harness-branch-branch-at-translations",
 				"reports-page-harness-branch-branch-at-types",
 				"reports-page-harness-branch-branch-at-types-entity",
-				"reports-page-harness-branch-branch-at-types-entity-history",
-				"reports-component-explorer-ui-explorer-kit-card-section",
-				"reports-component-explorer-ui-explorer-kit-card-tone",
-				"reports-component-explorer-ui-explorer-kit-pill-state",
-				"reports-component-explorer-ui-explorer-kit-pill-tone",
-				"reports-component-explorer-ui-explorer-kit-empty-state-action",
-				"reports-component-explorer-ui-explorer-kit-notice-long",
-				"reports-component-explorer-ui-explorer-kit-command-block-long",
-				"reports-component-explorer-ui-explorer-kit-command-block-multiline",
-				"reports-component-module-system-plugins-explorer-plugin-card-available",
-				"reports-component-module-system-plugins-explorer-plugin-card-included",
-				"reports-component-module-system-plugins-explorer-plugin-card-available-testing",
-				"reports-component-module-system-plugins-explorer-plugin-card-installed-testing",
-				"reports-component-module-system-plugins-explorer-plugin-card-included-testing",
-				"reports-component-module-system-plugins-explorer-plugin-card-empty-resources",
-				"reports-component-module-system-plugins-plugin-state-pills-available",
-				"reports-component-module-system-plugins-plugin-state-pills-included",
-				"reports-component-module-system-plugins-plugin-state-pills-available-testing",
-				"reports-component-module-system-plugins-plugin-state-pills-installed-testing",
-				"reports-component-module-system-plugins-plugin-state-pills-included-testing",
-				"reports-component-module-system-plugins-plugin-resource-card-available",
-				"reports-component-module-system-plugins-plugin-resource-card-empty-instructions",
-				"reports-component-module-system-plugins-plugin-steps-empty",
-				"reports-component-module-system-plugins-plugin-steps-long",
-				"reports-component-module-system-plugins-plugin-steps-multiline"
+				"reports-page-harness-branch-branch-at-types-entity-history"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",

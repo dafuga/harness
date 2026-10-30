@@ -1,3 +1,4 @@
+import { presentationVariants } from './presentationVariants';
 import { explorerKitVariants } from './explorerKitVariants';
 import { pluginVariants } from './pluginVariants';
 import { activityCatalogVariants } from './activityCatalogVariants';
@@ -18,6 +19,7 @@ import { browserErrorsStates } from './browserErrorsVariants';
 /** Additional representative states stay beside each component's required default state. */
 const variants: Record<string, string[]> = {
 	...explorerKitVariants,
+	...presentationVariants,
 	...pluginVariants,
 	...audioCatalogVariants,
 	...evidenceCatalogVariants,

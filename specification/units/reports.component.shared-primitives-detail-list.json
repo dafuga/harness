@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-detail-list",
+	"kind": "component",
+	"title": "DetailList",
+	"responsibility": "Renders keyed semantic definition rows while callers provide labels, values and empty content.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-dd",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-dl",
+			"reports.component.shared-primitives-atoms-html-dt"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/DetailList.svelte"],
+		"symbols": ["DetailList"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DetailList.rows",
+				"type": "Row[]",
+				"required": true,
+				"description": "Required rows in display order. Falsy values and repeated labels remain unmodified and are rendered by the caller snippets."
+			},
+			{
+				"name": "DetailList.rowKey",
+				"type": "(row: Row, position: number) => string | number",
+				"required": true,
+				"description": "Required callback returning a stable unique string or numeric key for each row. Repeated labels must still have distinct keys."
+			},
+			{
+				"name": "DetailList.label",
+				"type": "Snippet<[Row]>",
+				"required": true,
+				"description": "Required snippet receiving each row and rendering its definition term."
+			},
+			{
+				"name": "DetailList.children",
+				"type": "Snippet<[Row]>",
+				"required": true,
+				"description": "Required snippet receiving each row and rendering its definition description."
+			},
+			{
+				"name": "DetailList.empty",
+				"type": "Snippet",
+				"required": false,
+				"description": "Optional snippet shown instead of a definition list when rows is empty. Without it, an empty definition list is rendered."
+			},
+			{
+				"name": "DetailList.className",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Optional feature classes, default an empty string."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DetailList",
+				"type": "markup",
+				"description": "A definition list with one keyed term/description group per row, or caller-owned empty content outside the list."
+			}
+		],
+		"errors": [
+			{
+				"name": "Caller content error",
+				"type": "thrown",
+				"description": "Errors from supplied snippets or rowKey propagate; this presentation component does not catch them."
+			},
+			{
+				"name": "Duplicate row key",
+				"type": "Svelte keyed-each error",
+				"description": "Duplicate rowKey results are rejected during client updates; callers must provide distinct stable keys."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dd",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dl",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dt",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/DetailList.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/DetailList.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-shared-primitives-detail-list",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,132 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.shared-primitives-data-table",
+	"kind": "component",
+	"title": "DataTable",
+	"responsibility": "Frames caller-owned table rows in a labelled keyboard-scrollable region without loading or transforming data.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-table",
+			"reports.component.shared-primitives-atoms-html-tbody",
+			"reports.component.shared-primitives-atoms-html-thead"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/shared-primitives/DataTable.svelte"],
+		"symbols": ["DataTable"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DataTable.label",
+				"type": "string",
+				"required": true,
+				"description": "Required accessible name for both the table and its scroll region."
+			},
+			{
+				"name": "DataTable.header",
+				"type": "Snippet",
+				"required": true,
+				"description": "Required snippet of header rows and scoped column headings."
+			},
+			{
+				"name": "DataTable.children",
+				"type": "Snippet",
+				"required": true,
+				"description": "Required snippet of body rows; the caller retains data ordering, cell formatting and actions."
+			},
+			{
+				"name": "DataTable.empty",
+				"type": "Snippet",
+				"required": false,
+				"description": "Optional snippet of complete empty rows and cell spans; omitted empty content renders no body rows."
+			},
+			{
+				"name": "DataTable.isEmpty",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Optional empty-state selector, default false. True renders empty instead of children."
+			},
+			{
+				"name": "DataTable.className",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Optional frame classes, default an empty string; feature styling stays with the caller."
+			},
+			{
+				"name": "DataTable.tableClass",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Optional table classes, default an empty string; existing catalog styles remain supported."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DataTable",
+				"type": "markup",
+				"description": "A semantic table with caller-provided header/body or empty rows, contained horizontal scrolling and a keyboard-focusable labelled region."
+			}
+		],
+		"errors": [
+			{
+				"name": "Caller content error",
+				"type": "thrown",
+				"description": "Errors from supplied snippets propagate; this presentation component does not catch them."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-table",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-tbody",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-thead",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/shared-primitives/DataTable.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/shared-primitives/DataTable.svelte"
+			}
+		]
+	},
+	"scenarios": ["component-catalog-previews"],
+	"preview": {
+		"scenario": "component-catalog-previews",
+		"state": "reports-component-shared-primitives-data-table",
+		"viewport": "desktop"
+	},
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
