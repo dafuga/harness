@@ -5,6 +5,6 @@ export { _ as t } from 'svelte-i18n';
 addMessages('en', english);
 addMessages('fr', french);
 void init({ fallbackLocale: 'en', initialLocale: 'en' });
-export function reportLocale() {
+export function reportLocale(): 'en' {
 	return 'en';
 }
