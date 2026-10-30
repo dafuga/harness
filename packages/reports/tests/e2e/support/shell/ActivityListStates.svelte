@@ -50,11 +50,6 @@
 			</ActivityList>
 		</div>
 	</section>
-	<p class="note">
-		{state === 'error'
-			? 'Activity List renders the caller’s row content; it does not fetch data or create errors.'
-			: 'Rendered from the real Activity List component with synthetic activity.'}
-	</p>
 </main>
 
 <style>
@@ -97,10 +92,5 @@
 	}
 	.error-row strong {
 		color: #ffb9bd;
-	}
-	.note {
-		color: var(--hx-muted);
-		line-height: 1.5;
-		font-size: 0.85rem;
 	}
 </style>

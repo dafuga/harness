@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T02:59:59.451Z","name":"coverage-list-empty","goal":"Show an explicit empty state for missing acceptance and coverage data","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T03:02:26.861Z","loop":"coverage-list-empty","step":"spec","evidence":"Empty acceptance and coverage sections render no explanatory content; the coverage-only section can be blank."}
+{"event":"step.completed","timestamp":"2026-10-30T03:02:27.467Z","loop":"coverage-list-empty","step":"coverage","evidence":"The component catalog had only populated coverage input. Add section, embedded and empty states with assertions and a pre-assertion capture."}

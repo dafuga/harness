@@ -15,12 +15,12 @@ import { evidenceGridItems } from './evidenceGridData';
 import { reportCheck } from './reportChecksVariants';
 import { recordedValueFixture } from './recordedValueVariants';
 import { reportSummaryFixture } from './reportSummaryVariants';
+import { coverageListFixture } from './coverageListVariants';
 import * as d from './explorerData';
 import { explorerSearchEntries } from '../../../../src/utils/explorer-ui/explorerSearchEntries';
 import { entitySearch } from '../../../../src/utils/explorer-ui/entitySearch';
 import { contractPreviewUnit } from './reportEntityContractVariants';
 import { resolveStateImage } from './reportEntityStatesVariants';
-const field = group.fields[0];
 const entries = explorerSearchEntries(d.entities, d.shown.head.commit);
 export const reportCases: PreviewCases = {
 	'reports.component.audio-comparison': {
@@ -66,9 +66,9 @@ export const reportCases: PreviewCases = {
 		path: '/branch/feature%2Forders/components',
 		navigate: noop
 	},
-	'reports.component.contract-example': { field },
+	'reports.component.contract-example': { field: group.fields[0] },
 	'reports.component.contract-table': { group, onexample: noop },
-	'reports.component.coverage-list': { report },
+	'reports.component.coverage-list': { report: coverageListFixture },
 	'reports.component.entity-cases': { examples: [example] },
 	'reports.component.entity-contract': {
 		unit: contractPreviewUnit(d.entity.unit),
