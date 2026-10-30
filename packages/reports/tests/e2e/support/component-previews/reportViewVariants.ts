@@ -41,6 +41,18 @@ export function reportViewVariant(props: PreviewCases[string], variant: string) 
 			}
 		};
 	if (variant === 'portable') return { ...props, portable: true };
+	if (variant === 'image-open')
+		return {
+			...props,
+			report: {
+				...report,
+				evidence: report.evidence.map((item) =>
+					item.id === 'checkout-confirmation'
+						? { ...item, provenance: item.provenance?.slice(0, 1) }
+						: item
+				)
+			}
+		};
 	if (variant.startsWith('upload-'))
 		return { ...props, report: { ...report, state: 'active', exports: undefined } };
 	return reportSummaryVariant(props, variant);

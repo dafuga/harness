@@ -26,12 +26,19 @@ export async function prepareReportView(component: Locator, variant: string) {
 			)
 			.toBe(true);
 		await image.evaluate((node: HTMLImageElement) => node.decode());
+		await expect(dialog.locator('output')).toHaveText(/^\d+%$/);
+		await expect(dialog.locator('figcaption')).toBeInViewport({ ratio: 1 });
 	}
 	if (variant === 'audio-open') {
 		await component
 			.getByRole('button', { name: 'Open audio comparison: Release narration' })
 			.click();
-		await expect(component.getByRole('dialog')).toBeVisible();
+		const dialog = component.getByRole('dialog');
+		await expect(dialog).toBeVisible();
+		const sides = dialog.locator('.audio-comparison-side');
+		await expect(sides).toHaveCount(2);
+		for (const side of await sides.all())
+			await expect(side).toBeInViewport({ ratio: 1 });
 	}
 	if (variant === 'audio-selected') {
 		const button = component
