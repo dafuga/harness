@@ -36,8 +36,8 @@ export const activityCatalogVariants: Record<string, string[]> = {
 	'reports.component.project-activity': ['recorded', 'empty', 'stale', 'failed-read'],
 	// Site activity's refresh failure preserves the last known live observation with a warning.
 	'reports.component.site-activity': ['failed-refresh'],
-	// History filters show both a focused query and the no-filter form.
-	'reports.component.analytics-filters': ['empty'],
+	// History filters show focused, empty and fully populated forms.
+	'reports.component.analytics-filters': ['empty', 'all-filters'],
 	// CPU distinguishes a healthy idle checkout from an unavailable local sample.
 	'reports.component.analytics-cpu': ['no-agents', 'unavailable'],
 	// History retains independent empty tables and summaries after filters remove every loop.

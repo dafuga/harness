@@ -1301,6 +1301,12 @@
 			"units": ["reports.component.analytics-filters"]
 		},
 		{
+			"id": "reports-component-analytics-filters-all-filters",
+			"title": "Analytics filters: All filters",
+			"coverage": "required",
+			"units": ["reports.component.analytics-filters"]
+		},
+		{
 			"id": "reports-component-analytics-history",
 			"title": "Analytics history",
 			"coverage": "required",
@@ -4530,6 +4536,7 @@
 				"reports-component-analytics-cpu-unavailable",
 				"reports-component-analytics-filters",
 				"reports-component-analytics-filters-empty",
+				"reports-component-analytics-filters-all-filters",
 				"reports-component-analytics-history",
 				"reports-component-analytics-history-empty",
 				"reports-component-analytics-models",

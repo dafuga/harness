@@ -19,7 +19,7 @@ const check = {
 export const analyticsCases: PreviewCases = {
 	'reports.component.analytics-cpu': {},
 	'reports.component.analytics-filters': {
-		filters: { loop: 'component-card-evidence', since: '2026-10-20' }
+		filters: { loop: 'release-check', since: '2026-10-20' }
 	},
 	'reports.component.analytics-history': {
 		summary: {

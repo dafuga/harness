@@ -24,6 +24,16 @@ import { providerPickerVariant } from './providerPickerVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id === 'reports.component.analytics-filters' && variant === 'all-filters')
+		return {
+			filters: {
+				loop: 'release-check',
+				task: 'verify',
+				model: 'GPT 6.1',
+				since: '2026-10-20',
+				until: '2026-10-26'
+			}
+		};
 	if (id === 'reports.component.activity-files') return activityFileVariant(props, variant);
 	if (id === 'reports.component.site-activity' && variant === 'failed-refresh') return { ...props };
 	if (id === 'reports.component.activity-work') return activityWorkVariant(props, variant);
