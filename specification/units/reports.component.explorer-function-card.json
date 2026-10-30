@@ -52,7 +52,13 @@
 				"description": "One shared module card with the helper invocation or entity name and at most three flat Used In links."
 			}
 		],
-		"errors": []
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Function-card argument examples cannot serialize BigInt or circular values."
+			}
+		]
 	},
 	"dependencies": [
 		{
