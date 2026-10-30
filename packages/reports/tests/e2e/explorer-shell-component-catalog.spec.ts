@@ -16,10 +16,7 @@ import { assertPermissionTable } from './support/component-previews/permissionPr
 import { assertMobileContractFields } from './support/component-previews/entityContractPreviewAssertions';
 import { assertModuleCardPreview } from './support/component-previews/moduleCardPreviewAssertions';
 import { assertOpenLanguagePixels } from './support/component-previews/translationsPreviewAssertions';
-import {
-	assertCatalogLayout,
-	assertCatalogDetails
-} from './support/component-previews/catalogCaseAssertions';
+import * as caseAssertions from './support/component-previews/catalogCaseAssertions';
 import { assertProjectAgentState } from './support/component-previews/projectAgentStateAssertions';
 import type { ProjectAgentState } from './support/component-previews/projectAgentStateFixtures.types';
 import { prepareCatalogState } from './support/component-previews/catalogStateActions';
@@ -119,7 +116,10 @@ for (const viewport of catalogViewports) {
 			const component = await preview.readyPreview(page, unit.id, variant);
 			const target = { viewport: viewport.id, variant };
 			const early = unit.id === 'reports.component.coverage-list' && variant === 'empty';
-			if (early) await preview.capturePreview(page, home, unit.id, target);
+			if (early) {
+				await expect(component.getByRole('heading', { name: 'Acceptance' })).toBeVisible();
+				await preview.capturePreview(page, home, unit.id, target);
+			}
 			await prepareCatalogState(component, unit.id, variant);
 			await assertCatalogState(component, unit.id, variant, viewport.id);
 			if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
@@ -175,8 +175,8 @@ for (const viewport of catalogViewports) {
 					field,
 					'Only the compact value is painted in a closed revision field'
 				).toHaveCSS('color', 'rgba(0, 0, 0, 0)');
-			await assertCatalogLayout(component, unit, viewport);
-			await assertCatalogDetails(component, unit.id, variant);
+			await caseAssertions.assertCatalogLayout(component, unit, viewport);
+			await caseAssertions.assertCatalogDetails(component, unit.id, variant);
 			if (
 				['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
 					(name) => unit.id === `desktop.component.${name}`
