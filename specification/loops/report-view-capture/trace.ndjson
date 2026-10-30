@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-10-30T05:58:11.024Z","name":"report-view-capture","goal":"Show truthful empty reports and frame open dialogs in their visible viewport","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-10-30T05:58:38.163Z","loop":"report-view-capture","step":"spec","evidence":"The API images at b349 show an undimmed long page around open dialogs and a passed empty report with exports."}
+{"event":"step.completed","timestamp":"2026-10-30T05:58:38.720Z","loop":"report-view-capture","step":"coverage","evidence":"The standard catalog test did not assert dialog viewport bounds or the empty report outcome and export absence."}

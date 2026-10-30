@@ -82,6 +82,10 @@ export function reportVariantProps(id: string, props: PreviewCases[string], vari
 	if (id === 'reports.component.gameplay-replay') return gameplayReplayVariant(props, variant);
 	if (id === 'reports.component.replay-controls') return replayControlsVariant(props, variant);
 	if (id === 'reports.component.regression-proof') return regressionProofVariant(props, variant);
+	return audioVariant(id, props, variant);
+}
+
+function audioVariant(id: string, props: PreviewCases[string], variant: string) {
 	if (
 		!['reports.component.audio-comparison', 'reports.component.audio-comparison-viewer'].includes(
 			id

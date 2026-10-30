@@ -27,7 +27,18 @@ export function reportViewVariant(props: PreviewCases[string], variant: string) 
 	if (variant === 'empty')
 		return {
 			...props,
-			report: { ...report, checks: [], findings: [], acceptance: [], coverage: [], evidence: [] }
+			report: {
+				...report,
+				state: 'active',
+				status: 'not-proven',
+				revision: undefined,
+				exports: undefined,
+				checks: [],
+				findings: [],
+				acceptance: [],
+				coverage: [],
+				evidence: []
+			}
 		};
 	if (variant === 'portable') return { ...props, portable: true };
 	if (variant.startsWith('upload-'))
