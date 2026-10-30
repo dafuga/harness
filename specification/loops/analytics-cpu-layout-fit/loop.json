@@ -2,7 +2,7 @@
 	"name": "analytics-cpu-layout-fit",
 	"goal": "Keep CPU readings visible and readable at every viewport.",
 	"createdAt": "2026-10-30T01:05:01.433Z",
-	"updatedAt": "2026-10-30T01:12:25.776Z",
+	"updatedAt": "2026-10-30T01:16:55.892Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-10-30T01:16:55.892Z",
+			"evidence": "The unchanged tablet and mobile catalog regression passed on harbor-mbp-2."
 		},
 		{
 			"id": "verify",
