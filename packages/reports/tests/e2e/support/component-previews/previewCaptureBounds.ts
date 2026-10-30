@@ -48,15 +48,34 @@ export async function previewCaptureBounds(page: Page, id: string, variant = '')
 			edge: id === 'reports.component.evidence-grid' && modal ? 0 : 8
 		}
 	);
-	if (
-		(id === 'reports.component.select' && variant === 'open') ||
-		(id === 'reports.component.replay-controls' && ['speed-open', 'scene-open'].includes(variant))
-	) {
+	if (id === 'reports.component.replay-controls' && ['speed-open', 'scene-open'].includes(variant))
+		return replayPickerBounds(page, bounds, variant);
+	if (id === 'reports.component.select' && variant === 'open') {
 		const height = await page.evaluate(() => document.documentElement.scrollHeight);
-		const extra = id === 'reports.component.select' ? 180 : 250;
-		return { ...bounds, height: Math.min(height - bounds.y, bounds.height + extra) };
+		return { ...bounds, height: Math.min(height - bounds.y, bounds.height + 180) };
 	}
 	return bounds;
+}
+
+async function replayPickerBounds(
+	page: Page,
+	bounds: { x: number; y: number; width: number; height: number },
+	variant: string
+) {
+	const name = variant === 'speed-open' ? 'Playback speed' : 'Jump to scene';
+	const bottom = await page.getByRole('combobox', { name }).evaluate((node: HTMLSelectElement) => {
+		const options = [...node.options].map((option) => option.getBoundingClientRect());
+		const visible = options.filter((box) => box.width > 0 && box.height > 0);
+		const popupBottom = visible.length
+			? Math.max(...visible.map((box) => box.bottom))
+			: node.getBoundingClientRect().bottom + options.length * 26;
+		return Math.ceil(popupBottom + scrollY) + 8;
+	});
+	const height = await page.evaluate(() => document.documentElement.scrollHeight);
+	return {
+		...bounds,
+		height: Math.min(height - bounds.y, Math.max(bounds.height, bottom - bounds.y))
+	};
 }
 
 async function previewTarget(content: Locator, id: string, variant: string) {
